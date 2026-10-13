@@ -42,6 +42,8 @@ class Listing:
         self.by_phys = {}
         self.rope = {}
         self.labels = {}
+        image = os.path.join(os.path.dirname(path), 'MAIN.agc.bin')
+        self.image = open(image, 'rb').read() if os.path.exists(image) else None
         src = 'MAIN.agc'
         for raw in open(path, errors='replace'):
             raw = raw.rstrip('\n')
@@ -105,8 +107,27 @@ class Listing:
     def file_lines(self, name):
         return [l for l in self.lines if l.src == name]
 
+    # Spec 'rope_fallback': words the listing does not show come from the
+    # rope image instead of 0.
+    rope_fallback = False
+
     def word(self, phys):
-        return self.rope.get(phys, 0)
+        if phys in self.rope:
+            return self.rope[phys]
+        return self.image_word(phys) if self.rope_fallback else 0
+
+    def image_word(self, phys):
+        """Rope word from MAIN.agc.bin beside the listing, for words the
+        listing does not show (filler past a constant that an order reads)."""
+        if self.image is None:
+            return 0
+        bank, off = divmod(phys, 1024)
+        if bank < 4:
+            bank ^= 2
+        o = 2 * (bank * 1024 + off)
+        if o + 1 >= len(self.image):
+            return 0
+        return (self.image[o] << 8 | self.image[o + 1]) >> 1
 
     def label_at(self, phys):
         for k, v in self.labels.items():

@@ -15,7 +15,7 @@
   "tests/cm_update_cases.c": "b883d100487df15676c2767cd3432c27850ac8cbb52707aca71d53b5696aecfa"
  },
  "included_sources": {
-  "src/lm_interp_orders.c": "ca13888ecf72f5ac0f8b291cf07896c07e21fe32af015dbbdf9da717002bfe05",
+  "src/lm_interp_orders.c": "0460aa4b381f0961373048f779b50b1e4a13e2132a3e8647ee41c03e4f04676f",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56"
  },
  "compiler_flags": [
@@ -37,8 +37,6 @@
   15,
   16,
   17,
-  19,
-  21,
   23,
   27,
   29,
@@ -49,12 +47,14 @@
   35,
   43,
   48,
+  59,
   64,
   73,
   80,
   81,
   87,
   96,
+  111,
   112,
   119,
   128,
@@ -74,17 +74,21 @@
   301,
   304,
   320,
+  325,
   336,
   352,
   368,
   384,
   400,
+  405,
   416,
   432,
+  443,
   448,
   464,
   467,
   480,
+  481,
   496,
   512,
   519,
@@ -100,8 +104,10 @@
   672,
   688,
   704,
+  709,
   720,
   736,
+  743,
   752,
   768,
   784,
@@ -221,8 +227,10 @@
   2608,
   2624,
   2640,
+  2647,
   2656,
   2672,
+  2679,
   2688,
   2704,
   2720,
@@ -244,6 +252,7 @@
   2976,
   2992,
   3008,
+  3023,
   3024,
   3040,
   3056,
@@ -287,6 +296,7 @@
   3664,
   3680,
   3696,
+  3705,
   3712,
   3728,
   3744,
@@ -313,9 +323,13 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 479,
- "c64_branch_arcs": 479,
+ "host_branch_arcs": 547,
+ "c64_branch_arcs": 547,
  "arcs_by_source_host_c64": {
+  "build/cm-update-cover/../../tools/a2_call_sites.h": [
+   8,
+   8
+  ],
   "build/cm-update-cover/runner.c": [
    1,
    1
@@ -357,8 +371,8 @@
    0
   ],
   "src/cm_update.c": [
-   174,
-   174
+   234,
+   234
   ],
   "src/lm_interp_orders.c": [
    0,
@@ -374,6 +388,15 @@
   ]
  },
  "host_branches_missing_on_c64": [],
+ "call_site_outcomes": {
+  "sources": [
+   "src/cm_update.c"
+  ],
+  "header": {
+   "tools/a2_call_sites.h": "fe9f788bc554d40534aaeae24249d050576c7f34edd4cabdcb757263d38fb082"
+  },
+  "method": "each DAS/DDOUBL, ADS and BZF call site in these sources also branches on the helper's outcome (DAS: low-word carry, borrow or neither, and overflow +1, -1 or none; ADS: overflow +1, -1 or none; BZF: A = +0, -0 or nonzero) on its own line, so those outcomes are host arcs the rows must take"
+ },
  "entry_slots": "case n enters entry slot n % 38",
  "entry_slots_host_c64": [
   [
@@ -454,7 +477,7 @@
   ],
   [
    108,
-   1
+   2
   ],
   [
    108,
@@ -462,63 +485,63 @@
   ],
   [
    108,
-   1
-  ],
-  [
-   108,
-   13
-  ],
-  [
-   108,
-   1
-  ],
-  [
-   108,
-   13
-  ],
-  [
-   108,
-   1
-  ],
-  [
-   108,
-   14
-  ],
-  [
-   108,
-   1
-  ],
-  [
-   108,
-   13
-  ],
-  [
-   108,
-   1
-  ],
-  [
-   107,
-   14
-  ],
-  [
-   107,
-   1
-  ],
-  [
-   107,
-   14
-  ],
-  [
-   107,
-   1
-  ],
-  [
-   107,
-   13
-  ],
-  [
-   107,
    4
+  ],
+  [
+   108,
+   13
+  ],
+  [
+   108,
+   1
+  ],
+  [
+   108,
+   13
+  ],
+  [
+   108,
+   6
+  ],
+  [
+   108,
+   14
+  ],
+  [
+   108,
+   1
+  ],
+  [
+   108,
+   13
+  ],
+  [
+   108,
+   1
+  ],
+  [
+   107,
+   14
+  ],
+  [
+   107,
+   1
+  ],
+  [
+   107,
+   14
+  ],
+  [
+   107,
+   1
+  ],
+  [
+   107,
+   13
+  ],
+  [
+   107,
+   5
   ],
   [
    107,

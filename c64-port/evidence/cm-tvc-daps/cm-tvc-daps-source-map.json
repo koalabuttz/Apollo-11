@@ -1,4955 +1,3425 @@
 {
- "source_file": "Comanche055/TVCDAPS.agc",
- "original_sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
- "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
- "emitted_words": 489,
- "native_files": [
-  "src/cm_tvc_daps.c",
-  "include/cm_tvc_daps.h"
- ],
- "entries": [
-  "2530 PITCHDAP (T5RUPT via T5LOC = PITCHT5)",
-  "2732 YAWDAP (T5RUPT via T5LOC = YAWT5)",
-  "3107 DAPINIT (T5RUPT via DAPT5)",
-  "2541, 2543, 2743, 2745 (HACK returns)",
-  "2675 PCOPY+1, 3051 YCOPY+1 (FINCOPY ISWCALL; TC Q to the caller)"
- ],
- "frontiers": {
-  "HACK 3533": "TC HACK at 2540/2542/2742/2744 (TVCSTROKETEST)",
-  "RESUME 5333": "PDAPEND, YDAPEND",
-  "NOQRSM 5335": "DAPINIT",
-  "caller Q": "TC Q of PCOPY/YCOPY entered at +1"
- },
- "fixed_constants_checked": {
-  "2533 YAWT5": "02732",
-  "2562 1/RTLIM": "00115",
-  "2565 ZERO": "00000",
-  "2641 BIT11": "02000",
-  "2660 E(-AT)": "37535",
-  "2664 E(-AT)": "37535",
-  "2670 1-E(-AT)": "00243",
-  "2735 PITCHT5": "02530",
-  "3015 BIT12": "04000",
-  "3034 E(-AT)": "37535",
-  "3040 E(-AT)": "37535",
-  "3044 1-E(-AT)": "00243",
-  "3104 ZERO": "00000",
-  "3110 NEGONE": "77776",
-  "3112 NEGMAX": "40000",
-  "3115 PITCHT5": "02530",
-  "3126 1/ERRLIM": "00004",
-  "3132 ERRLIM": "10000",
-  "3134 ERRLIM": "10000",
-  "3142 ZERO": "00000",
-  "3145 1/ACTSAT": "00101",
-  "3151 ACTSAT": "00375",
-  "3153 ACTSAT": "00375",
-  "3156 ZERO": "00000",
-  "3211 BIT14": "20000",
-  "3247 ZERO": "00000",
-  "3301 ZERO": "00000",
-  "3326 ZERO": "00000",
-  "3360 ZERO": "00000",
-  "3406 BIT13": "10000",
-  "3411 ZERO": "00000",
-  "3443 ZERO": "00000"
- },
- "table_checked": "native TC Q dispatch equals the return addresses of the file's TCR words; HACK returns equal the TC HACK addresses +1",
- "reachability": {
-  "TS overflow skips other than TS L at 3141 and TS TIME5 at 3114": "unreachable: they store MSU or MP results, loads, constants or CCS results; the two are taken",
-  "CCS A slots 2/3 at 3212 and 3407": "unreachable: A is DAPDATR1 masked with BIT14 or BIT13 (+0 or the bit)",
-  "CCS +0/-0 slots at 3131 and 3150": "unreachable after BZF has taken a zero product; translated (they store +0)"
- },
- "words": [
-  {
-   "source_line": 129,
-   "bank": "20",
-   "address": "2530",
-   "raw_octal": "22016",
-   "label": "PITCHDAP",
-   "op": "LXCH",
-   "operand": "BANKRUPT",
-   "native_label": null
-  },
-  {
-   "source_line": 130,
-   "bank": "20",
-   "address": "2531",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": null
-  },
-  {
-   "source_line": 131,
-   "bank": "20",
-   "address": "2532",
-   "raw_octal": "22012",
-   "label": "",
-   "op": "QXCH",
-   "operand": "QRUPT",
-   "native_label": null
-  },
-  {
-   "source_line": 133,
-   "bank": "20",
-   "address": "2533",
-   "raw_octal": "33475",
-   "label": "",
-   "op": "CAF",
-   "operand": "YAWT5",
-   "native_label": null
-  },
-  {
-   "source_line": 134,
-   "bank": "20",
-   "address": "2534",
-   "raw_octal": "55312",
-   "label": "",
-   "op": "TS",
-   "operand": "T5LOC",
-   "native_label": null
-  },
-  {
-   "source_line": 135,
-   "bank": "20",
-   "address": "2535",
-   "raw_octal": "31625",
-   "label": "",
-   "op": "CAE",
-   "operand": "T5TVCDT",
-   "native_label": null
-  },
-  {
-   "source_line": 136,
-   "bank": "20",
-   "address": "2536",
-   "raw_octal": "54030",
-   "label": "",
-   "op": "TS",
-   "operand": "TIME5",
-   "native_label": null
-  },
-  {
-   "source_line": 138,
-   "bank": "20",
-   "address": "2537",
-   "raw_octal": "11574",
-   "label": "PSTROKER",
-   "op": "CCS",
-   "operand": "STROKER",
-   "native_label": null
-  },
-  {
-   "source_line": 139,
-   "bank": "20",
-   "address": "2540",
-   "raw_octal": "03533",
-   "label": "",
-   "op": "TC",
-   "operand": "HACK",
-   "native_label": null
-  },
-  {
-   "source_line": 140,
-   "bank": "20",
-   "address": "2541",
-   "raw_octal": "12543",
-   "label": "",
-   "op": "TCF",
-   "operand": "+2",
-   "native_label": "L2541"
-  },
-  {
-   "source_line": 141,
-   "bank": "20",
-   "address": "2542",
-   "raw_octal": "03533",
-   "label": "",
-   "op": "TC",
-   "operand": "HACK",
-   "native_label": "L2541"
-  },
-  {
-   "source_line": 143,
-   "bank": "20",
-   "address": "2543",
-   "raw_octal": "30033",
-   "label": "PCDUDOTS",
-   "op": "CAE",
-   "operand": "CDUY",
-   "native_label": "L2543"
-  },
-  {
-   "source_line": 144,
-   "bank": "20",
-   "address": "2544",
-   "raw_octal": "57645",
-   "label": "",
-   "op": "XCH",
-   "operand": "PCDUYPST",
-   "native_label": "L2543"
-  },
-  {
-   "source_line": 145,
-   "bank": "20",
-   "address": "2545",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2543"
-  },
-  {
-   "source_line": 146,
-   "bank": "20",
-   "address": "2546",
-   "raw_octal": "21645",
-   "label": "",
-   "op": "MSU",
-   "operand": "PCDUYPST",
-   "native_label": "L2543"
-  },
-  {
-   "source_line": 147,
-   "bank": "20",
-   "address": "2547",
-   "raw_octal": "02560",
-   "label": "",
-   "op": "TCR",
-   "operand": "RLIMTEST",
-   "native_label": "L2543"
-  },
-  {
-   "source_line": 148,
-   "bank": "20",
-   "address": "2550",
-   "raw_octal": "55647",
-   "label": "",
-   "op": "TS",
-   "operand": "MCDUYDOT",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 150,
-   "bank": "20",
-   "address": "2551",
-   "raw_octal": "30034",
-   "label": "",
-   "op": "CAE",
-   "operand": "CDUZ",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 151,
-   "bank": "20",
-   "address": "2552",
-   "raw_octal": "57646",
-   "label": "",
-   "op": "XCH",
-   "operand": "PCDUZPST",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 152,
-   "bank": "20",
-   "address": "2553",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 153,
-   "bank": "20",
-   "address": "2554",
-   "raw_octal": "21646",
-   "label": "",
-   "op": "MSU",
-   "operand": "PCDUZPST",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 154,
-   "bank": "20",
-   "address": "2555",
-   "raw_octal": "02560",
-   "label": "",
-   "op": "TCR",
-   "operand": "RLIMTEST",
-   "native_label": "L2550"
-  },
-  {
-   "source_line": 155,
-   "bank": "20",
-   "address": "2556",
-   "raw_octal": "55650",
-   "label": "",
-   "op": "TS",
-   "operand": "MCDUZDOT",
-   "native_label": "L2556"
-  },
-  {
-   "source_line": 156,
-   "bank": "20",
-   "address": "2557",
-   "raw_octal": "12571",
-   "label": "",
-   "op": "TCF",
-   "operand": "PINTEGRL",
-   "native_label": "L2556"
-  },
-  {
-   "source_line": 158,
-   "bank": "20",
-   "address": "2560",
-   "raw_octal": "55611",
-   "label": "RLIMTEST",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 159,
-   "bank": "20",
-   "address": "2561",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 160,
-   "bank": "20",
-   "address": "2562",
-   "raw_octal": "73476",
-   "label": "",
-   "op": "MP",
-   "operand": "1/RTLIM",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 161,
-   "bank": "20",
-   "address": "2563",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 162,
-   "bank": "20",
-   "address": "2564",
-   "raw_octal": "12567",
-   "label": "",
-   "op": "BZF",
-   "operand": "+3",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 163,
-   "bank": "20",
-   "address": "2565",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 164,
-   "bank": "20",
-   "address": "2566",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 165,
-   "bank": "20",
-   "address": "2567",
-   "raw_octal": "31611",
-   "label": "",
-   "op": "CAE",
-   "operand": "TTMP1",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 166,
-   "bank": "20",
-   "address": "2570",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L2560"
-  },
-  {
-   "source_line": 168,
-   "bank": "20",
-   "address": "2571",
-   "raw_octal": "00006",
-   "label": "PINTEGRL",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 169,
-   "bank": "20",
-   "address": "2572",
-   "raw_octal": "31576",
-   "label": "",
-   "op": "DCA",
-   "operand": "PERRB",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 170,
-   "bank": "20",
-   "address": "2573",
-   "raw_octal": "53703",
-   "label": "",
-   "op": "DXCH",
-   "operand": "ERRBTMP",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 172,
-   "bank": "20",
-   "address": "2574",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 173,
-   "bank": "20",
-   "address": "2575",
-   "raw_octal": "31530",
-   "label": "",
-   "op": "DCA",
-   "operand": "OMEGAYC",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 174,
-   "bank": "20",
-   "address": "2576",
-   "raw_octal": "21703",
-   "label": "",
-   "op": "DAS",
-   "operand": "ERRBTMP",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 177,
-   "bank": "20",
-   "address": "2577",
-   "raw_octal": "40746",
-   "label": "",
-   "op": "CS",
-   "operand": "COSCDUZ",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 178,
-   "bank": "20",
-   "address": "2600",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 179,
-   "bank": "20",
-   "address": "2601",
-   "raw_octal": "70750",
-   "label": "",
-   "op": "MP",
-   "operand": "COSCDUX",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 180,
-   "bank": "20",
-   "address": "2602",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 181,
-   "bank": "20",
-   "address": "2603",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 182,
-   "bank": "20",
-   "address": "2604",
-   "raw_octal": "71647",
-   "label": "",
-   "op": "MP",
-   "operand": "MCDUYDOT",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 183,
-   "bank": "20",
-   "address": "2605",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 184,
-   "bank": "20",
-   "address": "2606",
-   "raw_octal": "53536",
-   "label": "",
-   "op": "DXCH",
-   "operand": "OMEGAYB",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 186,
-   "bank": "20",
-   "address": "2607",
-   "raw_octal": "41650",
-   "label": "",
-   "op": "CS",
-   "operand": "MCDUZDOT",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 187,
-   "bank": "20",
-   "address": "2610",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 188,
-   "bank": "20",
-   "address": "2611",
-   "raw_octal": "70742",
-   "label": "",
-   "op": "MP",
-   "operand": "SINCDUX",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 189,
-   "bank": "20",
-   "address": "2612",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 190,
-   "bank": "20",
-   "address": "2613",
-   "raw_octal": "21536",
-   "label": "",
-   "op": "DAS",
-   "operand": "OMEGAYB",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 192,
-   "bank": "20",
-   "address": "2614",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 193,
-   "bank": "20",
-   "address": "2615",
-   "raw_octal": "41536",
-   "label": "",
-   "op": "DCS",
-   "operand": "OMEGAYB",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 194,
-   "bank": "20",
-   "address": "2616",
-   "raw_octal": "21703",
-   "label": "",
-   "op": "DAS",
-   "operand": "ERRBTMP",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 196,
-   "bank": "20",
-   "address": "2617",
-   "raw_octal": "03124",
-   "label": "PERORLIM",
-   "op": "TCR",
-   "operand": "ERRORLIM",
-   "native_label": "L2571"
-  },
-  {
-   "source_line": 198,
-   "bank": "20",
-   "address": "2620",
-   "raw_octal": "00006",
-   "label": "PFORWARD",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 199,
-   "bank": "20",
-   "address": "2621",
-   "raw_octal": "31542",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP1",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 200,
-   "bank": "20",
-   "address": "2622",
-   "raw_octal": "53707",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP1",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 201,
-   "bank": "20",
-   "address": "2623",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 202,
-   "bank": "20",
-   "address": "2624",
-   "raw_octal": "31546",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP3",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 203,
-   "bank": "20",
-   "address": "2625",
-   "raw_octal": "53713",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP3",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 204,
-   "bank": "20",
-   "address": "2626",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 205,
-   "bank": "20",
-   "address": "2627",
-   "raw_octal": "31552",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP5",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 206,
-   "bank": "20",
-   "address": "2630",
-   "raw_octal": "53717",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP5",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 208,
-   "bank": "20",
-   "address": "2631",
-   "raw_octal": "03156",
-   "label": "",
-   "op": "TCR",
-   "operand": "FWDFLTR",
-   "native_label": "L2620"
-  },
-  {
-   "source_line": 211,
-   "bank": "20",
-   "address": "2632",
-   "raw_octal": "00006",
-   "label": "POFFSET",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2632"
-  },
-  {
-   "source_line": 212,
-   "bank": "20",
-   "address": "2633",
-   "raw_octal": "31606",
-   "label": "",
-   "op": "DCA",
-   "operand": "PDELOFF",
-   "native_label": "L2632"
-  },
-  {
-   "source_line": 213,
-   "bank": "20",
-   "address": "2634",
-   "raw_octal": "21705",
-   "label": "",
-   "op": "DAS",
-   "operand": "CMDTMP",
-   "native_label": "L2632"
-  },
-  {
-   "source_line": 215,
-   "bank": "20",
-   "address": "2635",
-   "raw_octal": "03137",
-   "label": "PACLIM",
-   "op": "TCR",
-   "operand": "ACTLIM",
-   "native_label": "L2632"
-  },
-  {
-   "source_line": 217,
-   "bank": "20",
-   "address": "2636",
-   "raw_octal": "41623",
-   "label": "POUT",
-   "op": "CS",
-   "operand": "PCMD",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 218,
-   "bank": "20",
-   "address": "2637",
-   "raw_octal": "61704",
-   "label": "",
-   "op": "AD",
-   "operand": "CMDTMP",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 219,
-   "bank": "20",
-   "address": "2640",
-   "raw_octal": "26054",
-   "label": "",
-   "op": "ADS",
-   "operand": "TVCPITCH",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 222,
-   "bank": "20",
-   "address": "2641",
-   "raw_octal": "35005",
-   "label": "",
-   "op": "CAF",
-   "operand": "BIT11",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 223,
-   "bank": "20",
-   "address": "2642",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 224,
-   "bank": "20",
-   "address": "2643",
-   "raw_octal": "05014",
-   "label": "",
-   "op": "WOR",
-   "operand": "CHAN14",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 226,
-   "bank": "20",
-   "address": "2644",
-   "raw_octal": "00006",
-   "label": "PPRECOMP",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 228,
-   "bank": "20",
-   "address": "2645",
-   "raw_octal": "31544",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP2",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 229,
-   "bank": "20",
-   "address": "2646",
-   "raw_octal": "53711",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP2",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 230,
-   "bank": "20",
-   "address": "2647",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 231,
-   "bank": "20",
-   "address": "2650",
-   "raw_octal": "31550",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP4",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 232,
-   "bank": "20",
-   "address": "2651",
-   "raw_octal": "53715",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP4",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 233,
-   "bank": "20",
-   "address": "2652",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 234,
-   "bank": "20",
-   "address": "2653",
-   "raw_octal": "31554",
-   "label": "",
-   "op": "DCA",
-   "operand": "PTMP6",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 235,
-   "bank": "20",
-   "address": "2654",
-   "raw_octal": "53721",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP6",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 237,
-   "bank": "20",
-   "address": "2655",
-   "raw_octal": "03247",
-   "label": "",
-   "op": "TCR",
-   "operand": "PRECOMP",
-   "native_label": "L2636"
-  },
-  {
-   "source_line": 239,
-   "bank": "20",
-   "address": "2656",
-   "raw_octal": "31602",
-   "label": "DELBARP",
-   "op": "CAE",
-   "operand": "DELPBAR +1",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 240,
-   "bank": "20",
-   "address": "2657",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 241,
-   "bank": "20",
-   "address": "2660",
-   "raw_octal": "73500",
-   "label": "",
-   "op": "MP",
-   "operand": "E(-AT)",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 242,
-   "bank": "20",
-   "address": "2661",
-   "raw_octal": "55701",
-   "label": "",
-   "op": "TS",
-   "operand": "DELBRTMP +1",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 243,
-   "bank": "20",
-   "address": "2662",
-   "raw_octal": "31601",
-   "label": "",
-   "op": "CAE",
-   "operand": "DELPBAR",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 244,
-   "bank": "20",
-   "address": "2663",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 245,
-   "bank": "20",
-   "address": "2664",
-   "raw_octal": "73500",
-   "label": "",
-   "op": "MP",
-   "operand": "E(-AT)",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 246,
-   "bank": "20",
-   "address": "2665",
-   "raw_octal": "21701",
-   "label": "",
-   "op": "DAS",
-   "operand": "DELBRTMP",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 247,
-   "bank": "20",
-   "address": "2666",
-   "raw_octal": "31704",
-   "label": "",
-   "op": "CAE",
-   "operand": "CMDTMP",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 248,
-   "bank": "20",
-   "address": "2667",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 249,
-   "bank": "20",
-   "address": "2670",
-   "raw_octal": "73477",
-   "label": "",
-   "op": "MP",
-   "operand": "1-E(-AT)",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 250,
-   "bank": "20",
-   "address": "2671",
-   "raw_octal": "21701",
-   "label": "",
-   "op": "DAS",
-   "operand": "DELBRTMP",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 252,
-   "bank": "20",
-   "address": "2672",
-   "raw_octal": "02674",
-   "label": "PCOPYCYC",
-   "op": "TCR",
-   "operand": "PCOPY",
-   "native_label": "L2656"
-  },
-  {
-   "source_line": 254,
-   "bank": "20",
-   "address": "2673",
-   "raw_octal": "15333",
-   "label": "PDAPEND",
-   "op": "TCF",
-   "operand": "RESUME",
-   "native_label": "L2673"
-  },
-  {
-   "source_line": 258,
-   "bank": "20",
-   "address": "2674",
-   "raw_octal": "25644",
-   "label": "PCOPY",
-   "op": "INCR",
-   "operand": "TVCPHASE",
-   "native_label": "L2674"
-  },
-  {
-   "source_line": 263,
-   "bank": "20",
-   "address": "2675",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 264,
-   "bank": "20",
-   "address": "2676",
-   "raw_octal": "31707",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP1",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 265,
-   "bank": "20",
-   "address": "2677",
-   "raw_octal": "53542",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP1",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 266,
-   "bank": "20",
-   "address": "2700",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 267,
-   "bank": "20",
-   "address": "2701",
-   "raw_octal": "31711",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP2",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 268,
-   "bank": "20",
-   "address": "2702",
-   "raw_octal": "53544",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP2",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 269,
-   "bank": "20",
-   "address": "2703",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 270,
-   "bank": "20",
-   "address": "2704",
-   "raw_octal": "31713",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP3",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 271,
-   "bank": "20",
-   "address": "2705",
-   "raw_octal": "53546",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP3",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 272,
-   "bank": "20",
-   "address": "2706",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 273,
-   "bank": "20",
-   "address": "2707",
-   "raw_octal": "31715",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP4",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 274,
-   "bank": "20",
-   "address": "2710",
-   "raw_octal": "53550",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP4",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 275,
-   "bank": "20",
-   "address": "2711",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 276,
-   "bank": "20",
-   "address": "2712",
-   "raw_octal": "31717",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP5",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 277,
-   "bank": "20",
-   "address": "2713",
-   "raw_octal": "53552",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP5",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 278,
-   "bank": "20",
-   "address": "2714",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 279,
-   "bank": "20",
-   "address": "2715",
-   "raw_octal": "31721",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP6",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 280,
-   "bank": "20",
-   "address": "2716",
-   "raw_octal": "53554",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PTMP6",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 282,
-   "bank": "20",
-   "address": "2717",
-   "raw_octal": "00006",
-   "label": "PMISC",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 283,
-   "bank": "20",
-   "address": "2720",
-   "raw_octal": "31703",
-   "label": "",
-   "op": "DCA",
-   "operand": "ERRBTMP",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 284,
-   "bank": "20",
-   "address": "2721",
-   "raw_octal": "55477",
-   "label": "",
-   "op": "TS",
-   "operand": "AK1",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 285,
-   "bank": "20",
-   "address": "2722",
-   "raw_octal": "53576",
-   "label": "",
-   "op": "DXCH",
-   "operand": "PERRB",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 287,
-   "bank": "20",
-   "address": "2723",
-   "raw_octal": "31704",
-   "label": "",
-   "op": "CAE",
-   "operand": "CMDTMP",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 288,
-   "bank": "20",
-   "address": "2724",
-   "raw_octal": "55623",
-   "label": "",
-   "op": "TS",
-   "operand": "PCMD",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 290,
-   "bank": "20",
-   "address": "2725",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 291,
-   "bank": "20",
-   "address": "2726",
-   "raw_octal": "31701",
-   "label": "",
-   "op": "DCA",
-   "operand": "DELBRTMP",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 292,
-   "bank": "20",
-   "address": "2727",
-   "raw_octal": "53602",
-   "label": "",
-   "op": "DXCH",
-   "operand": "DELPBAR",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 294,
-   "bank": "20",
-   "address": "2730",
-   "raw_octal": "25644",
-   "label": "",
-   "op": "INCR",
-   "operand": "TVCPHASE",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 296,
-   "bank": "20",
-   "address": "2731",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L2675"
-  },
-  {
-   "source_line": 301,
-   "bank": "20",
-   "address": "2732",
-   "raw_octal": "22016",
-   "label": "YAWDAP",
-   "op": "LXCH",
-   "operand": "BANKRUPT",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 302,
-   "bank": "20",
-   "address": "2733",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 303,
-   "bank": "20",
-   "address": "2734",
-   "raw_octal": "22012",
-   "label": "",
-   "op": "QXCH",
-   "operand": "QRUPT",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 305,
-   "bank": "20",
-   "address": "2735",
-   "raw_octal": "33473",
-   "label": "",
-   "op": "CAF",
-   "operand": "PITCHT5",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 306,
-   "bank": "20",
-   "address": "2736",
-   "raw_octal": "55312",
-   "label": "",
-   "op": "TS",
-   "operand": "T5LOC",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 307,
-   "bank": "20",
-   "address": "2737",
-   "raw_octal": "31625",
-   "label": "",
-   "op": "CAE",
-   "operand": "T5TVCDT",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 308,
-   "bank": "20",
-   "address": "2740",
-   "raw_octal": "54030",
-   "label": "",
-   "op": "TS",
-   "operand": "TIME5",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 310,
-   "bank": "20",
-   "address": "2741",
-   "raw_octal": "11574",
-   "label": "YSTROKER",
-   "op": "CCS",
-   "operand": "STROKER",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 311,
-   "bank": "20",
-   "address": "2742",
-   "raw_octal": "03533",
-   "label": "",
-   "op": "TC",
-   "operand": "HACK",
-   "native_label": "L2732"
-  },
-  {
-   "source_line": 312,
-   "bank": "20",
-   "address": "2743",
-   "raw_octal": "12745",
-   "label": "",
-   "op": "TCF",
-   "operand": "+2",
-   "native_label": "L2743"
-  },
-  {
-   "source_line": 313,
-   "bank": "20",
-   "address": "2744",
-   "raw_octal": "03533",
-   "label": "",
-   "op": "TC",
-   "operand": "HACK",
-   "native_label": "L2743"
-  },
-  {
-   "source_line": 317,
-   "bank": "20",
-   "address": "2745",
-   "raw_octal": "00006",
-   "label": "YINTEGRL",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 318,
-   "bank": "20",
-   "address": "2746",
-   "raw_octal": "31600",
-   "label": "",
-   "op": "DCA",
-   "operand": "YERRB",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 319,
-   "bank": "20",
-   "address": "2747",
-   "raw_octal": "53703",
-   "label": "",
-   "op": "DXCH",
-   "operand": "ERRBTMP",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 321,
-   "bank": "20",
-   "address": "2750",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 322,
-   "bank": "20",
-   "address": "2751",
-   "raw_octal": "31532",
-   "label": "",
-   "op": "DCA",
-   "operand": "OMEGAZC",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 323,
-   "bank": "20",
-   "address": "2752",
-   "raw_octal": "21703",
-   "label": "",
-   "op": "DAS",
-   "operand": "ERRBTMP",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 325,
-   "bank": "20",
-   "address": "2753",
-   "raw_octal": "30746",
-   "label": "",
-   "op": "CAE",
-   "operand": "COSCDUZ",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 326,
-   "bank": "20",
-   "address": "2754",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 327,
-   "bank": "20",
-   "address": "2755",
-   "raw_octal": "70742",
-   "label": "",
-   "op": "MP",
-   "operand": "SINCDUX",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 328,
-   "bank": "20",
-   "address": "2756",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 329,
-   "bank": "20",
-   "address": "2757",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 330,
-   "bank": "20",
-   "address": "2760",
-   "raw_octal": "71647",
-   "label": "",
-   "op": "MP",
-   "operand": "MCDUYDOT",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 331,
-   "bank": "20",
-   "address": "2761",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 332,
-   "bank": "20",
-   "address": "2762",
-   "raw_octal": "53540",
-   "label": "",
-   "op": "DXCH",
-   "operand": "OMEGAZB",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 334,
-   "bank": "20",
-   "address": "2763",
-   "raw_octal": "41650",
-   "label": "",
-   "op": "CS",
-   "operand": "MCDUZDOT",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 335,
-   "bank": "20",
-   "address": "2764",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 336,
-   "bank": "20",
-   "address": "2765",
-   "raw_octal": "70750",
-   "label": "",
-   "op": "MP",
-   "operand": "COSCDUX",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 337,
-   "bank": "20",
-   "address": "2766",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 338,
-   "bank": "20",
-   "address": "2767",
-   "raw_octal": "21540",
-   "label": "",
-   "op": "DAS",
-   "operand": "OMEGAZB",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 340,
-   "bank": "20",
-   "address": "2770",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 341,
-   "bank": "20",
-   "address": "2771",
-   "raw_octal": "41540",
-   "label": "",
-   "op": "DCS",
-   "operand": "OMEGAZB",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 342,
-   "bank": "20",
-   "address": "2772",
-   "raw_octal": "21703",
-   "label": "",
-   "op": "DAS",
-   "operand": "ERRBTMP",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 344,
-   "bank": "20",
-   "address": "2773",
-   "raw_octal": "03124",
-   "label": "YERORLIM",
-   "op": "TCR",
-   "operand": "ERRORLIM",
-   "native_label": "L2745"
-  },
-  {
-   "source_line": 346,
-   "bank": "20",
-   "address": "2774",
-   "raw_octal": "00006",
-   "label": "YFORWARD",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 347,
-   "bank": "20",
-   "address": "2775",
-   "raw_octal": "31556",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP1",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 349,
-   "bank": "20",
-   "address": "2776",
-   "raw_octal": "53707",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP1",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 350,
-   "bank": "20",
-   "address": "2777",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 351,
-   "bank": "20",
-   "address": "3000",
-   "raw_octal": "31562",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP3",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 352,
-   "bank": "20",
-   "address": "3001",
-   "raw_octal": "53713",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP3",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 353,
-   "bank": "20",
-   "address": "3002",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 354,
-   "bank": "20",
-   "address": "3003",
-   "raw_octal": "31566",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP5",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 355,
-   "bank": "20",
-   "address": "3004",
-   "raw_octal": "53717",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP5",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 357,
-   "bank": "20",
-   "address": "3005",
-   "raw_octal": "03156",
-   "label": "",
-   "op": "TCR",
-   "operand": "FWDFLTR",
-   "native_label": "L2774"
-  },
-  {
-   "source_line": 360,
-   "bank": "20",
-   "address": "3006",
-   "raw_octal": "00006",
-   "label": "YOFFSET",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3006"
-  },
-  {
-   "source_line": 361,
-   "bank": "20",
-   "address": "3007",
-   "raw_octal": "31610",
-   "label": "",
-   "op": "DCA",
-   "operand": "YDELOFF",
-   "native_label": "L3006"
-  },
-  {
-   "source_line": 362,
-   "bank": "20",
-   "address": "3010",
-   "raw_octal": "21705",
-   "label": "",
-   "op": "DAS",
-   "operand": "CMDTMP",
-   "native_label": "L3006"
-  },
-  {
-   "source_line": 364,
-   "bank": "20",
-   "address": "3011",
-   "raw_octal": "03137",
-   "label": "YACLIM",
-   "op": "TCR",
-   "operand": "ACTLIM",
-   "native_label": "L3006"
-  },
-  {
-   "source_line": 366,
-   "bank": "20",
-   "address": "3012",
-   "raw_octal": "41624",
-   "label": "YOUT",
-   "op": "CS",
-   "operand": "YCMD",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 367,
-   "bank": "20",
-   "address": "3013",
-   "raw_octal": "61704",
-   "label": "",
-   "op": "AD",
-   "operand": "CMDTMP",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 368,
-   "bank": "20",
-   "address": "3014",
-   "raw_octal": "26053",
-   "label": "",
-   "op": "ADS",
-   "operand": "TVCYAW",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 371,
-   "bank": "20",
-   "address": "3015",
-   "raw_octal": "35004",
-   "label": "",
-   "op": "CAF",
-   "operand": "BIT12",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 372,
-   "bank": "20",
-   "address": "3016",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 373,
-   "bank": "20",
-   "address": "3017",
-   "raw_octal": "05014",
-   "label": "",
-   "op": "WOR",
-   "operand": "CHAN14",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 375,
-   "bank": "20",
-   "address": "3020",
-   "raw_octal": "00006",
-   "label": "YPRECOMP",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 376,
-   "bank": "20",
-   "address": "3021",
-   "raw_octal": "31560",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP2",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 377,
-   "bank": "20",
-   "address": "3022",
-   "raw_octal": "53711",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP2",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 378,
-   "bank": "20",
-   "address": "3023",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 379,
-   "bank": "20",
-   "address": "3024",
-   "raw_octal": "31564",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP4",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 380,
-   "bank": "20",
-   "address": "3025",
-   "raw_octal": "53715",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP4",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 381,
-   "bank": "20",
-   "address": "3026",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 382,
-   "bank": "20",
-   "address": "3027",
-   "raw_octal": "31570",
-   "label": "",
-   "op": "DCA",
-   "operand": "YTMP6",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 383,
-   "bank": "20",
-   "address": "3030",
-   "raw_octal": "53721",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP6",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 385,
-   "bank": "20",
-   "address": "3031",
-   "raw_octal": "03247",
-   "label": "",
-   "op": "TCR",
-   "operand": "PRECOMP",
-   "native_label": "L3012"
-  },
-  {
-   "source_line": 387,
-   "bank": "20",
-   "address": "3032",
-   "raw_octal": "31604",
-   "label": "DELBARY",
-   "op": "CAE",
-   "operand": "DELYBAR +1",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 388,
-   "bank": "20",
-   "address": "3033",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 389,
-   "bank": "20",
-   "address": "3034",
-   "raw_octal": "73500",
-   "label": "",
-   "op": "MP",
-   "operand": "E(-AT)",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 390,
-   "bank": "20",
-   "address": "3035",
-   "raw_octal": "55701",
-   "label": "",
-   "op": "TS",
-   "operand": "DELBRTMP +1",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 391,
-   "bank": "20",
-   "address": "3036",
-   "raw_octal": "31603",
-   "label": "",
-   "op": "CAE",
-   "operand": "DELYBAR",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 392,
-   "bank": "20",
-   "address": "3037",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 393,
-   "bank": "20",
-   "address": "3040",
-   "raw_octal": "73500",
-   "label": "",
-   "op": "MP",
-   "operand": "E(-AT)",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 394,
-   "bank": "20",
-   "address": "3041",
-   "raw_octal": "21701",
-   "label": "",
-   "op": "DAS",
-   "operand": "DELBRTMP",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 395,
-   "bank": "20",
-   "address": "3042",
-   "raw_octal": "31704",
-   "label": "",
-   "op": "CAE",
-   "operand": "CMDTMP",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 396,
-   "bank": "20",
-   "address": "3043",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 397,
-   "bank": "20",
-   "address": "3044",
-   "raw_octal": "73477",
-   "label": "",
-   "op": "MP",
-   "operand": "1-E(-AT)",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 398,
-   "bank": "20",
-   "address": "3045",
-   "raw_octal": "21701",
-   "label": "",
-   "op": "DAS",
-   "operand": "DELBRTMP",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 401,
-   "bank": "20",
-   "address": "3046",
-   "raw_octal": "03050",
-   "label": "YCOPYCYC",
-   "op": "TCR",
-   "operand": "YCOPY",
-   "native_label": "L3032"
-  },
-  {
-   "source_line": 403,
-   "bank": "20",
-   "address": "3047",
-   "raw_octal": "15333",
-   "label": "YDAPEND",
-   "op": "TCF",
-   "operand": "RESUME",
-   "native_label": "L3047"
-  },
-  {
-   "source_line": 408,
-   "bank": "20",
-   "address": "3050",
-   "raw_octal": "25644",
-   "label": "YCOPY",
-   "op": "INCR",
-   "operand": "TVCPHASE",
-   "native_label": "L3050"
-  },
-  {
-   "source_line": 413,
-   "bank": "20",
-   "address": "3051",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 414,
-   "bank": "20",
-   "address": "3052",
-   "raw_octal": "31707",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP1",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 415,
-   "bank": "20",
-   "address": "3053",
-   "raw_octal": "53556",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP1",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 416,
-   "bank": "20",
-   "address": "3054",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 417,
-   "bank": "20",
-   "address": "3055",
-   "raw_octal": "31711",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP2",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 418,
-   "bank": "20",
-   "address": "3056",
-   "raw_octal": "53560",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP2",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 419,
-   "bank": "20",
-   "address": "3057",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 420,
-   "bank": "20",
-   "address": "3060",
-   "raw_octal": "31713",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP3",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 421,
-   "bank": "20",
-   "address": "3061",
-   "raw_octal": "53562",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP3",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 422,
-   "bank": "20",
-   "address": "3062",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 423,
-   "bank": "20",
-   "address": "3063",
-   "raw_octal": "31715",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP4",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 424,
-   "bank": "20",
-   "address": "3064",
-   "raw_octal": "53564",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP4",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 425,
-   "bank": "20",
-   "address": "3065",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 426,
-   "bank": "20",
-   "address": "3066",
-   "raw_octal": "31717",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP5",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 427,
-   "bank": "20",
-   "address": "3067",
-   "raw_octal": "53566",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP5",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 428,
-   "bank": "20",
-   "address": "3070",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 429,
-   "bank": "20",
-   "address": "3071",
-   "raw_octal": "31721",
-   "label": "",
-   "op": "DCA",
-   "operand": "TMP6",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 430,
-   "bank": "20",
-   "address": "3072",
-   "raw_octal": "53570",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YTMP6",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 432,
-   "bank": "20",
-   "address": "3073",
-   "raw_octal": "00006",
-   "label": "YMISC",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 433,
-   "bank": "20",
-   "address": "3074",
-   "raw_octal": "31703",
-   "label": "",
-   "op": "DCA",
-   "operand": "ERRBTMP",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 434,
-   "bank": "20",
-   "address": "3075",
-   "raw_octal": "55500",
-   "label": "",
-   "op": "TS",
-   "operand": "AK2",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 435,
-   "bank": "20",
-   "address": "3076",
-   "raw_octal": "53600",
-   "label": "",
-   "op": "DXCH",
-   "operand": "YERRB",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 437,
-   "bank": "20",
-   "address": "3077",
-   "raw_octal": "31704",
-   "label": "",
-   "op": "CAE",
-   "operand": "CMDTMP",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 438,
-   "bank": "20",
-   "address": "3100",
-   "raw_octal": "55624",
-   "label": "",
-   "op": "TS",
-   "operand": "YCMD",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 440,
-   "bank": "20",
-   "address": "3101",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 441,
-   "bank": "20",
-   "address": "3102",
-   "raw_octal": "31701",
-   "label": "",
-   "op": "DCA",
-   "operand": "DELBRTMP",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 442,
-   "bank": "20",
-   "address": "3103",
-   "raw_octal": "53604",
-   "label": "",
-   "op": "DXCH",
-   "operand": "DELYBAR",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 444,
-   "bank": "20",
-   "address": "3104",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 445,
-   "bank": "20",
-   "address": "3105",
-   "raw_octal": "55644",
-   "label": "",
-   "op": "TS",
-   "operand": "TVCPHASE",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 447,
-   "bank": "20",
-   "address": "3106",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3051"
-  },
-  {
-   "source_line": 455,
-   "bank": "20",
-   "address": "3107",
-   "raw_octal": "22016",
-   "label": "DAPINIT",
-   "op": "LXCH",
-   "operand": "BANKRUPT",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 457,
-   "bank": "20",
-   "address": "3110",
-   "raw_octal": "37716",
-   "label": "",
-   "op": "CAF",
-   "operand": "NEGONE",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 458,
-   "bank": "20",
-   "address": "3111",
-   "raw_octal": "61625",
-   "label": "",
-   "op": "AD",
-   "operand": "T5TVCDT",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 459,
-   "bank": "20",
-   "address": "3112",
-   "raw_octal": "65001",
-   "label": "",
-   "op": "AD",
-   "operand": "NEGMAX",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 460,
-   "bank": "20",
-   "address": "3113",
-   "raw_octal": "61625",
-   "label": "",
-   "op": "AD",
-   "operand": "T5TVCDT",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 461,
-   "bank": "20",
-   "address": "3114",
-   "raw_octal": "54030",
-   "label": "",
-   "op": "TS",
-   "operand": "TIME5",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 462,
-   "bank": "20",
-   "address": "3115",
-   "raw_octal": "33473",
-   "label": "",
-   "op": "CAF",
-   "operand": "PITCHT5",
-   "native_label": "L3107"
-  },
-  {
-   "source_line": 463,
-   "bank": "20",
-   "address": "3116",
-   "raw_octal": "55312",
-   "label": "",
-   "op": "TS",
-   "operand": "T5LOC",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 465,
-   "bank": "20",
-   "address": "3117",
-   "raw_octal": "30033",
-   "label": "",
-   "op": "CAE",
-   "operand": "CDUY",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 466,
-   "bank": "20",
-   "address": "3120",
-   "raw_octal": "55645",
-   "label": "",
-   "op": "TS",
-   "operand": "PCDUYPST",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 467,
-   "bank": "20",
-   "address": "3121",
-   "raw_octal": "30034",
-   "label": "",
-   "op": "CAE",
-   "operand": "CDUZ",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 468,
-   "bank": "20",
-   "address": "3122",
-   "raw_octal": "55646",
-   "label": "",
-   "op": "TS",
-   "operand": "PCDUZPST",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 470,
-   "bank": "20",
-   "address": "3123",
-   "raw_octal": "15335",
-   "label": "",
-   "op": "TCF",
-   "operand": "NOQRSM",
-   "native_label": "L3116"
-  },
-  {
-   "source_line": 474,
-   "bank": "20",
-   "address": "3124",
-   "raw_octal": "31702",
-   "label": "ERRORLIM",
-   "op": "CAE",
-   "operand": "ERRBTMP",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 475,
-   "bank": "20",
-   "address": "3125",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 476,
-   "bank": "20",
-   "address": "3126",
-   "raw_octal": "75015",
-   "label": "",
-   "op": "MP",
-   "operand": "1/ERRLIM",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 477,
-   "bank": "20",
-   "address": "3127",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 478,
-   "bank": "20",
-   "address": "3130",
-   "raw_octal": "13136",
-   "label": "",
-   "op": "BZF",
-   "operand": "+6",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 479,
-   "bank": "20",
-   "address": "3131",
-   "raw_octal": "11702",
-   "label": "",
-   "op": "CCS",
-   "operand": "ERRBTMP",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 480,
-   "bank": "20",
-   "address": "3132",
-   "raw_octal": "35003",
-   "label": "",
-   "op": "CAF",
-   "operand": "ERRLIM",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 481,
-   "bank": "20",
-   "address": "3133",
-   "raw_octal": "13135",
-   "label": "",
-   "op": "TCF",
-   "operand": "+2",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 482,
-   "bank": "20",
-   "address": "3134",
-   "raw_octal": "45003",
-   "label": "",
-   "op": "CS",
-   "operand": "ERRLIM",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 483,
-   "bank": "20",
-   "address": "3135",
-   "raw_octal": "55702",
-   "label": "",
-   "op": "TS",
-   "operand": "ERRBTMP",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 485,
-   "bank": "20",
-   "address": "3136",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3124"
-  },
-  {
-   "source_line": 490,
-   "bank": "20",
-   "address": "3137",
-   "raw_octal": "31705",
-   "label": "ACTLIM",
-   "op": "CAE",
-   "operand": "CMDTMP +1",
-   "native_label": "L3137"
-  },
-  {
-   "source_line": 491,
-   "bank": "20",
-   "address": "3140",
-   "raw_octal": "60000",
-   "label": "",
-   "op": "DOUBLE",
-   "operand": "#",
-   "native_label": "L3137"
-  },
-  {
-   "source_line": 492,
-   "bank": "20",
-   "address": "3141",
-   "raw_octal": "54001",
-   "label": "",
-   "op": "TS",
-   "operand": "L",
-   "native_label": "L3137"
-  },
-  {
-   "source_line": 493,
-   "bank": "20",
-   "address": "3142",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3137"
-  },
-  {
-   "source_line": 494,
-   "bank": "20",
-   "address": "3143",
-   "raw_octal": "61704",
-   "label": "",
-   "op": "AD",
-   "operand": "CMDTMP",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 496,
-   "bank": "20",
-   "address": "3144",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 497,
-   "bank": "20",
-   "address": "3145",
-   "raw_octal": "73472",
-   "label": "",
-   "op": "MP",
-   "operand": "1/ACTSAT",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 498,
-   "bank": "20",
-   "address": "3146",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 500,
-   "bank": "20",
-   "address": "3147",
-   "raw_octal": "13155",
-   "label": "",
-   "op": "BZF",
-   "operand": "+6",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 501,
-   "bank": "20",
-   "address": "3150",
-   "raw_octal": "11704",
-   "label": "",
-   "op": "CCS",
-   "operand": "CMDTMP",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 502,
-   "bank": "20",
-   "address": "3151",
-   "raw_octal": "33471",
-   "label": "",
-   "op": "CAF",
-   "operand": "ACTSAT",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 503,
-   "bank": "20",
-   "address": "3152",
-   "raw_octal": "13154",
-   "label": "",
-   "op": "TCF",
-   "operand": "+2",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 504,
-   "bank": "20",
-   "address": "3153",
-   "raw_octal": "43471",
-   "label": "",
-   "op": "CS",
-   "operand": "ACTSAT",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 505,
-   "bank": "20",
-   "address": "3154",
-   "raw_octal": "55704",
-   "label": "",
-   "op": "TS",
-   "operand": "CMDTMP",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 507,
-   "bank": "20",
-   "address": "3155",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3143"
-  },
-  {
-   "source_line": 512,
-   "bank": "20",
-   "address": "3156",
-   "raw_octal": "35021",
-   "label": "FWDFLTR",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 513,
-   "bank": "20",
-   "address": "3157",
-   "raw_octal": "55615",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 514,
-   "bank": "20",
-   "address": "3160",
-   "raw_octal": "55617",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP2",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 515,
-   "bank": "20",
-   "address": "3161",
-   "raw_octal": "55621",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP3",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 516,
-   "bank": "20",
-   "address": "3162",
-   "raw_octal": "55704",
-   "label": "",
-   "op": "TS",
-   "operand": "CMDTMP",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 518,
-   "bank": "20",
-   "address": "3163",
-   "raw_octal": "55700",
-   "label": "",
-   "op": "TS",
-   "operand": "DELBRTMP",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 520,
-   "bank": "20",
-   "address": "3164",
-   "raw_octal": "31703",
-   "label": "1DAPCAS",
-   "op": "CAE",
-   "operand": "ERRBTMP +1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 521,
-   "bank": "20",
-   "address": "3165",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 522,
-   "bank": "20",
-   "address": "3166",
-   "raw_octal": "71723",
-   "label": "",
-   "op": "MP",
-   "operand": "N10",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 523,
-   "bank": "20",
-   "address": "3167",
-   "raw_octal": "55616",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP1 +1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 524,
-   "bank": "20",
-   "address": "3170",
-   "raw_octal": "31702",
-   "label": "",
-   "op": "CA",
-   "operand": "ERRBTMP",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 525,
-   "bank": "20",
-   "address": "3171",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 526,
-   "bank": "20",
-   "address": "3172",
-   "raw_octal": "71723",
-   "label": "",
-   "op": "MP",
-   "operand": "N10",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 527,
-   "bank": "20",
-   "address": "3173",
-   "raw_octal": "21616",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 528,
-   "bank": "20",
-   "address": "3174",
-   "raw_octal": "53707",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 529,
-   "bank": "20",
-   "address": "3175",
-   "raw_octal": "21616",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 531,
-   "bank": "20",
-   "address": "3176",
-   "raw_octal": "31616",
-   "label": "2DAPCAS",
-   "op": "CAE",
-   "operand": "DAP1 +1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 532,
-   "bank": "20",
-   "address": "3177",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 533,
-   "bank": "20",
-   "address": "3200",
-   "raw_octal": "71730",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +5",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 534,
-   "bank": "20",
-   "address": "3201",
-   "raw_octal": "55620",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP2 +1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 535,
-   "bank": "20",
-   "address": "3202",
-   "raw_octal": "31615",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 536,
-   "bank": "20",
-   "address": "3203",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 537,
-   "bank": "20",
-   "address": "3204",
-   "raw_octal": "71730",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +5",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 538,
-   "bank": "20",
-   "address": "3205",
-   "raw_octal": "21620",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP2",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 539,
-   "bank": "20",
-   "address": "3206",
-   "raw_octal": "53713",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP3",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 540,
-   "bank": "20",
-   "address": "3207",
-   "raw_octal": "21620",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP2",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 542,
-   "bank": "20",
-   "address": "3210",
-   "raw_octal": "31466",
-   "label": "",
-   "op": "CAE",
-   "operand": "DAPDATR1",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 543,
-   "bank": "20",
-   "address": "3211",
-   "raw_octal": "75002",
-   "label": "",
-   "op": "MASK",
-   "operand": "BIT14",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 544,
-   "bank": "20",
-   "address": "3212",
-   "raw_octal": "10000",
-   "label": "",
-   "op": "CCS",
-   "operand": "A",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 545,
-   "bank": "20",
-   "address": "3213",
-   "raw_octal": "13220",
-   "label": "",
-   "op": "TCF",
-   "operand": "3DAPCAS",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 546,
-   "bank": "20",
-   "address": "3214",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 547,
-   "bank": "20",
-   "address": "3215",
-   "raw_octal": "31620",
-   "label": "",
-   "op": "DCA",
-   "operand": "DAP2",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 548,
-   "bank": "20",
-   "address": "3216",
-   "raw_octal": "53622",
-   "label": "",
-   "op": "DXCH",
-   "operand": "DAP3",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 549,
-   "bank": "20",
-   "address": "3217",
-   "raw_octal": "13232",
-   "label": "",
-   "op": "TCF",
-   "operand": "OPTVARK",
-   "native_label": "L3156"
-  },
-  {
-   "source_line": 552,
-   "bank": "20",
-   "address": "3220",
-   "raw_octal": "31620",
-   "label": "3DAPCAS",
-   "op": "CAE",
-   "operand": "DAP2 +1",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 553,
-   "bank": "20",
-   "address": "3221",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 554,
-   "bank": "20",
-   "address": "3222",
-   "raw_octal": "71735",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +10D",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 555,
-   "bank": "20",
-   "address": "3223",
-   "raw_octal": "55622",
-   "label": "",
-   "op": "TS",
-   "operand": "DAP3 +1",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 556,
-   "bank": "20",
-   "address": "3224",
-   "raw_octal": "31617",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP2",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 557,
-   "bank": "20",
-   "address": "3225",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 558,
-   "bank": "20",
-   "address": "3226",
-   "raw_octal": "71735",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +10D",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 559,
-   "bank": "20",
-   "address": "3227",
-   "raw_octal": "21622",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP3",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 560,
-   "bank": "20",
-   "address": "3230",
-   "raw_octal": "53717",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP5",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 561,
-   "bank": "20",
-   "address": "3231",
-   "raw_octal": "21622",
-   "label": "",
-   "op": "DAS",
-   "operand": "DAP3",
-   "native_label": "L3220"
-  },
-  {
-   "source_line": 563,
-   "bank": "20",
-   "address": "3232",
-   "raw_octal": "41622",
-   "label": "OPTVARK",
-   "op": "CS",
-   "operand": "DAP3 +1",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 564,
-   "bank": "20",
-   "address": "3233",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 565,
-   "bank": "20",
-   "address": "3234",
-   "raw_octal": "71641",
-   "label": "",
-   "op": "MP",
-   "operand": "VARK",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 566,
-   "bank": "20",
-   "address": "3235",
-   "raw_octal": "55705",
-   "label": "",
-   "op": "TS",
-   "operand": "CMDTMP +1",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 567,
-   "bank": "20",
-   "address": "3236",
-   "raw_octal": "41621",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP3",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 568,
-   "bank": "20",
-   "address": "3237",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 569,
-   "bank": "20",
-   "address": "3240",
-   "raw_octal": "71641",
-   "label": "",
-   "op": "MP",
-   "operand": "VARK",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 570,
-   "bank": "20",
-   "address": "3241",
-   "raw_octal": "21705",
-   "label": "",
-   "op": "DAS",
-   "operand": "CMDTMP",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 572,
-   "bank": "20",
-   "address": "3242",
-   "raw_octal": "53705",
-   "label": "",
-   "op": "DXCH",
-   "operand": "CMDTMP",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 573,
-   "bank": "20",
-   "address": "3243",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 574,
-   "bank": "20",
-   "address": "3244",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 575,
-   "bank": "20",
-   "address": "3245",
-   "raw_octal": "53705",
-   "label": "",
-   "op": "DXCH",
-   "operand": "CMDTMP",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 579,
-   "bank": "20",
-   "address": "3246",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3232"
-  },
-  {
-   "source_line": 584,
-   "bank": "20",
-   "address": "3247",
-   "raw_octal": "35021",
-   "label": "PRECOMP",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 585,
-   "bank": "20",
-   "address": "3250",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 586,
-   "bank": "20",
-   "address": "3251",
-   "raw_octal": "55613",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 588,
-   "bank": "20",
-   "address": "3252",
-   "raw_octal": "31703",
-   "label": "",
-   "op": "CA",
-   "operand": "ERRBTMP +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 589,
-   "bank": "20",
-   "address": "3253",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 590,
-   "bank": "20",
-   "address": "3254",
-   "raw_octal": "71724",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 591,
-   "bank": "20",
-   "address": "3255",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 592,
-   "bank": "20",
-   "address": "3256",
-   "raw_octal": "31702",
-   "label": "",
-   "op": "CA",
-   "operand": "ERRBTMP",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 593,
-   "bank": "20",
-   "address": "3257",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 594,
-   "bank": "20",
-   "address": "3260",
-   "raw_octal": "71724",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 595,
-   "bank": "20",
-   "address": "3261",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 597,
-   "bank": "20",
-   "address": "3262",
-   "raw_octal": "41616",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 598,
-   "bank": "20",
-   "address": "3263",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 599,
-   "bank": "20",
-   "address": "3264",
-   "raw_octal": "71726",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +3",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 600,
-   "bank": "20",
-   "address": "3265",
-   "raw_octal": "55614",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 601,
-   "bank": "20",
-   "address": "3266",
-   "raw_octal": "41615",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 604,
-   "bank": "20",
-   "address": "3267",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 605,
-   "bank": "20",
-   "address": "3270",
-   "raw_octal": "71726",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +3",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 606,
-   "bank": "20",
-   "address": "3271",
-   "raw_octal": "21614",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 608,
-   "bank": "20",
-   "address": "3272",
-   "raw_octal": "53614",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 609,
-   "bank": "20",
-   "address": "3273",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 610,
-   "bank": "20",
-   "address": "3274",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 611,
-   "bank": "20",
-   "address": "3275",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 612,
-   "bank": "20",
-   "address": "3276",
-   "raw_octal": "21711",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 614,
-   "bank": "20",
-   "address": "3277",
-   "raw_octal": "53711",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 615,
-   "bank": "20",
-   "address": "3300",
-   "raw_octal": "53707",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 617,
-   "bank": "20",
-   "address": "3301",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 618,
-   "bank": "20",
-   "address": "3302",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 619,
-   "bank": "20",
-   "address": "3303",
-   "raw_octal": "55710",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 621,
-   "bank": "20",
-   "address": "3304",
-   "raw_octal": "31703",
-   "label": "",
-   "op": "CA",
-   "operand": "ERRBTMP +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 622,
-   "bank": "20",
-   "address": "3305",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 623,
-   "bank": "20",
-   "address": "3306",
-   "raw_octal": "71725",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 624,
-   "bank": "20",
-   "address": "3307",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 625,
-   "bank": "20",
-   "address": "3310",
-   "raw_octal": "31702",
-   "label": "",
-   "op": "CA",
-   "operand": "ERRBTMP",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 626,
-   "bank": "20",
-   "address": "3311",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 627,
-   "bank": "20",
-   "address": "3312",
-   "raw_octal": "71725",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 628,
-   "bank": "20",
-   "address": "3313",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 630,
-   "bank": "20",
-   "address": "3314",
-   "raw_octal": "41616",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 631,
-   "bank": "20",
-   "address": "3315",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 632,
-   "bank": "20",
-   "address": "3316",
-   "raw_octal": "71727",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 633,
-   "bank": "20",
-   "address": "3317",
-   "raw_octal": "55711",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 634,
-   "bank": "20",
-   "address": "3320",
-   "raw_octal": "41615",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 635,
-   "bank": "20",
-   "address": "3321",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 636,
-   "bank": "20",
-   "address": "3322",
-   "raw_octal": "71727",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 637,
-   "bank": "20",
-   "address": "3323",
-   "raw_octal": "21711",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 639,
-   "bank": "20",
-   "address": "3324",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 640,
-   "bank": "20",
-   "address": "3325",
-   "raw_octal": "21711",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 642,
-   "bank": "20",
-   "address": "3326",
-   "raw_octal": "35021",
-   "label": "2CASFLTR",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 643,
-   "bank": "20",
-   "address": "3327",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 644,
-   "bank": "20",
-   "address": "3330",
-   "raw_octal": "55613",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 646,
-   "bank": "20",
-   "address": "3331",
-   "raw_octal": "31616",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 647,
-   "bank": "20",
-   "address": "3332",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 648,
-   "bank": "20",
-   "address": "3333",
-   "raw_octal": "71731",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 649,
-   "bank": "20",
-   "address": "3334",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 650,
-   "bank": "20",
-   "address": "3335",
-   "raw_octal": "31615",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 651,
-   "bank": "20",
-   "address": "3336",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 652,
-   "bank": "20",
-   "address": "3337",
-   "raw_octal": "71731",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 654,
-   "bank": "20",
-   "address": "3340",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 656,
-   "bank": "20",
-   "address": "3341",
-   "raw_octal": "41620",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 657,
-   "bank": "20",
-   "address": "3342",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 658,
-   "bank": "20",
-   "address": "3343",
-   "raw_octal": "71733",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +8D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 659,
-   "bank": "20",
-   "address": "3344",
-   "raw_octal": "55614",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 660,
-   "bank": "20",
-   "address": "3345",
-   "raw_octal": "41617",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 661,
-   "bank": "20",
-   "address": "3346",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 662,
-   "bank": "20",
-   "address": "3347",
-   "raw_octal": "71733",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +8D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 663,
-   "bank": "20",
-   "address": "3350",
-   "raw_octal": "21614",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 665,
-   "bank": "20",
-   "address": "3351",
-   "raw_octal": "53614",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 666,
-   "bank": "20",
-   "address": "3352",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 667,
-   "bank": "20",
-   "address": "3353",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 668,
-   "bank": "20",
-   "address": "3354",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 669,
-   "bank": "20",
-   "address": "3355",
-   "raw_octal": "21715",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 671,
-   "bank": "20",
-   "address": "3356",
-   "raw_octal": "53715",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 672,
-   "bank": "20",
-   "address": "3357",
-   "raw_octal": "53713",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP3",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 674,
-   "bank": "20",
-   "address": "3360",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 675,
-   "bank": "20",
-   "address": "3361",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 676,
-   "bank": "20",
-   "address": "3362",
-   "raw_octal": "55714",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 678,
-   "bank": "20",
-   "address": "3363",
-   "raw_octal": "31616",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 679,
-   "bank": "20",
-   "address": "3364",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 680,
-   "bank": "20",
-   "address": "3365",
-   "raw_octal": "71732",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +7",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 681,
-   "bank": "20",
-   "address": "3366",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 682,
-   "bank": "20",
-   "address": "3367",
-   "raw_octal": "31615",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 683,
-   "bank": "20",
-   "address": "3370",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 684,
-   "bank": "20",
-   "address": "3371",
-   "raw_octal": "71732",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +7",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 685,
-   "bank": "20",
-   "address": "3372",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 687,
-   "bank": "20",
-   "address": "3373",
-   "raw_octal": "41620",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 688,
-   "bank": "20",
-   "address": "3374",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 689,
-   "bank": "20",
-   "address": "3375",
-   "raw_octal": "71734",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +9D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 690,
-   "bank": "20",
-   "address": "3376",
-   "raw_octal": "55715",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP4 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 691,
-   "bank": "20",
-   "address": "3377",
-   "raw_octal": "41617",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 692,
-   "bank": "20",
-   "address": "3400",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 693,
-   "bank": "20",
-   "address": "3401",
-   "raw_octal": "71734",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +9D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 694,
-   "bank": "20",
-   "address": "3402",
-   "raw_octal": "21715",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 696,
-   "bank": "20",
-   "address": "3403",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 697,
-   "bank": "20",
-   "address": "3404",
-   "raw_octal": "21715",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP4",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 700,
-   "bank": "20",
-   "address": "3405",
-   "raw_octal": "31466",
-   "label": "",
-   "op": "CAE",
-   "operand": "DAPDATR1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 701,
-   "bank": "20",
-   "address": "3406",
-   "raw_octal": "75003",
-   "label": "",
-   "op": "MASK",
-   "operand": "BIT13",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 702,
-   "bank": "20",
-   "address": "3407",
-   "raw_octal": "10000",
-   "label": "",
-   "op": "CCS",
-   "operand": "A",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 703,
-   "bank": "20",
-   "address": "3410",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 706,
-   "bank": "20",
-   "address": "3411",
-   "raw_octal": "35021",
-   "label": "3CASFLTR",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 707,
-   "bank": "20",
-   "address": "3412",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 708,
-   "bank": "20",
-   "address": "3413",
-   "raw_octal": "55613",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 710,
-   "bank": "20",
-   "address": "3414",
-   "raw_octal": "31620",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 711,
-   "bank": "20",
-   "address": "3415",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 712,
-   "bank": "20",
-   "address": "3416",
-   "raw_octal": "71736",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +11D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 713,
-   "bank": "20",
-   "address": "3417",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 714,
-   "bank": "20",
-   "address": "3420",
-   "raw_octal": "31617",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 715,
-   "bank": "20",
-   "address": "3421",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 716,
-   "bank": "20",
-   "address": "3422",
-   "raw_octal": "71736",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +11D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 717,
-   "bank": "20",
-   "address": "3423",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 719,
-   "bank": "20",
-   "address": "3424",
-   "raw_octal": "41622",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP3 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 720,
-   "bank": "20",
-   "address": "3425",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 721,
-   "bank": "20",
-   "address": "3426",
-   "raw_octal": "71740",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +13D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 722,
-   "bank": "20",
-   "address": "3427",
-   "raw_octal": "55614",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 723,
-   "bank": "20",
-   "address": "3430",
-   "raw_octal": "41621",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP3",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 724,
-   "bank": "20",
-   "address": "3431",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 725,
-   "bank": "20",
-   "address": "3432",
-   "raw_octal": "71740",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +13D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 726,
-   "bank": "20",
-   "address": "3433",
-   "raw_octal": "21614",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 728,
-   "bank": "20",
-   "address": "3434",
-   "raw_octal": "53614",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 729,
-   "bank": "20",
-   "address": "3435",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 730,
-   "bank": "20",
-   "address": "3436",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 731,
-   "bank": "20",
-   "address": "3437",
-   "raw_octal": "20001",
-   "label": "",
-   "op": "DDOUBL",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 732,
-   "bank": "20",
-   "address": "3440",
-   "raw_octal": "21721",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 734,
-   "bank": "20",
-   "address": "3441",
-   "raw_octal": "53721",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 735,
-   "bank": "20",
-   "address": "3442",
-   "raw_octal": "53717",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TMP5",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 737,
-   "bank": "20",
-   "address": "3443",
-   "raw_octal": "35021",
-   "label": "",
-   "op": "CAF",
-   "operand": "ZERO",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 738,
-   "bank": "20",
-   "address": "3444",
-   "raw_octal": "55611",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 739,
-   "bank": "20",
-   "address": "3445",
-   "raw_octal": "55720",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 741,
-   "bank": "20",
-   "address": "3446",
-   "raw_octal": "31620",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP2 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 742,
-   "bank": "20",
-   "address": "3447",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 743,
-   "bank": "20",
-   "address": "3450",
-   "raw_octal": "71737",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +12D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 744,
-   "bank": "20",
-   "address": "3451",
-   "raw_octal": "55612",
-   "label": "",
-   "op": "TS",
-   "operand": "TTMP1 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 745,
-   "bank": "20",
-   "address": "3452",
-   "raw_octal": "31617",
-   "label": "",
-   "op": "CA",
-   "operand": "DAP2",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 746,
-   "bank": "20",
-   "address": "3453",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 747,
-   "bank": "20",
-   "address": "3454",
-   "raw_octal": "71737",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +12D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 748,
-   "bank": "20",
-   "address": "3455",
-   "raw_octal": "21612",
-   "label": "",
-   "op": "DAS",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 750,
-   "bank": "20",
-   "address": "3456",
-   "raw_octal": "41622",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP3 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 751,
-   "bank": "20",
-   "address": "3457",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 752,
-   "bank": "20",
-   "address": "3460",
-   "raw_octal": "71741",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +14D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 753,
-   "bank": "20",
-   "address": "3461",
-   "raw_octal": "55721",
-   "label": "",
-   "op": "TS",
-   "operand": "TMP6 +1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 754,
-   "bank": "20",
-   "address": "3462",
-   "raw_octal": "41621",
-   "label": "",
-   "op": "CS",
-   "operand": "DAP3",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 755,
-   "bank": "20",
-   "address": "3463",
-   "raw_octal": "00006",
-   "label": "",
-   "op": "EXTEND",
-   "operand": "#",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 757,
-   "bank": "20",
-   "address": "3464",
-   "raw_octal": "71741",
-   "label": "",
-   "op": "MP",
-   "operand": "N10 +14D",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 758,
-   "bank": "20",
-   "address": "3465",
-   "raw_octal": "21721",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 760,
-   "bank": "20",
-   "address": "3466",
-   "raw_octal": "53612",
-   "label": "",
-   "op": "DXCH",
-   "operand": "TTMP1",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 761,
-   "bank": "20",
-   "address": "3467",
-   "raw_octal": "21721",
-   "label": "",
-   "op": "DAS",
-   "operand": "TMP6",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 763,
-   "bank": "20",
-   "address": "3470",
-   "raw_octal": "00002",
-   "label": "",
-   "op": "TC",
-   "operand": "Q",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 772,
-   "bank": "20",
-   "address": "3471",
-   "raw_octal": "00375",
-   "label": "ACTSAT",
-   "op": "DEC",
-   "operand": "253",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 773,
-   "bank": "20",
-   "address": "3472",
-   "raw_octal": "00101",
-   "label": "1/ACTSAT",
-   "op": "DEC",
-   "operand": ".0039525692",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 778,
-   "bank": "20",
-   "address": "3473",
-   "raw_octal": "02530",
-   "label": "PITCHT5",
-   "op": "GENADR",
-   "operand": "PITCHDAP",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 779,
-   "bank": "20",
-   "address": "3474",
-   "raw_octal": "03107",
-   "label": "DAPT5",
-   "op": "GENADR",
-   "operand": "DAPINIT",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 780,
-   "bank": "20",
-   "address": "3475",
-   "raw_octal": "02732",
-   "label": "YAWT5",
-   "op": "GENADR",
-   "operand": "YAWDAP",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 782,
-   "bank": "20",
-   "address": "3476",
-   "raw_octal": "00115",
-   "label": "1/RTLIM",
-   "op": "DEC",
-   "operand": "0.004715",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 783,
-   "bank": "20",
-   "address": "3477",
-   "raw_octal": "00243",
-   "label": "1-E(-AT)",
-   "op": "OCT",
-   "operand": "00243",
-   "native_label": "L3247"
-  },
-  {
-   "source_line": 784,
-   "bank": "20",
-   "address": "3500",
-   "raw_octal": "37535",
-   "label": "E(-AT)",
-   "op": "OCT",
-   "operand": "37535",
-   "native_label": "L3247"
-  }
- ]
+ "Comanche055/TVCDAPS.agc": {
+  "native_file": "src/cm_tvc_daps.c",
+  "words": 489,
+  "untranslated_words": 0,
+  "routines": 9,
+  "map": [
+   {
+    "address": "20,2530",
+    "word": "22016",
+    "source": "PITCHDAP LXCH BANKRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2531",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2532",
+    "word": "22012",
+    "source": " QXCH QRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2533",
+    "word": "33475",
+    "source": " CAF YAWT5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2534",
+    "word": "55312",
+    "source": " TS T5LOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2535",
+    "word": "31625",
+    "source": " CAE T5TVCDT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2536",
+    "word": "54030",
+    "source": " TS TIME5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2537",
+    "word": "11574",
+    "source": "PSTROKER CCS STROKER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2540",
+    "word": "03533",
+    "source": " TC HACK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2541",
+    "word": "12543",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2542",
+    "word": "03533",
+    "source": " TC HACK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2543",
+    "word": "30033",
+    "source": "PCDUDOTS CAE CDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2544",
+    "word": "57645",
+    "source": " XCH PCDUYPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2545",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2546",
+    "word": "21645",
+    "source": " MSU PCDUYPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2547",
+    "word": "02560",
+    "source": " TCR RLIMTEST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2550",
+    "word": "55647",
+    "source": " TS MCDUYDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2551",
+    "word": "30034",
+    "source": " CAE CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2552",
+    "word": "57646",
+    "source": " XCH PCDUZPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2553",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2554",
+    "word": "21646",
+    "source": " MSU PCDUZPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2555",
+    "word": "02560",
+    "source": " TCR RLIMTEST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2556",
+    "word": "55650",
+    "source": " TS MCDUZDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2557",
+    "word": "12571",
+    "source": " TCF PINTEGRL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2560",
+    "word": "55611",
+    "source": "RLIMTEST TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2561",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2562",
+    "word": "73476",
+    "source": " MP 1/RTLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2563",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2564",
+    "word": "12567",
+    "source": " BZF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2565",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2566",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2567",
+    "word": "31611",
+    "source": " CAE TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2570",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2571",
+    "word": "00006",
+    "source": "PINTEGRL EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2572",
+    "word": "31576",
+    "source": " DCA PERRB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2573",
+    "word": "53703",
+    "source": " DXCH ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2574",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2575",
+    "word": "31530",
+    "source": " DCA OMEGAYC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2576",
+    "word": "21703",
+    "source": " DAS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2577",
+    "word": "40746",
+    "source": " CS COSCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2600",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2601",
+    "word": "70750",
+    "source": " MP COSCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2602",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2603",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2604",
+    "word": "71647",
+    "source": " MP MCDUYDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2605",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2606",
+    "word": "53536",
+    "source": " DXCH OMEGAYB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2607",
+    "word": "41650",
+    "source": " CS MCDUZDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2610",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2611",
+    "word": "70742",
+    "source": " MP SINCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2612",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2613",
+    "word": "21536",
+    "source": " DAS OMEGAYB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2614",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2615",
+    "word": "41536",
+    "source": " DCS OMEGAYB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2616",
+    "word": "21703",
+    "source": " DAS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2617",
+    "word": "03124",
+    "source": "PERORLIM TCR ERRORLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2620",
+    "word": "00006",
+    "source": "PFORWARD EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2621",
+    "word": "31542",
+    "source": " DCA PTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2622",
+    "word": "53707",
+    "source": " DXCH TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2623",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2624",
+    "word": "31546",
+    "source": " DCA PTMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2625",
+    "word": "53713",
+    "source": " DXCH TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2626",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2627",
+    "word": "31552",
+    "source": " DCA PTMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2630",
+    "word": "53717",
+    "source": " DXCH TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2631",
+    "word": "03156",
+    "source": " TCR FWDFLTR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2632",
+    "word": "00006",
+    "source": "POFFSET EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2633",
+    "word": "31606",
+    "source": " DCA PDELOFF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2634",
+    "word": "21705",
+    "source": " DAS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2635",
+    "word": "03137",
+    "source": "PACLIM TCR ACTLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2636",
+    "word": "41623",
+    "source": "POUT CS PCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2637",
+    "word": "61704",
+    "source": " AD CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2640",
+    "word": "26054",
+    "source": " ADS TVCPITCH",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2641",
+    "word": "35005",
+    "source": " CAF BIT11",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2642",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2643",
+    "word": "05014",
+    "source": " WOR CHAN14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2644",
+    "word": "00006",
+    "source": "PPRECOMP EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2645",
+    "word": "31544",
+    "source": " DCA PTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2646",
+    "word": "53711",
+    "source": " DXCH TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2647",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2650",
+    "word": "31550",
+    "source": " DCA PTMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2651",
+    "word": "53715",
+    "source": " DXCH TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2652",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2653",
+    "word": "31554",
+    "source": " DCA PTMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2654",
+    "word": "53721",
+    "source": " DXCH TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2655",
+    "word": "03247",
+    "source": " TCR PRECOMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2656",
+    "word": "31602",
+    "source": "DELBARP CAE DELPBAR    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2657",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2660",
+    "word": "73500",
+    "source": " MP E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2661",
+    "word": "55701",
+    "source": " TS DELBRTMP   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2662",
+    "word": "31601",
+    "source": " CAE DELPBAR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2663",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2664",
+    "word": "73500",
+    "source": " MP E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2665",
+    "word": "21701",
+    "source": " DAS DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2666",
+    "word": "31704",
+    "source": " CAE CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2667",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2670",
+    "word": "73477",
+    "source": " MP 1-E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2671",
+    "word": "21701",
+    "source": " DAS DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2672",
+    "word": "02674",
+    "source": "PCOPYCYC TCR PCOPY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2673",
+    "word": "15333",
+    "source": "PDAPEND TCF RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2674",
+    "word": "25644",
+    "source": "PCOPY INCR TVCPHASE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2675",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2676",
+    "word": "31707",
+    "source": " DCA TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2677",
+    "word": "53542",
+    "source": " DXCH PTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2700",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2701",
+    "word": "31711",
+    "source": " DCA TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2702",
+    "word": "53544",
+    "source": " DXCH PTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2703",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2704",
+    "word": "31713",
+    "source": " DCA TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2705",
+    "word": "53546",
+    "source": " DXCH PTMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2706",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2707",
+    "word": "31715",
+    "source": " DCA TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2710",
+    "word": "53550",
+    "source": " DXCH PTMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2711",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2712",
+    "word": "31717",
+    "source": " DCA TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2713",
+    "word": "53552",
+    "source": " DXCH PTMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2714",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2715",
+    "word": "31721",
+    "source": " DCA TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2716",
+    "word": "53554",
+    "source": " DXCH PTMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2717",
+    "word": "00006",
+    "source": "PMISC EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2720",
+    "word": "31703",
+    "source": " DCA ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2721",
+    "word": "55477",
+    "source": " TS AK1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2722",
+    "word": "53576",
+    "source": " DXCH PERRB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2723",
+    "word": "31704",
+    "source": " CAE CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2724",
+    "word": "55623",
+    "source": " TS PCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2725",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2726",
+    "word": "31701",
+    "source": " DCA DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2727",
+    "word": "53602",
+    "source": " DXCH DELPBAR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2730",
+    "word": "25644",
+    "source": " INCR TVCPHASE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2731",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2732",
+    "word": "22016",
+    "source": "YAWDAP LXCH BANKRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2733",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2734",
+    "word": "22012",
+    "source": " QXCH QRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2735",
+    "word": "33473",
+    "source": " CAF PITCHT5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2736",
+    "word": "55312",
+    "source": " TS T5LOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2737",
+    "word": "31625",
+    "source": " CAE T5TVCDT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2740",
+    "word": "54030",
+    "source": " TS TIME5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2741",
+    "word": "11574",
+    "source": "YSTROKER CCS STROKER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2742",
+    "word": "03533",
+    "source": " TC HACK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2743",
+    "word": "12745",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2744",
+    "word": "03533",
+    "source": " TC HACK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2745",
+    "word": "00006",
+    "source": "YINTEGRL EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2746",
+    "word": "31600",
+    "source": " DCA YERRB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2747",
+    "word": "53703",
+    "source": " DXCH ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2750",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2751",
+    "word": "31532",
+    "source": " DCA OMEGAZC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2752",
+    "word": "21703",
+    "source": " DAS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2753",
+    "word": "30746",
+    "source": " CAE COSCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2754",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2755",
+    "word": "70742",
+    "source": " MP SINCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2756",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2757",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2760",
+    "word": "71647",
+    "source": " MP MCDUYDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2761",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2762",
+    "word": "53540",
+    "source": " DXCH OMEGAZB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2763",
+    "word": "41650",
+    "source": " CS MCDUZDOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2764",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2765",
+    "word": "70750",
+    "source": " MP COSCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2766",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2767",
+    "word": "21540",
+    "source": " DAS OMEGAZB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2770",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2771",
+    "word": "41540",
+    "source": " DCS OMEGAZB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2772",
+    "word": "21703",
+    "source": " DAS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2773",
+    "word": "03124",
+    "source": "YERORLIM TCR ERRORLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2774",
+    "word": "00006",
+    "source": "YFORWARD EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2775",
+    "word": "31556",
+    "source": " DCA YTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2776",
+    "word": "53707",
+    "source": " DXCH TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,2777",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3000",
+    "word": "31562",
+    "source": " DCA YTMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3001",
+    "word": "53713",
+    "source": " DXCH TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3002",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3003",
+    "word": "31566",
+    "source": " DCA YTMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3004",
+    "word": "53717",
+    "source": " DXCH TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3005",
+    "word": "03156",
+    "source": " TCR FWDFLTR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3006",
+    "word": "00006",
+    "source": "YOFFSET EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3007",
+    "word": "31610",
+    "source": " DCA YDELOFF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3010",
+    "word": "21705",
+    "source": " DAS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3011",
+    "word": "03137",
+    "source": "YACLIM TCR ACTLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3012",
+    "word": "41624",
+    "source": "YOUT CS YCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3013",
+    "word": "61704",
+    "source": " AD CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3014",
+    "word": "26053",
+    "source": " ADS TVCYAW",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3015",
+    "word": "35004",
+    "source": " CAF BIT12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3016",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3017",
+    "word": "05014",
+    "source": " WOR CHAN14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3020",
+    "word": "00006",
+    "source": "YPRECOMP EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3021",
+    "word": "31560",
+    "source": " DCA YTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3022",
+    "word": "53711",
+    "source": " DXCH TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3023",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3024",
+    "word": "31564",
+    "source": " DCA YTMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3025",
+    "word": "53715",
+    "source": " DXCH TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3026",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3027",
+    "word": "31570",
+    "source": " DCA YTMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3030",
+    "word": "53721",
+    "source": " DXCH TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3031",
+    "word": "03247",
+    "source": " TCR PRECOMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3032",
+    "word": "31604",
+    "source": "DELBARY CAE DELYBAR    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3033",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3034",
+    "word": "73500",
+    "source": " MP E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3035",
+    "word": "55701",
+    "source": " TS DELBRTMP   +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3036",
+    "word": "31603",
+    "source": " CAE DELYBAR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3037",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3040",
+    "word": "73500",
+    "source": " MP E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3041",
+    "word": "21701",
+    "source": " DAS DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3042",
+    "word": "31704",
+    "source": " CAE CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3043",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3044",
+    "word": "73477",
+    "source": " MP 1-E(-AT)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3045",
+    "word": "21701",
+    "source": " DAS DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3046",
+    "word": "03050",
+    "source": "YCOPYCYC TCR YCOPY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3047",
+    "word": "15333",
+    "source": "YDAPEND TCF RESUME",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3050",
+    "word": "25644",
+    "source": "YCOPY INCR TVCPHASE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3051",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3052",
+    "word": "31707",
+    "source": " DCA TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3053",
+    "word": "53556",
+    "source": " DXCH YTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3054",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3055",
+    "word": "31711",
+    "source": " DCA TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3056",
+    "word": "53560",
+    "source": " DXCH YTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3057",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3060",
+    "word": "31713",
+    "source": " DCA TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3061",
+    "word": "53562",
+    "source": " DXCH YTMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3062",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3063",
+    "word": "31715",
+    "source": " DCA TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3064",
+    "word": "53564",
+    "source": " DXCH YTMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3065",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3066",
+    "word": "31717",
+    "source": " DCA TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3067",
+    "word": "53566",
+    "source": " DXCH YTMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3070",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3071",
+    "word": "31721",
+    "source": " DCA TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3072",
+    "word": "53570",
+    "source": " DXCH YTMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3073",
+    "word": "00006",
+    "source": "YMISC EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3074",
+    "word": "31703",
+    "source": " DCA ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3075",
+    "word": "55500",
+    "source": " TS AK2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3076",
+    "word": "53600",
+    "source": " DXCH YERRB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3077",
+    "word": "31704",
+    "source": " CAE CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3100",
+    "word": "55624",
+    "source": " TS YCMD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3101",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3102",
+    "word": "31701",
+    "source": " DCA DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3103",
+    "word": "53604",
+    "source": " DXCH DELYBAR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3104",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3105",
+    "word": "55644",
+    "source": " TS TVCPHASE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3106",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3107",
+    "word": "22016",
+    "source": "DAPINIT LXCH BANKRUPT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3110",
+    "word": "37716",
+    "source": " CAF NEGONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3111",
+    "word": "61625",
+    "source": " AD T5TVCDT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3112",
+    "word": "65001",
+    "source": " AD NEGMAX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3113",
+    "word": "61625",
+    "source": " AD T5TVCDT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3114",
+    "word": "54030",
+    "source": " TS TIME5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3115",
+    "word": "33473",
+    "source": " CAF PITCHT5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3116",
+    "word": "55312",
+    "source": " TS T5LOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3117",
+    "word": "30033",
+    "source": " CAE CDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3120",
+    "word": "55645",
+    "source": " TS PCDUYPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3121",
+    "word": "30034",
+    "source": " CAE CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3122",
+    "word": "55646",
+    "source": " TS PCDUZPST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3123",
+    "word": "15335",
+    "source": " TCF NOQRSM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3124",
+    "word": "31702",
+    "source": "ERRORLIM CAE ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3125",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3126",
+    "word": "75015",
+    "source": " MP 1/ERRLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3127",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3130",
+    "word": "13136",
+    "source": " BZF +6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3131",
+    "word": "11702",
+    "source": " CCS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3132",
+    "word": "35003",
+    "source": " CAF ERRLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3133",
+    "word": "13135",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3134",
+    "word": "45003",
+    "source": " CS ERRLIM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3135",
+    "word": "55702",
+    "source": " TS ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3136",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3137",
+    "word": "31705",
+    "source": "ACTLIM CAE CMDTMP     +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3140",
+    "word": "60000",
+    "source": " DOUBLE ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3141",
+    "word": "54001",
+    "source": " TS L",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3142",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3143",
+    "word": "61704",
+    "source": " AD CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3144",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3145",
+    "word": "73472",
+    "source": " MP 1/ACTSAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3146",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3147",
+    "word": "13155",
+    "source": " BZF +6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3150",
+    "word": "11704",
+    "source": " CCS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3151",
+    "word": "33471",
+    "source": " CAF ACTSAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3152",
+    "word": "13154",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3153",
+    "word": "43471",
+    "source": " CS ACTSAT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3154",
+    "word": "55704",
+    "source": " TS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3155",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3156",
+    "word": "35021",
+    "source": "FWDFLTR CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3157",
+    "word": "55615",
+    "source": " TS DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3160",
+    "word": "55617",
+    "source": " TS DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3161",
+    "word": "55621",
+    "source": " TS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3162",
+    "word": "55704",
+    "source": " TS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3163",
+    "word": "55700",
+    "source": " TS DELBRTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3164",
+    "word": "31703",
+    "source": "1DAPCAS CAE ERRBTMP    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3165",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3166",
+    "word": "71723",
+    "source": " MP N10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3167",
+    "word": "55616",
+    "source": " TS DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3170",
+    "word": "31702",
+    "source": " CA ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3171",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3172",
+    "word": "71723",
+    "source": " MP N10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3173",
+    "word": "21616",
+    "source": " DAS DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3174",
+    "word": "53707",
+    "source": " DXCH TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3175",
+    "word": "21616",
+    "source": " DAS DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3176",
+    "word": "31616",
+    "source": "2DAPCAS CAE DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3177",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3200",
+    "word": "71730",
+    "source": " MP N10        +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3201",
+    "word": "55620",
+    "source": " TS DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3202",
+    "word": "31615",
+    "source": " CA DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3203",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3204",
+    "word": "71730",
+    "source": " MP N10        +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3205",
+    "word": "21620",
+    "source": " DAS DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3206",
+    "word": "53713",
+    "source": " DXCH TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3207",
+    "word": "21620",
+    "source": " DAS DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3210",
+    "word": "31466",
+    "source": " CAE DAPDATR1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3211",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3212",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3213",
+    "word": "13220",
+    "source": " TCF 3DAPCAS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3214",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3215",
+    "word": "31620",
+    "source": " DCA DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3216",
+    "word": "53622",
+    "source": " DXCH DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3217",
+    "word": "13232",
+    "source": " TCF OPTVARK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3220",
+    "word": "31620",
+    "source": "3DAPCAS CAE DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3221",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3222",
+    "word": "71735",
+    "source": " MP N10        +10D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3223",
+    "word": "55622",
+    "source": " TS DAP3       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3224",
+    "word": "31617",
+    "source": " CA DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3225",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3226",
+    "word": "71735",
+    "source": " MP N10        +10D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3227",
+    "word": "21622",
+    "source": " DAS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3230",
+    "word": "53717",
+    "source": " DXCH TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3231",
+    "word": "21622",
+    "source": " DAS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3232",
+    "word": "41622",
+    "source": "OPTVARK CS DAP3       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3233",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3234",
+    "word": "71641",
+    "source": " MP VARK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3235",
+    "word": "55705",
+    "source": " TS CMDTMP     +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3236",
+    "word": "41621",
+    "source": " CS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3237",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3240",
+    "word": "71641",
+    "source": " MP VARK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3241",
+    "word": "21705",
+    "source": " DAS CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3242",
+    "word": "53705",
+    "source": " DXCH CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3243",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3244",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3245",
+    "word": "53705",
+    "source": " DXCH CMDTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3246",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3247",
+    "word": "35021",
+    "source": "PRECOMP CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3250",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3251",
+    "word": "55613",
+    "source": " TS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3252",
+    "word": "31703",
+    "source": " CA ERRBTMP    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3253",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3254",
+    "word": "71724",
+    "source": " MP N10        +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3255",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3256",
+    "word": "31702",
+    "source": " CA ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3257",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3260",
+    "word": "71724",
+    "source": " MP N10        +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3261",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3262",
+    "word": "41616",
+    "source": " CS DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3263",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3264",
+    "word": "71726",
+    "source": " MP N10        +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3265",
+    "word": "55614",
+    "source": " TS TTMP2      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3266",
+    "word": "41615",
+    "source": " CS DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3267",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3270",
+    "word": "71726",
+    "source": " MP N10        +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3271",
+    "word": "21614",
+    "source": " DAS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3272",
+    "word": "53614",
+    "source": " DXCH TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3273",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3274",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3275",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3276",
+    "word": "21711",
+    "source": " DAS TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3277",
+    "word": "53711",
+    "source": " DXCH TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3300",
+    "word": "53707",
+    "source": " DXCH TMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3301",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3302",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3303",
+    "word": "55710",
+    "source": " TS TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3304",
+    "word": "31703",
+    "source": " CA ERRBTMP    +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3305",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3306",
+    "word": "71725",
+    "source": " MP N10        +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3307",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3310",
+    "word": "31702",
+    "source": " CA ERRBTMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3311",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3312",
+    "word": "71725",
+    "source": " MP N10        +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3313",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3314",
+    "word": "41616",
+    "source": " CS DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3315",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3316",
+    "word": "71727",
+    "source": " MP N10        +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3317",
+    "word": "55711",
+    "source": " TS TMP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3320",
+    "word": "41615",
+    "source": " CS DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3321",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3322",
+    "word": "71727",
+    "source": " MP N10        +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3323",
+    "word": "21711",
+    "source": " DAS TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3324",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3325",
+    "word": "21711",
+    "source": " DAS TMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3326",
+    "word": "35021",
+    "source": "2CASFLTR CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3327",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3330",
+    "word": "55613",
+    "source": " TS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3331",
+    "word": "31616",
+    "source": " CA DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3332",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3333",
+    "word": "71731",
+    "source": " MP N10        +6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3334",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3335",
+    "word": "31615",
+    "source": " CA DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3336",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3337",
+    "word": "71731",
+    "source": " MP N10        +6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3340",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3341",
+    "word": "41620",
+    "source": " CS DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3342",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3343",
+    "word": "71733",
+    "source": " MP N10        +8D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3344",
+    "word": "55614",
+    "source": " TS TTMP2      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3345",
+    "word": "41617",
+    "source": " CS DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3346",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3347",
+    "word": "71733",
+    "source": " MP N10        +8D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3350",
+    "word": "21614",
+    "source": " DAS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3351",
+    "word": "53614",
+    "source": " DXCH TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3352",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3353",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3354",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3355",
+    "word": "21715",
+    "source": " DAS TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3356",
+    "word": "53715",
+    "source": " DXCH TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3357",
+    "word": "53713",
+    "source": " DXCH TMP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3360",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3361",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3362",
+    "word": "55714",
+    "source": " TS TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3363",
+    "word": "31616",
+    "source": " CA DAP1       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3364",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3365",
+    "word": "71732",
+    "source": " MP N10        +7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3366",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3367",
+    "word": "31615",
+    "source": " CA DAP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3370",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3371",
+    "word": "71732",
+    "source": " MP N10        +7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3372",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3373",
+    "word": "41620",
+    "source": " CS DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3374",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3375",
+    "word": "71734",
+    "source": " MP N10        +9D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3376",
+    "word": "55715",
+    "source": " TS TMP4       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3377",
+    "word": "41617",
+    "source": " CS DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3400",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3401",
+    "word": "71734",
+    "source": " MP N10        +9D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3402",
+    "word": "21715",
+    "source": " DAS TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3403",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3404",
+    "word": "21715",
+    "source": " DAS TMP4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3405",
+    "word": "31466",
+    "source": " CAE DAPDATR1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3406",
+    "word": "75003",
+    "source": " MASK BIT13",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3407",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3410",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3411",
+    "word": "35021",
+    "source": "3CASFLTR CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3412",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3413",
+    "word": "55613",
+    "source": " TS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3414",
+    "word": "31620",
+    "source": " CA DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3415",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3416",
+    "word": "71736",
+    "source": " MP N10        +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3417",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3420",
+    "word": "31617",
+    "source": " CA DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3421",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3422",
+    "word": "71736",
+    "source": " MP N10        +11D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3423",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3424",
+    "word": "41622",
+    "source": " CS DAP3       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3425",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3426",
+    "word": "71740",
+    "source": " MP N10        +13D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3427",
+    "word": "55614",
+    "source": " TS TTMP2      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3430",
+    "word": "41621",
+    "source": " CS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3431",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3432",
+    "word": "71740",
+    "source": " MP N10        +13D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3433",
+    "word": "21614",
+    "source": " DAS TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3434",
+    "word": "53614",
+    "source": " DXCH TTMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3435",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3436",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3437",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3440",
+    "word": "21721",
+    "source": " DAS TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3441",
+    "word": "53721",
+    "source": " DXCH TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3442",
+    "word": "53717",
+    "source": " DXCH TMP5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3443",
+    "word": "35021",
+    "source": " CAF ZERO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3444",
+    "word": "55611",
+    "source": " TS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3445",
+    "word": "55720",
+    "source": " TS TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3446",
+    "word": "31620",
+    "source": " CA DAP2       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3447",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3450",
+    "word": "71737",
+    "source": " MP N10        +12D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3451",
+    "word": "55612",
+    "source": " TS TTMP1      +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3452",
+    "word": "31617",
+    "source": " CA DAP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3453",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3454",
+    "word": "71737",
+    "source": " MP N10        +12D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3455",
+    "word": "21612",
+    "source": " DAS TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3456",
+    "word": "41622",
+    "source": " CS DAP3       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3457",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3460",
+    "word": "71741",
+    "source": " MP N10        +14D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3461",
+    "word": "55721",
+    "source": " TS TMP6       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3462",
+    "word": "41621",
+    "source": " CS DAP3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3463",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3464",
+    "word": "71741",
+    "source": " MP N10        +14D",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3465",
+    "word": "21721",
+    "source": " DAS TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3466",
+    "word": "53612",
+    "source": " DXCH TTMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3467",
+    "word": "21721",
+    "source": " DAS TMP6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3470",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "20,3471",
+    "word": "00375",
+    "source": "ACTSAT DEC 253        B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3472",
+    "word": "00101",
+    "source": "1/ACTSAT DEC .0039525692",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3473",
+    "word": "02530",
+    "source": "PITCHT5 GENADR PITCHDAP",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3474",
+    "word": "03107",
+    "source": "DAPT5 GENADR DAPINIT",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "20,3475",
+    "word": "02732",
+    "source": "YAWT5 GENADR YAWDAP",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3476",
+    "word": "00115",
+    "source": "1/RTLIM DEC 0.004715",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3477",
+    "word": "00243",
+    "source": "1-E(-AT) OCT 00243",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "20,3500",
+    "word": "37535",
+    "source": "E(-AT) OCT 37535",
+    "constant": "basic operand (inline)"
+   }
+  ]
+ }
 }

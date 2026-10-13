@@ -1,81 +1,31 @@
-# Translate Comanche TVCROLLDAP (CM roll DAP during TVC)
+# Translate Comanche TVCROLLDAP
 
-Lane G. Milestone `cm-tvc-roll`.
+Lane G (CM flight). Milestone `cm-tvc-roll`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/TVCROLLDAP.agc` (`src/cm_tvc_roll.c`) is native C in full: The TVC roll autopilot ROLLDAP (switching logic, jet timing and the OGA rate filter) and NOROLL1. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #77: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/TVCROLLDAP.agc`, all of it: bank 16 `3272`-`3717`, 278
-assembled words (including the NOROL1T6 2CADR and the DB, -SLOPE, LMCRATE,
-INTERCEP, MINLIM, 1/MINLIM, MAXLIM, TMINFIRE, TMAXFIRE and -ROLL2
-constants). Nothing is left in the file.
+2 routines, keyed by physical address in `cm_tvc_roll_basic`:
 
-`cm_tvc_roll(image, io)` runs one task to its exit. `io` holds channel 6
-(roll jets, WRITE) and channel 13 (WOR of bit 15, the T6 enable):
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 16,3272 ROLLDAP | basic | entry ROLLDAP (TVCEXECUTIVE.agc 2CADR ROLLDAP) |
+| 16,3676 NOROLL1 | basic | 2CADR NOROLL1 |
 
-| Entry | Reached from |
-|---|---|
-| `3272` ROLLDAP | Waitlist task (TVCEXECUTIVE `2CADR ROLLDAP`) |
-| `3676` NOROLL1 | T6RUPT via T6LOC (NOROL1T6, set by JETROLL) |
+Destinations outside the file: NOQRSM, TASKOVER. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 16 (`034000`), EB E6, BB `034006`, any raw A/L/Q,
-erasable contents and channels. `CM_TVC_ROLL_OK` leaves `Z = TASKOVER
-5324` (WAIT1/2, EXTENTST, SAMEJETS, RDAPEND) or `Z = NOQRSM 5335`
-(NOROLL1); anything else is `CM_TVC_ROLL_OUT_OF_SCOPE`, image and io
-unchanged. The file has no loop.
+## Domain
 
-### How it is translated
-
-As in `cm-tvc-exec`: one qualified `agc_image_ops` primitive per original
-word, under C labels named for the original addresses, with every CCS
-four-way skip and every TS overflow skip the data can reach. MSU, WRITE and
-WOR are written from the yaAGC definitions. Three source idioms need care:
-
-- `INDEX I` on a word with a zero opcode field (`0 SGNRT`, `0 A`, `0 DB`,
-  ...): I is PRIO30 or BIT15, set at `3343`, so the word runs as CA or CS.
-- `TS` overflow followed by `INDEX A; CS LIMITS` (`3506`, `3520`): A is ±1,
-  so the CS reads LIMITS+1 or LIMITS-1 (BIT15 or POSMAX).
-- `TS DELOGA` at `3335` overflowing skips the EXTEND at `3336`. The BZMF
-  word then runs as `AD 3342`, and CAF PRIO30 follows. `TS TEMREG` at `3503`
-  overflowing would likewise run `SU OGARATE` as `AD OGARATE`. That case
-  is translated but no sample reaches it (A is a DV quotient, ±POSMAX or
-  ∓MAXLIM).
-
-## Source map
-
-`evidence/cm-tvc-roll/cm-tvc-roll-source-map.json`
-(`tools/cm_tvc_roll_source.py`): every word with its source line, rope
-check and native label (`L3313`..`L3676` in `src/cm_tvc_roll.c`), the 47
-fixed-constant reads matched to the native literals, and the NOROL1T6
-2CADR, LIMITS±1 and the `3342` word matched to the rope.
-
-Independent assembly comparison: `evidence/cm-tvc-roll/cm-tvc-roll-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
-unchanged file against the original Comanche055 rope, without reading the
-native code.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. I (E6,1670) holds PRIO30 or BIT15, the CA and CS order codes the file stores there: each INDEX I, 0 X word is compiled as CA X and CS X. TS TEMREG overflow protection reads LIMITS -1 to +1.
 
 ## Evidence
 
-Hashes: `evidence/cm-tvc-roll/SHA256.json`; bulk files in release
-`evidence-cm-tvc-roll`.
+Hashes: `evidence/cm-tvc-roll/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (`tools/cm_flight_prepare_reference.py`,
-  original CM rope `6e3150ae...`). The runner stops at TASKOVER or NOQRSM.
-  Channel 13 starts with its trap bits (`04000`-`020000`, which yaAGC turns
-  into hidden trap latches and drops from the channel) and its device-only
-  bits (`010`, `01000`, `02000`) clear; the file only ORs in bit 15. The
-  runner's scaler is held, so TIME6 does not count.
-- Host and sanitizer results: `make test-cm-tvc-roll sanitize-cm-tvc-roll`.
-  65536 cases (`tests/cm_tvc_roll_cases.c`: both entries; ROLLFIRE, TEMREG,
-  OGA, OGANOW/OGAPAST and 1/CONACC zero, -0, small, medium or raw, so every
-  phase-plane region, the DV limits and the reachable TS overflows occur;
-  raw ROLLWORD, TIME6, A/L/Q, channels and unowned words). Every case reaches
-  an exit, and the two sides agree on all of them. Native line coverage over
-  the cases is complete. Stream identity `cm-tvc-roll-source-stream.json`,
-  deltas `cm-tvc-roll-reference.deltas.xz`, log `cm-tvc-roll-checks.log`.
-- C64 execution results: `make vice-cm-tvc-roll`, 128 frozen rows
-  (`tools/cm_tvc_roll_freeze.py`). `cm-tvc-roll-results.json`.
-
-## Open
-
-ABI registration of the two entries follows in the Lane G routine-table
-step, after Lane A's ISWRETRN fix.
+- **Source map.** `cm-tvc-roll-source-map.json` lists all 278 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-tvc-roll-differential` runs 256 states per routine (512 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 06, 13 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-roll-proof.json` (`cm-tvc-roll-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_roll_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-tvc-roll sanitize-cm-tvc-roll` runs the 16 frozen cases (`cm-tvc-roll-host.log`).
+- **C64 execution results.** `make vice-cm-tvc-roll` runs 1 diagnostic program with 16 cases (`cm-tvc-roll-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 512 differential cases take: 578 of 578 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 262 of 262 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 316 of the 316 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
