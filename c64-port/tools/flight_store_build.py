@@ -258,14 +258,21 @@ def lane_slot(stem, mission, owners, place):
     return lane, 1 if placement == 'task' else 0, path
 
 
-def link_module(cc, m, prg, slot, ident, sources, basic, interp, library):
+def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None):
+    """chunk: (table, first, last) links only entries first..last-1 of one
+    basic table (platform/c64/flight_table_module.c FS_CHUNK)."""
     wrapper = prg.with_suffix('.c')
+    head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
+            + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
     wrapper.write_text(
-        f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
+        head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
         + (f'#define FS_HAS_INTERP 1\n#define FS_DANZIG agc_{m}_danzig_marker\n' if interp else '')
         + '#include "../../../platform/c64/flight_table_module.c"\n')
-    cmd = [cc, *COMMON, *MISSION[m], '-mllvm', '-inline-threshold=-50',
+    # A module holding interpretive tables resolves a pending DANZIG through
+    # the mission's marker table (include/agc_transfer.h).
+    cmd = [cc, *COMMON, *MISSION[m], *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
+           '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
            '-T', 'platform/c64/overlay_v2_payload.ld',
@@ -367,9 +374,9 @@ def main():
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
         def link(mod):
-            prg = OUT / m / f'module-{mod["id"]:04x}.prg'
+            prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
-                              library)
+                              library, mod.get('chunk'))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library)
@@ -379,13 +386,68 @@ def main():
             return mod, prg, res
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
+        # A basic-only module over its slot is split into chunks of
+        # consecutive routines, halving until each chunk fits. Splitting stops
+        # (the module stays whole and failed) when a chunk of one routine
+        # does not fit, or when halving leaves the overflow nearly unchanged:
+        # the routines share one body (a file-wide step machine) that every
+        # chunk links. Trial links use a scratch id; kept chunks are relinked
+        # with their own. Interpretive modules wait on the interpreter
+        # decision.
+        chunks = []
+
+        def trial(c, mod):
+            return link(dict(mod, id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
+                             prg_name=f'trial-{c[0]}-{c[1]}'))[2]
+
+        def split(mod):
+            todo, kept = [((t, 0, len(keys[t])), None) for t in mod['basic']], []
+            while todo:
+                with ThreadPoolExecutor(a.jobs) as pool:
+                    results = list(pool.map(lambda x: trial(x[0], mod), todo))
+                nxt = []
+                for (c, parent), r in zip(todo, results):
+                    if r['ok']:
+                        kept.append(c)
+                    elif not r.get('overflow') or c[2] - c[1] == 1 or (
+                            parent and r['overflow'] > 0.75 * parent):
+                        return None
+                    else:
+                        half = (c[1] + c[2]) // 2
+                        nxt += [((c[0], c[1], half), r['overflow']), ((c[0], half, c[2]), r['overflow'])]
+                todo = nxt
+            return kept
+        for mod, prg, res in linked:
+            if res['ok'] or not res.get('overflow') or mod['interp']:
+                continue
+            kept = split(mod)
+            if not kept or seq[mod['lane']] + len(kept) - 1 > LANE_LIMIT.get(mod['lane'], 0xFF):
+                mod['chunking'] = 'routines share one body' if kept is None else 'no module ids left'
+                continue
+            subs = []
+            for i, c in enumerate(sorted(kept)):
+                if i:
+                    seq[mod['lane']] += 1
+                ident = mod['id'] if i == 0 else LANE_BYTE[mod['lane']] << 8 | seq[mod['lane']]
+                subs.append(dict(mod, id=ident, basic=[], chunk=c, chunk_of=mod['id']))
+            with ThreadPoolExecutor(a.jobs) as pool:
+                chunks += list(pool.map(link, subs))
+            mod['chunked'] = True
+        linked = [x for x in linked if not x[0].get('chunked')] + sorted(chunks, key=lambda x: x[0]['id'])
+        modules = [mod for mod, _, _ in linked]
         module_of = {}
         for mod, prg, res in linked:
             mod.update(res)
             mod['prg'] = str(prg)
             if res['ok']:
+                if mod.get('chunk'):
+                    t, first, last = mod['chunk']
+                    for k in keys[t][first:last]:
+                        module_of[(t, k)] = mod['id']
+                    continue
                 for t in mod['basic'] + mod['interp']:
-                    module_of[t] = mod['id']
+                    for k in keys[t]:
+                        module_of[(t, k)] = mod['id']
         records, erasable, unplaced = [], 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
@@ -393,7 +455,7 @@ def main():
             if k >= ERASABLE_BASE:
                 erasable += 1
                 continue
-            owner = next((module_of[t] for t in ts if t in module_of), None)
+            owner = next((module_of[(t, k)] for t in ts if (t, k) in module_of), None)
             if owner is None:
                 unplaced += 1
                 continue
@@ -419,7 +481,8 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
-                       error=mod.get('error')) for mod in modules if not mod['ok']]
+                       error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'))
+                  for mod in modules if not mod['ok']]
         report[m] = dict(
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
@@ -429,7 +492,8 @@ def main():
             modules=len(modules), modules_linked=len(good), failed=failed,
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
-                                                    'moved_to_job_slot', 'task_overflow')} for mod in modules])
+                                                    'chunk', 'chunk_of', 'moved_to_job_slot', 'task_overflow')}
+                         for mod in modules])
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
