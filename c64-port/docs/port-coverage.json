@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -7941,7 +7941,7 @@
       "sha256": "92061c017abffeac794f349bee080dcb01186b1188d95679ace07fecf6bc85de",
       "bytes": 4407,
       "lines": 243,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7959,7 +7959,7 @@
           "verification": "docs/LM-P12.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7978,7 +7978,6 @@
           "CHANG2 when a DANZIG finds a job waiting"
         ],
         "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p12/lm-p12-source-map.json",
@@ -8002,6 +8001,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p12/lm-p12-c64-cover.json",
             "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-171.md",
+            "sha256": "23aa505e92a81394b3d8c5d30e2dc6b92b5fd8e0f1932ec4db90e4fc539c4a0c"
           }
         }
       }
@@ -9048,7 +9051,7 @@
       "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
       "bytes": 4925,
       "lines": 156,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9066,7 +9069,7 @@
           "verification": "docs/LM-R63.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9079,7 +9082,6 @@
           "Interpreter LOADTIME through RTB (native, src/rtb_angles.c); RTB NORMUNIT (no native body yet: the run ends there)",
           "CHANG2 when a DANZIG finds a job waiting"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-r63/lm-r63-source-map.json",
@@ -9103,6 +9105,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-r63/lm-r63-c64-cover.json",
             "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-171.md",
+            "sha256": "23aa505e92a81394b3d8c5d30e2dc6b92b5fd8e0f1932ec4db90e4fc539c4a0c"
           }
         },
         "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively."
@@ -9485,7 +9491,7 @@
       "sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415",
       "bytes": 34569,
       "lines": 1715,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "4SEC(28)=400 B-28 declaration verified separately; actual SERVICER producers/control remain untranslated.",
@@ -9520,7 +9526,7 @@
           "scope": "All of the file: bank 37 03410-03654 (PREREAD, BIBIBIAS, GOREADAX, READACCS, PIPSDONE, REDO5.5, MAKEACCS, AVEGOUT, GNUTFAZ5, GNUFAZE5, PIPASR, REPIP1-REPIP4, DODELVZ, REREADAC, CHKTEMX), bank 33 02206-03776 (SERVICER, GETABVAL, MASSMON, MOONSPOT, AVERAGEG, COPYCYCL, DVMON, DVCNTSET, USEGTS, NODVMON1, NODVMON2, LOTHRUST, DECCNTR, USEJETS, SERVOUT, XNBPIPAD, NORMLIZ1, NORMLIZ2, COPYCYC, TMPTOSPT, HIGATASK, MUNRETRN, HITEST, POS2CHK, HIGATCHK, POS1CHK, LRPOSALM, CONTSERV, COPYCYC1, R29?, R29NODES, NOR29NOW, COPYCYC2, ALTCHK, XORCHK, 35KCHK, CALCGRAV, CALCGRV1, CALCRVG, RVBOTH, MUNRVG, MUNGRAV, UPDATCHK, POSUPDAT, NOREASON, RUPDATED, VMEASCHK, VELUPDAT, VUPDAT, USEVF, WSTOR, VUPDATED, VALTCHK, READV, GNURVST, QUIKFAZ5, HFAIL, VFAIL, LRVJOB, VBAD, VSTILBAD, HIGATJOB, POSGOOD, POSALARM, SETPOS1, SETPOS2, SETPOS), bank 22 03661-03710 (AVGEND, AVERTRN, OUTGOAVE), bank 27 03321-03357 (SERVIDLE, SVEXTADR), bank 32 03770-03772 (SERVEXIT), bank 23 02461-02510 (NORMLIZE, ASCSPOT), bank 21 02130-02153 (LRHTASK, GRP2OFF) and bank 34 03716-03774 (LRHJOB, HBAD, HSTILBAD, RDGIMS), as 165 basic and 150 interpretive ABI routines (every interpretive label and every word after a DANZIG is a key); the C64 build runs as seven segment groups, each checked against the oracle with the same segment ends."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9557,7 +9563,6 @@
           "CHANG2",
           "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-servicer/lm-servicer-source-map.json",
@@ -9581,6 +9586,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-servicer/lm-servicer-c64-cover.json",
             "sha256": "b2549f7faea9b83d20db40b107f9103dda47049e76a6f26ac71a557aa8ee2230"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-171.md",
+            "sha256": "23aa505e92a81394b3d8c5d30e2dc6b92b5fd8e0f1932ec4db90e4fc539c4a0c"
           }
         }
       }
