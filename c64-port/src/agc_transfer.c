@@ -24,36 +24,49 @@ static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t p
  }
  return 0;
 }
+#ifdef AGC_TRANSFER_DANZIG_MARKER
 /* Never called: an entry at DANZIG's own address in the interpretive tables
  * marks the program as running pending right-hand orders (agc_transfer.h). */
 static enum exec_status danzig_marker(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)s;(void)io;return EXEC_OUT_OF_SCOPE;}
 static const agc_routine_entry lm_danzig[1]={{AGC_LM_DANZIG,danzig_marker}},cm_danzig[1]={{AGC_CM_DANZIG,danzig_marker}};
 const agc_routine_table agc_lm_danzig_marker={lm_danzig,1},agc_cm_danzig_marker={cm_danzig,1};
-static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;agc_word edop;const agc_routine_entry *m;
+#endif
+static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;
  if(p->loc>=APOLLO_SHARED_WORDS||p->bankset>=APOLLO_SHARED_WORDS)return false;
  z=agc_fixed_physical(s->words[5],s->words[4],superbank);
  if(p->interpreter_fetch!=AGC_TRANSFER_NONE&&z==p->interpreter_fetch)return true;
- /* The marker is the first interpretive table, keyed at the mission's DANZIG. */
- if(!p->interpretive_count||(m=p->interpretive[0].entries)->call!=danzig_marker||m->physical!=z)return false;
- edop=(agc_word)(s->words[AGC_EDOP]&077777u);
- return edop!=0u&&edop<040000u;
+#ifdef AGC_TRANSFER_DANZIG_MARKER
+ /* The marker is the first interpretive table (by identity, so an empty {0,0}
+  * table is never read), keyed at the mission's DANZIG; EDOP holds an order
+  * (nonzero, bit 15 clear). */
+ {agc_word edop;const agc_routine_entry *m;
+ if(!p->interpretive_count)return false;
+ m=p->interpretive[0].entries;
+ if(m==lm_danzig?z!=AGC_LM_DANZIG:m!=cm_danzig||z!=AGC_CM_DANZIG)return false;
+ edop=s->words[AGC_EDOP];
+ return !(edop&040000u)&&(edop&037777u);}
+#else
+ return false;
+#endif
 }
 uint16_t agc_erasable_point(agc_word logical,agc_word eb){
  logical&=07777u;if(logical>=02000u)return AGC_TRANSFER_NONE;
  if(logical>=01400u)logical=(agc_word)((eb&03400u)+(logical&0377u));
  return (uint16_t)(AGC_TRANSFER_ERASABLE_BASE+logical);
 }
-uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){
- if(!p||!s)return AGC_TRANSFER_NONE;
- if(interpreting(p,s,superbank))return agc_fixed_physical(s->words[p->loc],s->words[p->bankset],superbank);
+static uint16_t transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,bool *in){
+ if((*in=interpreting(p,s,superbank)))return agc_fixed_physical(s->words[p->loc],s->words[p->bankset],superbank);
  if((s->words[5]&07777u)<02000u)return agc_erasable_point(s->words[5],s->words[3]);
  return agc_fixed_physical(s->words[5],s->words[4],superbank);
 }
-agc_routine agc_transfer_resolve(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t point;
+uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){bool in;
+ if(!p||!s)return AGC_TRANSFER_NONE;
+ return transfer_point(p,s,superbank,&in);
+}
+agc_routine agc_transfer_resolve(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t point;bool in;
  if(!p||!s)return 0;
- point=agc_transfer_point(p,s,superbank);
- if(interpreting(p,s,superbank))return find(p->interpretive,p->interpretive_count,point);
- return find(p->basic,p->basic_count,point);
+ point=transfer_point(p,s,superbank,&in);
+ return in?find(p->interpretive,p->interpretive_count,point):find(p->basic,p->basic_count,point);
 }
 bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,agc_word q,agc_word *word){uint16_t physical;
  if(!p||!s||!word||q>07777u)return false;

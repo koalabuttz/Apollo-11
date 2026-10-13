@@ -1426,6 +1426,17 @@
           ],
           "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
           "verification": "docs/GIMBAL_COMPLETE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_gimbal_lock.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (LOCSKIRT: rate choice from RATEINDX, CALL DELCOMP, BRATE and TM, the overshoot bias, SETGO CALCMAN2 to NEWANGL +1) as 11 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: WCALC (22,2737), the DELCOMP return and every word after a DANZIG.",
+          "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
       "withdrawn_certificate": {
@@ -1459,6 +1470,44 @@
             }
           }
         }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 11 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "external_continuations": [
+          "Interpretive CALL to DELCOMP (ANGLFIND)",
+          "SETGO CALCMAN2 to NEWANGL +1",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
+            "sha256": "fa0ee121d8359f5ee0fa4996f6f5b31952318f86d0b1903e61f94d48bfde55f6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
+            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-host.log",
+            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
+          },
+          "c64_execution_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
+            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
+            "vice_targets": {
+              "vice-gimbal-lock": 31
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
+            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
+          }
+        }
       }
     },
     {
@@ -1489,7 +1538,62 @@
       "bytes": 23871,
       "lines": 1406,
       "status": "untranslated",
-      "native_coverage": []
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_imu_calibration.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "include/agc_input_channels.h"
+          ],
+          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 398 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
+          "verification": "docs/IMU-CALIBRATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, saved returns at the file's call sites, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "external_continuations": [
+          "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; POSTJUMP",
+          "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
+          "Interpretive CALL and STCALL to routines of other files; RTB PULSEIMU and SGNAGREE; RVQ or GOTO to a caller outside",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
+          "TC LAT(SPL) (E7,1400), the erasable program the performance test loads",
+          "Idle points CHECKG1 and FINETIME +1, waiting for PIPAX or LOSCALAR to move",
+          "Interpreter LOADTIME, 1STO2S and CDULOGIC through RTB (native, src/rtb_angles.c)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
+            "sha256": "27daa450c160ef5e9a11753f9389ccfb9162800b8ac21180476189b3ebde08dc"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
+            "sha256": "dbba98e4d695bac5487e7dd11e755e431a512ca06197afaa634dc0a22eac0f75"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
+            "sha256": "4e079d3550576667ca80c751baece5e3d2c9d90d652b4cde1893338cf8c55397"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
+            "sha256": "75d89cabaab0183e292512cf5edbcbc8e646363829a58f194910eb15d9073d05",
+            "vice_targets": {
+              "vice-cm-imu-calibration": 475
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-outcomes.json",
+            "sha256": "70f0e800d1db2f4c74cc89ff7795aa89372ee1dd931c3e65ad468261f37e9cd9"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
@@ -1497,7 +1601,7 @@
       "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
       "bytes": 9277,
       "lines": 368,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1505,23 +1609,22 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK and SWRETURN (Comanche NOVAC has no native routine yet).",
+          "scope": "Every word of the file (247 words, 06,3262-3650): 1/PIPA, its NOVAC return, 1/GYRO and its IMUPULSE/IMUSTALL returns, GCOMP1, NBDONLY, LASTBIAS and its PIPUSE return, with IRIGX/Y/Z, GCOMPSUB, DRIFTSUB, FBIASSUB and DRFTSUB2 compiled into their callers, as 9 routines of the control-transfer ABI; round trips from both genuine TC BANKCALL 1/PIPA sites through native INTER-BANK, native NOVAC (cm_exec_routines) and SWRETURN.",
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image entered at each routine with FB 06 as BANKCALL, NOVAC/the Executive or the BANKCALL return leave it; any EB (1/PIPA sets EBANK to GCOMP's and restores the caller's); any GCOMPSW, FLAGWRD2, TIME1, PIPA, coefficient and GCOMP values, including NBD2 elapsed times of -0 and +0; each routine runs to its exit with no interrupt in between.",
         "external_continuations": [
-          "NOVAC admitting 1/GYRO (EXECUTIVE, no native Comanche routine yet)",
+          "NOVAC admitting 1/GYRO (native, cm_exec_routines; the round trips run it with a canonical Executive and stop at its BAILOUT alarm)",
           "SWRETURN and BANKCALL (native, cm_interbank_routines)",
           "IMUPULSE and IMUSTALL (IMU_MODE_SWITCHING_ROUTINES)",
           "PIPUSE (SERVICER207)",
           "ENDOFJOB (EXECUTIVE)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
@@ -1529,15 +1632,27 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
@@ -1548,7 +1663,7 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1556,7 +1671,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "scope": "Every word of the file (656 words, fixed-fixed 5521, 07,2577-3651, 07,3652-3672 (R02BOTH), 26,3660-3776): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH, R02ZERO and P06/P05, as 73 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 54 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
           "verification": "docs/IMU-MODE-SWITCHING.md"
         },
         {
@@ -1605,7 +1720,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1620,23 +1735,33 @@
           "UPFLAG, DOWNFLAG (FLAG routines)",
           "PHASCHNG (RESTART_CONTROL)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
-            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
+            "sha256": "7745c8c046821e108e9e2a60b8441ba0b7dd52c8495a97f55f5dad0fb3231303"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
+            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
+            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
+            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
           }
         }
       },
@@ -2494,7 +2619,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
+        "supported_domain": "Canonical 2048-word image (every word random except 010-061: TIME2 and TIME1 (024/025) and CDUX-Z (032-034) are seeded, the rest of 010-061 is +0; TIME2 is +0 in half of every routine's cases, as for the first 163.84 s after liftoff, with TIME1 at 0, 1, 100, 199, 200 (2SECS), 201, 3000 or 037777) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
         "external_continuations": [
           "2PHSCHNG, PHASCHNG, NEWMODEX, UPFLAG, POWRSERS, GOPIN and RESUME (outside basic routines)",
           "BANKCALL, IBNKCALL, POSTJUMP, FINDVAC, WAITLIST, ENDOFJOB, TASKOVER, DANZIG and CHANG2 (outside basic routines; Lane A Executive/Waitlist)",
@@ -2511,7 +2636,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
-            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+            "sha256": "684377c88e7a26602f0b69370f9765373afacdbb47bc463bbb7dcf52fca87e33"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p11/cm-p11-host.log",
@@ -2519,14 +2644,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p11/cm-p11-vice.log",
-            "sha256": "f65fc1cf5177bd91b674aa422c7f33790ec96be22883bc9d72c7577b2a20845c",
+            "sha256": "dd94a1628caf3cfb0072657b56d20143cd3ca303de13f568ea47751973ff7511",
             "vice_targets": {
-              "vice-cm-p11": 203
+              "vice-cm-p11": 202
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
-            "sha256": "1c411967ea6ad2702aa5fbe6d672c87fbb114f051a685bf5eca496b37f73aeae"
+            "sha256": "684377c88e7a26602f0b69370f9765373afacdbb47bc463bbb7dcf52fca87e33"
           }
         }
       }
@@ -3994,9 +4119,9 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, VMOON, REFSMMAT, the CDU angles, the pushdown list, RCM at 2D among it). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
-          "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
+          "BANKCALL (R02BOTH, GOMARKFR, DELAYJOB) and BLANKET with their inline words",
           "B5OFF, ENDOFJOB and ENDEXT (no return)",
           "Interpretive CALL and STCALL to CSMCONIC, LUNPOS, CDUTRIG and *SMNB*",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file",
@@ -4010,15 +4135,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
+            "vice_targets": {
+              "vice-sband-antenna": 132
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
+            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
           }
         }
       }
@@ -6700,6 +6832,17 @@
           ],
           "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
           "verification": "docs/GIMBAL_COMPLETE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_gimbal_lock.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (LOCSKIRT: rate choice from RATEINDX, CALL DELCOMP, BRATE and TM, SETGO CALCMAN2 to NEWANGL +1) as 9 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: NOGIMLOC (22,2744) and WCALC, the DELCOMP return and every word after a DANZIG.",
+          "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
       "withdrawn_certificate": {
@@ -6731,6 +6874,44 @@
               "path": "evidence/gimbal-complete-target.log",
               "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 9 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "external_continuations": [
+          "Interpretive CALL to DELCOMP (ATTITUDE_MANEUVER_ROUTINE)",
+          "SETGO CALCMAN2 to NEWANGL +1",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "replaces": "complete_native_coverage (src/gimbal_complete.c, issue #129)",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/gimbal-lock/gimbal-lock-source-map.json",
+            "sha256": "fa0ee121d8359f5ee0fa4996f6f5b31952318f86d0b1903e61f94d48bfde55f6"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
+            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-host.log",
+            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
+          },
+          "c64_execution_results": {
+            "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
+            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
+            "vice_targets": {
+              "vice-gimbal-lock": 31
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
+            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
           }
         }
       }
@@ -6793,19 +6974,27 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
-            "sha256": "04142e1730eca2f37c80b8317fc59b806eee04ac46cb994d152f15b59688987b"
+            "sha256": "6097a8c4a5c67b6fe30cccef29429c8b0f9f585bab48fe1abed66c607d2fd6fa",
+            "vice_targets": {
+              "vice-imu-compensation": 381
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-compensation.md",
             "sha256": "7f29be1369ef661682c548085bc8eacf3b3c90e9e15438f109c5806107a0611e"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
+            "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
+            "check": "python3 tools/imu_compensation_cover.py"
           }
         }
       }
@@ -6816,7 +7005,7 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6824,7 +7013,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH and P06/P05, as 72 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
+          "scope": "Every word of the file (660 words, fixed-fixed 5457, 07,2714-3772, 04,3253-3273, 37,3655-3773): ZEROICDU, IMUZERO, coarse and fine align, PIPUSE/PIPFREE, gyro torquing (IMUPULSE, GYROAGRE, STRTGYRO/GSELECT, 8192AUG), ENDIMU/IMUBAD and the mode ends, the optics and IMU stalls, GOMANUR, R02BOTH, R02ZERO and P06/P05, as 73 routines of the control-transfer ABI with channels 11-14 and the interrupt state; round trips from all 74 genuine TC BANKCALL/IBNKCALL sites through native INTER-BANK.",
           "verification": "docs/IMU-MODE-SWITCHING.md"
         },
         {
@@ -6873,7 +7062,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6889,23 +7078,33 @@
           "PHASCHNG (RESTART_CONTROL)",
           "BAILOUT1 (ALARM_AND_ABORT, Luminary MODABORT)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
-            "sha256": "337159d05b989784ca8b1eeebcdf2bf46b5da9688133cf3e265b3ccc7dc4d589"
+            "sha256": "7745c8c046821e108e9e2a60b8441ba0b7dd52c8495a97f55f5dad0fb3231303"
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
+            "sha256": "e302347d8f28a7bd36c48e2f9e57e5cd17ea9dc68973542e08f8eb0ec29cc14e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
+            "sha256": "48dd3fc680e3505bacbfde4d9d257af4a7dba89c378b67951d29c485f10d966c"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
+            "sha256": "3cf9909e777954554119267dbf57a2a64901172e7544a2f6068d20fc44274b5f",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
+            "sha256": "865731007afa138af22041939f96d59387b092a7baf93b1f301bda703a5dd343"
           }
         }
       },
@@ -6940,7 +7139,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: eight parts run 657 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP and LOOSE), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -6958,15 +7157,18 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-proof.json",
-            "sha256": "9463210d948429ca9fda87fd1bfb2f7400922c4bfa9a33f5067b37f55feccf78"
+            "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-host.log",
-            "sha256": "84f5e9f8bae305e79480d72e06a525af89e98578d3667dba6568f18d42a90bf7"
+            "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08"
           },
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
-            "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+            "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
+            "vice_targets": {
+              "vice-lm-imu-performance": 657
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-performance.md",
@@ -6974,7 +7176,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
-            "sha256": "1463e9a680702363a171cb5f80e8ffa536e9197f566e3c4811eae9f421524875"
+            "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2"
           }
         }
       }
@@ -7004,7 +7206,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: seven parts run 650 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
+        "supported_domain": "Canonical 2048-word image entered at each of the 168 routine keys (Z in bank 37 or FINETIME 04103/04112; LOC at NEWOPS 06070 for the 125 interpretive keys), run to the first instruction outside the two files, FINETIME, SWCALL and the interpreter, or to an idle point (CHECKG1 after PIPAX was unchanged, FINETIME +1 after LOSCALAR 37777, each a continuation the key resumes; CHECKG1 ends with interrupts inhibited and is an interrupt point, the RELINT window 02336-02345 having no ABI boundary), with no interrupt in between, scalers frozen in io (hiscalar, loscalar) and a caller-supplied undo image; refused (image and io unchanged): Z or LOC not an instruction or order-pair word of the files, INDEX sums leaving the erasable words named (POSITON, PIPINDEX, RESULTCT, ZEROING's L) or NDXCTR's computed TC beyond bank 37, TC Q or erasable TC words that are not a TC to fixed memory or are a TC into FINETIME, SWCALL or the interpreter, NEWJOB negative at DANZIG, RVQ with a QPRET that is not a fixed CADR, fixed operands outside the named constants (VXSC GEORGEJ with a scalar in MPAC), SIN/COS outside sband_trig's domain, an indexed operand or store with X1 or X2 outside +-0377, AINGOTN's DDV with a divisor whose major part is +-0 once sign-agreed (BUFZERO; unreachable, the divisor is the test's elapsed time, about 584 s), interpretive orders with FIXLOC not a VAC area, PUSHLOC outside FIXLOC..+42, EDOP not +0 or FB not BANKSET's, no undo image, more than 4000 steps. C64: eight parts run 657 rows as chained steps (a run stops at a registered key its part leaves out; ALFLT split at ALKLP and LOOSE), each equal to the oracle with the same stops; they take every gcov branch outcome the host stream takes.",
         "external_continuations": [
           "BANKCALL, SWCALL/RTB targets 1STO2S, CDULOGIC, SGNAGREE, LOADTIME, PULSEIMU (INTER-BANK_COMMUNICATION and other banks)",
           "TWIDDLE, LONGCALL, TASKOVER (WAITLIST)",
@@ -7022,15 +7224,18 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-proof.json",
-            "sha256": "9463210d948429ca9fda87fd1bfb2f7400922c4bfa9a33f5067b37f55feccf78"
+            "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-host.log",
-            "sha256": "84f5e9f8bae305e79480d72e06a525af89e98578d3667dba6568f18d42a90bf7"
+            "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08"
           },
           "c64_execution_results": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-vice.log",
-            "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e"
+            "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
+            "vice_targets": {
+              "vice-lm-imu-performance": 657
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-imu-performance.md",
@@ -7038,7 +7243,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-imu-performance/lm-imu-performance-c64-cover.json",
-            "sha256": "1463e9a680702363a171cb5f80e8ffa536e9197f566e3c4811eae9f421524875"
+            "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2"
           }
         }
       }
@@ -9711,7 +9916,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
           "B5OFF, ENDOFJOB and ENDEXT (no return)",
@@ -9727,15 +9932,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
+            "vice_targets": {
+              "vice-sband-antenna": 132
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
+            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
           }
         }
       }
