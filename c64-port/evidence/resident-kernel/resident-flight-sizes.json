@@ -1,0 +1,70 @@
+{
+ "lm": {
+  "resident_bytes": 21035,
+  "resident_capacity": 26367,
+  "free_bytes": 5332,
+  "service_table_bytes": 6,
+  "boot_only_bytes": 2797,
+  "components": {
+   "kernel": 10250,
+   "ABI 2 runtime and REU store": 5176,
+   "transfer ABI trampoline and Executive call sites": 2609,
+   "single-precision subroutines": 1471,
+   "service table exports": 637,
+   "resident state and step": 540,
+   "C runtime and library": 336,
+   "IRQ entry": 16,
+   "BASIC header and alignment": 0
+  },
+  "library_symbols": {
+   "__mulsi3": 103,
+   "memcpy": 52,
+   "__mulhi3": 52,
+   "__memset": 34,
+   ".init": 24,
+   "__zero_bss": 19,
+   "main": 19,
+   ".basic_header": 12,
+   "exit": 6,
+   ".fini": 4,
+   "": 4,
+   ".call_main": 3,
+   ".after_main": 3,
+   ".fini_rts": 1
+  }
+ },
+ "cm": {
+  "resident_bytes": 20745,
+  "resident_capacity": 26367,
+  "free_bytes": 5622,
+  "service_table_bytes": 6,
+  "boot_only_bytes": 2780,
+  "components": {
+   "kernel": 10010,
+   "ABI 2 runtime and REU store": 5176,
+   "transfer ABI trampoline and Executive call sites": 2541,
+   "single-precision subroutines": 1471,
+   "service table exports": 637,
+   "resident state and step": 558,
+   "C runtime and library": 336,
+   "IRQ entry": 16,
+   "BASIC header and alignment": 0
+  },
+  "library_symbols": {
+   "__mulsi3": 103,
+   "memcpy": 52,
+   "__mulhi3": 52,
+   "__memset": 34,
+   ".init": 24,
+   "__zero_bss": 19,
+   "main": 19,
+   ".basic_header": 12,
+   "exit": 6,
+   ".fini": 4,
+   "": 4,
+   ".call_main": 3,
+   ".after_main": 3,
+   ".fini_rts": 1
+  }
+ }
+}

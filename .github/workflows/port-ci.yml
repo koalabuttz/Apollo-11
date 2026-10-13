@@ -46,6 +46,7 @@ jobs:
       c64: ${{ steps.plan.outputs.c64 }}
       full: ${{ steps.plan.outputs.full }}
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
+      c64_full: ${{ steps.plan.outputs.c64_full }}
     steps:
       - &checkout
         name: Lean checkout
@@ -85,7 +86,9 @@ jobs:
           echo "c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
-          echo "c64_shards=$(echo "$affected" | python3 -c 'import json,sys;print(json.dumps(list(range(4 if json.load(sys.stdin)["full"] else 1))))')" >> "$GITHUB_OUTPUT"
+          c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
+          echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
+          echo "c64_shards=$([ "$c64_full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
 
   ledgers-and-coverage:
     needs: plan
@@ -170,10 +173,11 @@ jobs:
         env:
           AFFECTED: ${{ needs.plan.outputs.affected }}
           SHARD: ${{ matrix.shard }}
-          SHARDS: ${{ needs.plan.outputs.full == '1' && 4 || 1 }}
+          SHARDS: ${{ needs.plan.outputs.c64_full == '1' && 4 || 1 }}
+          C64_FULL: ${{ needs.plan.outputs.c64_full }}
         run: |
           source deps/env.sh
-          if echo "$AFFECTED" | grep -q '"full": true'; then
+          if [ "$C64_FULL" = 1 ]; then
             targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-' | sort -u)
           else
             targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
