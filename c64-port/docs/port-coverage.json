@@ -4822,104 +4822,48 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/lm_conic_kepler.c",
+            "src/lm_conic_compiled.c",
+            "src/lm_conic_checkctr.c",
             "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "The Kepler subroutine, 338 words of bank 12 (KEPLERN 02023 through DELTIME 02535, CHECKCTR 02644-02652): from KEPPREP's GOTO KEPLERN entry frontier to the NEWOPS frontier of each of KEPPREP's three callers, as 23 native steps between original NEWOPS frontiers. ITERATOR, TIMERAD, APSIDES, LAMBERT and the bank-4 constants are not yet translated (TIMETHET is the next entry).",
-          "verification": "docs/LM-CONIC-KEPLER.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The time-theta subroutine, 290 words: NEWSTATE/LAMENTER, TIMETHET, COMMNOUT, COGAOVFL, GETX with its WLOOP iteration, POLY series, INVRSEQN, 1/WLOOP and TRUE360X paths, XCOMMON and INFINITY (bank 12 02653-03211), ABTCONIC (12,3742-3744) and PARAM/GEOM (bank 4 03064-03163), reusing the Kepler entry's DELTIME: from the NEWOPS entry frontier after each of TIMETHET's six callers' CALL to the caller's NEWOPS frontier at C(RTNTT) or ABTCONIC's POODOO frontier, as 27 native steps between original NEWOPS frontiers. HAVENORM is compiled but unreachable from TIMETHET (PARAM clears NORMSW).",
-          "verification": "docs/LM-CONIC-TIMETHET.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_timerad.c",
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The time-radius and apsides subroutines, 123 words of bank 12 (TIMERAD, TERMNVEC, CIRCULAR, BADR2 03547-03673; APSIDES, GETECC, INFINAPO 03674-03741), reusing the time-theta entry's PARAM/GEOM, GETX, COMMNOUT and DELTIME steps: from the NEWOPS entry frontier after P32/P72 CSI's STCALL TIMERAD or PERIAPO's STCALL APSIDES to the caller's NEWOPS frontier, ABTCONIC's POODOO frontier or the UNIT/SQRT abort frontier, as 9 native steps between original NEWOPS frontiers.",
-          "verification": "docs/LM-CONIC-TIMERAD.md"
-        },
-        {
-          "native_files": [
-            "src/lm_conic_lambert.c",
-            "src/lm_conic_timethet.c",
-            "src/lm_conic_kepler.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "The Lambert subroutine, 316 words of bank 12 (LAMBERT through TARGETV 03212-03546, ITERATOR 02536-02643, LAMENTER 02701-02731 compiled again for TARGETV), reusing the time-theta entry's GEOM (HAVENORM reached here with NORMSW set), GETX and DELTIME steps and the Kepler entry's CHECKCTR words inline: from the NEWOPS entry frontier after INITVEL's CALL SETITCTR to the caller's NEWOPS frontier at C(RTNLAMB) or the UNIT/SQRT abort frontier, as 30 native steps between original NEWOPS frontiers. With it every assembled word of the file has a native owner; the complete certificate below awaits the auditor review.",
-          "verification": "docs/LM-CONIC-LAMBERT.md"
+          "scope": "Every word of the file (1,072 words in banks 12 and 04): KEPLERN, TIMETHET, LAMBERT, TIMERAD, APSIDES, DELTIME, ITERATOR, LAMENTER, PARAM, GEOM, GETX, INITV and TARGETV with everything they reach (PERIODCH, KEPLOOP, WLOOP, POLYCOEF, INVRSEQN, COMMNOUT, INFINITY, LAMBLOOP, COGUPLIM/UPLIM, NEGP, TERMNVEC, GETECC, INFINAPO, ABTCONIC and the rest), as 455 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG, where a job switched out at CHANG2 resumes); the basic CHECKCTR behind RTB as lm_conic_checkctr; 29 constants read by fixed operands. Supersedes the per-caller steps of src/lm_conic_kepler.c, lm_conic_timethet.c, lm_conic_timerad.c and lm_conic_lambert.c.",
+          "verification": "docs/LM-CONIC-COMPILED.md"
         }
       ],
-      "complete_native_coverage": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word image; coherent original entry banks (FBANK 12 at each routine NEWOPS), BANKSET = BB, INTBIT15 040000, EDOP +0, five VACs, ordinary 15-bit words, X1 -2 or -10 (RTX1).",
-          "caller_returns": {
-            "KEPLERN": [
-              "027252",
-              "022516",
-              "023012 (KEPPREP GOTO KEPLERN)"
-            ],
-            "TIMETHET": [
-              "064320",
-              "070250",
-              "070363",
-              "071171",
-              "072664",
-              "071600"
-            ],
-            "TIMERAD": [
-              "072106 (P32/P72 CSI, RVSW set)"
-            ],
-            "APSIDES": [
-              "046333 (PERIAPO)"
-            ],
-            "LAMBERT": [
-              "022145 (INITVEL via SETITCTR, ITERCTR 20 or 5)"
-            ]
-          },
-          "data_validity": "Original conic formulas and scaling; no widened claim.",
-          "rare_source_paths": "Driven by dedicated case buckets and compared by the oracle streams: POLYCOEF BMN INFINITY (AGC 1242-1243, timethet cases (n&2047)==1333, reachable only when W^2+R1A/16 is exactly zero), DSU BMN COGUPLIM fall-through to UPLIM (AGC 1411-1414, lambert cases (n&2047)==1717) and LAMBLOOP BZE NEGP (AGC 1449-1451, lambert cases (n&2047)==717, CSTH one lsb above .5, so the stored 1-CSTH is -0 while ROUND leaves MPAC nonzero). See docs/LM-CONIC-TIMETHET.md and docs/LM-CONIC-LAMBERT.md."
-        },
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), CHECKCTR entered from its RTB, FIXLOC a VAC area, PUSHLOC on its pushdown list, MODE, OVFIND, X1 0 or -8 (MUTABLE,1 Earth or Moon), X2 0 to 3 and S2 1 (GETX/INVRSEQN), the registers each mid-file routine is reached with on the file's own runs, QPRET and the RTNxx return words outside the file, and any values of the conic erasables (a TAU. that PERIODCH reduces within a bounded number of periods).",
         "external_continuations": [
-          "Caller entry/resume services and application scheduling",
-          "POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) abort handling beyond the abort frontier",
-          "Overlay ABI 2 modules for the whole routines on the C64 (phases verified separately)"
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "The callers' returns at NEWOPS (QPRET, RTNLAMB, RTNTT, RTNTR, RTNAPSE, RTNPRM and the other saved returns)",
+          "POLY (interpreter basic routine) and POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) through the interpreter",
+          "The interpreter exits POODOO1 and ALARM1"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/lm-conic-lambert/lm-conic-lambert-source-map.json",
-            "sha256": "3182104c43c58ea2110a57e76506517b85d915c69ad6cea0a049b174a1152d7d"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-source-map.json",
+            "sha256": "ff323ab48be51189b09086d36d6447ae5a4a3cbb8e47c7735917977441e339c4"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
-            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
+            "sha256": "88113e5b0826b179df4f61547698ee9655f6f3d3bee2471431c8e7cddab5fe5c"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-checks.log",
-            "sha256": "75874aaf2e85d4baf0755a1d6b2d74a6f68a61174e72d90a7510a5b40b239ea3"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
+            "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25"
           },
           "c64_execution_results": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-record.json",
-            "sha256": "2233141e70c923d647bce4a6538a366430b539b3ebf510bfbc7ae18ea1b8d8fa"
-          },
-          "independent_review": {
-            "path": "evidence/lm-conic-lambert/lm-conic-file-independent-review.txt",
-            "sha256": "246fc0d93b5517b303b9c31e77bdaf0d43df31eeccf6b51a5feeb533066d25de"
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
+            "sha256": "57806f8ceab965e221b47fb2e0d5ce621c26723b3357872022d3a2a245d56ff6",
+            "vice_targets": {
+              "vice-lm-conic-compiled": 910
+            }
           }
         }
       }

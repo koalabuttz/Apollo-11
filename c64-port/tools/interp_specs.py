@@ -608,4 +608,42 @@ SPECS = {
         'target': 'tests/lm_p32_p35_target.c',
         'freeze_stride': 256,
     },
+    'lm-conic-compiled': {
+        'missions': ('lm',),
+        'file': {'lm': 'CONIC_SUBROUTINES.agc'},
+        'base': {'lm': 'lm_conic_compiled'},
+        'symbol': {'lm': 'lm_conic_compiled'},
+        'entries': ['KEPLERN', 'TIMETHET', 'LAMBERT', 'TIMERAD', 'APSIDES', 'DELTIME', 'ITERATOR',
+                    'LAMENTER', 'PARAM', 'GEOM', 'GETX', 'INITV', 'TARGETV'],
+        'externals': {'POLY': 'auto', 'POODOO': 'auto'},
+        'noreturn': ['POODOO'],
+        # MUTABLE,1: X1 is 0 (Earth) or -8 (Moon).
+        'indexed_fixed': {'MUTABLE': (0, 8)},
+        # X1 the body (MUTABLE,1: 0 Earth, -8 Moon); X2 and S2 the GETX and
+        # INVRSEQN loop count (AXT,2 3, SSP S2 1).
+        'all_states': {'vac+046': [0, 0o77767], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
+        # PERIODCH subtracts the period (0D) from TAU. (2073) until less than
+        # one is left. A random TAU. over a random period loops for millions
+        # of passes, so resumes before it take TAU. +0 (its own entries keep
+        # any TAU.) and resumes in the loop a period of at least 10000 octal
+        # against a TAU. of a few. The period is in MPAC at PERIODCH and its
+        # GOTO (PUSHLOC 0D), pushed at 0D in between (PUSHLOC 2D).
+        'states': {**{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
+                   **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
+                                         **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
+                                            if n in (0, 0o10) else {'0166': ['vac+2']})}
+                      for n in range(0, 0o11)}},
+        'rtb': {'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'}, 'CHECKCTR': {'lm': 'lm_conic_checkctr(s)'}},
+        'native_ranges': {'CHECKCTR': (7, 'lm_conic_checkctr')},
+        'includes': ['rtb_angles.h', 'lm_conic_checkctr.h'],
+        'native_sources': ['src/lm_conic_checkctr.c'],
+        'target': 'tests/lm_conic_compiled_target.c',
+        'flow_states': True,
+        'resume_keys': True,
+        # (a LAMBERT iteration runs about 100 pairs, up to 20 of them)
+        'max_steps': 5000,
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'rope_bin': True,
+    },
 }
