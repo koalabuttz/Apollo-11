@@ -106,5 +106,5 @@ Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
   `lanec-pin-gaps-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-pin-gaps sanitize-lanec-pin-gaps`
   (`lanec-pin-gaps-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-gaps`, @ROWS@ frozen cases that `tools/lanec/cover.py pick`
+- C64 execution results: `make vice-lanec-pin-gaps`, 50 frozen cases that `tools/lanec/cover.py pick`
   chose to take every host branch arc of the suite, on a VICE PAL C64 (`lanec-pin-gaps-vice.txt`).

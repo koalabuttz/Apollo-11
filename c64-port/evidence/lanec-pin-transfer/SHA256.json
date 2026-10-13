@@ -4,37 +4,37 @@
   "release": "evidence-lanec-pin-transfer",
   "files": {
     "lanec-pin-refuse-diff.json": {
-      "sha256": "fd60608e1eb3515f1ad41652ce427d0793dc3a2fb65af843c9d8351839b91257",
+      "sha256": "e4d58cb71ab01da5ae4d1184b83652a3de27be80ee2655d0d74cd665f303597c",
       "bytes": 161,
       "store": "tree"
     },
     "lanec-pin-transfer-c64-diff.json": {
-      "sha256": "873f425e29e06f35b81b4c70e7389bd9b5a67164a7601395e7e6503ce0c6e8fe",
+      "sha256": "2a1b255373546d2e430106fe0245bfc99d752a954a0970ae0b580eed27c2954b",
       "bytes": 272,
       "store": "tree"
     },
     "lanec-pin-transfer-c64-oracle.crc": {
-      "sha256": "7d71de7ba1b0f75f1f1ae3c2b2742578c18540d636f5896bfc5f483bf870a6a6",
-      "bytes": 27450,
+      "sha256": "577c234d9e3618d90c124c9e815f3bb93b16cce99cd6f468c660beecbb9de7a6",
+      "bytes": 28122,
       "store": "tree"
     },
     "lanec-pin-transfer-diff.json": {
-      "sha256": "e4891765a4728d9e40d73e93954e3415e946b393e725ded28b7e3a60f967ba77",
+      "sha256": "ab492961d7215e2d053d5dce15ce916736a78c7d7195ab9403ca6c74ff273a50",
       "bytes": 267,
       "store": "tree"
     },
     "lanec-pin-transfer-oracle.crc": {
-      "sha256": "df4862fbb42b51f9fee4cdc93ad5cf490e976559256ae52525618d971fd36694",
-      "bytes": 27562,
+      "sha256": "6575b3840b4cd1d71fadf5b01515ebd4d535437246b2bb654ca44ecd3fd30cc5",
+      "bytes": 28234,
       "store": "tree"
     },
     "lanec-pin-transfer-sanitize.txt": {
-      "sha256": "bf0bd9b491897dca1d0c957acbb4980d3bc20a26beb5ff0e75aacf8e077d59f2",
+      "sha256": "fb419d30f2ee87801c9f2a79a8d35ca7b9ec6162dd6076dd611539be852657de",
       "bytes": 482,
       "store": "tree"
     },
     "lanec-pin-transfer-vice.txt": {
-      "sha256": "a6d2ab11e4b861e9fcd1291c7ad421eaa6346cab6604bbe6c2a13832c255eaa4",
+      "sha256": "d2d66dfc54cfb0ae875074e1276f91822c1d8faae97732866f4ce90f05552459",
       "bytes": 8497,
       "store": "tree"
     }

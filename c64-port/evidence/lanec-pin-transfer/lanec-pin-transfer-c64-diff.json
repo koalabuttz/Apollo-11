@@ -1,8 +1,8 @@
 {
   "suite": "pin-transfer-c64",
-  "cases": 2040,
+  "cases": 2088,
   "differing": 0,
-  "refused_unchanged": 1132,
-  "native_sha256": "e62884f838a3862b39be307d0d635676d14612c35e405a191a02c8ae93fcfdcd",
-  "oracle_sha256": "a914d35d1a9e72bcf082a5470b9ef6c62f9f187f9c225c529481e0842990d517"
+  "refused_unchanged": 1161,
+  "native_sha256": "a9abdd8c33402b4450102a4945240d7a21cc1bd912fe55f32fe755b2ceb9885a",
+  "oracle_sha256": "5922a542f28c38a4b9d6cd2fe476cff4672c908c77a82f53f34342db7c892dc5"
 }

@@ -1,5 +1,5 @@
-PASS: VICE PAL lanec-pin-transfer-pin_gaps_cm.prg: 24 checks, 0 failures
-PASS: VICE PAL lanec-pin-transfer-pin_gaps_lm.prg: 24 checks, 0 failures
+PASS: VICE PAL lanec-pin-transfer-pin_gaps_cm.prg: 33 checks, 0 failures
+PASS: VICE PAL lanec-pin-transfer-pin_gaps_lm.prg: 29 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_alarm_cycle_cm.prg: 2 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_alarm_cycle_lm.prg: 2 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_blank_cm.prg: 1 checks, 0 failures
@@ -36,7 +36,7 @@ PASS: VICE PAL lanec-pin-transfer-pw_input_mode_lm.prg: 5 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_scale_cm.prg: 11 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_scale_lm.prg: 13 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_select_cm.prg: 11 checks, 0 failures
-PASS: VICE PAL lanec-pin-transfer-pw_input_select_lm.prg: 14 checks, 0 failures
+PASS: VICE PAL lanec-pin-transfer-pw_input_select_lm.prg: 15 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_store_cm.prg: 7 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_store_lm.prg: 5 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_input_time_cm.prg: 7 checks, 0 failures
@@ -106,4 +106,4 @@ PASS: VICE PAL lanec-pin-transfer-pw_test_noun_lm.prg: 2 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_two_digit_lm.prg: 1 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_verb_dispatch_cm.prg: 2 checks, 0 failures
 PASS: VICE PAL lanec-pin-transfer-pw_verb_dispatch_lm.prg: 2 checks, 0 failures
-PASS: VICE PAL lanec-pin-transfer: 108 programs, 560 checks, 0 failures
+PASS: VICE PAL lanec-pin-transfer: 108 programs, 575 checks, 0 failures
