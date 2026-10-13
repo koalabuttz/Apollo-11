@@ -15,7 +15,7 @@
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0x3ff",
+   "keep": "0x19ffff",
    "cases": 14,
    "case_ids": [
     180,
@@ -36,16 +36,16 @@
   }
  ],
  "c64_coverage": {
-  "host_labels": 198,
-  "c64_labels": 198,
-  "host_edges": 622,
-  "c64_edges": 622,
+  "host_labels": 202,
+  "c64_labels": 202,
+  "host_edges": 653,
+  "c64_edges": 653,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 378,
-  "c64_taken": 378,
+  "host_taken": 410,
+  "c64_taken": 410,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [

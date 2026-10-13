@@ -158,6 +158,16 @@
       "native_coverage": [
         {
           "native_files": [
+            "src/cm_alarm.c",
+            "src/cm_alarm_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-ALARM.md",
+          "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT (= ABORT), WHIMPER, POODOO/ABORT2, CCSHOLE, CURTAINS and VARALARM as control-transfer ABI routines (21 entries incl. MULTEXIT, BANKCALL and DOWNFLAG return points and the ALMCADR erasable continuation); alarm codes of all 62 caller sites compiled from the source listing."
+        },
+        {
+          "native_files": [
             "src/cm_alarm_record.c"
           ],
           "scope": "ALARM/VARALARM/CURTAINS/BORTENT source recording and genuine MULTFAIL negative-overflow POODOO handoff; actual recovery and other entries remain separate.",
@@ -296,6 +306,43 @@
             }
           }
         }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 62 compiled TC sites (ALARM, ALARM2, BAILOUT = ABORT, POODOO), CCSHOLE/CURTAINS/VARALARM/PRIOLARM as their callers enter them with a positive alarm code in A where one is passed, the MULTEXIT, BANKCALL (VAC5STOR, MR.KLEAN) and DOWNFLAG return points (BAILOUT's and POODOO's VAC5STOR returns with ALMCADR at a compiled site), and ALMCADR holding a return address 2000-7777; cm_native_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK FLAGWRD7 and MULTEXIT words other than TC/TCF refuse)",
+        "external_continuations": [
+          "callers' returns",
+          "PRIODSPR (PINBALL)",
+          "DOWNFLAG (SERVICE_ROUTINES)",
+          "BANKCALL/POSTJUMP (cm_interbank_routines) to VAC5STOR, MR.KLEAN and ENEMA"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-ALARM.md",
+            "sha256": "d6a10b9acd40756961c6d77d1c5c46c3c505ed7d6e4a68e5bb5614450147d365"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-alarm/cm-alarm-proof.json",
+            "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-alarm/cm-alarm-host.log",
+            "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-alarm/cm-alarm-vice.log",
+            "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+            "vice_targets": {
+              "vice-cm-alarm": 256
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-alarm/cm-alarm-c64-cover.json",
+            "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2"
+          }
+        }
       }
     },
     {
@@ -413,7 +460,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (333 words): The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. As 6 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at AHFNOROT, JETS, T6PROG and the continuations after outside calls.",
+          "scope": "Every word of the file (333 words): The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. As 39 routines of the control-transfer ABI (33 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at AHFNOROT, JETS, T6PROG and the continuations after outside calls.",
           "verification": "docs/CM-AUTO-MAN.md"
         }
       ],
@@ -434,11 +481,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-auto-man/cm-auto-man-source-map.json",
-            "sha256": "5aab2365427fe8959d2ae25f2f68c6f181c536024892d9da009da094b5f08cde"
+            "sha256": "b07d19db7cd2fbd8dd5d428fdebdb6b709787cb1eeca6d70af42b6c3730a3eff"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "d416b82833e4344dbfeb1fbbd402ec7b5ddf146781e5119e266ec307e4870215"
+            "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
@@ -446,14 +493,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "954f8632f0fe4d247705c58f388d4a8674ba6545d64e26bd2f3882ecc56af476",
+            "sha256": "cc0bfbccf53aa9df2289a41cf0ab589bb21de1e2e2c3e72ad788f11a324edb45",
             "vice_targets": {
               "vice-cm-auto-man": 24
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "d416b82833e4344dbfeb1fbbd402ec7b5ddf146781e5119e266ec307e4870215"
+            "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -540,7 +587,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (813 words): The entry autopilot: READGYMB and the body rates, the atmospheric and exo-atmospheric DAP modes, CM/RCS roll control, the FDAI needles and the CM/DUMPR telemetry file. As 28 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at ATTRATES, CM/DAPIC, CM/DAPON, EXDAP4, JETACTN, JETCALL, READGYMB, SETJTAG and the continuations after outside calls.",
+          "scope": "Every word of the file (813 words): The entry autopilot: READGYMB and the body rates, the atmospheric and exo-atmospheric DAP modes, CM/RCS roll control, the FDAI needles and the CM/DUMPR telemetry file. As 138 routines of the control-transfer ABI (110 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at ATTRATES, CM/DAPIC, CM/DAPON, EXDAP4, JETACTN, JETCALL, READGYMB, SETJTAG and the continuations after outside calls.",
           "verification": "docs/CM-ENTRY-DAP.md"
         }
       ],
@@ -568,11 +615,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
-            "sha256": "a8edce8bb4660f78a0f1da9477269c62e6c9edbae4036f502feb9a945c00e771"
+            "sha256": "5f8762889e6ec862477c2b81d353a08f7975d0477ab5c9f14923ead93753c527"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "725d38ad1af2dfdc3d8b4b1dbaf596e40bd7e2621267f4414faae3fff39d65f9"
+            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -580,14 +627,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "ead9492620283416bf396960ef765f15fd151ebed85c4aa47c99dfb34d5ef325",
+            "sha256": "f63e1fadefbea15c63f4eaf8f7374f0a50bc8aa2722299422cf8aa960eea9bf1",
             "vice_targets": {
               "vice-cm-entry-dap": 79
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "725d38ad1af2dfdc3d8b4b1dbaf596e40bd7e2621267f4414faae3fff39d65f9"
+            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -2375,7 +2422,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (629 words): JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. As 2 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at JETSLECT, T6START.",
+          "scope": "Every word of the file (629 words): JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. As 76 routines of the control-transfer ABI (74 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at JETSLECT, T6START.",
           "verification": "docs/CM-JET-SELECT.md"
         }
       ],
@@ -2392,11 +2439,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
-            "sha256": "6cac9bd71563334f098a770124e5e7ae490bde8aca9e3e6ef3ca3bc00ba4d9ed"
+            "sha256": "79c27762f7de19db5003ba82f85320f4f53a91920b841b2fcb2bf16f0214dc06"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "3b2809effc8d65fa2a8069162205cd669f5da86ec9977e6f414dd474dec46706"
+            "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
@@ -2404,14 +2451,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "903a9485481881917c4ce63d291105428b9e14e3dd83d609c95af8a8068ec0a7",
+            "sha256": "cf7c471a70af860b424086115664f349acefe95b9f707c9bd4745951ddf7ddb2",
             "vice_targets": {
               "vice-cm-jet-select": 28
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "3b2809effc8d65fa2a8069162205cd669f5da86ec9977e6f414dd474dec46706"
+            "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -2602,7 +2649,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -2610,7 +2657,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -2621,7 +2668,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -3838,7 +3885,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -3846,7 +3893,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -3857,7 +3904,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
@@ -4155,7 +4202,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (611 words): The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. As 17 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at NEEDLE11, NEEDLER, NEEDLER2, NEEDLES, RCSATT, REDORCS, REINIT, STICKCHK, T6PROGM, ZEROJET and the continuations after outside calls.",
+          "scope": "Every word of the file (611 words): The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. As 71 routines of the control-transfer ABI (54 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at NEEDLE11, NEEDLER, NEEDLER2, NEEDLES, RCSATT, REDORCS, REINIT, STICKCHK, T6PROGM, ZEROJET and the continuations after outside calls.",
           "verification": "docs/CM-RCS-DAP.md"
         }
       ],
@@ -4180,11 +4227,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
-            "sha256": "edbf36fd3df9c369024d2782e63203b7e3f84b4d534d9d27f1ade445d6f8dd8f"
+            "sha256": "03667a44a6b710c967fd49c4c98aa8134935fce2418c9ef77eb651677961d654"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
+            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
@@ -4192,14 +4239,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "b419ccca455c1853201942b4ee86f37221d9ead87401652bac50122b8831332d",
+            "sha256": "c56f2e956712da37aeed740a3201f6623294071c640817c5a318815bc2f507ff",
             "vice_targets": {
               "vice-cm-rcs-dap": 43
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
+            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5049,6 +5096,14 @@
           ],
           "scope": "IMUMON through 90SECS (bank 06,2174-2764) and ZOPFIN3 (06,3065-3067, shared with the optics code): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (cm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 11, 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison; OPTMON and the rest of the optics code remain unported.",
           "verification": "docs/CM-T4RUPT-IMU.md"
+        },
+        {
+          "native_files": [
+            "src/cm_t4rupt_optics.c",
+            "include/cm_t4rupt_optics.h"
+          ],
+          "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
+          "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
       ]
     },
@@ -5359,7 +5414,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (259 words): TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. As 11 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at MRCLEAN, PRESWTCH, S40.15, TVCDAPON, TVCINIT1, TVCINIT4 and the continuations after outside calls.",
+          "scope": "Every word of the file (259 words): TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. As 22 routines of the control-transfer ABI (11 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at MRCLEAN, PRESWTCH, S40.15, TVCDAPON, TVCINIT1, TVCINIT4 and the continuations after outside calls.",
           "verification": "docs/CM-TVC-INIT.md"
         }
       ],
@@ -5380,11 +5435,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
-            "sha256": "c918f4a2777c879ba96ecff2b003f83139f433855e15a0c11dd506503946c626"
+            "sha256": "13771dc64bfc1da9705bdffa952477bfabea276aee690a2386ddbe0ab4448a8e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "4b7fec717437518c8a6c72d80f0bb58ab857ea0d21728b501b92b69c9d699957"
+            "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-host.log",
@@ -5392,14 +5447,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-vice.log",
-            "sha256": "9abf34a4651f69154748b53b729bc5729d46ed63b1fd16d5762dd883c82f7148",
+            "sha256": "bd96035ee578824d6fba389e67a1972e98a5e9e045834b0dea51fb2906b5a778",
             "vice_targets": {
               "vice-cm-tvc-init": 14
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "4b7fec717437518c8a6c72d80f0bb58ab857ea0d21728b501b92b69c9d699957"
+            "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5835,12 +5890,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5849,12 +5904,12 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328
+              "vice-waitlist-entries": 365
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -7288,7 +7343,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/findcduw/findcduw-host.log",
@@ -7296,7 +7351,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/findcduw/findcduw-vice.log",
-            "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
+            "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
             "vice_targets": {
               "vice-findcduw": 146
             }
@@ -7307,7 +7362,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           }
         }
       }
@@ -8766,7 +8821,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -8774,7 +8829,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -8785,7 +8840,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -10079,7 +10134,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -10087,7 +10142,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -10098,7 +10153,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
@@ -11004,7 +11059,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since AOSTASK already runs with interrupts inhibited); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since they sit in 1/ACCS after its own INHINT); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
@@ -11999,12 +12054,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -12013,13 +12068,13 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328,
+              "vice-waitlist-entries": 365,
               "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",

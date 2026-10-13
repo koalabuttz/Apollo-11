@@ -82,7 +82,8 @@ static const agc_routine_entry cm_entries[13]={
 const agc_routine_table lm_service_routines={lm_entries,13},cm_service_routines={cm_entries,13};
 #if defined(CM_SERVICE_DELAYJOB_ONLY)
 /* For a C64 program that only enters the CM DELAYJOB (waitlist-entries kind
- * 3): that entry alone, so the rest of the table is not linked. */
-static const agc_routine_entry cm_delayjob_only[1]={{B(0u,03732),cm_delayjob}};
-const agc_routine_table cm_service_delayjob_routines={cm_delayjob_only,1};
+ * 3): that entry and TCGETCAD, where WAIT2 returns after inserting the task,
+ * alone, so the rest of the table is not linked. */
+static const agc_routine_entry cm_delayjob_only[2]={{B(0u,03732),cm_delayjob},{B(0u,03755),cm_tcgetcad}};
+const agc_routine_table cm_service_delayjob_routines={cm_delayjob_only,2};
 #endif
