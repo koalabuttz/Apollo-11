@@ -4345,177 +4345,124 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
 #ifdef LANEC_PIN_TRANSFER_C64
 /* the frozen rows of the program's module (tests/lanec_pin_transfer_c64_c64.h): case number, case */
 #ifdef LANEC_PIN_C64_MOD_pin_gaps_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[35] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[16] = {
     { 1168u, { 2316u, 0u, 44u, 220u, LANEC_CM } },
-    { 1169u, { 2316u, 0u, 3372u, 220u, LANEC_CM } },
     { 1176u, { 2339u, 0u, 45u, 220u, LANEC_CM } },
-    { 1177u, { 2339u, 0u, 3373u, 220u, LANEC_CM } },
     { 1180u, { 2343u, 0u, 46u, 220u, LANEC_CM } },
-    { 1324u, { 33215u, 0u, 26u, 220u, LANEC_CM } },
-    { 1326u, { 33215u, 0u, 6682u, 220u, LANEC_CM } },
-    { 1328u, { 33228u, 0u, 30u, 220u, LANEC_CM } },
-    { 1332u, { 33229u, 0u, 31u, 220u, LANEC_CM } },
-    { 1428u, { 33375u, 0u, 49u, 220u, LANEC_CM } },
-    { 1432u, { 33376u, 0u, 50u, 220u, LANEC_CM } },
-    { 1436u, { 33392u, 0u, 51u, 220u, LANEC_CM } },
+    { 1334u, { 33229u, 0u, 6687u, 220u, LANEC_CM } },
+    { 1429u, { 33375u, 0u, 3325u, 220u, LANEC_CM } },
+    { 1431u, { 33375u, 0u, 9929u, 220u, LANEC_CM } },
     { 1448u, { 33408u, 0u, 36u, 220u, LANEC_CM } },
-    { 1452u, { 33414u, 0u, 37u, 220u, LANEC_CM } },
-    { 1456u, { 33416u, 0u, 38u, 220u, LANEC_CM } },
     { 1460u, { 33417u, 0u, 39u, 220u, LANEC_CM } },
-    { 1461u, { 33417u, 0u, 3367u, 220u, LANEC_CM } },
-    { 1462u, { 33417u, 0u, 6695u, 220u, LANEC_CM } },
     { 1464u, { 33418u, 0u, 40u, 220u, LANEC_CM } },
-    { 1466u, { 33418u, 0u, 6696u, 220u, LANEC_CM } },
-    { 1472u, { 33428u, 0u, 13318u, 220u, LANEC_CM } },
-    { 1476u, { 33429u, 0u, 13319u, 220u, LANEC_CM } },
-    { 1477u, { 33429u, 0u, 13703u, 220u, LANEC_CM } },
-    { 1488u, { 33487u, 0u, 13320u, 220u, LANEC_CM } },
+    { 1465u, { 33418u, 0u, 3368u, 220u, LANEC_CM } },
+    { 1478u, { 33429u, 0u, 14087u, 220u, LANEC_CM } },
     { 1492u, { 33488u, 0u, 13321u, 220u, LANEC_CM } },
     { 1493u, { 33488u, 0u, 13705u, 220u, LANEC_CM } },
-    { 1577u, { 33792u, 0u, 3369u, 220u, LANEC_CM } },
-    { 1580u, { 33793u, 0u, 42u, 220u, LANEC_CM } },
-    { 1660u, { 34023u, 0u, 13322u, 220u, LANEC_CM } },
-    { 1664u, { 34024u, 0u, 43u, 220u, LANEC_CM } },
-    { 1894u, { 34417u, 0u, 6688u, 220u, LANEC_CM } },
-    { 1964u, { 34569u, 0u, 13323u, 220u, LANEC_CM } },
+    { 1892u, { 34417u, 0u, 32u, 220u, LANEC_CM } },
     { 2060u, { 34731u, 0u, 47u, 220u, LANEC_CM } },
     { 2068u, { 34742u, 0u, 48u, 220u, LANEC_CM } },
-    { 2070u, { 34742u, 0u, 6704u, 220u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_gaps_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[34] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[22] = {
     { 84u, { 2304u, 0u, 18u, 220u, LANEC_LM } },
     { 92u, { 2327u, 0u, 19u, 220u, LANEC_LM } },
     { 96u, { 2331u, 0u, 20u, 220u, LANEC_LM } },
     { 256u, { 33273u, 0u, 0u, 220u, LANEC_LM } },
-    { 258u, { 33273u, 0u, 6656u, 220u, LANEC_LM } },
     { 260u, { 33286u, 0u, 4u, 220u, LANEC_LM } },
-    { 264u, { 33287u, 0u, 5u, 220u, LANEC_LM } },
-    { 265u, { 33287u, 0u, 3333u, 220u, LANEC_LM } },
-    { 266u, { 33287u, 0u, 6661u, 220u, LANEC_LM } },
-    { 352u, { 33434u, 0u, 23u, 220u, LANEC_LM } },
     { 356u, { 33435u, 0u, 24u, 220u, LANEC_LM } },
-    { 358u, { 33435u, 0u, 6524u, 220u, LANEC_LM } },
     { 360u, { 33451u, 0u, 25u, 220u, LANEC_LM } },
+    { 372u, { 33467u, 0u, 10u, 220u, LANEC_LM } },
     { 373u, { 33467u, 0u, 3338u, 220u, LANEC_LM } },
     { 376u, { 33473u, 0u, 11u, 220u, LANEC_LM } },
     { 380u, { 33475u, 0u, 12u, 220u, LANEC_LM } },
-    { 384u, { 33476u, 0u, 13u, 220u, LANEC_LM } },
-    { 388u, { 33477u, 0u, 14u, 220u, LANEC_LM } },
-    { 391u, { 33477u, 0u, 9998u, 220u, LANEC_LM } },
+    { 386u, { 33476u, 0u, 6669u, 220u, LANEC_LM } },
     { 396u, { 33487u, 0u, 13312u, 220u, LANEC_LM } },
-    { 400u, { 33488u, 0u, 13313u, 220u, LANEC_LM } },
-    { 412u, { 33546u, 0u, 13314u, 220u, LANEC_LM } },
-    { 416u, { 33547u, 0u, 13315u, 220u, LANEC_LM } },
-    { 502u, { 33792u, 0u, 6671u, 220u, LANEC_LM } },
+    { 419u, { 33547u, 0u, 14467u, 220u, LANEC_LM } },
+    { 500u, { 33792u, 0u, 15u, 220u, LANEC_LM } },
     { 504u, { 33793u, 0u, 16u, 220u, LANEC_LM } },
-    { 505u, { 33793u, 0u, 3344u, 220u, LANEC_LM } },
     { 584u, { 34023u, 0u, 13316u, 220u, LANEC_LM } },
-    { 586u, { 34023u, 0u, 14084u, 220u, LANEC_LM } },
     { 588u, { 34024u, 0u, 17u, 220u, LANEC_LM } },
     { 816u, { 34417u, 0u, 6u, 220u, LANEC_LM } },
-    { 817u, { 34417u, 0u, 3334u, 220u, LANEC_LM } },
     { 888u, { 34569u, 0u, 13317u, 220u, LANEC_LM } },
     { 984u, { 34731u, 0u, 21u, 220u, LANEC_LM } },
     { 992u, { 34742u, 0u, 22u, 220u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_key_labels_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[20] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
     { 1212u, { 32816u, 0u, 1252u, 222u, LANEC_CM } },
-    { 1213u, { 32816u, 0u, 1461u, 222u, LANEC_CM } },
-    { 1214u, { 32816u, 0u, 1681u, 222u, LANEC_CM } },
-    { 1216u, { 32818u, 0u, 843u, 222u, LANEC_CM } },
-    { 1220u, { 32828u, 0u, 7u, 222u, LANEC_CM } },
-    { 1224u, { 32830u, 0u, 18u, 222u, LANEC_CM } },
-    { 1228u, { 32941u, 0u, 8u, 222u, LANEC_CM } },
-    { 1232u, { 32953u, 0u, 19u, 222u, LANEC_CM } },
-    { 1236u, { 32957u, 0u, 1414u, 222u, LANEC_CM } },
-    { 1238u, { 32957u, 0u, 2096u, 222u, LANEC_CM } },
-    { 1240u, { 32968u, 0u, 1436u, 222u, LANEC_CM } },
-    { 1252u, { 33016u, 0u, 705u, 222u, LANEC_CM } },
+    { 1217u, { 32818u, 0u, 1503u, 222u, LANEC_CM } },
+    { 1222u, { 32828u, 0u, 1470u, 222u, LANEC_CM } },
+    { 1223u, { 32828u, 0u, 2141u, 222u, LANEC_CM } },
+    { 1233u, { 32953u, 0u, 701u, 222u, LANEC_CM } },
+    { 1254u, { 33016u, 0u, 2113u, 222u, LANEC_CM } },
     { 1255u, { 33016u, 0u, 2465u, 222u, LANEC_CM } },
     { 1504u, { 33505u, 0u, 1408u, 222u, LANEC_CM } },
     { 1528u, { 33526u, 0u, 1412u, 222u, LANEC_CM } },
-    { 1529u, { 33526u, 0u, 1764u, 222u, LANEC_CM } },
-    { 1530u, { 33526u, 0u, 2116u, 222u, LANEC_CM } },
-    { 1531u, { 33526u, 0u, 2468u, 222u, LANEC_CM } },
-    { 1572u, { 33608u, 0u, 1413u, 222u, LANEC_CM } },
-    { 1573u, { 33608u, 0u, 1765u, 222u, LANEC_CM } },
+    { 1575u, { 33608u, 0u, 2469u, 222u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_key_labels_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[22] = {
-    { 128u, { 32879u, 0u, 9u, 222u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[14] = {
+    { 129u, { 32879u, 0u, 218u, 222u, LANEC_LM } },
     { 132u, { 32881u, 0u, 35u, 222u, LANEC_LM } },
-    { 135u, { 32881u, 0u, 1740u, 222u, LANEC_LM } },
-    { 136u, { 32891u, 0u, 2u, 222u, LANEC_LM } },
-    { 137u, { 32891u, 0u, 992u, 222u, LANEC_LM } },
-    { 140u, { 32893u, 0u, 13u, 222u, LANEC_LM } },
-    { 141u, { 32893u, 0u, 728u, 222u, LANEC_LM } },
+    { 138u, { 32891u, 0u, 1586u, 222u, LANEC_LM } },
+    { 142u, { 32893u, 0u, 1465u, 222u, LANEC_LM } },
     { 144u, { 33004u, 0u, 3u, 222u, LANEC_LM } },
     { 145u, { 33004u, 0u, 762u, 222u, LANEC_LM } },
-    { 148u, { 33016u, 0u, 14u, 222u, LANEC_LM } },
-    { 152u, { 33020u, 0u, 17u, 222u, LANEC_LM } },
-    { 155u, { 33020u, 0u, 1073u, 222u, LANEC_LM } },
-    { 156u, { 33031u, 0u, 6u, 222u, LANEC_LM } },
-    { 158u, { 33031u, 0u, 666u, 222u, LANEC_LM } },
+    { 153u, { 33020u, 0u, 369u, 222u, LANEC_LM } },
     { 168u, { 33079u, 0u, 1u, 222u, LANEC_LM } },
     { 169u, { 33079u, 0u, 353u, 222u, LANEC_LM } },
-    { 428u, { 33564u, 0u, 0u, 222u, LANEC_LM } },
-    { 429u, { 33564u, 0u, 352u, 222u, LANEC_LM } },
+    { 170u, { 33079u, 0u, 1409u, 222u, LANEC_LM } },
     { 452u, { 33585u, 0u, 4u, 222u, LANEC_LM } },
     { 454u, { 33585u, 0u, 708u, 222u, LANEC_LM } },
     { 496u, { 33667u, 0u, 5u, 222u, LANEC_LM } },
-    { 497u, { 33667u, 0u, 357u, 222u, LANEC_LM } },
+    { 498u, { 33667u, 0u, 709u, 222u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_keys_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1208u, { 32768u, 0u, 7u, 221u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1210u, { 32768u, 0u, 1881u, 221u, LANEC_CM } },
+    { 1211u, { 32768u, 0u, 2349u, 221u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_keys_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 124u, { 32831u, 0u, 0u, 221u, LANEC_LM } },
+    { 125u, { 32831u, 0u, 413u, 221u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_address_request_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[9] = {
-    { 1596u, { 33844u, 0u, 531u, 128u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
+    { 1597u, { 33844u, 0u, 644u, 128u, LANEC_CM } },
     { 1600u, { 33852u, 0u, 512u, 128u, LANEC_CM } },
-    { 1604u, { 33861u, 0u, 514u, 128u, LANEC_CM } },
-    { 1628u, { 33987u, 0u, 516u, 128u, LANEC_CM } },
-    { 1632u, { 33989u, 0u, 513u, 128u, LANEC_CM } },
-    { 1635u, { 33989u, 0u, 886u, 128u, LANEC_CM } },
-    { 1636u, { 33991u, 0u, 515u, 128u, LANEC_CM } },
-    { 1640u, { 33992u, 0u, 517u, 128u, LANEC_CM } },
-    { 1641u, { 33992u, 0u, 642u, 128u, LANEC_CM } },
+    { 1601u, { 33852u, 0u, 658u, 128u, LANEC_CM } },
+    { 1602u, { 33852u, 0u, 764u, 128u, LANEC_CM } },
+    { 1603u, { 33852u, 0u, 901u, 128u, LANEC_CM } },
+    { 1633u, { 33989u, 0u, 636u, 128u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_address_request_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[8] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
     { 520u, { 33844u, 0u, 0u, 128u, LANEC_LM } },
-    { 525u, { 33852u, 0u, 134u, 128u, LANEC_LM } },
-    { 528u, { 33861u, 0u, 4u, 128u, LANEC_LM } },
+    { 521u, { 33844u, 0u, 132u, 128u, LANEC_LM } },
+    { 524u, { 33852u, 0u, 2u, 128u, LANEC_LM } },
+    { 529u, { 33861u, 0u, 122u, 128u, LANEC_LM } },
     { 552u, { 33987u, 0u, 6u, 128u, LANEC_LM } },
-    { 556u, { 33989u, 0u, 1u, 128u, LANEC_LM } },
     { 560u, { 33991u, 0u, 3u, 128u, LANEC_LM } },
-    { 565u, { 33992u, 0u, 123u, 128u, LANEC_LM } },
-    { 566u, { 33992u, 0u, 267u, 128u, LANEC_LM } },
+    { 567u, { 33992u, 0u, 378u, 128u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_alarm_cycle_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 1096u, { 2161u, 0u, 526u, 129u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1100u, { 2166u, 0u, 512u, 129u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_alarm_cycle_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 12u, { 2149u, 0u, 0u, 129u, LANEC_LM } },
-    { 16u, { 2154u, 0u, 1u, 129u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blank_cm
@@ -4530,7 +4477,7 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blanksub_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1140u, { 2233u, 0u, 512u, 132u, LANEC_CM } },
+    { 1142u, { 2233u, 0u, 768u, 132u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blanksub_lm
@@ -4547,53 +4494,48 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_dynamic_display_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[11] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1108u, { 2169u, 0u, 35u, 143u, LANEC_CM } },
     { 1110u, { 2169u, 0u, 1042u, 143u, LANEC_CM } },
-    { 1292u, { 33171u, 0u, 40u, 143u, LANEC_CM } },
-    { 1293u, { 33171u, 0u, 521u, 143u, LANEC_CM } },
-    { 1653u, { 34015u, 0u, 513u, 143u, LANEC_CM } },
-    { 1732u, { 34143u, 0u, 39u, 143u, LANEC_CM } },
-    { 1736u, { 34166u, 0u, 41u, 143u, LANEC_CM } },
-    { 1740u, { 34168u, 0u, 42u, 143u, LANEC_CM } },
-    { 2040u, { 34690u, 0u, 37u, 143u, LANEC_CM } },
-    { 2044u, { 34692u, 0u, 38u, 143u, LANEC_CM } },
-    { 2047u, { 34692u, 0u, 1522u, 143u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_formatter_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 1424u, { 33371u, 0u, 512u, 144u, LANEC_CM } },
-    { 1425u, { 33371u, 0u, 640u, 144u, LANEC_CM } },
-    { 1440u, { 33399u, 0u, 1024u, 144u, LANEC_CM } },
-    { 1443u, { 33399u, 0u, 1408u, 144u, LANEC_CM } },
-    { 1468u, { 33419u, 0u, 0u, 144u, LANEC_CM } },
+    { 1441u, { 33399u, 0u, 1152u, 144u, LANEC_CM } },
     { 1470u, { 33419u, 0u, 256u, 144u, LANEC_CM } },
 };
 #endif
+#ifdef LANEC_PIN_C64_MOD_pw_cm_minutes_seconds_cm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 2112u, { 35470u, 0u, 0u, 145u, LANEC_CM } },
+    { 2119u, { 35502u, 0u, 1537u, 145u, LANEC_CM } },
+    { 2122u, { 35506u, 0u, 1022u, 145u, LANEC_CM } },
+    { 2123u, { 35506u, 0u, 1532u, 145u, LANEC_CM } },
+};
+#endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_pinball_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 1272u, { 33090u, 0u, 1u, 148u, LANEC_CM } },
     { 1480u, { 33431u, 0u, 0u, 148u, LANEC_CM } },
-    { 1481u, { 33431u, 0u, 238u, 148u, LANEC_CM } },
-    { 1484u, { 33481u, 0u, 2u, 148u, LANEC_CM } },
     { 1485u, { 33481u, 0u, 225u, 148u, LANEC_CM } },
-    { 1486u, { 33481u, 0u, 467u, 148u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_consumer_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1728u, { 34131u, 0u, 512u, 150u, LANEC_CM } },
+    { 1731u, { 34131u, 0u, 896u, 150u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_consumer_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 652u, { 34131u, 0u, 0u, 150u, LANEC_LM } },
+    { 655u, { 34131u, 0u, 384u, 150u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 348u, { 33430u, 0u, 1u, 149u, LANEC_LM } },
+    { 349u, { 33430u, 0u, 256u, 149u, LANEC_LM } },
     { 364u, { 33458u, 0u, 0u, 149u, LANEC_LM } },
 };
 #endif
@@ -4604,57 +4546,25 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_select_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 656u, { 34143u, 0u, 0u, 155u, LANEC_LM } },
+    { 658u, { 34143u, 0u, 256u, 155u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_time_consumer_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 1296u, { 33182u, 0u, 1090u, 156u, LANEC_CM } },
-    { 1297u, { 33182u, 0u, 1225u, 156u, LANEC_CM } },
-    { 1300u, { 33183u, 0u, 1027u, 156u, LANEC_CM } },
-    { 1304u, { 33184u, 0u, 1028u, 156u, LANEC_CM } },
-    { 1305u, { 33184u, 0u, 1220u, 156u, LANEC_CM } },
-    { 1308u, { 33186u, 0u, 1157u, 156u, LANEC_CM } },
-    { 1312u, { 33193u, 0u, 1094u, 156u, LANEC_CM } },
-    { 2080u, { 35427u, 0u, 1154u, 156u, LANEC_CM } },
-    { 2084u, { 35431u, 0u, 1155u, 156u, LANEC_CM } },
-    { 2087u, { 35431u, 0u, 1731u, 156u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1306u, { 33184u, 0u, 1419u, 156u, LANEC_CM } },
+    { 2092u, { 35437u, 0u, 1029u, 156u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_time_consumer_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[31] = {
-    { 232u, { 33242u, 0u, 66u, 156u, LANEC_LM } },
-    { 236u, { 33243u, 0u, 3u, 156u, LANEC_LM } },
-    { 240u, { 33244u, 0u, 196u, 156u, LANEC_LM } },
-    { 242u, { 33244u, 0u, 530u, 156u, LANEC_LM } },
-    { 243u, { 33244u, 0u, 651u, 156u, LANEC_LM } },
-    { 244u, { 33246u, 0u, 12u, 156u, LANEC_LM } },
-    { 248u, { 33253u, 0u, 134u, 156u, LANEC_LM } },
-    { 249u, { 33253u, 0u, 390u, 156u, LANEC_LM } },
-    { 664u, { 34168u, 0u, 15u, 156u, LANEC_LM } },
-    { 1005u, { 35480u, 0u, 450u, 156u, LANEC_LM } },
-    { 1007u, { 35480u, 0u, 706u, 156u, LANEC_LM } },
-    { 1008u, { 35484u, 0u, 131u, 156u, LANEC_LM } },
-    { 1012u, { 35488u, 0u, 4u, 156u, LANEC_LM } },
-    { 1015u, { 35488u, 0u, 900u, 156u, LANEC_LM } },
-    { 1017u, { 35490u, 0u, 261u, 156u, LANEC_LM } },
-    { 1019u, { 35490u, 0u, 581u, 156u, LANEC_LM } },
-    { 1020u, { 35499u, 0u, 198u, 156u, LANEC_LM } },
-    { 1027u, { 35501u, 0u, 711u, 156u, LANEC_LM } },
-    { 1028u, { 35508u, 0u, 72u, 156u, LANEC_LM } },
-    { 1030u, { 35508u, 0u, 648u, 156u, LANEC_LM } },
-    { 1031u, { 35508u, 0u, 712u, 156u, LANEC_LM } },
-    { 1032u, { 35510u, 0u, 9u, 156u, LANEC_LM } },
-    { 1036u, { 35523u, 0u, 2u, 156u, LANEC_LM } },
-    { 1041u, { 35555u, 0u, 195u, 156u, LANEC_LM } },
-    { 1043u, { 35555u, 0u, 771u, 156u, LANEC_LM } },
-    { 1044u, { 35559u, 0u, 20u, 156u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
+    { 234u, { 33242u, 0u, 400u, 156u, LANEC_LM } },
+    { 1014u, { 35488u, 0u, 644u, 156u, LANEC_LM } },
+    { 1034u, { 35510u, 0u, 522u, 156u, LANEC_LM } },
+    { 1039u, { 35523u, 0u, 722u, 156u, LANEC_LM } },
     { 1047u, { 35559u, 0u, 708u, 156u, LANEC_LM } },
-    { 1048u, { 35561u, 0u, 69u, 156u, LANEC_LM } },
-    { 1052u, { 35569u, 0u, 6u, 156u, LANEC_LM } },
-    { 1056u, { 35577u, 0u, 7u, 156u, LANEC_LM } },
-    { 1057u, { 35577u, 0u, 263u, 156u, LANEC_LM } },
+    { 1051u, { 35561u, 0u, 717u, 156u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_display_release_cm
@@ -4668,142 +4578,107 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 114u, { 2351u, 0u, 256u, 157u, LANEC_LM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_enter_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 1584u, { 33794u, 0u, 768u, 158u, LANEC_CM } },
-    { 1585u, { 33794u, 0u, 832u, 158u, LANEC_CM } },
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_enter_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 508u, { 33794u, 0u, 256u, 158u, LANEC_LM } },
-    { 511u, { 33794u, 0u, 448u, 158u, LANEC_LM } },
-};
-#endif
 #ifdef LANEC_PIN_C64_MOD_pw_enter_zero_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1588u, { 33821u, 0u, 512u, 159u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1589u, { 33821u, 0u, 640u, 159u, LANEC_CM } },
+    { 1591u, { 33821u, 0u, 896u, 159u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_enter_zero_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
-    { 512u, { 33821u, 0u, 0u, 159u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 513u, { 33821u, 0u, 128u, 159u, LANEC_LM } },
     { 514u, { 33821u, 0u, 256u, 159u, LANEC_LM } },
-    { 515u, { 33821u, 0u, 384u, 159u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_extended_dispatch_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 1620u, { 33891u, 0u, 512u, 160u, LANEC_CM } },
+    { 1621u, { 33891u, 0u, 643u, 160u, LANEC_CM } },
+    { 1622u, { 33891u, 0u, 767u, 160u, LANEC_CM } },
     { 1623u, { 33891u, 0u, 899u, 160u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_extended_dispatch_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 544u, { 33891u, 0u, 1u, 160u, LANEC_LM } },
     { 545u, { 33891u, 0u, 136u, 160u, LANEC_LM } },
+    { 546u, { 33891u, 0u, 256u, 160u, LANEC_LM } },
+    { 547u, { 33891u, 0u, 391u, 160u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_five_blank_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1256u, { 33046u, 0u, 512u, 161u, LANEC_CM } },
-    { 1260u, { 33054u, 0u, 517u, 161u, LANEC_CM } },
-    { 1264u, { 33055u, 0u, 515u, 161u, LANEC_CM } },
-    { 1266u, { 33055u, 0u, 756u, 161u, LANEC_CM } },
-    { 1268u, { 33057u, 0u, 513u, 161u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_five_blank_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 172u, { 33109u, 0u, 1u, 161u, LANEC_LM } },
     { 176u, { 33117u, 0u, 0u, 161u, LANEC_LM } },
-    { 180u, { 33118u, 0u, 4u, 161u, LANEC_LM } },
+    { 183u, { 33118u, 0u, 395u, 161u, LANEC_LM } },
     { 184u, { 33120u, 0u, 2u, 161u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fixed_display_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 1952u, { 34539u, 0u, 1026u, 162u, LANEC_CM } },
     { 1956u, { 34545u, 0u, 1025u, 162u, LANEC_CM } },
+    { 1957u, { 34545u, 0u, 1280u, 162u, LANEC_CM } },
+    { 1958u, { 34545u, 0u, 1535u, 162u, LANEC_CM } },
+    { 1959u, { 34545u, 0u, 1790u, 162u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fixed_display_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 876u, { 34539u, 0u, 0u, 162u, LANEC_LM } },
-    { 878u, { 34539u, 0u, 513u, 162u, LANEC_LM } },
     { 880u, { 34545u, 0u, 2u, 162u, LANEC_LM } },
+    { 881u, { 34545u, 0u, 257u, 162u, LANEC_LM } },
+    { 882u, { 34545u, 0u, 512u, 162u, LANEC_LM } },
+    { 883u, { 34545u, 0u, 767u, 162u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fraction_pair_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 368u, { 33462u, 0u, 0u, 163u, LANEC_LM } },
+    { 369u, { 33462u, 0u, 128u, 163u, LANEC_LM } },
+    { 370u, { 33462u, 0u, 256u, 163u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_angle_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 1336u, { 33230u, 0u, 517u, 165u, LANEC_CM } },
-    { 1340u, { 33239u, 0u, 515u, 165u, LANEC_CM } },
-    { 1344u, { 33247u, 0u, 513u, 165u, LANEC_CM } },
-    { 1348u, { 33257u, 0u, 516u, 165u, LANEC_CM } },
-    { 1352u, { 33259u, 0u, 527u, 165u, LANEC_CM } },
-    { 1356u, { 33261u, 0u, 518u, 165u, LANEC_CM } },
     { 1372u, { 33284u, 0u, 514u, 165u, LANEC_CM } },
     { 1373u, { 33284u, 0u, 641u, 165u, LANEC_CM } },
     { 1376u, { 33289u, 0u, 512u, 165u, LANEC_CM } },
-    { 1377u, { 33289u, 0u, 655u, 165u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_angle_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[13] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
     { 200u, { 33173u, 0u, 2u, 165u, LANEC_LM } },
-    { 203u, { 33173u, 0u, 394u, 165u, LANEC_LM } },
     { 204u, { 33180u, 0u, 9u, 165u, LANEC_LM } },
-    { 206u, { 33180u, 0u, 272u, 165u, LANEC_LM } },
     { 268u, { 33288u, 0u, 0u, 165u, LANEC_LM } },
-    { 272u, { 33297u, 0u, 5u, 165u, LANEC_LM } },
-    { 274u, { 33297u, 0u, 245u, 165u, LANEC_LM } },
-    { 276u, { 33305u, 0u, 3u, 165u, LANEC_LM } },
-    { 278u, { 33305u, 0u, 273u, 165u, LANEC_LM } },
-    { 280u, { 33315u, 0u, 4u, 165u, LANEC_LM } },
-    { 284u, { 33334u, 0u, 1u, 165u, LANEC_LM } },
-    { 288u, { 33336u, 0u, 6u, 165u, LANEC_LM } },
-    { 291u, { 33336u, 0u, 366u, 165u, LANEC_LM } },
+    { 270u, { 33288u, 0u, 240u, 165u, LANEC_LM } },
+    { 271u, { 33288u, 0u, 360u, 165u, LANEC_LM } },
+    { 277u, { 33305u, 0u, 123u, 165u, LANEC_LM } },
+    { 286u, { 33334u, 0u, 271u, 165u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_arithmetic_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1172u, { 2320u, 0u, 512u, 166u, LANEC_CM } },
-    { 1400u, { 33328u, 0u, 514u, 166u, LANEC_CM } },
-    { 1402u, { 33328u, 0u, 778u, 166u, LANEC_CM } },
-    { 1404u, { 33331u, 0u, 516u, 166u, LANEC_CM } },
-    { 1408u, { 33336u, 0u, 513u, 166u, LANEC_CM } },
-    { 1410u, { 33336u, 0u, 747u, 166u, LANEC_CM } },
-    { 1412u, { 33338u, 0u, 515u, 166u, LANEC_CM } },
-    { 1416u, { 33344u, 0u, 517u, 166u, LANEC_CM } },
-    { 1417u, { 33344u, 0u, 642u, 166u, LANEC_CM } },
     { 1420u, { 33345u, 0u, 531u, 166u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_arithmetic_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 88u, { 2308u, 0u, 0u, 166u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 324u, { 33387u, 0u, 2u, 166u, LANEC_LM } },
-    { 329u, { 33390u, 0u, 122u, 166u, LANEC_LM } },
-    { 332u, { 33395u, 0u, 6u, 166u, LANEC_LM } },
-    { 336u, { 33397u, 0u, 1u, 166u, LANEC_LM } },
+    { 331u, { 33390u, 0u, 391u, 166u, LANEC_LM } },
     { 340u, { 33403u, 0u, 3u, 166u, LANEC_LM } },
-    { 341u, { 33403u, 0u, 128u, 166u, LANEC_LM } },
-    { 342u, { 33403u, 0u, 239u, 166u, LANEC_LM } },
-    { 344u, { 33404u, 0u, 5u, 166u, LANEC_LM } },
-    { 345u, { 33404u, 0u, 123u, 166u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_factor_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1896u, { 34428u, 0u, 519u, 167u, LANEC_CM } },
-    { 1900u, { 34438u, 0u, 512u, 167u, LANEC_CM } },
-    { 1901u, { 34438u, 0u, 635u, 167u, LANEC_CM } },
-    { 1904u, { 34439u, 0u, 526u, 167u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_factor_lm
@@ -4814,148 +4689,123 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_mode_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1846u, { 34313u, 0u, 737u, 168u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1845u, { 34313u, 0u, 617u, 168u, LANEC_CM } },
+    { 2159u, { 35662u, 0u, 922u, 168u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_mode_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
-    { 768u, { 34313u, 0u, 0u, 168u, LANEC_LM } },
-    { 771u, { 34313u, 0u, 360u, 168u, LANEC_LM } },
-    { 1076u, { 35707u, 0u, 2u, 168u, LANEC_LM } },
-    { 1078u, { 35707u, 0u, 252u, 168u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+    { 769u, { 34313u, 0u, 112u, 168u, LANEC_LM } },
+    { 1079u, { 35707u, 0u, 377u, 168u, LANEC_LM } },
     { 1080u, { 35715u, 0u, 1u, 168u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_scale_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[12] = {
-    { 1360u, { 33270u, 0u, 517u, 169u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 1361u, { 33270u, 0u, 637u, 169u, LANEC_CM } },
-    { 1363u, { 33270u, 0u, 877u, 169u, LANEC_CM } },
-    { 1364u, { 33278u, 0u, 515u, 169u, LANEC_CM } },
-    { 1368u, { 33281u, 0u, 513u, 169u, LANEC_CM } },
-    { 1369u, { 33281u, 0u, 633u, 169u, LANEC_CM } },
-    { 1380u, { 33297u, 0u, 527u, 169u, LANEC_CM } },
-    { 1384u, { 33299u, 0u, 518u, 169u, LANEC_CM } },
-    { 1388u, { 33306u, 0u, 512u, 169u, LANEC_CM } },
-    { 1392u, { 33318u, 0u, 516u, 169u, LANEC_CM } },
+    { 1365u, { 33278u, 0u, 635u, 169u, LANEC_CM } },
+    { 1394u, { 33318u, 0u, 763u, 169u, LANEC_CM } },
     { 1396u, { 33323u, 0u, 514u, 169u, LANEC_CM } },
-    { 1397u, { 33323u, 0u, 641u, 169u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_scale_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 292u, { 33342u, 0u, 0u, 169u, LANEC_LM } },
-    { 296u, { 33350u, 0u, 5u, 169u, LANEC_LM } },
-    { 300u, { 33353u, 0u, 3u, 169u, LANEC_LM } },
-    { 303u, { 33353u, 0u, 393u, 169u, LANEC_LM } },
-    { 304u, { 33356u, 0u, 1u, 169u, LANEC_LM } },
-    { 308u, { 33358u, 0u, 6u, 169u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
+    { 293u, { 33342u, 0u, 120u, 169u, LANEC_LM } },
+    { 294u, { 33342u, 0u, 240u, 169u, LANEC_LM } },
+    { 302u, { 33353u, 0u, 273u, 169u, LANEC_LM } },
+    { 306u, { 33356u, 0u, 271u, 169u, LANEC_LM } },
     { 312u, { 33365u, 0u, 9u, 169u, LANEC_LM } },
-    { 316u, { 33377u, 0u, 4u, 169u, LANEC_LM } },
+    { 319u, { 33377u, 0u, 396u, 169u, LANEC_LM } },
     { 320u, { 33382u, 0u, 2u, 169u, LANEC_LM } },
-    { 321u, { 33382u, 0u, 122u, 169u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_select_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 1144u, { 2270u, 0u, 512u, 170u, LANEC_CM } },
-    { 1148u, { 2277u, 0u, 521u, 170u, LANEC_CM } },
-    { 1152u, { 2284u, 0u, 526u, 170u, LANEC_CM } },
-    { 1848u, { 34325u, 0u, 520u, 170u, LANEC_CM } },
-    { 1853u, { 34326u, 0u, 603u, 170u, LANEC_CM } },
-    { 1856u, { 34332u, 0u, 522u, 170u, LANEC_CM } },
-    { 1860u, { 34342u, 0u, 515u, 170u, LANEC_CM } },
-    { 1864u, { 34343u, 0u, 514u, 170u, LANEC_CM } },
-    { 1869u, { 34356u, 0u, 652u, 170u, LANEC_CM } },
-    { 1872u, { 34361u, 0u, 519u, 170u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1865u, { 34343u, 0u, 668u, 170u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_select_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[12] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
     { 60u, { 2258u, 0u, 4u, 170u, LANEC_LM } },
     { 64u, { 2265u, 0u, 17u, 170u, LANEC_LM } },
-    { 66u, { 2265u, 0u, 261u, 170u, LANEC_LM } },
     { 68u, { 2272u, 0u, 9u, 170u, LANEC_LM } },
-    { 70u, { 2272u, 0u, 309u, 170u, LANEC_LM } },
     { 772u, { 34325u, 0u, 3u, 170u, LANEC_LM } },
-    { 776u, { 34326u, 0u, 0u, 170u, LANEC_LM } },
     { 780u, { 34332u, 0u, 1u, 170u, LANEC_LM } },
     { 784u, { 34342u, 0u, 16u, 170u, LANEC_LM } },
     { 788u, { 34343u, 0u, 2u, 170u, LANEC_LM } },
+    { 789u, { 34343u, 0u, 96u, 170u, LANEC_LM } },
     { 792u, { 34356u, 0u, 11u, 170u, LANEC_LM } },
     { 796u, { 34361u, 0u, 19u, 170u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_store_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[8] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 1876u, { 34365u, 0u, 517u, 171u, LANEC_CM } },
-    { 1880u, { 34392u, 0u, 513u, 171u, LANEC_CM } },
-    { 1884u, { 34399u, 0u, 515u, 171u, LANEC_CM } },
-    { 1885u, { 34399u, 0u, 635u, 171u, LANEC_CM } },
-    { 1886u, { 34399u, 0u, 756u, 171u, LANEC_CM } },
+    { 1877u, { 34365u, 0u, 637u, 171u, LANEC_CM } },
+    { 1879u, { 34365u, 0u, 878u, 171u, LANEC_CM } },
     { 1887u, { 34399u, 0u, 905u, 171u, LANEC_CM } },
-    { 1888u, { 34413u, 0u, 512u, 171u, LANEC_CM } },
-    { 1891u, { 34413u, 0u, 895u, 171u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_store_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
-    { 800u, { 34365u, 0u, 0u, 171u, LANEC_LM } },
-    { 801u, { 34365u, 0u, 120u, 171u, LANEC_LM } },
-    { 802u, { 34365u, 0u, 240u, 171u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 803u, { 34365u, 0u, 360u, 171u, LANEC_LM } },
-    { 805u, { 34392u, 0u, 122u, 171u, LANEC_LM } },
-    { 810u, { 34399u, 0u, 244u, 171u, LANEC_LM } },
+    { 804u, { 34392u, 0u, 2u, 171u, LANEC_LM } },
     { 812u, { 34413u, 0u, 1u, 171u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pw_input_time_cm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 2137u, { 35573u, 0u, 637u, 172u, LANEC_CM } },
+    { 2138u, { 35573u, 0u, 758u, 172u, LANEC_CM } },
+    { 2140u, { 35630u, 0u, 515u, 172u, LANEC_CM } },
+    { 2148u, { 35644u, 0u, 512u, 172u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_time_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 1060u, { 35626u, 0u, 0u, 172u, LANEC_LM } },
-    { 1064u, { 35683u, 0u, 4u, 172u, LANEC_LM } },
+    { 1062u, { 35626u, 0u, 240u, 172u, LANEC_LM } },
+    { 1063u, { 35626u, 0u, 360u, 172u, LANEC_LM } },
     { 1068u, { 35692u, 0u, 2u, 172u, LANEC_LM } },
-    { 1072u, { 35697u, 0u, 1u, 172u, LANEC_LM } },
     { 1075u, { 35697u, 0u, 391u, 172u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_jam_control_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 1132u, { 2213u, 0u, 513u, 173u, LANEC_CM } },
     { 1136u, { 2223u, 0u, 512u, 173u, LANEC_CM } },
+    { 1137u, { 2223u, 0u, 643u, 173u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_jam_control_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
-    { 48u, { 2201u, 0u, 0u, 173u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 51u, { 2201u, 0u, 375u, 173u, LANEC_LM } },
-    { 52u, { 2211u, 0u, 1u, 173u, LANEC_LM } },
     { 53u, { 2211u, 0u, 136u, 173u, LANEC_LM } },
     { 55u, { 2211u, 0u, 391u, 173u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_lifecycle_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 2052u, { 34699u, 0u, 517u, 174u, LANEC_CM } },
-    { 2056u, { 34715u, 0u, 515u, 174u, LANEC_CM } },
+    { 2057u, { 34715u, 0u, 635u, 174u, LANEC_CM } },
     { 2064u, { 34738u, 0u, 513u, 174u, LANEC_CM } },
-    { 2065u, { 34738u, 0u, 634u, 174u, LANEC_CM } },
-    { 2066u, { 34738u, 0u, 783u, 174u, LANEC_CM } },
     { 2072u, { 34743u, 0u, 512u, 174u, LANEC_CM } },
+    { 2074u, { 34743u, 0u, 775u, 174u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_lifecycle_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 976u, { 34699u, 0u, 0u, 174u, LANEC_LM } },
-    { 980u, { 34713u, 0u, 4u, 174u, LANEC_LM } },
-    { 982u, { 34713u, 0u, 244u, 174u, LANEC_LM } },
+    { 977u, { 34699u, 0u, 120u, 174u, LANEC_LM } },
     { 988u, { 34738u, 0u, 2u, 174u, LANEC_LM } },
-    { 996u, { 34743u, 0u, 1u, 174u, LANEC_LM } },
+    { 998u, { 34743u, 0u, 271u, 174u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_release_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1532u, { 33534u, 0u, 512u, 175u, LANEC_CM } },
+    { 1534u, { 33534u, 0u, 768u, 175u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_release_lm
@@ -4970,9 +4820,8 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_test_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 1001u, { 34770u, 0u, 165u, 176u, LANEC_LM } },
-    { 1002u, { 34770u, 0u, 309u, 176u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1000u, { 34770u, 0u, 9u, 176u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lm_pinball_busy_lm
@@ -4983,135 +4832,83 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_complete_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 1840u, { 34301u, 0u, 512u, 178u, LANEC_CM } },
-    { 1841u, { 34301u, 0u, 640u, 178u, LANEC_CM } },
-    { 1843u, { 34301u, 0u, 896u, 178u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1842u, { 34301u, 0u, 768u, 178u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_complete_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 764u, { 34301u, 0u, 0u, 178u, LANEC_LM } },
+    { 767u, { 34301u, 0u, 384u, 178u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_control_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[11] = {
-    { 1508u, { 33511u, 0u, 526u, 179u, LANEC_CM } },
-    { 1516u, { 33517u, 0u, 513u, 179u, LANEC_CM } },
-    { 1517u, { 33517u, 0u, 605u, 179u, LANEC_CM } },
-    { 1519u, { 33517u, 0u, 845u, 179u, LANEC_CM } },
-    { 1520u, { 33519u, 0u, 512u, 179u, LANEC_CM } },
-    { 1521u, { 33519u, 0u, 668u, 179u, LANEC_CM } },
-    { 1525u, { 33524u, 0u, 644u, 179u, LANEC_CM } },
-    { 1548u, { 33580u, 0u, 519u, 179u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+    { 1511u, { 33511u, 0u, 896u, 179u, LANEC_CM } },
+    { 1524u, { 33524u, 0u, 520u, 179u, LANEC_CM } },
     { 1549u, { 33580u, 0u, 643u, 179u, LANEC_CM } },
-    { 1550u, { 33580u, 0u, 767u, 179u, LANEC_CM } },
-    { 1551u, { 33580u, 0u, 891u, 179u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_control_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[9] = {
-    { 432u, { 33570u, 0u, 0u, 179u, LANEC_LM } },
-    { 435u, { 33570u, 0u, 386u, 179u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 440u, { 33576u, 0u, 1u, 179u, LANEC_LM } },
-    { 441u, { 33576u, 0u, 125u, 179u, LANEC_LM } },
     { 444u, { 33578u, 0u, 17u, 179u, LANEC_LM } },
-    { 445u, { 33578u, 0u, 139u, 179u, LANEC_LM } },
-    { 448u, { 33583u, 0u, 2u, 179u, LANEC_LM } },
     { 450u, { 33583u, 0u, 214u, 179u, LANEC_LM } },
     { 472u, { 33639u, 0u, 9u, 179u, LANEC_LM } },
+    { 473u, { 33639u, 0u, 165u, 179u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_request_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 1744u, { 34190u, 0u, 517u, 180u, LANEC_CM } },
-    { 1748u, { 34196u, 0u, 516u, 180u, LANEC_CM } },
-    { 1752u, { 34199u, 0u, 514u, 180u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
+    { 1749u, { 34196u, 0u, 636u, 180u, LANEC_CM } },
     { 1784u, { 34243u, 0u, 515u, 180u, LANEC_CM } },
-    { 1788u, { 34249u, 0u, 512u, 180u, LANEC_CM } },
+    { 1785u, { 34243u, 0u, 635u, 180u, LANEC_CM } },
     { 1804u, { 34266u, 0u, 513u, 180u, LANEC_CM } },
-    { 1805u, { 34266u, 0u, 633u, 180u, LANEC_CM } },
-    { 1807u, { 34266u, 0u, 903u, 180u, LANEC_CM } },
-    { 1816u, { 34275u, 0u, 527u, 180u, LANEC_CM } },
-    { 1828u, { 34288u, 0u, 518u, 180u, LANEC_CM } },
+    { 1830u, { 34288u, 0u, 758u, 180u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_request_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[9] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 668u, { 34190u, 0u, 0u, 180u, LANEC_LM } },
     { 672u, { 34196u, 0u, 4u, 180u, LANEC_LM } },
     { 676u, { 34199u, 0u, 2u, 180u, LANEC_LM } },
-    { 708u, { 34243u, 0u, 5u, 180u, LANEC_LM } },
-    { 712u, { 34249u, 0u, 9u, 180u, LANEC_LM } },
-    { 728u, { 34266u, 0u, 3u, 180u, LANEC_LM } },
+    { 713u, { 34249u, 0u, 152u, 180u, LANEC_LM } },
     { 740u, { 34275u, 0u, 1u, 180u, LANEC_LM } },
-    { 752u, { 34288u, 0u, 6u, 180u, LANEC_LM } },
-    { 755u, { 34288u, 0u, 366u, 180u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_store_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[22] = {
-    { 1756u, { 34202u, 0u, 524u, 181u, LANEC_CM } },
-    { 1758u, { 34202u, 0u, 750u, 181u, LANEC_CM } },
-    { 1760u, { 34209u, 0u, 516u, 181u, LANEC_CM } },
-    { 1764u, { 34213u, 0u, 514u, 181u, LANEC_CM } },
-    { 1765u, { 34213u, 0u, 634u, 181u, LANEC_CM } },
-    { 1768u, { 34217u, 0u, 512u, 181u, LANEC_CM } },
-    { 1770u, { 34217u, 0u, 766u, 181u, LANEC_CM } },
-    { 1772u, { 34224u, 0u, 523u, 181u, LANEC_CM } },
-    { 1773u, { 34224u, 0u, 627u, 181u, LANEC_CM } },
-    { 1776u, { 34236u, 0u, 521u, 181u, LANEC_CM } },
-    { 1780u, { 34241u, 0u, 519u, 181u, LANEC_CM } },
-    { 1792u, { 34252u, 0u, 522u, 181u, LANEC_CM } },
-    { 1793u, { 34252u, 0u, 628u, 181u, LANEC_CM } },
-    { 1798u, { 34259u, 0u, 773u, 181u, LANEC_CM } },
-    { 1800u, { 34263u, 0u, 515u, 181u, LANEC_CM } },
-    { 1808u, { 34267u, 0u, 520u, 181u, LANEC_CM } },
-    { 1812u, { 34272u, 0u, 513u, 181u, LANEC_CM } },
-    { 1815u, { 34272u, 0u, 903u, 181u, LANEC_CM } },
-    { 1820u, { 34280u, 0u, 534u, 181u, LANEC_CM } },
-    { 1824u, { 34285u, 0u, 527u, 181u, LANEC_CM } },
-    { 1832u, { 34293u, 0u, 518u, 181u, LANEC_CM } },
-    { 1839u, { 34298u, 0u, 855u, 181u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 1759u, { 34202u, 0u, 854u, 181u, LANEC_CM } },
+    { 1769u, { 34217u, 0u, 632u, 181u, LANEC_CM } },
+    { 1795u, { 34252u, 0u, 914u, 181u, LANEC_CM } },
+    { 1837u, { 34298u, 0u, 629u, 181u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_store_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[21] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[13] = {
     { 680u, { 34202u, 0u, 0u, 181u, LANEC_LM } },
-    { 681u, { 34202u, 0u, 120u, 181u, LANEC_LM } },
     { 684u, { 34209u, 0u, 4u, 181u, LANEC_LM } },
     { 688u, { 34213u, 0u, 2u, 181u, LANEC_LM } },
     { 692u, { 34217u, 0u, 16u, 181u, LANEC_LM } },
+    { 693u, { 34217u, 0u, 182u, 181u, LANEC_LM } },
     { 696u, { 34224u, 0u, 13u, 181u, LANEC_LM } },
     { 700u, { 34236u, 0u, 11u, 181u, LANEC_LM } },
-    { 704u, { 34241u, 0u, 9u, 181u, LANEC_LM } },
-    { 716u, { 34252u, 0u, 12u, 181u, LANEC_LM } },
     { 720u, { 34259u, 0u, 7u, 181u, LANEC_LM } },
     { 724u, { 34263u, 0u, 5u, 181u, LANEC_LM } },
-    { 732u, { 34267u, 0u, 10u, 181u, LANEC_LM } },
-    { 735u, { 34267u, 0u, 386u, 181u, LANEC_LM } },
     { 736u, { 34272u, 0u, 3u, 181u, LANEC_LM } },
-    { 737u, { 34272u, 0u, 107u, 181u, LANEC_LM } },
     { 744u, { 34280u, 0u, 8u, 181u, LANEC_LM } },
     { 748u, { 34285u, 0u, 1u, 181u, LANEC_LM } },
     { 756u, { 34293u, 0u, 6u, 181u, LANEC_LM } },
-    { 757u, { 34293u, 0u, 112u, 181u, LANEC_LM } },
-    { 760u, { 34298u, 0u, 15u, 181u, LANEC_LM } },
-    { 761u, { 34298u, 0u, 135u, 181u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_machine_cadr_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 1609u, { 33870u, 0u, 634u, 182u, LANEC_CM } },
-    { 1611u, { 33870u, 0u, 892u, 182u, LANEC_CM } },
-    { 1613u, { 33872u, 0u, 643u, 182u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1608u, { 33870u, 0u, 513u, 182u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_machine_cadr_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 532u, { 33870u, 0u, 0u, 182u, LANEC_LM } },
-    { 535u, { 33870u, 0u, 375u, 182u, LANEC_LM } },
-    { 537u, { 33872u, 0u, 136u, 182u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 536u, { 33872u, 0u, 1u, 182u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_major_request_cm
@@ -5122,142 +4919,114 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_major_request_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 896u, { 34584u, 0u, 0u, 183u, LANEC_LM } },
+    { 897u, { 34584u, 0u, 112u, 183u, LANEC_LM } },
     { 900u, { 34585u, 0u, 2u, 183u, LANEC_LM } },
-    { 904u, { 34602u, 0u, 1u, 183u, LANEC_LM } },
+    { 902u, { 34585u, 0u, 252u, 183u, LANEC_LM } },
+    { 906u, { 34602u, 0u, 275u, 183u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1624u, { 33937u, 0u, 512u, 185u, LANEC_CM } },
+    { 1626u, { 33937u, 0u, 768u, 185u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 549u, { 33937u, 0u, 128u, 185u, LANEC_LM } },
+    { 548u, { 33937u, 0u, 0u, 185u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_admit_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1200u, { 4470u, 0u, 512u, 186u, LANEC_CM } },
+    { 1201u, { 4470u, 0u, 640u, 186u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_admit_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 116u, { 4510u, 0u, 0u, 186u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 118u, { 4510u, 0u, 256u, 186u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_job_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1544u, { 33569u, 0u, 512u, 187u, LANEC_CM } },
-    { 1547u, { 33569u, 0u, 896u, 187u, LANEC_CM } },
+    { 1545u, { 33569u, 0u, 640u, 187u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_job_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 468u, { 33628u, 0u, 0u, 187u, LANEC_LM } },
+    { 469u, { 33628u, 0u, 128u, 187u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[15] = {
-    { 1908u, { 34456u, 0u, 1025u, 188u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[8] = {
+    { 1911u, { 34456u, 0u, 1670u, 188u, LANEC_CM } },
     { 1912u, { 34482u, 0u, 1051u, 188u, LANEC_CM } },
-    { 1913u, { 34482u, 0u, 1367u, 188u, LANEC_CM } },
-    { 1914u, { 34482u, 0u, 1568u, 188u, LANEC_CM } },
-    { 1916u, { 34483u, 0u, 1030u, 188u, LANEC_CM } },
-    { 1920u, { 34489u, 0u, 1026u, 188u, LANEC_CM } },
-    { 1924u, { 34493u, 0u, 1031u, 188u, LANEC_CM } },
+    { 1915u, { 34482u, 0u, 1747u, 188u, LANEC_CM } },
     { 1928u, { 34503u, 0u, 1027u, 188u, LANEC_CM } },
     { 1932u, { 34507u, 0u, 1053u, 188u, LANEC_CM } },
     { 1936u, { 34508u, 0u, 1032u, 188u, LANEC_CM } },
-    { 1938u, { 34508u, 0u, 1613u, 188u, LANEC_CM } },
-    { 1940u, { 34513u, 0u, 1024u, 188u, LANEC_CM } },
+    { 1941u, { 34513u, 0u, 1250u, 188u, LANEC_CM } },
     { 1944u, { 34523u, 0u, 1033u, 188u, LANEC_CM } },
-    { 1948u, { 34537u, 0u, 1029u, 188u, LANEC_CM } },
-    { 1949u, { 34537u, 0u, 1238u, 188u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[20] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[13] = {
     { 832u, { 34456u, 0u, 0u, 188u, LANEC_LM } },
     { 833u, { 34456u, 0u, 372u, 188u, LANEC_LM } },
     { 834u, { 34456u, 0u, 590u, 188u, LANEC_LM } },
-    { 836u, { 34482u, 0u, 5u, 188u, LANEC_LM } },
-    { 840u, { 34483u, 0u, 1u, 188u, LANEC_LM } },
+    { 842u, { 34483u, 0u, 565u, 188u, LANEC_LM } },
     { 844u, { 34489u, 0u, 6u, 188u, LANEC_LM } },
     { 848u, { 34493u, 0u, 2u, 188u, LANEC_LM } },
     { 849u, { 34493u, 0u, 224u, 188u, LANEC_LM } },
-    { 850u, { 34493u, 0u, 442u, 188u, LANEC_LM } },
-    { 851u, { 34493u, 0u, 638u, 188u, LANEC_LM } },
     { 852u, { 34503u, 0u, 15u, 188u, LANEC_LM } },
     { 856u, { 34507u, 0u, 7u, 188u, LANEC_LM } },
-    { 861u, { 34508u, 0u, 208u, 188u, LANEC_LM } },
     { 864u, { 34513u, 0u, 8u, 188u, LANEC_LM } },
     { 865u, { 34513u, 0u, 204u, 188u, LANEC_LM } },
+    { 866u, { 34513u, 0u, 426u, 188u, LANEC_LM } },
     { 868u, { 34523u, 0u, 4u, 188u, LANEC_LM } },
-    { 869u, { 34523u, 0u, 213u, 188u, LANEC_LM } },
-    { 870u, { 34523u, 0u, 431u, 188u, LANEC_LM } },
-    { 872u, { 34537u, 0u, 47u, 188u, LANEC_LM } },
-    { 874u, { 34537u, 0u, 474u, 188u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_paste_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1084u, { 2144u, 0u, 512u, 190u, LANEC_CM } },
-    { 1088u, { 2158u, 0u, 514u, 190u, LANEC_CM } },
-    { 1092u, { 2159u, 0u, 516u, 190u, LANEC_CM } },
+    { 1089u, { 2158u, 0u, 637u, 190u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_paste_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 0u, { 2132u, 0u, 5u, 190u, LANEC_LM } },
-    { 4u, { 2146u, 0u, 2u, 190u, LANEC_LM } },
     { 8u, { 2147u, 0u, 4u, 190u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_noun_check_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[9] = {
-    { 1696u, { 34068u, 0u, 512u, 191u, LANEC_CM } },
-    { 1697u, { 34068u, 0u, 658u, 191u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 1700u, { 34070u, 0u, 514u, 191u, LANEC_CM } },
-    { 1704u, { 34079u, 0u, 516u, 191u, LANEC_CM } },
-    { 1708u, { 34083u, 0u, 513u, 191u, LANEC_CM } },
-    { 1712u, { 34090u, 0u, 515u, 191u, LANEC_CM } },
+    { 1707u, { 34079u, 0u, 910u, 191u, LANEC_CM } },
     { 1713u, { 34090u, 0u, 633u, 191u, LANEC_CM } },
-    { 1716u, { 34096u, 0u, 517u, 191u, LANEC_CM } },
-    { 1724u, { 34125u, 0u, 531u, 191u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_noun_check_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 620u, { 34068u, 0u, 0u, 191u, LANEC_LM } },
-    { 623u, { 34068u, 0u, 387u, 191u, LANEC_LM } },
-    { 624u, { 34070u, 0u, 2u, 191u, LANEC_LM } },
-    { 626u, { 34070u, 0u, 278u, 191u, LANEC_LM } },
-    { 628u, { 34079u, 0u, 4u, 191u, LANEC_LM } },
     { 629u, { 34079u, 0u, 122u, 191u, LANEC_LM } },
     { 632u, { 34083u, 0u, 6u, 191u, LANEC_LM } },
-    { 636u, { 34090u, 0u, 1u, 191u, LANEC_LM } },
-    { 640u, { 34096u, 0u, 3u, 191u, LANEC_LM } },
+    { 637u, { 34090u, 0u, 119u, 191u, LANEC_LM } },
     { 648u, { 34125u, 0u, 5u, 191u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_admission_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
-    { 1104u, { 2168u, 0u, 512u, 192u, LANEC_CM } },
-    { 1105u, { 2168u, 0u, 544u, 192u, LANEC_CM } },
-    { 2020u, { 34660u, 0u, 768u, 192u, LANEC_CM } },
-    { 2032u, { 34681u, 0u, 896u, 192u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1107u, { 2168u, 0u, 609u, 192u, LANEC_CM } },
+    { 2021u, { 34660u, 0u, 800u, 192u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_admission_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 20u, { 2156u, 0u, 0u, 192u, LANEC_LM } },
     { 24u, { 2157u, 0u, 128u, 192u, LANEC_LM } },
-    { 944u, { 34660u, 0u, 256u, 192u, LANEC_LM } },
-    { 945u, { 34660u, 0u, 288u, 192u, LANEC_LM } },
     { 956u, { 34681u, 0u, 384u, 192u, LANEC_LM } },
 };
 #endif
@@ -5268,16 +5037,13 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_blank_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 940u, { 34638u, 0u, 0u, 193u, LANEC_LM } },
+    { 942u, { 34638u, 0u, 256u, 193u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_busy_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
-    { 1129u, { 2195u, 0u, 537u, 194u, LANEC_CM } },
-    { 1184u, { 2347u, 0u, 716u, 194u, LANEC_CM } },
-    { 1185u, { 2347u, 0u, 741u, 194u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+    { 1128u, { 2195u, 0u, 512u, 194u, LANEC_CM } },
     { 1188u, { 2350u, 0u, 614u, 194u, LANEC_CM } },
-    { 1195u, { 2353u, 0u, 895u, 194u, LANEC_CM } },
     { 1204u, { 4479u, 0u, 921u, 194u, LANEC_CM } },
 };
 #endif
@@ -5291,29 +5057,17 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_continuation_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
-    { 1112u, { 2176u, 0u, 1024u, 196u, LANEC_CM } },
-    { 1116u, { 2180u, 0u, 1138u, 196u, LANEC_CM } },
-    { 1124u, { 2192u, 0u, 1252u, 196u, LANEC_CM } },
-    { 1127u, { 2192u, 0u, 1336u, 196u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 2024u, { 34678u, 0u, 1479u, 196u, LANEC_CM } },
-    { 2028u, { 34680u, 0u, 1365u, 196u, LANEC_CM } },
-    { 2037u, { 34685u, 0u, 1621u, 196u, LANEC_CM } },
-    { 2048u, { 34698u, 0u, 1934u, 196u, LANEC_CM } },
-    { 2050u, { 34698u, 0u, 1991u, 196u, LANEC_CM } },
-    { 2051u, { 34698u, 0u, 2019u, 196u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_continuation_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
     { 28u, { 2164u, 0u, 0u, 196u, LANEC_LM } },
     { 32u, { 2168u, 0u, 114u, 196u, LANEC_LM } },
     { 40u, { 2180u, 0u, 227u, 196u, LANEC_LM } },
-    { 948u, { 34678u, 0u, 455u, 196u, LANEC_LM } },
     { 952u, { 34680u, 0u, 342u, 196u, LANEC_LM } },
-    { 960u, { 34685u, 0u, 569u, 196u, LANEC_LM } },
     { 964u, { 34690u, 0u, 683u, 196u, LANEC_LM } },
-    { 966u, { 34690u, 0u, 739u, 196u, LANEC_LM } },
     { 968u, { 34692u, 0u, 796u, 196u, LANEC_LM } },
     { 972u, { 34698u, 0u, 911u, 196u, LANEC_LM } },
 };
@@ -5329,85 +5083,69 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_update_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1644u, { 33999u, 0u, 768u, 199u, LANEC_CM } },
-    { 1648u, { 34000u, 0u, 896u, 199u, LANEC_CM } },
-    { 1658u, { 34016u, 0u, 704u, 199u, LANEC_CM } },
-    { 1659u, { 34016u, 0u, 736u, 199u, LANEC_CM } },
+    { 1656u, { 34016u, 0u, 640u, 199u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_update_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 569u, { 33999u, 0u, 288u, 199u, LANEC_LM } },
-    { 572u, { 34000u, 0u, 384u, 199u, LANEC_LM } },
-    { 578u, { 34015u, 0u, 64u, 199u, LANEC_LM } },
-    { 580u, { 34016u, 0u, 128u, 199u, LANEC_LM } },
+    { 573u, { 34000u, 0u, 416u, 199u, LANEC_LM } },
+    { 576u, { 34015u, 0u, 0u, 199u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_consumer_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 1672u, { 34027u, 0u, 512u, 201u, LANEC_CM } },
-    { 1676u, { 34032u, 0u, 513u, 201u, LANEC_CM } },
-    { 1677u, { 34032u, 0u, 618u, 201u, LANEC_CM } },
-    { 1680u, { 34037u, 0u, 514u, 201u, LANEC_CM } },
-    { 1684u, { 34043u, 0u, 516u, 201u, LANEC_CM } },
-    { 1687u, { 34043u, 0u, 915u, 201u, LANEC_CM } },
-    { 1688u, { 34048u, 0u, 518u, 201u, LANEC_CM } },
+    { 1681u, { 34037u, 0u, 658u, 201u, LANEC_CM } },
+    { 1683u, { 34037u, 0u, 904u, 201u, LANEC_CM } },
+    { 1685u, { 34043u, 0u, 681u, 201u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_consumer_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[8] = {
-    { 596u, { 34027u, 0u, 7u, 201u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 597u, { 34027u, 0u, 163u, 201u, LANEC_LM } },
-    { 600u, { 34032u, 0u, 5u, 201u, LANEC_LM } },
+    { 598u, { 34027u, 0u, 304u, 201u, LANEC_LM } },
     { 604u, { 34037u, 0u, 0u, 201u, LANEC_LM } },
-    { 605u, { 34037u, 0u, 98u, 201u, LANEC_LM } },
-    { 608u, { 34043u, 0u, 1u, 201u, LANEC_LM } },
     { 612u, { 34048u, 0u, 3u, 201u, LANEC_LM } },
-    { 613u, { 34048u, 0u, 123u, 201u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_display_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 1960u, { 34547u, 0u, 513u, 202u, LANEC_CM } },
-    { 1968u, { 34574u, 0u, 512u, 202u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1963u, { 34547u, 0u, 892u, 202u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_display_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 884u, { 34547u, 0u, 0u, 202u, LANEC_LM } },
-    { 892u, { 34574u, 0u, 1u, 202u, LANEC_LM } },
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_octal_verb_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 1692u, { 34066u, 0u, 528u, 203u, LANEC_CM } },
-    { 1720u, { 34116u, 0u, 544u, 203u, LANEC_CM } },
-    { 1723u, { 34116u, 0u, 888u, 203u, LANEC_CM } },
+    { 893u, { 34574u, 0u, 136u, 202u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_verb_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 616u, { 34066u, 0u, 16u, 203u, LANEC_LM } },
     { 644u, { 34116u, 0u, 32u, 203u, LANEC_LM } },
+    { 645u, { 34116u, 0u, 136u, 203u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_release_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1536u, { 33540u, 0u, 512u, 204u, LANEC_CM } },
+    { 1538u, { 33540u, 0u, 767u, 204u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_release_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 460u, { 33599u, 0u, 1u, 204u, LANEC_LM } },
     { 461u, { 33599u, 0u, 136u, 204u, LANEC_LM } },
+    { 463u, { 33599u, 0u, 391u, 204u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_request_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 1984u, { 34614u, 0u, 513u, 205u, LANEC_CM } },
     { 1985u, { 34614u, 0u, 634u, 205u, LANEC_CM } },
-    { 2008u, { 34634u, 0u, 512u, 205u, LANEC_CM } },
+    { 1986u, { 34614u, 0u, 768u, 205u, LANEC_CM } },
+    { 2010u, { 34634u, 0u, 767u, 205u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_request_lm
@@ -5418,30 +5156,28 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_response_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1512u, { 33512u, 0u, 520u, 206u, LANEC_CM } },
     { 1513u, { 33512u, 0u, 644u, 206u, LANEC_CM } },
-    { 1514u, { 33512u, 0u, 777u, 206u, LANEC_CM } },
-    { 1515u, { 33512u, 0u, 925u, 206u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_response_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 436u, { 33571u, 0u, 1u, 206u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 437u, { 33571u, 0u, 125u, 206u, LANEC_LM } },
+    { 439u, { 33571u, 0u, 387u, 206u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_pinball_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 188u, { 33153u, 0u, 3u, 208u, LANEC_LM } },
     { 404u, { 33490u, 0u, 0u, 208u, LANEC_LM } },
     { 408u, { 33540u, 0u, 1u, 208u, LANEC_LM } },
-    { 409u, { 33540u, 0u, 281u, 208u, LANEC_LM } },
-    { 411u, { 33540u, 0u, 772u, 208u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_read_pair_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1320u, { 33197u, 0u, 512u, 209u, LANEC_CM } },
+    { 1323u, { 33197u, 0u, 897u, 209u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_read_pair_lm
@@ -5450,19 +5186,12 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_request_control_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1988u, { 34619u, 0u, 515u, 210u, LANEC_CM } },
-    { 1992u, { 34622u, 0u, 513u, 210u, LANEC_CM } },
-    { 1996u, { 34623u, 0u, 527u, 210u, LANEC_CM } },
-    { 2000u, { 34624u, 0u, 518u, 210u, LANEC_CM } },
-    { 2002u, { 34624u, 0u, 758u, 210u, LANEC_CM } },
-    { 2004u, { 34632u, 0u, 516u, 210u, LANEC_CM } },
-    { 2012u, { 34637u, 0u, 512u, 210u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_request_control_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
-    { 912u, { 34619u, 0u, 5u, 210u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
     { 916u, { 34622u, 0u, 3u, 210u, LANEC_LM } },
     { 920u, { 34623u, 0u, 1u, 210u, LANEC_LM } },
     { 924u, { 34624u, 0u, 6u, 210u, LANEC_LM } },
@@ -5471,120 +5200,103 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_response_recall_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
-    { 1552u, { 33583u, 0u, 512u, 211u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 1553u, { 33583u, 0u, 640u, 211u, LANEC_CM } },
     { 1554u, { 33583u, 0u, 760u, 211u, LANEC_CM } },
-    { 1557u, { 33592u, 0u, 678u, 211u, LANEC_CM } },
-    { 1560u, { 33602u, 0u, 519u, 211u, LANEC_CM } },
     { 1561u, { 33602u, 0u, 621u, 211u, LANEC_CM } },
-    { 1564u, { 33604u, 0u, 526u, 211u, LANEC_CM } },
-    { 1569u, { 33606u, 0u, 633u, 211u, LANEC_CM } },
+    { 1568u, { 33606u, 0u, 513u, 211u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_response_recall_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
     { 476u, { 33642u, 0u, 4u, 211u, LANEC_LM } },
-    { 479u, { 33642u, 0u, 398u, 211u, LANEC_LM } },
+    { 478u, { 33642u, 0u, 252u, 211u, LANEC_LM } },
     { 480u, { 33651u, 0u, 3u, 211u, LANEC_LM } },
-    { 481u, { 33651u, 0u, 149u, 211u, LANEC_LM } },
     { 482u, { 33651u, 0u, 277u, 211u, LANEC_LM } },
-    { 484u, { 33661u, 0u, 16u, 211u, LANEC_LM } },
-    { 486u, { 33661u, 0u, 234u, 211u, LANEC_LM } },
-    { 488u, { 33663u, 0u, 1u, 211u, LANEC_LM } },
+    { 485u, { 33661u, 0u, 118u, 211u, LANEC_LM } },
     { 489u, { 33663u, 0u, 152u, 211u, LANEC_LM } },
-    { 492u, { 33665u, 0u, 2u, 211u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_scalar_output_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
-    { 1276u, { 33102u, 0u, 1024u, 212u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
     { 1280u, { 33108u, 0u, 1639u, 212u, LANEC_CM } },
-    { 1284u, { 33155u, 0u, 1229u, 212u, LANEC_CM } },
-    { 1288u, { 33160u, 0u, 1434u, 212u, LANEC_CM } },
+    { 1281u, { 33108u, 0u, 1690u, 212u, LANEC_CM } },
+    { 1282u, { 33108u, 0u, 1741u, 212u, LANEC_CM } },
     { 1316u, { 33195u, 0u, 1844u, 212u, LANEC_CM } },
+    { 1317u, { 33195u, 0u, 1895u, 212u, LANEC_CM } },
+    { 1318u, { 33195u, 0u, 1946u, 212u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_scalar_output_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 192u, { 33165u, 0u, 0u, 212u, LANEC_LM } },
-    { 193u, { 33165u, 0u, 51u, 212u, LANEC_LM } },
-    { 196u, { 33171u, 0u, 614u, 212u, LANEC_LM } },
     { 197u, { 33171u, 0u, 665u, 212u, LANEC_LM } },
     { 208u, { 33181u, 0u, 819u, 212u, LANEC_LM } },
-    { 212u, { 33215u, 0u, 205u, 212u, LANEC_LM } },
     { 216u, { 33220u, 0u, 409u, 212u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_scale_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 220u, { 33224u, 0u, 0u, 213u, LANEC_LM } },
     { 221u, { 33224u, 0u, 249u, 213u, LANEC_LM } },
-    { 224u, { 33229u, 0u, 1u, 213u, LANEC_LM } },
-    { 228u, { 33231u, 0u, 3u, 213u, LANEC_LM } },
+    { 225u, { 33229u, 0u, 281u, 213u, LANEC_LM } },
+    { 231u, { 33231u, 0u, 777u, 213u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_sign_output_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
-    { 1244u, { 32972u, 0u, 513u, 214u, LANEC_CM } },
-    { 1248u, { 32988u, 0u, 512u, 214u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1249u, { 32988u, 0u, 643u, 214u, LANEC_CM } },
-    { 1250u, { 32988u, 0u, 767u, 214u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_sign_output_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 160u, { 33035u, 0u, 0u, 214u, LANEC_LM } },
-    { 164u, { 33051u, 0u, 1u, 214u, LANEC_LM } },
+    { 161u, { 33035u, 0u, 122u, 214u, LANEC_LM } },
+    { 165u, { 33051u, 0u, 137u, 214u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_source_alarm_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
-    { 1156u, { 2304u, 0u, 516u, 215u, LANEC_CM } },
-    { 1161u, { 2308u, 0u, 641u, 215u, LANEC_CM } },
-    { 1164u, { 2312u, 0u, 512u, 215u, LANEC_CM } },
-    { 1166u, { 2312u, 0u, 775u, 215u, LANEC_CM } },
-    { 1496u, { 33491u, 0u, 513u, 215u, LANEC_CM } },
-    { 1500u, { 33493u, 0u, 515u, 215u, LANEC_CM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+    { 1159u, { 2304u, 0u, 906u, 215u, LANEC_CM } },
+    { 1498u, { 33491u, 0u, 783u, 215u, LANEC_CM } },
     { 1668u, { 34025u, 0u, 517u, 215u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_source_alarm_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[10] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
     { 72u, { 2292u, 0u, 4u, 215u, LANEC_LM } },
     { 76u, { 2296u, 0u, 2u, 215u, LANEC_LM } },
     { 80u, { 2300u, 0u, 9u, 215u, LANEC_LM } },
-    { 83u, { 2300u, 0u, 383u, 215u, LANEC_LM } },
-    { 420u, { 33550u, 0u, 3u, 215u, LANEC_LM } },
-    { 422u, { 33550u, 0u, 273u, 215u, LANEC_LM } },
     { 424u, { 33552u, 0u, 5u, 215u, LANEC_LM } },
-    { 425u, { 33552u, 0u, 125u, 215u, LANEC_LM } },
-    { 426u, { 33552u, 0u, 245u, 215u, LANEC_LM } },
-    { 592u, { 34025u, 0u, 0u, 215u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_test_noun_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1592u, { 33830u, 0u, 512u, 216u, LANEC_CM } },
+    { 1593u, { 33830u, 0u, 640u, 216u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_test_noun_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 516u, { 33830u, 0u, 0u, 216u, LANEC_LM } },
+    { 518u, { 33830u, 0u, 256u, 216u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_two_digit_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 392u, { 33478u, 0u, 0u, 217u, LANEC_LM } },
-    { 394u, { 33478u, 0u, 512u, 217u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_verb_dispatch_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1616u, { 33883u, 0u, 512u, 219u, LANEC_CM } },
     { 1619u, { 33883u, 0u, 896u, 219u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_verb_dispatch_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 541u, { 33883u, 0u, 128u, 219u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 540u, { 33883u, 0u, 0u, 219u, LANEC_LM } },
+    { 543u, { 33883u, 0u, 384u, 219u, LANEC_LM } },
 };
 #endif
 #endif
