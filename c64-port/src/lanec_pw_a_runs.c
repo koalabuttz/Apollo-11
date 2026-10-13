@@ -34,7 +34,7 @@ LANEC_PW_CHARIN_RUN(lanec_pw_charin_release_run, dsky_charin_release(s, &c, &cha
 LANEC_PW_CHARIN_RUN(lanec_pw_charin_sign_run, dsky_charin_sign(s, &c), cm_charin_sign(s, &x, &w))
 
 enum lanec_status lanec_pw_decimal_consumer_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p;
     enum dsky_decimal_consumer_route route = DSKY_DECIMAL_NEXT;
     agc_word routine = (agc_word)(s->words[0140] == 1u ? (s->words[0147] >> 5) & 037u : s->words[0153] & 037u);
@@ -61,7 +61,7 @@ enum lanec_status lanec_pw_decimal_consumer_run(apollo_overlay_state *s, lanec_i
 }
 
 enum lanec_status lanec_pw_decimal_general_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum lanec_status r; enum dsky_decimal_general_route route;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     r = dsky_decimal_general(s, &p, lanec_pw_nv(mission), lanec_pw_rounded(s), &route) == P66_BIAS_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
@@ -70,7 +70,7 @@ enum lanec_status lanec_pw_decimal_general_run(apollo_overlay_state *s, lanec_io
 }
 
 enum lanec_status lanec_pw_decimal_load_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum lanec_status r;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     r = dsky_decimal_load(s, &p, lanec_pw_nv(mission)) == P66_BIAS_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
@@ -79,7 +79,7 @@ enum lanec_status lanec_pw_decimal_load_run(apollo_overlay_state *s, lanec_io *i
 }
 
 enum lanec_status lanec_pw_decimal_raw_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum lanec_status r; enum dsky_decimal_general_route route;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     r = dsky_decimal_raw(s, &p, lanec_pw_nv(mission), lanec_pw_rounded(s), &route) == P66_BIAS_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
@@ -88,7 +88,7 @@ enum lanec_status lanec_pw_decimal_raw_run(apollo_overlay_state *s, lanec_io *io
 }
 
 enum lanec_status lanec_pw_decimal_row_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum lanec_status r;
     enum dsky_decimal_row_entry entry = s->words[LANEC_Z] == 02566u ? DSKY_DECIMAL_ROW_CALL : DSKY_DECIMAL_ROW_RETURN;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
@@ -98,7 +98,7 @@ enum lanec_status lanec_pw_decimal_row_run(apollo_overlay_state *s, lanec_io *io
 }
 
 enum lanec_status lanec_pw_decimal_select_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum lanec_status r; agc_word route = 0;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     r = dsky_decimal_select(s, &p, lanec_pw_nv(mission), &route) == P66_BIAS_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
