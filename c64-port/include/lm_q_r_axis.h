@@ -66,6 +66,20 @@ bool lm_q_r_axis_data(uint16_t physical,agc_word *word);
 #define LM_QR_QERRCALC 02626u
 #define LM_QR_JTLST 03114u
 #define LM_QR_ROTTOUV 03146u
+/* The parts' keys (src/lm_q_r_axis.c): where one part hands Z to the next. */
+#define LM_QR_RCS 02107u
+#define LM_QR_RCS1 02110u  /* RCS +1 */
+#define LM_QR_QRCONTRL 02200u
+#define LM_QR_MINRTN 02273u
+#define LM_QR_CHEKSTIK 02323u
+#define LM_QR_BACKHAND 02532u
+#define LM_QR_TRYGTS 02574u
+#define LM_QR_STILLRCS 02661u  /* STILLRCS (ATTSTEER) */
+#define LM_QR_TJLAW3 02671u  /* TJLAW +3 */
+#define LM_QR_LOOPER 03005u
+#define LM_QR_DOSKIP 03010u
+#define LM_QR_DOSKIP1 03011u  /* DOSKIP +1 */
+#define LM_QR_XTRANS 03063u
 #define LM_QR_FIRST 02072u
 #define LM_QR_LAST 03251u
 #define LM_QR_MAKERUPT 07754u

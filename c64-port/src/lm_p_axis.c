@@ -311,23 +311,36 @@ static int selectp(agc_image *s,int yz,agc_word ret){uint8_t c;int k;
  }
 }
 
-enum {AT_BACKP,AT_ABORTYZ2,AT_ZATTRET,AT_WRITEPRET,AT_JTLSTRET,AT_JETSOFFRET,AT_SPSRET,AT_TJETRET,AT_SELALARM};
-/* BACKP and the returns into it, to the first call that leaves the file. */
-static enum exec_status flow(agc_image *s,lm_flight_io *io,unsigned at){uint8_t c;int k;
- static const agc_word indxyz[16]={077445u,4u,2u,07776u,5u,9u,10u,07776u,3u,8u,7u,07776u,07776u,07776u,07776u,07776u}; /* INDXYZ = -136MST6 */
- static const agc_word mintimes[2]={077751u,026u};
+/* The rate loop (BACKP to the first call that leaves the file) runs as
+ * parts, each ending where it hands Z to the next part's key (16,2451,
+ * Q-RATE, R-RATE, PRETIMCK,
+ * CHKVISFZ, TSNEXTP -1, TSNEXTP, DETENTCK, RATERROR, PJETSLEC -6 and -1,
+ * PURGENCY and PURGENCY +4): the
+ * transfer loop runs that part next, as the original runs on, and a flight
+ * module links only the parts its routines reach. */
+enum {AT_PJETSLEC6,AT_PJETSLEC1,AT_SPSRET,AT_TJETRET};
+static enum exec_status handoff(agc_image *s,agc_word z){W[5]=z;return EXEC_OK;}
+/* ABORTYZ +2: CA BIT1; LXCH RCSFLAGS; EXTEND; RXOR 1; TS RCSFLAGS;
+ * CA ZERO; TCF TSNEXTP (the caller's). */
+static void abortyz2(agc_image *s){
+ ai_caf(s,BIT1);ai_lxch(s,RCSFLAGS);rxor_l(s);
+ if(ai_ts(s,RCSFLAGS))LM_PA_PATH(53);
+ else ai_caf(s,ZERO);
+}
+static enum exec_status jetsoff(agc_image *s){ /* JETSOFF: TC WRITEP -1. */
+ return leave(s,03443u,LM_PA_WRITEP1);
+}
+/* QRAXIS: CS OMEGARD; AD OMEGAR; TC OVERSUB; TS EDOTR; CS OMEGAQD;
+ * AD OMEGAQ; TC OVERSUB; TS EDOTQ; EXTEND; DCA QERRCALL; DTCB. */
+static enum exec_status qraxis(agc_image *s){
  static const agc_word qerrcall[2]={02072u,036106u}; /* 2CADR CALLQERR */
- switch(at){
- case AT_ABORTYZ2:goto abortyz2;
- case AT_ZATTRET:goto zattret;
- case AT_WRITEPRET:goto writepret;
- case AT_JTLSTRET:goto jtlstret;
- case AT_JETSOFFRET:goto jetsoffret;
- case AT_SPSRET:goto spsret;
- case AT_TJETRET:goto tjetret;
- case AT_SELALARM:goto jetsoff;
- default:break;
- }
+ ai_cs(s,OMEGARD);ai_ad(s,OMEGAR);oversub(s,03627u);(void)ai_ts(s,EDOTR);
+ ai_cs(s,OMEGAQD);ai_ad(s,OMEGAQ);oversub(s,03633u);(void)ai_ts(s,EDOTQ);
+ ai_dcaf(s,qerrcall);dtcb(s,03636u);
+ return EXEC_OK;
+}
+/* BACKP: rate derivation, to 16,2451. */
+static enum exec_status rateloop(agc_image *s){
  /* BACKP: CA DAPTEMP1; EXTEND; MP 1JACC; TS JETRATE; CAE DAPTREG4; TS L;
   * EXTEND; MSU OLDXFORP; LXCH OLDXFORP; TS DAPTEMP1; CA 1/40;
   * TS DAPTREG4; CS JETRATE; EXTEND; MP BIT14; ADS TRAPEDP; CA JETRATEQ;
@@ -360,6 +373,10 @@ static enum exec_status flow(agc_image *s,lm_flight_io *io,unsigned at){uint8_t 
  ai_ca(s,M31);ai_mp(s,DAPTEMP2);ai_dxch(s,OMEGAU);ai_ca(s,M32);subdivde(s,0,02435u);
  ai_su(s,OMEGAR);ai_ads(s,TRAPEDR);oversub(s,02441u);(void)ai_ts(s,TRAPEDR);
  ai_dca(s,DAPTEMP5);ai_das(s,DZERROR);ai_cs(s,RLAST);ai_mpf(s,ONE40);ai_das(s,DZERROR);
+ return handoff(s,LM_PA_TRAPS);
+}
+/* 16,2451: the P trap filter, to Q-RATE. */
+static enum exec_status traps(agc_image *s){uint8_t c;
  /* CA DAPBOOLS; MASK CSMDOCKD; EXTEND; BZF LMONLY; EXTEND; DCA DKOMEGAN;
   * DXCH DAPTREG4; CA DKTRAP; TCF +5. LMONLY: EXTEND; DCA LMOMEGAN;
   * DXCH DAPTREG4; CA LMTRAP. +5 TS DAPTREG6. */
@@ -386,23 +403,31 @@ smalpdif:
   * XCH DAPTEMP1; EXTEND; MP FIVE; EXTEND; DV DAPTEMP1; ADS AOSQ. */
  ai_ca(s,JETRATE);ai_ads(s,OMEGAP);oversub(s,02513u);(void)ai_ts(s,OMEGAP);
  c=ai_ccs(s,TRAPEDQ);LM_PA_PATH(26u+c);
- if(c==1u||c==3u)goto qrate;
+ if(c==1u||c==3u)return handoff(s,LM_PA_QRATE);
  ai_ad(s,DAPTREG6);
- if(ai_bzmf(s)){LM_PA_PATH(30);goto qrate;}
+ if(ai_bzmf(s)){LM_PA_PATH(30);return handoff(s,LM_PA_QRATE);}
  ai_zl(s);ai_lxch(s,TRAPEDQ);ai_caf(s,ZERO);ai_dv(s,NQTRAPS);(void)ai_ts(s,DAPTEMP1);ai_ads(s,OMEGAQ);
  oversub(s,02532u);(void)ai_ts(s,OMEGAQ);
  ai_ca(s,DAPTREG4);ai_xch(s,NQTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP1);ai_mpf(s,FIVE);ai_dv(s,DAPTEMP1);ai_ads(s,AOSQ);
-qrate: /* Q-RATE: INCR NQTRAPS; CA JETRATEQ; AD AOSQTERM; ADS OMEGAQ;
+ return handoff(s,LM_PA_QRATE);
+}
+/* Q-RATE: the Q trap filter and AOS term, to R-RATE. */
+static enum exec_status qrate(agc_image *s){uint8_t c;
+/* Q-RATE: INCR NQTRAPS; CA JETRATEQ; AD AOSQTERM; ADS OMEGAQ;
   * TC OVERSUB; TS OMEGAQ; CCS TRAPEDR ... ADS AOSR, as for Q. */
  ai_incr(s,NQTRAPS);ai_ca(s,JETRATEQ);ai_ad(s,AOSQTERM);ai_ads(s,OMEGAQ);oversub(s,02551u);(void)ai_ts(s,OMEGAQ);
  c=ai_ccs(s,TRAPEDR);LM_PA_PATH(31u+c);
- if(c==1u||c==3u)goto rrate;
+ if(c==1u||c==3u)return handoff(s,LM_PA_RRATE);
  ai_ad(s,DAPTREG6);
- if(ai_bzmf(s)){LM_PA_PATH(35);goto rrate;}
+ if(ai_bzmf(s)){LM_PA_PATH(35);return handoff(s,LM_PA_RRATE);}
  ai_zl(s);ai_lxch(s,TRAPEDR);ai_caf(s,ZERO);ai_dv(s,NRTRAPS);(void)ai_ts(s,DAPTEMP2);ai_ads(s,OMEGAR);
  oversub(s,02570u);(void)ai_ts(s,OMEGAR);
  ai_ca(s,DAPTREG4);ai_xch(s,NRTRAPS);ai_ad(s,DAPTREG5);ai_xch(s,DAPTEMP2);ai_mpf(s,FIVE);ai_dv(s,DAPTEMP2);ai_ads(s,AOSR);
-rrate: /* R-RATE: INCR NRTRAPS; CA JETRATER; AD AOSRTERM; ADS OMEGAR;
+ return handoff(s,LM_PA_RRATE);
+}
+/* R-RATE: the R trap filter, AOS terms, to PRETIMCK. */
+static enum exec_status rrate(agc_image *s){
+/* R-RATE: INCR NRTRAPS; CA JETRATER; AD AOSRTERM; ADS OMEGAR;
   * TC OVERSUB; TS OMEGAR; CS DAPBOOLS; MASK DRIFTBIT; CCS A;
   * TCF WORKTIME; TS ALPHAQ; TS ALPHAR; TS AOSQTERM; TS AOSRTERM; TS AOSQ;
   * TS AOSR; TCF PRETIMCK. */
@@ -420,6 +445,10 @@ rrate: /* R-RATE: INCR NRTRAPS; CA JETRATER; AD AOSRTERM; ADS OMEGAR;
   LM_PA_PATH(37);
   (void)ai_ts(s,ALPHAQ);(void)ai_ts(s,ALPHAR);(void)ai_ts(s,AOSQTERM);(void)ai_ts(s,AOSRTERM);(void)ai_ts(s,AOSQ);(void)ai_ts(s,AOSR);
  }
+ return handoff(s,LM_PA_PRETIMCK);
+}
+/* PRETIMCK: the gimbal timers, the jet counters and SKIPPAXS, to CHKVISFZ. */
+static enum exec_status pretimck(agc_image *s,lm_flight_io *io){uint8_t c;
  /* PRETIMCK: CCS QGIMTIMR; TCF DECQTIMR; TCF TURNOFFQ; CHKRTIMR ... (the
   * -0 exit enters CHKRTIMR's TCF DECRTIMR). DECQTIMR: TS QGIMTIMR;
   * TCF CHKRTIMR. TURNOFFQ: TS NEGUQ; TS QACCDOT; CS QGIMBITS; EXTEND;
@@ -448,13 +477,18 @@ dimu:
  ai_dim(s,UJETCTR);ai_dim(s,VJETCTR);ai_caf(s,BIT12);ai_mask(s,RCSFLAGS);
  if(ai_bzf(s)){
   /* SKIPPAXS: CS RCSFLAGS; MASK BIT12; ADS RCSFLAGS; TCF QRAXIS. */
-  LM_PA_PATH(46);ai_cs(s,RCSFLAGS);ai_maskf(s,BIT12);ai_ads(s,RCSFLAGS);goto qraxis;
+  LM_PA_PATH(46);ai_cs(s,RCSFLAGS);ai_maskf(s,BIT12);ai_ads(s,RCSFLAGS);return qraxis(s);
  }
  ai_tc(s,02710u);
+ return handoff(s,LM_PA_CHKVISFZ);
+}
+/* CHKVISFZ and TRYUORV (translation), to TSNEXTP. */
+static enum exec_status chkvisfz(agc_image *s,lm_flight_io *io){int k;
+ static const agc_word indxyz[16]={077445u,4u,2u,07776u,5u,9u,10u,07776u,3u,8u,7u,07776u,07776u,07776u,07776u,07776u}; /* INDXYZ = -136MST6 */
  /* CHKVISFZ: EXTEND; READ CHAN31; CS A; MASK 07400OCT; EXTEND;
   * BZF TSNEXTP; EXTEND; MP BIT7; INDEX A; CA INDXYZ; TS ROTINDEX. */
  rd(s,io->chan31);ai_cs(s,0u);ai_maskf(s,OCT07400);
- if(ai_bzf(s)){LM_PA_PATH(47);goto tsnextp;}
+ if(ai_bzf(s)){LM_PA_PATH(47);return handoff(s,LM_PA_TSNEXTP);}
  ai_mpf(s,BIT7);ai_caf(s,indxyz[sa(s)]);(void)ai_ts(s,ROTINDEX);
 tryuorv: /* TRYUORV: CA SIX; TC SELECTYZ; CS SIX; AD NUMBERT; EXTEND;
   * BZF TSNEXTP -1; CS FIVE; AD ROTINDEX; EXTEND; BZMF ALTERYZ;
@@ -462,9 +496,9 @@ tryuorv: /* TRYUORV: CA SIX; TC SELECTYZ; CS SIX; AD NUMBERT; EXTEND;
  ai_caf(s,SIX);
  k=selectp(s,1,02755u);
  if(k==SEL_ALARM)return EXEC_OK;
- if(k==SEL_ABORTYZ)goto abortyz2;
+ if(k==SEL_ABORTYZ){abortyz2(s);return handoff(s,LM_PA_TSNEXTP);}
  ai_csf(s,SIX);ai_ad(s,NUMBERT);
- if(ai_bzf(s)){LM_PA_PATH(48);goto tsnextp1;}
+ if(ai_bzf(s)){LM_PA_PATH(48);return handoff(s,LM_PA_TSNEXTP1);}
  ai_csf(s,FIVE);ai_ad(s,ROTINDEX);
  if(ai_bzmf(s)){
   /* ALTERYZ: CA BIT1; LXCH RCSFLAGS; EXTEND; RXOR 1; TS RCSFLAGS;
@@ -475,16 +509,15 @@ tryuorv: /* TRYUORV: CA SIX; TC SELECTYZ; CS SIX; AD NUMBERT; EXTEND;
   ai_adf(s,FOUR);ai_ads(s,ROTINDEX);goto tryuorv;
  }
  ai_cs(s,NUMBERT);ai_adf(s,FOUR);
- if(ai_bzmf(s)){LM_PA_PATH(51);goto tsnextp1;}
+ if(ai_bzmf(s)){LM_PA_PATH(51);return handoff(s,LM_PA_TSNEXTP1);}
  /* ABORTYZ: TC ALARM; OCT 02001. */
  LM_PA_PATH(52);return leave(s,02772u,LM_PA_ALARM);
-abortyz2: /* ABORTYZ +2: CA BIT1; LXCH RCSFLAGS; EXTEND; RXOR 1;
-  * TS RCSFLAGS; CA ZERO; TCF TSNEXTP. */
- ai_caf(s,BIT1);ai_lxch(s,RCSFLAGS);rxor_l(s);
- if(ai_ts(s,RCSFLAGS))LM_PA_PATH(53);
- else ai_caf(s,ZERO);
- goto tsnextp;
-tsnextp1: /* TSNEXTP -1: CA POLYTEMP. */
+}
+/* TSNEXTP -1 (or TSNEXTP, or ABORTYZ +2): MANMODE, CHECKP and FIREP. */
+static enum exec_status manual(agc_image *s,lm_flight_io *io,agc_word at){uint8_t c;
+ if(at==LM_PA_ABORTYZ2){abortyz2(s);goto tsnextp;}
+ if(at==LM_PA_TSNEXTP)goto tsnextp;
+ /* TSNEXTP -1: CA POLYTEMP. */
  ai_ca(s,POLYTEMP);
 tsnextp: /* TSNEXTP: TS NEXTP; CA BIT13; EXTEND; RAND CHAN31; EXTEND;
   * BZF MANMODE; CA DAPBOOLS; MASK XOVINHIB; CCS A; TCF PURGENCY;
@@ -492,19 +525,19 @@ tsnextp: /* TSNEXTP: TS NEXTP; CA BIT13; EXTEND; RAND CHAN31; EXTEND;
  (void)ai_ts(s,NEXTP);ai_caf(s,BIT13);rand(s,io->chan31);
  if(!ai_bzf(s)){
   ai_ca(s,DAPBOOLS);ai_maskf(s,XOVINHIB);
-  if(ai_ccs(s,0u)==0u){LM_PA_PATH(54);goto purgency;}
-  LM_PA_PATH(55);goto detentck;
+  if(ai_ccs(s,0u)==0u){LM_PA_PATH(54);return handoff(s,LM_PA_PURGENCY);}
+  LM_PA_PATH(55);return handoff(s,LM_PA_DETENTCK);
  }
  /* MANMODE: CA PULSES; MASK DAPBOOLS; EXTEND; BZF DETENTCK; CA ZERO;
   * TS PERROR; CA CDUX; TS CDUXD; CCS OLDPMIN; TCF CHECKP. */
  ai_caf(s,PULSES);ai_mask(s,DAPBOOLS);
- if(ai_bzf(s)){LM_PA_PATH(56);goto detentck;}
+ if(ai_bzf(s)){LM_PA_PATH(56);return handoff(s,LM_PA_DETENTCK);}
  ai_caf(s,ZERO);(void)ai_ts(s,PERROR);ai_ca(s,CDUX);(void)ai_ts(s,CDUXD);
  c=ai_ccs(s,OLDPMIN);LM_PA_PATH(57u+c);
  if(c==0u){
   /* CHECKP: EXTEND; READ CHAN31; CS A; MASK OCT14; TS OLDPMIN;
    * TCF JETSOFF. */
-  rd(s,io->chan31);ai_cs(s,0u);ai_maskf(s,OCT14);(void)ai_ts(s,OLDPMIN);goto jetsoff;
+  rd(s,io->chan31);ai_cs(s,0u);ai_maskf(s,OCT14);(void)ai_ts(s,OLDPMIN);return jetsoff(s);
  }
  /* FIREP: CA BIT3; EXTEND; RAND CHAN31; EXTEND; BZF +XMIN; CA BIT4;
   * EXTEND; RAND CHAN31; EXTEND; BZF -XMIN; TCF JETSOFF (the CCS's
@@ -514,13 +547,16 @@ tsnextp: /* TSNEXTP: TS NEXTP; CA BIT13; EXTEND; RAND CHAN31; EXTEND;
  if(ai_bzf(s)){LM_PA_PATH(61);ai_caf(s,TEN);}
  else{
   ai_caf(s,BIT4);rand(s,io->chan31);
-  if(!ai_bzf(s)){LM_PA_PATH(62);goto jetsoff;}
+  if(!ai_bzf(s)){LM_PA_PATH(62);return jetsoff(s);}
   LM_PA_PATH(63);ai_csf(s,TEN);
  }
  /* -XMIN: CS TEN; TCF +2. +XMIN: CA TEN; TS TJP; CA ONE; TS OLDPMIN;
   * TCF PJETSLEC -6. */
- (void)ai_ts(s,TJP);ai_caf(s,ONE);(void)ai_ts(s,OLDPMIN);goto pjetslec6;
-detentck: /* DETENTCK: EXTEND; READ CHAN31; TS CH31TEMP; MASK BIT15;
+ (void)ai_ts(s,TJP);ai_caf(s,ONE);(void)ai_ts(s,OLDPMIN);return handoff(s,LM_PA_PJETSLEC6);
+}
+/* DETENTCK: RHCMOVED, RUTH, RATEDONE, RATEDAMP and JUSTOUT. */
+static enum exec_status detentck(agc_image *s,lm_flight_io *io){
+/* DETENTCK: EXTEND; READ CHAN31; TS CH31TEMP; MASK BIT15;
   * EXTEND; BZF RHCMOVED; CAF OURRCBIT; MASK DAPBOOLS; EXTEND;
   * BZF PURGENCY; CA BIT9; MASK RCSFLAGS; EXTEND; BZF RUTH; CAF BIT13;
   * EXTEND; RAND CHAN31; EXTEND; BZF RATEDAMP; CS BITS9,11; MASK RCSFLAGS;
@@ -530,10 +566,10 @@ detentck: /* DETENTCK: EXTEND; READ CHAN31; TS CH31TEMP; MASK BIT15;
   /* RHCMOVED: CA OURRCBIT; MASK DAPBOOLS; EXTEND; BZF JUSTOUT -1. */
   LM_PA_PATH(64);ai_caf(s,OURRCBIT);ai_mask(s,DAPBOOLS);
   if(ai_bzf(s)){LM_PA_PATH(65);goto justout1;}
-  goto raterror;
+  return handoff(s,LM_PA_RATERROR);
  }
  ai_caf(s,OURRCBIT);ai_mask(s,DAPBOOLS);
- if(ai_bzf(s)){LM_PA_PATH(66);goto purgency;}
+ if(ai_bzf(s)){LM_PA_PATH(66);return handoff(s,LM_PA_PURGENCY);}
  ai_caf(s,BIT9);ai_mask(s,RCSFLAGS);
  if(ai_bzf(s)){
   /* RUTH: CA RCSFLAGS; MASK PBIT; EXTEND; BZF +2; TCF RATEDAMP;
@@ -549,14 +585,13 @@ detentck: /* DETENTCK: EXTEND; READ CHAN31; TS CH31TEMP; MASK BIT15;
   ai_caf(s,BIT13);rand(s,io->chan31);
   if(ai_bzf(s)){LM_PA_PATH(70);return leave(s,03153u,LM_PA_IBNKCALL);}
   ai_ca(s,CDUX);(void)ai_ts(s,CDUXD);ai_tc(s,03152u);
-zattret:
-  io->bias.interrupt_enabled=1u;goto purgency;
+  io->bias.interrupt_enabled=1u;return handoff(s,LM_PA_PURGENCY);
  }
  ai_caf(s,BIT13);rand(s,io->chan31);
  if(!ai_bzf(s)){LM_PA_PATH(71);ai_csf(s,BITS9_11);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);}
 ratedamp: /* RATEDAMP: CA ZERO; TS P-RHCCTR; TCF RATERROR. */
  ai_caf(s,ZERO);(void)ai_ts(s,PRHCCTR);
- goto raterror;
+ return handoff(s,LM_PA_RATERROR);
 justout1: /* JUSTOUT -1: TS PERROR. JUSTOUT: CA OURRCBIT; ADS DAPBOOLS;
   * CA ZERO; TS DXERROR; TS DXERROR +1; TS DYERROR; TS DYERROR +1;
   * TS DZERROR; TS DZERROR +1; TS PLAST; TS QLAST; TS RLAST;
@@ -567,8 +602,11 @@ justout1: /* JUSTOUT -1: TS PERROR. JUSTOUT: CA OURRCBIT; ADS DAPBOOLS;
  (void)ai_ts(s,DZERROR);(void)ai_ts(s,DZERROR1);(void)ai_ts(s,PLAST);(void)ai_ts(s,QLAST);(void)ai_ts(s,RLAST);
  (void)ai_ts(s,QRHCCTR);(void)ai_ts(s,RRHCCTR);
  ai_caf(s,PQRBIT);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);ai_cs(s,RCSFLAGS);ai_maskf(s,BIT9);ai_ads(s,RCSFLAGS);
- zeroenbl(s,io,03204u);goto jetsoff;
-raterror: /* RATERROR: CA CDUX; TS CDUXD; CCS P-RHCCTR; TCF +3; TCF +2;
+ zeroenbl(s,io,03204u);return jetsoff(s);
+}
+/* RATERROR and PEGI: the P-axis RCS law, to PJETSLEC. */
+static enum exec_status raterror(agc_image *s,lm_flight_io *io){uint8_t c;
+/* RATERROR: CA CDUX; TS CDUXD; CCS P-RHCCTR; TCF +3; TCF +2;
   * TCF +1; DOUBLE; DOUBLE; AD LINRATP; EXTEND; MP P-RHCCTR; CA L; EXTEND;
   * MP STIKSENS; XCH PLAST; COM; AD PLAST; TS DAPTEMP1; TC ZEROENBL;
   * CS PLAST; AD OMEGAP; TS EDOTP; CCS DAPTEMP1; TCF +3; TCF +8D; TCF +1;
@@ -590,7 +628,7 @@ l3261:
 l3267:
  ai_ca(s,RCSFLAGS);ai_maskf(s,PBIT);
  if(!ai_bzf(s)){LM_PA_PATH(83);ai_tc(s,03274u);goto pegi;}
- ai_ca(s,DXERROR);(void)ai_ts(s,EREG);(void)ai_ts(s,PERROR);ai_tc(s,03300u);goto purgency4;
+ ai_ca(s,DXERROR);(void)ai_ts(s,EREG);(void)ai_ts(s,PERROR);ai_tc(s,03300u);return handoff(s,LM_PA_PURGENCY4);
 pegi: /* PEGI: CA CDUX; TS CDUXD; CA ZERO; TS DXERROR; TS DXERROR +1;
   * TS PERROR; CCS EDOTP; TC +3; TC +2; TC +1; TS ABSEDOTP; AD TARGETDB;
   * EXTEND; BZMF LAST; CA TCP; EXTEND; BZMF LAST; CS RCSFLAGS; MASK PBIT;
@@ -612,8 +650,15 @@ l3330: /* CS EDOTP; EXTEND; MP 1/ANETP; DAS A; TC OVERSUB; EXTEND;
   * TCF +8D; CA TJP; ADS TJP. */
  ai_cs(s,EDOTP);ai_mp(s,ONEANETP);ai_ddoubl(s);oversub(s,03335u);ai_mpf(s,C25_32);(void)ai_ts(s,TJP);
  ai_ca(s,ABSEDOTP);ai_ad(s,MINUS2JETLIM);
- if(!ai_bzmf(s)){LM_PA_PATH(90);ai_caf(s,SIX);goto pjetslec1;}
+ if(!ai_bzmf(s)){LM_PA_PATH(90);ai_caf(s,SIX);return handoff(s,LM_PA_PJETSLEC1);}
  ai_ca(s,TJP);ai_ads(s,TJP);
+ return handoff(s,LM_PA_PJETSLEC6);
+}
+/* PJETSLEC -6 or -1 to TC WRITEP, and the SPSRCS and TJETLAW returns. */
+static enum exec_status jetselect(agc_image *s,lm_flight_io *io,unsigned at){uint8_t c;int k;
+ if(at==AT_SPSRET)goto spsret;
+ if(at==AT_TJETRET)goto tjetret;
+ if(at==AT_PJETSLEC1)goto pjetslec1;
 pjetslec6: /* PJETSLEC -6: CA AORBSYST; MASK DAPBOOLS; CCS A; CA ONE;
   * AD FOUR. -1: TS NUMBERT. */
  ai_caf(s,AORBSYST);ai_mask(s,DAPBOOLS);
@@ -624,33 +669,39 @@ pjetslec1:
  /* PJETSLEC: CA ONE; TS L; CCS TJP; TCF +5; TCF JETSOFF; TCF +2;
   * TCF JETSOFF; ZL; AD ONE; TS ABSTJ; LXCH ROTINDEX; TC SELECTP. */
  ai_caf(s,ONE);(void)ai_ts(s,LREG);c=ai_ccs(s,TJP);LM_PA_PATH(92u+c);
- if(c==1u||c==3u)goto jetsoff;
+ if(c==1u||c==3u)return jetsoff(s);
  if(c==2u)ai_zl(s);
  ai_adf(s,ONE);(void)ai_ts(s,ABSTJ);ai_lxch(s,ROTINDEX);
  k=selectp(s,0,03372u);
  if(k==SEL_ALARM)return EXEC_OK;
- if(k==SEL_ABORTYZ)goto abortyz2;
+ if(k==SEL_ABORTYZ){abortyz2(s);return handoff(s,LM_PA_TSNEXTP);}
  /* CS SIX; AD NUMBERT; EXTEND; BZF +2; CS TWO; AD FOUR; TS NO.PJETS;
   * CA POLYTEMP; TC WRITEP. */
  ai_csf(s,SIX);ai_ad(s,NUMBERT);
  if(!ai_bzf(s)){LM_PA_PATH(96);ai_csf(s,TWO);}
  ai_adf(s,FOUR);(void)ai_ts(s,NOPJETS);ai_ca(s,POLYTEMP);
  return leave(s,03403u,LM_PA_WRITEP);
-writepret: /* CS ABSTJ; AD +150MST6; EXTEND; BZMF QRAXIS; AD -136MST6;
-  * EXTEND; BZMF +5; ADS ABSTJ; INDEX ROTINDEX; CA MINTIMES; TS TJP;
-  * CA ABSTJ; ZL; INHINT; DXCH T6FURTHA; TC IBNKCALL; CADR JTLST. */
- ai_cs(s,ABSTJ);ai_adf(s,PLUS150MST6);
- if(ai_bzmf(s)){LM_PA_PATH(97);goto qraxis;}
- ai_adf(s,MINUS136MST6);
- if(!ai_bzmf(s)){LM_PA_PATH(98);ai_ads(s,ABSTJ);ai_caf(s,mintimes[sv(s,ROTINDEX)]);(void)ai_ts(s,TJP);}
- ai_ca(s,ABSTJ);ai_zl(s);io->bias.interrupt_enabled=0u;ai_dxch(s,T6FURTHA);
- return leave(s,03423u,LM_PA_IBNKCALL);
-jtlstret: /* CS BIT12; MASK RCSFLAGS; TS RCSFLAGS; TC ALTSYST; TCF QRAXIS. */
- ai_csf(s,BIT12);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);altsyst(s,io,03430u);goto qraxis;
-jetsoff: /* JETSOFF: TC WRITEP -1. */
- return leave(s,03443u,LM_PA_WRITEP1);
-jetsoffret: /* CA ZERO; TS TJP; TCF QRAXIS. */
- ai_caf(s,ZERO);(void)ai_ts(s,TJP);goto qraxis;
+spsret: /* CA TJP; EXTEND; BZF DKALT; RELINT; TCF PJETSLEC -6.
+  * DKALT: TC ALTSYST; JETSOFF. */
+ ai_ca(s,TJP);
+ if(ai_bzf(s)){LM_PA_PATH(102);altsyst(s,io,03442u);return jetsoff(s);}
+ io->bias.interrupt_enabled=1u;goto pjetslec6;
+tjetret: /* RELINT; CS FIREFCT; AD -FOURDEG; EXTEND; BZMF PJETSLEC -6;
+  * CCS TJP; TCF +2; TCF JETSOFF; AD -160MST6; EXTEND; BZMF PJETSLEC -6;
+  * CA SIX; TCF PJETSLEC -1. */
+ io->bias.interrupt_enabled=1u;ai_cs(s,FIREFCT);ai_adf(s,MINUSFOURDEG);
+ if(ai_bzmf(s)){LM_PA_PATH(103);goto pjetslec6;}
+ c=ai_ccs(s,TJP);LM_PA_PATH(104u+c);
+ if(c==1u)return jetsoff(s);
+ if(c==3u)goto pjetslec6; /* EXTEND; BZMF PJETSLEC -6 on +0 */
+ ai_adf(s,MINUS160MST6);
+ if(ai_bzmf(s)){LM_PA_PATH(108);goto pjetslec6;}
+ ai_caf(s,SIX);goto pjetslec1;
+}
+/* PURGENCY (or +4, or ZATTEROR's return) to IBNKCALL SPSRCS or TJETLAW. */
+static enum exec_status urgency(agc_image *s,lm_flight_io *io,agc_word at){
+ if(at==LM_PA_ZATTRET){io->bias.interrupt_enabled=1u;goto purgency;}
+ if(at==LM_PA_PURGENCY4)goto purgency4;
 purgency: /* PURGENCY: TC CALCPERR; CS OMEGAPD; AD OMEGAP; TS EDOTP;
   * CS ONE; TS AXISCTR; CA DAPBOOLS; MASK CSMDOCKD; EXTEND; BZF HEADTJET;
   * INHINT; TC IBNKCALL; CADR SPSRCS. */
@@ -666,28 +717,28 @@ purgency5:
  /* HEADTJET: CA ZERO; TS SENSETYP; INHINT; TC IBNKCALL; CADR TJETLAW. */
  LM_PA_PATH(101);ai_caf(s,ZERO);(void)ai_ts(s,SENSETYP);
  return leave(s,03511u,LM_PA_IBNKCALL);
-spsret: /* CA TJP; EXTEND; BZF DKALT; RELINT; TCF PJETSLEC -6.
-  * DKALT: TC ALTSYST; JETSOFF. */
- ai_ca(s,TJP);
- if(ai_bzf(s)){LM_PA_PATH(102);altsyst(s,io,03442u);goto jetsoff;}
- io->bias.interrupt_enabled=1u;goto pjetslec6;
-tjetret: /* RELINT; CS FIREFCT; AD -FOURDEG; EXTEND; BZMF PJETSLEC -6;
-  * CCS TJP; TCF +2; TCF JETSOFF; AD -160MST6; EXTEND; BZMF PJETSLEC -6;
-  * CA SIX; TCF PJETSLEC -1. */
- io->bias.interrupt_enabled=1u;ai_cs(s,FIREFCT);ai_adf(s,MINUSFOURDEG);
- if(ai_bzmf(s)){LM_PA_PATH(103);goto pjetslec6;}
- c=ai_ccs(s,TJP);LM_PA_PATH(104u+c);
- if(c==1u)goto jetsoff;
- if(c==3u)goto pjetslec6; /* EXTEND; BZMF PJETSLEC -6 on +0 */
- ai_adf(s,MINUS160MST6);
- if(ai_bzmf(s)){LM_PA_PATH(108);goto pjetslec6;}
- ai_caf(s,SIX);goto pjetslec1;
-qraxis: /* QRAXIS: CS OMEGARD; AD OMEGAR; TC OVERSUB; TS EDOTR; CS OMEGAQD;
-  * AD OMEGAQ; TC OVERSUB; TS EDOTQ; EXTEND; DCA QERRCALL; DTCB. */
- ai_cs(s,OMEGARD);ai_ad(s,OMEGAR);oversub(s,03627u);(void)ai_ts(s,EDOTR);
- ai_cs(s,OMEGAQD);ai_ad(s,OMEGAQ);oversub(s,03633u);(void)ai_ts(s,EDOTQ);
- ai_dcaf(s,qerrcall);dtcb(s,03636u);
- return EXEC_OK;
+}
+/* 16,3403 (WRITEP's return): CS ABSTJ; AD +150MST6; EXTEND;
+ * BZMF QRAXIS; AD -136MST6; EXTEND; BZMF +5; ADS ABSTJ; INDEX ROTINDEX;
+ * CA MINTIMES; TS TJP; CA ABSTJ; ZL; INHINT; DXCH T6FURTHA;
+ * TC IBNKCALL; CADR JTLST. */
+static enum exec_status writepret_body(agc_image *s,lm_flight_io *io){
+ static const agc_word mintimes[2]={077751u,026u};
+ ai_cs(s,ABSTJ);ai_adf(s,PLUS150MST6);
+ if(ai_bzmf(s)){LM_PA_PATH(97);return qraxis(s);}
+ ai_adf(s,MINUS136MST6);
+ if(!ai_bzmf(s)){LM_PA_PATH(98);ai_ads(s,ABSTJ);ai_caf(s,mintimes[sv(s,ROTINDEX)]);(void)ai_ts(s,TJP);}
+ ai_ca(s,ABSTJ);ai_zl(s);io->bias.interrupt_enabled=0u;ai_dxch(s,T6FURTHA);
+ return leave(s,03423u,LM_PA_IBNKCALL);
+}
+/* 16,3424 (JTLST's return): CS BIT12; MASK RCSFLAGS; TS RCSFLAGS;
+ * TC ALTSYST; TCF QRAXIS. */
+static enum exec_status jtlstret_body(agc_image *s,lm_flight_io *io){
+ ai_csf(s,BIT12);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);altsyst(s,io,03430u);return qraxis(s);
+}
+/* 16,3443 (WRITEP -1's return): CA ZERO; TS TJP; TCF QRAXIS. */
+static enum exec_status jetsoffret_body(agc_image *s){
+ ai_caf(s,ZERO);(void)ai_ts(s,TJP);return qraxis(s);
 }
 
 /* PAXFILT +4 (ACDT+C12's return): DXCH ARUPT; DXCH DAPARUPT; CA SUPERJOB;
@@ -746,20 +797,35 @@ static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];calcperr_body(s);return EXEC_OK;
 }
-static enum exec_status flow_entry(agc_image *s,void *v,unsigned at){
- if(!entry(s,v)||ai_word(s,OLDPMIN)==077777u)return EXEC_OUT_OF_SCOPE;
- if(at==AT_WRITEPRET&&W[ai_ea(s,ROTINDEX)]>1u)return EXEC_OUT_OF_SCOPE;
- return flow(s,v,at);
+static int flow_ok(agc_image *s,void *v){return entry(s,v)&&ai_word(s,OLDPMIN)!=077777u;}
+#define FLOW(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){(void)p; \
+ if(!flow_ok(s,v))return EXEC_OUT_OF_SCOPE; \
+ return body;}
+FLOW(backp,rateloop(s))
+FLOW(traps_e,traps(s))
+FLOW(qrate_e,qrate(s))
+FLOW(rrate_e,rrate(s))
+FLOW(pretimck_e,pretimck(s,v))
+FLOW(chkvisfz_e,chkvisfz(s,v))
+FLOW(abortyzret,manual(s,v,LM_PA_ABORTYZ2))
+FLOW(tsnextp1,manual(s,v,LM_PA_TSNEXTP1))
+FLOW(tsnextp,manual(s,v,LM_PA_TSNEXTP))
+FLOW(detentck_e,detentck(s,v))
+FLOW(raterror_e,raterror(s,v))
+FLOW(zattret,urgency(s,v,LM_PA_ZATTRET))
+FLOW(pjetslec6,jetselect(s,v,AT_PJETSLEC6))
+FLOW(pjetslec1,jetselect(s,v,AT_PJETSLEC1))
+FLOW(jtlstret,jtlstret_body(s,v))
+FLOW(jetsoffret,jetsoffret_body(s))
+FLOW(purgency,urgency(s,v,LM_PA_PURGENCY))
+FLOW(purgency4,urgency(s,v,LM_PA_PURGENCY4))
+FLOW(spsret,jetselect(s,v,AT_SPSRET))
+FLOW(tjetret,jetselect(s,v,AT_TJETRET))
+FLOW(selalarm,jetsoff(s))
+static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){(void)p;
+ if(!flow_ok(s,v)||W[ai_ea(s,ROTINDEX)]>1u)return EXEC_OUT_OF_SCOPE;
+ return writepret_body(s,v);
 }
-static enum exec_status backp(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_BACKP);}
-static enum exec_status abortyzret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_ABORTYZ2);}
-static enum exec_status zattret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_ZATTRET);}
-static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_WRITEPRET);}
-static enum exec_status jtlstret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_JTLSTRET);}
-static enum exec_status jetsoffret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_JETSOFFRET);}
-static enum exec_status spsret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_SPSRET);}
-static enum exec_status tjetret(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_TJETRET);}
-static enum exec_status selalarm(const agc_native_program *p,agc_image *s,void *v){(void)p;return flow_entry(s,v,AT_SELALARM);}
 const agc_site_operand lm_p_axis_sites[LM_PA_SITES]={
 #include "lm_p_axis_sites.inc"
 };
@@ -772,9 +838,14 @@ static int pa_data(uint16_t physical,agc_word *word){
  return 0;
 }
 bool lm_p_axis_data(uint16_t physical,agc_word *word){return word&&pa_data(physical,word);}
-static const agc_routine_entry entries[15]={
+static const agc_routine_entry entries[28]={
  {P16(LM_PA_PAXIS),paxis},{P16(LM_PA_CHEKBITS2),chekbits2},{P16(LM_PA_AFTERCHEK),afterchek},{P16(LM_PA_BACKP),backp},
- {P16(LM_PA_AFTERACDT),afteracdt},{P16(LM_PA_SUPERJOB),superjob},{P16(LM_PA_ABORTYZ2),abortyzret},{P16(LM_PA_ZATTRET),zattret},
- {P16(LM_PA_WRITEPRET),writepret},{P16(LM_PA_JTLSTRET),jtlstret},{P16(LM_PA_JETSOFFRET),jetsoffret},{P16(LM_PA_CALCPERR),calcperr},
- {P16(LM_PA_SPSRET),spsret},{P16(LM_PA_TJETRET),tjetret},{P16(LM_PA_SELALARM),selalarm}};
-const agc_routine_table lm_p_axis_routines={entries,15};
+ {P16(LM_PA_TRAPS),traps_e},{P16(LM_PA_QRATE),qrate_e},{P16(LM_PA_RRATE),rrate_e},{P16(LM_PA_AFTERACDT),afteracdt},{P16(LM_PA_SUPERJOB),superjob},
+ {P16(LM_PA_PRETIMCK),pretimck_e},{P16(LM_PA_CHKVISFZ),chkvisfz_e},{P16(LM_PA_ABORTYZ2),abortyzret},
+ {P16(LM_PA_TSNEXTP1),tsnextp1},{P16(LM_PA_TSNEXTP),tsnextp},{P16(LM_PA_DETENTCK),detentck_e},
+ {P16(LM_PA_ZATTRET),zattret},{P16(LM_PA_RATERROR),raterror_e},{P16(LM_PA_PJETSLEC6),pjetslec6},
+ {P16(LM_PA_PJETSLEC1),pjetslec1},{P16(LM_PA_WRITEPRET),writepret},{P16(LM_PA_JTLSTRET),jtlstret},
+ {P16(LM_PA_JETSOFFRET),jetsoffret},{P16(LM_PA_CALCPERR),calcperr},{P16(LM_PA_PURGENCY),purgency},
+ {P16(LM_PA_PURGENCY4),purgency4},{P16(LM_PA_SPSRET),spsret},{P16(LM_PA_TJETRET),tjetret},
+ {P16(LM_PA_SELALARM),selalarm}};
+const agc_routine_table lm_p_axis_routines={entries,28};

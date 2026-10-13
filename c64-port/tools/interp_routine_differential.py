@@ -1234,12 +1234,12 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                     continue
                 m = re.match(r'branch\s+(\d+) taken (\d+)', l)
                 if m and int(m.group(2)):
-                    taken.add((src, line, int(m.group(1))))
-        res[tag] = taken
+                    taken.add((os.path.basename(o)[:-2], src, line, int(m.group(1))))
+        res[tag] = c64_row_cover.arc_keys(taken)
         shutil.rmtree(w, ignore_errors=True)
-    miss = sorted(res['host'] - res['c64'])
+    miss = sorted(res['host'] - res['c64'], key=lambda a: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', a)])
     return {'host_taken': len(res['host']), 'c64_taken': len(res['c64']), 'host_taken_not_c64': len(miss),
-            'missing': ['%s:%d branch %d' % x for x in miss[:50]],
+            'missing': miss[:50],
             'sources': srcs,
             'note': 'gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source '
                     'above: the branch outcomes all the differential cases take, and those the C64 cases take'}

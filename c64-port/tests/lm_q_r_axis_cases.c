@@ -61,11 +61,31 @@ void lm_qr_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
  m->words[0]=agc_extend(m->words[0]);m->words[1]=agc_extend(m->words[1]);
  m->words[5]=lm_qr_entry_z[e];
 }
+/* The parts of CALLQERR's step machine (src/lm_q_r_axis.c) hand Z on to
+ * each other: a run into one of those keys continues the routine before it. */
+static int part(const apollo_overlay_state *s){static const agc_word keys[13]={LM_QR_RCS,LM_QR_RCS1,LM_QR_QRCONTRL,
+  LM_QR_MINRTN,LM_QR_CHEKSTIK,LM_QR_BACKHAND,LM_QR_TRYGTS,LM_QR_STILLRCS,LM_QR_TJLAW3,LM_QR_LOOPER,LM_QR_DOSKIP,
+  LM_QR_DOSKIP1,LM_QR_XTRANS};unsigned i;
+ if((s->words[4]&076000u)!=LM_QR_FB17)return 0;
+ for(i=0;i<13u;++i)if(s->words[5]==keys[i])return 1;
+ return 0;
+}
 unsigned lm_qr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
- agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;agc_word superbank=0;
+ agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st=EXEC_OK;agc_word superbank=0;
+ agc_routine call;int more;
  program.basic=&lm_q_r_axis_routines;program.basic_count=1;program.operands=lm_q_r_axis_sites;program.operand_count=LM_QR_SITES;
  lm_qr_input(s,io,n);
- st=agc_transfer_run(&program,s,io,&superbank,(uint16_t)(AGC_TRANSFER_NONE-1u),4,steps);
+ /* agc_transfer_run's loop, at most 4 routines, the parts not counted. */
+ *steps=0;
+ for(;;){
+  more=part(s);
+  if(!more&&*steps==4u){st=EXEC_OUT_OF_SCOPE;break;}
+  call=agc_transfer_resolve(&program,s,superbank);
+  if(!call){st=EXEC_UNMAPPED;break;}
+  if(!more)++*steps;
+  st=call(&program,s,io);
+  if(st!=EXEC_OK)break;
+ }
  if(st==EXEC_UNMAPPED&&*steps==1u&&(!inside(s->words[5])||(s->words[4]&076000u)!=LM_QR_FB17))return LM_QR_LEFT;
  if(st==EXEC_OUT_OF_SCOPE&&*steps==1u)return LM_QR_REFUSED;
  return LM_QR_NONE;

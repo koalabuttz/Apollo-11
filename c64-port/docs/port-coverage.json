@@ -2703,7 +2703,7 @@
       "sha256": "e758ec3710c3f82e7e243a85552f20b8ea25028d621b6f62276b88326869fc8d",
       "bytes": 12085,
       "lines": 611,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2717,7 +2717,7 @@
           "verification": "docs/CM-P30-P37.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2731,7 +2731,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-source-map.json",
@@ -2755,6 +2754,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
             "sha256": "3ae0f95121ee7d6b70bbcdedbf65d084f40c12114d359f711e3f67573df71a6c"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -2765,7 +2768,7 @@
       "sha256": "60a18e541426e952deea775bd0ae625d2345c284ac9726a2647032ee9ce4ccc3",
       "bytes": 26843,
       "lines": 1415,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2779,7 +2782,7 @@
           "verification": "docs/CM-P32-P33.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2792,7 +2795,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-source-map.json",
@@ -2816,6 +2818,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
             "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -4710,7 +4716,7 @@
       "sha256": "7e07913f963e312eb5145dfa71832012a2f9ab2d699ada4ddd397bde518e5ec2",
       "bytes": 10653,
       "lines": 552,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4724,7 +4730,7 @@
           "verification": "docs/CM-TPI-SEARCH.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4737,7 +4743,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-source-map.json",
@@ -4761,6 +4766,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
             "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -8512,7 +8521,7 @@
             "src/agc_multiword.c"
           ],
           "verification": "docs/LM-P-AXIS.md",
-          "scope": "Every path of the file: the PAXIS T5 lead-in and CHEKBITS's two returns, the CDU desired update and PAXFILT to ACDT+C12, the KALMAN filter set up as an interrupted job and SUPERJOB, BACKP (SUBDIVDE, OVERSUB, trap filters, AOS terms, gimbal timers, CHKVISFZ/TRYUORV/ALTERYZ translation, manual, detent and rate command, PURGENCY/PEGI and PJETSLEC/SELECTP jet selection) to each call that leaves the file and its eight returns, and CALCPERR, as fifteen ABI routines in bank 16."
+          "scope": "Every path of the file: the PAXIS T5 lead-in and CHEKBITS's two returns, the CDU desired update and PAXFILT to ACDT+C12, the KALMAN filter set up as an interrupted job and SUPERJOB, BACKP (SUBDIVDE, OVERSUB, trap filters, AOS terms, gimbal timers, CHKVISFZ/TRYUORV/ALTERYZ translation, manual, detent and rate command, PURGENCY/PEGI and PJETSLEC/SELECTP jet selection) to each call that leaves the file and its eight returns, and CALCPERR, as fifteen ABI routines in bank 16, with BACKP's step machine run as thirteen part keys (16,2451, Q-RATE, R-RATE, PRETIMCK, CHKVISFZ, TSNEXTP -1, TSNEXTP, DETENTCK, RATERROR, PJETSLEC -6, PJETSLEC -1, PURGENCY, PURGENCY +4) so that each routine fits the 8 KB flight task slot."
         }
       ],
       "complete_native_coverage": {
@@ -8536,7 +8545,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
-            "sha256": "55464a05c9d17fdc3d5b9bd35196ffc64593dcbdfad1a9fc5e574a0233e61165"
+            "sha256": "695ea43769d25e1116a478064aa9ba5622ae463ec54150a89743c521cfadc28f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
@@ -8544,22 +8553,22 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-host.log",
-            "sha256": "4fbfbc9ba730d895a5e761056a46db63ff55fa22c14d272542bcde4a0fbe6b2e"
+            "sha256": "689dd17ae56d4590ed1ed0f8b906fdaa2cb23ecf18f62d7c75c2e016a4b1442d"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
-            "sha256": "4bddd6c02d09872c4a86f423e58adaa58a3a48c84d45593a63c7cff2fb7e18f9",
+            "sha256": "136ed810f51f31b8d94d35017664a91c5333a94a95cd3cac0e389a0d45a73312",
             "vice_targets": {
               "vice-lm-p-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
-            "sha256": "a86699db07c631a532fcc970c8fa2162c41c617f6f40214621407285fb189864"
+            "sha256": "faa0bc1c77cd72f881f936f4e6fbed8d3e9866e2593f13fcdd7c9b153de90e77"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-211.md",
+            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
           }
         }
       }
@@ -8675,7 +8684,7 @@
       "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
       "bytes": 25575,
       "lines": 1394,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8689,7 +8698,7 @@
           "verification": "docs/LM-P32-P35.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8704,7 +8713,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p32-p35/lm-p32-p35-source-map.json",
@@ -8728,6 +8736,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p32-p35/lm-p32-p35-c64-cover.json",
             "sha256": "599b3ff810b38d825c6b3e2a4901c4f6654fd8340615bf1801aa4d3a1ddf8fb6"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-194.md",
+            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
           }
         }
       }
@@ -9518,7 +9530,7 @@
             "src/agc_multiword.c"
           ],
           "verification": "docs/LM-Q-R-AXIS.md",
-          "scope": "Every path of the file: CALLQERR (QERRCALC, the GTS/TRYGTS/RCS choice, SENSEGET X-translation, minimum impulse, CHEKSTIK/RHCACTIV rate command and ENTERUV direct rate, ATTSTEER/TJLAW, AFTERTJ/DOROTAT/DOSKIP/NOTMIN/FEEDBACK/LOOPER jet selection with SELCTSUB and FAILOOP, XTRANS) to each call that leaves the file and its twelve returns, CLOSEOUT with MAKERUPT's EDRUPT and ENDJASK to TCF NOQRSM, and QERRCALC, JTLST and ROT-TOUV as subroutine entries, as seventeen ABI routines in bank 17 (MAKERUPT in fixed-fixed)."
+          "scope": "Every path of the file: CALLQERR (QERRCALC, the GTS/TRYGTS/RCS choice, SENSEGET X-translation, minimum impulse, CHEKSTIK/RHCACTIV rate command and ENTERUV direct rate, ATTSTEER/TJLAW, AFTERTJ/DOROTAT/DOSKIP/NOTMIN/FEEDBACK/LOOPER jet selection with SELCTSUB and FAILOOP, XTRANS) to each call that leaves the file and its twelve returns, CLOSEOUT with MAKERUPT's EDRUPT and ENDJASK to TCF NOQRSM, and QERRCALC, JTLST and ROT-TOUV as subroutine entries, as seventeen ABI routines in bank 17 (MAKERUPT in fixed-fixed), with CALLQERR's step machine run as thirteen part keys (RCS, RCS +1, QRCONTRL, CHEKSTIK, MINRTN, BACKHAND, TRYGTS, STILLRCS, TJLAW +3, LOOPER, DOSKIP, DOSKIP +1, XTRANS) so that each routine fits the 8 KB flight task slot."
         }
       ],
       "complete_native_coverage": {
@@ -9540,7 +9552,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-source-map.json",
-            "sha256": "f9ed4304676f2b2a5bd11c2a38002ce64c29d0bbec1b38f06dfe5c118bf12157"
+            "sha256": "d24823c0e6bc55ee4b62bb674a9bb085c1666bffceca78740d881666fee58710"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-proof.json",
@@ -9548,22 +9560,22 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-host.log",
-            "sha256": "e74e8385c3f1e7032641d10e110bbd3b021481b262390b5a07aa0ad82e4a6a91"
+            "sha256": "40ad05b01f3767ec849ad3583e25a632518d1024c663fb83ec6293cedd6a550c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
-            "sha256": "4e828db5128775f5cbd1c4a7824aaeec3246900e4529478553d8ede71078f77e",
+            "sha256": "014776cf169bae22dc489c7f22b6fde487f4f3cc9d47d1fb56a64adf341fa45d",
             "vice_targets": {
               "vice-lm-q-r-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
-            "sha256": "7c61b05191e14e8ad248d9d5692227808e7446a65ef3726b5adebe04dccf30a8"
+            "sha256": "0280968f0f74bb30f8cd43d58be2bc7ccd6232a714d96c2226c90d848c6c9096"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-211.md",
+            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
           }
         }
       }
@@ -10980,7 +10992,6 @@
         {
           "native_files": [
             "src/lm_trim_gimbal.c",
-            "src/lm_trim_gimbal_ca_table.inc",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
@@ -10992,7 +11003,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; after GTSQRT's zero root DOSHIFT's INDEX SHFTFLAG (ACENTRAL/2, ININDEX being the same cell) runs CA BIT15 as CA 04735+k, reading erasable memory or bank 21 and fixed-fixed from src/lm_trim_gimbal_ca_table.inc (generated from the certified rope and checked by make test-lm-trim-gimbal); excluded and refused with the image unchanged: k outside -2525..+1570, where the indexed word is another order (it needs |AOSQ| or |AOSR| of at least 1,571 LSB, 0.151 rad/s^2 or 8.6 deg/s^2, six times the RCS jet acceleration; a physical bound, not a producer check); 173 of 16,384 random cases",
+        "supported_domain": "entries in their own banks (GTS, TIMEGMBL and 21,3435 in bank 21; ACDT+C12 in bank 16) under EBANK6 (EBANK= QDIFF / NEGUQ) with the lm_flight_io channel 12 record; the ACDT+C12 return in Q and the TIMEGMBL return in RUPTREG2 are TC words into fixed memory; after GTSQRT's zero root DOSHIFT's INDEX SHFTFLAG (ACENTRAL/2, ININDEX being the same cell) runs CA BIT15 as CA 04735+k, reading erasable memory or bank 21 and fixed-fixed through the program's passive fixed_data read of the rope (the tests read tests/lm_trim_gimbal_ca_table.inc, generated from the certified rope and checked by make test-lm-trim-gimbal; without fixed_data GTS refuses with the image unchanged); excluded and refused with the image unchanged: k outside -2525..+1570, where the indexed word is another order (it needs |AOSQ| or |AOSR| of at least 1,571 LSB, 0.151 rad/s^2 or 8.6 deg/s^2, six times the RCS jet acceleration; a physical bound, not a producer check); 173 of 16,384 random cases",
         "external_continuations": [
           "CLOSEOUT (Q_R-AXIS_RCS_AUTOPILOT)",
           "IBNKCALL (ACDT+C12)",
@@ -11001,7 +11012,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-source-map.json",
-            "sha256": "6967776f385d021b5fe48978f9865a107cba42fd25646f739afd1315381816a3"
+            "sha256": "1b40d806b7b9f2713ba95812a16240ad34884fcf14806ab3588f5477f1fe501e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-proof.json",
@@ -11009,22 +11020,22 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-host.log",
-            "sha256": "a694f35c1285f9765c5c336fc19d8df9e48a082648db6da2e051ccf0914f441d"
+            "sha256": "a9ef3f041b9f3b636968bab413c8cb66b9f1bdd976e6b38d1e63b68be683c677"
           },
           "c64_execution_results": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-vice.log",
-            "sha256": "e291960b078a174337e43aed909890146f113f318fb18f173f47f111d4c0705a",
+            "sha256": "a45b1a7796b802b19dbabe1dd7f6944875bcd075491c3bf732ea7d3a59f456ac",
             "vice_targets": {
               "vice-lm-trim-gimbal": 256
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-151.md",
-            "sha256": "398d96e505adb1321f61cd56d6d26fbaa65ad074667aef29403d0c5343d902ab"
+            "path": "docs/audits/lane-f-211.md",
+            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json",
-            "sha256": "ee1418a50c3969764dcffe92d0ebf4bfd62f22c5dcd7412b310d6cef072bd8ea"
+            "sha256": "70f403d49e7e379e0b1c7564587b33806330e8250418210c9e97a4cfe76efd79"
           }
         }
       }
