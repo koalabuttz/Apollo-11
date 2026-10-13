@@ -59,12 +59,12 @@ int main(void) {
     *(volatile uint16_t *)0xfffa=(uint16_t)(uintptr_t)ov2_nmi_entry;
     __asm__ volatile("cli");
 
-    expect(apollo_reu_store_open(&store,0,LM,0x0201u,record),1);
+    expect(apollo_reu_store_open(&store,0,LM,0x0202u,record),1);
     clock_start();
     expect(apollo_reu_store_verify(&store,(uint8_t *)0xc100)==APOLLO_OV2_OK,2);
     put32(0x10,clock_stop());
     apollo_ov2_init(&rt,apollo_reu_store_backend(&store,c64_ov2_invoke,0),
-        (uint8_t *)0x8000,(uint8_t *)0xe000,header,image,LM,0x0201u,0);
+        (uint8_t *)0x8000,(uint8_t *)0xe000,header,image,LM,0x0202u,0);
 
     /* Resident service call from the job slot. */
     value=0;

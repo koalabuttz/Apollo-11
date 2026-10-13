@@ -10,7 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/overlay-v2')
-SERVICES = 0x0201
+SERVICES = 0x0202
 MODULES = ((1, 0, 4), (2, 0, 2), (3, 1, 2))   # number, slot class, selectors
 
 
