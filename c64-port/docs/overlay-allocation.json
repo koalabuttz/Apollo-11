@@ -12,6 +12,7 @@
   "task": 8186
  },
  "slot_fill": 0.75,
+ "reu_store_limit": 1835008,
  "lane_module_id_high_byte": {
   "A": 1,
   "B": 2,

@@ -34,6 +34,7 @@ import random
 import struct
 import subprocess
 import sys
+import types
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import c64_row_cover
@@ -95,6 +96,7 @@ class Mission:
         self.ebank = spec.get('ebank')
         self.edge = spec.get('edge_cases', False)
         self.rk = bool(spec.get('resume_keys'))
+        self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
 
@@ -121,7 +123,9 @@ class Mission:
         for p, ln in self.cp.code.items():
             if ln.op == '' and ln.words and ln.words[0] < 0o40000:
                 a = ln.words[0] - 1
-                if 0 <= a < 0o4000:
+                # 055-077 are counters and NEWJOB, never data operands: a
+                # word there is a switch bit (CLEAR MOONFLAG, 063).
+                if 0 <= a < 0o4000 and not 0o55 <= a < 0o100:
                     out.add(a)
         return sorted(out)
 
@@ -167,15 +171,20 @@ def case(mi, point, n, rng):
         if shape == 1:
             for k in range(6):
                 w = rng.randrange(0o4000)
-                E[(phys + k) & 0o3777] = w if rng.random() < 0.5 else (~w) & 0o77777
+                w = w if rng.random() < 0.5 else (~w) & 0o77777
+                # (An operand at the top of erasable, as P37's E7 03774,
+                # does not run on into A and L.)
+                if phys + k <= 0o3777:
+                    E[phys + k] = w
         elif shape == 2:
             z = rng.uniform(-1, 1)
             t = rng.uniform(0, 2 * math.pi)
             r = math.sqrt(max(0.0, 1 - z * z))
             for k, x in enumerate((r * math.cos(t) / 2, r * math.sin(t) / 2, z / 2)):
                 hi, lo = dp(x)
-                E[(phys + 2 * k) & 0o3777] = hi
-                E[(phys + 2 * k + 1) & 0o3777] = lo
+                for j, v in ((2 * k, hi), (2 * k + 1, lo)):
+                    if phys + j <= 0o3777:
+                        E[phys + j] = v
     if shape == 3:
         E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     for off in (0o50, 0o51, 0o52):
@@ -188,8 +197,10 @@ def case(mi, point, n, rng):
     # OVFIND clear in most cases, so BOV(B) falls through as often as not.
     if rng.random() < 0.75:
         E[0o121] = 0
+    pinned = set()
     for k, choices in list(mi.all_states.items()) + list(mi.states.get(point, {}).items()):
         a = vac + int(k[4:], 8) if k.startswith('vac+') else int(k, 8)
+        pinned.add(a)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
@@ -210,14 +221,35 @@ def case(mi, point, n, rng):
         # Q: a return in the caller's bank outside the file, the case's stop.
         while True:
             q = bank * 1024 + rng.randrange(0o1776)
-            if not mi.cp.in_file(q):
+            if mi.index_returns:
+                # (Returns up to four words past it, INDEX SPRTEX; TCF 0 +4,
+                # stay in the bank and outside the file.)
+                q = min(q, bank * 1024 + 0o1773)
+                if not any(mi.cp.in_file(q + i) for i in range(5)):
+                    break
+            elif not mi.cp.in_file(q):
                 break
         E[2] = logical(q)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
+        # A state the spec pins there (a caller's return in the file) stays.
         for k in mi.cp.tc_erasable:
-            E[k] = logical(q)
+            a = k if k < 0o1400 else eb * 0o400 + k - 0o1400
+            if a not in pinned:
+                E[a] = logical(q)
         stop = q
     return seed, list(E.items()), n & 1, stop, sb
+
+
+class Absent:
+    """A mission the spec leaves out: no ranges, exits or routines, so a
+    one-mission spec (cm-r31) writes the same case-file layout."""
+    def __init__(self, m):
+        self.m = m
+        self.newops = 0
+        self.cp = types.SimpleNamespace(ranges=[])
+        self.points = []
+        self.body_exits = []
+        self.externals = []
 
 
 def write_cases(path, missions, cases):
@@ -254,7 +286,8 @@ def build(spec_id, spec):
                         os.path.join(E, 'rfopen.o'), '-o', ref], cwd=R, check=True)
     nat = os.path.join(B, '%s-native' % spec_id)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    subprocess.run(['cc', *FLAGS, *srcs, spec['target'], 'tools/interp_routine_native.c', '-o', nat],
+    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *srcs, spec['target'],
+                    'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -275,7 +308,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
-    missions = [Mission(spec, m) for m in ('lm', 'cm')]
+    missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -486,7 +519,7 @@ def host_arcs(spec_id, spec, missions, cases):
     d = os.path.join(B, '%s-cover' % spec_id)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
     exe = c64_row_cover.build(d, [*srcs, spec['target'], 'tools/interp_routine_native.c'],
-                              [f for f in FLAGS if f != '-O2'])
+                              [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)])
     one = os.path.join(d, 'cases')
     os.makedirs(one)
 
@@ -541,6 +574,14 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
             want = 0
             for i in part:
                 want |= visits[i]
+            if part and (mask & want) != want and c64_size(
+                    spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
+                # Even this routine's shortest runs reach more code than one
+                # C64 program holds: it stays host-checked only.
+                if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:
+                    print('  C64: %s %s runs too much code for one program; host only' % (mi.m.upper(), mi.cp.where(p)))
+                    C64_HOST_ONLY.append('%s %s' % (mi.m, mi.cp.where(p)))
+                continue
             trial = mask | want
             tp = pick + part
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
@@ -562,7 +603,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
         if c64_size(spec, sym, m, mask, group_text(sym, [(m, mask, pick)], cases, rows)) is None:
             if os.environ.get('IRC_C64_DEBUG'):
                 sys.stderr.write('group %s mask %x picks %s edits %s\n' % (m, mask, [cases[i]['point'] for i in pick], [len(cases[i]['edits']) for i in pick]))
-            sys.exit('a single routine group of %s does not fit the C64' % m)
+            mi = [x for x in missions if x.m == m][0]
+            sys.exit('a single routine group of %s does not fit the C64: %s' % (
+                m, ', '.join(mi.cp.where(p) for k, p in enumerate(mi.points) if mask >> k & 1)))
     extra = {}
     if cover:
         picked = [i for m, mask, pick in groups for i in pick]

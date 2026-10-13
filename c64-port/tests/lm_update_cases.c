@@ -15,7 +15,7 @@ static agc_word target(uint32_t *seed,unsigned span){
   return (agc_word)(eb<<8|s);}
 }
 void lm_up_input(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,uint16_t n){
- unsigned i,k=n%LM_UP_ROUTINES,eb,count;uint32_t seed=UINT32_C(0x3401)+(uint32_t)n*UINT32_C(6007);agc_word fb,verb,z=lm_up_entries[k].z;
+ unsigned i,k=n%(LM_UP_ROUTINES+LM_UP_INTERPRETIVE),eb,count;uint32_t seed=UINT32_C(0x3401)+(uint32_t)n*UINT32_C(6007);agc_word fb,verb,z=k<LM_UP_ROUTINES?lm_up_entries[k].z:0u;
  for(i=0;i<2048u;++i)s->words[i]=word(&seed);
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
@@ -44,14 +44,35 @@ void lm_up_input(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,uint16
  if(verb==2u)for(i=1;i<=21u;i+=2u)s->words[LM_UP_UPBUFF+i]=target(&seed,1u);
  {unsigned m=upto(&seed,4);if(m==0u)s->words[01011]=0;else if(m==1u)s->words[01011]=077777u;else s->words[01011]=(agc_word)upto(&seed,0100);}
  eb=upto(&seed,8);
- if(lm_up_entries[k].bank==043u){fb=(agc_word)(033u<<10);io->superbank=0100;}
+ if(k<LM_UP_ROUTINES&&lm_up_entries[k].bank==043u){fb=(agc_word)(033u<<10);io->superbank=0100;}
  else{fb=(agc_word)(04u<<10);io->superbank=(agc_word)(upto(&seed,2)?0060u:0u);}
  s->words[4]=fb;s->words[3]=(agc_word)(eb<<8);s->words[6]=(agc_word)(fb|eb);s->words[5]=z;
+ /* UPJOB's interpretive words: NEWOPS with LOC on the word, BANKSET = BBANK
+  * (FB 04), EDOP +0, a work area of one of the five VAC areas with PUSHLOC
+  * inside it, and NEWJOB +0 or, in a fifth of the cases, positive. */
+ if(k>=LM_UP_ROUTINES){agc_word vac;
+  s->words[5]=LM_UP_NEWOPS;s->words[LM_UP_LOC]=lm_up_interp_entries[k-LM_UP_ROUTINES];s->words[LM_UP_BANKSET]=s->words[6];s->words[023]=0;
+  s->words[067]=upto(&seed,5)==4u?(agc_word)(upto(&seed,0400)+1u):0u;
+  vac=(agc_word)(0401u+054u*upto(&seed,5));s->words[0120]=vac;s->words[0166]=(agc_word)(vac+upto(&seed,043));}
+}
+/* The original's interpreter (fixed-fixed 06037-07707, bank 0 00,2000-3734
+ * and bank 1 01,2344-2600) and NEWOPS with LOC on one of UPJOB's
+ * interpretive words: the points an interpretive case's run owns besides
+ * the file's own. */
+int lm_up_interpreter(agc_word z,agc_word fb,agc_word superbank,agc_word loc,agc_word bankset){
+ uint16_t ph;
+ if(z==LM_UP_NEWOPS){ph=agc_fixed_physical(loc,bankset,superbank);return ph==04u*1024u+01552u||ph==04u*1024u+01554u;}
+ if(z>=06037u&&z<=07707u)return 1;
+ if(z<02000u||z>=04000u)return 0;
+ ph=agc_fixed_physical(z,fb,superbank);
+ return ph<=03734u-02000u||(ph>=1024u+0344u&&ph<=1024u+0600u);
 }
 enum exec_status lm_up_run(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,uint16_t n,uint16_t *steps){
  agc_routine_table tables[2];agc_native_program program={0,0,0,0,lm_update_operands,LM_UPDATE_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;
  tables[0]=lm_update_routines;tables[1]=lm_interbank_routines;
  program.basic=tables;program.basic_count=2;program.hardware=hw;
+ program.interpretive=&lm_update_interpretive;program.interpretive_count=1;
+ program.interpreter_fetch=(uint16_t)(2048u+LM_UP_NEWOPS-04000u);program.loc=LM_UP_LOC;program.bankset=LM_UP_BANKSET;
  lm_up_input(s,io,hw,n);
  /* No stop inside the run: it ends at the first point no table owns. */
  st=agc_transfer_run(&program,s,io,&io->superbank,0xfffeu,24,steps);

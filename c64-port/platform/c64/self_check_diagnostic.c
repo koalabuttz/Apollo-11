@@ -2,8 +2,8 @@
 /* self-check on the C64, one mission per image (-DSELF_CHECK_LM_ONLY:
  * Luminary099, -DSELF_CHECK_CM_ONLY: Comanche055): the outcome-chosen rows
  * of its AGC_BLOCK_TWO_SELF-CHECK cases (every 64th case plus a greedy cover
- * of every word the host cases execute) through the trampoline, and the
- * outcome-chosen whole-rope cases (ROPECHK over all 36 banks, SHOWSUM's
+ * of the gcov branch arcs the host cases take, tools/a2_c64_rows.py) through
+ * the trampoline, and the outcome-chosen whole-rope cases (ROPECHK over all 36 banks, SHOWSUM's
  * first display, the Executive exits), against digests frozen from the
  * original program (tools/self_check_freeze.py). Both ropes are in the REU
  * (build/self-check.reu, include/rope_image.h).

@@ -6,6 +6,7 @@ SVT_SRC = tests/service_transfer_cases.c tests/service_transfer_check.c src/serv
 SVT_HDR = include/agc_transfer.h include/service_transfer.h include/service_routines.h include/service_routines_source.h \
 	src/lm_service_sites.inc src/cm_service_sites.inc tests/service_transfer_cases.h tests/service_transfer_check.h \
 	tests/service_transfer_vectors.h
+SVT_C64_HDR = tests/service_transfer_c64_vectors.h tests/service_transfer_c64_rows.h
 .PHONY: test-service-transfer sanitize-service-transfer c64-service-transfer vice-service-transfer service-transfer-differential
 all: build/test-service-transfer
 test: test-service-transfer
@@ -20,11 +21,11 @@ sanitize-service-transfer: | build
 # Host-only oracle run (needs deps/virtualagc and both rope builds).
 service-transfer-differential:
 	python3 tools/service_transfer_freeze.py
-	git diff --exit-code -- tests/service_transfer_vectors.h
+	git diff --exit-code -- tests/service_transfer_vectors.h tests/service_transfer_c64_vectors.h
 	python3 tools/agc_sites_generate.py lm-service --check
 	python3 tools/agc_sites_generate.py cm-service --check
 c64-service-transfer: build/service-transfer.prg
-build/service-transfer.prg: $(SVT_SRC) platform/c64/service_transfer_diagnostic.c $(SVT_HDR) | build
+build/service-transfer.prg: $(SVT_SRC) platform/c64/service_transfer_diagnostic.c $(SVT_HDR) $(SVT_C64_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/service-transfer.map $(SVT_SRC) platform/c64/service_transfer_diagnostic.c -o $@
 vice-service-transfer: build/service-transfer.prg
 	python3 tools/vice_run.py build/service-transfer.prg --cycles 3000000000 --timeout 1800
