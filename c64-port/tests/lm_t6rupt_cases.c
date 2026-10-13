@@ -34,7 +34,12 @@ void lm_t6_input(apollo_overlay_state *m,p66_bias_io *io,agc_hardware *hw,uint16
  case LM_T6_WRITE:{static const agc_word z[6]={LM_WRITEP-1u,LM_WRITEP,LM_WRITEU-1u,LM_WRITEU,LM_WRITEV-1u,LM_WRITEV};
   m->words[5]=z[j%6u];m->words[2]=ret(&r);m->words[0]=(agc_word)(rnd(&r)&0377u);hw->in_interrupt=(uint16_t)((j/6u)&1u);break;}
  default:{static const agc_word z[3]={LM_RESUME,LM_NOQRSM,LM_NOQBRSM};
-  m->words[5]=z[j%3u];m->words[015]=(agc_word)(1u+rnd(&r)%010000u);m->words[016]=(agc_word)(bank(&r)|((rnd(&r)%8u)*020u)|(rnd(&r)&7u));break;}
+  m->words[5]=z[j%3u];m->words[015]=(agc_word)(1u+rnd(&r)%010000u);m->words[016]=(agc_word)(bank(&r)|((rnd(&r)%8u)*020u)|(rnd(&r)&7u));
+  /* The interrupt saved the instruction at ZRUPT-1 in BRUPT (#144); in
+   * erasable, under the EB that RESUME family restores. */
+  {agc_word at=(agc_word)(m->words[015]-1u),eb=m->words[5]==LM_NOQBRSM?(agc_word)(m->words[3]>>8):(agc_word)(m->words[016]&7u);
+   if(at<01400u)m->words[017]=m->words[at];else if(at<02000u)m->words[017]=m->words[eb*0400u+(at-01400u)];}
+  break;}
  }
 }
 unsigned lm_t6_run(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,uint16_t n){

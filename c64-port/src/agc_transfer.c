@@ -6,6 +6,15 @@ uint16_t agc_fixed_physical(agc_word logical,agc_word fb,agc_word superbank){agc
  else{bank=(agc_word)((fb&076000u)>>10);if(bank>=030u&&(superbank&0100u))bank=(agc_word)(bank+8u);}
  return (uint16_t)(bank*1024u+(logical&01777u));
 }
+bool agc_resume_exact(const agc_native_program *p,const apollo_overlay_state *s,agc_word fb,agc_word eb,agc_word superbank){
+ agc_word z,w;uint16_t ph;
+ if(!s)return false;
+ z=(agc_word)((s->words[015]-1u)&07777u);
+ if(z<01400u)w=s->words[z];
+ else if(z<02000u)w=s->words[((eb>>8)&7u)*0400u+(z-01400u)];
+ else{ph=agc_fixed_physical(z,fb,superbank);if(!p||!p->fixed_data||!p->fixed_data(p,ph,&w))return true;}
+ return ((w^s->words[017])&077777u)==0u;
+}
 bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,agc_word *word){uint16_t lo=0,hi=count,mid;
  if(!t||!word)return false;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t[mid].physical==physical){*word=t[mid].word;return true;}if(t[mid].physical<physical)lo=(uint16_t)(mid+1u);else hi=mid;}

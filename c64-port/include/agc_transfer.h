@@ -26,6 +26,17 @@
  * AGC_TRANSFER_NONE for an erasable address. */
 uint16_t agc_fixed_physical(agc_word logical, agc_word fb, agc_word superbank);
 
+struct agc_native_program;
+/* RESUME runs the instruction BRUPT holds, then continues at ZRUPT. A native
+ * RESUME continues at Z = ZRUPT-1, which is the same thing only when BRUPT is
+ * the word at ZRUPT-1 under the banks the interrupted program gets back (fb,
+ * eb, superbank). The interrupt hardware always saves that word; code that
+ * writes BRUPT itself (ENDJASK, ALARM_AND_ABORT, P70) may not. False when the
+ * word can be read (erasable, or fixed through the program's fixed_data) and
+ * differs, so the routine refuses rather than resume at the wrong point. */
+bool agc_resume_exact(const struct agc_native_program *p, const apollo_overlay_state *s, agc_word fb, agc_word eb,
+                      agc_word superbank);
+
 /* Key of an erasable continuation (Z below 02000; 01400-01777 under EB):
  * AGC_TRANSFER_ERASABLE_BASE + the physical erasable address. A file that
  * stores a TC into erasable for later execution (RESTARTS' GOLOC words)

@@ -47,6 +47,16 @@ static void together(apollo_overlay_state *m,uint32_t *seed){unsigned i;
  m->words[026]=(agc_word)(037740u+r17(seed)%040u);
  m->words[01400]=(agc_word)(077777u-r17(seed)%8u-1u);for(i=1;i<8u;++i)m->words[01400u+i]=0;
 }
+/* Q or QRUPT holding data, not an address (#143): TPAGREE leaves POSMAX in Q
+ * with interrupts enabled, and the interrupt saves it in QRUPT. */
+static void qdata(apollo_overlay_state *m,uint16_t j){
+ switch((j/16u)%8u){
+ case 3:m->words[2]=037777u;break;
+ case 5:m->words[2]=agc_extend((agc_word)(040000u+j%0400u));break;
+ case 6:m->words[012]=037777u;break;
+ case 7:m->words[012]=(agc_word)(070000u+j%0400u);break;
+ default:break;}
+}
 static void random_image(apollo_overlay_state *m,uint32_t *seed){unsigned i;
  for(i=0;i<2048u;++i)m->words[i]=(agc_word)((rnd(seed)>>12)&AGC_MASK);
  m->words[7]=0;for(i=010;i<=061u;++i)m->words[i]=0;
@@ -120,6 +130,7 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
   m->words[016]=(agc_word)(((r17(&seed)%32u)*02000u)|(j%8u)|((j/8u)%4u)*020u);
   m->words[010]=(agc_word)(r17(&seed)&077777u);m->words[011]=(agc_word)(r17(&seed)&077777u);m->words[012]=(agc_word)(r17(&seed)&07777u);
   m->words[2]=(agc_word)(r17(&seed)&07777u);io->superbank=(agc_word)((j%4u)*020u);
+  qdata(m,j);
   m->words[5]=CM_EXEC_TASKOVER;c->hw.in_interrupt=1;c->resume=1;
   stop(c,(agc_word)(z-1u),(agc_word)(m->words[016]&076000u));break;}
  case CM_EXS_DISPATCH:{uint8_t i;
@@ -128,6 +139,7 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
   canon(m,1,0,(uint8_t)(j%10u),&seed);edges(m,n);
   io->interrupt_enabled=(agc_word)((j/2u)%2u);io->superbank=(agc_word)(((j/4u)%4u)*020u);
   m->words[2]=(agc_word)(r17(&seed)&07777u);m->words[012]=(agc_word)(r17(&seed)&07777u);
+  qdata(m,j);
   if(j%4u<2u){set_banks(m,(agc_word)((r17(&seed)%32u)*02000u),(agc_word)((j%8u)*0400u));m->words[5]=CM_EXEC_T3RUPT_VECTOR;
    m->words[015]=(agc_word)(02001u+r17(&seed)%06000u);}
   else{set_banks(m,02000u,(agc_word)((j%8u)*0400u));m->words[0734]=1;m->words[5]=CM_EXEC_TASKOVER;
