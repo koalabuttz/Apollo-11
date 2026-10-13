@@ -71,7 +71,7 @@ def main():
     table(out, 'lm_v37_expected', values)
     (R / 'tests/lm_v37_vectors.h').write_text('\n'.join(out) + '\n')
     chosen, cover = a2_c64_rows.select('lm-v37', SRC, ['lm_v37_cases.h'], 'lm_v37_digest(&s,(uint16_t)n,&st);', len(values),
-                                           stride=32, slots=32)  # every 16th row would push the BSS past $c000
+                                           stride=48, slots=32)  # every 16th or 32nd row would push the BSS past $c000
     (R / 'tests/lm_v37_c64_vectors.h').write_text(a2_c64_rows.header('lm_v37_freeze.py', 'lm_v37', values, chosen, 32))
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
