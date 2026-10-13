@@ -1,0 +1,27 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "cases": 5120,
+ "snapshot_sha256": "ea461d7a0c4988b6895bf1256703a96e184103a9c42de4af5fad1c20c15dfe2c",
+ "outcomes": {
+  "advan:returned": 1024,
+  "dummyjob:returned": 512,
+  "nuchang2:returned": 1024,
+  "supdxchz:returned": 1024,
+  "svct3:returned": 1536
+ },
+ "entries": [
+  "01,3032 NUCHANG2",
+  "01,3223 DUMMYJOB",
+  "01,3225 DUMMYJOB +2",
+  "01,3231 ADVAN",
+  "05227 SUPDXCHZ",
+  "05230 SUPDXCHZ +1",
+  "05306 SVCT3",
+  "05323 SVCT3 after NOVAC",
+  "07721 SVCT3X after FIXDELAY"
+ ],
+ "boundary": "one routine from its entry to the continuation it leaves in Z (the selected basic job, NEWOPS for an interpretive job, the self-check at SELFRET, the SUPDXCHZ target, or TASKOVER, NOVAC or FIXDELAY from SVCT3); the original runs to the first time it reaches that Z (and FB in banked memory); alarm: BAILOUT/POODOO entry",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, channel 11",
+ "full_physical_words": 2048
+}

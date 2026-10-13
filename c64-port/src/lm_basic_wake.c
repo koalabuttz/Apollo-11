@@ -4,8 +4,8 @@ static void executive_words(executive *e,uint16_t *w,uint8_t read){uint8_t i,j;f
 enum exec_status lm_basic_wake(apollo_overlay_state *s,p66_bias_io *io){
  uint16_t *w=s->words,caller=w[2],oldl=w[1],oldfb=w[4],wake=agc_correct(w[0]),savedbank=0;
  uint8_t i,slot=8;executive e;enum exec_status status;
- if(w[5]!=05137u||w[0]!=agc_extend(wake)||caller<0100u||caller>07777u||w[3]>03400u||(w[3]&0377u)||w[4]>076000u||(w[4]&01777u)||w[6]!=(uint16_t)(w[4]|(w[3]>>8))||w[7]!=0||w[0167]==0||w[0167]>=040000u||io->superbank>0160u||(io->superbank&017u)||io->interrupt_enabled>1u||(w[067]!=AGC_NEG_ZERO&&(w[067]>84u||w[067]%12u)))return EXEC_OUT_OF_SCOPE;
- for(i=1;i<8u;++i){uint16_t p=w[0167u+12u*i],loc=w[0164u+12u*i];if(p==0)return EXEC_OUT_OF_SCOPE;if(slot==8u&&p>=040000u&&p<AGC_NEG_ZERO&&(loc==wake||((loc==0||loc==AGC_NEG_ZERO)&&(wake==0||wake==AGC_NEG_ZERO)))){slot=i;savedbank=w[0165u+12u*i];}}
+ if(w[5]!=05137u||w[0]!=agc_extend(wake)||caller<0100u||caller>07777u||w[3]>03400u||(w[3]&0377u)||w[4]>076000u||(w[4]&01777u)||w[6]!=(uint16_t)(w[4]|(w[3]>>8))||w[7]!=0||w[0167]==0||io->superbank>0160u||(io->superbank&017u)||io->interrupt_enabled>1u||(w[067]!=AGC_NEG_ZERO&&(w[067]>84u||w[067]%12u)))return EXEC_OUT_OF_SCOPE;
+ for(i=0;i<8u;++i){uint16_t p=w[0167u+12u*i],loc=w[0164u+12u*i];if(p==0)return EXEC_OUT_OF_SCOPE;if(slot==8u&&p>=040000u&&p<AGC_NEG_ZERO&&(loc==wake||((loc==0||loc==AGC_NEG_ZERO)&&(wake==0||wake==AGC_NEG_ZERO)))){slot=i;savedbank=w[0165u+12u*i];}}
  executive_words(&e,w,1);status=exec_wake_basic(&e,wake);if(status!=EXEC_OK&&status!=EXEC_NOT_FOUND)return status;
  if(status==EXEC_OK)e.newloc[1]=agc_correct(oldl);
  executive_words(&e,w,0);w[061]=oldfb;w[062]=(uint16_t)(slot<8u?7u-slot:0u);

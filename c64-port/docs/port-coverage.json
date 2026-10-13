@@ -965,8 +965,78 @@
           ],
           "scope": "Canonical original positive zero core admission scan; actual EXTEND BZF NEXTCORE behavior qualified, historical interpretation corrected additively.",
           "verification": "docs/COMANCHE_ADMISSION_ZERO.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "include/cm_exec_routines.h",
+            "src/cm_exec_sites.inc"
+          ],
+          "scope": "NOVAC and FINDVAC as control-transfer ABI routines at their original addresses, with the inline 2CADR from the compiled site table (every genuine call site) or erasable, through cm_admission_zero to the caller return or BAILOUT 1201/1202. SPVAC, CHANG1/CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB remain separate.",
+          "verification": "docs/CM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_jobs.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (cm_exec_job_routines) composing the qualified admission, context change, sleep, wake, priority and finish bodies, through the caller, the selected basic or interpretive job, ADVAN, and JOBWAKE's TC 014 and CCSHOLE exits. With cm-exec-services every EXECUTIVE.agc service other code calls is a native routine; the idle loop (ADVAN, NUDIRECT), the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/CM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_idle.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (cm_exec_idle_routines) composing the qualified idle dispatch, idle recheck and super dispatch bodies. With cm-exec-services and cm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/CM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_exec_jobs.c",
+            "src/cm_exec_idle.c",
+            "src/rupt_lead_ins.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Comanche055/EXECUTIVE.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (8 instruction lines).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (8 instruction lines). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-cm-executive.json",
+            "sha256": "feb5f53debd79a9209cf4969600d27a6581fe3b30ceffb2033d459e08d6135e0"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/EXTENDED_VERBS.agc",
@@ -1404,15 +1474,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
+            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
+            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
+            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
           }
         }
       },
@@ -1709,8 +1779,51 @@
           ],
           "scope": "Canonical automatic T3 interrupt lead-in through real service and hardware RESUME/foreground composition; other interrupt entries remain unported.",
           "verification": "docs/COMANCHE_MISSION_LOOP.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The GOPROG restart lead-in (04000), the T6RUPT 2CADR vector (04004), the T5RUPT lead-in (04010) and T5RUPT (04065, BZMF NOQBRSM; DCA T5LOC; DTCB), and the banked T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR and HANDRUPT vectors with their BBCON constants as control-transfer ABI routines (cm_lead_in_routines). With the T3RUPT vector (cm-exec-services) every assembled word of the file is native; T5RPTBB is assembled but nothing reads it.",
+          "verification": "docs/RUPT-LEAD-INS.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in cm_native_io; InIsr in agc_hardware.",
+          "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T6RUPT 04004, T5RUPT 04010 and its body 04065, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and HANDRUPT 04050 inside the interrupt (cm_lead_in_routines); T3RUPT 04014 in cm_exec_routines.",
+          "index_domains": "T6LOC and T5LOC hold 2CADRs whose CADRs are in fixed memory 02000-07777 (as the T6 and T5 schedulers and the restart store them); TIME5 any value. Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
+        },
+        "external_continuations": [
+          "GOPROG (FRESH_START_AND_RESTART) after the restart lead-in",
+          "The interrupt handlers T4RUPT, KEYRUPT1, MARKRUPT, UPRUPT, DODOWNTM, VHFREAD and the T6LOC and T5LOC targets, each ending the interrupt through WAITLIST RESUME (native in cm_lead_in_routines)",
+          "T3RUPT vector equivalence: evidence/cm-exec-services",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-cm.json",
+            "sha256": "1eace387ca147bd24beff6f1f63a6f337e8fcd78867a1b37c1fec5915553abfb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
+            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
+            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
+            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/JET_SELECTION_LOGIC.agc",
@@ -1831,8 +1944,51 @@
           ],
           "scope": "Actual KEYRUPT/KEYCOM admission, hardware RESUME and physical GETIN to genuine CHARIN/ENDOJOB lifecycle. UPRUPT and remaining source paths still need coverage.",
           "verification": "docs/COMANCHE-KEYBOARD-RUNTIME.md"
+        },
+        {
+          "native_files": [
+            "src/keyrupt_uprupt.c",
+            "include/keyrupt_uprupt.h"
+          ],
+          "scope": "Every assembled word: KEYRUPT1 with KEYCOM and ACCEPTUP to NOVAC (CHARIN) and NOVAC's return to RESUME, and UPRUPT with UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2, as control-transfer ABI routines (cm_keyrupt_routines) on the image through agc_image_ops, with channel 15 in agc_hardware.",
+          "verification": "docs/KEYRUPT-UPRUPT.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in cm_native_io; InIsr, channel 11 and channel 15 in agc_hardware.",
+          "entry_contracts": "Inside the interrupt with FB in the file's bank (07,3673): KEYRUPT1 and UPRUPT from their lead-ins, their LODSAMPT returns (+4), KEYCOM (Comanche SXTMARK's key path), and NOVAC's return after the CHARIN 2CADR. Every labelled entry and every return point a callee reaches is a routine.",
+          "index_domains": "A holds no overflow at KEYRUPT1, UPRUPT and KEYCOM (the lead-ins leave the old BB, SXTMARK a key code); Q may hold anything (an overflowed Q makes TS QRUPT skip LODSAMPT, as in the original); LOCCTR at NOVAC's return is a core set offset 0-72 in steps of 12. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "WOR on channel 11 (UPACT) as yaAGC computes it; reading the key code from channel 15 and the uplink word from INLINK are device-adapter obligations."
+        },
+        "external_continuations": [
+          "LODSAMPT (PINBALL_GAME_BUTTONS_AND_LIGHTS) returns to the entry +4",
+          "NOVAC (EXECUTIVE, native in the exec milestones) starts CHARIN and returns after the 2CADR",
+          "WAITLIST RESUME ends the interrupt (native: cm_lead_in_routines)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-source-map-cm.json",
+            "sha256": "c17f355fb527bf29cd9cab730d66e5e80a2ca4d859d8d157523c7e8ca8f66721"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
+            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
+            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+          },
+          "c64_execution_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
+            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
@@ -3344,8 +3500,17 @@
       "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
       "bytes": 38224,
       "lines": 1467,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/t4rupt_core.c",
+            "include/t4rupt_core.h"
+          ],
+          "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the RESUME paths, as control-transfer ABI routines (cm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2130) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
+          "verification": "docs/T4RUPT-CORE.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -3841,8 +4006,79 @@
           ],
           "scope": "Actual TWIDDLE and full ordinary positive delay domain, with source alarm target transfers. Alarm continuation bodies and complete timed service coverage remain pending.",
           "verification": "docs/COMANCHE_WAITLIST_EXTENDED.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "include/cm_exec_routines.h",
+            "src/cm_exec_sites.inc",
+            "src/cm_waitlist_extended.c"
+          ],
+          "scope": "WAITLIST, TWIDDLE, the whole LONGCALL chain (LONGCALL, LNGCALL2, LONGCYCL/MUCHTIME/LASTTIME, LONGRTRN, GETCADR), FIXDELAY, VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) and the T3RUPT vector lead-in as control-transfer ABI routines, against the original program at every genuine call site, including the DPBIT14 and TC 1203 frontiers. The SVCT3 end-of-list task, DLY2-1 and the RESUME entries other interrupts use remain separate.",
+          "verification": "docs/CM-EXEC-SERVICES.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_idle.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "The SVCT3 end-of-list task (05306) and its resumptions after NOVAC (05323) and SVCT3X's FIXDELAY (07721) as control-transfer ABI routines composing the qualified cm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. DLY2-1 and the RESUME entries other interrupts use remain separate.",
+          "verification": "docs/CM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The interrupt exits RESUME (05333), NOQRSM (05335), NOQRSM +1 (05336, HANDRUPT's entry) and NOQBRSM (05337) as control-transfer ABI routines of cm_lead_in_routines, ending the interrupt at ZRUPT-1.",
+          "verification": "docs/RUPT-LEAD-INS.md"
+        },
+        {
+          "native_files": [
+            "src/cm_exec_routines.c",
+            "src/cm_exec_jobs.c",
+            "src/cm_exec_idle.c",
+            "src/rupt_lead_ins.c",
+            "include/cm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Comanche055/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-cm-waitlist.json",
+            "sha256": "d0abc82f82e1178c8f061471d3812f2f29f514512ab03979809733f0b65a8503"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
@@ -4921,8 +5157,64 @@
           ],
           "scope": "SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDOFJOB as control-transfer ABI routines (lm_exec_job_routines) composing the qualified admission, change, sleep, wake, priority and finish bodies, through the selected basic job, NEWOPS for an interpretive one (JOBSLEEP and PRIOCHNG gain interpretive successors here), ADVAN idle or the caller. The DUMMYJOB/ADVAN idle loop, NUDIRECT and NUCHANG2 remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_idle.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "DUMMYJOB, DUMMYJOB+2, ADVAN (through NUDIRECT or the SELFRET self-check dispatch), NUCHANG2 and SUPDXCHZ/SUPDXCHZ+1 as control-transfer ABI routines (lm_exec_idle_routines) composing the qualified idle dispatch and super dispatch bodies. With lm-exec-services and lm-exec-jobs every EXECUTIVE.agc entry is a native routine; the BAILOUT/CCSHOLE bodies and a whole-file review remain.",
+          "verification": "docs/LM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "src/lm_basic_wake.c",
+            "src/rupt_lead_ins.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Luminary099/EXECUTIVE.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (10 instruction lines).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines and lm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the CCSHOLE traps on CCS NEWJOB at SPECTEST, on a +0 PRIORITY register in the scan and on a positive or +0 BUF +1 (10 instruction lines). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-lm-executive.json",
+            "sha256": "7bb857d2c4b7a331981f053a8939b896c4728739f8e9451e71fa6bb4cbad3a68"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/EXTENDED_VERBS.agc",
@@ -5502,15 +5794,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-proof.json",
-            "sha256": "ba357d57a53f6ec8c2a1ae2a058307c9ca379312ce4a934c3f800ddabad40af5"
+            "sha256": "4f6cd4b71d536b60c50de72d77114dd9533b7597b3a58059178c5697ec0ec26b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-host.log",
-            "sha256": "9d221dc8b93a958ffeeeec21311e0b9190321120dc628242d12a2c94f755b638"
+            "sha256": "4abdf9b00c4704e916f097a7622936113a6a8bd9b9d21b4d94fd5f47e35c4003"
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "a944d9a2cf15ae85c9acda9f39001a66ffc34d6b0c501b87c7a6df773b916ac3"
+            "sha256": "e56e607f80483bd335b0cf99b73609f754710cad55ee2b1ea58f0e37a7a017ac"
           }
         }
       },
@@ -5977,8 +6269,59 @@
           ],
           "scope": "The T3RUPT vector 04014 (DXCH ARUPT, CAF T3RPTBB, XCH BBANK, TCF T3RUPT) as a control-transfer ABI routine through T3RUPT2 to the dispatched task, with interrupts enabled or inhibited. The other vectors remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "The T6RUPT vector (04004: DXCH ARUPT; EXTEND; DCA T6ADR; DTCB) and T6ADR's 2CADR as a control-transfer ABI routine ending at DOT6RUPT.",
+          "verification": "docs/LM-T6RUPT.md"
+        },
+        {
+          "native_files": [
+            "src/rupt_lead_ins.c",
+            "include/rupt_lead_ins.h"
+          ],
+          "scope": "The GOPROG restart lead-in (04000), the T5RUPT 2CADR vector (04010, DCA T5ADR; DTCB) and the banked T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR and RUPT10 vectors with their BBCON constants as control-transfer ABI routines (lm_lead_in_routines). With the T6RUPT (lm-t6rupt) and T3RUPT (lm-exec-jobs) vectors every assembled word of the file is native.",
+          "verification": "docs/RUPT-LEAD-INS.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; InIsr in agc_hardware.",
+          "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T5RUPT 04010, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and RUPT10 04050 inside the interrupt (lm_lead_in_routines); T6RUPT 04004 in lm_t6rupt_routines and T3RUPT 04014 in lm_exec_task routines.",
+          "index_domains": "T5ADR holds a 2CADR whose CADR is in fixed memory 02000-07777 (as the DAP and restart store it). Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
+        },
+        "external_continuations": [
+          "GOPROG (FRESH_START_AND_RESTART) after the restart lead-in",
+          "The interrupt handlers T4RUPT, KEYRUPT1, MARKRUPT, UPRUPT, DODOWNTM, RADAREAD, PITFALL and the T5ADR target (the DAP), each ending the interrupt through WAITLIST RESUME",
+          "T6RUPT vector equivalence: evidence/lm-t6rupt; T3RUPT vector equivalence: evidence/lm-exec-jobs",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-lm.json",
+            "sha256": "4daf90775981605a53212aa6824f026f18e42b1abc882b1fafbd44d1d3795250"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
+            "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
+            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+          },
+          "c64_execution_results": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
+            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/KALCMANU_STEERING.agc",
@@ -6092,8 +6435,51 @@
           ],
           "scope": "Fixed-vector keyboard KEYRUPT/KEYCOM/RESUME paths, admission and selected CHARIN lifecycle; UPRUPT and other complete-file paths remain unported.",
           "verification": "docs/DSKY-KEYBOARD-RUNTIME.md"
+        },
+        {
+          "native_files": [
+            "src/keyrupt_uprupt.c",
+            "include/keyrupt_uprupt.h"
+          ],
+          "scope": "Every assembled word: KEYRUPT1 with KEYCOM and ACCEPTUP to NOVAC (CHARIN) and NOVAC's return to RESUME, and UPRUPT with UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2, as control-transfer ABI routines (lm_keyrupt_routines) on the image through agc_image_ops, with channel 15 in agc_hardware. The CS XDSPBIT at 04,3400 is unreached and has no native counterpart.",
+          "verification": "docs/KEYRUPT-UPRUPT.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; InIsr, channel 11 and channel 15 in agc_hardware.",
+          "entry_contracts": "Inside the interrupt with FB in the file's bank (04,3274): KEYRUPT1 and UPRUPT from their lead-ins, their LODSAMPT returns (+4), KEYCOM (Comanche SXTMARK's key path), and NOVAC's return after the CHARIN 2CADR. Every labelled entry and every return point a callee reaches is a routine.",
+          "index_domains": "A holds no overflow at KEYRUPT1, UPRUPT and KEYCOM (the lead-ins leave the old BB, SXTMARK a key code); Q may hold anything (an overflowed Q makes TS QRUPT skip LODSAMPT, as in the original); LOCCTR at NOVAC's return is a core set offset 0-72 in steps of 12. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "WOR on channel 11 (UPACT) as yaAGC computes it; reading the key code from channel 15 and the uplink word from INLINK are device-adapter obligations."
+        },
+        "external_continuations": [
+          "LODSAMPT (PINBALL_GAME_BUTTONS_AND_LIGHTS) returns to the entry +4",
+          "NOVAC (EXECUTIVE, native in the exec milestones) starts CHARIN and returns after the 2CADR",
+          "WAITLIST RESUME ends the interrupt (native: lm_t6rupt_routines)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-source-map-lm.json",
+            "sha256": "b8815418407dece510e01284cbc77d808f99277e50e7ce2e40e898037f603ca9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-proof.json",
+            "sha256": "3c766fe38d947b4972bffa3e9d42d481c856756639abfe48608a145b799c4a03"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
+            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+          },
+          "c64_execution_results": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
+            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
@@ -7987,8 +8373,17 @@
       "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
       "bytes": 37085,
       "lines": 1354,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/t4rupt_core.c",
+            "include/t4rupt_core.h"
+          ],
+          "scope": "T4RUPT entry with the DSRUPTSW scan, T4JUMP dispatch, SETTIME4 (PROCEEDE), DSPOUTSB/NODSPOUT/HANG20/DSPOUT display relay output, QUIKDSP and the SYNCT4 resume paths, as control-transfer ABI routines (lm_t4rupt_core_routines, bank 06 entries 2000, 2116, 2121, 2125) on the image through agc_image_ops, with channels 10 and 32 in agc_hardware. TABLNTH, 120MRUPT and OCT37737 are unreached data; IMUMON and the rest of the file remain unported.",
+          "verification": "docs/T4RUPT-CORE.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/T6-RUPT_PROGRAMS.agc",
@@ -7996,8 +8391,51 @@
       "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
       "bytes": 4500,
       "lines": 163,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "Every assembled word: DOT6RUPT, T6JOBCHK, T6JOB/ENABLET6/GOCH56 and the WRITEP/WRITEU/WRITEV jet writers (with their -1 entries and 00314OCT) as control-transfer ABI routines (lm_t6rupt_routines) on the image through agc_image_ops, with channels 5, 6 and 13 in agc_hardware. The negative-TIME6 self-loop at T6JOBCHK +3 has no producer and is refused.",
+          "verification": "docs/LM-T6RUPT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; channels 5, 6 and 13 (CPU-writable bits 043777) and InIsr in agc_hardware.",
+          "entry_contracts": "T6RUPT vector 04004 and DOT6RUPT 17,2065 inside the T6 interrupt (DOT6RUPT with FB 17, EB 6); T6JOBCHK 17,2027 and WRITEP-1/WRITEU-1/WRITEV-1 with EB 6; WRITEP/WRITEU/WRITEV from any bank. Every labelled entry and every DAP call target in the file is a routine.",
+          "index_domains": "NXT6ADR 0, 4 or 13 (the INDEXES and DAPIDLER values); TIME6 positive, +0 or -0 (a negative nonzero TIME6 reaches the T6JOBCHK +3 self-loop and has no producer); TC Q return addresses in fixed memory 02000-07777; no overflow in A at WRITEU/WRITEV. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "hardware_side_effects": "Channel values are kept exactly (WAND/WOR/RAND/WRITE results as yaAGC computes them); firing the jets from channels 5 and 6 and running the TIME6 counter from channel 13 bit 15 are device-adapter obligations."
+        },
+        "external_continuations": [
+          "WAITLIST RESUME (05270) ends the interrupt; RESUME/NOQRSM/NOQBRSM are routines of the same table",
+          "CCSHOLE (ALARM_AND_ABORT) for TIME6 +0",
+          "The DAP callers of WRITEP/WRITEU/WRITEV and producers of T6NEXT/T6FURTHA/NXT6ADR (P-AXIS and Q_R-AXIS RCS autopilots, DAPIDLER, FRESH_START_AND_RESTART); integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-source-map.json",
+            "sha256": "f995477a70d125d42074e091d382da59be7d35b433f25251766fb2d3536a5227"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-proof.json",
+            "sha256": "7fdf6c1508e008433c0ad5de6fc0f22c2f1f22596506a15c292206893fb8e30b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-host.log",
+            "sha256": "9718634faa0fa9b0a8625c0a62ba5f7abe7eb59994cefc361b1777b94247fb68"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-vice.log",
+            "sha256": "e15fabede24f731f0efd54c3ed2745bb638dbe1ca8cc2a1f76779cda5953f4ff"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -8484,8 +8922,74 @@
           ],
           "scope": "FIXDELAY (inline delay from the compiled site table at all 16 genuine call sites, or erasable), VARDELAY, TASKOVER (RESUME on RUPTAGN -0, T3RUPT2 dispatch on +1) as control-transfer ABI routines (lm_exec_task_routines) composing the delay, TASKOVER-resume and T3 dispatch bodies. The SVCT3 end-of-list task and the RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
           "verification": "docs/LM-EXEC-JOBS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "include/lm_svct3.h",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "The SVCT3 end-of-list task (05240, CKIMUSE) and its resumptions after NOVAC (05255) and SVCT3X's FIXDELAY (05260) as control-transfer ABI routines over the new lm_svct3_phase body, to TASKOVER, NOVAC NBDONLY or FIXDELAY 500. The RESUME/NOQRSM/NOQBRSM entries other interrupts use remain separate.",
+          "verification": "docs/LM-EXEC-IDLE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_t6rupt.c",
+            "include/lm_t6rupt_routines.h"
+          ],
+          "scope": "RESUME (05270), NOQRSM (05272) and NOQBRSM (05274), the interrupt exits other interrupts use, as control-transfer ABI routines ending the interrupt at ZRUPT-1.",
+          "verification": "docs/LM-T6RUPT.md"
+        },
+        {
+          "native_files": [
+            "src/lm_exec_routines.c",
+            "src/lm_exec_jobs.c",
+            "src/lm_exec_tasks.c",
+            "src/lm_exec_idle.c",
+            "src/lm_svct3.c",
+            "src/lm_basic_wake.c",
+            "src/rupt_lead_ins.c",
+            "include/lm_exec_routines.h"
+          ],
+          "scope": "Whole-file map: every assembled word of Luminary099/WAITLIST.agc listed with the native routine milestones whose yaAGC comparison executed it (exec-services, exec-jobs, exec-idle, rupt-lead-ins). Every instruction word is executed in a native routine's compared path apart from the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1).",
+          "verification": "docs/EXEC-CLOSURE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines and lm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "Named in the source map with reasons: the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1). No producer reaches these words.",
+          "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
+        },
+        "external_continuations": [
+          "Callers of the Executive and Waitlist services across the program, and the job and task bodies they start",
+          "CCSHOLE and BAILOUT (ALARM_AND_ABORT, Lane A2)",
+          "Interrupt RESUME from the other interrupt programs; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/exec-closure/exec-closure-source-map-lm-waitlist.json",
+            "sha256": "02ba9298c3bd1a8d3ddb6d0edebd41eb6a87db52d354f0a23f102b52ea3071fa"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/exec-closure/exec-closure-proof.json",
+            "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/exec-closure/exec-closure-host.log",
+            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/exec-closure/exec-closure-vice.log",
+            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+          }
+        }
+      }
     }
   ]
 }

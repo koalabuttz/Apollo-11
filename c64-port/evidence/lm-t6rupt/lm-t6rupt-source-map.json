@@ -1,0 +1,651 @@
+{
+ "source_path": "Luminary099/T6-RUPT_PROGRAMS.agc",
+ "source_sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native": {
+  "src/lm_t6rupt.c": "7acbaeeea5e67ac292e60a02ed27b11d0660077bf217bc5521e5f5f421947b6d",
+  "include/lm_t6rupt_routines.h": "62f628d317b76956b8dfc83904de9a4f9a9bb52a03b6460f366de67fbc5cdb07"
+ },
+ "source_words": 53,
+ "source_lines_with_words": 53,
+ "instructions_executed_by_oracle": 51,
+ "line_map": [
+  {
+   "line": 85,
+   "address": "17,2027",
+   "source": "T6JOBCHK CCS TIME6",
+   "words": [
+    "10031"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (CCS TIME6, TC Q / TC CCSHOLE))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 86,
+   "address": "17,2030",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (CCS TIME6, TC Q / TC CCSHOLE))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 87,
+   "address": "17,2031",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (CCS TIME6, TC Q / TC CCSHOLE))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 88,
+   "address": "17,2032",
+   "source": "TC T6JOBCHK +3",
+   "words": [
+    "02032"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (CCS TIME6, TC Q / TC CCSHOLE))",
+   "executed_by_oracle": false,
+   "refused": "negative nonzero TIME6 has no producer; T6JOBCHK refuses it unchanged"
+  },
+  {
+   "line": 92,
+   "address": "17,2033",
+   "source": "T6JOB CAF POSMAX",
+   "words": [
+    "34733"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 93,
+   "address": "17,2034",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 94,
+   "address": "17,2035",
+   "source": "WAND CHAN13",
+   "words": [
+    "03013"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 96,
+   "address": "17,2036",
+   "source": "CA POSMAX",
+   "words": [
+    "34733"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 97,
+   "address": "17,2037",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 98,
+   "address": "17,2040",
+   "source": "DXCH T6FURTHA",
+   "words": [
+    "53471"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 99,
+   "address": "17,2041",
+   "source": "DXCH T6NEXT",
+   "words": [
+    "53467"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 100,
+   "address": "17,2042",
+   "source": "LXCH NXT6ADR",
+   "words": [
+    "23465"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 101,
+   "address": "17,2043",
+   "source": "TS TIME6",
+   "words": [
+    "54031"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 103,
+   "address": "17,2044",
+   "source": "AD PRIO37",
+   "words": [
+    "67725"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 104,
+   "address": "17,2045",
+   "source": "TS A",
+   "words": [
+    "54000"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 105,
+   "address": "17,2046",
+   "source": "TCF ENABLET6",
+   "words": [
+    "12052"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 106,
+   "address": "17,2047",
+   "source": "CA POSMAX",
+   "words": [
+    "34733"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 107,
+   "address": "17,2050",
+   "source": "TS TIME6",
+   "words": [
+    "54031"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 108,
+   "address": "17,2051",
+   "source": "TCF GOCH56",
+   "words": [
+    "12063"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (T6JOB))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 109,
+   "address": "17,2052",
+   "source": "ENABLET6 CA BIT15",
+   "words": [
+    "34735"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 110,
+   "address": "17,2053",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 111,
+   "address": "17,2054",
+   "source": "WOR CHAN13",
+   "words": [
+    "05013"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 112,
+   "address": "17,2055",
+   "source": "CA T6NEXT",
+   "words": [
+    "31466"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 113,
+   "address": "17,2056",
+   "source": "AD PRIO37",
+   "words": [
+    "67725"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 114,
+   "address": "17,2057",
+   "source": "TS A",
+   "words": [
+    "54000"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 115,
+   "address": "17,2060",
+   "source": "TCF GOCH56",
+   "words": [
+    "12063"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 116,
+   "address": "17,2061",
+   "source": "CA POSMAX",
+   "words": [
+    "34733"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 117,
+   "address": "17,2062",
+   "source": "TS T6NEXT",
+   "words": [
+    "55466"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (ENABLET6))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 118,
+   "address": "17,2063",
+   "source": "GOCH56 INDEX L",
+   "words": [
+    "50001"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (GOCH56: INDEX L; TCF WRITEP -1))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 119,
+   "address": "17,2064",
+   "source": "TCF WRITEP -1",
+   "words": [
+    "15753"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (GOCH56: INDEX L; TCF WRITEP -1))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 127,
+   "address": "FF,5753",
+   "source": "CA NEXTP",
+   "words": [
+    "31472"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (t6jobchk (GOCH56: INDEX L; TCF WRITEP -1))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 128,
+   "address": "FF,5754",
+   "source": "WRITEP EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (fire / writex (WRITEP))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 129,
+   "address": "FF,5755",
+   "source": "WRITE CHAN6",
+   "words": [
+    "01006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (fire / writex (WRITEP))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 131,
+   "address": "FF,5756",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (fire / writex (WRITEP))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 133,
+   "address": "FF,5757",
+   "source": "CA NEXTU",
+   "words": [
+    "31473"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (fire / writex (WRITEP))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 134,
+   "address": "FF,5760",
+   "source": "WRITEU TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 135,
+   "address": "FF,5761",
+   "source": "CS 00314OCT",
+   "words": [
+    "45774"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 136,
+   "address": "FF,5762",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 137,
+   "address": "FF,5763",
+   "source": "RAND CHAN5",
+   "words": [
+    "02005"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 138,
+   "address": "FF,5764",
+   "source": "AD L",
+   "words": [
+    "60001"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 139,
+   "address": "FF,5765",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 140,
+   "address": "FF,5766",
+   "source": "WRITE CHAN5",
+   "words": [
+    "01005"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 141,
+   "address": "FF,5767",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 143,
+   "address": "FF,5770",
+   "source": "CA NEXTV",
+   "words": [
+    "31474"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEU))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 144,
+   "address": "FF,5771",
+   "source": "WRITEV TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEV))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 145,
+   "address": "FF,5772",
+   "source": "CA 00314OCT",
+   "words": [
+    "35774"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEV))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 146,
+   "address": "FF,5773",
+   "source": "TCF -9D",
+   "words": [
+    "15762"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (write5 (WRITEV))",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 147,
+   "address": "FF,5774",
+   "source": "00314OCT OCT 00314",
+   "words": [
+    "00314"
+   ],
+   "kind": "constant",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (OCT00314 constant (write5))",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 156,
+   "address": "17,2065",
+   "source": "DOT6RUPT LXCH BANKRUPT",
+   "words": [
+    "22016"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (dot6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 157,
+   "address": "17,2066",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (dot6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 158,
+   "address": "17,2067",
+   "source": "QXCH QRUPT",
+   "words": [
+    "22012"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (dot6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 160,
+   "address": "17,2070",
+   "source": "TC T6JOBCHK",
+   "words": [
+    "02027"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (dot6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 162,
+   "address": "17,2071",
+   "source": "TCF RESUME",
+   "words": [
+    "15270"
+   ],
+   "kind": "instruction",
+   "owner": "lm-t6rupt",
+   "native": "src/lm_t6rupt.c (dot6rupt)",
+   "executed_by_oracle": true
+  }
+ ]
+}
