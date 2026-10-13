@@ -34,7 +34,7 @@ static uint8_t time_stage(enum dsky_nv_mission mission, agc_word pc)
 }
 
 enum lanec_status lanec_pw_decimal_time_consumer_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum dsky_decimal_consumer_route r;
     enum dsky_nv_mission nv = lanec_pw_nv(mission);
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
@@ -45,7 +45,7 @@ enum lanec_status lanec_pw_decimal_time_consumer_run(apollo_overlay_state *s, la
 }
 
 enum lanec_status lanec_pw_display_release_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     int ok;
     if (mission == LANEC_LM) {
         dsky_charin_io p;
@@ -63,7 +63,7 @@ enum lanec_status lanec_pw_display_release_run(apollo_overlay_state *s, lanec_io
 }
 
 enum lanec_status lanec_pw_enter_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     int ok; enum dsky_enter_route r;
     if (mission == LANEC_LM) {
         dsky_charin_io p;
@@ -85,7 +85,7 @@ LANEC_PW_ROUTE_RUN(lanec_pw_enter_zero_run, dsky_enter_zero, cm_enter_zero, enum
 LANEC_PW_ROUTE_RUN(lanec_pw_five_blank_run, dsky_five_blank, cm_five_blank, enum dsky_five_blank_route)
 
 enum lanec_status lanec_pw_fixed_display_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     unsigned stage;
     enum dsky_nv_mission nv = lanec_pw_nv(mission);
     enum dsky_fixed_display_route r;
@@ -93,7 +93,7 @@ enum lanec_status lanec_pw_fixed_display_run(apollo_overlay_state *s, lanec_io *
         p66_bias_io p; agc_word value = 0; uint16_t address;
         p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
         if (stage == DSKY_FIXED_DATA &&
-            (!dsky_fixed_display_address(s, &p, nv, &address) || !dsky_fixed_display_data(nv, address, &value, 0)))
+            (!lanec_fixed_read || !dsky_fixed_display_address(s, &p, nv, &address) || !lanec_fixed_read(mission, address, &value)))
             continue;
         if (dsky_fixed_display(s, &p, nv, (enum dsky_fixed_display_stage)stage, value, &r) == P66_BIAS_OK) {
             io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
@@ -104,7 +104,7 @@ enum lanec_status lanec_pw_fixed_display_run(apollo_overlay_state *s, lanec_io *
 }
 
 enum lanec_status lanec_pw_fraction_pair_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     p66_bias_io p; enum dsky_decimal_general_route r;
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     if (dsky_fraction_pair(s, &p, lanec_pw_nv(mission), &r) != P66_BIAS_OK) return LANEC_OUT_OF_SCOPE;
@@ -113,7 +113,7 @@ enum lanec_status lanec_pw_fraction_pair_run(apollo_overlay_state *s, lanec_io *
 }
 
 enum lanec_status lanec_pw_hours_output_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     unsigned stage;
     for (stage = 0; stage < 8u; ++stage) {
         p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
@@ -136,3 +136,5 @@ LANEC_PW_LAMP_RUN(lanec_pw_input_mode_run, dsky_input_mode, cm_input_mode, enum 
 LANEC_PW_LAMP_RUN(lanec_pw_input_scale_run, dsky_input_scale, cm_input_scale, enum dsky_input_scale_route)
 
 LANEC_PW_LAMP_RUN(lanec_pw_input_select_run, dsky_input_select, cm_input_select, enum dsky_input_select_route)
+
+bool (*lanec_fixed_read)(enum lanec_mission, uint16_t, agc_word *);

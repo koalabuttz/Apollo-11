@@ -15,9 +15,10 @@
   "src/lm_r60_r62.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 1677,
- "host_vector_edges": 1677,
- "c64_edges": 1677,
+ "host_edges": 1680,
+ "host_vector_edges": 1680,
+ "c64_edges": 1680,
  "host_branches_missing_on_c64": [],
- "c64_rows": 256
+ "c64_rows": 256,
+ "c64_segment_rows": 0
 }

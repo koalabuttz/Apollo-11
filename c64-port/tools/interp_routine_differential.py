@@ -508,6 +508,10 @@ def case(mi, point, n, rng):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
             E[state_address(mi, k, vac)] = v & 0o77777
+    if mi.cp.novac(point) and rng.random() < 0.5:
+        # 'any_fixloc': a basic routine that never names FIXLOC runs from
+        # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
+        E[0o120] = rng.randrange(0o4000)
     if (mi.cp.basic or mi.cp.spec.get('basic_edges')) and mi.kinds[point] == 'b':
         # Compiled basic code: the words it names take zeros, small values
         # and saturating values often enough to reach every CCS exit, BZF and
@@ -1041,8 +1045,19 @@ def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True
     return picked, cov
 
 
+# A native or reference run that outlives this (seconds) is a hang, not a
+# slow spec: an interpreter loop with no step budget, say (#224).
+RUN_TIMEOUT = int(os.environ.get('IRC_RUN_TIMEOUT', '1200'))
+
+
 def run(cmd):
-    out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True).stdout
+    try:
+        out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True,
+                             timeout=RUN_TIMEOUT).stdout
+    except subprocess.TimeoutExpired:
+        sys.exit('FAIL: %s ran over %d s (IRC_RUN_TIMEOUT); a case hangs' % (' '.join(cmd), RUN_TIMEOUT))
+    except subprocess.CalledProcessError as e:
+        sys.exit('FAIL: %s exited %d\n%s' % (' '.join(cmd), e.returncode, e.stderr))
     return [l.split() for l in out.splitlines()]
 
 
@@ -1243,7 +1258,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
-        taken = set()
+        taken, seen = set(), set()
         for o in objs:
             out = subprocess.run(['gcov', '-b', '-c', '-t', '-o', w, o[:-2] + '.gcda'], cwd=R, check=True,
                                  capture_output=True, text=True).stdout
@@ -1252,6 +1267,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                 m = re.match(r'\s*-:\s*0:Source:(.*)', l)
                 if m:
                     src = m.group(1)
+                    seen.add((os.path.basename(o)[:-2], src))
                     continue
                 m = re.match(r'\s*[^:]+:\s*(\d+):', l)
                 if m:
@@ -1260,7 +1276,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                 m = re.match(r'branch\s+(\d+) taken (\d+)', l)
                 if m and int(m.group(2)):
                     taken.add((os.path.basename(o)[:-2], src, line, int(m.group(1))))
-        res[tag] = c64_row_cover.arc_keys(taken)
+        res[tag] = c64_row_cover.arc_keys(taken, seen)
         shutil.rmtree(w, ignore_errors=True)
     miss = sorted(res['host'] - res['c64'], key=lambda a: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', a)])
     return {'host_taken': len(res['host']), 'c64_taken': len(res['c64']), 'host_taken_not_c64': len(miss),
@@ -1722,6 +1738,10 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             break
     print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
         made, refused, differ, len(want)))
+    if differ:
+        # The oracle and the native code stop at the same cut in the same
+        # state, or the native code is wrong there.
+        sys.exit('%s: %d C64 cuts differ from the original program' % (spec_id, differ))
 
 
 C64_PICKS = []       # each group's cases, for the outcome cover

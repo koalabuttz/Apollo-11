@@ -28,7 +28,7 @@ static inline uint8_t lanec_pw_rounded(const apollo_overlay_state *s)
  * 11 passes through io->channel[011]. */
 #define LANEC_PW_CHARIN_RUN(name, lm, cm)                                                          \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         int ok;                                                                                    \
         if (mission == LANEC_LM) {                                                                 \
             dsky_charin_io c;                                                                      \

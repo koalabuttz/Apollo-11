@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-p-axis (lane F): Luminary099 P-AXIS_RCS_AUTOPILOT as native
 # routines of the control-transfer ABI.
-LM_PA_SRC = src/lm_p_axis.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_p_axis_cases.c
-LM_PA_HDR = include/lm_p_axis.h include/lm_flight_io.h include/agc_image_ops.h include/agc_transfer.h src/lm_p_axis_sites.inc tests/lm_p_axis_cases.h
+LM_PA_SRC = src/lm_p_axis.c src/agc_fast_ops.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_p_axis_cases.c
+LM_PA_HDR = include/lm_p_axis.h include/lm_flight_io.h include/agc_image_ops.h include/agc_fast_ops.h include/agc_image_thin.h include/agc_transfer.h src/lm_p_axis_sites.inc tests/lm_p_axis_cases.h
 LM_PA_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
 .PHONY: test-lm-p-axis sanitize-lm-p-axis c64-lm-p-axis vice-lm-p-axis lm-p-axis-differential
 all: build/test-lm-p-axis
