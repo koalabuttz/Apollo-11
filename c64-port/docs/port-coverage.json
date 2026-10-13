@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -1523,7 +1523,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "f4e8517ca1b8c475a94163b5b034bb57395899ee4e532e22c9178d8f110bd188",
+            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -1608,7 +1608,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "6d68ba8650cd25737a84d0daf17d3958a3556190521382df7e06b602bf24f828",
+            "sha256": "43efc541e01751eaa338607e1b31b1c031dab73694199fe51cb1aca537feea8f",
             "vice_targets": {
               "vice-cm-imu-calibration": 507
             }
@@ -4210,7 +4210,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "e74f96589759dc83cc5acb11e6ba32b2c56abff038e9c557a2130faa6f323e7f",
+            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -7003,7 +7003,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "f4e8517ca1b8c475a94163b5b034bb57395899ee4e532e22c9178d8f110bd188",
+            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -10085,7 +10085,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "e74f96589759dc83cc5acb11e6ba32b2c56abff038e9c557a2130faa6f323e7f",
+            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
