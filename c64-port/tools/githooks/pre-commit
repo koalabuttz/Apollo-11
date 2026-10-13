@@ -1,0 +1,13 @@
+#!/bin/sh
+# Format the C lines this commit touches (tools/format_changed.py).
+# Installed by tools/setup_cloud.sh (git config core.hooksPath). Skip once
+# with `git commit --no-verify`.
+port="$(git rev-parse --show-toplevel)/c64-port"
+[ -f "$port/tools/format_changed.py" ] || exit 0
+# Re-stage formatted files, except ones with unstaged edits of their own.
+dirty=$(git diff --name-only)
+python3 "$port/tools/format_changed.py" --staged || exit 1
+for f in $(git diff --cached --name-only --diff-filter=ACMR -- 'c64-port/*.c' 'c64-port/*.h'); do
+    case " $(echo $dirty) " in *" $f "*) ;; *) git add -- "$f" ;; esac
+done
+exit 0

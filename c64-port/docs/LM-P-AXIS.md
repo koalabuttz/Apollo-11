@@ -27,6 +27,14 @@ check below runs this form; `-DLM_PA_GENERIC` builds the same source on
 `agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
 P-AXIS takes about 71K 6502 cycles instead of 150K (mos-sim, `-Oz`).
 
+A cell in the EBANK6 window (01400-01776) goes to the one-byte `afw_*` form of
+the fast helper by its offset in the window (`include/agc_fast_window.h`,
+checked against `agc_image_ops` by `make test-agc-fast-ops`). With the cell's
+address at every call site, the compiler kept the twenty-odd addresses live
+across the calls and spilled them; the DAP's hold-cycle set (P-AXIS, Q_R-AXIS,
+TJET_LAW, DAPIDLER) links in about 31.0 KB instead of 36.2 KB. A hold cycle of
+P-AXIS takes about 75K cycles in that form (70K before).
+
 | Entry | Body |
 |---|---|
 | PAXIS `16,2213` | the T5 lead-in: TIME5, BANKRUPT and QRUPT; `TC BAILOUT` when DAPZRUPT shows the last pass still running; otherwise `TC CHEKBITS` (DAPIDLER_PROGRAM) |

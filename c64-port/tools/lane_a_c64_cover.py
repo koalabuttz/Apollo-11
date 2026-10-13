@@ -145,7 +145,10 @@ def main():
         c64_row_cover.save(trace_path, trace)
     rows_h = R / f'tests/{under}_c64_rows.h'
     if a.check:
-        extra = [int(x) for x in re.findall(r'\b(\d+)u', rows_h.read_text().split('_row[')[1].split('}')[0])]
+        text = rows_h.read_text()
+        # With no cover rows the array holds a single 0u placeholder.
+        k = int(re.search(rf'#define {prefix}_C64_ROWS (\d+)u', text).group(1))
+        extra = [int(x) for x in re.findall(r'\b(\d+)u', text.split('_row[')[1].split('}')[0])][:k]
         c64_row_cover.check(trace, sorted(set(seed) | set(extra)))
         print(f'{name}: {len(seed)} stride rows and {len(extra)} cover rows take every host branch arc')
         return

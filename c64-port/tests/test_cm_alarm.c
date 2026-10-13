@@ -3,7 +3,7 @@
  * digests frozen from the original program; every registered entry is
  * reached; each run ends at a point outside the file (a caller's return,
  * PRIODSPR, ENEMA, MR.KLEAN, VAC5STOR or DOWNFLAG); a Q or ALMCADR at no
- * compiled site, an ALMCADR word that is no return address, a negative alarm
+ * compiled site or in erasable, an ALMCADR word that is no return address, a negative alarm
  * code that overflows MULTFAIL's TS, a missing io record and WHIMPER without
  * the hardware record are refused. */
 #include <stdio.h>
@@ -64,6 +64,10 @@ int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q at no compiled site",0);
  kind(&s,&io,&hw,other(CM_AL_BAILOUT_RET));s.words[CM_AL_ALMCADR]=(agc_word)(s.words[CM_AL_ALMCADR]+1u);
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR at no compiled site",0);
+ kind(&s,&io,&hw,other(CM_AL_BAILOUT_RET));s.words[CM_AL_ALMCADR]=01000u;
+ check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR in erasable",0);
+ kind(&s,&io,&hw,first_alarm);s.words[2]=01000u;
+ check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q in erasable",0);
  kind(&s,&io,&hw,other(CM_AL_ALMCADR));s.words[CM_AL_ALMCADR]=040000u;
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR word",0);
  kind(&s,&io,&hw,other(CM_AL_VARALARM));s.words[0]=0160000u;           /* VARALARM with a negative code */

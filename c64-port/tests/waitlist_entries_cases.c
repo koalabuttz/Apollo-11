@@ -72,7 +72,8 @@ static uint32_t rnd(uint32_t *x){*x=*x*1103515245u+12345u;return *x>>8;}
 /* A DELAYJOB case with WLE_SANE set: a waitlist the way FRESH START and
  * WAIT2 leave it, so DLY2 -1 inserts the task and reaches JOBSLEEP (the
  * random image almost never does). A free DELAYLOC, a positive delay in A,
- * TIME3 anywhere (its overflow test both ways), and 0-8 queued tasks with
+ * TIME3 anywhere (its overflow test both ways, and exactly 0200, where
+ * -TIME3 + 0200 is +0), and 0-8 queued tasks with
  * negative delta Ts in LST1 (NEG1/2 past them) and ENDTASK past them in LST2;
  * one case in sixteen queues 9 (a full list), so the insertion pushes a task
  * off the end and WAIT2 aborts. */
@@ -81,7 +82,7 @@ static void sane_waitlist(apollo_overlay_state *s,uint8_t cm,uint16_t base){uint
  for(i=0;i<slots;++i)s->words[delayloc+i]=(agc_word)((rnd(&x)&1u)?0u:1u+rnd(&x)%077776u);
  s->words[delayloc+rnd(&x)%slots]=0;
  i=(uint16_t)(rnd(&x)%8u);s->words[0]=(agc_word)(i==0u?1u:i==1u?2u:i==2u?037777u:1u+rnd(&x)%(i<5u?0200u:037777u));
- i=(uint16_t)(rnd(&x)%4u);s->words[026]=(agc_word)(i==0u?rnd(&x)%0200u:i==1u?037600u+rnd(&x)%0200u:rnd(&x)%040000u);
+ i=(uint16_t)(rnd(&x)%5u);s->words[026]=(agc_word)(i==0u?rnd(&x)%0200u:i==1u?037600u+rnd(&x)%0200u:i==2u?0200u:rnd(&x)%040000u);
  c=(uint16_t)(rnd(&x)%16u==0u?9u:rnd(&x)%9u);
  if(base&WLE_EDGE)c=(uint16_t)(1u+c%8u);
  for(i=0;i<8u;++i)s->words[01400u+i]=(agc_word)(i<c?077777u-rnd(&x)%(i==0u?040u:02000u):057777u);
