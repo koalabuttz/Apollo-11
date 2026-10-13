@@ -19,7 +19,7 @@ from overlay_runtime_library import prepare  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/cm-service-overlay-v2')
-SERVICES = 0x0201
+SERVICES = 0x0202
 # ABI 1 number -> (ABI 2 id, slot class, selector count, sources)
 MODULES = {
     1: (0x0101, 1, 64, ['platform/c64/cm_service_overlay_payload.c', 'src/cm_task_transfer.c', 'src/cm_waitlist.c']),
