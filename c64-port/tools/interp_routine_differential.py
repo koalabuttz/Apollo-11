@@ -1671,8 +1671,10 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
     for arc in sorted(want):
         if arc not in want:
             continue
+        # (The fewest-edit 32: an arc only rare long runs take can need more
+        # than a few tries for a prefix that fits.)
         cands = sorted((i for i in arcs if arc in arcs[i] and not cases[i].get('cut')),
-                       key=lambda i: (len(cases[i]['edits']), i))[:8]
+                       key=lambda i: (len(cases[i]['edits']), i))[:32]
         sub = os.path.join(B, '%s-cuts.bin' % spec_id)
         write_cases(sub, missions, [cases[i] for i in cands])
         seqs = [[int(x[1:]) for x in r[4:]] for r in run([nat, sub, 'visits'])]
@@ -1720,6 +1722,11 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             break
     print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
         made, refused, differ, len(want)))
+    for arc in sorted(want):
+        took = [i for i in arcs if arc in arcs[i]]
+        print('  C64 cuts: %s left: %d cases take it, from %s' % (arc, len(took), ', '.join(sorted(set(
+            '%s %s' % (missions[cases[i]['cm']].m.upper(), missions[cases[i]['cm']].cp.where(cases[i]['point']))
+            for i in took)))[:400]))
 
 
 C64_PICKS = []       # each group's cases, for the outcome cover
