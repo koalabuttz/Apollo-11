@@ -1377,17 +1377,20 @@ class Compiler:
         start = max(heads)
         lg = self.logical_of(start)
         cases = {}
-        for q in sorted(self.words):
-            w = self.L.word(q)
-            ln = self.code.get(q)
-            if ln is None or ln.op != 'TC' or (w & 0o70000) or (w & 0o7777) != lg:
+        # (every caller in the rope: T4RUPT's TC RRLIMCHK too)
+        for ln in self.L.lines:
+            q = ln.phys
+            if ln.op != 'TC' or not ln.words or q is None or q // 1024 >= 0o40:
+                continue
+            w = ln.words[0]
+            if (w & 0o70000) or (w & 0o7777) != lg:
                 continue
             if lg >= 0o4000 or q // 1024 == start // 1024 or start // 1024 in (2, 3):
                 ret = self.logical_of(q + 1)
                 fb = (q // 1024 << 10) if q // 1024 not in (2, 3) else None
                 cases.setdefault(ret, []).append((fb, self.L.word(q + 1)))
         if not cases:
-            raise CompileError('INDEX Q inline read at %s: no caller in the file' % self.where(p))
+            raise CompileError('INDEX Q inline read at %s: no caller' % self.where(p))
         self.inline_reads.add(p)
         # (the returns a case of the routine starts with: Q and its FB)
         if self.cur_start == start:

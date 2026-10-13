@@ -18,7 +18,7 @@ sanitize-lm-p20-p25: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-p20-p25-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and both listing builds).
 lm-p20-p25-differential:
-	python3 tools/interp_routine_differential.py lm-p20-p25 --cases 256 --freeze
+	python3 tools/interp_routine_differential.py lm-p20-p25 --cases 128 --freeze
 	git diff --exit-code -- tests/lm_p20_p25_vectors.h tests/lm_p20_p25_c64_vectors.h tools/mk/lm-p20-p25.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).

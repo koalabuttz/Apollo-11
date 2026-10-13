@@ -1935,7 +1935,11 @@ SPECS = {
         'file': {'lm': 'P20-P25.agc'},
         'base': {'lm': 'lm_p20_p25'},
         'symbol': {'lm': 'lm_p20_p25'},
-        'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM'],
+        # PROG20/22/25 from FRESH_START, the rest the labels other files call.
+        'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM', 'CLRADMOD', 'DORREPOS', 'GOTOV56', 'LRALT', 'LRPOS2',
+                    'LRVEL', 'LRVELX', 'LRVELY', 'LRVELZ', 'P20LEMC1', 'P25LEM1', 'R12LITES', 'R22RSTRT',
+                    'R29', 'RADAREAD', 'RRDESNB', 'RRLIMCHK', 'RRRANGE', 'RRRDOT', 'RRTURNON', 'RRZERO', 'SETTRKF',
+                    'V67CALL'],
         'externals': {'SPSIN': 'auto', 'SPCOS': 'auto', 'MPACVBUF': 'auto', 'USPRCADR': 'auto', 'RESUME': 'auto', 'CHANG1': 'auto', 'BANKJUMP': 'auto', 'LONGCALL': 'auto', 'FALTON': 'auto', 'MAKECADR': 'auto', 'KILLTASK': 'auto', 'TWIDDLE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto',
                       'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'NOVAC': 'auto',
                       'WAITLIST': 'auto', 'FIXDELAY': 'auto', 'VARDELAY': 'auto', 'BLANKET': 'auto',
@@ -1963,11 +1967,11 @@ SPECS = {
         'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
                              + [('NXPOSVEL+%d' % n, v67_loop()) for n in range(4)]
                              + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
+        'channel_inputs': True,
         'resume_flow': True,
         'edge_cases': True,
         'counters': True,
         'c64_rows': 'cover',
-        'cover_stride': 4,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'resume_keys': True,
