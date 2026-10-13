@@ -211,7 +211,9 @@ Resolver keys are canonical, so a caller and the store builder always agree.
 `hist_loc` is the 12-bit address. For 04000-07777 (fixed-fixed), `hist_bank` is
 the physical bank in FB form, `02 << 10` or `03 << 10`, whatever FB and the
 superbank bit hold; this is the bank `agc_fixed_physical` gives. Banked
-addresses (02000-03777) carry FB with the superbank bit, as BBCON does.
+addresses (02000-03777) are keyed by physical bank too: banks 00-037 as
+`bank << 10` with no superbank bits, banks 040-047 as `(bank - 8) << 10 | 0100`.
+Superbank 0 and 060 therefore give the same key for FB 030-037.
 
 Loads only happen inside `apollo_ov2_run`, between bodies, while no module
 frame is live. A nested run is refused with `BUSY`. Any failure latches a fault
