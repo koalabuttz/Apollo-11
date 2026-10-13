@@ -1,0 +1,26 @@
+{
+ "milestone": "p51-p53",
+ "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+ "sources_measured": [
+  "src/agc_hardware_divide.c",
+  "src/agc_image_ops.c",
+  "src/agc_multiword.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/cm_p51_p53.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/lm_p51_p53.c",
+  "src/p51_p53_rtb.c",
+  "src/rtb_agreement.c",
+  "src/rtb_angles.c"
+ ],
+ "host_edges": 6592,
+ "host_vector_edges": 6592,
+ "c64_edges": 6592,
+ "host_branches_missing_on_c64": [],
+ "c64_rows": 1522,
+ "c64_segment_rows": 0
+}

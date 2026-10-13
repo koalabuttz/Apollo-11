@@ -24,6 +24,7 @@ SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA)}
 INDEX_ENTRIES = 4096
 INDEX_RECORD = 16
 RESOLVER_RECORD = 8
+BANK_PAGES = 512 * 1024 // 256  # the REU's DMA address wraps inside 512 KB
 REU_SIZES_KB = (128, 256, 512, 1024, 2048, 4096, 8192, 16384)
 D81_BLOCKS = 3160            # free data blocks on a formatted 1581 image
 D81_DIR_ENTRIES = 296
@@ -48,7 +49,7 @@ def parse_module(path, mission, services):
     if h[:4] != b'NATV' or h[4] != ABI or h[5] != HEADER:
         raise ValueError(f'{path}: not an ABI 2 module')
     slot, module_mission = h[6], h[7]
-    ident, entry, bss, bss_bytes, load_bytes, svc, selectors, reserved = struct.unpack_from('<8H', h, 8)
+    ident, entry, bss, bss_bytes, load_bytes, svc, selectors, tables = struct.unpack_from('<8H', h, 8)
     if slot not in SLOTS:
         raise ValueError(f'{path}: unknown slot class {slot}')
     base, capacity = SLOTS[slot]
@@ -64,7 +65,8 @@ def parse_module(path, mission, services):
     if svc >> 8 != services >> 8 or svc & 0xFF > services & 0xFF:
         problems.append(f'service table ${svc:04x} not compatible with resident ${services:04x}')
     if not selectors: problems.append('no selectors')
-    if reserved: problems.append('reserved header word is not zero')
+    if tables and not base + HEADER <= tables < base + capacity:
+        problems.append(f'routine-table list ${tables:04x} outside the slot')
     if problems:
         raise ValueError(f'{path}: ' + '; '.join(problems))
     return dict(path=str(path), id=ident, slot=slot, bytes=load_bytes, selectors=selectors,
@@ -92,8 +94,13 @@ def build_image(modules, resolver, mission, services):
     page = resolver_page + resolver_pages
     placed = []
     for m in sorted(modules, key=lambda m: m['id']):
+        size = -(-m['bytes'] // 256)
+        # One DMA loads a module, and the REU's address counter wraps inside
+        # a 512 KB bank (17xx REC; VICE too): never let a module cross one.
+        if page // BANK_PAGES != (page + size - 1) // BANK_PAGES:
+            page = (page // BANK_PAGES + 1) * BANK_PAGES
         placed.append(dict(m, page=page))
-        page += -(-m['bytes'] // 256)
+        page += size
     pages = page
     image = bytearray(pages * 256)
     struct.pack_into('<4sBBHHHHHH', image, 0, b'NREU', 1, mission, services, len(modules),

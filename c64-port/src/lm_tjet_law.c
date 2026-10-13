@@ -9,7 +9,17 @@
  * word to run as a basic order, which is composed here with its rope word. */
 #include "lm_tjet_law.h"
 #include "agc_image_ops.h"
-#define W s->words
+/* Every instruction runs on the one canonical image through
+ * include/agc_fast_redirect.h: a plain-cell operand under this file's
+ * EBANK 6 goes to the fast helper (include/agc_fast_ops.h), any other
+ * operand to a one-argument wrapper of the agc_image_ops helper; both have
+ * its effects. -DLM_TJ_GENERIC builds the same source on agc_image_ops alone. */
+#ifdef LM_TJ_GENERIC
+#define AFR_GENERIC
+#endif
+#define AFR_EBN (LM_TJ_EB>>8)
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_TJ_COUNT_PATHS
 extern unsigned lm_tj_paths[];
@@ -114,6 +124,7 @@ static void rufsetup(agc_image *s,agc_word ret,uint8_t full){
 static enum exec_status tjetlaw(const agc_native_program *p,agc_image *s,void *io){agc_word a;uint8_t c;(void)p;(void)io;
  static const agc_word axisdiff[3]={077757u,0u,020u}; /* AXISDIFF -1, 0, +1: DEC -16, +0, 16 B-14 */
  static const agc_word p00375a8[2]={00007u,025605u};  /* .00375A8: 2DEC .00375 B-3 */
+ AFR_BIND(s);
  if(!s||(W[4]&076000u)!=LM_TJ_FB||W[3]!=LM_TJ_EB||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  a=ai_word(s,AXISCTR);if(a!=NEGONE&&a!=0u&&a!=ONE)return EXEC_OUT_OF_SCOPE;
  /* EXTEND; QXCH HOLDQ; INDEX AXISCTR; CAF AXISDIFF; TS ADRSDIF1; CAE EDOT;

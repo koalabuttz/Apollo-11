@@ -51,7 +51,7 @@ def arcs(d):
         return frozenset()
     out = subprocess.run(['gcov', '-b', '-j', '-t', '-o', d, *data], cwd=d, check=True,
                          capture_output=True, text=True).stdout
-    taken = []
+    taken, seen = [], set()
     for doc in out.splitlines():
         doc = json.loads(doc)
         obj = os.path.splitext(os.path.basename(doc.get('data_file', '')))[0]
@@ -59,23 +59,26 @@ def arcs(d):
             name = f['file']
             if os.path.isabs(name):
                 name = os.path.relpath(name, R)
+            seen.add((obj, name))
             for ln in f['lines']:
                 for k, b in enumerate(ln['branches']):
                     if b['count']:
                         taken.append((obj, name, ln['line_number'], k))
-    return frozenset(arc_keys(taken))
+    return frozenset(arc_keys(taken, seen))
 
 
-def arc_keys(taken):
+def arc_keys(taken, seen=()):
     """'file:line branch N' keys of (object, source, line, branch) arcs.
 
     A .c source built into more than one object (the Comanche wrappers
     #include the Luminary file: cm_interp_orders.c includes
     lm_interp_orders.c) keys each object's arcs as 'file@object:line branch
     N', so a two-mission runner does not merge the missions' arcs. A source
-    in one object, and every header, keeps the plain key."""
+    in one object, and every header, keeps the plain key. seen: every
+    (object, source) gcov reported, taken arcs or not, so the key does not
+    depend on whether a case happened to run both objects' copies."""
     objs = {}
-    for obj, name, _, _ in taken:
+    for obj, name in [*seen, *((t[0], t[1]) for t in taken)]:
         objs.setdefault(name, set()).add(obj)
     split = {n for n, o in objs.items() if n.endswith('.c') and len(o) > 1}
     return {f"{name}@{obj}:{line} branch {k}" if name in split else f"{name}:{line} branch {k}"

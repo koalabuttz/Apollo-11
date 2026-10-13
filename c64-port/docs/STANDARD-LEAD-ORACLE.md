@@ -49,7 +49,7 @@ and freezes one Fletcher digest per case in
 `make sanitize-standard-lead-oracle` check every digest (1,414 checks).
 
 The C64 diagnostic runs every third case plus the 4 cover rows that
-`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 670 branch
+`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 664 branch
 arcs the host corpus takes (`evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json`);
 `make vice-standard-lead-oracle` passes 477 checks in VICE.
 

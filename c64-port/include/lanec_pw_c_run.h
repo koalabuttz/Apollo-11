@@ -50,7 +50,7 @@ static inline void lanec_pw_cm_out(lanec_io *io, const cm_native_io *c)
  * restart_light *, route *), channels 011-013 through lanec_io. */
 #define LANEC_PW_LAMP_RUN(name, lm, cm, route_type, route0)                                       \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         route_type r = route0;                                                                     \
         if (mission == LANEC_LM) {                                                                 \
             dsky_lamp_io p; lanec_pw_lamp_in(io, &p);                                              \
@@ -68,7 +68,7 @@ static inline void lanec_pw_cm_out(lanec_io *io, const cm_native_io *c)
  * lm(s, p66_bias_io *, route *) and CM cm(s, cm_native_io *, route *). */
 #define LANEC_PW_ROUTE_RUN(name, lm, cm, route_type, route0)                                      \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         route_type r = route0;                                                                     \
         if (mission == LANEC_LM) {                                                                 \
             p66_bias_io p; p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled; \

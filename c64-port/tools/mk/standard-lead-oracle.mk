@@ -4,7 +4,7 @@
 SLO_SRC = tests/standard_lead_oracle_cases.c tests/standard_lead_oracle_check.c tests/standard_lead_cases.c \
 	src/agc_transfer.c src/standard_lead_routines.c src/interp_entry.c src/standard_lead.c src/standard_lead_interp.c \
 	src/standard_lead_wake.c src/lm_basic_wake.c src/executive.c src/cm_basic_wake.c src/cm_native_image.c \
-	src/cm_dispatch.c src/cm_executive.c src/lm_interbank_routines.c src/lm_interbank.c src/cm_interbank_routines.c \
+	src/cm_dispatch.c src/cm_executive.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_idle.c \
 	src/cm_interbank_complete.c src/agc_word.c
 SLO_HDR = include/agc_transfer.h include/standard_lead_routines.h include/standard_lead.h include/standard_lead_wake.h \
 	include/lm_interbank_routines.h include/cm_interbank_routines.h tests/standard_lead_oracle_cases.h \

@@ -4,8 +4,8 @@
   "release": "evidence-cm-jet-select",
   "files": {
     "cm-jet-select-differential.log": {
-      "sha256": "929a48cb0126198eb9d5548314cf4ea3ff5b05c3515270659fdfa53a7c12f916",
-      "bytes": 188,
+      "sha256": "7dea7172ae710b8f6fcd4cfbdeacfa9d37f2811e79996c6632ce39c6eb579c66",
+      "bytes": 194,
       "store": "tree"
     },
     "cm-jet-select-host.log": {
@@ -14,18 +14,18 @@
       "store": "tree"
     },
     "cm-jet-select-proof.json": {
-      "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020",
-      "bytes": 3247,
+      "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334",
+      "bytes": 3259,
       "store": "tree"
     },
     "cm-jet-select-source-map.json": {
-      "sha256": "6cac9bd71563334f098a770124e5e7ae490bde8aca9e3e6ef3ca3bc00ba4d9ed",
-      "bytes": 89815,
+      "sha256": "79c27762f7de19db5003ba82f85320f4f53a91920b841b2fcb2bf16f0214dc06",
+      "bytes": 91484,
       "store": "tree"
     },
     "cm-jet-select-vice.log": {
-      "sha256": "8d7b6d158307a197a4b0efdd3cdf8b1dc517e887d80e7974af8234b61236dea4",
-      "bytes": 415,
+      "sha256": "cf7c471a70af860b424086115664f349acefe95b9f707c9bd4745951ddf7ddb2",
+      "bytes": 512,
       "store": "tree"
     }
   }

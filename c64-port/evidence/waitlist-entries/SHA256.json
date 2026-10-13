@@ -3,19 +3,34 @@
   "milestone": "waitlist-entries",
   "release": "evidence-waitlist-entries",
   "files": {
+    "waitlist-closure-c64-cover.json": {
+      "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902",
+      "bytes": 12551,
+      "store": "tree"
+    },
+    "waitlist-closure-host.log": {
+      "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36",
+      "bytes": 17995,
+      "store": "release"
+    },
+    "waitlist-closure-vice.log": {
+      "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
+      "bytes": 9248,
+      "store": "release"
+    },
     "waitlist-entries-host.log": {
-      "sha256": "d672d7f5b30954ee54cf9fddcc6ae9a09624e705f18546e17f964b2275302fcd",
-      "bytes": 3320,
+      "sha256": "94625bb6c4f9a70401af01fd824fcd0584ffeaff3f927c3fb535fe9407efdf57",
+      "bytes": 3356,
       "store": "release"
     },
     "waitlist-entries-proof.json": {
-      "sha256": "7d34824e8deacf9374172b5169395de955bf4529ff555b427c27a59e87ce42ea",
-      "bytes": 6657,
+      "sha256": "4dbbd5d3fb1dd2ebead2f7ecf9104d82a31985eca9c3a537fe3f75b00a2f2017",
+      "bytes": 6661,
       "store": "tree"
     },
     "waitlist-entries-vice.log": {
-      "sha256": "0282214f2c3e4d96ad09e1e0503f36457ecf7e99c227f0d2b97b156fc2bbfc5b",
-      "bytes": 3089,
+      "sha256": "661e2e13415892628ee06772e002a3855529b55e2be207628741f71d261f33ac",
+      "bytes": 807,
       "store": "release"
     }
   }

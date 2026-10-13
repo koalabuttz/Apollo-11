@@ -50,7 +50,7 @@ M = {
         'file': 'INTER-BANK_COMMUNICATION.agc',
         'tables': {'Luminary099': [('src/lm_interbank_routines.c', lambda n: True)],
                    'Comanche055': [('src/cm_interbank_routines.c', lambda n: True)]},
-        'native': ['src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c',
+        'native': ['src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c',
                    'src/cm_interbank_complete.c', 'src/lm_interbank_sites.inc', 'src/cm_interbank_sites.inc',
                    'include/lm_interbank_routines.h', 'include/cm_interbank_routines.h'],
         'reasons': {}},

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "rtb-op-codes",
+  "release": "evidence-rtb-op-codes",
+  "files": {
+    "rtb-op-codes-c64-outcomes.json": {
+      "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0",
+      "bytes": 652,
+      "store": "tree"
+    },
+    "rtb-op-codes-differential.log": {
+      "sha256": "98c1215f6f7e4979212c62d9c36da6fd5516af7ffd8985eb749c1d6395457e5d",
+      "bytes": 9962,
+      "store": "release"
+    },
+    "rtb-op-codes-host.log": {
+      "sha256": "233fbf17480b565df512f40b2487a161a66cdb692808a72260fd4d352444f646",
+      "bytes": 179,
+      "store": "release"
+    },
+    "rtb-op-codes-proof.json": {
+      "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3",
+      "bytes": 17753,
+      "store": "tree"
+    },
+    "rtb-op-codes-source-map.json": {
+      "sha256": "169418c30ca2aa806ef4bf9f8db7ee46b4c7ca73c532a64a93616d54812ffa87",
+      "bytes": 46967,
+      "store": "release"
+    },
+    "rtb-op-codes-vice.log": {
+      "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
+      "bytes": 456,
+      "store": "release"
+    }
+  }
+}

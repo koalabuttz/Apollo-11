@@ -10,20 +10,41 @@
  *  2. runs every flight module twice from a point no table holds (FL_IDLE_Z):
  *     the first run loads it from the REU into its slot, the second finds it
  *     loaded. Each run must return to the resident with EXEC_UNMAPPED. Both
- *     are timed in CPU cycles with CIA2's cascaded timers, interrupts off.
+ *     are timed in CPU cycles with CIA2's cascaded timers, interrupts off;
+ *  3. once a module is loaded, runs one of its resolver records' points
+ *     twice from the same state (the boot image and the module's slot, kept
+ *     in the REU at FL_SCRATCH): through the module's main (ABI 2 run) and
+ *     through the resident's direct call (rk_direct), with the module's
+ *     slot the only loaded one. Status, image and channels
+ *     (agc_hardware) must match; both are timed.
  *
  * FL_DATA names the generated data header (records, modules, FL_IDLE_Z).
- * Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
+ * For bisecting a crash, -DFL_FIRST=n -DFL_LIMIT=n run modules [FIRST,LIMIT)
+ * only and -DFL_NO_PROFILE skips profile(); $c006 holds the module index
+ * being run; -DFL_PROFILE_MARKS stores to $c007 and $c008 around each cached
+ * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
  * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
- * (4 bytes), $c3fe the module count, $c400 one fl_timing per module. */
+ * (4 bytes), $c3f0-5 the call profile (profile()), $c3fe the module count, $c400 one fl_timing per module (up to
+ * $cbff, FL_MODULES at most 146), $c3e0 the indices of up to 8 modules whose
+ * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
 #include "resident_flight.h"
 #define BOOT_DATA __attribute__((section(".boot.text.fl_records")))
 #define BOOT __attribute__((noinline,section(".boot.text.fl_check")))
 typedef struct { uint16_t bank, loc, module; } fl_record;
-typedef struct { uint16_t id, bytes; } fl_module;
-typedef struct { uint16_t id, bytes; uint32_t load, cached; } fl_timing;
+typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
+typedef struct { uint16_t id, bytes; uint32_t load; uint16_t cached, direct, main; } fl_timing;
 #include FL_DATA
+#ifndef FL_FIRST
+#define FL_FIRST 0u
+#endif
+#ifndef FL_LIMIT
+#define FL_LIMIT FL_MODULES
+#endif
+_Static_assert(FL_MODULES<=146u,"timings would reach the stack");
+#define FL_IMAGE_BYTES 4096ul
+_Static_assert(sizeof(apollo_overlay_state)<=FL_IMAGE_BYTES,"the image snapshot overruns its scratch");
+_Static_assert(FL_IMAGE_BYTES+16384u<=FL_SCRATCH_BYTES,"a slot snapshot overruns the REU scratch");
 #define IMAGE ((apollo_overlay_state *)APOLLO_SHARED_ADDRESS)
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 static fl_timing *const timing=(fl_timing *)0xc400;
@@ -57,19 +78,82 @@ static uint32_t run(uint16_t id,uint8_t step){apollo_ov2_cont at={id,0},resume;u
  expect(status==APOLLO_OV2_OK&&action==APOLLO_OV2_DONE&&rk_env.status==EXEC_UNMAPPED,step);
  return t;}
 
+/* Where a cached call goes: the runtime alone (a cached run of the
+ * boundary-word module, whose main only returns), and the resident's own
+ * transfer point and resolve from FL_IDLE_Z, which every flight module
+ * repeats with its own copy. Cycles, timer cost included, at $c3f0-$c3f5. */
+static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint16_t value;uint8_t action;
+ volatile uint16_t *out=(volatile uint16_t *)0xc3f0;
+ IMAGE->words[5]=FL_IDLE_Z;IMAGE->words[4]=0;
+ apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume);
+ timer_start();apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume);out[0]=(uint16_t)timer_stop();
+ timer_start();(void)agc_transfer_point(&rk_program,IMAGE,rk_device.superbank);out[1]=(uint16_t)timer_stop();
+ timer_start();(void)agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);out[2]=(uint16_t)timer_stop();}
+
+/* A 16-bit sum of the image and the channels, rotated per byte so moved
+ * words differ. */
+static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
+ while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
+ return h;}
+static uint16_t image_sum(void){
+ return sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware);}
+static rk_io device;
+static agc_hardware hardware;
+static void direct_state(const fl_module *m){
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
+ rk_device=device;rk_hardware=hardware;
+ IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
+ rk_device.superbank=(agc_word)(m->bank&0100u);}
+static uint8_t differ;
+static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apollo_ov2_cont at={m->id,0},resume;uint16_t value,sum,t;
+ uint8_t ok;
+ uint8_t action,i;enum exec_status a,b;
+ uint8_t *slot=0;uint16_t bytes=0;
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]==m->id){slot=rk_runtime.slot[i];bytes=apollo_ov2_slot_bytes(i);}
+ expect(slot!=0,7);
+ if(!slot)return 0;
+ /* The whole slot too: a module's own statics (device records, step state)
+  * must start both runs alike. */
+ apollo_reu_transfer(APOLLO_REU_STASH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ direct_state(m);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
+ timer_start();ok=apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK;*main_cycles=(uint16_t)timer_stop();
+ expect(ok,5);
+ a=rk_env.status;sum=image_sum();
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
+ direct_state(m);
+ apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ timer_start();b=rk_direct(AGC_TRANSFER_NONE);t=(uint16_t)timer_stop();
+ ok=a==b&&image_sum()==sum;expect(ok,6);
+ if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
+ return t;}
+
 int main(void){uint16_t i;
  for(i=1;i<5;++i)mail[i]=0;
+ mail[0x3df]=0;
  mail[5]=0;
  expect(rk_boot()==0,1);
  if(!failures){
   resolve_records();
   __asm__ volatile("sei");
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
-  for(i=0;i<FL_MODULES;++i){
-   timing[i].id=fl_modules[i].id;timing[i].bytes=fl_modules[i].bytes;
+#ifndef FL_NO_PROFILE
+  profile();
+#endif
+  for(i=FL_FIRST;i<FL_LIMIT;++i){
+   *(volatile uint16_t *)0xc006=i;timing[i].id=fl_modules[i].id;timing[i].bytes=fl_modules[i].bytes;
    timing[i].load=run(fl_modules[i].id,3);
-   timing[i].cached=run(fl_modules[i].id,4);}
-  *(volatile uint16_t *)0xc3fe=FL_MODULES;
+#ifdef FL_PROFILE_MARKS
+   mail[7]=1;   /* a monitor watch here can start VICE's profiler */
+#endif
+   timing[i].cached=(uint16_t)run(fl_modules[i].id,4);
+#ifdef FL_PROFILE_MARKS
+   mail[8]=1;
+#endif
+   timing[i].direct=fl_modules[i].loc?direct(i,&fl_modules[i],&timing[i].main):0u;
+  }
+  *(volatile uint16_t *)0xc3fe=FL_LIMIT;
   __asm__ volatile("cli");}
  mail[1]=(uint8_t)failures;mail[2]=(uint8_t)(failures>>8);
  mail[3]=(uint8_t)checks;mail[4]=(uint8_t)(checks>>8);

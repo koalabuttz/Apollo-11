@@ -51,6 +51,10 @@ M = {
                        '(uint16_t)(n-KU_CASES))', 'KU_SRC', '$(KU_FLAGS)', 'ku', 'KU'),
     # Whole T4RUPT interrupts: the diagnostic runs a picked case list (lch_c64_case), not a stride.
     'lm-t4rupt-chain': ('lm_t4rupt_chain_cases.h', 'lch_digest(&image,n)', 'LCH_SRC', '$(LCH_FLAGS)', 'lch', 'LCH'),
+    # Five programs, one per kind: each runs every fourth case of its kind and the kind's first two.
+    'waitlist-entries': ('waitlist_entries_cases.h', 'wle_digest(&image,n)', 'WLE_SRC', '$(WLE_FLAGS)', 'wle', 'WLE'),
+    'cm-alarm': ('cm_alarm_cases.h', 'cm_al_digest(&image,n,&(enum exec_status){EXEC_OK})', 'CM_AL_SRC', '', 'cm_al',
+                 'CM_AL'),
 }
 TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES')}
 
@@ -69,6 +73,12 @@ def header_int(path, name):
 
 def stride_rows(name, prefix):
     """The cases the diagnostic's stride loops already run."""
+    if name == 'waitlist-entries':
+        vec = 'tests/waitlist_entries_vectors.h'
+        counts = [header_int(vec, f'WLE_COUNT_{k}') for k in range(5)]
+        kind = [k for k, c in enumerate(counts) for _ in range(c)]
+        return len(kind), [n for n in range(len(kind)) if n % 4 == 0 or n < 2 or kind[n] != kind[n - 1] or
+                           kind[n] != kind[n - 2]]
     vec = f'tests/{name.replace("-", "_")}_c64_vectors.h'
     listed = re.search(rf'{M[name][4]}_c64_case\[\d+\]=\{{([^}}]*)\}}', (R / vec).read_text())
     if listed:  # a picked case list instead of a stride
@@ -88,6 +98,8 @@ def stride_rows(name, prefix):
 
 def count_expr(name):
     prefix = M[name][5]
+    if name == 'waitlist-entries':
+        return 'wle_cases()'
     return '+'.join(TWO[name]) if name in TWO else f'{prefix}_CASES'
 
 

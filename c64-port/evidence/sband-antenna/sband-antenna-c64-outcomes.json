@@ -15,9 +15,9 @@
   "src/lm_sband_antenna.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 13320,
- "host_vector_edges": 13320,
- "c64_edges": 13320,
+ "host_edges": 13322,
+ "host_vector_edges": 13322,
+ "c64_edges": 13322,
  "host_branches_missing_on_c64": [],
  "c64_rows": 224
 }

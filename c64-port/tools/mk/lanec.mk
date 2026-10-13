@@ -21,7 +21,11 @@ build/lanec-oracle: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/or
 	$(CC) -O2 $(LANEC_FLAGS) -I$(LANEC_YAAGC) $(LANEC_CORE) $(sort $(LANEC_SUITE_SRC)) tools/lanec/oracle.c \
 	  build/agc_engine_hardware_dv.o $(LANEC_YAAGC)/agc_engine_init.o $(LANEC_YAAGC)/rfopen.o -o $@
 # The native runner with branch coverage, one case per run, for choosing the
-# C64 rows by branch outcome (tools/lanec/cover.py).
+# C64 rows by branch outcome (tools/lanec/cover.py). LANEC_COVER_SITES makes
+# every call of a shared helper branch on its outcome at the call line; the
+# helpers' own file is built without it.
 build/lanec-cover/lanec-native: $(LANEC_CORE) $(LANEC_SUITE_SRC) $(LANEC_HDR) tools/lanec/native.c | build
 	rm -rf build/lanec-cover && mkdir -p build/lanec-cover
-	$(CC) -O0 --coverage $(LANEC_FLAGS) $(LANEC_CORE) $(sort $(LANEC_SUITE_SRC)) tools/lanec/native.c -o $@
+	$(CC) -O0 --coverage $(LANEC_FLAGS) -c src/lanec.c -o build/lanec-cover/lanec.o
+	$(CC) -O0 --coverage $(LANEC_FLAGS) -DLANEC_COVER_SITES $(filter-out src/lanec.c,$(LANEC_CORE)) \
+	  $(sort $(LANEC_SUITE_SRC)) tools/lanec/native.c build/lanec-cover/lanec.o -o $@

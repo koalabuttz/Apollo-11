@@ -11,7 +11,7 @@ symbol and the soft stack at $D000): `__heap_start` must be at most $c000.
 Maps from the overlay and resident linker scripts have their own ASSERTs and
 are skipped.
 
-  python3 tools/map_check.py                 # every build/*.map
+  python3 tools/map_check.py                 # every build/**/*.map
   python3 tools/map_check.py build/r30-3.map
 """
 import argparse
@@ -39,7 +39,7 @@ def main():
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('maps', nargs='*')
     args = parser.parse_args()
-    maps = args.maps or sorted(glob.glob('build/*.map'))
+    maps = args.maps or sorted(glob.glob('build/**/*.map', recursive=True))
     checked, over = 0, []
     for path in maps:
         heap = check(path)
@@ -52,7 +52,9 @@ def main():
         print(f'FAIL: {path}: __heap_start ${heap:04x} is past the ${LIMIT:04x} mailbox '
               f'by {heap - LIMIT} bytes')
     print(f'map-check: {checked} PRG maps checked, {len(over)} past ${LIMIT:04x}')
-    return 1 if over else 0
+    if not checked:
+        print('FAIL: no C64 link map matched (no PRGs built, or the map format changed)')
+    return 1 if over or not checked else 0
 
 
 if __name__ == '__main__':
