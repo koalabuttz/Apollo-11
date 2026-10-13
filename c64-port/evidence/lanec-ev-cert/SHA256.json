@@ -3,6 +3,11 @@
   "milestone": "lanec-ev-cert",
   "release": "evidence-lanec-ev-cert",
   "files": {
+    "lanec-ev-c64-cover.json": {
+      "sha256": "50ecab014fc0b0fbf23976736d85808a342665d72cb8533d2be72eb8c49fbd79",
+      "bytes": 7596,
+      "store": "tree"
+    },
     "lanec-ev-c64-results.json": {
       "sha256": "ed140324eca2284410b1c0f47b90c6e64f700cbf470f7d3a58ce1fe435e243ae",
       "bytes": 1516,

@@ -4,45 +4,84 @@
 
   python3 tools/lanec/cover.py pick SUITE [--budget K]   # prints the rows
   python3 tools/lanec/cover.py check SUITE                # the frozen rows take every host arc
+  python3 tools/lanec/cover.py record OUT SUITE...        # the c64_branch_outcomes record of a certificate
 
 Runs every case of SUITE alone through build/lanec-cover/lanec-native
 (the native runner built with --coverage) and reads the branch arcs it
 takes in every linked source (tools/c64_row_cover.py, gcov -b). pick
 prints the fewest cases whose arcs together equal the whole suite's, for
 tools/lanec/freeze.py SUITE --rows; check fails unless the cases frozen in
-tests/lanec_<suite>_c64.h take every arc the host cases take. Traces are
-kept in build/lanec-cover/<suite>.json while the runner is unchanged.
+tests/lanec_<suite>_c64.h take every arc the host cases take; record
+writes, for SUITEs whose frozen rows pass check (a suite with no frozen
+header runs every case on the C64), their host case and arc counts, the
+frozen rows, the sources measured and the arcs the C64 rows miss (none).
+Traces are kept in build/lanec-cover/<suite>-<runner digest>.json.
 """
-import argparse, hashlib, os, pathlib, re, subprocess, sys
+import argparse, hashlib, json, os, pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
 import c64_row_cover as rc  # noqa: E402
 
 p = argparse.ArgumentParser()
-p.add_argument('mode', choices=('pick', 'check'))
-p.add_argument('suite')
+p.add_argument('mode', choices=('pick', 'check', 'record'))
+p.add_argument('args', nargs='+')
 p.add_argument('--budget', type=int)
 a = p.parse_args()
 env = dict(os.environ, SKIP_EVIDENCE_RESTORE='1')
 subprocess.run(['make', '-s', 'build/lanec-cover/lanec-native'], cwd=ROOT, env=env, check=True)
 objdir = ROOT / 'build/lanec-cover'
 exe = objdir / 'lanec-native'
-rows = subprocess.run([str(exe), a.suite], cwd=ROOT, capture_output=True, check=True).stdout.count(b'\n')
 digest = hashlib.sha256(exe.read_bytes()).hexdigest()[:16]
-saved = objdir / f'{a.suite}-{digest}.json'
-if saved.exists():
-    t = rc.load(saved)
-else:
-    t = rc.trace(objdir, range(rows), lambda n: [str(exe), a.suite, str(n)])
+
+
+def traced(suite):
+    saved = objdir / f'{suite}-{digest}.json'
+    if saved.exists():
+        return rc.load(saved)
+    rows = subprocess.run([str(exe), suite], cwd=ROOT, capture_output=True, check=True).stdout.count(b'\n')
+    t = rc.trace(objdir, range(rows), lambda n: [str(exe), suite, str(n)])
     rc.save(saved, t)
-host = frozenset().union(*t.values())
+    return t
+
+
+def frozen(suite):
+    path = ROOT / f'tests/lanec_{suite.replace("-", "_")}_c64.h'
+    return [int(x) for x in re.findall(r'\{(\d+)u, 0x', path.read_text())] if path.exists() else None
+
+
 if a.mode == 'pick':
+    t = traced(a.args[0])
+    host = frozenset().union(*t.values())
     chosen = rc.cover(t, budget=a.budget)
     print(','.join(map(str, chosen)))
-    print(f'{a.suite}: {len(chosen)} of {len(t)} cases take all {len(host)} host branch arcs', file=sys.stderr)
+    print(f'{a.args[0]}: {len(chosen)} of {len(t)} cases take all {len(host)} host branch arcs', file=sys.stderr)
+elif a.mode == 'check':
+    t = traced(a.args[0])
+    host = frozenset().union(*t.values())
+    rows = frozen(a.args[0])
+    rc.check(t, rows, f'{a.args[0]} C64 rows')
+    print(f'PASS: {a.args[0]}: the {len(rows)} C64 rows take all {len(host)} host branch arcs')
 else:
-    name = a.suite.replace('-', '_')
-    frozen = [int(x) for x in re.findall(r'\{(\d+)u, 0x', (ROOT / f'tests/lanec_{name}_c64.h').read_text())]
-    rc.check(t, frozen, f'{a.suite} C64 rows')
-    print(f'PASS: {a.suite}: the {len(frozen)} C64 rows take all {len(host)} host branch arcs')
+    out, record = pathlib.Path(a.args[0]), {'method': (
+        'tools/lanec/cover.py: every host case of each suite run alone through build/lanec-cover/lanec-native '
+        '(-O0 --coverage) and the branch arcs it takes in every linked source read with gcov -b '
+        '(tools/c64_row_cover.py); the C64 rows are the cases frozen in tests/lanec_<suite>_c64.h (every case '
+        'when the suite has none), and their arcs are compared with the whole host suite\'s'), 'suites': {}}
+    missing_all = []
+    for suite in a.args[1:]:
+        t = traced(suite)
+        host = frozenset().union(*t.values())
+        rows = frozen(suite)
+        on_c64 = frozenset().union(*(t[n] for n in (rows if rows is not None else t)))
+        missing = sorted(host - on_c64)
+        missing_all += [f'{suite}: {m}' for m in missing]
+        record['suites'][suite] = {'host_cases': len(t), 'c64_rows': rows if rows is not None else 'all',
+                                   'host_branch_arcs': len(host), 'c64_branch_arcs': len(on_c64 & host),
+                                   'sources_measured': sorted({x.split(':')[0] for x in host})}
+        print(f'{suite}: {len(rows) if rows is not None else len(t)} C64 rows take {len(on_c64 & host)} of '
+              f'{len(host)} host branch arcs')
+    record['host_branches_missing_on_c64'] = missing_all
+    out.write_text(json.dumps(record, indent=1) + '\n')
+    if missing_all:
+        sys.exit(f'FAIL: the C64 rows miss {len(missing_all)} host branch arcs')

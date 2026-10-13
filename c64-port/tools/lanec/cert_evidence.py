@@ -53,6 +53,8 @@ for suite in a.suites + a.refusals_only:
     missions = collections.Counter(line.split()[0] for line in run(['build/lanec-native', '--entries', suite]).splitlines())
     summary['accepted_cases_by_mission'] = dict(sorted(missions.items()))
     suites[suite] = summary
+    for f in ROOT.glob(f'build/lanec-{suite}-*.txt'):   # the per-case results (the CRCs stay)
+        f.unlink()
 if a.wholefile:
     log += [line for line in run([sys.executable, a.wholefile, a.outdir]).splitlines() if line.startswith('PASS')]
 comparison = {

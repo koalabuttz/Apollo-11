@@ -3,6 +3,11 @@
   "milestone": "lanec-di-cert",
   "release": "evidence-lanec-di-cert",
   "files": {
+    "lanec-di-c64-cover.json": {
+      "sha256": "1c497bea4df823bc4778b9a5b80352bbecc851e9181d95fc75a5f539544ee922",
+      "bytes": 5296,
+      "store": "tree"
+    },
     "lanec-di-c64-results.json": {
       "sha256": "79284adba4521ea58df34459e377d13ef0d0e19bb6d4db1cbd0bab04de5be42b",
       "bytes": 1372,
