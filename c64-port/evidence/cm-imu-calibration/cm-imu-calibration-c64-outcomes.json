@@ -16,11 +16,7 @@
  ],
  "host_edges": 2198,
  "host_vector_edges": 2198,
- "c64_edges": 2195,
- "host_branches_missing_on_c64": [
-  "src/cm_imu_calibration.c:5301",
-  "src/cm_imu_calibration.c:5315",
-  "src/cm_imu_calibration.c:5329"
- ],
- "c64_rows": 476
+ "c64_edges": 2198,
+ "host_branches_missing_on_c64": [],
+ "c64_rows": 475
 }

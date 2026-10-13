@@ -4,8 +4,8 @@
   "release": "evidence-cm-imu-calibration",
   "files": {
     "cm-imu-calibration-c64-outcomes.json": {
-      "sha256": "81bfc806146755c71b3b5661399c286dfe499866140b4156dbd221a25bedc3f4",
-      "bytes": 741,
+      "sha256": "70f0e800d1db2f4c74cc89ff7795aa89372ee1dd931c3e65ad468261f37e9cd9",
+      "bytes": 635,
       "store": "tree"
     },
     "cm-imu-calibration-differential.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "cm-imu-calibration-proof.json": {
-      "sha256": "680dc31df39656d9c1dbeabff12c9bac1a844aecf526441e1bd23f5b75bce694",
-      "bytes": 33500,
+      "sha256": "dbba98e4d695bac5487e7dd11e755e431a512ca06197afaa634dc0a22eac0f75",
+      "bytes": 32958,
       "store": "tree"
     },
     "cm-imu-calibration-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-imu-calibration-vice.log": {
-      "sha256": "1b9b3f974f6a6fa00526e414ce5fe8b4d0532e918b0e94f7f986d19d666510fc",
-      "bytes": 23604,
+      "sha256": "e9216c10ff7dcd204876d474ba830a4bff7ab20e27c8555bb3e637ea293811d2",
+      "bytes": 19779,
       "store": "release"
     }
   }

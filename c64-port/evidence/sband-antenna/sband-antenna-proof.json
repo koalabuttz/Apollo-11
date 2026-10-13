@@ -15,43 +15,63 @@
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x7fff",
-   "cases": 21
+   "keep": "0xfffff",
+   "cases": 26
   },
   {
    "mission": "lm",
-   "keep": "0x600001fffc000",
-   "cases": 16
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7f8000000",
+   "keep": "0x600001ff80000",
    "cases": 4
   },
   {
    "mission": "lm",
-   "keep": "0x7ff9fe0000000",
+   "keep": "0xff9fffc00000",
    "cases": 1
   },
   {
    "mission": "lm",
-   "keep": "0xffffc0000000",
+   "keep": "0x3800000",
+   "cases": 3
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7ff9ffe000000",
+   "cases": 1
+  },
+  {
+   "mission": "lm",
+   "keep": "0x4000000",
+   "cases": 1
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7ff9ffc000000",
+   "cases": 1
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7ff9ffc000000",
+   "cases": 1
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f8000000",
+   "cases": 3
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7fffff0000000",
+   "cases": 1
+  },
+  {
+   "mission": "lm",
+   "keep": "0x1fffffe0000000",
+   "cases": 30
+  },
+  {
+   "mission": "lm",
+   "keep": "0x3e0000000000004",
    "cases": 5
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7ff9e00000000",
-   "cases": 5
-  },
-  {
-   "mission": "lm",
-   "keep": "0x7ffe000000000",
-   "cases": 18
-  },
-  {
-   "mission": "lm",
-   "keep": "0x3fe000000000004",
-   "cases": 9
   },
   {
    "mission": "cm",
@@ -60,28 +80,21 @@
   },
   {
    "mission": "cm",
-   "keep": "0x1fcff8000",
-   "cases": 7
+   "keep": "0x3fffff8000",
+   "cases": 30
   },
   {
    "mission": "cm",
-   "keep": "0x1ffffc0000",
-   "cases": 22
-  },
-  {
-   "mission": "cm",
-   "keep": "0x6000000004",
-   "cases": 2
+   "keep": "0x4000000004",
+   "cases": 1
   }
  ],
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
   "edges_all_cases": 1325,
   "edges_host_vectors": 1325,
-  "edges_c64": 1324,
-  "edges_not_on_c64": [
-   "src/lm_interp_orders.c:1122"
-  ]
+  "edges_c64": 1325,
+  "edges_not_on_c64": []
  },
  "stops": {
   "CM 42,3652 SBANDANT": {

@@ -1453,7 +1453,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "680dc31df39656d9c1dbeabff12c9bac1a844aecf526441e1bd23f5b75bce694"
+            "sha256": "dbba98e4d695bac5487e7dd11e755e431a512ca06197afaa634dc0a22eac0f75"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
@@ -1461,14 +1461,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "1b9b3f974f6a6fa00526e414ce5fe8b4d0532e918b0e94f7f986d19d666510fc",
+            "sha256": "e9216c10ff7dcd204876d474ba830a4bff7ab20e27c8555bb3e637ea293811d2",
             "vice_targets": {
-              "vice-cm-imu-calibration": 476
+              "vice-cm-imu-calibration": 475
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-outcomes.json",
-            "sha256": "81bfc806146755c71b3b5661399c286dfe499866140b4156dbd221a25bedc3f4"
+            "sha256": "70f0e800d1db2f4c74cc89ff7795aa89372ee1dd931c3e65ad468261f37e9cd9"
           }
         }
       }
@@ -3510,7 +3510,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "46c784368044f912daa4558a4a7114c3bcafe79137700880f305d20493abca05"
+            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -3518,14 +3518,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "c0dfa61538a023377627de655dee70cd91d3a463f2427ff56da23763cefed3ef",
+            "sha256": "680e8439def0d12f881ac391b83a5264b0736328589752eebc2429bc45e925b6",
             "vice_targets": {
-              "vice-sband-antenna": 134
+              "vice-sband-antenna": 132
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
-            "sha256": "d2a0145288eb4407f56af8c3e8805724797fcc3aa51d60bb274439ee95e2ae5e"
+            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
           }
         }
       }
@@ -8611,7 +8611,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "46c784368044f912daa4558a4a7114c3bcafe79137700880f305d20493abca05"
+            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -8619,14 +8619,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "c0dfa61538a023377627de655dee70cd91d3a463f2427ff56da23763cefed3ef",
+            "sha256": "680e8439def0d12f881ac391b83a5264b0736328589752eebc2429bc45e925b6",
             "vice_targets": {
-              "vice-sband-antenna": 134
+              "vice-sband-antenna": 132
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
-            "sha256": "d2a0145288eb4407f56af8c3e8805724797fcc3aa51d60bb274439ee95e2ae5e"
+            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
           }
         }
       }
