@@ -21947,10 +21947,9 @@ static enum exec_status r53230(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -21976,10 +21975,9 @@ static enum exec_status r53230(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -22266,10 +22264,9 @@ static enum exec_status r53251(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -22295,10 +22292,9 @@ static enum exec_status r53251(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -22560,10 +22556,9 @@ static enum exec_status r53253(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -22589,10 +22584,9 @@ static enum exec_status r53253(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -22837,10 +22831,9 @@ static enum exec_status r53261(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -22866,10 +22859,9 @@ static enum exec_status r53261(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -23100,10 +23092,9 @@ static enum exec_status r53262(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -23129,10 +23120,9 @@ static enum exec_status r53262(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -23714,10 +23704,9 @@ static enum exec_status r53313(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -23743,10 +23732,9 @@ static enum exec_status r53313(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -24169,10 +24157,9 @@ static enum exec_status r53327(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -24198,10 +24185,9 @@ static enum exec_status r53327(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -24588,10 +24574,9 @@ static enum exec_status r53331(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -24617,10 +24602,9 @@ static enum exec_status r53331(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -24893,10 +24877,9 @@ static enum exec_status r53347(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -24922,10 +24905,9 @@ static enum exec_status r53347(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -25391,10 +25373,9 @@ static enum exec_status r53376(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -25420,10 +25401,9 @@ static enum exec_status r53376(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -25691,10 +25671,9 @@ static enum exec_status r53445(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -25720,10 +25699,9 @@ static enum exec_status r53445(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -26707,10 +26685,9 @@ static enum exec_status r53601(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -26736,10 +26713,9 @@ static enum exec_status r53601(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -26902,10 +26878,9 @@ static enum exec_status r53603(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -26931,10 +26906,9 @@ static enum exec_status r53603(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */
@@ -27072,10 +27046,9 @@ static enum exec_status r53614(apollo_overlay_state *s,p66_bias_io *io){
  ai_ca(s,00107u);
  L53644:;
  /* 25,3645 MASK HFLSHBIT */
- {agc_word iw=ixw(s,074753,065u);switch(iw){
-   case 074753u:ai_maskf(s,000001);break;
-   case 074752u:ai_maskf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,074753,065u);if((iw^074753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_maskf(s,000001);break;case 04752u:ai_maskf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  goto L53646;
  L53645:;
  /* 25,3645 MASK HFLSHBIT */
@@ -27101,10 +27074,9 @@ static enum exec_status r53614(apollo_overlay_state *s,p66_bias_io *io){
  goto L4570;
  L53656:;
  /* 25,3657 CS HFLSHBIT */
- {agc_word iw=ixw(s,044753,065u);switch(iw){
-   case 044753u:ai_csf(s,000001);break;
-   case 044752u:ai_csf(s,000002);break;
-   default:return EXEC_OUT_OF_SCOPE;}}
+ {agc_word iw=ixw(s,044753,065u);if((iw^044753u)&070000u)return EXEC_OUT_OF_SCOPE;
+   switch(iw&07777u){case 04753u:ai_csf(s,000001);break;case 04752u:ai_csf(s,000002);break;default:return EXEC_OUT_OF_SCOPE;}
+ }
  /* 25,3660 MASK FLGWRD11 */
  ai_mask(s,00107u);
  /* 25,3661 TS FLGWRD11 */

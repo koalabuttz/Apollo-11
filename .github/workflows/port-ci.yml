@@ -46,6 +46,7 @@ jobs:
       c64: ${{ steps.plan.outputs.c64 }}
       full: ${{ steps.plan.outputs.full }}
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
+      host_shards: ${{ steps.plan.outputs.host_shards }}
       c64_full: ${{ steps.plan.outputs.c64_full }}
     steps:
       - &checkout
@@ -89,6 +90,9 @@ jobs:
           c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
           echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
           echo "c64_shards=$([ "$c64_full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
+          # A full host run is about 1,000 targets and an hour on one runner.
+          full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')
+          echo "host_shards=$([ "$full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
 
   ledgers-and-coverage:
     needs: plan
@@ -117,6 +121,10 @@ jobs:
     if: needs.plan.outputs.host == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.host_shards) }}
     steps:
       - *checkout
       - &deps
@@ -133,15 +141,16 @@ jobs:
         name: Install pinned toolchain
         working-directory: c64-port
         run: tools/setup_cloud.sh
-      - name: Host and sanitizer targets
+      - name: Host and sanitizer targets (shard ${{ matrix.shard }})
         working-directory: c64-port
         env:
           AFFECTED: ${{ needs.plan.outputs.affected }}
+          SHARD: ${{ matrix.shard }}
         run: |
           source deps/env.sh
           targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("test",[])+a.get("sanitize",[])))')
           if echo "$AFFECTED" | grep -q '"full": true'; then
-            python3 tools/ci_run.py --group test --group sanitize --summary build/ci-summary.json
+            python3 tools/ci_run.py --group test --group sanitize --shard "$SHARD/4" --summary build/ci-summary.json
           else
             python3 tools/ci_run.py $targets --summary build/ci-summary.json
           fi

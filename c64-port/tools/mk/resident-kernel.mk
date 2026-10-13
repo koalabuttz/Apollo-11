@@ -57,13 +57,19 @@ resident-kernel-size: | build
 # each mission's flight resident with its per-component sizes, and per part a
 # check program (the same resident) that runs the C64 rows from case modules
 # in an REU store.
-RF_SRC = src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
-RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4,build/resident-flight/$(m)-check-$(p).prg))
+RF_SRC = platform/c64/resident_boundary_module.c platform/c64/resident_boundary_words_lm.h platform/c64/resident_boundary_words_cm.h src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
+RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4 5,build/resident-flight/$(m)-check-$(p).prg))
+# The boundary-word tables (platform/c64/resident_boundary_words_<m>.h) must
+# match the routine tables, the rope and, when built, the listings.
+.PHONY: resident-boundary-words
+test: resident-boundary-words
+resident-boundary-words: | build
+	python3 tools/resident_boundary_words.py --cc $(CC) --check
 .PHONY: c64-resident-flight vice-resident-flight resident-flight-size
 c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
 	python3 tools/resident_flight_build.py --cc $(MOS_CC)
 vice-resident-flight: c64-resident-flight
-	for m in lm cm; do for p in 1 2 3 4; do python3 tools/vice_run.py build/resident-flight/$$m-check-$$p.prg --reu build/resident-flight/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done; done
+	for m in lm cm; do for p in 1 2 3 4 5; do python3 tools/vice_run.py build/resident-flight/$$m-check-$$p.prg --reu build/resident-flight/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done; done
 resident-flight-size: c64-resident-flight
 	cat build/resident-flight/sizes.json
 # SPSIN/SPCOS on the transfer ABI (src/sp_routines.c), against the frozen
@@ -91,21 +97,30 @@ sanitize-sp-routines: | build
 # against yaAGC (tests/resident_rupt_vectors.h, frozen by
 # tools/resident_rupt_vectors.py), with T3RUPT run through the kernel to
 # RESUME. Reads the unmodified ropes in evidence/.
-RR_SRC = src/resident_rupt.c src/agc_image_ops.c src/agc_multiword.c src/agc_hardware_divide.c src/agc_word.c src/agc_transfer.c tests/resident_rupt_cases.c tests/test_resident_rupt.c
-RR_HDR = include/resident_rupt.h include/resident_kernel.h tests/resident_rupt_cases.h tests/resident_rupt_vectors.h src/resident_kernel_body.inc
+RR_SRC = src/resident_rupt.c src/agc_image_ops.c src/agc_multiword.c src/agc_hardware_divide.c src/agc_word.c src/agc_transfer.c tests/resident_rupt_cases.c tests/test_resident_rupt.c $(RR_VECTOR_SRC)
+# The other vectors: the wrapped interrupt bodies and their own case generators.
+RR_VECTOR_SRC = tests/resident_vector_cases.c tests/resident_vector_run.c tests/rupt_lead_ins_cases.c tests/t4rupt_core_cases.c tests/keyrupt_uprupt_cases.c tests/lm_t6rupt_cases.c src/rupt_lead_ins.c src/t4rupt_core.c src/keyrupt_uprupt.c src/lm_t6rupt.c src/sp_routines.c
+RR_GC = -ffunction-sections -fdata-sections -Wl,--gc-sections
+RR_LM_SRC = src/lm_kernel.c src/lm_exec_routines.c src/lm_single_trig.c
+RR_CM_SRC = src/cm_kernel.c src/cm_exec_routines.c src/cm_quictrig.c src/cm_single_return.c
+RR_HDR = include/resident_rupt.h include/resident_kernel.h tests/resident_rupt_cases.h tests/resident_rupt_vectors.h src/resident_kernel_body.inc tests/resident_vector_cases.h tests/resident_vector_run.h
 .PHONY: test-resident-rupt sanitize-resident-rupt
 all: build/test-resident-rupt-lm build/test-resident-rupt-cm
 test: test-resident-rupt
 sanitize: sanitize-resident-rupt
-build/test-resident-rupt-lm: $(RR_SRC) $(RR_HDR) src/lm_kernel.c | build
-	$(CC) $(CPPFLAGS) $(CFLAGS) -DRK_LM=1 $(RR_SRC) src/lm_kernel.c -o $@
-build/test-resident-rupt-cm: $(RR_SRC) $(RR_HDR) src/cm_kernel.c | build
-	$(CC) $(CPPFLAGS) $(CFLAGS) -DRK_CM=1 $(RR_SRC) src/cm_kernel.c -o $@
+build/test-resident-rupt-lm: $(RR_SRC) $(RR_HDR) $(RR_LM_SRC) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DRK_LM=1 -DP66_NATIVE_DISPATCH_ONLY $(RR_GC) $(RR_SRC) $(RR_LM_SRC) -o $@
+build/test-resident-rupt-cm: $(RR_SRC) $(RR_HDR) $(RR_CM_SRC) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DRK_CM=1 $(RR_GC) $(RR_SRC) $(RR_CM_SRC) -o $@
 test-resident-rupt: build/test-resident-rupt-lm build/test-resident-rupt-cm
 	./build/test-resident-rupt-lm evidence/fixed-data-lm-original.rope.bin
 	./build/test-resident-rupt-cm evidence/fixed-data-cm-original.rope.bin
+# ASan's global registration keeps every global of a file alive, which
+# would link all of lm_exec_routines.c's routines where only its site table
+# is used; leave globals uninstrumented so gc-sections drops them (gcc).
+RR_SAN_GLOBALS = --param asan-globals=0
 sanitize-resident-rupt: | build
-	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -DRK_LM=1 -fsanitize=address,undefined -fno-sanitize-recover=all $(RR_SRC) src/lm_kernel.c -o build/test-resident-rupt-lm-sanitize
-	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -DRK_CM=1 -fsanitize=address,undefined -fno-sanitize-recover=all $(RR_SRC) src/cm_kernel.c -o build/test-resident-rupt-cm-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -DRK_LM=1 -DP66_NATIVE_DISPATCH_ONLY -fsanitize=address,undefined -fno-sanitize-recover=all $(RR_SAN_GLOBALS) $(RR_GC) $(RR_SRC) $(RR_LM_SRC) -o build/test-resident-rupt-lm-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -DRK_CM=1 -fsanitize=address,undefined -fno-sanitize-recover=all $(RR_SAN_GLOBALS) $(RR_GC) $(RR_SRC) $(RR_CM_SRC) -o build/test-resident-rupt-cm-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-resident-rupt-lm-sanitize evidence/fixed-data-lm-original.rope.bin
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-resident-rupt-cm-sanitize evidence/fixed-data-cm-original.rope.bin

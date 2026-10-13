@@ -4,17 +4,22 @@
   "release": "evidence-lm-servicer",
   "files": {
     "lm-servicer-c64-cover.json": {
-      "sha256": "6c5c75e7a4d12c3782c0b71a58a2993d4276ab838c478ac6f375bbeb78b135a6",
-      "bytes": 5904,
+      "sha256": "b2549f7faea9b83d20db40b107f9103dda47049e76a6f26ac71a557aa8ee2230",
+      "bytes": 5964,
+      "store": "tree"
+    },
+    "lm-servicer-c64-gcov.json": {
+      "sha256": "f34a3e6c06f9b47def1653c7d3df3b5ea0be4b700cc245d035e2e4508eec8319",
+      "bytes": 334,
       "store": "tree"
     },
     "lm-servicer-host.log": {
-      "sha256": "a610e10d31c2fdce194749d625b386be3137246af3b670f585c67dae553fd1bb",
-      "bytes": 1970,
+      "sha256": "53b016ac47e24ca7299bb5e0c5790094b907ffb0f3c5c55f0059acb14dfd1231",
+      "bytes": 2074,
       "store": "tree"
     },
     "lm-servicer-proof.json": {
-      "sha256": "209d981d6cf11c848be8819d87bb7278b3c18d3ef4d0fef6859865e6b227e3c9",
+      "sha256": "fe4d8d405173608cbb0f49525a458d657453cf2d046b5d5c0ab8daf1c5962d90",
       "bytes": 32012,
       "store": "tree"
     },
@@ -24,7 +29,7 @@
       "store": "tree"
     },
     "lm-servicer-vice.log": {
-      "sha256": "550de071fcb2f3d0bee5f36d8277bce37a907b38696add8b5538130a2dc56101",
+      "sha256": "09018a231f0466669b859d84e33f972b255d8a3e184f6d783bae8ac8bc8cd86b",
       "bytes": 1336,
       "store": "tree"
     }

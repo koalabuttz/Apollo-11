@@ -12,7 +12,7 @@ Comanche055 INTER-BANK_COMMUNICATION.agc, the CM counterpart of `lm-interbank-tr
 
 | AGC (fixed-fixed) | Native |
 |---|---|
-| 04662, 04666, 04675, 04701, 04704, QJUMP 04707, 04711, 04715, 04740, ISWCALL 04744, 04753, 04757, 04773 | `cm_interbank_routines` (`src/cm_interbank_routines.c`), each wrapping the certified `cm_interbank_complete` entry |
+| 04662, SWCALL -1 04665 (`INCR Q`, then SWCALL; `docs/INTERBANK-Q.md`), 04666, 04675, 04701, 04704, QJUMP 04707, 04711, 04715, 04740, ISWCALL 04744, 04753, 04757, 04773 | `cm_interbank_routines` (`src/cm_interbank_routines.c`), each wrapping the certified `cm_interbank_complete` entry |
 | inline CADR after each caller's `TC` | `cm_interbank_sites[354]` (`src/cm_interbank_sites.inc`, `tools/agc_sites_generate.py cm-interbank`) |
 
 ## Evidence

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "danzig-pending",
+  "release": "evidence-danzig-pending",
+  "files": {
+    "danzig-pending-host.log": {
+      "sha256": "65beacfb36e2e227815df25a76ef8f09cf8d7da22e80126fd265c5caadfa5513",
+      "bytes": 214,
+      "store": "release"
+    },
+    "danzig-pending-proof.json": {
+      "sha256": "987fb6afa971d6daca07c36d8d7d7132425140cad7eb0d0b3b57b6ce0f090715",
+      "bytes": 22285,
+      "store": "tree"
+    },
+    "danzig-pending-vice.log": {
+      "sha256": "be1ce92bebef1cd5d502b15b0b348ea76b396cbcbb5df1b995710d2c20a1ff12",
+      "bytes": 132,
+      "store": "release"
+    }
+  }
+}

@@ -1,0 +1,528 @@
+{
+ "milestone": "cm-body-attitude",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 17920,
+ "cases_sha256": "81e71643878439d46b0f18b3b59519312c7c564e72e15d63929718bec7d693f3",
+ "oracle_sha256": "86448894e6dc074d7ecf3e594390b106e504874186bf49d950aec8a2f6dbc5d9",
+ "frozen_vectors": 560,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xfffffffffffff",
+   "cases": 1,
+   "case_ids": [
+    192
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffffffffff",
+   "cases": 1,
+   "case_ids": [
+    18
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3",
+   "cases": 1,
+   "case_ids": [
+    21
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffffffffff",
+   "cases": 1,
+   "case_ids": [
+    228
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffffffffff",
+   "cases": 1,
+   "case_ids": [
+    216
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffffffe",
+   "cases": 1,
+   "case_ids": [
+    410
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffffffe",
+   "cases": 1,
+   "case_ids": [
+    273
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffffffc",
+   "cases": 2,
+   "case_ids": [
+    554,
+    665
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffffff8",
+   "cases": 3,
+   "case_ids": [
+    792,
+    921,
+    787
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffffff0",
+   "cases": 12,
+   "case_ids": [
+    1027,
+    1039,
+    1298,
+    1750,
+    1734,
+    1686,
+    1876,
+    2186,
+    2313,
+    2382,
+    2632,
+    2936
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffffff000",
+   "cases": 45,
+   "case_ids": [
+    3277,
+    3081,
+    3541,
+    3734,
+    4047,
+    4204,
+    4424,
+    4481,
+    4722,
+    4924,
+    5123,
+    5454,
+    5839,
+    5731,
+    5683,
+    5903,
+    6234,
+    6631,
+    6764,
+    7029,
+    7369,
+    7264,
+    7643,
+    7725,
+    8002,
+    8312,
+    8451,
+    8707,
+    9023,
+    9231,
+    9505,
+    9848,
+    9987,
+    10390,
+    10607,
+    10890,
+    11026,
+    11303,
+    11538,
+    11800,
+    12032,
+    12486,
+    12598,
+    12899,
+    13122
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ffff0000000000000",
+   "cases": 28,
+   "case_ids": [
+    13342,
+    13366,
+    13402,
+    13375,
+    13354,
+    13312,
+    13661,
+    13923,
+    14197,
+    14432,
+    14796,
+    14857,
+    15137,
+    15516,
+    15375,
+    15435,
+    15402,
+    15561,
+    15679,
+    15899,
+    16188,
+    16453,
+    16675,
+    16743,
+    17034,
+    17191,
+    17444,
+    17673
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 72,
+  "c64_labels": 72,
+  "host_edges": 1652,
+  "c64_edges": 1652,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 795,
+  "c64_taken": 795,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_body_attitude.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_body_attitude_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "c64_too_big_cases": [
+  {
+   "case": 160,
+   "point": 32568
+  },
+  {
+   "case": 43,
+   "point": 32568
+  }
+ ],
+ "stops": {
+  "CM 37,3470 CM/POSE": {
+   "05170": 58,
+   "06037": 198
+  },
+  "CM 37,3471 ": {
+   "06037": 198,
+   "05170": 58
+  },
+  "CM 37,3474 ": {
+   "06037": 193,
+   "05170": 63
+  },
+  "CM 37,3477 ": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 37,3502 ": {
+   "06037": 194,
+   "05170": 62
+  },
+  "CM 37,3504 ": {
+   "06037": 180,
+   "05170": 76
+  },
+  "CM 37,3506 ": {
+   "06037": 198,
+   "05170": 58
+  },
+  "CM 37,3507 ": {
+   "06037": 188,
+   "05170": 68
+  },
+  "CM 37,3511 ": {
+   "06037": 191,
+   "05170": 65
+  },
+  "CM 37,3514 ": {
+   "06037": 209,
+   "05170": 47
+  },
+  "CM 37,3517 CM/POSE2": {
+   "05170": 71,
+   "06037": 185
+  },
+  "CM 37,3520 ": {
+   "06037": 190,
+   "05170": 66
+  },
+  "CM 37,3521 ": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 37,3523 ": {
+   "05170": 74,
+   "06037": 182
+  },
+  "CM 37,3524 ": {
+   "05170": 68,
+   "06037": 188
+  },
+  "CM 37,3525 ": {
+   "06037": 184,
+   "05170": 72
+  },
+  "CM 37,3527 CM/TRIO": {
+   "06037": 194,
+   "05170": 62
+  },
+  "CM 37,3531 ": {
+   "06037": 184,
+   "05170": 72
+  },
+  "CM 37,3533 ": {
+   "06037": 197,
+   "05170": 59
+  },
+  "CM 37,3534 ": {
+   "06037": 202,
+   "05170": 54
+  },
+  "CM 37,3535 ": {
+   "05170": 66,
+   "06037": 190
+  },
+  "CM 37,3536 ": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 37,3540 ": {
+   "05170": 74,
+   "06037": 182
+  },
+  "CM 37,3542 ": {
+   "06037": 195,
+   "05170": 61
+  },
+  "CM 37,3543 ": {
+   "06037": 191,
+   "05170": 65
+  },
+  "CM 37,3545 ": {
+   "06037": 204,
+   "05170": 52
+  },
+  "CM 37,3547 ": {
+   "05170": 68,
+   "06037": 188
+  },
+  "CM 37,3550 ": {
+   "06037": 187,
+   "05170": 69
+  },
+  "CM 37,3552 ": {
+   "06037": 200,
+   "05170": 56
+  },
+  "CM 37,3554 ": {
+   "06037": 192,
+   "05170": 64
+  },
+  "CM 37,3556 ": {
+   "06037": 194,
+   "05170": 62
+  },
+  "CM 37,3557 ": {
+   "06037": 185,
+   "05170": 71
+  },
+  "CM 37,3561 ": {
+   "06037": 205,
+   "05170": 51
+  },
+  "CM 37,3563 ": {
+   "06037": 187,
+   "05170": 69
+  },
+  "CM 37,3565 ": {
+   "06037": 190,
+   "05170": 66
+  },
+  "CM 37,3567 ": {
+   "06037": 184,
+   "05170": 72
+  },
+  "CM 37,3570 ": {
+   "06037": 195,
+   "05170": 61
+  },
+  "CM 37,3573 ": {
+   "06037": 177,
+   "05170": 79
+  },
+  "CM 37,3575 ": {
+   "06037": 183,
+   "05170": 73
+  },
+  "CM 37,3577 ": {
+   "05170": 70,
+   "06037": 186
+  },
+  "CM 37,3600 ": {
+   "06037": 186,
+   "05170": 70
+  },
+  "CM 37,3602 ": {
+   "06037": 193,
+   "05170": 63
+  },
+  "CM 37,3603 ": {
+   "05170": 64,
+   "06037": 192
+  },
+  "CM 37,3606 ": {
+   "06037": 194,
+   "05170": 62
+  },
+  "CM 37,3610 ": {
+   "06037": 199,
+   "05170": 57
+  },
+  "CM 37,3611 ": {
+   "06037": 193,
+   "05170": 63
+  },
+  "CM 37,3613 ": {
+   "06037": 199,
+   "05170": 57
+  },
+  "CM 37,3615 ": {
+   "05170": 58,
+   "06037": 198
+  },
+  "CM 37,3617 ": {
+   "05170": 59,
+   "06037": 197
+  },
+  "CM 37,3621 ": {
+   "05170": 70,
+   "06037": 186
+  },
+  "CM 37,3623 ": {
+   "06037": 186,
+   "05170": 70
+  },
+  "CM 37,3625 ": {
+   "06037": 256
+  },
+  "CM 37,3627 ": {
+   "06037": 156,
+   "05650": 30,
+   "05170": 70
+  },
+  "CM 37,3631 ": {
+   "05170": 56,
+   "06037": 140,
+   "05650": 60
+  },
+  "CM 37,3633 ": {
+   "06037": 82,
+   "05650": 143,
+   "05170": 31
+  },
+  "CM 37,3634 ": {
+   "06037": 189,
+   "05170": 67
+  },
+  "CM 37,3636 ": {
+   "06037": 187,
+   "05170": 69
+  },
+  "CM 37,3640 ": {
+   "06037": 200,
+   "05170": 56
+  },
+  "CM 37,3641 ": {
+   "06037": 180,
+   "05170": 76
+  },
+  "CM 37,3643 ": {
+   "06037": 256
+  },
+  "CM 37,3645 ": {
+   "06037": 173,
+   "05170": 61,
+   "05650": 22
+  },
+  "CM 37,3647 ": {
+   "05650": 63,
+   "06037": 125,
+   "05170": 68
+  },
+  "CM 37,3651 ": {
+   "05650": 129,
+   "06037": 99,
+   "05170": 28
+  },
+  "CM 37,3652 ": {
+   "06037": 187,
+   "05170": 69
+  },
+  "CM 37,3653 ": {
+   "05170": 60,
+   "06037": 196
+  },
+  "CM 37,3655 CM/ATUP": {
+   "06037": 201,
+   "05170": 55
+  },
+  "CM 37,3744 REDOPOSE": {
+   "05170": 72,
+   "06037": 184
+  },
+  "CM 37,3753 CM/POSE3": {
+   "05170": 70,
+   "06037": 186
+  },
+  "CM 37,3755 ": {
+   "05170": 86,
+   "06037": 170
+  },
+  "CM 37,3756 ": {
+   "06037": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: CHANG2); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

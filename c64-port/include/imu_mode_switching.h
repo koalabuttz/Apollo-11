@@ -53,8 +53,8 @@ typedef struct {
 } lm_imu_io;
 extern const agc_routine_table lm_imu_mode_switching_routines;
 extern const agc_routine_table cm_imu_mode_switching_routines;
-#define IMS_LM_ROUTINES 72u
-#define IMS_CM_ROUTINES 72u
+#define IMS_LM_ROUTINES 73u
+#define IMS_CM_ROUTINES 73u
 /* Physical keys of every routine, Luminary then Comanche in table order
  * (also in the C64 builds that link only part of the tables). */
 extern const uint16_t ims_routine_keys[IMS_LM_ROUTINES+IMS_CM_ROUTINES];
@@ -95,6 +95,7 @@ extern const uint16_t ims_routine_keys[IMS_LM_ROUTINES+IMS_CM_ROUTINES];
 #define IMS_IMUSTALL 03716u
 #define IMS_GOMANUR 03750u
 #define IMS_R02BOTH 03254u        /* bank 04 */
+#define IMS_R02ZERO 03270u        /* bank 04 */
 #define IMS_P06 03655u            /* bank 37 */
 #define IMS_PRESTAND 03657u       /* bank 37 */
 #define IMS_SCALPREP 03714u       /* bank 37 */

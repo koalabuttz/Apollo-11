@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "interbank-q",
+  "release": "evidence-interbank-q",
+  "files": {
+    "interbank-q-host.log": {
+      "sha256": "d3ae0c1e2229b26f383565a988754f655685aaf72132a4937860c4ebfc151b68",
+      "bytes": 294,
+      "store": "release"
+    },
+    "interbank-q-proof.json": {
+      "sha256": "fbb9d969112bd138e53e6da9b5a5108f62f04c8dec243d22bb91d4f39fffea06",
+      "bytes": 2259,
+      "store": "tree"
+    },
+    "interbank-q-vice.log": {
+      "sha256": "c7aff7d516d05fc06f5f5088164ef326c4c3080dc6c48e6b2ec6b7864e7ab9b5",
+      "bytes": 210,
+      "store": "release"
+    }
+  }
+}

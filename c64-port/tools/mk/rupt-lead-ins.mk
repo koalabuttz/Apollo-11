@@ -24,7 +24,7 @@ rupt-lead-ins-differential: build/rupt-lead-ins-native
 	python3 tools/rupt_lead_ins_source_map.py
 	git diff --exit-code -- tests/rupt_lead_ins_vectors.h tests/rupt_lead_ins_c64_vectors.h
 c64-rupt-lead-ins: build/rupt-lead-ins.prg
-build/rupt-lead-ins.prg: $(RLI_SRC) platform/c64/rupt_lead_ins_diagnostic.c tests/rupt_lead_ins_c64_vectors.h $(RLI_HDR) | build
+build/rupt-lead-ins.prg: $(RLI_SRC) platform/c64/rupt_lead_ins_diagnostic.c tests/rupt_lead_ins_c64_vectors.h tests/rupt_lead_ins_c64_rows.h $(RLI_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(RLI_FLAGS) -Wl,-Map,build/rupt-lead-ins.map $(RLI_SRC) platform/c64/rupt_lead_ins_diagnostic.c -o $@
 vice-rupt-lead-ins: build/rupt-lead-ins.prg
 	python3 tools/vice_run.py build/rupt-lead-ins.prg --cycles 3000000000 --timeout 1200

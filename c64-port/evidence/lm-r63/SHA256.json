@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-r63",
+  "release": "evidence-lm-r63",
+  "files": {
+    "lm-r63-c64-cover.json": {
+      "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2",
+      "bytes": 667,
+      "store": "tree"
+    },
+    "lm-r63-differential.log": {
+      "sha256": "d991738309134c7e21519cc0fbc4e7b5809bea9107a67586a6768ecfaf137bb5",
+      "bytes": 1069,
+      "store": "tree"
+    },
+    "lm-r63-host.log": {
+      "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0",
+      "bytes": 91,
+      "store": "tree"
+    },
+    "lm-r63-proof.json": {
+      "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0",
+      "bytes": 2572,
+      "store": "tree"
+    },
+    "lm-r63-source-map.json": {
+      "sha256": "e2dc71348cfe2d680fc352a536722fbd3cac661f48190d583d00f455f556c680",
+      "bytes": 9050,
+      "store": "tree"
+    },
+    "lm-r63-vice.log": {
+      "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+      "bytes": 271,
+      "store": "tree"
+    }
+  }
+}

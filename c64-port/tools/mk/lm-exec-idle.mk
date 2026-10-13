@@ -23,7 +23,7 @@ lm-exec-idle-differential: build/lm-exec-idle-native
 	python3 tools/lm_exec_idle_freeze.py
 	git diff --exit-code -- tests/lm_exec_idle_vectors.h tests/lm_exec_idle_c64_vectors.h
 c64-lm-exec-idle: build/lm-exec-idle.prg
-build/lm-exec-idle.prg: $(LM_EXI_SRC) platform/c64/lm_exec_idle_diagnostic.c tests/lm_exec_idle_c64_vectors.h $(LM_EXI_HDR) | build
+build/lm-exec-idle.prg: $(LM_EXI_SRC) platform/c64/lm_exec_idle_diagnostic.c tests/lm_exec_idle_c64_vectors.h tests/lm_exec_idle_c64_rows.h $(LM_EXI_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(LM_EXI_FLAGS) -Wl,-Map,build/lm-exec-idle.map $(LM_EXI_SRC) platform/c64/lm_exec_idle_diagnostic.c -o $@
 vice-lm-exec-idle: build/lm-exec-idle.prg
 	python3 tools/vice_run.py build/lm-exec-idle.prg --cycles 3000000000 --timeout 1200

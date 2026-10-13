@@ -7,8 +7,8 @@
   "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
- "cases": 13824,
- "snapshot_sha256": "b2532c4db5f03d7b713c2e602704bc552a4e6fd8f8d76930b688cb0b3fc296d9",
+ "cases": 14080,
+ "snapshot_sha256": "ceb3f20ca3aa21beb3fc43acc55f3bcc37ac5e8cc94e7bb49c1be5134f66f588",
  "stops": {
   "LM 06,3263 1/PIPA": {
    "NOVAC": 377,
@@ -94,29 +94,37 @@
    "caller return": 470
   },
   "round trip site 4": {
-   "NOVAC": 380,
-   "caller return": 132
+   "BAILOUT": 42,
+   "caller return": 470
   },
   "round trip site 5": {
-   "NOVAC": 377,
-   "caller return": 135
+   "BAILOUT": 43,
+   "caller return": 469
   },
-  "plain LM round trip site 0": {
+  "plain round trip site 0": {
    "caller return": 128
   },
-  "plain LM round trip site 1": {
-   "NOVAC": 93,
-   "caller return": 35
+  "plain round trip site 1": {
+   "NOVAC": 96,
+   "caller return": 32
   },
-  "plain LM round trip site 2": {
+  "plain round trip site 2": {
+   "NOVAC": 94,
+   "caller return": 34
+  },
+  "plain round trip site 3": {
    "NOVAC": 95,
    "caller return": 33
   },
-  "plain LM round trip site 3": {
-   "NOVAC": 92,
-   "caller return": 36
+  "plain round trip site 4": {
+   "NOVAC": 93,
+   "caller return": 35
+  },
+  "plain round trip site 5": {
+   "NOVAC": 94,
+   "caller return": 34
   }
  },
- "boundary": "entry cases: from the routine to the first external address (SWRETURN, BANKCALL, IBNKCALL, NOVAC, ENDOFJOB); round trips: TC BANKCALL 1/PIPA or GCOMPZER from every genuine site to the caller Q+1, LM BAILOUT1 or CM NOVAC; plain LM round trips stop at NOVAC",
+ "boundary": "entry cases: from the routine to the first external address (SWRETURN, BANKCALL, IBNKCALL, NOVAC, ENDOFJOB); round trips: TC BANKCALL 1/PIPA or GCOMPZER from every genuine site through native NOVAC to the caller Q+1 or NOVAC's alarms (LM BAILOUT1, POODOO1; CM BAILOUT, POODOO); plain round trips stop at NOVAC",
  "compared": "2048 erasable words (A, L 16-bit) and the interrupt-enable state"
 }

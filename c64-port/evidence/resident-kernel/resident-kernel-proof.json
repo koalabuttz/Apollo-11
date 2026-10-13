@@ -72,58 +72,93 @@
   }
  },
  "flight_resident": {
+  "boundary_words": {
+   "doc": "docs/RESIDENT-FLIGHT.md#the-boundary-word-table",
+   "generator": "tools/resident_boundary_words.py (keys from tools/resident_boundary_keys.c)",
+   "module": "0x01E0 (task slot, data)",
+   "records": {
+    "lm": 66,
+    "cm": 59
+   },
+   "check": "make resident-boundary-words",
+   "check_lines": [
+    "lm: 66 boundary words match the rope and build/fixed-data/Luminary099/assembly.lst",
+    "cm: 59 boundary words match the rope and build/fixed-data/Comanche055/assembly.lst"
+   ],
+   "vice_steps": {
+    "13": "every key gives its word, the next absent key none",
+    "14": "BRUPT from the table at a fixed-fixed key; no entry at a key not in it",
+    "15": "fixed-fixed resolver key is canonical (07753 under FB 036000, superbank 0160)"
+   },
+   "mutation": "table REU address 4 bytes off and canonical key removed: LM part 4 fails 2 checks"
+  },
   "doc": "docs/RESIDENT-FLIGHT.md",
   "interrupts": {
    "c64_t3rupt_rows": 64,
    "cases_per_mission": {
     "entry": 8192,
     "t3rupt_to_resume": 2048,
-    "timer_periods": 40960
+    "timer_periods": 40960,
+    "other_vectors": 1152
    },
    "doc": "docs/RESIDENT-FLIGHT.md#the-agc-clock-and-interrupts",
    "log": "resident-rupt-host.log",
    "log_lines": [
-    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
-    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures",
-    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
-    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures"
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 1152 other-vector cases (229 to RESUME, 923 to a point no table holds, 0 refused, 0 not taken, 0 runaway; 1992 routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5683 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 1152 other-vector cases (323 to RESUME, 829 to a point no table holds, 0 refused, 0 not taken, 0 runaway; 1956 routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5669 checks, 0 failures",
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 1152 other-vector cases (229 to RESUME, 923 to a point no table holds, 0 refused, 0 not taken, 0 runaway; 1992 routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5683 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 1152 other-vector cases (323 to RESUME, 829 to a point no table holds, 0 refused, 0 not taken, 0 runaway; 1956 routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5669 checks, 0 failures"
    ],
    "mutations": {
     "BRUPT off by one": "160 failing checks",
-    "TIME3 overflow raising T4RUPT": "115 failing checks"
+    "TIME3 overflow raising T4RUPT": "115 failing checks",
+    "T4RUPT wrapper flips A bit 0 after each routine": "LM part 5 VICE: 5 failing checks"
    },
    "oracle": "yaAGC agc_engine (deps/virtualagc/yaAGC) linked by tools/resident_rupt_reference.c, frozen by tools/resident_rupt_vectors.py",
    "ropes": {
     "cm": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
     "lm": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
    },
-   "test": "make test-resident-rupt sanitize-resident-rupt"
+   "test": "make test-resident-rupt sanitize-resident-rupt",
+   "c64_vector_rows": 72
   },
   "native": {
    "include/resident_rupt.h": "0096770181db3d3098e04b3f467406d37a33cba96ec47c37e50a1afd15f1c12a",
    "include/sp_routines.h": "4fd5c6cadf7110083b170a322376a258abb2892b5f55a77dcfa59617407eda14",
-   "platform/c64/resident_flight.c": "c02024c5059acac472cb9895703f513dc7feb2fcdcfeab1c3f8a41a8b0fe0090",
-   "platform/c64/resident_flight.h": "2773e7eeaaf296eadff89cf4e35630e9c27f42b2793ec7f11928813bf0a473e5",
+   "platform/c64/resident_boundary_module.c": "371945f101bd6f93834be7ff39e563e8448a31773ea73aef6209d8e536fdda6d",
+   "platform/c64/resident_boundary_words_cm.h": "37789461b2f52fe287ed8eca7e151c7fe86a429aaac4eeaf239379b9ce610005",
+   "platform/c64/resident_boundary_words_lm.h": "60e417b5f31b73d6354f66ab9ed69c350bb1d7f84b61b2654bf048c4c6e40479",
+   "platform/c64/resident_flight.c": "5fc933e140fe0bd57d14f943239b498f8afadcb94ebd9db16d9c291ba070ee80",
+   "platform/c64/resident_flight.h": "d4f98988da3208111c3b962d15c62ae8d9dececb47edae7b4ed5ecd71a12cce4",
    "platform/c64/resident_flight.ld": "b2a93ac566bd7770210aac7b4cacb6ad6f3aa7d4113575e9dc2b579147636996",
    "platform/c64/resident_flight_cases.c": "71dd486a2015da8a64876981c0fc7827cd93027e76945475703bb0a83a4f1ed9",
-   "platform/c64/resident_flight_check.c": "c75d4354ba09e5f3f52dda07e06242fba37f8d4e18640987ad7f1f99ba60b254",
-   "platform/c64/resident_flight_check.h": "d6f680836bd8e3554a9a4cee6e9b76e47a9e558e0152b4edcb7f5a285491865a",
+   "platform/c64/resident_flight_check.c": "a31b676a704e13509c53f64a0dc5113f1f0bf46d9d39fc13db1da8aef9d383dd",
+   "platform/c64/resident_flight_check.h": "c3d068b415ba1831394d3e8ed364ae9b6fbc55bf49af9163e296522593d6bb12",
    "platform/c64/resident_flight_data.c": "cc21a603ec7438b86c14b13671548a2965fcf6939935b8897e06677ff88e55cb",
    "platform/c64/resident_flight_main.c": "1f5bc735d979663378dee37b8e5fa081339992a2b9fdbbdebd584c617d098cdf",
    "platform/c64/resident_flight_rupt_cases.c": "c24181e71ae03f3020dcfdb72733e39ca5a6b117efecfb0b965781062d085e3f",
+   "platform/c64/resident_flight_vector_cases.c": "15871a6163d13e9a095c9d8d65462a7984e551f24aaf61aa3f8a4e5f635a3714",
+   "platform/c64/resident_rupt_module.c": "c53d93c9cba4ce8d4bc61ca566f3c3c5470a27b74a124c6dcc039ba6d95de8d4",
    "src/resident_rupt.c": "e6ff48d8ef9ef9e3ed946a6ad31f8b3b9295271d6b6312d4127300b56d1f9ef1",
    "src/sp_routines.c": "4a1a8329f83ca4e44a2c27f20023927108e53dede8d4dfef95ee3c34f4d432dd",
    "tests/resident_kernel_cases.c": "d43f5cb96f181046ea787f1e9bff072ef599cbc20c02768cdcf68ddb6f9b7b93",
-   "tests/resident_rupt_c64_rows.h": "6379e39c8afbcdb349e295265cc6604bf86518ad3cdb6ed8ba2c8678517727d6",
+   "tests/resident_rupt_c64_rows.h": "f74189d69e4570f9fe1f581d15de73ba7f23913e818e2128eec7dcdf6f830791",
    "tests/resident_rupt_cases.c": "702117fe73f399ffbc5c5f667931e22b5ed3e0dbb0dc4bb18b6b2a3c61980a75",
    "tests/resident_rupt_cases.h": "f1f379b106003d96457455eeaeb0ae70ab28bbac49e4c7e2878a595034fe1302",
-   "tests/resident_rupt_vectors.h": "973655ce913d0291fd899c74a602521e33992d78db123e360a654cffbf99c0bd",
-   "tests/test_resident_rupt.c": "0b68e7851caa4dbb7cff53f916744f0ad3de6d3912a322a33b1c7467049c4ae9",
+   "tests/resident_rupt_vectors.h": "2c63299996b971d3e517158b7716646a4be8919c05c1888ff87d8cd888ba8444",
+   "tests/resident_vector_cases.c": "453a55572ee027b50189694b93aebdec10aa4f2d75361a7c6f9aa1593531541a",
+   "tests/resident_vector_cases.h": "ba24b71e4342ac95d2f5e4b24902929d88f9709eda53c6018471f29ab2ec6b59",
+   "tests/resident_vector_run.c": "0d479c85fab90f3aa2a11d56bbdce506f09e54e249260b4a4ae164eb3c34a1b6",
+   "tests/resident_vector_run.h": "1f1e003ab26c0f03fff1c9b189c9ff72c2a1938173190b5d3170fbaee11bdb6a",
+   "tests/test_resident_rupt.c": "35db883118001923db778b59a13bdcd8252bae61fdac1f6a5a504fcbf60f5918",
    "tests/test_sp_routines.c": "1ef3aadb265e7b167b398209878e8dba237ff17bb38ce362728098e894b3b684",
-   "tools/mk/resident-kernel.mk": "0f87f459d730fc8853d8960e9ab1b9b29aee62ab577a67e64b9770ad50a1db3b",
-   "tools/resident_flight_build.py": "2f65c161e040297871c65c3ba45cb843c85e5b722bfa65232c66f28e9e283a96",
-   "tools/resident_rupt_reference.c": "2af70c25650028ed3609a96b17eb6ff86e93dbef7bf1c441417c960b8b1c5747",
-   "tools/resident_rupt_vectors.py": "eb089a6b17785929cb52f1da1802fbeb66779adab70bbfac978fa579c082cafe"
+   "tools/mk/resident-kernel.mk": "ca321b2b9d48bb1695554f58abf5294015ab6b01db6d9e2035a5b818042b1d51",
+   "tools/resident_boundary_keys.c": "f324fe449e6d9ec80c858e0235b1b79b4ed4783f929bbfbefb93a7f1f6bcd845",
+   "tools/resident_boundary_words.py": "bea997bfd7f5e1513025d528568a66bbc0a688593c320556da54acaac961be56",
+   "tools/resident_flight_build.py": "0e157fc7b7aaf5b44bb890de2120722fedf9167d6e0eb03348fd11fd66beed1e",
+   "tools/resident_rupt_reference.c": "74e63e70ef25170bce8bca5a0a6eb6a660d7cb955ee3b521540423d78f1ce1a5",
+   "tools/resident_rupt_vectors.py": "7b0deaa3e3f9f8a932ba6d5407e49d420dd69a244cd115bc92cc2b2789e86ab3",
+   "tools/resident_vector_stops.c": "d9dad207a0285cc9f35700140be70f025d3d6c91a555bd721c24cd4c77940c4e"
   },
   "seams": {
    "cm": {
@@ -140,43 +175,43 @@
    }
   },
   "sizes": {
-   "cm": {
-    "boot_only_bytes": 2821,
-    "components": {
-     "ABI 2 runtime and REU store": 5176,
-     "AGC timers and interrupt entry": 1092,
-     "BASIC header and alignment": 0,
-     "C runtime and library": 480,
-     "IRQ entry": 16,
-     "kernel": 10232,
-     "resident state and step": 563,
-     "service table exports": 637,
-     "single-precision subroutines": 1299,
-     "transfer ABI trampoline and Executive call sites": 2612
-    },
-    "free_bytes": 4260,
-    "resident_bytes": 22107,
-    "resident_capacity": 26367,
-    "service_table_bytes": 6
-   },
    "lm": {
-    "boot_only_bytes": 2837,
+    "resident_bytes": 22778,
+    "resident_capacity": 26367,
+    "free_bytes": 3589,
+    "service_table_bytes": 6,
+    "boot_only_bytes": 3248,
     "components": {
-     "ABI 2 runtime and REU store": 5176,
+     "kernel": 10475,
+     "ABI 2 runtime and REU store": 5206,
+     "transfer ABI trampoline and Executive call sites": 2680,
+     "single-precision subroutines": 1299,
      "AGC timers and interrupt entry": 1092,
-     "BASIC header and alignment": 0,
+     "resident state and step": 893,
+     "service table exports": 637,
      "C runtime and library": 480,
      "IRQ entry": 16,
-     "kernel": 10475,
-     "resident state and step": 545,
-     "service table exports": 637,
-     "single-precision subroutines": 1299,
-     "transfer ABI trampoline and Executive call sites": 2680
-    },
-    "free_bytes": 3967,
-    "resident_bytes": 22400,
+     "BASIC header and alignment": 0
+    }
+   },
+   "cm": {
+    "resident_bytes": 22485,
     "resident_capacity": 26367,
-    "service_table_bytes": 6
+    "free_bytes": 3882,
+    "service_table_bytes": 6,
+    "boot_only_bytes": 3218,
+    "components": {
+     "kernel": 10232,
+     "ABI 2 runtime and REU store": 5206,
+     "transfer ABI trampoline and Executive call sites": 2612,
+     "single-precision subroutines": 1299,
+     "AGC timers and interrupt entry": 1092,
+     "resident state and step": 911,
+     "service table exports": 637,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "BASIC header and alignment": 0
+    }
    }
   },
   "sp_routines": {
@@ -192,23 +227,63 @@
    "test": "make test-sp-routines sanitize-sp-routines"
   },
   "vice_log": [
-   "PASS: VICE PAL lm-check-1.prg: 311 checks, 0 failures",
-   "PRG sha256: 16984c18c7a1d5e3b3fa6808575e3fee73e7189b5eb87b1ad22408cca6122b9d lm-check-1.prg",
-   "PASS: VICE PAL lm-check-2.prg: 327 checks, 0 failures",
-   "PRG sha256: e9c57e6a9119cbf0645a8506ba16077ae40fd056f5cf2aa2cb747895a40e9886 lm-check-2.prg",
-   "PASS: VICE PAL lm-check-3.prg: 177 checks, 0 failures",
-   "PRG sha256: 017b0687c692a7dba78cc16ed37c81fb867aaa43ffce77b3e789ee3401979f89 lm-check-3.prg",
-   "PASS: VICE PAL lm-check-4.prg: 71 checks, 0 failures",
-   "PRG sha256: ef6c00af5e48eb0b0f2af69df78fabebc24e2f7cac294215db229a35c1df8092 lm-check-4.prg",
-   "PASS: VICE PAL cm-check-1.prg: 263 checks, 0 failures",
-   "PRG sha256: ec6fb27bd7a54290669d246d35b762799a9bc8e8b0f98e9c7fa757cdcc63d3ab cm-check-1.prg",
-   "PASS: VICE PAL cm-check-2.prg: 225 checks, 0 failures",
-   "PRG sha256: 753970e58433f6d686067d60cb83149845bab57f0444364d706ee110397d3f2b cm-check-2.prg",
-   "PASS: VICE PAL cm-check-3.prg: 185 checks, 0 failures",
-   "PRG sha256: 227745ba505d8bf0168e98fa1d321cdba93acd1864599fbf16d5bf1ee8756179 cm-check-3.prg",
-   "PASS: VICE PAL cm-check-4.prg: 71 checks, 0 failures",
-   "PRG sha256: 8d1d9c1d7684074ce263c5227e8eceee756189d1c91d0f3f63cd30eb76388284 cm-check-4.prg"
-  ]
+   "PASS: VICE PAL lm-check-1.prg: 312 checks, 0 failures",
+   "PRG sha256: 1c1fd2201da1c915d2347ce4f0df57ad3ba7fcbe0a0368ff6d1f93341f5a4021 lm-check-1.prg",
+   "PASS: VICE PAL lm-check-2.prg: 328 checks, 0 failures",
+   "PRG sha256: bce43950511e35b59bd45ebd1f963618f617fbe5b2ed90c6e2f50c88ba4d5871 lm-check-2.prg",
+   "PASS: VICE PAL lm-check-3.prg: 178 checks, 0 failures",
+   "PRG sha256: dfbff3897d0ce34773164024ea5d2e88eaacb1be84658c22ebb382b872b096ec lm-check-3.prg",
+   "PASS: VICE PAL lm-check-4.prg: 72 checks, 0 failures",
+   "PRG sha256: 6a493efb8dc253ca1cdafc35029fd688558058f0b0ca5170bf4514e700f08a14 lm-check-4.prg",
+   "PASS: VICE PAL lm-check-5.prg: 81 checks, 0 failures",
+   "PRG sha256: de4b903d378b9de11fdc4bb29ec5499c3d52338f4cc0a2b2151f04642693c4b9 lm-check-5.prg",
+   "PASS: VICE PAL cm-check-1.prg: 264 checks, 0 failures",
+   "PRG sha256: e9efcc2cbe75007ade095162dae4bac8fe403cc5832b5f6ea0f9d679eb5cb4ea cm-check-1.prg",
+   "PASS: VICE PAL cm-check-2.prg: 226 checks, 0 failures",
+   "PRG sha256: 93a99f51125c23c6eea9f39ba0f0edacbfa72913428ea2609733c59dd23e59f1 cm-check-2.prg",
+   "PASS: VICE PAL cm-check-3.prg: 186 checks, 0 failures",
+   "PRG sha256: 31c57d51b4cb97bd4212a636f31f983140ddfd1de76d4fd5833eb609f1881488 cm-check-3.prg",
+   "PASS: VICE PAL cm-check-4.prg: 72 checks, 0 failures",
+   "PRG sha256: 31e9a34f06dbf097e8625883a2743c625452a6a1cc1857a89c35e2efe61c401d cm-check-4.prg",
+   "PASS: VICE PAL cm-check-5.prg: 81 checks, 0 failures",
+   "PRG sha256: a72d4aa625cea2a4e3654bcd7ce2901768a5246b0f98bc7bdedbd9c99e23a061 cm-check-5.prg"
+  ],
+  "interrupt_bodies": {
+   "doc": "docs/RESIDENT-FLIGHT.md#the-interrupt-bodies",
+   "modules": {
+    "0x01E1": "rupt_lead_ins.h",
+    "0x01E2": "t4rupt_core.h",
+    "0x01E3": "keyrupt_uprupt.h",
+    "0x01E4": "lm_t6rupt_routines.h (LM)"
+   },
+   "module_bytes": {
+    "lm": {
+     "0x01E1": 2642,
+     "0x01E2": 7733,
+     "0x01E3": 6384,
+     "0x01E4": 7711
+    },
+    "cm": {
+     "0x01E1": 4358,
+     "0x01E2": 7878,
+     "0x01E3": 6379
+    }
+   },
+   "host": "tests/resident_vector_cases.c, tests/resident_vector_run.c; yaAGC run to each native run end (tools/resident_vector_stops.c)",
+   "host_results": {
+    "lm": {
+     "cases": 1152,
+     "to_resume": 229,
+     "to_unheld_point": 923
+    },
+    "cm": {
+     "cases": 1152,
+     "to_resume": 323,
+     "to_unheld_point": 829
+    }
+   },
+   "c64": "part 5: every 16th case, case module 0x01F8 (selector 1 checks the digest)"
+  }
  },
  "host_log": [
   "PASS: src/lm_kernel_labels.inc matches the Luminary099 listing",

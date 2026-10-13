@@ -1,5 +1,5 @@
-PASS: VICE PAL rupt-lead-ins.prg: 192 checks, 0 failures
-
-real	1m24.157s
-user	1m23.095s
-sys	0m0.083s
+$ make vice-rupt-lead-ins
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,-Map,build/rupt-lead-ins.map src/rupt_lead_ins.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/rupt_lead_ins_cases.c platform/c64/rupt_lead_ins_diagnostic.c -o build/rupt-lead-ins.prg
+python3 tools/vice_run.py build/rupt-lead-ins.prg --cycles 3000000000 --timeout 1200
+PASS: VICE PAL rupt-lead-ins.prg: 193 checks, 0 failures
+PRG sha256: 4951496486aa92ad837e4804bb3283d6229ead68500733787f9d8c62037a4850 rupt-lead-ins.prg
