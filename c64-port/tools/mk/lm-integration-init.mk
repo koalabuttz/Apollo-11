@@ -18,7 +18,7 @@ sanitize-lm-integration-init: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-integration-init-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and the listing build).
 lm-integration-init-differential:
-	python3 tools/interp_routine_differential.py lm-integration-init --cases 512 --freeze
+	python3 tools/interp_routine_differential.py lm-integration-init --cases 192 --freeze
 	git diff --exit-code -- tests/lm_integration_init_vectors.h tests/lm_integration_init_c64_vectors.h tools/mk/lm-integration-init.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).

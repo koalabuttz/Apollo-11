@@ -259,6 +259,17 @@ SPECS = {
         # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
         'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
                           '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # CHANG2 resumes mid-sequence keep the sequence's own invariants:
+        # between ACCOMP's XCHX,2 DIFEQCNT pairs X2 is the DIFEQ stage and
+        # DIFEQCNT holds PBODY; between GAMCOMP's XCHX,2 S1 pairs S1 holds it;
+        # NBRANCH's DMP CGOTO has DIFEQCNT SLOADed (DP; stage 0 here, NBRANCH
+        # itself runs every stage); TIMESTEP's W
+        # stores index by COLREG (1117), after a VLOAD.
+        'states': {**{'ACCOMP+%d' % n: {'1500': [0, 2], 'vac+047': [0, 0o77763, 0o77747]} for n in (15, 16, 64, 65, 66)},
+                   **{'GAMCOMP+%d' % n: {'vac+050': [0, 2]} for n in (24, 27)},
+                   'NBRANCH+3': {'1500': [0], '0154': [0], '0155': [0], '0163': [0], 'vac+046': [0]},
+                   **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                                          '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
         'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
                        'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
@@ -267,8 +278,14 @@ SPECS = {
         'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
         'native_sources': ['src/lm_integration_moves.c'],
         'target': 'tests/lm_orbital_integration_target.c',
+        # (with resume keys every pair is a routine: a DIFEQ step runs hundreds)
+        'max_steps': 1000,
+        # Integration runs as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (bank checksums the listing omits, such as OCT27's DSU second word)
+        'rope_bin': True,
     },
     'lm-integration-init': {
         'missions': ('lm',),
@@ -285,6 +302,17 @@ SPECS = {
         'native_ranges': {'MOVEACSM': (9, 'lm_integration_move'), 'MOVEPCSM': (9, 'lm_integration_move'),
                           'MOVEALEM': (9, 'lm_integration_move'), 'MOVEPLEM': (9, 'lm_integration_move'),
                           'SETBANK': (5, 'lm_integration_move'), 'FORTYONE': (1, 'lm_integration_move')},
+        # MEASUREMENT_INCORPORATION's RTBs reach the MOVE* routines directly.
+        'native_entries': {'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)'},
+                           'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)'},
+                           'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)'},
+                           'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)'}},
+        # Their DANZIG resumes the RTB that called them as its pair's right
+        # order: LOC its address word (this file's own RTBs; MOVEPCSM's are
+        # left orders, so a word of bank 14), BANKSET its bank, INTBIT15 0.
+        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0]}
+                   for lab, loc, bank in (('MOVEACSM', 0o2663, 0o26000), ('MOVEPCSM', 0o2500, 0o30000),
+                                          ('MOVEALEM', 0o2736, 0o26000), ('MOVEPLEM', 0o2763, 0o26000))},
         'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
         'externals': {'PHASCHNG': 1, 'FINDVAC': 2, 'TASKOVER': 0, 'LONGCALL': 2, 'ENDOFJOB': 0,
                       'DOWNFLAG': 1, 'UPFLAG': 1, 'JOBSLEEP': 0, 'JOBWAKE': 0, 'TPAGREE': 0,
@@ -308,8 +336,82 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_agreement.h', 'lm_integration_moves.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/lm_integration_moves.c'],
         'target': 'tests/lm_integration_init_target.c',
+        # (with resume keys every pair is a routine: a DIFEQ step runs hundreds)
+        'max_steps': 1000,
+        # Integration runs as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (bank checksums the listing omits, such as OCT27's DSU second word)
+        'rope_bin': True,
+    },
+    'r60-r62': {
+        'missions': ('lm', 'cm'),
+        # The listing names the file R60,R62.agc; the repository R60_62.agc.
+        'file': {'lm': 'R60,R62.agc', 'cm': 'R60,R62.agc'},
+        'source_path': {'lm': 'R60_62.agc', 'cm': 'R60_62.agc'},
+        'base': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'symbol': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'entries': {'lm': ['R60LEM', 'R62FLASH', 'VECPOINT', 'VECPNT1', 'BALLANGS', 'RELINUS', 'ISITAUTO', 'G+N,AUTO'],
+                    'cm': ['R60CSM', 'R62DISP', 'VECPOINT', 'RELINUS']},
+        # 'auto': the call's inline words are the data words after the TC.
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
+                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', 'LINUS': 'auto', 'PRIOCHNG': 'auto',
+                      'CHECKMM': 'auto', 'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None,
+                      'BANKJUMP': None, 'TASKOVER': None},
+        # Display and restart returns (GOPERF +1/+2 and the like) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'rtb': {'V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)',
+                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/r60_r62_target.c',
+        # BUF2 holds the last display's return (a fixed address), as
+        # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
+        'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
+        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
+                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
+        'freeze_stride': 64,
+    },
+    'attitude-maneuver': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
+        'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        'entries': ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
+                    'VECOFANG', 'NOGO'],
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'MAKECADR': 'auto', 'CURTAINS': 'auto',
+                      'WAITLIST': 'auto', 'STOPRATE': 'auto', 'LOADCDUD': 'auto', 'POSTJUMP': 1,
+                      'ENDOFJOB': None, 'GOTOPOOH': None, 'BANKJUMP': None, 'TASKOVER': None},
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # READCDUK is the file's own basic code; CDULOGIC is native.
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/attitude_maneuver_target.c',
+        # One C64 case per routine: KALCMAN3's run reaches most of the file.
+        'c64_per_point': 1,
+        # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
+        # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
+        'ebank': 6,
+        # LOOPSIN is CDUTODCM's TIX loop: X1 3, 2 or 1 with S1 1, and the
+        # pushdown list at 0D (its SETPD 0), as the loop's pushes assume.
+        # SUHALFA and CALCPHI (DCMTOCDU's THETA quadrant fix) run with PSI
+        # and THETA pushed (pushdown at 4D).
+        'states': {'LOOPSIN': {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']},
+                   'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}},
+        'all_states': {'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
+                       'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
+        'freeze_stride': 64,
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),

@@ -11,9 +11,9 @@ extern const agc_routine_table lm_orbital_integration_interpretive,lm_orbital_in
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_orbital_integration_point;
-#define LM_ORBITAL_INTEGRATION_POINTS 73u
+#define LM_ORBITAL_INTEGRATION_POINTS 353u
 #define LM_ORBITAL_INTEGRATION_CADR_WORDS 1u
-#define LM_ORBITAL_INTEGRATION_EXTERNALS 4u
+#define LM_ORBITAL_INTEGRATION_EXTERNALS 5u
 #define LM_ORBITAL_INTEGRATION_FIRST 9470u
 #define LM_ORBITAL_INTEGRATION_LAST 12268u
 extern const lm_orbital_integration_point lm_orbital_integration_points[LM_ORBITAL_INTEGRATION_POINTS];

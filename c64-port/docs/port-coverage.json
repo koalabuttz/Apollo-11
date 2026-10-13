@@ -5751,7 +5751,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (623 words in banks 13 and 04): INTEGRV, INTEGRVS, INTEGRV2, LEMPREC, CSMPREC, LEMCONIC, CSMCONIC, INTSTALL, SETIFLGS, INTWAKE, INTWAKE0, INTWAKE1, INTWAKEU, TESTLOOP, ATOPCSM, ATOPLEM, CLRMOON, SETMOON, CKMID2, GRP2PC, A-PCHK, STATEINT, STATINT1, AVETOMID, MIDTOAV1, MIDTOAV2, ENDINT and PHEXIT, as 120 routines of the control-transfer ABI compiled by tools/interp_compile.py; the RTB state-vector moves (MOVEACSM, MOVEALEM, MOVEPCSM, MOVEPLEM with SETBANK) as lm_integration_move.",
+          "scope": "Every word of the file (623 words in banks 13 and 04): INTEGRV, INTEGRVS, INTEGRV2, LEMPREC, CSMPREC, LEMCONIC, CSMCONIC, INTSTALL, SETIFLGS, INTWAKE, INTWAKE0, INTWAKE1, INTWAKEU, TESTLOOP, ATOPCSM, ATOPLEM, CLRMOON, SETMOON, CKMID2, GRP2PC, A-PCHK, STATEINT, STATINT1, AVETOMID, MIDTOAV1, MIDTOAV2, ENDINT and PHEXIT, as 217 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG, where a job switched out at CHANG2 resumes); the RTB state-vector moves (MOVEACSM, MOVEALEM, MOVEPCSM, MOVEPLEM with SETBANK) as lm_integration_move, also registered as routines at MOVEACSM, MOVEALEM, MOVEPCSM and MOVEPLEM for MEASUREMENT_INCORPORATION.",
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
@@ -5759,8 +5759,9 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB that ends its pair (EDOP +0), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
         "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "ORBITAL_INTEGRATION (TIMESTEP and the integration loop) at NEWOPS",
           "PHASCHNG, UPFLAG, DOWNFLAG and ALARM with their inline words",
           "FINDVAC, LONGCALL, JOBSLEEP, JOBWAKE, TASKOVER, ENDOFJOB and BANKJUMP (Executive/Waitlist)",
@@ -5772,19 +5773,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
-            "sha256": "42d40190f941ba13829f17e925209dc24f503aca1230443e185ec8055771179d"
+            "sha256": "d3bec91136be92f7d7c364c2213e3b81f6611a777f81ae3acac2e51678289060"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "4ca47014e33980b69396d41234d807a871c9ac537320ebf17ccd0b55d5420d6d"
+            "sha256": "fb6d5c2fb15f4f88d653e05150ae9356248bba59a4ee839b8d3c371ce00b1ad8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "c2164482c883ed0a86dc4e889db1a5d764a3a854db6a14bab6b5df69d171f3e8"
+            "sha256": "03982b4c140571bed24777391fe6f1d2f165921b81c494cafdeb29b0ea1dca51"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "581391006ea784fa70cd2f1ecc5ef8b00c7fe08b716d53e9498414b5e6e18631"
+            "sha256": "baa761f1f405ff3e9e4e3f273e14710884baef682bef6c933e931e1a74d29c15"
           }
         }
       }
@@ -6429,7 +6430,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (841 words in banks 11, 12 and 13): KEPPREP, the TIMESTEP/INTGRATE loop, DIFEQ+0/+1/+2 through CGOTO DIFEQTAB, OBLATE and the lunar/solar terms, RECTIFY/MINIRECT, the sphere-of-influence change (EARSPH, LUNSPH, ORIGCHNG), AMOVED, RELOADSV and the W-matrix loop (DOW.., WMATEND), as 73 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "scope": "Every word of the file (841 words in banks 11, 12 and 13): KEPPREP, the TIMESTEP/INTGRATE loop, DIFEQ+0/+1/+2 through CGOTO DIFEQTAB, OBLATE and the lunar/solar terms, RECTIFY/MINIRECT, the sphere-of-influence change (EARSPH, LUNSPH, ORIGCHNG), AMOVED, RELOADSV and the W-matrix loop (DOW.., WMATEND), as 353 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG, where a job switched out at CHANG2 resumes).",
           "verification": "docs/ORBITAL-INTEGRATION.md"
         }
       ],
@@ -6437,8 +6438,9 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores).",
         "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "INTEGRATION_INITIALIZATION (A-PCHK, ATOPCSM, ATOPLEM, STATEINT) at NEWOPS",
           "PHASCHNG, UPFLAG and ALARM with their inline words; POODOO",
           "TIME_OF_FREE_FALL TCDANZIG through BOVB/RTB (native, lm_integration_tcdanzig)",
@@ -6449,19 +6451,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-source-map.json",
-            "sha256": "7827b158dee8278e93e471fe67f1583a8964426acba0703cdbf9148fd88b1a92"
+            "sha256": "7f4217512918a195e8ae230f99b902d0866705f231e0a6294c363cf3128fbeea"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "fd5aa73763acdfd4179830d389d843a2112f5c385bc76451b8f15241aabc8975"
+            "sha256": "c438f220f5b4ef69473b146ba8d970677e6ead25004abdf95c6281be4e612762"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
-            "sha256": "4fceb5b8a1899501af2fe9e68d3378688bf5114b949b4a68e1f28cc3c2015123"
+            "sha256": "2375fcef1d4efaa9524b8cb65748f10f7ce9b10f6e0bff5c83dccfd9eae4db6e"
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "2817dc9f2ae4af4284faa0d0c355a33ec42d90424a9417cef4c4ee3f830d8aa2"
+            "sha256": "40825c89bff7b99ba69e2ce4b288c214e00b1ab5aadd3bb797ba068b88933559"
           }
         }
       }

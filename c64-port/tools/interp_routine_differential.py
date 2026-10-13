@@ -238,7 +238,7 @@ def case(mi, point, n, rng):
     E[6] = fb | eb
     # NEWJOB +0, or (resume_keys) positive in a quarter of the cases: a job
     # waiting, so the next DANZIG goes to CHANG2.
-    E[0o67] = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
+    E[0o67] = newjob = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
     E[0o120] = vac
     # Shapes: 0 the VAC area and operands as they are, 1 random words,
@@ -273,10 +273,9 @@ def case(mi, point, n, rng):
                 for k, (hi, lo) in enumerate(edge_vector(rng, row)):
                     E[(phys + 2 * k) & 0o3777] = hi
                     E[(phys + 2 * k + 1) & 0o3777] = lo
-            if not mi.rk:
-                E[0o67] = 0   # (NEWJOB, which an operand's randomizing may have hit)
         else:
             E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
+    E[0o67] = newjob   # (NEWJOB, which an operand's randomizing may have hit)
     for off in (0o50, 0o51, 0o52):
         E[vac + off] = mi.outside(rng)
     for w in mi.cp.cadr_erasable:
@@ -388,7 +387,8 @@ def build(spec_id, spec):
                         os.path.join(E, 'rfopen.o'), '-o', ref], cwd=R, check=True)
     nat = os.path.join(B, '%s-native' % spec_id)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    subprocess.run(['cc', *FLAGS, *srcs, spec['target'], 'tools/interp_routine_native.c', '-o', nat],
+    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%du' % spec.get('max_steps', 200), *srcs, spec['target'],
+                    'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -633,19 +633,19 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
 C64_TOP = 0xbf00
 
 
-KEEP_WORDS = {}
-
-
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
             + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
 
 
-def keep_flags(spec, m, mask):
-    """-D<SYMBOL>_KEEP<n> for every 60-routine word of a KEEP mask."""
-    n = KEEP_WORDS.get(m, max(1, (mask.bit_length() + 59) // 60))
-    return ['-D%s_KEEP%d=0x%x' % (spec['symbol'][m].upper(), i, (mask >> (60 * i)) & ((1 << 60) - 1))
-            for i in range(n)]
+KEEP_WORDS = {}   # symbol -> the generated file's KEEP words
+
+
+def keep_flags(symbol, mask):
+    """-D<SYM>_KEEP<n> for a routine mask, 60 routines per word (every
+    word the file has, so none defaults to all)."""
+    n = KEEP_WORDS[symbol]
+    return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
 
 
 def c64_size(spec, sym, m, mask, text):
@@ -656,7 +656,7 @@ def c64_size(spec, sym, m, mask, text):
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
-                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec, m, mask),
+                        '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
                        cwd=R, capture_output=True, text=True)
@@ -733,6 +733,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
     out. Writes tests/<id>_c64_vectors.h and tools/mk/<id>.groups; returns
     the groups and the row cover's proof fields."""
     per = spec.get('c64_per_point', 2)
+    for mi in missions:
+        # (every KEEP word is defined, so a group drops the routines past 60 too)
+        KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
     if cover:
         arcs = host_arcs(spec_id, spec, missions, cases)
@@ -749,9 +752,6 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
             ok = {i: arcs[i] for i in mine if visits[i] in fits}
             chosen |= set(c64_row_cover.cover(ok, cost))
     groups = []
-    for mi in missions:
-        # (every KEEP word is defined, so a group drops the routines past 60 too)
-        KEEP_WORDS[mi.m] = max(1, (len(mi.points) + 59) // 60)
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
             continue
@@ -801,14 +801,6 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
             want = 0
             for i in part:
                 want |= visits[i]
-            # A routine whose cases run through more code than one PRG holds
-            # keeps its cases that visit the fewest routines.
-            while len(need[p]) > 1 and c64_size(spec, sym, mi.m, want, group_text(
-                    sym, [(mi.m, want, need[p])], cases, rows)) is None:
-                need[p] = need[p][:len(need[p]) // 2]
-                want = 0
-                for i in need[p]:
-                    want |= visits[i]
             trial = mask | want
             tp = pick + part
             if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
@@ -847,7 +839,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
     for g, (m, mask, pick) in enumerate(groups, 1):
         mk.append('%s_GROUP_MISSION_%d = %s' % (v, g, m))
         mk.append('%s_GROUP_FLAGS_%d = -DIRC_GROUP=%d -DIRC_%s_ONLY %s' % (
-            v, g, g, m.upper(), ' '.join(keep_flags(spec, m, mask))))
+            v, g, g, m.upper(), ' '.join(keep_flags(spec['symbol'][m], mask))))
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick)} for m, mask, pick in groups], extra
 

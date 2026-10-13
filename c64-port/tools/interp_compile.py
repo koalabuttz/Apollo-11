@@ -34,16 +34,15 @@ ADDR = {
     'DSU': ('dsu', True), 'BDSU': ('bdsu', True), 'DAD': ('dad', True),
     'DMP1': ('dmp', True), 'TLOAD': ('tload', False), 'SLOAD': ('sload', False),
     'TSLC': ('tslc', False), 'GSHIFT': ('gshift', False), 'SETPD': ('setpd', False),
-    'SSP': (None, False),
-    'VXM': ('vxm', True), 'MXV': ('mxv', True), 'V/SC': ('vsc', True), 'VPROJ': ('vproj', True),
+    'SSP': (None, False), 'MXV': ('mxv', True), 'VXM': ('vxm', True), 'V/SC': ('vsc', True), 'VPROJ': ('vproj', True),
     'CGOTO': (None, False),
 }
 # Fixed operands longer than a vector (the words a K array holds).
 K_WORDS = {'MXV': 18, 'VXM': 18}
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
-MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
-        'TIX': 'TIX', 'XAD': 'XAD', 'XSU': 'XSU', 'LXC': 'LXC', 'GOTO': 'BZE/GOTO', 'BZE': 'BZE/GOTO',
+MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
+        'TIX': 'TIX', 'XAD': 'XAD', 'XSU': 'XSU', 'GOTO': 'BZE/GOTO', 'BZE': 'BZE/GOTO',
         'BPL': 'BPL/BMN', 'BMN': 'BPL/BMN', 'RTB': 'RTB/BHIZ', 'BHIZ': 'RTB/BHIZ',
         'CALL': 'CALL/ITA', 'ITA': 'CALL/ITA', 'STQ': 'CALL/ITA', 'BOV': 'BOV(B)', 'BOVB': 'BOV(B)'}
 INDEXED_MISC = ('AXT', 'AXC', 'LXA', 'LXC', 'SXA', 'XCHX', 'INCR', 'TIX', 'XAD', 'XSU')
@@ -124,6 +123,8 @@ class Compiler:
         self.spec = spec
         self.m = mission
         self.L = IL.load(mission)
+        if spec.get('rope_bin'):
+            self.L.rope = {**self.L.bin_words, **self.L.rope}
         self.p = 'lmi_' if mission == 'lm' else 'cmi_'
         self.lines = self.L.file_lines(spec['file'][mission])
         if not self.lines:
@@ -157,10 +158,10 @@ class Compiler:
         self.vloadstar = 0o40001
         self.starts = {}       # phys -> ('i'|'b', reason)
         self.consts = {}       # phys -> label
-        self.const_len = {}    # phys -> words in its K array
-        self.tc_erasable = set()  # erasable words a TC runs as instructions
         self.ktabs = {}        # indexed fixed table phys -> (words, label)
         self.lists = {}        # CGOTO CADR list phys -> length
+        self.const_len = {}    # phys -> words in its K array
+        self.tc_erasable = set()  # erasable words a TC runs as instructions
         self.basic_fixed = set()  # rope words basic instructions read as operands
         self.cadr_erasable = set()
         self.externals = {}    # outside basic address (physical) -> name
@@ -255,6 +256,19 @@ class Compiler:
         for phys in list(self.blocks):
             kind = self.starts[phys][0]
             self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+        # Basic routines the spec runs by hand (its native_ranges) that other
+        # files reach directly: 'native_entries' {label: {mission: C call
+        # returning RTB_OK}}, registered as routines of their own.
+        for lab, calls in self.spec.get('native_entries', {}).items():
+            phys = self.label_phys(lab)
+            if phys is None or not self.is_basic(phys):
+                raise CompileError('native entry %s is not a basic word of the file' % lab)
+            self.starts[phys] = ('b', 'native entry ' + lab)
+            # (they end TC DANZIG, run here as a pair's end: a left-hand RTB,
+            # EDOP holding its pair's right order, is out of scope)
+            self.blocks[phys] = ['if(W[023])return EXEC_OUT_OF_SCOPE;',
+                                 'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+                                 '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
         self.channel_blocks = set(p for p, b in self.blocks.items() if any('I/O channel */' in x for x in b))
 
@@ -304,7 +318,7 @@ class Compiler:
         if fp is None:
             return '0'
         if not takes_k:
-            if split_op(what)[0] in ('SL', 'SR', 'SLR', 'SRR', 'VSL', 'VSR'):
+            if split_op(what)[0] in ('GSHIFT', 'SL', 'SR', 'SLR', 'SRR', 'VSL', 'VSR'):
                 return '0'   # (a shift count, not an address)
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)
