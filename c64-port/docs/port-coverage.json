@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2975,8 +2975,63 @@
       "sha256": "8ca37189556a5030fe1d42037a2c97a8e6b4163b185f8e1d663cad61ca234120",
       "bytes": 40894,
       "lines": 2213,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p51_p53.c",
+            "src/p51_p53_rtb.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (1,416 words: banks 11, 13, 14, 15, 16, 17 and 26): P51, P52, P53, P54, R51, R52, R53, R55, R56, S50 (LOCSAM), ADVORB, the star-pair search PICAPAR and the option tables, as 585 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/P51-P53.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, MARKSTAT any mark-VAC address, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS, CHECKMM, TWIDDLE, CLEARMRK, FALTON and CURTAINS with their inline words",
+          "SWCALL and SWRETURN (no return)",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S, 1STO2S, LOADTIME (src/rtb_angles.c), SGNAGREE (src/rtb_agreement.c), RDCDUS and SET1/PDT (src/p51_p53_rtb.c), native",
+          "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/p51-p53/p51-p53-source-map.json",
+            "sha256": "bf2edfa868252b3406524b12bd7f6649e7980417ff64b87c33c8bb0951f8f0c1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/p51-p53/p51-p53-proof.json",
+            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/p51-p53/p51-p53-host.log",
+            "sha256": "1cfca8d1c6561943734dbbc3bc0f53ded1c9130756e7dd7ef08a2ca778267f7f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/p51-p53/p51-p53-vice.log",
+            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "vice_targets": {
+              "vice-p51-p53": 1522
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
+            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P61-P67.agc",
@@ -8922,8 +8977,63 @@
       "sha256": "becc16af5767c23bc14bcce9f89456f3f93fe7c81a0e00455cd5ca757ca4b0c2",
       "bytes": 43690,
       "lines": 2341,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p51_p53.c",
+            "src/p51_p53_rtb.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (1,646 words: banks 04, 14 and 15): P51, P52, P53, P57, R51, R52, R55, R59, S50 (LOCSAM), the star-pair search PICAPAR and the option tables, as 696 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/P51-P53.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, STARCODE and POSCODE any of their codes, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS, CHECKMM, TWIDDLE, CLEARMRK, FALTON and CURTAINS with their inline words",
+          "SWCALL and SWRETURN (no return)",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S, 1STO2S, LOADTIME (src/rtb_angles.c), SGNAGREE (src/rtb_agreement.c), RDCDUS and SET1/PDT (src/p51_p53_rtb.c), native",
+          "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/p51-p53/p51-p53-source-map.json",
+            "sha256": "bf2edfa868252b3406524b12bd7f6649e7980417ff64b87c33c8bb0951f8f0c1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/p51-p53/p51-p53-proof.json",
+            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/p51-p53/p51-p53-host.log",
+            "sha256": "1cfca8d1c6561943734dbbc3bc0f53ded1c9130756e7dd7ef08a2ca778267f7f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/p51-p53/p51-p53-vice.log",
+            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "vice_targets": {
+              "vice-p51-p53": 1522
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
+            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P70-P71.agc",
