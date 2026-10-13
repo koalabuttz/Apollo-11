@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "resident-kernel",
+  "release": "evidence-resident-kernel",
+  "files": {
+    "resident-flight-sizes.json": {
+      "sha256": "acd432b1e486226e9ad298b3a908f4181aa553e801ddd18245d1e5364cd693c9",
+      "bytes": 1579,
+      "store": "tree"
+    },
+    "resident-flight-vice.log": {
+      "sha256": "e3fc50b382c30be248cb21372771c72f090527995a8e52bf265d577082b33308",
+      "bytes": 876,
+      "store": "tree"
+    },
+    "resident-kernel-host.log": {
+      "sha256": "41829aea002c097c14ace27f9b2c5db30a2980255e8783cd6f6457ec24a87040",
+      "bytes": 1272,
+      "store": "tree"
+    },
+    "resident-kernel-proof.json": {
+      "sha256": "294917adddd4f0ec8ad06dc58b2be1319f5068491396d5924869015365f29f51",
+      "bytes": 10438,
+      "store": "tree"
+    },
+    "resident-kernel-vice.log": {
+      "sha256": "d61ffd17a62ddc687ad81cd06860ad283c5656936a8c1930ce6041c39683047a",
+      "bytes": 1335,
+      "store": "tree"
+    },
+    "sp-routines-host.log": {
+      "sha256": "32e9701533583ede83c250d145ca0ba36aa5c52d17cdc0db450a9fae51413aa6",
+      "bytes": 336,
+      "store": "tree"
+    }
+  }
+}

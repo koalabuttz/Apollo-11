@@ -1,0 +1,225 @@
+{
+ "c64_rows": {
+  "cm": {
+   "arc_cover_rows": 37,
+   "c64_rows": 329,
+   "host_branch_arcs": 157,
+   "host_cases_traced": 18786
+  },
+  "lm": {
+   "arc_cover_rows": 36,
+   "c64_rows": 400,
+   "host_branch_arcs": 173,
+   "host_cases_traced": 23250
+  },
+  "selection": "tools/resident_kernel_rows.py (tools/c64_row_cover.py over the kernel translation unit) plus every 64th case with an oracle"
+ },
+ "c64_size_bytes": {
+  "cm-Os": {
+   "kernel_bytes": 11311,
+   "kernel_bytes_without_operand_reader": 10628,
+   "prg_bytes": 11439,
+   "runtime_bytes": 128
+  },
+  "cm-Oz": {
+   "kernel_bytes": 9985,
+   "kernel_bytes_without_operand_reader": 9336,
+   "prg_bytes": 10113,
+   "runtime_bytes": 128
+  },
+  "lm-Os": {
+   "kernel_bytes": 11702,
+   "kernel_bytes_without_operand_reader": 11021,
+   "prg_bytes": 11830,
+   "runtime_bytes": 128
+  },
+  "lm-Oz": {
+   "kernel_bytes": 10273,
+   "kernel_bytes_without_operand_reader": 9604,
+   "prg_bytes": 10401,
+   "runtime_bytes": 128
+  }
+ },
+ "cases": {
+  "cm": {
+   "idle": {
+    "compared": 5120,
+    "refused_by_certified": 0
+   },
+   "jobs": {
+    "compared": 6144,
+    "refused_by_certified": 0
+   },
+   "services": {
+    "compared": 7522,
+    "refused_by_certified": 126
+   }
+  },
+  "differing": 0,
+  "lm": {
+   "idle": {
+    "compared": 4864,
+    "refused_by_certified": 0
+   },
+   "jobs": {
+    "compared": 9216,
+    "refused_by_certified": 0
+   },
+   "services": {
+    "compared": 9170,
+    "refused_by_certified": 38
+   }
+  }
+ },
+ "flight_resident": {
+  "doc": "docs/RESIDENT-FLIGHT.md",
+  "native": {
+   "include/sp_routines.h": "4fd5c6cadf7110083b170a322376a258abb2892b5f55a77dcfa59617407eda14",
+   "platform/c64/resident_flight.c": "e0e064c4020032b2e7276cf20a0b04d648ac90f77f85a7ef9ceae1a16cdd2fb7",
+   "platform/c64/resident_flight.h": "61139f8828be62bd94770a06c7c0090d255d4594a081694d7e5320bb71394ff3",
+   "platform/c64/resident_flight.ld": "b2a93ac566bd7770210aac7b4cacb6ad6f3aa7d4113575e9dc2b579147636996",
+   "platform/c64/resident_flight_cases.c": "71dd486a2015da8a64876981c0fc7827cd93027e76945475703bb0a83a4f1ed9",
+   "platform/c64/resident_flight_check.c": "ce103f545088b296a5b03950550933e96418b7a0c8e47fe18938e96f3d4d32e2",
+   "platform/c64/resident_flight_check.h": "ea53396056b3cbf4190c2430caadcde59f139423739a78afeb95986719cdc4a8",
+   "platform/c64/resident_flight_data.c": "cc21a603ec7438b86c14b13671548a2965fcf6939935b8897e06677ff88e55cb",
+   "platform/c64/resident_flight_main.c": "1f5bc735d979663378dee37b8e5fa081339992a2b9fdbbdebd584c617d098cdf",
+   "src/sp_routines.c": "4a1a8329f83ca4e44a2c27f20023927108e53dede8d4dfef95ee3c34f4d432dd",
+   "tests/resident_kernel_cases.c": "d43f5cb96f181046ea787f1e9bff072ef599cbc20c02768cdcf68ddb6f9b7b93",
+   "tests/test_sp_routines.c": "1ef3aadb265e7b167b398209878e8dba237ff17bb38ce362728098e894b3b684",
+   "tools/mk/resident-kernel.mk": "7c58e959f0d7fc704865608613447eb366bea3436b8fc32f87fe9d2013360359",
+   "tools/resident_flight_build.py": "673a13583f21a8417eb62f889c467c8085d804a35b9a925e940179f5b64926e0"
+  },
+  "seams": {
+   "cm": {
+    "exchanges": 4851,
+    "not_a_core_set": 0,
+    "releases": 1042
+   },
+   "host_log": "resident-kernel-host.log",
+   "kernel_define": "RK_SEAMS",
+   "lm": {
+    "exchanges": 5131,
+    "not_a_core_set": 0,
+    "releases": 1042
+   }
+  },
+  "sizes": {
+   "cm": {
+    "boot_only_bytes": 2786,
+    "components": {
+     "ABI 2 runtime and REU store": 5176,
+     "BASIC header and alignment": 0,
+     "C runtime and library": 461,
+     "IRQ entry": 16,
+     "kernel": 10232,
+     "resident state and step": 556,
+     "service table exports": 637,
+     "single-precision subroutines": 1299,
+     "transfer ABI trampoline and Executive call sites": 2549
+    },
+    "free_bytes": 5441,
+    "resident_bytes": 20926,
+    "resident_capacity": 26367,
+    "service_table_bytes": 6
+   },
+   "lm": {
+    "boot_only_bytes": 2818,
+    "components": {
+     "ABI 2 runtime and REU store": 5176,
+     "BASIC header and alignment": 0,
+     "C runtime and library": 461,
+     "IRQ entry": 16,
+     "kernel": 10475,
+     "resident state and step": 538,
+     "service table exports": 637,
+     "single-precision subroutines": 1299,
+     "transfer ABI trampoline and Executive call sites": 2617
+    },
+    "free_bytes": 5148,
+    "resident_bytes": 21219,
+    "resident_capacity": 26367,
+    "service_table_bytes": 6
+   }
+  },
+  "sp_routines": {
+   "checks_per_mission": 128,
+   "log": "sp-routines-host.log",
+   "log_lines": [
+    "PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures"
+   ],
+   "oracle": "frozen yaAGC full-return states of lm-single-trig (selectors 2-3) and cm-single-return (selectors 0-1)",
+   "test": "make test-sp-routines sanitize-sp-routines"
+  },
+  "vice_log": [
+   "PASS: VICE PAL lm-check-1.prg: 311 checks, 0 failures",
+   "PRG sha256: 7da8cafc2720a68a1d7a7b08311203b7bee7b6cd8ef0f485ddaa13ccadf5ed0d lm-check-1.prg",
+   "PASS: VICE PAL lm-check-2.prg: 327 checks, 0 failures",
+   "PRG sha256: 689209cf91e6f134ae154f7fda2ff9a6bd0073dbbd1eea5e9bd6a765c534856c lm-check-2.prg",
+   "PASS: VICE PAL lm-check-3.prg: 177 checks, 0 failures",
+   "PRG sha256: 4c828d29450089837eb5ce60af476c38a306fa065a881b315cdaf2f32ba234c4 lm-check-3.prg",
+   "PASS: VICE PAL cm-check-1.prg: 263 checks, 0 failures",
+   "PRG sha256: e2e20f130c0f24f7b984aa35298b7764b92eb2cd730bb64ad133ccba53522cfb cm-check-1.prg",
+   "PASS: VICE PAL cm-check-2.prg: 225 checks, 0 failures",
+   "PRG sha256: 9aeda51f930333b590c9f6d8b856df11c6d142eb5811aef2c22f79b9334d0e3c cm-check-2.prg",
+   "PASS: VICE PAL cm-check-3.prg: 185 checks, 0 failures",
+   "PRG sha256: cc77249e55558c708fa45c37011cf4793c96da00fc4c19db6a52aa5316959874 cm-check-3.prg"
+  ]
+ },
+ "host_log": [
+  "PASS: src/lm_kernel_labels.inc matches the Luminary099 listing",
+  "PASS: src/cm_kernel_labels.inc matches the Comanche055 listing",
+  "PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; seams 5131 exchanges (0 not a core set), 1042 releases; 46902 checks, 0 failures",
+  "PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; seams 4851 exchanges (0 not a core set), 1042 releases; 37903 checks, 0 failures",
+  "PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; seams 5131 exchanges (0 not a core set), 1042 releases; 46902 checks, 0 failures",
+  "PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; seams 4851 exchanges (0 not a core set), 1042 releases; 37903 checks, 0 failures"
+ ],
+ "milestone": "resident-kernel",
+ "native": {
+  "include/resident_kernel.h": "722fd1ad6cb1e81efdf9b12b375f169596c1679d55ff6720e8607ad3fd8aa9e6",
+  "src/cm_kernel.c": "bc00a259d53a7d6262c02d716baa3b3f36889b94d2d81a5121e245fd6c9c3629",
+  "src/cm_kernel_labels.inc": "864e96316af0fa7a79f816bae83635ca8e6566eb695905bc939ca7a7753bb894",
+  "src/lm_kernel.c": "cf67d31e4e2bb4e4452ab2d74ea10a010cbc589e4c75935342d9cba42060ec8c",
+  "src/lm_kernel_labels.inc": "2f6238bab66bc7aa88b4f5beaa21195088be2c8f0cb185648e6c7f9df131449e",
+  "src/resident_kernel_body.inc": "2ea1a75a780cdea6216bdb0651dfb3e00b38ccd3b5a0940a99b34fb48973405d"
+ },
+ "oracle": {
+  "kind": "yaAGC digests of the original programs, frozen by the six certified service milestones",
+  "second_oracle": "the certified routines (lm_/cm_exec_routines, job, task and idle tables): final image equal word for word",
+  "vectors": {
+   "tests/cm_exec_idle_vectors.h": "aea3cc750904cd3aa2899c5bd80be8628d2bc7507cb5dd1679733c5cd5291672",
+   "tests/cm_exec_jobs_vectors.h": "b794662b5a81861d797c30b84291a108fc3ece4590eb1777d5252c5c76ceba09",
+   "tests/cm_exec_services_vectors.h": "0a9a9b0fa03a8873ceeb8f2b69b3e5c6a7d8204e3c39029208d386596b7f0d61",
+   "tests/lm_exec_idle_vectors.h": "48b2c1de2ed4809bf91148c6eed26a35740c471dbbc137ab7041714dec237377",
+   "tests/lm_exec_jobs_vectors.h": "e663a59f0e0d9c39a51c457dad5dc5992d273c6a464de37cff5dbe4809a33bb0",
+   "tests/lm_exec_services_vectors.h": "8794c43915b560d826c742363abf67a87d107e8464e32eae0f743ab0fca17116"
+  }
+ },
+ "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+ "sources": [
+  "Luminary099/EXECUTIVE.agc",
+  "Luminary099/WAITLIST.agc",
+  "Comanche055/EXECUTIVE.agc",
+  "Comanche055/WAITLIST.agc"
+ ],
+ "vice_log": [
+  "PASS: VICE PAL resident-kernel-lm-1.prg: 153 checks, 0 failures",
+  "PRG sha256: f6845ae97fe841383ccfe25533f8486849dfac44637018f4b559eb5367bc6022 resident-kernel-lm-1.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-1.prg: 45 checks, 0 failures",
+  "PRG sha256: 56754e5389bd4405e8b79c1eb49f4a248c0a8276f0f71217be9056f382e82196 resident-kernel-lm-2-1.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-2.prg: 63 checks, 0 failures",
+  "PRG sha256: 8435fd9107af30680b204f4088452ce4d1d05b2bca70bc725490531f84dc06ce resident-kernel-lm-2-2.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-3.prg: 53 checks, 0 failures",
+  "PRG sha256: d980e82caab37ad60d48665ee8446ed141af850a9c0f51af736cec3f104fc9a8 resident-kernel-lm-2-3.prg",
+  "PASS: VICE PAL resident-kernel-lm-3.prg: 86 checks, 0 failures",
+  "PRG sha256: dce9c41803bedd7618a1ebafa88b3bd8f312118211b575037b556f68a0ed5091 resident-kernel-lm-3.prg",
+  "PASS: VICE PAL resident-kernel-cm-1.prg: 129 checks, 0 failures",
+  "PRG sha256: 56b0db405c6e9b15639027b18831f910d91768c7598a693b9e57baadc1b767d8 resident-kernel-cm-1.prg",
+  "PASS: VICE PAL resident-kernel-cm-2.prg: 110 checks, 0 failures",
+  "PRG sha256: 59bc130b636c112e956415b7aa79cf81a56aceb19ba24ca4077ba3efcb8d0392 resident-kernel-cm-2.prg",
+  "PASS: VICE PAL resident-kernel-cm-3.prg: 90 checks, 0 failures",
+  "PRG sha256: dd59136600405e801f3adc94f10d9d1a97da13036509b46fac0010f3adfd8576 resident-kernel-cm-3.prg"
+ ]
+}

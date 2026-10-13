@@ -11,9 +11,9 @@ extern const agc_routine_table lm_r30_interpretive,lm_r30_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_r30_point;
-#define LM_R30_POINTS 66u
+#define LM_R30_POINTS 106u
 #define LM_R30_CADR_WORDS 1u
-#define LM_R30_EXTERNALS 9u
+#define LM_R30_EXTERNALS 10u
 #define LM_R30_FIRST 19106u
 #define LM_R30_LAST 19366u
 extern const lm_r30_point lm_r30_points[LM_R30_POINTS];

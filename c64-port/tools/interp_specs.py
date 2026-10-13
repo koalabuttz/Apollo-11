@@ -567,6 +567,34 @@ SPECS = {
         'edge_values': True,
         'freeze_stride': 640,
     },
+    'lm-p40-p47': {
+        'missions': ('lm',),
+        'file': {'lm': 'P40-P47.agc'},
+        'base': {'lm': 'lm_p40_p47'},
+        'symbol': {'lm': 'lm_p40_p47'},
+        'entries': ['P40LM', 'P41LM', 'P42LM', 'P47LM', 'POSTBURN', 'TIGNOW', 'REDO6.7', 'CALCN85',
+                    'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
+                    'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
+                    # dead code after a GOTO, kept as its own routine
+                    'S40.133'],
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
+                      'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
+                      'VARDELAY': 'auto', 'PRIOCHNG': 'auto', 'TPAGREE': 'auto', 'NOULLAGE': 'auto',
+                      'POSTJUMP': 1, 'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None,
+                      'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
+        # P40-P47 run as jobs: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
+        # output-channel model.
+        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # RTB routines without a native body: the run ends at them.
+        'rtb': {'NORMUNX1': None},
+        'target': 'tests/lm_p40_p47_target.c',
+        'freeze_stride': 640,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
@@ -576,11 +604,17 @@ SPECS = {
         # starts) enter from outside the file.
         'entries': ['V83', 'R31CALL', 'V83CALL'],
         'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        # V83's job: a DANZIG that finds a job waiting stops at CHANG2, and
+        # the word after it is where the job resumes.
+        'edge_cases': True,
+        'resume_keys': True,
+        # C64 rows picked by branch outcome (tools/c64_row_cover.py).
+        'c64_rows': 'cover',
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/cm_r31_target.c',
-        'freeze_stride': 32,
+        'freeze_stride': 128,
     },
     'r30': {
         'missions': ('lm', 'cm'),
@@ -606,9 +640,18 @@ SPECS = {
         # BOTHSHIP's DLOAD* 1/RTMUE,2 and MINPERE,2: X2 is 0 (Earth) or
         # 2 (Moon, the pair's first word) as THISPREC/OTHPREC leave it.
         'fixed_index': {'1/RTMUE': [0, -2], 'MINPERE': [0, -2]},
-        'states': {'BOTHSHIP': {'vac+047': [0, 2]}, 'THISSHIP+3': {'vac+047': [0, 2]}},
+        # The resume LOCs after BOTHSHIP's VLOAD run the same DLOAD*s with X2
+        # as BOTHSHIP left it.
+        # STORHAPO's DSU and STORE MPAC +4 run in DP mode (MODE +0) after its STODL.
+        'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
+                                                       'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
+                   'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
         'target': 'tests/r30_target.c',
         # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
+        'edge_cases': True,
+        'resume_keys': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
@@ -630,8 +673,17 @@ SPECS = {
         'ebank': 7,
         'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
         # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
-        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]}},
+        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]},
+                   # TRANSANG's resume LOCs after LXA,1 LXA,2 (the XRS above), with
+                   # the push list at 00D (02D after its first PDVL) from SETPD 0.
+                   **{'TRANSANG+%d' % n: {'vac+046': [0o77765, 0o77775], 'vac+047': [0, 2],
+                                          '0166': ['vac+%o' % pd]}
+                      for n, pd in ((6, 0), (9, 0), (11, 0), (14, 2))}},
         'target': 'tests/cm_tpi_search_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-p30-p37': {
@@ -667,6 +719,11 @@ SPECS = {
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
                    'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
         'target': 'tests/cm_p30_p37_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-p32-p33': {

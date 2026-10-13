@@ -1,6 +1,6 @@
 # Compiling a source file into native routines (`tools/interp_compile.py`)
 
-Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...) and Lane D1's `sband-antenna`. Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
+Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...), Lane D1 (`sband-antenna`) and Lane F (`lm-p40-p47`). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 ## What it emits
 
@@ -26,6 +26,8 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - `index_guard` refuses an indexed erasable operand that leaves erasable memory. A starred operand with a fixed base reads the rope words its index can reach (a `KX` window). One with an erasable base that indexes into fixed memory is refused.
 - A SLOAD of a fixed word, a TC to switched erasable, and an indexed TC into a table of up to eight TCs (INDEX NDXCTR, TC +1) compile. A channel instruction reached without its EXTEND (a TS overflow skip) is refused.
 - A spec can name one mission (`missions: ('cm',)`).
+- A CALL or STCALL followed by basic code has no return point. Its target is a saved return (`STCALL DELLT4` with `QTEMP1`).
+- `CALRB` is CALL.
 - A TC to an erasable address (TC MPAC +2, TC TBASE2, TC QSAVED) runs the word there with Q set to its return, as the hardware does. Switched erasable (01400-01777) is read through EB. The differential seeds the word with a caller return unless the spec pins it.
 - Lane E keys (`r30`, `cm-r31`, `cm-tpi-search`, `cm-p30-p37`, `cm-p32-p33`, `cm-p34-p35`, `cm-p37-p70`, `lm-p32-p35`, `lm-p34-p35`):
   - `tc_tables`: an INDEX into a TC table (`DOTICK +7`), with the table's length. It becomes a C `switch` on the indexed word.
@@ -66,11 +68,14 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 
 The states are random words, small magnitudes and unit vectors. A spec can pin EB (`ebank`, the file's `EBANK=`) and set erasable values at a routine (`states`, keyed by `LABEL` or `LABEL+n`) or at every routine (`all_states`, per mission if it is a dict). State keys are `vac+n`, an octal address or an erasable symbol from the listing (`TM+1`). `joint_states` gives sets of values that only mean something together (TM a little past TIME2/TIME1): one set per case, at a routine or, under `'*'`, in half of every routine's cases. With `counters`, TIME2, TIME1 (across its range, at 0 and just below its 037777 wrap) and CDUX-Z vary; otherwise `irc_build` leaves 010-061 at 0. With `edge_values`, a quarter of the cases put edge values into MPAC, the top of the pushdown list and every operand: ±0, one LSB, 1/2, 1/4, just below 1, half-unit axis vectors (a matrix's rows as a signed permutation), unit vectors in a coordinate plane and tiny vectors, with the CDUs at 0, 45, 90, 180 or 270°. These keys are all off unless a spec sets them, so other milestones' cases are unchanged. At a basic routine, every erasable word a TC runs holds the case's return. A routine in banks 040-043 runs with the superbank bit set. With `resume_keys`, NEWJOB is positive in a quarter of the cases, and CHANG2 is a stop. FIXLOC is a random VAC area, and PUSHLOC, MODE and OVFIND vary. Caller CADRs and Q returns point outside the file. `range_states` sets values at every routine from one label up to another (a loop's index registers, say). A state value `'outside'` is a caller return outside the file. With `channel_inputs`, each case latches input channels drawn from its seed (`irc_inputs`), LOSCALAR 37777 in a quarter of them, and the oracle sets yaAGC's input channels to the same values.
 
+With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the state the original program is in when it gets there, not random words: each case of the routine before it runs on the oracle (`IRC_SNAP`) to NEWOPS with LOC at the resume LOC, along a run of resume LOCs in turn, and NEWJOB is then set in a quarter of them. A resume LOC random states would reach with a MODE, index register or PUSHLOC the program never leaves there needs no pins this way. The differential prints how many resume LOCs it seeded; one no case reaches keeps random states.
+
 `--freeze` writes:
 
 - `tests/<id>_vectors.h`: every Nth case with its oracle digest, for the host and sanitizer tests. With `cover`, also the fewest cases (greedy) that reach every edge any case reaches: the native runner is rebuilt with `clang -fsanitize-coverage=trace-pc-guard` over every linked source but the test harness (`tools/irc_edges.c`), so each branch outcome is an edge, and each case reports the edges it reached.
 - `tests/<id>_c64_vectors.h` and `tools/mk/<id>.groups`: with `cover`, the cases a greedy cover picks to reach every edge, among those whose run fits one diagnostic, plus the fewest-visit case of any routine it leaves out, packed case by case into groups of routines that fit below $c000 with the shared interpreter bodies (found by linking each candidate), and the cases whose whole run stays in a group.
 - `build/<id>-proof.json`. Cases that stop at a channel instruction are listed as `waiting_for_io_channels` and not compared. Routines whose runs reach too much of the file to fit one diagnostic are listed as `c64_host_only`. With `cover`, `outcome_cover` gives the edges all cases, the host vectors and the C64 cases reach, and the source lines of any edge no C64 case reaches.
+- `build/<id>-c64-cover.json` (with `'c64_rows': 'cover'`): the `c64_branch_outcomes` record a certificate cites. The C64 rows are the fewest cases that take every gcov branch arc the traced host cases take over every linked source; `cover_stride` traces every Nth case (a divisor of `freeze_stride`, so every frozen host vector is traced) to keep large files fast.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
 
 ## Additions from the orbital lane (ORBITAL_INTEGRATION, INTEGRATION_INITIALIZATION)

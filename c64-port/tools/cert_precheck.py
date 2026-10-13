@@ -624,6 +624,10 @@ NEWJOB = re.compile(r'NEWJOB|\[\s*0+67u?\s*\]')
 # A range or multiple-of-12 test on NEWJOB refuses only values the Executive
 # never stores (standard_lead_cm.c), not a waiting job.
 NEWJOB_VALID = re.compile(r'(NEWJOB\w*|\[\s*0+67u?\s*\])\s*(>|%)')
+# A test for NEWJOB +0 whose branch returns is the DANZIG that goes on to
+# NEWOPS; NEWJOB set takes CHANG2 (tools/interp_compile.py next()). It
+# refuses nothing unless the line also says so.
+NEWJOB_ZERO = re.compile(r'!\s*(NEWJOB\w*|\w*\[\s*0+67u?\s*\])')
 
 
 def check_refusals(report, label, entry, certificate, notes):
@@ -644,6 +648,7 @@ def check_refusals(report, label, entry, certificate, notes):
                 sites.append(number)
             if NEWJOB.search(code) and not NEWJOB_VALID.search(code) and \
                     re.search(r'\breturn\b|OUT_OF_SCOPE|refuse', code) and \
+                    not (NEWJOB_ZERO.search(code) and not re.search(r'OUT_OF_SCOPE|refuse', code)) and \
                     not code.lstrip().startswith(('*', '/*')):
                 newjob.append(f'{source}:{number}')
         if sites and notes:

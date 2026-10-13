@@ -1,0 +1,37 @@
+lm-p40-p47-1.prg sha256 8ebdc0aa04d8be9e7a03565a21b130f550bf16ac3cfd8d0460e1ff2fbc757d7c
+lm-p40-p47-2.prg sha256 d53c5fd53cb12bad483a78db592e4ef3cca048183c07d92d16fedb40d9767ceb
+lm-p40-p47-3.prg sha256 9f3d9f207bdcc4dd58bea512fb13f082d7b84fb81f350be22606a393c1c0183d
+lm-p40-p47-4.prg sha256 8971ef4b9d2371f27ac02c2370696cf3437ba9d157cc19a16d5838083c3142a4
+lm-p40-p47-5.prg sha256 8d88e4c8fb0fb2fb638fa1b0807f114b9e873a0acb28236706f52424284fa6d9
+lm-p40-p47-6.prg sha256 65ace2f466d5f8258b7cfcac8e546ff132dfc5d4d8206ef6e1f7536746f5eaa9
+lm-p40-p47-7.prg sha256 08ee53da38f986406eec7d52cdd995562d03483f027e83f66ba6e21c02921709
+lm-p40-p47-8.prg sha256 51a30c86d4e37e70aa2a86e91bfcf56e70919d124801e8bb78083a413977cb1f
+lm-p40-p47-9.prg sha256 8fab3137720ccd703bfce6c73f49b43eda3284f8f973c765e3e0b49a6815ae14
+lm-p40-p47-10.prg sha256 9a3b7a2a010b986f4e6c91de18354547f34b9d93b27c76dc8fb848b865ec88d4
+lm-p40-p47-11.prg sha256 1deed9a14e1310ce4fc91987cf81a5c496a90dd544e27ae2eddff932a2fb9ade
+lm-p40-p47-12.prg sha256 f6a34e85510ba8c92614d179890e0dcd1cc7bd61089a7a5c096ba083e419a071
+lm-p40-p47-13.prg sha256 d274357b96621f8b89d90678af1a8c759c0c64cb2669256e1843d404f7ac1e8a
+lm-p40-p47-14.prg sha256 602d672d34b4e01be234d5ebbfbcd966d2b3d09fd7bdbceb4c4ef3f392a25351
+lm-p40-p47-15.prg sha256 0150395983f6dc732f91bfa5fbae51e056072309b8187ddf87b5ed7fd0a18eaa
+lm-p40-p47-16.prg sha256 442bdb4b2035185c7c68e214a108e2d6df19e2d9f767e05722e614ac253dacea
+lm-p40-p47-17.prg sha256 c5d7d65bf8e394ef290853d78b7531becb1991aae1dd95c95f0816ebd0e6950d
+lm-p40-p47-18.prg sha256 914abf6a05a647989e4f0ecb2fc6c25501a01d46a351864f7b4da46e46e8448b
+lm-p40-p47: 18 C64 diagnostics, 768 frozen cases (tests/lm_p40_p47_c64_vectors.h) compared with yaAGC digests
+PASS: VICE PAL lm-p40-p47-1.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-2.prg: 30 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-3.prg: 46 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-4.prg: 34 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-5.prg: 20 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-6.prg: 38 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-7.prg: 66 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-8.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-9.prg: 40 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-10.prg: 32 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-11.prg: 26 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-12.prg: 24 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-13.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-14.prg: 38 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-15.prg: 82 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-16.prg: 88 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-17.prg: 114 checks, 0 failures
+PASS: VICE PAL lm-p40-p47-18.prg: 6 checks, 0 failures
