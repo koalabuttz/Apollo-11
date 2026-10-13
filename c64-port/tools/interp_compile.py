@@ -174,7 +174,10 @@ class Compiler:
         self.cadr_erasable = set()
         self.externals = {}    # outside basic address (physical) -> name
         self.externals_any = {}  # the same, reached through interpreter code (BOVB)
-        self.rtb = spec.get('rtb', {})
+        # A per-mission entry whose value for this mission is None runs the
+        # basic code (as an unported routine) for that mission only.
+        self.rtb = {k: (None if isinstance(v, dict) and v.get(self.m) is None else v)
+                    for k, v in spec.get('rtb', {}).items()}
         # INCR Q anywhere in the file: in-file subroutine calls may return
         # one or two words past their return address.
         self.incr_q = any(l.op == 'INCR' and l.words == [0o24002] for l in self.lines)
@@ -635,7 +638,7 @@ class Compiler:
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
             st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
-            if base == 'BOVB' and self.L.label_at(self.cadr_phys(w)) in self.rtb:
+            if base == 'BOVB' and self.rtb.get(self.L.label_at(self.cadr_phys(w))) is not None:
                 # BOVB to a basic routine the spec runs natively (as RTB).
                 lab = self.L.label_at(self.cadr_phys(w))
                 st.append('case %sBOV_RTB:%srtb(s);if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* %s */'

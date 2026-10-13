@@ -608,4 +608,48 @@ SPECS = {
         'target': 'tests/lm_p32_p35_target.c',
         'freeze_stride': 256,
     },
+    'measurement-inc': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'MEASUREMENT_INCORPORATION.agc', 'cm': 'MEASUREMENT_INCORPORATION.agc'},
+        'base': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
+        'symbol': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
+        # INCORP1 and INCORP2 (called from P20-P25), and FAZA, which
+        # INCORP2's RTB FAZA runs as basic code.
+        'entries': ['INCORP1', 'INCORP2', 'FAZA'],
+        'externals': {'PHASCHNG': 1, 'UPFLAG': 1, 'POSTJUMP': 1},
+        'noreturn': ['POSTJUMP'],
+        # The MOVE* state-vector copies (INTEGRATION_INITIALIZATION) run
+        # natively; TCDANZIG is BOVB's TC DANZIG (ENDT(X)).
+        'rtb': {'TPMODE': {'lm': 'rtb_tpmode(s,io,RTB_LM)', 'cm': 'rtb_tpmode(s,io,RTB_CM)'},
+                'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_ACSM)'},
+                'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_ALEM)'},
+                'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_PCSM)'},
+                'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_PLEM)'},
+                'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)', 'cm': 'cm_integration_tcdanzig(s)'},
+                'FAZA': None},
+        'includes': ['rtb_modes.h', 'lm_integration_moves.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c', 'src/lm_integration_moves.c', 'src/cm_integration_moves.c'],
+        'target': 'tests/measurement_inc_target.c',
+        # The file's EBANK= W (E5): its names in E3, E4 and E7 are
+        # reached through the interpreter's E-bank bits from there.
+        'ebank': 5,
+        'self_loops': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        # Every point starts where INCORP1 or INCORP2 (from random
+        # measurements and W matrices) takes the original.
+        'flow_from': ['INCORP1', 'INCORP2'],
+        # FAZAB's no-overflow arm (TDELTAV and TNUV updated in place) is
+        # rarely reached from random corrections: where no flow gets there,
+        # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
+        'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'freeze_stride': 64,
+        'rope_bin': True,
+    },
 }
