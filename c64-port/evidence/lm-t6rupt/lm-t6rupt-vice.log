@@ -1,0 +1,5 @@
+PASS: VICE PAL lm-t6rupt.prg: 240 checks, 0 failures
+
+real	1m48.508s
+user	1m47.327s
+sys	0m0.081s

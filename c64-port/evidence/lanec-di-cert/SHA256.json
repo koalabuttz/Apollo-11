@@ -4,7 +4,7 @@
   "release": "evidence-lanec-di-cert",
   "files": {
     "lanec-di-c64-results.json": {
-      "sha256": "1759300b3303372ea1f78e768925c6b87c77189a90500fd43f91ceae37b620d3",
+      "sha256": "79284adba4521ea58df34459e377d13ef0d0e19bb6d4db1cbd0bab04de5be42b",
       "bytes": 1372,
       "store": "tree"
     },

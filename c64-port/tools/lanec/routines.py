@@ -94,7 +94,8 @@ def main():
     points = {m: {'': {}, 'I': {}} for m in ('LM', 'CM')}
     accepted = {'LM': {}, 'CM': {}}
     own, outside, exits, swret = {}, {}, {}, {}
-    listing = wholefile.LISTING.get(cfg['file'], cfg['file'])[:-4]
+    # the site tables name the repository file (older ones the listing's include name)
+    listing = (cfg['file'][:-4], wholefile.LISTING.get(cfg['file'], cfg['file'])[:-4])
     if multi:   # pin: the earlier modules also run code of other files; only the file's own points count
         wholefile.FILE = cfg['file']
         for mission in ('LM', 'CM'):
@@ -403,7 +404,7 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
             if form != 'CADR' or kind == 'USPRCADR' or word < 0o2000 or target not in points[mission]:
                 continue
             per = cfg.get('cases_per_site', CASES_PER_SITE)
-            if first and source.startswith(wholefile.LISTING.get(cfg['file'], cfg['file'])[:-4]):
+            if first and source.startswith((cfg['file'][:-4], wholefile.LISTING.get(cfg['file'], cfg['file'])[:-4])):
                 continue    # pin: a call inside the file runs within its caller's routine (below)
             mod = first[mission][target] if first else points[mission][target][0]
             ns = accepted[mission][target]

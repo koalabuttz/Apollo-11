@@ -17,7 +17,7 @@ void lm_v37_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint1
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
  {lm_fresh_io zero={{0,0},0,0,0,0,0,0,0,0,0,0,0};*io=zero;}
- {agc_hardware zero={0,0};*hw=zero;}
+ {agc_hardware zero={0};*hw=zero;}
  io->control.interrupt_enabled=(uint16_t)upto(&seed,2);hw->channel11=word(&seed);
  io->channel5=word(&seed);io->channel6=word(&seed);io->channel12=word(&seed);
  io->channel13=(agc_word)(word(&seed)&02767u);io->channel14=(agc_word)(word(&seed)&0777u);
