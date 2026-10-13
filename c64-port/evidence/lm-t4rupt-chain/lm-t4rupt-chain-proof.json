@@ -1,0 +1,29 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 4096,
+ "snapshot_sha256": "c080c33a7f1e2ded40d411f8a57e06ffc5adb73ba1f474e6a09b4a3c5ff9cab2",
+ "outcomes": {
+  "returned": 4096
+ },
+ "continuations": {
+  "03156": 451,
+  "04523": 15,
+  "04564": 76,
+  "04674": 147,
+  "05033": 1402,
+  "05072": 582,
+  "05203": 102,
+  "05270": 1090,
+  "05567": 89,
+  "05744": 142
+ },
+ "tables": [
+  "lm_t4rupt_core_routines",
+  "lm_t4rupt_imu_routines",
+  "lm_t4rupt_rr_routines"
+ ],
+ "boundary": "one T4RUPT interrupt from 06,2000 through agc_transfer_run over the three routine tables of the file until the first continuation outside them; the original runs from T4RUPT to the first time it reaches that Z (and FB in banked memory)",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channels 10, 11, 12, 14, 30, 33",
+ "full_physical_words": 2048
+}
