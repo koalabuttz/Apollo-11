@@ -986,7 +986,9 @@ SPECS = {
         # P52, P53, P54 and the R5x options are reached through P51/P57's
         # option tables. Comanche's P20-P25 CALLs ADVORB.
         'entries': {'lm': ['P51', 'P57', 'R51', 'R52', 'R55', 'R59'],
-                    'cm': ['P51', 'R51', 'R52', 'R53', 'R55', 'R56', 'S50', 'ADVORB']},
+                    'cm': ['P51', 'R51', 'R52', 'R53', 'R55', 'R56', 'S50', 'ADVORB',
+                           # SXTMARK POSTJUMPs to TERM52; R53 BANKCALLs R53C1.
+                           'TERM52', 'R53C1']},
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
                       'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
                       'MAKECADR': 'auto', 'PHASCHNG': 'auto', 'LINUS': 'auto', 'PRIOCHNG': 'auto',
