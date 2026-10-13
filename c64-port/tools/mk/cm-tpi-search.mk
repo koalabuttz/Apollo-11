@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-tpi-search (lane E): Comanche055 TPI_SEARCH compiled by
 # tools/interp_compile.py into native routines of the control-transfer ABI.
-CTPI_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
+CTPI_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CTPI_SRC = src/cm_tpi_search.c tests/cm_tpi_search_target.c $(CTPI_COMMON)
 CTPI_HDR = include/cm_tpi_search.h tests/interp_case.h tests/cm_tpi_search_vectors.h tests/cm_tpi_search_c64_vectors.h
 CTPI_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
@@ -24,7 +24,7 @@ cm-tpi-search-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-tpi-search.groups
 CTPI_C64_PRGS = $(foreach g,$(CM_TPI_SEARCH_GROUPS),build/cm-tpi-search-$(g).prg)
-CTPI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/cm_tpi_search_target.c
+CTPI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_tpi_search_target.c
 CTPI_C64_cm = src/cm_tpi_search.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-tpi-search: $(CTPI_C64_PRGS)
 build/cm-tpi-search-%.prg: $(CTPI_SRC) platform/c64/cm_tpi_search_diagnostic.c tools/mk/cm-tpi-search.groups $(CTPI_HDR) | build

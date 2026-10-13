@@ -640,7 +640,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
     if cover:
         arcs = host_arcs(spec_id, spec, missions, cases)
         cost = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']))
-        chosen = set()
+        chosen, okall = set(), set()
         for cm, mi in enumerate(missions):
             if mi.m not in spec['missions']:
                 continue
@@ -665,6 +665,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
                     limit[v] = len(cases[ii[lo]]['edits'])
             ok = {i: arcs[i] for i in mine if visits[i] in limit and len(cases[i]['edits']) <= limit[visits[i]]}
             chosen |= set(c64_row_cover.cover(ok, cost))
+            okall.update(ok)
     groups = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -719,6 +720,14 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
     extra = {}
     if cover:
         picked = [i for m, mask, pick in groups for i in pick]
+        if os.environ.get('IRC_C64_DEBUG'):
+            for arc in sorted(c64_row_cover.missing(arcs, picked))[:3]:
+                allw = [i for i in arcs if arc in arcs[i]]
+                sys.stderr.write('%s: %d cases, %d ok, points %s\n' % (arc, len(allw), sum(i in okall for i in allw),
+                                 sorted(set(missions[cases[i]['cm']].cp.where(cases[i]['point']) for i in allw))[:8]))
+                who = allw[:5]
+                sys.stderr.write('%s: cases %s chosen %s ok %s edits %s\n' % (
+                    arc, who, [i in chosen for i in who], [i in okall for i in who], [len(cases[i]['edits']) for i in who]))
         c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
         extra = c64_row_cover.summary(arcs, picked)
         write_cover_record(spec_id, spec, arcs, picked)
