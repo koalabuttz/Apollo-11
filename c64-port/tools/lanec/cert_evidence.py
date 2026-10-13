@@ -13,7 +13,7 @@ source map SCRIPT into OUTDIR and every named C64 diagnostic in VICE
 (make vice-TARGET). Writes OUTDIR/PREFIX-comparison.json,
 OUTDIR/PREFIX-checks.log and OUTDIR/PREFIX-c64-results.json.
 """
-import argparse, collections, hashlib, json, os, pathlib, subprocess, sys
+import argparse, collections, hashlib, json, os, pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 p = argparse.ArgumentParser()
@@ -53,6 +53,8 @@ for suite in a.suites + a.refusals_only:
     missions = collections.Counter(line.split()[0] for line in run(['build/lanec-native', '--entries', suite]).splitlines())
     summary['accepted_cases_by_mission'] = dict(sorted(missions.items()))
     suites[suite] = summary
+    for f in ROOT.glob(f'build/lanec-{suite}-*.txt'):   # the per-case results (the CRCs stay)
+        f.unlink()
 if a.wholefile:
     log += [line for line in run([sys.executable, a.wholefile, a.outdir]).splitlines() if line.startswith('PASS')]
 comparison = {
@@ -70,12 +72,15 @@ results, prgs = [], {}
 for item in a.c64:
     suite, target = item.split('=')
     run(['make', '-s', f'c64-{target}'])
-    line = run(['make', '-s', f'vice-{target}']).strip().splitlines()[-1]
+    lines = run(['make', '-s', f'vice-{target}']).strip().splitlines()
+    line = ([x for x in lines if x.startswith(('PASS', 'FAIL'))] or lines)[-1]
     if not line.startswith('PASS'):
         sys.exit(f'FAIL: {line}')
     results.append(line)
     log.append(f'{suite} C64: {line}')
-    prgs[f'{target}.prg'] = hashlib.sha256((ROOT / f'build/{target}.prg').read_bytes()).hexdigest()
+    # a target that runs several programs (tools/lanec/vice_many.py) prints each one's PASS line
+    for name in [m.group(1) for m in map(re.compile(r'PASS: VICE PAL (\S+\.prg):').match, lines) if m] or [f'{target}.prg']:
+        prgs[name] = hashlib.sha256((ROOT / f'build/{name}').read_bytes()).hexdigest()
 if a.c64:
     (out / f'{a.prefix}-c64-results.json').write_text(json.dumps(
         {'toolchain': 'llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)',

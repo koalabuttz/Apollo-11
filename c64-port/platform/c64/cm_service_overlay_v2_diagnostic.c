@@ -7,7 +7,7 @@
 #include "cm_service_overlay_binding.h"
 #include "overlay_reu.h"
 #define CM 2u
-#define SERVICES 0x0201u
+#define SERVICES 0x0202u
 extern void ov2_irq_entry(void);
 extern void ov2_nmi_entry(void);
 extern volatile uint16_t ov2_irq_count;

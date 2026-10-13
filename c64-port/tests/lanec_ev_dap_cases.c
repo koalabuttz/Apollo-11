@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* Cases for the V48 DAP data load bodies: every entry of both missions with
  * random DAPBOOLS, DAPDATR1, APSFLAG and FLAGWRD6 bits, masses above and
- * below their minimums (and overflowing sums into MASS), and random EB. */
+ * below their minimums (and overflowing sums into MASS), masses exactly at
+ * the minimums (sums of -0), and random EB. */
 #include "lanec_suites.h"
 #include "lanec_ev_dap.h"
 #include "lanec_symbols.h"
@@ -34,6 +35,12 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         w[LANEC_LM_LEMMASS] = (uint16_t)(lanec_rand(&r) & 07777u);
         w[LANEC_LM_CSMMASS] = (uint16_t)(lanec_rand(&r) & 07777u);
     }
+    /* masses exactly at the minimums, where the sums are -0: LEMMASS at the
+     * descent-plus-ascent minimum (02357, -MINLMD - MINMINLM) or the ascent
+     * minimum (01046, -MINMINLM), CSMMASS at MINCSM (02000) */
+    if (v % 8u == 2u || v % 8u == 4u) w[LANEC_LM_LEMMASS] = 02357u;
+    if (v % 8u == 6u) w[LANEC_LM_LEMMASS] = 01046u;
+    if (v % 8u >= 4u) w[LANEC_LM_CSMMASS] = 02000u;
     if (m->mission == LANEC_LM) {
         range(m, 020u, LANEC_LM_DAPDATA1, LANEC_LM_DAPDATA1 + 0110u);
         range(m, 01u, LANEC_LM_STIKLOAD, LANEC_LM_STIKLOAD + 0135u);

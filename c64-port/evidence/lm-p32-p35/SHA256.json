@@ -3,29 +3,34 @@
   "milestone": "lm-p32-p35",
   "release": "evidence-lm-p32-p35",
   "files": {
+    "lm-p32-p35-c64-cover.json": {
+      "sha256": "599b3ff810b38d825c6b3e2a4901c4f6654fd8340615bf1801aa4d3a1ddf8fb6",
+      "bytes": 7486,
+      "store": "tree"
+    },
     "lm-p32-p35-differential.log": {
-      "sha256": "71ec4957ad32ddf1045ae65b6be965fd00b5391bbac2be2975c3db5927e46434",
-      "bytes": 20368,
+      "sha256": "323febeb299377bce4e35bef7488316ea5c6cc8c02fcdd543725ed245ac2a4c4",
+      "bytes": 34300,
       "store": "release"
     },
     "lm-p32-p35-host.log": {
-      "sha256": "2855d8b8f221a2705e5785f8cb3ee0b1787a0d9441bcd16b1e51536cd0c83503",
-      "bytes": 70,
+      "sha256": "9ac6e741b2dbe14e8cea06ccbac5c05949a876a09fa0fa57186ed9084a857c08",
+      "bytes": 848,
       "store": "release"
     },
     "lm-p32-p35-proof.json": {
-      "sha256": "4e627d6325be71b5494aa580e90df848eee2bc7a0854844111db17493c780e3f",
-      "bytes": 31410,
+      "sha256": "a14b8e008d42a1c7644dbaa66777a84d1c9a8c99df7436bca91a46e2069d4404",
+      "bytes": 57169,
       "store": "tree"
     },
     "lm-p32-p35-source-map.json": {
-      "sha256": "e6350c829bcb0afdfaee456c3ef093096df6f95f4a3c1e93ee28dbe5033a78c3",
+      "sha256": "d120711bed812e99322f63d0423319a52622916a3f7bdb35b438b0104d2bc60a",
       "bytes": 124948,
       "store": "tree"
     },
     "lm-p32-p35-vice.log": {
-      "sha256": "3fcce7c9baec5a357b920b34810253ebd3c8718420b87031931fbc98e4e4d889",
-      "bytes": 936,
+      "sha256": "659421e9e16f6b5ce8372038f4b0828a7e4428025ec0d7613b037f95973cc4a7",
+      "bytes": 40250,
       "store": "release"
     }
   }

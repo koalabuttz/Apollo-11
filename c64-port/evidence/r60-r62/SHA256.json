@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "r60-r62-vice.log": {
-      "sha256": "55d96f537fdb0f1d363f10c42f7fe68e5a295bd8e2e0e04aaae637541dfc1159",
+      "sha256": "33b90aea0bf2513e5729835f78514941f4aa21f6ea4997ebc095ef15f0366ac8",
       "bytes": 1421,
       "store": "release"
     }

@@ -60,5 +60,6 @@ Hashes: `evidence/lanec-di-idle/SHA256.json`.
   out-of-scope guards and the unreachable `default` cases.
 - Host and sanitizer results: `make test-lanec-di-idle sanitize-lanec-di-idle`
   (`lanec-di-idle-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-idle`, 264 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-di-idle-vice.txt`).
+- C64 execution results: `make vice-lanec-di-idle`, 38 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 4,480 host cases take (`lanec-di-idle-vice.txt`).

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-pw",
+  "release": "evidence-lanec-pw",
+  "files": {
+    "lanec-pw-diff.json": {
+      "sha256": "6a4d99347100f46f9e4aa3f790ecbd804c2628e20d66939e4b85bcfd1de11e9a",
+      "bytes": 24932,
+      "store": "tree"
+    },
+    "lanec-pw-sanitize.txt": {
+      "sha256": "39e16addf192c98215d3bea7bb8d015b0693363bd6976f63b8b71e8c0d0787af",
+      "bytes": 31868,
+      "store": "tree"
+    },
+    "lanec-pw-vice.txt": {
+      "sha256": "988d8ed011a39c04d86cd8840094582df74af81d97b4e2903cbaf21c2bc9e462",
+      "bytes": 5428,
+      "store": "tree"
+    }
+  }
+}

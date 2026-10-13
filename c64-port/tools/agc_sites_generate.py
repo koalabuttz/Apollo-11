@@ -45,12 +45,15 @@ TABLES = {
     'cm-exec': ('Comanche055', ('NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'TWIDDLE', 'FIXDELAY'),
                 'src/cm_exec_sites.inc', 'cm_exec_sites'),
     # SERVICE_ROUTINES: the flag descriptor (ADRES or a named-flag constant)
-    # after UPFLAG and DOWNFLAG, the source and destination ADRES after GENTRAN.
-    'lm-service': ('Luminary099', ('UPFLAG', 'DOWNFLAG', 'GENTRAN'), 'src/lm_service_sites.inc', 'lm_service_sites'),
-    'cm-service': ('Comanche055', ('UPFLAG', 'DOWNFLAG', 'GENTRAN'), 'src/cm_service_sites.inc', 'cm_service_sites'),
+    # after UPFLAG and DOWNFLAG, the source and destination ADRES after GENTRAN
+    # (and after GENTRAN +1, which AOSTASK calls with A already set).
+    'lm-service': ('Luminary099', ('UPFLAG', 'DOWNFLAG', 'GENTRAN', 'GENTRAN +1'), 'src/lm_service_sites.inc',
+                   'lm_service_sites'),
+    'cm-service': ('Comanche055', ('UPFLAG', 'DOWNFLAG', 'GENTRAN', 'GENTRAN +1'), 'src/cm_service_sites.inc',
+                   'cm_service_sites'),
 }
 # Callees whose operand is two words (2CADR, or an OCT pair).
-TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'GENTRAN'}
+TWO_WORD = {'NOVAC', 'FINDVAC', 'WAITLIST', 'LONGCALL', 'GENTRAN', 'GENTRAN +1'}
 # `TC <service>` words that are data, not calls: PINBALL keeps them as
 # constants to store into erasable (TCNOVAC, TCWAIT, TCFINDVC).
 CONSTANT_WORDS = {'TCNOVAC', 'TCWAIT', 'TCFINDVC'}
@@ -126,7 +129,9 @@ def sites(mission, callees):
     listing = (base / 'assembly.lst').read_text(errors='replace')
     rope = (base / 'MAIN.agc.bin').read_bytes()
     table = symbol_table(listing)
-    targets = {fixed_fixed(table[name]): name for name in callees}
+    # A callee 'NAME +k' is a call k words into NAME.
+    targets = {fixed_fixed(table[name.split()[0]]) + int(name.split('+')[1] if '+' in name else 0): name
+               for name in callees}
     rows = list(listing_lines(listing))
     result = []
     for index, (path, line, address, words, label, op, operands) in enumerate(rows):
@@ -147,7 +152,7 @@ def sites(mission, callees):
             if n_op == '2CADR':
                 assert len(n_words) == 2, (n_path, n_line)
                 pair = [(n_words[0], f'2CADR {n_operands}'), (n_words[1], f'2CADR {n_operands} +1')]
-            elif callee == 'GENTRAN':
+            elif callee.startswith('GENTRAN'):
                 second = next(following)
                 assert len(n_words) == 1 and len(second[3]) == 1, (n_path, n_line)
                 assert fixed_address(second[2]) == operand_physical + 1, (n_path, n_line)
