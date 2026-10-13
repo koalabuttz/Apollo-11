@@ -33,9 +33,6 @@ static NI void ai_mask(unsigned);
 static NI void ai_maskf(agc_word);
 static NI uint8_t ai_ts(unsigned);
 static NI uint8_t ai_ovsk(void);
-static NI void ai_xch(unsigned);
-static NI void ai_lxch(unsigned);
-static NI void ai_qxch(unsigned);
 static NI void ai_ads(unsigned);
 static NI void ai_incr(unsigned);
 static NI void ai_aug(unsigned);
@@ -235,98 +232,51 @@ static NI uint8_t ai_ts(unsigned a){
  if(o)W[0]=o;
  endi();return o!=0u;
 }
-static NI void ai_xch(unsigned a){
- agc_register acc=W[0];
- if(a==0u){endi();return;}
- if(a<3u){W[0]=reg(a);setreg(a,acc);}
- else{W[0]=sx(ai_word(a));ai_put(a,oc(acc));}
- endi();
-}
-static NI void ai_lxch(unsigned a){
- agc_register l=W[1];
- if(a==1u){endi();return;}
- if(a==7u)W[1]=0;
- else if(a<3u){W[1]=reg(a);setreg(a,l);}
- else{W[1]=sx(ai_word(a));ai_put(a,oc(l));}
- endi();
-}
-static NI void ai_qxch(unsigned a){
- agc_register q=reg(2);
- if(a==2u){endi();return;}
- if(a==7u)W[2]=0;
- else if(a<3u){setreg(2,reg(a));setreg(a,q);}
- else{W[2]=sx(ai_word(a));ai_put(a,oc(q));}
- endi();
-}
-static NI void ai_ads(unsigned a){
- if(a==0u)W[0]=add16(W[0],W[0]);
- else if(a<3u){W[0]=add16(W[0],reg(a));setreg(a,W[0]);}
- else{W[0]=add16(W[0],sx(ai_word(a)));ai_put(a,oc(W[0]));}
- endi();
-}
-static NI void ai_incr(unsigned a){
- if(a<3u)setreg(a,add16(1u,reg(a)));else ai_put(a,oc(add16(1u,sx(ai_word(a)))));
- endi();
-}
+/* Register-or-memory operand of the exchanging and modifying instructions
+ * (memory read without the editing write-back, written back edited). */
+static NI agc_register get16(unsigned a){return a<3u?W[a]:sx(ai_word(a));}
+static NI void set16(unsigned a,agc_register v){if(a<3u)W[a]=v;else ai_put(a,oc(v));}
+static NI void xchr(unsigned r,unsigned a){agc_register v=get16(a);set16(a,W[r]);W[r]=v;endi();}
+#define ai_xch(a) xchr(0u,(a))
+#define ai_lxch(a) xchr(1u,(a))
+#define ai_qxch(a) xchr(2u,(a))
+static NI void ai_ads(unsigned a){W[0]=add16(W[0],get16(a));set16(a,W[0]);endi();}
+static NI void ai_incr(unsigned a){set16(a,add16(1u,get16(a)));endi();}
 static NI void ai_aug(unsigned a){
- agc_register v=a<3u?reg(a):sx(ai_word(a)),r=add16((v&0100000u)?M16-1u:1u,v);
- if(a<3u)setreg(a,r);else ai_put(a,oc(r));
- endi();
+ agc_register v=get16(a);
+ set16(a,add16((v&0100000u)?M16-1u:1u,v));endi();
 }
 static NI void ai_dim(unsigned a){
- agc_register v=a<3u?reg(a):sx(ai_word(a)),r;
- if(v!=0u&&v!=M16){
-  r=add16((v&0100000u)?1u:M16-1u,v);
-  if(a<3u)setreg(a,r);else ai_put(a,oc(r));
- }
+ agc_register v=get16(a);
+ if(v!=0u&&v!=M16)set16(a,add16((v&0100000u)?1u:M16-1u,v));
  endi();
 }
+/* DAS (DDOUBL for A). */
 static NI void ai_das(unsigned k){
  agc_register lsw,msw;unsigned lo=k+1u;
- if(k==0u){
-  /* DDOUBL */
-  lsw=add16(W[1],W[1]);msw=add16(W[0],W[0]);
-  if((lsw&0140000u)==040000u)msw=add16(msw,1u);else if((lsw&0140000u)==0100000u)msw=add16(msw,M16-1u);
-  W[0]=msw;W[1]=sx(oc(lsw));endi();return;
- }
- lsw=add16(W[1],lo<3u?reg(lo):sx(ai_word(lo)));
- msw=add16(W[0],k<3u?reg(k):sx(ai_word(k)));
+ lsw=add16(W[1],get16(lo));msw=add16(W[0],get16(k));
  if((lsw&0140000u)==040000u)msw=add16(msw,1u);else if((lsw&0140000u)==0100000u)msw=add16(msw,M16-1u);
  W[0]=ovf(msw);W[1]=0;
- if(lo<3u)setreg(lo,sx(oc(lsw)));else ai_put(lo,oc(lsw));
- if(k<3u)setreg(k,msw);else ai_put(k,oc(msw));
+ set16(lo,sx(oc(lsw)));set16(k,msw);
  endi();
 }
+static NI void reedit(unsigned a){if(a>=020u&&a<=023u)ai_put(a,ai_word(a));}
 static NI void ai_dca(unsigned k){
  unsigned lo=k+1u;
- if(k==0u){endi();return;}
- W[1]=sx(oc(lo<3u?reg(lo):sx(ai_word(lo))));
- W[0]=k<3u?reg(k):sx(ai_word(k));
- if(lo>=020u&&lo<=023u)ai_put(lo,ai_word(lo));
- if(k>=020u&&k<=023u)ai_put(k,ai_word(k));
- endi();
+ W[1]=sx(oc(get16(lo)));W[0]=get16(k);reedit(lo);reedit(k);endi();
 }
 static NI void ai_dcaf(const agc_word k[2]){W[1]=sx(k[1]);W[0]=sx(k[0]);endi();}
 static NI void ai_dcs(unsigned k){
  unsigned lo=k+1u;
- if(k==0u){W[0]=(agc_register)(~W[0]&M16);W[1]=sx(oc((agc_register)(~W[1]&M16)));endi();return;}
- W[1]=sx(oc((agc_register)(~(unsigned)(lo<3u?reg(lo):sx(ai_word(lo)))&M16)));
- W[0]=(agc_register)(~(unsigned)(k<3u?reg(k):sx(ai_word(k)))&M16);
- if(lo>=020u&&lo<=023u)ai_put(lo,ai_word(lo));
- if(k>=020u&&k<=023u)ai_put(k,ai_word(k));
- endi();
+ W[1]=sx(oc((agc_register)(~get16(lo)&M16)));W[0]=(agc_register)(~get16(k)&M16);reedit(lo);reedit(k);endi();
 }
 static NI void ai_dcsf(const agc_word k[2]){
  W[1]=sx((agc_word)(~k[1]&077777u));W[0]=sx((agc_word)(~k[0]&077777u));endi();
 }
 static NI void ai_dxch(unsigned k){
- unsigned lo=k+1u;agc_register op;
- if(k==0u){endi();return;}
- if(lo<3u){op=reg(lo);setreg(lo,W[1]);W[1]=op;}
- else{op=sx(ai_word(lo));ai_put(lo,oc(W[1]));W[1]=op;}
- W[1]=sx(oc(W[1]));
- if(k<3u){op=reg(k);setreg(k,W[0]);W[0]=op;}
- else{op=sx(ai_word(k));ai_put(k,oc(W[0]));W[0]=op;}
+ agc_register op=get16(k+1u);
+ set16(k+1u,W[1]);W[1]=sx(oc(op));
+ op=get16(k);set16(k,W[0]);W[0]=op;
  endi();
 }
 static NI void ai_mpf(agc_word k){
@@ -2075,7 +2025,7 @@ static NI enum exec_status run(void)
         case IRT_GOTO: lmi_goto_any(); return EXEC_OK;
         case IRT_SWRETURN: lmi_swreturn(); break;
         case IRT_INTPRET: lmi_intpret(); return EXEC_OK;
-        default: return EXEC_OK;   /* outside the interpreter */
+        default: return guard ? EXEC_OK : EXEC_UNMAPPED;   /* outside the interpreter */
         }
     }
     return r == REFUSE ? EXEC_OUT_OF_SCOPE : EXEC_OK;
