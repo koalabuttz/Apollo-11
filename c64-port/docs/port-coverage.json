@@ -6621,17 +6621,17 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
-            "sha256": "db87ce3d48b55fee7202833f6681d78e22273f1106901739da2158b2708bf840"
+            "sha256": "9f9a91e755e449cf85916a04ac6107ca458f0eaf38bf32b4a1f26bfd915212e3"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
-            "sha256": "ed140324eca2284410b1c0f47b90c6e64f700cbf470f7d3a58ce1fe435e243ae",
+            "sha256": "29ba2e0749aafeba1b9cfce53f9b20dfd8f57cff39c00cf04112c3b4a9607e23",
             "vice_targets": {
-              "vice-lanec-ev-front": 21,
-              "vice-lanec-ev-short": 110,
-              "vice-lanec-ev-align": 97,
+              "vice-lanec-ev-front": 23,
+              "vice-lanec-ev-short": 122,
+              "vice-lanec-ev-align": 104,
               "vice-lanec-ev-radar": 31,
-              "vice-lanec-ev-dap": 43,
+              "vice-lanec-ev-dap": 46,
               "vice-lanec-ev-time": 13,
               "vice-lanec-ev-track": 38,
               "vice-lanec-ev-lmi": 40,
@@ -6640,7 +6640,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
-            "sha256": "50ecab014fc0b0fbf23976736d85808a342665d72cb8533d2be72eb8c49fbd79"
+            "sha256": "983b90d6279080c8d314f7c313c976fa9a86c63eabe2b9ea625c154a3493e9a8"
           }
         }
       },
