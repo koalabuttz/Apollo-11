@@ -4,7 +4,7 @@
 #include "lm_conic_checkctr.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 uint8_t lm_conic_checkctr(apollo_overlay_state *s){
  unsigned a,i;
  if(!s||W[5]!=02644u||(W[4]&076000u)!=024000u||W[7])return RTB_OUT_OF_SCOPE;

@@ -489,6 +489,9 @@ static enum exec_status r_c3357(const ims_mission *m,apollo_overlay_state *s,voi
  if(W[MPAC+4u]>0376u)return EXEC_OUT_OF_SCOPE;
  if(n>=1u&&n<=037777u&&(W[ITEMP1]>0376u||2ul*(n-1u)+W[ITEMP1]>0376u))return EXEC_OUT_OF_SCOPE;
  if(e0_registers(W[3],W[MPAC+4u])||(n>=1u&&n<=037777u&&e0_registers(W[3],W[ITEMP1])))return EXEC_OUT_OF_SCOPE;
+ /* (Under EBANK 0 the DXCH can land on MPAC +3 or ITEMP1, which the checks
+  * above read first: GYROAGRE's TS MPAC +4 could then overflow.) */
+ if(((W[3]>>8)&7u)==0u&&(W[MPAC+4u]+1u==MPAC+3u||W[MPAC+4u]==MPAC+3u||W[MPAC+4u]+1u==ITEMP1||W[MPAC+4u]==ITEMP1))return EXEC_OUT_OF_SCOPE;
  ai_dxch(s,MPAC);ai_dxch(s,EB1400+ix(s,MPAC+4u));
  c=ai_ccs(s,MPAC+3u);
  if(c==0u)return gyroagre(m,s);
@@ -603,6 +606,9 @@ static enum exec_status r_gyroexit(const ims_mission *m,apollo_overlay_state *s,
  * CCS 1400: AUG2 (INDEX ITEMP1 TS 1400; CAF BIT14; ADS GYROCMD; AUG3) /
  * CAF BIT14 / ADS GYROCMD / TCF LASTSEG +1. */
 static enum exec_status r_8192aug(const ims_mission *m,apollo_overlay_state *s,void *io){uint8_t c;
+ /* (LGYRO's EBANK 0 with an index of 4-6: CCS finds FB, Z or BB positive
+  * and the TS writes it, so the AGC fetches from elsewhere.) */
+ if(((W[m->lgyro]>>8)&7u)==0u&&(W[m->lgyro]&K_LOW8)>=4u&&(W[m->lgyro]&K_LOW8)<=6u)return EXEC_OUT_OF_SCOPE;
  if(!cagetest(m,s,z7(m,03560u)))return imubad(m,s);
  ai_caf(s,K_BIT4);ch_rand(m,s,io,012);
  if(ai_ccs(s,0)==0u)return imubad(m,s);

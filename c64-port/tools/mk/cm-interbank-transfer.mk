@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-interbank-transfer (lane A): Comanche055 INTER-BANK_COMMUNICATION
 # entries as native routines of the control-transfer ABI.
-CM_IBR_SRC = src/agc_transfer.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_word.c tests/cm_interbank_routines_cases.c
+CM_IBR_SRC = src/agc_transfer.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_word.c tests/cm_interbank_routines_cases.c
 CM_IBR_HDR = include/agc_transfer.h include/cm_interbank_routines.h include/cm_interbank_complete.h src/cm_interbank_sites.inc tests/cm_interbank_routines_cases.h
 .PHONY: test-cm-interbank-transfer sanitize-cm-interbank-transfer c64-cm-interbank-transfer vice-cm-interbank-transfer
 all: build/test-cm-interbank-transfer

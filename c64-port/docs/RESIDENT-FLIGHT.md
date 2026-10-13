@@ -161,11 +161,16 @@ The resident's `fixed_data` is `rk_fixed_word`. It reads the word at Z
 from a table of every fixed point where the resident can stop between
 routines: the keys of the resident's routine tables, of the interrupt
 bodies (`rupt_lead_ins.h`, `t4rupt_core.h`, `keyrupt_uprupt.h`,
-`lm_t6rupt_routines.h`) and of the store's resolver records.
+`lm_t6rupt_routines.h`) and of the store's resolver records, and the
+interpreter's fetch point (LM NEWOPS 06070, CM 06037) and DANZIG (LM 06061,
+CM 06030). At an interpretive order Z stands at one of those two while the
+order's key is LOC's, so without their words an interrupt there would stay
+pending (the whole-program differential lost 2,500 of 3,000 LM V37E00E
+samples that way; docs/FLIGHT-STORE.md).
 `tools/resident_boundary_words.py` collects the keys (it builds
 `tools/resident_boundary_keys.c` against the tables), takes each word from
 the unmodified rope, checks it against the yaYUL listing when one is built,
-and writes `platform/c64/resident_boundary_words_<m>.h`: 66 LM and 59 CM
+and writes `platform/c64/resident_boundary_words_<m>.h`: 69 LM and 61 CM
 sorted {physical key, word} records. A key the listing has no word for is
 an error.
 
@@ -201,19 +206,19 @@ about 0.3 KB.
 
 | Component | LM bytes | CM bytes |
 |---|---|---|
-| Kernel (with the seam hooks) | 10,475 | 10,232 |
-| Transfer ABI trampoline and Executive call sites | 2,680 | 2,612 |
-| ABI 2 runtime and REU store | 5,206 | 5,206 |
-| Single-precision subroutines and their table | 1,299 | 1,299 |
+| Kernel (with the seam hooks) | 10,524 | 10,281 |
+| Transfer ABI trampoline and Executive call sites | 3,481 | 3,413 |
+| ABI 2 runtime and REU store | 5,235 | 5,235 |
+| Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step and boundary-word reader | 893 | 911 |
+| Resident state, step, boundary-word reader and direct calls | 1,499 | 1,517 |
 | IRQ entry | 16 | 16 |
 | C runtime and library (crt0, multiply, divide, memcpy, memset) | 480 | 480 |
-| **Resident, $0801 to the end of bss** | **22,778** | **22,485** |
-| Free below the service table (of 26,367) | 3,589 | 3,882 |
-| Service table at $6F00 (2 entries) | 6 | 6 |
-| Boot-only, in the job slot | 3,248 | 3,218 |
+| **Resident, $0801 to the end of bss** | **24,271** | **23,978** |
+| Free below the service table (of 26,367) | 2,096 | 2,389 |
+| Service table at $6F00 (24 entries) | 72 | 72 |
+| Boot-only, in the job slot | 3,252 | 3,219 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
 half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
@@ -225,8 +230,20 @@ address arithmetic doubled it, and boot runs the boundary-word module
 through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
 LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
 resident: the step hands each module `rk_env` and returns its status. Both
-missions fit with 3.6-3.9 KB to spare, so neither
-$C000-$CBFF nor $D000 is needed and the kernel stays as it is.
+missions fit with 2.1-2.4 KB to spare, so neither $C000-$CBFF nor $D000 is
+needed and the kernel stays as it is.
+
+Since flight modules share the resident's runtime (docs/FLIGHT-STORE.md,
+runtime sharing), the resident exports 21 more services (service table
+0x0203): `agc_transfer_run`, `agc_transfer_point`, `agc_fixed_physical`,
+`memcpy` and 17 kernel image ops (`k_ca` ... `k_bzmf`). LTO can no longer
+inline or specialise an exported function, which costs about 800 bytes in
+the transfer ABI. Exports that measured too costly for the 2 KB floor stay
+private: `ai_put` 604, `k_das` 716, `ai_word` 208, `k_incr` 118, `k_qxch`
+86, `k_mask` 63 and `k_dcsf` 27 bytes. `rk_direct` (direct calls into a
+loaded module) is 496 bytes. The check programs (`RK_RUNS_ONLY`) link with
+the 3-entry table (0x0202), keep the kernel ops static and leave out
+`rk_direct` (`RK_NO_DIRECT`), since their case code needs the space.
 
 ## Checks on the linked resident
 
@@ -325,9 +342,10 @@ boundary-word table's check in `boundary_words`) of
 
 ## Not yet in the resident
 
-- The flight store's resolver records. The boundary-word tables hold the
-  check's two probe records; the store that carries every lane's modules
-  regenerates them with its records (`--resolver`).
+- The flight store's resolver records. The committed boundary-word tables
+  hold the check's two probe records; the flight store
+  (`tools/flight_store_build.py`) builds its own boundary-word module with
+  its records (`RK_BOUNDARY_HEADER`).
 - What the interrupt bodies continue into: Waitlist tasks T4RUPT and the
   T5RUPT handlers start, and the other lane's banked code a lead-in reaches.
   The step resolves those through the store like any module once their

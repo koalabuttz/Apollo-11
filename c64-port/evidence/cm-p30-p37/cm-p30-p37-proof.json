@@ -15,38 +15,33 @@
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0xffff",
-   "cases": 20
+   "keep": "0x3fffff",
+   "cases": 29
   },
   {
    "mission": "cm",
-   "keep": "0x1fffffff8000",
-   "cases": 36
+   "keep": "0x381f8fffffff00000",
+   "cases": 35
   },
   {
    "mission": "cm",
-   "keep": "0x1fff01f81fbf00000000000",
-   "cases": 6
+   "keep": "0xffffffc01ff000000000000",
+   "cases": 12
   },
   {
    "mission": "cm",
-   "keep": "0xf6ffffc01ff000000000000",
-   "cases": 9
+   "keep": "0x7fe08000000000000",
+   "cases": 16
   },
   {
    "mission": "cm",
-   "keep": "0x1fff08000000000000",
-   "cases": 17
-  },
-  {
-   "mission": "cm",
-   "keep": "0x7fffffffe00000000000000000",
+   "keep": "0xfffffffc0000000000000000",
    "cases": 40
   },
   {
    "mission": "cm",
-   "keep": "0x7fffffffff80300000000000000030000180",
-   "cases": 41
+   "keep": "0x7fffffffffff300000000000000030000180",
+   "cases": 48
   }
  ],
  "stops": {
@@ -3299,8 +3294,8 @@
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, BANKCALL, CHANG2, DOWNFLAG, ENDOFJOB, PHASCHNG, TCF GOTOPOOH, UPFLAG, WAITLIST)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "host_cases_traced": 9152,
- "host_branch_arcs": 886,
- "c64_rows": 169,
- "c64_branch_arcs": 886
+ "host_cases_traced": 9408,
+ "host_branch_arcs": 930,
+ "c64_rows": 180,
+ "c64_branch_arcs": 930
 }

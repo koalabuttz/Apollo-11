@@ -1,4 +1,4 @@
-PASS: 7168 cm-entry-dap cases equal the original programs (28 routines)
+PASS: 7168 cm-entry-dap cases equal the original programs (138 routines)
   CM 15,2434 READGYMB: 05245 x186, 05412 x70
   CM 15,2500 : 05324 x256
   CM 15,2507 : 05074 x82, 05245 x126, 05324 x48
@@ -28,3 +28,4 @@ PASS: 7168 cm-entry-dap cases equal the original programs (28 routines)
   CM 20,3716 : 05372 x256
   CM 20,3732 : 04701 x256
 froze 224 vectors to tests/cm_entry_dap_vectors.h
+rc=0

@@ -1,0 +1,4157 @@
+{
+ "source_path": "Comanche055/T4RUPT_PROGRAM.agc",
+ "scope": "IMUMON through 90SECS (06,2174-2764) and ZOPFIN3 (06,3065-3067): the IMU monitor, its bit-change handlers, CAGESUB, LAMPTEST and their constants",
+ "source_sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "native": {
+  "src/cm_t4rupt_imu.c": "6ddacce9b83ee3cf3ef0fe2d4898286b91313d9663f3e8e394b52ce37122d459",
+  "include/cm_t4rupt_imu.h": "c43ccd0a0b45b2d033e42bb455e98f5d12e0b779bf4303029d8edffbf2720851"
+ },
+ "source_words": 380,
+ "source_lines_with_words": 376,
+ "instructions_executed_by_oracle": 347,
+ "native_constants_checked": 37,
+ "external_addresses_checked": 9,
+ "line_map": [
+  {
+   "line": 278,
+   "address": "06,2174",
+   "source": "IMUMON CA IMODES30",
+   "words": [
+    "31320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 279,
+   "address": "06,2175",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 280,
+   "address": "06,2176",
+   "source": "RXOR CHAN30",
+   "words": [
+    "06030"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 281,
+   "address": "06,2177",
+   "source": "MASK 30RDMSK",
+   "words": [
+    "72743"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 282,
+   "address": "06,2200",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 283,
+   "address": "06,2201",
+   "source": "BZF TNONTEST",
+   "words": [
+    "12231"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 285,
+   "address": "06,2202",
+   "source": "TS RUPTREG1",
+   "words": [
+    "54070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 286,
+   "address": "06,2203",
+   "source": "LXCH IMODES30",
+   "words": [
+    "23320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 287,
+   "address": "06,2204",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 288,
+   "address": "06,2205",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 289,
+   "address": "06,2206",
+   "source": "TS IMODES30",
+   "words": [
+    "55320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 291,
+   "address": "06,2207",
+   "source": "CS ONE",
+   "words": [
+    "45017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 292,
+   "address": "06,2210",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 293,
+   "address": "06,2211",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 295,
+   "address": "06,2212",
+   "source": "BZMF TLIM",
+   "words": [
+    "62507"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 296,
+   "address": "06,2213",
+   "source": "TCF NXTIFBIT",
+   "words": [
+    "12215"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 298,
+   "address": "06,2214",
+   "source": "-1 AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 299,
+   "address": "06,2215",
+   "source": "NXTIFBIT INCR RUPTREG1",
+   "words": [
+    "24070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 300,
+   "address": "06,2216",
+   "source": "+1 DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 301,
+   "address": "06,2217",
+   "source": "TS A",
+   "words": [
+    "54000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 302,
+   "address": "06,2220",
+   "source": "TCF NXTIFBIT",
+   "words": [
+    "12215"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 304,
+   "address": "06,2221",
+   "source": "XCH RUPTREG2",
+   "words": [
+    "56071"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 305,
+   "address": "06,2222",
+   "source": "INDEX RUPTREG1",
+   "words": [
+    "50070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 306,
+   "address": "06,2223",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 307,
+   "address": "06,2224",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 308,
+   "address": "06,2225",
+   "source": "INDEX RUPTREG1",
+   "words": [
+    "50070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 309,
+   "address": "06,2226",
+   "source": "TC IFAILJMP",
+   "words": [
+    "02737"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 311,
+   "address": "06,2227",
+   "source": "NXTIFAIL CCS RUPTREG2",
+   "words": [
+    "10071"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 312,
+   "address": "06,2230",
+   "source": "TCF NXTIFBIT -1",
+   "words": [
+    "12214"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 364,
+   "address": "06,2231",
+   "source": "TNONTEST CS IMODES30",
+   "words": [
+    "41320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 366,
+   "address": "06,2232",
+   "source": "MASK BIT7",
+   "words": [
+    "75011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 367,
+   "address": "06,2233",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 368,
+   "address": "06,2234",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 370,
+   "address": "06,2235",
+   "source": "CAF BIT8",
+   "words": [
+    "35010"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 371,
+   "address": "06,2236",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 372,
+   "address": "06,2237",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 373,
+   "address": "06,2240",
+   "source": "TCF PROCTNON",
+   "words": [
+    "12244"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 375,
+   "address": "06,2241",
+   "source": "CAF BIT8",
+   "words": [
+    "35010"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 376,
+   "address": "06,2242",
+   "source": "ADS IMODES30",
+   "words": [
+    "27320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 377,
+   "address": "06,2243",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 381,
+   "address": "06,2244",
+   "source": "PROCTNON CS BITS7&8",
+   "words": [
+    "42757"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 382,
+   "address": "06,2245",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 383,
+   "address": "06,2246",
+   "source": "TS IMODES30",
+   "words": [
+    "55320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 384,
+   "address": "06,2247",
+   "source": "MASK BIT14",
+   "words": [
+    "75002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 385,
+   "address": "06,2250",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 386,
+   "address": "06,2251",
+   "source": "TCF OPONLY",
+   "words": [
+    "12342"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 388,
+   "address": "06,2252",
+   "source": "CS IMODES30",
+   "words": [
+    "41320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 389,
+   "address": "06,2253",
+   "source": "MASK BIT9",
+   "words": [
+    "75007"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 390,
+   "address": "06,2254",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 391,
+   "address": "06,2255",
+   "source": "TCF +3",
+   "words": [
+    "12260"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 393,
+   "address": "06,2256",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 394,
+   "address": "06,2257",
+   "source": "OCT 213",
+   "words": [
+    "00213"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 396,
+   "address": "06,2260",
+   "source": "+3 TC CAGESUB",
+   "words": [
+    "02717"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 398,
+   "address": "06,2261",
+   "source": "CAF 90SECS",
+   "words": [
+    "32764"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 399,
+   "address": "06,2262",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 401,
+   "address": "06,2263",
+   "source": "2CADR ENDTNON",
+   "words": [
+    "02270",
+    "14063"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 403,
+   "address": "06,2265",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 405,
+   "address": "06,2266",
+   "source": "RETNON CAF 90SECS",
+   "words": [
+    "32764"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 406,
+   "address": "06,2267",
+   "source": "TC VARDELAY",
+   "words": [
+    "05272"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 408,
+   "address": "06,2270",
+   "source": "ENDTNON CS BIT2",
+   "words": [
+    "45016"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 409,
+   "address": "06,2271",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 410,
+   "address": "06,2272",
+   "source": "XCH IMODES30",
+   "words": [
+    "57320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 411,
+   "address": "06,2273",
+   "source": "MASK BIT2",
+   "words": [
+    "75016"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 412,
+   "address": "06,2274",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 413,
+   "address": "06,2275",
+   "source": "BZF ENDTNON2",
+   "words": [
+    "12310"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 415,
+   "address": "06,2276",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 416,
+   "address": "06,2277",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 417,
+   "address": "06,2300",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 418,
+   "address": "06,2301",
+   "source": "BZF RETNON",
+   "words": [
+    "12266"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 420,
+   "address": "06,2302",
+   "source": "CS STATE",
+   "words": [
+    "40074"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 421,
+   "address": "06,2303",
+   "source": "MASK IMUSEFLG",
+   "words": [
+    "75010"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 422,
+   "address": "06,2304",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 423,
+   "address": "06,2305",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15324"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 424,
+   "address": "06,2306",
+   "source": "TC POSTJUMP",
+   "words": [
+    "04701"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 425,
+   "address": "06,2307",
+   "source": "CADR IMUBAD",
+   "words": [
+    "17522"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 427,
+   "address": "06,2310",
+   "source": "ENDTNON2 CAF BIT15",
+   "words": [
+    "35001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 428,
+   "address": "06,2311",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 429,
+   "address": "06,2312",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 430,
+   "address": "06,2313",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04740"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 431,
+   "address": "06,2314",
+   "source": "CADR NOATTOFF",
+   "words": [
+    "17151"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 433,
+   "address": "06,2315",
+   "source": "UNZ2 TC ZEROICDU",
+   "words": [
+    "05521"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 435,
+   "address": "06,2316",
+   "source": "CS BITS4&5",
+   "words": [
+    "45027"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 436,
+   "address": "06,2317",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 437,
+   "address": "06,2320",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 439,
+   "address": "06,2321",
+   "source": "CAF BIT11",
+   "words": [
+    "35005"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 440,
+   "address": "06,2322",
+   "source": "TC VARDELAY",
+   "words": [
+    "05272"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 442,
+   "address": "06,2323",
+   "source": "ISSUP CS OCT54",
+   "words": [
+    "42754"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 443,
+   "address": "06,2324",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 444,
+   "address": "06,2325",
+   "source": "TS IMODES30",
+   "words": [
+    "55320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 446,
+   "address": "06,2326",
+   "source": "CS BIT6",
+   "words": [
+    "45012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 447,
+   "address": "06,2327",
+   "source": "MASK IMODES33",
+   "words": [
+    "71321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 448,
+   "address": "06,2330",
+   "source": "TS IMODES33",
+   "words": [
+    "55321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 450,
+   "address": "06,2331",
+   "source": "TC SETISSW",
+   "words": [
+    "02665"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 452,
+   "address": "06,2332",
+   "source": "CS BIT15",
+   "words": [
+    "45001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 453,
+   "address": "06,2333",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 454,
+   "address": "06,2334",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 456,
+   "address": "06,2335",
+   "source": "CAF 4SECS",
+   "words": [
+    "35045"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 457,
+   "address": "06,2336",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 459,
+   "address": "06,2337",
+   "source": "2CADR PFAILOK",
+   "words": [
+    "03137",
+    "16063"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 461,
+   "address": "06,2341",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15324"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 463,
+   "address": "06,2342",
+   "source": "OPONLY CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 465,
+   "address": "06,2343",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 466,
+   "address": "06,2344",
+   "source": "RAND CHAN12",
+   "words": [
+    "02012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 467,
+   "address": "06,2345",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 468,
+   "address": "06,2346",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 470,
+   "address": "06,2347",
+   "source": "CAF IMUSEFLG",
+   "words": [
+    "35010"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 471,
+   "address": "06,2350",
+   "source": "MASK STATE",
+   "words": [
+    "70074"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 472,
+   "address": "06,2351",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 473,
+   "address": "06,2352",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 475,
+   "address": "06,2353",
+   "source": "TC CAGESUB2",
+   "words": [
+    "02730"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 477,
+   "address": "06,2354",
+   "source": "ISSZERO TC IBNKCALL",
+   "words": [
+    "04740"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 478,
+   "address": "06,2355",
+   "source": "CADR NOATTOFF",
+   "words": [
+    "17151"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 480,
+   "address": "06,2356",
+   "source": "CAF BIT5",
+   "words": [
+    "35013"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 481,
+   "address": "06,2357",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 482,
+   "address": "06,2360",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 484,
+   "address": "06,2361",
+   "source": "TC ZEROICDU",
+   "words": [
+    "05521"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 485,
+   "address": "06,2362",
+   "source": "CAF BIT6",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 486,
+   "address": "06,2363",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 488,
+   "address": "06,2364",
+   "source": "2CADR UNZ2",
+   "words": [
+    "02315",
+    "14062"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 490,
+   "address": "06,2366",
+   "source": "TCF C33TEST",
+   "words": [
+    "12367"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 522,
+   "address": "06,2367",
+   "source": "C33TEST CA IMODES33",
+   "words": [
+    "31321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 523,
+   "address": "06,2370",
+   "source": "MASK 33RDMSK",
+   "words": [
+    "75070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 524,
+   "address": "06,2371",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 525,
+   "address": "06,2372",
+   "source": "CAF 33RDMSK",
+   "words": [
+    "35070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 526,
+   "address": "06,2373",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 527,
+   "address": "06,2374",
+   "source": "WAND CHAN33",
+   "words": [
+    "03033"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 528,
+   "address": "06,2375",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 529,
+   "address": "06,2376",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 530,
+   "address": "06,2377",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 531,
+   "address": "06,2400",
+   "source": "BZF GLOCKMON",
+   "words": [
+    "12427"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 533,
+   "address": "06,2401",
+   "source": "TS RUPTREG1",
+   "words": [
+    "54070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 534,
+   "address": "06,2402",
+   "source": "LXCH IMODES33",
+   "words": [
+    "23321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 535,
+   "address": "06,2403",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 536,
+   "address": "06,2404",
+   "source": "RXOR LCHAN",
+   "words": [
+    "06001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 537,
+   "address": "06,2405",
+   "source": "TS IMODES33",
+   "words": [
+    "55321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 539,
+   "address": "06,2406",
+   "source": "CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 540,
+   "address": "06,2407",
+   "source": "XCH RUPTREG1",
+   "words": [
+    "56070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 541,
+   "address": "06,2410",
+   "source": "DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 543,
+   "address": "06,2411",
+   "source": "TCF NXTIBT +1",
+   "words": [
+    "12414"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 545,
+   "address": "06,2412",
+   "source": "-1 AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 546,
+   "address": "06,2413",
+   "source": "NXTIBT INCR RUPTREG1",
+   "words": [
+    "24070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 547,
+   "address": "06,2414",
+   "source": "+1 DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 548,
+   "address": "06,2415",
+   "source": "TS A",
+   "words": [
+    "54000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 549,
+   "address": "06,2416",
+   "source": "TCF NXTIBT",
+   "words": [
+    "12413"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 551,
+   "address": "06,2417",
+   "source": "XCH RUPTREG2",
+   "words": [
+    "56071"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 552,
+   "address": "06,2420",
+   "source": "INDEX RUPTREG1",
+   "words": [
+    "50070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 553,
+   "address": "06,2421",
+   "source": "CAF BIT13",
+   "words": [
+    "35003"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 554,
+   "address": "06,2422",
+   "source": "MASK IMODES33",
+   "words": [
+    "71321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 555,
+   "address": "06,2423",
+   "source": "INDEX RUPTREG1",
+   "words": [
+    "50070"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 556,
+   "address": "06,2424",
+   "source": "TC C33JMP",
+   "words": [
+    "02745"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 558,
+   "address": "06,2425",
+   "source": "NXTFL33 CCS RUPTREG2",
+   "words": [
+    "10071"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 559,
+   "address": "06,2426",
+   "source": "TCF NXTIBT -1",
+   "words": [
+    "12412"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 587,
+   "address": "06,2427",
+   "source": "GLOCKMON CCS CDUZ",
+   "words": [
+    "10034"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 588,
+   "address": "06,2430",
+   "source": "TCF GLOCKCHK",
+   "words": [
+    "12434"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 589,
+   "address": "06,2431",
+   "source": "TCF SETGLOCK",
+   "words": [
+    "12460"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 590,
+   "address": "06,2432",
+   "source": "TCF GLOCKCHK",
+   "words": [
+    "12434"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 591,
+   "address": "06,2433",
+   "source": "TCF SETGLOCK",
+   "words": [
+    "12460"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 593,
+   "address": "06,2434",
+   "source": "GLOCKCHK AD -70DEGS",
+   "words": [
+    "62505"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 594,
+   "address": "06,2435",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 595,
+   "address": "06,2436",
+   "source": "BZMF SETGLOCK -1",
+   "words": [
+    "62457"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 597,
+   "address": "06,2437",
+   "source": "AD -15DEGS",
+   "words": [
+    "62506"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 598,
+   "address": "06,2440",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 599,
+   "address": "06,2441",
+   "source": "BZMF NOGIMRUN",
+   "words": [
+    "62455"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 601,
+   "address": "06,2442",
+   "source": "CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 602,
+   "address": "06,2443",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 603,
+   "address": "06,2444",
+   "source": "RAND CHAN12",
+   "words": [
+    "02012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 604,
+   "address": "06,2445",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 605,
+   "address": "06,2446",
+   "source": "TCF NOGIMRUN",
+   "words": [
+    "12455"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 607,
+   "address": "06,2447",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04740"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 608,
+   "address": "06,2450",
+   "source": "CADR SETCOARS",
+   "words": [
+    "17027"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 610,
+   "address": "06,2451",
+   "source": "CAF SIX",
+   "words": [
+    "36211"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 611,
+   "address": "06,2452",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 614,
+   "address": "06,2453",
+   "source": "2CADR CA+ECE",
+   "words": [
+    "03023",
+    "16063"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 616,
+   "address": "06,2455",
+   "source": "NOGIMRUN CAF BIT6",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 617,
+   "address": "06,2456",
+   "source": "TCF SETGLOCK",
+   "words": [
+    "12460"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 619,
+   "address": "06,2457",
+   "source": "-1 CAF ZERO",
+   "words": [
+    "35021"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 620,
+   "address": "06,2460",
+   "source": "SETGLOCK AD DSPTAB +11D",
+   "words": [
+    "61036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 621,
+   "address": "06,2461",
+   "source": "MASK BIT6",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 622,
+   "address": "06,2462",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 623,
+   "address": "06,2463",
+   "source": "BZF GLOCKOK",
+   "words": [
+    "15333"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 625,
+   "address": "06,2464",
+   "source": "MASK DSPTAB +11D",
+   "words": [
+    "71036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 626,
+   "address": "06,2465",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 627,
+   "address": "06,2466",
+   "source": "TCF GLAMPTST",
+   "words": [
+    "12502"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 629,
+   "address": "06,2467",
+   "source": "CAF BIT6",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 630,
+   "address": "06,2470",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 631,
+   "address": "06,2471",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 632,
+   "address": "06,2472",
+   "source": "TCF GLOCKOK",
+   "words": [
+    "15333"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 634,
+   "address": "06,2473",
+   "source": "GLINVERT CS DSPTAB +11D",
+   "words": [
+    "41036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 635,
+   "address": "06,2474",
+   "source": "MASK BIT6",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 636,
+   "address": "06,2475",
+   "source": "AD BIT15",
+   "words": [
+    "65001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 637,
+   "address": "06,2476",
+   "source": "XCH DSPTAB +11D",
+   "words": [
+    "57036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 638,
+   "address": "06,2477",
+   "source": "MASK OCT37737",
+   "words": [
+    "72164"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 639,
+   "address": "06,2500",
+   "source": "ADS DSPTAB +11D",
+   "words": [
+    "27036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 640,
+   "address": "06,2501",
+   "source": "TCF GLOCKOK",
+   "words": [
+    "15333"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 642,
+   "address": "06,2502",
+   "source": "GLAMPTST TC LAMPTEST",
+   "words": [
+    "02750"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 643,
+   "address": "06,2503",
+   "source": "TCF GLOCKOK",
+   "words": [
+    "15333"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 644,
+   "address": "06,2504",
+   "source": "TCF GLINVERT",
+   "words": [
+    "12473"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 646,
+   "address": "06,2505",
+   "source": "-70DEGS DEC -.38888",
+   "words": [
+    "63434"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 647,
+   "address": "06,2506",
+   "source": "-15DEGS DEC -.08333",
+   "words": [
+    "75252"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 670,
+   "address": "06,2507",
+   "source": "TLIM MASK POSMAX",
+   "words": [
+    "74777"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 671,
+   "address": "06,2510",
+   "source": "TS RUPTREG2",
+   "words": [
+    "54071"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 673,
+   "address": "06,2511",
+   "source": "CCS IMODES30",
+   "words": [
+    "11320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 674,
+   "address": "06,2512",
+   "source": "TCF TEMPOK",
+   "words": [
+    "12520"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 675,
+   "address": "06,2513",
+   "source": "TCF TEMPOK",
+   "words": [
+    "12520"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 677,
+   "address": "06,2514",
+   "source": "CAF BIT4",
+   "words": [
+    "35014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 678,
+   "address": "06,2515",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 679,
+   "address": "06,2516",
+   "source": "WOR DSALMOUT",
+   "words": [
+    "05011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 680,
+   "address": "06,2517",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 682,
+   "address": "06,2520",
+   "source": "TEMPOK TC LAMPTEST",
+   "words": [
+    "02750"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 683,
+   "address": "06,2521",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 685,
+   "address": "06,2522",
+   "source": "CS BIT4",
+   "words": [
+    "45014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 686,
+   "address": "06,2523",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 687,
+   "address": "06,2524",
+   "source": "WAND DSALMOUT",
+   "words": [
+    "03011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 688,
+   "address": "06,2525",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 720,
+   "address": "06,2526",
+   "source": "ITURNON CAF BIT2",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 721,
+   "address": "06,2527",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 722,
+   "address": "06,2530",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 723,
+   "address": "06,2531",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 725,
+   "address": "06,2532",
+   "source": "CAF BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 726,
+   "address": "06,2533",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 727,
+   "address": "06,2534",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 728,
+   "address": "06,2535",
+   "source": "BZF ITURNON2",
+   "words": [
+    "12551"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 730,
+   "address": "06,2536",
+   "source": "CAF BIT15",
+   "words": [
+    "35001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 731,
+   "address": "06,2537",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 732,
+   "address": "06,2540",
+   "source": "RAND CHAN12",
+   "words": [
+    "02012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 733,
+   "address": "06,2541",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 734,
+   "address": "06,2542",
+   "source": "BZF +2",
+   "words": [
+    "12544"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 735,
+   "address": "06,2543",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 737,
+   "address": "06,2544",
+   "source": "CAF BIT2",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 738,
+   "address": "06,2545",
+   "source": "ADS IMODES30",
+   "words": [
+    "27320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 739,
+   "address": "06,2546",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 740,
+   "address": "06,2547",
+   "source": "OCT 207",
+   "words": [
+    "00207"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 741,
+   "address": "06,2550",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 744,
+   "address": "06,2551",
+   "source": "ITURNON2 CS IMODES30",
+   "words": [
+    "41320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 745,
+   "address": "06,2552",
+   "source": "MASK BIT7",
+   "words": [
+    "75011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 746,
+   "address": "06,2553",
+   "source": "ADS IMODES30",
+   "words": [
+    "27320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 747,
+   "address": "06,2554",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 772,
+   "address": "06,2555",
+   "source": "IMUCAGE CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 773,
+   "address": "06,2556",
+   "source": "TCF ISSZERO",
+   "words": [
+    "12354"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 774,
+   "address": "06,2557",
+   "source": "CS OCT77000",
+   "words": [
+    "42762"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 775,
+   "address": "06,2560",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 776,
+   "address": "06,2561",
+   "source": "WAND CHAN14",
+   "words": [
+    "03014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 778,
+   "address": "06,2562",
+   "source": "CS OCT272",
+   "words": [
+    "42756"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 779,
+   "address": "06,2563",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 780,
+   "address": "06,2564",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 782,
+   "address": "06,2565",
+   "source": "CS BIT13",
+   "words": [
+    "45003"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 783,
+   "address": "06,2566",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 784,
+   "address": "06,2567",
+   "source": "WAND DSALMOUT",
+   "words": [
+    "03011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 786,
+   "address": "06,2570",
+   "source": "TC CAGESUB1",
+   "words": [
+    "02725"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 788,
+   "address": "06,2571",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04740"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 789,
+   "address": "06,2572",
+   "source": "CADR RNDREFDR",
+   "words": [
+    "17060"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 791,
+   "address": "06,2573",
+   "source": "CS ZERO",
+   "words": [
+    "45021"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 792,
+   "address": "06,2574",
+   "source": "TS CDUXCMD",
+   "words": [
+    "54050"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 793,
+   "address": "06,2575",
+   "source": "TS CDUYCMD",
+   "words": [
+    "54051"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 794,
+   "address": "06,2576",
+   "source": "TS CDUZCMD",
+   "words": [
+    "54052"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 795,
+   "address": "06,2577",
+   "source": "TS GYROCMD",
+   "words": [
+    "54047"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 797,
+   "address": "06,2600",
+   "source": "CS OCT740",
+   "words": [
+    "42761"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 798,
+   "address": "06,2601",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 799,
+   "address": "06,2602",
+   "source": "WAND CHAN14",
+   "words": [
+    "03014"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 801,
+   "address": "06,2603",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 827,
+   "address": "06,2604",
+   "source": "IMUOP EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 828,
+   "address": "06,2605",
+   "source": "BZF IMUOP2",
+   "words": [
+    "12625"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 830,
+   "address": "06,2606",
+   "source": "CS IMODES33",
+   "words": [
+    "41321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 831,
+   "address": "06,2607",
+   "source": "MASK BIT6",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 832,
+   "address": "06,2610",
+   "source": "ADS IMODES33",
+   "words": [
+    "27321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 834,
+   "address": "06,2611",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04740"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 835,
+   "address": "06,2612",
+   "source": "CADR RNDREFDR",
+   "words": [
+    "17060"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 837,
+   "address": "06,2613",
+   "source": "CS BITS7&8",
+   "words": [
+    "42757"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 838,
+   "address": "06,2614",
+   "source": "MASK STATE",
+   "words": [
+    "70074"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 839,
+   "address": "06,2615",
+   "source": "XCH STATE",
+   "words": [
+    "56074"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 840,
+   "address": "06,2616",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 841,
+   "address": "06,2617",
+   "source": "MASK IMUSEFLG",
+   "words": [
+    "75010"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 842,
+   "address": "06,2620",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 843,
+   "address": "06,2621",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 845,
+   "address": "06,2622",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 846,
+   "address": "06,2623",
+   "source": "OCT 214",
+   "words": [
+    "00214"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 847,
+   "address": "06,2624",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 849,
+   "address": "06,2625",
+   "source": "IMUOP2 CAF BIT2",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 850,
+   "address": "06,2626",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 851,
+   "address": "06,2627",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 852,
+   "address": "06,2630",
+   "source": "TCF NXTIFAIL",
+   "words": [
+    "12227"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 853,
+   "address": "06,2631",
+   "source": "TCF ITURNON2",
+   "words": [
+    "12551"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 877,
+   "address": "06,2632",
+   "source": "PIPFAIL CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 878,
+   "address": "06,2633",
+   "source": "CAF BIT10",
+   "words": [
+    "35006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 879,
+   "address": "06,2634",
+   "source": "XCH IMODES30",
+   "words": [
+    "57320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 880,
+   "address": "06,2635",
+   "source": "MASK -BIT10",
+   "words": [
+    "72763"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 881,
+   "address": "06,2636",
+   "source": "ADS IMODES30",
+   "words": [
+    "27320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 883,
+   "address": "06,2637",
+   "source": "TC SETISSW",
+   "words": [
+    "02665"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 885,
+   "address": "06,2640",
+   "source": "CS IMODES30",
+   "words": [
+    "41320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 886,
+   "address": "06,2641",
+   "source": "MASK BIT1",
+   "words": [
+    "75017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 887,
+   "address": "06,2642",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 888,
+   "address": "06,2643",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 890,
+   "address": "06,2644",
+   "source": "CA IMODES30",
+   "words": [
+    "31320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 891,
+   "address": "06,2645",
+   "source": "MASK OCT1720",
+   "words": [
+    "72760"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 892,
+   "address": "06,2646",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 893,
+   "address": "06,2647",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 895,
+   "address": "06,2650",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 896,
+   "address": "06,2651",
+   "source": "OCT 212",
+   "words": [
+    "00212"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 897,
+   "address": "06,2652",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 922,
+   "address": "06,2653",
+   "source": "DNTMFAST CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 923,
+   "address": "06,2654",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 925,
+   "address": "06,2655",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 926,
+   "address": "06,2656",
+   "source": "OCT 1105",
+   "words": [
+    "01105"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 927,
+   "address": "06,2657",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 929,
+   "address": "06,2660",
+   "source": "UPTMFAST CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 930,
+   "address": "06,2661",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 932,
+   "address": "06,2662",
+   "source": "TC ALARM",
+   "words": [
+    "05650"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 933,
+   "address": "06,2663",
+   "source": "OCT 1106",
+   "words": [
+    "01106"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 934,
+   "address": "06,2664",
+   "source": "TCF NXTFL33",
+   "words": [
+    "12425"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 964,
+   "address": "06,2665",
+   "source": "SETISSW CAF OCT15",
+   "words": [
+    "35025"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 965,
+   "address": "06,2666",
+   "source": "MASK IMODES30",
+   "words": [
+    "71320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 966,
+   "address": "06,2667",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 967,
+   "address": "06,2670",
+   "source": "MP BIT10",
+   "words": [
+    "75006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 968,
+   "address": "06,2671",
+   "source": "CA IMODES30",
+   "words": [
+    "31320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 969,
+   "address": "06,2672",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 970,
+   "address": "06,2673",
+   "source": "ROR LCHAN",
+   "words": [
+    "04001"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 971,
+   "address": "06,2674",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 972,
+   "address": "06,2675",
+   "source": "MASK OCT15000",
+   "words": [
+    "75067"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 973,
+   "address": "06,2676",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 974,
+   "address": "06,2677",
+   "source": "TCF ISSWON",
+   "words": [
+    "12710"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 976,
+   "address": "06,2700",
+   "source": "ISSWOFF CAF BIT1",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 977,
+   "address": "06,2701",
+   "source": "MASK IMODES33",
+   "words": [
+    "71321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 978,
+   "address": "06,2702",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 979,
+   "address": "06,2703",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 981,
+   "address": "06,2704",
+   "source": "CS BIT1",
+   "words": [
+    "45017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 982,
+   "address": "06,2705",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 983,
+   "address": "06,2706",
+   "source": "WAND DSALMOUT",
+   "words": [
+    "03011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 984,
+   "address": "06,2707",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 986,
+   "address": "06,2710",
+   "source": "ISSWON EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 988,
+   "address": "06,2711",
+   "source": "QXCH ITEMP6",
+   "words": [
+    "22066"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 989,
+   "address": "06,2712",
+   "source": "TC VARALARM",
+   "words": [
+    "05764"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 990,
+   "address": "06,2713",
+   "source": "CAF BIT1",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 991,
+   "address": "06,2714",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 992,
+   "address": "06,2715",
+   "source": "WOR DSALMOUT",
+   "words": [
+    "05011"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 993,
+   "address": "06,2716",
+   "source": "TC ITEMP6",
+   "words": [
+    "00066"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 995,
+   "address": "06,2717",
+   "source": "CAGESUB CS BIT15+6",
+   "words": [
+    "47703"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 996,
+   "address": "06,2720",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 997,
+   "address": "06,2721",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 998,
+   "address": "06,2722",
+   "source": "CAF BITS4&5",
+   "words": [
+    "35027"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 999,
+   "address": "06,2723",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1000,
+   "address": "06,2724",
+   "source": "WOR CHAN12",
+   "words": [
+    "05012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1002,
+   "address": "06,2725",
+   "source": "CAGESUB1 CS DSPTAB +11D",
+   "words": [
+    "41036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1003,
+   "address": "06,2726",
+   "source": "MASK OC40010",
+   "words": [
+    "72753"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1004,
+   "address": "06,2727",
+   "source": "ADS DSPTAB +11D",
+   "words": [
+    "27036"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1006,
+   "address": "06,2730",
+   "source": "CAGESUB2 CS IMODES30",
+   "words": [
+    "41320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1007,
+   "address": "06,2731",
+   "source": "MASK OCT75",
+   "words": [
+    "72755"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1008,
+   "address": "06,2732",
+   "source": "ADS IMODES30",
+   "words": [
+    "27320"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1010,
+   "address": "06,2733",
+   "source": "CS IMODES33",
+   "words": [
+    "41321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1011,
+   "address": "06,2734",
+   "source": "MASK BIT6",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1012,
+   "address": "06,2735",
+   "source": "ADS IMODES33",
+   "words": [
+    "27321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1014,
+   "address": "06,2736",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1022,
+   "address": "06,2737",
+   "source": "IFAILJMP TCF ITURNON",
+   "words": [
+    "12526"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1023,
+   "address": "06,2740",
+   "source": "TCF IMUFAIL",
+   "words": [
+    "12665"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1024,
+   "address": "06,2741",
+   "source": "TCF ICDUFAIL",
+   "words": [
+    "12665"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1025,
+   "address": "06,2742",
+   "source": "TCF IMUCAGE",
+   "words": [
+    "12555"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1026,
+   "address": "06,2743",
+   "source": "30RDMSK OCT 76400",
+   "words": [
+    "76400"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1027,
+   "address": "06,2744",
+   "source": "TCF IMUOP",
+   "words": [
+    "12604"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1029,
+   "address": "06,2745",
+   "source": "C33JMP TCF PIPFAIL",
+   "words": [
+    "12632"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1030,
+   "address": "06,2746",
+   "source": "TCF DNTMFAST",
+   "words": [
+    "12653"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1031,
+   "address": "06,2747",
+   "source": "TCF UPTMFAST",
+   "words": [
+    "12660"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1035,
+   "address": "06,2750",
+   "source": "LAMPTEST CS IMODES33",
+   "words": [
+    "41321"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1036,
+   "address": "06,2751",
+   "source": "MASK BIT1",
+   "words": [
+    "75017"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1037,
+   "address": "06,2752",
+   "source": "TCF ZOPFIN3",
+   "words": [
+    "13065"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1040,
+   "address": "06,2753",
+   "source": "OC40010 OCT 40010",
+   "words": [
+    "40010"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1041,
+   "address": "06,2754",
+   "source": "OCT54 OCT 54",
+   "words": [
+    "00054"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1042,
+   "address": "06,2755",
+   "source": "OCT75 OCT 75",
+   "words": [
+    "00075"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1043,
+   "address": "06,2756",
+   "source": "OCT272 OCT 00272",
+   "words": [
+    "00272"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1044,
+   "address": "06,2757",
+   "source": "BITS7&8 OCT 300",
+   "words": [
+    "00300"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1045,
+   "address": "06,2760",
+   "source": "OCT1720 OCT 1720",
+   "words": [
+    "01720"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1046,
+   "address": "06,2761",
+   "source": "OCT740 OCT 00740",
+   "words": [
+    "00740"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1048,
+   "address": "06,2762",
+   "source": "OCT77000 OCT 77000",
+   "words": [
+    "77000"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1049,
+   "address": "06,2763",
+   "source": "-BIT10 OCT -1000",
+   "words": [
+    "76777"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1051,
+   "address": "06,2764",
+   "source": "90SECS DEC 9000",
+   "words": [
+    "21450"
+   ],
+   "kind": "constant",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 1135,
+   "address": "06,3065",
+   "source": "ZOPFIN3 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1136,
+   "address": "06,3066",
+   "source": "INCR Q",
+   "words": [
+    "24002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 1137,
+   "address": "06,3067",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/cm_t4rupt_imu.c",
+   "executed_by_oracle": true
+  }
+ ]
+}

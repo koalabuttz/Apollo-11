@@ -3,7 +3,7 @@
   "mission": "Luminary099",
   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "cases": 1152,
-  "snapshot_sha256": "a71967a1d5c8baed2d8f4ab85f9ef062f5ee13d5c0a0b5b33fdca98470d04845",
+  "snapshot_sha256": "da8ad6cc524837a12a7472d7b96f7f6a02a4b9464bc0e506c154a0c9731950ce",
   "outcomes": {
    "04000 GOPROG lead-in:returned": 128,
    "04010 T5RUPT:returned": 128,
@@ -31,7 +31,7 @@
   "mission": "Comanche055",
   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
   "cases": 1920,
-  "snapshot_sha256": "93e4fd14e943db96d85d2e83a12a91f41ecb4df66157655f00ce9088a9e054e4",
+  "snapshot_sha256": "55edcc09eb70f576e7a0afa709a90cca6f106199e1eb023bda59ee964506e5b4",
   "outcomes": {
    "04000 GOPROG lead-in:returned": 128,
    "04004 T6RUPT:returned": 128,
@@ -44,10 +44,14 @@
    "04044 RADAR RUPT:returned": 128,
    "04050 HAND CONTROL RUPT:returned": 128,
    "04065 T5RUPT:returned": 128,
-   "05333 RESUME:returned": 128,
-   "05335 NOQRSM:returned": 128,
-   "05336 NOQRSM +1:returned": 128,
-   "05337 NOQBRSM:returned": 128
+   "05333 RESUME:refused": 4,
+   "05333 RESUME:returned": 124,
+   "05335 NOQRSM:refused": 4,
+   "05335 NOQRSM:returned": 124,
+   "05336 NOQRSM +1:refused": 4,
+   "05336 NOQRSM +1:returned": 124,
+   "05337 NOQBRSM:refused": 4,
+   "05337 NOQBRSM:returned": 124
   },
   "entries": [
    "04000 GOPROG lead-in",

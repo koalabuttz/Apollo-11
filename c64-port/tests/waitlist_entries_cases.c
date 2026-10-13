@@ -65,8 +65,29 @@ uint32_t wle_frozen_digest(uint16_t n){uint16_t i=index_in_kind(n);switch(wle_ki
 #endif
  default:return 0;}}
 #endif
-#if HAS(4)
+#if HAS(2)||HAS(3)||HAS(4)
 static uint32_t rnd(uint32_t *x){*x=*x*1103515245u+12345u;return *x>>8;}
+#endif
+#if HAS(2)||HAS(3)
+/* A DELAYJOB case with WLE_SANE set: a waitlist the way FRESH START and
+ * WAIT2 leave it, so DLY2 -1 inserts the task and reaches JOBSLEEP (the
+ * random image almost never does). A free DELAYLOC, a positive delay in A,
+ * TIME3 anywhere (its overflow test both ways), and 0-8 queued tasks with
+ * negative delta Ts in LST1 (NEG1/2 past them) and ENDTASK past them in LST2;
+ * one case in sixteen queues 9 (a full list), so the insertion pushes a task
+ * off the end and WAIT2 aborts. */
+static void sane_waitlist(apollo_overlay_state *s,uint8_t cm,uint16_t base){uint32_t x=0x7a11u+base*2654435761u;uint16_t i,c,
+ delayloc=cm?01141u:01326u,slots=cm?4u:3u,end=cm?05306u:05240u;
+ for(i=0;i<slots;++i)s->words[delayloc+i]=(agc_word)((rnd(&x)&1u)?0u:1u+rnd(&x)%077776u);
+ s->words[delayloc+rnd(&x)%slots]=0;
+ i=(uint16_t)(rnd(&x)%8u);s->words[0]=(agc_word)(i==0u?1u:i==1u?2u:i==2u?037777u:1u+rnd(&x)%(i<5u?0200u:037777u));
+ i=(uint16_t)(rnd(&x)%4u);s->words[026]=(agc_word)(i==0u?rnd(&x)%0200u:i==1u?037600u+rnd(&x)%0200u:rnd(&x)%040000u);
+ c=(uint16_t)(rnd(&x)%16u==0u?9u:rnd(&x)%9u);
+ for(i=0;i<8u;++i)s->words[01400u+i]=(agc_word)(i<c?077777u-rnd(&x)%(i==0u?040u:02000u):057777u);
+ /* One rnd() per statement: gcc and clang order calls within an expression differently. */
+ for(i=0;i<9u;++i){uint16_t fb=(uint16_t)(rnd(&x)%040u),sb=(rnd(&x)&1u)?0100u:0060u,eb=(uint16_t)(rnd(&x)%8u);
+  s->words[01410u+2u*i]=(agc_word)(i<c?02000u+rnd(&x)%01776u:end);
+  s->words[01411u+2u*i]=(agc_word)(i<c?(uint16_t)(fb<<10|sb|eb):04063u);}}
 #endif
 void wle_io(const void *io,uint8_t kind,uint16_t *superbank,uint16_t *enabled){
  if(kind==1u||kind==3u){const cm_native_io *c=io;*superbank=(uint16_t)c->superbank;*enabled=(uint16_t)c->interrupt_enabled;}
@@ -86,7 +107,8 @@ void wle_input(apollo_overlay_state *s,void *io,agc_hardware *hw,uint8_t kind,ui
  else if(kind==1u){static cm_exs_case c;cm_exs_input(s,io,&c,base);*hw=c.hw;vector_words(s,03416u);}
 #endif
 #if HAS(2)||HAS(3)
- else if(kind==2u||kind==3u){uint16_t superbank,inhint;svt_input(s,&superbank,&inhint,base);
+ else if(kind==2u||kind==3u){uint16_t superbank,inhint;svt_input(s,&superbank,&inhint,(uint16_t)(base&~WLE_SANE));
+  if(base&WLE_SANE)sane_waitlist(s,(uint8_t)(kind==3u),base);
   if(kind==2u){p66_bias_io *l=io;l->superbank=superbank;l->interrupt_enabled=(uint16_t)!inhint;}
   else{cm_native_io *c=io,cz={0};*c=cz;c->superbank=superbank;c->interrupt_enabled=!inhint;}}
 #endif
@@ -97,6 +119,8 @@ void wle_input(apollo_overlay_state *s,void *io,agc_hardware *hw,uint8_t kind,ui
   s->words[0]=(agc_word)(rnd(&x)&0177777u);s->words[1]=agc_extend((agc_word)(rnd(&x)&077777u));s->words[2]=(agc_word)(rnd(&x)&0177777u);
   s->words[3]=(agc_word)(eb<<8);s->words[4]=(agc_word)(fb<<10);s->words[6]=(agc_word)((fb<<10)|eb);s->words[5]=05275u;s->words[7]=0;
   s->words[015]=(agc_word)(1u+rnd(&x)%010000u);
+  /* The interrupt saved the instruction at ZRUPT-1 in BRUPT (#144). */
+  {agc_word at=(agc_word)(s->words[015]-1u);if(at<01400u)s->words[017]=s->words[at];else if(at<02000u)s->words[017]=s->words[eb*0400u+(at-01400u)];}
   l->superbank=(rnd(&x)&1u)?0100u:0060u;l->interrupt_enabled=0;hw->in_interrupt=1;}
 #endif
 }

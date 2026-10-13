@@ -7,13 +7,25 @@ Lane F. Milestone `lm-p-axis`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 `Luminary099/P-AXIS_RCS_AUTOPILOT.agc`, all of it: bank 16 `02213`-`03640`,
 790 assembled words. Nothing is left in the file.
 
-`src/lm_p_axis.c` registers fifteen routines in `lm_p_axis_routines`. Each
-runs from its entry until the original program leaves the file, and every
+`src/lm_p_axis.c` registers fifteen entries in `lm_p_axis_routines`, and
+thirteen part keys (below). Each entry runs until the original program leaves
+the file, and every
 source instruction is one `agc_image_ops` call (register effects checked
 against yaAGC by `tools/agc_image_ops_differential.py`), named with its
 erasable address or the source's fixed constant. MSU, DTCB and the channel
 orders (READ, RAND, WAND, WOR, RXOR on L) are small helpers with yaAGC's
 effect.
+
+The calls are routed at compile time: an operand that is a plain erasable
+cell under EBANK6 goes to the `agc_fast_ops` helper of the same name
+(`include/agc_fast_ops.h`: the cell resolved at compile time, A and L kept
+as image words 0 and 1, 6502 assembly cores for MP and DV), and any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_PA_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+P-AXIS takes about 71K 6502 cycles instead of 150K (mos-sim, `-Oz`).
 
 | Entry | Body |
 |---|---|
@@ -25,6 +37,18 @@ effect.
 | BACKP `16,2316` | from KALMAN_FILTER: rate derivation through SUBDIVDE and OVERSUB, the trap filters, the AOS terms, the trim gimbal timers, translation (CHKVISFZ, TRYUORV, ALTERYZ), the manual, detent and rate command modes, the P-axis RCS law (PURGENCY, PEGI) and jet selection (PJETSLEC, SELECTP), until the first call that leaves the file |
 | `16,2773` `16,3154` `16,3403` `16,3424` `16,3443` `16,3500` `16,3512` `16,3550` | the returns from those calls (ALARM in ABORTYZ, IBNKCALL to ZATTEROR, `TC WRITEP`, IBNKCALL to JTLST, `TC WRITEP -1`, IBNKCALL to SPSRCS, IBNKCALL to TJETLAW, ALARM in SELECTP), continuing the same flow |
 | CALCPERR `16,3446` | the P-axis attitude error; `TC Q` |
+
+BACKP's step machine runs as parts so that a flight module links only the
+code its routine reaches (every routine of the file fits the 8 KB task slot,
+`tools/flight_store_build.py`). A part ends where the original runs on to
+the next part's first word, with Z there and every register as the original
+leaves it, and that word is a key of its own: 16,2451 (after the rate
+derivation), Q-RATE, R-RATE, PRETIMCK, CHKVISFZ, TSNEXTP -1, TSNEXTP,
+DETENTCK, RATERROR, PJETSLEC -6, PJETSLEC -1, PURGENCY and PURGENCY +4. The
+transfer loop runs the next part at once, as the original does; the case
+harness counts a run through the parts as the one routine it was
+(`lm_pa_run`), so the digests are the ones frozen before the split.
+QRAXIS, JETSOFF and ABORTYZ +2 are short tails each part calls directly.
 
 The calls that leave the file end a routine with Z at the destination and
 Q (or the IBNKCALL operand) as the original leaves it: `TC BAILOUT`,

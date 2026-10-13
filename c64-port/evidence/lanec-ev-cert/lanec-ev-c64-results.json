@@ -1,25 +1,25 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "results": [
-  "PASS: VICE PAL lanec-ev-front.prg: 251 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-short.prg: 245 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-align.prg: 241 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-radar.prg: 223 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-dap.prg: 258 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-time.prg: 231 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-track.prg: 210 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-lmi.prg: 138 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-front.prg: 23 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-short.prg: 122 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-align.prg: 104 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-radar.prg: 31 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-dap.prg: 46 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-time.prg: 13 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-track.prg: 38 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-lmi.prg: 40 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-transfer.prg: 64 checks, 0 failures"
  ],
  "prg_sha256": {
-  "lanec-ev-front.prg": "8a34b91897d03fc387da9bd601c6559812eae2519a5eaf0ab51bbd80f7febcec",
-  "lanec-ev-short.prg": "f054616ccdafb536c7d38be42a97924300de7301a51de7ac7afff066b0d852b5",
-  "lanec-ev-align.prg": "b3e7267af2d5fe7aee6a3e4f8a3300b9037a4282491172bda59c13671ef2f863",
-  "lanec-ev-radar.prg": "05f33b6cdb75a02803c30de0c0630ef3d3626de0d7c8c952e2cb37ea859c73c3",
-  "lanec-ev-dap.prg": "092911e73b722ca32c884ffd4ec5081d0b509cea474e5b07d90fdbb6154a294e",
-  "lanec-ev-time.prg": "1de6eea7f2010e016bfc3f5af913a0d18f19e66a6176669b1231924b3d4b1ff9",
-  "lanec-ev-track.prg": "2ed55cd76a399cd875c85d939b5b9bc76206d128e27247438fcd9c1e6ad014f8",
-  "lanec-ev-lmi.prg": "6afdb2f19ac89e56a8c94c4b7a8d1019eb831d2fb848750c17960307a59f6f6d",
-  "lanec-ev-transfer.prg": "77c8ef3d7bd449e32711ed5c6db112ccccc340e043c28dca697c1e20901faf1f"
+  "lanec-ev-front.prg": "fcc6973c932096181040c8e2358fdd8f38ca4fb2ee233e0646bbc2277217277c",
+  "lanec-ev-short.prg": "1aa1e17b48c7d98e81c0670cf8a26615ca0d037416237a37a9fe3a1e06808d24",
+  "lanec-ev-align.prg": "c261b182ff53fa3cedc09a0558e3160155af58fde116952cdc878853730db8a1",
+  "lanec-ev-radar.prg": "9e9864b8ceac76062531be0e48dc6a42bdd1ee791fa5deaa7cdbcb9415695aee",
+  "lanec-ev-dap.prg": "048e63c9b4f2350c2f7d8a464f3f4cd211c413b8a4819c95a2b59121d8bbbf57",
+  "lanec-ev-time.prg": "d795b4390f442653d0949610f9f2c735e9120e569b2d4324b2f4e43db41fcc0f",
+  "lanec-ev-track.prg": "0ac0e8dbce65cb9268fd50f977f13e1e60a656a0cce7163e0374aa7c7deb3674",
+  "lanec-ev-lmi.prg": "19cdd6c7a9c12825002603cddce8e7df9f092fce54a177b80aa288300434b95c",
+  "lanec-ev-transfer.prg": "7c7cfece74e5665a174f505c90e5c7b4fb9be8e737e890a36a1e00bcdbbf3ec2"
  }
 }

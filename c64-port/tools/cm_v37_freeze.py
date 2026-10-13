@@ -27,12 +27,12 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/cm-v37.mk CM_V37_SRC), for the row cover.
-SRC = ['src/cm_v37.c', 'src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_v37_cases.c']
+SRC = ['src/cm_v37.c', 'src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_v37_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
 # The milestone's own words (bank 04 V37 ... RAKE, bank 20 VAC5STOR), physical.
 OWNED = [0o4 * 1024 + w - 0o2000 for w in range(0o2000, 0o2367)] + [0o20 * 1024 + w - 0o2000 for w in range(0o2000, 0o2064)]
 CORE = ['tests/cm_v37_cases.c', 'src/cm_v37.c', 'src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
+        'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 

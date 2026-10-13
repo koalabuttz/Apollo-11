@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-dapidler (lane F): Luminary099 DAPIDLER_PROGRAM as native
 # routines of the control-transfer ABI.
-LM_DI_SRC = src/lm_dapidler.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/lm_exec_routines.c src/lm_admission_image.c src/lm_waitlist_image.c src/waitlist.c src/executive.c src/p66_native.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_dapidler_cases.c
-LM_DI_HDR = include/lm_dapidler.h include/lm_flight_io.h include/agc_image_ops.h include/agc_transfer.h tests/lm_dapidler_cases.h
+LM_DI_SRC = src/lm_dapidler.c src/agc_fast_ops.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/lm_exec_routines.c src/lm_admission_image.c src/lm_waitlist_image.c src/waitlist.c src/executive.c src/p66_native.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_dapidler_cases.c
+LM_DI_HDR = include/lm_dapidler.h include/lm_flight_io.h include/agc_image_ops.h include/agc_fast_ops.h include/agc_image_thin.h include/agc_fast_redirect.h include/agc_transfer.h tests/lm_dapidler_cases.h
 LM_DI_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
 .PHONY: test-lm-dapidler sanitize-lm-dapidler c64-lm-dapidler vice-lm-dapidler lm-dapidler-differential
 all: build/test-lm-dapidler

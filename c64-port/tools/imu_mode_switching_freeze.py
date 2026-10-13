@@ -23,8 +23,8 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPES = [B / 'fixed-data/Luminary099/MAIN.agc.bin', B / 'fixed-data/Comanche055/MAIN.agc.bin']
-NATIVE = ['src/imu_mode_switching.c', 'src/agc_image_ops.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
-          'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
+NATIVE = ['src/imu_mode_switching.c', 'src/agc_image_ops.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c',
+          'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
           'src/agc_multiword.c', 'src/agc_hardware_divide.c', 'tests/imu_mode_switching_cases.c']
 CORE = NATIVE + ['tests/cm_executive_cases.c', str(B / 'agc_engine_no_imu_device.o'),
                  str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
@@ -124,6 +124,7 @@ def main():
              'rope_sha256': [hashlib.sha256(p.read_bytes()).hexdigest() for p in ROPES],
              'oracle_engine': 'pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block '
                               '(build/no-imu-device.patch)',
+             'source_sha256': {s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in NATIVE},
              'cases': len(rows), 'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'stops': {k: dict(sorted(v.items())) for k, v in stops.items()},
              'boundary': 'entry cases: from the routine to the first external address, the subroutine '

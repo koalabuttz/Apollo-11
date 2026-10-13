@@ -1,0 +1,1716 @@
+{
+ "milestone": "interbank-oracle",
+ "oracle": "yaAGC agc_engine from the original ropes, tools/interbank_oracle_reference.c",
+ "missions": {
+  "Luminary099": {
+   "source_path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+   "source_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+   "registered_entries": 14,
+   "source_words": 76,
+   "source_lines_with_words": 76,
+   "instructions": 76,
+   "instructions_executed_by_oracle": 76,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 36,
+     "address": "FF,4616",
+     "source": "BANKCALL DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 37,
+     "address": "FF,4617",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 38,
+     "address": "FF,4620",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 39,
+     "address": "FF,4621",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall_m1)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 43,
+     "address": "FF,4622",
+     "source": "SWCALL TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 44,
+     "address": "FF,4623",
+     "source": "LXCH FBANK",
+     "words": [
+      "22004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 45,
+     "address": "FF,4624",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 46,
+     "address": "FF,4625",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 47,
+     "address": "FF,4626",
+     "source": "DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 48,
+     "address": "FF,4627",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 49,
+     "address": "FF,4630",
+     "source": "TC 10000",
+     "words": [
+      "02000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 51,
+     "address": "FF,4631",
+     "source": "SWRETURN XCH BUF2 +1",
+     "words": [
+      "56134"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 52,
+     "address": "FF,4632",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 53,
+     "address": "FF,4633",
+     "source": "XCH BUF2 +1",
+     "words": [
+      "56134"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 54,
+     "address": "FF,4634",
+     "source": "TC BUF2",
+     "words": [
+      "00133"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 59,
+     "address": "FF,4635",
+     "source": "POSTJUMP XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 60,
+     "address": "FF,4636",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 61,
+     "address": "FF,4637",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (lm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 65,
+     "address": "FF,4640",
+     "source": "BANKJUMP TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 66,
+     "address": "FF,4641",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 67,
+     "address": "FF,4642",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 68,
+     "address": "FF,4643",
+     "source": "Q+10000 INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (qjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 69,
+     "address": "FF,4644",
+     "source": "PRIO12 TCF 10000",
+     "words": [
+      "12000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (qjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 74,
+     "address": "FF,4645",
+     "source": "MAKECADR CAF LOW10",
+     "words": [
+      "35012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 75,
+     "address": "FF,4646",
+     "source": "MASK BUF2",
+     "words": [
+      "70133"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 76,
+     "address": "FF,4647",
+     "source": "AD BUF2 +1",
+     "words": [
+      "60134"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 77,
+     "address": "FF,4650",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 79,
+     "address": "FF,4651",
+     "source": "SUPDACAL TS MPTEMP",
+     "words": [
+      "54135"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 80,
+     "address": "FF,4652",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 81,
+     "address": "FF,4653",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 82,
+     "address": "FF,4654",
+     "source": "ROR SUPERBNK",
+     "words": [
+      "04007"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 83,
+     "address": "FF,4655",
+     "source": "XCH MPTEMP",
+     "words": [
+      "56135"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 84,
+     "address": "FF,4656",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 85,
+     "address": "FF,4657",
+     "source": "XCH L",
+     "words": [
+      "56001"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 86,
+     "address": "FF,4660",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 87,
+     "address": "FF,4661",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 88,
+     "address": "FF,4662",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 89,
+     "address": "FF,4663",
+     "source": "INDEX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 90,
+     "address": "FF,4664",
+     "source": "CA 10000",
+     "words": [
+      "32000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 91,
+     "address": "FF,4665",
+     "source": "XCH MPTEMP",
+     "words": [
+      "56135"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 92,
+     "address": "FF,4666",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 93,
+     "address": "FF,4667",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 94,
+     "address": "FF,4670",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 95,
+     "address": "FF,4671",
+     "source": "TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 96,
+     "address": "FF,4672",
+     "source": "CA MPTEMP",
+     "words": [
+      "30135"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 97,
+     "address": "FF,4673",
+     "source": "RETURN",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 102,
+     "address": "FF,4674",
+     "source": "IBNKCALL DXCH RUPTREG3",
+     "words": [
+      "52073"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 103,
+     "address": "FF,4675",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 104,
+     "address": "FF,4676",
+     "source": "CAF 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 105,
+     "address": "FF,4677",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 107,
+     "address": "FF,4700",
+     "source": "ISWCALLL TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 108,
+     "address": "FF,4701",
+     "source": "LXCH FBANK",
+     "words": [
+      "22004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 109,
+     "address": "FF,4702",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 110,
+     "address": "FF,4703",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 111,
+     "address": "FF,4704",
+     "source": "DXCH RUPTREG3",
+     "words": [
+      "52073"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 112,
+     "address": "FF,4705",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 113,
+     "address": "FF,4706",
+     "source": "TC 10000",
+     "words": [
+      "02000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswcalll)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 115,
+     "address": "FF,4707",
+     "source": "ISWRETRN XCH RUPTREG4",
+     "words": [
+      "56073"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 116,
+     "address": "FF,4710",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 117,
+     "address": "FF,4711",
+     "source": "XCH RUPTREG4",
+     "words": [
+      "56073"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 118,
+     "address": "FF,4712",
+     "source": "TC RUPTREG3",
+     "words": [
+      "00072"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 126,
+     "address": "FF,4713",
+     "source": "USPRCADR TS LOC",
+     "words": [
+      "54164"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 127,
+     "address": "FF,4714",
+     "source": "CA BIT8",
+     "words": [
+      "34744"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 128,
+     "address": "FF,4715",
+     "source": "TS EDOP",
+     "words": [
+      "54023"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 129,
+     "address": "FF,4716",
+     "source": "CA BBANK",
+     "words": [
+      "30006"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 130,
+     "address": "FF,4717",
+     "source": "TS BANKSET",
+     "words": [
+      "54165"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 131,
+     "address": "FF,4720",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 132,
+     "address": "FF,4721",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 133,
+     "address": "FF,4722",
+     "source": "TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 134,
+     "address": "FF,4723",
+     "source": "MASK LOW10",
+     "words": [
+      "75012"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 135,
+     "address": "FF,4724",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 136,
+     "address": "FF,4725",
+     "source": "XCH LOC",
+     "words": [
+      "56164"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 137,
+     "address": "FF,4726",
+     "source": "TCF Q+10000",
+     "words": [
+      "14643"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 172,
+     "address": "FF,4727",
+     "source": "SUPERSW EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 173,
+     "address": "FF,4730",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 175,
+     "address": "FF,4731",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/lm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    }
+   ]
+  },
+  "Comanche055": {
+   "source_path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+   "source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "registered_entries": 14,
+   "source_words": 76,
+   "source_lines_with_words": 76,
+   "instructions": 76,
+   "instructions_executed_by_oracle": 76,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 41,
+     "address": "FF,4662",
+     "source": "BANKCALL DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 42,
+     "address": "FF,4663",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 43,
+     "address": "FF,4664",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_bankcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 44,
+     "address": "FF,4665",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall_m1)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 48,
+     "address": "FF,4666",
+     "source": "SWCALL TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 49,
+     "address": "FF,4667",
+     "source": "LXCH FBANK",
+     "words": [
+      "22004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 50,
+     "address": "FF,4670",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 51,
+     "address": "FF,4671",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 52,
+     "address": "FF,4672",
+     "source": "DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 53,
+     "address": "FF,4673",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 54,
+     "address": "FF,4674",
+     "source": "TC 10000",
+     "words": [
+      "02000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 56,
+     "address": "FF,4675",
+     "source": "SWRETURN XCH BUF2 +1",
+     "words": [
+      "56134"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 57,
+     "address": "FF,4676",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 58,
+     "address": "FF,4677",
+     "source": "XCH BUF2 +1",
+     "words": [
+      "56134"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 59,
+     "address": "FF,4700",
+     "source": "TC BUF2",
+     "words": [
+      "00133"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_swreturn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 64,
+     "address": "FF,4701",
+     "source": "POSTJUMP XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 65,
+     "address": "FF,4702",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 66,
+     "address": "FF,4703",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (cm_ib_postjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 70,
+     "address": "FF,4704",
+     "source": "BANKJUMP TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 71,
+     "address": "FF,4705",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 72,
+     "address": "FF,4706",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (bankjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 73,
+     "address": "FF,4707",
+     "source": "Q+10000 INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (qjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 74,
+     "address": "FF,4710",
+     "source": "PRIO12 TCF 10000",
+     "words": [
+      "12000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (qjump)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 79,
+     "address": "FF,4711",
+     "source": "MAKECADR CAF LOW10",
+     "words": [
+      "35054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 80,
+     "address": "FF,4712",
+     "source": "MASK BUF2",
+     "words": [
+      "70133"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 81,
+     "address": "FF,4713",
+     "source": "AD BUF2 +1",
+     "words": [
+      "60134"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 82,
+     "address": "FF,4714",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (makecadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 84,
+     "address": "FF,4715",
+     "source": "SUPDACAL TS MPTEMP",
+     "words": [
+      "54135"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 85,
+     "address": "FF,4716",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 86,
+     "address": "FF,4717",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 87,
+     "address": "FF,4720",
+     "source": "ROR SUPERBNK",
+     "words": [
+      "04007"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 88,
+     "address": "FF,4721",
+     "source": "XCH MPTEMP",
+     "words": [
+      "56135"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 89,
+     "address": "FF,4722",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 90,
+     "address": "FF,4723",
+     "source": "XCH L",
+     "words": [
+      "56001"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 91,
+     "address": "FF,4724",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 92,
+     "address": "FF,4725",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 93,
+     "address": "FF,4726",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 94,
+     "address": "FF,4727",
+     "source": "INDEX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 95,
+     "address": "FF,4730",
+     "source": "CA 10000",
+     "words": [
+      "32000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 96,
+     "address": "FF,4731",
+     "source": "XCH MPTEMP",
+     "words": [
+      "56135"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 97,
+     "address": "FF,4732",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 98,
+     "address": "FF,4733",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 99,
+     "address": "FF,4734",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 100,
+     "address": "FF,4735",
+     "source": "TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 101,
+     "address": "FF,4736",
+     "source": "CA MPTEMP",
+     "words": [
+      "30135"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 102,
+     "address": "FF,4737",
+     "source": "RETURN",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supdacal)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 107,
+     "address": "FF,4740",
+     "source": "IBNKCALL DXCH RUPTREG3",
+     "words": [
+      "52073"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 108,
+     "address": "FF,4741",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 110,
+     "address": "FF,4742",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 111,
+     "address": "FF,4743",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (ibnkcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 113,
+     "address": "FF,4744",
+     "source": "ISWCALL TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 114,
+     "address": "FF,4745",
+     "source": "LXCH FBANK",
+     "words": [
+      "22004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 115,
+     "address": "FF,4746",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 116,
+     "address": "FF,4747",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 117,
+     "address": "FF,4750",
+     "source": "DXCH RUPTREG3",
+     "words": [
+      "52073"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 118,
+     "address": "FF,4751",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 119,
+     "address": "FF,4752",
+     "source": "TC 10000",
+     "words": [
+      "02000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswcall)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 121,
+     "address": "FF,4753",
+     "source": "ISWRETRN XCH RUPTREG4",
+     "words": [
+      "56073"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 122,
+     "address": "FF,4754",
+     "source": "XCH FBANK",
+     "words": [
+      "56004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 123,
+     "address": "FF,4755",
+     "source": "XCH RUPTREG4",
+     "words": [
+      "56073"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 124,
+     "address": "FF,4756",
+     "source": "TC RUPTREG3",
+     "words": [
+      "00072"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (iswretrn)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 131,
+     "address": "FF,4757",
+     "source": "USPRCADR TS LOC",
+     "words": [
+      "54164"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 132,
+     "address": "FF,4760",
+     "source": "CA BIT8",
+     "words": [
+      "35010"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 133,
+     "address": "FF,4761",
+     "source": "TS EDOP",
+     "words": [
+      "54023"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 134,
+     "address": "FF,4762",
+     "source": "CA BBANK",
+     "words": [
+      "30006"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 135,
+     "address": "FF,4763",
+     "source": "TS BANKSET",
+     "words": [
+      "54165"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 136,
+     "address": "FF,4764",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 137,
+     "address": "FF,4765",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 138,
+     "address": "FF,4766",
+     "source": "TS FBANK",
+     "words": [
+      "54004"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 139,
+     "address": "FF,4767",
+     "source": "MASK LOW10",
+     "words": [
+      "75054"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 140,
+     "address": "FF,4770",
+     "source": "XCH Q",
+     "words": [
+      "56002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 141,
+     "address": "FF,4771",
+     "source": "XCH LOC",
+     "words": [
+      "56164"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 142,
+     "address": "FF,4772",
+     "source": "TCF Q+10000",
+     "words": [
+      "14707"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (usprcadr)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 176,
+     "address": "FF,4773",
+     "source": "SUPERSW EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 177,
+     "address": "FF,4774",
+     "source": "WRITE SUPERBNK",
+     "words": [
+      "01007"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 179,
+     "address": "FF,4775",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/cm_interbank_routines.c (supersw)",
+     "executed_by_oracle": true
+    }
+   ]
+  }
+ },
+ "native": {
+  "src/lm_interbank_routines.c": "10ba9f22b3e445a958fe874d7cd96e74834def56ac7e4fb5b8ba27fd102d875b",
+  "src/lm_interbank_idle.c": "021083bb31184b943adca23b24d25f270813a2f8c2edea259bd9f43ed1514302",
+  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
+  "src/cm_interbank_routines.c": "4d32b047e9bd683285c39b02e51331579aa55991cee3672f23fd1258900ec218",
+  "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/lm_interbank_sites.inc": "6ac164f83c20e671d53416074796258036904d62736ac3b23dbdf3cf071f76d7",
+  "src/cm_interbank_sites.inc": "645a474c2e1d438db4e5f5290bf04b50383935028a592843b58b9c3ace3bca1b",
+  "include/lm_interbank_routines.h": "9d8b7f2df6df722d50b7e0a7133575e75d7213d6ac771d3b0c3685907a461233",
+  "include/cm_interbank_routines.h": "8a2401a69d59564509fa43286e5c8f3c7030426512b2f53c8707b2346c4cb188"
+ }
+}

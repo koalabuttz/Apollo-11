@@ -15,6 +15,10 @@ typedef struct {
     uint16_t stop_count;
     const lanec_range *range_list;       /* more translated code (NULL: none) */
     uint16_t range_count;
+    /* With stop_q set, stop[0] counts only when Q is also stop_q_value (an
+     * exit address the program passes earlier with another return address). */
+    uint8_t stop_q;
+    uint16_t stop_q_value;
     /* Interpretive code: when newops is set, the oracle also stops at that
      * address (the interpreter's NEWOPS) once LOC, in the bank FB selects,
      * leaves the interpretive words listed in loc[]. */

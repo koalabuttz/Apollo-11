@@ -3,24 +3,29 @@
   "milestone": "sband-antenna",
   "release": "evidence-sband-antenna",
   "files": {
+    "sband-antenna-c64-cover.json": {
+      "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610",
+      "bytes": 4904,
+      "store": "tree"
+    },
     "sband-antenna-c64-outcomes.json": {
-      "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a",
-      "bytes": 656,
+      "sha256": "60058cac04238adac3d0fd71c7b5ee9e007906945366a5aef4c6a497666067ea",
+      "bytes": 804,
       "store": "tree"
     },
     "sband-antenna-differential.log": {
-      "sha256": "d9f037e7887918aacf9a110db5f64148f116a838782eba1eb3fc2948e444dcd0",
-      "bytes": 4619,
+      "sha256": "eb22a82c7311002e5f44445e5ae4f7f18514549959a9d0d48a2546220ffa7487",
+      "bytes": 149963,
       "store": "release"
     },
     "sband-antenna-host.log": {
-      "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6",
-      "bytes": 1062,
+      "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1",
+      "bytes": 1077,
       "store": "release"
     },
     "sband-antenna-proof.json": {
-      "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433",
-      "bytes": 8908,
+      "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6",
+      "bytes": 12335,
       "store": "tree"
     },
     "sband-antenna-source-map.json": {
@@ -29,8 +34,8 @@
       "store": "tree"
     },
     "sband-antenna-vice.log": {
-      "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
-      "bytes": 12030,
+      "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
+      "bytes": 8209,
       "store": "release"
     }
   }

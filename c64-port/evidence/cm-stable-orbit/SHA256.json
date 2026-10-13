@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-stable-orbit",
+  "release": "evidence-cm-stable-orbit",
+  "files": {
+    "cm-stable-orbit-differential.log": {
+      "sha256": "00438c60be322a3073afb017d80ec79f53b0b1fe11045f384bbe053271c6d547",
+      "bytes": 3641,
+      "store": "tree"
+    },
+    "cm-stable-orbit-host.log": {
+      "sha256": "ea69cd19e9f49b6875918d9110f68c3ec324b05f2ad2313deb451d479560c6a0",
+      "bytes": 1058,
+      "store": "tree"
+    },
+    "cm-stable-orbit-proof.json": {
+      "sha256": "d340184cccb8e5a47c1bbd784d35ef7544db4ab06d37bd9ef7b50164596efa10",
+      "bytes": 9631,
+      "store": "tree"
+    },
+    "cm-stable-orbit-source-map.json": {
+      "sha256": "e7e75083785a66e4eea524ca996dbb118945d6453dbe69182fc656bfb5f8554a",
+      "bytes": 31369,
+      "store": "tree"
+    },
+    "cm-stable-orbit-vice.log": {
+      "sha256": "26f8fa1b31edab81af67739beb216885198e375ad2885cbd937ce240e5a4eea1",
+      "bytes": 1084,
+      "store": "tree"
+    }
+  }
+}

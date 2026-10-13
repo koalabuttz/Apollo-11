@@ -4,7 +4,7 @@
   "release": "evidence-lm-v37",
   "files": {
     "lm-v37-c64-cover.json": {
-      "sha256": "4b5f324408ee35989378de5d431c47a532ff67d14e3afc3783e60918dbdfa6ee",
+      "sha256": "9a0b061c4597999c22ad7f005a842bf3418f1771e2db48fc29a085527ba98fc5",
       "bytes": 3863,
       "store": "tree"
     },
@@ -14,18 +14,18 @@
       "store": "release"
     },
     "lm-v37-host.log": {
-      "sha256": "0598273530076dbafaf11d60fa96705117f768ae5c253b2e30c89cdcb655253e",
-      "bytes": 1775,
+      "sha256": "dd6c84403c4ceb15d3221ad70d3e5b636436cc6f9be0d3090f9941dc8c695859",
+      "bytes": 1805,
       "store": "release"
     },
     "lm-v37-proof.json": {
-      "sha256": "0d4c0f5ffc422be6fcbc6e7369f04762e83d7a930c0ee4f466ba5d1129fafffe",
+      "sha256": "8380117efedf86253d0fac270d4a605f9b9c4b265f1a391fec6aad8b42394a09",
       "bytes": 850,
       "store": "tree"
     },
     "lm-v37-vice.log": {
-      "sha256": "6bcd14b376e9264787f92933f9e4bb4c31ab542b9c80d04a840c0ee110200e07",
-      "bytes": 596,
+      "sha256": "10aba4e811577be449aece99ee26bbbf1d224cac565025fdd6139689b4f963fc",
+      "bytes": 194,
       "store": "release"
     }
   }

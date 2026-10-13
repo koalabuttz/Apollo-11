@@ -29,6 +29,8 @@ sys.path.insert(0, str(ROOT / 'tools/lanec'))
 import symbols  # noqa: E402
 
 FILE = 'DISPLAY_INTERFACE_ROUTINES.agc'
+# the include name in the listing, where it differs from FILE
+LISTING = {'PINBALL_GAME_BUTTONS_AND_LIGHTS.agc': 'PINBALL_GAME__BUTTONS_AND_LIGHTS.agc'}
 SUITES = ('di-dsp', 'di-mark', 'di-play', 'di-sleep', 'di-idle', 'di-nvdsp')
 MODULE = {'lanec-di-dsp': 'src/lanec_di_dsp.c', 'lanec-di-mark': 'src/lanec_di_mark.c',
           'lanec-di-play': 'src/lanec_di_play.c', 'lanec-di-sleep': 'src/lanec_di_sleep.c',
@@ -61,14 +63,17 @@ def norm(text, mission):
     code = ' '.join(text.split('#', 1)[0].split())
     if mission == 'CM':
         code = code.replace('CAF EBANKSAV', 'CA EBANKSAV')
+    # The transcribed Luminary099 Pinball reads TC DSPOCTWO; the rope assembles DSPOCTWD.
+    code = re.sub(r'\bDSPOCTWO\b', 'DSPOCTWD', code)
     # yaYUL lists a relative address +8 as +8D
     return re.sub(r'(?<=\s)([+-]\d+)D(?=\s|$)', r'\1', code)
 
 
 def listing_words(mission):
     lines = (ROOT / 'deps' / FIXTURE[mission] / 'assembly.lst').read_text(errors='replace').splitlines()
-    start = next(i for i, l in enumerate(lines) if '$' + FILE in l)
-    end = next(i for i, l in enumerate(lines) if f'End of include-file {FILE}' in l)
+    name = LISTING.get(FILE, FILE)
+    start = next(i for i, l in enumerate(lines) if '$' + name in l)
+    end = next(i for i, l in enumerate(lines) if f'End of include-file {name}' in l)
     rows = []
     for l in lines[start:end]:
         m = re.match(r'^\d+,\d+:\s+(?:([0-7]{2}),)?([0-7]{4})\s+([0-7]{5})(?:\s+([0-7]{5}))?\s+(.*)$', l)

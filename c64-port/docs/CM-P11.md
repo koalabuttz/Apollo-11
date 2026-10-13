@@ -9,6 +9,7 @@ Lane A2 (restart and telemetry; the file waited on Lane G's whole-file basic too
 Entries other files reach, all registered routines: P11 (POSTJUMP from IMU_CALIBRATION_AND_ALIGNMENT), MATRXJOB, REP11A, REP11 and ATERTASK (RESTART_TABLES; MATRXJOB also by BANKCALL), ATERJOB (FINDVAC), REDOSAT (FRESH_START_AND_RESTART), S11.1 and SATSTKON (P40-P47). The other routines are the continuations after outside calls, the file's own transfer targets and every interpretive word that can follow a DANZIG (a CHANG2 resume key).
 
 The spec states the facts the cases need:
+- TIME2 (024) is +0 in half of every routine's cases, as it is for the first 163.84 s after liftoff (P11's DXCH TIME2 zeroes TIME2 and TIME1), with TIME1 (025) at 0, 1, 100, 199, 200, 201, 3000 or 037777. These reach ATTDISP's BZMF TIME2 into the pitch polynomial, REP11's CCS TIME2 +0 exit, and the CCS A -0 exit when TIME1 is 2SECS (200).
 - STICKCHK's rate indexes RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2.
 - SATSW (E6,1725), the boost takeover switch, holds +1, +0 or -1.
 - RESCALES can return with overflow in A: TS AK2 then skips into SATOUT's CADR NEEDLER, which the AGC runs as CS 2420 (on to ATERSET). The port does the same (`execute_data` 34,2472).
@@ -28,4 +29,4 @@ Hashes: `evidence/cm-p11/SHA256.json`. Bulk files are assets of the `evidence-cm
 - **Source map.** `cm-p11-source-map.json` lists every word with the routine that compiles it: 535 words, none untranslated.
 - **Independent assembly comparison.** `make cm-p11-differential`: 256 states per routine (37,888 cases) equal the pinned flight-device yaAGC in Z, all 2,048 erasable words, the interrupt-enable state, and channels 12, 30 and 31 with the 31A/31B/32 trap flags. Every 64th case is frozen in `tests/cm_p11_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-p11 sanitize-cm-p11` runs the 592 frozen cases (`cm-p11-host.log`).
-- **C64 execution results.** `make vice-cm-p11` runs eight diagnostics with 203 cases (`cm-p11-vice.log`). They reach all 284 compiled labels and all 2,232 edges, and take all 1,141 gcov branch arcs the host cases take over every linked source (`cm-p11-proof.json`, `c64_coverage` and `c64_gcov_branches`).
+- **C64 execution results.** `make vice-cm-p11` runs eight diagnostics with 202 cases (`cm-p11-vice.log`). They reach all 292 labels the host cases reach and all 2,243 edges, and take all 1,148 gcov branch arcs the host cases take over every linked source (`cm-p11-proof.json`, `c64_coverage` and `c64_gcov_branches`).

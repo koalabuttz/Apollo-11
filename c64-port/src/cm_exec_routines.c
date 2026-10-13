@@ -121,12 +121,14 @@ static enum exec_status vardelay(const agc_native_program *p,apollo_overlay_stat
 static const uint8_t leadin[10]={0,1,2,3,4,6,010,011,012,016};
 /* body: entered at T3RUPT 01,3416 itself (the vector's TCF T3RUPT), with
  * BB = T3RPTBB and A the interrupted BB. */
-static enum exec_status t3(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *io,bool body){agc_word saved[10],old_bb,q;uint8_t i;
- if(!p||!p->hardware||!s||!io||p->hardware->in_interrupt!=1u||agc_overflow(W[0])||W[012]>07777u)return EXEC_OUT_OF_SCOPE;
- if(body&&(W[7]||W[6]!=BB_LST1||(agc_correct(W[0])&(agc_word)~076007u)||W[2]>07777u))return EXEC_OUT_OF_SCOPE;
+static enum exec_status t3(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *io,bool body){agc_word saved[10],old_bb;uint8_t i;
+ if(!p||!p->hardware||!s||!io||p->hardware->in_interrupt!=1u||agc_overflow(W[0]))return EXEC_OUT_OF_SCOPE;
+ if(body&&(W[7]||W[6]!=BB_LST1||(agc_correct(W[0])&(agc_word)~076007u)))return EXEC_OUT_OF_SCOPE;
  for(i=0;i<10u;++i)saved[i]=W[leadin[i]];
  if(body)old_bb=agc_correct(W[0]);else{dxch(s,010);old_bb=W[6];banks(s,BB_LST1);}
- W[0]=(agc_word)(old_bb|io->superbank);W[016]=W[0];q=W[2];W[2]=W[012];W[012]=q;
+ W[0]=(agc_word)(old_bb|io->superbank);W[016]=W[0];
+ /* QXCH QRUPT: Q may hold data, not an address (TPAGREE leaves POSMAX, #143). */
+ {agc_word q=W[2];W[2]=agc_extend(W[012]);W[012]=agc_correct(q);}
  /* A refused T3RUPT2 writes nothing itself. */
  if(cm_task_transfer(s,io,CM_TASK_DISPATCH)!=CM_TASK_SELECTED){for(i=0;i<10u;++i)W[leadin[i]]=saved[i];return EXEC_OUT_OF_SCOPE;}
  return EXEC_OK;
@@ -142,6 +144,8 @@ static enum exec_status dly2_m1(const agc_native_program *p,apollo_overlay_state
 static enum exec_status taskover(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;agc_word eb,fb,bb,super;enum cm_task_transfer_exit x;
  if(!p||!p->hardware||!s||!io||p->hardware->in_interrupt!=1u)return EXEC_OUT_OF_SCOPE;
  if(W[0734]==AGC_NEG_ZERO&&(W[015]==0u||W[015]>010000u))return EXEC_OUT_OF_SCOPE;
+ /* RESUME: BRUPT is the word at ZRUPT-1 under BANKRUPT's banks and superbank (#144). */
+ if(W[0734]==AGC_NEG_ZERO&&!agc_resume_exact(p,s,(agc_word)(W[016]&076000u),(agc_word)((W[016]&7u)<<8),(agc_word)(W[016]&0160u)))return EXEC_OUT_OF_SCOPE;
  /* A refused dispatch has only switched to the Waitlist bank. */
  eb=W[3];fb=W[4];bb=W[6];super=io->superbank;x=cm_task_transfer(s,io,CM_TASK_FINISH);
  if(x==CM_TASK_SELECTED)return EXEC_OK;

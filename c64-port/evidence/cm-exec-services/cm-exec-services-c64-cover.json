@@ -1,0 +1,38 @@
+{
+  "milestone": "cm-exec-services",
+  "tool": "tools/c64_row_cover.py (via tools/lane_a_c64_cover.py)",
+  "reproduce": "python3 tools/lane_a_c64_cover.py --check cm-exec-services",
+  "linked_sources": [
+    "src/agc_multiword.c",
+    "src/agc_transfer.c",
+    "src/agc_word.c",
+    "src/cm_admission_zero.c",
+    "src/cm_exec_routines.c",
+    "src/cm_executive.c",
+    "src/cm_native_image.c",
+    "src/cm_task_transfer.c",
+    "src/cm_waitlist.c",
+    "src/cm_waitlist_extended.c",
+    "src/cm_waitlist_internal.c",
+    "tests/cm_exec_services_cases.c"
+  ],
+  "defines": [],
+  "host_cases": 7648,
+  "host_branch_arcs": 658,
+  "c64_rows": 487,
+  "stride_rows": 478,
+  "cover_rows": 9,
+  "cover_cases": [
+    285,
+    755,
+    4129,
+    4130,
+    4148,
+    5623,
+    5881,
+    5885,
+    6626
+  ],
+  "c64_branch_arcs": 658,
+  "host_branches_missing_on_c64": []
+}

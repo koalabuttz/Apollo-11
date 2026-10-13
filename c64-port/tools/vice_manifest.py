@@ -117,9 +117,10 @@ def cmd_merge(args):
     pieces = [json.loads(p.read_text()) for p in args.pieces]
     jobs = dict(job.split('=', 1) for job in args.job)
     main = next((p for p in pieces if 'certificates' in p), pieces[0] if pieces else {})
-    targets = {}
+    targets, cover = {}, {}
     for piece in pieces:
         targets.update(piece['targets'])
+        cover.update(piece.get('c64_cover', {}))   # (tools/cover_check.py pieces)
     manifest = {
         'schema': SCHEMA, 'commit': main.get('commit'), 'ref': os.environ.get('MANIFEST_REF', ''),
         'event': os.environ.get('GITHUB_EVENT_NAME', ''), 'run_id': os.environ.get('GITHUB_RUN_ID', ''),
@@ -127,7 +128,8 @@ def cmd_merge(args):
         'date': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         'complete': len(pieces) == args.expect and all(r in ('success', 'failure') for r in jobs.values()),
         'jobs': jobs, 'pieces': sorted(p['name'] for p in pieces),
-        'targets': dict(sorted(targets.items())), 'certificates': main.get('certificates', {})}
+        'targets': dict(sorted(targets.items())), 'certificates': main.get('certificates', {}),
+        'c64_cover': dict(sorted(cover.items()))}
     args.out.write_text(json.dumps(manifest, indent=1) + '\n')
     passed = sum(t['status'] == 'pass' for t in targets.values())
     print(f'{args.out}: {passed}/{len(targets)} vice targets passed at {manifest["commit"]}, '

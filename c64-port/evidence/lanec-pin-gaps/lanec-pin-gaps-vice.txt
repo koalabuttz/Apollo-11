@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-pin-gaps.prg: 223 checks, 0 failures
+PASS: VICE PAL lanec-pin-gaps.prg: 50 checks, 0 failures

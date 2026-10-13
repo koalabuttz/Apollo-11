@@ -11,6 +11,7 @@
  * the original program holds when it reaches that boundary, including Z
  * (the boundary address), Q, A/L debris, FB/BB and the superbank. Nothing
  * here fetches, decodes or executes source instructions. */
+#include <stdbool.h>
 #include "overlay_runtime.h"
 #include "agc_word.h"
 
@@ -32,11 +33,28 @@ typedef struct {
 
 enum lanec_status { LANEC_OK = 0, LANEC_OUT_OF_SCOPE = 1 };
 enum lanec_mission { LANEC_LM = 0, LANEC_CM = 1 };
+/* A flight-store module is linked for one mission (RK_LM or RK_CM), so each
+ * run fixes its mission and the other mission's code drops out of the link;
+ * the other mission's entries refuse. */
+#if defined(RK_LM) && !defined(RK_CM)
+#define LANEC_ONE_MISSION(m) ((m) = LANEC_LM)
+#define LANEC_MISSION_LINKED(m) ((m) == LANEC_LM)
+#elif defined(RK_CM) && !defined(RK_LM)
+#define LANEC_ONE_MISSION(m) ((m) = LANEC_CM)
+#define LANEC_MISSION_LINKED(m) ((m) == LANEC_CM)
+#else
+#define LANEC_ONE_MISSION(m) ((void)(m))
+#define LANEC_MISSION_LINKED(m) 1
+#endif
 
 /* Bank-qualified source address: bank is the fixed bank number (0..043) for
  * switchable fixed memory 02000-03777, or LANEC_ANY_BANK for erasable and
  * fixed-fixed addresses. */
 #define LANEC_ANY_BANK 0377u
+/* As a range's bank: erasable words the program runs (TC WDRET, ...) only
+ * while they hold a TC (not to themselves, and not RELINT, INHINT or EXTEND)
+ * or a TCF into fixed memory, a transfer taken in one instruction. */
+#define LANEC_TC_CELL 0376u
 typedef struct { uint16_t bank, lo, hi; } lanec_range;      /* lo..hi inclusive */
 typedef struct { uint16_t bank, address; } lanec_point;
 
@@ -48,6 +66,12 @@ uint16_t lanec_current_bank(const apollo_overlay_state *, const lanec_io *);
 /* Image registers hold their architectural forms: A/L/Q 16 bits, EB/FB/BB
  * consistent, Z any 12-bit address, ZERO zero. */
 uint8_t lanec_registers_valid(const apollo_overlay_state *);
+/* Reads a word of fixed memory as data (physical address bank*1024+offset)
+ * for a module that displays or reads the rope: NULL, or the program's
+ * fixed_data as the transfer wrappers set it, or the test harness's reader.
+ * A module never links a copy of the rope itself, so its flight-store module
+ * reads the program's (the REU rope image on the C64). */
+extern bool (*lanec_fixed_read)(enum lanec_mission, uint16_t physical, agc_word *);
 /* Source TC: Q = return address, Z = target. */
 void lanec_tc(apollo_overlay_state *, uint16_t target, uint16_t return_address);
 /* Source CCS on a 15-bit erasable or fixed word: A <- DABS, returns the
@@ -74,5 +98,19 @@ uint16_t lanec_a16(uint16_t word);
 /* Source TS of A into erasable word k; returns 1 when A overflowed (A is then
  * +1 or -1 and the source skips). */
 uint8_t lanec_ts(apollo_overlay_state *, uint16_t k);
+
+#ifdef LANEC_COVER_SITES
+/* The coverage runner only (tools/mk/lanec.mk, tools/lanec/cover.py): each
+ * call of a shared helper branches on its outcome at the call line, so gcov
+ * counts the outcomes per call site rather than once in the helper. */
+#define lanec_ccs(s, w) __extension__({ uint8_t lanec_r_ = (lanec_ccs)(s, w); \
+    lanec_r_ == 0 ? 0u : lanec_r_ == 1 ? 1u : lanec_r_ == 2 ? 2u : 3u; })
+#define lanec_ccs_a(s) __extension__({ uint8_t lanec_r_ = (lanec_ccs_a)(s); \
+    lanec_r_ == 0 ? 0u : lanec_r_ == 1 ? 1u : lanec_r_ == 2 ? 2u : 3u; })
+#define lanec_ts(s, k) __extension__({ uint16_t lanec_a_ = (s)->words[LANEC_A]; \
+    (lanec_a_ & 0140000u) == 0040000u ? (lanec_ts)(s, k) : (lanec_a_ & 0140000u) == 0100000u ? (lanec_ts)(s, k) : (lanec_ts)(s, k); })
+/* A's class before a helper reads it: +0, -0, negative, positive. */
+#define LANEC_COVER_A(s) ((s)->words[LANEC_A] == 0 ? 0 : (s)->words[LANEC_A] == 0177777u ? 1 : ((s)->words[LANEC_A] & 0100000u) ? 2 : 3)
+#endif
 
 #endif

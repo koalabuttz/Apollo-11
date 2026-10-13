@@ -2,8 +2,8 @@
 # Milestone interbank-q (lane A): the INTER-BANK entries reached with an
 # unusual Q (SWCALL -1 from RTB, BANKJUMP from SAVELOCS' TC L), both missions,
 # checked against yaAGC.
-IBQ_SRC = tests/interbank_q_cases.c tests/interbank_q_check.c src/lm_interbank_routines.c src/lm_interbank.c \
-	src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c \
+IBQ_SRC = tests/interbank_q_cases.c tests/interbank_q_check.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c \
+	src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c \
 	src/agc_multiword.c src/agc_image_ops.c src/agc_hardware_divide.c
 IBQ_HDR = include/agc_transfer.h include/lm_interbank_routines.h include/cm_interbank_routines.h \
 	tests/interbank_q_cases.h tests/interbank_q_check.h tests/interbank_q_vectors.h

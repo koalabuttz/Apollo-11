@@ -39,7 +39,9 @@ static enum exec_status t3rupt(const agc_native_program *p,apollo_overlay_state 
  * task that fell due. */
 static enum exec_status taskover(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!p||!p->hardware||!s||!v)return EXEC_OUT_OF_SCOPE;
- if(W[0734]==AGC_NEG_ZERO)return lm_taskover_resume(s,v,&p->hardware->in_interrupt);
+ /* RESUME: BRUPT is the word at ZRUPT-1 under BANKRUPT's banks and superbank (#144). */
+ if(W[0734]==AGC_NEG_ZERO){if(!agc_resume_exact(p,s,(agc_word)(W[016]&076000u),(agc_word)((W[016]&7u)<<8),(agc_word)(W[016]&0160u)))return EXEC_OUT_OF_SCOPE;
+  return lm_taskover_resume(s,v,&p->hardware->in_interrupt);}
  return dispatch(p->hardware,s,v);
 }
 /* T3RUPT 01,3407, where the T3 vector's TCF T3RUPT lands (BB = T3RPTBB, A the

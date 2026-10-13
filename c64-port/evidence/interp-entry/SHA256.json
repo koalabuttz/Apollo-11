@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "interp-entry",
+  "release": "evidence-interp-entry",
+  "files": {
+    "interp-entry-host.log": {
+      "sha256": "e2f91a189bf28106b7cb7e01978a6e43dff613719b0e2bcee43d5bdcda0577e2",
+      "bytes": 766,
+      "store": "release"
+    },
+    "interp-entry-proof.json": {
+      "sha256": "7ba9e5b57293032b59f54ad8e04b6548bbb0d6ddf2e057c1347a827641c27dac",
+      "bytes": 1198,
+      "store": "tree"
+    },
+    "interp-entry-vice.log": {
+      "sha256": "b93860ed33465ae4fa84cc9bb0bd4f4983e867f91a1f12e9dfe045616d091e97",
+      "bytes": 325,
+      "store": "release"
+    }
+  }
+}

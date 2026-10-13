@@ -33,9 +33,12 @@ from overlay_runtime_library import prepare  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/resident-flight')
-SERVICES = 0x0201
+SERVICES = 0x0203
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
-          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror']
+          '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror',
+          # The resident and every flight module resolve a pending DANZIG
+          # (RTB right-hand order) through the mission's marker table.
+          '-DAGC_TRANSFER_DANZIG_MARKER']
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 
 # The resident's sources, by component (the size report's classes).
@@ -152,10 +155,25 @@ CHECK_SOURCES = {1: ['tests/resident_kernel_cases.c'], 2: ['tests/resident_kerne
                  5: []}
 
 
-def link_resident(cc, m, name, sources, defines=()):
+# The flight checks and their case modules use only the first three
+# services (version $0202): the check programs carry test code beside the
+# resident, which has no room for the flight modules' shared runtime.
+CHECK_SERVICES, CHECK_SERVICE_COUNT = 0x0202, 3
+CHECKS = OUT / 'checks'
+
+
+def check_services():
+    spec = json.loads((ROOT / 'docs/overlay-v2-services.json').read_text())
+    spec.update(minor=CHECK_SERVICES & 0xFF, services=spec['services'][:CHECK_SERVICE_COUNT])
+    (ROOT / CHECKS).mkdir(parents=True, exist_ok=True)
+    (ROOT / CHECKS / 'services.json').write_text(json.dumps(spec, indent=2) + '\n')
+    run([sys.executable, 'tools/overlay_v2_services.py', '--spec', CHECKS / 'services.json', '--out-dir', CHECKS])
+
+
+def link_resident(cc, m, name, sources, defines=(), services=OUT):
     out = OUT / f'{m}-{name}.prg'
     run([cc, *COMMON, *MISSION[m], *defines, '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-         *sources, *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out])
+         *sources, *resident_sources(m), services / 'overlay_v2_services.S', '-o', out])
     return out
 
 
@@ -233,10 +251,10 @@ def measure(cc, m, prg):
 
 def link_module(cc, m, prg, slot, ident, selectors, sources, extra, library):
     run([cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections',
-         '-nostdlib', '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
+         '-nostdlib', '-Lplatform/c64', f'-L{CHECKS}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
          '-T', 'platform/c64/overlay_v2_payload.ld',
          f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
-         f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors={selectors},'
+         f'--defsym=__ov2_id={ident},--defsym=__ov2_services={CHECK_SERVICES},--defsym=__ov2_selectors={selectors},'
          f'-Map,{prg}.map',
          *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg])
 
@@ -264,7 +282,7 @@ def build_modules(cc, m, cases, library):
         prgs.append(prg)
     resolver = OUT / f'{m}-resolver.json'
     resolver.write_text(json.dumps(PROBES + wrapper_records(os.environ.get('CC', 'cc'), m), indent=1) + '\n')
-    run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(SERVICES),
+    run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(CHECK_SERVICES),
          '--resolver', resolver, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
     return prgs
 
@@ -283,13 +301,15 @@ def main():
     a = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
     run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', OUT])
+    check_services()
     library = prepare(a.cc, ROOT / OUT)
     report = {}
     for m in a.missions.split(','):
         build_modules(a.cc, m, make_cases(m), library)
         for part in CHECK_PARTS:
             link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
-                          ['-DRK_RUNS_ONLY', f'-DRK_PART={part}'])
+                          ['-DRK_RUNS_ONLY', '-DRK_NO_DIRECT', f'-DRK_PART={part}', f'-DRK_SERVICES_VERSION={CHECK_SERVICES:#06x}u'],
+                          CHECKS)
         report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', ['platform/c64/resident_flight_main.c']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:

@@ -13,7 +13,8 @@
  *
  * lm_interpreter_routines holds the INTERPRETER entries these paths reach so
  * far (INTPRET 6037 for the E/CALL form, INTPRET+2 6041); the interpretive
- * table holds E/CALL's EXIT at LOC 04,2626. The fetch point is 6070. A native
+ * table holds E/CALL's CALL order at LOC 04,2624 (a CHANG2 resume LOC) and its
+ * EXIT at LOC 04,2626. The fetch point is 6070. A native
  * interpretive callee ends with lm_interpreter_rvq. */
 #include "agc_transfer.h"
 #include "standard_lead.h"
@@ -27,7 +28,7 @@ enum exec_status lm_interpreter_rvq(apollo_overlay_state *, p66_bias_io *);
 
 /* Comanche055: the same with io a cm_native_io. E/BKCALL 13,2036, landing
  * points 13,2047/2050/2051, E/CALL 13,2055, resume 13,2067, E/JOBWAK 04,2606;
- * INTPRET 6006 and INTPRET+2 6010; EXIT at LOC 13,2066; fetch point 6037.
+ * INTPRET 6006 and INTPRET+2 6010; CALL at LOC 13,2064, EXIT at LOC 13,2066; fetch point 6037.
  * Also the system-test entry words COMPVER, GTSCPSS1 and REDO at 33,2000-2002
  * (one TC each, to GCOMPVER, GTSCPSS and NEWMODEX). */
 #define CM_INTERPRETER_FETCH ((uint16_t)(2048u + (06037u - 04000u)))

@@ -53,6 +53,7 @@ DATA_OPS = {'OCT', 'DEC', '2DEC', 'CADR', '2CADR', 'GENADR', 'ADRES', 'ECADR', '
             'VN', 'MM', 'OCTAL', '2OCT', 'REMADR', 'NV'}
 BODY = 'src/self_check_body.inc'
 NATIVE = {0: 'src/lm_self_check.c', 1: 'src/cm_self_check.c'}
+IDLE = {0: 'src/lm_self_check_idle.c', 1: 'src/cm_self_check_idle.c'}
 OPERANDS = {0: 'src/lm_self_check_operands.inc', 1: 'src/cm_self_check_operands.inc'}
 
 
@@ -166,8 +167,8 @@ def main():
                 'category': 'source_to_native_map', 'source_path': f'{name}/{REPO_SOURCE[mission]}',
                 'source_sha256': hashlib.sha256(sourcefile.read_bytes()).hexdigest(), 'rope_sha256': rope_sha,
                 'aggregates': {MILESTONE: {'record': 'docs/SELF-CHECK.md', 'sha256': sha('docs/SELF-CHECK.md'),
-                                           'native': [NATIVE[mission], BODY, OPERANDS[mission], 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c'],
-                                           'native_sha256': {p: sha(p) for p in (NATIVE[mission], BODY, OPERANDS[mission])},
+                                           'native': [NATIVE[mission], IDLE[mission], BODY, OPERANDS[mission], 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c'],
+                                           'native_sha256': {p: sha(p) for p in (NATIVE[mission], IDLE[mission], BODY, OPERANDS[mission])},
                                            'owns': ['43,3232-3723' if mission == 0 else '43,3234-3725']}},
                 'word_check': {'source_words': total, 'translated_words': total - len(untranslated), 'excluded_words': 0,
                                'result': 'PASS' if not untranslated else 'FAIL'},

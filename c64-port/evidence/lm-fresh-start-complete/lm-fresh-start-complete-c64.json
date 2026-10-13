@@ -3,7 +3,7 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "evidence/lm-fresh-start/lm-fresh-start-vice.log",
-   "sha256": "f12a4407c69866db5b975ed9566e1b18ebc5f8e5ae7206c4806c02fc4008102a",
+   "sha256": "2613ebcf3ce1900c9685aa5d7aba1ed68db1aa3ce4e8f283bf677ee171d852ab",
    "pass_lines": [
     "PASS: VICE PAL lm-fresh-start.prg: 259 checks, 0 failures"
    ],
@@ -15,13 +15,13 @@
    "prg_sha256": [
     {
      "prg": null,
-     "sha256": "92819d4d93600a2bef2af18e58c845466df8d57c7cac0ff38601df9b814f3766"
+     "sha256": "81576930ea679ef6e3ee56db9eec9846aba6f61e025402c6fad9b87013447f1a"
     }
    ]
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-vice.log",
-   "sha256": "6bcd14b376e9264787f92933f9e4bb4c31ab542b9c80d04a840c0ee110200e07",
+   "sha256": "10aba4e811577be449aece99ee26bbbf1d224cac565025fdd6139689b4f963fc",
    "pass_lines": [
     "PASS: VICE PAL lm-v37.prg: 136 checks, 0 failures"
    ],
@@ -33,13 +33,13 @@
    "prg_sha256": [
     {
      "prg": null,
-     "sha256": "9788f6858e02006a6941ca693e4b3dd2ade5f9838a3959ffc0015760660599e0"
+     "sha256": "e9264618f31f51fc9aaad1b2f2ef1b148544f45be3786c8eb0ff14abf3c4ca4f"
     }
    ]
   },
   "lm-stateup": {
    "record": "evidence/lm-stateup/lm-stateup-vice.log",
-   "sha256": "c7c827ac9895dc42e5fb0ba37ffef9a127ef49b76fdf0619c573fa277a4e8354",
+   "sha256": "b2581b5ce9baf109ae2ad7310cb93a2143ab83457fae33f4ae0db5a8e1775e64",
    "pass_lines": [
     "PASS: VICE PAL lm-stateup.prg: 256 checks, 0 failures"
    ],
@@ -51,7 +51,7 @@
    "prg_sha256": [
     {
      "prg": null,
-     "sha256": "067e9272cd289891651e373e585762337fa4efb8094b1086689756d00b572379"
+     "sha256": "4eed261b2d93dfcee6a9ce7922cd2fb2b6c17306764bb35ab09295e469a9ecc1"
     }
    ]
   }

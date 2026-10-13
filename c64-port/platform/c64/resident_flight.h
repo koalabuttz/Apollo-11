@@ -9,6 +9,8 @@
  * $6F00. Boot-only code (store open and verify, runtime init) links into
  * the job slot at $8000 and runs once, before the first module loads over
  * it. Build with -DRK_LM=1 or -DRK_CM=1 and -DRK_FIXED_IMAGE=1. */
+#include <stddef.h>
+#include <string.h>
 #include "overlay_reu.h"
 #include "resident_kernel.h"
 #if RK_LM
@@ -20,7 +22,12 @@ typedef p66_bias_io rk_io;
 typedef cm_native_io rk_io;
 #define RK_MISSION APOLLO_OV2_CM
 #endif
-#define RK_SERVICES_VERSION 0x0201u
+/* The service table this resident exports (docs/overlay-v2-services.json);
+ * the flight checks build against the first three entries only
+ * (tools/resident_flight_build.py CHECK_SERVICES). */
+#ifndef RK_SERVICES_VERSION
+#define RK_SERVICES_VERSION 0x0203u
+#endif
 /* CIA1 timer A latch for one interrupt per 10 ms (PAL, 985,248 Hz: the
  * timer counts latch..0). */
 #define RK_CIA_LATCH 9851u
@@ -34,6 +41,38 @@ typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_ta
  * failure in status, which the step returns; the step resets it to
  * EXEC_OK before each run. */
 typedef struct { const agc_native_program *program; void *io; enum exec_status status; } rk_module_env;
+/* A flight module's routine-table list (platform/c64/flight_table_module.c),
+ * named by its header's TABLES word (include/overlay_v2.h). The module
+ * builds it on its first run after a load (ready then becomes 1; the load
+ * zeroes it with the BSS); from then on the resident calls the module's
+ * routines directly from its step, with no ABI 2 run and no module main.
+ * The fields up to operand_count have agc_native_program's layout, so one
+ * copy puts them in a program; operands and fixed_data are the resident's
+ * own where the module has none. */
+typedef struct {
+    agc_routine_table *basic; uint8_t basic_count;
+    agc_routine_table *interpretive; uint8_t interpretive_count;
+    const agc_site_operand *operands; uint16_t operand_count;
+    bool (*fixed_data)(const agc_native_program *,uint16_t physical,agc_word *word);
+    uint8_t ready;
+} rk_module_tables;
+_Static_assert(offsetof(rk_module_tables,operand_count)==offsetof(agc_native_program,operand_count),
+               "rk_module_tables must start like agc_native_program");
+/* The resident's program with a module's tables, operands and fixed_data. */
+static inline void rk_module_program(agc_native_program *p,const rk_module_tables *t) {
+    memcpy(p,t,offsetof(rk_module_tables,fixed_data));
+    p->fixed_data=t->fixed_data;
+}
+/* Routines one module run may chain before it returns to the step. */
+#define RK_MODULE_STEPS 256u
+/* A module's run, as the step reports it: an unmapped point after at least
+ * one routine is where the module hands back (the next step resolves it),
+ * and so is the step limit. */
+static inline enum exec_status rk_module_status(enum exec_status status,uint16_t steps,uint16_t limit) {
+    if(status==EXEC_UNMAPPED && steps) return EXEC_OK;
+    if(status==EXEC_OUT_OF_SCOPE && steps==limit) return EXEC_OK;
+    return status;
+}
 extern rk_module_env rk_env;
 /* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). */
 #define RK_MODULE_LEAD_INS APOLLO_OV2_ID(APOLLO_LANE_A,0xe1)   /* task slot */
@@ -72,6 +111,9 @@ uint8_t rk_boot(void);
  * ran, otherwise the routine's status, the module's rk_env.status, or
  * EXEC_UNMAPPED for a point no module resolves. */
 enum exec_status rk_resident_step(uint16_t stop_physical);
+/* One run of a loaded module's routine at the current point, straight from
+ * its slot (EXEC_UNMAPPED: no loaded module holds it). */
+enum exec_status rk_direct(uint16_t stop_physical);
 
 /* The canonical resolver bank for 12-bit address loc, the physical bank in
  * FB form: 04000 or 06000 for fixed-fixed, otherwise FB (bits 14-10), plus

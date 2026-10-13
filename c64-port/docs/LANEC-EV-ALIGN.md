@@ -54,5 +54,6 @@ Hashes: `evidence/lanec-ev-align/SHA256.json`.
   that bit 15 makes impossible.
 - Host and sanitizer results: `make test-lanec-ev-align sanitize-lanec-ev-align`
   (`lanec-ev-align-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-align`, 241 frozen cases
-  (every entry, both missions) on a VICE PAL C64 (`lanec-ev-align-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-align`, 97 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 5,056 host cases take (`lanec-ev-align-vice.txt`).

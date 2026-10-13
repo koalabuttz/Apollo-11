@@ -12,7 +12,7 @@ extern const agc_routine_table cm_jet_select_interpretive,cm_jet_select_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_jet_select_point;
-#define CM_JET_SELECT_POINTS 2u
+#define CM_JET_SELECT_POINTS 76u
 #define CM_JET_SELECT_CADR_WORDS 1u
 #define CM_JET_SELECT_EXTERNALS 1u
 #define CM_JET_SELECT_FIRST 15722u

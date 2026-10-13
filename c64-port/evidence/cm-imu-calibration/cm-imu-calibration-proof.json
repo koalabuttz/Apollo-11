@@ -9,111 +9,123 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 203776,
- "cases_sha256": "bcd1910dad6f6a14ae58e8ffd3d9986a7bbbb710f4e15ef0b61cb05db029f78d",
- "oracle_sha256": "c185d86c675db0bdd1614961a269ea0cac90e167b1b64bbc57dea6346294dd37",
- "frozen_vectors": 534,
+ "cases_sha256": "34fb4e38bf50cf2a0d33ae90a856a83c8637eae7d952b1721c6cf58c9bd47409",
+ "oracle_sha256": "693ac7f985db5c3da6f2749532c7467102f481bd719a9c201a275068248c3ca2",
+ "frozen_vectors": 535,
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0x3ffffff",
-   "cases": 29
-  },
-  {
-   "mission": "cm",
-   "keep": "0x7ffffffffc000004",
+   "keep": "0xfffffffff",
    "cases": 41
   },
   {
    "mission": "cm",
-   "keep": "0x2ff80c0007ffc000000000000000",
-   "cases": 17
+   "keep": "0x2008000007fffffffff000000000",
+   "cases": 50
   },
   {
    "mission": "cm",
-   "keep": "0x20080c0ffe000000000000000000",
-   "cases": 21
+   "keep": "0x20080c0ffc000000000000000000",
+   "cases": 27
   },
   {
    "mission": "cm",
-   "keep": "0xfffffff400000040000000000000",
+   "keep": "0x4000000000000000000000000000000000000000010000012ffffff8000000007fd000000000",
    "cases": 28
   },
   {
    "mission": "cm",
-   "keep": "0x1ffffff8000000000004000000001ff0000",
+   "keep": "0x20020000000000000000000001fffffffe08000000010000000001ff0000",
+   "cases": 38
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfff8000002fb8000000000000000000000000",
+   "cases": 22
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3fffffffffff0ffc18000000000000000000000000000000000000",
+   "cases": 4
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ffffffffffffffc30000000000000000000000000000000000000",
+   "cases": 4
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3e7ffffe0000000000000000000fffffe0000000000000000000000000000000000000",
    "cases": 30
   },
   {
    "mission": "cm",
-   "keep": "0x47fff8000002008000000000000000000000000",
-   "cases": 29
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3e7fc3fe0000000000000000000007ffc0000000000000000000000000000000000000",
-   "cases": 10
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3fffffffffffffe000000000000000000000000000000000000000",
-   "cases": 1
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3ffffffffc000000000000000000000000000000000000000",
-   "cases": 38
-  },
-  {
-   "mission": "cm",
-   "keep": "0xffffffffc000000000000000000000000000000000000000000010000",
-   "cases": 37
-  },
-  {
-   "mission": "cm",
-   "keep": "0x1fffff0000000000000000000000000000000000c047e020000000000000000",
-   "cases": 23
-  },
-  {
-   "mission": "cm",
-   "keep": "0xfffffffe00000000000000000000000000000000000000000000000000000000000000",
-   "cases": 38
-  },
-  {
-   "mission": "cm",
-   "keep": "0x7fffff80000001ff800000000000000000000000000000002fb8000000000000000000000000",
-   "cases": 18
-  },
-  {
-   "mission": "cm",
-   "keep": "0xffffffc0000000000000800000000000000000000000000000000000000000000000004000000000",
-   "cases": 28
-  },
-  {
-   "mission": "cm",
-   "keep": "0x10380001ffffffff80000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "keep": "0x3ffffffffffe000000000000000000000000000000000000000000",
    "cases": 34
   },
   {
    "mission": "cm",
-   "keep": "0x17ffffff0000000400000000000000000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 29
+   "keep": "0x7ffffffc00000000000000000000000000000000000000000001ff0000",
+   "cases": 32
   },
   {
    "mission": "cm",
-   "keep": "0x3ffc00000387fffffc00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "keep": "0x40000000603fffffff800000000000000000000000000000000000007e000200000000000000",
+   "cases": 35
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3fffffffc00000000000000000000000000000000000002ff80c0000000000000000000000",
+   "cases": 41
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffff00000000001ff800000000000000000000000000000000000000000000000004000000000",
+   "cases": 33
+  },
+  {
+   "mission": "cm",
+   "keep": "0x10381fffffffffff80000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "cases": 45
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1fffffc03bffffffc00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "cases": 28
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ffe000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
    "cases": 15
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3fc0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 9
   }
  ],
+ "c64_gcov_branches": {
+  "host_taken": 1813,
+  "c64_taken": 1813,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_imu_calibration.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_imu_calibration_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 2198,
-  "edges_host_vectors": 2198,
-  "edges_c64": 2198,
+  "edges_all_cases": 2200,
+  "edges_host_vectors": 2200,
+  "edges_c64": 2200,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -797,8 +809,9 @@
    "02324": 512
   },
   "CM 33,2324 CHECKG1": {
-   "04554": 367,
-   "05164": 145
+   "02324": 226,
+   "05164": 144,
+   "04554": 142
   },
   "CM 33,2331 ": {
    "02324": 512
@@ -2129,5 +2142,11 @@
   }
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, CHANG1, CHANG2, CHECKMM, DOWNFLAG, ENDMARK, ENDOFJOB, FINDVAC, JOBSLEEP, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX, NEWPHASE, PHASCHNG, POODOO, POSTJUMP, PRIOCHNG, RTB PULSEIMU, RTB SGNAGREE, TASKOVER, TWIDDLE, idle point)",
- "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 4568,
+ "host_branch_arcs": 1839,
+ "c64_rows": 507,
+ "c64_branch_arcs": 1839,
+ "host_branches_missing_on_c64": []
 }

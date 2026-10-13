@@ -28,10 +28,10 @@ OWNED = [0o43 * 1024 + w - 0o2000 for w in range(0o3726, 0o3766)] + [0o27 * 1024
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/cm-update.mk CM_UP_SRC), for the row cover.
-SRC = ['src/cm_update.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_update_cases.c']
+SRC = ['src/cm_update.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_update_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
 CORE = ['tests/cm_update_cases.c', 'src/cm_update.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/agc_transfer.c', 'src/agc_word.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c',
+        'src/agc_transfer.c', 'src/agc_word.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 

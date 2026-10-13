@@ -6,7 +6,9 @@ The interrupt entry (src/resident_rupt.c) stores the instruction word at Z in
 BRUPT and refuses to vector at RELINT, INHINT or EXTEND, so it needs the word
 at every fixed point where the resident can stop between two routines. Those
 points are the keys of the routine tables (the resident's, and the interrupt
-bodies its task-slot wrappers run) and of the store's resolver records. This
+bodies its task-slot wrappers run), the store's resolver records, and the
+interpreter's fetch point and DANZIG (where Z stands at an interpretive
+order, whose key is LOC's). This
 tool collects them (tools/resident_boundary_keys.c, built with the host cc),
 takes each word from the unmodified rope
 (evidence/fixed-data-<m>-original.rope.bin), checks it against the assembly
@@ -42,6 +44,11 @@ EXTRA = {
     'lm': ['src/lm_kernel.c', 'src/sp_routines.c', 'src/lm_single_trig.c', 'src/lm_t6rupt.c'],
     'cm': ['src/cm_kernel.c', 'src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c'],
 }
+# Where Z stands when the resident resolves an interpretive order: the
+# interpreter's fetch point (NEWOPS, include/standard_lead_routines.h) and
+# DANZIG with a right-hand order pending (include/agc_transfer.h). An
+# interrupt there takes the word at Z, not at the order's LOC key.
+INTERPRETER_POINTS = {'lm': [2048 + 0o6070 - 0o4000, 3121], 'cm': [2048 + 0o6037 - 0o4000, 3096]}
 COMMON = ['src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_word.c', 'src/agc_multiword.c',
           'src/agc_transfer.c', 'src/rupt_lead_ins.c', 'src/t4rupt_core.c', 'src/keyrupt_uprupt.c']
 
@@ -120,6 +127,36 @@ def render(m, rows, sources):
     return '\n'.join(out) + '\n'
 
 
+def header_text(cc, m, resolver):
+    """The mission's boundary-word header for these resolver records, or None
+    when a word disagrees with the assembly listing."""
+    out_dir = ROOT / 'build'
+    out_dir.mkdir(exist_ok=True)
+    keys = table_keys(cc, m, out_dir)
+    for k in INTERPRETER_POINTS[m]:
+        keys.setdefault(k, 'interpreter points')
+    for r in resolver:
+        k = fixed_physical(r['loc'], r['bank'])
+        if k is not None:
+            keys.setdefault(k, 'resolver')
+    rope = (ROOT / f'evidence/fixed-data-{m}-original.rope.bin').read_bytes()
+    rows = [(k, keys[k], rope_word(rope, k)) for k in sorted(keys)]
+    listing = ROOT / f'build/fixed-data/{PROGRAM[m]}/assembly.lst'
+    if listing.exists():
+        words = listing_words(listing)
+        bad = [(k, t, w, words.get(k)) for k, t, w in rows if words.get(k) != w]
+        if bad:
+            for k, t, w, lw in bad:
+                print(f'{m}: {t} key {k} ({k // 1024:02o},{k % 1024 + 0o2000:04o}): rope {w:05o}, listing {lw}',
+                      file=sys.stderr)
+            return None
+        print(f'{m}: {len(rows)} boundary words match the rope and {listing.relative_to(ROOT)}')
+    else:
+        print(f'{m}: SKIP listing check (no {listing.relative_to(ROOT)}); {len(rows)} words from the rope')
+    tables = sorted({t for _, t, _ in rows}, key=lambda t: (t == 'resolver', t))
+    return render(m, rows, [t if t != 'resolver' else 'resolver records' for t in tables])
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default='cc')
@@ -130,31 +167,11 @@ def main():
     for spec in a.resolver:
         m, path = spec.split('=', 1)
         resolvers[m] = json.loads(Path(path).read_text())
-    out_dir = ROOT / 'build'
-    out_dir.mkdir(exist_ok=True)
     failed = False
     for m in PROGRAM:
-        keys = table_keys(a.cc, m, out_dir)
-        for r in resolvers[m]:
-            k = fixed_physical(r['loc'], r['bank'])
-            if k is not None:
-                keys.setdefault(k, 'resolver')
-        rope = (ROOT / f'evidence/fixed-data-{m}-original.rope.bin').read_bytes()
-        rows = [(k, keys[k], rope_word(rope, k)) for k in sorted(keys)]
-        listing = ROOT / f'build/fixed-data/{PROGRAM[m]}/assembly.lst'
-        if listing.exists():
-            words = listing_words(listing)
-            bad = [(k, t, w, words.get(k)) for k, t, w in rows if words.get(k) != w]
-            if bad:
-                for k, t, w, lw in bad:
-                    print(f'{m}: {t} key {k} ({k // 1024:02o},{k % 1024 + 0o2000:04o}): rope {w:05o}, listing {lw}',
-                          file=sys.stderr)
-                return 1
-            print(f'{m}: {len(rows)} boundary words match the rope and {listing.relative_to(ROOT)}')
-        else:
-            print(f'{m}: SKIP listing check (no {listing.relative_to(ROOT)}); {len(rows)} words from the rope')
-        tables = sorted({t for _, t, _ in rows}, key=lambda t: (t == 'resolver', t))
-        text = render(m, rows, [t if t != 'resolver' else 'resolver records' for t in tables])
+        text = header_text(a.cc, m, resolvers[m])
+        if text is None:
+            return 1
         header = ROOT / f'platform/c64/resident_boundary_words_{m}.h'
         if a.check:
             if not header.exists() or header.read_text() != text:

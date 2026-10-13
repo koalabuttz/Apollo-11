@@ -4,12 +4,12 @@
   "release": "evidence-lm-p-axis",
   "files": {
     "lm-p-axis-c64-cover.json": {
-      "sha256": "a86699db07c631a532fcc970c8fa2162c41c617f6f40214621407285fb189864",
-      "bytes": 19973,
+      "sha256": "2991e772fc04a5d956d08e97c8d816585fcf1fdf8b8c9c532826f8c90d76252f",
+      "bytes": 25412,
       "store": "tree"
     },
     "lm-p-axis-host.log": {
-      "sha256": "4fbfbc9ba730d895a5e761056a46db63ff55fa22c14d272542bcde4a0fbe6b2e",
+      "sha256": "689dd17ae56d4590ed1ed0f8b906fdaa2cb23ecf18f62d7c75c2e016a4b1442d",
       "bytes": 1489,
       "store": "tree"
     },
@@ -19,12 +19,12 @@
       "store": "tree"
     },
     "lm-p-axis-source-map.json": {
-      "sha256": "55464a05c9d17fdc3d5b9bd35196ffc64593dcbdfad1a9fc5e574a0233e61165",
-      "bytes": 143630,
+      "sha256": "e7c5433a0749036ec7f19885e5954c19fd59bc2d0ddf149049b4fa7f96cfc2e4",
+      "bytes": 145850,
       "store": "tree"
     },
     "lm-p-axis-vice.log": {
-      "sha256": "4bddd6c02d09872c4a86f423e58adaa58a3a48c84d45593a63c7cff2fb7e18f9",
+      "sha256": "3caac587333046134f9dacdded2732a78eb4ed5a91740071ae1cbc7e63d1a6a0",
       "bytes": 291,
       "store": "tree"
     }

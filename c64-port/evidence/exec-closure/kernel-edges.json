@@ -1,0 +1,93 @@
+{
+  "lm-exec-jobs": {
+    "cases": 9216,
+    "TIME3 037770-037777": 3191,
+    "TIME6 1-3": 0,
+    "LST1 tasks due together (+0)": 898,
+    "LST1 tasks 1 cs apart": 898,
+    "Waitlist full (9 tasks)": 7881,
+    "NEWJOB +0": 4014,
+    "NEWJOB -0": 346,
+    "equal busy priorities": 513,
+    "no free core set": 149,
+    "no free VAC area": 169
+  },
+  "lm-exec-services": {
+    "cases": 9208,
+    "TIME3 037770-037777": 1447,
+    "TIME6 1-3": 0,
+    "LST1 tasks due together (+0)": 1144,
+    "LST1 tasks 1 cs apart": 1165,
+    "Waitlist full (9 tasks)": 948,
+    "NEWJOB +0": 8051,
+    "NEWJOB -0": 1157,
+    "equal busy priorities": 723,
+    "no free core set": 877,
+    "no free VAC area": 1264
+  },
+  "lm-exec-idle": {
+    "cases": 4864,
+    "TIME3 037770-037777": 2449,
+    "TIME6 1-3": 0,
+    "LST1 tasks due together (+0)": 2,
+    "LST1 tasks 1 cs apart": 0,
+    "Waitlist full (9 tasks)": 4864,
+    "NEWJOB +0": 1549,
+    "NEWJOB -0": 499,
+    "equal busy priorities": 9,
+    "no free core set": 125,
+    "no free VAC area": 172
+  },
+  "cm-exec-services": {
+    "cases": 7648,
+    "TIME3 037770-037777": 1042,
+    "TIME6 1-3": 0,
+    "LST1 tasks due together (+0)": 756,
+    "LST1 tasks 1 cs apart": 841,
+    "Waitlist full (9 tasks)": 687,
+    "NEWJOB +0": 6686,
+    "NEWJOB -0": 962,
+    "equal busy priorities": 413,
+    "no free core set": 257,
+    "no free VAC area": 516
+  },
+  "cm-exec-jobs": {
+    "cases": 6144,
+    "TIME3 037770-037777": 3061,
+    "TIME6 1-3": 0,
+    "LST1 tasks due together (+0)": 2,
+    "LST1 tasks 1 cs apart": 1,
+    "Waitlist full (9 tasks)": 6144,
+    "NEWJOB +0": 1385,
+    "NEWJOB -0": 464,
+    "equal busy priorities": 344,
+    "no free core set": 283,
+    "no free VAC area": 512
+  },
+  "cm-exec-idle": {
+    "cases": 5120,
+    "TIME3 037770-037777": 2048,
+    "TIME6 1-3": 2,
+    "LST1 tasks due together (+0)": 3,
+    "LST1 tasks 1 cs apart": 0,
+    "Waitlist full (9 tasks)": 5120,
+    "NEWJOB +0": 727,
+    "NEWJOB -0": 385,
+    "equal busy priorities": 1,
+    "no free core set": 6,
+    "no free VAC area": 0
+  },
+  "lm-t6rupt": {
+    "cases": 3840,
+    "TIME3 037770-037777": 1920,
+    "TIME6 1-3": 362,
+    "LST1 tasks due together (+0)": 1,
+    "LST1 tasks 1 cs apart": 1,
+    "Waitlist full (9 tasks)": 3840,
+    "NEWJOB +0": 1,
+    "NEWJOB -0": 1,
+    "equal busy priorities": 8,
+    "no free core set": 13,
+    "no free VAC area": 0
+  }
+}

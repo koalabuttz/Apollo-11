@@ -29,6 +29,9 @@ uint16_t dzp_check(uint16_t n,uint16_t *checks){const dzp_row *r=&dzp_rows[n];ui
  ++*checks;if(agc_transfer_point(&p,&image,superbank)!=z||agc_transfer_resolve(&p,&image,superbank)!=at_z)++f;
  p.interpretive=interp+1;p.interpretive_count=1;
  ++*checks;if(agc_transfer_point(&p,&image,superbank)!=z||agc_transfer_resolve(&p,&image,superbank)!=at_z)++f;
+ /* An empty first table (basic-only programs register {0,0}) is no marker either. */
+ {static const agc_routine_table none={0,0};p.interpretive=&none;
+  if(agc_transfer_point(&p,&image,superbank)!=z||agc_transfer_resolve(&p,&image,superbank)!=at_z)++f;}
  /* NEWOPS stays the fetch point alongside the marker: LOC at the RTB operand word resolves there too. */
  interp[0]=r->cm?agc_cm_danzig_marker:agc_lm_danzig_marker;p.interpretive=interp;p.interpretive_count=2;
  p.interpreter_fetch=(uint16_t)(3u*1024u+(r->cm?037u:070u));load(r,0);image.words[5]=r->cm?06037u:06070u;
