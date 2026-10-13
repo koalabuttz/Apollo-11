@@ -4,18 +4,18 @@
   "release": "evidence-waitlist-entries",
   "files": {
     "waitlist-entries-host.log": {
-      "sha256": "4378e07827b1a886dc0d09eb64a469d07e00aca190ea841dff9e8675da7373a6",
-      "bytes": 313,
+      "sha256": "d672d7f5b30954ee54cf9fddcc6ae9a09624e705f18546e17f964b2275302fcd",
+      "bytes": 3320,
       "store": "release"
     },
     "waitlist-entries-proof.json": {
-      "sha256": "e6dd55149d302e45e37ee058161be299af40dcc972b725c0b535a9a5750eddb3",
+      "sha256": "7d34824e8deacf9374172b5169395de955bf4529ff555b427c27a59e87ce42ea",
       "bytes": 6657,
       "store": "tree"
     },
     "waitlist-entries-vice.log": {
-      "sha256": "c4719e1a7018047781f3ff609f731a44e0c1a4676442c8d0883ee271a9cfd5e1",
-      "bytes": 849,
+      "sha256": "0282214f2c3e4d96ad09e1e0503f36457ecf7e99c227f0d2b97b156fc2bbfc5b",
+      "bytes": 3089,
       "store": "release"
     }
   }

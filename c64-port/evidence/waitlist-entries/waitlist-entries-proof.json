@@ -1,6 +1,6 @@
 {
  "cases": 1266,
- "reached": 1244,
+ "reached": 1240,
  "native_equals_yaagc": true,
  "by_kind": {
   "LM T3RUPT 01,3407": {
@@ -13,7 +13,7 @@
   },
   "LM DLY2 -1 05211": {
    "cases": 57,
-   "reached": 49
+   "reached": 45
   },
   "CM DLY2 -1 05255": {
    "cases": 57,
@@ -29,10 +29,10 @@
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
  "oracle": "yaAGC (agc_engine) running the original rope of each mission",
- "oracle_sha256": "3f45112d6d4295a781f7cfd1d29d1f50ce6916bd5ffb0fc5502e0290b3a40bc3",
+ "oracle_sha256": "5179b684f0e89a4324b58868c4523b97e28e502ae06306172c60be3111807340",
  "dependencies": {
   "src/lm_exec_jobs.c": "51b394b672f7c55ecad20507af07ad56b733dea18582ea5a63d7a46b22769f72",
-  "src/lm_exec_tasks.c": "54f3f42a64409b1bbdfc9555d7da1f82a67b6b46a4d5f716edd8717acc2c4511",
+  "src/lm_exec_tasks.c": "9431dd3093665915fa39dc11b57b395b1692b6f91e4de79ef65158072e72a803",
   "src/lm_exec_routines.c": "d981332eda55f7028c37430780fff87ae004ce52e41eb09a546f5c551fb30ee8",
   "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
   "src/lm_admission_image.c": "79952101a1b19a7c90bb6c94b706d4a89f74347c820902da00267692a004deab",
@@ -49,7 +49,7 @@
   "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
   "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
   "src/p66_native.c": "bbcb6cc6e4cb1c6bd5e10efa888eb38b762255975bd522bb4146bdf968c0447a",
-  "src/agc_transfer.c": "b477eed83d18e40c78cb013157d6cfb988833249abaad1e008afa882666a3ebf",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_admission_image_cases.c": "862178bd4da47252c9a0f885961f9deb4a440b68128eb2316801b861d8f72756",
@@ -65,7 +65,7 @@
   "tests/lm_waitlist_dispatch_cases.c": "1bf94f67b23e3530554f8170661f8f70c955a2538b2438c4d89e0887002e2cd8",
   "tests/throttle_bridge_cases.c": "ff017285d26479485fd3896ea4d21b2d7692eafa0b4f187a603c1d7fe8396e14",
   "tests/lm_exec_jobs_cases.c": "e53f23081b164121ecd5b8ca0972cc85a5e66b64ef7a6632f79d0b7255ce1359",
-  "src/cm_exec_routines.c": "835b5bf289256dcf50affc8232cf1fa9402b4cff077db67f08cf59665bc8f5a9",
+  "src/cm_exec_routines.c": "f1b68b16f9ace5614806459798b220ae53fada5c2c0884778377be741ee79c44",
   "src/cm_admission_zero.c": "e865643cd9d8f54fb87f7e5456e2c4cd45b9d016a3f212246cf99ec27ddef253",
   "src/cm_waitlist_extended.c": "c4909d471846944e7018dfc70cca8606062cb5604906ec857363d9bb61829e87",
   "src/cm_waitlist_internal.c": "58eaaf498a2a8497be5377e07ed1f395cf294efb78478da56f3910e04dfac9c5",
@@ -74,15 +74,15 @@
   "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
   "src/cm_waitlist.c": "ff80e11e7934a3d494a3a85144925335af0234d1f036be6f072c778d05b45d45",
   "tests/cm_exec_services_cases.c": "1f4ae83278674f4c5d365ceeee70f4025a30205e4da78746209187e2aef2a027",
-  "src/lm_t6rupt.c": "b5e7fefbdfcb9f46424c76629f8fbcd2b2ecad3b7a8f50faad4550917fd5c423",
+  "src/lm_t6rupt.c": "381cb85e46aeca1810681b07936933fbbb3df1c7c33e328d6d732ce73adff9cb",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "tests/lm_t6rupt_cases.c": "d0507d9e6d92f43ed17a2e48b3c41ae01f6e6f629bda7b778c1ebcb12e0dce51",
-  "tests/service_transfer_cases.c": "a45b879d502e0a2e2df3a30d9483a55f43dc58c19f562fc465f9507d3ed14782",
-  "src/service_transfer.c": "ff4e3f3382bc6292103fd1362144be949f8aa3d8db653b798a9f52f40e650712",
+  "tests/lm_t6rupt_cases.c": "f11003fca11baba2234eba036ffbfcd6df198905084a76f97bd4dbfcd9e18bca",
+  "tests/service_transfer_cases.c": "84f83fc9017dc5878644f0bd604fd69bd381be7f7e5a2708fc12adc21ca49d36",
+  "src/service_transfer.c": "ef45d86d6014c24e5d2094268613fa9f201fe88534f6492fca4593a6f17be92b",
   "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
   "tests/waitlist_entries_cases.c": "c05f65934d53dd7fd8751ba66e1dac93200f445c16bf55a05ee6364d492d6fab",
-  "include/agc_transfer.h": "41e856d63ea78cfdb6d36c1f07e538bc61fc9a9e869eca96b4afb26c2bf42a98",
+  "include/agc_transfer.h": "2b268250f6b0a454f8ae8a3083d65eb915b292233fa144633c31405416bd646f",
   "include/lm_exec_routines.h": "5eb5020b4cc645164f0e75f6740432402efc2cd641d75ca381b0fc05aa4de4a8",
   "include/cm_exec_routines.h": "3109fec2df17ef77ceaf34bea0c734803835e5a341b5c86738c377e14851c5df",
   "include/lm_t6rupt_routines.h": "62f628d317b76956b8dfc83904de9a4f9a9bb52a03b6460f366de67fbc5cdb07",

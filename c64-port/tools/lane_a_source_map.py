@@ -38,7 +38,7 @@ M = {
         'file': 'SYSTEM_TEST_STANDARD_LEAD_INS.agc',
         'tables': {'Luminary099': [('src/standard_lead_routines.c', LM)],
                    'Comanche055': [('src/standard_lead_routines.c', CM)]},
-        'native': ['src/standard_lead_routines.c', 'src/standard_lead.c', 'src/standard_lead_interp.c',
+        'native': ['src/standard_lead_routines.c', 'src/interp_entry.c', 'src/standard_lead.c', 'src/standard_lead_interp.c',
                    'src/standard_lead_wake.c', 'include/standard_lead_routines.h', 'include/standard_lead.h',
                    'include/standard_lead_wake.h'],
         'reasons': {('Comanche055', n): 'executed in milestone cm-lead-tests: its yaAGC oracle runs the entry words '

@@ -51,21 +51,23 @@ mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
 
-### Fit on 8564ca79
+### Fit on 6b6ed2dc
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |
 |---|---|---|---|---|---|---|---|
-| LM | 112 | 62 | 16 | 46 | 213 | 650 (25 table pairs) | 270,592 bytes |
-| CM | 88 | 51 | 16 | 35 | 202 | 405 (12 table pairs) | 274,176 bytes |
+| LM | 113 | 63 | 16 | 47 | 213 | 650 (25 table pairs) | 297,472 bytes |
+| CM | 89 | 52 | 16 | 36 | 202 | 405 (12 table pairs) | 294,912 bytes |
 
 Every failure is a module bigger than its 16 KB slot (median overflow about
 34 KB, largest 136 KB LM and 170 KB CM). LM `service_transfer` misses by 65
-bytes since it carries its own 171 operand sites (684 bytes). `<m>_self_check`
-links since services 0x0202 (`apollo_reu_transfer`) but misses by about
-1.1 KB on its own (its step machine `body` is 10 KB) and by about 9 KB with
-the interbank tables co-located, so the co-location below is the target
-layout rather than one that fits yet. The store itself is far below the 2 MB
-REU. So the VICE whole-program run waits on the modules fitting.
+bytes since it carries its own 171 operand sites (684 bytes), and LM
+`lm_fresh_start` by 359. `<m>_self_check` links since services 0x0202
+(`apollo_reu_transfer`) but misses by about 1.1 KB on its own (its step
+machine `body` is 10 KB) and by about 9 KB with the interbank tables
+co-located, so the co-location below is the target layout rather than one
+that fits yet. The store, with the resident's own modules (five LM, four
+CM), is far below the 2 MB REU. The load path works in VICE (below); the
+whole-program scenarios in VICE wait on the modules fitting.
 Interpretive modules wait on the interpreter decision
 (`/mnt/project-files/steward/interpreter-proposal.md`).
 
@@ -83,6 +85,38 @@ The resident and every module are compiled with
 `-DAGC_TRANSFER_DANZIG_MARKER` (`tools/resident_flight_build.py` COMMON):
 the pending-DANZIG marker is opt-in on the C64 since #184, and the resident
 resolves pending RTB right-hand orders through it.
+
+## VICE load path
+
+`make flight-store-vice` (`tools/flight_vice_load.py`) boots the flight
+resident on the whole-program store in VICE. The store builder also packs
+the resident's own modules into the store (the boundary-word module, built
+for the store's resolver records, and the interrupt-body wrappers with their
+records), so `build/flight-store/<m>.reu` is a bootable flight image. It
+also links `build/flight-store/<m>-load-check.prg`: the resident with
+`platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
+resolves every resolver record through the resident's resolver (LM 245, CM
+226, the wrappers' included) and checks the module it names. It then runs each
+flight module twice, with interrupts off, from a fixed point no table holds:
+once loading it from the REU into its slot, and once already loaded. Each run
+must come back with `EXEC_UNMAPPED`. CIA2's cascaded timers count the
+cycles. The timings go to `build/flight-store/vice-load.json`.
+
+On 6b6ed2dc both missions pass (LM 278 checks, CM 259): every record
+resolves, and all 16 fitting modules per mission load and return. Load cost
+over a cached call, fitted over the 32 modules (5.7 to 16.2 KB, largest
+residual 880 cycles):
+
+    load = 7,459 + 1.103 cycles per byte   (PAL: 985,248 cycles a second)
+
+A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
+run, the module copying its program record and tables, and one resolve. So a
+swap to a 12 KB module costs about 21,000 cycles plus the call, about 30,000
+in all (3% of a second), and a full 16 KB slot about 35 ms. At the LM's 40
+module loads a second (DAP chain, results below), swaps alone would take
+more than the CPU (about 1.2 million cycles a second), and even 5 a second
+costs 15%. The task-slot DAP chain needs its modules merged or kept
+resident, not just made to fit.
 
 ## Host differential method
 
@@ -185,5 +219,7 @@ where the point is periodic.
   from the REU store.
 - Give the flight resident the interpreter fetch point's boundary word when
   it resolves interpretive orders.
+- Cut the cost of a cached module call (about 8,000 cycles) and plan the
+  swap budget around the measured load cost.
 - Rerun after each lane fills a point in; the target prints the remaining
   list.

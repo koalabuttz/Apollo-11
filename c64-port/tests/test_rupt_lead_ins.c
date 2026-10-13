@@ -38,7 +38,10 @@ int main(void){static apollo_overlay_state s;unsigned cm,n,e,kind[3]={0,0,0},to_
   memset(seen,0,sizeof seen);
   for(n=0;n<rli_cases(cm);++n){static rli_io io;unsigned k;agc_word z=rli_entry(cm,(uint16_t)n);
    check(rli_digest(cm,&s,(uint16_t)n)==expected[n],"digest",n);
-   k=rli_run(cm,&s,&io,(uint16_t)n);check(k==RLI_RETURNED,"outcome",n);if(k<3u)++kind[k];
+   /* Only the CM rope-reader RESUME cases (every fourth) may refuse: BRUPT not the word at ZRUPT-1. */
+   {bool rope=cm&&z>=05333u&&n%4u==3u;
+   k=rli_run(cm,&s,&io,(uint16_t)n);check(k==RLI_RETURNED||(rope&&k==RLI_REFUSED),"outcome",n);if(k<3u)++kind[k];
+   if(k==RLI_REFUSED){++seen[n/RLI_PER_ENTRY];continue;}}
    ++seen[n/RLI_PER_ENTRY];
    if(cm&&(z==04010u||z==04065u)){if(s.words[5]==05337u)++to_noqbrsm;else ++to_t5loc;}
    if(z!=04000u&&!(cm&&z>=05333u))check(io.hw.in_interrupt==1u,"interrupt still in progress",n);

@@ -2,8 +2,8 @@
  * diagnostic runs besides every RLI_C64_STRIDE-th, so its rows take every branch arc
  * (gcov -b, all linked sources) the 3072 host cases take; native digests, equal to
  * yaAGC's by the host test. */
-#define RLI_C64_ROWS 1u
-static const uint16_t rli_c64_row[1]={
-2586u};
-static const uint32_t rli_c64_row_digest[1]={
-0x91cd8749ul};
+#define RLI_C64_ROWS 3u
+static const uint16_t rli_c64_row[3]={
+2739u,2907u,2947u};
+static const uint32_t rli_c64_row_digest[3]={
+0x00020002ul,0xe21f3453ul,0x521b84fcul};

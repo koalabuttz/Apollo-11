@@ -1,7 +1,7 @@
 {
  "milestone": "exec-closure",
  "tool": "tools/c64_row_cover.py (via tools/lane_a_c64_cover.py)",
- "reproduce": "python3 tools/lane_a_c64_cover.py --check lm-exec-services && python3 tools/lane_a_c64_cover.py --check lm-exec-jobs && python3 tools/lane_a_c64_cover.py --check lm-exec-idle && python3 tools/lane_a_c64_cover.py --check cm-exec-services && python3 tools/lane_a_c64_cover.py --check cm-exec-jobs && python3 tools/lane_a_c64_cover.py --check cm-exec-idle && python3 tools/lane_a_c64_cover.py --check rupt-lead-ins",
+ "reproduce": "python3 tools/lane_a_c64_cover.py --check lm-exec-services && python3 tools/lane_a_c64_cover.py --check lm-exec-jobs && python3 tools/lane_a_c64_cover.py --check lm-exec-idle && python3 tools/lane_a_c64_cover.py --check cm-exec-services && python3 tools/lane_a_c64_cover.py --check cm-exec-jobs && python3 tools/lane_a_c64_cover.py --check cm-exec-idle && python3 tools/lane_a_c64_cover.py --check rupt-lead-ins && python3 tools/lane_a_c64_cover.py --check lm-t6rupt",
  "milestones": {
   "lm-exec-services": {
    "host_cases": 9208,
@@ -190,11 +190,11 @@
   },
   "rupt-lead-ins": {
    "host_cases": 3072,
-   "host_branch_arcs": 168,
+   "host_branch_arcs": 184,
    "stride_rows": 192,
-   "cover_rows": 1,
-   "c64_rows": 193,
-   "c64_branch_arcs": 168,
+   "cover_rows": 3,
+   "c64_rows": 195,
+   "c64_branch_arcs": 184,
    "host_branches_missing_on_c64": [],
    "linked_sources": [
     "src/agc_hardware_divide.c",
@@ -204,6 +204,24 @@
     "src/agc_word.c",
     "src/rupt_lead_ins.c",
     "tests/rupt_lead_ins_cases.c"
+   ]
+  },
+  "lm-t6rupt": {
+   "host_cases": 3840,
+   "host_branch_arcs": 214,
+   "stride_rows": 240,
+   "cover_rows": 4,
+   "c64_rows": 244,
+   "c64_branch_arcs": 214,
+   "host_branches_missing_on_c64": [],
+   "linked_sources": [
+    "src/agc_hardware_divide.c",
+    "src/agc_image_ops.c",
+    "src/agc_multiword.c",
+    "src/agc_transfer.c",
+    "src/agc_word.c",
+    "src/lm_t6rupt.c",
+    "tests/lm_t6rupt_cases.c"
    ]
   }
  },
@@ -251,6 +269,7 @@
   "src/lm_restart_select.c",
   "src/lm_super_dispatch.c",
   "src/lm_svct3.c",
+  "src/lm_t6rupt.c",
   "src/lm_taskover_resume.c",
   "src/lm_waitlist_dispatch.c",
   "src/lm_waitlist_image.c",
@@ -288,6 +307,7 @@
   "tests/lm_sleep_cases.c",
   "tests/lm_super_dispatch_cases.c",
   "tests/lm_svct3_cases.c",
+  "tests/lm_t6rupt_cases.c",
   "tests/lm_taskover_resume_cases.c",
   "tests/lm_waitlist_dispatch_cases.c",
   "tests/lm_waitlist_image_cases.c",

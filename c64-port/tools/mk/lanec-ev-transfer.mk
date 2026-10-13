@@ -4,7 +4,7 @@
 # BANKCALL/POSTJUMP caller (Pinball's POSTJUMP GOEXTVB among them) through
 # INTER-BANK_COMMUNICATION, the display interface, the LM Executive and the
 # LM interpreter's INTPRET.
-LANEC_EV_ABI = src/lanec_ev_routines.c src/standard_lead_routines.c src/standard_lead.c src/standard_lead_interp.c \
+LANEC_EV_ABI = src/lanec_ev_routines.c src/standard_lead_routines.c src/interp_entry.c src/standard_lead.c src/standard_lead_interp.c \
   src/standard_lead_wake.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c
 LANEC_EV_TRANSFER_SRC = $(LANEC_EV_ABI) tests/lanec_ev_transfer_cases.c
 LANEC_SUITE_SRC += $(LANEC_EV_TRANSFER_SRC)
