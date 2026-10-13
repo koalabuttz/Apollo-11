@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 #include "lm_servicer_cases.h"
+#include "lm_servicer_chains.h"
 #define W m->words
 #define NEWOPS 06070u
 #define FIXLOC 0120u
@@ -8,7 +9,8 @@
 #define PH(b,a) (uint16_t)((b)*1024u+((a)-02000u))
 #define KEY(b,a) (ph==PH(b,a))
 #define E7(a) (07u*0400u+(a)-01400u)
-typedef char lmsv_cases_check[LMSV_CASES==LMSV_ROUTINES*LMSV_STATES?1:-1];
+typedef char lmsv_cases_check[LMSV_BASE_CASES==LMSV_ROUTINES*LMSV_STATES&&
+                              LMSV_CASES==LMSV_BASE_CASES+LMSV_CHAINS?1:-1];
 static uint32_t rnd(uint32_t *s){*s=*s*1664525u+1013904223u;return *s;}
 static agc_word r15(uint32_t *s){return (agc_word)((rnd(s)>>12)&AGC_MASK);}
 static unsigned below(uint32_t *s,unsigned n){return (unsigned)((rnd(s)>>16)%n);}
@@ -61,9 +63,16 @@ static unsigned ebank_of(uint16_t ph){
  return 7u;
 }
 
+unsigned lmsv_slot(uint16_t n){return n<LMSV_BASE_CASES?n%LMSV_ROUTINES:lmsv_chain_slot[n-LMSV_BASE_CASES];}
+
 void lmsv_input(apollo_overlay_state *m,lmsv_case *c,uint16_t n){
  uint32_t seed=0x5356u+(uint32_t)n*2654435761u;unsigned i,v,r=n%LMSV_ROUTINES,bank;uint16_t ph=lmsv_routine_keys[r];
  agc_word eb,vac,q;
+ if(n>=LMSV_BASE_CASES){unsigned j=n-LMSV_BASE_CASES;
+  lmsv_input(m,c,lmsv_chain_base[j]);
+  if(lmsv_chain_edits[j])for(i=0;i<lmsv_chain_count[j];++i)W[lmsv_chain_edits[j][i][0]]=lmsv_chain_edits[j][i][1];
+  c->chan11=lmsv_chain_io[j][0];c->chan12=lmsv_chain_io[j][1];c->chan32=lmsv_chain_io[j][2];
+  c->chan33=lmsv_chain_io[j][3];c->interrupt_enabled=lmsv_chain_io[j][4];return;}
  v=n/LMSV_ROUTINES;
  for(i=0;i<2048u;++i)W[i]=r15(&seed);
  W[7]=0;W[0]=agc_extend(W[0]);W[1]=agc_extend(W[1]);
@@ -153,6 +162,8 @@ static apollo_overlay_state undo_image;
 unsigned lmsv_run(apollo_overlay_state *s,uint16_t n,lmsv_case *out){
  lmsv_case c;lm_sv_io io;agc_routine_table basic[1],interp[1];
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;enum exec_status st;
+ /* A continuation another C64 group runs: this build lacks its image. */
+ if(n>=LMSV_BASE_CASES&&!lmsv_chain_edits[n-LMSV_BASE_CASES])return 4u;
  lmsv_input(s,&c,n);
  io.control.superbank=c.superbank;io.control.interrupt_enabled=c.interrupt_enabled;
  io.chan11=c.chan11;io.chan12=c.chan12;io.chan32=c.chan32;io.chan33=c.chan33;io.undo=LMSV_UNDO;

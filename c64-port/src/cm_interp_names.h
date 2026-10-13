@@ -31,6 +31,7 @@
 #define lmi_diradres_pushup cmi_diradres_pushup
 #define lmi_address_pushup cmi_address_pushup
 #define lmi_store_code cmi_store_code
+#define lmi_store_spills cmi_store_spills
 #define lmi_stadr cmi_stadr
 #define lmi_dodload cmi_dodload
 #define lmi_dovload cmi_dovload
@@ -71,6 +72,7 @@
 #define lmi_mxv cmi_mxv
 #define lmi_vxm cmi_vxm
 #define lmi_vproj cmi_vproj
+#define lmi_vsc cmi_vsc
 #define LMI_BOV_NONE CMI_BOV_NONE
 #define LMI_BOV_GOTO CMI_BOV_GOTO
 #define LMI_BOV_RTB CMI_BOV_RTB
@@ -98,10 +100,13 @@
 #define lmi_bhiz cmi_bhiz
 #define lmi_call cmi_call
 #define lmi_goto_any cmi_goto_any
+#define lmi_cgoto cmi_cgoto
 #define lmi_15bitadr cmi_15bitadr
 #define lmi_bzegoto cmi_bzegoto
 #define lmi_tload cmi_tload
 #define lmi_tload_fixed cmi_tload_fixed
+#define lmi_sload_fixed cmi_sload_fixed
+#define lmi_vdsc cmi_vdsc
 #define lmi_exit cmi_exit
 #define lmi_intpret cmi_intpret
 #define lmi_tpmode cmi_tpmode

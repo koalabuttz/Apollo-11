@@ -292,7 +292,11 @@ enum {GO=0,STOP=1,REFUSE=2};
 #define NOINL __attribute__((noinline,unused))
 #define RUN_LIMIT 2000u
 static __attribute__((unused)) agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
-static __attribute__((unused)) int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
+static __attribute__((unused)) int tc_word(agc_register w){
+ if(w<02000u)return 0;
+ if(w>07777u)return 0;
+ return 1;
+}
 
 /* ---- Interpretive helpers (as lm_burn_baby.c) ------------------------ */
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
@@ -352,14 +356,18 @@ static NOINL void opnd(apollo_overlay_state *s,agc_word word,agc_word target){
  if(word&040000u)lmi_address_pushup(s,word,target);else lmi_direct(s,word,target);
 }
 static NOINL void shorts(apollo_overlay_state *s){lmi_short_dispatch(s);if(W[5]==02017u)lmi_shortt(s);else lmi_shortv(s);}
-static NOINL int store(apollo_overlay_state *s,agc_word code){lmi_store_code(s,code);return next(s);}
+/* A store whose words would pass the E-bank window's end (into fixed
+ * memory, only from a mode its producer never leaves there) refuses. */
+static NOINL int store(apollo_overlay_state *s,agc_word code){if(lmi_store_spills(s,code))return REFUSE;lmi_store_code(s,code);return next(s);}
 /* STODL/STOVL: the store, then the load of the given word (or PUSHUP). */
 static NOINL int stodl(apollo_overlay_state *s,agc_word code,agc_word word){const agc_word *k;
+ if(lmi_store_spills(s,code))return REFUSE;
  lmi_store_code(s,code);lmi_dodload(s);
  if(word&040000u)lmi_diradres_pushup(s,word,DLOAD);else lmi_diradres(s,word,DLOAD);
  K(2);lmi_dload_op(s,k);return next(s);
 }
 static NOINL int stovl(apollo_overlay_state *s,agc_word code,agc_word word){const agc_word *k;
+ if(lmi_store_spills(s,code))return REFUSE;
  lmi_store_code(s,code);lmi_dovload(s);
  if(word&040000u)lmi_diradres_pushup(s,word,VLOAD);else lmi_diradres(s,word,VLOAD);
  K(6);lmi_vload(s,k);return next(s);
@@ -368,6 +376,7 @@ static NOINL int stovl(apollo_overlay_state *s,agc_word code,agc_word word){cons
  * address holds the CADR to go to: STCALL VN1 31D returns through the QPRET
  * STQ saved there). */
 static NOINL int stcall(apollo_overlay_state *s,agc_word code,agc_word word){
+ if(lmi_store_spills(s,code))return REFUSE;
  lmi_store_code(s,code);lmi_15bitadr(s,word,CALLITA);lmi_call(s);
  if(word<04000u)lmi_goto_any(s);else lmi_goto(s);
  return GO;
@@ -450,7 +459,9 @@ static const uint8_t SEG_LABELS[2][160]={{
 static int seg_end(uint16_t ph,int interp){unsigned b=ph/1024u,a=ph%1024u+02000u,p;
  p=b==033u?a-02206u:b==037u?01600u+a-03410u:b==022u?02100u+a-03661u:b==027u?02140u+a-03321u:
    b==032u?02200u+a-03770u:b==023u?02210u+a-02461u:b==021u?02240u+a-02130u:02270u+a-03716u;
- return p<1280u&&(SEG_LABELS[interp][p>>3]>>(p&7)&1u)?STOP:REFUSE;}
+ if(p>=1280u)return REFUSE;
+ if(SEG_LABELS[interp][p>>3]>>(p&7)&1u)return STOP;
+ return REFUSE;}
 #endif
 #define IC(b,a) case PH(b,a): SV_PATH(PATHOF(b,a))
 /* One order-pair word at LOC (Z at NEWOPS), by its physical address. */
@@ -833,7 +844,14 @@ static NOINL int ixr(agc_register w,unsigned n,unsigned step,unsigned *v){
 }
 static NOINL int ix(const apollo_overlay_state *s,unsigned x,unsigned n,unsigned step,unsigned *v){return ixr(ai_word(s,x),n,step,v);}
 #define IX(x,n,step) do{if(!ix(s,(x),(n),(step),&v))return REFUSE;}while(0)
-static __attribute__((unused)) int vac(agc_word f){return f==0401u||f==0455u||f==0531u||f==0605u||f==0661u;}
+static __attribute__((unused)) int vac(agc_word f){
+ if(f==0401u)return 1;
+ if(f==0455u)return 1;
+ if(f==0531u)return 1;
+ if(f==0605u)return 1;
+ if(f==0661u)return 1;
+ return 0;
+}
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #define AT(b,a) case PH(b,a): L##b##_##a: __attribute__((unused)) SV_PATH(PATHOF(b,a))
 #define GOTO(b,a) goto L##b##_##a
@@ -2000,15 +2018,12 @@ static int basic(apollo_overlay_state *s,lm_sv_io *io,uint16_t ph){
 }
 /* The file's words (code and data). A data word reached as code is
  * refused (basic's default). */
-static __attribute__((unused)) int in_code(uint16_t ph){
- return (ph>=PH(21,02130)&&ph<=PH(21,02153))||
-        (ph>=PH(22,03661)&&ph<=PH(22,03710))||
-        (ph>=PH(23,02461)&&ph<=PH(23,02510))||
-        (ph>=PH(27,03321)&&ph<=PH(27,03357))||
-        (ph>=PH(32,03770)&&ph<=PH(32,03772))||
-        (ph>=PH(33,02206)&&ph<=PH(33,03776))||
-        (ph>=PH(34,03716)&&ph<=PH(34,03774))||
-        (ph>=PH(37,03410)&&ph<=PH(37,03654));
+static const uint16_t code_ranges[][2]={
+ {PH(21,02130),PH(21,02153)},{PH(22,03661),PH(22,03710)},{PH(23,02461),PH(23,02510)},{PH(27,03321),PH(27,03357)},
+ {PH(32,03770),PH(32,03772)},{PH(33,02206),PH(33,03776)},{PH(34,03716),PH(34,03774)},{PH(37,03410),PH(37,03654)}};
+static __attribute__((unused)) int in_code(uint16_t ph){unsigned i;
+ for(i=0;i<sizeof code_ranges/sizeof code_ranges[0];++i)if(ph>=code_ranges[i][0]&&ph<=code_ranges[i][1])return 1;
+ return 0;
 }
 /* The words that run only after the EXTEND or INDEX before them (an
  * extracode, an indexed operand): a computed transfer that lands on one
@@ -2025,7 +2040,8 @@ static __attribute__((unused)) int here(const apollo_overlay_state *s,const lm_s
  *interp=0;
  if(z==NEWOPS){*interp=1;*ph=agc_fixed_physical(W[LOC],W[BANKSET],io->control.superbank);}
  else *ph=agc_fixed_physical(z,W[FBANK],io->control.superbank);
- return *ph!=AGC_TRANSFER_NONE&&in_code(*ph);
+ if(*ph==AGC_TRANSFER_NONE)return 0;
+ return in_code(*ph);
 }
 /* FIXLOC one of the five VAC areas, PUSHLOC inside it, no order code left
  * over in EDOP. */
@@ -2033,7 +2049,9 @@ static __attribute__((unused)) int work_area(const apollo_overlay_state *s){
  agc_word f=W[FIXLOC],p=W[PUSHLOC];
  if(W[EDOP])return 0;
  if(f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
- return p>=f&&p<=f+042u;
+ if(p<f)return 0;
+ if(p>f+042u)return 0;
+ return 1;
 }
 /* A computed transfer (TC Q, TC A, TC LRADRET, DTCB) out of the file onto
  * the interpreter's own code (fixed-fixed 06037-07707 but NEWOPS, SWCALL
@@ -2045,12 +2063,18 @@ static __attribute__((unused)) int inner(const apollo_overlay_state *s,const lm_
  if(z<02000u||(z>=04621u&&z<=04630u)||(z>=06037u&&z<=07707u))return 1;
  if(z>=04000u)return 0;
  ph=agc_fixed_physical(z,W[FBANK],io->control.superbank);
- return ph<=03734u-02000u||(ph>=1024u+0344u&&ph<=1024u+0600u);
+ if(ph<=03734u-02000u)return 1;
+ if(ph<1024u+0344u)return 0;
+ if(ph>1024u+0600u)return 0;
+ return 1;
 }
 static enum exec_status steps(apollo_overlay_state *s,lm_sv_io *io){
  unsigned n;int st,interp;uint16_t ph;
  for(n=0;n<RUN_LIMIT;++n){
-  if(!here(s,io,&interp,&ph))return n&&!inner(s,io)?EXEC_OK:EXEC_OUT_OF_SCOPE;
+  if(!here(s,io,&interp,&ph)){
+   if(!n)return EXEC_OUT_OF_SCOPE;
+   if(inner(s,io))return EXEC_OUT_OF_SCOPE;
+   return EXEC_OK;}
   /* NEWOPS reads the order word under FB, which DANZIG set from BANKSET. */
   if(interp&&(((W[FBANK]^W[BANKSET])&076000u)||!work_area(s)))return EXEC_OUT_OF_SCOPE;
   if(!interp&&dependent_word(ph))return EXEC_OUT_OF_SCOPE;
@@ -2168,58 +2192,82 @@ static const agc_routine_entry basic_entries[]={
  R34(03716),R34(03720),R34(03722),R34(03723),R34(03744),R34(03745),R34(03753),R34(03754),
  R34(03755),R34(03757),R37(03410),R37(03412),R37(03416),R37(03417),R37(03435),R37(03436),
  R37(03437),R37(03441),R37(03451),R37(03453),R37(03461),R37(03515),R37(03517),R37(03524),
- R37(03525),R37(03531),R37(03541),R37(03557),R37(03565),R37(03570),R37(03571),R37(03614),
+ R37(03525),R37(03531),R37(03541),R37(03544),R37(03557),R37(03565),R37(03570),R37(03571),R37(03614),
  R37(03641),
 #endif
 };
 static const agc_routine_entry interp_entries[]={
 #if SV_G(5)
- R22(03705),R23(02472),
+ R22(03677),R22(03702),R22(03705),R23(02462),R23(02466),R23(02470),R23(02472),R23(02474),
+ R23(02476),R23(02500),R23(02502),
 #endif
 #if SV_G(7)
  R23(02503),
+#endif
+#if SV_G(6)
+ R33(02220),R33(02222),
 #endif
 #if SV_G(5)
  R33(02267),R33(02273),
 #endif
 #if SV_G(4)
- R33(02415),R33(02417),R33(02461),
+ R33(02415),R33(02417),R33(02461),R33(02571),R33(02573),R33(02575),R33(02576),R33(02577),
 #endif
 #if SV_G(5)
- R33(02602),
+ R33(02602),R33(02604),R33(02606),R33(02610),R33(02612),R33(02614),R33(02616),R33(02620),
+ R33(02622),R33(02623),R33(02624),
 #endif
 #if SV_G(6)
  R33(02627),
 #endif
 #if SV_G(2)
- R33(02730),
+ R33(02730),R33(02731),R33(02732),R33(02735),R33(02737),R33(02742),R33(02743),R33(02745),
+ R33(02750),R33(02751),R33(02753),R33(02755),R33(02760),R33(02762),R33(02764),
 #endif
 #if SV_G(3)
- R33(02765),
+ R33(02765),R33(02770),R33(02773),R33(02775),
 #endif
 #if SV_G(7)
- R33(02776),R33(03021),R33(03032),R33(03045),
+ R33(02776),R33(03001),R33(03003),R33(03004),R33(03005),R33(03007),R33(03012),R33(03014),
+ R33(03017),R33(03021),R33(03022),R33(03024),R33(03032),R33(03034),R33(03037),R33(03041),
+ R33(03043),R33(03045),R33(03047),R33(03051),R33(03054),R33(03056),R33(03060),R33(03062),
+ R33(03063),
 #endif
 #if SV_G(4)
- R33(03066),R33(03105),
+ R33(03066),R33(03071),R33(03073),R33(03075),R33(03100),R33(03101),R33(03103),R33(03105),
+ R33(03106),R33(03110),R33(03111),R33(03112),R33(03114),R33(03116),R33(03120),R33(03122),
+ R33(03124),R33(03126),
 #endif
 #if SV_G(6)
- R33(03130),
+ R33(03130),R33(03131),R33(03133),R33(03136),R33(03141),R33(03142),
 #endif
 #if SV_G(7)
- R33(03304),
+ R33(03170),R33(03173),R33(03175),R33(03200),
+#endif
+#if SV_G(6)
+ R33(03211),R33(03214),R33(03216),R33(03221),R33(03222),R33(03230),R33(03232),R33(03234),
+#endif
+#if SV_G(2)
+ R33(03250),R33(03252),
+#endif
+#if SV_G(7)
+ R33(03276),R33(03277),R33(03302),R33(03304),
+#endif
+#if SV_G(2)
+ R33(03341),
 #endif
 #if SV_G(3)
- R33(03344),
+ R33(03344),R33(03347),R33(03351),R33(03370),R33(03373),R33(03376),R33(03400),R33(03402),
+ R33(03404),R33(03405),R33(03407),R33(03410),R33(03412),R33(03413),
 #endif
 #if SV_G(7)
- R33(03761),
+ R33(03504),R33(03505),R33(03507),R33(03510),R33(03756),R33(03761),R33(03763),
 #endif
 #if SV_G(4)
- R33(03765),
+ R33(03765),R33(03766),R33(03770),R33(03772),
 #endif
 #if SV_G(6)
- R33(03774),
+ R33(03774),R33(03775),
 #endif
 };
 #define COUNT(t) (uint16_t)(sizeof t/sizeof t[0])
@@ -2249,9 +2297,25 @@ const uint16_t lmsv_routine_keys[LMSV_ROUTINES]={
  K33(03735),K33(03737),K33(03740),K34(03716),K34(03720),K34(03722),K34(03723),K34(03744),
  K34(03745),K34(03753),K34(03754),K34(03755),K34(03757),K37(03410),K37(03412),K37(03416),
  K37(03417),K37(03435),K37(03436),K37(03437),K37(03441),K37(03451),K37(03453),K37(03461),
- K37(03515),K37(03517),K37(03524),K37(03525),K37(03531),K37(03541),K37(03557),K37(03565),
- K37(03570),K37(03571),K37(03614),K37(03641),K22(03705),K23(02472),K23(02503),K33(02267),
- K33(02273),K33(02415),K33(02417),K33(02461),K33(02602),K33(02627),K33(02730),K33(02765),
- K33(02776),K33(03021),K33(03032),K33(03045),K33(03066),K33(03105),K33(03130),K33(03304),
- K33(03344),K33(03761),K33(03765),K33(03774)
+ K37(03515),K37(03517),K37(03524),K37(03525),K37(03531),K37(03541),K37(03544),K37(03557),K37(03565),
+ K37(03570),K37(03571),K37(03614),K37(03641),K22(03677),K22(03702),K22(03705),K23(02462),
+ K23(02466),K23(02470),K23(02472),K23(02474),K23(02476),K23(02500),K23(02502),K23(02503),
+ K33(02220),K33(02222),K33(02267),K33(02273),K33(02415),K33(02417),K33(02461),K33(02571),
+ K33(02573),K33(02575),K33(02576),K33(02577),K33(02602),K33(02604),K33(02606),K33(02610),
+ K33(02612),K33(02614),K33(02616),K33(02620),K33(02622),K33(02623),K33(02624),K33(02627),
+ K33(02730),K33(02731),K33(02732),K33(02735),K33(02737),K33(02742),K33(02743),K33(02745),
+ K33(02750),K33(02751),K33(02753),K33(02755),K33(02760),K33(02762),K33(02764),K33(02765),
+ K33(02770),K33(02773),K33(02775),K33(02776),K33(03001),K33(03003),K33(03004),K33(03005),
+ K33(03007),K33(03012),K33(03014),K33(03017),K33(03021),K33(03022),K33(03024),K33(03032),
+ K33(03034),K33(03037),K33(03041),K33(03043),K33(03045),K33(03047),K33(03051),K33(03054),
+ K33(03056),K33(03060),K33(03062),K33(03063),K33(03066),K33(03071),K33(03073),K33(03075),
+ K33(03100),K33(03101),K33(03103),K33(03105),K33(03106),K33(03110),K33(03111),K33(03112),
+ K33(03114),K33(03116),K33(03120),K33(03122),K33(03124),K33(03126),K33(03130),K33(03131),
+ K33(03133),K33(03136),K33(03141),K33(03142),K33(03170),K33(03173),K33(03175),K33(03200),
+ K33(03211),K33(03214),K33(03216),K33(03221),K33(03222),K33(03230),K33(03232),K33(03234),
+ K33(03250),K33(03252),K33(03276),K33(03277),K33(03302),K33(03304),K33(03341),K33(03344),
+ K33(03347),K33(03351),K33(03370),K33(03373),K33(03376),K33(03400),K33(03402),K33(03404),
+ K33(03405),K33(03407),K33(03410),K33(03412),K33(03413),K33(03504),K33(03505),K33(03507),
+ K33(03510),K33(03756),K33(03761),K33(03763),K33(03765),K33(03766),K33(03770),K33(03772),
+ K33(03774),K33(03775)
 };

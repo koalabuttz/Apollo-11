@@ -32,4 +32,4 @@ c64-inflight-align: $(IFA_C64_PRGS)
 build/inflight-align-%.prg: $(IFA_SRC) platform/c64/inflight_align_diagnostic.c tools/mk/inflight-align.groups $(IFA_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(IFA_MOS_FLAGS) $(INFLIGHT_ALIGN_GROUP_FLAGS_$*) -Wl,-Map,build/inflight-align-$*.map $(IFA_C64_$(INFLIGHT_ALIGN_GROUP_MISSION_$*)) $(IFA_C64_COMMON) platform/c64/inflight_align_diagnostic.c -o $@
 vice-inflight-align: $(IFA_C64_PRGS)
-	for p in $(IFA_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(IFA_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

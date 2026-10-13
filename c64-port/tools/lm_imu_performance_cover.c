@@ -11,7 +11,8 @@
  *   key, and prints them as "part case" lines; the edges no part row takes
  *   go to stderr.
  * replay FILE: built with --coverage. Runs the "part case" rows of FILE
- *   (or, with FILE "-", every case as the host stream) for gcov. */
+ *   (or, with FILE "-", every case as the host stream; with "+", every case
+ *   as every part, the rows the C64 parts could run) for gcov. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,6 +76,7 @@ static int do_select(void){unsigned n,p,i,left=0,picked=0;
 }
 static int do_replay(const char *file){unsigned p,n;FILE *f;
  if(!strcmp(file,"-")){for(n=0;n<IPT_CASES;++n)run(0,(uint16_t)n);return 0;}
+ if(!strcmp(file,"+")){for(p=1;p<=IPT_PARTS;++p)for(n=0;n<IPT_CASES;++n)(void)run(p,(uint16_t)n);return 0;}
  f=fopen(file,"r");if(!f)return 2;
  while(fscanf(f,"%u %u",&p,&n)==2)if(run(p,(uint16_t)n)==3u){fprintf(stderr,"part %u case %u is kind 3\n",p,n);return 1;}
  fclose(f);return 0;

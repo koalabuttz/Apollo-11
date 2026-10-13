@@ -11,7 +11,8 @@ enum service_routines_entry {SERVICE_UPENT2,SERVICE_DOWNENT2,SERVICE_UPFLAG,SERV
  * ending at its genuine +1 back edge or source return/fallthrough. Caller must
  * keep producers quiesced while composing iterations; no extra poll is added.
  * Ordinary RAM15, raw A/L16, coherent banks/ZERO and ordinary compiled caller
- * Q0100..07775. Named flag descriptors map ordinary erasable words074..01777.
+ * Q0100..07775 (any Q for TCGETCAD, WAKER, its finish and B5OFF, which never
+ * read it). Named flag descriptors map ordinary erasable words074..01777.
  * GENTRAN source/destination effective logical addresses remain valid original
  * CA/LXCH operand forms; ordinary data (physical>=030) and fixed sources.
  * Unsupported input is unchanged. Fixed inline/source words are immutable

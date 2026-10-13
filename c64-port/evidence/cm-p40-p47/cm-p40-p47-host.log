@@ -1,0 +1,8 @@
+$ make test-cm-p40-p47 sanitize-cm-p40-p47
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_p40_p47.c tests/cm_p40_p47_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_cm_p40_p47.c -o build/test-cm-p40-p47
+./build/test-cm-p40-p47
+cm-p40-p47: 992 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_p40_p47.c tests/cm_p40_p47_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_cm_p40_p47.c -o build/test-cm-p40-p47-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-p40-p47-sanitize
+cm-p40-p47: 992 checks, 0 failures
+exit 0

@@ -14,7 +14,13 @@
  * at the interpretive keys); the rest exercise the refusals, which
  * tests/test_lm_servicer.c also checks. */
 #define LMSV_STATES 128u
-#define LMSV_CASES 24064u    /* LMSV_ROUTINES * LMSV_STATES */
+#define LMSV_BASE_CASES 40320u    /* LMSV_ROUTINES * LMSV_STATES */
+/* Then the continuations (tests/lm_servicer_chains.h, from
+ * tools/lm_servicer_chains.py): case LMSV_BASE_CASES + j starts where
+ * case lmsv_chain_base[j]'s run reaches the end of its C64 segment group,
+ * with the image that run leaves, at the key there; it runs the rest of
+ * the original case in the group that holds that code. */
+#define LMSV_CASES 40336u
 #define LMSV_STOPPED 0u
 #define LMSV_REFUSED 2u
 typedef struct {
@@ -22,6 +28,8 @@ typedef struct {
  uint16_t interrupt_enabled;
 } lmsv_case;
 void lmsv_input(apollo_overlay_state *,lmsv_case *,uint16_t n);
+/* The key slot (lmsv_routine_keys) case n starts at. */
+unsigned lmsv_slot(uint16_t n);
 /* Whether the original has left the file at Z (FB, superbank, Q, and LOC
  * and BANKSET at NEWOPS). */
 int lmsv_leaves(agc_word z,agc_word fb,agc_word superbank,agc_word q,agc_word loc,agc_word bankset);

@@ -9,8 +9,8 @@
       "store": "release"
     },
     "exec-closure-proof.json": {
-      "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5",
-      "bytes": 2705,
+      "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735",
+      "bytes": 4149,
       "store": "tree"
     },
     "exec-closure-source-map-cm-executive.json": {

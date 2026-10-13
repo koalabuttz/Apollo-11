@@ -12,9 +12,9 @@ extern const agc_routine_table cm_tpi_search_interpretive,cm_tpi_search_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_tpi_search_point;
-#define CM_TPI_SEARCH_POINTS 65u
+#define CM_TPI_SEARCH_POINTS 199u
 #define CM_TPI_SEARCH_CADR_WORDS 3u
-#define CM_TPI_SEARCH_EXTERNALS 9u
+#define CM_TPI_SEARCH_EXTERNALS 10u
 #define CM_TPI_SEARCH_FIRST 7457u
 #define CM_TPI_SEARCH_LAST 31029u
 extern const cm_tpi_search_point cm_tpi_search_points[CM_TPI_SEARCH_POINTS];

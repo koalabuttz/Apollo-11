@@ -1,0 +1,9 @@
+{
+ "milestone": "lm-servicer",
+ "method": "gcc --coverage, gcov -b per object over every src/ file linked: every host case in the whole-file build against each C64 build's rows (tests/lm_servicer_c64_vectors.h)",
+ "host_branch_outcomes": 1532,
+ "c64_branch_outcomes": 1532,
+ "missing": [],
+ "host_lines": 2088,
+ "missing_lines": []
+}

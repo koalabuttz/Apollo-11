@@ -169,6 +169,24 @@
     "high": 24299
    },
    "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 22778,
+    "free_bytes": 3589,
+    "boot_only_bytes": 3248,
+    "components": {
+     "kernel": 10475,
+     "ABI 2 runtime and REU store": 5206,
+     "transfer ABI trampoline and Executive call sites": 2680,
+     "single-precision subroutines": 1299,
+     "AGC timers and interrupt entry": 1092,
+     "resident state and step": 893,
+     "service table exports": 637,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "BASIC header and alignment": 0
+    }
+   },
    "files": [
     {
      "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
@@ -1300,6 +1318,24 @@
     "high": 23774
    },
    "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 22485,
+    "free_bytes": 3882,
+    "boot_only_bytes": 3218,
+    "components": {
+     "kernel": 10232,
+     "ABI 2 runtime and REU store": 5206,
+     "transfer ABI trampoline and Executive call sites": 2612,
+     "single-precision subroutines": 1299,
+     "AGC timers and interrupt entry": 1092,
+     "resident state and step": 911,
+     "service table exports": 637,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "BASIC header and alignment": 0
+    }
+   },
    "files": [
     {
      "path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
