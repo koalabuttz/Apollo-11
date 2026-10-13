@@ -74,8 +74,8 @@ uint32_t rk_services_digest(apollo_overlay_state *s,uint16_t n){uint16_t steps,i
 #endif
 #if RK_JOBS||RK_IDLE
 static uint32_t one(apollo_overlay_state *s,uint16_t n,const agc_routine_table *table,void (*input)(apollo_overlay_state *,cm_native_io *,uint16_t)){
- cm_native_io io;agc_hardware hw={0,1,0,0,0,0,0,0};agc_native_program p=program();agc_routine call;unsigned kind=3u;uint16_t dev[3];
- p.basic=table;p.basic_count=1;p.hardware=&hw;
+ cm_native_io io;agc_hardware hw={0};agc_native_program p=program();agc_routine call;unsigned kind=3u;uint16_t dev[3];
+ hw.in_interrupt=1;p.basic=table;p.basic_count=1;p.hardware=&hw;
  input(s,&io,n);rk_entry=s->words[5];
  call=agc_transfer_resolve(&p,s,io.superbank);
  if(call)kind=call(&p,s,&io)!=EXEC_OK?2u:s->words[5]==CM_EXEC_BAILOUT||s->words[5]==CM_EXEC_POODOO?1u:0u;
