@@ -1,5 +1,0 @@
-PASS 13312 original P35/P75 entries equal native trampoline runs 418af5cdef915a952a4fa5b25939227765eacdef038b91f3f51e6b9b5d55afcf
-lm-p35: 13312 cases, 147 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 13488 checks, 0 failures
-PASS 31 assembled P35/P75 words on 31 source lines map to 13 native routines
-lm-p35: 13312 cases, 147 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 13488 checks, 0 failures
-PASS: VICE PAL lm-p35-1.prg: 520 checks, 0 failures

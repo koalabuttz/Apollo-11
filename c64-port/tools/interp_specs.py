@@ -1391,6 +1391,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'TPI_SEARCH.agc'},
         'base': {'cm': 'cm_tpi_search'},
@@ -1661,6 +1662,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P32-P33,_P72-P73.agc'},
         'source_path': {'cm': 'P32-P33_P72-P73.agc'},
@@ -1690,12 +1692,20 @@ SPECS = {
                    'ROTATE': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
-        # P32/P72F subtracts 60MIN until negative: hundreds of passes.
+        # P32/P72F subtracts 60MIN until negative: hundreds of passes (and
+        # with resume_keys the loop runs over two routines).
         'self_loops': True,
+        'max_steps': 10000,
         'target': 'tests/cm_p32_p33_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'cm': 'P34-35_P74-75.agc'},
@@ -1732,6 +1742,11 @@ SPECS = {
         'fixed_index': {'MUTABLE': [2, 10]},
         'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         'target': 'tests/cm_p34_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
@@ -1812,6 +1827,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P32-P35,_P72-P75.agc'},
         'source_path': {'lm': 'P32-P35_P72-P75.agc'},
@@ -1839,7 +1855,15 @@ SPECS = {
                    'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
         'self_loops': True,
+        # With resume_keys the loops (P32/P72F's 60MIN passes) run over
+        # several routines.
+        'max_steps': 10000,
         'target': 'tests/lm_p32_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'lm-conic-compiled': {

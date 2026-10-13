@@ -2710,7 +2710,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under EB 4, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p30-p37 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -2730,22 +2730,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "272d62a64184318b4133aa54f76fc3799788dd3a7afd3060f074f12a0f85758f"
+            "sha256": "c17bbe0814a3f0a22de4d26798340f4dc29454f567c66b79da34298f74fd7b85"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
-            "sha256": "8133cedb40bb835a77afcdc857d86c3a84dbf15b002d92681c735066af670d79"
+            "sha256": "d94d58f4965377a71b23e05871f4786aed335bbb8902d4fa5dd6449bb451243b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "5f726691ca6eda2d6dcacdbc283d33d451e90a35a2a59143de97a58dbe040749",
+            "sha256": "8b50023829e981f0c7c131a4379c06108b0020f257d6bb44e328bc38d537a8c3",
             "vice_targets": {
-              "vice-cm-p30-p37": 169
+              "vice-cm-p30-p37": 180
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "f48fabba2f8e332b9f3ae272eb5f4cbaef6b7e63a23f58648963a9acdad2c53c"
+            "sha256": "3ae0f95121ee7d6b70bbcdedbf65d084f40c12114d359f711e3f67573df71a6c"
           }
         }
       }
@@ -2769,7 +2769,47 @@
           "scope": "Every word of the file (882 words): P32/P72 (CSI), P33/P73 (CDH), the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C and INTINT3P, as 128 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P32-P33.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p32-p33 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
+          "AVFLAGA, AVFLAGP, P20FLGON, VNPOOH and TC GOTOPOOH",
+          "ALARM and VARALARM with their alarm codes",
+          "ACTIVE, INTINT, NORMEX, PASSIVE, PERIAPO, PRECSET, S33/34.1, SELECTMU, SHIFTR1, TIMETHET, VECSHIFT and VN1645 through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-source-map.json",
+            "sha256": "7a7f5ce7edf4be1c26e30093879203c37a01ea9b7fe2a805dd67e7722ea17f4c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-proof.json",
+            "sha256": "8116c22ece4ac3de32648e5fdb7c107b2c119100bc819e6c1d8a7a7fc670e128"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-host.log",
+            "sha256": "d10b1850ec53de4dc68d3d6a78f8ff913e483da7a3aa150323b3b1512558ce86"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-vice.log",
+            "sha256": "add9e826c159a2b666fb4a161270014da59eeedc941f575ce45d3b8461a6f6b8",
+            "vice_targets": {
+              "vice-cm-p32-p33": 477
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
+            "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P34-35_P74-75.agc",
@@ -3653,7 +3693,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -3672,7 +3712,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+            "sha256": "96b1ea3aaf26e2853750bf92097445b90d88c6b50cb166fcdac415f84638c996"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -3680,14 +3720,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "sha256": "eb72dacf912afd977381b38d09c552e223fe4603d534817ddc4dd50ff24219b1",
             "vice_targets": {
-              "vice-r30": 252
+              "vice-r30": 258
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+            "sha256": "a26516e31f5d88ca2dbb5d7abd4b40f6055112034cf7a2edda73db6f40cc3a77"
           }
         }
       }
@@ -4668,9 +4708,9 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "0c27ebd505a8a19362ec4eb023cf970e7465d207",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-tpi-search pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-tpi-search pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). One C64 row is truncated (c64_branch_outcomes truncated_rows): case 17287 run to its first NEWOPS with LOC at 35,3210, where the yaAGC run of the same case also stops, compared over the full state there.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "AVFLAGA, AVFLAGP, P20FLGON, BLANKET, VNPOOH, ENDOFJOB and TCF GOTOPOOH",
@@ -4687,7 +4727,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "5facde770588d7805a24b63597a0ba34201293fc290cf5c2af057a6fe1acf123"
+            "sha256": "25c53efb28a034d83f10b3a23bb5932d5614985416b4aa49283a6072d38514d5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
@@ -4695,14 +4735,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "287a2ab90c3c7530b9d6cd96aa540b3201920d7909ccb210ec5f14332cba7c3b",
+            "sha256": "ecf27bcfc4111e633256e4ab2513604b6309df5e3dc6e2be2302557d9ddb6a7f",
             "vice_targets": {
-              "vice-cm-tpi-search": 236
+              "vice-cm-tpi-search": 248
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "66c62349530ab20343dfaa9f92d4c4db61e073ea66a390c44388e0d1c9fd79b7"
+            "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
           }
         }
       }
@@ -8619,31 +8659,50 @@
           ],
           "scope": "Every word of the file (923 words in banks 34 and 35): P32/P72 (CSI) and P33/P73 (CDH) with their displays, ALMXIT, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC, the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C, INTINT3P and COMPTGO, as 135 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P32-P35.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p32_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P32/P72, ALMXITA and ALMXIT (35,2027-35,2215), 119 words, as twenty-one basic routines keyed by Z and nineteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P32 and P72 through AVFLAGA/AVFLAGP, P32STRT (CENTANG from P30ZERO), P32/P72A (P20FLGON, NN +1 and TCSI zeroed, the V06N11 display and INTPRET); the TCSI check (DCOMP, BMN VN0655, PRECSET, RVEC/VVEC by VSR* 0,2, RVSW, TIMERAD to DPPOSMAX, TCSI = TDEC2 + time) and VN0655 (V06N55 GOFLASH and its returns, the V06N37 display); TCSI into TIG and SELECTMU; P32/P72B (ADVANCE, INTINT from VPASS1, RPASS1, TCSI, TTPI and TWOPI, PASSIVE, CSI/A); P32/P72C-F (UPDATFLG by FINALFLG, the 60MIN loops on T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, DELVEET1/RACT1, DISDVLVC, VN1645 and GOTO P32/P72B; and ALMXITA/ALMXIT (SXA,2 and LXC,1 CSIALRM, SLOAD* ALARM/TB -1,1, VARALARM and the V05N09 GOFLASH returns): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, VARALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2036-2043, 2063-2111, 2113, 2125-2172 and 2176-2215).",
-          "verification": "docs/LM-P32.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p33_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/lm_work_matrix.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P33/P73, AVFLAGA, AVFLAGP, P20FLGON and DISDVLVC (35,2216-35,2407), 122 words, as twenty-three basic routines keyed by Z and twenty interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P33 and P73 through AVFLAGA/AVFLAGP, P20FLGON, the V06N13 display and INTPRET; TTPI0, TCDH and SELECTMU; P33/P73B's ADVANCE, CDHMVR, the INTINT3P/ACTIVE and INTINT3P/PASSIVE integrations, ITSWICH, NOMTPI and S33/34.1 with the 611 alarm and its V05N09 GOFLASH returns; P33/P73C-F (UPDATFLG by FINALFLG, TTPI + NOMTPI, the 60MIN loops into T1TOT2 and T2TOT3); the V06N75 display, S32/33.1, VN1645 and GOTO P33/P73B; AVFLAGA, AVFLAGP and P20FLGON (QXCH SUBEXIT, UPFLAG/DOWNFLAG, TC SUBEXIT); and DISDVLVC (STQ NORMEX, S32/33.X, MXV, VSL1, SXA,1 VERBNOUN, the VERBNOUN display and GOTO NORMEX): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, E 1470, POODOO1, or a NEWOPS outside 35,2225-2265, 2277-2346, 2370-2402 and 2406-2407).",
-          "verification": "docs/LM-P33.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p32-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
+          "WAITLIST with its inline 2CADR, PHASCHNG and 2PHSCHNG with their inline phase words",
+          "UPFLAG and DOWNFLAG with their inline flag words",
+          "VNPOOH, RTRN, ENDOFJOB and TC GOTOPOOH",
+          "ALARM and VARALARM with their alarm codes",
+          "ACTIVE, INTINT, NORMEX, PASSIVE, PERIAPO, PRECSET, S33/34.1, SELECTMU, SHIFTR1, TIMERAD, TIMETHET, VECSHIFT and VN1645 through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
+          "The interpreter exits POODOO1 and ALARM1",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p32-p35/lm-p32-p35-source-map.json",
+            "sha256": "d120711bed812e99322f63d0423319a52622916a3f7bdb35b438b0104d2bc60a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p32-p35/lm-p32-p35-proof.json",
+            "sha256": "a14b8e008d42a1c7644dbaa66777a84d1c9a8c99df7436bca91a46e2069d4404"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p32-p35/lm-p32-p35-host.log",
+            "sha256": "9ac6e741b2dbe14e8cea06ccbac5c05949a876a09fa0fa57186ed9084a857c08"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p32-p35/lm-p32-p35-vice.log",
+            "sha256": "659421e9e16f6b5ce8372038f4b0828a7e4428025ec0d7613b037f95973cc4a7",
+            "vice_targets": {
+              "vice-lm-p32-p35": 497
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p32-p35/lm-p32-p35-c64-cover.json",
+            "sha256": "599b3ff810b38d825c6b3e2a4901c4f6654fd8340615bf1801aa4d3a1ddf8fb6"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P34-35_P74-75.agc",
@@ -8717,20 +8776,6 @@
         },
         {
           "native_files": [
-            "src/lm_p34_routines.c",
-            "src/lm_vn1645.c",
-            "src/lm_midgim.c",
-            "src/lm_interbank_routines.c",
-            "src/agc_transfer.c",
-            "src/agc_image_ops.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c"
-          ],
-          "scope": "GET45 +1 through VNPOOH (35,3635-35,3722), 54 words: GET45 +1's TC COMPTGO, the DELAYJOB wait, the V16N45 flash and its terminate, proceed and recycle responses, KILCLOCK, N45PROC, CLUPDATE with its interpretive CLEAR GOTO UPDATFLG QSAVED, DISPLAYE, P3XORP7X and VNPOOH, as 20 basic and 7 interpretive routines of the control-transfer ABI (with the lm-vn1645 and lm-midgim steps registered as interpretive routines): from each entry through the trampoline and the native INTER-BANK routines to the first point outside the file (COMPTGO, DELAYJOB, GOFLASH, PHASCHNG, UPFLAG, GOTOPOOH, CLUPDATE's TC INTPRET, a NEWOPS outside the file, the UNIT or ARCSIN alarm frontier, or the caller's return).",
-          "verification": "docs/LM-P34-TRANSFER.md"
-        },
-        {
-          "native_files": [
             "src/lm_s3435_routines.c",
             "src/agc_transfer.c",
             "src/lm_interp_orders.c",
@@ -8751,45 +8796,6 @@
           ],
           "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
           "verification": "docs/LM-S3435B.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p34p74_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/sband_trig.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P34/P74 (35,2545-35,2724), 112 words, as eighteen basic routines keyed by Z and sixteen interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P34 and P74 with AVFLAGA/AVFLAGP, P20FLGON, the V06N37 display, 130DEG and NN zero, DISPLAYE and INTPRET; the TPI time (ETPIFLAG by ELEV) and SELECTMU; the search loop (NOMTPI, ITSWICH, INTLOOP's PRECSET to TTPI, S33/34.1, SWCHCLR) with the 611 alarm and its V05N09 GOFLASH returns; the displays; the transfer (TIMETHET setup with COS/SIN of CENTANG, INTIME and TPASS4, S34/35.2, DELVTPI and DELVTPF, PERIAPO1, SHIFTR1, POSTTPI and TIG, V06N58); and S34/35.5, VN1645 and the GOTO P34/P74C: from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, DISPLAYE, VNPOOH, ALARM, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2562-35,2724).",
-          "verification": "docs/LM-P34P74.md"
-        },
-        {
-          "native_files": [
-            "src/lm_p35_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "P35/P75 (35,2725-35,2763), 31 words, as five basic routines keyed by Z and eight interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P35 and P75 with AVFLAGA/AVFLAGP, ATIGINC or PTIGINC into KT, P20FLGON and INTPRET, then CALL SELECTMU and the P35/P75B loop (RTB LOADTIME; TSTRT, TIG and INTIME from the time plus KT; STCALL TDEC1 PRECSET; CALL S34/35.1, S34/35.2, S34/35.5 and VN1645; GOTO P35/P75B): from each entry through the trampoline to the first point outside them (AVFLAGA, AVFLAGP, P20FLGON, INTPRET, LOADTIME, or a NEWOPS outside 35,2737-35,2763).",
-          "verification": "docs/LM-P35.md"
-        },
-        {
-          "native_files": [
-            "src/lm_s3435c_routines.c",
-            "src/lm_work_matrix.c",
-            "src/lm_s3435b_routines.c",
-            "src/lm_s3435_routines.c",
-            "src/lm_p34_routines.c",
-            "src/agc_transfer.c",
-            "src/lm_interp_orders.c",
-            "src/lm_interp_steps.c",
-            "src/matrix_native.c",
-            "src/agc_image_ops.c"
-          ],
-          "scope": "S34/35.2's integration head (35,3306-35,3326) and LOMAT tail (35,3367-35,3376), and S34/35.5 (35,3522-35,3605), 77 words, as ten interpretive routines keyed at their NEWOPS and eight basic routines keyed by Z, of the control-transfer ABI: SUBEXIT saved, the TPI integration arguments pushed (VPASS3, RPASS3, INTIME, TPASS4, TWOPI, or with NN nonzero ZEROVECS in its place) and INTINT called, LOMAT called and DELVEET3 rotated through the work-area matrix (MXV) into DELVLVC on to SUBEXIT; S34/35.5's FINALFLG branch and UPDATFLG set, FLAGON's GDT/2 save and V06N81 GOFLASH with its terminate, proceed and recycle returns, the EBANK7 new-target check with UPFLAG and INTPRET, the NTARGFLG branch to S34/35.3 or NOCHG (XDELVFLG cleared, DELVEET3 into DELVSIN), FLAGOFF's S34/35.4 call and V06N59 VNPOOH, and the GOTO SUBEXIT: from each entry through the trampoline (with lm-s3435b's, lm-s3435's and lm-p34's routines and the native INTER-BANK routines) to the first point outside them (INITVEL, INTSTALL, a caller's return, GOFLASH, UPFLAG, GOTOPOOH or INTPRET).",
-          "verification": "docs/LM-S3435C.md"
         }
       ]
     },
@@ -9566,7 +9572,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -9585,7 +9591,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+            "sha256": "96b1ea3aaf26e2853750bf92097445b90d88c6b50cb166fcdac415f84638c996"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -9593,14 +9599,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "sha256": "eb72dacf912afd977381b38d09c552e223fe4603d534817ddc4dd50ff24219b1",
             "vice_targets": {
-              "vice-r30": 252
+              "vice-r30": 258
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+            "sha256": "a26516e31f5d88ca2dbb5d7abd4b40f6055112034cf7a2edda73db6f40cc3a77"
           }
         }
       }
