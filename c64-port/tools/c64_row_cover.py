@@ -51,17 +51,35 @@ def arcs(d):
         return frozenset()
     out = subprocess.run(['gcov', '-b', '-j', '-t', '-o', d, *data], cwd=d, check=True,
                          capture_output=True, text=True).stdout
-    taken = set()
+    taken = []
     for doc in out.splitlines():
-        for f in json.loads(doc)['files']:
+        doc = json.loads(doc)
+        obj = os.path.splitext(os.path.basename(doc.get('data_file', '')))[0]
+        for f in doc['files']:
             name = f['file']
             if os.path.isabs(name):
                 name = os.path.relpath(name, R)
             for ln in f['lines']:
                 for k, b in enumerate(ln['branches']):
                     if b['count']:
-                        taken.add(f"{name}:{ln['line_number']} branch {k}")
-    return frozenset(taken)
+                        taken.append((obj, name, ln['line_number'], k))
+    return frozenset(arc_keys(taken))
+
+
+def arc_keys(taken):
+    """'file:line branch N' keys of (object, source, line, branch) arcs.
+
+    A .c source built into more than one object (the Comanche wrappers
+    #include the Luminary file: cm_interp_orders.c includes
+    lm_interp_orders.c) keys each object's arcs as 'file@object:line branch
+    N', so a two-mission runner does not merge the missions' arcs. A source
+    in one object, and every header, keeps the plain key."""
+    objs = {}
+    for obj, name, _, _ in taken:
+        objs.setdefault(name, set()).add(obj)
+    split = {n for n, o in objs.items() if n.endswith('.c') and len(o) > 1}
+    return {f"{name}@{obj}:{line} branch {k}" if name in split else f"{name}:{line} branch {k}"
+            for obj, name, line, k in taken}
 
 
 def _worker_dirs(objdir, jobs, tmp):
