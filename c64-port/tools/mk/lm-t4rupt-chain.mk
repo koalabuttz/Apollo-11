@@ -22,7 +22,7 @@ lm-t4rupt-chain-differential: build/lm-t4rupt-chain-native
 	python3 tools/lm_t4rupt_chain_freeze.py
 	git diff --exit-code -- tests/lm_t4rupt_chain_vectors.h tests/lm_t4rupt_chain_c64_vectors.h
 c64-lm-t4rupt-chain: build/lm-t4rupt-chain.prg
-build/lm-t4rupt-chain.prg: $(LCH_SRC) platform/c64/lm_t4rupt_chain_diagnostic.c tests/lm_t4rupt_chain_c64_vectors.h $(LCH_HDR) | build
+build/lm-t4rupt-chain.prg: $(LCH_SRC) platform/c64/lm_t4rupt_chain_diagnostic.c tests/lm_t4rupt_chain_c64_vectors.h tests/lm_t4rupt_chain_c64_rows.h $(LCH_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(LCH_FLAGS) -Wl,-Map,build/lm-t4rupt-chain.map $(LCH_SRC) platform/c64/lm_t4rupt_chain_diagnostic.c -o $@
 vice-lm-t4rupt-chain: build/lm-t4rupt-chain.prg
 	python3 tools/vice_run.py build/lm-t4rupt-chain.prg --cycles 3000000000 --timeout 1200

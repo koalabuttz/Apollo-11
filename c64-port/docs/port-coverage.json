@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -10433,11 +10433,21 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-host.log",
-            "sha256": "d1beb00eedeceb4303104a3de61eaf8428de3c827077b37ccae6912c75413b89"
+            "sha256": "2eb875e188f5e9542058bad90b8adf5bce5149bd4e3974eb68ecda2b59005461"
           },
           "c64_execution_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-vice.log",
-            "sha256": "63ed9ea510d3e7f6542f55a8c00ef2bb6b9185fe7b1fe6012fa90834075cab1a"
+            "sha256": "6f56c1a3e9614d11090aac01b930a8cf62109db4007037ea056f6b6b5a163523",
+            "vice_targets": {
+              "vice-t4rupt-core": 276,
+              "vice-lm-t4rupt-imu": 300,
+              "vice-lm-t4rupt-rr": 216,
+              "vice-lm-t4rupt-chain": 266
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-t4rupt-chain/lm-t4rupt-chain-c64-cover.json",
+            "sha256": "d033949ebbdea350a8e7dc2131e46e0fa79ee9649721ee81a87ab89120c288d5"
           }
         }
       }
