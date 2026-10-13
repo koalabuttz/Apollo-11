@@ -133,7 +133,9 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
-# AOTMARK's surface mark slots: a VAC area's address +1, plus 6 words a mark.
+# AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
+# and the surface mark slots (that area plus 6 words a mark).
+AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
 AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
 
 SPECS = {
@@ -158,11 +160,16 @@ SPECS = {
         'states': dict({'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]},
                         '07,2633': {'MKDEX': AOT_SLOTS}, '07,2634': {'MKDEX': AOT_SLOTS}},
                        # The star vector code indexes a mark's slot with X1 = -slot
-                       # (AVESTAR), XYMARK holding the marks' VAC area (MARKCHEX).
+                       # (AVESTAR), XYMARK holding the marks' VAC area (MARKCHEX);
+                       # AVESTAR empties the pushdown list, which stays shallow
+                       # (a deeper PUSHLOC would push over X1).
                        **{'%02o,%04o' % (b, a): {'vac+046': [0o77777 - x for x in AOT_SLOTS],
-                                                 'XYMARK': [0o401, 0o455, 0o531, 0o605, 0o661]}
+                                                 'XYMARK': [0o401, 0o455, 0o531, 0o605, 0o661],
+                                                 '0166': ['vac+%o' % n for n in range(0, 0o16, 2)]}
                           for b, lo, hi in ((7, 0o2171, 0o2202), (7, 0o2255, 0o2316), (0o15, 0o2000, 0o2046))
-                          for a in range(lo, hi)}),
+                          for a in range(lo, hi)},
+                       # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
+                       **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
         'joint_states': {'CHANGEVB': [{'FLAGWRD8': f | o, 'MKDEX': m}
                                       for f, ms in ((0, range(4)), (0o200, AOT_SLOTS))
                                       for o in (0, 0o12345 & ~0o200, 0o77577) for m in ms]},
@@ -173,8 +180,7 @@ SPECS = {
                        'VAC4USE': [0, 0o604], 'VAC5USE': [0, 0o660],
                        # MARKSTAT: the VAC area's address +1 in the low 9
                        # bits, mark flags in bits 10-14 (or zero: no marks).
-                       'MARKSTAT': [0] + [(f << 9) | a for f in range(32)
-                                      for a in (0o401, 0o455, 0o531, 0o605, 0o661)],
+                       'MARKSTAT': AOT_MARKSTAT,
                        # MARKCNTR: marks wanted or taken, 0 to 5.
                        'MARKCNTR': list(range(6)),
                        # AOTCODE: detent 0-7 in bits 7-9, star code below.
@@ -186,7 +192,19 @@ SPECS = {
         'flow_states': True,
         'resume_flow': True,
         'channel_inputs': True,
+        'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
         'target': 'tests/lm_aotmark_target.c',
+        # Host vectors and C64 rows chosen to reach every branch outcome
+        # (gcov arcs and clang edges, the shared bodies' edges per call
+        # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
+        # edge values in MPAC and the operands.
+        'c64_rows': 'cover',
+        'cover_stride': 8,
+        'site_edges': True,
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 32,
     },
     'inflight-align': {
         'missions': ('lm', 'cm'),
