@@ -2415,7 +2415,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -2423,14 +2423,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
             "vice_targets": {
-              "vice-lat-long": 179
+              "vice-lat-long": 197
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
           }
         }
       }
@@ -2639,7 +2639,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random except 010-061: TIME2 and TIME1 (024/025) and CDUX-Z (032-034) are seeded, the rest of 010-061 is +0; TIME2 is +0 in half of every routine's cases, as for the first 163.84 s after liftoff, with TIME1 at 0, 1, 100, 199, 200 (2SECS), 201, 3000 or 037777) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
+        "supported_domain": "Canonical 2048-word image (every word random except 010-061: TIME2 and TIME1 (024/025) and CDUX-Z (032-034) are seeded, QRUPT (012), BANKRUPT (016) and TIME5 (030) are drawn in some cases, the rest of 010-061 is +0; TIME2 is +0 in half of every routine's cases, as for the first 163.84 s after liftoff, with TIME1 at 0, 1, 100, 199, 200 (2SECS), 201, 3000 or 037777) under the EBANK= in effect at each routine (listing), entered with Z at any of the file's basic routines (FB of the routine's bank, superbank 4 for bank 43) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses; the pinned flight-device yaAGC with its scaler held (TIME1-TIME6 do not advance within a case). RMANNDX, PMANNDX and YMANNDX (E6,1656-1660) hold 0, 1 or 2 as STICKCHK leaves them; SATSW (E6,1725) holds +1, +0 or -1. NEWJOB is +0 or positive: a positive NEWJOB sends DANZIG to CHANG2, where the routine stops, and every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. CCS SATSW's -0 exit onto STEERSAT's TLOAD (34,2453) is outside the domain: no SATSW value takes it, and the routine refuses (EXEC_INVALID_ACTION) if it were reached. RESCALES returning with overflow skips into SATOUT's CADR NEEDLER, run as the AGC runs it (CS 2420).",
         "external_continuations": [
           "2PHSCHNG, PHASCHNG, NEWMODEX, UPFLAG, POWRSERS, GOPIN and RESUME (outside basic routines)",
           "BANKCALL, IBNKCALL, POSTJUMP, FINDVAC, WAITLIST, ENDOFJOB, TASKOVER, DANZIG and CHANG2 (outside basic routines; Lane A Executive/Waitlist)",
@@ -3533,7 +3533,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -3541,14 +3541,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
             "vice_targets": {
-              "vice-planetary": 202
+              "vice-planetary": 204
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
           }
         }
       }
@@ -8117,7 +8117,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -8125,14 +8125,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
             "vice_targets": {
-              "vice-lat-long": 179
+              "vice-lat-long": 197
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
           }
         }
       }
@@ -9383,7 +9383,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -9391,14 +9391,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
             "vice_targets": {
-              "vice-planetary": 202
+              "vice-planetary": 204
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
           }
         }
       }

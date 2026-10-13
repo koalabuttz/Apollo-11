@@ -106,6 +106,33 @@ def cdutodcm_states():
     return out
 
 
+
+# Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
+# +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
+# NEGCOS's BPL on -0: LONG 180 degrees) and COSTH +-0 (ASIN +-1), as
+# (hi, lo) doubles; the empty sets keep half the cases random.
+def lat_long_arctan_joint():
+    z, mz, h, mh = (0, 0), (0o77777, 0o77777), (0o20000, 0), (0o57777, 0o77777)
+    sets = []
+    for s_, c_ in ((z, z), (mz, mz), (z, mz), (mz, z), (z, h), (mz, h), (z, mh), (mz, mh),
+                   (h, z), (mh, z), (h, mz), (mh, mz)):
+        # SINTH and COSTH are 18D and 16D of the work area.
+        sets.append({'vac+22': s_[0], 'vac+23': s_[1], 'vac+20': c_[0], 'vac+21': c_[1]})
+    return sets + [{}] * len(sets)
+
+
+# The planetary vector LAT-LONG unitizes after R-TO-RP returns: on an axis,
+# so SINTH or COSTH of the latitude and longitude come out exact (+-0, 1/2).
+def lat_long_axis_joint():
+    sets = []
+    for axis in range(3):
+        for hi, lo in ((0o20000, 0), (0o57777, 0o77777)):
+            v = {'MPAC+%d' % k if k else 'MPAC': 0 for k in range(6)}
+            v['MPAC+%d' % (2 * axis) if axis else 'MPAC'] = hi
+            v['MPAC+%d' % (2 * axis + 1)] = lo
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -1516,6 +1543,11 @@ SPECS = {
             'RTORPB': {'163': [0o77776]},
             'RTORPB+3': {'163': [0o77776]},
         },
+        'edge_values': True,
+        # BHIZ (CCS MPAC) at RP-TO-R and R-TO-RP: MPAC +-0 is every Earth
+        # call (LAT-LONG loads ZEROVEC when LUNAFLAG is 0), COS(0) the Moon.
+        'joint_states': {lab: [{'MPAC': 0}, {'MPAC': 0o77777}, {'MPAC': 0o20000}, {}]
+                         for lab in ('RP-TO-R', 'R-TO-RP')},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/planetary_target.c',
@@ -1580,6 +1612,9 @@ SPECS = {
             'TSTRLSRM+4': {'163': [0o77776]},
             'TSTRLSRM+5': {'163': [0o0]},
         },
+        'edge_values': True,
+        'joint_states': {'ARCTAN': lat_long_arctan_joint(), 'CLROVFLW': lat_long_arctan_joint(),
+                         'CALLRTRP+2': lat_long_axis_joint()},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/lat_long_target.c',
