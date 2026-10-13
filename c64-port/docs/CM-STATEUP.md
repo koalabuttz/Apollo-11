@@ -13,7 +13,7 @@ STATEUP is the interpretive code INTEGRATION_INITIALIZATION calls for P00 integr
   - CALL and STCALL go through CALL/ITA (01,2534), store QPRET and GOTO the callee; STCALL first stores MPAC in TDEC1. DLOAD TETCSM reads the erasable pair (DLOAD 06021).
   - RVQ returns to the CADR in QPRET. EXIT leaves the interpreter for the basic word after it (R00's CS OCT1400 at 04,2134, a `cm-v37` entry).
 - A run goes from pair to pair through the trampoline until LOC leaves the file (INTEGRV, INTSTALL, SETIFLGS, ENDINT, THISVINT's caller), R00's EXIT reaches basic code, or DANZIG finds NEWJOB positive and goes to CHANG2 (05170).
-- Refused: a state the interpreter does not run in at NEWOPS (EDOP nonzero, BBANK not under BANKSET or not the pair's bank (13, or 04 for R00), a work area outside the five VAC areas or PUSHLOC outside it), NEWJOB negative, a CLRGO that does not branch, and an RVQ with an erasable QPRET (CALL always leaves a fixed one).
+- Refused: a state the interpreter does not run in at NEWOPS (EDOP nonzero, BBANK not under BANKSET or not the pair's bank (13, or 04 for R00), a work area that is neither one of the five VAC areas nor FAKEPRET (0110, a NOVAC job's) or PUSHLOC outside it), NEWJOB negative, a CLRGO that does not branch, and an RVQ with an erasable QPRET (CALL always leaves a fixed one).
 - Devices: io is a `p66_bias_io`; the switch orders' INHINT/RELINT leave interrupts enabled.
 
 ## Source map
@@ -29,11 +29,11 @@ Hashes: `evidence/cm-stateup/SHA256.json`. Bulk files are assets of the `evidenc
 
 - Independent assembly comparison: `evidence/cm-stateup/cm-stateup-proof.json`. `make cm-stateup-differential` runs the unmodified Comanche055 rope in yaAGC (host-only), 4,096 cases.
   - Case n enters pair n % 12 at NEWOPS with LOC there and BANKSET = BBANK (FB 13, or 04 for R00).
-  - The image is pseudo-random within the program's domain: the flag words, so each switch order goes both ways; EB, SUPERBNK, the interrupt-enable state and MODE; EDOP +0; a work area of one of the five VAC areas with PUSHLOC inside it; NEWJOB +0, or positive in a fifth of the cases; at THISVINT, QPRET as CALL leaves it (its caller's return at 13,3576, or another bank 13 word outside the file).
+  - The image is pseudo-random within the program's domain: the flag words, so each switch order goes both ways; EB, SUPERBNK, the interrupt-enable state and MODE; EDOP +0; a work area of one of the five VAC areas or, in a sixth of the cases, FAKEPRET (0110: the NOVAC V37 job that runs R00 after CANV37, whose QPRET is MPAC +6) with PUSHLOC inside it; NEWJOB +0, or positive in a fifth of the cases; at THISVINT, QPRET as CALL leaves it (its caller's return at 13,3576, or another bank 13 word outside the file).
   - Each case runs until the original leaves the interpreter's code (fixed-fixed 06006-07656, 00,2000-3731, 01,2371-2625) with Z at NEWOPS and LOC outside the file, at R00's CS OCT1400 after EXIT, or at CHANG2.
   - Compared: the interrupt-enable state, SUPERBNK and all 2,048 erasable words. The digests are frozen into `tests/cm_stateup_vectors.h`.
 - Host and sanitizer results: `make test-cm-stateup sanitize-cm-stateup` (`evidence/cm-stateup/cm-stateup-host.log`). Beyond the oracle digests, the test checks that:
   - all 12 pairs are reached;
   - each case ends at NEWOPS of INTEGRV, INTSTALL, SETIFLGS, ENDINT, THISVINT's caller or another bank 13 return, at R00's CS OCT1400, or at CHANG2, and every one is reached; CALL, STCALL and CLRGO targets are in bank 13;
-  - LOC on an operand word has no routine; BBANK not under BANKSET, an R00 pair outside bank 04, a work area outside the VAC areas, an erasable QPRET at RVQ and a missing io are refused.
-- C64 execution results: `make vice-cm-stateup` (`evidence/cm-stateup/cm-stateup-vice.log`): 242 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 17th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 211 arcs the host cases take). The host test checks every C64 row is a host case with its host digest.
+  - LOC on an operand word has no routine; BBANK not under BANKSET, an R00 pair outside bank 04, a work area outside the VAC areas and FAKEPRET, an erasable QPRET at RVQ and a missing io are refused.
+- C64 execution results: `make vice-cm-stateup` (`evidence/cm-stateup/cm-stateup-vice.log`): 242 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 17th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 217 arcs the host cases take). The host test checks every C64 row is a host case with its host digest.

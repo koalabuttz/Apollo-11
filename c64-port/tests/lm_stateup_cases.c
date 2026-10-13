@@ -30,7 +30,8 @@ void lm_stateup_input(apollo_overlay_state *m,p66_bias_io *io,uint16_t n){
  W[4]=(agc_word)((lm_stateup_entries[k]>=02144u?04u:013u)<<10);W[3]=eb;W[6]=(agc_word)(W[4]|(eb>>8));
  W[5]=NEWOPS;W[LOC]=lm_stateup_entries[k];W[BANKSET]=W[6];W[023]=0;W[0115]=040000u;
  W[067]=below(&seed,5u)==4u?(agc_word)(below(&seed,0400u)+1u):0u;
- vac=(agc_word)(0401u+054u*below(&seed,5u));W[0120]=vac;W[0166]=(agc_word)(vac+below(&seed,043u));
+ /* One of the five VAC areas, or FAKEPRET for a NOVAC job. */
+ {unsigned v=below(&seed,6u);vac=(agc_word)(v==5u?0110u:0401u+054u*v);}W[0120]=vac;W[0166]=(agc_word)(vac+below(&seed,043u));
  {unsigned m3=below(&seed,3u);W[0163]=(agc_word)(m3==0u?0u:m3==1u?1u:077776u);}
  /* QPRET as CALL leaves it (074000 + the return address in BANKSET's
   * bank): THISVINT's caller at 13,3601, or another word of bank 13
