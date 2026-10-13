@@ -165,6 +165,9 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
     } else {
         lanec_enter(s, io, bank, c->callee);
         s->words[LANEC_Q] = (uint16_t)(02000u + offset);
+        /* a caller in bank 40-43 runs with FEB 4 alone (CM GOLOADLV writes
+         * PINSUPBT before its POSTJUMP to LOADLV1) */
+        if (bank >= 040u) io->superbank = 0100u;
     }
     range(m, LANEC_TC_CELL, 0u, 7u);                 /* TC Q, TC L: a return held in a register */
 #ifdef LANEC_PIN_HAS_LM
@@ -188,6 +191,10 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
 #endif
 #ifdef LANEC_PIN_HAS_CM
     if (m->mission == LANEC_CM) {
+        /* the Executive as for LM: the caller alone in core set 0 of 7 */
+        s->words[0167] = 020000u;
+        for (i = 1u; i < 7u; ++i) s->words[0167u + i * 12u] = 077777u;
+        s->words[067] = 0;
         range(m, LANEC_ANY_BANK, 04662u, 04775u);
         range(m, LANEC_ANY_BANK, 05526u, 05545u);
         range(m, 010u, 02553u, 03765u);
