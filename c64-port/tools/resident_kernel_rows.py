@@ -57,9 +57,8 @@ def main(argv):
     mission = argv[0]
     cut = argv.index('--')
     flags, sources = argv[1:cut], argv[cut + 1:]
-    expected, starts = [], []
+    expected = []
     for prefix in MODULES[mission]:
-        starts.append(len(expected))
         expected += vectors(prefix)
     cases = [n for n, e in enumerate(expected) if e != REFUSED]
     objdir, exe = build(mission, flags, sources)
@@ -79,19 +78,10 @@ def main(argv):
              f' * The resident kernel\'s C64 rows: {len(picked)} of the {s["host_cases_traced"]} {mission.upper()} cases with a',
              f' * yaAGC oracle take all {s["host_branch_arcs"]} kernel branch arcs the host cases take',
              ' * (tools/c64_row_cover.py), plus every 64th such case: flat case numbers',
-             ' * (services, then jobs, then idle) and their frozen yaAGC digests.',
-             ' * RK_C64_PART 1, 2 or 3 keeps only that module\'s rows (one C64',
-             ' * program per module has no room for the others). */']
-    bounds = starts + [len(expected)]
-    for part in (1, 2, 3, 0):
-        part_rows = [n for n in rows if bounds[part - 1] <= n < bounds[part]] if part else rows
-        lines += [f'#if defined(RK_C64_PART)&&RK_C64_PART=={part}' if part == 1 else
-                  f'#elif defined(RK_C64_PART)&&RK_C64_PART=={part}' if part else '#else',
-                  f'#define RK_C64_ROWS {len(part_rows)}u',
-                  'static const uint16_t rk_c64_case[RK_C64_ROWS]={' + ','.join(map(str, part_rows)) + '};',
-                  'static const uint32_t rk_c64_digest[RK_C64_ROWS]={' +
-                  ','.join('0x%08xul' % expected[n] for n in part_rows) + '};']
-    lines.append('#endif')
+             ' * (services, then jobs, then idle) and their frozen yaAGC digests. */',
+             f'#define RK_C64_ROWS {len(rows)}u',
+             'static const uint16_t rk_c64_case[RK_C64_ROWS]={' + ','.join(map(str, rows)) + '};',
+             'static const uint32_t rk_c64_digest[RK_C64_ROWS]={' + ','.join('0x%08xul' % expected[n] for n in rows) + '};']
     out.write_text('\n'.join(lines) + '\n')
     print(f'{mission}: {len(picked)} rows take all {s["host_branch_arcs"]} kernel branch arcs of {len(trace)} traced cases; '
           f'{len(rows)} C64 rows with the stride')
