@@ -49,7 +49,7 @@ def parse_module(path, mission, services):
     if h[:4] != b'NATV' or h[4] != ABI or h[5] != HEADER:
         raise ValueError(f'{path}: not an ABI 2 module')
     slot, module_mission = h[6], h[7]
-    ident, entry, bss, bss_bytes, load_bytes, svc, selectors, reserved = struct.unpack_from('<8H', h, 8)
+    ident, entry, bss, bss_bytes, load_bytes, svc, selectors, tables = struct.unpack_from('<8H', h, 8)
     if slot not in SLOTS:
         raise ValueError(f'{path}: unknown slot class {slot}')
     base, capacity = SLOTS[slot]
@@ -65,7 +65,8 @@ def parse_module(path, mission, services):
     if svc >> 8 != services >> 8 or svc & 0xFF > services & 0xFF:
         problems.append(f'service table ${svc:04x} not compatible with resident ${services:04x}')
     if not selectors: problems.append('no selectors')
-    if reserved: problems.append('reserved header word is not zero')
+    if tables and not base + HEADER <= tables < base + capacity:
+        problems.append(f'routine-table list ${tables:04x} outside the slot')
     if problems:
         raise ValueError(f'{path}: ' + '; '.join(problems))
     return dict(path=str(path), id=ident, slot=slot, bytes=load_bytes, selectors=selectors,
