@@ -21,6 +21,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_listing as IL
 import interp_specs
+import basic_compile
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -84,7 +85,9 @@ def split_op(op):
         tag = int(op[-1])
         op = op[:-2]
     star = op.endswith('*')
-    return (op[:-1] if star else op), star, tag
+    op = op[:-1] if star else op
+    # CALRB ("return in basic") is CALL's opcode under another name.
+    return ('CALL' if op == 'CALRB' else op), star, tag
 
 
 def classify(op):
@@ -125,6 +128,7 @@ class Compiler:
         self.spec = spec
         self.m = mission
         self.L = IL.load(mission)
+        self.L.rope_fallback = spec.get('rope_fallback', False)
         if spec.get('rope_bin'):
             self.L.rope = {**self.L.bin_words, **self.L.rope}
         self.p = 'lmi_' if mission == 'lm' else 'cmi_'
@@ -139,7 +143,10 @@ class Compiler:
         for lab_, n_ in spec.get('outside', {}).items():
             p_ = self.L.labels[lab_]
             self.words -= set(range(p_, p_ + n_))
-        self.superbank = any(l.phys >= 0o40 * 1024 for l in self.lines)
+        # (Only a file wholly in banks 040-043: a file with code in 030-033 as
+        # well, as P40-P47 with DAPFIG in 042, keeps FB 030-033 as banks 030-033.)
+        banked = [l.phys for l in self.lines if l.phys is not None and l.phys >= 4 * 1024]
+        self.superbank = bool(banked) and all(p >= 0o40 * 1024 for p in banked)
         self.high_banks = any(l.phys >= 0o30 * 1024 for l in self.lines)
         # resume_keys: every word after a DANZIG is a routine of its own, so
         # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
@@ -172,12 +179,14 @@ class Compiler:
         self.tc_erasable = set()  # erasable words a TC runs as instructions
         self.basic_fixed = set()  # rope words basic instructions read as operands
         self.cadr_erasable = set()
+        self.ktables = {}      # phys -> (words, label, range) for indexed fixed operands
         self.externals = {}    # outside basic address (physical) -> name
         self.externals_any = {}  # the same, reached through interpreter code (BOVB)
         self.rtb = spec.get('rtb', {})
         # INCR Q anywhere in the file: in-file subroutine calls may return
         # one or two words past their return address.
         self.incr_q = any(l.op == 'INCR' and l.words == [0o24002] for l in self.lines)
+        self.basic = basic_compile.Basic(self) if spec.get('basic') == 'full' else None
 
     # ---- addresses -------------------------------------------------------
     def word(self, phys):
@@ -241,18 +250,36 @@ class Compiler:
     # ---- decoding --------------------------------------------------------
     def decode(self):
         self.work = []
+        for t, why in self.external_entries() if '@external' in entries(self.spec, self.m) else []:
+            self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', why)
         for lab in entries(self.spec, self.m):
+            if lab == '@external':
+                continue
             phys = self.label_phys(lab)
             if phys is None:
                 raise CompileError('entry %s not found' % lab)
             ln = self.code[phys]
             self.add_start(phys, 'i' if is_interp_op(ln.op) else 'b', 'entry ' + lab)
+        if self.basic:
+            for t, why in self.basic.erasable_targets():
+                self.add_start(t, 'b', why)
+            # The file's own CADR constants that name its code.
+            for ln in self.lines:
+                if ln.op in ('2CADR', 'CADR', 'GENADR', 'FCADR', '2FCADR') and ln.operand:
+                    t = self.L.labels.get(ln.operand.split()[0])
+                    if (t is not None and self.in_file(t) and t in self.code and len(ln.operand.split()) == 1
+                            and self.code[t].op not in self.DATA_OPS):
+                        self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', ln.op + ' ' + ln.operand)
         self.blocks = {}
         self.owner = {}
         while self.work:
             phys = self.work.pop()
             kind = self.starts[phys][0]
-            self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+            if kind == 'b' and self.basic:
+                self.basic.enter(phys)
+                self.blocks[phys] = None
+            else:
+                self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
             if not self.work and self.spec.get('resume_orphans'):
                 # Basic words nothing in the file reaches are entered from
                 # outside (display and restart returns): routines of their own.
@@ -260,14 +287,22 @@ class Compiler:
                     prev = self.code.get(q - 1)
                     if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
                         continue    # (a prefixed word is its prefix's)
-                    if self.is_basic(q) and self.in_file(q) and q not in self.owner and q not in self.starts:
+                    if self.is_basic(q) and self.in_file(q) and q not in self.owner and q not in self.starts and not (
+                            self.basic and (q in self.basic.words or q in self.basic.operands)):
                         self.add_start(q, 'b', 'resumed from outside')
                         break
         # Second pass: a block stops where another starts.
         self.owner = {}        # word phys -> routine phys that compiles it
         for phys in list(self.blocks):
             kind = self.starts[phys][0]
+            if kind == 'b' and self.basic:
+                continue
             self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+        if self.basic:
+            for q in self.basic.words:
+                self.owner.setdefault(q, 'basic')
+            for q in self.basic.operands:
+                self.owner.setdefault(q, 'basic')
         # Basic routines the spec runs by hand (its native_ranges) that other
         # files reach directly: 'native_entries' {label: {mission: C call
         # returning RTB_OK}}, registered as routines of their own.
@@ -282,7 +317,43 @@ class Compiler:
                                  'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
                                  '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
-        self.channel_blocks = set(p for p, b in self.blocks.items() if any('I/O channel */' in x for x in b))
+        self.channel_blocks = set(p for p, b in self.blocks.items() if b and any('I/O channel */' in x for x in b))
+
+    DATA_OPS = ('DEC', '2DEC', 'OCT', 'OCTAL', 'CADR', '2CADR', 'FCADR', '2FCADR', 'GENADR', 'ECADR', 'BBCON',
+                'ADRES', 'REMADR', 'DEC*', '2DEC*', 'MM', 'VN', 'NV', '=', 'EQUALS', 'ERASE', 'BANK', 'SETLOC',
+                'BLOCK', 'COUNT*', 'COUNT', 'EBANK=', 'SBANK=')
+
+    def external_entries(self):
+        """Code words of the file that another file's operand names (a label,
+        or label +n): the points reached from outside it (spec entry
+        '@external')."""
+        mine = {v: k for k, v in self.L.labels.items() if self.in_file(v) and v in self.code
+                and self.code[v].op not in self.DATA_OPS}
+        found = {}
+        for ln in self.L.lines:
+            if ln.src == self.spec['file'][self.m] or not ln.operand:
+                continue
+            t = ln.operand.replace(' ', '').split(',')[0]
+            if t[:1] in '+-':
+                continue    # relative to the line itself (TC +5), not a label
+            off = 0
+            for sep in ('+', '-') if t not in self.L.labels else ():   # (labels like PRE-HUNT)
+                if sep in t[1:]:
+                    i = t.index(sep, 1)
+                    try:
+                        off = int(t[i + 1:]) * (1 if sep == '+' else -1)
+                    except ValueError:
+                        off = None
+                    t = t[:i]
+                    break
+            if off is None or t not in self.L.labels:
+                continue
+            q = self.L.labels[t] + off
+            if q in mine or (off and q in self.code and self.L.labels[t] in mine
+                             and self.code[q].op not in self.DATA_OPS):
+                found.setdefault(q, 'entry %s (%s %s %s)' % (self.L.label_at(q) or self.where(q), ln.src, ln.op,
+                                                             ln.operand))
+        return sorted(found.items())
 
     def target(self, w, why):
         """A fixed branch target in the file becomes a routine start."""
@@ -337,6 +408,18 @@ class Compiler:
             if done:
                 return out
 
+    def indexed_fixed(self, fp):
+        """kx(...) for an indexed operand based at fixed fp: the spec's
+        'indexed_fixed' {label: (first, last)} word offsets the index
+        reaches, plus the five words an order reads past them."""
+        lab = self.name(fp)
+        rng = self.spec.get('indexed_fixed', {}).get(lab)
+        if rng is None:
+            raise CompileError('indexed fixed operand %s at %s needs an indexed_fixed range' % (lab, self.where(fp)))
+        lo, hi = fp + rng[0], fp + rng[1] + 5
+        self.ktables[lo] = (hi - lo + 1, lab, rng)
+        return 'kx(s,KX%o,%uu,%uu,&k)' % (lo, lo, hi - lo + 1)
+
     def fixed_index(self, p, takes_k, what):
         """Physical addresses an indexed operand at p reaches when it names
         a label the spec's fixed_index lists ({'LABEL': [offsets]}), else
@@ -366,7 +449,7 @@ class Compiler:
         effective address the switch computes assumes that."""
         return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;' if any(fp // 1024 >= 0o30 for fp in fx) else ''
 
-    def operand_k(self, w, bank, takes_k, starred, what):
+    def operand_k(self, w, bank, takes_k, starred, what, n=6):
         if starred:
             return '0'
         fp = self.fixed_operand(w, bank)
@@ -374,12 +457,15 @@ class Compiler:
             # A shift's operand word is its count (SL 14D is 020217), not
             # an address the order reads.
             return '0'
-        if not takes_k or split_op(what)[0] in ('VXM', 'MXV'):
-            if split_op(what)[0] in ('GSHIFT', 'SL', 'SR', 'SLR', 'SRR', 'VSL', 'VSR'):
+        if not takes_k or (not self.basic and split_op(what)[0] in ('VXM', 'MXV')):
+            if not self.basic and split_op(what)[0] in ('GSHIFT', 'SL', 'SR', 'SLR', 'SRR', 'VSL', 'VSR'):
                 return '0'   # (a shift count, not an address)
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)
-        self.const_len[fp] = max(self.const_len.get(fp, 6), K_WORDS.get(split_op(what)[0], 6))
+        if self.basic:
+            self.const_len[fp] = max(self.const_len.get(fp, 6), K_WORDS.get(what, 6), n)
+        else:
+            self.const_len[fp] = max(self.const_len.get(fp, 6), K_WORDS.get(split_op(what)[0], 6))
         return 'K%o' % fp
 
     def indexed_k(self, w, bank, takes_k, what):
@@ -479,6 +565,8 @@ class Compiler:
             return st, cur, name == 'RVQ', False
         if kind == 'addr':
             fn, takes_k = ADDR[name]
+            if self.basic and fn == 'vsc':
+                fn = 'vdsc'   # (Lane G's V/SC body, which its frozen files call)
             if name == 'CGOTO':
                 # CGOTO X LIST: the operand, then the CADR list's word.
                 if star:
@@ -497,6 +585,13 @@ class Compiler:
                         % (P, a, T['CGOTO'], P, lw, tab, n)], cur + 2, True, False
             if name == 'SSP':
                 a, v = self.word(cur), self.word(cur + 1)
+                ln = self.code.get(cur + 1)
+                t = self.L.labels.get(ln.operand) if ln is not None else None
+                if self.basic and t is not None and self.in_file(t) and t in self.code \
+                        and self.code[t].op not in self.DATA_OPS:
+                    # SSP storing the address of the file's own code (a GOTO
+                    # selector such as POSEXIT = SCALEPOP): a routine start.
+                    self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', 'SSP %s' % ln.operand)
                 return ['%sdirect(s,0%05o,0%05o);%sssp(s,0%05o);' % (P, a, T['SSP'], P, v)], cur + 2, False, False
             nxt = self.word(cur)
             if star:
@@ -522,9 +617,17 @@ class Compiler:
                     st.append('  default:return EXEC_OUT_OF_SCOPE;}')
                     st.append('%s%s(s,k);}' % (P, fn))
                     return st, cur + 1, False, False
-                k = self.indexed_k(nxt, bank, takes_k, op)
+                if self.basic:
+                    # (whole-file basic files: the spec's indexed_fixed ranges
+                    # through kx, refusing outside them)
+                    k = '0'
+                    fp = self.fixed_operand(nxt, bank)
+                    if fp is not None and takes_k and self.name(fp) in self.spec.get('indexed_fixed', {}):
+                        k = self.indexed_fixed(fp)
+                else:
+                    k = self.indexed_k(nxt, bank, takes_k, op)
                 cur += 1
-                if k != '0':
+                if k != '0' and not self.basic:
                     st[-1] += '{const agc_word *k;if(!kix(s,%s,&k))return EXEC_OUT_OF_SCOPE;%s%s(s,k);}' % (k, P, fn)
                     return st, cur, False, name == 'SETPD'
             elif nxt & 0o40000:
@@ -534,26 +637,37 @@ class Compiler:
                 k = '0'
             else:
                 st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
-                if name == 'TLOAD' and self.fixed_operand(nxt, bank) is not None:
-                    # TLOAD of a fixed triple (the interpreter's own path,
-                    # with the three rope words).
-                    fp = self.fixed_operand(nxt, bank)
-                    self.consts[fp] = self.name(fp)
-                    self.const_len[fp] = max(self.const_len.get(fp, 3), 3)
-                    st[-1] += '%stload_fixed(s,K%o);' % (P, fp)
-                    return st, cur + 1, False, False
-                if name == 'SLOAD' and self.fixed_operand(nxt, bank) is not None:
-                    # SLOAD of a fixed constant (DECTWO): ZL; CAF K; DXCH
-                    # MPAC; CAF ZERO; TS MPAC+2; TS MODE; on to DANZIG.
-                    fp = self.fixed_operand(nxt, bank)
-                    self.consts[fp] = self.name(fp)
-                    self.const_len.setdefault(fp, 1)
-                    st[-1] += ('W[1]=0;ai_caf(s,K%o[0]);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);'
-                               '(void)ai_ts(s,0163);W[5]=0%o;' % (fp, 0o6061 if self.m == 'lm' else 0o6030))
-                    return st, cur + 1, False, False
-                k = self.operand_k(nxt, bank, takes_k, False, op)
+                if self.basic:
+                    if name in ('TLOAD', 'SLOAD') and self.fixed_operand(nxt, bank) is not None:
+                        fn, takes_k = name.lower() + '_fixed', True     # a load of a rope constant
+                    # A shift's word is a count code (020200 + n), not an address.
+                    k = '0' if name == 'GSHIFT' else self.operand_k(nxt, bank, takes_k, False, op,
+                                                                    18 if name in ('MXV', 'VXM') else 6)
+                else:
+                    if name == 'TLOAD' and self.fixed_operand(nxt, bank) is not None:
+                        # TLOAD of a fixed triple (the interpreter's own path,
+                        # with the three rope words).
+                        fp = self.fixed_operand(nxt, bank)
+                        self.consts[fp] = self.name(fp)
+                        self.const_len[fp] = max(self.const_len.get(fp, 3), 3)
+                        st[-1] += '%stload_fixed(s,K%o);' % (P, fp)
+                        return st, cur + 1, False, False
+                    if name == 'SLOAD' and self.fixed_operand(nxt, bank) is not None:
+                        # SLOAD of a fixed constant (DECTWO): ZL; CAF K; DXCH
+                        # MPAC; CAF ZERO; TS MPAC+2; TS MODE; on to DANZIG.
+                        fp = self.fixed_operand(nxt, bank)
+                        self.consts[fp] = self.name(fp)
+                        self.const_len.setdefault(fp, 1)
+                        st[-1] += ('W[1]=0;ai_caf(s,K%o[0]);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);'
+                                   '(void)ai_ts(s,0163);W[5]=0%o;' % (fp, 0o6061 if self.m == 'lm' else 0o6030))
+                        return st, cur + 1, False, False
+                    k = self.operand_k(nxt, bank, takes_k, False, op)
                 cur += 1
-            if takes_k:
+            if takes_k and k.startswith('kx('):
+                # An indexed fixed operand: the rope words at the address the
+                # index gives, from the spec's table (erasable: the image).
+                st[-1] += '{const agc_word *k;if(%s)return EXEC_INVALID_ACTION;%s%s(s,k);}' % (k, P, fn)
+            elif takes_k:
                 st[-1] += '%s%s(s,%s);' % (P, fn, k)
             else:
                 st[-1] += '%s%s(s);' % (P, fn)
@@ -607,7 +721,15 @@ class Compiler:
             return st, cur, True, False
         if base == 'CALL':
             st[-1] += '%scall(s);' % P
-            self.call_return(cur, 'CALL return')
+            if self.basic:
+                if op.startswith('CALRB'):
+                    # CALRB: the callee comes back in basic code (BANKJUMP to
+                    # the CADR CALL saved), at the word after the pair.
+                    self.add_start(cur, 'b', 'CALRB return')
+                else:
+                    self.call_return_g(cur, w, 'CALL return')
+            else:
+                self.call_return(cur, 'CALL return')
             st.extend(self.goto(w, 'CALL target', call=True))
             return st, cur, True, False
         if base in ('ITA', 'STQ'):
@@ -616,6 +738,27 @@ class Compiler:
         if base == 'RTB':
             target = self.cadr_phys(w)
             lab = self.L.label_at(target)
+            if lab not in self.rtb and self.basic and (not self.in_file(target) or (
+                    target in self.code and not is_interp_op(self.code[target].op))):
+                # RTB to basic code with no native body (whole-file basic):
+                # the interpreter transfers there, to a routine of the file or
+                # an outside one; its TC DANZIG resumes at NEWOPS.
+                if self.in_file(target):
+                    self.add_start(target, 'b', 'RTB target')
+                else:
+                    self.externals_any[target] = 'RTB ' + (lab or '')
+                if cur in self.code and is_interp_op(self.code[cur].op):
+                    self.add_start(cur, 'i', 'after RTB %s' % lab)
+                elif self.rk:
+                    # RTB with an order on its right: DANZIG runs that order,
+                    # then NEWOPS at the word after its operands.
+                    q = cur
+                    while q in self.code and not is_interp_op(self.code[q].op):
+                        q += 1
+                    if q in self.code:
+                        self.add_start(q, 'i', 'after RTB %s' % lab)
+                st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
+                return st, cur, True, False
             if lab not in self.rtb:
                 raise CompileError('RTB %s has no native routine in the spec' % lab)
             st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P
@@ -634,19 +777,27 @@ class Compiler:
             return st, cur, False, False
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
-            st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
-            if base == 'BOVB' and self.L.label_at(self.cadr_phys(w)) in self.rtb:
-                # BOVB to a basic routine the spec runs natively (as RTB).
-                lab = self.L.label_at(self.cadr_phys(w))
-                st.append('case %sBOV_RTB:%srtb(s);if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* %s */'
-                          % (P.upper(), P, self.rtb[lab][self.m], lab))
-            elif base == 'BOVB':
-                # BOVB's branch is to basic code, as RTB transfers.
-                t = self.cadr_phys(w)
-                if self.in_file(t):
-                    raise CompileError('BOVB into the file at %s' % self.where(t))
-                self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+            t = self.cadr_phys(w) if base == 'BOVB' else None
+            if t is not None and self.basic and self.in_file(t) and t in self.code \
+                    and not is_interp_op(self.code[t].op) and self.L.label_at(t) not in self.rtb:
+                # BOVB to the file's own basic code (P61's BOVB RETRN1): a
+                # basic routine of the file; the body takes the RTB path.
+                self.add_start(t, 'b', 'BOVB target')
+                st.append('  return EXEC_OUT_OF_SCOPE;')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
+            else:
+                st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+                if base == 'BOVB' and self.L.label_at(t) in self.rtb:
+                    # BOVB to a basic routine the spec runs natively (as RTB).
+                    lab = self.L.label_at(t)
+                    st.append('case %sBOV_RTB:%srtb(s);if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* %s */'
+                              % (P.upper(), P, self.rtb[lab][self.m], lab))
+                elif base == 'BOVB':
+                    # BOVB's branch is to basic code, as RTB transfers.
+                    if self.in_file(t):
+                        raise CompileError('BOVB into the file at %s' % self.where(t))
+                    self.externals_any[t] = 'BOVB ' + (self.L.label_at(t) or '')
+                    st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             st.append('default:return EXEC_OUT_OF_SCOPE;}')
             return st, cur, False, False
         raise CompileError('unsupported order %s' % op)
@@ -659,6 +810,17 @@ class Compiler:
         self.cadr_erasable.add(w)
         return ['(void)ai_ca(s,0165);(void)ai_ts(s,4);ai_caf(s,0%05o);(void)ai_ts(s,0117);%sgoto_any(s);return EXEC_OK;' % (w, P)]
 
+    def call_return_g(self, cur, w, why):
+        """The word after a CALL/STCALL is a routine start, unless the call
+        goes through an erasable CADR (a return the file keeps with STQ) and
+        no order follows it."""
+        ln = self.code.get(cur)
+        if (not (w & 0o74000) or (ln is not None and ln.op in self.DATA_OPS)) and (
+                ln is None or not is_interp_op(ln.op)):
+            # (Also a CALL used as a GOTO, with constants after it.)
+            return
+        self.add_start(cur, 'i', why)
+
     def store_tail(self, sop, cur, bank):
         """After the store itself (Z at the STORJUMP continuation)."""
         P = self.p
@@ -669,7 +831,10 @@ class Compiler:
             w = self.word(cur)
             cur += 1
             st = ['%s15bitadr(s,0%05o,0%05o);%scall(s);' % (P, w, T['CALL/ITA'], P)]
-            self.call_return(cur, 'STCALL return')
+            if self.basic:
+                self.call_return_g(cur, w, 'STCALL return')
+            else:
+                self.call_return(cur, 'STCALL return')
             return st + self.goto(w, 'STCALL target', call=True), cur, True
         w = self.word(cur)
         load, fn = ('DLOAD', 'dload_op') if sop.startswith('STODL') else ('VLOAD', 'vload')
@@ -903,11 +1068,37 @@ class Compiler:
                 return st + ['ai_%s(s,%s);' % (fn, eras(a, fn))], [nxt]
             if op in (3, 4, 6, 7):
                 fn = {3: 'ca', 4: 'cs', 6: 'ad', 7: 'mask'}[op]
+                if k12 >= 0o2000 and index is not None:
+                    # INDEX K; CAF T (ABRTJASK's INDEX Q; CAF MODE70): the
+                    # spec's basic_fixed_index lists the offsets K can hold;
+                    # any other effective address is refused.
+                    offs = self.spec.get('basic_fixed_index', {}).get(ln.operand.split()[0])
+                    if offs is None:
+                        raise CompileError('INDEX on a fixed operand at %s (no basic_fixed_index)' % self.where(p))
+                    self._ix = (w, index, 0o7777)
+                    cases = []
+                    for off in offs:
+                        fp = self.phys_of(k12 + off, bank)
+                        self.basic_fixed.add(fp)
+                        cases.append('case 0%04ou:ai_%sf(s,0%05o);break;' % (k12 + off, fn, self.L.word(fp)))
+                    return st + ['switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(cases)], [nxt]
                 if k12 >= 0o2000:
                     fp = fixed(k12)
                     return st + ['ai_%sf(s,0%05o);' % (fn, self.L.word(fp))], [nxt]
                 return st + ['ai_%s(s,%s);' % (fn, eras(k12, fn))], [nxt]
             if op == 5:
+                if qc == 0 and k10 == 0o17 and index is None:
+                    # RESUME (INDEX 17): the next instruction is BRUPT's,
+                    # run in place (yaAGC's substitute instruction); here a
+                    # TCF, as CONTABRT stores (any other word is refused).
+                    return st + ['{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
+                                 'W[5]=(agc_word)(b&07777u);return EXEC_OK;}'], []
+                if qc == 1 and k10 - 1 == 5 and index is None:
+                    # DTCB (DXCH Z): Z,BB <-> A,L; BB sets FB and EB. The
+                    # run loop goes on from the new Z under the new FB.
+                    return st + ['{agc_word z=agc_correct(W[0]),bb=agc_correct(W[1]);W[0]=0%04o;W[1]=agc_extend(W[6]);'
+                                 'W[6]=(agc_word)(bb&076007u);W[3]=(agc_word)((bb&7u)<<8);W[4]=(agc_word)(bb&076000u);'
+                                 'W[5]=z;return EXEC_OK;}' % (ln.loc + 1)], []
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
                 if qc == 2:
@@ -1040,7 +1231,7 @@ class Compiler:
         fixed operand (K array) it is a word of, or neither."""
         const = {}
         for fp in self.consts:
-            for i in range(self.const_len[fp]):
+            for i in range(self.const_len.get(fp, 6)):
                 const.setdefault(fp + i, fp)
         for lo, (n, lab) in self.ktabs.items():
             for i in range(n):
@@ -1056,7 +1247,10 @@ class Compiler:
         for ln in self.lines:
             for i in range(len(ln.words)):
                 q = ln.phys + i
-                if q in self.owner:
+                if self.owner.get(q) == 'basic':
+                    # Basic words compile into the file's one basic_run.
+                    use = {'routine': 'basic code', 'function': self.basic.run_name(q // 1024)}
+                elif q in self.owner:
                     use = {'routine': self.where(self.owner[q]), 'function': 'r%o' % self.owner[q]}
                 elif q in native:
                     use = {'routine': 'native', 'function': native[q]}
@@ -1066,6 +1260,11 @@ class Compiler:
                     use = {'constant': 'K%s' % (const[q] if isinstance(const[q], str) else '%o' % const[q])}
                 elif q in self.basic_fixed:
                     use = {'constant': 'basic operand (inline)'}
+                elif self.basic and q in self.basic.operands:
+                    use = {'constant': 'inline operand of an outside call'}
+                elif self.basic and ln.op in self.DATA_OPS:
+                    use = {'constant': 'data no instruction of the file reads (another file or an '
+                                       'interrupt table may)'}
                 elif ln.op in DATA_OPS:
                     use = {'constant': 'data word (no instruction in the file reads it)'}
                 else:
@@ -1111,9 +1310,25 @@ class Compiler:
         if self.consts:
             c.append('/* Fixed operands (the rope words from each address). */')
             for fp in sorted(self.consts):
-                n = self.const_len[fp]
+                n = self.const_len.get(fp, 6)
                 ws = ','.join('0%05o' % self.L.word(fp + i) for i in range(n))
                 c.append('static const agc_word K%o[%d] MAYBE_UNUSED={%s}; /* %s %s */' % (fp, n, ws, self.where(fp), self.consts[fp] or ''))
+            c.append('')
+        if self.ktables:
+            c.append('/* Indexed fixed operands: the rope words over the range the index reaches. */')
+            for lo in sorted(self.ktables):
+                n, lab, rng = self.ktables[lo]
+                c.append('static const agc_word KX%o[%d] MAYBE_UNUSED={%s}; /* %s %s%+d..%+d and five more */' % (
+                    lo, n, ','.join('0%05o' % self.L.word(lo + i) for i in range(n)), self.where(lo), lab, rng[0], rng[1]))
+            c.append('/* The operand words at the indexed address (FBANK, ADDRWD) when it is')
+            c.append(' * fixed: k into the table, 1 when outside it; 0 for erasable (k = 0). */')
+            c.append('static MAYBE_UNUSED uint8_t kx(const apollo_overlay_state *s,const agc_word *t,uint16_t first,uint16_t n,const agc_word **k){')
+            c.append(' unsigned a=W[0116],p;')
+            c.append(' if(a<02000u){*k=0;return 0;}')
+            c.append(' p=((W[4]>>10)&037u)*1024u+(a-02000u);')
+            c.append(' if(p<first||p+6u>(unsigned)first+n)return 1;')
+            c.append(' *k=t+(p-first);return 0;')
+            c.append('}')
             c.append('')
         if self.ktabs:
             c.append('/* Fixed tables indexed operands reach (the rope words). */')
@@ -1219,6 +1434,28 @@ class Compiler:
         c.append(' return %s&&sane(s,io);' % sb)
         c.append('}')
         c.append('')
+        if self.basic:
+            c.extend(self.basic.emit(sym))
+            c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
+            c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
+            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
+            c.append(' unsigned i;')
+            if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
+                c.append(' /* fb bit 15: a bank 40-43 routine, FB 30-33 with SUPERBNK 0100 */')
+                c.append(' agc_word sb=(agc_word)(fb>>15);fb&=077777u;')
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(sb?(io->superbank&0160u)!=0100u:(fb>=060000u&&(io->superbank&0100u))))return 0;')
+            else:
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
+            c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+            c.append(' return 1;')
+            c.append('}')
+            c.append('')
+        self.erasable_ents = []
+        if self.basic:
+            ec, self.erasable_ents = self.basic.erasable_points()
+            c.extend(ec)
         routines = []
         keep = sym.upper() + '_KEEP'
         nwords = (len(self.blocks) + 59) // 60
@@ -1238,8 +1475,17 @@ class Compiler:
             bank = phys // 1024
             # Banks 040-043: FB 030-033 under the superbank (bit 0 marks it).
             fb = ((bank - 8) << 10) | 1 if bank >= 0o40 else bank << 10
+            # basic_sane's superbank form: FB 30-33 with bit 15 for SUPERBNK 0100.
+            bfb = (bank - 0o10) << 10 | 0o100000 if bank >= 0o40 else bank << 10
             c.append(guard(i))
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
+            if kind == 'b' and self.basic:
+                c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
+                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
+                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
+                c.append('}')
+                c.append('#endif')
+                continue
             c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
             if kind == 'b' and phys // 1024 in (2, 3):
                 c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
@@ -1262,7 +1508,7 @@ class Compiler:
         else:
             c.append('/* Comanche routines take the two latches the bodies use from the')
             c.append(' * mission\'s cm_native_io and copy them back. */')
-            c.append('static enum exec_status latched(enum exec_status (*f)(apollo_overlay_state *,p66_bias_io *),apollo_overlay_state *s,void *v){')
+            c.append('static %senum exec_status latched(enum' % ('MAYBE_UNUSED ' if self.basic else '') + ' exec_status (*f)(apollo_overlay_state *,p66_bias_io *),apollo_overlay_state *s,void *v){')
             c.append(' cm_native_io *io=v;p66_bias_io l;enum exec_status st;')
             c.append(' if(!s||!io)return EXEC_OUT_OF_SCOPE;')
             c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);')
@@ -1271,6 +1517,8 @@ class Compiler:
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return latched(f,s,v);}')
         index = {r[0]: i for i, r in enumerate(routines)}
         for i, (phys, kind, fn, lab, why) in enumerate(routines):
+            if kind == 'b' and self.basic:
+                continue
             c.append(guard(i))
             c.append('WRAP(%s)' % fn)
             c.append('#endif')
@@ -1285,6 +1533,9 @@ class Compiler:
                 c.append(guard(index[phys]))
                 c.append(' {%u,%s_abi},' % (phys, fn))
                 c.append('#endif')
+            if kind == 'b' and self.basic:
+                for key, fn in self.erasable_ents:
+                    c.append(' {%u,%s_abi},' % (key, fn))
             c.append(' {0xffffu,0}')
             c.append('};')
             c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'

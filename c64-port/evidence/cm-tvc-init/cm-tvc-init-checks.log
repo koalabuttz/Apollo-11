@@ -1,6 +1,0 @@
-cm-tvc-init: 128 frozen original TVCINITIALIZE states, entry refusals: PASS
-PASS 65536 original TVCINITIALIZE oracle states equal native 2053-word rows {'returned': 65536} a811feeba9dc32f8b5c3f0821699d698da0387bb584bda0243054c4713acf09e
-PASS 259 original TVCINITIALIZE words mapped; listing equals rope; 28 fixed constants, the coefficient and 2CADR tables equal native literals
-cm-tvc-init: 128 frozen original TVCINITIALIZE states, entry refusals: PASS
-PASS 65536 original TVCINITIALIZE oracle states equal native 2053-word rows (ASan/UBSan) {'returned': 65536} a811feeba9dc32f8b5c3f0821699d698da0387bb584bda0243054c4713acf09e
-PASS: VICE PAL cm-tvc-init.prg: 128 checks, 0 failures

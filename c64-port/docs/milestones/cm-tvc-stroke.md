@@ -1,7 +1,7 @@
 ---
 id: cm-tvc-stroke
-title: Translate Comanche TVCSTROKETEST (V68 stroke test initialization and HACK waveform)
-date: 2026-10-12T16:40Z
+title: Translate Comanche TVCSTROKETEST
+date: 2026-10-13
 lane: G
 ---
-Native C for all of Comanche055 TVCSTROKETEST (bank 20 `3501`-`3611`, 73 words): the V68 STRKTSTI job (TSTINIT, STRKCHK) and the HACK waveform generator with its HACKWLST waitlist task, from each of its 4 original entry points to the next transfer out of the file (ENDOFJOB, WAITLIST, or TC BUNKER). The final image, channel 14 and interrupt enable equal unchanged Comanche055 in the pinned yaAGC for all 65536 sampled entry states, strict and ASAN/UBSAN; all 73 words, 8 fixed constants and the 7-word FCARD table are checked against the rope; a C64 diagnostic passes 128 frozen oracle rows in VICE. See `docs/CM-TVC-STROKE.md`.
+All of Comanche055 TVCSTROKETEST (73 words) is native C on the control-transfer ABI, as 5 routines compiled whole-file by `tools/basic_compile.py`. All 1,024 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 32 frozen cases, and 1 C64 diagnostic passes 12 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-STROKE.md`.

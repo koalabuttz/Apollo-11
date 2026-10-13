@@ -22,6 +22,7 @@ apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
 agc_hardware rk_hardware;
 uint16_t rk_pending,rk_ticks;
+rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
 /* The boundary-word table: its REU bank and address (in its module's
  * image, within one 64 KB bank) and record count. */
@@ -144,15 +145,18 @@ __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_ph
 }
 __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at) {
     apollo_ov2_cont resume;
-    run_value=0;
+    run_value=(uint16_t)(uintptr_t)&rk_env;
+    rk_env.status=EXEC_OK;
     return apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
 }
-/* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): fixed-fixed
- * 04000-07777 is physical bank 2 or 3 in FB form whatever FB and the
- * superbank hold; elsewhere FB with the channel 7 superbank bits. */
+/* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): the physical
+ * bank in FB form. Fixed-fixed 04000-07777 is bank 2 or 3 whatever FB and
+ * the superbank hold; banked, FB alone, plus 0100 for banks 040-043 (FB
+ * 030-037 with superbank bit 0100), so superbank 0 and 060 key the same. */
 uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
     if(loc>=04000u) return loc<06000u ? 04000u : 06000u;
-    return (uint16_t)((fb&076000u)|(superbank&0160u));
+    fb&=076000u;
+    return (uint16_t)(fb>=060000u && (superbank&0100u) ? fb|0100u : fb);
 }
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical) {
     apollo_overlay_state *s=IMAGE;
@@ -165,5 +169,5 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
-    return rk_run_module(at)==APOLLO_OV2_OK ? EXEC_OK : EXEC_UNMAPPED;
+    return rk_run_module(at)==APOLLO_OV2_OK ? rk_env.status : EXEC_UNMAPPED;
 }

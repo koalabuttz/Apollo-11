@@ -109,6 +109,8 @@ void cmi_15bitadr(apollo_overlay_state *, agc_word word, agc_word target);
 uint8_t cmi_bzegoto(apollo_overlay_state *);
 void cmi_tload(apollo_overlay_state *);
 void cmi_tload_fixed(apollo_overlay_state *, const agc_word *k);
+void cmi_sload_fixed(apollo_overlay_state *, const agc_word *k);
+void cmi_vdsc(apollo_overlay_state *, const agc_word *k);
 void cmi_exit(apollo_overlay_state *);
 void cmi_intpret(apollo_overlay_state *, p66_bias_io *);
 void cmi_tpmode(apollo_overlay_state *);

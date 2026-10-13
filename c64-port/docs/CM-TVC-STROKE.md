@@ -1,92 +1,36 @@
-# Translate Comanche TVCSTROKETEST (V68 stroke test initialization and HACK waveform)
+# Translate Comanche TVCSTROKETEST
 
-Lane G. Milestone `cm-tvc-stroke`.
+Lane G (CM flight). Milestone `cm-tvc-stroke`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/TVCSTROKETEST.agc` (`src/cm_tvc_stroke.c`) is native C in full: The V68 stroke test: STRKTSTI, its waveform task and HACK, which the pitch and yaw DAPs call by TC HACK and which returns to them through BUNKER. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #77: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/TVCSTROKETEST.agc`, all of it: bank 20 `3501`-`3611`, 73
-assembled words (including the HACKWLST 2CADR and the FCADDY..FCARD6
-constants). Nothing is left in the file.
+5 routines, keyed by physical address in `cm_tvc_stroke_basic`:
 
-`cm_tvc_stroke(image, io)` runs from one of the file's original entry
-points to the next transfer out of the file. `io` holds output channel 14
-(WOR CHAN14) and the interrupt enable (INHINT in STRKCHK):
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 20,3501 STRKTSTI | basic | entry STRKTSTI (EXTENDED_VERBS.agc 2CADR STRKTSTI) |
+| 20,3533 HACK | basic | entry HACK (TVCDAPS.agc TC HACK) |
+| 20,3541  | basic | return from WAITLIST |
+| 20,3542 HACKWLST | basic | 2CADR HACKWLST |
+| E6,1657 (erasable) | continuation | the TC words the file stores there: 02541, 02543, 02743, 02745, 05324 |
 
-| Entry | Reached from |
-|---|---|
-| `3501` STRKTSTI | Job set up by V68 (EXTENDED VERBS `2CADR STRKTSTI`) |
-| `3533` HACK | `TC HACK` from the pitch and yaw TVC DAPs (TVCDAPS) |
-| `3541` | WAITLIST return past HACK's 2CADR (`TCF +3`) |
-| `3542` HACKWLST | Waitlist task (HACK's 2CADR) |
+TC BUNKER is the erasable continuation E6,1657 (key AGC_TRANSFER_ERASABLE_BASE + agc_erasable_point(01657, E6)), owned by this file: it accepts exactly the TC words 2541, 2543, 2743, 2745 and TCTSKOVR (5324) and refuses any other with EXEC_OUT_OF_SCOPE.
 
-TSTINIT (`3512`) is reached only by `TCR` from STRKTSTI; its `TC Q` runs
-the TC held in Q (STRKCHK), leaving Q = 3.
+Destinations outside the file: ENDOFJOB, WAITLIST. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 20 (`040000`), EB E6, BB `040006`, any raw A/L/Q,
-erasable contents, channel 14 and interrupt enable. HACK, its WAITLIST
-return and HACKWLST also need CARD -4..-1: only TSTINIT (which sets -4)
-and the waveform (which steps it up and stops at -0) write CARD, and CARD
-indexes the FCARD table. Results:
+## Domain
 
-- `CM_TVC_STROKE_OK` at the frontier the original reaches: `ENDOFJOB 5217`
-  (STRKCHK, interrupts inhibited); `WAITLIST 5245` with Q `3537` (2CADR
-  HACKWLST) and A = 20MS; or `Z = BUNKER 1657` from `TC BUNKER` with Q
-  `3556`, `3575`, `3577` or `3612`. BUNKER holds the instruction to run
-  next: the DAP's return saved by `QXCH BUNKER` (entry from HACK) or
-  `TC TASKOVER` (TCTSKOVR, entry from HACKWLST).
-- `CM_TVC_STROKE_OUT_OF_SCOPE`: image and io unchanged.
-
-There is no loop in the file, so there is no non-returning case.
-
-### How it is translated
-
-As in `cm-tvc-restarts`: one qualified `agc_image_ops` primitive per
-original word, under a C label named for its address, with every CCS
-four-way skip and the reachable TS overflow skip (`TS CADDY` at `3606`
-after `DOUBLE`). WOR is written from the yaAGC definition. The other TS
-words store constants, CCS results, a negated constant or a loaded word,
-which cannot overflow.
-
-## Source map
-
-`evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json`
-(`tools/cm_tvc_stroke_source.py`): every word with its source line, rope
-check and native label (`L3501`..`L3610` in `src/cm_tvc_stroke.c`), the 8
-fixed-constant reads (BIT14, FCADDY, FREVS, FCARD, 20MS, TCTSKOVR, BIT11,
-ONE) matched to the native literals, and the native `fcard[]` matched to
-rope words `3524`-`3532`.
-
-Independent assembly comparison: `evidence/cm-tvc-stroke/cm-tvc-stroke-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
-unchanged file against the original Comanche055 rope, without reading the
-native code.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6).
 
 ## Evidence
 
-Hashes: `evidence/cm-tvc-stroke/SHA256.json`; bulk files in release
-`evidence-cm-tvc-stroke`.
+Hashes: `evidence/cm-tvc-stroke/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (`tools/cm_flight_prepare_reference.py`,
-  original CM rope `6e3150ae...`). The runner stops at the first frontier
-  above. As in `cm-tvc-restarts`, yaAGC's optics CDU model empties
-  OPTY/OPTX (`035`/`036`) when channel 14 bits 11/12 are set and its gyro
-  and IMU CDU drive models act on bits `01000`/`070000`; the cases start
-  with the drive bits clear and the runner keeps `035`/`036` as the program
-  left them (the file never addresses them).
-- Host and sanitizer results: `make test-cm-tvc-stroke
-  sanitize-cm-tvc-stroke`. 65536 cases (`tests/cm_tvc_stroke_cases.c`:
-  every entry; DAPDATR1 bit 14 set and clear; CARD -4..-1; each CCS class
-  of REVS; CADDY classes; N small and raw, so DOUBLE overflows; raw
-  STROKER, ESTROKER, TVCPITCH, A/L/Q, channel 14, interrupt enable and
-  unowned words); every case reaches a frontier, and the two sides agree on
-  all of them. Every native branch is taken over the cases apart from the
-  entry refusals, which the host test exercises. Stream identity
-  `cm-tvc-stroke-source-stream.json`, deltas
-  `cm-tvc-stroke-reference.deltas.xz`, log `cm-tvc-stroke-checks.log`.
-- C64 execution results: `make vice-cm-tvc-stroke`, 128 frozen rows
-  (`tools/cm_tvc_stroke_freeze.py`). `cm-tvc-stroke-results.json`.
-
-## Open
-
-ABI registration of the four entries follows in the Lane G routine-table
-step, after Lane A's ISWRETRN fix.
+- **Source map.** `cm-tvc-stroke-source-map.json` lists all 73 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-tvc-stroke-differential` runs 256 states per routine (1,024 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 14 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-stroke-proof.json` (`cm-tvc-stroke-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_stroke_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-tvc-stroke sanitize-cm-tvc-stroke` runs the 32 frozen cases (`cm-tvc-stroke-host.log`).
+- **C64 execution results.** `make vice-cm-tvc-stroke` runs 1 diagnostic program with 12 cases (`cm-tvc-stroke-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 1,024 differential cases take: 344 of 344 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 62 of 62 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 193 of the 193 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
