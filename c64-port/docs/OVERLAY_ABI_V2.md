@@ -82,7 +82,7 @@ module's 7.8 KB.
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$C7FF` | Transient views; overflow space for resident BSS if Lane A needs it | 2,048 |
 | `$C800..$CFFF` | LLVM-MOS software stack (measured peak so far 773 bytes) | 2,048 |
-| `$D000..$DFFF` | I/O; REU controller at `$DF00` | 4,096 |
+| `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
 | `$E000..$FFF9` | Task slot | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
 
@@ -128,7 +128,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 0 | 4 | `NATV` |
 | 4 | 1 | ABI version, 2 |
 | 5 | 1 | Header size, 24 |
-| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`) |
+| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267) |
 | 7 | 1 | Mission: 1 LM, 2 CM |
 | 8 | 2 | Module identity (lane << 8 \| number) |
 | 10 | 2 | Entry address, slot base + 24 |
