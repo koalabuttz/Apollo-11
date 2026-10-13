@@ -1755,6 +1755,31 @@ SPECS = {
         'freeze_stride': 32,
         'cover_stride': 8,
     },
+    # Lane F: Luminary099 RCS_FAILURE_MONITOR (RCSMON, the T4RUPT
+    # channel-32 valve check), the whole file (basic code).
+    'lm-rcsmon': {
+        'missions': ('lm',),
+        'file': {'lm': 'RCS_FAILURE_MONITOR.agc'},
+        'base': {'lm': 'lm_rcsmon'},
+        'symbol': {'lm': 'lm_rcsmon'},
+        'entries': ['RCSMON'],
+        'externals': {'RESUME': None, 'NOVAC': 'auto'},
+        # INDEX L; CA BIT8 -1 / MASK 5FAILTAB / MASK 6FAILTAB: L is the
+        # changed channel-32 bit's number, 1 to 8 (the DOUBLE loop's count).
+        'basic_fixed_index': {'BIT8': list(range(1, 9)), '5FAILTAB': list(range(1, 9)), '6FAILTAB': list(range(1, 9))},
+        # PVALVEST holds the valve-state bits RCSMON itself records (low 8);
+        # with a higher bit the DOUBLE loop never overflows (the original
+        # runs forever too).
+        'all_states': {'PVALVEST': list(range(0o400))},
+        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive.
+        'resume_keys': True,
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
+        'target': 'tests/lm_rcsmon_target.c',
+        'c64_rows': 'cover',
+        'cover': True,
+        'freeze_stride': 16,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
