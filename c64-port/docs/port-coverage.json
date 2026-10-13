@@ -2253,7 +2253,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "b26ca7dfa94a88443815876e89f057520b248a67ac81e9cc81a8d6253807dadb",
+            "sha256": "f40172af5f680e34c04dbca248b7bda15af280ce54ef610c30cdbf618ec06290",
             "vice_targets": {
               "vice-cm-p30-p37": 173
             }
@@ -2981,7 +2981,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "7410edf1366878eb3dd4b29dff3e49d7f0cc1ad39fef5dd83bf304809768d8f4",
+            "sha256": "4f73ba244dc62280d36fbe0b654c22168cc0cd96eb43d9c381d34ee1ba5a85c0",
             "vice_targets": {
               "vice-r30": 256
             }
@@ -7976,7 +7976,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "7410edf1366878eb3dd4b29dff3e49d7f0cc1ad39fef5dd83bf304809768d8f4",
+            "sha256": "4f73ba244dc62280d36fbe0b654c22168cc0cd96eb43d9c381d34ee1ba5a85c0",
             "vice_targets": {
               "vice-r30": 256
             }

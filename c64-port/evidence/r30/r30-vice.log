@@ -7,16 +7,16 @@
 /home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_GROUP=7 -DIRC_CM_ONLY -DCM_R30_KEEP0=0x0 -DCM_R30_KEEP1=0x3ffffffffe0060 -Wl,-Map,build/r30-7.map src/cm_r30.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r30_target.c platform/c64/r30_diagnostic.c -o build/r30-7.prg
 for p in build/r30-1.prg build/r30-2.prg build/r30-3.prg build/r30-4.prg build/r30-5.prg build/r30-6.prg build/r30-7.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
 PASS: VICE PAL r30-1.prg: 26 checks, 0 failures
-PRG sha256: 520e6bb0ad3e587a596523e91ed492c1011453d3aab99fb24f406a917585c321 r30-1.prg
+PRG sha256: 1da824beea3c7a220d45ec46c5419b224d99f67b5106c5ded9417fd8d53e3d7c r30-1.prg
 PASS: VICE PAL r30-2.prg: 33 checks, 0 failures
-PRG sha256: d4119a0200b7de250fb01692305c8477cf77505be258ef7fc5329f8d7a0146b7 r30-2.prg
+PRG sha256: 4a8ae36142ab124412e29aaafa4623c1185f24f54f913f407168d06b9818fadf r30-2.prg
 PASS: VICE PAL r30-3.prg: 43 checks, 0 failures
-PRG sha256: 81d241c48ba1f360d5c253eae01ded78a7c0c7580d5673d845d6a1e750a1d737 r30-3.prg
+PRG sha256: 92d6757c6e4098e5616c6806b921127909d1debd73112cada0a72d2f77b702bd r30-3.prg
 PASS: VICE PAL r30-4.prg: 23 checks, 0 failures
-PRG sha256: 26d78fbac285f857fe0b00fdf1719fda074426814b58da8b71754cab4ece8cb9 r30-4.prg
+PRG sha256: 1632b4125397e67c70d0f7a854c8fcc61510987660d58a99558b86c12d73291b r30-4.prg
 PASS: VICE PAL r30-5.prg: 42 checks, 0 failures
-PRG sha256: 6b7499ff1bbb53670c27a102eb07fdd7ded78786ec2f500fdd607a6cdc9c5974 r30-5.prg
+PRG sha256: 670b344b832dcc13bf748665d3c96995667af5468933f165ef169bdd5df8aa7c r30-5.prg
 PASS: VICE PAL r30-6.prg: 47 checks, 0 failures
-PRG sha256: cb653868ce6e0b4e2dd06291345bc9cee49146a1c803e50cc372ce175ee416a4 r30-6.prg
+PRG sha256: c623f76e2c559306a303a71f63f41c3c03ed9e68d405c75c7308e63e21da9938 r30-6.prg
 PASS: VICE PAL r30-7.prg: 42 checks, 0 failures
-PRG sha256: cde38655209b560a2376b3afea5d9725bcd1b275f3a30904d85239a6afd62693 r30-7.prg
+PRG sha256: 10ef619b8ac33717c6d73c0b2a6d66b4ce93dfee58d5d35239d301dc74ddf15e r30-7.prg
