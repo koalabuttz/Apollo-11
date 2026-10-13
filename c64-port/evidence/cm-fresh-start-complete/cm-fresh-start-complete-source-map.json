@@ -6,9 +6,9 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "docs/CM-FRESH-START.md",
-   "sha256": "7a2222bb9c7aeec1fb98e1c829839e368c34e373c908dc957037dc4d157d6993",
+   "sha256": "21a5376314d06fddc1eeff9ea9242dfcbc4427965b88fd16666220d87c2fe77f",
    "native": "src/cm_fresh_start.c",
-   "native_sha256": "89dd532381c97d08d1d5528033cfedbf752b12a03302960c84cab945a2395bbe",
+   "native_sha256": "61ddf3a89c0f6f5ff7e67fd8847abc0c4031969f9d9a686faa0ca81810c95127",
    "owns": [
     "05,2342-2344",
     "05,2351-3217",
@@ -17,7 +17,7 @@
   },
   "cm-v37": {
    "record": "docs/CM-V37.md",
-   "sha256": "769f0ff89461d4cecb9e06430ff5e39e1985ce1265bd265e15513f3fb5c9dceb",
+   "sha256": "fcdc653c97311f58c95aae971c3ef39f4e62fcd5b802e4e94e732b92d0d0fd79",
    "native": "src/cm_v37.c",
    "native_sha256": "ed769e6ce9e192f8f555e754815eb1ccc5919da8f4abcc2f68e539c831ce4a0f",
    "owns": [
