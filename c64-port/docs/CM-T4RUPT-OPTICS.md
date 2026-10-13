@@ -18,6 +18,8 @@ Each runs to RESUME, TASKOVER or the next of those calls. T4RUPT through 90SECS 
 - CDUT and CDUS (counters, 0 unless set) hold values around 0, ±45°, ±90° and ±180°, so that OPTDRIVE's zone and shaft-stop tests go both ways.
 - SETOFF's `BZF TCQ`, the no-change return of OCDUFTST, lands on the interpreter's `TC Q` word at 06711 (TCQ = Q+2 +1). It runs in place as the file's own TC Q (`tcq_words`), so Q becomes 3 and the run continues at the caller in the file. It is not an exit to an unregistered fixed address.
 
+- `basic_split`: one body per bank (OPTMON's in 06, OPTDRIVE's in 10). The whole module is about 20 KB, over either slot, but each bank's chunk fits the job slot.
+
 Compiler additions with this file (every other spec's generated files are unchanged, `interp_compile.py <spec> --check`; `cm-p34-p35` already differs on the base):
 - `tools/basic_compile.py`: an INDEXed MSU (`INDEX OPTIND; MSU CDUT`) runs on the indexed word when that word is an ordinary erasable one. Anything else is EXEC_INVALID_ACTION.
 - `tools/basic_compile.py`, `tools/interp_compile.py`: `tcq_words` (fixed-fixed addresses of outside `TC Q` words) run in place. The oracle treats them as the file's own words.
