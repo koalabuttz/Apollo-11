@@ -2102,7 +2102,7 @@ Luminary099 P40-P47.agc (P40, P41, P42 and P47, the S40.x burn set-up, the engin
 
 ## WAITLIST entries reached from other files in the transfer ABI
 
-The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,266 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together. The 1,271 strict, sanitizer and C64 checks pass. See `docs/WAITLIST-ENTRIES.md`.
+The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,380 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together, half of them on a sane waitlist so the task is inserted and the job sleeps (45 LM, 52 CM). The 1,389 strict and sanitizer checks pass, and the C64 rows take every host branch arc. See `docs/WAITLIST-ENTRIES.md`.
 
 ## Translate Comanche055 R31
 
@@ -2191,6 +2191,10 @@ Pending complete-coverage certificates for Luminary099 and Comanche055 PINBALL_G
 ## Translate Luminary099 FINDCDUW--GUIDAP_INTERFACE
 
 All of Luminary099 FINDCDUW--GUIDAP_INTERFACE (441 words, 30,3104-3774: INITCDUW, FINDCDUW with its PNGCS-auto branch PAUTNO, the CDU-window filter FLTRSUB, CDUWXFR and TCQCDUW, NB2CDUSP with DVBYCOSM, ARCTRGSP, SPARCSIN, LIMITSUB, ONESTO2S and the two alarm exits) is native C on the control-transfer ABI, as 75 routines compiled by `tools/interp_compile.py` (lane A2), every word after a DANZIG a CHANG2 resume routine. PAUTNO's two RTBs run through existing native bodies: NORMUNIT is `rtb_vector`'s NORMUNIT front then `rtb_unit`'s UNIT+1 phases, and QUICTRIG is `lm_powered_quick`; its RAND CHAN30/CHAN31 read the input channels the caller latches (`channel_inputs`). All 19,200 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 1,200 frozen cases, and fourteen C64 diagnostics pass 146 cases in VICE that take all 1,974 branch arcs the host cases take. See `docs/LM-FINDCDUW.md`.
+
+## Run the CM optics monitor and drive of T4RUPT as native routines
+
+Comanche055 T4RUPT_PROGRAM.agc from OPTMON to the end (06,2765-3262) and OPTDRIVE (10,2000-2202) are native as `cm_t4rupt_optics_basic`, compiled by `tools/basic_compile.py`. The milestone covers the optics monitor, the zero-optics sequence and the optics CDU drive. All 4,096 cases equal the original program in yaAGC in all 2,048 erasable words and channels 12, 14, 30 and 33. The 274 frozen cases pass on the host and under the sanitizer. In VICE, 46 cases pass and take every branch arc the host cases take. With `t4rupt-core` and `cm-t4rupt-imu`, every word of the file is native. See `docs/CM-T4RUPT-OPTICS.md`.
 
 ## Translate RTB_OP_CODES and RT8_OP_CODES
 
