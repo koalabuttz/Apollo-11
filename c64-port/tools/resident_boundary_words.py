@@ -120,6 +120,34 @@ def render(m, rows, sources):
     return '\n'.join(out) + '\n'
 
 
+def header_text(cc, m, resolver):
+    """The mission's boundary-word header for these resolver records, or None
+    when a word disagrees with the assembly listing."""
+    out_dir = ROOT / 'build'
+    out_dir.mkdir(exist_ok=True)
+    keys = table_keys(cc, m, out_dir)
+    for r in resolver:
+        k = fixed_physical(r['loc'], r['bank'])
+        if k is not None:
+            keys.setdefault(k, 'resolver')
+    rope = (ROOT / f'evidence/fixed-data-{m}-original.rope.bin').read_bytes()
+    rows = [(k, keys[k], rope_word(rope, k)) for k in sorted(keys)]
+    listing = ROOT / f'build/fixed-data/{PROGRAM[m]}/assembly.lst'
+    if listing.exists():
+        words = listing_words(listing)
+        bad = [(k, t, w, words.get(k)) for k, t, w in rows if words.get(k) != w]
+        if bad:
+            for k, t, w, lw in bad:
+                print(f'{m}: {t} key {k} ({k // 1024:02o},{k % 1024 + 0o2000:04o}): rope {w:05o}, listing {lw}',
+                      file=sys.stderr)
+            return None
+        print(f'{m}: {len(rows)} boundary words match the rope and {listing.relative_to(ROOT)}')
+    else:
+        print(f'{m}: SKIP listing check (no {listing.relative_to(ROOT)}); {len(rows)} words from the rope')
+    tables = sorted({t for _, t, _ in rows}, key=lambda t: (t == 'resolver', t))
+    return render(m, rows, [t if t != 'resolver' else 'resolver records' for t in tables])
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default='cc')
@@ -130,31 +158,11 @@ def main():
     for spec in a.resolver:
         m, path = spec.split('=', 1)
         resolvers[m] = json.loads(Path(path).read_text())
-    out_dir = ROOT / 'build'
-    out_dir.mkdir(exist_ok=True)
     failed = False
     for m in PROGRAM:
-        keys = table_keys(a.cc, m, out_dir)
-        for r in resolvers[m]:
-            k = fixed_physical(r['loc'], r['bank'])
-            if k is not None:
-                keys.setdefault(k, 'resolver')
-        rope = (ROOT / f'evidence/fixed-data-{m}-original.rope.bin').read_bytes()
-        rows = [(k, keys[k], rope_word(rope, k)) for k in sorted(keys)]
-        listing = ROOT / f'build/fixed-data/{PROGRAM[m]}/assembly.lst'
-        if listing.exists():
-            words = listing_words(listing)
-            bad = [(k, t, w, words.get(k)) for k, t, w in rows if words.get(k) != w]
-            if bad:
-                for k, t, w, lw in bad:
-                    print(f'{m}: {t} key {k} ({k // 1024:02o},{k % 1024 + 0o2000:04o}): rope {w:05o}, listing {lw}',
-                          file=sys.stderr)
-                return 1
-            print(f'{m}: {len(rows)} boundary words match the rope and {listing.relative_to(ROOT)}')
-        else:
-            print(f'{m}: SKIP listing check (no {listing.relative_to(ROOT)}); {len(rows)} words from the rope')
-        tables = sorted({t for _, t, _ in rows}, key=lambda t: (t == 'resolver', t))
-        text = render(m, rows, [t if t != 'resolver' else 'resolver records' for t in tables])
+        text = header_text(a.cc, m, resolvers[m])
+        if text is None:
+            return 1
         header = ROOT / f'platform/c64/resident_boundary_words_{m}.h'
         if a.check:
             if not header.exists() or header.read_text() != text:

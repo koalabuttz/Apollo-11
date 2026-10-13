@@ -4,9 +4,13 @@
  * routines (platform/c64/resident_boundary_words_<m>.h, tools/resident_boundary_words.py).
  * The resident runs it once at boot for the table's place in the image and
  * then reads the table from the REU store without loading it.
+ * RK_BOUNDARY_HEADER names another generated table (the flight store's,
+ * tools/flight_store_build.py, whose resolver records add keys).
  * Value: the address of an rk_boundary_table. */
 #include "resident_flight.h"
-#if RK_LM
+#ifdef RK_BOUNDARY_HEADER
+#include RK_BOUNDARY_HEADER
+#elif RK_LM
 #include "resident_boundary_words_lm.h"
 #else
 #include "resident_boundary_words_cm.h"
