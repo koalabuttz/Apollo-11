@@ -23,7 +23,7 @@ routine.
 `cm_service_routines` (13). The `ADRES` words after every genuine fixed
 `TC UPFLAG`, `TC DOWNFLAG` and `TC GENTRAN` (and, in Luminary099, the two
 `TC GENTRAN +1` in AOSTASK at 20,3574 and 20,3615, which load the count
-with `CA NINE` and skip GENTRAN's `INHINT`, AOSTASK running inside T3RUPT) are compiled constants
+with `CA NINE` and skip GENTRAN's `INHINT`: they sit in 1/ACCS after its own `INHINT`) are compiled constants
 (`src/lm_service_sites.inc`, 175 words; `src/cm_service_sites.inc`, 152;
 `tools/agc_sites_generate.py lm-service|cm-service`). GENTRAN's fixed source
 words come from the program's passive constant reader. A fixed Q that is no

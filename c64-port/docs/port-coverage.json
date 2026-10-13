@@ -10297,7 +10297,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since AOSTASK already runs with interrupts inhibited); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since they sit in 1/ACCS after its own INHINT); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
