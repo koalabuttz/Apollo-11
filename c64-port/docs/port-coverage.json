@@ -1548,7 +1548,7 @@
       "sha256": "91635bbc0cf874075cdeeb9c8f7da291f340f8114841c0f34c9d1067d250b440",
       "bytes": 7027,
       "lines": 304,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1563,7 +1563,7 @@
           "verification": "docs/INFLIGHT-ALIGN.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1573,7 +1573,6 @@
           "UPFLAG 05546, ALARM 05650, POODOO 05721 (alarm and flag routines, basic)",
           "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/inflight-align/inflight-align-source-map.json",
@@ -1597,6 +1596,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
             "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-128.md",
+            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
           }
         },
         "precheck_notes": [
@@ -1945,7 +1948,7 @@
       "sha256": "06e71db5a48ba879b3cf730693a7a6e4db3f433a2ed95dcfceaf23dee11487fa",
       "bytes": 5059,
       "lines": 265,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1960,7 +1963,7 @@
           "verification": "docs/KALCMANU-STEERING.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1974,7 +1977,6 @@
           "TASKOVER and ENDOFJOB",
           "The caller's return through Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-source-map.json",
@@ -1998,6 +2000,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
             "sha256": "79c135966efecd66d07262524499c8fd03882fc1f323b4cec2af4071e06c7cc8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-128.md",
+            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
           }
         },
         "precheck_notes": [
@@ -6330,7 +6336,7 @@
       "sha256": "9d5e5d467f4eeedd9aee8a2f068e646a5d43ba3ec93a83cec565554b0c3fa52c",
       "bytes": 6931,
       "lines": 300,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6345,7 +6351,7 @@
           "verification": "docs/INFLIGHT-ALIGN.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6355,7 +6361,6 @@
           "UPFLAG 05504, ALARM 05567, POODOO1 05726, ALARM1 05732 (alarm and flag routines, basic)",
           "Interpreter V1STO2S through RTB (native, src/rtb_angles.c)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/inflight-align/inflight-align-source-map.json",
@@ -6379,6 +6384,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
             "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-128.md",
+            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
           }
         },
         "precheck_notes": [
@@ -6781,7 +6790,7 @@
       "sha256": "6a330bb23cb8f6c15cd50ffe8550ffd7599d19fcd9b9c03f0b2fbe8f081c21da",
       "bytes": 4807,
       "lines": 221,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6796,7 +6805,7 @@
           "verification": "docs/KALCMANU-STEERING.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6809,7 +6818,6 @@
           "TASKOVER and ENDOFJOB",
           "The caller's return through Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-source-map.json",
@@ -6833,6 +6841,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
             "sha256": "79c135966efecd66d07262524499c8fd03882fc1f323b4cec2af4071e06c7cc8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-128.md",
+            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
           }
         },
         "precheck_notes": [
@@ -7019,7 +7031,7 @@
       "sha256": "6793dddb22af8b0ae7f73d735fabbc4336a0f6743c5d1965e5dab3350c1ce6d6",
       "bytes": 5084,
       "lines": 206,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7034,7 +7046,7 @@
           "verification": "docs/GEOMETRY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7046,7 +7058,6 @@
           "Interpreter CDULOGIC and 2V1STO2S through RTB (native, src/rtb_angles.c)",
           "ALARM1 from ASIN/UNIT (interpreter alarm)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/geometry/geometry-source-map.json",
@@ -7070,6 +7081,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
             "sha256": "5fbb39e6e6b166665ba065a6b8636daed2d916fc4e4a7e2b6c970bd68592e5ca"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-128.md",
+            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
           }
         },
         "precheck_notes": [
