@@ -2154,4 +2154,4 @@ All of Luminary099 and Comanche055 PLANETARY_INERTIAL_ORIENTATION (188 and 204 w
 
 ## Translate Comanche055 P11
 
-All of Comanche055 P11 (535 words: the Earth orbit insertion monitor, its attitude error display and the boost steering takeover) is native C on the control-transfer ABI, as 148 routines compiled whole-file by `tools/basic_compile.py` and `tools/interp_compile.py`. All 37,888 cases equal the original program in yaAGC; the host tests pass 592 frozen cases and eight C64 diagnostics pass 203 cases in VICE. See `docs/CM-P11.md`.
+All of Comanche055 P11 (535 words: the Earth orbit insertion monitor, its attitude error display and the boost steering takeover) is native C on the control-transfer ABI, as 148 routines compiled whole-file by `tools/basic_compile.py` and `tools/interp_compile.py`. All 37,888 cases equal the original program in yaAGC; the host tests pass 592 frozen cases and eight C64 diagnostics pass 202 cases in VICE. See `docs/CM-P11.md`.
