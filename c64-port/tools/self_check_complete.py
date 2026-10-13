@@ -17,7 +17,11 @@ milestone records it rests on with their sha256:
       instruction must be executed by those runs but the two words no state
       reaches (tools/self_check_freeze.py UNREACHABLE)
   <id>-host.json         the host and sanitizer log
-  <id>-c64.json          the VICE log
+  <id>-c64.json          the VICE log, with the PRG sha256s it names
+  <id>-c64-cover.json    the mission's c64_branch_outcomes records (random-state
+      and whole-rope, evidence/self-check/self-check-<m>[-rope]-c64-cover.json,
+      tools/a2_c64_rows.py): no host branch arc the C64 rows miss, every
+      entry slot run on the C64, every linked source unchanged since the cover
 
 It fails on any hash mismatch, untranslated word, snapshot difference,
 unexecuted instruction or failed check.
@@ -37,6 +41,7 @@ import sys
 R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'tools'))
 from agc_sites_generate import listing_lines  # noqa: E402
+import a2_c64_rows  # noqa: E402
 
 MILESTONE = 'self-check'
 # mission index, name, source file, certificate id, words below Comanche055's
@@ -82,6 +87,10 @@ def log_record(name, kind, errors):
     ok = bool(found or passes) and not any(int(f) for _, f in found)
     record = {'record': log, 'sha256': sha(log), 'pass_lines': passes,
               'checks': [int(c) for c, _ in found], 'failures': sum(int(f) for _, f in found), 'result': 'PASS' if ok else 'FAIL'}
+    if kind == 'vice':
+        record['prg_sha256'] = a2_c64_rows.prg_hashes(text)
+        if not record['prg_sha256']:
+            errors.append(f'{log}: names no PRG sha256')
     if json.loads((R / f'evidence/{name}/SHA256.json').read_text())['files'][f'{name}-{kind}.log']['sha256'] != record['sha256']:
         errors.append(f'{log}: sha256 differs from evidence/{name}/SHA256.json')
     if not ok:
@@ -174,7 +183,10 @@ def main():
                                            'result': 'PASS' if shas == frozen else 'FAIL'}},
                 'result': 'PASS' if shas == frozen else 'FAIL'},
             f'{cert}-host.json': {'category': 'host_and_sanitizer_results', 'aggregates': {MILESTONE: host}, 'result': host['result']},
-            f'{cert}-c64.json': {'category': 'c64_execution_results', 'aggregates': {MILESTONE: c64}, 'result': c64['result']}}
+            f'{cert}-c64.json': {'category': 'c64_execution_results', 'aggregates': {MILESTONE: c64}, 'result': c64['result']},
+            f'{cert}-c64-cover.json': a2_c64_rows.cover_aggregate(
+                {f'{MILESTONE}-{cert[:2]}{tag}': f'evidence/{MILESTONE}/{MILESTONE}-{cert[:2]}{tag}-c64-cover.json'
+                 for tag in ('', '-rope')}, errors)}
         summary.append(f'{name}: {total} words translated, {instructions} instructions, all executed but '
                        f'{len(freeze.UNREACHABLE)} unreachable; {record["cases"]} + {record["cases_rope"]} oracle cases equal the snapshots')
     if errors:

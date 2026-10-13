@@ -12,6 +12,7 @@ the image back).
 Defaults come from deps/env.sh (VICE, VICE_ROM_DIR, VICE_DATA_DIR).
 """
 import argparse
+import hashlib
 import os
 import pathlib
 import re
@@ -69,6 +70,7 @@ def main():
     if len(data) != 5 or data[0] != 0xa5 or failures or not checks:
         sys.exit(f'FAIL: {prg.name}: mailbox {data.hex()} ({failures} failures, {checks} checks)')
     print(f'PASS: VICE PAL {prg.name}: {checks} checks, 0 failures')
+    print(f'PRG sha256: {hashlib.sha256(prg.read_bytes()).hexdigest()} {prg.name}')
     return 0
 
 

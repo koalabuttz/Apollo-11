@@ -6,7 +6,7 @@
  "aggregates": {
   "self-check": {
    "record": "docs/SELF-CHECK.md",
-   "sha256": "b9c496ab219422faa74c10fe17de61f12c9a95fa64fc81ecd408794034569bb7",
+   "sha256": "0a4750cd129672c8d971b83ca9601c69170db6d6b0126518d9420be1d5971d47",
    "native": [
     "src/lm_self_check.c",
     "src/self_check_body.inc",
@@ -15,7 +15,7 @@
     "platform/c64/rope_image_reu.c"
    ],
    "native_sha256": {
-    "src/lm_self_check.c": "021d428c1b9881d4ffe7cce662064da8c6f62cc1ff1acf07b662e2aa0c8605c8",
+    "src/lm_self_check.c": "1e29362b21bc705d67154e751b2d2f1a7757b68987c299946b891e0a892fc399",
     "src/self_check_body.inc": "34274613da05498dbde5a98e3fef9be1743db7ab2eaa422ffd8aba1ef3d29ab4",
     "src/lm_self_check_operands.inc": "943f15eb851913c52ed4bb66e4e425c4021a4eab8a7040913cd93f75b41273e1"
    },

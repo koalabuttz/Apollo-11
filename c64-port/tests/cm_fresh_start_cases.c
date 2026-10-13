@@ -9,7 +9,7 @@ void cm_fs_input(apollo_overlay_state *s,cm_fresh_io *io,uint16_t n){
  for(i=0;i<2048u;++i)s->words[i]=word(&seed);
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
- {cm_fresh_io zero={{0},0,0,0};*io=zero;}
+ {cm_fresh_io zero={{0},0,0,0,0};*io=zero;}
  io->control.interrupt_enabled=(agc_word)upto(&seed,2);io->control.channel11=word(&seed);
  io->channel5=word(&seed);io->channel6=word(&seed);io->control.channel12=word(&seed);
  io->control.channel13=(agc_word)(word(&seed)&02767u);io->control.channel14=(agc_word)(word(&seed)&0777u);
@@ -38,6 +38,10 @@ void cm_fs_input(apollo_overlay_state *s,cm_fresh_io *io,uint16_t n){
   if(upto(&seed,2)){s->words[2]=04675u;s->words[0133]=(agc_word)(02000u+upto(&seed,02000u));s->words[0134]=(agc_word)(04u<<10);}
   else s->words[2]=(agc_word)(07000u+upto(&seed,01000u));}
  s->words[4]=fb;s->words[3]=(agc_word)(eb<<8);s->words[6]=(agc_word)(fb|eb);s->words[5]=z;
+ /* A quarter of the cases have the AGC warning condition persisting: its
+  * channel 33 latch (bit 14) reads 0 and sets again after every reset.
+  * Drawn last, so the other cases keep their images. */
+ if(upto(&seed,4)==0u){io->warning=1u;io->channel33&=(agc_word)~020000u;}
 }
 enum exec_status cm_fs_run(apollo_overlay_state *s,cm_fresh_io *io,uint16_t n,uint16_t *steps){
  agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;

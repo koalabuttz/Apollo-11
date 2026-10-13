@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-r31",
+  "release": "evidence-cm-r31",
+  "files": {
+    "cm-r31-differential.log": {
+      "sha256": "4a2bc0fb4c392dd8a95ce4dbf8ce82c763a04aeb8192876724032e4bbbed697c",
+      "bytes": 1397,
+      "store": "release"
+    },
+    "cm-r31-host.log": {
+      "sha256": "bdc341288369b2ad209329fabf18264a0564729f6e375f9567209bf5724aef28",
+      "bytes": 62,
+      "store": "release"
+    },
+    "cm-r31-proof.json": {
+      "sha256": "fbda52c4829f713ccb7b4e4d6c33cc5560ab01187b46659373d65c4bc3837d70",
+      "bytes": 3207,
+      "store": "tree"
+    },
+    "cm-r31-source-map.json": {
+      "sha256": "b402364736387c5cd5fef9008502766394d280dff1d44438779ed706f4ce0f19",
+      "bytes": 29818,
+      "store": "tree"
+    },
+    "cm-r31-vice.log": {
+      "sha256": "80324ab997fe9dfd238b59184d2e0d8bdf6b88b634b815c67516cedebba744a6",
+      "bytes": 353,
+      "store": "release"
+    }
+  }
+}

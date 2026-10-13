@@ -2,6 +2,7 @@
 /* Comanche055 AGC_BLOCK_TWO_SELF-CHECK (43,3234-3725): src/self_check_body.inc
  * with Comanche055's addresses and constants. */
 #include "self_check.h"
+/* Defines the agc_routine_table cm_self_check_routines (src/self_check_body.inc). */
 #include "cm_self_check_operands.inc"
 #define SC_MISSION 1u
 #define SC_IO cm_native_io

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p32-p33",
+  "release": "evidence-cm-p32-p33",
+  "files": {
+    "cm-p32-p33-differential.log": {
+      "sha256": "44c714326f5fe58245324e457fd1661db26a1ff814510d264375079497d5aaf8",
+      "bytes": 5472,
+      "store": "release"
+    },
+    "cm-p32-p33-host.log": {
+      "sha256": "b9c1971560899a86fe98a0042b7219368382f0ec8fc950fae7302b55d5197cf7",
+      "bytes": 70,
+      "store": "release"
+    },
+    "cm-p32-p33-proof.json": {
+      "sha256": "a49dc221e775fc9a5c64e670357db9b41be08976e79b7831c87f248c10fdaa73",
+      "bytes": 8944,
+      "store": "tree"
+    },
+    "cm-p32-p33-source-map.json": {
+      "sha256": "f4c1731832ce9767579fedfdc779f49239e6cfefafcf5a55c4135f9870a9bcdd",
+      "bytes": 119393,
+      "store": "tree"
+    },
+    "cm-p32-p33-vice.log": {
+      "sha256": "6b7b90ff64c7499a16b16665601ec30c69d3fa4acc4c4a0289e54d4911961c7b",
+      "bytes": 879,
+      "store": "release"
+    }
+  }
+}
