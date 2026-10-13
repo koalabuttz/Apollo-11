@@ -208,6 +208,11 @@ def table_keys(cc, tables, objects):
     for line in run([exe], capture_output=True, text=True).stdout.splitlines():
         n, k = line.split()
         keys[n].append(int(k))
+    # agc_transfer.c's find() binary-searches each table and skips one whose
+    # first..last range misses the point, so keys must strictly ascend.
+    unsorted = [n for n, v in keys.items() if any(a >= b for a, b in zip(v, v[1:]))]
+    if unsorted:
+        raise SystemExit(f'routine tables not in ascending key order: {" ".join(sorted(unsorted))}')
     return {n: keys.get(n, []) for n in names}
 
 

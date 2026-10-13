@@ -56,6 +56,29 @@ static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
   expect(rk_runtime.store.resolve(rk_runtime.store.user,fl_records[i].bank,fl_records[i].loc,&at)&&
          at.module==fl_records[i].module&&at.selector==0u,2);}
 
+/* The $D000 extension path (slot class 2): a pattern stashed in the REU
+ * scratch, fetched to $D000 and verified with I/O banked out (rk_hidden_dma),
+ * read back with I/O out, then CIA1 interrupts left on with I/O out: the IRQ
+ * entry must restore I/O to acknowledge them, or the CPU never returns. */
+extern volatile uint16_t ov2_irq_count;
+static uint16_t BOOT irq_count(void){uint16_t n;do n=ov2_irq_count;while(n!=ov2_irq_count);return n;}
+static void BOOT fixed_extension(void){uint8_t *b=(uint8_t *)RK_BOOT_SCRATCH;uint16_t i,bad=0,t;
+ for(i=0;i<256u;++i)b[i]=(uint8_t)(i^0x5au);
+ apollo_reu_transfer(APOLLO_REU_STASH,b,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u);
+ expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ expect(rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x34;
+ for(i=0;i<256u;++i)bad|=(uint8_t)(((volatile uint8_t *)APOLLO_OV2_FIXED_ADDRESS)[i]^(uint8_t)(i^0x5au));
+ t=irq_count();
+ __asm__ volatile("cli");
+ for(i=0;i<60000u&&(uint16_t)(irq_count()-t)<3u;++i){}
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x35;
+ __asm__ volatile("cli");
+ expect(!bad,8);
+ expect((uint16_t)(irq_count()-t)>=3u,9);}
+
 /* CIA2 timer A counts cycles from $FFFF, timer B its underflows. */
 #define CIA2 ((volatile uint8_t *)0xdd00)
 static void timer_start(void){
@@ -135,6 +158,7 @@ int main(void){uint16_t i;
  expect(rk_boot()==0,1);
  if(!failures){
   resolve_records();
+  fixed_extension();
   __asm__ volatile("sei");
   apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();

@@ -43,6 +43,26 @@ static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at);
 static uint16_t run_value;
 static uint8_t run_action;
 
+/* One DMA with I/O banked out ($01=$34), for the $D000 extension (slot
+ * class 2): the registers are set with I/O in and the command armed without
+ * execute-now, then a write to $FF00 starts it (task-slot RAM there; the
+ * byte is written back unchanged). Boot-only. */
+uint8_t BOOT rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes) {
+    volatile uint8_t *trigger=(volatile uint8_t *)0xff00u;
+    (void)apollo_reu_transfer((uint8_t)(command&~0x10u),c64,reu,bytes);
+    __asm__ volatile("sei");
+    *(volatile uint8_t *)1=0x34;
+    *trigger=*trigger;
+    *(volatile uint8_t *)1=0x35;
+    __asm__ volatile("cli");
+    return (uint8_t)((apollo_reu_peek(APOLLO_REU_STATUS)&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==
+        APOLLO_REU_STATUS_END);
+}
+static uint8_t BOOT rk_load_fixed(void *user,uint32_t reu,const apollo_ov2_dirent *d) {
+    void *at=(void *)APOLLO_OV2_FIXED_ADDRESS;
+    (void)user;
+    return rk_hidden_dma(APOLLO_REU_FETCH,at,reu,d->bytes) && rk_hidden_dma(APOLLO_REU_VERIFY,at,reu,d->bytes);
+}
 uint8_t BOOT rk_boot(void) {
     __asm__ volatile("sei");
     *(volatile uint8_t *)1=0x35;
@@ -65,6 +85,7 @@ uint8_t BOOT rk_boot(void) {
 #endif
     if(!apollo_reu_store_open(&rk_store,0,RK_MISSION,RK_SERVICES_VERSION,record)) return 1;
     if(apollo_reu_store_verify(&rk_store,(uint8_t *)RK_BOOT_SCRATCH)!=APOLLO_OV2_OK) return 2;
+    if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,0)) return 4;
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);

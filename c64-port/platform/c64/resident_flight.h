@@ -94,10 +94,15 @@ extern uint16_t rk_pending, rk_ticks;
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
  * verified, the runtime initialized on the image at $7000, and the
+ * fixed-extension modules (slot class 2) loaded at $D000, and the
  * boundary-word module run once for its table (rk_fixed_word). Returns 0,
- * or 1 (store header), 2 (store contents) or 3 (boundary-word module).
+ * or 1 (store header), 2 (store contents), 3 (boundary-word module) or 4
+ * (a fixed-extension load).
  * Lives in the job slot: call it once, before any module runs. */
 uint8_t rk_boot(void);
+/* Boot-only (job slot): one REU command with I/O banked out during the DMA,
+ * started through $FF00; 1 when it ends without a fault. */
+uint8_t rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes);
 
 /* One resident step. First the AGC clock: one 10 ms timer period
  * (rk_timer_tick) per CIA1 interrupt since the last step. Then the highest
