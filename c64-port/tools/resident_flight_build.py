@@ -33,7 +33,7 @@ from overlay_runtime_library import prepare  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/resident-flight')
-SERVICES = 0x0201
+SERVICES = 0x0202
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
           '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror']
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
