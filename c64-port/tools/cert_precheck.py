@@ -612,6 +612,9 @@ def native_files(entry, certificate):
 
 REFUSAL = re.compile(r'\b\w*OUT_OF_SCOPE\b|\brefuse\w*\s*\(|EXEC_UNMAPPED')
 NEWJOB = re.compile(r'NEWJOB|\[\s*0+67u?\s*\]')
+# A range or multiple-of-12 test on NEWJOB refuses only values the Executive
+# never stores (standard_lead_cm.c), not a waiting job.
+NEWJOB_VALID = re.compile(r'(NEWJOB\w*|\[\s*0+67u?\s*\])\s*(>|%)')
 
 
 def check_refusals(report, label, entry, certificate, notes):
@@ -630,7 +633,8 @@ def check_refusals(report, label, entry, certificate, notes):
             code = line.split('//', 1)[0]
             if REFUSAL.search(code) and not code.lstrip().startswith(('#', '*', '/*')):
                 sites.append(number)
-            if NEWJOB.search(code) and re.search(r'\breturn\b|OUT_OF_SCOPE|refuse', code) and \
+            if NEWJOB.search(code) and not NEWJOB_VALID.search(code) and \
+                    re.search(r'\breturn\b|OUT_OF_SCOPE|refuse', code) and \
                     not code.lstrip().startswith(('*', '/*')):
                 newjob.append(f'{source}:{number}')
         if sites and notes:
