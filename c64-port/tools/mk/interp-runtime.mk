@@ -37,7 +37,7 @@ interp-runtime-size: interp-runtime-check | build
 build/interp-core-fuzz: $(INTERP_CORE_FUZZ_SRC) | build
 	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit $(INTERP_CORE_FUZZ_SRC) -o $@
 build/interp-core-fuzz-kops: $(INTERP_CORE_FUZZ_SRC) tools/interp_core_kops.c | build
-	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit -DINTERP_K_OPS=1 \
+	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit -DINTERP_K_OPS=1 -DINTERP_K_OPS2=1 \
 	  $(INTERP_CORE_FUZZ_SRC) tools/interp_core_kops.c -o $@
 interp-core-fuzz: build/interp-core-fuzz build/interp-core-fuzz-kops build/fixed-data/Luminary099/MAIN.agc.bin \
   build/fixed-data/Comanche055/MAIN.agc.bin

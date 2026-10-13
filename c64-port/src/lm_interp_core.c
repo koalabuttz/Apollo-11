@@ -64,16 +64,24 @@ static NI void ai_caf_b(uint8_t);
 static NI void ai_csf_b(uint8_t);
 static NI void ai_adf_b(uint8_t);
 static NI void ai_su_w(unsigned);
+#if !INTERP_K_OPS2
 static NI void ai_mask_w(unsigned);
+#endif
 static NI void ai_maskf_b(uint8_t);
 static NI uint8_t ai_ovsk(void);
+#if !INTERP_K_OPS2
 static NI void ai_incr_w(unsigned);
+#endif
 static NI void ai_aug_w(unsigned);
 static NI void ai_dim_w(unsigned);
+#if !INTERP_K_OPS2
 static NI void ai_das_w(unsigned);
+#endif
 static NI void ai_dca_w(unsigned);
 static NI void ai_dcs_w(unsigned);
+#if !INTERP_K_OPS2
 static NI void ai_dcsf(const agc_word[2]);
+#endif
 static NI void ai_mp_w(unsigned);
 static NI void ai_mpf_w(agc_word);
 static NI void ai_mpf_b(uint8_t);
@@ -302,7 +310,9 @@ static NI agc_word rd(unsigned a){
 /* INTERP_K_OPS (the flight module): the resident kernel's image ops, ABI 2
  * services k_ca ... k_bzmf (platform/c64/flight_image_op_services.c). They
  * are agc_image_ops on the canonical image at APOLLO_SHARED_ADDRESS, the
- * image this core runs on; the other ops stay here. */
+ * image this core runs on; the other ops stay here. INTERP_K_OPS2 also
+ * takes k_mask, k_incr, k_das and k_dcsf from the resident (456 B less in
+ * the slot), once the service table exports them (ABI 2.4). */
 #ifndef INTERP_K_OPS
 #define INTERP_K_OPS 0
 #endif
@@ -311,6 +321,9 @@ void k_ca(unsigned);void k_caf(agc_word);void k_cs(unsigned);void k_csf(agc_word
 void k_adf(agc_word);void k_maskf(agc_word);uint8_t k_ts(unsigned);void k_xch(unsigned);void k_lxch(unsigned);
 void k_ads(unsigned);void k_dxch(unsigned);uint8_t k_ccs(unsigned);void k_tc(agc_word);void k_dcaf(const agc_word *);
 uint8_t k_bzf(void);uint8_t k_bzmf(void);
+#if INTERP_K_OPS2
+void k_mask(unsigned);void k_incr(unsigned);void k_das(unsigned);void k_dcsf(const agc_word *);
+#endif
 #if !(defined(__mos__) && AGC_FIXED_IMAGE)
 extern apollo_overlay_state *interp_core_k_image;
 #endif
@@ -361,10 +374,14 @@ static NI void ai_su_w(unsigned a){
  endi();
 }
 static NI void ai_su_b(uint8_t a){ai_su_w(a);}
+#if INTERP_K_OPS2
+#define ai_mask_w k_mask
+#else
 static NI void ai_mask_w(unsigned a){
  if(a<3u)W[0]=(agc_register)(W[0]&reg(a));else W[0]=sx((agc_word)(oc(W[0])&ai_word(a)));
  endi();
 }
+#endif
 static NI void ai_mask_b(uint8_t a){ai_mask_w(a);}
 #if INTERP_K_OPS
 #define ai_maskf_w k_maskf
@@ -407,7 +424,11 @@ static NI void xchr_b(uint8_t r,uint8_t a){xchr(r,a);}
 static NI void ai_ads_w(unsigned a){W[0]=add16(W[0],get16(a));set16(a,W[0]);endi();}
 #endif
 static NI void ai_ads_b(uint8_t a){ai_ads_w(a);}
+#if INTERP_K_OPS2
+#define ai_incr_w k_incr
+#else
 static NI void ai_incr_w(unsigned a){set16(a,add16(1u,get16(a)));endi();}
+#endif
 static NI void ai_incr_b(uint8_t a){ai_incr_w(a);}
 static NI void ai_aug_w(unsigned a){
  agc_register v=get16(a);
@@ -421,6 +442,9 @@ static NI void ai_dim_w(unsigned a){
 }
 static NI void ai_dim_b(uint8_t a){ai_dim_w(a);}
 /* DAS (DDOUBL for A). */
+#if INTERP_K_OPS2
+#define ai_das_w k_das
+#else
 static NI void ai_das_w(unsigned k){
  agc_register lsw,msw;unsigned lo=k+1u;
  lsw=add16(W[1],get16(lo));msw=add16(W[0],get16(k));
@@ -429,6 +453,7 @@ static NI void ai_das_w(unsigned k){
  set16(lo,sx(oc(lsw)));set16(k,msw);
  endi();
 }
+#endif
 static NI void ai_das_b(uint8_t a){ai_das_w(a);}
 static NI void reedit(unsigned a){if(a>=020u&&a<=023u)ai_put(a,ai_word(a));}
 static NI void ai_dca_w(unsigned k){
@@ -448,9 +473,13 @@ static NI void ai_dcs_w(unsigned k){
  ai_dca_w(k);W[1]=(agc_register)(~W[1]&M16);if(ai_ea(k)!=1u)W[0]=(agc_register)(~W[0]&M16);
 }
 static NI void ai_dcs_b(uint8_t a){ai_dcs_w(a);}
+#if INTERP_K_OPS2
+#define ai_dcsf k_dcsf
+#else
 static NI void ai_dcsf(const agc_word k[2]){
  ai_dcaf(k);W[1]=(agc_register)(~W[1]&M16);W[0]=(agc_register)(~W[0]&M16);
 }
+#endif
 #if INTERP_K_OPS
 #define ai_dxch_w k_dxch
 #else

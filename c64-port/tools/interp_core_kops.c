@@ -12,5 +12,7 @@ apollo_overlay_state *interp_core_k_image;
 KOP(ca,unsigned) KOP(caf,agc_word) KOP(cs,unsigned) KOP(csf,agc_word) KOP(ad,unsigned) KOP(adf,agc_word)
 KOP(maskf,agc_word) KOPS(ts,unsigned) KOP(xch,unsigned) KOP(lxch,unsigned) KOP(ads,unsigned) KOP(dxch,unsigned)
 KOPS(ccs,unsigned) KOP(tc,agc_word) KOP(dcaf,const agc_word *)
+/* (ABI 2.4: INTERP_K_OPS2) */
+KOP(mask,unsigned) KOP(incr,unsigned) KOP(das,unsigned) KOP(dcsf,const agc_word *)
 uint8_t k_bzf(void); uint8_t k_bzf(void){return ai_bzf(S);}
 uint8_t k_bzmf(void); uint8_t k_bzmf(void){return ai_bzmf(S);}
