@@ -2683,7 +2683,7 @@
       "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
       "bytes": 5394,
       "lines": 198,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2698,7 +2698,7 @@
           "verification": "docs/CM-EPHEMERIS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2708,7 +2708,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-source-map.json",
@@ -2728,6 +2727,10 @@
             "vice_targets": {
               "vice-cm-ephemeris": 38
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-277.md",
+            "sha256": "0db05c2f6f158f9791830b8f36b88fcc47610da4bbda0a0d7db27206962ac1f6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
