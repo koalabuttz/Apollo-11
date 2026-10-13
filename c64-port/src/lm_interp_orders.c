@@ -182,6 +182,17 @@ static void dostore(apollo_overlay_state *s){
  }
  W[5]=next[kind];
 }
+/* Whether the store `code` (at NEWOPS, before lmi_store_code) would write
+ * past the end of the E-bank window (01777): the original then writes into
+ * fixed memory and reads it back into A and L, which the image does not
+ * hold. Mirrors DOSTORE's indexing and STORE's addressing and MODE count. */
+uint8_t lmi_store_spills(const apollo_overlay_state *s,agc_word code){
+ unsigned kind=(code>>11)&7u,a=code&03777u,n;agc_word m=W[rMODE];
+ if(kind==1u||kind==2u)a=(a+(~(unsigned)W[(W[rFIXLOC]+(unsigned)(kind==1u?tX1:tX2))&03777u]&077777u))%077777u;
+ if(a<=DEC45)return 0;   /* the work area (FIXLOC + a), or 45 itself */
+ n=m==0u||m==077777u?1u:(m&040000u)?5u:2u;   /* DP (+-0), vector, TP */
+ return (uint8_t)((a&0377u)+n>0377u);
+}
 void lmi_store_code(apollo_overlay_state *s,agc_word code){
  /* NEWOPS INDEX LOC, CA 0; CCS A (positive) TCF DOSTORE. */
  CAF(code);(void)CCS(rA);dostore(s);
@@ -806,6 +817,71 @@ static void vecagree(apollo_overlay_state *s){
  DXCH(rMPAC+5);TC(03021);alsignag(s);DXCH(rMPAC+5);
  ai_tc(s,1u);
 }
+/* V/SCDV 02750 (Q = return): one component in MPAC,+1 over BUF; 1 when it
+ * ends at DVOVF's TC DANZIG. */
+static uint8_t vscdv(apollo_overlay_state *s){
+ uint8_t c;
+ CA(rVBUF+5);(void)TS(rDVSIGN);
+ c=CCS(rMPAC);
+ if(c==1u||c==3u){
+  c=CCS(rMPAC+1);
+  if(c==1u||c==3u){RETQ();return 0;}    /* zero component: TC Q */
+ }
+ if(c==2u){DCS(rMPAC);DXCH(rMPAC);INCR(rDVSIGN);}
+ /* /MPAC+ CS ONE; TS MAXDVSW; CS MPAC; AD BUF2; CCS A. */
+ CSF(ONE);(void)TS(rMAXDVSW);CS(rMPAC);AD(rBUF2);c=CCS(rA);
+ if(c==2u){dvovf(s);return 1;}
+ if(c!=0u){
+  (void)TS(rMAXDVSW);CS(rMPAC+1);AD(rBUF2+1);
+  if(ai_bzmf(s)){dvovf(s);return 1;}
+ }
+ /* DDVCALL DXCH MPAC; INDEX DVNORMCT; TCF MAXTEST. */
+ DXCH(rMPAC);ddv_chain(s,chain_at(02565u,W[rDVNORMCT]));
+ return 0;
+}
+/* V/SC 07624 (Comanche 07573), operand at ADDRWD (k when fixed), through
+ * V/SC2 02654 and VROTATEX to DANZIG (or DVOVF's). */
+void lmi_vdsc(apollo_overlay_state *s,const agc_word *k){
+ uint8_t c=CCS(rMODE);
+ if(c==0u||c==1u){
+  /* DV/SC: the vector at X into MPAC, the scalar in MPAC to BUF. */
+  dca_op(s,k,2);DXCH(rMPAC+3);dca_op(s,k,4);DXCH(rMPAC+5);
+  CSF(ONE);(void)TS(rMODE);dca_op(s,k,0);DXCH(rMPAC);
+ }else if(c==2u)dca_op(s,k,0);          /* VV/SC: the scalar at X */
+ else if(k)CAF(k[0]);else CA(AT(W[rADDRWD]));   /* -0: INDEX ADDRWD; DCA 0 unextended (CA) */
+ /* V/SC1 DXCH BUF; CAF ZERO; TS FBANK. */
+ DXCH(rBUF);CAF(ZERO);(void)TS(rFB);
+ /* V/SC2 */
+ CSF(ONE);(void)TS(rDVNORMCT);(void)TS(rVBUF+5);
+ TC(02660);vecagree(s);
+ DXCH(rBUF);TC(02662);alsignag(s);DXCH(rBUF);
+ c=CCS(rBUF);
+ if(c==1u||c==3u){
+  /* Shift vector and scalar left 14, each major part zero or DVOVF. */
+  XCH(rBUF+1);XCH(rBUF);XCH(rMPAC+1);XCH(rMPAC);
+  if(!ai_bzf(s)){dvovf(s);return;}
+  XCH(rMPAC+4);XCH(rMPAC+3);
+  if(!ai_bzf(s)){dvovf(s);return;}
+  XCH(rMPAC+6);XCH(rMPAC+5);
+  if(!ai_bzf(s)){dvovf(s);return;}
+  c=CCS(rBUF);
+  if(c==1u||c==3u){dvovf(s);return;}   /* zero divisor */
+ }
+ if(c==2u){DCS(rBUF);DXCH(rBUF);INCR(rVBUF+5);}
+ /* /BUF+ DCA BUF; DXCH BUF2; /NORM. */
+ DCA(rBUF);DXCH(rBUF2);
+ for(;;){
+  CA(rBUF);DOUBLE();
+  if(ai_ovsk(s))break;
+  ai_aug(s,rDVNORMCT);DCA(rBUF);DAS(rBUF);
+ }
+ TC(02737);if(vscdv(s))return;
+ DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);
+ TC(02743);if(vscdv(s))return;
+ DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);
+ TC(02747);if(vscdv(s))return;
+ vrotatex(s);
+}
 /* MPACVBUF 07532 to TC Q. */
 static void mpacvbuf(apollo_overlay_state *s){
  DCA(rMPAC);DXCH(rVBUF);DCA(rMPAC+3);DXCH(rVBUF+2);DCA(rMPAC+5);DXCH(rVBUF+4);RETQ();
@@ -888,6 +964,50 @@ void lmi_vxsc(apollo_overlay_state *s,const agc_word *k){
  * the operand; DVXSC. */
 void lmi_vproj(apollo_overlay_state *s,const agc_word *k){
  TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub(s,k);CSF(FOUR);ADS(rADDRWD);dvxsc(s,k);
+}
+/* V/SC2 02654 (vector in MPAC, scalar in BUF) to DANZIG. */
+static void vsc2(apollo_overlay_state *s){
+ uint8_t c;
+ CSF(ONE);(void)TS(rDVNORMCT);(void)TS(rVBUF+5);
+ TC(02660);vecagree(s);
+ DXCH(rBUF);TC(02662);alsignag(s);DXCH(rBUF);
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c==2u)goto bufminus;
+ /* Major part zero: shift vector and scalar left 14, DVOVF on overflow. */
+ XCH(rBUF+1);XCH(rBUF);XCH(rMPAC+1);XCH(rMPAC);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+4);XCH(rMPAC+3);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ XCH(rMPAC+6);XCH(rMPAC+5);
+ if(!ai_bzf(s)){dvovf(s);return;}
+ c=CCS(rBUF);
+ if(c==0u)goto bufplus;
+ if(c!=2u){dvovf(s);return;}   /* zero divisor */
+bufminus:
+ DCS(rBUF);DXCH(rBUF);INCR(rVBUF+5);
+bufplus:
+ DCA(rBUF);DXCH(rBUF2);
+ for(;;){
+  CA(rBUF);DOUBLE();
+  if(ai_ovsk(s))break;
+  ai_aug(s,rDVNORMCT);DCA(rBUF);DAS(rBUF);
+ }
+ TC(02737);if(vscdv(s))return;
+ DXCH(rMPAC+3);DXCH(rMPAC);DXCH(rMPAC+3);
+ TC(02743);if(vscdv(s))return;
+ DXCH(rMPAC+5);DXCH(rMPAC);DXCH(rMPAC+5);
+ TC(02747);if(vscdv(s))return;
+ vrotatex(s);
+}
+/* V/SC 07624: VV/SC (vector mode, scalar operand) or DV/SC (scalar mode,
+ * vector operand; mode becomes vector), V/SC1 DXCH BUF; FBANK 0; V/SC2. */
+void lmi_vsc(apollo_overlay_state *s,const agc_word *k){
+ if(CCS(rMODE)<2u){
+  dca_op(s,k,2);DXCH(rMPAC+3);dca_op(s,k,4);DXCH(rMPAC+5);
+  CSF(ONE);(void)TS(rMODE);dca_op(s,k,0);DXCH(rMPAC);
+ }else dca_op(s,k,0);
+ DXCH(rBUF);CAF(ZERO);(void)TS(rFB);vsc2(s);
 }
 void lmi_vxv(apollo_overlay_state *s,const agc_word *k){
  DCA(rMPAC+5);DXCH(rMPAC);DXCH(rVBUF);TC(IF_(07465,07434));dmpsub(s,k);
@@ -1210,6 +1330,17 @@ void lmi_goto_any(apollo_overlay_state *s){
  }
  lmi_goto(s);
 }
+/* CGOTO 06703 (ADDRWD names the modifier; `list` is the CADR-list word after
+ * the operand and cadrs its n words): INDEX LOC, CA 1; INDEX ADDRWD, AD 0;
+ * TS FBANK; MASK LOW10; INDEX A, CA 10000; TS POLISH; TCF GOTO +1, to the
+ * target's NEWOPS. 0, with the image unchanged, when the modifier selects
+ * a word outside the list. */
+uint8_t lmi_cgoto(apollo_overlay_state *s,agc_word list,const agc_word *cadrs,uint16_t n){
+ int i=signed_word(ai_word(s,AT(W[rADDRWD])));
+ if(i<0||i>=(int)n||(list&LOW10)+(unsigned)i>LOW10)return 0;
+ CAF(list);AD(AT(W[rADDRWD]));(void)TS(rFB);MASKF(LOW10);CAF(cadrs[i]);(void)TS(rPOLISH);lmi_goto(s);
+ return 1;
+}
 void lmi_15bitadr(apollo_overlay_state *s,agc_word word,agc_word target){
  /* 15BITADR 06252 (from STCALL's STOTC): INCR LOC; INDEX LOC, CA 0;
   * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A, TCF MISCJUMP. */
@@ -1243,6 +1374,11 @@ void lmi_tload(apollo_overlay_state *s){
 /* TLOAD with a fixed operand: the same path, the three words passed in k. */
 void lmi_tload_fixed(apollo_overlay_state *s,const agc_word *k){
  CAF(k[2]);(void)TS(rMPAC+2);ai_dcaf(s,k);DXCH(rMPAC);CAF(ONE);newmode(s);
+}
+/* SLOAD with a fixed operand (Comanche P40-P47's SLOAD of a rope
+ * constant): ZL; CA of the word passed in k; TCF SLOAD2. */
+void lmi_sload_fixed(apollo_overlay_state *s,const agc_word *k){
+ W[rL]=0;CAF(k[0]);DXCH(rMPAC);CAF(ZERO);(void)TS(rMPAC+2);newmode(s);
 }
 void lmi_tpmode(apollo_overlay_state *s){
  /* TPMODE (RTB_OP_CODES, bank 10): CAF ONE; TCF NEWMODE. */

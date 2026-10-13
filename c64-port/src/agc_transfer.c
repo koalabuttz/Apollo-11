@@ -6,6 +6,12 @@ uint16_t agc_fixed_physical(agc_word logical,agc_word fb,agc_word superbank){agc
  else{bank=(agc_word)((fb&076000u)>>10);if(bank>=030u&&(superbank&0100u))bank=(agc_word)(bank+8u);}
  return (uint16_t)(bank*1024u+(logical&01777u));
 }
+bool agc_resume_exact(const agc_native_program *p,const apollo_overlay_state *s,agc_word fb,agc_word eb,agc_word superbank){
+ agc_word z=(agc_word)((s->words[015]-1u)&07777u),w;
+ if(z>=02000u){if(!p->fixed_data||!p->fixed_data(p,agc_fixed_physical(z,fb,superbank),&w))return true;}
+ else w=s->words[z<01400u?z:((eb>>8)&7u)*0400u+(z-01400u)];
+ return ((w^s->words[017])&077777u)==0u;
+}
 bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,agc_word *word){uint16_t lo=0,hi=count,mid;
  if(!t||!word)return false;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t[mid].physical==physical){*word=t[mid].word;return true;}if(t[mid].physical<physical)lo=(uint16_t)(mid+1u);else hi=mid;}
@@ -23,12 +29,14 @@ static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t p
 static enum exec_status danzig_marker(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)s;(void)io;return EXEC_OUT_OF_SCOPE;}
 static const agc_routine_entry lm_danzig[1]={{AGC_LM_DANZIG,danzig_marker}},cm_danzig[1]={{AGC_CM_DANZIG,danzig_marker}};
 const agc_routine_table agc_lm_danzig_marker={lm_danzig,1},agc_cm_danzig_marker={cm_danzig,1};
-static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;agc_word edop;
+static bool interpreting(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t z;agc_word edop;const agc_routine_entry *m;
  if(p->loc>=APOLLO_SHARED_WORDS||p->bankset>=APOLLO_SHARED_WORDS)return false;
  z=agc_fixed_physical(s->words[5],s->words[4],superbank);
  if(p->interpreter_fetch!=AGC_TRANSFER_NONE&&z==p->interpreter_fetch)return true;
+ /* The marker is the first interpretive table, keyed at the mission's DANZIG. */
+ if(!p->interpretive_count||(m=p->interpretive[0].entries)->call!=danzig_marker||m->physical!=z)return false;
  edop=(agc_word)(s->words[AGC_EDOP]&077777u);
- return (z==AGC_LM_DANZIG||z==AGC_CM_DANZIG)&&edop!=0u&&edop<040000u&&find(p->interpretive,p->interpretive_count,z)==danzig_marker;
+ return edop!=0u&&edop<040000u;
 }
 uint16_t agc_erasable_point(agc_word logical,agc_word eb){
  logical&=07777u;if(logical>=02000u)return AGC_TRANSFER_NONE;

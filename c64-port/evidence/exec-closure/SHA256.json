@@ -3,14 +3,19 @@
   "milestone": "exec-closure",
   "release": "evidence-exec-closure",
   "files": {
+    "exec-closure-c64-cover.json": {
+      "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74",
+      "bytes": 8712,
+      "store": "tree"
+    },
     "exec-closure-host.log": {
-      "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2",
-      "bytes": 3968,
+      "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d",
+      "bytes": 8869,
       "store": "release"
     },
     "exec-closure-proof.json": {
-      "sha256": "ee26c7b362eadbd33a2cc6064dbf3c57f037d849d262da3b777f468d993a7ef5",
-      "bytes": 2705,
+      "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735",
+      "bytes": 4149,
       "store": "tree"
     },
     "exec-closure-source-map-cm-executive.json": {
@@ -39,9 +44,14 @@
       "store": "release"
     },
     "exec-closure-vice.log": {
-      "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f",
-      "bytes": 588,
+      "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+      "bytes": 9800,
       "store": "release"
+    },
+    "kernel-edges.json": {
+      "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad",
+      "bytes": 2392,
+      "store": "tree"
     }
   }
 }

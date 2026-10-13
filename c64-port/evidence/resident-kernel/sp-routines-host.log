@@ -1,0 +1,4 @@
+PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures
+PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures
+PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures
+PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures

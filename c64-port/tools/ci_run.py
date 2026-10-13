@@ -381,13 +381,23 @@ def main():
     parser.add_argument('--attempts', type=int, default=30)
     parser.add_argument('--make-arg', action='append', default=[])
     parser.add_argument('--summary', type=pathlib.Path)
+    parser.add_argument('--shard', metavar='K/N',
+                        help='run only every Nth target, starting at the Kth (0-based)')
     args = parser.parse_args()
     targets = list(dict.fromkeys(args.targets + [t for g in args.group for t in group_targets(g)]))
+    if args.shard:
+        k, n = (int(x) for x in args.shard.split('/'))
+        targets = targets[k::n]
     if not targets:
         print('nothing to run')
         return 0
     args.log_dir.mkdir(parents=True, exist_ok=True)
     (ROOT / 'build').mkdir(exist_ok=True)
+    # VICE exits 1 at startup when its XDG cache/config directory is missing;
+    # some *_vice_test.py scripts point XDG there without creating it, and on
+    # a c64 shard no earlier target may have.
+    for name in ('vice-cache', 'vice-config'):
+        (ROOT / 'build' / name).mkdir(exist_ok=True)
     results = []
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as pool:
         futures = [pool.submit(run, t, args.log_dir, args.make_arg, args.attempts) for t in targets]

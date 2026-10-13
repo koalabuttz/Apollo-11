@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tpi-search",
+  "release": "evidence-cm-tpi-search",
+  "files": {
+    "cm-tpi-search-c64-cover.json": {
+      "sha256": "66c62349530ab20343dfaa9f92d4c4db61e073ea66a390c44388e0d1c9fd79b7",
+      "bytes": 4394,
+      "store": "tree"
+    },
+    "cm-tpi-search-differential.log": {
+      "sha256": "9093a037230e11218448034c78f4e971182b3a92f21c31a9b1f2e7a9cce3ba68",
+      "bytes": 8067,
+      "store": "release"
+    },
+    "cm-tpi-search-host.log": {
+      "sha256": "07701059d4b8f410b39d705f2e7ba70a0600832bb5a7034357571d159b61799e",
+      "bytes": 884,
+      "store": "release"
+    },
+    "cm-tpi-search-proof.json": {
+      "sha256": "5facde770588d7805a24b63597a0ba34201293fc290cf5c2af057a6fe1acf123",
+      "bytes": 14324,
+      "store": "tree"
+    },
+    "cm-tpi-search-source-map.json": {
+      "sha256": "9cd9a2af4ed5944e9ee7f31d658e00efb4ebc3217f2fb028c6d63e3c22bd1dfa",
+      "bytes": 60015,
+      "store": "tree"
+    },
+    "cm-tpi-search-vice.log": {
+      "sha256": "287a2ab90c3c7530b9d6cd96aa540b3201920d7909ccb210ec5f14332cba7c3b",
+      "bytes": 12011,
+      "store": "release"
+    }
+  }
+}

@@ -60,7 +60,7 @@ typedef struct {
 extern const agc_routine_table lm_lunar_landing_routines;
 extern const agc_routine_table lm_lunar_landing_interpretive;
 #define LLD_BASIC_ROUTINES 21u
-#define LLD_INTERPRETIVE_ROUTINES 10u
+#define LLD_INTERPRETIVE_ROUTINES 69u
 #define LLD_ROUTINES (LLD_BASIC_ROUTINES+LLD_INTERPRETIVE_ROUTINES)
 /* Physical keys, basic then interpretive, in table order. */
 extern const uint16_t lld_routine_keys[LLD_ROUTINES];

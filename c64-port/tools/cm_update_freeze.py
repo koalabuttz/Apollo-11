@@ -6,7 +6,10 @@ Builds the host-only yaAGC driver (tools/cm_update_reference.c), runs it
 on the unmodified Comanche055 rope, checks the native snapshot
 (build/cm-update-native) is byte-identical, and writes
 tests/cm_update_vectors.h (one digest per case: two 16-bit running sums
-over the printed values) and every 16th digest to
+over the printed values) and the C64 rows chosen by native branch outcome
+(tools/a2_c64_rows.py: every 16th case plus a greedy cover of the gcov arcs
+every host case takes in every linked source; the freeze fails unless the
+rows take them all) to
 tests/cm_update_c64_vectors.h. Also writes build/cm-update-proof.json.
 """
 import hashlib
@@ -16,6 +19,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import a2_c64_rows  # noqa: E402
 import c64_rows  # noqa: E402
 
 R = pathlib.Path(__file__).resolve().parents[1]
@@ -23,8 +27,10 @@ R = pathlib.Path(__file__).resolve().parents[1]
 OWNED = [0o43 * 1024 + w - 0o2000 for w in range(0o3726, 0o3766)] + [0o27 * 1024 + w - 0o2000 for w in range(0o3373, 0o3763)]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
+# The milestone's linked sources (tools/mk/cm-update.mk CM_UP_SRC), for the row cover.
+SRC = ['src/cm_update.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_update_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
-CORE = ['tests/cm_update_cases.c', 'src/cm_update.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
+CORE = ['tests/cm_update_cases.c', 'src/cm_update.c', 'src/cm_interp_orders.c', 'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
         'src/agc_transfer.c', 'src/agc_word.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
@@ -70,20 +76,23 @@ def main():
     (R / 'tests/cm_update_vectors.h').write_text('\n'.join(out) + '\n')
     cases = c64_rows.read(trace)
     assert sorted(cases) == list(range(len(values)))
-    chosen = c64_rows.rows(cases, 16)
     missed = c64_rows.unexecuted_instructions(c64_rows.listing(ROPE.parent / 'assembly.lst'), OWNED,
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the file no case executes: {missed}')
-    (R / 'tests/cm_update_c64_vectors.h').write_text(c64_rows.c64_header('cm_update', 'cm_up', values, chosen))
+    chosen, cover = a2_c64_rows.select('cm-update', SRC, ['cm_update_cases.h'], 'cm_up_digest(&s,(uint16_t)n,&st);', len(values), slots=38, call_sites=['src/cm_update.c'])
+    (R / 'tests/cm_update_c64_vectors.h').write_text(a2_c64_rows.header('cm_update_freeze.py', 'cm_up', values, chosen))
+    host = frozenset().union(*cases.values())
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'entries': 'V70UPDAT-V73UPDAT (with CKMDMORE), UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)',
-             'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)',
-             'full_physical_words': 2048, **c64_rows.summary(cases, chosen, OWNED)}
+             'entries': 'V70UPDAT-V73UPDAT (with CKMDMORE), UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1, UPACTOFF from either BANKCALL and the return point after every TC out of the file (36 basic), and UPJOB\'s interpretive words CALL INTSTALL and UPWAKE EXIT at NEWOPS (2 interpretive, NEWOPS points)',
+             'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT, NEWOPS with LOC at INTSTALL, SWRETURN); an interpretive case also owns the interpreter',
+             'full_physical_words': 2048, 'host_words_executed': len(host),
+             'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}
     (B / 'cm-update-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
-    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows cover every word the host cases execute')
+    print(f'PASS: {len(values)} cases equal the original program; {len(chosen)} C64 rows take all '
+          f'{cover["host_branch_arcs"]} host branch arcs')
 
 
 if __name__ == '__main__':

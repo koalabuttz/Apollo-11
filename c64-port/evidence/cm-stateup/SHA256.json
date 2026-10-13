@@ -3,19 +3,24 @@
   "milestone": "cm-stateup",
   "release": "evidence-cm-stateup",
   "files": {
+    "cm-stateup-c64-cover.json": {
+      "sha256": "ab6176375fe63d8857f72cdde08a7e356a7694ee4e671d00ef1f9fae5efbecd0",
+      "bytes": 4482,
+      "store": "tree"
+    },
     "cm-stateup-host.log": {
-      "sha256": "76dc2418040dc1f9ba7d4c88db7d097c425a550f5d899a28b224747676e82ec2",
-      "bytes": 1202,
+      "sha256": "3497434c1c87fa42ecadaa64b5ced2c9339add0f64eb8169e4f7c574d0e85fc2",
+      "bytes": 1578,
       "store": "release"
     },
     "cm-stateup-proof.json": {
-      "sha256": "86a13e2afa058d403fc7ed00c2866394951c096c5ccbf1a43d25dccc5e312997",
-      "bytes": 555,
+      "sha256": "2c619bb9765edfa8738b39dcc0046ca24e2ab55120c5259b50dc7d4afcdfcbf3",
+      "bytes": 846,
       "store": "tree"
     },
     "cm-stateup-vice.log": {
-      "sha256": "e3efa68053e94d2b1f7c83dc7e978d66deded39f7aa2012b3edcd8479967f498",
-      "bytes": 614,
+      "sha256": "c3989f4770d7df0aa4ff10ff9181a7217a5248c0e4c0da511a18e9468492f587",
+      "bytes": 608,
       "store": "release"
     }
   }

@@ -1,0 +1,31 @@
+{
+ "milestone": "attitude-maneuver",
+ "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+ "sources_measured": [
+  "src/agc_hardware_divide.c",
+  "src/agc_image_ops.c",
+  "src/agc_multiword.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/cm_attitude_maneuver.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/lm_attitude_maneuver.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/rtb_angles.c"
+ ],
+ "host_edges": 3154,
+ "host_vector_edges": 3154,
+ "c64_edges": 3147,
+ "host_branches_missing_on_c64": [
+  "src/agc_transfer.c:50",
+  "src/cm_attitude_maneuver.c:140",
+  "src/cm_attitude_maneuver.c:154",
+  "src/cm_attitude_maneuver.c:180",
+  "src/lm_attitude_maneuver.c:174",
+  "src/lm_attitude_maneuver.c:188",
+  "src/lm_attitude_maneuver.c:214"
+ ],
+ "c64_rows": 550
+}

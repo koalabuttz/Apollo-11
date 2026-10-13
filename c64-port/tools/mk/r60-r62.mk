@@ -32,4 +32,4 @@ c64-r60-r62: $(R60_C64_PRGS)
 build/r60-r62-%.prg: $(R60_SRC) platform/c64/r60_r62_diagnostic.c tools/mk/r60-r62.groups $(R60_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(R60_MOS_FLAGS) $(R60_R62_GROUP_FLAGS_$*) -Wl,-Map,build/r60-r62-$*.map $(R60_C64_$(R60_R62_GROUP_MISSION_$*)) $(R60_C64_COMMON) platform/c64/r60_r62_diagnostic.c -o $@
 vice-r60-r62: $(R60_C64_PRGS)
-	for p in $(R60_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(R60_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

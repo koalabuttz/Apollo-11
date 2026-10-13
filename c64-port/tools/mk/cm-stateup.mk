@@ -8,7 +8,7 @@ CM_STATEUP_HDR = include/cm_stateup.h include/cm_interp.h src/cm_interp_names.h 
 all: build/test-cm-stateup
 test: test-cm-stateup
 sanitize: sanitize-cm-stateup
-build/test-cm-stateup: $(CM_STATEUP_SRC) tests/test_cm_stateup.c tests/cm_stateup_vectors.h $(CM_STATEUP_HDR) | build
+build/test-cm-stateup: $(CM_STATEUP_SRC) tests/test_cm_stateup.c tests/cm_stateup_vectors.h tests/cm_stateup_c64_vectors.h $(CM_STATEUP_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_STATEUP_SRC) tests/test_cm_stateup.c -o $@
 test-cm-stateup: build/test-cm-stateup
 	./build/test-cm-stateup

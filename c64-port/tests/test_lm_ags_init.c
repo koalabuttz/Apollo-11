@@ -71,12 +71,12 @@ int main(void){apollo_overlay_state s;unsigned n,i,stopped=0,refusals=0;uint16_t
  check(call_qpret(02053u)==AGS_QPRET_2053&&call_qpret(02061u)==AGS_QPRET_2061,"QPRET of CALL SCALEVEC",0);
  /* Inputs no producer supplies. */
  refused(0,fb10,"AGSINIT under FB 10");
- refused(AGS_BASIC_ROUTINES,bankset10,"32,2051 with BANKSET bank 10");
- refused(AGS_BASIC_ROUTINES+1u,vac_bad,"32,2053 with a work area off the VAC areas");
- refused(AGS_BASIC_ROUTINES+2u,pushloc_bad,"32,2055 with PUSHLOC outside the work area");
- refused(AGS_BASIC_ROUTINES+3u,edop,"32,2061 with EDOP set");
- refused(AGS_BASIC_ROUTINES+4u,newjob_neg,"32,2063 with NEWJOB negative");
- refused(AGS_BASIC_ROUTINES+6u,qpret_erasable,"32,2156 with QPRET in erasable");
+ refused(AGS_BASIC_ROUTINES+3u,bankset10,"32,2051 with BANKSET bank 10");
+ refused(AGS_BASIC_ROUTINES+4u,vac_bad,"32,2053 with a work area off the VAC areas");
+ refused(AGS_BASIC_ROUTINES+5u,pushloc_bad,"32,2055 with PUSHLOC outside the work area");
+ refused(AGS_BASIC_ROUTINES+7u,edop,"32,2061 with EDOP set");
+ refused(AGS_BASIC_ROUTINES+8u,newjob_neg,"32,2063 with NEWJOB negative");
+ refused(AGS_BASIC_ROUTINES+20u,qpret_erasable,"32,2156 with QPRET in erasable");
  refused(5,no_undo,"32,2046 without an undo image");
  printf("lm-ags-init: %u cases left the file, %u refusals; routines",stopped,refusals);
  for(i=0;i<AGS_ROUTINES;++i)printf(" %u",reached[i]);

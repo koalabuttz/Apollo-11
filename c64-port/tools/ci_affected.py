@@ -10,7 +10,9 @@ build paths from a directory) appears anywhere in that closure. Prints JSON:
   {"full": bool, "test": [...], "sanitize": [...], "c64": [...], "vice": [...]}
 
 `full` is true when the change touches shared build plumbing or would select
-more than --limit targets; CI then runs the whole suite instead.
+more than --limit targets; CI then runs the whole suite instead. `c64_full`
+(absent means `full`) is true only when the C64 list itself is over the limit,
+so the c64 job keeps its own list when host targets alone pass the limit.
 
   python3 tools/ci_affected.py --base origin/port/c64-native-c
   python3 tools/ci_affected.py --files src/waitlist.c tools/mk/foo.mk
@@ -171,6 +173,9 @@ def main():
                 result[group].insert(0, core)
         selected = sum(len(result[k]) for k in ('test', 'sanitize', 'c64'))
         result['full'] = selected > args.limit
+        # Over the limit only because of host targets: the c64 job still runs
+        # just its own list (a full c64 run is four runners of VICE).
+        result['c64_full'] = len(result['c64']) > args.limit
     json.dump(result, sys.stdout, indent=1)
     print()
     return 0

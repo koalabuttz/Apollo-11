@@ -1,108 +1,42 @@
-# Translate Comanche TVCINITIALIZE (TVC DAP initialization, CSM/LM switch-over, LOADCOEF, S40.15)
+# Translate Comanche TVCINITIALIZE
 
-Lane G. Milestone `cm-tvc-init`.
+Lane G (CM flight). Milestone `cm-tvc-init`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/TVCINITIALIZE.agc` (`src/cm_tvc_init.c`) is native C in full: TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #77: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/TVCINITIALIZE.agc`, all of it: bank 17 `2147`-`2551`, 259
-assembled words (including the CSMN10/LBN10 coefficient tables, the
-GENADRs, constants and the DAPINIT5/INITLOC2 2CADRs). Nothing is left in the
-file.
+11 routines, keyed by physical address in `cm_tvc_init_basic`:
 
-`cm_tvc_init(image, io)` runs from one of the file's original entry points
-to the next transfer out of the file. `io` holds channel 11 (DSALMOUT, read
-by `RAND` in TVCINIT4) and the interrupt enable (INHINT in SWICHOVR):
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 17,2147 TVCDAPON | basic | entry TVCDAPON (P40-P47.agc 2CADR TVCDAPON) |
+| 17,2152 MRCLEAN | basic | entry MRCLEAN (TVCRESTARTS.agc CADR MRCLEAN) |
+| 17,2171 TVCINIT1 | basic | 2CADR TVCINIT1 |
+| 17,2176  | basic | return from IBNKCALL |
+| 17,2324 TVCINIT4 | basic | entry TVCINIT4 (TVCRESTARTS.agc CADR TVCINIT4) |
+| 17,2343  | basic | return from WAITLIST |
+| 17,2351 PRESWTCH | basic | entry PRESWTCH (EXTENDED_VERBS.agc CADR PRESWTCH) |
+| 17,2352  | basic | TC 02352 stored in E6,1613 |
+| 17,2361  | basic | entry 17,2361 (TVCRESTARTS.agc CADR SWICHOVR   +5) |
+| 17,2462 S40.15 | basic | entry S40.15 (TVCEXECUTIVE.agc CADR S40.15) |
+| E6,1613 (erasable) | continuation | the TC words the file stores there: 02352, 04753 |
 
-| Entry | Reached from |
-|---|---|
-| `2147` TVCDAPON | T5RUPT via T5LOC (DOTVCON, P40-P47) |
-| `2152` MRCLEAN | POSTJUMP from TVCRESTARTS PHSCHK2 |
-| `2171` TVCINIT1 | T5RUPT via INITLOC2 |
-| `2176` | IBNKCALL return from MASSPROP |
-| `2324` TVCINIT4 | IBNKCALL return from NEEDLER; POSTJUMP from TVCRESTARTS CHKSTRK |
-| `2343` | WAITLIST return past `2CADR TVCEXEC` |
-| `2351` PRESWTCH | V46 (EXTENDED VERBS `CADR PRESWTCH`) |
-| `2361` SWICHOVR +5 | IBNKCALL from TVCRESTARTS PHSCHK2 |
-| `2462` S40.15 | IBNKCALL from TVCEXECUTIVE |
+TC RTRNLOC is the erasable continuation E6,1613: it accepts the two Q values SWICHOVR +5 saves there, the return into PRESWTCH (TC 2352, a routine of this file) and IBNKCALL's ISWRETRN (TC 4753), and refuses any other.
 
-TVCINIT2/3, ATTINIT, NEEDLEIN, SWICHOVR, LOADCOEF and S40.15 +7 are reached
-only from inside the file, by fall-through or by `TC`/`TCR` with the file's
-own Q; their `TC Q` returns run the TC held in Q, leaving Q = 3.
+Destinations outside the file: IBNKCALL, POSTJUMP, RESUME, WAITLIST. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 17 (`036000`), EB E6, BB `036006`, any raw A/L/Q,
-erasable contents, channel 11 and interrupt enable. S40.15, left by `TC Q`
-to its caller, needs Q `4000`-`7777` (a fixed-fixed return, as IBNKCALL
-provides). Results:
+## Domain
 
-- `CM_TVC_INIT_OK` at the frontier the original reaches: `RESUME 5333`
-  (ENDMRC with T5LOC = INITLOC2, ENDTVCIN with T5LOC = DAPINIT5);
-  `IBNKCALL 4740` with Q `2175` (MASSPROP) or `2323` (NEEDLER); `WAITLIST
-  5245` with Q `2341` (2CADR TVCEXEC) and A = .5SEC; `Z = RTRNLOC 1613`
-  from `TC RTRNLOC` with Q `2422` (RTRNLOC holds the return QXCH saved);
-  the caller's return from S40.15; or `Z = 1703` with Q `2503`.
-- `CM_TVC_INIT_OUT_OF_SCOPE`: image and io unchanged.
-
-The last frontier is the source's own overflow path: when `TS VARK`
-overflows (KTLX/I times IAVG/TLX doubled twice), the skip passes over
-`TC Q` into the CSMN10 table, whose first words run as `CA 7777`, `AD
-7657`, `TC 1703`. The native code does the same with the rope's
-fixed-fixed words.
-
-The MRCLEAN and MCLEANJR loops count down from NZERO and NZEROJR (odd) by
-two and always end, so there is no non-returning case.
-
-### How it is translated
-
-As in `cm-tvc-restarts`: one qualified `agc_image_ops` primitive per
-original word, under a C label named for its address, with every CCS
-four-way skip and the reachable TS overflow skips (`TS MASSTMP` at `2204`,
-`TS 1/CONACC` at `2470`, `TS VARK` at `2476`). The other TS words store
-constants, loads, CCS or MP results. RAND on channel 11 is written from the
-yaAGC definition, as in `cm-tvc-exec`. INDEX on the file's own counters
-(CNTR 0/1, TTMP1, CNTRTMP, COEFFADR) is resolved against the source's
-tables: CSMCFADR/HBCFADR, TCORR, BIT2/BIT3 (`INDEX A` on -CNTR), and
-LOADCOEF's `INDEX COEFFADR; DCA k` over CSMN10 or LBN10 in fixed memory or
-HBN10 in erasable memory.
-
-Unreachable but translated: the CCS negative and -0 slots on the MRCLEAN,
-ATTINIT and MCLEANJR counters, and the CCS +0 slot at `2371`.
-
-## Source map
-
-`evidence/cm-tvc-init/cm-tvc-init-source-map.json`
-(`tools/cm_tvc_init_source.py`): every word with its source line, rope check
-and native label (`L2147`..`L2472` in `src/cm_tvc_init.c`), the 28
-fixed-constant reads (CAF, CA, CS, AD, MASK, MP on fixed memory) matched to
-the native literals, and the native coefficient table, 2CADRs, INDEX tables
-and fixed-fixed `7777`/`7657` matched to the rope.
-
-Independent assembly comparison: `evidence/cm-tvc-init/cm-tvc-init-assembly-comparison.json`
-(`tools/cm_flight_assembly_comparison.py`), every word yaYUL emits for the
-unchanged file against the original Comanche055 rope, without reading the
-native code.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. CSMMASS within the CSM mass and EMDOT (SPS flow rate) up to 01400 at B+3 kg/cs, so the 10-second mass decrement never overflows TS MASSTMP; the gains S40.15 multiplies (EKTLX/I, KTLX/I, IXX, IAVG, IAVG/TLX) within +-07777 as MASSPROP and the pad load leave them, so TS 1/CONACC and TS VARK never overflow into the coefficient tables. COEFFADR holds one of the three coefficient-table addresses the file stores (CSMN10, HBN10, LBN10). SWICHOVR +5 is entered only through IBNKCALL (Q = ISWRETRN, 4753).
 
 ## Evidence
 
-Hashes: `evidence/cm-tvc-init/SHA256.json`; bulk files in release
-`evidence-cm-tvc-init`.
+Hashes: `evidence/cm-tvc-init/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (`tools/cm_flight_prepare_reference.py`,
-  original CM rope `6e3150ae...`). The runner stops at the first frontier
-  above; for the S40.15 entry, also at the caller's return.
-- Host and sanitizer results: `make test-cm-tvc-init sanitize-cm-tvc-init`.
-  65536 cases (`tests/cm_tvc_init_cases.c`: every entry; DAPDATR1 bits 13
-  and 14; engine on/off; ERRBTMP, IXX, KTLX/I and IAVG/TLX small, zero,
-  negative or raw, so the attitude limits and the three overflow skips are
-  all taken; raw EMDOT, CSMMASS, trims, A/L/Q, channel 11, interrupt enable
-  and unowned words). Every case reaches a frontier, and the two sides agree
-  on all of them. Every native branch is taken over the cases except the
-  entry refusals, which the host test exercises, and the unreachable slots
-  above. Stream identity `cm-tvc-init-source-stream.json`, deltas
-  `cm-tvc-init-reference.deltas.xz`, log `cm-tvc-init-checks.log`.
-- C64 execution results: `make vice-cm-tvc-init`, 128 frozen rows
-  (`tools/cm_tvc_init_freeze.py`). `cm-tvc-init-results.json`.
-
-## Open
-
-ABI registration of the nine entries follows in the Lane G routine-table
-step, after Lane A's ISWRETRN fix.
+- **Source map.** `cm-tvc-init-source-map.json` lists all 259 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-tvc-init-differential` runs 256 states per routine (2,560 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-tvc-init-proof.json` (`cm-tvc-init-differential.log` is the run). One case in 32 is frozen in `tests/cm_tvc_init_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-tvc-init sanitize-cm-tvc-init` runs the 80 frozen cases (`cm-tvc-init-host.log`).
+- **C64 execution results.** `make vice-cm-tvc-init` runs 1 diagnostic program with 14 cases (`cm-tvc-init-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 2,560 differential cases take: 612 of 612 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 198 of 198 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 371 of the 371 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

@@ -1,0 +1,16 @@
+PASS: VICE PAL resident-kernel-lm-1.prg: 153 checks, 0 failures
+PRG sha256: f6845ae97fe841383ccfe25533f8486849dfac44637018f4b559eb5367bc6022 resident-kernel-lm-1.prg
+PASS: VICE PAL resident-kernel-lm-2-1.prg: 45 checks, 0 failures
+PRG sha256: 56754e5389bd4405e8b79c1eb49f4a248c0a8276f0f71217be9056f382e82196 resident-kernel-lm-2-1.prg
+PASS: VICE PAL resident-kernel-lm-2-2.prg: 63 checks, 0 failures
+PRG sha256: 8435fd9107af30680b204f4088452ce4d1d05b2bca70bc725490531f84dc06ce resident-kernel-lm-2-2.prg
+PASS: VICE PAL resident-kernel-lm-2-3.prg: 53 checks, 0 failures
+PRG sha256: d980e82caab37ad60d48665ee8446ed141af850a9c0f51af736cec3f104fc9a8 resident-kernel-lm-2-3.prg
+PASS: VICE PAL resident-kernel-lm-3.prg: 86 checks, 0 failures
+PRG sha256: dce9c41803bedd7618a1ebafa88b3bd8f312118211b575037b556f68a0ed5091 resident-kernel-lm-3.prg
+PASS: VICE PAL resident-kernel-cm-1.prg: 129 checks, 0 failures
+PRG sha256: 56b0db405c6e9b15639027b18831f910d91768c7598a693b9e57baadc1b767d8 resident-kernel-cm-1.prg
+PASS: VICE PAL resident-kernel-cm-2.prg: 110 checks, 0 failures
+PRG sha256: 59bc130b636c112e956415b7aa79cf81a56aceb19ba24ca4077ba3efcb8d0392 resident-kernel-cm-2.prg
+PASS: VICE PAL resident-kernel-cm-3.prg: 90 checks, 0 failures
+PRG sha256: dd59136600405e801f3adc94f10d9d1a97da13036509b46fac0010f3adfd8576 resident-kernel-cm-3.prg
