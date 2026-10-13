@@ -15,7 +15,11 @@
  * With IRC_SNAP set, a case's stop word is instead a physical LOC: the run
  * stops at NEWOPS with LOC there and prints "<case> S" and the (address,
  * word) pairs that differ from the case's image, or "<case> N" when it
- * never gets there (tools/interp_routine_differential.py resume_flow). */
+ * never gets there (tools/interp_routine_differential.py resume_flow).
+ * A case flagged in its interrupt-enable byte (0x80) carries a cut, a
+ * physical LOC, after its edit count ('c64_cuts'): the run stops at the
+ * first NEWOPS with LOC there, and prints kind 8 when it stops anywhere
+ * else first (tests/interp_cut.h). */
 static agc_t baseline[2];
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
@@ -49,9 +53,10 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   st[m].any=0;st[m].nd=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){unsigned j;st[m].any=1;st[m].intpret=st[m].from_file[i+1];
    for(j=i+2;j<st[m].nf&&st[m].nd<8u;++j)st[m].device[st[m].nd++]=st[m].from_file[j];break;}}
  count=(unsigned)rd32(f);
- for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1,was_in=0;const struct stops *t;
+ for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1,was_in=0,cut=0,atcut=0;const struct stops *t;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);stop=rd16(f);c.nedits=(uint16_t)rd16(f);
   if(c.nedits>4096u)return 2;
+  if(c.interrupt_enabled&0x80u){c.interrupt_enabled&=0x7fu;cut=rd16(f);}
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
   {unsigned snap=0xffffu,snapped=0;if(snapmode){snap=stop;stop=0xffffu;for(i=0;i<2048u;++i)init[i]=s.words[i];}
@@ -64,6 +69,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
      printf("\n");snapped=stopped=1;break;}
+    if(pc==t->newops&&cut&&loc_physical()==cut){stopped=atcut=1;break;}
     if(pc==t->newops){unsigned p=loc_physical();if(flow){unsigned v=get(0120);fprintf(stderr,"F %u %u %u %u %u %u %u %u\n",n,p,(get(0166)-v)&077777u,get(0163),get(v+046),get(v+047),get(v+050),get(v+051));}if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
     if(trace==n&&getenv("IRC_ZTRACE"))fprintf(stderr,"Z %05o FB %05o A %06o L %06o Q %05o MPAC %05o %05o %05o BUF %05o %05o %05o BUF2 %05o %05o MPTEMP %05o IE %d\n",pc,get(4),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,get(2),get(0154),get(0155),get(0156),get(0130),get(0131),get(0132),get(0134),get(0135),get(0136),machine.AllowInterrupt);
     zp=z_physical(pc);
@@ -81,6 +87,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(snapmode){if(!snapped)printf("%u N\n",n);continue;}}
   if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
+  if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
   {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));
   for(i=0;i<t->nd;++i)s.words[t->device[i]]=keep[i];}

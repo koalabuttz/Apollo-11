@@ -57,6 +57,14 @@ BODY_EXITS = {'lm': ['POODOO1', 'ALARM1'], 'cm': ['POODOO', 'ALARM']}
 COMMON = ['src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/cm_interp_orders.c',
           'src/cm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
           'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/interp_case.c']
+# 'c64_cuts' specs also link the truncated-case runner (tests/interp_cut.h).
+CUT = ['tests/interp_cut.c']
+
+
+def common(spec):
+    return COMMON + (CUT if spec.get('c64_cuts') else [])
+
+
 MOS_CC = os.environ.get('MOS_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-c64-clang'))
 C64_FLAGS = ['-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']
 FLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
@@ -546,7 +554,11 @@ def write_cases(path, missions, cases):
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']
-            f.write(struct.pack('<IBBHHH', seed, cm, ie, c.get('sb', 0), c.get('stop', 0xffff), len(edits)))
+            # (A cut: flagged in the interrupt-enable byte, after the edit count.)
+            f.write(struct.pack('<IBBHHH', seed, cm, ie | (0x80 if c.get('cut') else 0), c.get('sb', 0),
+                                c.get('stop', 0xffff), len(edits)))
+            if c.get('cut'):
+                f.write(struct.pack('<H', c['cut']))
             for a, w in edits:
                 f.write(struct.pack('<HH', a, w))
 
@@ -609,6 +621,10 @@ def flow_seed(missions, cases, rng, ref, path):
         if set(level) - flowed else ''))
 
 
+def cut_flags(spec):
+    return ['-DIRC_CUTS'] if spec.get('c64_cuts') else []
+
+
 def build(spec_id, spec):
     # The pinned engine with DV always through its hardware model
     # (tools/prepare_hardware_dv.py: the fast path mishandles a
@@ -634,8 +650,8 @@ def build(spec_id, spec):
                         hw, os.path.join(E, 'agc_engine_init.o'),
                         os.path.join(E, 'rfopen.o'), '-o', ref], cwd=R, check=True)
     nat = os.path.join(B, '%s-native' % spec_id)
-    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *srcs, spec['target'],
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
+    subprocess.run(['cc', *FLAGS, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
                     'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
@@ -786,6 +802,7 @@ def main():
     os.makedirs(B, exist_ok=True)
     path = os.path.join(B, '%s-cases.bin' % a.spec)
     ref, nat = build(a.spec, spec)
+    BUILT[:] = [ref, nat]
     if spec.get('resume_flow'):
         flow_seed(missions, cases, rng, ref, path)
     write_cases(path, missions, cases)
@@ -1119,7 +1136,7 @@ C64_TOP = 0xbf00
 
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
-            + spec.get('native_sources', []) + [x for x in COMMON if '_interp_' not in x] + [spec['target']])
+            + spec.get('native_sources', []) + [x for x in common(spec) if '_interp_' not in x] + [spec['target']])
 
 
 KEEP_WORDS = {}   # symbol -> the generated file's KEEP words
@@ -1191,20 +1208,26 @@ def group_text(sym, groups, cases, rows):
         out.append('static const uint32_t irc_c64_expected[%d]={' % len(pick))
         out.append(',\n'.join(' 0x%08xul' % int(rows[i][3]) for i in pick))
         out.append('};')
+        if any(cases[i].get('cut') for i in pick):
+            # Each case's cut (0: its whole run), for irc_run_cut.
+            out.append('#define IRC_C64_CUTS 1')
+            out.append('static const uint16_t irc_c64_cut[%d]={%s};' % (
+                len(pick), ','.join('0%o' % cases[i]['cut'] if cases[i].get('cut') else '0' for i in pick)))
         out.append('#endif')
     return '\n'.join(out) + '\n'
 
 
 def cover_sources(spec):
     """The sources the cover runner links (host_arcs)."""
-    return (['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON +
+    return (['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec) +
             [spec['target']])
 
 
-def write_cover_record(spec_id, spec, arcs, rows, full=None):
+def write_cover_record(spec_id, spec, arcs, rows, full=None, cut=None):
     """build/<id>-c64-cover.json, the c64_branch_outcomes record a
     certificate cites (evidence/<id>/<id>-c64-cover.json). full: the arcs
-    of every case run in one process (wider_arcs)."""
+    of every case run in one process (wider_arcs); cut: the truncated rows
+    ('c64_cuts')."""
     host = frozenset().union(*arcs.values())
     taken = frozenset().union(*(arcs[n] for n in rows))
     sources = cover_sources(spec)
@@ -1227,6 +1250,8 @@ def write_cover_record(spec_id, spec, arcs, rows, full=None):
     if full is not None:
         record['all_cases_branch_arcs'] = len(full)
         record['all_cases_branches_missing_on_c64'] = sorted(full - taken)
+    if cut:
+        record['truncated_rows'] = cut
     open(os.path.join(B, '%s-c64-cover.json' % spec_id), 'w').write(json.dumps(record, indent=1) + '\n')
 
 
@@ -1236,7 +1261,8 @@ def host_arcs(spec_id, spec, missions, cases):
     assert spec.get('freeze_stride', 16) % spec.get('cover_stride', 1) == 0
     d = os.path.join(B, '%s-cover' % spec_id)
     exe = c64_row_cover.build(d, [*cover_sources(spec), 'tools/interp_routine_native.c'],
-                              [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)])
+                              [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)] +
+                              cut_flags(spec))
     one = os.path.join(d, 'cases')
     os.makedirs(one)
 
@@ -1310,6 +1336,83 @@ def bank_flags(spec, mi, covers):
     return flags
 
 
+BUILT = []           # the oracle and the native runner (main)
+
+
+def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
+    """'c64_cuts': for each arc in want (taken by cases whose whole runs fit
+    no C64 diagnostic), a truncated case: one such case (fewest edits first)
+    run instead to a cut, the first NEWOPS with LOC at an interpretive
+    routine its run enters (tests/interp_cut.h), the earliest whose prefix
+    takes the arc, when that prefix fits one diagnostic. The yaAGC oracle
+    runs the same case to the same cut: a cut it does not stop at first is
+    refused, and its state there is the row's digest. Appends to cases,
+    rows, visits and arcs (case keys 'cut', 'of', 'ran')."""
+    ref, nat = BUILT
+    d = os.path.join(B, '%s-cover' % spec_id)
+    exe, one = os.path.join(d, 'runner'), os.path.join(d, 'cases')
+    os.makedirs(one, exist_ok=True)
+    trial = {}
+
+    def argv(key):
+        p = os.path.join(one, '%s.bin' % key)
+        write_cases(p, missions, [trial[key]])
+        return [exe, p]
+    want, made, refused, differ = set(want), 0, 0, 0
+    for arc in sorted(want):
+        if arc not in want:
+            continue
+        cands = sorted((i for i in arcs if arc in arcs[i] and not cases[i].get('cut')),
+                       key=lambda i: (len(cases[i]['edits']), i))[:8]
+        sub = os.path.join(B, '%s-cuts.bin' % spec_id)
+        write_cases(sub, missions, [cases[i] for i in cands])
+        seqs = [[int(x[1:]) for x in r[4:]] for r in run([nat, sub, 'visits'])]
+        for i, seq in zip(cands, seqs):
+            mi = missions[cases[i]['cm']]
+            at = [k for k in range(1, len(seq)) if seq[k] not in seq[:k] and mi.kinds[seq[k]] == 'i']
+            took = {}
+
+            def takes(j):
+                key = 'cut-%d-%d' % (i, at[j])
+                trial[key] = dict(cases[i], cut=seq[at[j]])
+                took[j] = c64_row_cover.trace(d, [key], argv)[key]
+                return arc in took[j]
+            if not at or not takes(len(at) - 1):
+                continue
+            lo, hi = -1, len(at) - 1        # takes(hi); not takes(lo)
+            while hi - lo > 1:
+                mid = (lo + hi) // 2
+                lo, hi = (lo, mid) if takes(mid) else (mid, hi)
+            k = at[hi]
+            c = dict(cases[i], cut=seq[k], of=i, ran=k)
+            idx = {p: b for b, p in enumerate(mi.points)}
+            mask = 0
+            for p in seq[:k]:
+                mask |= 1 << idx[p]
+            n = len(cases)
+            if c64_size(spec, sym, mi.m, mask, group_text(sym, [(mi.m, mask, [n])], cases + [c],
+                                                         rows + [['0', '0', '0', '0']])) is None:
+                continue
+            write_cases(sub, missions, [c])
+            rr, rn = run([ref, *ROPES, sub]), run([nat, sub])
+            if rr[0][1] != '0':
+                refused += 1
+                continue
+            if rr[0][1:] != rn[0][1:]:
+                differ += 1
+                print('  C64 cut: case %d at %s: oracle %s, native %s' % (i, mi.cp.where(seq[k]), rr[0][1:], rn[0][1:]))
+                continue
+            cases.append(c)
+            rows.append([str(n)] + rr[0][1:])
+            visits.append(mask)
+            arcs[n] = took[hi]
+            want -= took[hi]
+            made += 1
+            break
+    print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
+        made, refused, differ, len(want)))
+
+
 C64_PICKS = []       # each group's cases, for the outcome cover
 
 
@@ -1327,6 +1430,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     the groups and the row cover's proof fields."""
     per = spec.get('c64_per_point', 2)
     for mi in missions:
+        if mi.m not in spec['missions']:
+            continue
         # (every KEEP word is defined, so a group drops the routines past 60 too)
         KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
@@ -1375,6 +1480,13 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             if more:
                 arcs = {**arcs, **more}
                 chosen, okall = pick(arcs, sorted(chosen))
+        if spec.get('c64_cuts'):
+            # Arcs only runs too long for one diagnostic take: truncated rows.
+            want = (full or frozenset().union(*arcs.values())) - frozenset().union(*(arcs[i] for i in chosen))
+            if want:
+                cases, rows, visits = list(cases), list(rows), list(visits)
+                cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want)
+                chosen, okall = pick(arcs, sorted(chosen))
     groups = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -1383,8 +1495,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         need = {}
         fewest = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i)
         for p in mi.points:
-            mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
-                          key=fewest)
+            mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan
+                           and (not c.get('cut') or i in chosen)), key=fewest)
             if cover:
                 # (With cover_stride, from the traced cases.)
                 mine = [i for i in mine if i in arcs] or mine
@@ -1479,7 +1591,9 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                     arc, who, [i in chosen for i in who], [i in okall for i in who], [len(cases[i]['edits']) for i in who]))
         c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
         extra = c64_row_cover.summary(arcs, picked)
-        write_cover_record(spec_id, spec, arcs, picked, full)
+        write_cover_record(spec_id, spec, arcs, picked, full, [
+            {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
+             'routines_run': cases[i]['ran']} for i in sorted(picked) if cases[i].get('cut')])
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
