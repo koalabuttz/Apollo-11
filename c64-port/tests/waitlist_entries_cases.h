@@ -9,7 +9,9 @@
  *  2 LM and 3 CM DLY2 -1: each DELAYJOB entry case of service-transfer, from
  *    DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP (or BAILOUT),
  *    once on its own random image and once (base | WLE_SANE) with a sane
- *    waitlist, so the task is inserted and the job sleeps;
+ *    waitlist, so the task is inserted and the job sleeps; LM also a third
+ *    time (base | WLE_SANE | WLE_EDGE) with the new task due 1 cs before a
+ *    queued one, so WAIT2's list search ends on CCS -0;
  *  4 LM NOQBRSM +1 05275 (the P-axis autopilot's RELINT; RESUME): random
  *    erasable inside an interrupt, to the end of the interrupt.
  * The case list (kind, base case) is frozen in waitlist_entries_vectors.h by
@@ -18,6 +20,7 @@
 #define WLE_KINDS 5u
 #define WLE_RESUME_CASES 128u
 #define WLE_SANE 0x8000u
+#define WLE_EDGE 0x4000u
 #ifndef WLE_SCAN
 uint16_t wle_cases(void);
 uint8_t wle_kind(uint16_t n);

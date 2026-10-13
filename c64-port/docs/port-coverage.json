@@ -5838,7 +5838,7 @@
             "src/cm_waitlist_internal.c",
             "src/agc_transfer.c"
           ],
-          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 114 DELAYJOB-to-DLY2 -1 cases (57 inputs on their own image and on a sane waitlist) equal yaAGC through agc_transfer_run.",
           "verification": "docs/milestones/waitlist-entries.md"
         },
         {
@@ -5878,11 +5878,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
+            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
+            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5891,12 +5891,12 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 365
+              "vice-waitlist-entries": 379
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
+            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -11994,7 +11994,7 @@
             "src/lm_delay_image.c",
             "src/agc_transfer.c"
           ],
-          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 171 DELAYJOB-to-DLY2 -1 cases (57 inputs on their own image, on a sane waitlist, and on a sane waitlist with the new task due 1 cs before a queued one, so WAIT2's search ends on CCS -0) equal yaAGC through agc_transfer_run.",
           "verification": "docs/milestones/waitlist-entries.md"
         },
         {
@@ -12022,7 +12022,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines, lm_lead_in_routines and lm_t6rupt_routines (the RESUME family, milestone lm-t6rupt), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body, DLY2 -1 and NOQBRSM +1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines, lm_lead_in_routines and lm_t6rupt_routines (the RESUME family, milestone lm-t6rupt), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body, DLY2 -1 and NOQBRSM +1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change. The Waitlist takes a positive delay of at most 16250 cs (WL_MAX_DELAY in include/waitlist.h); a larger positive delay returns EXEC_OUT_OF_SCOPE.",
           "unreached": "Named in the source map with reasons: the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1). No producer reaches these words.",
           "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
         },
@@ -12042,11 +12042,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
+            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
+            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -12055,13 +12055,13 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 365,
+              "vice-waitlist-entries": 379,
               "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
+            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
