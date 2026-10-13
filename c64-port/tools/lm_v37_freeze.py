@@ -25,10 +25,10 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/lm-v37.mk LM_V37_SRC), for the row cover.
-SRC = ['src/lm_v37.c', 'src/lm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_v37_cases.c']
+SRC = ['src/lm_v37.c', 'src/lm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_v37_cases.c']
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
 CORE = ['tests/lm_v37_cases.c', 'src/lm_v37.c', 'src/lm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
+        'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 

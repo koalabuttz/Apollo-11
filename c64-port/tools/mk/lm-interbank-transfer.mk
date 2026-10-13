@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-interbank-transfer (lane A): Luminary099 INTER-BANK_COMMUNICATION
 # entries as native routines of the control-transfer ABI.
-LM_IBR_SRC = src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_word.c tests/lm_interbank_routines_cases.c
+LM_IBR_SRC = src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_word.c tests/lm_interbank_routines_cases.c
 LM_IBR_HDR = include/agc_transfer.h include/lm_interbank_routines.h include/lm_interbank.h src/lm_interbank_sites.inc tests/lm_interbank_routines_cases.h
 .PHONY: test-lm-interbank-transfer sanitize-lm-interbank-transfer c64-lm-interbank-transfer vice-lm-interbank-transfer
 all: build/test-lm-interbank-transfer

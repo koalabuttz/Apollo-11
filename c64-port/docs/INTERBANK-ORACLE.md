@@ -34,7 +34,7 @@ freezes one digest per case in `tests/interbank_oracle_vectors.h`.
 `make test-interbank-oracle` and `make sanitize-interbank-oracle` pass 2,150
 checks.
 
-The C64 diagnostic runs every third case plus 4 cover rows, taking all 481
+The C64 diagnostic runs every third case plus 4 cover rows, taking all 501
 branch arcs the host corpus takes
 (`evidence/interbank-oracle/interbank-oracle-c64-cover.json`);
 `make vice-interbank-oracle` passes 722 checks in VICE.

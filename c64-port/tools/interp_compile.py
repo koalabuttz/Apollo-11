@@ -177,6 +177,10 @@ class Compiler:
                 self.ranges[-1][1] = q
             else:
                 self.ranges.append([q, q])
+        # Outside TC Q words the basic code runs in place (spec 'tcq_words',
+        # fixed-fixed): the oracle runs through them as the file's own.
+        for a in spec.get('tcq_words', ()):
+            self.ranges.append([2048 + a - 0o4000, 2048 + a - 0o4000])
         self.T = {}
         self.T.update(self.L.jump_table('INDJUMP', 32))
         self.T.update(self.L.jump_table('MISCJUMP', 16))
@@ -666,6 +670,15 @@ class Compiler:
                     # An indexed fixed operand: the rope words at each
                     # address the spec's index values reach; any other
                     # effective address is refused.
+                    if self.spec.get('fixed_index_erasable'):
+                        # (An index that takes the address below 02000 reads
+                        # erasable, as the interpreter does: k = 0.)
+                        st[-1] += '{const agc_word *k=0;if(W[0116]>=02000u){' + self.superbank_guard(fx) + \
+                            'switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
+                        st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
+                        st.append('  default:return EXEC_OUT_OF_SCOPE;}}')
+                        st.append('%s%s(s,k);}' % (P, fn))
+                        return st, cur + 1, False, False
                     st[-1] += self.superbank_guard(fx) + '{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
                     st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
                     st.append('  default:return EXEC_OUT_OF_SCOPE;}')
@@ -815,18 +828,21 @@ class Compiler:
                     self.add_start(target, 'b', 'RTB target')
                 else:
                     self.externals_any[target] = 'RTB ' + (lab or '')
+                end = cur
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
                 elif self.rk:
                     # RTB with an order on its right: DANZIG runs that order,
-                    # then NEWOPS at the word after its operands.
+                    # then NEWOPS at the word after its operands (words of
+                    # this routine's pair, for the source map).
                     q = cur
                     while q in self.code and not is_interp_op(self.code[q].op):
                         q += 1
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
+                        end = q
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
-                return st, cur, True, False
+                return st, end, True, False
             if lab not in self.rtb:
                 raise CompileError('RTB %s has no native routine in the spec' % lab)
             st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P

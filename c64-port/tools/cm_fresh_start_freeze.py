@@ -28,13 +28,13 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/cm-fresh-start.mk CM_FS_SRC), for the row cover.
-SRC = ['src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_fresh_start_cases.c']
+SRC = ['src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/cm_fresh_start_cases.c']
 ROPE = B / 'fixed-data/Comanche055/MAIN.agc.bin'
 # The milestone's own words (bank 05 but STARTSIM 2345-2350, GOTOPOOH), physical.
 OWNED = ([0o5 * 1024 + w - 0o2000 for w in range(0o2342, 0o3220) if not 0o2345 <= w <= 0o2350]
          + [2048 + w - 0o4000 for w in range(0o4106, 0o4112)])
 CORE = ['tests/cm_fresh_start_cases.c', 'src/cm_fresh_start.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-        'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
+        'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_transfer.c', 'src/agc_word.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
 
