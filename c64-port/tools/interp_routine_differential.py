@@ -339,6 +339,16 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
                 # (no job waiting on the way: CHANG2 would leave the file)
                 E = collections.OrderedDict(c['edits'])
                 E[0o67] = 0
+                # (an interpretive entry returns through QPRET, FIXLOC +42D,
+                # which its STQ saves: a word of its bank outside the file,
+                # where the run ends, not wherever a random QPRET leads)
+                if ret == 0xffff and missions[q[0]].kinds[q[1]] == 'i':
+                    mq, bank = missions[q[0]], q[1] // 1024
+                    while True:
+                        ret = bank * 1024 + rng.randrange(0o1776)
+                        if not mq.cp.in_file(ret):
+                            break
+                    E[E[0o120] + 0o52] = logical(ret)
                 # (the entry's caller return, which ends the run there: a
                 # pseudo-edit at 0xffff the reference takes out)
                 c['edits'] = list(E.items()) + ([(0xffff, ret)] if ret != 0xffff else [])

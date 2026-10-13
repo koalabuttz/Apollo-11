@@ -56,8 +56,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
     if(snap!=0xffffu&&((pc==t->newops&&(!through||(get(0164)>=02000u&&get(0164)<010000u&&get(0120)==init[0120]))&&loc_physical()==snap)||(through&&pc!=t->newops&&get(0120)==init[0120]&&z_physical(pc)==snap))){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
      printf("\n");snapped=stopped=1;break;}
-    /* (A snapshot run through outside code ends at its entry's caller return.) */
-    if(through&&z_physical(pc)==ret){stopped=1;break;}
+    /* (A snapshot run through outside code ends at its entry's caller
+     * return: Z there, or the interpreter's LOC for an interpretive one.) */
+    if(through&&ret!=0xffffu&&(z_physical(pc)==ret||(pc==t->newops&&get(0120)==init[0120]&&loc_physical()==ret))){stopped=1;break;}
     /* (IRC_SNAP_THROUGH: a snapshot run goes on through outside code, and
      * takes LOC only as a word of fixed memory, in the job it began in: FIXLOC
      * unchanged.) */
