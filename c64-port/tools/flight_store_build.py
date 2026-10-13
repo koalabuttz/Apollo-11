@@ -242,6 +242,29 @@ def closure(index, *stems):
     return sorted(seen)
 
 
+def module_io(m, stems):
+    """The io kind a module's tables run on (platform/c64/flight_table_module.c
+    FS_IO_KIND): None for the mission's base record, else the one kind every
+    other stem takes. One run hands every routine the same record, so a
+    module may mix the base record only with a kind that starts with it
+    (LM_* records open with p66_bias_io, CM_* with cm_native_io); any other
+    mix is refused."""
+    kinds = {io_kind(m, st) for st in stems}
+    other = kinds - {BASE_IO[m]}
+    if len(other) > 1 or (other and len(kinds) > 1 and not next(iter(other)).startswith(f'{m.upper()}_')):
+        raise SystemExit(f'{m}: one module mixes io kinds {sorted(kinds)} ({", ".join(stems)})')
+    if not other:
+        return None
+    kind = other.pop()
+    # The module converts through src/flight_io.c: a kind with no case
+    # there would run on a cleared record.
+    io_c = (ROOT / 'src/flight_io.c').read_text()
+    enter, leave = io_c.split('void flight_io_leave', 1)
+    if f'case FLIGHT_IO_{kind}:' not in enter or f'case FLIGHT_IO_{kind}:' not in leave:
+        raise SystemExit(f'{m}: io kind {kind} ({", ".join(stems)}) has no flight_io_enter/leave case in src/flight_io.c')
+    return kind
+
+
 def c64_sources(index, *stems):
     """The link closure as C64 source paths, host-only files replaced."""
     owner_all = {s: o for o, (d, _) in index.items() for s in d}
@@ -279,14 +302,25 @@ def lane_slot(stem, mission, owners, place):
 # Image ops a flight module takes from the resident kernel's k_* services
 # (platform/c64/flight_image_op_services.c, docs/overlay-v2-services.json).
 SHARED_OPS = ('ca caf cs csf ad adf maskf ts xch lxch ads dxch ccs tc dcaf bzf bzmf').split()
+# Modules use the resident's rk_hardware, rk_flight and (CM) cm_channels
+# records (platform/c64/resident_flight.h RK_HARDWARE, RK_FLIGHT_IO,
+# RK_CM_CHANNELS), not copies of their own.
+CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc'],
+            'cm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=cm_channels=0x6ff4']}
 
 
-def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None):
+def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
+                io=None):
     """chunk: (table, first, last) links only entries first..last-1 of one
-    basic table (platform/c64/flight_table_module.c FS_CHUNK)."""
+    basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
+    module's io kind (module_io)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    if io:
+        head += (f'#define FS_IO_KIND FLIGHT_IO_{io}\n'
+                 f'#define FS_IO_CM {int(io.startswith("CM_"))}\n')
+        sources = [*sources, 'src/flight_io.c']
     if sites:
         head += '#define FS_SITES ' + ','.join(f'{{{k}u,0{w:o}u}}' for k, w in sorted(sites.items())) + '\n'
     if fixed_data == 'rope':
@@ -308,7 +342,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
            '-T', 'platform/c64/overlay_v2_payload.ld',
            f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
            f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors=1,'
-           f'-Map,{prg}.map', *(f'-Wl,--wrap=ai_{op}' for op in SHARED_OPS),
+           f'-Map,{prg}.map', *(f'-Wl,--wrap=ai_{op}' for op in SHARED_OPS), *CHANNELS[m],
            wrapper, *sources, 'platform/c64/flight_image_op_services.c', 'platform/c64/overlay_v2_entry.S', '-lc', library,
            '-lcrt', '-o', prg]
     r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
@@ -316,6 +350,8 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", r.stderr)]
         return dict(ok=False, overflow=max(over) if over else None,
                     error=None if over else [l for l in r.stderr.splitlines() if 'error' in l][:4])
+    if re.search(r'\((?:\.bss|\.data)\.cm_channels\)', (ROOT / f'{prg}.map').read_text()):
+        raise SystemExit(f'{prg}: links its own cm_channels (CHANNELS)')
     return dict(ok=True, bytes=(ROOT / prg).stat().st_size - 2)
 
 
@@ -392,7 +428,7 @@ def link_load_check(cc, m, resolver, modules, keys):
         f'#define FL_SCRATCH 0x{scratch:x}ul\n#define FL_SCRATCH_BYTES {SCRATCH_BYTES}u\n'
         'static const fl_record fl_records[FL_RECORDS] BOOT_DATA={'
         + ','.join(f'{{0{r["bank"]:o}u,0{r["loc"]:o}u,0x{r["module"]:04x}u}}' for r in resolver) + '};\n'
-        'static const fl_module fl_modules[FL_MODULES]={'
+        'static const fl_module fl_modules[FL_MODULES] BOOT_DATA={'
         + ','.join(f'{{0x{mod["id"]:04x}u,{mod["bytes"]}u,0{first.get(mod["id"], {}).get("bank", 0):o}u,'
                    f'0{first.get(mod["id"], {}).get("loc", 0):o}u}}' for mod in modules) + '};\n')
     out = OUT / f'{m}-load-check.prg'
@@ -554,18 +590,18 @@ def main():
             modules.append(dict(stem=stem, agc=agc, lane=lane, slot=slot, id=ident,
                                 basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
                                 interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
-                                also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem),
+                                also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
                                 sources=c64_sources(index, *sources, 'agc_transfer')))
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
-                              library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'))
+                              library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
-                                   mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'))
+                                   mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -668,7 +704,7 @@ def main():
             _, _, res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
                                   basic=[t for t in ts if 'interpret' not in t],
                                   interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
-                                  sources=c64_sources(index, *stems, 'agc_transfer'),
+                                  sources=c64_sources(index, *stems, 'agc_transfer'), io=module_io(m, stems),
                                   prg_name=f'pin-{"task" if slot else "job"}'))
             size = 8186 if slot else 16384
             if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
