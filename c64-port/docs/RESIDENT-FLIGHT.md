@@ -161,11 +161,16 @@ The resident's `fixed_data` is `rk_fixed_word`. It reads the word at Z
 from a table of every fixed point where the resident can stop between
 routines: the keys of the resident's routine tables, of the interrupt
 bodies (`rupt_lead_ins.h`, `t4rupt_core.h`, `keyrupt_uprupt.h`,
-`lm_t6rupt_routines.h`) and of the store's resolver records.
+`lm_t6rupt_routines.h`) and of the store's resolver records, and the
+interpreter's fetch point (LM NEWOPS 06070, CM 06037) and DANZIG (LM 06061,
+CM 06030). At an interpretive order Z stands at one of those two while the
+order's key is LOC's, so without their words an interrupt there would stay
+pending (the whole-program differential lost 2,500 of 3,000 LM V37E00E
+samples that way; docs/FLIGHT-STORE.md).
 `tools/resident_boundary_words.py` collects the keys (it builds
 `tools/resident_boundary_keys.c` against the tables), takes each word from
 the unmodified rope, checks it against the yaYUL listing when one is built,
-and writes `platform/c64/resident_boundary_words_<m>.h`: 66 LM and 59 CM
+and writes `platform/c64/resident_boundary_words_<m>.h`: 69 LM and 61 CM
 sorted {physical key, word} records. A key the listing has no word for is
 an error.
 
@@ -325,9 +330,10 @@ boundary-word table's check in `boundary_words`) of
 
 ## Not yet in the resident
 
-- The flight store's resolver records. The boundary-word tables hold the
-  check's two probe records; the store that carries every lane's modules
-  regenerates them with its records (`--resolver`).
+- The flight store's resolver records. The committed boundary-word tables
+  hold the check's two probe records; the flight store
+  (`tools/flight_store_build.py`) builds its own boundary-word module with
+  its records (`RK_BOUNDARY_HEADER`).
 - What the interrupt bodies continue into: Waitlist tasks T4RUPT and the
   T5RUPT handlers start, and the other lane's banked code a lead-in reaches.
   The step resolves those through the store like any module once their
