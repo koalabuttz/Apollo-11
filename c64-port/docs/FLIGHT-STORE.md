@@ -72,9 +72,10 @@ basic module (9 LM, 10 CM): each file's routines run one file-wide step
 machine (LM P-AXIS `flow` alone is 9.4 KB), so a one-routine chunk still
 overflows. Those files fit only once their lane splits the step machine.
 
-Modules holding interpretive tables are compiled with
-`-DAGC_TRANSFER_DANZIG_MARKER` (the pending-DANZIG marker is opt-in on the
-C64 since #184).
+The resident and every module are compiled with
+`-DAGC_TRANSFER_DANZIG_MARKER` (`tools/resident_flight_build.py` COMMON):
+the pending-DANZIG marker is opt-in on the C64 since #184, and the resident
+resolves pending RTB right-hand orders through it.
 
 ## Host differential method
 

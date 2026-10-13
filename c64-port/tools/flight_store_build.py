@@ -269,10 +269,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
         + (f'#define FS_HAS_INTERP 1\n#define FS_DANZIG agc_{m}_danzig_marker\n' if interp else '')
         + '#include "../../../platform/c64/flight_table_module.c"\n')
-    # A module holding interpretive tables resolves a pending DANZIG through
-    # the mission's marker table (include/agc_transfer.h).
-    cmd = [cc, *COMMON, *MISSION[m], *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
-           '-mllvm', '-inline-threshold=-50',
+    cmd = [cc, *COMMON, *MISSION[m], '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
            '-T', 'platform/c64/overlay_v2_payload.ld',
