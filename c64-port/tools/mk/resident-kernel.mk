@@ -53,3 +53,16 @@ vice-resident-kernel: $(RK_PRGS)
 # The kernel alone, LTO + gc-sections, on the $7000 image (docs/RESIDENT-KERNEL.md).
 resident-kernel-size: | build
 	python3 tools/resident_kernel_size.py
+# The thin kernel in the linked ABI 2 flight resident (docs/RESIDENT-FLIGHT.md):
+# each mission's flight resident with its per-component sizes, and per part a
+# check program (the same resident) that runs the C64 rows from case modules
+# in an REU store.
+RF_SRC = platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_restart.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
+RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3,build/resident-flight/$(m)-check-$(p).prg))
+.PHONY: c64-resident-flight vice-resident-flight resident-flight-size
+c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
+	python3 tools/resident_flight_build.py --cc $(MOS_CC)
+vice-resident-flight: c64-resident-flight
+	for m in lm cm; do for p in 1 2 3; do python3 tools/vice_run.py build/resident-flight/$$m-check-$$p.prg --reu build/resident-flight/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done; done
+resident-flight-size: c64-resident-flight
+	cat build/resident-flight/sizes.json
