@@ -30,24 +30,27 @@ typedef struct {
  * out (a chained step: the key's own cases continue from there in the part
  * that has it); reaching other code left out ends as kind 3. Part 1 is
  * the basic code with SETUPER1 and GEOSTRT4 (03000 on). The ALFLT
- * loop is split at ALKLP (02676; no loop crosses it): parts 6 and 7. Part
+ * loop is split at ALKLP (02676) and LOOSE (02730; no loop crosses either):
+ * parts 6, 7 and 8 (8 also has BOOP and PERFERAS, so 7 links no trig). Part
  * 0 links everything and takes the part from ipt_part at run time (the
  * host's replay of every part's rows). */
-#define IPT_PARTS 7u
+#define IPT_PARTS 8u
 #define IPT_P_IN(p,loc) ((p)==1u?(loc)>=03000u: \
  (p)==2u?(loc)<02100u: \
  (p)==3u?((loc)>=02200u&&(loc)<02400u): \
  (p)==4u?(((loc)>=02400u&&(loc)<02414u)||((loc)>=02500u&&(loc)<02605u)): \
  (p)==5u?((loc)>=02414u&&(loc)<02500u): \
  (p)==6u?((loc)>=02605u&&(loc)<02676u): \
- (p)==7u?((loc)>=02676u&&(loc)<03000u):1)
+ (p)==7u?((loc)>=02676u&&(loc)<02730u): \
+ (p)==8u?((loc)>=02730u&&(loc)<03000u):1)
 #define IPT_P_BASIC_IN(p,a) ((p)==1u?1: \
  (p)==2u?((a)==02004u||(a)==02027u||(a)==02067u): \
  (p)==3u?((a)==02166u||(a)==02226u||(a)==02301u||(a)==02332u||(a)==02447u||(a)==02457u||(a)==04102u): \
  (p)==4u?((a)==02367u||(a)==02447u||(a)==02500u||(a)==02773u||(a)==03034u): \
  (p)==5u?((a)==02126u||(a)==02166u||(a)==02226u||(a)==02301u||(a)==02332u||(a)==02447u||(a)==02457u||(a)==04102u): \
  (p)==6u?((a)==02577u): \
- (p)==7u?((a)==02773u):1)
+ (p)==7u?0: \
+ (p)==8u?((a)==02773u):1)
 #if defined IPT_C64_PART && IPT_C64_PART>0
 #define ipt_part ((unsigned)IPT_C64_PART)
 #define IPT_BASIC_IN(a) IPT_P_BASIC_IN(IPT_C64_PART,a)
