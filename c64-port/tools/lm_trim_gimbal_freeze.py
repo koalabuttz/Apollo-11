@@ -25,7 +25,7 @@ B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
 NATIVE = ['src/lm_trim_gimbal.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
-          'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_multiword.c',
+          'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_multiword.c',
           'tests/lm_trim_gimbal_cases.c']
 CORE = NATIVE + ['src/agc_word.c', 'tests/cm_executive_cases.c',
                  str(B / 'agc_engine_hardware_dv.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]

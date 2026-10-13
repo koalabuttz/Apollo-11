@@ -9,7 +9,7 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 512,
- "cases_sha256": "2bd1858902504e91bf0f967a8ba9534a406486e679ef5e3632239283e26b1a16",
+ "cases_sha256": "249ad74cb43c820b186b0452411a905335f2cac7fbe31eabf2a41ffae7eff1ec",
  "oracle_sha256": "6170e9f913b337d859b5a292d6adf6a5493a88875140dd16b22c24833e40fb43",
  "frozen_vectors": 16,
  "c64_vectors": [
@@ -52,14 +52,14 @@
  "c64_coverage": {
   "host_labels": 532,
   "c64_labels": 532,
-  "host_edges": 799,
-  "c64_edges": 799,
+  "host_edges": 809,
+  "c64_edges": 809,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 534,
-  "c64_taken": 534,
+  "host_taken": 541,
+  "c64_taken": 541,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [

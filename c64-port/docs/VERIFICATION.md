@@ -2222,6 +2222,8 @@ Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory
 
 All of Luminary099 LEM_GEOMETRY (113 words: the downlink state vectors, the rendezvous radar angles RRANGLES and RRNB) and 105 of the 253 Comanche055 CSM_GEOMETRY words (SVDWN1/2, LOG and EARROT) are native C on the control-transfer ABI, as 21 routines. `tools/interp_compile.py` now also compiles basic instructions (CCS, TCF, TC with returns, DXCH, DAS, TS skips, EXTEND/INDEX), and BOVB. All 10,752 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 357 frozen cases, and seven C64 diagnostics pass 57 cases in VICE. The host vectors and C64 cases are chosen to reach every branch outcome that any case reaches; the cases include edge values (±0, 1/2, axis vectors, tiny vectors). The Luminary file has a complete certificate drafted for the certificate reviewer. The Comanche sextant routines wait for a Comanche MXV body and native TRANSP1/2. See `docs/GEOMETRY.md`.
 
+Update 2026-10-13: the Comanche sextant routines SXTNB, SXTLOGIC, CALCSXA and SXTANG are native too, so CSM_GEOMETRY is native in every word (204 compiled, 49 constants, 91 routines) with a complete certificate drafted. SXTLOGIC and the SHORTMP multiply it calls are hand-written (`src/geometry_rtb.c`); `tools/interp_compile.py` gains the `native_calls` spec key for a TC to such a function. All 76,288 cases equal yaAGC, the host tests pass 658 frozen cases, and eight C64 diagnostics pass 197 cases in VICE, reaching all 1,671 host branch outcomes.
+
 ## Translate Luminary UPDATE_PROGRAM as transfer-ABI routines
 
 Every instruction of Luminary099 UPDATE_PROGRAM (P27: the V70-V73 uplink verbs, data collection and verification, restart-protected stores into erasable memory and the TIME2/TIME1 adjustment) runs as routines of the control-transfer ABI. There are 35 entries: the verbs, the POSTJUMP targets, the job, its post-EXIT code, two restart points and the return after every TC out of the file, plus UPJOB's two interpretive words (CALL INTSTALL, UPWAKE EXIT) registered at NEWOPS as the CHANG2 resume LOCs, with NEWJOB positive in a fifth of their cases. The file's own BANKCALL/POSTJUMP CADRs and constants are compiled from the source listing. 4,096 cases from every entry equal the original Luminary099 program in the interrupt-enable state, SUPERBNK, channel 11 and all 2,048 erasable words. They include even V72 counts, one-word V71 loads at a bank's first word, V71 loads past a bank's end and EB0 targets, and together they execute every instruction of the file (12,666 strict and sanitizer checks, all 35 entries, both interpretive entries and all 14 exits reached). 261 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 16th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 450 arcs the host cases take) match in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-UPDATE.md`.
@@ -2442,21 +2444,9 @@ Every SERVICE_ROUTINES entry of both missions is now a registered transfer routi
 
 The three fixed entry words at the start of Comanche055's SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER 33,2000, GTSCPSS1 33,2001 and REDO 33,2002) are now registered in `cm_standard_lead_routines`. RESTART_TABLES, FRESH_START_AND_RESTART and EXTENDED_VERBS reach them by 2CADR or FCADR. Each is one TC: Q is left at the next word (REDO's `MM 07` operand, which NEWMODEX reads) and Z at GCOMPVER, GTSCPSS or NEWMODEX. 384 cases through `agc_transfer_run` match yaAGC on all 2048 erasable words. The 390 strict, sanitizer and C64 checks pass. This addresses the CM STANDARD_LEAD_INS item of #129.
 
-## Translate Comanche AUTOMATIC_MANEUVERS
-
-All of Comanche055 AUTOMATIC_MANEUVERS (333 words) is native C on the control-transfer ABI, as 6 routines compiled whole-file by `tools/basic_compile.py`. All 1,536 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 48 frozen cases, and 1 C64 diagnostic passes 24 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-AUTO-MAN.md`.
-
 ## Translate Comanche CM_BODY_ATTITUDE
 
 All of Comanche055 CM_BODY_ATTITUDE (195 words) is native C on the control-transfer ABI, as 70 routines compiled whole-file by `tools/basic_compile.py`. All 17,920 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 560 frozen cases, and 12 C64 diagnostics pass 97 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-BODY-ATTITUDE.md`.
-
-## Translate Comanche CM_ENTRY_DIGITAL_AUTOPILOT
-
-All of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (813 words) is native C on the control-transfer ABI, as 28 routines compiled whole-file by `tools/basic_compile.py`. All 7,168 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 224 frozen cases, and 2 C64 diagnostics pass 79 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-ENTRY-DAP.md`.
-
-## Translate Comanche JET_SELECTION_LOGIC
-
-All of Comanche055 JET_SELECTION_LOGIC (629 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 28 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-JET-SELECT.md`.
 
 ## Translate Comanche P40-P47
 
@@ -2477,34 +2467,6 @@ All but 2 words of Comanche055 REENTRY_CONTROL (1172 words) is native C on the c
 ## Translate Comanche SERVICER207
 
 All of Comanche055 SERVICER207 (375 words) is native C on the control-transfer ABI, as 80 routines compiled whole-file by `tools/basic_compile.py`. All 20,480 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 160 frozen cases, and 9 C64 diagnostics pass 123 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-SERVICER.md`.
-
-## Translate Comanche TVCDAPS
-
-All of Comanche055 TVCDAPS (489 words) is native C on the control-transfer ABI, as 9 routines compiled whole-file by `tools/basic_compile.py`. All 2,304 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 72 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-DAPS.md`.
-
-## Translate Comanche TVCEXECUTIVE
-
-All of Comanche055 TVCEXECUTIVE (144 words) is native C on the control-transfer ABI, as 12 routines compiled whole-file by `tools/basic_compile.py`. All 3,072 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 96 frozen cases, and 1 C64 diagnostic passes 25 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-EXEC.md`.
-
-## Translate Comanche TVCINITIALIZE
-
-All of Comanche055 TVCINITIALIZE (259 words) is native C on the control-transfer ABI, as 11 routines compiled whole-file by `tools/basic_compile.py`. All 2,560 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 80 frozen cases, and 1 C64 diagnostic passes 14 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-INIT.md`.
-
-## Translate Comanche TVCMASSPROP
-
-All of Comanche055 TVCMASSPROP (91 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 6 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-MASSPROP.md`.
-
-## Translate Comanche TVCRESTARTS
-
-All of Comanche055 TVCRESTARTS (90 words) is native C on the control-transfer ABI, as 7 routines compiled whole-file by `tools/basic_compile.py`. All 1,792 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 56 frozen cases, and 1 C64 diagnostic passes 19 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-RESTARTS.md`.
-
-## Translate Comanche TVCROLLDAP
-
-All of Comanche055 TVCROLLDAP (278 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 16 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-ROLL.md`.
-
-## Translate Comanche TVCSTROKETEST
-
-All of Comanche055 TVCSTROKETEST (73 words) is native C on the control-transfer ABI, as 5 routines compiled whole-file by `tools/basic_compile.py`. All 1,024 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 32 frozen cases, and 1 C64 diagnostic passes 12 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-STROKE.md`.
 
 ## Run whole LM T4RUPT interrupts through the trampoline
 
@@ -2618,6 +2580,74 @@ Luminary099 AOTMARK (AOTMARK, GETDAT, OPTAXIS, MARKRUPT, MARKCHEX, AVESTAR, SURF
 
 Comanche055 SXTMARK (SXTMARK, MARKRUPT, MARKDIF/DIFCHK, MARKCONT, MKREJECT, MKVB51, ENTANSWR and the rest, 315 words in banks 07 and 10) is compiled whole by `tools/basic_compile.py` into 42 routines of the control-transfer ABI. All 21,504 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, QPRET and MKNDX states, with channel 16 (the mark buttons) a latched input. The host and sanitizer tests pass 682 frozen cases, and one C64 diagnostic passes 71 cases in VICE that reach all 333 branch outcomes and all 470 gcov arcs the host cases reach. A complete certificate is drafted for the reviewer. See `docs/CM-SXTMARK.md`.
 
+## Translate Comanche AUTOMATIC_MANEUVERS
+
+All of Comanche055 AUTOMATIC_MANEUVERS (333 words) is native C on the control-transfer ABI, as 6 routines compiled whole-file by `tools/basic_compile.py`. All 1,536 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 48 frozen cases, and 1 C64 diagnostic passes 24 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-AUTO-MAN.md`.
+
+## Translate Comanche CM_ENTRY_DIGITAL_AUTOPILOT
+
+All of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (813 words) is native C on the control-transfer ABI, as 28 routines compiled whole-file by `tools/basic_compile.py`. All 7,168 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 224 frozen cases, and 2 C64 diagnostics pass 79 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-ENTRY-DAP.md`.
+
+## Translate Comanche INTEGRATION_INITIALIZATION
+
+All of Comanche055 INTEGRATION_INITIALIZATION (685 words) is native C on the control-transfer ABI, as 235 routines compiled whole-file by `tools/basic_compile.py`. All 60,160 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 470 frozen cases, and 9 C64 diagnostics pass 322 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-INTEGRATION-INIT.md`.
+
+## Translate Comanche JET_SELECTION_LOGIC
+
+All of Comanche055 JET_SELECTION_LOGIC (629 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 28 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-JET-SELECT.md`.
+
+## Translate Comanche TIME_OF_FREE_FALL
+
+All of Comanche055 TIME_OF_FREE_FALL (268 words) is native C on the control-transfer ABI, as 121 routines compiled whole-file by `tools/basic_compile.py`. All 30,976 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 968 frozen cases, and 6 C64 diagnostics pass 192 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TIME-FREE-FALL.md`.
+
+## Translate Comanche TVCDAPS
+
+All of Comanche055 TVCDAPS (489 words) is native C on the control-transfer ABI, as 9 routines compiled whole-file by `tools/basic_compile.py`. All 2,304 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 72 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-DAPS.md`.
+
+## Translate Comanche TVCEXECUTIVE
+
+All of Comanche055 TVCEXECUTIVE (144 words) is native C on the control-transfer ABI, as 12 routines compiled whole-file by `tools/basic_compile.py`. All 3,072 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 96 frozen cases, and 1 C64 diagnostic passes 25 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-EXEC.md`.
+
+## Translate Comanche TVCINITIALIZE
+
+All of Comanche055 TVCINITIALIZE (259 words) is native C on the control-transfer ABI, as 11 routines compiled whole-file by `tools/basic_compile.py`. All 2,560 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 80 frozen cases, and 1 C64 diagnostic passes 14 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-INIT.md`.
+
+## Translate Comanche TVCMASSPROP
+
+All of Comanche055 TVCMASSPROP (91 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 7 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-MASSPROP.md`.
+
+## Translate Comanche TVCRESTARTS
+
+All of Comanche055 TVCRESTARTS (90 words) is native C on the control-transfer ABI, as 7 routines compiled whole-file by `tools/basic_compile.py`. All 1,792 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 56 frozen cases, and 1 C64 diagnostic passes 19 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-RESTARTS.md`.
+
+## Translate Comanche TVCROLLDAP
+
+All of Comanche055 TVCROLLDAP (278 words) is native C on the control-transfer ABI, as 2 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 16 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-ROLL.md`.
+
 ## Translate P51-P53
 
 All of Luminary099 and Comanche055 P51-P53 (1,646 and 1,416 words: P51, P52, P53, P54 and P57, the star-sighting and mark routines R51-R59, S50 and the star-pair search PICAPAR over the 37-star catalog) are native C on the control-transfer ABI, as 696 and 585 routines compiled by tools/interp_compile.py, with native RTB RDCDUS and SET1/PDT. The compiler gained indexed TCF tables, INDEX Q; TC n returns, and a compile error for an SLOAD* of a fixed table without fixed_index. All 327,936 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 2,174 frozen cases, and 62 C64 diagnostics pass 1,522 cases in VICE that reach all 6,592 host branch outcomes. Both files have pending complete certificates for the certificate reviewer. See `docs/P51-P53.md`.
+
+## Translate Comanche ORBITAL_INTEGRATION
+
+All of Comanche055 ORBITAL_INTEGRATION (816 words) is native C on the control-transfer ABI, as 333 routines compiled whole-file by `tools/basic_compile.py`. All 85,248 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 666 frozen cases, and 25 C64 diagnostics pass 411 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-ORBITAL-INTEGRATION.md`.
+
+## Translate Comanche TVCSTROKETEST
+
+All of Comanche055 TVCSTROKETEST (73 words) is native C on the control-transfer ABI, as 5 routines compiled whole-file by `tools/basic_compile.py`. All 1,024 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 32 frozen cases, and 1 C64 diagnostic passes 13 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-STROKE.md`.
+
+## Translate Luminary LUNAR_LANDING_GUIDANCE_EQUATIONS
+
+Luminary099 LUNAR_LANDING_GUIDANCE_EQUATIONS.agc (the P63 to P67 landing guidance: the guidance pass, P64 redesignation, the time-to-go and target logic with ROOTPSRS, the P65 to P67 starts, RODTASK and the guidance displays) is native C on the control-transfer ABI as 258 routines compiled by `tools/interp_compile.py`, except the 15 words that read channels 30 and 31 or write channel 13, which wait for an I/O channel model. The compiler gained indexed TCF/BZMF tables, a double INDEX into a fixed table, INDEX into an erasable table, TCF INTPRET through a subroutine, callee returns past the TC, never-returning callees, `TC A`, `INCR BBANK` and a 16-bit-safe INDEX carry (a C64-only fault the LLGE diagnostics found). All 118,017 compared cases (of 132,096; the 14,079 that reach a channel instruction are listed, not compared) equal the original program in yaAGC. The host and sanitizer tests pass 3,690 frozen cases, and 36 C64 diagnostics pass 313 cases in VICE. The file stays partial until the channel words are translated. See `docs/LM-LLGE.md`.
+
+## Translate Comanche STABLE_ORBIT (P38-P39)
+
+All of Comanche055 STABLE_ORBIT (225 words) is native C on the control-transfer ABI, as 104 routines compiled whole-file by `tools/basic_compile.py`. All 26,368 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 206 frozen cases, and 3 C64 diagnostics pass 139 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-STABLE-ORBIT.md`.
+
+## Translate Comanche CONIC_SUBROUTINES
+
+All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-transfer ABI, as 445 routines compiled whole-file by `tools/basic_compile.py`. All 113,920 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 3560 frozen cases, and 32 C64 diagnostics pass 616 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-CONICS.md`.
+
+## Translate Luminary RCS_FAILURE_MONITOR on the transfer ABI
+
+Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 71 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take all 219 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-RCSMON.md`.

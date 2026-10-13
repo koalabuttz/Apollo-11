@@ -8,13 +8,13 @@ LM_PA_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl
 all: build/test-lm-p-axis
 test: test-lm-p-axis
 sanitize: sanitize-lm-p-axis
-build/test-lm-p-axis: $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank.c tests/test_lm_p_axis.c tests/lm_p_axis_vectors.h $(LM_PA_HDR) | build
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_PA_FLAGS) -DLM_PA_COUNT_PATHS $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank.c tests/test_lm_p_axis.c -o $@
+build/test-lm-p-axis: $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c tests/test_lm_p_axis.c tests/lm_p_axis_vectors.h $(LM_PA_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_PA_FLAGS) -DLM_PA_COUNT_PATHS $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c tests/test_lm_p_axis.c -o $@
 test-lm-p-axis: build/test-lm-p-axis
 	./build/test-lm-p-axis
 	python3 tools/lm_p_axis_source.py
 sanitize-lm-p-axis: | build
-	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(LM_PA_FLAGS) -DLM_PA_COUNT_PATHS -fsanitize=address,undefined $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank.c tests/test_lm_p_axis.c -o build/test-lm-p-axis-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(LM_PA_FLAGS) -DLM_PA_COUNT_PATHS -fsanitize=address,undefined $(LM_PA_SRC) src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c tests/test_lm_p_axis.c -o build/test-lm-p-axis-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-p-axis-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and the Luminary099 listing build).
 build/lm-p-axis-native: $(LM_PA_SRC) platform/host/lm_p_axis_snapshot.c $(LM_PA_HDR) | build

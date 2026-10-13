@@ -484,7 +484,7 @@
     "03312"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3307, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
@@ -495,7 +495,7 @@
     "03303"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3307, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
@@ -506,7 +506,7 @@
     "03312"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3311, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
@@ -517,7 +517,7 @@
     "25366"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3312, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
@@ -528,7 +528,7 @@
     "01371"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3312, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {

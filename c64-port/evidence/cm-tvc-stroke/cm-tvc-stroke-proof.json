@@ -9,41 +9,42 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 1024,
- "cases_sha256": "b39a651bef6322c4e68ae3e3b4355099ccbd409516dc8400116e62e97cc403cf",
- "oracle_sha256": "a556d85cf93d7aa6ed2f6c7330269d9d96eb08053ab8fd2bbdb2a9ccc1321481",
+ "cases_sha256": "6608a76ed66a3b6b8312a9d2380bc9bc840836ab5f2086725f1b819c5e8ff869",
+ "oracle_sha256": "32cd4cb55222dd1d70f660b007b99b98c1d1072e355929f6949703fa31adfafe",
  "frozen_vectors": 32,
  "c64_vectors": [
   {
    "mission": "cm",
    "keep": "0xf",
-   "cases": 12,
+   "cases": 13,
    "case_ids": [
-    225,
-    96,
-    259,
-    614,
-    740,
-    674,
-    758,
-    533,
-    584,
-    579,
-    587,
-    867
+    9,
+    252,
+    460,
+    689,
+    713,
+    550,
+    563,
+    593,
+    512,
+    698,
+    659,
+    542,
+    909
    ]
   }
  ],
  "c64_coverage": {
   "host_labels": 62,
   "c64_labels": 62,
-  "host_edges": 344,
-  "c64_edges": 344,
+  "host_edges": 356,
+  "c64_edges": 356,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 193,
-  "c64_taken": 193,
+  "host_taken": 201,
+  "c64_taken": 201,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -70,11 +71,11 @@
    "05245": 256
   },
   "CM 20,3541 ": {
-   "05324": 56,
-   "02743": 63,
-   "02541": 44,
-   "02543": 44,
-   "02745": 49
+   "02745": 49,
+   "02743": 38,
+   "02543": 64,
+   "02541": 59,
+   "05324": 46
   },
   "CM 20,3542 HACKWLST": {
    "05324": 256

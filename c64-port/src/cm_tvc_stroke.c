@@ -110,13 +110,13 @@ static MAYBE_UNUSED void ch_ror(apollo_overlay_state *s,cm_native_io *io,unsigne
 static MAYBE_UNUSED void ch_wor(apollo_overlay_state *s,cm_native_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])|*chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
 static MAYBE_UNUSED void ch_rxor(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])^*chan(io,k)));}
 /* Fixed words the file reads under INDEX (rope words). */
-static const agc_word T41524[7]={000004,000005,000011,000015,000006,000005,000004}; /* 20,3524 FCARD+0 .. +6 */
+static const agc_word T41524[10]={000004,000005,000011,000015,000006,000005,000004,000006,023657,035016}; /* 20,3524 FCARD+0 .. +9 */
 /* A fixed word read under INDEX (logical e under this bank), from the
  * tables above: 0 outside them. */
 static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){
  unsigned p;(void)s;
  if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=020u*1024u+e-02000u;
- if(p>=17236u&&p<=17242u){*k=T41524[p-17236u];return 1;}
+ if(p>=17236u&&p<=17245u){*k=T41524[p-17236u];return 1;}
  (void)p;(void)k;return 0;
 }
 /* Host coverage builds (tools/interp_routine_differential.py --freeze)

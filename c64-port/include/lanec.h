@@ -99,4 +99,18 @@ uint16_t lanec_a16(uint16_t word);
  * +1 or -1 and the source skips). */
 uint8_t lanec_ts(apollo_overlay_state *, uint16_t k);
 
+#ifdef LANEC_COVER_SITES
+/* The coverage runner only (tools/mk/lanec.mk, tools/lanec/cover.py): each
+ * call of a shared helper branches on its outcome at the call line, so gcov
+ * counts the outcomes per call site rather than once in the helper. */
+#define lanec_ccs(s, w) __extension__({ uint8_t lanec_r_ = (lanec_ccs)(s, w); \
+    lanec_r_ == 0 ? 0u : lanec_r_ == 1 ? 1u : lanec_r_ == 2 ? 2u : 3u; })
+#define lanec_ccs_a(s) __extension__({ uint8_t lanec_r_ = (lanec_ccs_a)(s); \
+    lanec_r_ == 0 ? 0u : lanec_r_ == 1 ? 1u : lanec_r_ == 2 ? 2u : 3u; })
+#define lanec_ts(s, k) __extension__({ uint16_t lanec_a_ = (s)->words[LANEC_A]; \
+    (lanec_a_ & 0140000u) == 0040000u ? (lanec_ts)(s, k) : (lanec_a_ & 0140000u) == 0100000u ? (lanec_ts)(s, k) : (lanec_ts)(s, k); })
+/* A's class before a helper reads it: +0, -0, negative, positive. */
+#define LANEC_COVER_A(s) ((s)->words[LANEC_A] == 0 ? 0 : (s)->words[LANEC_A] == 0177777u ? 1 : ((s)->words[LANEC_A] & 0100000u) ? 2 : 3)
+#endif
+
 #endif

@@ -26,6 +26,7 @@ build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
 by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
 import collections
+import concurrent.futures
 import functools
 import hashlib
 import json
@@ -1206,9 +1207,11 @@ def cover_check(spec_id, spec, missions, cases, path, record):
     sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
     out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
     beyond = [i for i in rows if i >= len(cases)]
-    if out.get('cases_match') is False or beyond or not rows:
-        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else
-                   'the record does not list its C64 rows (refreeze to record them)')
+    if not out.get('cases_match') or beyond or not rows:
+        out.update(verified=False, reason='the record does not list its C64 rows (refreeze to record them)'
+                   if not rows else 'neither the record nor its proof pins the frozen cases (cases_sha256); '
+                   'refreeze to record it' if out.get('cases_match') is None else
+                   'the regenerated cases are not the frozen ones')
         print(json.dumps(out))
         return 1
     if spec.get('cover'):
@@ -1327,6 +1330,23 @@ def chan_outcomes(chan, rows):
     return out
 
 
+def too_big_record(cases):
+    """The proof's c64_too_big_cases: one entry per case, or for more than
+    1000 cases (DIFEQ files) the count, the cases per routine and the case
+    ids as ranges, so the proof stays within the in-tree size limit."""
+    if len(C64_TOO_BIG) <= 1000:
+        return [{'case': i, 'point': cases[i]['point']} for i in C64_TOO_BIG]
+    ids, runs = sorted(C64_TOO_BIG), []
+    for i in ids:
+        if runs and runs[-1][1] == i - 1:
+            runs[-1][1] = i
+        else:
+            runs.append([i, i])
+    return {'count': len(ids),
+            'cases_per_point': dict(sorted(collections.Counter(cases[i]['point'] for i in ids).items())),
+            'case_ranges': ','.join('%d' % a if a == b else '%d-%d' % (a, b) for a, b in runs)}
+
+
 def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=None, covers=None):
     stride = spec.get('freeze_stride', 16)
     pick = [i for i in range(0, len(cases), stride) if i not in chan]
@@ -1388,7 +1408,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
                                             'outside the KEEP mask), against yaAGC stopped at NEWOPS with LOC there '
                                             '(IRC_SNAPROW); each equal to the oracle on the host with the same mask',
                                   'rows': SEGMENTS}} if SEGMENTS else {}),
-             **({'c64_too_big_cases': [{'case': i, 'point': cases[i]['point']} for i in C64_TOO_BIG]} if C64_TOO_BIG else {}),
+             **({'c64_too_big_cases': too_big_record(cases)} if C64_TOO_BIG else {}),
              **({'outcome_cover': cover} if cover is not None else {}),
              'stops': {k: dict(v) for k, v in sorted(stops.items())},
              'boundary': 'from each routine entry state to NEWOPS with LOC outside the file, an exit of the '
@@ -1786,6 +1806,11 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
                 by[visits[i]].append(i)
             limit = {}
+            # (The probes are independent compiles: the largest case of each
+            # set first, on every core.)
+            with concurrent.futures.ThreadPoolExecutor(os.cpu_count() or 1) as ex:
+                list(ex.map(lambda v: c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [by[v][-1]])], cases, rows)),
+                            list(by)))
             for v, ii in by.items():
                 def fit(i, v=v):
                     if (v, i) not in fits:
@@ -1939,8 +1964,14 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                 who = allw[:5]
                 sys.stderr.write('%s: cases %s chosen %s ok %s edits %s\n' % (
                     arc, who, [i in chosen for i in who], [i in okall for i in who], [len(cases[i]['edits']) for i in who]))
-        c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
-        extra = c64_row_cover.summary(arcs, picked)
+        if spec.get('c64_cover_partial'):
+            # (A partial file: the arcs only runs too long for one C64
+            # program take are listed in the proof instead.)
+            extra = c64_row_cover.summary(arcs, picked)
+            extra['c64_missed_arcs'] = c64_row_cover.missing(arcs, picked)
+        else:
+            c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
+            extra = c64_row_cover.summary(arcs, picked)
         write_cover_record(spec_id, spec, arcs, picked, full, [
             {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
              'routines_run': cases[i]['ran']} for i in sorted(picked) if cases[i].get('cut')])
@@ -2065,9 +2096,19 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers=None, c
             break
         # (So do the cases of its routine whose runs reach every routine its
         # run reaches: one pass each, not one probe per case.)
+        # With 'c64_drop_superset' (files whose DIFEQ or iteration runs
+        # reach most of the file): every case, of any routine, whose run
+        # reaches every routine the dropped case's run reaches, whatever its
+        # edits, so selection does not re-probe them one at a time.
+        # Also every case whose run reaches at least as many routines (a
+        # diagnostic's size is mostly its routines' code).
+        wide = spec.get('c64_drop_superset')
+        nb = bin(visits[bad]).count('1')
         for i, c in enumerate(cases):
-            if i not in excluded and c['cm'] == cases[bad]['cm'] and c['point'] == cases[bad]['point'] \
-                    and visits[bad] & ~visits[i] == 0 and len(c['edits']) >= len(cases[bad]['edits']):
+            if i not in excluded and c['cm'] == cases[bad]['cm'] and (
+                    (wide and (visits[bad] & ~visits[i] == 0 or bin(visits[i]).count('1') >= nb))
+                    or (c['point'] == cases[bad]['point'] and visits[bad] & ~visits[i] == 0
+                        and len(c['edits']) >= len(cases[bad]['edits']))):
                 sys.stderr.write('case %d (%s) does not fit one C64 diagnostic: host only\n' % (i, c['point']))
                 excluded.add(i)
                 C64_TOO_BIG.append(i)

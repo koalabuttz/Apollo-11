@@ -3,14 +3,14 @@
  "aggregates": {
   "self-check": {
    "record": "evidence/self-check/self-check-host.log",
-   "sha256": "e9b53de4c165ed64bfd6c565df66368e7790a5f94406988e28e888654ab30e42",
+   "sha256": "b357bf7f28c772d547d5d97fb6342ea2eddfaf6d42c4a3af622816f6321a0943",
    "pass_lines": [
-    "PASS: Luminary099: 4096 random-state and 43 whole-rope cases equal the original program; 77 + 7 C64 rows take all 426 + 392 host branch arcs",
-    "PASS: Comanche055: 4096 random-state and 43 whole-rope cases equal the original program; 78 + 7 C64 rows take all 426 + 388 host branch arcs"
+    "PASS: Luminary099: 4096 random-state and 43 whole-rope cases equal the original program; 77 + 7 C64 rows take all 436 + 402 host branch arcs",
+    "PASS: Comanche055: 4096 random-state and 43 whole-rope cases equal the original program; 78 + 7 C64 rows take all 436 + 400 host branch arcs"
    ],
    "checks": [
-    25068,
-    25068
+    25120,
+    25120
    ],
    "failures": 0,
    "result": "PASS"

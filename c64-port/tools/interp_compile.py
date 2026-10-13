@@ -666,6 +666,15 @@ class Compiler:
                     # An indexed fixed operand: the rope words at each
                     # address the spec's index values reach; any other
                     # effective address is refused.
+                    if self.spec.get('fixed_index_erasable'):
+                        # (An index that takes the address below 02000 reads
+                        # erasable, as the interpreter does: k = 0.)
+                        st[-1] += '{const agc_word *k=0;if(W[0116]>=02000u){' + self.superbank_guard(fx) + \
+                            'switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
+                        st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
+                        st.append('  default:return EXEC_OUT_OF_SCOPE;}}')
+                        st.append('%s%s(s,k);}' % (P, fn))
+                        return st, cur + 1, False, False
                     st[-1] += self.superbank_guard(fx) + '{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
                     st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
                     st.append('  default:return EXEC_OUT_OF_SCOPE;}')
@@ -815,18 +824,21 @@ class Compiler:
                     self.add_start(target, 'b', 'RTB target')
                 else:
                     self.externals_any[target] = 'RTB ' + (lab or '')
+                end = cur
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
                 elif self.rk:
                     # RTB with an order on its right: DANZIG runs that order,
-                    # then NEWOPS at the word after its operands.
+                    # then NEWOPS at the word after its operands (words of
+                    # this routine's pair, for the source map).
                     q = cur
                     while q in self.code and not is_interp_op(self.code[q].op):
                         q += 1
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
+                        end = q
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
-                return st, cur, True, False
+                return st, end, True, False
             if lab not in self.rtb:
                 raise CompileError('RTB %s has no native routine in the spec' % lab)
             st[-1] += '(void)ai_ccs(s,020);%srtb(s);' % P
@@ -841,7 +853,14 @@ class Compiler:
                 self.add_start(cur, 'i', 'RTB %s return' % lab)
                 st.append('return EXEC_OK; /* RTB %s */' % lab)
                 return st, cur, True, False
-            st.append('if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (self.rtb[lab][self.m], lab))
+            call = self.rtb[lab][self.m]
+            if isinstance(call, tuple):
+                # (call, 'stops'): the call returns RTB_OK to go on, 2 when
+                # the run ends outside the file (an alarm), else refuses.
+                st.append('{int r=%s;if(r==2)return EXEC_OK;if(r!=RTB_OK)return EXEC_OUT_OF_SCOPE;} /* %s */'
+                          % (call[0], lab))
+                return st, cur, False, False
+            st.append('if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (call, lab))
             return st, cur, False, False
         if base in ('BOV', 'BOVB'):
             st.append('switch(%sbov(s)){case %sBOV_NONE:break;case %sBOV_GOTO:' % (P, P.upper(), P.upper()))
@@ -963,8 +982,21 @@ class Compiler:
             w, k, mask = self._ix
             head = st[0]
             self._st_tail = st[1:]
-            st = [head, '{agc_word iw=ixw(s,0%05o,0%ou);if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
-                self._ix_base if self._ix_base is not None else w, k, w, 0o77777 & ~mask)]
+            if self._ix2:
+                # EXTEND; INDEX K; INDEX T (T fixed); X: the second INDEX
+                # adds C(T + C(K)), a word of the rope, for the offsets the
+                # spec's basic_fixed_index lists (any other C(K) refuses).
+                k1, a2, bank2, offs = self._ix2
+                expr = ''.join('W[0%o]==0%05ou?(agc_word)(0%05ou+0%05ou):' % (
+                    k1, off & 0o77777 if off >= 0 else 0o77777 + off, w, self.L.word(self.phys_of(a2 + off, bank2)))
+                    for off in offs) + '077777u'
+                for off in offs:
+                    self.basic_fixed.add(self.phys_of(a2 + off, bank2))
+                st = [head, '{agc_word iw=%s;if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
+                    expr, w, 0o77777 & ~mask)]
+            else:
+                st = [head, '{agc_word iw=ixw(s,0%05o,0%ou);if((iw^0%05ou)&0%05ou)return EXEC_OUT_OF_SCOPE;' % (
+                    self._ix_base if self._ix_base is not None else w, k, w, 0o77777 & ~mask)]
             if mask == 0o7777 and self.spec.get('index_guard'):
                 # A 12-bit erasable operand: the sum must stay erasable (an
                 # INDEX POSITON far past the table would read the rope).
@@ -972,6 +1004,8 @@ class Compiler:
             if self._ix_write:
                 e, n = self._ix_write
                 st.append('  if(%s<=6u&&%s+%du>=3u)return EXEC_OUT_OF_SCOPE;' % (e, e, n - 1))
+            if self._ix_read:
+                st.append('  if(%s>=02000u)return EXEC_OUT_OF_SCOPE;' % self._ix_read)
             st += ['  ' + x for x in self._st_tail] + ['}']
         return st, succ
 
@@ -985,6 +1019,7 @@ class Compiler:
         start = p
         extended = False
         index = None
+        self._ix2 = None
         while True:
             if w == 0o6:          # EXTEND
                 extended = True
@@ -999,6 +1034,14 @@ class Compiler:
                 continue
             if op == 5 and extended and index is None and k12 < 0o2000:
                 index = k12       # extended INDEX: next stays extended
+                p += 1
+                w = self.L.word(p)
+                continue
+            if op == 5 and extended and index is not None and self._ix2 is None and k12 >= 0o2000 and \
+                    self.code.get(p) and self.code[p].operand.split()[0] in self.spec.get('basic_fixed_index', {}):
+                # A second INDEX, of a fixed table, under the first (CGCALC's
+                # EXTEND; INDEX WCHPHASE; INDEX TARGTDEX; DCA TCGFBRAK).
+                self._ix2 = (index, k12, bank, self.spec['basic_fixed_index'][self.code[p].operand.split()[0]])
                 p += 1
                 w = self.L.word(p)
                 continue
@@ -1026,6 +1069,9 @@ class Compiler:
 
         self._ix = None
         self._ix_write = None
+        self._ix_read = None
+        if self._ix2:
+            self._ix = (w, index, 0o7777)
         if (index is not None and not extended and op == 1 and qc == 0 and k10 < 0o10
                 and self.spec.get('index_returns')):
             # INDEX K; TCF 0 +n with K a saved Q (P37's INDEX SPRTEX, TCF 0
@@ -1043,7 +1089,12 @@ class Compiler:
             # (ixw); the opcode bits must not change.
             mask = 0o7777 if (w & 0o7777) - k in (0, 1) else 0o1777
             self._ix = (w, index, mask)
-            return '(unsigned)((iw&0%ou)-%du)' % (mask, (w & mask) - k)
+            e = '(unsigned)((iw&0%ou)-%du)' % (mask, (w & mask) - k)
+            if mask == 0o7777 and self.spec.get('index_erasable'):
+                # (A sum past the erasable words is refused: LLGE's INDEX
+                # MPAC +3; CA 5 reads a power table there.)
+                self._ix_read = e
+            return e
 
         def eras(k, what):
             writes = what in ('ts', 'xch', 'lxch', 'qxch', 'dxch', 'das', 'ads', 'incr', 'aug', 'dim')
@@ -1107,7 +1158,8 @@ class Compiler:
                     # the run ends there, with Z the erasable address.
                     st.append('ai_tc(s,0%04o);' % (ln.loc + 1))
                     return st + ['W[5]=0%04o;return EXEC_OK; /* erasable program %s */' % (k12, ln.operand.split()[0])], []
-                if 0o10 <= k12 < 0o2000 and index is None:
+                if (k12 == 0 or 0o10 <= k12 < 0o2000) and index is None:
+                    # (TC A, FASTCHNG's return, runs the TC in A: Q = 1.)
                     # TC to an erasable word runs it as an instruction (a
                     # saved return): Z = its address, Q = the word's own + 1.
                     # 01400-01777 is the switched bank EB selects (QSAVED).
@@ -1123,12 +1175,19 @@ class Compiler:
                     st.append('W[5]=0%04o;%sintpret(s,io);return EXEC_OK;' % (self.intpret, self.p))
                     self.add_start(p + 1, 'i', 'after TC INTPRET')
                     return st, []
+                if lab in self.spec.get('intpret_via', ()):
+                    self.add_start(p + 1, 'i', 'after TC %s' % lab)
                 if self.in_file(tz):
                     # (A TC followed by data, as TC SBANDANT +2, does not return.)
                     if self.is_basic(nxt):
                         self.add_start(nxt, 'b', 'return from %s' % (lab or self.where(tz)))
                     # The return, and the skips INCR Q makes, stay in this routine.
                     rets = [nxt] + ([nxt + 1, nxt + 2, nxt + 3] if self.incr_q else [])
+                    # Returns past the TC the callee makes itself (ROOTPSRS's
+                    # INDEX RETROOT; TCF 2): keys of their own.
+                    for k in self.spec.get('in_file_returns', {}).get(lab, ()):
+                        self.add_start(nxt + k, 'b', 'return from %s +%d' % (lab, k))
+                        rets.append(nxt + k)
                     rets = [q for q in rets if self.is_basic(q)]
                     self.returns_seen.update(rets)
                     return st + ['goto L%o;' % tz], [tz] + rets
@@ -1137,6 +1196,12 @@ class Compiler:
                     # overflow skip over the EXTEND): no producer leaves
                     # overflow there, so it is refused.
                     return st + ['return EXEC_OUT_OF_SCOPE; /* %s without EXTEND */' % ln.op], []
+                nc = self.spec.get('native_calls', {}).get(lab, {}).get(self.m)
+                if nc:
+                    # A basic subroutine outside the file run natively in
+                    # place (it returns to the word after the TC, Q as its own
+                    # TC Q leaves it).
+                    return st + ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (nc, lab)], [nxt]
                 if lab not in ext:
                     raise CompileError('TC %s at %s: not in the spec externals' % (lab or '%04o' % k12, self.where(p)))
                 n = ext[lab]
@@ -1147,16 +1212,24 @@ class Compiler:
                         n += len(self.code[q].words)
                         q += len(self.code[q].words)
                 self.externals[tz] = lab
+                if n is not None and nxt in self.code and \
+                        self.spec.get('returns', {}).get(' '.join(self.code[nxt].operand.split()), 1) == 0:
+                    # A callee that never returns: only its inline CADR is
+                    # the call's (what follows is the file's data).
+                    self.unit_words = range(start, nxt + 1)
+                    return st + ['W[5]=0%04o;return EXEC_OK; /* %s */' % (k12, lab)], []
                 if n is not None:
                     # The inline words (the call's operands) belong to this TC.
                     self.unit_words = range(start, nxt + n)
                     # (Data after the inline words: the call does not return
                     # there, as BANKCALL; CADR R53C1 jumping into a routine.)
-                    if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n):
+                    # A display (GOXDSPF, GOMARKF...) called through its
+                    # inline CADR returns to one of several words; 'returns'
+                    # 0 is a callee that never returns (BANKCALL DISPEXIT +3).
+                    callee = self.code[nxt].operand.strip() if n == 1 and nxt in self.code else None
+                    if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n) and \
+                            self.spec.get('returns', {}).get(callee, 1):
                         self.add_start(nxt + n, 'b', 'return from ' + lab)
-                        # A display (GOXDSPF, GOMARKF...) called through its
-                        # inline CADR returns to one of several words.
-                        callee = self.code[nxt].operand.strip() if n == 1 and nxt in self.code else None
                         for i in range(1, self.spec.get('returns', {}).get(callee, 1)):
                             if self.is_basic(nxt + n + i):
                                 self.add_start(nxt + n + i, 'b', 'return %d from %s' % (i + 1, callee))
@@ -1177,12 +1250,38 @@ class Compiler:
                         arms.append('return EXEC_OUT_OF_SCOPE;')
                 st.append('switch(ai_ccs(s,%s)){case 0:%scase 1:%scase 2:%sdefault:%s}' % ((eras(k10, 'ccs'),) + tuple(arms)))
                 return st, succ
+            if op == 1 and index is not None and not extended and \
+                    ln.operand.split()[0] in self.spec.get('index_tcf', {}):
+                # INDEX K; TCF T into a table of the file (LLGE's INDEX
+                # WCHPHASE; TCF WHATGUID): the spec's index_tcf lists the
+                # offsets K can hold; any other target is refused.
+                offs = self.spec['index_tcf'][ln.operand.split()[0]]
+                self._ix = (w, index, 0o7777)
+                cases, succ = [], []
+                for off in offs:
+                    t = self.phys_of(k12 + off, bank)
+                    if not self.is_basic(t):
+                        raise CompileError('index_tcf %s%+d is not basic code' % (ln.operand, off))
+                    cases.append('case 0%04ou:goto L%o;' % ((k12 + off) & 0o7777, t))
+                    succ.append(t)
+                return st + ['switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(cases)], succ
             if op == 1:
                 if index is not None:
                     return self.indexed_tc(p, w, index, ln, nxt, bank, tcf=True)
-                more, succ = leave(self.phys_of(k12, bank), 'TCF %s' % ln.operand)
+                tz = self.phys_of(k12, bank)
+                if self.L.label_at(tz) == 'INTPRET' and self.spec.get('intpret_via'):
+                    # TCF INTPRET in a subroutine the file TCs to (LLGE's
+                    # INTPRETX): the interpretive code starts at the
+                    # caller's Q, as after TC INTPRET.
+                    return st + ['W[5]=0%04o;%sintpret(s,io);return EXEC_OK;' % (self.intpret, self.p)], []
+                more, succ = leave(tz, 'TCF %s' % ln.operand)
                 return st + more, succ
             if op == 2:
+                if qc == 2 and k10 == 6 and index is None:
+                    # INCR BBANK (TDISPSET's EBANK 5 to 7): EB + 1 through BB;
+                    # past EB 7 (into BB's unused bits) is refused.
+                    return st + ['if((W[6]&7u)==7u)return EXEC_OUT_OF_SCOPE;',
+                                 'W[6]=(agc_word)(W[6]+1u);W[3]=(agc_word)((W[6]&7u)<<8);'], [nxt]
                 fn = ('das', 'lxch', 'incr', 'ads')[qc]
                 a = k10 - 1 if fn == 'das' else k10
                 return st + ['ai_%s(s,%s);' % (fn, eras(a, fn))], [nxt]
@@ -1246,7 +1345,21 @@ class Compiler:
             if op in (1, 6) and qc != 0:
                 fn = 'bzf' if op == 1 else 'bzmf'
                 if index is not None:
-                    raise CompileError('indexed %s at %s' % (fn, self.where(p)))
+                    # INDEX K; BZMF T into a table (LLGE's INDEX WCHPHASE;
+                    # BZMF WHATEXIT): as an indexed TCF (index_tcf).
+                    offs = self.spec.get('index_tcf', {}).get(ln.operand.split()[0])
+                    if offs is None:
+                        raise CompileError('indexed %s at %s' % (fn, self.where(p)))
+                    self._ix = (w, index, 0o7777)
+                    cases, succ = [], [nxt]
+                    for off in offs:
+                        t = self.phys_of(k12 + off, bank)
+                        if not self.is_basic(t):
+                            raise CompileError('index_tcf %s%+d is not basic code' % (ln.operand, off))
+                        cases.append('case 0%04ou:goto L%o;' % ((k12 + off) & 0o7777, t))
+                        succ.append(t)
+                    return st + ['if(ai_%s(s)){switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}}' % (
+                        fn, ''.join(cases))], succ
                 more, succ = leave(self.phys_of(k12, bank), fn.upper())
                 return st + ['if(ai_%s(s)){' % fn] + ['  ' + x for x in more] + ['}'], succ + [nxt]
             if op == 2:

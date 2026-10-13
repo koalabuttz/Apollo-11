@@ -95,10 +95,56 @@ linked), chunking gained nothing; now it does.
 | CM | 90 | 207 | 146 | 61 (34 one routine over its slot, 27 whole files) | 1,473,536 bytes |
 
 The over-slot routines and files, by lane, are in
-`/mnt/project-files/resident-kernel/over-slot-2026-10-13.md`. Each module
-carries about 3.5 KB of fixed runtime (the transfer ABI and image ops);
-sharing it from the resident is the next step
-(`/mnt/project-files/resident-kernel/runtime-sharing-proposal.md`).
+`/mnt/project-files/resident-kernel/over-slot-2026-10-13.md`.
+
+### Runtime sharing
+
+A module no longer links its own copy of the transfer ABI and the common
+image ops. The resident exports them as ABI 2 services (table 0x0203,
+docs/overlay-v2-services.json): `agc_transfer_run`, `agc_transfer_point`,
+`agc_fixed_physical`, `memcpy` and the kernel's `k_<op>` for 17 image ops
+(CA, CAF, CS, CSF, AD, ADF, MASKF, TS, XCH, LXCH, ADS, DXCH, CCS, TC, DCAF,
+BZF, BZMF). `tools/flight_store_build.py` links each module with
+`-Wl,--wrap=ai_<op>` and `platform/c64/flight_image_op_services.c`, whose
+`__wrap_ai_<op>` calls `k_<op>` (the frame's image is always the canonical
+one at `APOLLO_SHARED_ADDRESS`). Ops whose export would cost the resident
+too much (DAS, INCR, QXCH, MASK, DCSF, `ai_put`, `ai_word`;
+docs/RESIDENT-FLIGHT.md, Size) and ops the kernel does not wrap stay in
+each module. On def640e3d, against the same tree without sharing:
+
+| | Modules (linked, failed) | Resolver records | Mean module | Store image |
+|---|---|---|---|---|
+| LM before | 129 (72, 57) | 596 | 11,040 bytes | 936,192 bytes |
+| LM after | 113 (66, 47) | 606 | 9,022 bytes | 721,920 bytes |
+| CM before | 248 (183, 65) | 791 | 8,181 bytes | 1,636,608 bytes |
+| CM after | 183 (133, 50) | 806 | 7,353 bytes | 1,106,944 bytes |
+
+Fewer modules link because more files fit whole and need no chunks; the
+resolver records (keys the store can run) go up on both missions.
+
+`PIN` names task-slot tables that must link as one module (the steward's
+DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
+(DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
+8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
+packed yet.
+
+### Direct calls into a loaded module
+
+Header word 22 (reserved before) is `TABLES`: the address, inside the
+slot, of the module's table list (`rk_module_tables`,
+`platform/c64/resident_flight.h`), or 0. `overlay_v2_payload.ld` fills it
+from a module's `.ov2_tables` word, so only flight modules carry one. A
+module builds the list on its first run after a load (the load clears its
+BSS, so a fresh copy is never trusted). `tools/overlay_v2_pack.py` checks
+the word lies inside the slot; the loader does not read it.
+
+After the trampoline and before the resolver, the resident's step calls
+`rk_direct`: for each loaded slot with a ready list, it runs
+`agc_transfer_run` on the resident's program with the module's tables, at
+most 256 steps. `EXEC_UNMAPPED` with no step means the point is not that
+module's; the resolver and an ABI 2 run follow only when no loaded module
+holds the point. A module's main does the same through its own list, so
+both paths run the same tables.
 
 A module never crosses a 512 KB REU bank (`tools/overlay_v2_pack.py`
 starts it on the next bank instead): one DMA loads a module, and the REU's
@@ -140,6 +186,16 @@ cycles per byte with a largest residual of 22,476: some modules' first run
 does more work than their cached run, so the 32-module fit above is the
 cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
 `-DFL_FIRST`/`-DFL_LIMIT` (a module range) and `-DFL_NO_PROFILE`.
+
+The check then runs one resolver record per module both ways: through the
+module's main (an ABI 2 run) and through `rk_direct`, from the same image,
+slot contents and channels (snapshotted in the REU's last 32 KB), with only
+that module loaded. Status, image and channels must match. On def640e3d
+plus this change both missions pass (LM 903 checks, 44 modules compared;
+CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
+module main: the ABI 2 run and the copy of the program record. Most of
+what is left is the step itself: the transfer point (about 1,100 cycles)
+and the table search, which is the next thing to cut.
 
 A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
 run, the module copying its program record and tables, and one resolve. So a

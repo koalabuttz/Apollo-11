@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-v37 (lane A2): Luminary099 FRESH_START_AND_RESTART bank 04 (verb 37, R00, POOH, V37XEQ)
 # as native routines of the control-transfer ABI.
-LM_V37_SRC = src/lm_v37.c src/lm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_v37_cases.c
+LM_V37_SRC = src/lm_v37.c src/lm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_v37_cases.c
 LM_V37_HDR = include/lm_v37.h include/lm_fresh_start.h include/lm_interbank_routines.h include/agc_transfer.h include/agc_image_ops.h src/lm_v37_operands.inc tests/lm_v37_cases.h
 .PHONY: test-lm-v37 sanitize-lm-v37 c64-lm-v37 vice-lm-v37 lm-v37-differential
 all: build/test-lm-v37
