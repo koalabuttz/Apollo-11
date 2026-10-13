@@ -86,7 +86,7 @@ typedef struct agc_native_program {
  * DANZIG (LM 06061, CM 06030) with the right order's code still in EDOP
  * (CCS EDOP positive: TCF OPJUMP) and LOC at the RTB's operand word, the
  * pair word +1. That point is interpretive too: when Z is DANZIG, EDOP is
- * positive and the program's interpretive tables include the mission's
+ * positive and the program's first interpretive table is the mission's
  * marker table, the point is LOC under BANKSET. The file owning the pair
  * registers a routine there, in its interpretive table, that accepts exactly
  * the EDOP code its pair leaves, performs DANZIG's BBANK load and the right

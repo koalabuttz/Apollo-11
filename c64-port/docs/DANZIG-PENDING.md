@@ -6,7 +6,7 @@ An interpretive order pair whose left order is RTB, such as Luminary R63's `RTB 
 
 ## The rule
 
-When Z is DANZIG (LM 06061, CM 06030), EDOP is positive (1-037777, the values for which the original's `CCS EDOP` takes OPJUMP), and the program's interpretive tables include the mission's marker table (`agc_lm_danzig_marker` or `agc_cm_danzig_marker`), the point is interpretive. Its key is LOC under BANKSET, like NEWOPS. At that moment LOC holds the RTB's operand word, the pair word +1. The file that owns the pair registers a routine at that key in its interpretive table. The routine:
+When Z is DANZIG (LM 06061, CM 06030), EDOP is positive (1-037777, the values for which the original's `CCS EDOP` takes OPJUMP), and the program's first interpretive table is the mission's marker table (`agc_lm_danzig_marker` or `agc_cm_danzig_marker`), the point is interpretive. Its key is LOC under BANKSET, like NEWOPS. At that moment LOC holds the RTB's operand word, the pair word +1. The file that owns the pair registers a routine at that key in its interpretive table. The routine:
 
 - accepts exactly the EDOP code its pair leaves;
 - performs DANZIG's `CA BANKSET; TS BBANK` and the right order, including its operand fetch at LOC +1;
