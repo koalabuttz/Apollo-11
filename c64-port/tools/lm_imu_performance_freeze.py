@@ -43,7 +43,7 @@ FLAGS = ['-std=c99', '-O2', '-DP66_NATIVE_DISPATCH_ONLY', '-ffunction-sections',
          '-Wl,--gc-sections', '-Iinclude', '-Itests', '-Isrc', '-I' + str(E)]
 STRIDE = 149
 REFUSED = 2
-PARTS = 7
+PARTS = 8
 STOPS = {0o2335: 'CHECKG1 idle', 0o4103: 'FINETIME +1 idle', 0o5567: 'ALARM', 0o5744: 'VARALARM', 0o5516: 'DOWNFLAG', 0o5504: 'UPFLAG', 0o5126: 'CHANG2',
          0o5122: 'CHANG1', 0o4616: 'BANKCALL', 0o5261: 'TASKOVER', 0o5173: 'TWIDDLE', 0o5105: 'FINDVAC',
          0o5133: 'JOBSLEEP', 0o5137: 'JOBWAKE', 0o4000: 'caller return', 0o6070: 'NEWOPS outside the file'}
