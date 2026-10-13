@@ -1072,6 +1072,9 @@ SPECS = {
         'resume_flow': True,
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
+        # Arcs only runs too long for one diagnostic take come from
+        # truncated rows ('c64_cuts').
+        'c64_cuts': True,
         'rope_bin': True,
     },
     'lm-integration-init': {
