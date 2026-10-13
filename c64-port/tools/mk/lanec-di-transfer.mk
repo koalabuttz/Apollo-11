@@ -23,10 +23,10 @@ sanitize: sanitize-lanec-di-transfer
 test-lanec-di-transfer: build/lanec-native build/lanec-oracle tools/lanec/diff.py tools/lanec/routines.py
 	python3 tools/lanec/routines.py di --check
 	python3 tools/lanec/diff.py di-transfer
-	python3 tools/lanec/diff.py di-transfer-c64
+	python3 tools/lanec/diff.py di-transfer-c64 --refusals
 sanitize-lanec-di-transfer: build/lanec-native-sanitize build/lanec-oracle tools/lanec/diff.py
 	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py di-transfer --native build/lanec-native-sanitize
-	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py di-transfer-c64 --native build/lanec-native-sanitize
+	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py di-transfer-c64 --refusals --native build/lanec-native-sanitize
 # The C64 runs di-transfer-c64's frozen rows (the whole round trip does not fit
 # one program): INTER-BANK, display-start and MAKEPLAY routines only, one
 # program per mission (LANEC_DI_C64_CM), without inlining and with the static
