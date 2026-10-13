@@ -1,0 +1,26 @@
+{
+ "milestone": "cm-imu-calibration",
+ "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+ "sources_measured": [
+  "src/agc_hardware_divide.c",
+  "src/agc_image_ops.c",
+  "src/agc_multiword.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/cm_imu_calibration.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/rtb_angles.c"
+ ],
+ "host_edges": 2198,
+ "host_vector_edges": 2198,
+ "c64_edges": 2195,
+ "host_branches_missing_on_c64": [
+  "src/cm_imu_calibration.c:5301",
+  "src/cm_imu_calibration.c:5315",
+  "src/cm_imu_calibration.c:5329"
+ ],
+ "c64_rows": 476
+}

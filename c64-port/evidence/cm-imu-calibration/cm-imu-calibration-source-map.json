@@ -3,7 +3,7 @@
   "native_file": "src/cm_imu_calibration.c",
   "words": 1077,
   "untranslated_words": 0,
-  "routines": 395,
+  "routines": 398,
   "map": [
    {
     "address": "33,2004",
@@ -2863,43 +2863,43 @@
     "address": "33,2574",
     "word": "30025",
     "source": "ALLOOP CA TIME1",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2575",
     "word": "55645",
     "source": " TS GTSWTLT1",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2576",
     "word": "31540",
     "source": "ALLOOP3 CA ALTIM",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2577",
     "word": "55631",
     "source": " TS GEOSAVE1",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2600",
     "word": "05412",
     "source": " TC PHASCHNG",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2601",
     "word": "00115",
     "source": " OCT 00115",
-    "routine": "33,2525",
-    "function": "r66525"
+    "routine": "33,2574",
+    "function": "r66574"
    },
    {
     "address": "33,2602",
@@ -4332,31 +4332,31 @@
     "address": "33,3117",
     "word": "00004",
     "source": "INTVAL OCT 4",
-    "constant": "K67116"
+    "constant": "K67115"
    },
    {
     "address": "33,3120",
     "word": "00002",
     "source": " OCT 2",
-    "constant": "K67116"
+    "constant": "K67115"
    },
    {
     "address": "33,3121",
     "word": "00220",
     "source": " DEC 144        B-14",
-    "constant": "K67116"
+    "constant": "K67121"
    },
    {
     "address": "33,3122",
     "word": "77776",
     "source": " DEC -1         B-14",
-    "constant": "K67116"
+    "constant": "K67121"
    },
    {
     "address": "33,3123",
     "word": "35730",
     "source": "SOUPLY 2DEC .93505870",
-    "constant": "K67116"
+    "constant": "K67121"
    },
    {
     "address": "33,3124",

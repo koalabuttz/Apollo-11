@@ -759,7 +759,8 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
     per = spec.get('c64_per_point', 2)
     for mi in missions:
         # (every KEEP word is defined, so a group drops the routines past 60 too)
-        KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
+        if mi.m in spec['missions']:
+            KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
     if cover:
         arcs = host_arcs(spec_id, spec, missions, cases)

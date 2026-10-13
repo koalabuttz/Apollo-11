@@ -1353,7 +1353,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 11 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 11 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "Interpretive CALL to DELCOMP (ANGLFIND)",
           "SETGO CALCMAN2 to NEWANGL +1",
@@ -1372,11 +1372,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "6dfc1025e34d940044719e4c5c0fafcd3c17fd1d1b33af651418a26990508f05"
+            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "7e0a16953c38832793e1be0b7d0ece41f88d2de16c5db1d56c10c8a1c24064dc"
+            "sha256": "a6008e138752d8b919242630265d6e5fa2399dcaaa15749c699770e7214cb45a",
+            "vice_targets": {
+              "vice-gimbal-lock": 31
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
+            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
           }
         }
       }
@@ -1420,7 +1427,7 @@
             "src/agc_transfer.c",
             "include/agc_input_channels.h"
           ],
-          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 395 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
+          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 398 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
           "verification": "docs/IMU-CALIBRATION.md"
         }
       ],
@@ -1428,7 +1435,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, saved returns at the file's call sites, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, saved returns at the file's call sites, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; POSTJUMP",
           "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
@@ -1442,19 +1449,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
-            "sha256": "714951f5a9968978cae5de67b27a8cb36073b535122d854fe335fae756ae1dc7"
+            "sha256": "27daa450c160ef5e9a11753f9389ccfb9162800b8ac21180476189b3ebde08dc"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "22ecb8d8cda4ff44b83c13fb1292bbf51fe7d15420d845da618d0bccb2fca7b3"
+            "sha256": "680dc31df39656d9c1dbeabff12c9bac1a844aecf526441e1bd23f5b75bce694"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "03699dd5a64060be9cef6d3c5bd406d65eb3ede596b99cf531c30fbfecf96dab"
+            "sha256": "4e079d3550576667ca80c751baece5e3d2c9d90d652b4cde1893338cf8c55397"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "50dcbe65889b0655240180a09a465a1720309769fcd0f88c020f10fb15b561c8"
+            "sha256": "1b9b3f974f6a6fa00526e414ce5fe8b4d0532e918b0e94f7f986d19d666510fc",
+            "vice_targets": {
+              "vice-cm-imu-calibration": 476
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-outcomes.json",
+            "sha256": "81bfc806146755c71b3b5661399c286dfe499866140b4156dbd221a25bedc3f4"
           }
         }
       }
@@ -3480,7 +3494,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, VMOON, REFSMMAT, the CDU angles, the pushdown list, RCM at 2D among it).",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, VMOON, REFSMMAT, the CDU angles, the pushdown list, RCM at 2D among it). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL (R02BOTH, GOMARKFR, DELAYJOB) and BLANKET with their inline words",
           "B5OFF, ENDOFJOB and ENDEXT (no return)",
@@ -3500,11 +3514,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "c54b4498dd470d8aee1032ccef851bcb518526afdf5b3c798736971d0dca6156"
+            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "05e6f12d4047aba29c2d565f2f48fc68145fc3c9f90a93fba5e960db0cd3904b"
+            "sha256": "c0dfa61538a023377627de655dee70cd91d3a463f2427ff56da23763cefed3ef",
+            "vice_targets": {
+              "vice-sband-antenna": 134
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
+            "sha256": "d2a0145288eb4407f56af8c3e8805724797fcc3aa51d60bb274439ee95e2ae5e"
           }
         }
       }
@@ -5943,7 +5964,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 9 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under EB 6 (EBANK= BCDU) and FB 22, entered at NEWOPS with LOC at any of the file's 9 routines (LOCSKIRT, the DELCOMP return, every word after a DANZIG), NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, RATEINDX 0, 2, 4 or 6 and X1 its complement, and any values of the erasables the file reads (AM, COF, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "Interpretive CALL to DELCOMP (ATTITUDE_MANEUVER_ROUTINE)",
           "SETGO CALCMAN2 to NEWANGL +1",
@@ -5962,11 +5983,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "6dfc1025e34d940044719e4c5c0fafcd3c17fd1d1b33af651418a26990508f05"
+            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "7e0a16953c38832793e1be0b7d0ece41f88d2de16c5db1d56c10c8a1c24064dc"
+            "sha256": "a6008e138752d8b919242630265d6e5fa2399dcaaa15749c699770e7214cb45a",
+            "vice_targets": {
+              "vice-gimbal-lock": 31
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
+            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
           }
         }
       }
@@ -8567,7 +8595,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list).",
+        "supported_domain": "Canonical 2048-word image under any EB with FB 32 and the superbank bit set (bank 42), entered at NEWOPS with LOC at any of the file's interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2, Q a caller return, and any values of the erasables the file reads (RATT, TAT, RLM, VMOON, REFSMMAT, the CDU angles, the pushdown list). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL (R02BOTH, GOMARKFR), PRIOCHNG and BLANKET with their inline words",
           "B5OFF, ENDOFJOB and ENDEXT (no return)",
@@ -8587,11 +8615,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "c54b4498dd470d8aee1032ccef851bcb518526afdf5b3c798736971d0dca6156"
+            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "05e6f12d4047aba29c2d565f2f48fc68145fc3c9f90a93fba5e960db0cd3904b"
+            "sha256": "c0dfa61538a023377627de655dee70cd91d3a463f2427ff56da23763cefed3ef",
+            "vice_targets": {
+              "vice-sband-antenna": 134
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
+            "sha256": "d2a0145288eb4407f56af8c3e8805724797fcc3aa51d60bb274439ee95e2ae5e"
           }
         }
       }

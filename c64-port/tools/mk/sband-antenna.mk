@@ -5,7 +5,7 @@
 SBA_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 SBA_SRC = src/lm_sband_antenna.c src/cm_sband_antenna.c tests/sband_antenna_target.c $(SBA_COMMON)
 SBA_HDR = include/lm_sband_antenna.h include/cm_sband_antenna.h tests/interp_case.h tests/sband_antenna_vectors.h tests/sband_antenna_c64_vectors.h
-SBA_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+SBA_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
 .PHONY: test-sband-antenna sanitize-sband-antenna c64-sband-antenna vice-sband-antenna sband-antenna-differential
 all: build/test-sband-antenna
 test: test-sband-antenna

@@ -12,7 +12,7 @@ extern const agc_routine_table cm_imu_calibration_interpretive,cm_imu_calibratio
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_imu_calibration_point;
-#define CM_IMU_CALIBRATION_POINTS 395u
+#define CM_IMU_CALIBRATION_POINTS 398u
 #define CM_IMU_CALIBRATION_CADR_WORDS 2u
 #define CM_IMU_CALIBRATION_EXTERNALS 26u
 #define CM_IMU_CALIBRATION_FIRST 2411u

@@ -5,7 +5,7 @@
 CIC_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 CIC_SRC = src/cm_imu_calibration.c tests/cm_imu_calibration_target.c $(CIC_COMMON)
 CIC_HDR = include/cm_imu_calibration.h include/agc_input_channels.h tests/interp_case.h tests/cm_imu_calibration_vectors.h tests/cm_imu_calibration_c64_vectors.h
-CIC_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+CIC_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
 .PHONY: test-cm-imu-calibration sanitize-cm-imu-calibration c64-cm-imu-calibration vice-cm-imu-calibration cm-imu-calibration-differential
 all: build/test-cm-imu-calibration
 test: test-cm-imu-calibration

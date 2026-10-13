@@ -452,6 +452,9 @@ SPECS = {
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
+        # Without inlining the runs that take every branch outcome fit one
+        # diagnostic (the C64 cover misses none).
+        'c64_flags': ['-fno-inline'],
         'target': 'tests/sband_antenna_target.c',
         # V64 runs SBANDANT as a job: any DANZIG can find a job waiting.
         'resume_keys': True,
@@ -475,7 +478,8 @@ SPECS = {
         'file': {'cm': 'IMU_CALIBRATION_AND_ALIGNMENT.agc'},
         'base': {'cm': 'cm_imu_calibration'},
         'symbol': {'cm': 'cm_imu_calibration'},
-        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1'],
+        # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
         'noreturn': ['POSTJUMP'],
         'resume_keys': True,
@@ -486,6 +490,9 @@ SPECS = {
                 'PULSEIMU': None, 'SGNAGREE': None},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
+        # Without inlining the runs that take every branch outcome fit one
+        # diagnostic (the C64 cover misses none).
+        'c64_flags': ['-fno-inline'],
         'target': 'tests/cm_imu_calibration_target.c',
         # EBANK= POSITON and XSM: the file's erasables are in E5.
         'ebank': 5,
