@@ -2364,6 +2364,10 @@ Every word of Luminary099 IMU_PERFORMANCE_TEST_2 and IMU_PERFORMANCE_TESTS_4 (58
 
 Every word of INTERRUPT_LEAD_INS.agc in Luminary099 and Comanche055 is native. The GOPROG restart lead-in, the T4, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR, RUPT10 and HANDRUPT vectors, the T5RUPT lead-ins and the Comanche T6RUPT vector are routines of the control-transfer ABI (`lm_lead_in_routines`, `cm_lead_in_routines`); the LM T6RUPT and both T3RUPT vectors were already native. Comanche's RESUME, NOQRSM and NOQBRSM interrupt exits join them. All 3,072 cases equal the original programs in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit and InIsr, and the original executed every instruction of both files in that comparison. The 8,992 strict and sanitizer checks pass, and every sixteenth case matches in VICE. Complete certificates are drafted for both files. See `docs/RUPT-LEAD-INS.md`.
 
+## Resolve a pending right-hand order at DANZIG in the transfer ABI
+
+The transfer ABI now has a point for an interpretive pair whose left order is RTB. When the RTB routine returns to DANZIG with the right order still in EDOP, and the program carries the mission's DANZIG marker table, the point is LOC under BANKSET. LOC then holds the RTB's operand word, and the file that owns the pair registers its right-order routine there. In yaAGC, 88 RTB-left pairs of both missions reach DANZIG with EDOP positive and LOC at the pair word +1. The 792 strict, sanitizer and VICE checks pass. Programs without the marker resolve DANZIG by Z as before. See `docs/DANZIG-PENDING.md`.
+
 ## Run the KEYRUPT and UPRUPT handlers of both missions as native routines
 
 Every word of KEYRUPT_UPRUPT.agc in Luminary099 and Comanche055 is native: the DSKY key handler KEYRUPT1 with KEYCOM and ACCEPTUP, and the uplink handler UPRUPT with its triple-redundancy test, ERROR RESET and lockout (`lm_keyrupt_routines`, `cm_keyrupt_routines`). Each ends where the original continues: at LODSAMPT, at NOVAC to start CHARIN, or at RESUME. Channel 15, the key code, joins `agc_hardware`. All 3,072 cases equal the original programs in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channel 11, and the original executed every reachable instruction of both files in that comparison. The 9,240 strict and sanitizer checks pass, and every sixteenth case matches in VICE. Complete certificates are drafted for both files. See `docs/KEYRUPT-UPRUPT.md`.
@@ -2388,9 +2392,21 @@ All of Luminary099 S-BAND_ANTENNA_FOR_LM and Comanche055 S-BAND_ANTENNA_FOR_CM (
 
 T4RUPT_PROGRAM.agc's core is native in both missions: the 120 ms phase (NORMT4, CDRVE, DSPOUT and the DSPTAB scan to channel 10, HANG20, SETTIME4, the PRO key check), the T4JUMP dispatch to the monitors, and the 20 ms quick display (QUIKDSP, QUIKRUPT, NODSPY, SYNCT4, QUIKOFF) (`lm_t4rupt_core_routines`, `cm_t4rupt_core_routines`). Channels 10 and 32 join `agc_hardware`. All 4,416 cases equal the original programs in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channel 10. The original executed every reachable instruction of the core in that comparison. The 11,400 strict and sanitizer checks pass, and every sixteenth case matches in VICE. The monitors from IMUMON on remain; the file stays partial. See `docs/T4RUPT-CORE.md`.
 
+## INTER-BANK entries reached with an unusual Q (SWCALL -1, BANKJUMP from TC L)
+
+`SWCALL -1`, the `INCR Q` that every RTB enters through, is now a registered transfer routine in both missions, and CM BANKJUMP takes Q below 0100 as LM's does since #101 (DISPLAY_INTERFACE's SAVELOCS reaches it by `TC L`). In 1,024 cases across both missions and both entries, native runs through `agc_transfer_run` equal yaAGC on all 2048 erasable words at the callee. The 1,030 strict, sanitizer and C64 checks pass. The proof lists every native source it depends on. This addresses the INTER-BANK items of #129. See `docs/INTERBANK-Q.md`.
+
 ## Translate Luminary SERVICER as transfer-ABI routines
 
 All of Luminary099 SERVICER (the average-G navigation, 1,203 words in banks 37, 33, 22, 27, 32, 23, 21 and 34) runs as 188 native routines of the control-transfer ABI, 164 basic and 24 interpretive: READACCS and PIPASR, SERVICER, AVERAGEG and COPYCYCL, the DV monitor and LOTHRUST, AVGEND, SERVIDLE and SERVEXIT, NORMLIZE, the R29 and altitude block, CALCGRAV, CALCRVG, RVBOTH, MUNRVG and MUNGRAV, and the landing radar position and velocity updates, radar jobs and SETPOS. All 23,032 accepted cases (of 24,064; 1,032 refused) equal the original program (on yaAGC with the hardware divide) in all 2,048 erasable words, channels 11, 12, 32 and 33 and the interrupt-enable bit (strict and ASAN/UBSAN). Every key, instruction, order pair and reachable decision outcome is taken, every word is owned and its operand checked against the listing and rope. The C64 build is split into seven segment groups, each checked against the oracle with the same segment ends, and 261 C64 rows chosen by outcome pass in VICE in seven PRGs. See `docs/LM-SERVICER.md`.
+
+## SERVICE_ROUTINES entries of both missions in the transfer ABI
+
+Every SERVICE_ROUTINES entry of both missions is now a registered transfer routine at its original address: UPENT2, DOWNENT2, UPFLAG, DOWNFLAG, DELAYJOB, TCGETCAD, WAKER, GENTRAN, B5OFF, and CM TRFAILOF/TRFAILON. The flag and block-transfer operands of all 323 genuine call-site words are compiled constants. TCGETCAD, WAKER and B5OFF now accept any Q, since they never read it. 1,642 cases (every site twice, plus 512 entry cases) match yaAGC on all 2048 erasable words and the interrupt inhibit, through `agc_transfer_run`. The 1,654 strict, sanitizer and C64 checks pass. This addresses the SERVICE_ROUTINES items of #129. See `docs/SERVICE-TRANSFER.md`.
+
+## Comanche055 system-test entry words COMPVER, GTSCPSS1 and REDO in the transfer ABI
+
+The three fixed entry words at the start of Comanche055's SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER 33,2000, GTSCPSS1 33,2001 and REDO 33,2002) are now registered in `cm_standard_lead_routines`. RESTART_TABLES, FRESH_START_AND_RESTART and EXTENDED_VERBS reach them by 2CADR or FCADR. Each is one TC: Q is left at the next word (REDO's `MM 07` operand, which NEWMODEX reads) and Z at GCOMPVER, GTSCPSS or NEWMODEX. 384 cases through `agc_transfer_run` match yaAGC on all 2048 erasable words. The 390 strict, sanitizer and C64 checks pass. This addresses the CM STANDARD_LEAD_INS item of #129.
 
 ## Translate Comanche AUTOMATIC_MANEUVERS
 
@@ -2459,6 +2475,10 @@ All of Comanche055 TVCSTROKETEST (73 words) is native C on the control-transfer 
 ## Translate Luminary P40-P47
 
 Luminary099 P40-P47.agc (P40, P41, P42 and P47, the S40.x burn set-up, the engine on and off tasks, POSTBURN and UPDATEVG) is native C on the control-transfer ABI as 403 routines compiled by `tools/interp_compile.py`, except the 17 words that write channels 12 and 14 and DSALMOUT, which wait for an output-channel model. The compiler now also reads `Z` as an operand, returns a `CALL` without a return point through QPRET, and takes `GSHIFT` and `SLOAD` of fixed words and `CALRB`. Every word after a DANZIG is a routine of its own (`resume_keys`), so a job resumed after CHANG2 has its key. All 196,608 compared cases (of 206,336; the 9,728 that reach a channel write are listed, not compared) equal the original program in yaAGC. The host and sanitizer tests pass 305 frozen cases, and 18 C64 diagnostics pass 768 cases in VICE. The file stays partial until the channel words are translated. See `docs/LM-P40-P47.md`.
+
+## WAITLIST entries reached from other files in the transfer ABI
+
+The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,266 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together. The 1,271 strict, sanitizer and C64 checks pass. See `docs/WAITLIST-ENTRIES.md`.
 
 ## Translate Comanche055 R31
 
