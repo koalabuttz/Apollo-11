@@ -131,9 +131,6 @@ static NI uint8_t ai_ccsf_b(uint8_t);
 #define ai_zl() ai_lxch(7u)
 #define ai_zq() ai_qxch(7u)
 static void lmi_newops(agc_word pair);
-static void lmi_danzig_next(void);
-static void lmi_danzig_right(void);
-static void lmi_noibnksw_right(void);
 static void lmi_direct(agc_word operand, agc_word target);
 static NI void lmi_indexed(agc_word operand, agc_word target);
 static void lmi_misc(agc_word operand, agc_word target);
@@ -546,11 +543,6 @@ static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
 #define ENDERAS_NEG 074056u /* -ENDERAS DEC -2001 */
 #define DEC45 055u
 
-static void lmi_danzig_next(void){
- /* DANZIG CA BANKSET, TS BBANK; NOIBNKSW CCS EDOP (+0); CCS NEWJOB (+0);
-  * INCR LOC; NEWOPS. */
- ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);(void)ai_ccs(067);ai_incr(0164);W[5]=IF_(06070,06037);
-}
 static NI void opjump(void){
  /* OPJUMP TS CYR; CCS CYR. */
  (void)ai_ts(020);(void)ai_ccs(020);
@@ -559,10 +551,6 @@ static void lmi_newops(agc_word pair){
  /* NEWOPS INDEX LOC, CA 0; CCS A (negative pair); TS EDOP; MASK LOW7.
   * Every instruction ends with L overflow-corrected and sign-extended. */
  W[1]=agc_extend(agc_correct(W[1]));ai_caf(pair);(void)ai_ccs(0);(void)ai_ts(023);ai_maskf(LOW7);opjump();
-}
-static void lmi_danzig_right(void){
- /* DANZIG CA BANKSET, TS BBANK; CCS EDOP (positive) TCF OPJUMP. */
- ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);opjump();
 }
 static NI void indjump(agc_word target){
  /* ITRnn INDEX CYR; 7 (or 3) INDJUMP -1: the transfer reads CYR without
@@ -696,10 +684,6 @@ static NI uint8_t lmi_switch(void){
 static void lmi_swbranch(agc_word target_word){
  /* SWBRANCH CA BANKSET; TS FBANK; INDEX LOC, CA 1; TS POLISH; TCF GOTO +1. */
  ai_ca(0165);(void)ai_ts(4);ai_caf(target_word);(void)ai_ts(0117);ai_maskf(HIGH4);goto_fixed();
-}
-static void lmi_noibnksw_right(void){
- /* NOIBNKSW CCS EDOP (positive) TCF OPJUMP (SETPD's return). */
- (void)ai_ccs(023);opjump();
 }
 /* ---- orders ---- */
 /* SPDX-License-Identifier: MIT */
@@ -2074,14 +2058,6 @@ static NI void operand(uint8_t n)
     kaddr = a;
 }
 
-/* DANZIG's job switch: NEWJOB positive goes to CHANG2 (CCS EDOP +0; CCS
- * NEWJOB; TCF CHANG2), from DANZIG (bank) or NOIBNKSW (no bank). */
-static NI void chang2(uint8_t bank)
-{
-    if (bank) { ai_ca(rBANKSET); (void)ai_ts(6); }
-    (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB); W[5] = IRT_CHANG2;
-}
-
 /* CGOTO 04 (ADDRWD names the modifier, the word after the operand the CADR
  * list): INDEX LOC, CA 1; INDEX ADDRWD, AD 0; TS FBANK; MASK LOW10; INDEX A,
  * CA 10000; TS POLISH; TCF GOTO +1. */
@@ -2233,14 +2209,16 @@ static NI enum exec_status run(void)
             if (!(cw & 040000u)) { lmi_store_code(cw); break; }
             lmi_newops(cw);
             r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
-        case P_DANZIG:
-            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_danzig_right(); r = order(c); break; }
-            if (W[rNEWJOB]) { chang2(1); return EXEC_OK; }
-            lmi_danzig_next(); return EXEC_OK;
+        case P_DANZIG: ai_ca(rBANKSET); (void)ai_ts(6);   /* DANZIG CA BANKSET, TS BBANK */
+            /* fall through */
         case P_NOIBNKSW:
-            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_noibnksw_right(); r = order(c); break; }
-            if (W[rNEWJOB]) { chang2(0); return EXEC_OK; }
-            (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB); ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
+            /* CCS EDOP: positive, its right-hand order (TCF OPJUMP); +0,
+             * CCS NEWJOB: positive, CHANG2 (the job switch); +0, INCR LOC
+             * and NEWOPS. */
+            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); (void)ai_ccs(rEDOP); opjump(); r = order(c); break; }
+            (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB);
+            if (W[rNEWJOB]) { W[5] = IRT_CHANG2; return EXEC_OK; }
+            ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
         case P_DODLOAD: lmi_dodload(); load = 0; break;
         case P_DOVLOAD: lmi_dovload(); load = 1; break;
         case P_DIRADRES:
