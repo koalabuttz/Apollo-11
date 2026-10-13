@@ -11,8 +11,20 @@ corpus takes (host == C64), exiting otherwise. The cover starts from every
 16th case (the earlier stride rows, which also exercise the C64 arithmetic
 on more images). header() writes the C64 vector header: the explicit
 case-number list and the 32-bit digests of those cases.
+
+select() also writes build/<name>-c64-cover.json, the c64_branch_outcomes
+record a certificate cites (evidence/<milestone>/<milestone>-c64-cover.json):
+the linked sources with their sha256, the rows, the arcs the host corpus and
+the rows take in each source ([host, rows]), the host arcs the rows miss
+(host_branches_missing_on_c64, empty or the freeze fails) and, with slots
+(case n enters entry n % slots), the host cases and rows per entry slot;
+with slots the rows also include the first case of every entry slot the
+cover leaves out, so every registered entry runs on the C64.
 """
+import collections
 import hashlib
+import json
+import re
 import pathlib
 import sys
 
@@ -24,12 +36,13 @@ B = R / 'build'
 FLAGS = ('-std=c99', '-Iinclude', '-Itests', '-Isrc')
 
 
-def select(name, sources, includes, call, cases, budget=None, stride=16, flags=()):
+def select(name, sources, includes, call, cases, budget=None, stride=16, flags=(), slots=None):
     """(rows, proof fields): sources are the milestone's linked sources (port root
     relative), includes the headers the runner needs, call a C statement running
     case n (an unsigned) with apollo_overlay_state s and enum exec_status st in scope.
     The cover starts from every stride-th case (the earlier C64 rows; 0: none);
-    flags are extra compiler flags (the C64 build's -D options)."""
+    flags are extra compiler flags (the C64 build's -D options); slots the
+    number of entry slots (case n enters entry n % slots), for the record."""
     d = B / f'{name}-cover'
     d.mkdir(parents=True, exist_ok=True)
     runner = d / 'runner.c'
@@ -55,11 +68,39 @@ def select(name, sources, includes, call, cases, budget=None, stride=16, flags=(
         trace = c64_row_cover.host_trace(d / 'obj', srcs, (*FLAGS, *flags), range(cases))
         c64_row_cover.save(cache, trace)
     rows = c64_row_cover.cover(trace, budget=budget, seed=range(0, cases, stride) if stride else ())
+    if slots:
+        # Every registered entry runs on the C64: the first case of an entry
+        # slot no chosen row enters.
+        rows = sorted({*rows, *(k for k in range(min(slots, cases)) if not any(n % slots == k for n in rows))})
     c64_row_cover.check(trace, rows, f'{name} C64 rows')
     proof = c64_row_cover.summary(trace, rows)
     proof['c64_row_seed_stride'] = stride
     proof['c64_missing_branch_arcs'] = c64_row_cover.missing(trace, rows)
     assert proof['c64_branch_arcs'] == proof['host_branch_arcs'] and not proof['c64_missing_branch_arcs']
+    host = frozenset().union(*trace.values())
+    taken = frozenset().union(*(trace[n] for n in rows))
+    per = collections.defaultdict(lambda: [0, 0])
+    for arc in host:
+        per[arc.split(':', 1)[0]][0] += 1
+    for arc in taken:
+        per[arc.split(':', 1)[0]][1] += 1
+    record = {'milestone': name,
+              'method': 'gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over '
+                        'every linked source, which calls the digest function the C64 diagnostic calls per row; '
+                        'the rows are the C64 vector header\'s case list, each run on VICE against its frozen '
+                        'digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)',
+              'linked_sources': {s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in sources},
+              'compiler_flags': [*FLAGS, *flags], 'host_cases': cases, 'c64_rows': rows,
+              'c64_row_seed_stride': stride,
+              'host_branch_arcs': len(host), 'c64_branch_arcs': len(taken),
+              'arcs_by_source_host_c64': {s: per[s] for s in sorted(per)},
+              'host_branches_missing_on_c64': proof['c64_missing_branch_arcs']}
+    if slots:
+        chosen = set(rows)
+        record['entry_slots'] = f'case n enters entry slot n % {slots}'
+        record['entry_slots_host_c64'] = [[sum(1 for n in range(cases) if n % slots == k),
+                                           sum(1 for n in chosen if n % slots == k)] for k in range(slots)]
+    (B / f'{name}-c64-cover.json').write_text(json.dumps(record, indent=1) + '\n')
     return rows, proof
 
 
@@ -80,3 +121,43 @@ def header(tool, prefix, values, rows, stride=16):
         out.append(''.join(f'0x{values[n]:08x}ul,' for n in rows[i:i + 6]))
     out.append('};')
     return '\n'.join(out) + '\n'
+
+
+def prg_hashes(text):
+    """The PRG sha256s a VICE evidence log names ('PRG sha256 <hex> [(<name>.prg)]')."""
+    return [{'prg': name or None, 'sha256': digest}
+            for digest, name in re.findall(r'PRG sha256 ([0-9a-f]{64})(?: \(([\w.-]+\.prg)\))?', text)]
+
+
+def cover_aggregate(records, errors):
+    """A completion certificate's c64_branch_outcomes record from milestone
+    cover records ({label: evidence path}): each record's sha256 must match its
+    milestone manifest and every linked source its current bytes, and no host
+    arc may be missing on the C64 rows."""
+    agg, missing, slots, linked = {}, [], [], {}
+    for label, path in records.items():
+        file = R / path
+        if not file.is_file():
+            errors.append(f'{path}: missing')
+            continue
+        data = json.loads(file.read_text())
+        digest = hashlib.sha256(file.read_bytes()).hexdigest()
+        milestone = pathlib.PurePosixPath(path).parts[1]
+        manifest = json.loads((R / f'evidence/{milestone}/SHA256.json').read_text())['files']
+        if manifest.get(file.name, {}).get('sha256') != digest:
+            errors.append(f'{path}: sha256 differs from evidence/{milestone}/SHA256.json')
+        stale = [s for s, h in data['linked_sources'].items() if hashlib.sha256((R / s).read_bytes()).hexdigest() != h]
+        if stale:
+            errors.append(f'{path}: linked sources changed since the cover was taken: {stale}')
+        missing += [f'{label}: {arc}' for arc in data['host_branches_missing_on_c64']]
+        slots += data.get('entry_slots_host_c64') or []
+        linked.update(data['linked_sources'])
+        agg[label] = {'record': path, 'sha256': digest, 'host_cases': data['host_cases'], 'c64_rows': len(data['c64_rows']),
+                      'host_branch_arcs': data['host_branch_arcs'], 'c64_branch_arcs': data['c64_branch_arcs'],
+                      'host_branches_missing_on_c64': len(data['host_branches_missing_on_c64'])}
+    return {'category': 'c64_branch_outcomes',
+            'method': 'per milestone, gcov -b branch arcs of every linked source for every host case and for the '
+                      'C64 rows (tools/a2_c64_rows.py); the rows run on VICE against their frozen digests',
+            'aggregates': agg, 'linked_sources': dict(sorted(linked.items())),
+            'host_branches_missing_on_c64': missing, 'entry_slots_host_c64': slots,
+            'result': 'PASS' if agg and not missing and len(agg) == len(records) else 'FAIL'}

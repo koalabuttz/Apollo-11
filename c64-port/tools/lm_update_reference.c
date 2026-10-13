@@ -8,8 +8,12 @@ static agc_t baseline;
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
 /* Points the native run owns: UPDATE_PROGRAM (bank 43 3724-3751, bank 04
  * 3401-3770), INTER-BANK_COMMUNICATION (4616-4731), Z = 2 (TC Q executes
- * the word in Q) and UPTEMP (TC UPTEMP executes the word stored there). */
+ * the word in Q) and UPTEMP (TC UPTEMP executes the word stored there);
+ * in a case entering at one of UPJOB's interpretive words, also the
+ * interpreter (lm_up_interpreter). */
+static int interp;
 static int owned(unsigned z,unsigned fb){unsigned bank=fb>>10;
+ if(interp&&lm_up_interpreter((agc_word)z,(agc_word)fb,(agc_word)(machine.OutputChannel7&0160),(agc_word)get(LM_UP_LOC),(agc_word)get(LM_UP_BANKSET)))return 1;
  if(z==2u||z==LM_UP_UPTEMP)return 1;
  if(z>=04616u&&z<=04731u)return 1;
  if(bank>=030u&&(machine.OutputChannel7&0100))bank+=010u;
@@ -23,7 +27,7 @@ static int owned(unsigned z,unsigned fb){unsigned bank=fb>>10;
 int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
  if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;
  for(n=0;n<LM_UP_CASES;++n){apollo_overlay_state s;p66_bias_io io;agc_hardware hw;
-  lm_up_input(&s,&io,&hw,(uint16_t)n);
+  lm_up_input(&s,&io,&hw,(uint16_t)n);interp=n%(LM_UP_ROUTINES+LM_UP_INTERPRETIVE)>=LM_UP_ROUTINES;
   machine=baseline;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=(int16_t)hw.channel11;
   for(cycles=0;cycles<6000u;++cycles){

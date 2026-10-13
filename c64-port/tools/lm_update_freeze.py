@@ -28,9 +28,9 @@ OWNED = [0o43 * 1024 + w - 0o2000 for w in range(0o3724, 0o3752)] + [0o4 * 1024 
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 # The milestone's linked sources (tools/mk/lm-update.mk LM_UP_SRC), for the row cover.
-SRC = ['src/lm_update.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_update_cases.c']
+SRC = ['src/lm_update.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c', 'tests/lm_update_cases.c']
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
-CORE = ['tests/lm_update_cases.c', 'src/lm_update.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
+CORE = ['tests/lm_update_cases.c', 'src/lm_update.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c',
         'src/agc_transfer.c', 'src/agc_word.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
         'src/agc_multiword.c', 'tests/cm_executive_cases.c',
         str(E / 'agc_engine.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
@@ -80,14 +80,14 @@ def main():
                                               frozenset().union(*cases.values()))
     if missed:
         raise SystemExit(f'instructions of the file no case executes: {missed}')
-    chosen, cover = a2_c64_rows.select('lm-update', SRC, ['lm_update_cases.h'], 'lm_up_digest(&s,(uint16_t)n,&st);', len(values))
+    chosen, cover = a2_c64_rows.select('lm-update', SRC, ['lm_update_cases.h'], 'lm_up_digest(&s,(uint16_t)n,&st);', len(values), slots=37)
     (R / 'tests/lm_update_c64_vectors.h').write_text(a2_c64_rows.header('lm_update_freeze.py', 'lm_up', values, chosen))
     host = frozenset().union(*cases.values())
     proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
              'oracle': 'yaAGC (deps/virtualagc), host only', 'cases': len(values),
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'entries': 'V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)',
-             'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)',
+             'entries': 'V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35 basic), and UPJOB\'s interpretive words CALL INTSTALL and UPWAKE EXIT at NEWOPS (2 interpretive, the CHANG2 resume LOCs)',
+             'boundary': 'entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT, NEWOPS with LOC at INTSTALL); an interpretive case also owns the interpreter',
              'full_physical_words': 2048, 'host_words_executed': len(host),
              'owned_words_never_executed': [c64_rows.name(w) for w in sorted(set(OWNED) - host)], **cover}
     (B / 'lm-update-proof.json').write_text(json.dumps(proof, indent=1) + '\n')

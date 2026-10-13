@@ -85,7 +85,7 @@ def main():
     if missed:
         raise SystemExit(f'instructions of the milestone no case executes: {missed}')
     chosen, cover = a2_c64_rows.select('cm-fresh-start', SRC, ['cm_fresh_start_cases.h'], 'cm_fs_digest(&s,(uint16_t)n,&st);', len(values),
-                                       stride=16)
+                                       stride=16, slots=17)
     (R / 'tests/cm_fresh_start_c64_vectors.h').write_text(a2_c64_rows.header('cm_fresh_start_freeze.py', 'cm_fs', values, chosen, 16))
     host = frozenset().union(*cases.values())
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),

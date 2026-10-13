@@ -83,7 +83,7 @@ def main():
     if missed:
         raise SystemExit(f'instructions of the milestone no case executes: {missed}')
     chosen, cover = a2_c64_rows.select('cm-v37', SRC, ['cm_v37_cases.h'], 'cm_v37_digest(&s,(uint16_t)n,&st);', len(values),
-                                       stride=32)
+                                       stride=32, slots=36)
     (R / 'tests/cm_v37_c64_vectors.h').write_text(a2_c64_rows.header('cm_v37_freeze.py', 'cm_v37', values, chosen, 32))
     host = frozenset().union(*cases.values())
     proof = {'mission': 'Comanche055', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),

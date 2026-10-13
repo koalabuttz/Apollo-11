@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-update (lane A2): Comanche055 UPDATE_PROGRAM (P27: V70-V73
 # updates) as native routines of the control-transfer ABI.
-CM_UP_SRC = src/cm_update.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_update_cases.c
-CM_UP_HDR = include/cm_update.h include/cm_interbank_routines.h include/cm_interbank_complete.h include/agc_transfer.h include/agc_image_ops.h src/cm_update_operands.inc tests/cm_update_cases.h
+CM_UP_SRC = src/cm_update.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_update_cases.c
+CM_UP_HDR = include/cm_update.h include/cm_interp.h src/cm_interp_names.h src/lm_interp_orders.c src/lm_interp_steps.c include/cm_interbank_routines.h include/cm_interbank_complete.h include/agc_transfer.h include/agc_image_ops.h src/cm_update_operands.inc tests/cm_update_cases.h
 .PHONY: test-cm-update sanitize-cm-update c64-cm-update vice-cm-update cm-update-differential
 all: build/test-cm-update
 test: test-cm-update

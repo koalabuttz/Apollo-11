@@ -114,7 +114,7 @@ def main():
                 f'self-check-{m}{tag.replace("_", "-")}', C64_SRC[mission], ['self_check_cases.h', 'rope_image.h'],
                 f'if(!apollo_rope_load({mission}u,"build/fixed-data/{name}/MAIN.agc.bin"))return 2;'
                 f'self_check{tag}_digest({mission}u,&s,(uint16_t)n,&st);', len(values), stride=stride,
-                flags=(f'-DSELF_CHECK_{m.upper()}_ONLY',))
+                flags=(f'-DSELF_CHECK_{m.upper()}_ONLY',), slots=None if tag else 11)
             c64.append(a2_c64_rows.header('self_check_freeze.py', prefix + tag, values, chosen, stride))
             record[f'cases{tag}'] = len(values)
             record[f'snapshot{tag}_sha256'] = hashlib.sha256(ref).hexdigest()
