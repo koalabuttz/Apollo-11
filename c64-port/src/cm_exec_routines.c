@@ -6,7 +6,7 @@
 #include "cm_task_transfer.h"
 #include "agc_multiword.h"
 #include "cm_exec_sites.inc"
-#include "agc_image_w.h"
+#define W s->words
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B1(z) (uint16_t)(1024u+((z)-02000u))
 #define LONGCADR CM_EXEC_LONGCADR

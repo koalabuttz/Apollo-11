@@ -14,7 +14,7 @@
 #include "agc_image_ops.h"
 #include "cm_v37_operands.inc"
 
-#include "agc_image_w.h"
+#define W s->words
 #define B04(z) (uint16_t)(04u*1024u+((z)-02000u))
 #define B20(z) (uint16_t)(020u*1024u+((z)-02000u))
 #define A 0u

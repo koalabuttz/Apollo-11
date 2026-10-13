@@ -12,7 +12,7 @@
 #include "cm_p76_routines.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 /* The routines a C64 build registers (C64 RAM): group 1 COMPMAT (UNIT, VXV,
  * VXM), group 2 the rest. Host builds register all. */
 #ifndef CM_P76_C64_GROUP

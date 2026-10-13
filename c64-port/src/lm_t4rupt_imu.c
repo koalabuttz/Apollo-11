@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "lm_t4rupt_imu.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 /* Erasable. */
 #define TIME1 025u
 #define CDUZ 034u

@@ -6,7 +6,7 @@
 #include "lm_basic_finish.h"
 #include "lm_basic_change.h"
 #include "lm_interpreter_change.h"
-#include "agc_image_w.h"
+#define W s->words
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 
 /* Executive job services. Each composes the qualified image body of its

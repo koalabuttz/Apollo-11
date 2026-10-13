@@ -10,7 +10,7 @@
 #include "agc_image_ops.h"
 #include "cm_interp.h"
 
-#include "agc_image_w.h"
+#define W s->words
 #define NEWJOB 067u
 #define EDOP 023u
 #define FIXLOC 0120u

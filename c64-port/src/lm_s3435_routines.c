@@ -13,7 +13,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "matrix_native.h"
-#include "agc_image_w.h"
+#define W s->words
 #define LM APOLLO_FIXED_LM
 /* The routines a C64 build registers (C64 RAM): lm-s3435's own groups 1
  * (S34/35.1, LOMAT) and 2 (NOVRWRT, S34/35.4), and group 3 (NOVRWRT) for

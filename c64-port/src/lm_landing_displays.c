@@ -8,7 +8,7 @@
  * its EXTEND or the next routine. */
 #include "lm_landing_displays.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_LAD_COUNT_PATHS
 extern unsigned lm_lad_paths[];

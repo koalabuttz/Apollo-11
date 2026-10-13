@@ -19,7 +19,7 @@ void lm_time_free_fall_trace(const apollo_overlay_state *);
 #else
 #define TRACE(s) ((void)0)
 #endif
-#include "agc_image_w.h"
+#define W s->words
 #define LM APOLLO_FIXED_LM
 
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */

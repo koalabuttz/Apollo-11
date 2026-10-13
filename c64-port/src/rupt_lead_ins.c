@@ -3,7 +3,7 @@
 #include "agc_image_ops.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"
-#include "agc_image_w.h"
+#define W s->words
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 
 /* The two missions' io records share nothing but these two fields. */

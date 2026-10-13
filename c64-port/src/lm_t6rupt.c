@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #include "lm_t6rupt_routines.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B17(z) (uint16_t)(017u*1024u+((z)-02000u))
 #define POSMAX 037777u

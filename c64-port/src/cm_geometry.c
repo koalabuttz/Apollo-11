@@ -10,7 +10,7 @@
 #include "rtb_angles.h"
 #include "rtb_agreement.h"
 #include "geometry_rtb.h"
-#include "agc_image_w.h"
+#define W s->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))

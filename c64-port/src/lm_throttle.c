@@ -7,7 +7,7 @@
  * overflow skips are followed as the original does. */
 #include "lm_throttle.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_THR_COUNT_PATHS
 extern unsigned lm_thr_paths[];

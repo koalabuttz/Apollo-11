@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #endif
-#include "agc_image_w.h"
+#define W s->words
 
 /* Erasable assignments (Luminary099 ERASABLE_ASSIGNMENTS). */
 enum {

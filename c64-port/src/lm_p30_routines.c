@@ -13,7 +13,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "lm_work_matrix.h"
-#include "agc_image_w.h"
+#define W s->words
 /* The routines a C64 build registers (C64 RAM): group 1 S30.1's LEMPREC
  * return (UNIT, VXV, VXM, ABVAL), group 2 the rest. Host builds register
  * all. */

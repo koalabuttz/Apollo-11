@@ -14,7 +14,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "matrix_native.h"
-#include "agc_image_w.h"
+#define W s->words
 #define LM APOLLO_FIXED_LM
 /* The routines a C64 build registers (C64 RAM): group 1 S34/35.3's LOMAT
  * return and INTINT, group 2 GOINT and INTINT with INTINT's INTSTALL return,

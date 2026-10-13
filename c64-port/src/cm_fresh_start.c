@@ -12,7 +12,7 @@
 #include "agc_image_ops.h"
 #include "cm_fresh_start_operands.inc"
 
-#include "agc_image_w.h"
+#define W s->words
 #define B05(z) (uint16_t)(05u*1024u+((z)-02000u))
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define A 0u

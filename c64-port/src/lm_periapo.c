@@ -20,7 +20,7 @@ void lm_periapo_trace(const apollo_overlay_state *);
 #else
 #define TRACE(s) ((void)0)
 #endif
-#include "agc_image_w.h"
+#define W s->words
 
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
 enum {VLOAD=06505,PDVL=06557,DLOAD=06052,SLOAD=06501,PDDL=06523,GSHIFT=07621,DSU=07005,DAD=06775,

@@ -21,7 +21,7 @@
 #include "agc_image_ops.h"
 #include "rope_image.h"
 
-#include "agc_image_w.h"
+#define W s->words
 #define K(z) ((agc_word)((z)-SC_D))
 #define A 0u
 #define L 1u

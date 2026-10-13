@@ -4,7 +4,7 @@
 #include "lm_restart_table_data.inc"
 #define B1(z) (uint16_t)(1024u+((z)-02000u))
 #define E(a) (uint16_t)(AGC_TRANSFER_ERASABLE_BASE+(a))
-#include "agc_image_w.h"
+#define W s->words
 
 static enum exec_status selected(enum lm_restart_select_exit e){return e==LM_RS_SELECT_INVALID?EXEC_OUT_OF_SCOPE:EXEC_OK;}
 static enum exec_status restarts(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;(void)io;return selected(lm_restart_select(s,LM_RS_SELECT_GROUP));}

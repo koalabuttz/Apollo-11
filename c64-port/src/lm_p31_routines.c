@@ -12,7 +12,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define W s->words
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
 enum {VLOAD=06505,PDVL=06557,PDDL=06523,DLOAD=06052,DAD=06775,SETPD=07613,PUSH=03247,ABVAL=03176,SXA=02364,
  CALLITA=02507,BZEGOTO=02467,SWITCH=02516};

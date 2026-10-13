@@ -16,7 +16,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 
-#include "agc_image_w.h"
+#define W s->words
 #define B04(z) (uint16_t)(04u*1024u+((z)-02000u))
 #define B43(z) (uint16_t)(043u*1024u+((z)-02000u))
 #define A 0u
