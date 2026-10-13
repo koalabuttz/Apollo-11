@@ -38,8 +38,9 @@ an interrupt at the boundary that routine left. At a point with no kernel
 routine the step resolves that point through the store's resolver. The key
 is canonical (docs/OVERLAY_ABI_V2.md, `rk_resolver_bank`): for fixed-fixed
 04000-07777 the bank is 04000 or 06000 whatever FB and the superbank hold,
-and elsewhere it is FB with the channel 7 superbank bits, as BBCON holds
-them.
+and elsewhere it is FB's bank bits, plus the superbank bit 0100 only where
+FB is 030-037 and that bit is set (banks 040-043). Superbank bits that
+change no address never change the key.
 It runs the module in context 0 (the running job is always core set 0) or,
 inside an interrupt, in context 8. A module leaves Z where the program
 continues. `platform/c64/resident_flight_main.c` is the flight entry: boot,
@@ -110,6 +111,50 @@ mutations fail the test: BRUPT off by one (160 checks) and TIME3's
 overflow raising T4RUPT (115 checks). The fixed words come from the
 unmodified ropes in `evidence/fixed-data-<m>-original.rope.bin`.
 
+### The interrupt bodies
+
+The vectors other than T3RUPT run the Kernel lane's tables unchanged, from
+task-slot modules the step's resolver reaches like any other
+(`platform/c64/resident_rupt_module.c`, the steward's call):
+
+| Module | Table | LM bytes | CM bytes |
+|---|---|---|---|
+| 0x01E1 | the lead-ins (`rupt_lead_ins.h`; CM with the RESUME family) | 2,642 | 4,358 |
+| 0x01E2 | the T4RUPT core (`t4rupt_core.h`) | 7,733 | 7,878 |
+| 0x01E3 | KEYRUPT and UPRUPT (`keyrupt_uprupt.h`) | 6,384 | 6,379 |
+| 0x01E4 | LM T6RUPT and the LM RESUME family (`lm_t6rupt_routines.h`) | 7,711 | |
+
+Each wrapper binary-searches its one table for the routine at Z and runs it
+with the resident's program and io (`rk_env`, the step's module value),
+until Z reaches a point its table does not hold or 256 routines have run.
+A routine's failure, or a first point its table does not hold, goes back
+through `rk_env.status`, which the step returns. The task slot holds 8,186
+bytes, so the wrappers link with `-mllvm -inline-threshold=-50`: inlining
+the image operations into every routine is what overflows it (the LM
+T4RUPT core is 8,506 bytes at -Oz alone). The store's resolver records for
+them (`wrapper_records` in `tools/resident_flight_build.py`) are one per key
+the resident's own tables do not hold, in the canonical form above.
+
+`make test-resident-rupt` also runs 1,152 cases per mission through every
+other vector (`tests/resident_vector_cases.c`, 128 per vector: T6RUPT,
+T5RUPT, T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADARUPT, HANDRUPT).
+Each takes its image and io from the Kernel lane's own generator for the
+body the vector reaches (T4RUPT from `t4_input`, KEYRUPT1 and UPRUPT from
+`ku_input`, LM T6RUPT from `lm_t6_input`, the rest from `rli_input`), then
+moves Z to an erasable word before the interrupt with only that request
+pending. The run (`tests/resident_vector_run.c`) takes the interrupt and
+resolves each point over the resident's tables and the wrapped ones, until
+RESUME brings Z back or the run reaches a point no table holds. yaAGC runs
+the original from the same state to the same point
+(`tools/resident_vector_stops.c` gives it each native run's end), and all
+2048 words, the superbank bits, the interrupt enable and flag and channels
+5, 6, 10, 11 and 13 must agree. All 2,304 cases pass: 229 LM and 323 CM
+reach RESUME, the rest stop where a body continues into code the resident
+does not hold yet (a Waitlist task, a banked T5RUPT handler). A 2CADR names
+fixed-fixed code by its fixed-fixed address, as yaYUL assembles it, so the
+cases do too: run through its banked alias, RESUME's XCH BBANK would switch
+the bank under Z.
+
 ### The boundary-word table
 
 The resident's `fixed_data` is `rk_fixed_word`. It reads the word at Z
@@ -158,15 +203,15 @@ about 0.3 KB.
 |---|---|---|
 | Kernel (with the seam hooks) | 10,475 | 10,232 |
 | Transfer ABI trampoline and Executive call sites | 2,680 | 2,612 |
-| ABI 2 runtime and REU store | 5,166 | 5,166 |
+| ABI 2 runtime and REU store | 5,206 | 5,206 |
 | Single-precision subroutines and their table | 1,299 | 1,299 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step and boundary-word reader | 878 | 896 |
+| Resident state, step and boundary-word reader | 893 | 911 |
 | IRQ entry | 16 | 16 |
 | C runtime and library (crt0, multiply, divide, memcpy, memset) | 480 | 480 |
-| **Resident, $0801 to the end of bss** | **22,723** | **22,430** |
-| Free below the service table (of 26,367) | 3,644 | 3,937 |
+| **Resident, $0801 to the end of bss** | **22,778** | **22,485** |
+| Free below the service table (of 26,367) | 3,589 | 3,882 |
 | Service table at $6F00 (2 entries) | 6 | 6 |
 | Boot-only, in the job slot | 3,248 | 3,218 |
 
@@ -178,13 +223,16 @@ with its table linked than without it. `rk_fixed_word` is 253 bytes: it
 programs the REU registers itself, because `apollo_reu_transfer`'s 32-bit
 address arithmetic doubled it, and boot runs the boundary-word module
 through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
-LTO inlining it and costs about 450 bytes. Both missions fit with 3.6-3.9 KB to spare, so neither
+LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
+resident: the step hands each module `rk_env` and returns its status. Both
+missions fit with 3.6-3.9 KB to spare, so neither
 $C000-$CBFF nor $D000 is needed and the kernel stays as it is.
 
 ## Checks on the linked resident
 
-`make vice-resident-flight` runs eight programs (`<m>-check-<part>.prg`, LM
-and CM, parts 1 services, 2 jobs, 3 idle, 4 clock and T3RUPT) under VICE with the mission's REU
+`make vice-resident-flight` runs ten programs (`<m>-check-<part>.prg`, LM
+and CM, parts 1 services, 2 jobs, 3 idle, 4 clock and T3RUPT, 5 the other
+vectors and the boundary-word table) under VICE with the mission's REU
 store attached. Each one links the same resident sources and script as the
 flight resident. Its `main` is `platform/c64/resident_flight_check.c` in place
 of the flight entry, with the kernel halves of the cases
@@ -222,13 +270,26 @@ the image. The program sets T3RUPT pending and runs resident steps until
 RESUME brings Z back. The image, channel 7, the interrupt enable and the
 interrupt flag must give yaAGC's digest. Then, with the timer running, TIME1
 must have counted exactly the ticks the steps consumed (at least five), and
-CIA1 timer A must be counting down from the 10 ms latch. Last, every key of
+CIA1 timer A must be counting down from the 10 ms latch.
+
+Part 5, again with the CIA interrupt held off, runs every 16th other-vector
+case (72 per mission, eight per vector). A job-slot module (0x01F8,
+`platform/c64/resident_flight_vector_cases.c`) writes each case, and the
+program runs resident steps with that request pending: the entry, then the
+lead-in and the body from their wrapper modules, loaded from the REU into
+the task slot, and the kernel where a body calls it. It stops when RESUME
+brings Z back or a step finds neither a routine nor a module. The module,
+called again with selector 1, checks the run's digest against yaAGC's;
+the digest code, the frozen rows and the case itself live in the module
+and in free RAM at $C200, because the program has no room for them beside
+the resident. Last, every key of
 the boundary-word table must give its word through `rk_fixed_word` and the
 next key not in the table none; an entry at the first fixed-fixed key that
 is not RELINT, INHINT or EXTEND must store its word in BRUPT; and an entry at
 07754, not in the table, must take nothing and leave T3RUPT pending. With the
 table's REU address four bytes off and the canonical key removed, the LM
-program fails two checks.
+program fails two checks; with the T4RUPT wrapper flipping a bit of A after
+each routine, the LM part 5 program fails five.
 
 | Program | Rows | Checks |
 |---|---|---|
@@ -238,10 +299,12 @@ program fails two checks.
 | CM services | 129 | 264 |
 | CM jobs | 110 | 226 |
 | CM idle | 90 | 186 |
-| LM clock, T3RUPT and boundary words | 64 | 75 |
-| CM clock, T3RUPT and boundary words | 64 | 75 |
+| LM clock and T3RUPT | 64 | 72 |
+| CM clock and T3RUPT | 64 | 72 |
+| LM other vectors and boundary words | 72 | 81 |
+| CM other vectors and boundary words | 72 | 81 |
 
-All 729 rows pass, the same rows as `make vice-resident-kernel`. A one-word
+All 873 rows pass, the same rows as `make vice-resident-kernel`. A one-word
 kernel mutation (CS TWO to CS THREE in DUMMYJOB) fails the LM idle program.
 The host differential (`make test-resident-kernel`) is unchanged; its cases
 now run as an input half and a kernel half
@@ -250,7 +313,7 @@ and the resident.
 
 ## Evidence
 
-In `evidence/resident-kernel/` (hashes in `SHA256.json`): the eight VICE
+In `evidence/resident-kernel/` (hashes in `SHA256.json`): the ten VICE
 results with their PRG hashes (`resident-flight-vice.log`), the size report
 (`resident-flight-sizes.json`, which `tools/overlay_allocation.py` copies
 into docs/overlay-allocation.json), the host differential with the seam
@@ -265,15 +328,10 @@ boundary-word table's check in `boundary_words`) of
 - The flight store's resolver records. The boundary-word tables hold the
   check's two probe records; the store that carries every lane's modules
   regenerates them with its records (`--resolver`).
-- The vectors other than T3RUPT: the T4RUPT, T5RUPT, KEYRUPT, UPRUPT and
-  the other lead-ins, the T4RUPT core, KEYRUPT/UPRUPT and LM T6RUPT. These
-  are the Kernel lane's tables (`rupt_lead_ins.h`, `t4rupt_core.h`,
-  `keyrupt_uprupt.h`, `lm_t6rupt_routines.h`). Linked into the resident,
-  the lead-ins alone leave LM 2.8 KB and CM 1.2 KB free, KEYRUPT/UPRUPT
-  leaves under 0.6 KB, and the T4RUPT core does not fit. They become
-  task-slot modules that wrap the tables unchanged, which the step's
-  resolver reaches like any other module (the steward's call); their
-  keys are already in the boundary-word table.
+- What the interrupt bodies continue into: Waitlist tasks T4RUPT and the
+  T5RUPT handlers start, and the other lane's banked code a lead-in reaches.
+  The step resolves those through the store like any module once their
+  lanes' modules are in it.
 - KEYRUPT and UPRUPT requests. The scheduler takes them (`RK_RUPT_KEY1`,
   `RK_RUPT_UP`) once the DSKY input sets them in `rk_pending`.
 - The site operand table holds the Executive and Waitlist call sites only.
