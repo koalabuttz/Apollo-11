@@ -4,7 +4,7 @@
 LP20_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 LP20_SRC = src/lm_p20_p25.c tests/lm_p20_p25_target.c $(LP20_COMMON)
 LP20_HDR = include/lm_p20_p25.h tests/interp_case.h tests/lm_p20_p25_vectors.h tests/lm_p20_p25_c64_vectors.h
-LP20_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110
+LP20_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_INPUTS
 .PHONY: test-lm-p20-p25 sanitize-lm-p20-p25 c64-lm-p20-p25 vice-lm-p20-p25 lm-p20-p25-differential
 all: build/test-lm-p20-p25
 test: test-lm-p20-p25

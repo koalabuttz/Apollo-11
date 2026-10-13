@@ -2029,6 +2029,12 @@ SPECS = {
         'base': {'lm': 'lm_p20_p25'},
         'symbol': {'lm': 'lm_p20_p25'},
         # PROG20/22/25 from FRESH_START, the rest the labels other files call.
+        # Channel instructions wait for the shared output-channel model
+        # (spec 'channels', from Lane F and Lane D2): a case reaching one
+        # refuses and is listed, not compared. So does RRLIMCHK's entry.
+        'partial': {'lm': 'the channel instructions (RAND, WAND, WOR and RXOR on channels 12, 13 and 14, '
+                          'LCHAN and SUPERBNK) wait for the shared I/O channel model; RRLIMCHK\'s double index '
+                          '(EXTEND, INDEX Q, INDEX 0) is not compiled yet'},
         'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM', 'CLRADMOD', 'DORREPOS', 'GOTOV56', 'LRALT', 'LRPOS2',
                     'LRVEL', 'LRVELX', 'LRVELY', 'LRVELZ', 'P20LEMC1', 'P25LEM1', 'R12LITES', 'R22RSTRT',
                     'R29', 'RADAREAD', 'RRDESNB', 'RRLIMCHK', 'RRRANGE', 'RRRDOT', 'RRTURNON', 'RRZERO', 'SETTRKF',
