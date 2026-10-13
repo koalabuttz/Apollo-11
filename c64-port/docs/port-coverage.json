@@ -93,6 +93,7 @@
         {
           "native_files": [
             "src/cm_self_check.c",
+            "src/cm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/cm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -100,7 +101,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -108,7 +109,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
             "vice_targets": {
               "vice-self-check": 85
             }
@@ -119,19 +120,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
-            "sha256": "69012cf6a828dddc78308947152f11f1c43cb037b12fc1d3597fcebffbd9e25c"
+            "sha256": "bcb69dd2bad76e57614843b15bcc8c0fb804d8fd0d3aefb58b0ca49f40cffdba"
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "e194f987bfc8f0323a18fd7e448f020ba7e59ae84b0c875855990762304dd964"
+            "sha256": "a3562a47664eed60ac79b7c7dc550ffd7fbb3caf8af569f27a1dac520e891e9c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
-            "sha256": "3aa087a1519d33efa8a186e211c4e05e61a43133d4a18fb71a8b6cdffe293b9b"
+            "sha256": "53b43bb75ea43bc3ac14c652b99009a808116266d42edbab228387aa1e2bf2ab"
           }
         },
         "external_continuations": [
@@ -2116,19 +2117,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
@@ -2139,7 +2140,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
           }
         }
       }
@@ -4996,15 +4997,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
             "vice_targets": {
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
@@ -5016,7 +5017,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -5873,6 +5874,7 @@
         {
           "native_files": [
             "src/lm_self_check.c",
+            "src/lm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/lm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -5880,7 +5882,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -5888,7 +5890,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
             "vice_targets": {
               "vice-self-check": 84
             }
@@ -5899,19 +5901,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
-            "sha256": "bea2c13939fa9fff4aa5efc27167297c1502d34fd67f24338df5f5915909765f"
+            "sha256": "afac6d9b44b2b44d804f4e6c9548670e6294e1defb1094e7e29afaba3ef74ab6"
           },
           "source_to_native_map": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
-            "sha256": "c1bad20bc3065ebd07154b3f6c7d81e2f32227562cece8f606ad34a15dd77b2c"
+            "sha256": "697aca0da88ce924e082fba1b3af3871f29bcd5980a56485ad95dc8d35d4b1b3"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64-cover.json",
-            "sha256": "eda6da832371015d3535a62e199fcf058daa5137eaabd6b7b7fb4068a58f90b9"
+            "sha256": "a9382b79438a91d1e0546b13f09d68d177440929ccb2933e5e09ad959515d159"
           }
         },
         "external_continuations": [
@@ -8205,19 +8207,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
@@ -8228,7 +8230,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
           }
         }
       }
@@ -11222,15 +11224,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
             "vice_targets": {
               "vice-standard-lead-oracle": 477
             }
@@ -11241,7 +11243,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
           }
         }
       }

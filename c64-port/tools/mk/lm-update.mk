@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-update (lane A2): Luminary099 UPDATE_PROGRAM (P27: V70-V73
 # updates) as native routines of the control-transfer ABI.
-LM_UP_SRC = src/lm_update.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_update_cases.c
+LM_UP_SRC = src/lm_update.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_update_cases.c
 LM_UP_HDR = include/lm_update.h include/lm_interp_steps.h include/lm_interp_orders.h include/lm_interbank_routines.h include/agc_transfer.h include/agc_image_ops.h src/lm_update_operands.inc tests/lm_update_cases.h
 .PHONY: test-lm-update sanitize-lm-update c64-lm-update vice-lm-update lm-update-differential
 all: build/test-lm-update
