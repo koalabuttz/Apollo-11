@@ -1016,7 +1016,7 @@ static NI void roundsub(uint8_t entry){
  (void)TS(rOVFIND);RETQ();
 }
 /* DMPSUB 07107 with the operand pair at C(ADDRWD) (fixed: kop()). */
-static NI void dmpsub(void){const agc_word *k=kop();
+static NI void dmpsub(void){static const agc_word *k;k=kop();   /* (static: no callee-saved register) */
  if(k)CAF(k[1]);else CA(AT(W[rADDRWD]+1u));
  (void)TS(rMPAC+2);CAF(ZERO);XCH(rMPAC+1);(void)TS(rMPTEMP);
  MP(rMPAC+2);XCH(rMPAC+2);MP(rMPAC);DAS(rMPAC+1);
@@ -2269,11 +2269,12 @@ static NI enum exec_status run(void)
 /* The image as the bodies need it (the compiled routines' sane()). */
 static NI uint8_t sane(void)
 {
-    unsigned vac = W[rFIXLOC];
+    uint8_t v;
     if (W[7] || W[rNEWJOB] > 037777u || W[3] > 03400u || (W[3] & 0377u) || W[6] != (agc_word)((W[4] & 076000u) | (W[3] >> 8))) return 0;
     if (io->interrupt_enabled > 1u || (io->superbank & ~0160u)) return 0;
-    unsigned v;
-    for (v = 0401u; v <= 0661u; v += 054u) if (v == vac) return 1;   /* the five VAC areas */
+    /* FIXLOC at one of the five VAC areas, 0401 + 054 k (all 01xx) */
+    if ((W[rFIXLOC] >> 8) != 1u) return 0;
+    for (v = 1u; v <= 0261u; v += 054u) if (v == (uint8_t)W[rFIXLOC]) return 1;
     return 0;
 }
 

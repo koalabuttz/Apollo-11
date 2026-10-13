@@ -211,6 +211,9 @@ static int wild(const apollo_overlay_state *s, const apollo_overlay_state *pre)
     unsigned v = s->words[0120];
     if ((s->words[3] >> 8) < 3u || v != pre->words[0120] || (s->words[0164] & 076000u) != 02000u
         || ((s->words[0165] >> 10) & 037u) != CODE_BANK) return 1;
+    /* (PUSHLOC stored outside erasable: a push-up operand address then
+     * runs through fixed memory and wraps past -0) */
+    if (s->words[0166] >= 02000u) return 1;
     if (!small(s->words[v + 046u]) || !small(s->words[v + 047u]) || !small(pre->words[v + 046u]) || !small(pre->words[v + 047u])) return 1;
     return 0;
 }
