@@ -177,6 +177,7 @@ SPECS = {
         'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
         # V83's job: a DANZIG that finds a job waiting stops at CHANG2, and
         # the word after it is where the job resumes.
+        'edge_cases': True,
         'resume_keys': True,
         # C64 rows picked by branch outcome (tools/c64_row_cover.py).
         'c64_rows': 'cover',
@@ -218,8 +219,10 @@ SPECS = {
                    'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
         'target': 'tests/r30_target.c',
         # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
+        'edge_cases': True,
         'resume_keys': True,
         'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
@@ -248,8 +251,10 @@ SPECS = {
                                           '0166': ['vac+%o' % pd]}
                       for n, pd in ((6, 0), (9, 0), (11, 0), (14, 2))}},
         'target': 'tests/cm_tpi_search_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'c64_rows': 'cover',
+        'cover_stride': 8,
         'freeze_stride': 128,
     },
     'cm-p30-p37': {
@@ -285,6 +290,7 @@ SPECS = {
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
                    'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
         'target': 'tests/cm_p30_p37_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',
@@ -326,6 +332,7 @@ SPECS = {
         'self_loops': True,
         'max_steps': 10000,
         'target': 'tests/cm_p32_p33_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',
@@ -369,6 +376,7 @@ SPECS = {
         'fixed_index': {'MUTABLE': [2, 10]},
         'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         'target': 'tests/cm_p34_p35_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',
@@ -395,7 +403,8 @@ SPECS = {
         # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
         # 144 passes of about eight routines each, and V2T's own iteration
         # calls it again on each of its passes.
-        'max_steps': 10000,
+        # (An edge-case state runs V2T past 10,000 routines.)
+        'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
@@ -418,6 +427,7 @@ SPECS = {
                    # they would run over XT1LIM's 20D.
                    'V2T101+51': {'0163': [0, 1]}},
         'target': 'tests/cm_p37_p70_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',
@@ -454,6 +464,7 @@ SPECS = {
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},
         'target': 'tests/lm_p34_p35_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',
@@ -492,6 +503,7 @@ SPECS = {
         # several routines.
         'max_steps': 10000,
         'target': 'tests/lm_p32_p35_target.c',
+        'edge_cases': True,
         'resume_keys': True,
         'resume_flow': True,
         'c64_rows': 'cover',

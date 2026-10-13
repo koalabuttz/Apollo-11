@@ -662,6 +662,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
         for p in mi.points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan),
                           key=lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i))
+            if cover:
+                # (With cover_stride, from the traced cases.)
+                mine = [i for i in mine if i in arcs] or mine
             need[p] = ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per]
         mask, pick = 0, []
         for p, part in (((p, [i]) for p in mi.points for i in need[p]) if cover else ((p, need[p]) for p in mi.points)):
