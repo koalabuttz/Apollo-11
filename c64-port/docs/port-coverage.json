@@ -2064,8 +2064,61 @@
       "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
       "bytes": 7119,
       "lines": 317,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_lat_long.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (159 words in bank 13, 2370-2626): LAT-LONG, CALLRTRP, LALOTORV, CALLRPRT, GETERAD, ARCTAN, CLROVFLW, NEGCOS, ARCTANXX, NEGOUT, SETGAMMA, SETGMEX, SETRE, SETREX, TSTRLSRM and SETRXX, as 75 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec lat-long, resume_keys).",
+          "verification": "docs/LAT-LONG.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of LAT-LONG, LALOTORV and the file's CALL targets leave them at each point (spec states), INCORPEX and QPRET caller returns, LUNAFLAG and ERADFLAG either way, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of ALPHAV, LAT, LONG, ALT and the time erasables.",
+        "external_continuations": [
+          "R-TO-RP and RP-TO-R in PLANETARY_INERTIAL_ORIENTATION (a run stops at NEWOPS with LOC there; that file is certified separately in docs/PLANETARY.md)",
+          "The caller's return through INCORPEX or QPRET (RVQ)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lat-long/lat-long-source-map.json",
+            "sha256": "c8e5411c31954786bb524994e06af477e3049df8f1a00f0f3696dfd27091b8a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lat-long/lat-long-proof.json",
+            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lat-long/lat-long-host.log",
+            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lat-long/lat-long-vice.log",
+            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "vice_targets": {
+              "vice-lat-long": 179
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lat-long/lat-long-c64-cover.json",
+            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
@@ -2917,8 +2970,60 @@
       "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
       "bytes": 9496,
       "lines": 386,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_planetary.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (204 words in bank 26): RP-TO-R, RPTORB, RPTORA, R-TO-RP, RTORPB, RPRPXXXX, RTORPA, MOONMX, NEWANGLE, EARTHMX and EARTHL, as 94 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec planetary, resume_keys).",
+          "verification": "docs/PLANETARY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of R-TO-RP, RP-TO-R, MOONMX, EARTHMX and their CALL targets leave them at each point (spec states), S1/S2 (RPREXIT, EARTHMXX) and QPRET caller returns, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of the time and position erasables. A resume point entered with a deeper pushdown list than the file leaves there overwrites S1/S2 and loops on the AGC too; it is outside the domain.",
+        "external_continuations": [
+          "The caller's return through RPREXIT (S1), EARTHMXX (S2) or QPRET (RVQ from NEWANGLE and EARTHL)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/planetary/planetary-source-map.json",
+            "sha256": "fdfe992549cb7a9ade5ae7520bffd506cb6752738d10d32eb3e84273ee59547a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/planetary/planetary-proof.json",
+            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/planetary/planetary-host.log",
+            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/planetary/planetary-vice.log",
+            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "vice_targets": {
+              "vice-planetary": 202
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/planetary/planetary-c64-cover.json",
+            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
@@ -6992,8 +7097,61 @@
       "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
       "bytes": 7080,
       "lines": 306,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_lat_long.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (155 words in bank 13, 2351-2603): LAT-LONG, CALLRTRP, LALOTORV, CALLRPRT, GETERAD, ARCTAN, CLROVFLW, NEGCOS, ARCTANXX, NEGOUT, SETGAMMA, SETGMEX, SETRE, SETREX, TSTRLSRM and SETRXX, as 75 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec lat-long, resume_keys).",
+          "verification": "docs/LAT-LONG.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of LAT-LONG, LALOTORV and the file's CALL targets leave them at each point (spec states), INCORPEX and QPRET caller returns, LUNAFLAG and ERADFLAG either way, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of ALPHAV, LAT, LONG, ALT and the time erasables.",
+        "external_continuations": [
+          "R-TO-RP and RP-TO-R in PLANETARY_INERTIAL_ORIENTATION (a run stops at NEWOPS with LOC there; that file is certified separately in docs/PLANETARY.md)",
+          "The caller's return through INCORPEX or QPRET (RVQ)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lat-long/lat-long-source-map.json",
+            "sha256": "c8e5411c31954786bb524994e06af477e3049df8f1a00f0f3696dfd27091b8a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lat-long/lat-long-proof.json",
+            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lat-long/lat-long-host.log",
+            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lat-long/lat-long-vice.log",
+            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "vice_targets": {
+              "vice-lat-long": 179
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lat-long/lat-long-c64-cover.json",
+            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LEM_GEOMETRY.agc",
@@ -8078,8 +8236,60 @@
       "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
       "bytes": 9233,
       "lines": 385,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_planetary.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (188 words in banks 06, 24, 25 and 26): RP-TO-R, RPTORB, RPTORA, R-TO-RP, RTORPB, RPRPXXXX, RTORPA, MOONMX, MOONMXA, NEWANGLE, EARTHMX and EARTHL, as 95 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec planetary, resume_keys).",
+          "verification": "docs/PLANETARY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of R-TO-RP, RP-TO-R, MOONMX, EARTHMX and their CALL targets leave them at each point (spec states), S1/S2 (RPREXIT, EARTHMXX) and QPRET caller returns, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of the time and position erasables. A resume point entered with a deeper pushdown list than the file leaves there overwrites S1/S2 and loops on the AGC too; it is outside the domain.",
+        "external_continuations": [
+          "The caller's return through RPREXIT (S1), EARTHMXX (S2) or QPRET (RVQ from NEWANGLE and EARTHL)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/planetary/planetary-source-map.json",
+            "sha256": "fdfe992549cb7a9ade5ae7520bffd506cb6752738d10d32eb3e84273ee59547a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/planetary/planetary-proof.json",
+            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/planetary/planetary-host.log",
+            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/planetary/planetary-vice.log",
+            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "vice_targets": {
+              "vice-planetary": 202
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/planetary/planetary-c64-cover.json",
+            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",

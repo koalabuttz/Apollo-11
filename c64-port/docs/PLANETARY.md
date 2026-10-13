@@ -26,4 +26,4 @@ Hashes: `evidence/planetary/SHA256.json`. Bulk files are assets of the `evidence
 - **Source map.** `planetary-source-map.json` lists every word with the routine that compiles it: 188 Luminary words and 204 Comanche words, none untranslated.
 - **Independent assembly comparison.** `make planetary-differential`: 256 states per routine (48,384 cases over 189 routines) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Every 64th case is frozen in `tests/planetary_vectors.h`.
 - **Host and sanitizer results.** `make test-planetary sanitize-planetary` runs the 756 frozen cases (`planetary-host.log`).
-- **C64 execution results.** `make vice-planetary` runs eight diagnostics with 202 cases (`planetary-vice.log`). They take every branch arc of the linked sources that the 48,384 host cases take (1,137 arcs, `tools/c64_row_cover.py`).
+- **C64 execution results.** `make vice-planetary` runs eight diagnostics with 202 cases (`planetary-vice.log`). They take every branch arc of the linked sources that the 48,384 host cases take (1,138 arcs, `tools/c64_row_cover.py`).
