@@ -70,6 +70,19 @@ pinned LM DAP set, against about 750 for a base-kind module); the set
 measures 39,341 bytes. Every CM module links the resident's
 `cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
 
+A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
+engine, its main only builds the table list and returns `EXEC_OK`, and the
+resident runs its routines through `rk_direct` from the next step. That
+needs the base record, so a pinned set whose tables take another kind
+links the engine and conversion until the kind folds into `agc_hardware`;
+`report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
+measures 39,341 bytes today and 38,534 direct-only.
+
+The VICE load check also fills the free soft stack below the timings with a
+pattern and reports the deepest byte touched (`soft_stack_peak_bytes` in
+`vice-load.json`): 302 bytes LM and 174 bytes CM, over every module's main
+and one resolver record per module run through `rk_direct`.
+
 ### Fit on 6b6ed2dc
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |

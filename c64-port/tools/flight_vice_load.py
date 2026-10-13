@@ -72,7 +72,7 @@ def run(m, a):
                             transfer_cycles=load - cached, cycles_per_byte=round((load - cached) / size, 2)))
     run_only, point, resolve = (v - overhead for v in struct.unpack_from('<3H', data, 0x3f0))
     return dict(mission=m, ok=ok, failures=failures, checks=checks, first_failing_step=data[5],
-                timer_overhead_cycles=overhead,
+                timer_overhead_cycles=overhead, soft_stack_peak_bytes=struct.unpack_from('<H', data, 0x3f6)[0],
                 call_profile=dict(runtime_cached_run=run_only, resident_transfer_point=point,
                                   resident_transfer_resolve=resolve),
                 modules=modules)
@@ -118,7 +118,8 @@ def main():
               f"{min(x['cached_cycles'] for x in mods)}-{max(x['cached_cycles'] for x in mods)}"
               + (f", direct call saves {min(d)}-{max(d)} cycles over the module main ({len(d)} modules match)"
                  if (d := [x['main_cycles'] - x['direct_cycles'] for x in mods
-                           if x.get('direct_cycles') is not None]) else ''))
+                           if x.get('direct_cycles') is not None]) else '')
+              + f"; soft stack peak {r['soft_stack_peak_bytes']} bytes")
     return 1 if failed else 0
 
 
