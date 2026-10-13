@@ -16,6 +16,9 @@
 #include "resident_flight.h"
 #include "resident_flight_check.h"
 #include "resident_kernel_cases.h"
+#ifdef RK_PART
+#define RK_C64_PART RK_PART
+#endif
 #if RK_LM
 #include "lm_kernel_c64_rows.h"
 #define JOB_PARTS 3u
