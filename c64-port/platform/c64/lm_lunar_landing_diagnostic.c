@@ -3,15 +3,18 @@
  * chosen by tools/lane_f_c64_rows.py (every routine, outcome and path the
  * host cases take) through the routines, against digests frozen from the
  * original program (tools/lm_lunar_landing_freeze.py). Two PRGs
- * (LLD_C64_GROUP): group 2 runs the rows of DDUMCALC and P63SPOT2, group 1
- * all others. The undo image lives at LLD_UNDO_ADDRESS, outside the
+ * (LLD_C64_GROUP): group 2 runs the rows of DDUMCALC, P63SPOT2 and
+ * the order pairs they reach, group 1 all others. The undo image lives at LLD_UNDO_ADDRESS, outside the
  * program.
  * Mailbox (tools/vice_run.py): $c001-2 failures, $c003-4 checks, $a5 at $c000. */
 #include <stdint.h>
 #include "lm_lunar_landing_cases.h"
 #include "lm_lunar_landing_c64_vectors.h"
 static int in_group(uint16_t n){uint16_t k=lld_routine_keys[n%LLD_ROUTINES];
- int heavy=k==032u*1024u+01102u||k==032u*1024u+01215u;
+ /* DDUMCALC (32,3102) and the order pairs src/lm_lunar_landing.c keeps
+  * under LLD_G2 (32,3104-3143, 3163-3201, 3215-3222). */
+ unsigned a=k-032u*1024u+02000u;
+ int heavy=k/1024u==032u&&(a==03102u||(a>=03104u&&a<=03143u)||(a>=03163u&&a<=03201u)||(a>=03215u&&a<=03222u));
  return LLD_C64_GROUP==2?heavy:!heavy;}
 int main(void){volatile uint8_t *mail=(volatile uint8_t *)0xc000;uint16_t failures=0,checks=0,n;
  /* Interrupts off and $01=$35: BASIC and KERNAL ROM banked out, so the
