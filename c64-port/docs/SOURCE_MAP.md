@@ -2082,3 +2082,23 @@ All of Luminary099 CONIC_SUBROUTINES (1,072 words) is native C on the control-tr
 ## Thin resident Executive and Waitlist on the canonical image
 
 One thin resident Executive and Waitlist for both missions (`src/resident_kernel_body.inc`, `src/lm_kernel.c`, `src/cm_kernel.c`) translates EXECUTIVE.agc and WAITLIST.agc instruction by instruction onto the canonical image, with no gather/commit view and no domain refusals, as drop-in routine tables for the certified ones (`include/resident_kernel.h`). On every case of the six certified service milestones, 23,250 Luminary099 and 18,786 Comanche055 cases, each run equals the original program in yaAGC in all 2,048 erasable words and the device words, and equals the certified routines' final image word for word. The strict and sanitizer builds pass, and 400 LM and 329 CM rows, which take every kernel branch arc the host cases take, pass in VICE with the kernel on the image at $7000. The kernel links in 10.3 KB (LM) and 10.0 KB (CM) at -Oz, against 54-56 KB for the certified routines. See `docs/RESIDENT-KERNEL.md`.
+
+## Translate Luminary R63
+
+Luminary099 R63.agc (Verb 89, the rendezvous final attitude) is native C on the control-transfer ABI as 30 routines compiled by `tools/interp_compile.py`, every word of the file. Every word after a DANZIG is a routine of its own (`resume_keys`). All 15,360 cases equal the original program in yaAGC, none refused. The host and sanitizer tests pass 960 frozen cases, and one C64 diagnostic passes 34 cases in VICE that take all 408 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-R63.md`.
+
+## Translate Luminary P12
+
+Luminary099 P12.agc (powered ascent, and the P12INIT, COMMINIT and GUIDINIT set-up that P70 and P71 share) is native C on the control-transfer ABI as 91 routines compiled by `tools/interp_compile.py`, every word of the file. Every word after a DANZIG is a routine of its own (`resume_keys`). All 46,592 cases equal the original program in yaAGC, none refused. The host and sanitizer tests pass 1,456 frozen cases, and 7 C64 diagnostics pass 112 cases in VICE that take all 1,015 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-P12.md`.
+
+## Translate Luminary P70-P71
+
+Luminary099 P70-P71.agc (the DPS and APS abort programs, the abort-switch task R10,R11 and the abort set-up) is native C on the control-transfer ABI as 88 routines compiled by `tools/interp_compile.py`, 290 of its 298 words. The 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14) wait for the channel model, so the file stays partial. All 37,747 compared cases equal the original program in yaAGC; 7,309 that reach a channel word are listed. The host and sanitizer tests pass 1,184 frozen cases, and 4 C64 diagnostics pass 101 cases in VICE that take all 854 branch arcs the compared host cases take. See `docs/LM-P70-P71.md`.
+
+## Translate Luminary099 and Comanche055 LATITUDE_LONGITUDE_SUBROUTINES
+
+All of Luminary099 and Comanche055 LATITUDE_LONGITUDE_SUBROUTINES (155 and 159 words: LAT-LONG, LALOTORV, ARCTAN, GETERAD and SETRE) are native C on the control-transfer ABI, as 150 routines compiled by `tools/interp_compile.py`. All 38,400 cases equal the original programs in yaAGC; the host tests pass 600 frozen cases and eight C64 diagnostics pass 179 cases in VICE. See `docs/LAT-LONG.md`.
+
+## Translate Luminary099 and Comanche055 PLANETARY_INERTIAL_ORIENTATION
+
+All of Luminary099 and Comanche055 PLANETARY_INERTIAL_ORIENTATION (188 and 204 words: R-TO-RP, RP-TO-R and the Moon and Earth matrices) are native C on the control-transfer ABI, as 189 routines compiled by `tools/interp_compile.py`. All 48,384 cases equal the original programs in yaAGC; the host tests pass 756 frozen cases and eight C64 diagnostics pass 202 cases in VICE. See `docs/PLANETARY.md`.

@@ -1,0 +1,24 @@
+{
+ "milestone": "lm-r63",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "measured_sources": [
+  "src/lm_r63.c",
+  "src/rtb_angles.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/agc_image_ops.c",
+  "src/agc_hardware_divide.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/agc_multiword.c",
+  "tests/interp_case.c"
+ ],
+ "host_cases_traced": 15360,
+ "host_branch_arcs": 408,
+ "c64_rows": 34,
+ "c64_branch_arcs": 408,
+ "host_branches_missing_on_c64": [],
+ "c64_vectors": "tests/lm_r63_c64_vectors.h"
+}

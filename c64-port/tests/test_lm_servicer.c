@@ -179,7 +179,7 @@ int main(void){apollo_overlay_state s;unsigned n,i,stopped=0,refusals=0;
   memcpy(lmsv_paths,saved,sizeof saved);
   kind=lmsv_run(&s,(uint16_t)n,0);
   if(kind==LMSV_REFUSED)memcpy(lmsv_paths,saved,sizeof saved);
-  if(kind==LMSV_STOPPED){++stopped;++reached[n%LMSV_ROUTINES];}
+  if(kind==LMSV_STOPPED){++stopped;++reached[lmsv_slot((uint16_t)n)];}
   if(kind==LMSV_REFUSED)++refusals;
   check(kind!=3u,"every case leaves the file or is refused",n);}
  for(i=0;i<LMSV_ROUTINES;++i)check(reached[i]>0u,"routine reached",i);

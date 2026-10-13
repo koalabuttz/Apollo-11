@@ -1,6 +1,6 @@
 # Compiling a source file into native routines (`tools/interp_compile.py`)
 
-Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...), Lane D1 (`sband-antenna`) and Lane F (`lm-p40-p47`). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
+Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...), Lane D1 (`sband-antenna`) and Lane F (`lm-p40-p47`, `lm-r63`, `lm-p12`, `lm-p70-p71`). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 ## What it emits
 

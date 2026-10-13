@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -396,7 +396,7 @@
       "sha256": "b7803a69b1702f90b89d8ae1510d646569cee23876bb113db51aec9c315f990e",
       "bytes": 10787,
       "lines": 504,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -409,7 +409,7 @@
           "verification": "docs/CM-AUTO-MAN.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -423,7 +423,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-auto-man/cm-auto-man-source-map.json",
@@ -447,6 +446,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
             "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -457,7 +460,7 @@
       "sha256": "187481b79cf3ff3c911b724c34084b0471ab62e06b52726fbde7d0d59786475c",
       "bytes": 6926,
       "lines": 301,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -473,7 +476,7 @@
           "verification": "docs/CM-BODY-ATTITUDE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -483,7 +486,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-source-map.json",
@@ -507,6 +509,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
             "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -517,7 +523,7 @@
       "sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
       "bytes": 31099,
       "lines": 1273,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -530,7 +536,7 @@
           "verification": "docs/CM-ENTRY-DAP.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -551,7 +557,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
@@ -575,6 +580,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
             "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -1978,7 +1987,7 @@
       "sha256": "e626c5273e96df95e3e0f243842bd32005537910554475e3dde3e2f48bdffbd4",
       "bytes": 21978,
       "lines": 920,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1991,7 +2000,7 @@
           "verification": "docs/CM-JET-SELECT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2001,7 +2010,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
@@ -2025,6 +2033,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
             "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -2165,8 +2177,61 @@
       "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
       "bytes": 7119,
       "lines": 317,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_lat_long.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (159 words in bank 13, 2370-2626): LAT-LONG, CALLRTRP, LALOTORV, CALLRPRT, GETERAD, ARCTAN, CLROVFLW, NEGCOS, ARCTANXX, NEGOUT, SETGAMMA, SETGMEX, SETRE, SETREX, TSTRLSRM and SETRXX, as 75 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec lat-long, resume_keys).",
+          "verification": "docs/LAT-LONG.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of LAT-LONG, LALOTORV and the file's CALL targets leave them at each point (spec states), INCORPEX and QPRET caller returns, LUNAFLAG and ERADFLAG either way, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of ALPHAV, LAT, LONG, ALT and the time erasables.",
+        "external_continuations": [
+          "R-TO-RP and RP-TO-R in PLANETARY_INERTIAL_ORIENTATION (a run stops at NEWOPS with LOC there; that file is certified separately in docs/PLANETARY.md)",
+          "The caller's return through INCORPEX or QPRET (RVQ)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lat-long/lat-long-source-map.json",
+            "sha256": "c8e5411c31954786bb524994e06af477e3049df8f1a00f0f3696dfd27091b8a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lat-long/lat-long-proof.json",
+            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lat-long/lat-long-host.log",
+            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lat-long/lat-long-vice.log",
+            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "vice_targets": {
+              "vice-lat-long": 179
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lat-long/lat-long-c64-cover.json",
+            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
@@ -2498,7 +2563,7 @@
       "sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
       "bytes": 50844,
       "lines": 2429,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2513,7 +2578,7 @@
           "verification": "docs/CM-P40-P47.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2546,7 +2611,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-source-map.json",
@@ -2570,6 +2634,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
             "sha256": "175a159370d52cc1c54e5a993d89d57e5c8346f5b131b11b2da0b77b8084953c"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -2589,7 +2657,7 @@
       "sha256": "49cc72bb29fceae82c5a40ffd2e8d1dd62264e9a55f920e81c8f3ae8d5d20172",
       "bytes": 34115,
       "lines": 1225,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2605,7 +2673,7 @@
           "verification": "docs/CM-P61-P67.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2636,7 +2704,6 @@
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
           "Erasable continuation E6,1773 (this file): accepts only TC 02224, TC 02321"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-source-map.json",
@@ -2660,6 +2727,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
             "sha256": "589f41c1abe3573101f224805b966aabecb2f404462accb99e14eec60b61aeb8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -3124,8 +3195,60 @@
       "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
       "bytes": 9496,
       "lines": 386,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_planetary.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (204 words in bank 26): RP-TO-R, RPTORB, RPTORA, R-TO-RP, RTORPB, RPRPXXXX, RTORPA, MOONMX, NEWANGLE, EARTHMX and EARTHL, as 94 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec planetary, resume_keys).",
+          "verification": "docs/PLANETARY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of R-TO-RP, RP-TO-R, MOONMX, EARTHMX and their CALL targets leave them at each point (spec states), S1/S2 (RPREXIT, EARTHMXX) and QPRET caller returns, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of the time and position erasables. A resume point entered with a deeper pushdown list than the file leaves there overwrites S1/S2 and loops on the AGC too; it is outside the domain.",
+        "external_continuations": [
+          "The caller's return through RPREXIT (S1), EARTHMXX (S2) or QPRET (RVQ from NEWANGLE and EARTHL)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/planetary/planetary-source-map.json",
+            "sha256": "fdfe992549cb7a9ade5ae7520bffd506cb6752738d10d32eb3e84273ee59547a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/planetary/planetary-proof.json",
+            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/planetary/planetary-host.log",
+            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/planetary/planetary-vice.log",
+            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "vice_targets": {
+              "vice-planetary": 202
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/planetary/planetary-c64-cover.json",
+            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
@@ -3408,7 +3531,7 @@
       "sha256": "9b4c9acb5836870ceb53a4203b8db334728e96b8ce2b1ea02da151d17b5f0966",
       "bytes": 24477,
       "lines": 975,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3421,7 +3544,7 @@
           "verification": "docs/CM-RCS-DAP.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3439,7 +3562,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
@@ -3463,6 +3585,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
             "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -3792,7 +3918,7 @@
       "sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
       "bytes": 19665,
       "lines": 824,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3807,7 +3933,7 @@
           "verification": "docs/CM-SERVICER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3832,7 +3958,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-servicer/cm-servicer-source-map.json",
@@ -3856,6 +3981,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-servicer/cm-servicer-proof.json",
             "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4221,7 +4350,7 @@
       "sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
       "bytes": 16414,
       "lines": 784,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4234,7 +4363,7 @@
           "verification": "docs/CM-TVC-DAPS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4246,7 +4375,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-source-map.json",
@@ -4270,6 +4398,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
             "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4280,7 +4412,7 @@
       "sha256": "db23079b9f12369d550b9658a5fb9a9adf52b798735c17e408cd36ff1aed5594",
       "bytes": 7926,
       "lines": 276,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4293,7 +4425,7 @@
           "verification": "docs/CM-TVC-EXEC.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4305,7 +4437,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-source-map.json",
@@ -4329,6 +4460,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
             "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4339,7 +4474,7 @@
       "sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
       "bytes": 10796,
       "lines": 414,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4352,7 +4487,7 @@
           "verification": "docs/CM-TVC-INIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4366,7 +4501,6 @@
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
           "Erasable continuation E6,1613 (this file): accepts only TC 02352, TC 04753"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
@@ -4390,6 +4524,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
             "sha256": "0b3a5cd64c85d10bf818b5263013f4e1eb1fe7d078e25c9a49ebf57e5c0d27b0"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4400,7 +4538,7 @@
       "sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
       "bytes": 6897,
       "lines": 245,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4413,7 +4551,7 @@
           "verification": "docs/CM-TVC-MASSPROP.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4422,7 +4560,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-source-map.json",
@@ -4446,6 +4583,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
             "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4456,7 +4597,7 @@
       "sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
       "bytes": 9821,
       "lines": 256,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4469,7 +4610,7 @@
           "verification": "docs/CM-TVC-RESTARTS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4484,7 +4625,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-source-map.json",
@@ -4508,6 +4648,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
             "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4518,7 +4662,7 @@
       "sha256": "e428b4f8811ab77ba4088c91dd170effb016b3dc9f46998ba59bb3ff48cf14c9",
       "bytes": 18686,
       "lines": 619,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4531,7 +4675,7 @@
           "verification": "docs/CM-TVC-ROLL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4542,7 +4686,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-source-map.json",
@@ -4566,6 +4709,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
             "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -4576,7 +4723,7 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4589,7 +4736,7 @@
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4601,7 +4748,6 @@
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
           "Erasable continuation E6,1657 (this file): accepts only TC 02541, TC 02543, TC 02743, TC 02745, TC 05324"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-source-map.json",
@@ -4625,6 +4771,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
             "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-107.md",
+            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
         }
       }
@@ -7370,8 +7520,61 @@
       "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
       "bytes": 7080,
       "lines": 306,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_lat_long.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (155 words in bank 13, 2351-2603): LAT-LONG, CALLRTRP, LALOTORV, CALLRPRT, GETERAD, ARCTAN, CLROVFLW, NEGCOS, ARCTANXX, NEGOUT, SETGAMMA, SETGMEX, SETRE, SETREX, TSTRLSRM and SETRXX, as 75 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec lat-long, resume_keys).",
+          "verification": "docs/LAT-LONG.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of LAT-LONG, LALOTORV and the file's CALL targets leave them at each point (spec states), INCORPEX and QPRET caller returns, LUNAFLAG and ERADFLAG either way, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of ALPHAV, LAT, LONG, ALT and the time erasables.",
+        "external_continuations": [
+          "R-TO-RP and RP-TO-R in PLANETARY_INERTIAL_ORIENTATION (a run stops at NEWOPS with LOC there; that file is certified separately in docs/PLANETARY.md)",
+          "The caller's return through INCORPEX or QPRET (RVQ)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lat-long/lat-long-source-map.json",
+            "sha256": "c8e5411c31954786bb524994e06af477e3049df8f1a00f0f3696dfd27091b8a7"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lat-long/lat-long-proof.json",
+            "sha256": "186e54c0ce47429190398f549226fbf9560f7e4169c506c374d5da4344821f3b"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lat-long/lat-long-host.log",
+            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lat-long/lat-long-vice.log",
+            "sha256": "76e3c44e98b0d8366f6fa32c684195d967ceb27da5ae436e9fa08d177300ab27",
+            "vice_targets": {
+              "vice-lat-long": 179
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lat-long/lat-long-c64-cover.json",
+            "sha256": "e409ced75bf563d2514226a00acf9520d7d449d2af4e70046eb888e8ac4b4e00"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/LEM_GEOMETRY.agc",
@@ -7738,8 +7941,70 @@
       "sha256": "92061c017abffeac794f349bee080dcb01186b1188d95679ace07fecf6bc85de",
       "bytes": 4407,
       "lines": 243,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p12.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "All 183 words (30,2061-2320 and 23,2432-2460): P12LM, P12LMB, NEWLOAD, P12RET, YAWDUN, P12INIT, COMMINIT and GUIDINIT, as 91 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-P12.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= DVCNTR, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 30 or 23) or with Z at any of its basic ones (FB 30 or 23): P12LM, P12LMB, P12RET, P12INIT, COMMINIT, GUIDINIT, the BANKCALL, PHASCHNG and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1, S2 and TEMPR60 caller returns outside the file, the flag words, and any values of the ascent erasables; 0 of 46,592 random cases refused.",
+        "external_continuations": [
+          "PHASCHNG with its inline OCT",
+          "BANKCALL with its inline CADR (R02BOTH, GOFLASH with its three returns)",
+          "IBNKCALL PFLITEDB",
+          "UPFLAG and DOWNFLAG with their inline ADRES",
+          "CLRADMOD",
+          "GOTOPOOH",
+          "POSTJUMP BURNBABY (no return)",
+          "Interpretive CALL of LEMPREC, MUNGRAV, YCOMP and RP-TO-R",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "The caller's return through QPRET or TEMPR60",
+          "CHANG2 when a DANZIG finds a job waiting"
+        ],
+        "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p12/lm-p12-source-map.json",
+            "sha256": "6fcb22e91a857ac526b1538e4ca17c821cb7ac7146429e6d82c3fe0682a8ae18"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p12/lm-p12-proof.json",
+            "sha256": "7a5b7f445ccd12e9724383c9895091738919332d80ca9faff95d16c9c260fb34"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p12/lm-p12-host.log",
+            "sha256": "1124d6b9be0bdb47cad8b859f089e81a2a1e8e9a4bfb146830cd7e27c5bab405"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p12/lm-p12-vice.log",
+            "sha256": "c1b81b2ffff3f54d4b2b9aceb2fb9d2d131f1167d3a736b1ab6e0e3ef8cb454a",
+            "vice_targets": {
+              "vice-lm-p12": 112
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p12/lm-p12-c64-cover.json",
+            "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P20-P25.agc",
@@ -8003,8 +8268,24 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p70_p71.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c",
+            "src/rtb_angles.c"
+          ],
+          "scope": "290 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 88 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for the channel model.",
+          "verification": "docs/LM-P70-P71.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P76.agc",
@@ -8459,8 +8740,60 @@
       "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
       "bytes": 9233,
       "lines": 385,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_planetary.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (188 words in banks 06, 24, 25 and 26): RP-TO-R, RPTORB, RPTORA, R-TO-RP, RTORPB, RPRPXXXX, RTORPA, MOONMX, MOONMXA, NEWANGLE, EARTHMX and EARTHL, as 95 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec planetary, resume_keys).",
+          "verification": "docs/PLANETARY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's routines (every entry, branch target, CALL return and word after a DANZIG), FIXLOC a VAC area, PUSHLOC and MODE as the SETPDs and loads of R-TO-RP, RP-TO-R, MOONMX, EARTHMX and their CALL targets leave them at each point (spec states), S1/S2 (RPREXIT, EARTHMXX) and QPRET caller returns, OVFIND, NEWJOB +0 or positive (a positive NEWJOB stops at CHANG2 and resumes at NEWOPS with LOC +1, a registered routine), and any values of the time and position erasables. A resume point entered with a deeper pushdown list than the file leaves there overwrites S1/S2 and loops on the AGC too; it is outside the domain.",
+        "external_continuations": [
+          "The caller's return through RPREXIT (S1), EARTHMXX (S2) or QPRET (RVQ from NEWANGLE and EARTHL)",
+          "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
+          "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/planetary/planetary-source-map.json",
+            "sha256": "fdfe992549cb7a9ade5ae7520bffd506cb6752738d10d32eb3e84273ee59547a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/planetary/planetary-proof.json",
+            "sha256": "3ed4ca494fe3333e3fa6a8467ff1a90d0c1f38e0193ee8354b0b99e637451e1a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/planetary/planetary-host.log",
+            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+          },
+          "c64_execution_results": {
+            "path": "evidence/planetary/planetary-vice.log",
+            "sha256": "f2625f2acb7f60847012a7c63844ada25258d22c220c27d3a4985eccb18227f0",
+            "vice_targets": {
+              "vice-planetary": 202
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/planetary/planetary-c64-cover.json",
+            "sha256": "eb49096d4629ac62fe2923d57c09f7a1dfad3498f18f79b7c080f0f067b083a7"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
@@ -8715,8 +9048,65 @@
       "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
       "bytes": 4925,
       "lines": 156,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r63.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "All 65 words (26,2022-2122): V89CALL, V89RECL, ALINEX, V89CALL1 and ALINEZ, as 30 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-R63.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= RONE, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 26) or with Z at any of its basic ones (FB 26): V89CALL, V89RECL, the BANKCALL and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1 and S2 caller returns outside the file, and any values of the R63 erasables (OPTIONX, TSTART82, TDEC1, RONE, RATT, POINTVSM, SCAXIS, CPHI); 0 of 15,360 random cases refused.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (R02BOTH, GOFLASH with its three returns, BALLANGS, R60LEM)",
+          "DOWNFLAG with its inline ADRES",
+          "ENDEXT and ENDMARK",
+          "Interpretive CALL of CSMCONIC, LEMCONIC and VECPOINT",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c); RTB NORMUNIT (no native body yet: the run ends there)",
+          "CHANG2 when a DANZIG finds a job waiting"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-r63/lm-r63-source-map.json",
+            "sha256": "e2dc71348cfe2d680fc352a536722fbd3cac661f48190d583d00f455f556c680"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-r63/lm-r63-proof.json",
+            "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-r63/lm-r63-host.log",
+            "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-r63/lm-r63-vice.log",
+            "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+            "vice_targets": {
+              "vice-lm-r63": 34
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-r63/lm-r63-c64-cover.json",
+            "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+          }
+        },
+        "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively."
+      }
     },
     {
       "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
@@ -9134,7 +9524,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,208 of 40,320 random cases. ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
+        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,223 of 40,336 cases (40,320 random, and 16 continuations that run a random case on past the end of a C64 segment group, tools/lm_servicer_chains.py). ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
         "external_continuations": [
           "PHASCHNG",
           "2PHSCHNG",
@@ -9175,22 +9565,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-servicer/lm-servicer-proof.json",
-            "sha256": "209d981d6cf11c848be8819d87bb7278b3c18d3ef4d0fef6859865e6b227e3c9"
+            "sha256": "fe4d8d405173608cbb0f49525a458d657453cf2d046b5d5c0ab8daf1c5962d90"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-servicer/lm-servicer-host.log",
-            "sha256": "a610e10d31c2fdce194749d625b386be3137246af3b670f585c67dae553fd1bb"
+            "sha256": "53b016ac47e24ca7299bb5e0c5790094b907ffb0f3c5c55f0059acb14dfd1231"
           },
           "c64_execution_results": {
             "path": "evidence/lm-servicer/lm-servicer-vice.log",
-            "sha256": "550de071fcb2f3d0bee5f36d8277bce37a907b38696add8b5538130a2dc56101",
+            "sha256": "09018a231f0466669b859d84e33f972b255d8a3e184f6d783bae8ac8bc8cd86b",
             "vice_targets": {
-              "vice-lm-servicer": 459
+              "vice-lm-servicer": 464
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-servicer/lm-servicer-c64-cover.json",
-            "sha256": "6c5c75e7a4d12c3782c0b71a58a2993d4276ab838c478ac6f375bbeb78b135a6"
+            "sha256": "b2549f7faea9b83d20db40b107f9103dda47049e76a6f26ac71a557aa8ee2230"
           }
         }
       }
