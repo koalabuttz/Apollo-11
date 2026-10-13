@@ -59,8 +59,8 @@ arc (gcov -b, per object, all linked sources) the 1,380 host cases take
 (`python3 tools/lane_a_c64_cover.py --check waitlist-entries`; record
 `evidence/exec-closure/exec-closure-c64-cover.json`). The CM DLY2 -1 program is
 built with `CM_EXEC_DLY2_ONLY` and `CM_SERVICE_DELAYJOB_ONLY`, which add the
-one-entry tables `cm_exec_dly2_routines` and `cm_service_delayjob_routines`
-(the same routines) so the rest of both tables is not linked and the program
+small tables `cm_exec_dly2_routines` (DLY2 -1) and `cm_service_delayjob_routines`
+(DELAYJOB and TCGETCAD; the same routines) so the rest of both tables is not linked and the program
 fits below the $C000 mailbox; a case that left them would stop early and fail
 its digest. The check's state
 lives at $E000 under the banked-out ROMs.
