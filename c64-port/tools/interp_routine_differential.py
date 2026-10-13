@@ -702,7 +702,8 @@ def build_edges(spec_id, spec):
                         '-fsanitize-coverage=trace-pc-guard', '-c', src, '-o', o], cwd=R, check=True)
         objs.append(o)
     nat = os.path.join(d, 'native')
-    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES', *objs,
+    subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES',
+                    '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *objs,
                     'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
                     '-o', nat], cwd=R, check=True)
     return nat
