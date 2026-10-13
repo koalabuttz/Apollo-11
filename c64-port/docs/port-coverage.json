@@ -2401,7 +2401,7 @@
       "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
       "bytes": 7119,
       "lines": 317,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2418,7 +2418,7 @@
           "verification": "docs/LAT-LONG.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2429,7 +2429,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lat-long/lat-long-source-map.json",
@@ -2449,6 +2448,10 @@
             "vice_targets": {
               "vice-lat-long": 197
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
@@ -3567,7 +3570,7 @@
       "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
       "bytes": 9496,
       "lines": 386,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3584,7 +3587,7 @@
           "verification": "docs/PLANETARY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3594,7 +3597,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO, ALARM)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/planetary/planetary-source-map.json",
@@ -3614,6 +3616,10 @@
             "vice_targets": {
               "vice-planetary": 204
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
@@ -8261,7 +8267,7 @@
       "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
       "bytes": 7080,
       "lines": 306,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8278,7 +8284,7 @@
           "verification": "docs/LAT-LONG.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8289,7 +8295,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lat-long/lat-long-source-map.json",
@@ -8309,6 +8314,10 @@
             "vice_targets": {
               "vice-lat-long": 197
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
@@ -9499,7 +9508,7 @@
       "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
       "bytes": 9233,
       "lines": 385,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9516,7 +9525,7 @@
           "verification": "docs/PLANETARY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9526,7 +9535,6 @@
           "CHANG2 when DANZIG finds NEWJOB positive (the Executive resumes the job at the registered NEWOPS routine)",
           "The interpreter bodies' POODOO/ALARM exits (POODOO1, ALARM1)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/planetary/planetary-source-map.json",
@@ -9546,6 +9554,10 @@
             "vice_targets": {
               "vice-planetary": 204
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/a2-204.md",
+            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
