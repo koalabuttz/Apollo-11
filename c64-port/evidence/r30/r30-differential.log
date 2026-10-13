@@ -219,5 +219,5 @@ PASS: 112640 r30 cases equal the original programs (220 routines)
   LM 22,3636 MAXCHK: 05126 x79, 06070 x433
   LM 22,3641 : 06070 x512
   LM 22,3643 : 06070 x512
-cover: 14139 cases traced (every 8th, and 59 more for arcs those miss)
+  C64 cover: 21 arcs only untraced cases take; 296 more cases traced
 froze 880 vectors to tests/r30_vectors.h
