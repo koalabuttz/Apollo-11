@@ -458,7 +458,7 @@ def c64_size(spec, sym, m, mask, text):
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
-    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, '-DIRC_GROUP=1',
+    r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *c64_sources(spec, m), 'platform/c64/%s_diagnostic.c' % sym,
                         '-Wl,-Map,' + os.path.join(d, 'probe.map'), '-o', prg],
@@ -538,6 +538,7 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
         for cm, mi in enumerate(missions):
             if mi.m not in spec['missions']:
                 continue
+            KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
             mine = [i for i in arcs if cases[i]['cm'] == cm and i not in chan]
             # Each routine set the cases visit, probed with its largest case.
             big = {visits[i]: i for i in sorted(mine, key=lambda i: len(cases[i]['edits']))}

@@ -335,6 +335,9 @@ class Compiler:
         fp = self.fixed_operand(w, bank)
         if fp is None:
             return '0'
+        if what == 'GSHIFT' or ADDR_ALIAS.get(what) == 'GSHIFT':
+            # A long shift's word is its shift code, not an operand address.
+            return '0'
         if not takes_k or split_op(what)[0] in ('VXM', 'MXV'):
             raise CompileError('%s with fixed operand' % what)
         self.consts[fp] = self.name(fp)

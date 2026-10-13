@@ -39,6 +39,8 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - Every routine first checks that the image is one the original could be in. Anything else is `EXEC_OUT_OF_SCOPE` with the image unchanged.
 - `--check` fails when the generated files differ from what the listings give.
 - `<SYM>_KEEP<n>` masks keep only some routines. The C64 diagnostics use them.
+- A long shift (SR, SL, SRR, SLR and their R forms) whose shift count is the GSHIFT word has no operand address: its operand is 0, so a count past the end of the file's banks no longer needs a `K` array (`planetary`, `lat-long`).
+- `c64_flags` (opt-in) adds compiler flags after the shared C64 ones when the differential links a group. `planetary` and `lat-long` use `-fno-inline -fstatic-stack -mlto-zp=110`, as their `.mk` does, so runs that visit most of the file still fit one diagnostic.
 
 ## How it is checked
 
