@@ -18,7 +18,7 @@ the task slot at $E000, the soft stack below $D000. One mission's resident is:
 | Kernel | `src/lm_kernel.c` or `src/cm_kernel.c` (`src/resident_kernel_body.inc`), `src/agc_image_ops.c` |
 | Transfer ABI trampoline and Executive call sites | `src/agc_transfer.c`; the site operand table from `src/lm_exec_routines.c` or `src/cm_exec_routines.c` (only the table links) |
 | ABI 2 runtime and REU store | `src/overlay_v2.c`, `src/overlay_reu.c`, `src/overlay_runtime.c` (the CRC), `platform/c64/overlay_reu_platform.c` |
-| Single-precision subroutines | `src/lm_single_trig.c`, or `src/cm_quictrig.c` and `src/cm_single_return.c` |
+| Single-precision subroutines | `src/lm_single_trig.c`, or `src/cm_quictrig.c` and `src/cm_single_return.c`; their transfer-ABI table `src/sp_routines.c` |
 | Service table exports | `src/agc_multiword.c` (`agc_multiply`, `agc_double_add`, docs/overlay-v2-services.json) |
 | IRQ entry | `platform/c64/overlay_v2_irq.S` |
 | Resident state and step | `platform/c64/resident_flight.c` |
@@ -36,6 +36,30 @@ It runs the module in context 0 (the running job is always core set 0) or,
 inside an interrupt, in context 8. A module leaves Z where the program
 continues. `platform/c64/resident_flight_main.c` is the flight entry: boot,
 then steps.
+
+### Seams on job switches
+
+The flight resident builds the kernel with `RK_SEAMS`. CHANJOB4, where the
+kernel exchanges core set 0 with the set at NEWJOB, first calls
+`apollo_ov2_seam_exchange` for job context NEWJOB/12, and ENDOFJOB first
+calls `apollo_ov2_seam_release` for context 0. So a module chain that a job
+switch suspends inside a CALL follows its job to the core set it moves to,
+and a finished job's seam is freed. `make test-resident-kernel` builds the
+kernel with counting hooks and checks every exchange names a core set
+(NEWJOB a multiple of 12 from 12 to 84): 5,131 LM and 4,851 CM exchanges,
+1,042 releases each, none outside a core set.
+
+### SPSIN and SPCOS
+
+`src/sp_routines.c` gives the single-precision sine and cosine a
+transfer-ABI routine table (`lm_sp_routines`, `cm_sp_routines`; LM SPCOS
+05032, SPSIN 05033; CM 05074, 05075), so the step enters them like a kernel
+routine and stops at the caller's return. Each refuses a return address
+outside fixed memory (Q not in 02000-07777) before it writes anything.
+`make test-sp-routines` runs the frozen yaAGC full-return states (LM
+lm-single-trig selectors 2-3, CM cm-single-return selectors 0-1) through the table, and the
+refusal with the image unchanged: 128 checks per mission, plain and
+ASan/UBSan.
 
 ### Boot-only code
 
@@ -58,21 +82,24 @@ about 0.3 KB.
 
 | Component | LM bytes | CM bytes |
 |---|---|---|
-| Kernel | 10,250 | 10,010 |
-| Transfer ABI trampoline and Executive call sites | 2,609 | 2,541 |
+| Kernel (with the seam hooks) | 10,475 | 10,232 |
+| Transfer ABI trampoline and Executive call sites | 2,617 | 2,549 |
 | ABI 2 runtime and REU store | 5,176 | 5,176 |
-| Single-precision subroutines | 1,471 | 1,471 |
+| Single-precision subroutines and their table | 1,299 | 1,299 |
 | Service table exports | 637 | 637 |
-| Resident state and step | 540 | 558 |
+| Resident state and step | 538 | 556 |
 | IRQ entry | 16 | 16 |
-| C runtime and library (crt0, multiply, memcpy, memset) | 336 | 336 |
-| **Resident, $0801 to the end of bss** | **21,035** | **20,745** |
-| Free below the service table (of 26,367) | 5,332 | 5,622 |
+| C runtime and library (crt0, multiply, divide, memcpy, memset) | 461 | 461 |
+| **Resident, $0801 to the end of bss** | **21,219** | **20,926** |
+| Free below the service table (of 26,367) | 5,148 | 5,441 |
 | Service table at $6F00 (2 entries) | 6 | 6 |
-| Boot-only, in the job slot | 2,797 | 2,780 |
+| Boot-only, in the job slot | 2,818 | 2,786 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
-half of the resident. Both missions fit with 5.3-5.6 KB to spare, so neither
+half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
+kernel, and the NEWJOB/12 in `rk_seams_exchange` pulls in the 125-byte
+`__udivmodqi4`. The single-precision component measures 172 bytes less
+with its table linked than without it. Both missions fit with 5.1-5.4 KB to spare, so neither
 $C000-$CBFF nor $D000 is needed and the kernel stays as it is.
 
 ## Checks on the linked resident
@@ -95,23 +122,25 @@ Each program does the following:
    case module from the REU into the job slot. The module writes the case
    into the image at $7000. The resident then runs the kernel and compares
    the digest with the frozen yaAGC digest.
-3. For the LM services rows, reads the RESTARTS routines the lm-exec-services
-   programs chain into from a task-slot module (0x01F6,
-   `platform/c64/resident_flight_restart.c`). That module stays loaded while
-   the kernel's trampoline calls into it.
-4. Ends with one `rk_resident_step` from a point with no kernel routine. The
+   The rows and their digests come from a task-slot data module (0x01F6,
+   `platform/c64/resident_flight_data.c`), which for LM also holds the
+   RESTARTS routines the lm-exec-services programs chain into. That module
+   stays loaded while the kernel's trampoline calls into it.
+3. Runs one `rk_resident_step` from a point with no kernel routine. The
    step must resolve that point through the store's resolver to the services
    module's probe selector, and Z must come back where the probe left it.
+4. Runs one step from SPSIN with A = 0 and Q in fixed memory. It must go
+   through the resident's SPSIN/SPCOS table and stop at Q with A = 0.
 5. Checks that interrupts kept arriving through the resident vector.
 
 | Program | Rows | Checks |
 |---|---|---|
-| LM services | 153 | 310 |
-| LM jobs | 161 | 325 |
-| LM idle | 86 | 175 |
-| CM services | 129 | 261 |
-| CM jobs | 110 | 223 |
-| CM idle | 90 | 183 |
+| LM services | 153 | 311 |
+| LM jobs | 161 | 327 |
+| LM idle | 86 | 177 |
+| CM services | 129 | 263 |
+| CM jobs | 110 | 225 |
+| CM idle | 90 | 185 |
 
 All 729 rows pass, the same rows as `make vice-resident-kernel`. A one-word
 kernel mutation (CS TWO to CS THREE in DUMMYJOB) fails the LM idle program.
@@ -120,16 +149,19 @@ now run as an input half and a kernel half
 (`rk_*_input`, `rk_*_run`), which the C64 check splits across the module
 and the resident.
 
+## Evidence
+
+In `evidence/resident-kernel/` (hashes in `SHA256.json`): the six VICE
+results with their PRG hashes (`resident-flight-vice.log`), the size report
+(`resident-flight-sizes.json`), the host differential with the seam counts
+(`resident-kernel-host.log`), the SPSIN/SPCOS results
+(`sp-routines-host.log`), and the `flight_resident` section of
+`resident-kernel-proof.json` with the source hashes.
+
 ## Not yet in the resident
 
 - The production interrupt entry. `overlay_v2_irq.S` acknowledges CIA1 and
   counts; the T3RUPT/T4RUPT/T5RUPT/T6RUPT and KEYRUPT dispatch onto the
   kernel and the modules belongs to integration.
-- Seam bookkeeping on job switches. `apollo_ov2_seam_exchange` and
-  `apollo_ov2_seam_release` are not called when the kernel's CHANJOB or
-  ENDOFJOB exchanges or frees core sets. A module chain that sleeps a job
-  inside a CALL needs them.
-- The single-precision subroutines link but have no transfer-ABI routine
-  table yet, so the step cannot enter them.
 - The site operand table holds the Executive and Waitlist call sites only.
   The flight program's table grows with every module that calls them.

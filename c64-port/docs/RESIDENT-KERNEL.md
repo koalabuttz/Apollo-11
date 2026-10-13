@@ -97,7 +97,7 @@ EXTEND, so a +0 priority word goes on to NEXTCORE through BZF.
 
 ## Evidence
 
-Hashes: `evidence/resident-kernel/SHA256.json` (all three records are in git).
+Hashes: `evidence/resident-kernel/SHA256.json` (all records are in git).
 
 - Independent assembly comparison and host results
   (`resident-kernel-host.log`, `resident-kernel-proof.json`):
