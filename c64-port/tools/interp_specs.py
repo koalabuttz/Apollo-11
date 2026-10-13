@@ -150,6 +150,7 @@ SPECS = {
         'channels': 'all',
         'io_channels': 'auto',
         'engine': 'flight-device',
+        'counters': True,
         'ebank': 'listing',
         # STICKCHK's rate indexes (RMANNDX, PMANNDX, YMANNDX): 0 no
         # rotation, 1 plus, 2 minus. SATSW (E6,1725), the boost-takeover
