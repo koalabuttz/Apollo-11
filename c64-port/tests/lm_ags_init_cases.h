@@ -11,7 +11,7 @@
  * States are drawn inside the routines' domain; the refusals are exercised
  * by tests/test_lm_ags_init.c. */
 #define AGS_STATES 768u
-#define AGS_CASES 16896u     /* AGS_ROUTINES * AGS_STATES */
+#define AGS_CASES 29952u     /* AGS_ROUTINES * AGS_STATES */
 #define AGS_STOPPED 0u
 #define AGS_REFUSED 2u
 typedef struct {

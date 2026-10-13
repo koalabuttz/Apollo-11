@@ -6,6 +6,11 @@
   "mid": 25,
   "high": 40
  },
+ "resident_bytes_per_word": {
+  "low": 12,
+  "mid": 16,
+  "high": 20
+ },
  "data_bytes_per_word": 2.5,
  "slot_bytes": {
   "job": 16384,
@@ -70,9 +75,9 @@
      "files": 3,
      "words": 710,
      "bytes": {
-      "low": 11360,
-      "mid": 17750,
-      "high": 28400
+      "low": 8520,
+      "mid": 11360,
+      "high": 14200
      }
     },
     "resident-data": {
@@ -159,11 +164,29 @@
     "high": 1305356
    },
    "resident_bytes": {
-    "low": 18830,
-    "mid": 25220,
-    "high": 35870
+    "low": 18619,
+    "mid": 21459,
+    "high": 24299
    },
    "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 22723,
+    "free_bytes": 3644,
+    "boot_only_bytes": 3248,
+    "components": {
+     "kernel": 10475,
+     "ABI 2 runtime and REU store": 5166,
+     "transfer ABI trampoline and Executive call sites": 2680,
+     "single-precision subroutines": 1299,
+     "AGC timers and interrupt entry": 1092,
+     "resident state and step": 878,
+     "service table exports": 637,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "BASIC header and alignment": 0
+    }
+   },
    "files": [
     {
      "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
@@ -358,9 +381,9 @@
      "placement": "resident",
      "estimated_words": 374,
      "estimated_native_bytes": {
-      "low": 5984,
-      "mid": 9350,
-      "high": 14960
+      "low": 4488,
+      "mid": 5984,
+      "high": 7480
      }
     },
     {
@@ -1007,9 +1030,9 @@
      "placement": "resident",
      "estimated_words": 32,
      "estimated_native_bytes": {
-      "low": 512,
-      "mid": 800,
-      "high": 1280
+      "low": 384,
+      "mid": 512,
+      "high": 640
      }
     },
     {
@@ -1150,9 +1173,9 @@
      "placement": "resident",
      "estimated_words": 304,
      "estimated_native_bytes": {
-      "low": 4864,
-      "mid": 7600,
-      "high": 12160
+      "low": 3648,
+      "mid": 4864,
+      "high": 6080
      }
     }
    ]
@@ -1201,9 +1224,9 @@
      "files": 3,
      "words": 684,
      "bytes": {
-      "low": 10944,
-      "mid": 17100,
-      "high": 27360
+      "low": 8208,
+      "mid": 10944,
+      "high": 13680
      }
     },
     "resident-data": {
@@ -1290,11 +1313,29 @@
     "high": 1280109
    },
    "resident_bytes": {
-    "low": 18409,
-    "mid": 24565,
-    "high": 34825
+    "low": 18302,
+    "mid": 21038,
+    "high": 23774
    },
    "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 22430,
+    "free_bytes": 3937,
+    "boot_only_bytes": 3218,
+    "components": {
+     "kernel": 10232,
+     "ABI 2 runtime and REU store": 5166,
+     "transfer ABI trampoline and Executive call sites": 2612,
+     "single-precision subroutines": 1299,
+     "AGC timers and interrupt entry": 1092,
+     "resident state and step": 896,
+     "service table exports": 637,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "BASIC header and alignment": 0
+    }
+   },
    "files": [
     {
      "path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
@@ -1467,9 +1508,9 @@
      "placement": "resident",
      "estimated_words": 366,
      "estimated_native_bytes": {
-      "low": 5856,
-      "mid": 9150,
-      "high": 14640
+      "low": 4392,
+      "mid": 5856,
+      "high": 7320
      }
     },
     {
@@ -2039,9 +2080,9 @@
      "placement": "resident",
      "estimated_words": 32,
      "estimated_native_bytes": {
-      "low": 512,
-      "mid": 800,
-      "high": 1280
+      "low": 384,
+      "mid": 512,
+      "high": 640
      }
     },
     {
@@ -2226,9 +2267,9 @@
      "placement": "resident",
      "estimated_words": 286,
      "estimated_native_bytes": {
-      "low": 4576,
-      "mid": 7150,
-      "high": 11440
+      "low": 3432,
+      "mid": 4576,
+      "high": 5720
      }
     }
    ]

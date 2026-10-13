@@ -12,7 +12,7 @@
  * routines' domain; the refusals are exercised by
  * tests/test_lm_lunar_landing.c. */
 #define LLD_STATES 512u
-#define LLD_CASES 15872u     /* LLD_ROUTINES * LLD_STATES */
+#define LLD_CASES 46080u     /* LLD_ROUTINES * LLD_STATES */
 #define LLD_STOPPED 0u
 #define LLD_REFUSED 2u
 typedef struct {
