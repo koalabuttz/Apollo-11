@@ -13,7 +13,7 @@ int main(void){volatile uint8_t *mail=(volatile uint8_t *)0xc000;uint16_t failur
   * check's state at $e000 reads back as RAM. */
  __asm__("sei");*(volatile uint8_t *)1u=0x35u;
  for(n=0;n<wle_cases();++n){k=wle_kind(n);if(!MINE(k))continue;
-  if(n%4u==0u||!n||k!=wle_kind((uint16_t)(n-1u))||(n>=2u&&k!=wle_kind((uint16_t)(n-2u))))failures=(uint16_t)(failures+wle_check(n,&checks));}
+  if(n%4u==0u||n<2u||k!=wle_kind((uint16_t)(n-1u))||(n>=2u&&k!=wle_kind((uint16_t)(n-2u))))failures=(uint16_t)(failures+wle_check(n,&checks));}
  for(n=0;n<WLE_C64_ROWS;++n)if(MINE(wle_kind(wle_c64_row[n]))){
   /* The cover row's digest (the host's) is the frozen one. */
   if(wle_frozen_digest(wle_c64_row[n])!=wle_c64_row_digest[n])++failures;
