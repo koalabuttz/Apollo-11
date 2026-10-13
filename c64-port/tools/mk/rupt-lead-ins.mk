@@ -3,7 +3,7 @@
 # Comanche055 and Comanche's RESUME/NOQRSM/NOQBRSM interrupt exits as native
 # routines (lm_lead_in_routines, cm_lead_in_routines).
 RLI_SRC = src/rupt_lead_ins.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/rupt_lead_ins_cases.c
-RLI_HDR = include/rupt_lead_ins.h include/agc_transfer.h include/agc_image_ops.h tests/rupt_lead_ins_cases.h
+RLI_HDR = tests/resume_rope_words.h include/rupt_lead_ins.h include/agc_transfer.h include/agc_image_ops.h tests/rupt_lead_ins_cases.h
 RLI_FLAGS = -ffunction-sections -fdata-sections -Wl,--gc-sections
 .PHONY: test-rupt-lead-ins sanitize-rupt-lead-ins c64-rupt-lead-ins vice-rupt-lead-ins rupt-lead-ins-differential
 all: build/test-rupt-lead-ins
