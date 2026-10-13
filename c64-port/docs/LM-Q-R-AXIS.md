@@ -118,6 +118,16 @@ AXISCTR -1, GTS keeps SR in AXISCTR (SAVESR) and PJETSLEC leaves NUMBERT 5 or
 6. SENSEGET's SELCTSUB, which would index TJU by AXISCTR on its alarm, never
 alarms: TYPEPOLY 0 and 1 share no jet with ALLJETS 4 or 5.
 
+The calls are routed at compile time through `include/agc_fast_redirect.h`:
+an operand that is a plain erasable cell under EBANK6 goes to the
+`agc_fast_ops` helper of the same name (`include/agc_fast_ops.h`), any other
+operand to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`), and every
+check below runs this form; `-DLM_QR_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
+Q_R-AXIS takes about 49K 6502 cycles instead of 79K (mos-sim, `-Oz`).
+
 ## Verification
 
 `tests/lm_q_r_axis_cases.c` builds 16,384 cases, 512 for each of 32 entry
