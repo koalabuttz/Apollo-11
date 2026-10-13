@@ -1222,7 +1222,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
-        taken = set()
+        taken, seen = set(), set()
         for o in objs:
             out = subprocess.run(['gcov', '-b', '-c', '-t', '-o', w, o[:-2] + '.gcda'], cwd=R, check=True,
                                  capture_output=True, text=True).stdout
@@ -1231,6 +1231,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                 m = re.match(r'\s*-:\s*0:Source:(.*)', l)
                 if m:
                     src = m.group(1)
+                    seen.add((os.path.basename(o)[:-2], src))
                     continue
                 m = re.match(r'\s*[^:]+:\s*(\d+):', l)
                 if m:
@@ -1239,7 +1240,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
                 m = re.match(r'branch\s+(\d+) taken (\d+)', l)
                 if m and int(m.group(2)):
                     taken.add((os.path.basename(o)[:-2], src, line, int(m.group(1))))
-        res[tag] = c64_row_cover.arc_keys(taken)
+        res[tag] = c64_row_cover.arc_keys(taken, seen)
         shutil.rmtree(w, ignore_errors=True)
     miss = sorted(res['host'] - res['c64'], key=lambda a: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', a)])
     return {'host_taken': len(res['host']), 'c64_taken': len(res['c64']), 'host_taken_not_c64': len(miss),
@@ -1701,6 +1702,10 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             break
     print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
         made, refused, differ, len(want)))
+    if differ:
+        # The oracle and the native code stop at the same cut in the same
+        # state, or the native code is wrong there.
+        sys.exit('%s: %d C64 cuts differ from the original program' % (spec_id, differ))
 
 
 C64_PICKS = []       # each group's cases, for the outcome cover

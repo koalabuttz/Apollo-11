@@ -3734,7 +3734,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "96b1ea3aaf26e2853750bf92097445b90d88c6b50cb166fcdac415f84638c996"
+            "sha256": "de06b4813f7b488861754dcf6f53382702ed449df080ddf292de511ab5d48d3c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -3742,14 +3742,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "eb72dacf912afd977381b38d09c552e223fe4603d534817ddc4dd50ff24219b1",
+            "sha256": "784657bf544e592cba2de996eba94f1473e4b3e216d5d840839cfa92905217dc",
             "vice_targets": {
-              "vice-r30": 258
+              "vice-r30": 260
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "a26516e31f5d88ca2dbb5d7abd4b40f6055112034cf7a2edda73db6f40cc3a77"
+            "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
           }
         }
       }
@@ -9664,7 +9664,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "96b1ea3aaf26e2853750bf92097445b90d88c6b50cb166fcdac415f84638c996"
+            "sha256": "de06b4813f7b488861754dcf6f53382702ed449df080ddf292de511ab5d48d3c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -9672,14 +9672,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "eb72dacf912afd977381b38d09c552e223fe4603d534817ddc4dd50ff24219b1",
+            "sha256": "784657bf544e592cba2de996eba94f1473e4b3e216d5d840839cfa92905217dc",
             "vice_targets": {
-              "vice-r30": 258
+              "vice-r30": 260
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "a26516e31f5d88ca2dbb5d7abd4b40f6055112034cf7a2edda73db6f40cc3a77"
+            "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
           }
         }
       }
