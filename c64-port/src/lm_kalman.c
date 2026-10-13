@@ -8,7 +8,9 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
-#include "agc_image_w.h"
+#define AFR_EBN 6
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -466,6 +468,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
 #if (LM_KALMAN_KEEP0 >> 0) & 1
 /* 16,3641 RATELOOP (entry RATELOOP (P-AXIS_RCS_AUTOPILOT.agc TCF RATELOOP)) */
 static enum exec_status r35641_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
  (void)p;
  return basic_run(s,(p66_bias_io *)v,15265u);

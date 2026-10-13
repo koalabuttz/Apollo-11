@@ -4,8 +4,8 @@
 # as basic routines at their original addresses ('basic': 'full'; channel
 # orders through the program's agc_hardware).
 KAL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
-KAL_SRC = src/lm_kalman.c tests/lm_kalman_target.c $(KAL_COMMON)
-KAL_HDR = include/lm_kalman.h tests/interp_case.h tests/lm_kalman_vectors.h tests/lm_kalman_c64_vectors.h
+KAL_SRC = src/lm_kalman.c src/agc_fast_ops.c src/agc_fast_window.c tests/lm_kalman_target.c $(KAL_COMMON)
+KAL_HDR = include/lm_kalman.h include/agc_fast_ops.h include/agc_fast_window.h include/agc_image_thin.h include/agc_fast_redirect.h tests/interp_case.h tests/lm_kalman_vectors.h tests/lm_kalman_c64_vectors.h
 # (the spec's c64_flags; -DIRC_CHANNELS for its seeded counters and channels,
 # -DIRC_INPUTS for the latched input channels)
 KAL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS
@@ -28,7 +28,7 @@ lm-kalman-differential:
 # the vectors; each fits below the $c000 mailbox, the image under KERNAL).
 -include tools/mk/lm-kalman.groups
 KAL_C64_PRGS = $(foreach g,$(LM_KALMAN_GROUPS),build/lm-kalman-$(g).prg)
-KAL_C64 = src/lm_kalman.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/lm_kalman_target.c
+KAL_C64 = src/lm_kalman.c src/agc_fast_ops.c src/agc_fast_window.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/lm_kalman_target.c
 c64-lm-kalman: $(KAL_C64_PRGS)
 build/lm-kalman-%.prg: $(KAL_SRC) platform/c64/lm_kalman_diagnostic.c tools/mk/lm-kalman.groups $(KAL_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(KAL_MOS_FLAGS) $(LM_KALMAN_GROUP_FLAGS_$*) -Wl,-Map,build/lm-kalman-$*.map $(KAL_C64) platform/c64/lm_kalman_diagnostic.c -o $@
