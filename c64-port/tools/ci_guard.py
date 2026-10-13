@@ -82,7 +82,7 @@ def changed_certificates(base, errors, remote=False):
 # yaAGC) loads the image for the self-check module of the whole program.
 ROPE_IMAGE_USERS = {'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
                     'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c',
-                    'tools/flight_host_run.c'}
+                    'tools/flight_host_run.c', 'platform/c64/flight_table_module.c'}
 
 
 def rope_image_includes(errors):
