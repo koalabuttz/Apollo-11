@@ -51,16 +51,25 @@ static agc_word *kch11;
 #else
 static agc_image *ks;
 #endif
-#define K_OP(n,T) static __attribute__((noinline)) void k_##n(T a){ai_##n(ks,a);}
-#define K_OPS(n,T) static __attribute__((noinline)) uint8_t k_##n(T a){return ai_##n(ks,a);}
+/* With the fixed image (one mission's resident) these are not static: the
+ * flight resident exports them as ABI 2 services
+ * (docs/overlay-v2-services.json), so flight modules share them. The
+ * check programs (RK_RUNS_ONLY) export none of them. */
+#if RK_FIXED_IMAGE && !defined(RK_RUNS_ONLY)
+#define K_EXPORT
+#else
+#define K_EXPORT static
+#endif
+#define K_OP(n,T) K_EXPORT __attribute__((noinline)) void k_##n(T a){ai_##n(ks,a);}
+#define K_OPS(n,T) K_EXPORT __attribute__((noinline)) uint8_t k_##n(T a){return ai_##n(ks,a);}
 K_OP(ca,unsigned) K_OP(caf,agc_word) K_OP(cs,unsigned) K_OP(csf,agc_word) K_OP(ad,unsigned) K_OP(adf,agc_word)
 K_OP(mask,unsigned) K_OP(maskf,agc_word) K_OPS(ts,unsigned) K_OP(xch,unsigned) K_OP(lxch,unsigned)
 K_OP(qxch,unsigned) K_OP(ads,unsigned) K_OP(incr,unsigned) K_OP(dxch,unsigned) K_OP(das,unsigned)
 K_OPS(ccs,unsigned) K_OP(tc,agc_word) K_OP(dcaf,const agc_word *) K_OP(dcsf,const agc_word *)
 static __attribute__((noinline)) enum exec_status k_go(agc_word z){ks->words[5]=z;return EXEC_OK;}
 static __attribute__((noinline)) enum exec_status k_resume(void){ks->words[5]=(agc_word)(ks->words[K_ZRUPT]-1u);ks->words[7]=0;return EXEC_OK;}
-static __attribute__((noinline)) uint8_t k_bzf(void){return ai_bzf(ks);}
-static __attribute__((noinline)) uint8_t k_bzmf(void){return ai_bzmf(ks);}
+K_EXPORT __attribute__((noinline)) uint8_t k_bzf(void){return ai_bzf(ks);}
+K_EXPORT __attribute__((noinline)) uint8_t k_bzmf(void){return ai_bzmf(ks);}
 /* An erasable operand below 0400 (most of them) is passed in one byte. */
 #define K_OP8(n) static __attribute__((noinline)) void k_##n##8(uint8_t a){k_##n(a);}
 #define K_OPS8(n) static __attribute__((noinline)) uint8_t k_##n##8(uint8_t a){return k_##n(a);}

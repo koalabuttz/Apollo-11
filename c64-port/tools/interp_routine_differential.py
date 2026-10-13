@@ -1207,9 +1207,11 @@ def cover_check(spec_id, spec, missions, cases, path, record):
     sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
     out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
     beyond = [i for i in rows if i >= len(cases)]
-    if out.get('cases_match') is False or beyond or not rows:
-        out.update(verified=False, reason='the regenerated cases are not the frozen ones' if rows else
-                   'the record does not list its C64 rows (refreeze to record them)')
+    if not out.get('cases_match') or beyond or not rows:
+        out.update(verified=False, reason='the record does not list its C64 rows (refreeze to record them)'
+                   if not rows else 'neither the record nor its proof pins the frozen cases (cases_sha256); '
+                   'refreeze to record it' if out.get('cases_match') is None else
+                   'the regenerated cases are not the frozen ones')
         print(json.dumps(out))
         return 1
     if spec.get('cover'):

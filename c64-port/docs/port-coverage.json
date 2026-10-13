@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -647,15 +647,59 @@
         {
           "native_files": [
             "src/cm_geometry.c",
+            "src/geometry_rtb.c",
+            "src/rtb_angles.c",
+            "src/rtb_agreement.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "105 of 253 words: SVDWN1, SVDWN2 (bank 10), LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, as 39 routines of the control-transfer ABI compiled by tools/interp_compile.py. SXTNB, SXTLOGIC, CALCSXA and SXTANG with their matrices wait for a Comanche MXV body and native TRANSP1/TRANSP2.",
+          "scope": "Every word of the file (253 words, banks 10 and 23): SVDWN1, SVDWN2, the sextant routines SXTNB, SXTLOGIC (native, src/geometry_rtb.c), CALCSXA, SXTANG and SXTANG1, LOG with its POLY and SHORTMP basic code, EARROT1, EARROT2 and OVERADAY, and the NB2NB1/NB1NB2 matrices, as 91 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/GEOMETRY.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). Runs take up to 1,000 routines.",
+        "external_continuations": [
+          "The caller's return through QPRET, the CADR in S2, or GOTO 28D (VAC+034)",
+          "TCDANZIG and ENDT(X) through BOVB",
+          "POLY (TC from LOG, with its coefficient table)",
+          "SHORTMP (TC from LOG; from SXTLOGIC it runs natively, src/geometry_rtb.c)",
+          "*SMNB* and ARCTRIG (CALL; native in src/cm_inflight_align.c, milestone inflight-align)",
+          "RTB CDULOGIC, 1STO2S (src/rtb_angles.c), TRANSP1, TRANSP2 (src/rtb_agreement.c) and SXTLOGIC (src/geometry_rtb.c), native",
+          "POODOO and ALARM from the interpreter bodies"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/geometry/geometry-source-map.json",
+            "sha256": "ecbcf758a748ed96833e14a5c8c843fed773e3ea32bae89ffafd2fbab3662197"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/geometry/geometry-proof.json",
+            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/geometry/geometry-host.log",
+            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
+          },
+          "c64_execution_results": {
+            "path": "evidence/geometry/geometry-vice.log",
+            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "vice_targets": {
+              "vice-geometry": 197
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/geometry/geometry-c64-outcomes.json",
+            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
@@ -4357,7 +4401,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
+            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -4365,7 +4409,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
+            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -4376,7 +4420,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
+            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
           }
         }
       }
@@ -6799,8 +6843,8 @@
       "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
       "bytes": 37260,
       "lines": 1681,
-      "status": "partial",
-      "pending_complete_certificate": {
+      "status": "complete",
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6844,6 +6888,10 @@
               "vice-lanec-ev-lmi": 40,
               "vice-lanec-ev-transfer": 64
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-c-240.md",
+            "sha256": "1c7134f8afbfcc57b1826b2058f7e1990c7e1030652f44ec30d081cdb3c6d37c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
@@ -8530,26 +8578,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/geometry/geometry-source-map.json",
-            "sha256": "c6e97c778526d1e5ca6c824bb328369c80a54a60a117042a177cfd5340e6815c"
+            "sha256": "ecbcf758a748ed96833e14a5c8c843fed773e3ea32bae89ffafd2fbab3662197"
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "b497ed998209551114d582daf552c55b973fd0765466b34d493743c66a7ad87d"
+            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "c24c299a4c4404525b10cfc20ed57ae6626aa9214edab9ea8af7c69e481041fc"
+            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "48e0d88e6b4eb26729aa42aa3818aeb8231d6a24e77497034cf4962a80bc3e94",
+            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
             "vice_targets": {
-              "vice-geometry": 136
+              "vice-geometry": 197
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a6ef59cb32834c30a94ba865359db8e5afb379eb2bb09369c03ea8ac3c1aa820"
+            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-231.md",
@@ -10553,7 +10601,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
+            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -10561,7 +10609,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
+            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -10572,7 +10620,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
+            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
           }
         }
       }
