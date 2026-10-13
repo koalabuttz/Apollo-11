@@ -5,7 +5,7 @@
 MINC_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c src/lm_integration_moves.c src/cm_integration_moves.c tests/interp_case.c
 MINC_SRC = src/lm_measurement_inc.c src/cm_measurement_inc.c tests/measurement_inc_target.c $(MINC_COMMON)
 MINC_HDR = include/lm_measurement_inc.h include/cm_measurement_inc.h tests/interp_case.h tests/measurement_inc_vectors.h tests/measurement_inc_c64_vectors.h
-MINC_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+MINC_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110
 .PHONY: test-measurement-inc sanitize-measurement-inc c64-measurement-inc vice-measurement-inc measurement-inc-differential
 all: build/test-measurement-inc
 test: test-measurement-inc

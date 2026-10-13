@@ -651,5 +651,9 @@ SPECS = {
         'c64_rows': 'cover',
         'freeze_stride': 64,
         'rope_bin': True,
+        # (With the image at $e000 under the KERNAL, platform/c64/
+        # measurement_inc_diagnostic.c; the same flags as tools/mk/
+        # measurement-inc.mk's MINC_MOS_FLAGS.)
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
 }
