@@ -77,7 +77,8 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FF3` | Resident service jump table (81 entries max; the resident linker script asserts it ends below `$6FF4`) | 244 |
+| `$6F00..$6FDB` | Resident service jump table (73 entries max; the resident linker script asserts it ends at or below `$6FDC`) | 220 |
+| `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
 | `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
