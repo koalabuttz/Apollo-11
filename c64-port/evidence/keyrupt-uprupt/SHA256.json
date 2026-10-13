@@ -3,14 +3,19 @@
   "milestone": "keyrupt-uprupt",
   "release": "evidence-keyrupt-uprupt",
   "files": {
+    "keyrupt-uprupt-c64-cover.json": {
+      "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea",
+      "bytes": 615,
+      "store": "tree"
+    },
     "keyrupt-uprupt-differential.log": {
       "sha256": "e2e7b924ab355fcf20479e57f2bedaba4e4be2cdae5534a49f5708105ffb7fd5",
       "bytes": 679,
       "store": "tree"
     },
     "keyrupt-uprupt-host.log": {
-      "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91",
-      "bytes": 1176,
+      "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102",
+      "bytes": 884,
       "store": "tree"
     },
     "keyrupt-uprupt-proof.json": {
@@ -29,8 +34,8 @@
       "store": "tree"
     },
     "keyrupt-uprupt-vice.log": {
-      "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326",
-      "bytes": 102,
+      "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+      "bytes": 720,
       "store": "tree"
     }
   }

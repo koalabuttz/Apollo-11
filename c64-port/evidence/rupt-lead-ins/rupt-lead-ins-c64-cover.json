@@ -1,0 +1,25 @@
+{
+  "milestone": "rupt-lead-ins",
+  "tool": "tools/c64_row_cover.py (via tools/lane_a_c64_cover.py)",
+  "reproduce": "python3 tools/lane_a_c64_cover.py --check rupt-lead-ins",
+  "linked_sources": [
+    "src/agc_hardware_divide.c",
+    "src/agc_image_ops.c",
+    "src/agc_multiword.c",
+    "src/agc_transfer.c",
+    "src/agc_word.c",
+    "src/rupt_lead_ins.c",
+    "tests/rupt_lead_ins_cases.c"
+  ],
+  "defines": [],
+  "host_cases": 3072,
+  "host_branch_arcs": 168,
+  "c64_rows": 193,
+  "stride_rows": 192,
+  "cover_rows": 1,
+  "cover_cases": [
+    2586
+  ],
+  "c64_branch_arcs": 168,
+  "host_branches_missing_on_c64": []
+}

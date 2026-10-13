@@ -9,7 +9,7 @@
       "store": "release"
     },
     "waitlist-entries-proof.json": {
-      "sha256": "37956a04585da9ac8927cec5b4e475d545d30a709bfe6039fbd494aaf7b5aa1d",
+      "sha256": "e6dd55149d302e45e37ee058161be299af40dcc972b725c0b535a9a5750eddb3",
       "bytes": 6657,
       "store": "tree"
     },

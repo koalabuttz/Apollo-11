@@ -30,7 +30,21 @@ every arc. Traces are tens of MB, so they stay in `build/`; the certificates
 cite the cover record through `c64_branch_outcomes` (fallback fields) and the
 VICE log through `vice_targets`.
 
-COVER_TABLE
+Every C64 program now takes every host branch arc:
+
+| milestone | host cases | host branch arcs | stride rows | cover rows | VICE checks |
+|---|---|---|---|---|---|
+| `lm-t6rupt` | 3,840 | 198 | 240 | 2 | 242 |
+| `rupt-lead-ins` | 3,072 | 168 | 192 | 1 | 193 |
+| `keyrupt-uprupt` | 3,072 | 137 | 192 | 0 | 192 |
+| `lm-exec-services` | 9,208 | 620 | 576 | 5 | 581 |
+| `lm-exec-jobs` | 9,216 | 1110 | 576 | 20 | 596 |
+| `lm-exec-idle` | 4,864 | 289 | 304 | 6 | 310 |
+| `cm-exec-services` | 7,648 | 662 | 478 | 9 | 487 |
+| `cm-exec-jobs` | 6,144 | 670 | 384 | 4 | 388 |
+| `cm-exec-idle` | 5,120 | 294 | 320 | 5 | 325 |
+
+`evidence/exec-closure/exec-closure-c64-cover.json` gathers the six Executive milestones and `rupt-lead-ins` for the EXECUTIVE and WAITLIST certificates. `waitlist-entries` already runs every case on the C64 (five programs, one per entry group).
 
 ## Flight edges
 
@@ -51,7 +65,17 @@ purpose:
   (037777, and an overflowing word) and QRUPT holding data (037777, 070000+).
 
 A full waitlist, NEWJOB +0 and -0, no free core set and no free VAC area were
-already common. EDGE_TABLE
+already common. Cases holding each edge (an image can hold several):
+
+| milestone | cases | TIME3 037770-037777 | TIME6 1-3 | LST1 tasks due together (+0) | LST1 tasks 1 cs apart | Waitlist full (9 tasks) | NEWJOB +0 | NEWJOB -0 | equal busy priorities | no free core set | no free VAC area |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `lm-exec-jobs` | 9,216 | 3,191 | 0 | 898 | 898 | 7,881 | 4,014 | 346 | 513 | 149 | 169 |
+| `lm-exec-services` | 9,208 | 1,447 | 0 | 1,144 | 1,165 | 948 | 8,051 | 1,157 | 723 | 877 | 1,264 |
+| `lm-exec-idle` | 4,864 | 2,449 | 0 | 2 | 0 | 4,864 | 1,549 | 499 | 9 | 125 | 172 |
+| `cm-exec-services` | 7,648 | 1,042 | 0 | 756 | 841 | 687 | 6,686 | 962 | 413 | 257 | 516 |
+| `cm-exec-jobs` | 6,144 | 3,061 | 0 | 2 | 1 | 6,144 | 1,385 | 464 | 344 | 283 | 512 |
+| `cm-exec-idle` | 5,120 | 2,048 | 2 | 3 | 0 | 5,120 | 727 | 385 | 1 | 6 | 0 |
+| `lm-t6rupt` | 3,840 | 1,920 | 362 | 1 | 1 | 3,840 | 1 | 1 | 8 | 13 | 0 |
 
 ## #143: QXCH moves data, not just addresses
 

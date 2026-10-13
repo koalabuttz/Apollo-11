@@ -1042,11 +1042,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -1857,19 +1874,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-cm.json",
-            "sha256": "1eace387ca147bd24beff6f1f63a6f337e8fcd78867a1b37c1fec5915553abfb"
+            "sha256": "b6eca388d62d1a108948652cda84fd3b808d6dae333fef8c3e402bf379c1872b"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
+            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "vice_targets": {
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
+            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
           }
         }
       }
@@ -2030,11 +2054,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
-            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+            "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102"
           },
           "c64_execution_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
-            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+            "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+            "vice_targets": {
+              "vice-keyrupt-uprupt": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
+            "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea"
           }
         }
       }
@@ -4302,11 +4333,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -5448,11 +5496,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
@@ -6583,19 +6648,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-lm.json",
-            "sha256": "4daf90775981605a53212aa6824f026f18e42b1abc882b1fafbd44d1d3795250"
+            "sha256": "50d27e76bfbd793f040a8688acd1e46aea66faeeddfd0ecb94fcda35ca4854c9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "fbefdb84e00a3af784c71830efd4f22ce0200b4cee42087984f6921253fc740f"
+            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a"
+            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b"
+            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "vice_targets": {
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
+            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
           }
         }
       }
@@ -6749,11 +6821,18 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-host.log",
-            "sha256": "b0c552e79666755a7ea80d7b88323d47ca6055ee24ff2e6845dc8958d434ed91"
+            "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102"
           },
           "c64_execution_results": {
             "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-vice.log",
-            "sha256": "f36dec4d0d0e791a0e66289a4911c24749b86aa6c3de6c46a4c668fdd6e0c326"
+            "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+            "vice_targets": {
+              "vice-keyrupt-uprupt": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/keyrupt-uprupt/keyrupt-uprupt-c64-cover.json",
+            "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea"
           }
         }
       }
@@ -8803,19 +8882,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-source-map.json",
-            "sha256": "f995477a70d125d42074e091d382da59be7d35b433f25251766fb2d3536a5227"
+            "sha256": "24de8d6efaf1da650a5cd57f174c3456c2343076c434da48b08da58dd9e7388f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-proof.json",
-            "sha256": "7fdf6c1508e008433c0ad5de6fc0f22c2f1f22596506a15c292206893fb8e30b"
+            "sha256": "621d52b27b6aa118fbc09e8931037822b476ba0c6e2c64e2eac08dd8e401843e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-host.log",
-            "sha256": "9718634faa0fa9b0a8625c0a62ba5f7abe7eb59994cefc361b1777b94247fb68"
+            "sha256": "0cb38501d950f3992f71647158f98dc1141035b1c0b3270572e0240f62a56b8b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-vice.log",
-            "sha256": "e15fabede24f731f0efd54c3ed2745bb638dbe1ca8cc2a1f76779cda5953f4ff"
+            "sha256": "de3fc32e76827049baa6e73763fba99d1c9c435f54af16aa2b0c12008b9e9ff7",
+            "vice_targets": {
+              "vice-lm-t6rupt": 242
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-t6rupt/lm-t6rupt-c64-cover.json",
+            "sha256": "da8211a96d82d216d85dff3de2930b600649d0908c14f8371526e765ec2a24a9"
           }
         }
       }
@@ -9390,11 +9476,28 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "9b20c7ecf390b454f9212b5aadf4788044f5aff3099f332361fe13e0a5a8bbd2"
+            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "e1a96342667828f3725f8994bf2ba7dbae19e9f89679e4203af217a6a543a80f"
+            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "vice_targets": {
+              "vice-lm-exec-services": 581,
+              "vice-lm-exec-jobs": 596,
+              "vice-lm-exec-idle": 310,
+              "vice-cm-exec-services": 487,
+              "vice-cm-exec-jobs": 388,
+              "vice-cm-exec-idle": 325,
+              "vice-rupt-lead-ins": 193
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
+            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+          },
+          "flight_edges": {
+            "path": "evidence/exec-closure/kernel-edges.json",
+            "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad"
           }
         }
       }
