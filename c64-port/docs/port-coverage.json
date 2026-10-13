@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -4401,7 +4401,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
+            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -4409,7 +4409,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
+            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -4420,7 +4420,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
+            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
           }
         }
       }
@@ -10597,7 +10597,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
+            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
@@ -10605,7 +10605,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
+            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -10616,7 +10616,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
+            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
           }
         }
       }
