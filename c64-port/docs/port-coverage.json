@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2837,8 +2837,21 @@
       "sha256": "412fbc54a7f99ea193e85c3ea739319eaf8ab489558ba5165a6482d6c51c6d9b",
       "bytes": 15336,
       "lines": 485,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_r30.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (283 words in bank 23): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, CANDEL, SPLRET, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 74 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/R30.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/R31.agc",
@@ -2846,8 +2859,21 @@
       "sha256": "94af1db0793427cefee250133313bb00cdbf92274d01e67dafa7ae8b82d14118",
       "bytes": 5840,
       "lines": 290,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_r31.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (218 words in bank 31): R31CALL, DSPDELAY, DISPN5X, V83, V83CALL, COMPDISP, R34ANG, STATEXTP, HAVEBASE, OTHINT, GETRVN5, GETRVN6, GETRVN and R34LOS, as 44 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/CM-R31.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/R60_62.agc",
@@ -3569,8 +3595,20 @@
       "sha256": "7e07913f963e312eb5145dfa71832012a2f9ab2d699ada4ddd397bde518e5ec2",
       "bytes": 10653,
       "lines": 552,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_tpi_search.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (443 words in banks 35, 36 and 07): P17, P77, VNCOMP17, ALARUMS, the search (P17S, BIS, CONCAUL, ADVCSM, JUNCT1-3, INTERP, HALFSAFE, LRGRDVO, RNGETEST, ENDEN, USEKAY, NEXUS) and TRANSANG, as 65 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/CM-TPI-SEARCH.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/TVCDAPS.agc",
@@ -7643,6 +7681,18 @@
           ],
           "scope": "MAXCHK and its constant MAXNM, 9 words of bank 22 (03636-03646): from the NEWOPS entry frontier after each of its six Luminary CALLs (R30 and the P30/P35 apsides displays) to the caller's NEWOPS frontier at C(QPRET), as one native step. The rest of R30 (V82 orbit parameter display, CALCTPER, CALCTFF) is not yet translated.",
           "verification": "docs/LM-PERIAPO.md"
+        },
+        {
+          "native_files": [
+            "src/lm_r30.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (261 words in bank 22): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 66 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/R30.md"
         }
       ]
     },

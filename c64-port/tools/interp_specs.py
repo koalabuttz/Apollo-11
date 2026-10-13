@@ -166,4 +166,71 @@ SPECS = {
         'resume_orphans': True,
         'freeze_stride': 32,
     },
+    'cm-r31': {
+        'missions': ('cm',),
+        'file': {'cm': 'R31.agc'},
+        'base': {'cm': 'cm_r31'},
+        'symbol': {'cm': 'cm_r31'},
+        # V83 (the extended verb), R31CALL and V83CALL (the job FINDVAC
+        # starts) enter from outside the file.
+        'entries': ['V83', 'R31CALL', 'V83CALL'],
+        'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/cm_r31_target.c',
+        'freeze_stride': 32,
+    },
+    'r30': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'R30.agc', 'cm': 'R30.agc'},
+        'base': {'lm': 'lm_r30', 'cm': 'cm_r30'},
+        'symbol': {'lm': 'lm_r30', 'cm': 'cm_r30'},
+        # V82 (the extended verb) and the Executive/Waitlist targets the
+        # file names itself.
+        # CANDEL (CM): CHECKMM's in-mode return, past its DEC 11.
+        'entries': {'lm': ['V82CALL', 'V82GON', 'V82GOFF1', 'TICKTEST', 'V82GON1'],
+                    'cm': ['V82CALL', 'V82GON', 'V82GOFF1', 'TICKTEST', 'V82GON1', 'CANDEL']},
+        'externals': {'BANKCALL': 1, 'WAITLIST': 2, 'FINDVAC': 2, 'NOVAC': 2, 'B5OFF': 0, 'CHANG1': 0, 'CHECKMM': 1,
+                      'ENDEXT': None, 'ENDMARK': None, 'TASKOVER': None, 'ENDOFJOB': None},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        # GOXDSPF returns to the first, second or third word after its CADR
+        # (terminate, proceed, data in or recycle).
+        'returns': {'GOXDSPF': 3},
+        # TICKTEST's INDEX A; TC +1 on V82FLAGS bits 1-2 (A = 0 to 3).
+        'tc_tables': {'DOTICK+7': 4},
+        # BOTHSHIP's DLOAD* 1/RTMUE,2 and MINPERE,2: X2 is 0 (Earth) or
+        # 2 (Moon, the pair's first word) as THISPREC/OTHPREC leave it.
+        'fixed_index': {'1/RTMUE': [0, -2], 'MINPERE': [0, -2]},
+        'states': {'BOTHSHIP': {'vac+047': [0, 2]}, 'THISSHIP+3': {'vac+047': [0, 2]}},
+        'target': 'tests/r30_target.c',
+        # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
+        'freeze_stride': 128,
+    },
+    'cm-tpi-search': {
+        'missions': ('cm',),
+        'file': {'cm': 'TPI_SEARCH.agc'},
+        'base': {'cm': 'cm_tpi_search'},
+        'symbol': {'cm': 'cm_tpi_search'},
+        # P17 and P77 (the major modes) and TRANSANG (called from P34).
+        'entries': ['P17', 'P77', 'TRANSANG'],
+        'externals': {'BANKCALL': 1, 'AVFLAGA': 0, 'AVFLAGP': 0, 'P20FLGON': 0, 'VNPOOH': 0,
+                      'BLANKET': 0, 'ALARM': 1, 'GOTOPOOH': None, 'ENDOFJOB': None},
+        # GOFLASH returns to the first, second or third word after its CADR
+        # (terminate, proceed, enter); GOFLASHR also to the fourth at once.
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        # MUTABLE,1 and MUTABLE +2,1 with X1 -2 or -10 (the conics' AXT,1).
+        'fixed_index': {'MUTABLE': [2, 10]},
+        # The search's EBANK= RACT3 (E7): XRS (X1, X2 as the conics leave
+        # them, saved by S17.1) at E7,1745.
+        'ebank': 7,
+        'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
+        # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
+        'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]}},
+        'target': 'tests/cm_tpi_search_target.c',
+        'freeze_stride': 128,
+    },
 }
