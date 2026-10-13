@@ -31,6 +31,7 @@
 #define lmi_diradres_pushup cmi_diradres_pushup
 #define lmi_address_pushup cmi_address_pushup
 #define lmi_store_code cmi_store_code
+#define lmi_store_spills cmi_store_spills
 #define lmi_stadr cmi_stadr
 #define lmi_dodload cmi_dodload
 #define lmi_dovload cmi_dovload

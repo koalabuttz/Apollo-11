@@ -61,7 +61,7 @@ int main(void){apollo_overlay_state s;unsigned n,i,stopped=0,refusals=0;
   * and STILBADH (BR 175, 183), refused, since their CCS would run the
   * PHASCHNG operand or a word after EXTEND. */
  static const unsigned unreachable[]={02402u,02403u,02404u,02411u,02430u,02431u,02434u,02435u,02440u,02441u,
-  02446u,02447u,02460u,02464u,02465u,02470u,02471u,02550u,02551u,02554u,02555u,02560u,02561u,02564u,02565u,
+  02446u,02447u,02460u,02464u,02465u,02470u,02471u,02474u,02550u,02551u,02554u,02555u,02560u,02561u,02564u,02565u,
   02576u,02577u,02606u,02607u,02616u,02617u,02630u,02631u,02646u,02647u,02653u,02657u,02663u,02667u};
  /* Every instruction address and order pair (bank 33 a - 02206; bank 37
   * 01600 + a - 03410; bank 22 02100 + a - 03661; bank 27 02140 + a - 03321;

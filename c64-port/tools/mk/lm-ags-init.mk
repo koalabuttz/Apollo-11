@@ -24,6 +24,7 @@ lm-ags-init-differential: build/lm-ags-init-native
 	git diff --exit-code -- tests/lm_ags_init_vectors.h tests/lm_ags_init_c64_vectors.h
 c64-lm-ags-init: build/lm-ags-init.prg
 build/lm-ags-init.prg: $(LM_AGS_SRC) platform/c64/lm_ags_init_diagnostic.c tests/lm_ags_init_c64_vectors.h $(LM_AGS_HDR) | build
-	$(MOS_CC) $(CPPFLAGS) -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DAGS_UNDO_ADDRESS=0xf000u -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-ags-init.map $(LM_AGS_SRC) platform/c64/lm_ags_init_diagnostic.c -o $@
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DAGS_UNDO_ADDRESS=0xf000u -fno-inline -ffunction-sections -fdata-sections -Wl,--gc-sections -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-ags-init.map $(LM_AGS_SRC) platform/c64/lm_ags_init_diagnostic.c -o $@
+	python3 -c "import re,sys;m=open('build/lm-ags-init.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else 'code and BSS reach the mailbox page: '+hex(e))"
 vice-lm-ags-init: build/lm-ags-init.prg
 	python3 tools/vice_run.py build/lm-ags-init.prg --cycles 3000000000 --timeout 1200

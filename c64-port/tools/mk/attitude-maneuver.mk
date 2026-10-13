@@ -5,7 +5,7 @@
 ATT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 ATT_SRC = src/lm_attitude_maneuver.c src/cm_attitude_maneuver.c tests/attitude_maneuver_target.c $(ATT_COMMON)
 ATT_HDR = include/lm_attitude_maneuver.h include/cm_attitude_maneuver.h tests/interp_case.h tests/attitude_maneuver_vectors.h tests/attitude_maneuver_c64_vectors.h
-ATT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+ATT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
 .PHONY: test-attitude-maneuver sanitize-attitude-maneuver c64-attitude-maneuver vice-attitude-maneuver attitude-maneuver-differential
 all: build/test-attitude-maneuver
 test: test-attitude-maneuver
@@ -32,4 +32,4 @@ c64-attitude-maneuver: $(ATT_C64_PRGS)
 build/attitude-maneuver-%.prg: $(ATT_SRC) platform/c64/attitude_maneuver_diagnostic.c tools/mk/attitude-maneuver.groups $(ATT_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(ATT_MOS_FLAGS) $(ATTITUDE_MANEUVER_GROUP_FLAGS_$*) -Wl,-Map,build/attitude-maneuver-$*.map $(ATT_C64_$(ATTITUDE_MANEUVER_GROUP_MISSION_$*)) $(ATT_C64_COMMON) platform/c64/attitude_maneuver_diagnostic.c -o $@
 vice-attitude-maneuver: $(ATT_C64_PRGS)
-	for p in $(ATT_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(ATT_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

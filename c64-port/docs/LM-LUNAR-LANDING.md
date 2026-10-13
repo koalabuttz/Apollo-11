@@ -8,8 +8,11 @@ Lane F. Milestone `lm-lunar-landing`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 `02776`-`03262` and P68's LANDJUNK in bank 31 `02144`-`02215`, 223
 assembled words. Nothing is left in the file.
 
-`src/lm_lunar_landing.c` registers twenty-one basic and ten interpretive
-routines (`lm_lunar_landing_routines`, `lm_lunar_landing_interpretive`).
+`src/lm_lunar_landing.c` registers twenty-one basic and sixty-nine
+interpretive routines (`lm_lunar_landing_routines`,
+`lm_lunar_landing_interpretive`). Every interpretive label is a key, and so
+is every word after a DANZIG, where the Executive resumes a job that CHANG2
+suspended.
 One step machine runs from each key (Z, or LOC at NEWOPS for an
 interpretive key) through the file's basic code, its interpretive code and
 the interpreter, until control leaves the file:
@@ -72,7 +75,8 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 - a basic key under an FB other than its bank;
 - an interpretive key whose BANKSET or FB is not its bank;
 - a work area that is not one of the five VAC areas, PUSHLOC outside it, or
-  EDOP not +0;
+  EDOP not +0, at any NEWOPS the run reaches (a key entered inside
+  DDUMCALC's pushdown arithmetic can pop PUSHLOC below FIXLOC);
 - NEWJOB negative at a DANZIG;
 - DDUMCALC with overflow in A (its `TS NIGNLOOP` would skip `TC INTPRET`
   into the order words; POSTJUMP never leaves one);
@@ -81,8 +85,8 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 
 ## Verification
 
-`tests/lm_lunar_landing_cases.c` builds 15,872 cases, 512 for each of the
-31 keys. Each case starts from a random image with FB the key's bank.
+`tests/lm_lunar_landing_cases.c` builds 46,080 cases, 512 for each of the
+90 keys. Each case starts from a random image with FB the key's bank.
 
 - EB is E7 (`EBANK= E2DPS`), another bank in a quarter of the states; the
   superbank bits, the interrupt-enable bit and channel 12 vary; channel 33
@@ -93,7 +97,9 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 - At DDUMCALC, three sevenths of the states have the ignition guesses
   converge (the gains, RGU, RIGNX/Z and VGU's X and Y zero, so DDUM is +0
   and BMN takes DDUMGOOD), with V zero in a third of those; at P63SPOT2,
-  R60VSAVE is zero in a quarter (UNIT of a zero vector).
+  R60VSAVE is zero in a quarter (UNIT of a zero vector). At `32,3141`
+  (`BMN DDUMGOOD`), |DDUM| equals DDUMCRIT, of either sign, in a twelfth of
+  the states, so BMN sees +0 and -0.
 
 - `make lm-lunar-landing-differential` runs `tools/lm_lunar_landing_freeze.py`.
   - It builds the yaAGC oracle `tools/lm_lunar_landing_reference.c` on
@@ -102,25 +108,28 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
     interpreter (fixed-fixed 06037-07707, bank 0 and bank 1's interpretive
     code, its erasable words including UNIT's `TC A`, and SWCALL) or, at
     NEWOPS, the file's interpretive words (`lld_leaves`).
-  - It requires the native snapshot to be byte-identical for every case:
-    all 15,872. The comparison covers all 2,048 erasable words, channels 12
+  - It requires the native snapshot to be byte-identical for every case the
+    routines accept: 44,758, with 1,322 refused (all a pushdown read that
+    takes PUSHLOC below FIXLOC). The comparison covers all 2,048 erasable words, channels 12
     and 33 and the interrupt-enable bit.
   - The digests are frozen into `tests/lm_lunar_landing_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_lunar_landing_c64_vectors.h`, 120 cases): every key, outcome,
-    path and basic block of `src/lm_lunar_landing.c` the host cases take
-    (33 cases), then a stride of 97. The counts
+    (`tests/lm_lunar_landing_c64_vectors.h`, 119 cases). For each PRG it
+    takes, from the cases that PRG runs as the whole file does, every key,
+    outcome, path and control-flow edge of every linked source (clang
+    `-fsanitize-coverage=edge,trace-pc-guard`) those host cases take (62
+    and 33 cases), then a stride of 97. The counts
     are in `evidence/lm-lunar-landing/lm-lunar-landing-c64-cover.json`.
   - The proof (`evidence/lm-lunar-landing/lm-lunar-landing-proof.json`)
-    counts where each key's cases leave the file.
+    counts where each key's cases leave the file, and the refusals per key.
 - `make test-lm-lunar-landing` and `make sanitize-lm-lunar-landing` check
   every digest (strict and ASAN/UBSAN). They require every case to leave the
-  file, every key, instruction, order pair and decision outcome to be taken,
+  file or be refused, every key, instruction, order pair and decision outcome to be taken,
   and the refusals.
 - `make vice-lm-lunar-landing` runs the C64 rows in VICE as two PRGs that
-  together run all 120 rows: the whole file does not fit C64 RAM, so group
-  2 (`LLD_C64_GROUP=2`) registers DDUMCALC and P63SPOT2 with the code they
-  reach (9 rows) and group 1 the other 29 keys (111 rows). Both are built
+  together run all 119 rows: the whole file does not fit C64 RAM, so group
+  2 (`LLD_C64_GROUP=2`) registers the 29 keys of DDUMCALC and P63SPOT2 with
+  the code they reach (38 rows) and group 1 the other 61 keys (81 rows). Both are built
   without inlining, with the image and the undo image in the RAM under
   KERNAL ($E000, $F000; ROM banked out); the build fails if code or BSS
   reaches the mailbox page. The VICE log records each PRG's SHA-256.

@@ -2,6 +2,102 @@
 """Milestone specs for tools/interp_compile.py: the file, its entries, the
 outside basic routines it calls (with their inline word counts) and the
 native routines its RTBs reach."""
+
+
+def ones(x):
+    """x as a ones'-complement word."""
+    return x if x >= 0 else ~(-x) & 0o77777
+
+
+def kalcmanu_joint(cm):
+    """KALCMANU steering states that only mean something together:
+    TIMECHK's TM - TIME (TTEMP) small, of both signs and exactly 0, around
+    ONESEK (100); CONTMANU's NEXTIME at, near and wrapped past TIME1;
+    INCRDCDU's BCDU - NCDU small enough that MP DT/TAU leaves +-0; RATEBIAS's
+    BRATE +-0; and (Comanche) HOLDFLAG +-0 and each RATEINDX."""
+    out = []
+    for t2 in (0, 0o1234, 0o37777):
+        for t1 in (0o200, 0o37000):
+            for dh in (0, 1):
+                for d in (-101, -100, -99, -1, 0, 1, 99, 100, 101):
+                    out.append({'0024': t2, '0025': t1, 'TM': t2 + dh, 'TM+1': t1 + d})
+    for t1 in (0o200, 0o37770, 0o37777):
+        for d in (-1, 0, 1, 50, 100):
+            out.append({'0025': t1, 'NEXTIME': (t1 + d) % 0o40000})
+    for e in (-12, -5, -1, 0, 1, 5, 12):
+        st = {}
+        for i in range(3):
+            st['BCDU+%d' % i] = ones(0o100 + e * (i - 1))
+            st['NCDU+%d' % i] = 0o100
+        out.append(st)
+    for hi in (0, 0o77777, 3, 0o77774):
+        out.append({'BRATE+0': hi, 'BRATE+1': 0, 'BRATE+2': 0o77777 ^ hi, 'BRATE+3': 0, 'BRATE+4': hi, 'BRATE+5': 0})
+    if cm:
+        for v in (0, 0o77777, 1, 0o77776):
+            out.append({'HOLDFLAG': v})
+        for v in (0, 2, 4, 5, 6, 7):
+            out.append({'RATEINDX': v})
+    return out
+
+
+def anglfind_joint():
+    """MFI at identity and axis rotations (AM = ARCCOS(1), the ACOSST .5
+    edge), and COF with each ordering of its components, ties included
+    (COFMAXGO's BMN arms)."""
+    out = []
+    for one in (0o10000, 0o20000):
+        for signs in ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1)):
+            st = {'MFI+%d' % k: 0 for k in range(18)}
+            for i, sg in enumerate(signs):
+                st['MFI+%d' % (8 * i)] = one if sg > 0 else ones(-one)
+                st['MFI+%d' % (8 * i + 1)] = 0 if sg > 0 else 0o77777
+            out.append(st)
+    for a, b, c in ((1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1),
+                    (2, 2, 1), (1, 2, 2), (2, 1, 2), (1, 1, 1)):
+        out.append({'COF': a * 0o2000, 'COF+1': 0, 'COF+2': b * 0o2000, 'COF+3': 0,
+                    'COF+4': c * 0o2000, 'COF+5': 0})
+    return out
+
+
+def axisgen_states():
+    """AXISGEN's loops entered at their heads or at any resume point in them
+    (AXISGEN+1..AXISGEN1+28 with AXISGEN1's, the AXISGEN2 and AXISGEN3
+    loops with theirs): the index registers and steps as the loops hold
+    them."""
+    one = {'vac+046': ['AXISGEN+1', 0o14], 'vac+050': ['AXISGEN+3'], '0166': ['vac+0']}
+    two = {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
+           'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']}
+    # Past AXISGEN1's loop SXA,1 has put -6 in 30D. Between the AXISGEN2
+    # loop's two XCHX,1 30D, X1 holds -6 and 30D the loop count.
+    after = dict(one, **{'vac+036': [0o77771]})
+    inside = dict(two, **{'vac+046': [0o77771], 'vac+036': [0o22, 0o14, 0o6]})
+    out = {'AXISGEN+%d' % n: one for n in range(4, 6)}
+    out.update({'AXISGEN1+%d' % n: one for n in range(0, 0o14)})
+    out.update({'AXISGEN1+%d' % n: after for n in range(0o14, 0o27)})
+    out['AXISGEN2'] = two
+    out.update({'AXISGEN2+%d' % n: inside for n in range(1, 0o17)})
+    out.update({'AXISGEN2+%d' % n: two for n in range(0o17, 0o23)})
+    out.update({'AXISGEN3+%d' % n: two for n in range(0, 0o20)})
+    return out
+
+
+def cdutodcm_states():
+    """CDUTODCM's LOOPSIN loop: X1 3, 2 or 1 with S1 1 and the pushdown list
+    at 0D at the loop head; at its resume points (CDUTODCM+4 on, inside the
+    loop) the pushdown list anywhere the pushes take it. SUHALFA and CALCPHI
+    run with PSI and THETA pushed (4D)."""
+    head = {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']}
+    body = dict(head, **{'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12', 'vac+14']})
+    out = {'CDUTODCM+%d' % n: dict(head, **{'vac+046': [3]}) for n in (4, 5)}
+    out['LOOPSIN'] = head
+    out.update({'LOOPSIN+%d' % n: body for n in range(1, 0o12)})
+    out.update({'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}})
+    # DCMTOCDU's SL1 and STORE S1 run on the double-precision sine of
+    # PSI: in another mode the STORE would reach QPRET (S1 +2).
+    out.update({'DCMTOCDU+%d' % n: {'0163': [0]} for n in (3, 5)})
+    return out
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -15,20 +111,28 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/inflight_align_target.c',
-        # Every 32nd case keeps the vectors under the 1 MB fast-checkout limit.
-        'freeze_stride': 32,
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as
         # the loops hold them (X1 and S1 at VAC+046/050, X2 and S2 at
         # VAC+047/051, the saved X1 in 30D at VAC+036). 'LABEL+n' is the
         # word at that address (AXT,1 STARAD +6 and SSP S1 STARAD -6);
         # 'vac+n' the VAC address (PUSHLOC 0166 at 0D, AXISGEN's SETPD).
-        'states': {
-            'AXISGEN1': {'vac+046': ['AXISGEN+1', 0o14], 'vac+050': ['AXISGEN+3'], '0166': ['vac+0']},
-            'AXISGEN2': {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
-                         'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']},
-            'AXISGEN3': {'vac+046': [0o22, 0o14, 0o6], 'vac+050': [0o6], 'vac+047': [0o6, 0o4, 0o2],
-                         'vac+051': [0o2], 'vac+036': [0o77771], '0166': ['vac+0']},
-        },
+        # The job's resume points inside the loops (resume_keys) take the
+        # states of the loop they are in.
+        'states': axisgen_states(),
     },
     'geometry': {
         'missions': ('lm', 'cm'),
@@ -47,9 +151,21 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/geometry_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
         # Words no routine compiles yet, and why (the source map records them).
         'partial': {'cm': 'SXTNB, SXTLOGIC, CALCSXA and SXTANG wait for native TRANSP1/TRANSP2'},
-        'freeze_stride': 32,
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
     },
     'kalcmanu-steering': {
         'missions': ('lm', 'cm'),
@@ -70,13 +186,130 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'target': 'tests/kalcmanu_steering_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
         'freeze_stride': 32,
-        # ISITAUTO leaves +0 or +1 in A; CCS A's negative arms are the
-        # interpretive words that follow.
-        'states': {'NEWDELHI+2': {'0': [0, 1]}},
+        # ISITAUTO leaves CHAN31 & BIT14 in A: +0 or 020000.
+        'states': {'NEWDELHI+2': {'0': [0, 0o20000]}},
+        # The joint states reach TIMECHK's end of maneuver, CONTMANU's wrap
+        # and the +-0 arms.
+        'joint_states': {'*': {'lm': kalcmanu_joint(False), 'cm': kalcmanu_joint(True)}},
         # The file's EBANK= TTEMP (E6, as its 2CADR BBCONs carry): its
         # switched names (KSPNDX, BRATE...) mean nothing under another EB.
         'ebank': 6,
+    },
+    'r60-r62': {
+        'missions': ('lm', 'cm'),
+        # The listing names the file R60,R62.agc; the repository R60_62.agc.
+        'file': {'lm': 'R60,R62.agc', 'cm': 'R60,R62.agc'},
+        'source_path': {'lm': 'R60_62.agc', 'cm': 'R60_62.agc'},
+        'base': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'symbol': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
+        'entries': {'lm': ['R60LEM', 'R62FLASH', 'VECPOINT', 'VECPNT1', 'BALLANGS', 'RELINUS', 'ISITAUTO', 'G+N,AUTO'],
+                    'cm': ['R60CSM', 'R62DISP', 'VECPOINT', 'RELINUS']},
+        # 'auto': the call's inline words are the data words after the TC.
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
+                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', 'LINUS': 'auto', 'PRIOCHNG': 'auto',
+                      'CHECKMM': 'auto', 'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None,
+                      'BANKJUMP': None, 'TASKOVER': None},
+        # Display and restart returns (GOPERF +1/+2 and the like) land on
+        # words nothing in the file reaches.
+        'resume_orphans': True,
+        'rtb': {'V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)',
+                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/r60_r62_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # BUF2 holds the last display's return (a fixed address), as
+        # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
+        'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
+        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
+                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 128,
+    },
+    'attitude-maneuver': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
+        'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
+        # Comanche's KALCMANU ends with BZMF NOGO -2 (NOGOM2's TC BANKCALL,
+        # after its INHINT).
+        'entries': {m: ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
+                        'VECOFANG', 'NOGO'] + (['NOGO-2'] if m == 'cm' else []) for m in ('lm', 'cm')},
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'MAKECADR': 'auto', 'CURTAINS': 'auto',
+                      'WAITLIST': 'auto', 'STOPRATE': 'auto', 'LOADCDUD': 'auto', 'POSTJUMP': 1,
+                      'ENDOFJOB': None, 'GOTOPOOH': None, 'BANKJUMP': None, 'TASKOVER': None},
+        'noreturn': ['POSTJUMP'],
+        'resume_orphans': True,
+        # READCDUK is the file's own basic code; CDULOGIC is native.
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
+                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
+                'READCDUK': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/attitude_maneuver_target.c',
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
+        # the word after it is the routine the job resumes at.
+        'resume_keys': True,
+        # One C64 case per routine: KALCMAN3's run reaches most of the file.
+        'c64_per_point': 1,
+        # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
+        # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
+        'ebank': 6,
+        # LOOPSIN is CDUTODCM's TIX loop: X1 3, 2 or 1 with S1 1, and the
+        # pushdown list at 0D (its SETPD 0), as the loop's pushes assume.
+        # SUHALFA and CALCPHI (DCMTOCDU's THETA quadrant fix) run with PSI
+        # and THETA pushed (pushdown at 4D).
+        # The job's resume points in CDUTODCM before and inside the loop
+        # take the same index registers, with the pushdown list where the
+        # loop's pushes leave it (four words an iteration).
+        'states': cdutodcm_states(),
+        # PUSHLOC low enough that the pushes a resumed MXM3 or DCMTOCDU
+        # still makes stay below X1 and X2 (VAC+046).
+        'all_states': {'0166': ['vac+%o' % n for n in range(0, 0o24, 2)],
+                       'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
+                       'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
+                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
+        # Half the cases start from one MFI or COF set (anglfind_joint).
+        'joint_states': {'*': anglfind_joint()},
+        # -fno-inline keeps KALCMAN3's whole path in one diagnostic.
+        'c64_flags': ['-fno-inline'],
+        # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'max_steps': 1000,
+        'freeze_stride': 256,
     },
     'lm-orbital-integration': {
         'missions': ('lm',),
@@ -178,74 +411,6 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
         'rope_bin': True,
-    },
-    'r60-r62': {
-        'missions': ('lm', 'cm'),
-        # The listing names the file R60,R62.agc; the repository R60_62.agc.
-        'file': {'lm': 'R60,R62.agc', 'cm': 'R60,R62.agc'},
-        'source_path': {'lm': 'R60_62.agc', 'cm': 'R60_62.agc'},
-        'base': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
-        'symbol': {'lm': 'lm_r60_r62', 'cm': 'cm_r60_r62'},
-        'entries': {'lm': ['R60LEM', 'R62FLASH', 'VECPOINT', 'VECPNT1', 'BALLANGS', 'RELINUS', 'ISITAUTO', 'G+N,AUTO'],
-                    'cm': ['R60CSM', 'R62DISP', 'VECPOINT', 'RELINUS']},
-        # 'auto': the call's inline words are the data words after the TC.
-        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
-                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
-                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', 'LINUS': 'auto', 'PRIOCHNG': 'auto',
-                      'CHECKMM': 'auto', 'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None,
-                      'BANKJUMP': None, 'TASKOVER': None},
-        # Display and restart returns (GOPERF +1/+2 and the like) land on
-        # words nothing in the file reaches.
-        'resume_orphans': True,
-        'rtb': {'V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)',
-                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'},
-                'READCDUK': None},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
-        'target': 'tests/r60_r62_target.c',
-        # BUF2 holds the last display's return (a fixed address), as
-        # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
-        'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
-        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
-                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
-        'freeze_stride': 64,
-    },
-    'attitude-maneuver': {
-        'missions': ('lm', 'cm'),
-        'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
-        'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
-        'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
-        'entries': ['KALCMAN3', 'MXM3', 'TRANSPOS', 'READCDUK', 'CDUTODCM', 'DELCOMP', 'DCMTOCDU',
-                    'VECOFANG', 'NOGO'],
-        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
-                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'MAKECADR': 'auto', 'CURTAINS': 'auto',
-                      'WAITLIST': 'auto', 'STOPRATE': 'auto', 'LOADCDUD': 'auto', 'POSTJUMP': 1,
-                      'ENDOFJOB': None, 'GOTOPOOH': None, 'BANKJUMP': None, 'TASKOVER': None},
-        'noreturn': ['POSTJUMP'],
-        'resume_orphans': True,
-        # READCDUK is the file's own basic code; CDULOGIC is native.
-        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
-                             'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
-                'READCDUK': None},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
-        'target': 'tests/attitude_maneuver_target.c',
-        # One C64 case per routine: KALCMAN3's run reaches most of the file.
-        'c64_per_point': 1,
-        # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
-        # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
-        'ebank': 6,
-        # LOOPSIN is CDUTODCM's TIX loop: X1 3, 2 or 1 with S1 1, and the
-        # pushdown list at 0D (its SETPD 0), as the loop's pushes assume.
-        # SUHALFA and CALCPHI (DCMTOCDU's THETA quadrant fix) run with PSI
-        # and THETA pushed (pushdown at 4D).
-        'states': {'LOOPSIN': {'vac+046': [3, 2, 1], 'vac+050': [1], '0166': ['vac+0']},
-                   'SUHALFA': {'0166': ['vac+4']}, 'CALCPHI': {'0166': ['vac+4']}},
-        'all_states': {'vac+046': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
-                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
-                       'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
-                                   'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
-        'freeze_stride': 64,
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),
