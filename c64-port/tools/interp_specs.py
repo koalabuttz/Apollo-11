@@ -1837,4 +1837,44 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'rope_bin': True,
     },
+    # Lane D2: Luminary099 AOSTASK_AND_AOSJOB (1/ACCS, the DAP's mass and
+    # jet-acceleration interface, and the AOSTASK/AOSJOB offset filter), the
+    # whole file as basic routines at its original addresses.
+    'lm-aostask': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
+        'base': {'lm': 'lm_aostask'},
+        'symbol': {'lm': 'lm_aostask'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= AOSQ (E6).
+        'ebank': 6,
+        # DVOVSUB (INCR Q) returns past its ADRES of the divisor.
+        'call_skips': {'DVOVSUB': 1},
+        # The constants the file reads under INDEX: the inertia and mass
+        # tables (INERCONA..GFACTM, 20,3037-3110), the jet torque and
+        # acceleration coefficients (TORQCONS..COEFF, 20,3145-3230), the
+        # U/V jet masks (20,3762-3771) and DVOVSUB's divisors (TORKJET1,
+        # 20,2000, through its ADRES).
+        # DVOVSUB's INDEX Q reads the ADRES after each TC DVOVSUB (LRESC +4
+        # .. +22, and TORQCONS +11 and +42 in its table).
+        'fixed_tables': {'TORKJET1': (0, 0), 'INERCONA': (-0o41, 0o47), 'TORQCONS': (0, 0o63), '-UMASK': (-4, 3),
+                         'LRESC': (4, 0o22)},
+        # TC ARET runs ARET's word: DO1/NET+'s saved return (QXCH ARET) or
+        # ACCHERE's TCF ACCTHERE (CA ACCHERE; TS ARET).
+        'tcf_words': True,
+        # DOCKTEST's CCS DOCKTEMP: DOCKTEMP (MPAC +3) is DAPBOOLS' CSMDOCKD
+        # bit, 0 or BIT13 (20,2463-2465); negative it would fall into
+        # DVOVSUB with no call.
+        'states': {'20,2773': {'157': [0, 0o10000]}},
+        'target': 'tests/lm_aostask_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
 }

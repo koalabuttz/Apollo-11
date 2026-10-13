@@ -1385,6 +1385,9 @@ class Compiler:
         c.append('#include "%s.h"' % base)
         c.append('#include "%s"' % ('lm_interp_steps.h"\n#include "lm_interp_orders.h' if self.m == 'lm' else 'cm_interp.h'))
         c.append('#include "agc_image_ops.h"')
+        if self.basic and self.basic.io == 'p66_bias_io' and self.basic.input_channels():
+            # (Luminary basic code reading input channels: lm_channel_io.)
+            self.uses_channels = True
         if self.uses_channels:
             c.append('#include "agc_input_channels.h"')
         for inc in s.get('includes', []):
@@ -1558,7 +1561,7 @@ class Compiler:
             c.extend(self.basic.emit(sym))
             c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
             c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
-            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
+            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const %s *io,agc_word fb){' % self.basic.io)
             c.append(' unsigned i;')
             if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
                 c.append(' /* fb bit 15: a bank 40-43 routine, FB 30-33 with SUPERBNK 0100 */')
@@ -1601,8 +1604,15 @@ class Compiler:
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
-                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
-                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
+                if self.basic.io == 'p66_bias_io' and self.basic.channels:
+                    # (Luminary channel orders: the program's agc_hardware, and
+                    # the inputs after the io record, lm_channel_io.)
+                    c.append(' (void)p;if(!s||!v%s||!basic_sane(s,(p66_bias_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % (
+                        '||!p->hardware' if self.basic.hw_channels() else '', bfb))
+                    c.append(' hw=p->hardware;%s' % ('agc_channels_in=&((lm_channel_io *)v)->in;' if self.basic.input_channels() else ''))
+                else:
+                    c.append(' (void)p;if(!s||!v||!basic_sane(s,(%s *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % (self.basic.io, bfb))
+                c.append(' return %s(s,(%s *)v,%uu);' % (self.basic.run_name(phys // 1024), self.basic.io, phys))
                 c.append('}')
                 c.append('#endif')
                 continue
