@@ -26,7 +26,7 @@ every owned word is reproduced by its milestone. Instruction rows that are
 transfer-ABI entries (src/lanec_pin_routines.inc) name their routine. Writes
 OUTDIR/lanec-pin-{lm,cm}-source-map.json.
 """
-import json, os, pathlib, re, subprocess, sys
+import hashlib, json, os, pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/lanec'))
@@ -87,7 +87,9 @@ CLASSIFIED = {
 def traces(mission):
     executed = {}
     env = dict(os.environ)
-    cache = ROOT / 'build/lanec-pinmap'
+    # Keyed by the oracle build, which holds the suites' cases: a stale trace
+    # from an older case set would credit words to the wrong module.
+    cache = ROOT / 'build/lanec-pinmap' / hashlib.sha256((ROOT / 'build/lanec-oracle').read_bytes()).hexdigest()[:16]
     cache.mkdir(parents=True, exist_ok=True)
     for suite, _, _ in SUITES:
         out = cache / f'{suite}.trace'

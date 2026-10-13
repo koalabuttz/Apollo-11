@@ -190,8 +190,8 @@ pin-transfer-c64 strict: PASS: 927 complete states (2048 erasable words, A/L/Q/E
 pin-transfer-c64 sanitize: PASS: 927 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1161 out-of-domain cases refused with the state unchanged
 pin-refuse strict: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
 pin-refuse sanitize: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
-PASS LM Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2378 assembled words; 2101 executed, 65 call arguments, 199 constants, 11 instructions read as data, 2 unreachable; owners {'constants': 210, 'lanec-pin-gaps': 79, 'lanec-pw': 2089}
-PASS CM Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2379 assembled words; 2098 executed, 65 call arguments, 202 constants, 11 instructions read as data, 3 unreachable; owners {'constants': 213, 'lanec-pin-gaps': 80, 'lanec-pw': 2086}
+PASS LM Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2378 assembled words; 2101 executed, 65 call arguments, 199 constants, 11 instructions read as data, 2 unreachable; owners {'constants': 210, 'lanec-pin-gaps': 107, 'lanec-pw': 2061}
+PASS CM Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2379 assembled words; 2098 executed, 65 call arguments, 202 constants, 11 instructions read as data, 3 unreachable; owners {'constants': 213, 'lanec-pin-gaps': 108, 'lanec-pw': 2058}
 pin-gaps C64: PASS: VICE PAL lanec-pin-gaps.prg: 50 checks, 0 failures
 pw C64: PASS: VICE PAL lanec-pw: 85 programs, 917 checks, 0 failures
 pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer: 108 programs, 575 checks, 0 failures

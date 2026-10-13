@@ -3343,7 +3343,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "beb396991faa088a70f0765fbd850cb09dc3b3a5acadd5f073471410ce5e4f97"
+            "sha256": "fcaf42de7e59781d204bb5c7074ff6ce87015a23c1aed30a322690c768e8196e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -3351,7 +3351,7 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "c89e0e617a9e9f540c923c18aeaca63156e1a797bb68e0448e6bd632bb941fe2"
+            "sha256": "cba0cd163e3ba92bdf23ee52dbdd862a47d1a6c246fc131d2b6635936ff67208"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
@@ -9061,7 +9061,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "af2f78d1e16905a17922111c2f641e70d2e5c6da20030264c090390b296fa82d"
+            "sha256": "b3c25763f28aea1ec542b01125079ac243cb48eea4c54657a9adbba9bf548f56"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -9069,7 +9069,7 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "c89e0e617a9e9f540c923c18aeaca63156e1a797bb68e0448e6bd632bb941fe2"
+            "sha256": "cba0cd163e3ba92bdf23ee52dbdd862a47d1a6c246fc131d2b6635936ff67208"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",

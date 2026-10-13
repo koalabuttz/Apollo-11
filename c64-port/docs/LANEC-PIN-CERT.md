@@ -33,8 +33,8 @@ Every assembled word of each file has exactly one owner:
 
 | Words (LM / CM) | Owner | Native code |
 |---|---|---|
-| 79 / 80 | `lanec-pin-gaps`: DSP2DEC/END2DEC, NVSUBB, LOADLV1, DSPDCWD1 and the other words no earlier module carried | `src/lanec_pin_gaps.c` |
-| 2,089 / 2,086 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
+| 107 / 108 | `lanec-pin-gaps`: DSP2DEC/END2DEC, NVSUBB, LOADLV1, DSPDCWD1, GOVNUPDT, DSPOCTIN, the octal display's WDAGAIN/OCTBACK loop and the other words no earlier module carried | `src/lanec_pin_gaps.c` |
+| 2,061 / 2,058 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
 | 210 / 213 | constants | compiled `symbols.txt` WORD rows or literals |
 
 Both module counts include each call's inline arguments (65 words per
