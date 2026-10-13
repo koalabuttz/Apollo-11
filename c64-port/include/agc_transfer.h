@@ -33,7 +33,8 @@ struct agc_native_program;
  * eb, superbank). The interrupt hardware always saves that word; code that
  * writes BRUPT itself (ENDJASK, ALARM_AND_ABORT, P70) may not. False when the
  * word can be read (erasable, or fixed through the program's fixed_data) and
- * differs, so the routine refuses rather than resume at the wrong point. */
+ * differs, so the routine refuses rather than resume at the wrong point.
+ * p and s must not be NULL. */
 bool agc_resume_exact(const struct agc_native_program *p, const apollo_overlay_state *s, agc_word fb, agc_word eb,
                       agc_word superbank);
 

@@ -90,8 +90,9 @@ static enum exec_status resume(const agc_native_program *p,apollo_overlay_state 
  z=W[5];bank=W[016];
  if(z!=LM_NOQBRSM&&z!=LM_NOQBRSM+1u&&(bank&(agc_word)~076167u))return EXEC_OUT_OF_SCOPE;
  /* BRUPT must be the word at ZRUPT-1 under the banks restored (#144). */
- if(z==LM_NOQBRSM||z==LM_NOQBRSM+1u?!agc_resume_exact(p,s,W[4],W[3],io->superbank):
-    !agc_resume_exact(p,s,(agc_word)(bank&076000u),(agc_word)((bank&7u)<<8),(agc_word)(bank&0160u)))return EXEC_OUT_OF_SCOPE;
+ {bool noq=z==LM_NOQBRSM||z==LM_NOQBRSM+1u;
+  if(!agc_resume_exact(p,s,noq?W[4]:(agc_word)(bank&076000u),noq?W[3]:(agc_word)((bank&7u)<<8),noq?io->superbank:(agc_word)(bank&0160u)))
+   return EXEC_OUT_OF_SCOPE;}
  if(z==LM_RESUME)ai_qxch(s,012u);
  if(z!=LM_NOQBRSM&&z!=LM_NOQBRSM+1u){ai_ca(s,016u);ai_xch(s,6u);}
  if(z!=LM_NOQBRSM+1u)ai_dxch(s,010u);
