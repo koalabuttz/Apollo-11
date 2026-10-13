@@ -223,7 +223,7 @@ def main():
     merge = sub.add_parser('merge')
     merge.add_argument('pieces', nargs='*', type=pathlib.Path)
     merge.add_argument('--job', action='append', default=[], help='NAME=RESULT of a VICE job')
-    merge.add_argument('--expect', type=int, default=9, help='pieces of a complete run')
+    merge.add_argument('--expect', type=int, default=12, help='pieces of a complete run')
     merge.add_argument('--out', type=pathlib.Path, required=True)
     sub.add_parser('fetch')
     args = parser.parse_args()
