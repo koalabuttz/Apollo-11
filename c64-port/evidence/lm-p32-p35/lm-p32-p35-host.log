@@ -1,6 +1,0 @@
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_p32_p35.c tests/lm_p32_p35_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_p32_p35.c -o build/test-lm-p32-p35
-./build/test-lm-p32-p35
-lm-p32-p35: 842 checks, 0 failures
-cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_p32_p35.c tests/lm_p32_p35_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_p32_p35.c -o build/test-lm-p32-p35-sanitize
-ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-p32-p35-sanitize
-lm-p32-p35: 842 checks, 0 failures

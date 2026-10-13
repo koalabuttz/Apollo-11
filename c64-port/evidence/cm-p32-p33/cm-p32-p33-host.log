@@ -1,6 +1,0 @@
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_p32_p33.c tests/cm_p32_p33_target.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_p32_p33.c -o build/test-cm-p32-p33
-./build/test-cm-p32-p33
-cm-p32-p33: 814 checks, 0 failures
-cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_p32_p33.c tests/cm_p32_p33_target.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_p32_p33.c -o build/test-cm-p32-p33-sanitize
-ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-p32-p33-sanitize
-cm-p32-p33: 814 checks, 0 failures
