@@ -33,6 +33,9 @@ p.add_argument('--legacy', action='append', default=[], metavar='SUITE=TARGET',
                help='record: a suite whose module does not fit a C64 program with the harness; its module runs '
                     'on the C64 in its own milestone\'s program (vice TARGET), and the host arcs only its cases take '
                     'are listed apart')
+p.add_argument('--host-only', action='append', default=[], metavar='FILE:LINE=REASON',
+               help='record: host arcs on this source line that no C64 program can take (REASON says why and where '
+                    'the code is checked instead); they are listed apart with the reason')
 p.add_argument('--pool', action='store_true',
                help='record: a host arc counts as taken on the C64 when any suite\'s C64 rows take it')
 a = p.parse_args()
@@ -91,11 +94,14 @@ else:
         seen[suite] = (t, rows, [], host, frozenset())
     pool = frozenset().union(*(s[4] for s in seen.values())) if a.pool else None
     legacy_arcs = frozenset().union(*(seen[s][3] for s in legacy)) - (pool or frozenset())
-    elsewhere = []
+    host_only = dict(item.split('=', 1) for item in a.host_only)
+    elsewhere, apart = [], []
     for suite, (t, rows, run, host, on_c64) in seen.items():
         missing = sorted(host - (pool if a.pool else on_c64))
         elsewhere += [f'{suite}: {m}' for m in missing if m in legacy_arcs]
-        missing_all += [f'{suite}: {m}' for m in missing if m not in legacy_arcs]
+        apart += [f'{suite}: {m}' for m in missing if m not in legacy_arcs and m.split(' branch ')[0] in host_only]
+        missing_all += [f'{suite}: {m}' for m in missing
+                        if m not in legacy_arcs and m.split(' branch ')[0] not in host_only]
         record['suites'][suite] = {'host_cases': len(t), 'c64_rows': rows if rows is not None else 'all',
                                    'host_branch_arcs': len(host), 'c64_branch_arcs': len(on_c64 & host),
                                    'sources_measured': sorted({x.split(':')[0] for x in host})}
@@ -117,6 +123,9 @@ else:
             'in its own milestone\'s program (the vice target named), checked there against its own Virtual AGC '
             'vectors, and the host arcs below are taken on the C64 only there')
         record['host_branches_on_c64_only_in_legacy_programs'] = elsewhere
+    if host_only:
+        record['host_only_lines'] = host_only
+        record['host_branches_not_on_c64'] = apart
     record['host_branches_missing_on_c64'] = missing_all
     out.write_text(json.dumps(record, indent=1) + '\n')
     if missing_all:

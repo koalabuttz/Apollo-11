@@ -19,6 +19,10 @@ translated, in both Luminary099 and Comanche055:
   `CAF FOUR` lead-in, the loop head and the point where DSPIN returns.
 - The fixed-fixed LODSAMPT, FLASHON and FLASHOFF, and the lamp test's
   WAITLIST and NOVAC return points.
+- The words the file reaches through POSTJUMP and BANKJUMP: GOVNUPDT (the
+  verb display of UPDATVB) and its return from DSPDECVN, UPDAT1 +2, DSPOCTIN
+  and its return from DSPIN (bank 40), and OCTBACK, the octal display's
+  per-character loop (bank 41).
 
 Each native entry runs one source path from its entry to the first boundary
 and leaves the image exactly as the original program leaves it there (A/L/Q
@@ -43,6 +47,11 @@ debris, the stores, Z at the boundary, FB/BB, superbank, channels).
 | DSPDCWD1 +16 (DSPIN returns): `CCS WDCNT` and its four branches, `CS VD1`/`TS DSPCOUNT` | `lanec_pin_dspdcwd1` | the next digit (Q = DSPDCWD1 +18), or WDRET |
 | LODSAMPT `DCA TIME2`, `DXCH SAMPTIME`; FLASHON/FLASHOFF on channel 11 | `lanec_pin_small` | the caller in Q (switched or fixed-fixed) |
 | the lamp test's `TC WAITLIST` and `TC NOVAC` returns | `lanec_pin_small` | ENDOFJOB, TASKOVER |
+| GOVNUPDT `TC DSPDECVN`; +1 (DSPDECVN returns through WDRET) `TC POSTJUMP` | `lanec_pin_jumps` | DSPDECVN; POSTJUMP (CADR UPDAT1 +2) |
+| UPDAT1 +2 `TC UPDATRET` | `lanec_pin_jumps` | the return word UPDATVB saved |
+| DSPOCTIN `TC DSPIN`; +1 (DSPIN returns) `CAF +2`, `TC BANKJUMP` | `lanec_pin_jumps` | DSPIN; BANKJUMP with A = ENDSPOCT (CADR OCTBACK) |
+| OCTBACK `CCS WDCNT`: WDAGAIN (`TS WDCNT`, `CS CYL` three times, `CS A`, `MASK DSPMSK`, the relay code from RELTAB, `TS CODE`, `XCH DSPCOUNT`, `TS COUNT`, `CCS A`, `TS DSPCOUNT`) | `lanec_pin_jumps` | POSTJUMP (CADR DSPOCTIN), the next character |
+| OCTBACK's other branches, DSPLV `CS VD1`, `TS DSPCOUNT` | `lanec_pin_jumps` | WDRET |
 | dispatch by Z and bank | `lanec_pin_gaps_dispatch` | |
 
 `NOUNADD` may name any erasable pair from 010 up to 01376 or inside the
@@ -67,6 +76,13 @@ DSPDECWD leaves in MPAC; an A that overflowed into `TS WDCNT` is out of scope.
 SHORTMP's and DMPSUB2's words are part of the oracle's range and its
 `TC Q` runs through Q.
 
+OCTBACK runs WDAGAIN inline. Each `CS CYL` reads CYL and edits it again,
+so three reads leave it cycled left three times. When WDCNT is positive the
+next character's `CCS A` must find the old DSPCOUNT positive or +0 (DSPOCTWD
+leaves the display position there, plus BIT14 to blank the signs); a negative
+DSPCOUNT would run the `CADR DSPOCTIN` word as an instruction, and is out of
+scope.
+
 `DCA` reads the pair's second word into L before the first into A, so a
 pair whose first word is L (NOUNADD 1) gives A the new L; a central register
 read through its address gives its low 15 bits, sign-extended. Verb 07
@@ -77,16 +93,18 @@ follows both rules.
 Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
 
-- Independent assembly comparison: `lanec-pin-gaps-diff.json` (13,312 cases:
+- Independent assembly comparison: `lanec-pin-gaps-diff.json` (14,848 cases:
   both MIXBR branches, NOUNADD over unswitched, switched, MPAC-overlapping and
   editing-register pairs, both return points, every channel 0-077 with and
   without high NOUNCADR bits, DSP2DEC from its entry with and without an
   overflowed Q and from each return, the lead-ins, LODSAMPT/FLASHON/FLASHOFF
   with fixed and erasable callers, the lamp-test returns, DSPDCWD1 from its
   three points with every digit, every CCS branch and out-of-range A or MPAC,
-  both missions; 13,043 identical, 269 refused unchanged) and
+  the POSTJUMP and BANKJUMP targets with OCTBACK over every WDCNT branch,
+  positive, blanking and negative DSPCOUNT and any CYL, both missions;
+  14,545 identical, 303 refused unchanged) and
   `lanec-pin-gaps-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-pin-gaps sanitize-lanec-pin-gaps`
   (`lanec-pin-gaps-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-gaps`, 40 frozen cases that `tools/lanec/cover.py pick`
+- C64 execution results: `make vice-lanec-pin-gaps`, @ROWS@ frozen cases that `tools/lanec/cover.py pick`
   chose to take every host branch arc of the suite, on a VICE PAL C64 (`lanec-pin-gaps-vice.txt`).

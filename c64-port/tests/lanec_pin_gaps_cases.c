@@ -5,12 +5,17 @@
  * both return points, a channel load for every channel 0-077, DSP2DEC from
  * its entry (Q with and without overflow) and from each return, and the
  * NVSUBB/LOADLV1 lead-ins, and DSPDCWD1 from both entries and from DSPIN's
- * return (each digit, every CCS branch). */
+ * return (each digit, every CCS branch), and the POSTJUMP and BANKJUMP
+ * targets GOVNUPDT, DSPOCTIN, UPDAT1 +2 and OCTBACK with their lead-ins
+ * (OCTBACK over every WDCNT branch, DSPCOUNT positive, blanking and
+ * negative, any CYL). */
 #include "lanec_suites.h"
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
 
 #define ENTRIES 26u
+#define FIRST (ENTRIES * 2u * 64u * 4u)    /* the jump-target cases follow the first suite's */
+#define JUMPS 6u
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 {
@@ -30,10 +35,44 @@ static uint16_t nounadd(uint32_t *r, uint32_t v)
     }
 }
 
+static void make_jump(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    static const uint16_t wdcnt[8] = { 0, 1, 2, 3, 4, 077777u, 077776u, 070000u };
+    static const uint16_t count[8] = { 0, 1, 5, 021u, 020004u, 020021u, 077776u, 077777u };
+    uint16_t *w = s->words, entry = (uint16_t)(n % JUMPS), g, d;
+    uint32_t r = n * 2891336453u + 7u, v = n / JUMPS / 2u;
+    lanec_fill(s, io, FIRST + n);
+    m->mission = (n / JUMPS) & 1u ? LANEC_CM : LANEC_LM;
+    g = m->mission == LANEC_LM ? LANEC_LM_GOVNUPDT : LANEC_CM_GOVNUPDT;
+    d = m->mission == LANEC_LM ? LANEC_LM_DSPOCTIN : LANEC_CM_DSPOCTIN;
+    switch (entry) {
+    case 0: case 1:                  /* GOVNUPDT, +1 (DSPDECVN returns) */
+        lanec_enter(s, io, 040u, (uint16_t)(g + entry));
+        range(m, 040u, w[LANEC_Z], w[LANEC_Z]);
+        break;
+    case 2: case 3:                  /* DSPOCTIN, +1 (DSPIN returns) */
+        lanec_enter(s, io, 040u, (uint16_t)(d + entry - 2u));
+        range(m, 040u, w[LANEC_Z], (uint16_t)(d + 2u));
+        break;
+    case 4:                          /* UPDAT1 +2 (POSTJUMP from GOVNUPDT) */
+        lanec_enter(s, io, 041u, (uint16_t)(LANEC_LM_UPDAT1 + 2u));
+        range(m, 041u, w[LANEC_Z], w[LANEC_Z]);
+        break;
+    default:                         /* OCTBACK (BANKJUMP from DSPOCTIN) */
+        lanec_enter(s, io, 041u, LANEC_LM_OCTBACK);
+        w[LANEC_LM_WDCNT] = v % 16u == 15u ? (uint16_t)(lanec_rand(&r) & 077777u) : wdcnt[v % 8u];
+        w[LANEC_LM_DSPCOUNT] = count[(v / 8u) % 8u];
+        w[022] = (uint16_t)(lanec_rand(&r) & 077777u);
+        range(m, 041u, LANEC_LM_WDAGAIN, (uint16_t)(LANEC_LM_OCTBACK + 4u));
+        break;
+    }
+}
+
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
     uint16_t *w = s->words, entry = (uint16_t)(n % ENTRIES), x, y, channel;
     uint32_t r = n * 747796405u + 1u, v = n / ENTRIES / 2u;
+    if (n >= FIRST) { make_jump(n - FIRST, s, io, m); return; }
     lanec_fill(s, io, n);
     m->mission = (n / ENTRIES) & 1u ? LANEC_CM : LANEC_LM;
     x = m->mission == LANEC_LM ? LANEC_LM_DSPDPDEC : LANEC_CM_DSPDPDEC;
@@ -105,4 +144,4 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     }
 }
 
-const lanec_suite lanec_suite_pin_gaps = { "pin-gaps", ENTRIES * 2u * 64u * 4u, make, lanec_pin_gaps_dispatch };
+const lanec_suite lanec_suite_pin_gaps = { "pin-gaps", FIRST + JUMPS * 2u * 128u, make, lanec_pin_gaps_dispatch };
