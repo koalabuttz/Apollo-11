@@ -1,22 +1,23 @@
 /* SPDX-License-Identifier: MIT */
 /* The Comanche055 INTER-BANK_COMMUNICATION routines the self-check idle loop
  * and most callers use, BANKCALL through POSTJUMP (cm_interbank_routines
- * entries 0-4), in a file of their own: each calls only its own group of
- * cm_interbank_complete and this file compiles no operand table, so the
- * flight store can pack cm_interbank_idle_chunk beside the self-check idle
- * loop for a few hundred bytes (docs/FLIGHT-STORE.md). Inline CADRs come from
- * the program's operand table, as in cm_interbank_routines. */
+ * entries 0-4), in a file of their own that compiles no operand table, so
+ * the flight store can pack cm_interbank_idle_chunk beside the self-check
+ * idle loop with cm_interbank_complete but without the routines' site table
+ * (docs/FLIGHT-STORE.md). Inline CADRs come from the program's operand
+ * table, as in cm_interbank_routines. */
 #include "cm_interbank_routines.h"
 static bool inline_cadr(const agc_native_program *p,const apollo_overlay_state *s,const cm_native_io *io,agc_word *literal){
  return !(s->words[2]>=02000u&&s->words[2]<=07777u)||agc_transfer_operand(p,s,io->superbank,s->words[2],literal);}
-enum exec_status cm_ib_bankcall(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;agc_word literal=0;
- return p&&s&&io&&inline_cadr(p,s,io,&literal)&&cm_interbank_complete_call(s,io,CM_IC_BANKCALL,literal)?EXEC_OK:EXEC_OUT_OF_SCOPE;}
-enum exec_status cm_ib_swcall(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;
- return p&&s&&io&&cm_interbank_complete_call(s,io,CM_IC_SWCALL,0)?EXEC_OK:EXEC_OUT_OF_SCOPE;}
-enum exec_status cm_ib_swreturn(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;
- return p&&s&&io&&cm_interbank_complete_return(s,io,CM_IC_SWRETURN)?EXEC_OK:EXEC_OUT_OF_SCOPE;}
-enum exec_status cm_ib_postjump(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *io=v;agc_word literal=0;
- return p&&s&&io&&inline_cadr(p,s,io,&literal)&&cm_interbank_complete_jump(s,io,CM_IC_POSTJUMP,literal)?EXEC_OK:EXEC_OUT_OF_SCOPE;}
+/* One body for the four, so the wrappers stay a few bytes each. */
+static __attribute__((noinline)) enum exec_status ib(const agc_native_program *p,apollo_overlay_state *s,void *v,enum cm_interbank_complete_entry entry){cm_native_io *io=v;agc_word literal=0;
+ if(!p||!s||!io)return EXEC_OUT_OF_SCOPE;
+ if((entry==CM_IC_BANKCALL||entry==CM_IC_POSTJUMP)&&!inline_cadr(p,s,io,&literal))return EXEC_OUT_OF_SCOPE;
+ return cm_interbank_complete(s,io,entry,literal,0)?EXEC_OK:EXEC_OUT_OF_SCOPE;}
+enum exec_status cm_ib_bankcall(const agc_native_program *p,apollo_overlay_state *s,void *v){return ib(p,s,v,CM_IC_BANKCALL);}
+enum exec_status cm_ib_swcall(const agc_native_program *p,apollo_overlay_state *s,void *v){return ib(p,s,v,CM_IC_SWCALL);}
+enum exec_status cm_ib_swreturn(const agc_native_program *p,apollo_overlay_state *s,void *v){return ib(p,s,v,CM_IC_SWRETURN);}
+enum exec_status cm_ib_postjump(const agc_native_program *p,apollo_overlay_state *s,void *v){return ib(p,s,v,CM_IC_POSTJUMP);}
 /* SWCALL -1 (04665, BANKCALL's INCR Q): RTB's `TC SWCALL -1` enters here so
  * that SWCALL returns one word later. Q is a return address from that TC. */
 enum exec_status cm_ib_swcall_m1(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;
