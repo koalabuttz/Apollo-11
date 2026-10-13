@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -1515,22 +1515,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
+            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
+            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
+            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
             "vice_targets": {
-              "vice-gimbal-lock": 31
+              "vice-gimbal-lock": 36
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
-            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
+            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
           }
         }
       }
@@ -1562,7 +1562,7 @@
       "sha256": "0f912428b5bde06a8bae27432f9c56679cfe5cfc2d1ee5eeadf80a37cf98185c",
       "bytes": 23871,
       "lines": 1406,
-      "status": "untranslated",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -1600,22 +1600,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "dbba98e4d695bac5487e7dd11e755e431a512ca06197afaa634dc0a22eac0f75"
+            "sha256": "4003d73dcbaed66d9907b435c921b606ba3ccdfcc2d1ba1151d0b3925eb2ce7c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "4e079d3550576667ca80c751baece5e3d2c9d90d652b4cde1893338cf8c55397"
+            "sha256": "3bd0f798acbab58eef0ac9e3795514ec9f8df912e6fe4536ea28adf78f9abd42"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "75d89cabaab0183e292512cf5edbcbc8e646363829a58f194910eb15d9073d05",
+            "sha256": "43efc541e01751eaa338607e1b31b1c031dab73694199fe51cb1aca537feea8f",
             "vice_targets": {
-              "vice-cm-imu-calibration": 475
+              "vice-cm-imu-calibration": 507
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-outcomes.json",
-            "sha256": "70f0e800d1db2f4c74cc89ff7795aa89372ee1dd931c3e65ad468261f37e9cd9"
+            "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
+            "sha256": "3423816f0b3b50234a3097329424c27904baf68ee22d723f22e52c3759cb45d2"
           }
         }
       }
@@ -4242,22 +4242,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
+            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
+            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
+            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
             "vice_targets": {
-              "vice-sband-antenna": 132
+              "vice-sband-antenna": 224
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
-            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
+            "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
+            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
           }
         }
       }
@@ -7035,22 +7035,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
+            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "cc68380143746d87d5f709a4eac66fbc490e5d460090a30cea83cf9610efe481"
+            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "7e96f19232a4f13d01346fb9716bac7bac6c114e65a479486bc176a0ee5676ba",
+            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
             "vice_targets": {
-              "vice-gimbal-lock": 31
+              "vice-gimbal-lock": 36
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/gimbal-lock/gimbal-lock-c64-outcomes.json",
-            "sha256": "34028fcfac67e1dfd810c57011a60badc61016d2549a0fd82c876e55ce10473e"
+            "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
+            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
           }
         }
       }
@@ -10083,22 +10083,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "71a52264943a537449a074faf558de4bed28a7b47f77907ac27d2f25fe5cf433"
+            "sha256": "09f5af230050fde81526fc3d35a8c7d89c9e6788e4d2d7ad505b9d47a204f924"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "5d3bac79fcc825278cf6e83faaab1f937a719f9e0958da4bff66e7a809cc05f6"
+            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "d1f0be284652c7d63a2e5826941e51d320f57c60694285b65047d945acf456cb",
+            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
             "vice_targets": {
-              "vice-sband-antenna": 132
+              "vice-sband-antenna": 224
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/sband-antenna/sband-antenna-c64-outcomes.json",
-            "sha256": "f2c80b57ad3a1f86aacd6bd7d417054e20a49a5924be61727ba51b07ee651f4a"
+            "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
+            "sha256": "85054518d969fc187d4c57cecd0368d4f531f1cff0bdca8ad550f2ba2a99bb4a"
           }
         }
       }
