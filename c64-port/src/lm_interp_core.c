@@ -2034,19 +2034,19 @@ static NI uint8_t code_word(uint8_t off)
     return rope(phys((W[rLOC] + off) & 077777u, W[rBANKSET]), &cw);
 }
 /* Fixed operand words at ADDRWD under FB (n words; past the rope's end
- * reads as zero, which no order uses). Returns them, or 0 for an erasable
- * operand (the bodies then read C(ADDRWD) from the image). */
+ * reads as zero, which no order uses). kop() points into them; for an erasable
+ * operand it is 0 (the bodies then read C(ADDRWD) from the image). */
 static agc_word kw[18];
 static unsigned kaddr;
 static NI const agc_word *kop(void){unsigned a=W[rADDRWD]&077777u;return kaddr&&a>=02000u?kw+(a-kaddr):0;}
-static NI const agc_word *operand(unsigned n)
+static NI void operand(uint8_t n)
 {
-    unsigned i, a = W[rADDRWD] & 077777u;
+    uint8_t i;
+    unsigned a = W[rADDRWD] & 077777u;
     kaddr = 0;
-    if (a < 02000u) return 0;
+    if (a < 02000u) return;
     for (i = 0; i < n; ++i) if (!rope(phys(a + i, W[4]), &kw[i])) kw[i] = 0;
     kaddr = a;
-    return kw;
 }
 
 /* DANZIG's job switch: NEWJOB positive goes to CHANG2 (CCS EDOP +0; CCS
@@ -2089,7 +2089,7 @@ static const addr_order addr_orders[32] = {
 };
 static NI uint8_t addr_body(uint8_t idx)
 {
-    (void)operand(idx == 013u || idx == 016u ? 18u : 6u);
+    operand(idx == 013u || idx == 016u ? 18u : 6u);
     if (idx == 004u) return cgoto();
     if (idx == 011u) {
         if (!code_word(1u)) return REFUSE;
@@ -2240,8 +2240,9 @@ static NI uint8_t sane(void)
     unsigned vac = W[rFIXLOC];
     if (W[7] || W[rNEWJOB] > 037777u || W[3] > 03400u || (W[3] & 0377u) || W[6] != (agc_word)((W[4] & 076000u) | (W[3] >> 8))) return 0;
     if (io->interrupt_enabled > 1u || (io->superbank & ~0160u)) return 0;
-    if (vac < 0401u || vac > 0661u || (vac - 0401u) % 054u) return 0;
-    return 1;
+    unsigned v;
+    for (v = 0401u; v <= 0661u; v += 054u) if (v == vac) return 1;   /* the five VAC areas */
+    return 0;
 }
 
 /* The flight image is always the canonical one at $7000 (fixed addressing
