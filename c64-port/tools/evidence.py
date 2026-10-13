@@ -190,12 +190,13 @@ def download(url, target, record):
 
 
 def coverage_paths():
-    paths = set()
+    """{evidence path: its cited SHA256 (None when uncited)}."""
+    paths = {}
 
     def walk(node):
         if isinstance(node, dict):
             if isinstance(node.get('path'), str) and node['path'].startswith('evidence/'):
-                paths.add(node['path'])
+                paths[node['path']] = node.get('sha256') or paths.get(node['path'])
             for value in node.values():
                 walk(value)
         elif isinstance(node, list):
@@ -217,9 +218,10 @@ def cmd_fetch(args):
                 wanted.setdefault(parts[1], set()).add(parts[2])
     count = 0
     if args.coverage:
-        # Legacy certificates cite flat evidence that lean checkouts may skip.
-        for path in sorted(coverage_paths()):
-            if path.count('/') == 1 and not (ROOT / path).exists():
+        # Legacy certificates cite flat evidence that lean checkouts may skip
+        # or hold stale.
+        for path, sha in sorted(coverage_paths().items()):
+            if path.count('/') == 1 and (not (ROOT / path).exists() or sha and digest(ROOT / path) != sha):
                 blob = subprocess.run(['git', 'cat-file', 'blob', f'HEAD:c64-port/{path}'], cwd=REPOSITORY,
                                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
                 if blob.returncode == 0:
