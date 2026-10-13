@@ -10,8 +10,11 @@ re-run with `interp_routine_differential.py <id> --cover-check`; other
 records have no re-derivation yet and are reported unverified.
 
 Writes a vice manifest piece (tools/vice_manifest.py) carrying
-`c64_cover`: {milestone: {record, verified, missing, ...}}. Exits 0: the
-nightly reports, tools/cert_precheck.py judges.
+`c64_cover`: {milestone: {record, verified, missing, ...}}. Exits 1 when a
+re-derived cover misses host branches or a record cannot be re-derived (stale
+cases, no C64 rows, a failed run); a record with no re-derivation yet is
+reported, not failed. tools/cert_precheck.py also reads c64_cover from the
+newest manifest for the certificates a change touches.
 
   python3 tools/cover_check.py --shard 0/2 --out build/vice-manifest-cover0.json
   python3 tools/cover_check.py --only r30 cm-p11 --out /dev/stdout
@@ -26,6 +29,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import interp_specs  # noqa: E402
 from vice_manifest import CERTIFICATES  # noqa: E402
+
+NO_RECHECK = 'no re-derivation for this record yet'
 
 
 def cited():
@@ -42,7 +47,7 @@ def cited():
 
 def check(milestone, record):
     if milestone not in interp_specs.SPECS:
-        return {'record': record, 'verified': False, 'reason': 'no re-derivation for this record yet'}
+        return {'record': record, 'verified': False, 'reason': NO_RECHECK}
     fetch = subprocess.run([sys.executable, 'tools/evidence.py', 'fetch', milestone], cwd=ROOT,
                            capture_output=True, text=True)
     if fetch.returncode:
@@ -80,7 +85,15 @@ def main():
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps({'name': args.name, 'commit': commit, 'targets': {}, 'c64_cover': cover},
                                    indent=1, sort_keys=True) + '\n')
-    return 0
+    bad = [m for m, r in cover.items() if not cover_ok(r) and r.get('reason') != NO_RECHECK]
+    if bad:
+        print('FAIL: %d of %d cited covers miss host branches or cannot be re-derived: %s'
+              % (len(bad), len(cover), ' '.join(bad)))
+    return 1 if bad else 0
+
+
+def cover_ok(r):
+    return bool(r.get('verified')) and not r.get('missing') and not r.get('missing_count')
 
 
 if __name__ == '__main__':

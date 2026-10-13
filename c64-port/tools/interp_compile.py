@@ -1184,6 +1184,12 @@ class Compiler:
                     # overflow skip over the EXTEND): no producer leaves
                     # overflow there, so it is refused.
                     return st + ['return EXEC_OUT_OF_SCOPE; /* %s without EXTEND */' % ln.op], []
+                nc = self.spec.get('native_calls', {}).get(lab, {}).get(self.m)
+                if nc:
+                    # A basic subroutine outside the file run natively in
+                    # place (it returns to the word after the TC, Q as its own
+                    # TC Q leaves it).
+                    return st + ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (nc, lab)], [nxt]
                 if lab not in ext:
                     raise CompileError('TC %s at %s: not in the spec externals' % (lab or '%04o' % k12, self.where(p)))
                 n = ext[lab]
