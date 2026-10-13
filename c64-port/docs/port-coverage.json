@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -8334,8 +8334,65 @@
       "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
       "bytes": 4925,
       "lines": 156,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r63.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "All 65 words (26,2022-2122): V89CALL, V89RECL, ALINEX, V89CALL1 and ALINEZ, as 30 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-R63.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "7fe570e4d8841b229c161354e8930572192b0e0c",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= RONE, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 26) or with Z at any of its basic ones (FB 26): V89CALL, V89RECL, the BANKCALL and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1 and S2 caller returns outside the file, and any values of the R63 erasables (OPTIONX, TSTART82, TDEC1, RONE, RATT, POINTVSM, SCAXIS, CPHI); 0 of 15,360 random cases refused.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (R02BOTH, GOFLASH with its three returns, BALLANGS, R60LEM)",
+          "DOWNFLAG with its inline ADRES",
+          "ENDEXT and ENDMARK",
+          "Interpretive CALL of CSMCONIC, LEMCONIC and VECPOINT",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c); RTB NORMUNIT (no native body yet: the run ends there)",
+          "CHANG2 when a DANZIG finds a job waiting"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-r63/lm-r63-source-map.json",
+            "sha256": "e2dc71348cfe2d680fc352a536722fbd3cac661f48190d583d00f455f556c680"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-r63/lm-r63-proof.json",
+            "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-r63/lm-r63-host.log",
+            "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-r63/lm-r63-vice.log",
+            "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+            "vice_targets": {
+              "vice-lm-r63": 34
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-r63/lm-r63-c64-cover.json",
+            "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+          }
+        },
+        "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively."
+      }
     },
     {
       "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",

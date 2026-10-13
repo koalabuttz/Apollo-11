@@ -460,6 +460,26 @@ SPECS = {
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
+    'lm-r63': {
+        'missions': ('lm',),
+        'file': {'lm': 'R63.agc'},
+        'base': {'lm': 'lm_r63'},
+        'symbol': {'lm': 'lm_r63'},
+        # V89CALL (the extended verb) and the recycle point V89RECL.
+        'entries': ['V89CALL', 'V89RECL'],
+        'externals': {'BANKCALL': 'auto', 'DOWNFLAG': 'auto', 'ENDEXT': None, 'ENDMARK': None},
+        'returns': {'GOFLASH': 3},
+        'resume_keys': True,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}, 'NORMUNIT': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        # Flight edge values, and C64 rows chosen by branch outcome over
+        # every linked source.
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'target': 'tests/lm_r63_target.c',
+        'freeze_stride': 16,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
