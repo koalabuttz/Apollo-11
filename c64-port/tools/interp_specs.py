@@ -290,6 +290,7 @@ SPECS = {
         'engine': 'flight-device',
         'counters': True,
         'ebank': 'listing',
+        'resume_keys': True,
         # STICKCHK's rate indexes (RMANNDX, PMANNDX, YMANNDX): 0 no
         # rotation, 1 plus, 2 minus. SATSW (E6,1725), the boost-takeover
         # switch the file keeps: +1 (display), +0 (needles initialized), -1
