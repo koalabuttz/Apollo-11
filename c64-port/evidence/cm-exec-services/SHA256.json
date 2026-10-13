@@ -4,7 +4,7 @@
   "release": "evidence-cm-exec-services",
   "files": {
     "cm-exec-services-c64-cover.json": {
-      "sha256": "7bb2197c47dc0197c69800ee0383d40b6375c3150a9777d291dc1ba0d9d768ff",
+      "sha256": "d28a338f9d6b44cae411894380056dda29dc33a5e4e61f2c6cf4815ca9e2b399",
       "bytes": 862,
       "store": "tree"
     },
@@ -14,8 +14,8 @@
       "store": "release"
     },
     "cm-exec-services-host.log": {
-      "sha256": "4142c97fd0826c434f8cf85c96a0ef7523ed01980499be621240cb37e8bf3d29",
-      "bytes": 1204,
+      "sha256": "5793cc30596bc260ca36a279e67ec87dd23d1a93cddddf9acbfc2358e31f00e4",
+      "bytes": 1720,
       "store": "release"
     },
     "cm-exec-services-proof.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-exec-services-vice.log": {
-      "sha256": "7b7165ce51caad6bbc139e4002717e8ac1d9a9728044246ac1609e08d6732d1c",
-      "bytes": 852,
+      "sha256": "3afd455637616698442454af859691da7fa9c9f414914b8f3c74e064d92b84cc",
+      "bytes": 614,
       "store": "release"
     }
   }

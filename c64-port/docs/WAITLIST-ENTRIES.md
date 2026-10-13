@@ -42,8 +42,10 @@ interrupt flags are identical. The proof
 (`evidence/waitlist-entries/waitlist-entries-proof.json`) lists the hashes of
 the native sources it depends on.
 
-`tests/test_waitlist_entries.c` checks the frozen digests and one refusal per
-kind: 1,271 checks. The C64 programs (`waitlist-entries-0` .. `-4`, one per
+`tests/test_waitlist_entries.c` checks the frozen digests, one refusal per
+kind, and TASKOVER's RESUME check in both missions under BANKRUPT's
+superbank (BANKRUPT 060100 with channel 7 at 060: TASKOVER writes BANKRUPT
+to SUPERBNK before RESUME): 1,275 checks. The C64 programs (`waitlist-entries-0` .. `-4`, one per
 kind) run every fourth case and each kind's first. The CM DLY2 -1 program is
 built with `CM_EXEC_DLY2_ONLY` and `CM_SERVICE_DELAYJOB_ONLY`, which add the
 one-entry tables `cm_exec_dly2_routines` and `cm_service_delayjob_routines`
