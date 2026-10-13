@@ -41,6 +41,8 @@ void irc_inputs(const irc_case *c,agc_input_channels *in){uint32_t seed=c->seed^
  if(((rnd(&seed)>>20)&3u)==0u)in->channel4=037777u;
  in->channel30=(agc_word)((rnd(&seed)>>12)&AGC_MASK);in->channel31=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
  in->channel32=(agc_word)((rnd(&seed)>>12)&AGC_MASK);in->channel33=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
+ /* (Drawn last, so the others are as before channel 16 was added.) */
+ in->channel16=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
 }
 #endif
 #ifndef IRC_BUILD_ONLY

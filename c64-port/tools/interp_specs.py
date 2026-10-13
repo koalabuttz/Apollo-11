@@ -133,7 +133,61 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
+# AOTMARK's surface mark slots: a VAC area's address +1, plus 6 words a mark.
+AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
+
 SPECS = {
+    # Lane D1: Luminary099 AOTMARK (probe).
+    'lm-aotmark': {
+        'missions': ('lm',),
+        'file': {'lm': 'AOTMARK.agc'},
+        'base': {'lm': 'lm_aotmark'},
+        'symbol': {'lm': 'lm_aotmark'},
+        'entries': ['@external'],
+        'externals': {'POSTJUMP': 'auto', 'NOVAC': 'auto', 'RESUME': 'auto', 'ALARM': 'auto', 'ENDMARK': 'auto', 'WAITLIST': 'auto', 'GOTOPOOH': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'FINDVAC': 'auto', 'BAILOUT1': 'auto', 'POODOO': 'auto', },
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'basic_fixed_index': {'MKVB54': [0, 1, 2, 3]},
+        # MKVACFND's INDEX MARKSTAT; TS 0 -1 assembles as DXCH 1777 and
+        # becomes TS VACnUSE once the index is added.
+        'index_carry': {'07,2035': 0o54000},
+        # MKVACFND is reached from CCS VACnUSE: A holds the free area's address -1.
+        # MKDEX is the mark verb index (0-3) in flight, the mark's VAC slot
+        # (area +1, 6 words a mark) on the surface (FLAGWRD8 bit 8).
+        'states': dict({'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]},
+                        '07,2633': {'MKDEX': AOT_SLOTS}, '07,2634': {'MKDEX': AOT_SLOTS}},
+                       # The star vector code indexes a mark's slot with X1 = -slot
+                       # (AVESTAR), XYMARK holding the marks' VAC area (MARKCHEX).
+                       **{'%02o,%04o' % (b, a): {'vac+046': [0o77777 - x for x in AOT_SLOTS],
+                                                 'XYMARK': [0o401, 0o455, 0o531, 0o605, 0o661]}
+                          for b, lo, hi in ((7, 0o2171, 0o2202), (7, 0o2255, 0o2316), (0o15, 0o2000, 0o2046))
+                          for a in range(lo, hi)}),
+        'joint_states': {'CHANGEVB': [{'FLAGWRD8': f | o, 'MKDEX': m}
+                                      for f, ms in ((0, range(4)), (0o200, AOT_SLOTS))
+                                      for o in (0, 0o12345 & ~0o200, 0o77577) for m in ms]},
+        'ebank': 7,
+        # FRESH_START leaves a free VAC area holding its own address
+        # (VAC1ADRC ADRES VAC1USE); a busy one holds zero.
+        'all_states': {'VAC1USE': [0, 0o400], 'VAC2USE': [0, 0o454], 'VAC3USE': [0, 0o530],
+                       'VAC4USE': [0, 0o604], 'VAC5USE': [0, 0o660],
+                       # MARKSTAT: the VAC area's address +1 in the low 9
+                       # bits, mark flags in bits 10-14 (or zero: no marks).
+                       'MARKSTAT': [0] + [(f << 9) | a for f in range(32)
+                                      for a in (0o401, 0o455, 0o531, 0o605, 0o661)],
+                       # MARKCNTR: marks wanted or taken, 0 to 5.
+                       'MARKCNTR': list(range(6)),
+                       # AOTCODE: detent 0-7 in bits 7-9, star code below.
+                       'AOTCODE': [(d << 6) | c for d in range(8) for c in (0, 1, 0o45, 0o77)]},
+        'resume_keys': True,
+        'resume_orphans': 'all',
+        # Mid-file interpretive points start from the PUSHLOC, MODE and
+        # index registers the file's own runs reach them with.
+        'flow_states': True,
+        'resume_flow': True,
+        'channel_inputs': True,
+        'target': 'tests/lm_aotmark_target.c',
+    },
     'inflight-align': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc', 'cm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc'},
