@@ -544,16 +544,16 @@ SPECS = {
         'ebank': 6,
         # The axis loops' SPNDX (E6,1506: 0-2) and DPNDX (E6,1507: 0, 2, 4),
         # and ATTKALMN (E6,1617) from -3 (JETSLECT's translation gains) to
-        # 10 (the Kalman initialisation count).
+        # 11 (the Kalman initialisation count, CAF ELEVEN at 21,2571).
         'cells': {0o3106: [0, 1, 2], 0o3107: [0, 2, 4],
-                  0o3217: [0o77774, 0o77775, 0o77776] + list(range(11)),
+                  0o3217: [0o77774, 0o77775, 0o77776] + list(range(12)),
                   # RMANNDX/PMANNDX/YMANNDX (E6,1656-1660) as STICKCHK
                   # leaves them (MASK THREE).
                   0o3256: [0, 1, 2, 3], 0o3257: [0, 1, 2, 3], 0o3260: [0, 1, 2, 3],
                   # RATEINDX (1130), the manual rate index into MANTABLE:
                   # 0, 2, 4 or 6, as FRESH START and P40-P47 set it.
                   0o1130: [0, 2, 4, 6]},
-        'fixed_tables': {'GAIN1': (-3, 10), 'GAIN2': (-3, 10), 'DACLIMIT': (-1, 1),
+        'fixed_tables': {'GAIN1': (-3, 11), 'GAIN2': (-3, 11), 'DACLIMIT': (-1, 1),
                          'FREETAU': (0, 3),
                          # MANTABLE -1 indexed by RATEINDX + RMANNDX (0-6 + 0-3):
                          # 3 (both stick directions) reads =+14MS after it.

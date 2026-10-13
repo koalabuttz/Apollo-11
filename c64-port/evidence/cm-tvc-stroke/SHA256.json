@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-stroke-proof.json": {
-      "sha256": "26748661f36f1e235fc6cedb6cdbc806f3ef6c2a94ab90f330f48a7c198a9356",
-      "bytes": 3220,
+      "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74",
+      "bytes": 3257,
       "store": "tree"
     },
     "cm-tvc-stroke-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-stroke-vice.log": {
-      "sha256": "8613340903a174ca6917082de43a4060a6a592f79dc8799ca36dd7c917648ac4",
-      "bytes": 416,
+      "sha256": "77a91c3c21802f097a006c805c0c16d679129137a1336e68726a7ff633abe449",
+      "bytes": 415,
       "store": "tree"
     }
   }

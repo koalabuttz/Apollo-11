@@ -4,28 +4,28 @@
   "release": "evidence-cm-reentry",
   "files": {
     "cm-reentry-differential.log": {
-      "sha256": "2a7e9d818e1585151bc3dc67abe101f087064f87dfad123432e21507f6372863",
-      "bytes": 4677,
+      "sha256": "4d5e0812d363155ad53c0c464e59e2297df38a762deabc68ceaa5728d0d93675",
+      "bytes": 20831,
       "store": "tree"
     },
     "cm-reentry-host.log": {
-      "sha256": "780d2d71e70018163c8889181b7cc17851586214ebf1b9417d18e9659607eef2",
+      "sha256": "1fb9141cd6c2482a10643dc244088f8f18e893190f364f5be5e24469b606ab2d",
       "bytes": 1022,
       "store": "tree"
     },
     "cm-reentry-proof.json": {
-      "sha256": "a2dfbb0c0c5f6bd01b0d92ef767e363c17c48bde604f939d4d9252ce9a8fe598",
-      "bytes": 14547,
+      "sha256": "52f8a2524c904d93b53c348a64de4d7c8514bc6191a1c9adad57f1d0e44e0dae",
+      "bytes": 47030,
       "store": "tree"
     },
     "cm-reentry-source-map.json": {
-      "sha256": "ebbc603de4afa7970d12a7f2c61c6c7e35539e9f303b43527da7fba755f2f419",
-      "bytes": 157122,
+      "sha256": "177a1f6783fca1e6df0296034bc14a6a9827061a2eabe93f09a2dc9cf2e846d6",
+      "bytes": 157148,
       "store": "tree"
     },
     "cm-reentry-vice.log": {
-      "sha256": "bc525acd5dcfac83662701d7ca88f8494d33596c7b9acdaf965be13d6c2da9d0",
-      "bytes": 5892,
+      "sha256": "6a99b9e67d72e264a462cb1c7120923b85fbb0bf6e05ef641c61bcf8a4083d9d",
+      "bytes": 8169,
       "store": "tree"
     }
   }

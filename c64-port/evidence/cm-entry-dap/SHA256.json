@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-entry-dap-proof.json": {
-      "sha256": "4428ab2ec9df968ef124d877da648c067f1f0de1cb4f25aa066d3aa4220a81eb",
-      "bytes": 5253,
+      "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c",
+      "bytes": 5290,
       "store": "tree"
     },
     "cm-entry-dap-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-entry-dap-vice.log": {
-      "sha256": "06d4aa3278dea524a4d032c49046977db500674acaf98ec2cff7ba991d76e542",
-      "bytes": 585,
+      "sha256": "fd6305391bc1cb33c6bf8cdf4ed930686e940a73b737bc27acabea6cc79f61b7",
+      "bytes": 584,
       "store": "tree"
     }
   }

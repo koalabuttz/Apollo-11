@@ -747,9 +747,20 @@ def keep_flags(symbol, mask):
     return ['-D%s_KEEP%d=0x%x' % (symbol.upper(), w, (mask >> (60 * w)) & ((1 << 60) - 1)) for w in range(n)]
 
 
+C64_SIZES = {}   # probe memo: selection reruns probe the same groups
+
+
 def c64_size(spec, sym, m, mask, text, pick=()):
     """End of the C64 diagnostic's memory (code, data and bss) for one group,
     or None when it does not link or reaches past C64_TOP."""
+    key = (sym, m, mask, hashlib.sha256(text.encode()).hexdigest(),
+           tuple(GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick)))
+    if key not in C64_SIZES:
+        C64_SIZES[key] = c64_probe(spec, sym, m, mask, text, pick)
+    return C64_SIZES[key]
+
+
+def c64_probe(spec, sym, m, mask, text, pick=()):
     d = os.path.join(B, '%s-probe-%s-%x' % (sym, m, mask))
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)

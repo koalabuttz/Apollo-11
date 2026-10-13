@@ -1,72 +1,99 @@
-PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-75399dc15be6a6a7f237a816413440adbfc14274d9e7888f8bfe59b5f0cb0fd0  build/cm-reentry-1.prg
-cd8f9a2f6f7f12b6e5ea99ff87951f84bd64920ff886c11db2a8764d0c390e71  build/cm-reentry-10.prg
-b41a5ee9ca48a407f2df76f2cd6bb60ea76f316659fb257aafc207cd2f730dfa  build/cm-reentry-11.prg
-a61cffbf0375ee96313d870a7ac54d1ec4d7543a3ce5d1b2e7d3da383f2accc7  build/cm-reentry-12.prg
-a8dbfcc89e63753beb40949f0f2287a5884bdda369a514a938281a780efacdd1  build/cm-reentry-13.prg
-696e8cc47d7712b2820ad4eeb71484d521cfa669e04c3e9a8737af9d137669b7  build/cm-reentry-14.prg
-b3379f4d8f0c2185f1db1878e2494bd10debf98ee6d86720d3f481f5efba6cd5  build/cm-reentry-15.prg
-9c6e32ab04a1db23e0cd78dd8ffd504c215fc2c57ef99c135e3f435ed8e949ad  build/cm-reentry-16.prg
-215f0cf908cc53c277889ae5f0705a9b755bfccb1144ad1cb47b5542e17a8994  build/cm-reentry-17.prg
-dfaa52a7f8338cfa07621c21f14ea7274d67397313e28bafb4c3e7ef1dc21ebe  build/cm-reentry-18.prg
-a384f69d4b16ab631b1dbbea7c44ed1415a54d9bd036063ec1069a85597aa1a7  build/cm-reentry-19.prg
-24617c4a1def1d2f04235ff9c19f9a49ea194d061114747dabd6ef7245fa2172  build/cm-reentry-2.prg
-1ab5f11bbfbb876afcf721a4d4ee0222b327531078f9941c53c3fc0725a2fc35  build/cm-reentry-20.prg
-ca538cef08a6bfc4afb24fab2f7a680a624950fdcba3187a67fcf2ff7bbc6380  build/cm-reentry-21.prg
-c40460ff0b67a6e3b85d18eff41ef36e64067b186abf353ba8137528a32717bf  build/cm-reentry-22.prg
-de7f94abfc9d21fe5a20eb9ccf1de05f6e433a7933ad5034a35dfbce22cffe1f  build/cm-reentry-23.prg
-49a47a7583b59660adfc2907570030a8af25c7130969ae2f6f96318296995a31  build/cm-reentry-24.prg
-c9824b40383bc4f9cd39044f4fd5d538d8f879a6c2eb44ffab13a170d43372f6  build/cm-reentry-25.prg
-b290e7064575887a97e9ca409fd071353ba2190fe8b9beef425482ea62d21383  build/cm-reentry-26.prg
-cbad3d095c1a94b88cf6f2bdb076d537e8434a7ab648075ff7fa6442feaf642c  build/cm-reentry-27.prg
-737c75e5f259629abfd3e8e91ea4412dadaef076492ddea8b07311560e458052  build/cm-reentry-28.prg
-92c6d1882fefde3b9c1ad5d26430548149ee6ea91d2627906be8ae708d234165  build/cm-reentry-29.prg
-8c3a4e0202f2fbdf9aa7f1b1f5c967a684d83ecb5a62a1b2f261401824133f86  build/cm-reentry-3.prg
-d2f4635d567e4346353f333c1daeb47d00196a2e9412c34d2a6001e2c576c9cc  build/cm-reentry-30.prg
-95538a67c172b3f482946d0ade966915f0bc459e6885067dd53575b28f13bc46  build/cm-reentry-31.prg
-6985949aa58291fcdec5f70020f89d41dc25d0f0d95fc213310f1779295f07ce  build/cm-reentry-32.prg
-e5112b1e93563c6c57325b755680c27514cfb058ff0ca59f44f687b6c3140c08  build/cm-reentry-33.prg
-dcd0896b2131969e7eb80ca28b10ee0afe113dee806864d1c9f53a44279bc8e2  build/cm-reentry-34.prg
-f132dd197f8318add2a990e533a2c7b9bdcf69c59e1408733ca50e654f0ac636  build/cm-reentry-35.prg
-3bb2de96e974c11642a3e43b40d07ff10958413b4218b3e547ee357d463df878  build/cm-reentry-4.prg
-ec99adc5b14e3265d3bca30f43e80cb5df1d400da88d32d2b503c5da9c93f586  build/cm-reentry-5.prg
-ef4c0a298d9f768f2ab6c45c0ed57809c0bbf611138ae8338e19387793ba407b  build/cm-reentry-6.prg
-bfad167b68c85c50dc0ce4cf0a6f7d84df9612ac649f7efa80d6a34d7194ab3b  build/cm-reentry-7.prg
-0e05bdafd46a318b18ef723a642a84cc99adb9f2c997317ff238f2757193ed54  build/cm-reentry-8.prg
-46281c71148fe74fb1b6d519bff160b1bf826ed4053b525cfd1efef30fc9f0d5  build/cm-reentry-9.prg
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+64f9471e7f2aea4cc8f22457fc3ee132dd765d42100488aab73bea4847f2f2cc  build/cm-reentry-1.prg
+e4cd7ac33cc2743fc747a5751fb734429ea351c8087a38496680202cfcdd146b  build/cm-reentry-10.prg
+f0e18e75c66ff187947e2cf62c1a1d8cd82d50527f16dfeecfa5a0366070e310  build/cm-reentry-11.prg
+6829420080288d345b06cb37e8d7232556c945510a2ff162da79b71fe95c19cc  build/cm-reentry-12.prg
+b6796970eabe327a946d7992a71077f08eb09d71cfdda66b053942bdd0457761  build/cm-reentry-13.prg
+69b5e3d1b2e7468ed99532de6c53476d69cee529d348f4c99cce45d0ba6be86e  build/cm-reentry-14.prg
+048ee01a4ad35f3cb8c777f9ec04814decf6ad7540d6e0b1bf16826969ecc14b  build/cm-reentry-15.prg
+0d0ed75b382f493c95dc4e3b267cdbd07483f534847a550882422bd16b86fe5c  build/cm-reentry-16.prg
+d3076cf938790b0d1bec36d626d9af5c687dd3edf0108d726c90a06da613fb2a  build/cm-reentry-17.prg
+2263f90e65f22205b359386273e71e901b4f7cc0e37f647d40367eb3eb0ecd2c  build/cm-reentry-18.prg
+c395f7d348d165c7d18fe1bb165f22754577b904e3e0ffbe2bfb5754f57a6b94  build/cm-reentry-19.prg
+df77fa684579f0560b4b4319694e80793c86a140a3f3cd52a53b9ee73a48b524  build/cm-reentry-2.prg
+1630dea494061912a0bc5f35f523f3d87049c2f698b8cba245cf3240d791c332  build/cm-reentry-20.prg
+0cd74949399c24d640a30ba95cc71716cf33268d09ccb44747a9c44dda77280a  build/cm-reentry-21.prg
+699399a0fa871c65c737992a160094d3f07d19b70202c8b3375315a9d552ae8f  build/cm-reentry-22.prg
+ef46a755b452a1808e1218095ff12ae319d0b9d0f2091aee49f059e9a9af5fa1  build/cm-reentry-23.prg
+7602c18c82fbc9a8f64ae7f7b8e1d96c99dd0e7b4257a53672c230c035ef9124  build/cm-reentry-24.prg
+f144f6c644d7e3a62418973c64b75f193b4e50810d2d64884bf57f45bfdf39f1  build/cm-reentry-25.prg
+f3834131872534c3dfc71648b20ad46f48a5837ae35345c4a58580c81c90308d  build/cm-reentry-26.prg
+a8daeb50229cde97b4d9acfea1e62780501a8899168a4bf092784f4af04c483f  build/cm-reentry-27.prg
+a74c3db14b7ab08f93a0e7d0203a20c739b02acda671bd2ec5cf0c6e20f36f37  build/cm-reentry-28.prg
+5976186a3729af3a65a31b3947a7c19f4672c1b92cc1372cc28a1bdf45a2db59  build/cm-reentry-29.prg
+56eff4d59da32232f850bc693e946f7b1465dd6bc1ea28f349556c8280dfc71a  build/cm-reentry-3.prg
+f86417848d168d1020ee577d0b75f7a3e8022813f16d817a3255e980afb0385b  build/cm-reentry-30.prg
+97444df104c9f1fd4ba0a2495e2e6c2addf7044d46dba2cd98fce78e03c2d3cd  build/cm-reentry-31.prg
+973190713994a77885f2a1f05cebceb776593b98ddbb7848d21287dcf9f8018e  build/cm-reentry-32.prg
+f3b93382ec4cf210ec1e99621796677b34054ba39a93257b7510550166a6ee2f  build/cm-reentry-33.prg
+868c95fad6d0a32052e2bd1511d798b3c4f26aac38562ec688aa5370e4243fae  build/cm-reentry-34.prg
+8aab3923d1359a18c747836bfb678aa65130e72d770d30cc31266aa4bac21998  build/cm-reentry-35.prg
+c66440d34f0f9a9e55e4b42c874a4bfd22884438538638eb2b50344c2cc2bd58  build/cm-reentry-36.prg
+09e1a4cc422e961edd46c7e6143a1ecc6631ef2e1c3303111b957cbb78191f76  build/cm-reentry-37.prg
+20e9d82ea7e3b387ba73fc316cae17dfac49bf44cec911fee5b09cee3aa26049  build/cm-reentry-38.prg
+622ff08488d43741c501120c36aeff45846e0205b7bb21ca34e782ce5c755157  build/cm-reentry-39.prg
+5d253d499305ff04e758a1f8ab5b35a52821f8f2f61a4c255df55d8adb1e53c1  build/cm-reentry-4.prg
+ebdfde572a27bdd72ac4b45ba45d8a9d549beaf4ff42474a97a04e87761e924e  build/cm-reentry-40.prg
+a29c49f2a1ce319387872fcea4885e923175da1bf67c3e25062d06b6d36f1083  build/cm-reentry-41.prg
+aa2bd09882eb75e74bdddee9508a54336e20ef2c86c4936e4eabaf359cbd1621  build/cm-reentry-42.prg
+2e73d56cfb85f0e6281bc11126b14bedf025c75b335ab7c10accbfda2d3ac4c0  build/cm-reentry-43.prg
+8ea5b3632b1fb1784f37f63c7df23122964c65be453fe1a279cc179cbb3cfc8e  build/cm-reentry-44.prg
+3ec082e707fdb441ead518be76c66052981422e6c31146f8aef089c97975e092  build/cm-reentry-45.prg
+0a76ca3819a9096daf2be5ac679585707d8c7d0c2ac3a9270df35c9580d5dda8  build/cm-reentry-46.prg
+16280a17e98d9c9f46ac9df89f0946c26dae2442287ce3196aeb49a468e1a99a  build/cm-reentry-47.prg
+ff665185e0b383c583cc2364779b84f1da45e118b3382dc00f6fa05564eec174  build/cm-reentry-5.prg
+14a45149cdf555d0cebcd5ed0d37f88b96e212001aa810338ea8ba7bbf07a800  build/cm-reentry-6.prg
+e26f17e9411fb1a8fc467a5b89212ecff314ce399c37827955749d8b7e7fe207  build/cm-reentry-7.prg
+f44ca89d1c1e11a37c7722d48d8ae544d24c97b1d7e19b0b9143e365c2314b62  build/cm-reentry-8.prg
+6c615e45cad274e5d1a29d6f43fdb7bd35216ac28f72f09ea928894895cb674a  build/cm-reentry-9.prg
 
 $ make vice-cm-reentry
-for p in build/cm-reentry-1.prg build/cm-reentry-2.prg build/cm-reentry-3.prg build/cm-reentry-4.prg build/cm-reentry-5.prg build/cm-reentry-6.prg build/cm-reentry-7.prg build/cm-reentry-8.prg build/cm-reentry-9.prg build/cm-reentry-10.prg build/cm-reentry-11.prg build/cm-reentry-12.prg build/cm-reentry-13.prg build/cm-reentry-14.prg build/cm-reentry-15.prg build/cm-reentry-16.prg build/cm-reentry-17.prg build/cm-reentry-18.prg build/cm-reentry-19.prg build/cm-reentry-20.prg build/cm-reentry-21.prg build/cm-reentry-22.prg build/cm-reentry-23.prg build/cm-reentry-24.prg build/cm-reentry-25.prg build/cm-reentry-26.prg build/cm-reentry-27.prg build/cm-reentry-28.prg build/cm-reentry-29.prg build/cm-reentry-30.prg build/cm-reentry-31.prg build/cm-reentry-32.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-reentry-1.prg: 14 checks, 0 failures
-PASS: VICE PAL cm-reentry-2.prg: 7 checks, 0 failures
-PASS: VICE PAL cm-reentry-3.prg: 7 checks, 0 failures
-PASS: VICE PAL cm-reentry-4.prg: 5 checks, 0 failures
-PASS: VICE PAL cm-reentry-5.prg: 4 checks, 0 failures
+for p in build/cm-reentry-1.prg build/cm-reentry-2.prg build/cm-reentry-3.prg build/cm-reentry-4.prg build/cm-reentry-5.prg build/cm-reentry-6.prg build/cm-reentry-7.prg build/cm-reentry-8.prg build/cm-reentry-9.prg build/cm-reentry-10.prg build/cm-reentry-11.prg build/cm-reentry-12.prg build/cm-reentry-13.prg build/cm-reentry-14.prg build/cm-reentry-15.prg build/cm-reentry-16.prg build/cm-reentry-17.prg build/cm-reentry-18.prg build/cm-reentry-19.prg build/cm-reentry-20.prg build/cm-reentry-21.prg build/cm-reentry-22.prg build/cm-reentry-23.prg build/cm-reentry-24.prg build/cm-reentry-25.prg build/cm-reentry-26.prg build/cm-reentry-27.prg build/cm-reentry-28.prg build/cm-reentry-29.prg build/cm-reentry-30.prg build/cm-reentry-31.prg build/cm-reentry-32.prg build/cm-reentry-33.prg build/cm-reentry-34.prg build/cm-reentry-35.prg build/cm-reentry-36.prg build/cm-reentry-37.prg build/cm-reentry-38.prg build/cm-reentry-39.prg build/cm-reentry-40.prg build/cm-reentry-41.prg build/cm-reentry-42.prg build/cm-reentry-43.prg build/cm-reentry-44.prg build/cm-reentry-45.prg build/cm-reentry-46.prg build/cm-reentry-47.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-reentry-1.prg: 29 checks, 0 failures
+PASS: VICE PAL cm-reentry-2.prg: 24 checks, 0 failures
+PASS: VICE PAL cm-reentry-3.prg: 3 checks, 0 failures
+PASS: VICE PAL cm-reentry-4.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-reentry-5.prg: 3 checks, 0 failures
 PASS: VICE PAL cm-reentry-6.prg: 5 checks, 0 failures
-PASS: VICE PAL cm-reentry-7.prg: 8 checks, 0 failures
-PASS: VICE PAL cm-reentry-8.prg: 1 checks, 0 failures
-PASS: VICE PAL cm-reentry-9.prg: 2 checks, 0 failures
-PASS: VICE PAL cm-reentry-10.prg: 1 checks, 0 failures
-PASS: VICE PAL cm-reentry-11.prg: 2 checks, 0 failures
-PASS: VICE PAL cm-reentry-12.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-7.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-8.prg: 13 checks, 0 failures
+PASS: VICE PAL cm-reentry-9.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-reentry-10.prg: 10 checks, 0 failures
+PASS: VICE PAL cm-reentry-11.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-reentry-12.prg: 1 checks, 0 failures
 PASS: VICE PAL cm-reentry-13.prg: 1 checks, 0 failures
 PASS: VICE PAL cm-reentry-14.prg: 2 checks, 0 failures
-PASS: VICE PAL cm-reentry-15.prg: 3 checks, 0 failures
-PASS: VICE PAL cm-reentry-16.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-reentry-15.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-reentry-16.prg: 8 checks, 0 failures
 PASS: VICE PAL cm-reentry-17.prg: 1 checks, 0 failures
-PASS: VICE PAL cm-reentry-18.prg: 4 checks, 0 failures
-PASS: VICE PAL cm-reentry-19.prg: 6 checks, 0 failures
-PASS: VICE PAL cm-reentry-20.prg: 7 checks, 0 failures
-PASS: VICE PAL cm-reentry-21.prg: 11 checks, 0 failures
-PASS: VICE PAL cm-reentry-22.prg: 5 checks, 0 failures
-PASS: VICE PAL cm-reentry-23.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-18.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-19.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-20.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-reentry-21.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-reentry-22.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-reentry-23.prg: 2 checks, 0 failures
 PASS: VICE PAL cm-reentry-24.prg: 1 checks, 0 failures
-PASS: VICE PAL cm-reentry-25.prg: 4 checks, 0 failures
-PASS: VICE PAL cm-reentry-26.prg: 5 checks, 0 failures
-PASS: VICE PAL cm-reentry-27.prg: 8 checks, 0 failures
-PASS: VICE PAL cm-reentry-28.prg: 9 checks, 0 failures
-PASS: VICE PAL cm-reentry-29.prg: 7 checks, 0 failures
-PASS: VICE PAL cm-reentry-30.prg: 17 checks, 0 failures
-PASS: VICE PAL cm-reentry-31.prg: 10 checks, 0 failures
-PASS: VICE PAL cm-reentry-32.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-reentry-25.prg: 16 checks, 0 failures
+PASS: VICE PAL cm-reentry-26.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-reentry-27.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-reentry-28.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-reentry-29.prg: 14 checks, 0 failures
+PASS: VICE PAL cm-reentry-30.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-reentry-31.prg: 33 checks, 0 failures
+PASS: VICE PAL cm-reentry-32.prg: 38 checks, 0 failures
+PASS: VICE PAL cm-reentry-33.prg: 42 checks, 0 failures
+PASS: VICE PAL cm-reentry-34.prg: 26 checks, 0 failures
+PASS: VICE PAL cm-reentry-35.prg: 10 checks, 0 failures
+PASS: VICE PAL cm-reentry-36.prg: 6 checks, 0 failures
+PASS: VICE PAL cm-reentry-37.prg: 5 checks, 0 failures
+PASS: VICE PAL cm-reentry-38.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-reentry-39.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-reentry-40.prg: 47 checks, 0 failures
+PASS: VICE PAL cm-reentry-41.prg: 32 checks, 0 failures
+PASS: VICE PAL cm-reentry-42.prg: 7 checks, 0 failures
+PASS: VICE PAL cm-reentry-43.prg: 4 checks, 0 failures
+PASS: VICE PAL cm-reentry-44.prg: 10 checks, 0 failures
+PASS: VICE PAL cm-reentry-45.prg: 30 checks, 0 failures
+PASS: VICE PAL cm-reentry-46.prg: 37 checks, 0 failures
+PASS: VICE PAL cm-reentry-47.prg: 4 checks, 0 failures
 exit 0

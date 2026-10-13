@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-roll-proof.json": {
-      "sha256": "4c60810e2f9977ff4d8024e96e5929dfeeecb4f0998aed942807eeefcccb8f14",
-      "bytes": 3099,
+      "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554",
+      "bytes": 3136,
       "store": "tree"
     },
     "cm-tvc-roll-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-roll-vice.log": {
-      "sha256": "6b96e399740c0059651d3f78cf2cf6a878a3ec75c52edcc2274dc8a74244467b",
-      "bytes": 408,
+      "sha256": "6ce334926eb0c1a3a9083110f40083a455180e99ade441feda59facbc089a560",
+      "bytes": 407,
       "store": "tree"
     }
   }

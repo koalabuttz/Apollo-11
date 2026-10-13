@@ -1,11 +1,29 @@
-PRG SHA-256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-413558956159724d029a9810c64ad977808cabd63e4352842169a7b39566ed7c  build/cm-body-attitude-1.prg
-d12320d23be507994a0bd0835985b8e50268bf33cc8fd6ef045403083b1efca5  build/cm-body-attitude-2.prg
-28f7f49c4230c15ad431284a6ba381c2ba184098aa9c88b89390c5c7f8c6a9ea  build/cm-body-attitude-3.prg
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+cdfe5ca4ec19d756562cc49e907876fd75162b52aa1e363c6f927e58fee30eaa  build/cm-body-attitude-1.prg
+3d1ac81e196d50bdb0de42bb29f34be1cc9200409662d7c9ed9d2c33df6bbe44  build/cm-body-attitude-10.prg
+b769133c5d7c21a428fa5c429398b2ca5b7a320f4675e0f31dfec66c336e5b0a  build/cm-body-attitude-11.prg
+ba6ca18e53dc68ba87f73c528b3acc012dd3795318f1364220c1fcefe64e0ce6  build/cm-body-attitude-12.prg
+19a1a5c53ea77d7011a834ce7fb839202c2120db877ead85459a402849775470  build/cm-body-attitude-2.prg
+cffde5e647d822ce148edc3162e23fde85fbe0967a34a6fd00f8b00300a334e2  build/cm-body-attitude-3.prg
+5e18fd3db3542f466afc03fcf36872fdac033bc9c1a44d4c6a84a7c4c309a53c  build/cm-body-attitude-4.prg
+93845c2b78a3907e9675f748ba5bdd8dfb1406235a282dab60b13ad8099bc75b  build/cm-body-attitude-5.prg
+234d175ab4eeb2a4bf192ea5c2de55b09cd5be893678130f4fe2548eb1d75219  build/cm-body-attitude-6.prg
+6fb058f98efba7acb16ddeba1dccd7f3cf02215e6d4c4a2b37e6b35abd60b6dc  build/cm-body-attitude-7.prg
+6b61ec970ab135fb37d88d8b963388c3ccccd5588f39004ca397716e9c12159c  build/cm-body-attitude-8.prg
+66d23d72e2da9fac3af2debd409bec6c7ef9613439d49e791fa9d9f20b150656  build/cm-body-attitude-9.prg
 
 $ make vice-cm-body-attitude
-for p in build/cm-body-attitude-1.prg build/cm-body-attitude-2.prg build/cm-body-attitude-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-body-attitude-1.prg: 7 checks, 0 failures
-PASS: VICE PAL cm-body-attitude-2.prg: 9 checks, 0 failures
-PASS: VICE PAL cm-body-attitude-3.prg: 8 checks, 0 failures
+for p in build/cm-body-attitude-1.prg build/cm-body-attitude-2.prg build/cm-body-attitude-3.prg build/cm-body-attitude-4.prg build/cm-body-attitude-5.prg build/cm-body-attitude-6.prg build/cm-body-attitude-7.prg build/cm-body-attitude-8.prg build/cm-body-attitude-9.prg build/cm-body-attitude-10.prg build/cm-body-attitude-11.prg build/cm-body-attitude-12.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-body-attitude-1.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-2.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-3.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-4.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-5.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-6.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-7.prg: 1 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-8.prg: 2 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-9.prg: 3 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-10.prg: 12 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-11.prg: 45 checks, 0 failures
+PASS: VICE PAL cm-body-attitude-12.prg: 28 checks, 0 failures
 exit 0

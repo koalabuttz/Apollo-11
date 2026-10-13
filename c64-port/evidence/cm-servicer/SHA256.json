@@ -4,28 +4,28 @@
   "release": "evidence-cm-servicer",
   "files": {
     "cm-servicer-differential.log": {
-      "sha256": "4036a477f4d65651c1c96bf1fe1baea60c842fe71c0085ed481591ad45201fe4",
-      "bytes": 1746,
+      "sha256": "86dbe8eed93cbd9a74b8b25797607d616f6a0746236e91d930200abf2d846397",
+      "bytes": 8960,
       "store": "tree"
     },
     "cm-servicer-host.log": {
-      "sha256": "5ff5ce35fd87bbf7a7e22f4e7bda5cf64d6a1a07773d5fe2b54d0df6911eef50",
+      "sha256": "b24cd534f6dee765422ed2a63947d478c5ecb8c6de2e1ed7e3eb84e83e74c9c0",
       "bytes": 1002,
       "store": "tree"
     },
     "cm-servicer-proof.json": {
-      "sha256": "24fd2d5c11194fcc71fa4e22558a574a2c4770265c67c65503624465e49783f1",
-      "bytes": 6739,
+      "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c",
+      "bytes": 13554,
       "store": "tree"
     },
     "cm-servicer-source-map.json": {
-      "sha256": "21e5491d22c83cd53d6a9e0c6a943044cc740ec99bc793d1f505b3b17dc1e8c2",
+      "sha256": "732b300d992197ad635943065eeaef70b8772c810affdb33470a79102ecf2f22",
       "bytes": 53295,
       "store": "tree"
     },
     "cm-servicer-vice.log": {
-      "sha256": "fceff4d3b29d7ea73b6a04c4f58a4703c7871154e26b5bf8c5020ee5d672d997",
-      "bytes": 1424,
+      "sha256": "7fc62204212fb25345bec9e361bbed4197229e9b4be44b726f34e4084147e751",
+      "bytes": 1763,
       "store": "tree"
     }
   }

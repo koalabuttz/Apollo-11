@@ -4,28 +4,28 @@
   "release": "evidence-cm-body-attitude",
   "files": {
     "cm-body-attitude-differential.log": {
-      "sha256": "bc280bffffa09aefddbc5ac1a32ea534f32be9621491d04cc4f736c3af50d5f3",
-      "bytes": 396,
+      "sha256": "9d547e1a2c7e981e2a9578737f78fee48401d8a434829da211baa8f02786e7af",
+      "bytes": 2918,
       "store": "tree"
     },
     "cm-body-attitude-host.log": {
-      "sha256": "9b7ef5ec0b444a5c7d1718268d9f98c0e9a1568ff212d80c1998b48c330f4473",
-      "bytes": 1104,
+      "sha256": "c748fb3aa1392f79396653e5dfd9d70d74e207552d7a4305118eb6b968c4b8b9",
+      "bytes": 1106,
       "store": "tree"
     },
     "cm-body-attitude-proof.json": {
-      "sha256": "3a9aac64b91f7265d2a2e68af933b49d4e76b6ac1cf8369a97dbbec3c623469a",
-      "bytes": 3520,
+      "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1",
+      "bytes": 8956,
       "store": "tree"
     },
     "cm-body-attitude-source-map.json": {
-      "sha256": "2947fde0d367b9006c77f3f6da8ffd2065183d4c5c7e318712c603e62bcd62dc",
-      "bytes": 27120,
+      "sha256": "197cdf06e4487d509f9afb5f0ccd046765cad77186bde5c7b014de8992b99d97",
+      "bytes": 27121,
       "store": "tree"
     },
     "cm-body-attitude-vice.log": {
-      "sha256": "9848416499b514a674fb8c214ba5936e2523c93dd2fb43e350a8c3f48ff13699",
-      "bytes": 795,
+      "sha256": "fdcc337974d22c8d50778383e0498fb9585ccf50b6ebb3b06016a6daf8db57c6",
+      "bytes": 2462,
       "store": "tree"
     }
   }
