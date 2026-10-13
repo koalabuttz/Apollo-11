@@ -1455,7 +1455,11 @@ def c64_size(spec, sym, m, mask, text, pick=()):
 
 
 def c64_probe(spec, sym, m, mask, text, pick=()):
-    d = os.path.join(B, '%s-probe-%s-%x' % (sym, m, mask))
+    tag = '%x' % mask
+    if len(tag) > 64:
+        # (A mask of a file with hundreds of routines is too long for a name.)
+        tag = 'h' + hashlib.sha256(tag.encode()).hexdigest()[:32]
+    d = os.path.join(B, '%s-probe-%s-%s' % (sym, m, tag))
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, '%s_c64_vectors.h' % sym), 'w').write(text)
     prg = os.path.join(d, 'probe.prg')
