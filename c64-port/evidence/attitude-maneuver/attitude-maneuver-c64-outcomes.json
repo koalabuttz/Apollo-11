@@ -17,15 +17,8 @@
  ],
  "host_edges": 3154,
  "host_vector_edges": 3154,
- "c64_edges": 3147,
- "host_branches_missing_on_c64": [
-  "src/agc_transfer.c:50",
-  "src/cm_attitude_maneuver.c:140",
-  "src/cm_attitude_maneuver.c:154",
-  "src/cm_attitude_maneuver.c:180",
-  "src/lm_attitude_maneuver.c:174",
-  "src/lm_attitude_maneuver.c:188",
-  "src/lm_attitude_maneuver.c:214"
- ],
- "c64_rows": 550
+ "c64_edges": 3154,
+ "host_branches_missing_on_c64": [],
+ "c64_rows": 556,
+ "c64_segment_rows": 6
 }

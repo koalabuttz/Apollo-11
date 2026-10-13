@@ -133,6 +133,33 @@ def v67_loop():
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
 
 
+# Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
+# +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
+# NEGCOS's BPL on -0: LONG 180 degrees) and COSTH +-0 (ASIN +-1), as
+# (hi, lo) doubles; the empty sets keep half the cases random.
+def lat_long_arctan_joint():
+    z, mz, h, mh = (0, 0), (0o77777, 0o77777), (0o20000, 0), (0o57777, 0o77777)
+    sets = []
+    for s_, c_ in ((z, z), (mz, mz), (z, mz), (mz, z), (z, h), (mz, h), (z, mh), (mz, mh),
+                   (h, z), (mh, z), (h, mz), (mh, mz)):
+        # SINTH and COSTH are 18D and 16D of the work area.
+        sets.append({'vac+22': s_[0], 'vac+23': s_[1], 'vac+20': c_[0], 'vac+21': c_[1]})
+    return sets + [{}] * len(sets)
+
+
+# The planetary vector LAT-LONG unitizes after R-TO-RP returns: on an axis,
+# so SINTH or COSTH of the latitude and longitude come out exact (+-0, 1/2).
+def lat_long_axis_joint():
+    sets = []
+    for axis in range(3):
+        for hi, lo in ((0o20000, 0), (0o57777, 0o77777)):
+            v = {'MPAC+%d' % k if k else 'MPAC': 0 for k in range(6)}
+            v['MPAC+%d' % (2 * axis) if axis else 'MPAC'] = hi
+            v['MPAC+%d' % (2 * axis + 1)] = lo
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -942,8 +969,10 @@ SPECS = {
         # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
-        # One C64 case per routine: KALCMAN3's run reaches most of the file.
-        'c64_per_point': 1,
+        # KALCMAN3's run reaches most of the file, more than one C64
+        # diagnostic holds: the outcomes only it takes before a CHANG2
+        # resume get segment rows.
+        'c64_segments': True,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
         # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
         'ebank': 6,
@@ -995,6 +1024,9 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc as well (the ?: outcomes clang folds).
+        'c64_rows': 'cover',
+        'cover_stride': 8,
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -1027,7 +1059,7 @@ SPECS = {
                    **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
                                           '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
         'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
-                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
         'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
@@ -1051,6 +1083,9 @@ SPECS = {
         'resume_flow': True,
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
+        # Arcs only runs too long for one diagnostic take come from
+        # truncated rows ('c64_cuts').
+        'c64_cuts': True,
         'rope_bin': True,
     },
     'lm-integration-init': {
@@ -1091,6 +1126,9 @@ SPECS = {
         # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
         'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
                           '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # STATEINT (from P00 and V37) runs INTSTALL under a NOVAC job: its
+        # EXIT, the stall test and GOBAC's RVQ back to the caller.
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
         'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.
@@ -1153,6 +1191,12 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc (the ?: outcomes clang folds) and per call site:
+        # each UNIT/ASIN/ACOS/BPL site takes its own outcomes of the shared
+        # bodies (tools/irc_edges.c IRC_SITES).
+        'c64_rows': 'cover',
+        'cover_stride': 8,
+        'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -1241,12 +1285,24 @@ SPECS = {
             ('LITTLSUB', 'AZMTHCG1', {'02424': [0o67562, 0o67575]})],
         # STOVL S1 stores INTVAL's 4 and 2; TARGDRVE's callers pass 0 or 6.
         'states': {'NORMLOP+3': {'00154': [4], '00155': [2]}, 'TARGDRVE': {'00000': [0, 6]}},
+        # CHECKG1's spin: PIPAX has not moved since TS ZERONDX, so C(PIPAX +
+        # PIPINDEX) + ZERONDX is +-0 and BZF CHECKG1 is taken (the idle
+        # point). Half the sets hold that (with the +0/-0 pairs), half miss
+        # by one; points before TS ZERONDX overwrite it.
+        'joint_states': {('CHECKG1+%d' % k if k else 'CHECKG1'): [
+            {'02422': i, '%05o' % (0o37 + i): v, '02655': (~v - miss) & 0o77777}
+            for i in (0, 1, 2) for v in (0, 0o77777, 1, 0o77776, 0o1234, 0o54321) for miss in (0, 1)]
+            for k in range(15)},
         # One case per routine: the cases carry many edits, and the header
         # must stay under 1 MB.
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # Rows by gcov arc as well (the ?: outcomes clang folds, as DIM's
+        # negative operand in ai_dim).
+        'c64_rows': 'cover',
+        'cover_stride': 64,
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -1413,6 +1469,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'TPI_SEARCH.agc'},
         'base': {'cm': 'cm_tpi_search'},
@@ -1565,6 +1622,11 @@ SPECS = {
             'RTORPB': {'163': [0o77776]},
             'RTORPB+3': {'163': [0o77776]},
         },
+        'edge_values': True,
+        # BHIZ (CCS MPAC) at RP-TO-R and R-TO-RP: MPAC +-0 is every Earth
+        # call (LAT-LONG loads ZEROVEC when LUNAFLAG is 0), COS(0) the Moon.
+        'joint_states': {lab: [{'MPAC': 0}, {'MPAC': 0o77777}, {'MPAC': 0o20000}, {}]
+                         for lab in ('RP-TO-R', 'R-TO-RP')},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/planetary_target.c',
@@ -1629,6 +1691,9 @@ SPECS = {
             'TSTRLSRM+4': {'163': [0o77776]},
             'TSTRLSRM+5': {'163': [0o0]},
         },
+        'edge_values': True,
+        'joint_states': {'ARCTAN': lat_long_arctan_joint(), 'CLROVFLW': lat_long_arctan_joint(),
+                         'CALLRTRP+2': lat_long_axis_joint()},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/lat_long_target.c',
@@ -1675,6 +1740,7 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P32-P33,_P72-P73.agc'},
         'source_path': {'cm': 'P32-P33_P72-P73.agc'},
@@ -1704,12 +1770,20 @@ SPECS = {
                    'ROTATE': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
-        # P32/P72F subtracts 60MIN until negative: hundreds of passes.
+        # P32/P72F subtracts 60MIN until negative: hundreds of passes (and
+        # with resume_keys the loop runs over two routines).
         'self_loops': True,
+        'max_steps': 10000,
         'target': 'tests/cm_p32_p33_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'cm': 'P34-35_P74-75.agc'},
@@ -1746,6 +1820,11 @@ SPECS = {
         'fixed_index': {'MUTABLE': [2, 10]},
         'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         'target': 'tests/cm_p34_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
@@ -1826,6 +1905,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P32-P35,_P72-P75.agc'},
         'source_path': {'lm': 'P32-P35_P72-P75.agc'},
@@ -1853,7 +1933,15 @@ SPECS = {
                    'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
         'self_loops': True,
+        # With resume_keys the loops (P32/P72F's 60MIN passes) run over
+        # several routines.
+        'max_steps': 10000,
         'target': 'tests/lm_p32_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'lm-conic-compiled': {
@@ -1892,9 +1980,14 @@ SPECS = {
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
-        # A CHANG2 resume starts from the state the program reaches it in.
-        'resume_flow': True,
+        # (No resume_flow: the CHANG2 resumes in PERIODCH's loop keep the
+        # TAU. and period pins above; a snapshot from a random TAU. loops
+        # for millions of passes.)
         'edge_cases': True,
+        # KEPLERN's routines before PERIODCH take no edge inputs: from an
+        # edge state vector PERIODCH can loop forever in the original as
+        # well (yaAGC times out, the native run stops at max_steps).
+        'edge_skip': [('KEPLERN', 'PERIODCH')],
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         'rope_bin': True,

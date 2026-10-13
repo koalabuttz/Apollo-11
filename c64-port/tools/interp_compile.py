@@ -1652,7 +1652,10 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
-        c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
+        # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
+        # as STATEINT's INTSTALL runs under it.)
+        c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
+                 ' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
         c.append(' return 1;')
         c.append('}')

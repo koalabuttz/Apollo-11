@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-ev-front.prg: 251 checks, 0 failures
+PASS: VICE PAL lanec-ev-front.prg: 21 checks, 0 failures

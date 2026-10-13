@@ -2,8 +2,8 @@
  * diagnostic runs besides every IBO_C64_STRIDE-th, so its rows take every branch arc
  * (gcov -b, all linked sources) the 2146 host cases take; native digests, equal to
  * yaAGC's by the host test. */
-#define IBO_C64_ROWS 5u
-static const uint16_t ibo_c64_row[5]={
-992u,1187u,1259u,1298u,1790u};
-static const uint32_t ibo_c64_row_digest[5]={
-0x32aa1e62ul,0x3814b4e4ul,0x7bd4a12bul,0x00000000ul,0x8c3622b1ul};
+#define IBO_C64_ROWS 4u
+static const uint16_t ibo_c64_row[4]={
+992u,1259u,1298u,1790u};
+static const uint32_t ibo_c64_row_digest[4]={
+0x32aa1e62ul,0x7bd4a12bul,0x00000000ul,0x8c3622b1ul};

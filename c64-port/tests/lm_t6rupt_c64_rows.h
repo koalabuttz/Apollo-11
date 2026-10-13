@@ -2,8 +2,8 @@
  * diagnostic runs besides every LM_T6_C64_STRIDE-th, so its rows take every branch arc
  * (gcov -b, all linked sources) the 3840 host cases take; native digests, equal to
  * yaAGC's by the host test. */
-#define LM_T6_C64_ROWS 2u
-static const uint16_t lm_t6_c64_row[2]={
-2305u,2307u};
-static const uint32_t lm_t6_c64_row_digest[2]={
-0xc2978a95ul,0x17875fb7ul};
+#define LM_T6_C64_ROWS 4u
+static const uint16_t lm_t6_c64_row[4]={
+2305u,2307u,3079u,3119u};
+static const uint32_t lm_t6_c64_row_digest[4]={
+0xc2978a95ul,0x17875fb7ul,0xfc2b4991ul,0x00020002ul};

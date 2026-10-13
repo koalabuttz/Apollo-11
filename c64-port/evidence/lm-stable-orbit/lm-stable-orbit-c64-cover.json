@@ -4,16 +4,16 @@
  "linked_sources": {
   "src/lm_stable_orbit.c": "e283cbd7ca3fbbc833dd7fbbc1a072a1a42eae5b2696e33d2104e800760ffacf",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
-  "src/lm_interp_orders.c": "0460aa4b381f0961373048f779b50b1e4a13e2132a3e8647ee41c03e4f04676f",
+  "src/lm_interp_orders.c": "3e01539e4314e13e98f4407a24e23782f7b4acdaf484a48bf607375a6fa3fcdd",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
-  "src/cm_interp_orders.c": "5b9d263cca1508d4c2bd83559865b6c2adf6a129cba3b2c79c2c23462f053f8a",
+  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "6dbecdbce674e4ae3bda02135cadbc0558fb8ee4e359bd86774ab3c652e7b85b",
+  "tests/interp_case.c": "8929d9a08267aa85d2dff2635a3a78a54bb9fdc6544815fb301d66f8084ee613",
   "tests/lm_stable_orbit_target.c": "09166d5405c067b0055bd66783e60cb7a4040da4c67f2585267d21e85b8db5e1"
  },
  "host_cases": 25856,
@@ -31,7 +31,7 @@
   2316,
   2584,
   2816,
-  3139,
+  3307,
   3340,
   3584,
   3844,
@@ -142,8 +142,8 @@
   25356,
   25600
  ],
- "host_branch_arcs": 1002,
- "c64_branch_arcs": 1002,
+ "host_branch_arcs": 1024,
+ "c64_branch_arcs": 1024,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    18,
@@ -158,8 +158,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   41,
-   41
+   45,
+   45
   ],
   "src/agc_word.c": [
    3,
@@ -190,16 +190,16 @@
    25
   ],
   "tests/interp_case.c": [
-   16,
-   16
+   32,
+   32
   ],
   "tests/lm_stable_orbit_target.c": [
    0,
    0
   ],
   "tools/interp_routine_native.c": [
-   24,
-   24
+   26,
+   26
   ]
  },
  "host_branches_missing_on_c64": []

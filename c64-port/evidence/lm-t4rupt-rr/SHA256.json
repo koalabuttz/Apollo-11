@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-t4rupt-rr",
+  "release": "evidence-lm-t4rupt-rr",
+  "files": {
+    "lm-t4rupt-rr-host.log": {
+      "sha256": "4d27b6ef76ac20a80ac2fb3b1dfc8fde71efcdebb21f2d5af08c0759c1039519",
+      "bytes": 1214,
+      "store": "release"
+    },
+    "lm-t4rupt-rr-proof.json": {
+      "sha256": "8586685bb9229cfb62459725105bf767b0b3970b9da932a23361faedf5514a67",
+      "bytes": 1821,
+      "store": "tree"
+    },
+    "lm-t4rupt-rr-source-map.json": {
+      "sha256": "5231e37db1769730e4c8574700ae6be4911528b2d21ec46805c7b03c4a9338fb",
+      "bytes": 21294,
+      "store": "tree"
+    },
+    "lm-t4rupt-rr-vice.log": {
+      "sha256": "c73b127229cf5981c89fc1740a22167e7d8087151613770dc0315b3fcb9788df",
+      "bytes": 224,
+      "store": "release"
+    }
+  }
+}

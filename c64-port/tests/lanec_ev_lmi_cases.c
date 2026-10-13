@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* Cases for the Luminary099 EXTENDED_VERBS interpretive words: every entry
  * with random MOONTHIS/MOONOTH switch bits, a VAC area in FIXLOC (above the interpreter's
- * work area, in unswitched erasable), NEWJOB +0,
- * and at NEWOPS EDOP +0 with BANKSET = BB and INTBIT15 its bit 15, as the interpreter leaves them. */
+ * work area, in unswitched erasable), NEWJOB +0 or (every fourth variant) a
+ * job's core set, so the first DANZIG changes jobs, and at NEWOPS EDOP +0 with BANKSET = BB and INTBIT15 its bit 15, as the interpreter leaves them. */
 #include "lanec_suites.h"
 #include "lanec_ev_lmi.h"
 #include "lanec_symbols.h"
@@ -17,7 +17,7 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     lanec_fill(s, io, n);
     m->mission = LANEC_LM;
     lanec_enter(s, io, bank, z);
-    w[067] = 0;                                                     /* NEWJOB */
+    w[067] = (n / count) % 4u == 3u ? (uint16_t)(1u + lanec_rand(&r) % 037777u) : 0u;   /* NEWJOB */
     w[0120] = (uint16_t)(0200u + lanec_rand(&r) % (01400u - 060u - 0200u)); /* FIXLOC */
     w[0164] = *at; w[023] = 0; w[0165] = w[LANEC_BB];               /* LOC, EDOP, BANKSET */
     w[0115] = w[0165] & 040000u;                                    /* INTBIT15 */
@@ -42,4 +42,5 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     m->loc[3].bank = 043u; m->loc[3].lo = LANEC_LM_TCPIN; m->loc[3].hi = LANEC_LM_TCPIN + 1u;
 }
 
-const lanec_suite lanec_suite_ev_lmi = { "ev-lmi", 15u * 64u, make, lanec_ev_lmi_dispatch };
+#define ENTRIES 29u
+const lanec_suite lanec_suite_ev_lmi = { "ev-lmi", ENTRIES * 64u, make, lanec_ev_lmi_dispatch };

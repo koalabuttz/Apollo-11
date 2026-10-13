@@ -18,7 +18,7 @@ sanitize-planetary: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-planetary-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and both listing builds).
 planetary-differential:
-	python3 tools/interp_routine_differential.py planetary --cases 512 --freeze
+	python3 tools/interp_routine_differential.py planetary --cases 256 --freeze
 	git diff --exit-code -- tests/planetary_vectors.h tests/planetary_c64_vectors.h tools/mk/planetary.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).

@@ -12,7 +12,7 @@ translated.
 
 Every labelled entry and every return into the file from a callee is a
 routine of the native control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`):
-313 basic routines in `lanec_ev_lm_routines` and the 15 interpretive entries,
+313 basic routines in `lanec_ev_lm_routines` and the 29 interpretive entries,
 keyed by LOC, in `lanec_ev_lm_interpretive`, generated and checked against
 the listing by `tools/lanec/routines.py ev`. 468 round trips through
 `agc_transfer_run`, from Pinball's `POSTJUMP GOEXTVB` and every other
@@ -79,15 +79,16 @@ Hashes: `evidence/lanec-ev-cert/SHA256.json`.
   word's original line, address, assembled word, owner, native module and
   how the oracle covered it.
 - Independent assembly comparison: `lanec-ev-comparison.json`. It holds
-  the eight module suites' `diff.py` summaries (26,880 cases), the
+  the eight module suites' `diff.py` summaries (27,776 cases), the
   `ev-transfer` and `ev-transfer-c64` round trips (532 cases) and the
-  `ev-refuse` refusals (512 cases refused with the state unchanged): 27,412
+  `ev-refuse` refusals (512 cases refused with the state unchanged): 28,820
   compared with zero differing, and the hashes of their per-case oracle CRCs.
 - Host and sanitizer results: `lanec-ev-checks.log`. It has the strict and
   ASan/UBSan runs of all eleven suites and the whole-file map run.
 - C64 execution results: `lanec-ev-c64-results.json`. It has fresh VICE
-  PAL runs of the eight frozen module subsets and the transfer round trip
-  (1,861 checks, 0 failures) with the PRG hashes.
+  PAL runs of the eight frozen module subsets (each picked by
+  `tools/lanec/cover.py` to take every host branch arc) and the transfer round trip
+  (457 checks, 0 failures) with the PRG hashes.
 
 The supported domain and the external continuations are written into the
 certificate itself.

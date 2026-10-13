@@ -1,7 +1,0 @@
-PASS 18432 original S34/35.2 and S34/35.5 entries equal native trampoline runs 3b7c3bf48396fcef863804f95785076f178fd9c06f05640834d370d2dd4c04c8
-lm-s3435c: 18432 cases, 196 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 18667 checks, 0 failures
-PASS 77 assembled S34/35.2 and S34/35.5 words on 77 source lines map to 18 native routines
-lm-s3435c: 18432 cases, 196 admission guards; stops 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024 1024; 18667 checks, 0 failures
-PASS: VICE PAL lm-s3435c-1.prg: 256 checks, 0 failures
-PASS: VICE PAL lm-s3435c-2.prg: 256 checks, 0 failures
-PASS: VICE PAL lm-s3435c-3.prg: 352 checks, 0 failures
