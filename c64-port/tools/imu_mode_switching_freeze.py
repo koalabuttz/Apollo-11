@@ -89,9 +89,8 @@ def main():
            '#else', *table('ims_c64_trips', trips[1]), '#endif']
     (R / 'tests/imu_mode_switching_c64_vectors.h').write_text('\n'.join(out) + '\n')
     stops = collections.defaultdict(collections.Counter)
-    gap = 0
     for r in rows:
-        n, z, q = r[0], r[2 + 5], r[2 + 2]
+        n, z = r[0], r[2 + 5]
         if n < ENTRY_CASES:
             k = n % ROUTINES
             cm = int(k >= LM_ROUTINES)
@@ -101,25 +100,20 @@ def main():
             cm = int(k >= LM_SITES)
             key = f'{"CM" if cm else "LM"} round trip site {k - LM_SITES * cm}'
         name = STOPS[cm].get(z, f'Z {z:05o}' if z < 0o2000 else 'caller continuation')
-        if n >= ENTRY_CASES and name in ('SWRETURN', 'ISWRETRN') and not 0o100 <= q <= 0o7775:
-            name += ' (Q outside 0100-07775: INTER-BANK gap stop)'
-            gap += 1
         stops[key][name] += 1
     proof = {'missions': ['Luminary099', 'Comanche055'],
              'rope_sha256': [hashlib.sha256(p.read_bytes()).hexdigest() for p in ROPES],
              'oracle_engine': 'pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block '
                               '(build/no-imu-device.patch)',
              'cases': len(rows), 'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
-             'interbank_gap_stops': gap,
              'stops': {k: dict(sorted(v.items())) for k, v in stops.items()},
              'boundary': 'entry cases: from the routine to the first external address, the subroutine '
                          'return at 04000, or an erasable TC target; round trips: TC BANKCALL or IBNKCALL '
                          'from every genuine site through native INTER-BANK to the caller continuation, an '
-                         'external, SETISSW, or SWRETURN/ISWRETRN entered with Q outside 0100-07775',
+                         'external or SETISSW',
              'compared': '2048 erasable words (A, L 16-bit), the interrupt-enable state and channels 11-14'}
     (B / 'imu-mode-switching-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
-    print(f'PASS: {len(rows)} imu-mode-switching cases equal the original programs '
-          f'({gap} round trips stop at the INTER-BANK gap)')
+    print(f'PASS: {len(rows)} imu-mode-switching cases equal the original programs')
 
 
 if __name__ == '__main__':

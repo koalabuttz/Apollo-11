@@ -1,0 +1,5 @@
+./build/test-t4rupt-core
+t4rupt-core: 2240 LM and 2176 CM cases (4416 returned, 0 refused); LM to RESUME 1020, NOVAC 251, RCSMONIT 134, RRAUTCHK 279, IMUMON 145, DAPT4S 411; CM to RESUME 1019, NOVAC 252, OPTTEST 206, OPTMON 151, IMUMON 136, RESUME (T4JUMP) 412; LM HANG20 392, NODSPOUT 636, QUIKOFF 513, quick display 507; CM 405, 624, 511, 508; 11400 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -fsanitize=address,undefined src/t4rupt_core.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/t4rupt_core_cases.c tests/test_t4rupt_core.c -o build/test-t4rupt-core-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-t4rupt-core-sanitize
+t4rupt-core: 2240 LM and 2176 CM cases (4416 returned, 0 refused); LM to RESUME 1020, NOVAC 251, RCSMONIT 134, RRAUTCHK 279, IMUMON 145, DAPT4S 411; CM to RESUME 1019, NOVAC 252, OPTTEST 206, OPTMON 151, IMUMON 136, RESUME (T4JUMP) 412; LM HANG20 392, NODSPOUT 636, QUIKOFF 513, quick display 507; CM 405, 624, 511, 508; 11400 checks, 0 failures

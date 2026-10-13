@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -fdata-sections -Wl,--gc-sections src/keyrupt_uprupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/keyrupt_uprupt_cases.c tests/test_keyrupt_uprupt.c -o build/test-keyrupt-uprupt
+./build/test-keyrupt-uprupt
+keyrupt-uprupt: 1536 LM and 1536 CM cases (3072 returned, 0 refused); redundancy failed first 500, second 13; ERROR RESET 126, locked 69, accepted 59; QRUPT skip 512; 9240 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -fsanitize=address,undefined src/keyrupt_uprupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/keyrupt_uprupt_cases.c tests/test_keyrupt_uprupt.c -o build/test-keyrupt-uprupt-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-keyrupt-uprupt-sanitize
+keyrupt-uprupt: 1536 LM and 1536 CM cases (3072 returned, 0 refused); redundancy failed first 500, second 13; ERROR RESET 126, locked 69, accepted 59; QRUPT skip 512; 9240 checks, 0 failures
