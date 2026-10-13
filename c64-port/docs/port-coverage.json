@@ -154,7 +154,7 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -307,7 +307,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -337,6 +337,10 @@
             "vice_targets": {
               "vice-cm-alarm": 256
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-265.md",
+            "sha256": "36b1805f87222fb9f4a81e5017954b5d86a3a5afe3d8886fe83068feef8e5513"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-alarm/cm-alarm-c64-cover.json",
