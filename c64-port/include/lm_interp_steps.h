@@ -48,7 +48,6 @@ void lmi_store(apollo_overlay_state *, agc_word code);
 void lmi_dload(apollo_overlay_state *);
 void lmi_sload(apollo_overlay_state *);
 /* DLOAD whose ADDRWD names the fixed DP pair `operand` in the FBANK. */
-void lmi_sload_fixed(apollo_overlay_state *,const agc_word operand[1]);
 void lmi_dload_fixed(apollo_overlay_state *,const agc_word operand[2]);
 void lmi_pddl(apollo_overlay_state *);
 void lmi_setpd(apollo_overlay_state *);

@@ -7,7 +7,7 @@ LM_FS_HDR = include/lm_fresh_start.h include/lm_interbank_routines.h include/agc
 all: build/test-lm-fresh-start
 test: test-lm-fresh-start
 sanitize: sanitize-lm-fresh-start
-build/test-lm-fresh-start: $(LM_FS_SRC) tests/test_lm_fresh_start.c tests/lm_fresh_start_vectors.h $(LM_FS_HDR) | build
+build/test-lm-fresh-start: $(LM_FS_SRC) tests/test_lm_fresh_start.c tests/lm_fresh_start_vectors.h tests/lm_fresh_start_c64_vectors.h $(LM_FS_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_FS_SRC) tests/test_lm_fresh_start.c -o $@
 test-lm-fresh-start: build/test-lm-fresh-start
 	python3 tools/file_operands_generate.py lm-fresh-start --check

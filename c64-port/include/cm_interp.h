@@ -19,7 +19,6 @@ void cmi_unary(apollo_overlay_state *, agc_word target);
 void cmi_store(apollo_overlay_state *, agc_word code);
 void cmi_dload(apollo_overlay_state *);
 void cmi_sload(apollo_overlay_state *);
-void cmi_sload_fixed(apollo_overlay_state *,const agc_word operand[1]);
 void cmi_dload_fixed(apollo_overlay_state *,const agc_word operand[2]);
 void cmi_pddl(apollo_overlay_state *);
 void cmi_setpd(apollo_overlay_state *);

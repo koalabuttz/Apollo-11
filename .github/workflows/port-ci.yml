@@ -92,6 +92,8 @@ jobs:
       - name: Shared-ledger guard
         if: github.event_name == 'pull_request'
         working-directory: c64-port
+        env:
+          GH_TOKEN: ${{ github.token }}   # reads the nightly vice-manifest artifact
         run: |
           python3 tools/ci_guard.py --base "${{ needs.plan.outputs.base }}" --remote \
             ${{ needs.plan.outputs.shared == '1' && '--allow-shared' || '' }}
@@ -170,6 +172,22 @@ jobs:
           python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --summary build/ci-summary.json
           make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
       - *logs
+      - &piece
+        name: Vice manifest piece
+        if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+        working-directory: c64-port
+        env:
+          PIECE: ${{ github.job }}${{ matrix.shard }}
+        run: |
+          python3 tools/vice_manifest.py piece --name "$PIECE" --out "build/vice-manifest-$PIECE.json" \
+            ${{ github.job == 'c64' && '--certificates' || '' }}
+      - &upload-piece
+        if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest-${{ github.job }}${{ matrix.shard }}
+          path: c64-port/build/vice-manifest-*.json
+          if-no-files-found: ignore
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
   # targets. Requested full runs only (nightly, dispatch): about 400 VICE
@@ -206,3 +224,35 @@ jobs:
             c64-port/build/ci-logs
             c64-port/build/ci-summary.json
           if-no-files-found: ignore
+      - *piece
+      - *upload-piece
+
+  # The vice manifest (tools/vice_manifest.py): every vice-* target of this
+  # full run, its PRG sha256, checks and result, as the `vice-manifest`
+  # artifact that tools/cert_precheck.py checks certificates' vice_targets
+  # against.
+  vice-manifest:
+    needs: [plan, c64, c64-legacy]
+    if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: vice-manifest-*
+          path: c64-port/build/vice-pieces
+          merge-multiple: true
+      - name: Merge the vice manifest
+        working-directory: c64-port
+        env:
+          MANIFEST_REF: ${{ inputs.ref || github.ref_name }}
+        run: |
+          shopt -s nullglob
+          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 9 \
+            --job "c64=${{ needs.c64.result }}" --job "c64-legacy=${{ needs.c64-legacy.result }}" \
+            --out build/vice-manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest
+          path: c64-port/build/vice-manifest.json
+          retention-days: 30

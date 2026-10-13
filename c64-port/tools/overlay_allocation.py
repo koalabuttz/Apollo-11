@@ -36,6 +36,10 @@ RESIDENT_BYTES = 0x6F00 - 0x0801
 # Disk loader (apollo_overlay_call, measured 2,630), ABI 2 runtime and REU
 # store (estimate), IRQ entry and device adapters (estimate).
 RESIDENT_PLATFORM = 2630 + 1600 + 3000
+# The 2 MB REU's top 256 KB holds both missions' rope images (Luminary099 at
+# 0x1c0000, Comanche055 at 0x1e0000; include/rope_image.h), so the module
+# store must end below it even at the high estimate.
+REU_STORE_LIMIT = 0x1c0000
 
 NOWORD = {'EQUALS', '=', 'ERASE', 'SETLOC', 'BANK', 'COUNT', 'COUNT*', 'BLOCK', 'EBANK=', 'SBANK=',
           'MEMORY', 'SUBRO', 'BNKSUM', '=MINUS', '=ECADR', 'CHECK=', 'EQUALS*'}
@@ -206,7 +210,7 @@ def plan():
                              resident_capacity=RESIDENT_BYTES, files=files))
     return dict(schema_version=1, abi=2,
                 expansion_bytes_per_word=EXPANSION, data_bytes_per_word=DATA_BYTES_PER_WORD,
-                slot_bytes=SLOT_BYTES, slot_fill=SLOT_FILL,
+                slot_bytes=SLOT_BYTES, slot_fill=SLOT_FILL, reu_store_limit=REU_STORE_LIMIT,
                 lane_module_id_high_byte=dict(A=1, B=2, C=3, D1=4, D2=5, E=6, F=7, G=8, H=9, proof=15),
                 missions=missions)
 
@@ -226,6 +230,10 @@ def main():
             print(f"  {placement:13s} {t['files']:3d} files {t['words']:6d} words  mid {t['bytes']['mid'] / 1024:7.1f} KB")
         for lane, l in sorted(m['lanes'].items()):
             print(f"  lane {lane:3s} {l['files']:3d} files {l['words']:6d} words  ~{int(l['job_modules_mid'])} job + {int(l['task_modules_mid'])} task modules (mid)")
+    over = [m['mission'] for m in result['missions'] if m['store_bytes']['high'] > REU_STORE_LIMIT]
+    if over:
+        raise SystemExit(f"{', '.join(over)}: high module store estimate crosses the "
+                         f"reserved rope images at REU {REU_STORE_LIMIT:#x}")
 
 
 if __name__ == '__main__':

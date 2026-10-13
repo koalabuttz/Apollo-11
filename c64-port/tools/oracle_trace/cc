@@ -1,0 +1,19 @@
+#!/bin/sh
+# SPDX-License-Identifier: MIT
+# Compiler shim for coverage runs: put this directory first on PATH (as cc
+# and gcc). A link of a *_reference.c oracle also gets oracle_trace.c and
+# -Wl,--wrap=agc_engine; every other command runs unchanged.
+dir=$(cd "$(dirname "$0")" && pwd)
+PATH=$(printf '%s' "$PATH" | sed "s#$dir:##g")
+trace=
+link=1
+for a in "$@"; do
+  case "$a" in
+    -c|-E|-S) link= ;;
+    *_reference.c) trace=1 ;;
+  esac
+done
+if [ -n "$trace" ] && [ -n "$link" ]; then
+  exec "$(basename "$0")" "$@" "$dir/oracle_trace.c" -Wl,--wrap=agc_engine
+fi
+exec "$(basename "$0")" "$@"

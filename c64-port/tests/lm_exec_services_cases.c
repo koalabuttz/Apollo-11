@@ -77,7 +77,9 @@ void lm_exs_input(apollo_overlay_state *m,p66_bias_io *io,lm_exs_case *c,uint16_
   io->superbank=c->superbank;
   set_banks(m,fb,(agc_word)((v%8u)*0400u));
   m->words[2]=q;m->words[5]=callee;a=m->words[0];l=m->words[1];
-  if(callee==LM_EXEC_NOVAC||callee==LM_EXEC_FINDVAC)a=(agc_word)((v%31u+1u)*01000u);
+  if(callee==LM_EXEC_NOVAC||callee==LM_EXEC_FINDVAC){a=(agc_word)((v%31u+1u)*01000u);
+   /* Some scans pass a dormant (sleeping, negative priority) job. */
+   if(v%3u==2u&&v%8u)m->words[0167u+12u*(v%8u)]=agc_negate(m->words[0167u+12u*(v%8u)]);}
   else if(callee==LM_EXEC_LONGCALL){
    /* DP delta: positive (high or low word), zero, or negative. */
    a=(agc_word)(v%7u==0u?0u:v%7u==1u?077777u:v%7u==2u?(rnd(&seed)>>17)%0400u+040000u:(rnd(&seed)>>17)%010u);
