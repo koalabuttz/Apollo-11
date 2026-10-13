@@ -5410,12 +5410,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5424,12 +5424,12 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328
+              "vice-waitlist-entries": 365
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -11288,12 +11288,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -11302,13 +11302,13 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328,
+              "vice-waitlist-entries": 365,
               "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
