@@ -2225,7 +2225,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under EB 4, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p30-p37 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -2245,22 +2245,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "272d62a64184318b4133aa54f76fc3799788dd3a7afd3060f074f12a0f85758f"
+            "sha256": "1f81b3a0579b105392bd56565ff797cc61f2136e01e31d033d346172893c5d47"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
-            "sha256": "8133cedb40bb835a77afcdc857d86c3a84dbf15b002d92681c735066af670d79"
+            "sha256": "d94d58f4965377a71b23e05871f4786aed335bbb8902d4fa5dd6449bb451243b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "5f726691ca6eda2d6dcacdbc283d33d451e90a35a2a59143de97a58dbe040749",
+            "sha256": "b26ca7dfa94a88443815876e89f057520b248a67ac81e9cc81a8d6253807dadb",
             "vice_targets": {
-              "vice-cm-p30-p37": 169
+              "vice-cm-p30-p37": 173
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "f48fabba2f8e332b9f3ae272eb5f4cbaef6b7e63a23f58648963a9acdad2c53c"
+            "sha256": "b20464b58409355263fa0d6670e235f3c01e7f83e450eb1e1d489342d1add0de"
           }
         }
       }
