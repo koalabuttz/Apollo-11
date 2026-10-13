@@ -47,10 +47,44 @@ generated from the listings into `include/interp_runtime_tables.h`
 fixed operand (ADDRWD in 02000-03777 after address formation) is read from the
 rope at FB/ADDRWD, so indexed fixed tables need no per-file data.
 
-Today the order bodies are the image-level ones the compiled routines call
-(`src/lm_interp_steps.c`, `src/lm_interp_orders.c`), which are verified against
-yaAGC body by body. They are about 54 KB on the C64; the compact rewrite for one
-16 KB slot is the lane's next milestone.
+The verification interpreter's order bodies are the image-level ones the
+compiled routines call (`src/lm_interp_steps.c`, `src/lm_interp_orders.c`),
+verified against yaAGC body by body. They are about 54 KB on the C64.
+
+## Compact interpreter (flight build)
+
+`lm_interp_core` / `cm_interp_core` (`src/lm_interp_core.c`; the CM unit
+includes it with `INTERP_COMANCHE`) are the same interpreter in one
+translation unit for the C64 job slot:
+
+- One image: with `AGC_FIXED_IMAGE` on llvm-mos the bodies address the
+  canonical image at $7000 directly, and the entry refuses any other.
+- Its own instruction helpers (`ai_*`), with one-byte entries for constant
+  register addresses and small constants, chosen at compile time.
+- Table dispatch for the address, miscellaneous and unary orders.
+- Its own module entry, `platform/c64/interp_module.c`. It runs slots until Z
+  leaves the interpreter, so it needs no transfer-ABI table wrapper.
+
+It must equal the verification interpreter word for word:
+
+- `make interp-core-fuzz` runs random interpretive programs in a bank of the
+  rope against both interpreters and compares every NEWOPS slot: Z, all 2048
+  words, the status and the io record. Inputs no program produces are left
+  out and counted (an EBANK window over the registers, an index register or
+  store run wild, MODE outside -1..+1).
+- `make interp-core-differential` runs the yaAGC differential above with the
+  compact interpreter.
+
+`make interp-runtime-size` links it as module `$0A01` (16 KB job slot target);
+`--runtime` links the verification interpreter instead.
+
+`make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
+simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
+
+- It takes one order per slot from the fuzz.
+- It checks every slot's 6502 result against the host's.
+- It adds the measured REU rope read cost.
+- Results go to `build/interp-cycles/<m>.json`.
 
 ## Tests
 
