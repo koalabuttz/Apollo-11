@@ -84,6 +84,22 @@ It must equal the verification interpreter word for word:
 `make interp-runtime-size` links it as module `$0A01` (16 KB job slot target);
 `--runtime` links the verification interpreter instead.
 
+The interpreter extension (`INTERP_EXTENSION`, `--ext`) is 4 KB of RAM under
+I/O at $D000-$DFFF (steward ruling, 2026-10-13), loaded once with the
+interpreter:
+
+- It holds the cold math bodies (`XT`: SQRT, UNIT, ABVAL, VSQ, SIN, COS,
+  ASIN, ACOS with POLY, DDV, BDDV, DOT, VPROJ, VXSC, MXV, VXM, V/SC), linked
+  by `platform/c64/interp_ext.ld`.
+- None of these bodies reads the rope, since the REU registers are I/O.
+- They are reached only from the address and unary order tables. Every call
+  through a table banks I/O out ($01 = $34) and back in. The resident's IRQ
+  entry saves $01 and banks I/O in.
+- With it, the module fits: LM 16,038 and CM 16,054 of 16,384 bytes, and the
+  extension takes 4,062 and 4,071 of 4,096 bytes.
+- Without it, the module is 3.7 KB over.
+- The flight store does not load it yet.
+
 `make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
 simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
 

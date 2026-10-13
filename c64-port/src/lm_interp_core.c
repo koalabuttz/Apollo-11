@@ -8,7 +8,8 @@
 #include "rope_image.h"
 #include "p66_bias.h"
 /* Functions stay out of line: on llvm-mos inlining grows this unit by a
- * third (larger frames and zero-page spills). */
+ * third (larger frames and zero-page spills). The dispatch path's helpers
+ * with one caller are the exception (static, no NI: -400 B inlined). */
 #define NI __attribute__((noinline))
 /* The flight build (AGC_FIXED_IMAGE) addresses the one canonical image at
  * $7000 directly; elsewhere the image is the one passed in. */
@@ -22,12 +23,18 @@ static agc_word *ic_image;
  * interpreter extension, RAM under I/O at $D000-$DFFF, loaded once with
  * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope (the REU
  * registers are I/O) and are reached only through the order tables, whose
- * calls bank I/O out ($01 = $34) when the body lies there. */
+ * calls bank I/O out ($01 = $34). */
 #if defined(__mos__) && AGC_FIXED_IMAGE && INTERP_EXTENSION
 #define XT __attribute__((section(".interp_ext")))
-#define XT_AT 0xd000u
+/* Around every order-table call (no table body reads the rope); the
+ * resident's IRQ entry saves $01 and banks I/O in. */
+static uint8_t xt_mem;
+#define XT_IN (xt_mem = *(volatile uint8_t *)1, *(volatile uint8_t *)1 = 0x34)
+#define XT_OUT (*(volatile uint8_t *)1 = xt_mem)
 #else
 #define XT
+#define XT_IN ((void)0)
+#define XT_OUT ((void)0)
 #endif
 static p66_bias_io *io;
 static NI const agc_word *kop(void);
@@ -123,30 +130,30 @@ static NI uint8_t ai_ccsf_b(uint8_t);
 #define ai_square() ai_mp(0u)
 #define ai_zl() ai_lxch(7u)
 #define ai_zq() ai_qxch(7u)
-static NI void lmi_newops(agc_word pair);
-static NI void lmi_danzig_next(void);
-static NI void lmi_danzig_right(void);
-static NI void lmi_noibnksw_right(void);
-static NI void lmi_direct(agc_word operand, agc_word target);
+static void lmi_newops(agc_word pair);
+static void lmi_danzig_next(void);
+static void lmi_danzig_right(void);
+static void lmi_noibnksw_right(void);
+static void lmi_direct(agc_word operand, agc_word target);
 static NI void lmi_indexed(agc_word operand, agc_word target);
-static NI void lmi_misc(agc_word operand, agc_word target);
-static NI void lmi_unary(agc_word target);
+static void lmi_misc(agc_word operand, agc_word target);
+static void lmi_unary(agc_word target);
 static NI void lmi_sload(void);
 static NI void lmi_setpd(void);
 static NI uint8_t lmi_vdef(void);
 static NI uint8_t lmi_axt(void);
 static NI uint8_t lmi_incr(void);
 static NI uint8_t lmi_switch(void);
-static NI void lmi_swbranch(agc_word target_word);
+static void lmi_swbranch(agc_word target_word);
 static NI void lmi_goto(void);
-static NI void lmi_rvq(void);
-static NI void lmi_diradres(agc_word operand, agc_word target);
+static void lmi_rvq(void);
+static void lmi_diradres(agc_word operand, agc_word target);
 static NI void lmi_diradres_pushup(agc_word next, agc_word target);
-static NI void lmi_address_pushup(agc_word next, agc_word target);
+static void lmi_address_pushup(agc_word next, agc_word target);
 static NI void lmi_store_code(agc_word code);
-static NI void lmi_stadr(agc_word word);
-static NI void lmi_dodload(void);
-static NI void lmi_dovload(void);
+static void lmi_stadr(agc_word word);
+static void lmi_dodload(void);
+static void lmi_dovload(void);
 static NI void lmi_dload_op(void);
 static NI void lmi_vload(void);
 static NI void lmi_pdvl(void);
@@ -157,8 +164,8 @@ static NI void lmi_dsu(void);
 static NI void lmi_bdsu(void);
 static NI void lmi_dmp(void);
 static NI void lmi_dmpr(void);
-static NI void lmi_short_dispatch(void);
-static NI void lmi_shortt(void);
+static void lmi_short_dispatch(void);
+static void lmi_shortt(void);
 static NI void lmi_shortv(void);
 static NI void lmi_gshift(void);
 static NI void lmi_genshift(void);
@@ -186,16 +193,16 @@ static NI void lmi_vproj(void);
 static NI void lmi_vsc(void);
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
 static NI uint8_t lmi_bplbmn(void);
-static NI uint8_t lmi_bov(void);
+static uint8_t lmi_bov(void);
 static NI void lmi_rtb(void);
-static NI void lmi_swreturn(void);
+static void lmi_swreturn(void);
 static NI void lmi_poly(const agc_word *table);
 static NI void lmi_vad(void);
 static NI void lmi_vsu(void);
 static NI void lmi_bvsu(void);
 static NI void lmi_tad(void);
 static NI uint8_t lmi_round(void);
-static NI void lmi_ssp(agc_word word);
+static void lmi_ssp(agc_word word);
 static NI uint8_t lmi_xad(void);
 static NI uint8_t lmi_xsu(void);
 static NI uint8_t lmi_lxa(void);
@@ -203,18 +210,18 @@ static NI uint8_t lmi_lxc(void);
 static NI uint8_t lmi_sxa(void);
 static NI uint8_t lmi_xchx(void);
 static NI uint8_t lmi_axc(void);
-static NI void lmi_ita(void);
+static void lmi_ita(void);
 static NI uint8_t lmi_tix(void);
-static NI uint8_t lmi_bhiz(void);
+static uint8_t lmi_bhiz(void);
 static NI void lmi_call(void);
 static NI void lmi_goto_any(void);
-static NI void lmi_15bitadr(agc_word word, agc_word target);
+static void lmi_15bitadr(agc_word word, agc_word target);
 static NI uint8_t lmi_bzegoto(void);
 static NI void lmi_tload(void);
 static NI void lmi_tload_fixed(void);
 static NI void lmi_sload_fixed(void);
-static NI void lmi_exit(void);
-static NI void lmi_intpret(void);
+static void lmi_exit(void);
+static void lmi_intpret(void);
 
 /* ---- agc_image_ops ---- */
 /* SPDX-License-Identifier: MIT */
@@ -537,7 +544,7 @@ static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
 #define ENDERAS_NEG 074056u /* -ENDERAS DEC -2001 */
 #define DEC45 055u
 
-static NI void lmi_danzig_next(void){
+static void lmi_danzig_next(void){
  /* DANZIG CA BANKSET, TS BBANK; NOIBNKSW CCS EDOP (+0); CCS NEWJOB (+0);
   * INCR LOC; NEWOPS. */
  ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);(void)ai_ccs(067);ai_incr(0164);W[5]=IF_(06070,06037);
@@ -546,12 +553,12 @@ static NI void opjump(void){
  /* OPJUMP TS CYR; CCS CYR. */
  (void)ai_ts(020);(void)ai_ccs(020);
 }
-static NI void lmi_newops(agc_word pair){
+static void lmi_newops(agc_word pair){
  /* NEWOPS INDEX LOC, CA 0; CCS A (negative pair); TS EDOP; MASK LOW7.
   * Every instruction ends with L overflow-corrected and sign-extended. */
  W[1]=agc_extend(agc_correct(W[1]));ai_caf(pair);(void)ai_ccs(0);(void)ai_ts(023);ai_maskf(LOW7);opjump();
 }
-static NI void lmi_danzig_right(void){
+static void lmi_danzig_right(void){
  /* DANZIG CA BANKSET, TS BBANK; CCS EDOP (positive) TCF OPJUMP. */
  ai_ca(0165);(void)ai_ts(6);(void)ai_ccs(023);opjump();
 }
@@ -560,7 +567,7 @@ static NI void indjump(agc_word target){
   * rewriting it. */
  W[5]=target;
 }
-static NI void lmi_direct(agc_word operand,agc_word target){
+static void lmi_direct(agc_word operand,agc_word target){
  /* ADDRESS MASK BIT1; CCS A (+0); DIRADRES INDEX LOC, CS 1; CCS A
   * (negative, an address is given); INCR LOC; TS ADDRWD; AD -ENDVAC;
   * CCS A. */
@@ -594,12 +601,12 @@ static NI void lmi_indexed(agc_word operand,agc_word target){
  if(!W[0]){ai_caf(OCT1400);ai_xch(0116);(void)ai_ts(3);ai_maskf(LOW8);ai_ads(0116);indjump(target);return;}
  ai_ca(0116);(void)ai_ts(4);ai_maskf(LOW10);ai_adf(TWO_K);(void)ai_ts(0116);indjump(target);
 }
-static NI void lmi_misc(agc_word operand,agc_word target){
+static void lmi_misc(agc_word operand,agc_word target){
  /* OPJUMP2 CCS CYR (negative); 15BITADR INCR LOC; INDEX LOC, CA 0;
   * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A; TCF MISCJUMP. */
  (void)ai_ccs(020);ai_incr(0164);ai_caf(operand);(void)ai_ts(0117);ai_caf(02177u);(void)ai_ts(4);ai_mask(020);W[5]=target;
 }
-static NI void lmi_unary(agc_word target){
+static void lmi_unary(agc_word target){
  /* OPJUMP2 CCS CYR (positive); OPJUMP3 TS FBANK; CCS CYR (positive);
   * INDEX A; TCF UNAJUMP. */
  (void)ai_ccs(020);(void)ai_ts(4);(void)ai_ccs(020);W[5]=target;
@@ -652,7 +659,7 @@ static NI void lmi_goto(void){
  /* GOTO CA POLISH; +1 MASK HIGH4; EXTEND BZF GOTOERS (fixed: nonzero). */
  ai_ca(0117);ai_maskf(HIGH4);goto_fixed();
 }
-static NI void lmi_rvq(void){
+static void lmi_rvq(void){
  /* RVQ INDEX FIXLOC, CA QPRET; TS POLISH; TCF GOTO +4. */
  ai_ca((unsigned)(W[0120]+052u));(void)ai_ts(0117);goto_fixed();
 }
@@ -681,11 +688,11 @@ static NI uint8_t lmi_switch(void){
  if(ai_ccs(0)==1u)return 1;
  ai_incr(0164);danzig_entry();return 0;
 }
-static NI void lmi_swbranch(agc_word target_word){
+static void lmi_swbranch(agc_word target_word){
  /* SWBRANCH CA BANKSET; TS FBANK; INDEX LOC, CA 1; TS POLISH; TCF GOTO +1. */
  ai_ca(0165);(void)ai_ts(4);ai_caf(target_word);(void)ai_ts(0117);ai_maskf(HIGH4);goto_fixed();
 }
-static NI void lmi_noibnksw_right(void){
+static void lmi_noibnksw_right(void){
  /* NOIBNKSW CCS EDOP (positive) TCF OPJUMP (SETPD's return). */
  (void)ai_ccs(023);opjump();
 }
@@ -798,7 +805,7 @@ static NI agc_word nowds(int index){
 static NI int signed_word(agc_word v){return (v&040000u)?-(int)(~v&037777u):(int)v;}
 
 /* DIRADRES from INCR LOC (an address word was given) to the INDJUMP body. */
-static NI void diradres_given(agc_word target){
+static void diradres_given(agc_word target){
  uint8_t c;
  INCR(rLOC);(void)TS(rADDRWD);ADF(ENDVAC_NEG);c=CCS(rA);
  if(c==2u||c==3u){
@@ -814,7 +821,7 @@ static NI void diradres_given(agc_word target){
  MASKF(LOW10);ADF(LOW10);XCH(rADDRWD);AD(rINTBIT15);(void)TS(rFB);W[5]=target;
 }
 /* PUSHUP: operand from the push-down list. */
-static NI void pushup(agc_word target){
+static void pushup(agc_word target){
  uint8_t c;
  CAF(OCT23);MASK(rCYR);ADF(OCT10_NEG);c=CCS(rA);
  if(c==0u)goto regup;
@@ -829,7 +836,7 @@ regup:
 regup2:
  ADS(rPUSHLOC);(void)TS(rADDRWD);W[5]=target;
 }
-static NI void lmi_diradres(agc_word operand,agc_word target){
+static void lmi_diradres(agc_word operand,agc_word target){
  /* DIRADRES INDEX LOC, CS 1; CCS A (negative: an address is given). */
  CSF(operand);(void)CCS(rA);diradres_given(target);
 }
@@ -837,7 +844,7 @@ static NI void lmi_diradres_pushup(agc_word next,agc_word target){
  /* DIRADRES INDEX LOC, CS 1; CCS A (positive: next word is an order). */
  CSF(next);(void)CCS(rA);pushup(target);
 }
-static NI void lmi_address_pushup(agc_word next,agc_word target){
+static void lmi_address_pushup(agc_word next,agc_word target){
  /* ADDRESS MASK BIT1; CCS A (+0); DIRADRES as above. */
  MASKF(BIT1);(void)CCS(rA);lmi_diradres_pushup(next,target);
 }
@@ -882,12 +889,12 @@ static NI void lmi_store_code(agc_word code){
  /* NEWOPS INDEX LOC, CA 0; CCS A (positive) TCF DOSTORE. */
  CAF(code);(void)CCS(rA);dostore();
 }
-static NI void lmi_stadr(agc_word word){
+static void lmi_stadr(agc_word word){
  /* STADR CA BANKSET; TS FBANK; INCR LOC; INDEX LOC, CS 0; AD NEGONE. */
  CA(rBANKSET);(void)TS(rFB);INCR(rLOC);CSF(word);ADF(NEGONE);dostore();
 }
-static NI void lmi_dodload(void){CAF(DLOADCOD);(void)TS(rCYR);W[5]=IF_(06106,06055);}
-static NI void lmi_dovload(void){CAF(VLOADCOD);(void)TS(rCYR);W[5]=IF_(06106,06055);}
+static void lmi_dodload(void){CAF(DLOADCOD);(void)TS(rCYR);W[5]=IF_(06106,06055);}
+static void lmi_dovload(void){CAF(VLOADCOD);(void)TS(rCYR);W[5]=IF_(06106,06055);}
 
 /* NEWMODE (TS MODE) and VMODE. */
 static NI void newmode(void){(void)TS(rMODE);danzig();}
@@ -1047,7 +1054,7 @@ static NI void vshr2(void){
  if(TS(rMPAC+2))ADS(rMPAC+1);
  CAF(ZERO);(void)TS(rMPAC+2);XCH(rMPAC);MP(rMPTEMP);DAS(rMPAC);RETQ();
 }
-static NI void mpacsrnd(void){
+static void mpacsrnd(void){
  CA(rMPAC+2);MP(rMPTEMP);XCH(rMPAC+1);MP(rMPTEMP);XCH(rMPAC+1);AD(rL);vshr2();
 }
 static NI void vshrrnd(void){CA(rMPTEMP);MP(rMPAC+1);(void)TS(rMPAC+1);XCH(rL);vshr2();}
@@ -1089,14 +1096,14 @@ static NI void vssl(void){
  }
  danzig();
 }
-static NI void lmi_short_dispatch(void){
+static void lmi_short_dispatch(void){
  /* OPJUMP2 CCS CYR (+); OPJUMP3 TS FBANK; CCS CYR (-); CCS MODE: SHORTT
   * for a scalar, SHORTV for a vector. */
  uint8_t c;
  (void)CCS(rCYR);(void)TS(rFB);(void)CCS(rCYR);c=CCS(rMODE);
  W[5]=c==2u?02121:02017;
 }
-static NI void lmi_shortt(void){
+static void lmi_shortt(void){
  uint8_t c;
  CAF(6u);MASK(rCYR);(void)TS(rSR);c=CCS(rCYR);
  if(c==0u){
@@ -1122,7 +1129,7 @@ static NI void setround(void){
  DOUBLE();if(!TS(rMPAC+2))CAF(ZERO);XCH(rL);RETQ();
 }
 /* DOSSHFT and the GENSCR right shift (MPTEMP = count - 1). */
-static NI void dosshft(void){
+static void dosshft(void){
  CAF(bit14_indexed(rMPTEMP));(void)TS(rMPTEMP);CAF(BIT10);MASK(rADDRWD);
  if(CCS(rA)==0u)rightr();else mpacshr();
 }
@@ -1151,7 +1158,7 @@ static NI void genscr1(uint8_t at4){
   }
  }
 }
-static NI void genscr(void){CA(rMPTEMP);genscr1(0);}
+static void genscr(void){CA(rMPTEMP);genscr1(0);}
 static NI void vright2(void){
  uint8_t c;
  for(;;){
@@ -1287,13 +1294,13 @@ static NI void genddv(uint8_t plus1){
  if(!ai_bzf()&&ai_bzmf()){endmaxdv();return;}
  INCR(rMPAC);finaldv();
 }
-static NI void maxdv(void){
+static void maxdv(void){
  CS(rMPAC);AD(rBUF);
  if(!ai_bzf()){genddv(0);return;}
  CAF(POSMAX);(void)TS(rMPAC);CS(rBUF+1);AD(rMPAC+1);endmaxdv();
 }
 /* MAXTEST CCS MAXDVSW (-1, or +0 when the majors may be equal). */
-static NI void maxtest(void){
+static void maxtest(void){
  switch(CCS(rMAXDVSW)){
  case 1:maxdv();return;
  case 3:genddv(1);return;
@@ -1697,7 +1704,7 @@ static NI uint8_t lmi_bplbmn(void){
  if(c==3u){danzig();return 0;}
  TC(IF_(02500,02525));b=branch();if(b==2u){W[5]=IF_(06646,06615);return 1;}danzig();return 0;
 }
-static NI uint8_t lmi_bov(void){
+static uint8_t lmi_bov(void){
  uint8_t c=CCS(rOVFIND);
  if(c==1u){danzig();return LMI_BOV_NONE;}
  if(c!=3u)(void)TS(rOVFIND);
@@ -1713,7 +1720,7 @@ static NI void lmi_rtb(void){
  CA(rPOLISH);TC(IF_(02452,02477));INCR(rQ);(void)TS(rL);LXCH(rFB);MASKF(LOW10);XCH(rQ);DXCH(rBUF2);
  sub=W[rQ]&01777u;TC(IF_(04631,04675));W[5]=(agc_word)(02000u+sub);
 }
-static NI void lmi_swreturn(void){
+static void lmi_swreturn(void){
  /* SWRETURN XCH BUF2 +1; XCH FBANK; XCH BUF2 +1; TC BUF2 (the TC held
   * there, leaving Q = BUF2 +1, reaches RTB's TCF DANZIG). */
  XCH(rBUF2+1);XCH(rFB);XCH(rBUF2+1);ai_tc(rBUF2+1u);danzig();
@@ -1889,7 +1896,7 @@ static NI uint8_t lmi_round(void){
  TC(02117);roundsub(0);danzig();
  return 0;
 }
-static NI void lmi_ssp(agc_word word){
+static void lmi_ssp(agc_word word){
  /* SSP 06620: INCR LOC; INDEX LOC, CA 0 (the word given); STORE1 INDEX
   * ADDRWD, TS 0; TCF DANZIG. */
  INCR(rLOC);CAF(word);(void)TS(AT(W[rADDRWD]));danzig();
@@ -1928,7 +1935,7 @@ static NI uint8_t lmi_xchx(void){
  TC(IF_(02373,02420));adrers15();CA(AT(W[rPOLISH]));XCH(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig();
  return 0;
 }
-static NI void lmi_ita(void){
+static void lmi_ita(void){
  /* CALL/ITA CCS CYR (negative: ITA/STQ); TC 15ADRERS; INDEX FIXLOC,
   * CA QPRET; MSTORE1 INDEX POLISH, TS 0; TCF DANZIG. */
  (void)CCS(rCYR);TC(IF_(02513,02540));adrers15();CA(AT(W[rFIXLOC]+tQPRET));(void)TS(AT(W[rPOLISH]));danzig();
@@ -1941,7 +1948,7 @@ static NI uint8_t lmi_tix(void){
  if(ai_bzmf()){danzig();return 0;}
  XCH(AT(W[rINDEXLOC]+tX1));W[5]=IF_(06646,06615);return 1;
 }
-static NI uint8_t lmi_bhiz(void){
+static uint8_t lmi_bhiz(void){
  /* BHIZ 01,2452: CCS MPAC; + and - DANZIG, +0 and -0 GOTO 06646. */
  uint8_t c=CCS(rMPAC);
  if(c==1u||c==3u){W[5]=IF_(06646,06615);return 1;}
@@ -1977,7 +1984,7 @@ static NI void lmi_goto_any(void){
  * TS FBANK; MASK LOW10; INDEX A, CA 10000; TS POLISH; TCF GOTO +1, to the
  * target's NEWOPS. 0, with the image unchanged, when the modifier selects
  * a word outside the list. */
-static NI void lmi_15bitadr(agc_word word,agc_word target){
+static void lmi_15bitadr(agc_word word,agc_word target){
  /* 15BITADR 06252 (from STCALL's STOTC): INCR LOC; INDEX LOC, CA 0;
   * TS POLISH; CAF LOW7+2K; TS FBANK; MASK CYR; INDEX A, TCF MISCJUMP. */
  INCR(rLOC);CAF(word);(void)TS(rPOLISH);CAF(02177u);(void)TS(rFB);MASK(rCYR);W[5]=target;
@@ -1991,13 +1998,13 @@ static NI uint8_t lmi_bzegoto(void){
  if(branch()==1u){W[5]=IF_(06646,06615);return 1;}
  danzig();return 0;
 }
-static NI void lmi_exit(void){
+static void lmi_exit(void){
  /* EXIT 06743: CA BANKSET; TS BBANK; INDEX LOC, TC 1 (to the basic code
   * after the order; Q = 06747). */
  unsigned loc;
  CA(rBANKSET);(void)TS(rBB);loc=W[rLOC];TC(IF_(06747,06716));W[5]=(agc_word)((loc+1u)&07777u);
 }
-static NI void lmi_intpret(void){
+static void lmi_intpret(void){
  /* TC INTPRET (Q = the word after the TC): RELINT; QXCH LOC; CA BBANK;
   * TS BANKSET; MASK BIT15; TS INTBIT15; TS EDOP; TCF NEWOPS. */
  io->interrupt_enabled=1;ai_qxch(rLOC);CA(rBB);(void)TS(rBANKSET);MASKF(BIT15);(void)TS(rINTBIT15);(void)TS(rEDOP);W[5]=IF_(06070,06037);
@@ -2071,7 +2078,7 @@ static NI void chang2(uint8_t bank)
 /* CGOTO 04 (ADDRWD names the modifier, the word after the operand the CADR
  * list): INDEX LOC, CA 1; INDEX ADDRWD, AD 0; TS FBANK; MASK LOW10; INDEX A,
  * CA 10000; TS POLISH; TCF GOTO +1. */
-static NI uint8_t cgoto(void)
+static uint8_t cgoto(void)
 {
     agc_word list, v;
     int i;
@@ -2107,21 +2114,14 @@ static NI uint8_t addr_body(uint8_t idx)
         lmi_ssp(cw); return MORE;
     }
     if (!addr_orders[idx]) return REFUSE;
-#ifdef XT_AT
-    if ((uintptr_t)addr_orders[idx] >= XT_AT) {
-        uint8_t m = *(volatile uint8_t *)1;
-        *(volatile uint8_t *)1 = 0x34;
-        addr_orders[idx]();
-        *(volatile uint8_t *)1 = m;
-        return MORE;
-    }
-#endif
+    XT_IN;
     addr_orders[idx]();
+    XT_OUT;
     return MORE;
 }
 
 /* Erasable branch word (a switch order's or GOTO's CADR in erasable). */
-static NI void swbranch(agc_word w)
+static void swbranch(agc_word w)
 {
     if (w & 074000u) { lmi_swbranch(w); return; }
     ai_ca(rBANKSET); (void)ai_ts(4); ai_caf(w); (void)ai_ts(rPOLISH); lmi_goto_any();
@@ -2188,16 +2188,12 @@ static NI uint8_t order(uint8_t c)
     }
     idx = (c >> 3) - 1u;
     lmi_unary(unajump[idx]);
-#ifdef XT_AT
-    if (idx < 014u && (uintptr_t)unary_orders[idx] >= XT_AT) {
-        uint8_t m = *(volatile uint8_t *)1, r;
-        *(volatile uint8_t *)1 = 0x34;
-        r = unary_orders[idx]();
-        *(volatile uint8_t *)1 = m;
-        return r ? DONE : MORE;
+    if (idx < 014u) {
+        XT_IN;
+        g = unary_orders[idx]();
+        XT_OUT;
+        return g ? DONE : MORE;
     }
-#endif
-    if (idx < 014u) return unary_orders[idx]() ? DONE : MORE;
     if (idx == 014u) {
         if (!code_word(1u)) return REFUSE;
         lmi_stadr(cw); return MORE;
@@ -2214,7 +2210,7 @@ static const agc_word points[] = {
 };
 enum { P_NEWOPS, P_DANZIG, P_NOIBNKSW, P_DODLOAD, P_DOVLOAD, P_DIRADRES, P_DODLOADX, P_DOVLOADX, P_B15BITADR,
        P_GOTO, P_SWRETURN, P_INTPRET, P_OUTSIDE };
-static NI uint8_t point(void)
+static uint8_t point(void)
 {
     uint8_t k;
     for (k = 0; k < P_OUTSIDE && points[k] != W[5]; ++k) {}
