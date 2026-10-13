@@ -100,6 +100,16 @@ interpreter:
 - Without it, the module is 3.7 KB over.
 - The flight store does not load it yet.
 
+`make vice-interp-core` runs the flight build on a PAL C64 in VICE
+(`tools/interp_core_vice_test.py`, `tools/interp_core_vice.c`):
+
+- The build has the resident's k_ ops and the extension, which is copied to
+  $D000 with I/O banked out.
+- The rope is in the REU at its flight address.
+- The CIA timer IRQ runs throughout, through a RAM vector that saves $01.
+- It runs 180 fuzz slot records per mission and checks each 6502 result
+  against the host's verification interpreter.
+
 `make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
 simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
 

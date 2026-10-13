@@ -15,6 +15,8 @@
 # built both ways: with its own image ops, and with the flight module's
 # INTERP_K_OPS (the resident's k_ ops; host stand-ins tools/interp_core_kops.c).
 # interp-core-cycles: 6502 cycles per order (build/interp-cycles/<m>.json).
+# vice-interp-core: the flight build (k_ ops, the $D000 extension) on a PAL
+# C64 in VICE, fuzz slot records checked against the host's, IRQs running.
 # The differentials and size need the listings, ropes and yaAGC objects, as
 # the compiled-routine differentials do; none gates `test` yet.
 INTERP_RUNTIME_CASES ?= 8
@@ -23,7 +25,7 @@ INTERP_CORE_FUZZ_SRC := tools/interp_core_fuzz.c src/lm_interp_runtime.c src/cm_
   src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c \
   src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c
 .PHONY: interp-runtime-check interp-runtime-differential interp-core-differential interp-runtime-size \
-  interp-core-fuzz interp-core-cycles
+  interp-core-fuzz interp-core-cycles vice-interp-core
 interp-runtime-check:
 	python3 tools/interp_runtime_generate.py --check
 interp-runtime-differential: interp-runtime-check build/agc_engine_hardware_dv.o | build
@@ -43,3 +45,6 @@ interp-core-fuzz: build/interp-core-fuzz build/interp-core-fuzz-kops build/fixed
 	build/interp-core-fuzz-kops build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin $(INTERP_CORE_FUZZ) 12
 interp-core-cycles: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
 	python3 tools/interp_core_cycles.py
+vice-interp-core: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
+	python3 tools/interp_core_vice_test.py lm
+	python3 tools/interp_core_vice_test.py cm
