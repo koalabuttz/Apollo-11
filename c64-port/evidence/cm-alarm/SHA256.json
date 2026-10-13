@@ -4,7 +4,7 @@
   "release": "evidence-cm-alarm",
   "files": {
     "cm-alarm-c64-cover.json": {
-      "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2",
+      "sha256": "9d4de410e18c558e84cb5f6c17279493bc175d1565c2d9b3192f1765bed82875",
       "bytes": 692,
       "store": "tree"
     },
@@ -14,17 +14,17 @@
       "store": "release"
     },
     "cm-alarm-host.log": {
-      "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1",
-      "bytes": 1172,
+      "sha256": "fc310419f0f1862e3e8fd2f88be32f28520df51dbc7dabba9e88fb5a30c84439",
+      "bytes": 1187,
       "store": "release"
     },
     "cm-alarm-proof.json": {
-      "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9",
+      "sha256": "ed4743a14c8bef59b057de58009525cdc724b5fc065fd8c6996b81ff88857463",
       "bytes": 625,
       "store": "tree"
     },
     "cm-alarm-vice.log": {
-      "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+      "sha256": "94649da4aac0caba9b56572c88c2b093c28daf25b806a963f2944e697af92644",
       "bytes": 142,
       "store": "release"
     }

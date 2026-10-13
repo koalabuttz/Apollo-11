@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -311,7 +311,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "entries from their 62 compiled TC sites (ALARM, ALARM2, BAILOUT = ABORT, POODOO), CCSHOLE/CURTAINS/VARALARM/PRIOLARM as their callers enter them with a positive alarm code in A where one is passed, the MULTEXIT, BANKCALL (VAC5STOR, MR.KLEAN) and DOWNFLAG return points (BAILOUT's and POODOO's VAC5STOR returns with ALMCADR at a compiled site), and ALMCADR holding a return address 2000-7777; cm_native_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK FLAGWRD7 and MULTEXIT words other than TC/TCF refuse)",
+        "supported_domain": "entries from their 62 compiled TC sites (ALARM, ALARM2, BAILOUT = ABORT, POODOO), CCSHOLE/CURTAINS/VARALARM/PRIOLARM as their callers enter them with a positive alarm code in A where one is passed, the MULTEXIT, BANKCALL (VAC5STOR, MR.KLEAN) and DOWNFLAG return points (BAILOUT's and POODOO's VAC5STOR returns with ALMCADR at a compiled site), and ALMCADR holding a return address 2000-7777; cm_native_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK FLAGWRD7 and MULTEXIT words other than TC/TCF refuse, as does a return address in Q or ALMCADR that is erasable)",
         "external_continuations": [
           "callers' returns",
           "PRIODSPR (PINBALL)",
@@ -321,19 +321,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-ALARM.md",
-            "sha256": "d6a10b9acd40756961c6d77d1c5c46c3c505ed7d6e4a68e5bb5614450147d365"
+            "sha256": "aa25aa3ab24ef42ab8ca4f83ff4226ca445ad2e117c873b69bd62fbfc15af462"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-alarm/cm-alarm-proof.json",
-            "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9"
+            "sha256": "ed4743a14c8bef59b057de58009525cdc724b5fc065fd8c6996b81ff88857463"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-alarm/cm-alarm-host.log",
-            "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1"
+            "sha256": "fc310419f0f1862e3e8fd2f88be32f28520df51dbc7dabba9e88fb5a30c84439"
           },
           "c64_execution_results": {
             "path": "evidence/cm-alarm/cm-alarm-vice.log",
-            "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+            "sha256": "94649da4aac0caba9b56572c88c2b093c28daf25b806a963f2944e697af92644",
             "vice_targets": {
               "vice-cm-alarm": 256
             }
@@ -344,7 +344,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-alarm/cm-alarm-c64-cover.json",
-            "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2"
+            "sha256": "9d4de410e18c558e84cb5f6c17279493bc175d1565c2d9b3192f1765bed82875"
           }
         }
       }
@@ -2702,7 +2702,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 = 6 (LSTIME's SSP S1 6D, the TIX step) and PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 any value up to LSTIME's SSP S1 6D and 6 (the TIX step it sets) from its GOTO X1 at 26,2141 on; PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
         "external_continuations": [
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
           "The caller's return through Q (TC Q runs the TC word held in Q)",
@@ -2716,7 +2716,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
-            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
+            "sha256": "e21c4214c7dbe48802816a130177ba9cd0f1c0e2df9d810b58d21c7a8355de2d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-host.log",
@@ -2724,14 +2724,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-vice.log",
-            "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+            "sha256": "69d6818b524d4672db8a688ba05a5386498aa589fa507f57f74ab4854f791303",
             "vice_targets": {
-              "vice-cm-ephemeris": 39
+              "vice-cm-ephemeris": 38
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
-            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
+            "sha256": "e21c4214c7dbe48802816a130177ba9cd0f1c0e2df9d810b58d21c7a8355de2d"
           }
         }
       },
@@ -5772,7 +5772,7 @@
       "sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
       "bytes": 14011,
       "lines": 556,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5856,7 +5856,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5897,6 +5897,10 @@
               "vice-rupt-lead-ins": 195,
               "vice-waitlist-entries": 379
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-270.md",
+            "sha256": "799cd4de9bc709e51e9546b6565a205ab30ba96e5de833cad986a41846aa20d6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
@@ -6505,6 +6509,7 @@
           "native_files": [
             "src/lm_dapidler.c",
             "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
@@ -6538,7 +6543,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-dapidler/lm-dapidler-vice.log",
-            "sha256": "e500c4a4cd5a3ba03da15903fd802863ae501bdd25e556699f8a4cf7cf65d2f8",
+            "sha256": "742112fd70f39c7458e070ad487fa3bc327c71132d8b2c520f32f11e1f65048f",
             "vice_targets": {
               "vice-lm-dapidler": 192
             }
@@ -6549,7 +6554,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
-            "sha256": "ff4220c3393fc909a6f849b3aed9b9fc9306a6044828a4162f68fdcf2f2d5e6b"
+            "sha256": "aeac8edc51adbf2d31cd3c4d73b942f109e4eda403c0875991cad4ea009a67c2"
           }
         }
       }
@@ -9164,6 +9169,7 @@
             "src/lm_p_axis.c",
             "src/lm_p_axis_sites.inc",
             "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -9195,7 +9201,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p-axis/lm-p-axis-source-map.json",
-            "sha256": "e7c5433a0749036ec7f19885e5954c19fd59bc2d0ddf149049b4fa7f96cfc2e4"
+            "sha256": "ffd6a8a957939649729a0b8447972369fa58512f733e7ad386b5c1424e7ae6f6"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p-axis/lm-p-axis-proof.json",
@@ -9207,14 +9213,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p-axis/lm-p-axis-vice.log",
-            "sha256": "3caac587333046134f9dacdded2732a78eb4ed5a91740071ae1cbc7e63d1a6a0",
+            "sha256": "5031246e80d70a4ab8118d450059fffa8bd04c4745db010586cf5e26eccb1c77",
             "vice_targets": {
               "vice-lm-p-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p-axis/lm-p-axis-c64-cover.json",
-            "sha256": "2991e772fc04a5d956d08e97c8d816585fcf1fdf8b8c9c532826f8c90d76252f"
+            "sha256": "fe0f9f97eba973a2b817a2663c29050aa949f9cb0dafcc70eeb8e324666e57d2"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-233.md",
@@ -10233,6 +10239,7 @@
             "src/lm_q_r_axis.c",
             "src/lm_q_r_axis_sites.inc",
             "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -10274,14 +10281,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-vice.log",
-            "sha256": "9e7b5868e50537027d39c16055361f3748200329587322b90089c68270510112",
+            "sha256": "af3a77adcb114aa6ece3886f8885c0c2fce30f48165cd71ac240d19ecdf27de7",
             "vice_targets": {
               "vice-lm-q-r-axis": 128
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-q-r-axis/lm-q-r-axis-c64-cover.json",
-            "sha256": "43f6e6df9cf03c99d323239e08d5872d6455e57ae3e2585a33dc951c86807aea"
+            "sha256": "a6af9d273b69b3bc3eb1282a3eacc1d118bf3c84586a809afbb7a08d567abedf"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-236.md",
@@ -11785,6 +11792,7 @@
           "native_files": [
             "src/lm_tjet_law.c",
             "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
@@ -11807,7 +11815,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-source-map.json",
-            "sha256": "5c1903ab0b5b92e7438360f5898fad5078cc0804e9c8b79dc089286abdd1a6f7"
+            "sha256": "829b713e714fba142759a9f71ec1ac122efeece4ee1cbbcc7919b5f20977a23c"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-proof.json",
@@ -11819,14 +11827,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-vice.log",
-            "sha256": "44a6ec0c8bed7f8b4db4726855853788d694f5d63c836ed865437a08437cd97d",
+            "sha256": "10562ac0b716dda60b24a969890c66742a087b159f12446b4daa243a5ad28944",
             "vice_targets": {
               "vice-lm-tjet-law": 256
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-tjet-law/lm-tjet-law-c64-cover.json",
-            "sha256": "e176cad7e26e8392c894ff8739688e26fbdd9a8296421968c719ca3b24b91439"
+            "sha256": "c682c508ea2c5c68e32bbaf6eaad31526b29d4dab2d0499613acab7c6116ccf4"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-236.md",
@@ -11963,7 +11971,7 @@
       "sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
       "bytes": 14816,
       "lines": 564,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded WAITLIST admission/T3 task transfer/completion; complete timed wrappers/LONGCALL/live producer integration remain incomplete.",
@@ -12083,7 +12091,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12125,6 +12133,10 @@
               "vice-waitlist-entries": 379,
               "vice-lm-t6rupt": 244
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-270.md",
+            "sha256": "799cd4de9bc709e51e9546b6565a205ab30ba96e5de833cad986a41846aa20d6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
