@@ -6,7 +6,9 @@ const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
 uint8_t irc_ch_on;
 #if IRC_IO && !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
-/* (cm_channels: src/cm_interp_orders.c, which LM-only C64 builds leave out.) */
+/* (cm_channels: src/cm_interp_orders.c, which LM-only C64 builds leave out;
+ * LM host tests link no CM code, so they take this weak copy.) */
+__attribute__((weak)) cm_native_channels cm_channels;
 void irc_cm_io(void *cm_io,unsigned save){cm_native_io *io=(cm_native_io *)cm_io;
  agc_word *f[IRC_NCH];unsigned i;
  f[0]=&cm_channels.channel05;f[1]=&cm_channels.channel06;f[2]=&io->channel11;f[3]=&io->channel12;f[4]=&io->channel13;
