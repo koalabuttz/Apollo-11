@@ -40,6 +40,12 @@ Hashes: `evidence/lanec-pw/SHA256.json`.
   differing.
 - Host and sanitizer results: `make test-lanec-pw sanitize-lanec-pw`
   (`lanec-pw-sanitize.txt`).
-- C64 execution: the modules' own milestones run them on a VICE PAL C64;
-  the decimal display also runs through the transfer ABI on the C64
+- C64 execution: `make vice-lanec-pw` builds one program per suite with
+  the frozen rows `tools/lanec/cover.py pick` chose to take every host
+  branch arc (`tests/lanec_pw_*_c64.h`) and runs them on a VICE PAL C64:
+  85 programs, 917 checks, zero failures (`lanec-pw-vice.txt`). Seven
+  suites' modules do not fit a program with the harness below $C000
+  (`LANEC_PW_C64_TOO_BIG` in `tools/mk/lanec-pw.mk`); their modules run on
+  the C64 in their own milestones' programs (`vice-legacy-*`). Every
+  module also runs through the transfer ABI on the C64
   (`lanec-pin-transfer`).

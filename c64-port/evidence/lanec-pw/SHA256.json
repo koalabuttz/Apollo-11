@@ -12,6 +12,11 @@
       "sha256": "39e16addf192c98215d3bea7bb8d015b0693363bd6976f63b8b71e8c0d0787af",
       "bytes": 31868,
       "store": "tree"
+    },
+    "lanec-pw-vice.txt": {
+      "sha256": "988d8ed011a39c04d86cd8840094582df74af81d97b4e2903cbaf21c2bc9e462",
+      "bytes": 5428,
+      "store": "tree"
     }
   }
 }
