@@ -19,6 +19,7 @@ static agc_word *ic_image;
 #define W ic_image
 #endif
 static p66_bias_io *io;
+static NI const agc_word *kop(void);
 
 typedef apollo_overlay_state agc_image;
 static NI unsigned ai_ea(unsigned address);
@@ -120,7 +121,7 @@ static NI void lmi_indexed(agc_word operand, agc_word target);
 static NI void lmi_misc(agc_word operand, agc_word target);
 static NI void lmi_unary(agc_word target);
 static NI void lmi_sload(void);
-static NI void lmi_setpd(const agc_word *);
+static NI void lmi_setpd(void);
 static NI uint8_t lmi_vdef(void);
 static NI uint8_t lmi_axt(void);
 static NI uint8_t lmi_incr(void);
@@ -135,30 +136,30 @@ static NI void lmi_store_code(agc_word code);
 static NI void lmi_stadr(agc_word word);
 static NI void lmi_dodload(void);
 static NI void lmi_dovload(void);
-static NI void lmi_dload_op(const agc_word *k);
-static NI void lmi_vload(const agc_word *k);
-static NI void lmi_pdvl(const agc_word *k);
-static NI void lmi_pddl_op(const agc_word *k);
+static NI void lmi_dload_op(void);
+static NI void lmi_vload(void);
+static NI void lmi_pdvl(void);
+static NI void lmi_pddl_op(void);
 static NI uint8_t lmi_push(void);
-static NI void lmi_dad(const agc_word *k);
-static NI void lmi_dsu(const agc_word *k);
-static NI void lmi_bdsu(const agc_word *k);
-static NI void lmi_dmp(const agc_word *k);
-static NI void lmi_dmpr(const agc_word *k);
+static NI void lmi_dad(void);
+static NI void lmi_dsu(void);
+static NI void lmi_bdsu(void);
+static NI void lmi_dmp(void);
+static NI void lmi_dmpr(void);
 static NI void lmi_short_dispatch(void);
 static NI void lmi_shortt(void);
 static NI void lmi_shortv(void);
-static NI void lmi_gshift(const agc_word *);
+static NI void lmi_gshift(void);
 static NI void lmi_genshift(void);
-static NI void lmi_tslc(const agc_word *);
+static NI void lmi_tslc(void);
 static NI uint8_t lmi_comp(void);
-static NI void lmi_sign(const agc_word *k);
+static NI void lmi_sign(void);
 static NI void lmi_abs(void);
 static NI uint8_t lmi_dsq(void);
 static NI uint8_t lmi_vsq(void);
-static NI void lmi_dot(const agc_word *k);
-static NI void lmi_ddv(const agc_word *k);
-static NI void lmi_bddv(const agc_word *k);
+static NI void lmi_dot(void);
+static NI void lmi_ddv(void);
+static NI void lmi_bddv(void);
 static NI uint8_t lmi_sqrt(void);
 static NI uint8_t lmi_sin(void);
 static NI uint8_t lmi_cos(void);
@@ -166,22 +167,22 @@ static NI uint8_t lmi_acos(void);
 static NI uint8_t lmi_asin(void);
 static NI uint8_t lmi_abvalabs(void);
 static NI uint8_t lmi_unit(void);
-static NI void lmi_vxsc(const agc_word *k);
-static NI void lmi_vxv(const agc_word *k);
-static NI void lmi_mxv(const agc_word *k);
-static NI void lmi_vxm(const agc_word *k);
-static NI void lmi_vproj(const agc_word *k);
-static NI void lmi_vsc(const agc_word *k);
+static NI void lmi_vxsc(void);
+static NI void lmi_vxv(void);
+static NI void lmi_mxv(void);
+static NI void lmi_vxm(void);
+static NI void lmi_vproj(void);
+static NI void lmi_vsc(void);
 enum {LMI_BOV_NONE,LMI_BOV_GOTO,LMI_BOV_RTB,LMI_BOV_OUT_OF_SCOPE};
 static NI uint8_t lmi_bplbmn(void);
 static NI uint8_t lmi_bov(void);
 static NI void lmi_rtb(void);
 static NI void lmi_swreturn(void);
 static NI void lmi_poly(const agc_word *table);
-static NI void lmi_vad(const agc_word *k);
-static NI void lmi_vsu(const agc_word *k);
-static NI void lmi_bvsu(const agc_word *k);
-static NI void lmi_tad(const agc_word *k);
+static NI void lmi_vad(void);
+static NI void lmi_vsu(void);
+static NI void lmi_bvsu(void);
+static NI void lmi_tad(void);
 static NI uint8_t lmi_round(void);
 static NI void lmi_ssp(agc_word word);
 static NI uint8_t lmi_xad(void);
@@ -199,8 +200,8 @@ static NI void lmi_goto_any(void);
 static NI void lmi_15bitadr(agc_word word, agc_word target);
 static NI uint8_t lmi_bzegoto(void);
 static NI void lmi_tload(void);
-static NI void lmi_tload_fixed(const agc_word *k);
-static NI void lmi_sload_fixed(const agc_word *k);
+static NI void lmi_tload_fixed(void);
+static NI void lmi_sload_fixed(void);
 static NI void lmi_exit(void);
 static NI void lmi_intpret(void);
 
@@ -587,7 +588,7 @@ static NI void lmi_sload(void){
  /* SLOAD ZL; INDEX ADDRWD, CA 0; TCF SLOAD2. */
  W[1]=0;ai_ca(W[0116]);ai_dxch(0154);ai_caf(0);(void)ai_ts(0156);(void)ai_ts(0163);danzig_entry();
 }
-static NI void lmi_setpd(const agc_word *k){(void)k;
+static NI void lmi_setpd(void){
  /* SETPD CA ADDRWD; TS PUSHLOC; TCF NOIBNKSW (DANZIG without BBANK). */
  ai_ca(0116);(void)ai_ts(0166);W[5]=IF_(06063,06032);
 }
@@ -759,7 +760,7 @@ static NI void dxch2_b(uint8_t a,uint8_t b){ai_dxch_b(a);ai_dxch_b(b);}
 static NI void danzig(void){W[5]=IF_(06061,06030);}
 
 /* Operand pair at C(ADDRWD)+off: live erasable, or the caller's fixed data. */
-static NI void dca_op(const agc_word *k,unsigned off){
+static NI void dca_op(unsigned off){const agc_word *k=kop();
  if(k)ai_dcaf(k+off);else DCA(AT(W[rADDRWD]+off));
 }
 /* NO.WDS/REVCNT region 06241-06247 as INDEX MODE/A select it. */
@@ -866,28 +867,28 @@ static NI void lmi_dovload(void){CAF(VLOADCOD);(void)TS(rCYR);W[5]=IF_(06106,060
 /* NEWMODE (TS MODE) and VMODE. */
 static NI void newmode(void){(void)TS(rMODE);danzig();}
 static NI void vmode(void){CSF(ONE);newmode();}
-static NI void lmi_dload_op(const agc_word *k){
- dca_op(k,0);DXCH(rMPAC);CAF(ZERO);(void)TS(rMPAC+2);newmode();
+static NI void lmi_dload_op(void){
+ dca_op(0);DXCH(rMPAC);CAF(ZERO);(void)TS(rMPAC+2);newmode();
 }
-static NI void endvload4(const agc_word *k){dca_op(k,4);DXCH(rMPAC+5);vmode();}
-static NI void endvload(const agc_word *k){dca_op(k,2);DXCH(rMPAC+3);endvload4(k);}
-static NI void lmi_vload(const agc_word *k){
- dca_op(k,0);DXCH(rMPAC);endvload(k);
+static NI void endvload4(void){dca_op(4);DXCH(rMPAC+5);vmode();}
+static NI void endvload(void){dca_op(2);DXCH(rMPAC+3);endvload4();}
+static NI void lmi_vload(void){
+ dca_op(0);DXCH(rMPAC);endvload();
 }
-static NI void lmi_pdvl(const agc_word *k){
+static NI void lmi_pdvl(void){
  uint8_t c;
- dca_op(k,0);DXCH(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
+ dca_op(0);DXCH(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
  if(c==0u){
   /* TPDVL */
-  dca_op(k,2);DXCH(rMPAC+3);CA(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));endvload4(k);return;
+  dca_op(2);DXCH(rMPAC+3);CA(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));endvload4();return;
  }
- if(c==1u){endvload(k);return;}
+ if(c==1u){endvload();return;}
  /* VPDVL */
- dca_op(k,2);DXCH(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));dca_op(k,4);DXCH(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));danzig();
+ dca_op(2);DXCH(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));dca_op(4);DXCH(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));danzig();
 }
-static NI void lmi_pddl_op(const agc_word *k){
+static NI void lmi_pddl_op(void){
  uint8_t c;
- dca_op(k,0);DXCH(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
+ dca_op(0);DXCH(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
  if(c==0u){(void)TS(rMODE);XCH(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));}
  else if(c==1u)(void)TS(rMPAC+2);
  else{(void)TS(rMODE);(void)TS(rMPAC+2);DXCH(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DXCH(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));}
@@ -957,13 +958,13 @@ static NI void endvxv(void){
  if(!ai_bzf()){TC(IF_(07004,06753));(void)overflow();}
  danzig();
 }
-static NI void lmi_dad(const agc_word *k){dca_op(k,0);endvxv();}
-static NI void lmi_dsu(const agc_word *k){
+static NI void lmi_dad(void){dca_op(0);endvxv();}
+static NI void lmi_dsu(void){const agc_word *k=kop();
  if(k)ai_dcsf(k);else DCS(W[rADDRWD]);
  endvxv();
 }
-static NI void lmi_bdsu(const agc_word *k){
- dca_op(k,0);DXCH(rMPAC);ai_dcom();endvxv();
+static NI void lmi_bdsu(void){
+ dca_op(0);DXCH(rMPAC);ai_dcom();endvxv();
 }
 /* VROUND/ROUNDSUB 07136-07153. `entry` 0 ROUNDSUB, 1 ROUNDSUB +1, 2 VROUND. */
 static NI void roundsub(uint8_t entry){
@@ -977,8 +978,8 @@ static NI void roundsub(uint8_t entry){
  if(!TS(rMPAC)){RETQ();return;}
  (void)TS(rOVFIND);RETQ();
 }
-/* DMPSUB 07107 with the operand pair at C(ADDRWD) (or fixed `k`). */
-static NI void dmpsub(const agc_word *k){
+/* DMPSUB 07107 with the operand pair at C(ADDRWD) (fixed: kop()). */
+static NI void dmpsub(void){const agc_word *k=kop();
  if(k)CAF(k[1]);else CA(AT(W[rADDRWD]+1u));
  (void)TS(rMPAC+2);CAF(ZERO);XCH(rMPAC+1);(void)TS(rMPTEMP);
  MP(rMPAC+2);XCH(rMPAC+2);MP(rMPAC);DAS(rMPAC+1);
@@ -986,9 +987,9 @@ static NI void dmpsub(const agc_word *k){
  XCH(rMPTEMP);
  MP(rMPTEMP);DAS(rMPAC+1);XCH(rMPAC);MP(rMPTEMP);DAS(rMPAC);RETQ();
 }
-static NI void lmi_dmp(const agc_word *k){TC(IF_(07573,07542));dmpsub(k);danzig();}
-static NI void lmi_dmpr(const agc_word *k){
- TC(IF_(07575,07544));dmpsub(k);TC(IF_(07576,07545));roundsub(1);danzig();
+static NI void lmi_dmp(void){TC(IF_(07573,07542));dmpsub();danzig();}
+static NI void lmi_dmpr(void){
+ TC(IF_(07575,07544));dmpsub();TC(IF_(07576,07545));roundsub(1);danzig();
 }
 /* TPAGREE 07257 (Q = return); returns via TC L. */
 static NI void tpagree(void){
@@ -1165,9 +1166,9 @@ static NI void lmi_genshift(void){
  }
 }
 /* GSHIFT CAF LOW7; TS FBANK; TCF GENSHIFT. */
-static NI void lmi_gshift(const agc_word *k){(void)k;CAF(LOW7);(void)TS(rFB);lmi_genshift();}
+static NI void lmi_gshift(void){CAF(LOW7);(void)TS(rFB);lmi_genshift();}
 /* TSLC CAF ZERO; TS FBANK; TSLC2 ... ENDTSLC CS MPTEMP; STORE1. */
-static NI void lmi_tslc(const agc_word *k){(void)k;
+static NI void lmi_tslc(void){
  uint8_t c;
  CAF(ZERO);(void)TS(rFB);(void)TS(rMPTEMP);TC(02174);c=branch();
  if(c!=1u){
@@ -1189,7 +1190,7 @@ static NI void comp(void){
  DCS(rMPAC+3);DXCH(rMPAC+3);DCS(rMPAC+5);DXCH(rMPAC+5);danzig();
 }
 static NI uint8_t lmi_comp(void){comp();return 0;}
-static NI void lmi_sign(const agc_word *k){
+static NI void lmi_sign(void){const agc_word *k=kop();
  uint8_t c=k?ai_ccsf(k[0]):CCS(W[rADDRWD]);
  if(c==0u){danzig();return;}
  if(c==2u){comp();return;}
@@ -1220,20 +1221,19 @@ static NI void vsqsub(void){
 /* DMODE CAF ZERO; TCF NEWMODE. */
 static NI void dmode(void){CAF(ZERO);newmode();}
 static NI uint8_t lmi_vsq(void){TC(03246);vsqsub();dmode();return 0;}
-/* DOTSUB 07156 (DOTINC set) with the vector operand at C(ADDRWD) or `k`. */
-static NI void dotsub(const agc_word *k){
- unsigned base=W[rADDRWD];
+/* DOTSUB 07156 (DOTINC set) with the vector operand at C(ADDRWD) (fixed: kop()). */
+static NI void dotsub(void){
  ai_qxch(rDOTRET);
- TC(IF_(07161,07130));dmpsub(k);DXCH2(rMPAC+3,rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
+ TC(IF_(07161,07130));dmpsub();DXCH2(rMPAC+3,rMPAC);DXCH(rBUF);CA(rMPAC+2);(void)TS(rBUF+2);
  CA(rDOTINC);ADS(rADDRWD);
- TC(IF_(07171,07140));dmpsub(k?k+(W[rADDRWD]-base):0);DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
+ TC(IF_(07171,07140));dmpsub();DXCH(rMPAC+1);DAS(rBUF+1);AD(rMPAC);AD(rBUF);
  if(TS(rBUF))(void)TS(rOVFIND);
  DXCH2(rMPAC+5,rMPAC);CA(rDOTINC);ADS(rADDRWD);
- TC(IF_(07205,07154));dmpsub(k?k+(W[rADDRWD]-base):0);enddot();
+ TC(IF_(07205,07154));dmpsub();enddot();
 }
-static NI void lmi_dot(const agc_word *k){
+static NI void lmi_dot(void){
  /* DOT TC PREDOT (CAF TWO; TS DOTINC; DOTSUB); DMODE. */
- TC(IF_(07332,07301));CAF(TWO);(void)TS(rDOTINC);dotsub(k);dmode();
+ TC(IF_(07332,07301));CAF(TWO);(void)TS(rDOTINC);dotsub();dmode();
 }
 
 /* ---- Division (bank 0) ------------------------------------------------ */
@@ -1356,8 +1356,8 @@ bufneg:
 }
 /* DDV/BDDV prologue tail BDDV +4: DXCH BUF; CAF ZERO; TS FBANK. */
 static NI void bddv4(void){DXCH(rBUF);CAF(ZERO);(void)TS(rFB);ddv_bddv();}
-static NI void lmi_ddv(const agc_word *k){dca_op(k,0);bddv4();}
-static NI void lmi_bddv(const agc_word *k){dca_op(k,0);DXCH(rMPAC);bddv4();}
+static NI void lmi_ddv(void){dca_op(0);bddv4();}
+static NI void lmi_bddv(void){dca_op(0);DXCH(rMPAC);bddv4();}
 
 /* ---- Square root and length (bank 0) ---------------------------------- */
 #define SLOPEHI 022650u
@@ -1562,28 +1562,27 @@ large2:
 }
 
 /* ---- Vector times scalar and cross product (bank 3) ------------------- */
-static const agc_word *kat(const agc_word *k,unsigned i){return k?k+i:0;}
 /* DVXSC 07430 (Comanche 07377): scalar in MPAC, vector operand at C(ADDRWD), to DANZIG. */
-static NI void dvxsc(const agc_word *k){
- DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub(k);TC(IF_(07435,07404));roundsub(2);
- CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH2(rMPAC,rMPAC+5);TC(IF_(07444,07413));dmpsub(kat(k,2));TC(IF_(07445,07414));roundsub(2);
- CAF(TWO);ADS(rADDRWD);DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub(kat(k,4));TC(IF_(07454,07423));roundsub(2);
+static NI void dvxsc(void){
+ DCA(rMPAC);DXCH(rMPAC+3);TC(IF_(07434,07403));dmpsub();TC(IF_(07435,07404));roundsub(2);
+ CAF(TWO);ADS(rADDRWD);DCA(rMPAC+3);DXCH2(rMPAC,rMPAC+5);TC(IF_(07444,07413));dmpsub();TC(IF_(07445,07414));roundsub(2);
+ CAF(TWO);ADS(rADDRWD);DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07453,07422));dmpsub();TC(IF_(07454,07423));roundsub(2);
  DXCH2(rMPAC,rMPAC+5);DXCH(rMPAC);vmode();
 }
-static NI void lmi_vxsc(const agc_word *k){
+static NI void lmi_vxsc(void){
  uint8_t c=CCS(rMODE);
- if(c<2u){dvxsc(k);return;}
+ if(c<2u){dvxsc();return;}
  /* VVXSC (-0 enters at its TC VROUND). */
- if(c==2u){TC(IF_(07405,07354));dmpsub(k);}
+ if(c==2u){TC(IF_(07405,07354));dmpsub();}
  TC(IF_(07406,07355));roundsub(2);
- DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07412,07361));dmpsub(k);TC(IF_(07413,07362));roundsub(2);
- DXCH2(rMPAC+5,rMPAC);DXCH(rMPAC+5);TC(IF_(07417,07366));dmpsub(k);TC(IF_(07420,07367));roundsub(2);
+ DXCH2(rMPAC+3,rMPAC);DXCH(rMPAC+3);TC(IF_(07412,07361));dmpsub();TC(IF_(07413,07362));roundsub(2);
+ DXCH2(rMPAC+5,rMPAC);DXCH(rMPAC+5);TC(IF_(07417,07366));dmpsub();TC(IF_(07420,07367));roundsub(2);
  vrotatex();
 }
 /* VPROJ 07425 (Comanche 07374): TC PREDOT (DOTINC 2, DOTSUB); CS FOUR; ADS ADDRWD back to
  * the operand; DVXSC. */
-static NI void lmi_vproj(const agc_word *k){
- TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub(k);CSF(FOUR);ADS(rADDRWD);dvxsc(k);
+static NI void lmi_vproj(void){
+ TC(IF_(07426,07375));CAF(TWO);(void)TS(rDOTINC);dotsub();CSF(FOUR);ADS(rADDRWD);dvxsc();
 }
 /* V/SC2 02654 (vector in MPAC, scalar in BUF) to DANZIG. */
 static NI void vsc2(void){
@@ -1622,47 +1621,46 @@ bufplus:
 }
 /* V/SC 07624: VV/SC (vector mode, scalar operand) or DV/SC (scalar mode,
  * vector operand; mode becomes vector), V/SC1 DXCH BUF; FBANK 0; V/SC2. */
-static NI void lmi_vsc(const agc_word *k){
+static NI void lmi_vsc(void){
  if(CCS(rMODE)<2u){
-  dca_op(k,2);DXCH(rMPAC+3);dca_op(k,4);DXCH(rMPAC+5);
-  CSF(ONE);(void)TS(rMODE);dca_op(k,0);DXCH(rMPAC);
- }else dca_op(k,0);
+  dca_op(2);DXCH(rMPAC+3);dca_op(4);DXCH(rMPAC+5);
+  CSF(ONE);(void)TS(rMODE);dca_op(0);DXCH(rMPAC);
+ }else dca_op(0);
  DXCH(rBUF);CAF(ZERO);(void)TS(rFB);vsc2();
 }
-static NI void lmi_vxv(const agc_word *k){
- DCA(rMPAC+5);DXCH2(rMPAC,rVBUF);TC(IF_(07465,07434));dmpsub(k);
- DCS(rMPAC+3);DXCH2(rMPAC,rVBUF+2);TC(IF_(07472,07441));dmpsub(k);
+static NI void lmi_vxv(void){
+ DCA(rMPAC+5);DXCH2(rMPAC,rVBUF);TC(IF_(07465,07434));dmpsub();
+ DCS(rMPAC+3);DXCH2(rMPAC,rVBUF+2);TC(IF_(07472,07441));dmpsub();
  CAF(TWO);ADS(rADDRWD);
- DCS(rMPAC+5);DXCH2(rMPAC,rMPAC+5);TC(IF_(07501,07450));dmpsub(kat(k,2));
- DCA(rVBUF);DXCH2(rMPAC,rVBUF+4);TC(IF_(07506,07455));dmpsub(kat(k,2));
+ DCS(rMPAC+5);DXCH2(rMPAC,rMPAC+5);TC(IF_(07501,07450));dmpsub();
+ DCA(rVBUF);DXCH2(rMPAC,rVBUF+4);TC(IF_(07506,07455));dmpsub();
  CAF(TWO);ADS(rADDRWD);
  DCS(rVBUF);DXCH(rMPAC);DAS(rMPAC+5);
  if(!ai_bzf()){TC(IF_(07517,07466));overflwz();}
- TC(IF_(07520,07467));dmpsub(kat(k,4));
+ TC(IF_(07520,07467));dmpsub();
  DXCH2(rVBUF+2,rMPAC+3);DXCH(rMPAC);DAS(rMPAC+3);
  if(!ai_bzf()){TC(IF_(07527,07476));overflwy();}
- TC(IF_(07530,07477));dmpsub(kat(k,4));DXCH(rVBUF+4);endvxv();
+ TC(IF_(07530,07477));dmpsub();DXCH(rVBUF+4);endvxv();
 }
 
 /* VXM/MXV 07342 (Comanche 07311; DOTINC in A, MATINC set): three DOTSUBs of the MPAC vector
  * (saved in VBUF) with the rows (MXV) or columns (VXM) of the matrix at
- * C(ADDRWD) or `k` (18 words), result in MPAC, to DANZIG. */
-static NI void vxmmxv(const agc_word *k){
- unsigned base=W[rADDRWD];
+ * C(ADDRWD) (18 words; fixed ones in kw, kop()), result in MPAC, to DANZIG. */
+static NI void vxmmxv(void){
  (void)TS(rDOTINC);TC(IF_(07344,07313));mpacvbuf();
- TC(IF_(07345,07314));dotsub(k);
+ TC(IF_(07345,07314));dotsub();
  DCA(rVBUF);DXCH2(rMPAC,rBUF2);DCA(rVBUF+2);DXCH(rMPAC+3);DCA(rVBUF+4);DXCH(rMPAC+5);
  CA(rMATINC);ADS(rADDRWD);
- TC(IF_(07362,07331));dotsub(kat(k,(unsigned)(W[rADDRWD]-base)));
+ TC(IF_(07362,07331));dotsub();
  DXCH2(rVBUF,rMPAC);DXCH2(rVBUF+2,rMPAC+3);DXCH2(rVBUF+4,rMPAC+5);
  CA(rMATINC);ADS(rADDRWD);
- TC(IF_(07373,07342));dotsub(kat(k,(unsigned)(W[rADDRWD]-base)));
+ TC(IF_(07373,07342));dotsub();
  DXCH2(rBUF2,rMPAC);DXCH2(rMPAC+5,rVBUF+2);DXCH(rMPAC+3);danzig();
 }
 /* MXV 07334 (Comanche 07303) CAF TWO; TS MATINC; TCF VXM/MXV. */
-static NI void lmi_mxv(const agc_word *k){CAF(TWO);(void)TS(rMATINC);vxmmxv(k);}
+static NI void lmi_mxv(void){CAF(TWO);(void)TS(rMATINC);vxmmxv();}
 /* VXM 07337 (Comanche 07306) CS TEN; TS MATINC; CAF SIX; VXM/MXV. */
-static NI void lmi_vxm(const agc_word *k){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv(k);}
+static NI void lmi_vxm(void){CSF(TEN);(void)TS(rMATINC);CAF(SIX);vxmmxv();}
 
 /* ---- BOV(B), RTB and POLY ----------------------------------------------- */
 /* BPL/BMN 01,2474: CCS CYR; positive TCF BPL (TC BRANCH; + or zero GOTO),
@@ -1701,7 +1699,7 @@ static NI void lmi_poly(const agc_word *table){
  CAF(LVBUF);(void)TS(rADDRWD);
  ai_dcaf(table+(W[rPOLISH]-q)+3u);DXCH2(rMPAC,rVBUF);
  for(;;){
-  TC(IF_(07246,07215));dmpsub(0);ai_dcaf(table+(W[rPOLISH]-q)+1u);DAS(rMPAC);
+  TC(IF_(07246,07215));dmpsub();ai_dcaf(table+(W[rPOLISH]-q)+1u);DAS(rMPAC);
   if(CCS(rPOLYCNT)!=0u)break;
   (void)TS(rPOLYCNT);CSF(TWO);ADS(rPOLISH);
  }
@@ -1726,7 +1724,7 @@ static NI void sine(void){
  DCA(rMPAC);DXCH(rBUF2);TC(IF_(03557,03556));dsqsub();
  TC(IF_(03560,03557));lmi_poly(sin_poly);
  /* CAF LBUF2; TC DMPSUB -1; then shift left 2. */
- CAF(rBUF2);TC(IF_(03575,03574));(void)TS(rADDRWD);dmpsub(0);
+ CAF(rBUF2);TC(IF_(03575,03574));(void)TS(rADDRWD);dmpsub();
  for(i=0;i<2u;++i){DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);}
  danzig();
 }
@@ -1821,7 +1819,7 @@ static NI uint8_t arccos_body(uint8_t asin){
  DXCH2(rMPAC,rBUF2);DXCH(rMPAC);
  TC(IF_(03656,03655));lmi_poly(acos_poly);
  /* CAF LBUF2; TC DMPSUB -1 (TS ADDRWD); TC ESCAPE. */
- CAF(rBUF2);TC(IF_(03701,03700));(void)TS(rADDRWD);dmpsub(0);
+ CAF(rBUF2);TC(IF_(03701,03700));(void)TS(rADDRWD);dmpsub();
  escape(IF_(03702,03701));return 0;
 }
 static NI uint8_t lmi_acos(void){return arccos_body(0);}
@@ -1830,7 +1828,7 @@ static NI uint8_t lmi_asin(void){return arccos_body(1);}
 /* VSU 06747 / VAD 06751: ADS ADDRWD with BIT15 or PRIO30 turns the indexed
  * READs into DCS or DCA of the operand's +2, +4 and +0 words; ADDRWD keeps
  * the sum. Ends through ENDVXV at DANZIG. */
-static NI void vaddsub(const agc_word *k,uint8_t sub){
+static NI void vaddsub(uint8_t sub){const agc_word *k=kop();
  unsigned a=W[rADDRWD];unsigned i;static const unsigned off[3]={2u,4u,0u};
  if(sub)CAF(BIT15);else CAF(030000u);
  ADS(rADDRWD);
@@ -1843,19 +1841,19 @@ static NI void vaddsub(const agc_word *k,uint8_t sub){
  }
  endvxv();
 }
-static NI void lmi_vad(const agc_word *k){vaddsub(k,0);}
-static NI void lmi_vsu(const agc_word *k){vaddsub(k,1);}
-static NI void lmi_bvsu(const agc_word *k){
- dca_op(k,2);DXCH(rMPAC+3);ai_dcom();DAS(rMPAC+3);
+static NI void lmi_vad(void){vaddsub(0);}
+static NI void lmi_vsu(void){vaddsub(1);}
+static NI void lmi_bvsu(void){
+ dca_op(2);DXCH(rMPAC+3);ai_dcom();DAS(rMPAC+3);
  if(!ai_bzf()){TC(IF_(07050,07017));overflwy();}
- dca_op(k,4);DXCH(rMPAC+5);ai_dcom();DAS(rMPAC+5);
+ dca_op(4);DXCH(rMPAC+5);ai_dcom();DAS(rMPAC+5);
  if(!ai_bzf()){TC(IF_(07062,07031));overflwz();}
- dca_op(k,0);DXCH(rMPAC);ai_dcom();endvxv();
+ dca_op(0);DXCH(rMPAC);ai_dcom();endvxv();
 }
-static NI void lmi_tad(const agc_word *k){
+static NI void lmi_tad(void){const agc_word *k=kop();
  /* TAD 07071: DCA 1; DAS MPAC +1; AD 0; AD MPAC; TS MPAC (skip on
   * overflow to TCF SETOVF). */
- dca_op(k,1);DAS(rMPAC+1);
+ dca_op(1);DAS(rMPAC+1);
  if(k)ADF(k[0]);else AD(AT(W[rADDRWD]));
  AD(rMPAC);
  if(!TS(rMPAC)){danzig();return;}
@@ -1985,12 +1983,12 @@ static NI void lmi_tload(void){
  CA(AT(W[rADDRWD]+2u));(void)TS(rMPAC+2);DCA(AT(W[rADDRWD]));DXCH(rMPAC);CAF(ONE);newmode();
 }
 /* TLOAD with a fixed operand: the same path, the three words passed in k. */
-static NI void lmi_tload_fixed(const agc_word *k){
+static NI void lmi_tload_fixed(void){const agc_word *k=kop();
  CAF(k[2]);(void)TS(rMPAC+2);ai_dcaf(k);DXCH(rMPAC);CAF(ONE);newmode();
 }
 /* SLOAD with a fixed operand (Comanche P40-P47's SLOAD of a rope
  * constant): ZL; CA of the word passed in k; TCF SLOAD2. */
-static NI void lmi_sload_fixed(const agc_word *k){
+static NI void lmi_sload_fixed(void){const agc_word *k=kop();
  W[rL]=0;CAF(k[0]);DXCH(rMPAC);CAF(ZERO);(void)TS(rMPAC+2);newmode();
 }
 /* ---- runtime ---- */
@@ -2025,11 +2023,15 @@ static NI uint8_t code_word(uint8_t off)
  * reads as zero, which no order uses). Returns them, or 0 for an erasable
  * operand (the bodies then read C(ADDRWD) from the image). */
 static agc_word kw[18];
+static unsigned kaddr;
+static NI const agc_word *kop(void){unsigned a=W[rADDRWD]&077777u;return kaddr&&a>=02000u?kw+(a-kaddr):0;}
 static NI const agc_word *operand(unsigned n)
 {
     unsigned i, a = W[rADDRWD] & 077777u;
+    kaddr = 0;
     if (a < 02000u) return 0;
     for (i = 0; i < n; ++i) if (!rope(phys(a + i, W[4]), &kw[i])) kw[i] = 0;
+    kaddr = a;
     return kw;
 }
 
@@ -2062,9 +2064,9 @@ static NI uint8_t cgoto(void)
 /* The address orders (INDJUMP) after address formation, by table index;
  * 004 CGOTO and 011 SSP read a further code word, 015 CCALL (no program
  * uses it) and 035 (unassigned) refuse. */
-typedef void (*addr_order)(const agc_word *);
-static NI void tload_any(const agc_word *k) { if (k) lmi_tload_fixed(k); else lmi_tload(); }
-static NI void sload_any(const agc_word *k) { if (k) lmi_sload_fixed(k); else lmi_sload(); }
+typedef void (*addr_order)(void);
+static NI void tload_any(void) { if (kop()) lmi_tload_fixed(); else lmi_tload(); }
+static NI void sload_any(void) { if (kop()) lmi_sload_fixed(); else lmi_sload(); }
 static const addr_order addr_orders[32] = {
     lmi_vload, lmi_tad, lmi_sign, lmi_vxsc, 0, tload_any, lmi_dload_op, lmi_vsc,
     sload_any, 0, lmi_pddl_op, lmi_mxv, lmi_pdvl, 0, lmi_vxm, lmi_tslc,
@@ -2073,14 +2075,14 @@ static const addr_order addr_orders[32] = {
 };
 static NI uint8_t addr_body(uint8_t idx)
 {
-    const agc_word *k = operand(idx == 013u || idx == 016u ? 18u : 6u);
+    (void)operand(idx == 013u || idx == 016u ? 18u : 6u);
     if (idx == 004u) return cgoto();
     if (idx == 011u) {
         if (!code_word(1u)) return REFUSE;
         lmi_ssp(cw); return MORE;
     }
     if (!addr_orders[idx]) return REFUSE;
-    addr_orders[idx](k);
+    addr_orders[idx]();
     return MORE;
 }
 
@@ -2109,6 +2111,7 @@ static NI uint8_t order(uint8_t c)
 {
     uint8_t idx;
     uint8_t g;
+    kaddr = 0;
     if (c == 0u) { lmi_exit(); return DONE; }
     if (c & 1u) {
         idx = c >> 2;
