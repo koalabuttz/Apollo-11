@@ -4476,7 +4476,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "66a72d11652181f3e93581201a52afda09d8e1654e0df8a47a83257f2e6bef25"
+            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -4484,7 +4484,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01af11acd383ac3232ca2f700db5a2ba31de259d21cc6911f97eb9aebb78a8d2",
+            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
             "vice_targets": {
               "vice-rtb-op-codes": 144
             }
@@ -10798,7 +10798,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "66a72d11652181f3e93581201a52afda09d8e1654e0df8a47a83257f2e6bef25"
+            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -10806,7 +10806,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01af11acd383ac3232ca2f700db5a2ba31de259d21cc6911f97eb9aebb78a8d2",
+            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
             "vice_targets": {
               "vice-rtb-op-codes": 144
             }
