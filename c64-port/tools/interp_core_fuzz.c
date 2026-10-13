@@ -9,13 +9,21 @@
  *
  * The rope image here is this program's own (it defines apollo_rope_read), so
  * a bank of it can hold the generated program. A case stops at the first slot
- * the verification interpreter refuses, or when Z leaves the interpreter. */
+ * the verification interpreter refuses, or when Z leaves the interpreter.
+ *
+ * FUZZ_DUMP=<file> writes each slot that compared equal as a record for
+ * tools/interp_core_cycles.c (the image before it and the rope words it
+ * read); FUZZ_SINGLE=1 generates one order per word (no right orders), so a
+ * slot is one order. FUZZ_CASE=<n> starts at case n with a slot trace,
+ * FUZZ_SHOW=<n> shows n differences, FUZZ_SELF/FUZZ_CORE2 compare an
+ * interpreter with itself. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <sys/mman.h>
 #include "interp_runtime.h"
 #include "interp_runtime_tables.h"
 #include "rope_image.h"
@@ -23,12 +31,18 @@
 
 static agc_word rope[2][APOLLO_ROPE_WORDS];
 static uint8_t loaded[2];
+/* FUZZ_DUMP: the rope words the compact interpreter's slot reads. */
+static uint8_t recording;
+static unsigned nrec;
+static uint16_t recp[96], recw[96];
 bool apollo_rope_read(unsigned mission, uint16_t physical, agc_word *word)
 {
     if (mission > 1u || !loaded[mission] || physical >= APOLLO_ROPE_WORDS || !word) return false;
     *word = rope[mission][physical];
+    if (recording && nrec < 96u) { unsigned i; for (i = 0; i < nrec && recp[i] != physical; ++i) {} if (i == nrec) { recp[nrec] = physical; recw[nrec++] = *word; } }
     return true;
 }
+static void put16(FILE *f, unsigned v) { fputc((int)(v & 0xffu), f); fputc((int)((v >> 8) & 0xffu), f); }
 bool apollo_rope_load(unsigned mission, const char *path)
 {
     FILE *f;
@@ -147,7 +161,7 @@ static void program(uint16_t *p)
             p[at++] = (uint16_t)((kind << 11) | safe((agc_word)(operand() % 02000u)));   /* stores go to erasable */
             if (kind >= 3u) { p[at] = kind == 7u ? target_at(at) : operand(); ++at; }
         } else {
-            unsigned l = code(), r = rnd(6) ? code() : 0177u, v, w;
+            unsigned l = code(), r = rnd(6) && !getenv("FUZZ_SINGLE") ? code() : 0177u, v, w;
             need_pair = 0;
             if (r == 0177u) v = l; else v = l | ((r + 1u) << 7);
             w = (~(v + 1u)) & 077777u;
@@ -220,10 +234,36 @@ static void arm(unsigned ms)
     setitimer(ITIMER_REAL, &t, 0);
 }
 
+/* The compact interpreter's slot again on a copy of the image followed by
+ * unmapped pages: 1 when it touched no word past the image and ended as
+ * in the comparison. */
+static sigjmp_buf fault;
+static void on_fault(int sig) { (void)sig; siglongjmp(fault, 1); }
+static int guarded_ok(const apollo_overlay_state *pre, unsigned m, const apollo_overlay_state *want)
+{
+    static apollo_overlay_state *g;
+    p66_bias_io l = { 0, 1 };
+    cm_native_io c;
+    int ok;
+    if (!g) {
+        char *p = mmap(0, 4096u + 0x40000u, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        if (p == MAP_FAILED || mprotect(p + 4096, 0x40000u, PROT_NONE)) return 0;
+        g = (apollo_overlay_state *)(void *)p;
+    }
+    *g = *pre;
+    memset(&c, 0, sizeof c); c.interrupt_enabled = 1;
+    signal(SIGSEGV, on_fault);
+    if (sigsetjmp(fault, 1)) ok = 0;
+    else { if (m) (void)cm_interp_core(0, g, &c); else (void)lm_interp_core(0, g, &l); ok = !memcmp(g, want, sizeof *g); }
+    signal(SIGSEGV, on_alarm);
+    return ok;
+}
+
 int main(int argc, char **argv)
 {
     static unsigned hung, c, m, slots, refused, bad, shown, unreal;
     static apollo_overlay_state pre;
+    static FILE *dump;
     unsigned cases = argc > 3 ? (unsigned)strtoul(argv[3], 0, 0) : 2000u, seed = argc > 4 ? (unsigned)strtoul(argv[4], 0, 0) : 1u;
     unsigned which = argc > 5 ? (unsigned)strtoul(argv[5], 0, 0) : 2u;
     /* Random words can send an index past the image (both interpreters read
@@ -236,6 +276,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "usage: interp_core_fuzz <lm.bin> <cm.bin> [cases] [seed] [mission]\n");
         return 2;
     }
+    if (getenv("FUZZ_DUMP") && (dump = fopen(getenv("FUZZ_DUMP"), "wb")) == 0) return 2;
     for (c = getenv("FUZZ_CASE") ? (unsigned)atoi(getenv("FUZZ_CASE")) : 0; c < cases; ++c) {
         unsigned slot;
         rs = 0x9e3779b97f4a7c15ull ^ ((uint64_t)(seed * 1000003u + c) << 1);
@@ -272,8 +313,13 @@ int main(int argc, char **argv)
             }
             memset(&ca, 0, sizeof ca); ca.interrupt_enabled = 1; cb = ca;
             pre = a;
-            if (m) { sa = cm_interp_runtime(0, &a, &ca); sb = cm_interp_core(0, &b, &cb); }
-            else { sa = getenv("FUZZ_CORE2") ? lm_interp_core(0, &a, &la) : lm_interp_runtime(0, &a, &la); sb = getenv("FUZZ_SELF") ? lm_interp_runtime(0, &b, &lb) : lm_interp_core(0, &b, &lb); }
+            if (m) { sa = cm_interp_runtime(0, &a, &ca); recording = 1; nrec = 0; sb = cm_interp_core(0, &b, &cb); recording = 0; }
+            else {
+                sa = getenv("FUZZ_CORE2") ? lm_interp_core(0, &a, &la) : lm_interp_runtime(0, &a, &la);
+                recording = 1; nrec = 0;
+                sb = getenv("FUZZ_SELF") ? lm_interp_runtime(0, &b, &lb) : lm_interp_core(0, &b, &lb);
+                recording = 0;
+            }
             if (sa == EXEC_OUT_OF_SCOPE) { ++refused; break; }
             /* A slot that leaves the program's frame (an index register or
              * a store run wild: EBANK 0-2, which lays the EB window over the
@@ -293,11 +339,26 @@ int main(int argc, char **argv)
                 }
                 break;
             }
+            /* (not a slot that touches a word past the image: on the 6502
+             * that is the program itself; rerun with the image before
+             * unmapped pages) */
+            if (dump && nrec < 96u && guarded_ok(&pre, m, &b)) {
+                agc_word w = 0;
+                (void)apollo_rope_read(m, (uint16_t)(((pre.words[0165] >> 10) & 037u) * 1024u + (pre.words[0164] & 01777u)), &w);
+                put16(dump, 0xa6c1u);
+                for (i = 0; i < 2048u; ++i) put16(dump, pre.words[i]);
+                put16(dump, 1u); put16(dump, 0u); put16(dump, nrec);
+                for (i = 0; i < nrec; ++i) { put16(dump, recp[i]); put16(dump, recw[i]); }
+                put16(dump, w);
+                /* the slot's result */
+                for (i = 0; i < 2048u; ++i) put16(dump, b.words[i]);
+            }
             if (sa != EXEC_OK) break;
             if (getenv("FUZZ_CASE") && slot == 0 && c == (unsigned)atoi(getenv("FUZZ_CASE")) + 1u) break;
         }
     }
     arm(0);
+    if (dump) fclose(dump);
     printf("%u cases, %u slots compared, %u refused, %u abandoned, %u left the frame, %u differ\n", cases, slots, refused, hung, unreal, bad);
     return bad ? 1 : 0;
 }

@@ -1,19 +1,38 @@
 # SPDX-License-Identifier: MIT
-# Runtime interpreter (Interpreter lane; INTERPRETER.agc over the rope image,
-# src/lm_interp_runtime.c and src/cm_interp_runtime.c).
+# Runtime interpreter (Interpreter lane; INTERPRETER.agc over the rope image).
+# Verification interpreter: src/lm_interp_runtime.c and src/cm_interp_runtime.c
+# (the image-level lmi_ bodies). Compact interpreter, the flight build:
+# src/lm_interp_core.c and src/cm_interp_core.c.
 # interp-runtime-check: include/interp_runtime_tables.h matches the listings.
 # interp-runtime-differential: every compiled-routine milestone's cases
 # (tools/interp_specs.py) with its interpretive points run by the interpreter,
-# against yaAGC (INTERP_RUNTIME_CASES cases per routine, default 8).
-# interp-runtime-size: each mission's interpreter linked as one ABI 2
+# against yaAGC (INTERP_RUNTIME_CASES cases per routine, default 8);
+# interp-core-differential the same with the compact interpreter.
+# interp-runtime-size: each mission's compact interpreter linked as one ABI 2
 # job-slot module with the flight store's flags (build/interp-runtime/size.json).
-# The differential and size need the listings, ropes and yaAGC objects, as the
-# compiled-routine differentials do; neither gates `test` yet.
+# interp-core-fuzz: random interpretive programs, the compact interpreter
+# against the verification one (INTERP_CORE_FUZZ cases, default 100000).
+# interp-core-cycles: 6502 cycles per order (build/interp-cycles/<m>.json).
+# The differentials and size need the listings, ropes and yaAGC objects, as
+# the compiled-routine differentials do; none gates `test` yet.
 INTERP_RUNTIME_CASES ?= 8
-.PHONY: interp-runtime-check interp-runtime-differential interp-runtime-size
+INTERP_CORE_FUZZ ?= 100000
+INTERP_CORE_FUZZ_SRC := tools/interp_core_fuzz.c src/lm_interp_runtime.c src/cm_interp_runtime.c \
+  src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c \
+  src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c
+.PHONY: interp-runtime-check interp-runtime-differential interp-core-differential interp-runtime-size \
+  interp-core-fuzz interp-core-cycles
 interp-runtime-check:
 	python3 tools/interp_runtime_generate.py --check
 interp-runtime-differential: interp-runtime-check build/agc_engine_hardware_dv.o | build
 	python3 tools/interp_runtime_differential.py --cases $(INTERP_RUNTIME_CASES)
+interp-core-differential: interp-runtime-check build/agc_engine_hardware_dv.o | build
+	python3 tools/interp_runtime_differential.py --core --cases $(INTERP_RUNTIME_CASES)
 interp-runtime-size: interp-runtime-check | build
 	python3 tools/interp_runtime_size.py
+build/interp-core-fuzz: $(INTERP_CORE_FUZZ_SRC) | build
+	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests $(INTERP_CORE_FUZZ_SRC) -o $@
+interp-core-fuzz: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
+	build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin $(INTERP_CORE_FUZZ) 11
+interp-core-cycles: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
+	python3 tools/interp_core_cycles.py
