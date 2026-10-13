@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-orbital-integration",
+  "release": "evidence-cm-orbital-integration",
+  "files": {
+    "cm-orbital-integration-differential.log": {
+      "sha256": "db7a98ec5a0d90f1355fa0d690a99cf4be18b8cd69e345dc832f60dc85f23f78",
+      "bytes": 15807,
+      "store": "tree"
+    },
+    "cm-orbital-integration-host.log": {
+      "sha256": "dd0c183b0c1a3dd50abbda56a0ebd83d94e8a13d538b8090a7057b144c29eb4b",
+      "bytes": 1156,
+      "store": "tree"
+    },
+    "cm-orbital-integration-proof.json": {
+      "sha256": "4bcd1f2ce4241f864c39a13f7a5baa72eebeb11b4ef73456535b11b7fc08dc42",
+      "bytes": 85476,
+      "store": "tree"
+    },
+    "cm-orbital-integration-source-map.json": {
+      "sha256": "1ddaa0b9788450e049f9fe35791859b647f81d383c0ecb97a2b551289e90e40e",
+      "bytes": 109687,
+      "store": "tree"
+    },
+    "cm-orbital-integration-vice.log": {
+      "sha256": "bc6f4b7b420dc71c5f096ef7775bcfb55a7f3cbfea7e69f046b4e5c195fd7f8c",
+      "bytes": 8029,
+      "store": "tree"
+    }
+  }
+}

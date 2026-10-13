@@ -479,6 +479,9 @@ SPECS = {
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
         'max_steps': 1000,
+        # A DIFEQ or iteration run that does not fit one C64 diagnostic
+        # drops every case whose run reaches at least its routines.
+        'c64_drop_superset': True,
         'target': 'tests/cm_orbital_integration_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
@@ -542,6 +545,7 @@ SPECS = {
         'seed_counters': True,
         'missions': ('cm',),
         'file': {'cm': 'STABLE_ORBIT_-_P38-P39.agc'},   # (the listing's name for STABLE_ORBIT.agc)
+        'source_path': {'cm': 'STABLE_ORBIT.agc'},
         'base': {'cm': 'cm_stable_orbit'},
         'symbol': {'cm': 'cm_stable_orbit'},
         'basic': 'full',
@@ -611,6 +615,17 @@ SPECS = {
             '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
             '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
         },
+        # Half of GETX's cases take CSTH and SNTH so that its DDV (12,3016)
+        # divides SNTH/64 by 1/4 - CSTH/2 with equal majors (both exactly
+        # or a few low-word units apart), so DDV's MAXDV/MAXTEST paths run
+        # in a case short enough for one C64 diagnostic.
+        'joint_states': {'GETX': [{'CSTH': c, 'CSTH+1': cl, 'SNTH': sn, 'SNTH+1': sl}
+                                  for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
+                                  for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
+                                 + [{}] * 9},
+        # A DIFEQ or iteration run that does not fit one C64 diagnostic
+        # drops every case whose run reaches at least its routines.
+        'c64_drop_superset': True,
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
@@ -816,10 +831,13 @@ SPECS = {
         # TC HACK at 20,2540, 2542, 2742, 2744) or TCTSKOVR (TC TASKOVER).
         'erasable_points': {'E6,1657': [0o2541, 0o2543, 0o2743, 0o2745, 0o5324]},
         # CARD (E6,1661) counts -4 (CS FCARD) up to -1 between sets: INDEX
-        # CARD reads FCARD +1 .. +6.
+        # CARD reads FCARD +1 .. +6. STROKILL leaves CARD -0 with one
+        # HACKWLST still pending, which INCRs it to +1 and reads FCARD +5
+        # and FCARD +8 (HACK's own words; issue #219); one more from +1
+        # reads FCARD +6 and +9.
         'cells': {0o3257: [0o2541, 0o2543, 0o2743, 0o2745, 0o5324],
-                  0o3261: [0o77773, 0o77774, 0o77775, 0o77776]},
-        'fixed_tables': {'FCARD': (0, 6)},
+                  0o3261: [0o77773, 0o77774, 0o77775, 0o77776, 0o77777, 1]},
+        'fixed_tables': {'FCARD': (0, 9)},
         'ebank': 6,
         # HACK is entered by the DAPs' TC HACK: Q one of their returns.
         'states': {'HACK': {'2': [0o2541, 0o2543, 0o2743, 0o2745]}},
