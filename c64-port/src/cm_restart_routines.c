@@ -11,7 +11,7 @@
 #define CM_RESTART_TABLE
 #include "cm_restart_table_data.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define B1(z) (uint16_t)(1024u+((z)-02000u))
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define E(a) (uint16_t)(AGC_TRANSFER_ERASABLE_BASE+(a))

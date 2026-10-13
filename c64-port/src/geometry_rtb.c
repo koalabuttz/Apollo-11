@@ -5,7 +5,7 @@
 #include "geometry_rtb.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 uint8_t geometry_shortmp(apollo_overlay_state *s){
  /* SHORTMP (07256): TS MPTEMP; EXTEND; MP MPAC +2; TS MPAC +2; CAF ZERO;
   * XCH MPAC +1; TCF DMPSUB2. (A TS that skips on overflow is refused.) */

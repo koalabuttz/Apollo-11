@@ -137,7 +137,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 16 | 2 | Loaded bytes, header included |
 | 18 | 2 | Service-table version the module was linked against |
 | 20 | 2 | Selector count; valid selectors are 0..count-1 |
-| 22 | 2 | Reserved, zero |
+| 22 | 2 | `TABLES`: in-slot address of the module's `rk_module_tables`, or 0. The flight packer checks it lies inside the slot; the loader never reads it (resident direct calls do, #256) |
 
 The fields are little-endian. `overlay_v2_payload.ld` emits the header from
 link-time symbols (`__ov2_slot`, `__ov2_mission`, `__ov2_id`, `__ov2_services`,
@@ -167,7 +167,7 @@ stores are separate, so the same id can name different modules in each.
 | Page 0 | `NREU`, format 1, mission, service version, module count, index page, resolver page, resolver count, total pages |
 | Pages 1..256 | Direct index: 4,096 records of 16 bytes, at `id * 16`: id, page, bytes, CRC16, selectors, slot, flags |
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
-| Modules | Each image starts on a page boundary |
+| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx), so the packer starts a module that would cross on the next bank |
 
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present

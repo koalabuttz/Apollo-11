@@ -55,6 +55,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - VPROJ is an address order. BHIZ runs RTB/BHIZ's `CCS CYR` before its own test, as the original does.
 - A TC into the file followed by data (`TC SBANDANT +2`, which never returns) has no return point.
 - Files in banks 040-043 run as FB 030-033 under superbank 4 (channel 7 bit 0100). Their routines are keyed by that FB and refuse unless the superbank bit is set; a file in banks 030-037 refuses with it set. Fixed operands and CADR targets decode through the superbank. Files below bank 030 are not affected.
+- `image_w` (off by default): the file takes `W` from `include/agc_image_w.h`, so flight builds (`RK_FIXED_IMAGE`) address the fixed $7000 image directly, about a fifth smaller on the C64. Host and diagnostic builds are unchanged. Turn it on at the spec's next refreeze; existing files stay byte-identical until then, so their pinned evidence does too.
 - `resume_keys` (off by default) is for files that run as jobs. The word after every DANZIG is a routine of its own. A DANZIG that finds NEWJOB positive stops at CHANG2, where the Executive suspends the job; it resumes at NEWOPS with LOC +1, which is that routine's key. Without it, every routine requires NEWJOB +0.
 - RTB to a routine with a native implementation (`rtb` in the spec, such as `rtb_angles`) calls it. BOVB's branch to basic code ends the routine at that address.
 - Every routine first checks that the image is one the original could be in. Anything else is `EXEC_OUT_OF_SCOPE` with the image unchanged.
