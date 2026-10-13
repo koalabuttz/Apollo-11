@@ -12,7 +12,7 @@ Luminary099 INTER-BANK_COMMUNICATION.agc. Auditor finding 4 (2026-10-11): the ce
 
 | AGC (fixed-fixed) | Native |
 |---|---|
-| BANKCALL 04616, SWCALL 04622, SWRETURN 04631, POSTJUMP 04635, BANKJUMP 04640, QJUMP 04643, MAKECADR 04645, SUPDACAL 04651, IBNKCALL 04674, ISWCALLL 04700, ISWRETRN 04707, USPRCADR 04713, SUPERSW 04727 | `lm_interbank_routines` (`src/lm_interbank_routines.c`), each wrapping the certified `lm_interbank` step |
+| BANKCALL 04616, SWCALL -1 04621 (`INCR Q`, then SWCALL; `docs/INTERBANK-Q.md`), SWCALL 04622, SWRETURN 04631, POSTJUMP 04635, BANKJUMP 04640, QJUMP 04643, MAKECADR 04645, SUPDACAL 04651, IBNKCALL 04674, ISWCALLL 04700, ISWRETRN 04707, USPRCADR 04713, SUPERSW 04727 | `lm_interbank_routines` (`src/lm_interbank_routines.c`), each wrapping the certified `lm_interbank` step |
 | inline CADR after each caller's `TC` | `lm_interbank_sites[448]` (`src/lm_interbank_sites.inc`, `tools/agc_sites_generate.py lm-interbank`) |
 | SUPDACAL passive constant read | the program's `fixed_data` reader |
 

@@ -688,6 +688,9 @@ static enum exec_status r_r02both(const ims_mission *m,apollo_overlay_state *s,v
 }
 /* 3267 after VARALARM: TC GOTOPOOH. 3272 after UPFLAG: TCF SWRETURN. */
 static enum exec_status r_c3267(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return call(s,z4(m,03270u),m->gotopooh);}
+/* 3270 R02ZERO (TC R02ZERO from R02BOTH, and TC BANKCALL CADR R02ZERO in
+ * P51-P53): TC UPFLAG (ADRES IMUSE). */
+static enum exec_status r_r02zero(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return call(s,z4(m,03271u),m->upflag);}
 static enum exec_status r_c3272(const ims_mission *m,apollo_overlay_state *s,void *io){(void)io;return jump(s,m->swreturn);}
 
 /* ---- P06 / P05 (Luminary bank 37, Comanche bank 26) ---- */
@@ -785,7 +788,7 @@ static enum exec_status r_c3773(const ims_mission *m,apollo_overlay_state *s,voi
  X(imubad,07,IMS_IMUBAD) X(badend,07,IMS_BADEND) X(goodend,07,IMS_GOODEND) X(c3702,07,03702u) \
  X(aotstall,07,IMS_AOTSTALL) X(radstall,07,IMS_RADSTALL) X(imustall,07,IMS_IMUSTALL) X(c3736,07,03736u) \
  X(gomanur,07,IMS_GOMANUR)
-#define R02_ROUTINES(X) X(r02both,04,IMS_R02BOTH) X(c3267,04,03267u) X(c3272,04,03272u)
+#define R02_ROUTINES(X) X(r02both,04,IMS_R02BOTH) X(c3267,04,03267u) X(r02zero,04,IMS_R02ZERO) X(c3272,04,03272u)
 #define P06_ROUTINES(X) \
  X(p06,037,IMS_P06) X(prestand,037,IMS_PRESTAND) X(c3664,037,03664u) X(c3665,037,03665u) \
  X(c3672,037,03672u) X(c3674,037,03674u) X(c3676,037,03676u) X(c3706,037,03706u) \

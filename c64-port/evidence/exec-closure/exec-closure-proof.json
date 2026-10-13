@@ -40,31 +40,85 @@
  "milestone_evidence": {
   "lm-exec-services": {
    "manifest": "evidence/lm-exec-services/SHA256.json",
-   "sha256": "3d8e926e52f8038bb4caa21c998f0913fbf7eaac7d28e17be6095a2f4d7b72e7"
+   "sha256": "7543478752b84c7f786fc0f164cd72b3dbe2366be71207636cc457714c35151c",
+   "oracle_cases": {
+    "run": {
+     "mission": "Luminary099",
+     "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+     "cases": 9208
+    }
+   }
   },
   "lm-exec-jobs": {
    "manifest": "evidence/lm-exec-jobs/SHA256.json",
-   "sha256": "c874cbb60f22ec94e1d3ff711451a1af7b32080bd655cceed7df2a299f2b03e0"
+   "sha256": "1afc44d2561355e87fec39b90f7c4af254f88819dd3bf3fb1a5f053584082960",
+   "oracle_cases": {
+    "run": {
+     "mission": "Luminary099",
+     "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+     "cases": 9216
+    }
+   }
   },
   "lm-exec-idle": {
    "manifest": "evidence/lm-exec-idle/SHA256.json",
-   "sha256": "bcb11f678d3a5cd88c348a3267c09fe5cd54f0e1b7cd9296f33e71920a4f1620"
+   "sha256": "35b90d52939f89bd14f772a43dac0008498ce6efacaae3397dd13e431d7b4ac9",
+   "oracle_cases": {
+    "run": {
+     "mission": "Luminary099",
+     "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+     "cases": 4864
+    }
+   }
   },
   "rupt-lead-ins": {
    "manifest": "evidence/rupt-lead-ins/SHA256.json",
-   "sha256": "2c0a382903cae46d3fb60819eed513ac948f5db8ba79df816394fda1a5c3079f"
+   "sha256": "ce16a1a64592d8eac86ce8c147ca63aa94b96dc49a2c71047dd06aa6d6337df6",
+   "oracle_cases": {
+    "lm": {
+     "mission": "Luminary099",
+     "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+     "cases": 1152
+    },
+    "cm": {
+     "mission": "Comanche055",
+     "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+     "cases": 1920
+    }
+   }
   },
   "cm-exec-services": {
    "manifest": "evidence/cm-exec-services/SHA256.json",
-   "sha256": "a2a3574b0039b190aad97e1987cb6c1cc6f9515747a03e7f17a219ab56b517df"
+   "sha256": "215938a5f669d2425528f469400e7877d2145c4859aae5c69cb0992a3f4e6cfe",
+   "oracle_cases": {
+    "run": {
+     "mission": "Comanche055",
+     "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+     "cases": 7648
+    }
+   }
   },
   "cm-exec-jobs": {
    "manifest": "evidence/cm-exec-jobs/SHA256.json",
-   "sha256": "3bbc1af3a191a24aafcd3dc183841fd46cfc08f41faf6c492e68ab7eba14f731"
+   "sha256": "36004e55fd8ccaa9e21b08d0541608b065a0c13aab942ac50111657878e43287",
+   "oracle_cases": {
+    "run": {
+     "mission": "Comanche055",
+     "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+     "cases": 6144
+    }
+   }
   },
   "cm-exec-idle": {
    "manifest": "evidence/cm-exec-idle/SHA256.json",
-   "sha256": "4a522a2d60ea95bb12d22335c3b987fc18d30af518b493a06dcc5db22d729af3"
+   "sha256": "92b6ea84e671de8901eb5c0994fe1483c1356cba7d11e0e8b189bb267b898470",
+   "oracle_cases": {
+    "run": {
+     "mission": "Comanche055",
+     "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+     "cases": 5120
+    }
+   }
   }
  },
  "method": "each milestone differential rerun with tools/oracle_trace linked into its yaAGC reference; a word is executed when the original program ran it in that comparison (each run ends where the native routine ended, so the word is inside a native routine's compared path)"

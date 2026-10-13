@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p11",
+  "release": "evidence-cm-p11",
+  "files": {
+    "cm-p11-differential.log": {
+      "sha256": "ac69ff21a605b30033a1a5d1b699275d54cb5116be4c00a71d4435a04370ef6a",
+      "bytes": 5343,
+      "store": "release"
+    },
+    "cm-p11-host.log": {
+      "sha256": "0558610cbacfa79feb64a03dc77690756b6bc07bdab0508895efe20c14d9e5af",
+      "bytes": 62,
+      "store": "release"
+    },
+    "cm-p11-proof.json": {
+      "sha256": "02f04b540ab9997383f949975e33ba8b579093396fcf0e275d52f766a31a4d7e",
+      "bytes": 13409,
+      "store": "tree"
+    },
+    "cm-p11-source-map.json": {
+      "sha256": "2b7f6183d05670c3e976f4aa56fca99d84a3db07d5eba58831286e8d827f1b1f",
+      "bytes": 75336,
+      "store": "tree"
+    },
+    "cm-p11-vice.log": {
+      "sha256": "5bb7957b42c389d0dae06c146176d81e3618eb1c294752e3abad46033352a96f",
+      "bytes": 1127,
+      "store": "release"
+    }
+  }
+}

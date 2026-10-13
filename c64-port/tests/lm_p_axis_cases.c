@@ -56,11 +56,28 @@ void lm_pa_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
  m->words[0]=agc_extend(m->words[0]);m->words[1]=agc_extend(m->words[1]);
  m->words[5]=lm_pa_entry_z[e];
 }
+/* The rate loop's parts (src/lm_p_axis.c) hand Z on to each other: a run
+ * into one of those keys continues the routine before it. */
+static int part(const apollo_overlay_state *s){agc_word z=s->words[5];
+ return (s->words[4]&076000u)==LM_PA_FB16&&(z==LM_PA_TRAPS||z==LM_PA_QRATE||z==LM_PA_RRATE||z==LM_PA_PRETIMCK||z==LM_PA_CHKVISFZ||z==LM_PA_TSNEXTP1||
+  z==LM_PA_TSNEXTP||z==LM_PA_DETENTCK||z==LM_PA_RATERROR||z==LM_PA_PJETSLEC6||z==LM_PA_PJETSLEC1||z==LM_PA_PURGENCY||
+  z==LM_PA_PURGENCY4);}
 unsigned lm_pa_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
- agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;agc_word superbank=0;
+ agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st=EXEC_OK;agc_word superbank=0;
+ agc_routine call;int more;
  program.basic=&lm_p_axis_routines;program.basic_count=1;program.operands=lm_p_axis_sites;program.operand_count=LM_PA_SITES;
  lm_pa_input(s,io,n);
- st=agc_transfer_run(&program,s,io,&superbank,(uint16_t)(AGC_TRANSFER_NONE-1u),4,steps);
+ /* agc_transfer_run's loop, at most 4 routines, the parts not counted. */
+ *steps=0;
+ for(;;){
+  more=part(s);
+  if(!more&&*steps==4u){st=EXEC_OUT_OF_SCOPE;break;}
+  call=agc_transfer_resolve(&program,s,superbank);
+  if(!call){st=EXEC_UNMAPPED;break;}
+  if(!more)++*steps;
+  st=call(&program,s,io);
+  if(st!=EXEC_OK)break;
+ }
  if(st==EXEC_UNMAPPED&&*steps==1u&&(!inside(s->words[5])||(s->words[4]&076000u)!=LM_PA_FB16))return LM_PA_LEFT;
  if(st==EXEC_OUT_OF_SCOPE&&*steps==1u)return LM_PA_REFUSED;
  return LM_PA_NONE;

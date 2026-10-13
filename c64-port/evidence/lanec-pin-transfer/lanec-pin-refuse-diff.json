@@ -1,0 +1,6 @@
+{
+  "suite": "pin-refuse",
+  "cases": 1530,
+  "refused_unchanged": 1530,
+  "native_sha256": "cb5e183f026e9e3f8b4b665abef9bd6020320721c4ee89fbf4979c96e589a0a1"
+}

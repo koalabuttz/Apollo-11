@@ -34,39 +34,35 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
  (void)k;for(i=0;i<c->nedits;++i)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
 #endif
 }
-#ifndef IRC_BUILD_ONLY
-#if IRC_IO && !defined(IRC_CM_ONLY)
-/* LM cases run with the LM device record (lm_flight_io, its p66_bias_io
- * first, so routines that read no channel see the same latches): input
- * channels 30 and 31 from the case's channel edits, else yaAGC's idle
- * values. (C64 builds carry it only with -DIRC_CHANNELS and LM routines.) */
-#include "lm_flight_io.h"
-#define IRC_LM_IO 1
+#if IRC_INPUTS_ON
+void irc_inputs(const irc_case *c,agc_input_channels *in){uint32_t seed=c->seed^0x5ca1e5u;
+ in->channel3=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
+ in->channel4=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
+ if(((rnd(&seed)>>20)&3u)==0u)in->channel4=037777u;
+ in->channel30=(agc_word)((rnd(&seed)>>12)&AGC_MASK);in->channel31=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
+ in->channel32=(agc_word)((rnd(&seed)>>12)&AGC_MASK);in->channel33=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
+}
 #endif
+#ifndef IRC_BUILD_ONLY
 unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps,uint16_t *ie){
- p66_bias_io lio;cm_native_io cio;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
- lio.superbank=c->superbank;lio.interrupt_enabled=c->interrupt_enabled;
- {uint16_t *w=(uint16_t *)&cio;for(i=0;i<sizeof cio/sizeof *w;++i)w[i]=0;}
- cio.superbank=c->superbank;cio.interrupt_enabled=c->interrupt_enabled;
+ lm_channel_io lio;cm_channel_io cio;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
+ lio.io.superbank=c->superbank;lio.io.interrupt_enabled=c->interrupt_enabled;
+ {uint16_t *w=(uint16_t *)&cio.io;for(i=0;i<sizeof cio.io/sizeof *w;++i)w[i]=0;}
+ cio.io.superbank=c->superbank;cio.io.interrupt_enabled=c->interrupt_enabled;
+#if IRC_INPUTS_ON
+ irc_inputs(c,&lio.in);cio.in=lio.in;
+#endif
 #if IRC_IO && !defined(IRC_LM_ONLY)
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
- if(irc_ch_on)irc_cm_io(&cio,0);
+ if(irc_ch_on)irc_cm_io(&cio.io,0);
 #endif
  io=c->cm?(void *)&cio:(void *)&lio;
-#if IRC_LM_IO
- lm_flight_io lf;
- if(!c->cm){uint16_t *w=(uint16_t *)&lf;for(i=0;i<sizeof lf/sizeof *w;++i)w[i]=0;
-  lf.bias=lio;lf.chan30=(agc_word)(irc_ch_on?irc_ch[6]:037777u);lf.chan31=(agc_word)(irc_ch_on?irc_ch[7]:077777u);io=&lf;}
-#endif
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);
-#if IRC_LM_IO
- if(!c->cm)lio=lf.bias;
-#endif
 #if IRC_IO && !defined(IRC_LM_ONLY)
- if(irc_ch_on)irc_cm_io(&cio,1);
+ if(irc_ch_on)irc_cm_io(&cio.io,1);
 #endif
- if(ie)*ie=c->cm?cio.interrupt_enabled:lio.interrupt_enabled;
- return st==EXEC_UNMAPPED?IRC_STOPPED:st==EXEC_OUT_OF_SCOPE&&steps==0u?IRC_REFUSED:IRC_FAILED;
+ if(ie)*ie=c->cm?cio.io.interrupt_enabled:lio.io.interrupt_enabled;
+ return st==EXEC_UNMAPPED||st==EXEC_IDLE?IRC_STOPPED:st==EXEC_OUT_OF_SCOPE&&steps==0u?IRC_REFUSED:IRC_FAILED;
 }
 #endif
 static uint16_t sum_a,sum_b;

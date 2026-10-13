@@ -1,5 +1,10 @@
-PASS: VICE PAL lm-t6rupt.prg: 240 checks, 0 failures
-
-real	1m48.508s
-user	1m47.327s
-sys	0m0.081s
+PASS: VICE PAL lm-t6rupt.prg: 244 checks, 0 failures
+PRG sha256: 0a963a03615f075ebaed1785b67ef7c5b88bedf967f63defe5360a05a62baaa2 lm-t6rupt.prg
+exit 0
+# build/vice-lm-t6rupt/monitor.log
+Loading /tmp/x/r198/c64-port/build/lm-t6rupt.prg from 0801 to 42CD (3ACD bytes)
+WATCH: 1  C:$c000  (Stop on store)
+#1 (Stop on store c000)  199/$0c7,  18/$12
+.C:3a67  8E 00 C0    STX $C000      - A:10 X:A5 Y:02 SP:f1 N.-....C 1087244883
+>C:c000  a5 00 00 f4  00                                      .....
+Saving file `/tmp/x/r198/c64-port/build/vice-lm-t6rupt/mailbox.bin' from $c000 to $c004

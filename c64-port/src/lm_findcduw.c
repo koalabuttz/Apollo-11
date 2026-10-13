@@ -8,8 +8,8 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
+#include "agc_input_channels.h"
 #include "lm_findcduw_rtb.h"
-#include "lm_flight_io.h"
 #define W s->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -38,6 +38,8 @@ static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){
  ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=05126u;return 1;
 }
 static MAYBE_UNUSED void right(apollo_overlay_state *s){lmi_danzig_right(s);}
+/* The input channels of the run (READ, RAND, ROR, RXOR), set by the wrappers. */
+static MAYBE_UNUSED const agc_input_channels *agc_channels_in;
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
 static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){
@@ -253,7 +255,7 @@ static enum exec_status r61120(apollo_overlay_state *s,p66_bias_io *io){
  ai_caf(s,001000);
  L61144:;
  /* 30,3145 RAND CHAN30 */
- W[0]=agc_extend((agc_word)((agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))&((const lm_flight_io *)(const void *)io)->chan30)&0177777u));
+ ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))&AGC_CHANNEL(30)));
  /* 30,3146 CCS A */
  switch(ai_ccs(s,00000u)){case 0:goto L61147;case 1:goto L61150;case 2:goto L61151;default:return EXEC_OUT_OF_SCOPE;}
  L61147:;
@@ -264,7 +266,7 @@ static enum exec_status r61120(apollo_overlay_state *s,p66_bias_io *io){
  ai_caf(s,020000);
  L61151:;
  /* 30,3152 RAND CHAN31 */
- W[0]=agc_extend((agc_word)((agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))&((const lm_flight_io *)(const void *)io)->chan31)&0177777u));
+ ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))&AGC_CHANNEL(31)));
  /* 30,3153 CCS A */
  switch(ai_ccs(s,00000u)){case 0:goto L61154;case 1:goto L61155;case 2:goto L61156;default:goto L61157;}
  L61154:;
@@ -5054,7 +5056,8 @@ static enum exec_status r61760(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 
-#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}
+/* The routines take lm_channel_io: the mission record, then the inputs. */
+#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;if(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}
 #if (LM_FINDCDUW_KEEP0 >> 0) & 1
 WRAP(r61104)
 #endif

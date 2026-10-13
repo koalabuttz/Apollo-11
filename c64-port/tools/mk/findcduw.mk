@@ -2,14 +2,14 @@
 # Milestone findcduw (lane A2): Luminary099 FINDCDUW--GUIDAP_INTERFACE
 # compiled by tools/interp_compile.py into native routines of the
 # control-transfer ABI (RTB NORMUNIT and QUICTRIG through
-# src/lm_findcduw_rtb.c; PAUTNO's RAND CHAN30/CHAN31 from the LM device
-# record, include/lm_flight_io.h).
+# src/lm_findcduw_rtb.c; PAUTNO's RAND CHAN30/CHAN31 from the latched
+# input channels, include/agc_input_channels.h).
 FCW_NATIVE = src/lm_findcduw_rtb.c src/rtb_vector.c src/rtb_unit.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/lm_powered_quick.c src/lm_single_trig.c src/rtb_angles.c
 FCW_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 FCW_SRC = src/lm_findcduw.c tests/findcduw_target.c $(FCW_NATIVE) $(FCW_COMMON)
-FCW_HDR = include/lm_findcduw.h include/lm_findcduw_rtb.h include/lm_flight_io.h tests/interp_case.h tests/findcduw_vectors.h tests/findcduw_c64_vectors.h
-# (the spec's c64_flags; -DIRC_CHANNELS for the channel and counter edits)
-FCW_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+FCW_HDR = include/lm_findcduw.h include/lm_findcduw_rtb.h include/agc_input_channels.h tests/interp_case.h tests/findcduw_vectors.h tests/findcduw_c64_vectors.h
+# (the spec's c64_flags; -DIRC_INPUTS for the latched input channels)
+FCW_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_INPUTS
 .PHONY: test-findcduw sanitize-findcduw c64-findcduw vice-findcduw findcduw-differential
 all: build/test-findcduw
 test: test-findcduw

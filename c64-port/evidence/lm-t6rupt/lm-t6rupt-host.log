@@ -1,6 +1,7 @@
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -fdata-sections -Wl,--gc-sections src/lm_t6rupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_t6rupt_cases.c tests/test_lm_t6rupt.c -o build/test-lm-t6rupt
+# make test-lm-t6rupt sanitize-lm-t6rupt at 8e68c5ae0401fb9ff81abfb265f7912ed34a417c
 ./build/test-lm-t6rupt
-lm-t6rupt: 3840 cases (3840 returned, 0 refused); entries 256 1536 512 128 128 128 128 128 128 256 256 256; return 513, CCSHOLE 256, clock stopped 723, restarted 286, next dropped 270; jets P 422, U 432, V 425; 7705 checks, 0 failures
+lm-t6rupt: 3840 cases (3814 returned, 26 refused); entries 256 1536 512 128 128 128 128 128 128 256 256 256; return 513, CCSHOLE 256, clock stopped 723, restarted 286, next dropped 270; jets P 422, U 432, V 425; 7705 checks, 0 failures
 cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -fsanitize=address,undefined src/lm_t6rupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_t6rupt_cases.c tests/test_lm_t6rupt.c -o build/test-lm-t6rupt-sanitize
 ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-t6rupt-sanitize
-lm-t6rupt: 3840 cases (3840 returned, 0 refused); entries 256 1536 512 128 128 128 128 128 128 256 256 256; return 513, CCSHOLE 256, clock stopped 723, restarted 286, next dropped 270; jets P 422, U 432, V 425; 7705 checks, 0 failures
+lm-t6rupt: 3840 cases (3814 returned, 26 refused); entries 256 1536 512 128 128 128 128 128 128 256 256 256; return 513, CCSHOLE 256, clock stopped 723, restarted 286, next dropped 270; jets P 422, U 432, V 425; 7705 checks, 0 failures
+exit 0

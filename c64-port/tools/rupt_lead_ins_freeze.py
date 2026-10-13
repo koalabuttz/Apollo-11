@@ -84,7 +84,8 @@ def main():
                               'time it reaches that Z (and FB in banked memory), or for the Comanche RESUME family '
                               'until the interrupt ends',
                   'compared': 'outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr',
-                  'full_physical_words': 2048})
+                  'full_physical_words': 2048,
+                  'oracle': 'yaAGC (agc_engine) running the original rope of each mission'})
     (B / 'rupt-lead-ins-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
     print(f"PASS: {proof['lm']['cases']} LM and {proof['cm']['cases']} CM rupt-lead-ins cases equal the original programs")
 

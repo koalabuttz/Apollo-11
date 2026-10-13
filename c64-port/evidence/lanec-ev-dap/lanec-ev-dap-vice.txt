@@ -1,1 +1,1 @@
-PASS: VICE PAL lanec-ev-dap.prg: 258 checks, 0 failures
+PASS: VICE PAL lanec-ev-dap.prg: 43 checks, 0 failures

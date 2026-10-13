@@ -24,7 +24,7 @@ lm-exec-services-differential: build/lm-exec-services-native
 	python3 tools/lm_exec_services_freeze.py
 	git diff --exit-code -- tests/lm_exec_services_vectors.h tests/lm_exec_services_c64_vectors.h
 c64-lm-exec-services: build/lm-exec-services.prg
-build/lm-exec-services.prg: $(LM_EXS_SRC) platform/c64/lm_exec_services_diagnostic.c tests/lm_exec_services_c64_vectors.h $(LM_EXS_HDR) | build
+build/lm-exec-services.prg: $(LM_EXS_SRC) platform/c64/lm_exec_services_diagnostic.c tests/lm_exec_services_c64_vectors.h tests/lm_exec_services_c64_rows.h $(LM_EXS_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -DP66_NATIVE_DISPATCH_ONLY -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-exec-services.map $(LM_EXS_SRC) platform/c64/lm_exec_services_diagnostic.c -o $@
 vice-lm-exec-services: build/lm-exec-services.prg
 	python3 tools/vice_run.py build/lm-exec-services.prg --cycles 3000000000 --timeout 1200

@@ -3,29 +3,34 @@
   "milestone": "lm-t6rupt",
   "release": "evidence-lm-t6rupt",
   "files": {
+    "lm-t6rupt-c64-cover.json": {
+      "sha256": "175e2670765719e46dcc93be7e9d8435229111ba1cb2f47430815b961db55c86",
+      "bytes": 637,
+      "store": "tree"
+    },
     "lm-t6rupt-differential.log": {
       "sha256": "924cc0598173c72d832e0a85eb5a017fd06d99bd639c764388515ca94f493291",
       "bytes": 535,
       "store": "tree"
     },
     "lm-t6rupt-host.log": {
-      "sha256": "9718634faa0fa9b0a8625c0a62ba5f7abe7eb59994cefc361b1777b94247fb68",
-      "bytes": 1214,
+      "sha256": "c4972bf82af1c62b62a7ba72992614400f1cfc31aa6aa3fbbce2cf22dcc599f5",
+      "bytes": 985,
       "store": "tree"
     },
     "lm-t6rupt-proof.json": {
-      "sha256": "7fdf6c1508e008433c0ad5de6fc0f22c2f1f22596506a15c292206893fb8e30b",
-      "bytes": 1117,
+      "sha256": "913e32e498f7bdb131e3152871fcaba63d47587bafd9d230235d1b7ecc6e35ba",
+      "bytes": 1141,
       "store": "tree"
     },
     "lm-t6rupt-source-map.json": {
-      "sha256": "f995477a70d125d42074e091d382da59be7d35b433f25251766fb2d3536a5227",
+      "sha256": "e3a961328a710f5665523106e821b9028991ff3e732cf3dfb4dd158e22c74921",
       "bytes": 13554,
       "store": "tree"
     },
     "lm-t6rupt-vice.log": {
-      "sha256": "e15fabede24f731f0efd54c3ed2745bb638dbe1ca8cc2a1f76779cda5953f4ff",
-      "bytes": 97,
+      "sha256": "fbd5209ae74074229d3db2172b64d76a720c66f3fd5ad1e76b47663f164b3b7f",
+      "bytes": 579,
       "store": "tree"
     }
   }

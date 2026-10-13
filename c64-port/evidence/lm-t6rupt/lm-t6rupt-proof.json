@@ -2,10 +2,11 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 3840,
- "snapshot_sha256": "1f8010fd1e62d6a7ebe9bad1d7446a076b3be488b994fc555f93a186f8983b79",
+ "snapshot_sha256": "d5e5a1971f929d48825010a21688a816a509bcb5cd63cca24ba871b90cb0eb29",
  "outcomes": {
   "dot6rupt:returned": 1536,
-  "resume:returned": 768,
+  "resume:refused": 26,
+  "resume:returned": 742,
   "t6jobchk:returned": 512,
   "vector:returned": 256,
   "write:returned": 768

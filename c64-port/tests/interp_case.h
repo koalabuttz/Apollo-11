@@ -8,6 +8,7 @@
  * the host differential, the host test and the C64 diagnostic share it. */
 #include "agc_transfer.h"
 #include "p66_bias.h"
+#include "agc_input_channels.h"
 typedef struct { uint16_t addr; agc_word word; } irc_edit;
 typedef struct {
     uint32_t seed; uint8_t cm, interrupt_enabled; agc_word superbank;
@@ -16,8 +17,7 @@ typedef struct {
 /* Channel edits (Lane G): an edit whose addr is IRC_CHANNEL|k sets I/O
  * channel k (one of irc_ch_num) instead of an image word. A case with any
  * channel edit runs with those channel values (the rest 0) in the CM io
- * record (an LM case: channels 30 and 31 in its lm_flight_io record) and
- * in yaAGC's channels, and its digest also covers the channels
+ * record and in yaAGC's channels, and its digest also covers the channels
  * and the channel-13 traps after the run; a case without one is unchanged. */
 #define IRC_CHANNEL 0x8000u
 /* Counter edit (Lane G): a case holding an edit whose addr is IRC_COUNTERS
@@ -41,6 +41,17 @@ extern uint8_t irc_ch_on;
  * and counter registers 010-061 and ZERO cleared unless the case has the
  * IRC_COUNTERS edit), then apply the edits. */
 void irc_build(apollo_overlay_state *, const irc_case *);
+/* The input channels the case latches, from its seed (a stream apart from
+ * the image's): LOSCALAR (channel 4) 37777 in a quarter of the cases, else random.
+ * Only routines of 'channel_inputs' specs read them; the oracle sets them
+ * only under IRC_INPUTS, and a C64 diagnostic carries the code only when
+ * built with -DIRC_INPUTS. */
+#if !defined(__mos__) || defined(IRC_INPUTS)
+#define IRC_INPUTS_ON 1
+void irc_inputs(const irc_case *, agc_input_channels *);
+#else
+#define IRC_INPUTS_ON 0
+#endif
 enum { IRC_STOPPED = 0, IRC_REFUSED = 1, IRC_FAILED = 2 };
 /* Run from the image's point until a point no routine covers (the case's
  * stop), at most max_steps routines. Returns IRC_STOPPED at an unmapped

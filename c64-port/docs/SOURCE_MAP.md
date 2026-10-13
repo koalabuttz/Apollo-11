@@ -1663,7 +1663,7 @@ Native C for the EXTENDED_VERBS front end of both Luminary099 and Comanche055: t
 
 ## Translate Pinball verb 07 (DSPDPDEC) and CHANLOAD
 
-Native C for the two Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC) and the channel load for channel nouns (CHANLOAD). 5,120 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds, and 223 of them (every entry, both missions) match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
+Native C for the Pinball paths no earlier milestone covered, in both Luminary099 and Comanche055: verb 07 double-precision decimal display (DSPDPDEC through ENDDPDEC, and DSP2DEC through END2DEC), the channel load for channel nouns (CHANLOAD), the NVSUBB/LOADLV1/GOALMCYC lead-ins, the decimal display's per-digit loop (DSPDCWD1), LODSAMPT, FLASHON/FLASHOFF, the lamp test's returns, and the words the file reaches through POSTJUMP and BANKJUMP (GOVNUPDT, UPDAT1 +2, DSPOCTIN and the octal display's OCTBACK loop). 14,545 complete states (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) are identical to the unchanged original programs in Virtual AGC, in strict and ASan/UBSan builds (303 more refused unchanged), and 50 of them, picked to take every host branch arc, match the oracle on a VICE PAL C64. Adds `lanec_ad`, `lanec_erasable`, `lanec_rewrite` and `lanec_write` to the shared Lane C helpers. See `docs/LANEC-PIN-GAPS.md`.
 
 ## Translate Luminary RESTARTS and run its restart table entries through the trampoline
 
@@ -1821,7 +1821,7 @@ Comanche055 SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG and ENDO
 
 ## Draft the Luminary099 EXTENDED_VERBS full-file certificate
 
-Pending complete-coverage certificate for Luminary099 EXTENDED_VERBS.agc, for the auditor's review. `tools/lanec/wholefile_ev.py` assigns every assembled word (994) to one of the eight Lane C extended-verb milestones or to the file's constants. It shows that every instruction word but one unreachable `TC ALM/END` is executed (778), and every interpretive word is read by the interpreter (55), in the unchanged original program in Virtual AGC under cases the native code matches. Every entry is a transfer-ABI routine (`lanec-ev-transfer`). The evidence also covers 27,412 oracle cases (strict and ASan/UBSan, including 468 round trips through `agc_transfer_run`), 512 refusals with the state unchanged, and fresh VICE runs of all nine frozen subsets (1,861 checks). See `docs/LANEC-EV-CERT.md`.
+Pending complete-coverage certificate for Luminary099 EXTENDED_VERBS.agc, for the auditor's review. `tools/lanec/wholefile_ev.py` assigns every assembled word (994) to one of the eight Lane C extended-verb milestones or to the file's constants. It shows that every instruction word but one unreachable `TC ALM/END` is executed (778), and every interpretive word is read by the interpreter (55), in the unchanged original program in Virtual AGC under cases the native code matches. Every entry is a transfer-ABI routine (`lanec-ev-transfer`). The evidence also covers 28,820 oracle cases (strict and ASan/UBSan, including 468 round trips through `agc_transfer_run`), 512 refusals with the state unchanged, and fresh VICE runs of all nine frozen subsets (457 checks). See `docs/LANEC-EV-CERT.md`.
 
 ## Translate Luminary FRESH_START_AND_RESTART (bank 05) as transfer-ABI routines
 
@@ -1866,6 +1866,12 @@ All of Luminary099 LANDING_ANALOG_DISPLAYS (bank 21, 467 words) runs as four nat
 ## Translate ATTITUDE_MANEUVER_ROUTINE and ANGLFIND
 
 All of Luminary099 ATTITUDE_MANEUVER_ROUTINE and Comanche055 ANGLFIND (480 and 479 words: KALCMAN3 and SECAD, gimbal lock avoidance, the maneuver axis methods, MXM3, TRANSPOS, CDUTODCM, DELCOMP, DCMTOCDU and VECOFANG) are native C on the control-transfer ABI, as 83 routines. MXV and VXM matrix operands and LXC now compile. All 42,496 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 708 frozen cases, and 13 C64 diagnostics pass 145 cases in VICE, chosen by branch-outcome cover. With the image under the KERNAL ROM every routine runs on the C64; three outcomes in the shared interpreter bodies are reached only by whole-maneuver runs too large for C64 RAM. Both files have complete certificates drafted for the certificate reviewer. See `docs/ATTITUDE-MANEUVER.md`.
+
+## Enter the interpreter from any caller (INTPRET, INTPRET +2, INTRSM)
+
+The interpreter tables of both missions now run INTPRET, INTPRET +2 and INTRSM for any caller, to NEWOPS, where the trampoline continues with the interpretive routine at LOC. Before this, INTPRET took only the E/CALL standard lead-in, and lanes registered their own entries (Lane C's EXTENDED_VERBS INTPRET). E/CALL's INTPRET keeps its composite path.
+
+3,072 cases equal the original programs in yaAGC, in every erasable word and the 16-bit registers. Host, sanitizer and VICE runs pass, and both standard lead-in transfer suites pass unchanged. See `docs/INTERP-ENTRY.md`.
 
 ## Translate the DISPLAY_INTERFACE display start-up
 
@@ -1925,7 +1931,7 @@ Every instruction of AGC_BLOCK_TWO_SELF-CHECK in both missions runs as a native 
 
 ## Register DISPLAY_INTERFACE_ROUTINES on the transfer ABI
 
-Every labelled entry and every callee return of Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES is an `exec_status` routine at its physical address (165 LM, 164 CM, generated and checked against the listings by `tools/lanec/routines.py di`). 996 round trips through `agc_transfer_run` (INTER-BANK, the display tables and the LM Executive) match the unchanged original programs in Virtual AGC in strict and ASan/UBSan builds, 68 of them on a VICE PAL C64, and 384 broken entry states are refused unchanged. See `docs/LANEC-DI-TRANSFER.md`.
+Every labelled entry and every callee return of Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES is an `exec_status` routine at its physical address (165 LM, 164 CM, generated and checked against the listings by `tools/lanec/routines.py di`). 996 round trips through `agc_transfer_run` (INTER-BANK, the display tables and the LM Executive) match the unchanged original programs in Virtual AGC in strict and ASan/UBSan builds. So do 1,136 of 1,164 Luminary099 and Comanche055 round trips through the display-start and MAKEPLAY routines alone (BOTHJOBS to BANKJUMP, the SAVELOCS return, fixed-fixed resolution; the other 28 are refused unchanged), and the 63 of them that take every branch arc run on a VICE PAL C64. 384 broken entry states are refused unchanged. See `docs/LANEC-DI-TRANSFER.md`.
 
 ## Translate the short EXTENDED_VERBS verb bodies
 
@@ -1937,11 +1943,15 @@ All of Luminary099 BURN_BABY_BURN (the master ignition routine, 689 words in ban
 
 ## Run the Luminary IMU performance tests (P07) as native routines
 
-Every word of Luminary099 IMU_PERFORMANCE_TEST_2 and IMU_PERFORMANCE_TESTS_4 (585 words, bank 37) is compiled native C on the control-transfer ABI: 43 basic and 125 interpretive routines covering P07's gyro drift, PIPA and torque tests, the erasable return lists, ERTHRVSE and EARTHR, ESTIMS and the ALFLT/NORMLOP filter loop with its matrix orders. The keys include 1STO2S's EXIT return, every word a job switch can resume at, FINETIME +1 and the two idle points (CHECKG1 and FINETIME +1), which end runs as continuations (issue #88). Of 64,512 cases, the 56,580 the native code runs equal the original program in all 2,048 erasable words and the interrupt state; the 7,932 refused are outside the documented domain and leave the image unchanged. The 129,258 strict, part-dispatch and sanitizer checks pass. Seven C64 diagnostics run 650 rows in VICE, as chained steps split at the keys each part leaves out (ALFLT split at ALKLP); those rows take every branch outcome the host stream takes. A complete certificate for both files is drafted for the reviewer. See `docs/LM-IMU-PERFORMANCE.md`.
+Every word of Luminary099 IMU_PERFORMANCE_TEST_2 and IMU_PERFORMANCE_TESTS_4 (585 words, bank 37) is compiled native C on the control-transfer ABI: 43 basic and 125 interpretive routines covering P07's gyro drift, PIPA and torque tests, the erasable return lists, ERTHRVSE and EARTHR, ESTIMS and the ALFLT/NORMLOP filter loop with its matrix orders. The keys include 1STO2S's EXIT return, every word a job switch can resume at, FINETIME +1 and the two idle points (CHECKG1 and FINETIME +1), which end runs as continuations (issue #88). Of 64,512 cases, the 56,580 the native code runs equal the original program in all 2,048 erasable words and the interrupt state; the 7,932 refused are outside the documented domain and leave the image unchanged. The 129,258 strict, part-dispatch and sanitizer checks pass. Seven C64 diagnostics run 657 rows in VICE, as chained steps split at the keys each part leaves out (ALFLT split at ALKLP); those rows take every branch outcome the host stream takes over every linked native source. A complete certificate for both files is drafted for the reviewer. See `docs/LM-IMU-PERFORMANCE.md`.
 
 ## Run the interrupt lead-ins of both missions as native routines
 
 Every word of INTERRUPT_LEAD_INS.agc in Luminary099 and Comanche055 is native. The GOPROG restart lead-in, the T4, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR, RUPT10 and HANDRUPT vectors, the T5RUPT lead-ins and the Comanche T6RUPT vector are routines of the control-transfer ABI (`lm_lead_in_routines`, `cm_lead_in_routines`); the LM T6RUPT and both T3RUPT vectors were already native. Comanche's RESUME, NOQRSM and NOQBRSM interrupt exits join them. All 3,072 cases equal the original programs in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit and InIsr, and the original executed every instruction of both files in that comparison. The 8,992 strict and sanitizer checks pass, and every sixteenth case matches in VICE. Complete certificates are drafted for both files. See `docs/RUPT-LEAD-INS.md`.
+
+## Resolve a pending right-hand order at DANZIG in the transfer ABI
+
+The transfer ABI now has a point for an interpretive pair whose left order is RTB. When the RTB routine returns to DANZIG with the right order still in EDOP, and the program carries the mission's DANZIG marker table, the point is LOC under BANKSET. LOC then holds the RTB's operand word, and the file that owns the pair registers its right-order routine there. In yaAGC, 88 RTB-left pairs of both missions reach DANZIG with EDOP positive and LOC at the pair word +1. The 792 strict, sanitizer and VICE checks pass. Programs without the marker resolve DANZIG by Z as before. See `docs/DANZIG-PENDING.md`.
 
 ## Run the KEYRUPT and UPRUPT handlers of both missions as native routines
 
@@ -1957,19 +1967,59 @@ Native C for R77 through R77END of Luminary099 EXTENDED_VERBS (V63 R04 radar sam
 
 ## Register EXTENDED_VERBS on the transfer ABI
 
-Every labelled entry and every callee return of Luminary099 EXTENDED_VERBS is a routine of the control-transfer ABI at its physical address (313 basic, 15 interpretive keyed by LOC), and so is every Comanche055 entry the suites verify (241); `tools/lanec/routines.py ev` generates the tables and checks them against the listing. 468 round trips from Pinball's POSTJUMP GOEXTVB and the other BANKCALL/POSTJUMP callers, through INTER-BANK, the display interface, the LM Executive and the interpreter, match the unchanged original programs in Virtual AGC in strict and ASan/UBSan builds; 64 run on a VICE PAL C64, and 512 broken entry states are refused unchanged. See `docs/LANEC-EV-TRANSFER.md`.
+Every labelled entry and every callee return of Luminary099 EXTENDED_VERBS is a routine of the control-transfer ABI at its physical address (313 basic, 29 interpretive keyed by LOC), and so is every Comanche055 entry the suites verify (241); `tools/lanec/routines.py ev` generates the tables and checks them against the listing. 468 round trips from Pinball's POSTJUMP GOEXTVB and the other BANKCALL/POSTJUMP callers, through INTER-BANK, the display interface, the LM Executive and the interpreter, match the unchanged original programs in Virtual AGC in strict and ASan/UBSan builds; 64 run on a VICE PAL C64, and 512 broken entry states are refused unchanged. See `docs/LANEC-EV-TRANSFER.md`.
 
 ## Translate S-BAND_ANTENNA_FOR_LM and S-BAND_ANTENNA_FOR_CM
 
-All of Luminary099 S-BAND_ANTENNA_FOR_LM and Comanche055 S-BAND_ANTENNA_FOR_CM (116 and 80 words: R05, the V64 S-band antenna angles display) are native C on the control-transfer ABI, as 97 routines compiled by `tools/interp_compile.py`. The compiler now handles code in banks 040-043 (superbank 4), and with `resume_keys` it stops at CHANG2 when a DANZIG finds a job waiting, so every order pair of a job is a resume point. All 49,664 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 1,552 frozen cases, and seven C64 diagnostics pass 194 cases in VICE. Both files have complete certificates drafted for the certificate reviewer. See `docs/SBAND-ANTENNA.md`.
+All of Luminary099 S-BAND_ANTENNA_FOR_LM and Comanche055 S-BAND_ANTENNA_FOR_CM (116 and 80 words: R05, the V64 S-band antenna angles display) are native C on the control-transfer ABI, as 97 routines compiled by `tools/interp_compile.py`. The compiler now handles code in banks 040-043 (superbank 4), and with `resume_keys` it stops at CHANG2 when a DANZIG finds a job waiting, so every order pair of a job is a resume point. All 49,664 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 1,564 frozen cases, and 15 C64 diagnostics pass 132 cases in VICE that reach all 1,325 branch outcomes the host cases reach, with PRG hashes in the log. The first certificate review (#133) asked for that outcome cover, the Earth-sphere X2 states, varying TIME1/TIME2, edge values and corrected CM certificate text; this re-freeze adds them. See `docs/SBAND-ANTENNA.md`.
 
 ## Run the T4RUPT display and dispatch core of both missions as native routines
 
 T4RUPT_PROGRAM.agc's core is native in both missions: the 120 ms phase (NORMT4, CDRVE, DSPOUT and the DSPTAB scan to channel 10, HANG20, SETTIME4, the PRO key check), the T4JUMP dispatch to the monitors, and the 20 ms quick display (QUIKDSP, QUIKRUPT, NODSPY, SYNCT4, QUIKOFF) (`lm_t4rupt_core_routines`, `cm_t4rupt_core_routines`). Channels 10 and 32 join `agc_hardware`. All 4,416 cases equal the original programs in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channel 10. The original executed every reachable instruction of the core in that comparison. The 11,400 strict and sanitizer checks pass, and every sixteenth case matches in VICE. The monitors from IMUMON on remain; the file stays partial. See `docs/T4RUPT-CORE.md`.
 
+## Register PINBALL_GAME_BUTTONS_AND_LIGHTS on the transfer ABI
+
+Every point at which a Pinball module is entered is a routine of the control-transfer ABI at its physical address, in both Luminary099 (273) and Comanche055 (268): every label but the internal subroutines, every external-callee return, and the BANKCALL return points through SWRETURN; routines ending at a return cell (TC WDRET, TC DSEXIT, TC Q, ...) take that one transfer. `tools/lanec/routines.py pin` generates the tables and checks them against the listings. 2,096 round trips (the genuine external callers, and every routine from its own entry chained through the routines that follow it) give 1,232 complete states identical to the unchanged original programs in Virtual AGC and 864 chains refused unchanged where they leave the modules' domains, in strict and ASan/UBSan builds; 1,530 entry states with a broken register contract are refused unchanged (`pin-refuse`). On the C64, one program per module and mission registers INTER-BANK and that module's points: 108 programs run 575 round-trip rows, picked to take every host branch arc, on a VICE PAL C64 (22 modules' programs do not fit below $C000). Luminary's SWRETURN/ISWRETRN accept Q = 3 after `TC Q`. See `docs/LANEC-PIN-TRANSFER.md`.
+
+## Run the earlier Pinball modules through the Lane C harness
+
+Every earlier native Pinball module of Luminary099 and Comanche055 (the CHARIN family, decimal and octal displays, scale factors, loads, monitor, NVSUB and verb/noun machinery, lamp test, operator requests) now runs through the Lane C harness in 92 `pw-*` suites, drawing states from each module's own generator over its whole domain: 108,043 of 108,063 cases' complete state (all 2,048 erasable words, central registers, I/O channels 0-77, superbank and IRQ) is identical to the unchanged original programs in Virtual AGC, run to the point where the module stops, in strict and ASan/UBSan builds, and the other 20 are refused unchanged. 85 suites' branch-arc-picked rows also pass on a VICE PAL C64 (917 checks); the other seven modules run on the C64 in their own milestones' programs. These are the cases the Pinball transfer ABI and full-file certificates build on. See `docs/LANEC-PW.md`.
+
+## Translate Comanche055 IMU_CALIBRATION_AND_ALIGNMENT
+
+All of Comanche055 IMU_CALIBRATION_AND_ALIGNMENT (1,077 words: the P07 IMU performance tests, the optimum prelaunch alignment and calibration filter, gyrocompassing, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED) is native C on the control-transfer ABI, as 398 routines compiled by `tools/interp_compile.py`. The compiler now reads input channels 3, 4 and 030-033 that the caller latches (`channel_inputs`, through `AGC_CHANNEL`), ends runs at spin waits (`idle`) and at the erasable program the test loads (`erasable_calls`), and guards indexed operands (`index_guard`). All 203,776 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 534 frozen cases, chosen to reach every branch outcome any case reaches, and 19 C64 diagnostics pass 475 cases in VICE that reach all of them. A complete certificate is drafted for the certificate reviewer. See `docs/IMU-CALIBRATION.md`.
+
+## Gimbal lock avoidance as registered native routines
+
+Luminary099 and Comanche055 GIMBAL_LOCK_AVOIDANCE (LOCSKIRT, which KALCMANU reaches by GOTO and BPL) are compiled by `tools/interp_compile.py` into 9 Luminary and 11 Comanche routines of the control-transfer ABI. The entry, the DELCOMP return and every word where the job resumes after CHANG2 are registered keys. All 10,240 cases equal the original programs in yaAGC. The host and sanitizer tests pass 325 frozen cases, and two C64 diagnostics pass 31 cases in VICE that reach every branch outcome the host cases reach, with PRG hashes in the log. New certificates for both files are drafted to replace the legacy ones flagged in issue #129. See `docs/GIMBAL-LOCK.md`.
+
+## INTER-BANK entries reached with an unusual Q (SWCALL -1, BANKJUMP from TC L)
+
+`SWCALL -1`, the `INCR Q` that every RTB enters through, is now a registered transfer routine in both missions, and CM BANKJUMP takes Q below 0100 as LM's does since #101 (DISPLAY_INTERFACE's SAVELOCS reaches it by `TC L`). In 1,024 cases across both missions and both entries, native runs through `agc_transfer_run` equal yaAGC on all 2048 erasable words at the callee. The 1,030 strict, sanitizer and C64 checks pass. The proof lists every native source it depends on. This addresses the INTER-BANK items of #129. See `docs/INTERBANK-Q.md`.
+
+## Run the LM IMU monitor of T4RUPT as native routines
+
+Luminary099 T4RUPT_PROGRAM.agc from IMUMON to 90SECS (06,2172-3005) is native as `lm_t4rupt_imu_routines`: the channel 30 and channel 33 monitors with their bit-change handlers (temperature, turn-on, IMU and CDU fail, cage, operate, PIPA fail, rate alarms), SETISSW, the gimbal lock check, CAGESUB and LAMPTEST. Channels 12, 14, 30 and 33 join `agc_hardware`. All 4,736 cases equal the original program in yaAGC in all 2,048 erasable words, SUPERBNK and channels 11, 12, 14, 30 and 33. The original executed every instruction of the range in that comparison. The 9,582 strict and sanitizer checks pass, and 300 cases, which run every branch outcome the host cases run, match in VICE. RRAUTCHK and DAPT4S are `lm-t4rupt-rr`. See `docs/LM-T4RUPT-IMU.md`.
+
+## Run the CM IMU monitor of T4RUPT as native routines
+
+Comanche055 T4RUPT_PROGRAM.agc from IMUMON to 90SECS (06,2174-2764), with ZOPFIN3 that LAMPTEST shares, is native as `cm_t4rupt_imu_routines`: the channel 30 and channel 33 monitors with their bit-change handlers, SETISSW, the gimbal lock check, CAGESUB and LAMPTEST. All 4,736 cases equal the original program in yaAGC in all 2,048 erasable words, SUPERBNK and channels 11, 12, 14, 30 and 33. The original executed every instruction of the range in that comparison. The 9,577 strict and sanitizer checks pass, and 300 cases, which run every branch outcome the host cases run, match in VICE. OPTMON remains; the file stays partial. See `docs/CM-T4RUPT-IMU.md`.
+
 ## Translate Luminary SERVICER as transfer-ABI routines
 
 All of Luminary099 SERVICER (the average-G navigation, 1,203 words in banks 37, 33, 22, 27, 32, 23, 21 and 34) runs as 188 native routines of the control-transfer ABI, 164 basic and 24 interpretive: READACCS and PIPASR, SERVICER, AVERAGEG and COPYCYCL, the DV monitor and LOTHRUST, AVGEND, SERVIDLE and SERVEXIT, NORMLIZE, the R29 and altitude block, CALCGRAV, CALCRVG, RVBOTH, MUNRVG and MUNGRAV, and the landing radar position and velocity updates, radar jobs and SETPOS. All 23,032 accepted cases (of 24,064; 1,032 refused) equal the original program (on yaAGC with the hardware divide) in all 2,048 erasable words, channels 11, 12, 32 and 33 and the interrupt-enable bit (strict and ASAN/UBSAN). Every key, instruction, order pair and reachable decision outcome is taken, every word is owned and its operand checked against the listing and rope. The C64 build is split into seven segment groups, each checked against the oracle with the same segment ends, and 261 C64 rows chosen by outcome pass in VICE in seven PRGs. See `docs/LM-SERVICER.md`.
+
+## Run the LM rendezvous radar monitor and GPMATRIX of T4RUPT as native routines
+
+Luminary099 T4RUPT_PROGRAM.agc from RRAUTCHK to the end (06,3006-3155) is native as `lm_t4rupt_rr_routines`: the rendezvous radar auto-mode and CDU fail monitor, the angle limit check and reposition, and GPMATRIX. All 3,456 cases equal the original program in yaAGC in all 2,048 erasable words, SUPERBNK and channels 11, 12, 14, 30 and 33. The original executed every instruction of the range in that comparison. The 10,379 strict and sanitizer checks pass, and 216 cases, which run every branch outcome the host cases run, match in VICE. With `t4rupt-core` and `lm-t4rupt-imu` every word of the file is native. See `docs/LM-T4RUPT-RR.md`.
+
+## SERVICE_ROUTINES entries of both missions in the transfer ABI
+
+Every SERVICE_ROUTINES entry of both missions is now a registered transfer routine at its original address: UPENT2, DOWNENT2, UPFLAG, DOWNFLAG, DELAYJOB, TCGETCAD, WAKER, GENTRAN, B5OFF, and CM TRFAILOF/TRFAILON. The flag and block-transfer operands of all 323 genuine call-site words are compiled constants. TCGETCAD, WAKER and B5OFF now accept any Q, since they never read it. 1,642 cases (every site twice, plus 512 entry cases) match yaAGC on all 2048 erasable words and the interrupt inhibit, through `agc_transfer_run`. The 1,654 strict, sanitizer and C64 checks pass. This addresses the SERVICE_ROUTINES items of #129. See `docs/SERVICE-TRANSFER.md`.
+
+## Comanche055 system-test entry words COMPVER, GTSCPSS1 and REDO in the transfer ABI
+
+The three fixed entry words at the start of Comanche055's SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER 33,2000, GTSCPSS1 33,2001 and REDO 33,2002) are now registered in `cm_standard_lead_routines`. RESTART_TABLES, FRESH_START_AND_RESTART and EXTENDED_VERBS reach them by 2CADR or FCADR. Each is one TC: Q is left at the next word (REDO's `MM 07` operand, which NEWMODEX reads) and Z at GCOMPVER, GTSCPSS or NEWMODEX. 384 cases through `agc_transfer_run` match yaAGC on all 2048 erasable words. The 390 strict, sanitizer and C64 checks pass. This addresses the CM STANDARD_LEAD_INS item of #129.
 
 ## Translate Comanche AUTOMATIC_MANEUVERS
 
@@ -2035,9 +2085,17 @@ All of Comanche055 TVCROLLDAP (278 words) is native C on the control-transfer AB
 
 All of Comanche055 TVCSTROKETEST (73 words) is native C on the control-transfer ABI, as 5 routines compiled whole-file by `tools/basic_compile.py`. All 1,024 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 32 frozen cases, and 1 C64 diagnostic passes 12 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-STROKE.md`.
 
+## Run whole LM T4RUPT interrupts through the trampoline
+
+Whole Luminary099 T4RUPT interrupts run through `agc_transfer_run` over the three routine tables of T4RUPT_PROGRAM.agc, from T4RUPT to the first continuation outside the file. All 4,096 interrupts equal the original program in yaAGC in all 2,048 erasable words, SUPERBNK, the interrupt-enable bit, InIsr and channels 10, 11, 12, 14, 30 and 33, and 265 of them, which run every branch outcome the host interrupts run, match in VICE. The whole-file source map shows every instruction of the file executed by a native routine's oracle run. See `docs/LM-T4RUPT-CHAIN.md`.
+
 ## Translate Luminary P40-P47
 
 Luminary099 P40-P47.agc (P40, P41, P42 and P47, the S40.x burn set-up, the engine on and off tasks, POSTBURN and UPDATEVG) is native C on the control-transfer ABI as 403 routines compiled by `tools/interp_compile.py`, except the 17 words that write channels 12 and 14 and DSALMOUT, which wait for an output-channel model. The compiler now also reads `Z` as an operand, returns a `CALL` without a return point through QPRET, and takes `GSHIFT` and `SLOAD` of fixed words and `CALRB`. Every word after a DANZIG is a routine of its own (`resume_keys`), so a job resumed after CHANG2 has its key. All 196,608 compared cases (of 206,336; the 9,728 that reach a channel write are listed, not compared) equal the original program in yaAGC. The host and sanitizer tests pass 305 frozen cases, and 18 C64 diagnostics pass 768 cases in VICE. The file stays partial until the channel words are translated. See `docs/LM-P40-P47.md`.
+
+## WAITLIST entries reached from other files in the transfer ABI
+
+The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,266 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together. The 1,271 strict, sanitizer and C64 checks pass. See `docs/WAITLIST-ENTRIES.md`.
 
 ## Translate Comanche055 R31
 
@@ -2079,9 +2137,21 @@ All of Luminary099 P32-P35_P72-P75 (923 words: CSI and CDH with the CSI search, 
 
 All of Luminary099 CONIC_SUBROUTINES (1,072 words) is native C on the control-transfer ABI, as 455 routines compiled by `tools/interp_compile.py`, with CHECKCTR as `lm_conic_checkctr`. Every entry (KEPLERN, TIMETHET, LAMBERT, TIMERAD, APSIDES and the rest) and every point a job resumes at after CHANG2 is a routine. All 29,120 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 228 frozen cases, and 13 C64 diagnostics pass 910 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/LM-CONIC-COMPILED.md`.
 
+## INTER-BANK_COMMUNICATION of both missions against yaAGC
+
+Every genuine inline-CADR call site (448 LM, 354 CM) and every one of the 14 registered entries of INTER-BANK_COMMUNICATION in each mission now runs through `agc_transfer_run` against the original program in yaAGC. 2,146 cases match on all 2048 erasable words, the interrupt inhibit and SUPERBNK; 2,145 reach a continuation. The 2,150 strict and sanitizer checks and 723 VICE checks pass, and a source map shows the oracle executed every instruction of the file in both missions. This is re-certification evidence for the INTER-BANK items of #129. See `docs/INTERBANK-ORACLE.md`.
+
+## SYSTEM_TEST_STANDARD_LEAD_INS of both missions against yaAGC, with its CALL and EXIT words
+
+Every registered entry of SYSTEM_TEST_STANDARD_LEAD_INS in both missions, the interpreter entries they reach, and the file's interpretive CALL and EXIT words now run through `agc_transfer_run` against the original program in yaAGC. The CALL word is a new registered interpretive key (`standard_lead_interp_call_order`), and the EXIT key is registered at its word. 1,408 cases match yaAGC on all 2048 erasable words, the interrupt inhibit and SUPERBNK; 1,344 reach a continuation. The 1,414 strict and sanitizer checks and 475 VICE checks pass, and a source map shows every instruction executed by the oracle (COMPVER, GTSCPSS1 and REDO in cm-lead-tests). This is re-certification evidence for the STANDARD_LEAD_INS items of #129. See `docs/STANDARD-LEAD-ORACLE.md`.
+
 ## Thin resident Executive and Waitlist on the canonical image
 
 One thin resident Executive and Waitlist for both missions (`src/resident_kernel_body.inc`, `src/lm_kernel.c`, `src/cm_kernel.c`) translates EXECUTIVE.agc and WAITLIST.agc instruction by instruction onto the canonical image, with no gather/commit view and no domain refusals, as drop-in routine tables for the certified ones (`include/resident_kernel.h`). On every case of the six certified service milestones, 23,250 Luminary099 and 18,786 Comanche055 cases, each run equals the original program in yaAGC in all 2,048 erasable words and the device words, and equals the certified routines' final image word for word. The strict and sanitizer builds pass, and 400 LM and 329 CM rows, which take every kernel branch arc the host cases take, pass in VICE with the kernel on the image at $7000. The kernel links in 10.3 KB (LM) and 10.0 KB (CM) at -Oz, against 54-56 KB for the certified routines. See `docs/RESIDENT-KERNEL.md`.
+
+## Kernel C64 rows by branch cover, flight edges, and the #143/#144 fixes
+
+The C64 programs of the nine kernel milestones (`lm-t6rupt`, `rupt-lead-ins`, `keyrupt-uprupt` and the six Executive milestones) now run, beyond every third case, the fewest extra cases that take every branch arc the host corpus takes in every linked source (`tools/lane_a_c64_cover.py`); all nine pass in VICE. The Executive, Waitlist and T6 generators now produce flight edges on purpose (TIME3 wrap, tasks due together or 1 cs apart, equal priorities, NEWJOB -0, Q and QRUPT holding data, TIME6 1-3). QXCH now moves any Q (#143), and RESUME re-executes BRUPT only when it is the word at ZRUPT-1 (#144). The certificates of EXECUTIVE, WAITLIST, INTERRUPT_LEAD_INS, KEYRUPT_UPRUPT (both missions) and T6-RUPT_PROGRAMS cite the cover records and their VICE targets. See `docs/KERNEL-C64-COVER.md`.
 
 ## Translate Luminary R63
 
@@ -2094,3 +2164,19 @@ Luminary099 P12.agc (powered ascent, and the P12INIT, COMMINIT and GUIDINIT set-
 ## Translate Luminary P70-P71
 
 Luminary099 P70-P71.agc (the DPS and APS abort programs, the abort-switch task R10,R11 and the abort set-up) is native C on the control-transfer ABI as 88 routines compiled by `tools/interp_compile.py`, 290 of its 298 words. The 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14) wait for the channel model, so the file stays partial. All 37,747 compared cases equal the original program in yaAGC; 7,309 that reach a channel word are listed. The host and sanitizer tests pass 1,184 frozen cases, and 4 C64 diagnostics pass 101 cases in VICE that take all 854 branch arcs the compared host cases take. See `docs/LM-P70-P71.md`.
+
+## Translate Luminary099 and Comanche055 LATITUDE_LONGITUDE_SUBROUTINES
+
+All of Luminary099 and Comanche055 LATITUDE_LONGITUDE_SUBROUTINES (155 and 159 words: LAT-LONG, LALOTORV, ARCTAN, GETERAD and SETRE) are native C on the control-transfer ABI, as 150 routines compiled by `tools/interp_compile.py`. All 38,400 cases equal the original programs in yaAGC; the host tests pass 600 frozen cases and eight C64 diagnostics pass 179 cases in VICE. See `docs/LAT-LONG.md`.
+
+## Translate Luminary099 and Comanche055 PLANETARY_INERTIAL_ORIENTATION
+
+All of Luminary099 and Comanche055 PLANETARY_INERTIAL_ORIENTATION (188 and 204 words: R-TO-RP, RP-TO-R and the Moon and Earth matrices) are native C on the control-transfer ABI, as 189 routines compiled by `tools/interp_compile.py`. All 48,384 cases equal the original programs in yaAGC; the host tests pass 756 frozen cases and eight C64 diagnostics pass 202 cases in VICE. See `docs/PLANETARY.md`.
+
+## Translate Comanche055 P11
+
+All of Comanche055 P11 (535 words: the Earth orbit insertion monitor, its attitude error display and the boost steering takeover) is native C on the control-transfer ABI, as 148 routines compiled whole-file by `tools/basic_compile.py` and `tools/interp_compile.py`. All 37,888 cases equal the original program in yaAGC; the host tests pass 592 frozen cases and eight C64 diagnostics pass 202 cases in VICE. See `docs/CM-P11.md`.
+
+## Draft the PINBALL_GAME_BUTTONS_AND_LIGHTS full-file certificates
+
+Pending complete-coverage certificates for Luminary099 and Comanche055 PINBALL_GAME_BUTTONS_AND_LIGHTS.agc, for the certificate reviewer. `tools/lanec/wholefile_pin.py` assigns every assembled word (2,378 LM, 2,379 CM) to `lanec-pin-gaps`, to `lanec-pw` (the earlier Pinball modules) or to the file's constants. It shows that every instruction word except two LM and three CM unreachable ones executes in the unchanged original program in Virtual AGC under cases the native code matches. Every entry, external-callee return, BANKCALL return point and POSTJUMP/BANKJUMP target is a transfer-ABI routine (273 LM, 268 CM; `lanec-pin-transfer`). The evidence covers 96 suites with 128,625 oracle cases (strict and ASan/UBSan), zero differing, and 3,878 refusals with the state unchanged. It also includes fresh VICE runs (`vice-lanec-pin-gaps` 50 checks, `vice-lanec-pw` 917, `vice-lanec-pin-transfer` 575) and a C64 branch record in which the frozen rows take every host branch arc apart from the documented exceptions. `tools/cert_precheck.py` reports no failures. See `docs/LANEC-PIN-CERT.md`.

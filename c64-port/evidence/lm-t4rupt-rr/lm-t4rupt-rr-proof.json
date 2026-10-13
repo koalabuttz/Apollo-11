@@ -1,0 +1,51 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 3456,
+ "snapshot_sha256": "888fe5d0bef0eb32a364d8a562f4366df6b63b31a93571a67f51ce35f149c8a0",
+ "outcomes": {
+  "06,3006 RRAUTCHK:returned": 2048,
+  "06,3032 WAITLIST return (2CADR RRTURNON):returned": 128,
+  "06,3070 TRKFLCDU (ALARM 515 return):returned": 128,
+  "06,3071 RRGIMON (SETTRKF return):returned": 128,
+  "06,3113 RRLIMCHK return (out of limits):returned": 128,
+  "06,3114 RRLIMCHK return (in limits):returned": 128,
+  "06,3126 WAITLIST return (2CADR DORREPOS):returned": 128,
+  "06,3132 GPMATRIX (DAPT4S, NORRGMON):returned": 128,
+  "06,3134 SPSIN return:returned": 128,
+  "06,3137 SPCOS return:returned": 128,
+  "06,3142 SPSIN return:returned": 128,
+  "06,3151 SPCOS return:returned": 128
+ },
+ "continuations": {
+  "04523": 160,
+  "04564": 341,
+  "05032": 256,
+  "05033": 2209,
+  "05203": 317,
+  "05270": 128,
+  "05567": 45
+ },
+ "entries": [
+  "06,3006 RRAUTCHK",
+  "06,3032 WAITLIST return (2CADR RRTURNON)",
+  "06,3070 TRKFLCDU (ALARM 515 return)",
+  "06,3071 RRGIMON (SETTRKF return)",
+  "06,3113 RRLIMCHK return (out of limits)",
+  "06,3114 RRLIMCHK return (in limits)",
+  "06,3126 WAITLIST return (2CADR DORREPOS)",
+  "06,3132 GPMATRIX (DAPT4S, NORRGMON)",
+  "06,3134 SPSIN return",
+  "06,3137 SPCOS return",
+  "06,3142 SPSIN return",
+  "06,3151 SPCOS return"
+ ],
+ "boundary": "one routine from its entry to the continuation it leaves in Z (RESUME, ALARM, WAITLIST, SETTRKF, RRLIMCHK, SPSIN or SPCOS); the original runs to the first time it reaches that Z (and FB in banked memory)",
+ "c64_rows": {
+  "cases": 216,
+  "host_edges": 39,
+  "row_edges": 39
+ },
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, channels 11, 12, 14, 30, 33",
+ "full_physical_words": 2048
+}

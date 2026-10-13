@@ -67,5 +67,6 @@ Hashes: `evidence/lanec-ev-front/SHA256.json` (all files in the tree).
   (per-case CRC-32 of the oracle states).
 - Host and sanitizer results: `make test-lanec-ev-front sanitize-lanec-ev-front`
   (`lanec-ev-front-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-front`, 251 frozen cases (every entry, both missions) on a VICE
-  PAL C64 (`lanec-ev-front-vice.txt`).
+- C64 execution results: `make vice-lanec-ev-front`, 21 frozen cases on a VICE PAL C64,
+  picked by `tools/lanec/cover.py` so that together they take every
+  branch arc the 5,760 host cases take (`lanec-ev-front-vice.txt`).

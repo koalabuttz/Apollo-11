@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-pin-transfer",
+  "release": "evidence-lanec-pin-transfer",
+  "files": {
+    "lanec-pin-refuse-diff.json": {
+      "sha256": "e4d58cb71ab01da5ae4d1184b83652a3de27be80ee2655d0d74cd665f303597c",
+      "bytes": 161,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-c64-diff.json": {
+      "sha256": "2a1b255373546d2e430106fe0245bfc99d752a954a0970ae0b580eed27c2954b",
+      "bytes": 272,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-c64-oracle.crc": {
+      "sha256": "577c234d9e3618d90c124c9e815f3bb93b16cce99cd6f468c660beecbb9de7a6",
+      "bytes": 28122,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-diff.json": {
+      "sha256": "ab492961d7215e2d053d5dce15ce916736a78c7d7195ab9403ca6c74ff273a50",
+      "bytes": 267,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-oracle.crc": {
+      "sha256": "6575b3840b4cd1d71fadf5b01515ebd4d535437246b2bb654ca44ecd3fd30cc5",
+      "bytes": 28234,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-sanitize.txt": {
+      "sha256": "fb419d30f2ee87801c9f2a79a8d35ca7b9ec6162dd6076dd611539be852657de",
+      "bytes": 482,
+      "store": "tree"
+    },
+    "lanec-pin-transfer-vice.txt": {
+      "sha256": "d2d66dfc54cfb0ae875074e1276f91822c1d8faae97732866f4ce90f05552459",
+      "bytes": 8497,
+      "store": "tree"
+    }
+  }
+}
