@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "lm-imu-performance-vice.log": {
-      "sha256": "ad3530a01f872968462b21a70e60d7c36cb7a50c3915e591a1e1f7e31f21697e",
-      "bytes": 1164,
+      "sha256": "a57538d003177f59812c03cc9215254d24915735251c6e9f28088257bf8a4fa3",
+      "bytes": 7523,
       "store": "release"
     }
   }
