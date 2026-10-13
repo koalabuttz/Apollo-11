@@ -108,6 +108,7 @@ class Mission:
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
+        self.flow = {}   # ('flow_states') point -> states its entries' runs reach it in
 
     def caller_returns(self, spec):
         """Fixed CADRs of the words after CALL/STCALL operands elsewhere
@@ -303,7 +304,8 @@ def case(mi, point, n, rng):
         if shape == 3:
             counter_edges(E, rng)
     pinned = set()
-    for k, choices in list(mi.all_states.items()) + list(mi.states.get(point, {}).items()):
+    for k, choices in (list(mi.all_states.items()) + list(mi.flow.get(point, {}).items())
+                       + list(mi.states.get(point, {}).items())):
         a = state_address(mi, k, vac)
         pinned.add(a)
         if isinstance(choices, dict):
@@ -466,6 +468,52 @@ def build(spec_id, spec):
     return ref, nat
 
 
+FLOW_KEYS = ('0166', '0163', 'vac+046', 'vac+047', 'vac+050', 'vac+051')
+
+
+def flow_states(spec_id, spec, missions, per_entry=64):
+    """'flow_states': a resume point mid-sequence starts from the states the
+    file's own runs reach it in. The oracle runs cases from every entry
+    (IRC_FLOW lists PUSHLOC, MODE, X1, X2, S1 and S2 at each NEWOPS), and
+    each other routine's cases draw those registers from the values seen
+    there (spec states still win). A routine no entry reaches keeps
+    random ones."""
+    rng = random.Random('interp-flow:' + spec_id)
+    cases = []
+    for cm, mi in enumerate(missions):
+        if mi.m not in spec['missions']:
+            continue
+        for p in mi.points:
+            if mi.cp.starts[p][1].startswith('entry'):
+                for n in range(per_entry):
+                    seed, edits, ie, stop, sb = case(mi, p, n, rng)
+                    cases.append({'cm': cm, 'point': p, 'seed': seed, 'edits': edits, 'ie': ie, 'stop': stop, 'sb': sb})
+    os.makedirs(B, exist_ok=True)
+    path = os.path.join(B, '%s-flow.bin' % spec_id)
+    write_cases(path, missions, cases)
+    ref, _ = build(spec_id, spec)
+    err = subprocess.run([ref, *ROPES, path], cwd=R, check=True, capture_output=True, text=True,
+                         env={**os.environ, 'IRC_FLOW': '1'}).stderr
+    seen = collections.defaultdict(lambda: collections.defaultdict(set))
+    for line in err.splitlines():
+        f = line.split()
+        if f[:1] != ['F']:
+            continue
+        n, p, *vals = (int(x) for x in f[1:])
+        mi = missions[cases[n]['cm']]
+        if p not in mi.cp.starts or mi.cp.starts[p][1].startswith('entry'):
+            continue
+        for k, v in zip(FLOW_KEYS, vals):
+            # A PUSHLOC off the pushdown list is an entry case's own random
+            # one, not a state the file reaches.
+            if k == '0166' and v >= 0o46:
+                continue
+            seen[(cases[n]['cm'], p)][k].add('vac+%o' % v if k == '0166' else v)
+    for (cm, p), d in seen.items():
+        missions[cm].flow[p] = {k: sorted(v, key=str) for k, v in d.items()}
+    print('flow states: %d routines reached from %d entry cases' % (len(seen), len(cases)))
+
+
 def build_edges(spec_id, spec):
     """The native runner with every linked source (the milestone's routines,
     the interpreter bodies, the image ops and native RTBs; not the test
@@ -542,6 +590,8 @@ def main():
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
+    if spec.get('flow_states'):
+        flow_states(a.spec, spec, missions)
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -961,7 +1011,8 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
                 mask, pick = want, list(part)
             else:
                 mask, pick = trial, tp
-        groups.append((mi.m, mask, pick))
+        if mask:
+            groups.append((mi.m, mask, pick))
     for m, mask, pick in groups:
         # Every case of a group whose run stays in it, so later routines'
         # closures don't drop earlier cases.
