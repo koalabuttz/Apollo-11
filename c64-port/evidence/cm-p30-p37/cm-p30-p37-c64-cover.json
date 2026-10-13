@@ -248,5 +248,7 @@
    23
   ]
  },
- "host_branches_missing_on_c64": []
+ "host_branches_missing_on_c64": [],
+ "all_cases_branch_arcs": 888,
+ "all_cases_branches_missing_on_c64": []
 }

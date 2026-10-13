@@ -2260,7 +2260,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "b20464b58409355263fa0d6670e235f3c01e7f83e450eb1e1d489342d1add0de"
+            "sha256": "a1bcf4523b935da9f2f06d6cbc649f947ae7e995962876fbb435cbda3902d37a"
           }
         }
       }
@@ -2988,7 +2988,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "6d024bcd1a5216c421bb567d2360da88a5bc7c58ff72f302842c6db681fd1ae2"
+            "sha256": "2cae62f1ddaac4bda6b3b85d6dd819b4c72eb9aab046e2dd1f008421ca59f4ef"
           }
         }
       }
@@ -7983,7 +7983,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "6d024bcd1a5216c421bb567d2360da88a5bc7c58ff72f302842c6db681fd1ae2"
+            "sha256": "2cae62f1ddaac4bda6b3b85d6dd819b4c72eb9aab046e2dd1f008421ca59f4ef"
           }
         }
       }

@@ -4,8 +4,8 @@
   "release": "evidence-cm-p30-p37",
   "files": {
     "cm-p30-p37-c64-cover.json": {
-      "sha256": "b20464b58409355263fa0d6670e235f3c01e7f83e450eb1e1d489342d1add0de",
-      "bytes": 3807,
+      "sha256": "a1bcf4523b935da9f2f06d6cbc649f947ae7e995962876fbb435cbda3902d37a",
+      "bytes": 3880,
       "store": "tree"
     },
     "cm-p30-p37-differential.log": {
