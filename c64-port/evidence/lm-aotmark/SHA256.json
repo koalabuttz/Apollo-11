@@ -4,28 +4,28 @@
   "release": "evidence-lm-aotmark",
   "files": {
     "lm-aotmark-c64-cover.json": {
-      "sha256": "7858e6023de821e1454ae38b0ff718988cdbb76f78f6f58c7cb074b7c7f0be72",
-      "bytes": 5099,
+      "sha256": "e6a4ae1072c3ce1f54367f9438b0609dbef29c7b291be2aa931cff5f783e8cf0",
+      "bytes": 5543,
       "store": "tree"
     },
     "lm-aotmark-c64-outcomes.json": {
-      "sha256": "93654cdc64a98de49645191e72fd0c9b25990b75ff4cf48848a0b99ebe1891b4",
-      "bytes": 767,
+      "sha256": "d94ef7fdf0b7f31ee8ec1cdb482ab9fc12adecfcc9153a25b811afc838926023",
+      "bytes": 883,
       "store": "tree"
     },
     "lm-aotmark-differential.log": {
-      "sha256": "cad343a1d16acab26aa7878986e1f0a80170a3ad5921816bbf912f50a38bbda5",
-      "bytes": 8419,
+      "sha256": "126c9bf3690602bc8c344375493e1b12e9a5a0f401681587b701fb0d0222a904",
+      "bytes": 8317,
       "store": "release"
     },
     "lm-aotmark-host.log": {
-      "sha256": "268eb56f254dbcd04339d16e45dadb232fb5d7fb87afa455727c46d3a37df398",
+      "sha256": "309943eff0f8e5b466db8594ab29bd85d51826c2c7416c717c57f3b5d743cf64",
       "bytes": 899,
       "store": "release"
     },
     "lm-aotmark-proof.json": {
-      "sha256": "39225e6c6b5859afcb604fb844c2d9af636c594205e5af9b84d1da9da78c5eea",
-      "bytes": 19843,
+      "sha256": "4577d07d39fc48402d910e91782dda2cca6b4c42d38db0508c707d85ac57d5f3",
+      "bytes": 19670,
       "store": "tree"
     },
     "lm-aotmark-source-map.json": {
@@ -34,8 +34,8 @@
       "store": "tree"
     },
     "lm-aotmark-vice.log": {
-      "sha256": "0e804e65ae6357a8d5412a16e58818c232bfadb6d9ebcbbbf952fa8560fbafea",
-      "bytes": 18330,
+      "sha256": "11817ddb49e99d9cc5a4ff25f6b401fb724a1905dea7498e46a7793845b89207",
+      "bytes": 17873,
       "store": "release"
     }
   }

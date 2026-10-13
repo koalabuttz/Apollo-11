@@ -3,7 +3,7 @@
 # tools/interp_compile.py into native routines of the control-transfer ABI.
 AOT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 AOT_SRC = src/lm_aotmark.c tests/lm_aotmark_target.c $(AOT_COMMON)
-AOT_HDR = include/lm_aotmark.h tests/interp_case.h tests/lm_aotmark_vectors.h tests/lm_aotmark_c64_vectors.h
+AOT_HDR = include/lm_aotmark.h tests/interp_case.h tests/interp_cut.h tests/lm_aotmark_vectors.h tests/lm_aotmark_c64_vectors.h
 AOT_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS
 .PHONY: test-lm-aotmark sanitize-lm-aotmark c64-lm-aotmark vice-lm-aotmark lm-aotmark-differential
 all: build/test-lm-aotmark
@@ -24,7 +24,7 @@ lm-aotmark-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/lm-aotmark.groups
 AOT_C64_PRGS = $(foreach g,$(LM_AOTMARK_GROUPS),build/lm-aotmark-$(g).prg)
-AOT_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/lm_aotmark_target.c
+AOT_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/interp_cut.c tests/lm_aotmark_target.c
 AOT_C64_lm = src/lm_aotmark.c src/lm_interp_orders.c src/lm_interp_steps.c
 c64-lm-aotmark: $(AOT_C64_PRGS)
 build/lm-aotmark-%.prg: $(AOT_SRC) platform/c64/lm_aotmark_diagnostic.c tools/mk/lm-aotmark.groups $(AOT_HDR) | build

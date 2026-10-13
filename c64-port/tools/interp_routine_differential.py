@@ -1878,7 +1878,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             need[p] = ((mine[:1] + [i for i in mine[1:] if cover and i in chosen]) if edges is not None else
                        ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per])
         if edges is not None:
-            sets = edges[0]
+            # ('c64_cuts' rows come after the traced cases: no site edges.)
+            sets = list(edges[0]) + [frozenset()] * (len(cases) - len(edges[0]))
             fits = {}
 
             def alone(i):
@@ -1956,7 +1957,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             mi = [x for x in missions if x.m == m][0]
             sys.exit('a single routine group of %s does not fit the C64: %s' % (
                 m, ', '.join(mi.cp.where(p) for k, p in enumerate(mi.points) if mask >> k & 1)))
-    C64_PICKS[:] = [pick for m, mask, pick in groups]
+    # (A 'c64_cuts' row counts as the differential's case it was cut from.)
+    C64_PICKS[:] = [[cases[i].get('of', cases[i].get('src', i)) for i in pick] for m, mask, pick in groups]
     extra = {}
     if cover:
         picked = [i for m, mask, pick in groups for i in pick]
@@ -2000,7 +2002,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     open(os.path.join(R, 'tools/mk/%s.groups' % sym.replace('_', '-')), 'w').write('\n'.join(mk) + '\n')
     # (case_ids: the differential's case of each row, a segment row's too)
     return [{'mission': m, 'keep': '0x%x' % mask, 'cases': len(pick),
-             'case_ids': [cases[i].get('src', i) for i in pick]} for m, mask, pick in groups], extra
+             'case_ids': [cases[i].get('of', cases[i].get('src', i)) for i in pick]} for m, mask, pick in groups], extra
 
 
 
