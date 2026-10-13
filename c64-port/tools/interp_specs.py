@@ -527,6 +527,8 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # (#260) C64 INDEX end-around carry.
+        'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
         'base': {'cm': 'cm_t4rupt_optics'},
         'symbol': {'cm': 'cm_t4rupt_optics'},
