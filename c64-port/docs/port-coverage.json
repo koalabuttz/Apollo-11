@@ -128,7 +128,7 @@
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "848e960c1f7c34a8efb122a5cd44796be3f8ca1a9584d8c6e72faf2a2c3f022e"
+            "sha256": "a3562a47664eed60ac79b7c7dc550ffd7fbb3caf8af569f27a1dac520e891e9c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
@@ -1947,26 +1947,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "c1d965e868fa5041022ba898271b33a6320b6a8846d1298ca4421e4ac16e55e3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "d3d5e57d267eb9393a50bee398e5527f66d9a566a2e7ed03b1828a21baa61e83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "e5bd0b352794c6eb07fe29182a91a16576d01308b544eea2aa89f6a3ec3aaa11"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "27e5a2c05557bb70be8199f061e8abddf6d35c95134c84fa07b4704cddc6b78a",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "15baa0117bc8c9fb953556cc6c8a2b0b9f8d1010a4310388014525b5f6cd8c31"
           }
         }
       }
@@ -4609,15 +4609,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "164ee4f8ac701c6a5b125ac2e3e677918704c75ca3d652edab05e96bcea9ec63"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "85bb18d317e4248ef146fa163244e3513bfb268a2703d8f024501ad1c9109fa6"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e5aaa2a4f0a1acb70a91ace36dcc7ea0925e6accbdce925371e9a2bac2debe8c",
             "vice_targets": {
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
@@ -4625,7 +4625,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "d2a3d19a86e93d5c176cf9a4cdc7b29a4c7bbf6c095d6f3b574a38fea880cf3a"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -5463,7 +5463,7 @@
           },
           "source_to_native_map": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
-            "sha256": "4dbb109abe1239a8a0206dbc2b9a8b63cba8dc9d4e7632954caa7771b439b21c"
+            "sha256": "697aca0da88ce924e082fba1b3af3871f29bcd5980a56485ad95dc8d35d4b1b3"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64-cover.json",
@@ -7636,19 +7636,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "c1d965e868fa5041022ba898271b33a6320b6a8846d1298ca4421e4ac16e55e3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "d3d5e57d267eb9393a50bee398e5527f66d9a566a2e7ed03b1828a21baa61e83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "e5bd0b352794c6eb07fe29182a91a16576d01308b544eea2aa89f6a3ec3aaa11"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "27e5a2c05557bb70be8199f061e8abddf6d35c95134c84fa07b4704cddc6b78a",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
@@ -7659,7 +7659,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "15baa0117bc8c9fb953556cc6c8a2b0b9f8d1010a4310388014525b5f6cd8c31"
           }
         }
       }
@@ -10494,22 +10494,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "164ee4f8ac701c6a5b125ac2e3e677918704c75ca3d652edab05e96bcea9ec63"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "85bb18d317e4248ef146fa163244e3513bfb268a2703d8f024501ad1c9109fa6"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e5aaa2a4f0a1acb70a91ace36dcc7ea0925e6accbdce925371e9a2bac2debe8c",
             "vice_targets": {
               "vice-standard-lead-oracle": 477
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "d2a3d19a86e93d5c176cf9a4cdc7b29a4c7bbf6c095d6f3b574a38fea880cf3a"
           }
         }
       }

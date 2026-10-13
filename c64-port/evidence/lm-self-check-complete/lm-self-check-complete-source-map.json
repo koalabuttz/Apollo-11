@@ -6,7 +6,7 @@
  "aggregates": {
   "self-check": {
    "record": "docs/SELF-CHECK.md",
-   "sha256": "921cc495445fd5724baf49e06d885fc6bbd342965bb59e45e9261a97ecc52e8c",
+   "sha256": "f8cc47d2dfb87a38518990397f37750d46b2a193908963beff2081cd2f18644a",
    "native": [
     "src/lm_self_check.c",
     "src/lm_self_check_idle.c",
