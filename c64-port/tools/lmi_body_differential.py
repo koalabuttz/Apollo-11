@@ -381,6 +381,64 @@ def case(g,body):
   for x in(0o46,0o47,0o50,0o51):
    v=r.randrange(0,0o60);img[vac+x]=v if r.random()<.6 else 0o77777-v
   return hdr,img
+ if body==61:
+  # AXC: POLISH the operand word, CYR's sign selects X1 or X2.
+  setbanks(img,1);img[5]=A(0o2351,1)
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  img[0o117]=r.choice([r.randrange(0,0o40),0o77777-r.randrange(0,0o40),r.getrandbits(15)])
+  return hdr,img
+ if body==62:
+  # XCHX: POLISH an erasable address (work area or either window), as SXA.
+  setbanks(img,1);img[5]=A(0o2372,1)
+  img[0o20]=r.choice([r.randrange(1,0o40000),r.randrange(0o40000,0o77777)])
+  if r.random()<.4:img[0o117]=r.randrange(0,0o55)
+  else:
+   while True:
+    v=r.randrange(0o56,0o4000)
+    if v>=0o61 and not 0o1370<=v<0o1400 and (v>>8)!=0 or (v<0o400 and v>=0o61):break
+   img[0o117]=v
+  return hdr,img
+ if body in(63,64):
+  # ARCCOS/ARCSIN of 2 MPAC: inside (-.5,.5), at and just past the .5 edge
+  # (ACOS=0 and the 1301 alarm), zero forms, and near-edge arguments that
+  # need ACOSSHR. Stops: DANZIG, the alarm service, SQRTSUB's abort.
+  setbanks(img,0);img[5]=A(0o3612 if body==63 else 0o3610,0)
+  hdr[2]=0o5732 if MISSION=='lm' else 0o5650;hdr[3]=A(POODOO1)
+  c=r.random();sg=r.random()<.5
+  def neg(v):return 0o77777-v if sg else v
+  if c<.45:img[0o154]=neg(r.randrange(0,0o20000));img[0o155]=neg(r.getrandbits(14))
+  elif c<.6:img[0o154]=neg(0o20000-r.randrange(1,4));img[0o155]=neg(r.getrandbits(14))
+  elif c<.7:img[0o154]=neg(0o20000);img[0o155]=r.choice([0,0o77777,r.getrandbits(14),0o77777-r.getrandbits(14)])
+  elif c<.78:img[0o154]=neg(r.choice([0o20001,0o20002,r.randrange(0o20001,0o40000)]));img[0o155]=r.getrandbits(15)
+  elif c<.88:img[0o154]=r.choice([0,0o77777]);img[0o155]=r.choice([0,0o77777,r.getrandbits(15)])
+  elif c<.94:img[0o154]=neg(r.randrange(0,4));img[0o155]=neg(r.getrandbits(14))
+  else:img[0o154]=r.getrandbits(15);img[0o155]=r.getrandbits(15)
+  img[0o163]=r.choice([0,1,0o77776])
+  return hdr,img
+ if body==67:
+  # ACOSABRT after the alarm service returns past OCT 1301 (Luminary
+  # 00,3727, Comanche 00,3724), with ESCAPE/ESCAPE2 as ARCSIN/ARCCOS set them.
+  setbanks(img,0);img[5]=0o3727 if MISSION=='lm' else 0o3724
+  w=lambda lm,cm:lm if MISSION=='lm' else cm
+  las,ldz,tcs=w(0o13707,0o13706),w(0o16061,0o16030),w(0o13702,0o13701)
+  c=r.randrange(3)
+  if c==0:img[0o136]=las
+  elif c==1:img[0o136]=ldz
+  else:img[0o136]=tcs;img[0o137]=r.choice([las,ldz])
+  return hdr,img
+ if body in(65,66):
+  # SIN/COS of MPAC (fraction of a revolution): any DP word pair, signed
+  # zeros, quarter and half turns and their neighbours (the reductions).
+  setbanks(img,0);img[5]=A(0o3530 if body==65 else 0o3517,0)
+  c=r.random()
+  if c<.6:img[0o154]=r.getrandbits(15);img[0o155]=r.getrandbits(15)
+  elif c<.8:
+   v=r.choice([0,0o10000,0o20000,0o30000,0o37777])+r.randrange(-2,3)
+   v=max(0,min(0o37777,v));sg=r.random()<.5;img[0o154]=0o77777-v if sg else v
+   img[0o155]=r.choice([0,0o77777,r.getrandbits(15)])
+  else:img[0o154]=r.choice([0,0o77777]);img[0o155]=r.choice([0,0o77777,r.getrandbits(15)])
+  img[0o163]=r.choice([0,1,0o77776])
+  return hdr,img
  if body in BANK0:
   setbanks(img,0);img[5]=BANK0[body]
   if body==22 and r.random()<.15:
@@ -396,7 +454,7 @@ NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODL
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
  'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC',
- 'reserved','reserved','reserved','reserved','reserved','reserved','MXV','VXM','LXC']  # (62-67: Lane D1b's trig and XCHX bodies)
+ 'XCHX','ARCCOS','ARCSIN','SIN','COS','ACOSABRT return','MXV','VXM','LXC']
 def main():
  global rom,MISSION,ROPES,LST,ROM
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

@@ -2,6 +2,7 @@
 #define main admission_reference_main
 #include "cm_executive_reference.c"
 #undef main
+#include "cert_trace.h"
 #include "lm_fresh_start_cases.h"
 static agc_t baseline;
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
@@ -34,6 +35,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
   machine.Trap31A=io.trap31a;machine.Trap31B=io.trap31b;machine.Trap32=io.trap32;
   for(cycles=0;cycles<20000u;++cycles){
    if(cycles&&quiet()){pc=get(RegZ);if(!owned(pc,get(4)))break;}
+   if(quiet())CERT_MARK();
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==20000u){fprintf(stderr,"LM fresh start %u timeout %05o\n",n,pc);return 2;}
   printf("%u %u %u %u %u %u %u %u %u %u %u %u",n,(unsigned)machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u,

@@ -1,0 +1,11 @@
+lm-servicer: 23032 cases left the file, 1032 refusals; routines 128 128 128 128 128 128 128 118 128 128 128 128 128 128 128 128 128 128 128 110 128 128 127 127 128 128 128 128 126 122 128 128 128 128 128 128 70 66 128 128 105 102 128 128 128 128 128 128 128 128 128 128 128 128 112 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 101 128 128 128 128 128 128 128 112 128 128 128 121 122 122 128 110 106 96 70 66 128 112 128 128 128 128 98 120 128 128 124 121 128 128 128 128 128 109 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 112 128 128 128 117 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 118 123 116 122 123 109 125 97 125 128 128 128 110 128 96 128 128 113 128 89 86 87 73 128 100 128 86 123 128 121 128 128 102; 49477 checks, 0 failures
+PASS: 1203 words of SERVICER.agc owned; operands, sites and constants match the rope
+sanitize (ASAN/UBSAN): 49477 checks, 0 failures
+C64 group 1: 18646 of 19072 segment cases equal the original program
+C64 group 2: 377 of 384 segment cases equal the original program
+C64 group 3: 207 of 256 segment cases equal the original program
+C64 group 4: 854 of 896 segment cases equal the original program
+C64 group 5: 881 of 896 segment cases equal the original program
+C64 group 6: 586 of 640 segment cases equal the original program
+C64 group 7: 1759 of 1920 segment cases equal the original program
+PASS: 23032 of 24064 lm-servicer cases equal the original program (1032 refused)

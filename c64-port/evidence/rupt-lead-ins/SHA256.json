@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "rupt-lead-ins",
+  "release": "evidence-rupt-lead-ins",
+  "files": {
+    "rupt-lead-ins-differential.log": {
+      "sha256": "242838f34bfa4e9335a726418ca91229cc2c9f2443c59023a2acbc1a0d771c15",
+      "bytes": 666,
+      "store": "tree"
+    },
+    "rupt-lead-ins-host.log": {
+      "sha256": "4a51377697d063f42a06bc8ccf9fbe16a93d206e129a4d3c6739218b8508838a",
+      "bytes": 1050,
+      "store": "tree"
+    },
+    "rupt-lead-ins-proof.json": {
+      "sha256": "7a3489df77208ff4a1b331d2b19c78994109df9635ea3fd49a68a59276785832",
+      "bytes": 2298,
+      "store": "tree"
+    },
+    "rupt-lead-ins-source-map-cm.json": {
+      "sha256": "1eace387ca147bd24beff6f1f63a6f337e8fcd78867a1b37c1fec5915553abfb",
+      "bytes": 12552,
+      "store": "tree"
+    },
+    "rupt-lead-ins-source-map-lm.json": {
+      "sha256": "4daf90775981605a53212aa6824f026f18e42b1abc882b1fafbd44d1d3795250",
+      "bytes": 11618,
+      "store": "tree"
+    },
+    "rupt-lead-ins-vice.log": {
+      "sha256": "d123ef86778ab8a86c033b83e41ebe7d9564f06adb713ad87af7054d4a1a9d9b",
+      "bytes": 101,
+      "store": "tree"
+    }
+  }
+}

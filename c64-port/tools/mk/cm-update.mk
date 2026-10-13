@@ -7,7 +7,7 @@ CM_UP_HDR = include/cm_update.h include/cm_interbank_routines.h include/cm_inter
 all: build/test-cm-update
 test: test-cm-update
 sanitize: sanitize-cm-update
-build/test-cm-update: $(CM_UP_SRC) tests/test_cm_update.c tests/cm_update_vectors.h $(CM_UP_HDR) | build
+build/test-cm-update: $(CM_UP_SRC) tests/test_cm_update.c tests/cm_update_vectors.h tests/cm_update_c64_vectors.h $(CM_UP_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_UP_SRC) tests/test_cm_update.c -o $@
 test-cm-update: build/test-cm-update
 	python3 tools/file_operands_generate.py cm-update --check

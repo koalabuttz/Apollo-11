@@ -34,9 +34,16 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   the T3 vector end at the next task or the interrupted program.
 - **Hardware.** `program->hardware` (`agc_hardware`) carries the CPU state a
   routine needs beyond the image and the mission's device record: output
-  channel 11 (the Executive's idle loop turns COMP ACTY off) and the
+  channel 11 (the Executive's idle loop turns COMP ACTY off), the
   interrupt-in-progress flag (tasks run inside T3RUPT; TASKOVER's RESUME ends
-  it). A routine that needs it refuses when it is NULL.
+  it), and the LM RCS jet channels 5 and 6 and channel 13 (TIME6 enable) that
+  the T6RUPT programs drive (`docs/LM-T6RUPT.md`), and input channel 15, the
+  DSKY key code KEYRUPT1 reads (`docs/KEYRUPT-UPRUPT.md`), and output
+  channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
+  T4RUPT uses (`docs/T4RUPT-CORE.md`). Channel 13 holds only the
+  CPU-writable bits (043777). Initializers that name only the first two
+  members leave the others zero. A routine that needs it refuses when it is
+  NULL.
 - **Erasable continuations.** A few files store a `TC` into erasable memory and
   run it later (RESTARTS writes the service call at GOLOC-1 and its own
   continuation at GOLOC+2). Such a point is keyed
@@ -89,7 +96,10 @@ transferring file.
 | Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS | 7 basic entries, E/CALL's EXIT, and the INTPRET/INTPRET+2 forms they reach | test caller only, as in Luminary | `cm-standard-lead-transfer` |
 | Luminary099 EXECUTIVE (NOVAC, FINDVAC) and WAITLIST (WAITLIST, TWIDDLE, the LONGCALL chain) | 10 entries in `lm_exec_routines` | `lm_exec_sites` (146 sites, 268 words) | `lm-exec-services` |
 | Luminary099 EXECUTIVE (SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB), WAITLIST (FIXDELAY, VARDELAY, TASKOVER) and the INTERRUPT_LEAD_INS T3 vector | 8 entries in `lm_exec_job_routines`, 4 in `lm_exec_task_routines` | `lm_exec_sites` (adds the 16 FIXDELAY sites: 284 words) | `lm-exec-jobs` |
+| Luminary099 and Comanche055 IMU_COMPENSATION_PACKAGE | 11 Luminary and 9 Comanche entries in `lm_`/`cm_imu_compensation_routines` (1/PIPA, the NOVAC and BANKCALL returns, NBDONLY, GCOMPZER...) | BANKCALL/IBNKCALL CADRs in `lm_interbank_sites`/`cm_interbank_sites`; Luminary 1/GYRO 2CADR in `lm_exec_sites` | `imu-compensation` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
+| Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES | 165 LM / 164 CM entries (every label and every callee return) in `lanec_di_lm_routines` / `lanec_di_cm_routines`, one table per module for subsets | through `lm_interbank_sites`, `cm_interbank_sites` and `lm_exec_sites`; CM NOVAC/FINDVAC operands wait for `cm_exec_sites` | `lanec-di-transfer` |
+| Luminary099 and Comanche055 EXTENDED_VERBS | 313 LM / 241 CM basic entries in `lanec_ev_lm_routines` / `lanec_ev_cm_routines`, 15 LM interpretive entries (keyed by LOC) in `lanec_ev_lm_interpretive`, INTPRET for the file's own callers in `lanec_ev_lm_intpret`; io is `lm_dntm_io` / `cm_dntm_io` (channels 12, 14, 30-33) | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites`; CM interpretive words not yet translated | `lanec-ev-transfer` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
 certificate for the auditor's review.

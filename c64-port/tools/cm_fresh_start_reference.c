@@ -2,6 +2,8 @@
 #define main admission_reference_main
 #include "cm_executive_reference.c"
 #undef main
+#include "case_trace.h"
+#include "cert_trace.h"
 #include "cm_fresh_start_cases.h"
 static agc_t baseline;
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
@@ -34,8 +36,10 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
   machine.Trap31A=io.control.trap31a;machine.Trap31B=io.control.trap31b;machine.Trap32=io.control.trap32;
   for(cycles=0;cycles<20000u;++cycles){
    if(cycles&&quiet()){pc=get(RegZ);if(!owned(pc,get(4)))break;}
+   if(quiet()){CASE_MARK();CERT_MARK();}
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==20000u){fprintf(stderr,"CM fresh start %u timeout %05o\n",n,pc);return 2;}
+  CASE_END(n);
   printf("%u %u %u %u %u %u %u %u %u %u %u %u %u",n,(unsigned)machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u,
          (unsigned)machine.InputChannel[011]&077777u,(unsigned)machine.InputChannel[05]&077777u,(unsigned)machine.InputChannel[06]&077777u,
          (unsigned)machine.InputChannel[012]&077777u,(unsigned)machine.InputChannel[013]&077777u,(unsigned)machine.InputChannel[014]&077777u,

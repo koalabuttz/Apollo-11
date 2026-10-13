@@ -17,7 +17,7 @@ void lm_v37_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint1
  s->words[7]=0;for(i=010;i<=023;++i)s->words[i]=0;for(i=026;i<=060;++i)s->words[i]=0;
  s->words[0]=agc_extend(s->words[0]);s->words[1]=agc_extend(s->words[1]);
  {lm_fresh_io zero={{0,0},0,0,0,0,0,0,0,0,0,0,0};*io=zero;}
- {agc_hardware zero={0,0};*hw=zero;}
+ {agc_hardware zero={0};*hw=zero;}
  io->control.interrupt_enabled=(uint16_t)upto(&seed,2);hw->channel11=word(&seed);
  io->channel5=word(&seed);io->channel6=word(&seed);io->channel12=word(&seed);
  io->channel13=(agc_word)(word(&seed)&02767u);io->channel14=(agc_word)(word(&seed)&0777u);
@@ -35,6 +35,11 @@ void lm_v37_input(apollo_overlay_state *s,lm_fresh_io *io,agc_hardware *hw,uint1
   /* Mostly an IMU not being initialized and NODOFLAG clear, so V37 gets past CANTROD. */
   if(upto(&seed,8))s->words[01302]&=(agc_word)~LM_V37_K_BIT6;
   if(upto(&seed,8))s->words[076]&=(agc_word)~LM_V37_K_NODOBIT;}
+ /* A quarter of the requests P20 with only the rendezvous bit or P25 with
+  * only the P25 bit of OCT500 in FLAGWRD0, which RENDN00 keeps (STATQUO). */
+ if(upto(&seed,4)==0u){unsigned r=upto(&seed,2);agc_word m=r?031u:024u;
+  s->words[074]=(agc_word)((s->words[074]&~0500u)|(r?0400u:0100u));
+  if(z==02040u)s->words[0]=m;else s->words[LM_V37_MMNUMBER]=m;}
  s->words[LM_V37_MINDEX]=(agc_word)upto(&seed,30);
  {unsigned m=upto(&seed,4);static const agc_word near[6]={024u,026u,031u,023u,030u,0u};
   if(m<2u)s->words[01011]=near[upto(&seed,6)];else if(m==2u)s->words[01011]=mode(&seed);}

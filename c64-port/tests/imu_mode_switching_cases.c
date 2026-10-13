@@ -213,10 +213,6 @@ void ims_input(apollo_overlay_state *m,ims_case *c,uint16_t n){uint32_t seed=0x1
 #endif
 }
 int ims_executed_erasable(agc_word z){return z==2u||z==0156u||z==0133u||z==072u;}
-int ims_interbank_gap(const ims_case *c,agc_word z,agc_word q){
- if(!c->stop_z||(q>=0100u&&q<=07775u))return 0;
- return c->cm?z==04675u||z==04753u:z==04631u||z==04707u;
-}
 static int external(const ims_case *c,const apollo_overlay_state *s){const ims_stop *e=ims_externals(c);
  if(s->words[5]<02000u)return 1;
  for(;e->z;++e)if(e->z==s->words[5]&&(e->fb==ANY||e->fb==s->words[4]))return 1;
@@ -252,7 +248,6 @@ unsigned ims_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie,agc_word channe
   channel[2]=c.cm?cio.channel13:lio.channel13;channel[3]=c.cm?cio.channel14:lio.channel14;}
  if(st==EXEC_OK)return IMS_STOPPED;
  if(st==EXEC_UNMAPPED&&external(&c,s))return IMS_STOPPED;
- if(st==EXEC_OUT_OF_SCOPE&&ims_interbank_gap(&c,s->words[5],s->words[2]))return IMS_STOPPED;
  if(st==EXEC_OUT_OF_SCOPE)return IMS_REFUSED;
  return 3u;
 }

@@ -2,7 +2,7 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 9208,
- "snapshot_sha256": "3cec94240661ee095d49c1eeb8a44e95698bcb5ba1f7c47516ec160f57a387dc",
+ "snapshot_sha256": "756c5c58ed34d7008c9c0b279fd8065948de94b4c3ee5afe8303a3ee6af7eaf9",
  "outcomes": {
   "restart:alarm": 824,
   "restart:returned": 3272,

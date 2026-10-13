@@ -21,7 +21,10 @@ word gets exactly one owner:
   - one instruction word is unreachable (UNREACHABLE below, with the reason
     checked against the listing).
 The suites' complete results match the native code (tools/lanec/diff.py), so
-every owned word is reproduced by its milestone. Writes
+every owned word is reproduced by its milestone. Each instruction row names
+the C function that carries it and, when the word is a transfer-ABI entry
+(src/lanec_ev_routines.inc; interpretive entries keyed by LOC), the routine
+it is registered as. Writes
 OUTDIR/lanec-ev-lm-source-map.json.
 """
 import json, os, pathlib, re, subprocess, sys
@@ -92,6 +95,7 @@ def build(mission):
     native = '\n'.join((ROOT / mod).read_text() for _, _, mod in SUITES)
     src = (ROOT.parent / wholefile.ORIGINAL[mission] / FILE).read_text(errors='replace').splitlines()
     read = wholefile.read_addresses(mission, {k: v for k, v in table.items()}, native)
+    abi, abi_i = wholefile.abi_entries(mission, 'ev'), wholefile.abi_entries(mission, 'ev', True)
     owners, line_map, label, call_owner = {}, [], None, None
     for i, r in enumerate(rows):
         key = (r['bank'], r['addr'])
@@ -102,12 +106,19 @@ def build(mission):
         op = next((f for f in fields if f in DATA), None) if fields else None
         if key in executed and not op:
             ms, mod = milestone[executed[key]]
-            entry = {'kind': 'instruction', 'owner': ms, 'native': mod, 'evidence': f'executed under {executed[key]}'}
+            entry = {'kind': 'instruction', 'owner': ms, 'native': f'{mod}: {wholefile.c_function(mod, label)}',
+                     'evidence': f'executed under {executed[key]}'}
+            at = wholefile.physical(r['bank'], r['addr'])
+            if at in abi:
+                entry['abi_routine'] = f'lanec_ev_{mission.lower()}_routines[{at}] -> {abi[at]}'
             call_owner = (ms, mod)
         elif key in interpreted and not op:
             ms, mod = milestone[interpreted[key]]
-            entry = {'kind': 'interpretive', 'owner': ms, 'native': mod,
+            entry = {'kind': 'interpretive', 'owner': ms, 'native': f'{mod}: {wholefile.c_function(mod, label)}',
                      'evidence': f'read by the interpreter under {interpreted[key]}'}
+            at = wholefile.physical(r['bank'], r['addr'])
+            if at in abi_i:
+                entry['abi_routine'] = f'lanec_ev_{mission.lower()}_interpretive[{at}] (LOC) -> {abi_i[at]}'
             call_owner = None
         elif key in UNREACHABLE:
             text, before, why = UNREACHABLE[key]
@@ -150,6 +161,8 @@ def build(mission):
         'source_words': total,
         'source_lines_with_words': len(rows),
         'line_map': line_map,
+        'aliases': wholefile.aliases(mission, table, line_map),
+        'abi_entries': {'basic': len(abi), 'interpretive': len(abi_i)},
         'whole_file': {'assembled_words': total, 'words_by_owner': dict(sorted(owners.items())),
                        'instruction_words_executed_by_oracle': count('instruction'),
                        'interpretive_words_read_by_oracle': count('interpretive'),
@@ -160,7 +173,9 @@ def build(mission):
                  'Virtual AGC under at least one case of the Lane C extended-verb suites (oracle LANEC_TRACE), '
                  'and the native modules reproduce those cases\' complete results (2048 erasable words, '
                  'registers, channels, superbank, interrupt state). Call arguments are compiled into the native '
-                 'call. Constants are compiled from symbols.txt WORD rows or as literals where native code reads them. The one '
+                 'call. Constants are compiled from symbols.txt WORD rows or as literals where native code reads them. Every '
+                 'labelled entry and every return into the file from a callee is a transfer-ABI routine (abi_routine; '
+                 'tools/lanec/routines.py ev checks this against the listing). The one '
                  'unreachable word is listed with the reason, checked against the listing.'),
     }
 
@@ -169,7 +184,10 @@ if __name__ == '__main__':
     out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else 'build/ev-cert')
     out.mkdir(parents=True, exist_ok=True)
     data = build('LM')
-    (out / 'lanec-ev-lm-source-map.json').write_text(json.dumps(data, indent=1) + '\n')
+    # One line_map row per line keeps the map under the in-tree evidence limit.
+    rows = ',\n'.join('  ' + json.dumps(r) for r in data['line_map'])
+    text = json.dumps(dict(data, line_map=None), indent=1).replace('"line_map": null', '"line_map": [\n' + rows + '\n ]')
+    (out / 'lanec-ev-lm-source-map.json').write_text(text + '\n')
     w = data['whole_file']
     print(f'PASS LM {data["source_path"]}: {w["assembled_words"]} assembled words; '
           f'{w["instruction_words_executed_by_oracle"]} executed, {w["interpretive_words_read_by_oracle"]} '

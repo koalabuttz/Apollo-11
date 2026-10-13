@@ -1,0 +1,7 @@
+{
+  "suite": "ev-transfer",
+  "cases": 468,
+  "differing": 0,
+  "native_sha256": "caf11976eaa6044651f4397728a2a6e11a46fe83717899c3527c184f936cbc79",
+  "oracle_sha256": "caf11976eaa6044651f4397728a2a6e11a46fe83717899c3527c184f936cbc79"
+}

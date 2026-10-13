@@ -83,8 +83,10 @@ program would leave the file.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
     (`tests/lm_landing_displays_c64_vectors.h`, 128 cases). It runs every
     host case with branch counting (`tools/lane_f_path_trace.c`) and takes,
-    greedily, cases until every entry slot, outcome and branch the host
-    cases take is taken (20 cases), then spreads the rest with a stride of
+    greedily, cases until every entry slot, outcome, counted branch and
+    basic block of `src/lm_landing_displays.c` (built with
+    `-fsanitize-coverage=trace-pc`) the host cases take is taken (22
+    cases), then spreads the rest with a stride of
     97. The per-branch host and C64 counts are in
     `evidence/lm-landing-displays/lm-landing-displays-c64-cover.json`.
   - The proof (`evidence/lm-landing-displays/lm-landing-displays-proof.json`)
@@ -96,7 +98,7 @@ program would leave the file.
   leave the file, every entry and every reachable branch to be taken, and
   check the refusals.
 - `make vice-lm-landing-displays` runs the 128 C64 rows in VICE: every entry,
-  every outcome and every branch the host cases take. The VICE log records
+  every outcome, every branch and every basic block the host cases take. The VICE log records
   the PRG's SHA-256.
 
 Branches no admitted input reaches are documented in the host test:

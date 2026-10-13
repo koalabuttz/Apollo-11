@@ -4,8 +4,8 @@
   "release": "evidence-lm-ags-init",
   "files": {
     "lm-ags-init-c64-cover.json": {
-      "sha256": "eb3d625d05e34c45db496bacadf1e01f0b52f3aeb0d71d06ccff0681b6ec6cd0",
-      "bytes": 7488,
+      "sha256": "0ec008aab5f726933211260fd10e20011c8cf2167fc607394d6b62eb9fc79246",
+      "bytes": 14412,
       "store": "tree"
     },
     "lm-ags-init-host.log": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "lm-ags-init-vice.log": {
-      "sha256": "eb9a4cdfd7a3243b9789c532cfb0330616f32a71a4cc270d64e75f022e7aa3c8",
+      "sha256": "be605d662273a0ff27c1b47608042254de83b3df72754f121f7f92c586bcb8ae",
       "bytes": 191,
       "store": "tree"
     }

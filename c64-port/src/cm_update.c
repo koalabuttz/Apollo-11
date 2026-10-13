@@ -132,7 +132,7 @@ jump:
  case 03624u:goto L3624; case 03656u:goto L3656; case 03704u:goto L3704; case 03706u:goto L3706;
  case 03711u:goto L3711; case 03715u:goto L3715; case 03721u:goto L3721; case 03722u:goto L3722;
  case 03732u:goto L3732; case 03751u:goto L3751; case 03753u:goto L3753; case 03754u:goto L3754;
- case 03755u:goto L3755; case 03756u:goto L3756;
+ case 03755u:goto L3755; case 03756u:goto L3756; case 03757u:goto L3757;
  default:return EXEC_OUT_OF_SCOPE;}
 L3373: /* UPPART2 */
  OUT(03374u,PHASCHNG);                          /* OCT 07026; OCT 30000; 2CADR UPOUT +1 */
@@ -359,27 +359,31 @@ L3757: /* UPACTOFF */
  if(!p->hardware)return EXEC_OUT_OF_SCOPE;
  ai_csf(s,CM_UPDATE_K_BIT3);
  {agc_word v=(agc_word)(agc_correct(W[0])&p->hardware->channel11);p->hardware->channel11=v;W[0]=agc_extend(v);} /* 3760-3761 EXTEND; WAND DSALMOUT */
- at=(agc_word)(agc_correct(W[Q])&077777u);ai_tc(s,3u);goto jump; /* 3762 TC Q */
+ /* 3762 TC Q: back inside the file after its own TC UPACTOFF; from a BANKCALL
+  * (FRESH_START, P20-P25) to the word in Q (SWRETURN), with Q = 3. */
+ at=(agc_word)(agc_correct(W[Q])&077777u);ai_tc(s,3u);
+ if(at==03711u||at==03756u)goto jump;
+ W[5]=at;return EXEC_OK;
 }
 
 const cm_up_entry cm_up_entries[CM_UP_ROUTINES]={
  {027,03373},{027,03400},{027,03404},{027,03421},{027,03422},{027,03423},{027,03445},{027,03446},{027,03447},
  {027,03462},{027,03463},{027,03464},{027,03523},{027,03535},{027,03542},{027,03543},{027,03547},{027,03551},
  {027,03553},{027,03573},{027,03613},{027,03615},{027,03621},{027,03704},{027,03706},{027,03732},{027,03751},
- {027,03753},{027,03754},{027,03755},{043,03726},{043,03730},{043,03732},{043,03734},{043,03737}};
+ {027,03753},{027,03754},{027,03755},{027,03757},{043,03726},{043,03730},{043,03732},{043,03734},{043,03737}};
 #define E27(name,z) static enum exec_status name(const agc_native_program *p,apollo_overlay_state *s,void *io){return bank27(p,s,io,(z));}
 #define E43(name,z) static enum exec_status name(const agc_native_program *p,apollo_overlay_state *s,void *io){return bank43(p,s,io,(z));}
  E27(e3373,03373u) E27(e3400,03400u) E27(e3404,03404u) E27(e3421,03421u) E27(e3422,03422u) E27(e3423,03423u)
  E27(e3445,03445u) E27(e3446,03446u) E27(e3447,03447u) E27(e3462,03462u) E27(e3463,03463u) E27(e3464,03464u)
  E27(e3523,03523u) E27(e3535,03535u) E27(e3542,03542u) E27(e3543,03543u) E27(e3547,03547u) E27(e3551,03551u)
  E27(e3553,03553u) E27(e3573,03573u) E27(e3613,03613u) E27(e3615,03615u) E27(e3621,03621u) E27(e3704,03704u)
- E27(e3706,03706u) E27(e3732,03732u) E27(e3751,03751u) E27(e3753,03753u) E27(e3754,03754u) E27(e3755,03755u)
+ E27(e3706,03706u) E27(e3732,03732u) E27(e3751,03751u) E27(e3753,03753u) E27(e3754,03754u) E27(e3755,03755u) E27(upactoff,03757u)
 E43(v70updat,03726u) E43(v71updat,03730u) E43(v72updat,03732u) E43(v73updat,03734u) E43(testxact_ret,03737u)
 static const agc_routine_entry entries[CM_UP_ROUTINES]={
  {B27(03373),e3373},{B27(03400),e3400},{B27(03404),e3404},{B27(03421),e3421},{B27(03422),e3422},{B27(03423),e3423},
  {B27(03445),e3445},{B27(03446),e3446},{B27(03447),e3447},{B27(03462),e3462},{B27(03463),e3463},{B27(03464),e3464},
  {B27(03523),e3523},{B27(03535),e3535},{B27(03542),e3542},{B27(03543),e3543},{B27(03547),e3547},{B27(03551),e3551},
  {B27(03553),e3553},{B27(03573),e3573},{B27(03613),e3613},{B27(03615),e3615},{B27(03621),e3621},{B27(03704),e3704},
- {B27(03706),e3706},{B27(03732),e3732},{B27(03751),e3751},{B27(03753),e3753},{B27(03754),e3754},{B27(03755),e3755},
+ {B27(03706),e3706},{B27(03732),e3732},{B27(03751),e3751},{B27(03753),e3753},{B27(03754),e3754},{B27(03755),e3755},{B27(03757),upactoff},
  {B43(03726),v70updat},{B43(03730),v71updat},{B43(03732),v72updat},{B43(03734),v73updat},{B43(03737),testxact_ret}};
 const agc_routine_table cm_update_routines={entries,CM_UP_ROUTINES};

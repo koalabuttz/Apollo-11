@@ -1,0 +1,10 @@
+{
+  "archive": "build/cm-p76-reference.snapshots.bin.xz",
+  "decoded_sha256": "e0bd74c3081670f897dd8dd9fa1a3f563b4b877bb18bd4103e469751584c97dd",
+  "decoded_bytes": 56761344,
+  "cases": 13824,
+  "tag_counts": {
+    "1": 13824
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/cm-rtb-fixture/MAIN.agc.bin (unchanged Comanche055)"
+}

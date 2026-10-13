@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "r60-r62",
+  "release": "evidence-r60-r62",
+  "files": {
+    "r60-r62-differential.log": {
+      "sha256": "71e7e10cc0d125fbe442e4301f392c07ac93c45b26e722c18e6f4138e14e3b4f",
+      "bytes": 21257,
+      "store": "release"
+    },
+    "r60-r62-host.log": {
+      "sha256": "8c3d5a5c2d2018d6ccff4b30f8af7773886c35fcf90540b37261dc4f087d7810",
+      "bytes": 64,
+      "store": "release"
+    },
+    "r60-r62-proof.json": {
+      "sha256": "77d9fbc589c9d636e8d7d5652d914ed0da137f72caa454c22393a89f9c58850a",
+      "bytes": 33178,
+      "store": "tree"
+    },
+    "r60-r62-source-map.json": {
+      "sha256": "ae84d443106a731479d5cfb5362c7267d5d0c12019391ef1c640e908e182d38e",
+      "bytes": 71964,
+      "store": "tree"
+    },
+    "r60-r62-vice.log": {
+      "sha256": "b4a4b393bdb2dc28ebf772adbd83677634a2cb5b76b67283ec3280bdba9e0a69",
+      "bytes": 413,
+      "store": "release"
+    }
+  }
+}

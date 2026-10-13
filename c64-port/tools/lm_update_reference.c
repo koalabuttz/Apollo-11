@@ -3,6 +3,7 @@
 #include "cm_executive_reference.c"
 #undef main
 #include "lm_update_cases.h"
+#include "case_trace.h"
 static agc_t baseline;
 static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
 /* Points the native run owns: UPDATE_PROGRAM (bank 43 3724-3751, bank 04
@@ -26,9 +27,10 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
   machine=baseline;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=(int16_t)hw.channel11;
   for(cycles=0;cycles<6000u;++cycles){
-   if(cycles&&quiet()){pc=get(RegZ);if(!owned(pc,get(4)))break;}
+   if(quiet()){pc=get(RegZ);if(!owned(pc,get(4))){if(cycles)break;}else CASE_MARK();}
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
   if(cycles==6000u){fprintf(stderr,"LM update %u timeout %05o\n",n,pc);return 2;}
+  CASE_END(n);
   printf("%u %u %u %u",n,(unsigned)machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u,(unsigned)machine.InputChannel[011]&077777u);
   for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i==0||i==1?0177777u:077777u));putchar('\n');
  }return 0;
