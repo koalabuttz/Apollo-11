@@ -30,6 +30,9 @@ These routines replace `src/gimbal_complete.c` as the file's translation. Nothin
 Hashes: `evidence/gimbal-lock/SHA256.json`. Bulk files are assets of the `evidence-gimbal-lock` release.
 
 - **Source map.** `gimbal-lock-source-map.json` lists every emitted word of both files with its routine, and none is untranslated.
-- **Independent assembly comparison.** `make gimbal-lock-differential` runs 512 states per routine (10,240 cases) through the unmodified ropes in yaAGC. Every case equals the native run in Z, all 2,048 erasable words and the interrupt-enable state. RATEINDX is 0, 2, 4 or 6, and NEWJOB is positive in a quarter of the cases. Record: `gimbal-lock-proof.json` (ropes, case and oracle hashes, stops per routine) and `gimbal-lock-differential.log`.
-- **Host and sanitizer results.** `make test-gimbal-lock sanitize-gimbal-lock` runs the 320 frozen cases (every 32nd).
-- **C64 execution results.** `make vice-gimbal-lock` runs two diagnostics, one per mission, with 40 cases (18 Luminary, 22 Comanche), at least one per routine. The log gives each PRG's SHA-256.
+- **Independent assembly comparison.** `make gimbal-lock-differential` runs 512 states per routine (10,240 cases) through the unmodified ropes in yaAGC. Every case equals the native run in Z, all 2,048 erasable words and the interrupt-enable state. Record: `gimbal-lock-proof.json` (ropes, case and oracle hashes, stops per routine, outcome cover) and `gimbal-lock-differential.log`.
+  - RATEINDX is 0, 2, 4 or 6, and NEWJOB is positive in a quarter of the cases.
+  - TIME1, TIME2 and the CDUs vary in every case.
+  - A quarter of the cases put edge values into MPAC, the top of the pushdown list and every operand the files name: +0 and -0, one LSB, 1/2, 1/4, just below 1, half-unit axis vectors (a matrix's rows a signed permutation), unit vectors in a coordinate plane and tiny vectors.
+- **Host and sanitizer results.** `make test-gimbal-lock sanitize-gimbal-lock` runs the 325 frozen cases: every 32nd, plus a greedy cover of every branch outcome any case reaches (635 outcomes over both files, the interpreter bodies and the image ops).
+- **C64 execution results.** `make vice-gimbal-lock` runs two diagnostics, one per mission, with 31 cases (14 Luminary, 17 Comanche), chosen by branch outcome: they reach all 635 outcomes, DANZIG's NEWJOB +0 continuation among them. The log gives each PRG's sha256.

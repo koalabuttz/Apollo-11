@@ -1266,15 +1266,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "8b422f87cf708d0bd2864173f2d60a534d1ec2c39441930efd6d55bdf7bf3f3d"
+            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "81325ef6e06fe23890f757ec68374e682fa630966c05914edfc0992586bf0515"
+            "sha256": "6dfc1025e34d940044719e4c5c0fafcd3c17fd1d1b33af651418a26990508f05"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "ee0123698b10374ab6fd1e4cc4391f71277bc14a8b9830d556d2a6f996103462"
+            "sha256": "7e0a16953c38832793e1be0b7d0ece41f88d2de16c5db1d56c10c8a1c24064dc"
           }
         }
       }
@@ -1344,15 +1344,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "c2afb73ad70a42650646eb875991b7598b9a515d4adebe2690085561088aa8c0"
+            "sha256": "22ecb8d8cda4ff44b83c13fb1292bbf51fe7d15420d845da618d0bccb2fca7b3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "5dfc5c53e7f578d231f34d5a6cfe523c66a14681830a57b12c760bcf00daf24d"
+            "sha256": "03699dd5a64060be9cef6d3c5bd406d65eb3ede596b99cf531c30fbfecf96dab"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "e61448658ea9642c92e3ee5e04f3b0e91e7aa8c4c886ddd08bf513543eedf00f"
+            "sha256": "50dcbe65889b0655240180a09a465a1720309769fcd0f88c020f10fb15b561c8"
           }
         }
       }
@@ -3193,15 +3193,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+            "sha256": "46c784368044f912daa4558a4a7114c3bcafe79137700880f305d20493abca05"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+            "sha256": "c54b4498dd470d8aee1032ccef851bcb518526afdf5b3c798736971d0dca6156"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+            "sha256": "05e6f12d4047aba29c2d565f2f48fc68145fc3c9f90a93fba5e960db0cd3904b"
           }
         }
       }
@@ -5459,15 +5459,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "8b422f87cf708d0bd2864173f2d60a534d1ec2c39441930efd6d55bdf7bf3f3d"
+            "sha256": "15500f338e23ffb85eeb6349de13037a01696bee28b0553b968b490332419f45"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "81325ef6e06fe23890f757ec68374e682fa630966c05914edfc0992586bf0515"
+            "sha256": "6dfc1025e34d940044719e4c5c0fafcd3c17fd1d1b33af651418a26990508f05"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "ee0123698b10374ab6fd1e4cc4391f71277bc14a8b9830d556d2a6f996103462"
+            "sha256": "7e0a16953c38832793e1be0b7d0ece41f88d2de16c5db1d56c10c8a1c24064dc"
           }
         }
       }
@@ -7892,15 +7892,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "8cf371a0455b46855fa9aafd11a6120e0eb239fc5537d59f03ec30f675057a86"
+            "sha256": "46c784368044f912daa4558a4a7114c3bcafe79137700880f305d20493abca05"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "a328c3ad594b8aacf5e4f225039c9a76a730306aad23891073f8ce0132dc4460"
+            "sha256": "c54b4498dd470d8aee1032ccef851bcb518526afdf5b3c798736971d0dca6156"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "fc810a35392acc640a68364234118c9ffac40b81781c4898f3c1c4b79162d59e"
+            "sha256": "05e6f12d4047aba29c2d565f2f48fc68145fc3c9f90a93fba5e960db0cd3904b"
           }
         }
       }
