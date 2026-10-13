@@ -133,6 +133,13 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
+
+# LLGE's ROOTPSRS work words (MPAC +3 to +6, PWRPTR, DERPTR, RETROOT)
+# mid-routine.
+ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 1],
+                 '0117': [0o1565, 0o1563, 0o1561], '0141': [0o147, 0o145, 0o143], '0132': [0o3113],
+                 'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']}
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -1387,6 +1394,98 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_p70_p71_target.c',
         'freeze_stride': 32,
+    },
+    'lm-llge': {
+        'missions': ('lm',),
+        'file': {'lm': 'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc'},
+        'base': {'lm': 'lm_llge'},
+        'symbol': {'lm': 'lm_llge'},
+        # LUNLAND (BURNBABY's AVEGEXIT), ?GUIDSUB (P63's guidance passes),
+        # PITFALL (RUPT10), DESCBITS (AOTMARK's CADR), P63DISPS -2 (the
+        # display restart), INTPRETX and ROOTPSRS (subroutines).
+        'entries': ['LUNLAND', '?GUIDSUB', 'GUILDEN', 'PITFALL', 'DESCBITS', 'P63DISPS-2', 'INTPRETX', 'ROOTPSRS',
+                    'FASTCHNG', 'RODTASK', 'STARTP66', 'STARTP67', 'P65START', 'STARTP64', 'REDESMON'],
+        'externals': {'PHASCHNG': 'auto', 'BANKCALL': 'auto', 'POSTJUMP': 1, 'CHECKMM': 1, 'NEWMODEX': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'ENDOFJOB': None, 'TASKOVER': None, 'ALARM': 'auto',
+                      'POODOO': None, 'THROTTLE': 'auto', 'WAITLIST': 'auto', 'NOVAC': 'auto', 'FINDVAC': 'auto',
+                      'BANKJUMP': None, 'RESUME': None, 'SHORTMP': 'auto', 'USPRCADR': 'auto', 'DMPNSUB': 'auto', 'POWRSERS': 'auto', 'TWIDDLE': 'auto', 'VARDELAY': 'auto', 'LOW7+2K': 'auto'},
+        'noreturn': ['POSTJUMP'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        # A resume LOC starts in the MODE, PUSHLOC and index registers the
+        # file's own runs bring there (VSU and VXV keep the MODE they find).
+        'flow_states': True,
+        # INDEX WCHPHASE (or WCHPHOLD); TCF table: WCHPHASE is -1 (IGNALG),
+        # 0 (BRAKQUAD), 1 (APPRQUAD) or 2 (VERTICAL), as each table holds.
+        # WHATEXIT +2 and WHATDISP -1 are the neighbouring table's words.
+        'index_tcf': {'NEWPHASE': [-1, 0, 1, 2], 'PREGUIDE': [-1, 0, 1, 2], 'WHATGUID': [-1, 0, 1, 2],
+                      'AFTRGUID': [-1, 0, 1, 2], 'WHATEXIT': [-1, 0, 1, 2], 'WHATDISP': [-1, 0, 1, 2],
+                      'WHATALM': [-1, 0, 1]},
+        # The file runs under EBANK= E2DPS (E7); WCHPHASE and WCHPHOLD hold a
+        # phase (-1 to 2) in every case.
+        'ebank': 7,
+        # X1, set only by INTPRETX, is -TARGTDEX: -0, -034 or +1.
+        'all_states': {'WCHPHASE': [0o77776, 0, 1, 2], 'WCHPHOLD': [0o77776, 0, 1, 2],
+                       'vac+046': [0o77777, 0o77743, 1],
+                       # PUSHLOC below 32D (the file's own pushdown words), so
+                       # a push never reaches X1.
+                       '0166': ['vac+%o' % n for n in range(0, 0o40, 2)],
+                       # WCHVERT (P67 positive, P66 +0, P65 negative), which
+                       # is also NGUIDSUB (passes left: 2 to 0).
+                       'WCHVERT': [2, 1, 0, 0o77776],
+                       # NIGNLOOP, the ignition loops left (THE_LUNAR_LANDING
+                       # counts it down from 40).
+                       'NIGNLOOP': [0, 1, 0o50]},
+        # QUADGUID sets MODE to 0 before its TC INTPRETX; the resume LOCs
+        # before a NORMUNIT with no load of their own are in vector mode.
+        # RGVGCALC resets PUSHLOC to FIXLOC, and TTF/8CL pushes nothing, so
+        # QUADGUID's interpretive code starts with an empty pushdown list.
+        'states': {'QUADGUID+32': {'0163': [0], '0166': ['vac+0']}, 'CGCALC+24': {'0163': [0o77776]},
+                   'CGCALC+26': {'0163': [0o77776]}, 'CGCALC+29': {'0163': [0o77776]},
+                   'EXNORM+4': {'0163': [0o77776]},
+                   # ROOTPSRS takes TABLTTFL (TABLTTF +3) in A and N-1 in L;
+                   # inside it, MPAC +3 to +6, PWRPTR and DERPTR walk the
+                   # power table and DERTABLL's derivative table.
+                   # (TTF/8CL's TC ROOTPSRS is the one caller: Q = 3113.)
+                   'ROOTPSRS': {'0': [0o1565], '1': [1, 2], '2': [0o3113], 'WCHPHASE': [0o77776, 0, 1]},
+                   # ROOTPSRS's returns run in IGNALG to APPRQUAD (WHATALM).
+                   'TTF/8CL+26': {'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']},
+                   'TTF/8CL+28': {'0166': ['vac+0']}, 'QUADGUID': {'0166': ['vac+0']},
+                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+19', 'DERCLOOP+3', 'ROOTLOOP+6',
+                                                 'ROOTLOOP+13', 'ROOTLOOP+15', 'ROOTLOOP+20')}},
+        # VHORCOMP's BANKCALL of DISPEXIT +3 ends the job (ENDOFJOB).
+        'returns': {'DISPEXIT +3': 0},
+        # ROOTPSRS returns through INDEX RETROOT; TCF 2 (two words past
+        # its caller's TC).
+        'index_returns': True,
+        'in_file_returns': {'ROOTPSRS': [2]},
+        # ROOTPSRS's INDEX MPAC +3; CA 5 reads an erasable power table.
+        'index_erasable': True,
+        # A guidance pass (QUADGUID through EXGSUB, with ?GUIDSUB's three
+        # passes) runs a few hundred routines.
+        'max_steps': 2000,
+        # TC INTPRETX starts the interpretive code after it (TCF INTPRET).
+        'intpret_via': ['INTPRETX'],
+        # INTPRETX's INDEX WCHPHASE; CS TARGTDEX.
+        'basic_fixed_index': {'TARGTDEX': [-1, 0, 1, 2]},
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'NORMUNIT': {'lm': ('lm_normunit(s,io)', 'stops')}},
+        'includes': ['rtb_angles.h', 'lm_normunit.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_normunit.c', 'src/rtb_vector.c', 'src/rtb_unit.c',
+                           'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c',
+                           'src/guidance_product.c'],
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        # Routines whose whole runs reach more code than one C64 program
+        # holds stay host-checked; the proof lists the arcs only they take.
+        'c64_cover_partial': True,
+        # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
+        # build needs (unsigned is 16 bits there).
+        'index_carry16': True,
+        'partial': {'lm': 'READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 wait for an I/O channel model'},
+        'target': 'tests/lm_llge_target.c',
+        'freeze_stride': 32,
+        'cover_stride': 8,
     },
     'cm-r31': {
         'missions': ('cm',),

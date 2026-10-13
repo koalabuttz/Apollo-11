@@ -1,0 +1,73 @@
+lm-llge-1.prg sha256 9d9c371fcf7790732f76b395f2fd737221df2bf2d9054a693a63ff703a0b924a
+lm-llge-2.prg sha256 5663c73c9a6e74a5d9db658b781d6de004a71576edb5a903d8e43ea4d15c7f79
+lm-llge-3.prg sha256 eafdefaac46a64a27b04ea6db403abd6f5ef147c0ed24f3fdc4def933b83c630
+lm-llge-4.prg sha256 6044b8c4d345b9bbf59043c65fd51a9108df93c4231bd11114de0d1e70d25b3b
+lm-llge-5.prg sha256 b15daee8db1a720c6ce79a060fd1345273aea230b503e32da0e884a38545936c
+lm-llge-6.prg sha256 3ca25ad2a7ffe222d278a1defa74350dd0f2e5719f585e0a130b3d56a78d1149
+lm-llge-7.prg sha256 d745139fe0a8e8c6fa52246c87df2e963d91e0032af89d1b70f1860ff84b3cfb
+lm-llge-8.prg sha256 3be8b1674da1e2c5767d3e1025d2d2af2ca405ddc876ceb829a7457a4f4be0e5
+lm-llge-9.prg sha256 dc2b9fa1ed026fa4baee6b5cdf09d2fc9017ec4031b1bb484c68333045f83962
+lm-llge-10.prg sha256 c32006d5ee6116218f6556af7542427751978acec0031c6ed5ee5e781c54e649
+lm-llge-11.prg sha256 4d5ec74efc796f4f38ce4f7d6fde1d2ec432f652c78ed1fea1add09f85fccfba
+lm-llge-12.prg sha256 10de8ecbee039402a832fff4feea6943349a432ea90724557bbc3514989230fa
+lm-llge-13.prg sha256 27820b9bbbd5f1baaf4f03826b1aa29ef998f309a067cc584f3de954624f71c2
+lm-llge-14.prg sha256 992a01b40d4ac93770fc306b5e9d0fe3e7bbaca1ee0126b9c9d3cb6c950a74aa
+lm-llge-15.prg sha256 9d6ffdccb6d3a468b63df378bb4aa2fe318ed3b82f6353a0d85c13bda7c98c9a
+lm-llge-16.prg sha256 e349a740cb12c8459ec5b409af189ef88f3249ccd7f9ac294477e0ca2592a6a6
+lm-llge-17.prg sha256 7acb04698376417519737afc703c786cff03c2e777f8729fd2de075782c14769
+lm-llge-18.prg sha256 60a1f720bcd135d8566dff89379795eb4218d041108058b7616bf4282276fde9
+lm-llge-19.prg sha256 d1b08f13204d529095f551843f91bccd0e1fdfdd1bda4688e057dd7e71f92b8a
+lm-llge-20.prg sha256 44181215fe11455c1e8b58497df30653589428ef024147fc8ca6b5329f93e78d
+lm-llge-21.prg sha256 81fef602ea57fa447de663b98815e7c786a2ad80e11d4656dedb885620a9ed0e
+lm-llge-22.prg sha256 e6fcc954c22fabfba24939b4bff08f172f3a9d8633ffab95080ab75d575ab4a8
+lm-llge-23.prg sha256 1ccffa61bffec3007b23008fb54074f509b755d728d0093264b87fa43a5325be
+lm-llge-24.prg sha256 e83965baf95f7e336d7e68f5c3cc3636b49029aa9a20dc97102f519345e54be9
+lm-llge-25.prg sha256 a48169372c755063bfcf4b30632afe94ab79b0c790f76ecf869c9399bac58bae
+lm-llge-26.prg sha256 d082f4d7fead1aeb82e3f026e807019bd45f1bc709d69fd07d6f7b238b2299eb
+lm-llge-27.prg sha256 ab30ab3a61d9857966a8caaf068b09552892b469566ca4dc7905a9f95bec77d9
+lm-llge-28.prg sha256 e558a1aef7762ed1834b4cec4a7fdfe09f2d375b9acfd96b7d5dd41470e8ce37
+lm-llge-29.prg sha256 762cd45797b605ee0e993923927e7e2517543716d7cf273db5c603de2d47156b
+lm-llge-30.prg sha256 1d25c6bdaa07b3bd2e03c35f156c38db3e7f60013109bea68c0a31dcaf949399
+lm-llge-31.prg sha256 b79dc823d5a97ba132d82c71849f70f5085628062d75a6be71aed9aaf15977c1
+lm-llge-32.prg sha256 8f6fbe0107a50bb5c6dca9267cd114d02d0ad5b78592dc3e4e9495a1b6fa3ca9
+lm-llge-33.prg sha256 49a24a40a458c334c8d5be3caaf945ef55748cb176ce38ad7d2fccd11692747c
+lm-llge-34.prg sha256 931f43fdb59260a5473b57fdb98348033acb365d782d85b5db1b1df2db3fc11b
+lm-llge-35.prg sha256 61c2991a3f1a7d1d4bd1b44527979f5706584fe999d389e709d4175f5da22041
+lm-llge-36.prg sha256 b4071d90898c83902e38514bc20b13b652737d5fc8e02678e2732716254bfbe1
+lm-llge: 36 C64 diagnostics, 313 frozen cases (tests/lm_llge_c64_vectors.h) compared with yaAGC digests; they take 2178 of the 2291 branch arcs of the traced host cases (the rest are listed in the proof as c64_missed_arcs)
+PASS: VICE PAL lm-llge-1.prg: 47 checks, 0 failures
+PASS: VICE PAL lm-llge-2.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-3.prg: 3 checks, 0 failures
+PASS: VICE PAL lm-llge-4.prg: 9 checks, 0 failures
+PASS: VICE PAL lm-llge-5.prg: 3 checks, 0 failures
+PASS: VICE PAL lm-llge-6.prg: 14 checks, 0 failures
+PASS: VICE PAL lm-llge-7.prg: 18 checks, 0 failures
+PASS: VICE PAL lm-llge-8.prg: 8 checks, 0 failures
+PASS: VICE PAL lm-llge-9.prg: 24 checks, 0 failures
+PASS: VICE PAL lm-llge-10.prg: 8 checks, 0 failures
+PASS: VICE PAL lm-llge-11.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-12.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-llge-13.prg: 4 checks, 0 failures
+PASS: VICE PAL lm-llge-14.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-15.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-16.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-17.prg: 4 checks, 0 failures
+PASS: VICE PAL lm-llge-18.prg: 2 checks, 0 failures
+PASS: VICE PAL lm-llge-19.prg: 1 checks, 0 failures
+PASS: VICE PAL lm-llge-20.prg: 3 checks, 0 failures
+PASS: VICE PAL lm-llge-21.prg: 4 checks, 0 failures
+PASS: VICE PAL lm-llge-22.prg: 7 checks, 0 failures
+PASS: VICE PAL lm-llge-23.prg: 6 checks, 0 failures
+PASS: VICE PAL lm-llge-24.prg: 6 checks, 0 failures
+PASS: VICE PAL lm-llge-25.prg: 6 checks, 0 failures
+PASS: VICE PAL lm-llge-26.prg: 1 checks, 0 failures
+PASS: VICE PAL lm-llge-27.prg: 7 checks, 0 failures
+PASS: VICE PAL lm-llge-28.prg: 1 checks, 0 failures
+PASS: VICE PAL lm-llge-29.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-llge-30.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-llge-31.prg: 19 checks, 0 failures
+PASS: VICE PAL lm-llge-32.prg: 4 checks, 0 failures
+PASS: VICE PAL lm-llge-33.prg: 13 checks, 0 failures
+PASS: VICE PAL lm-llge-34.prg: 11 checks, 0 failures
+PASS: VICE PAL lm-llge-35.prg: 24 checks, 0 failures
+PASS: VICE PAL lm-llge-36.prg: 10 checks, 0 failures
