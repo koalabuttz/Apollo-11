@@ -646,11 +646,24 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
                 continue
             KEEP_WORDS[spec['symbol'][mi.m]] = (len(mi.points) + 59) // 60
             mine = [i for i in arcs if cases[i]['cm'] == cm and i not in chan]
-            # Each routine set the cases visit, probed with its largest case.
-            big = {visits[i]: i for i in sorted(mine, key=lambda i: len(cases[i]['edits']))}
-            fits = {v for v, i in big.items()
-                    if c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None}
-            ok = {i: arcs[i] for i in mine if visits[i] in fits}
+            # Each routine set the cases visit, probed with its largest case;
+            # when that one does not fit (edge cases add many edits), the
+            # largest edit count that does, found by bisection.
+            by = collections.defaultdict(list)
+            for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
+                by[visits[i]].append(i)
+            limit = {}
+            for v, ii in by.items():
+                fit = lambda i: c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None
+                if fit(ii[-1]):
+                    limit[v] = len(cases[ii[-1]]['edits'])
+                elif fit(ii[0]):
+                    lo, hi = 0, len(ii) - 1
+                    while hi - lo > 1:
+                        mid = (lo + hi) // 2
+                        lo, hi = (mid, hi) if fit(ii[mid]) else (lo, mid)
+                    limit[v] = len(cases[ii[lo]]['edits'])
+            ok = {i: arcs[i] for i in mine if visits[i] in limit and len(cases[i]['edits']) <= limit[visits[i]]}
             chosen |= set(c64_row_cover.cover(ok, cost))
     groups = []
     for cm, mi in enumerate(missions):

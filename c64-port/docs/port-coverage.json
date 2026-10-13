@@ -2222,7 +2222,48 @@
           "scope": "Every word of the file (374 words in banks 02, 31, 32 and 35): P30, P31, their displays, S30.1, S31.1, DELRSPL, AUGEKUGL, AVFLAGA, AVFLAGP and P20FLGON, as 90 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P30-P37.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 4, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p30-p37 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (CLOKTASK, GOFLASH, GOFLASHR)",
+          "WAITLIST with its inline 2CADR, PHASCHNG and 2PHSCHNG with their inline phase words (restart groups)",
+          "UPFLAG and DOWNFLAG with their inline flag words",
+          "ENDOFJOB and TCF GOTOPOOH",
+          "AGAIN, GET+MGA, INTWAKE0, LALOTORV, LOMAT, MAXCHK, MIDGIM, PERIAPO1, SHIFTR1, SPLRET and VGAMCALC through CALL, STCALL or GOTO (interpretive)",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-source-map.json",
+            "sha256": "ee49323558c2b74f2e8d208bffc04796e0950bacd0c5d77af2b54ee374880a21"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
+            "sha256": "272d62a64184318b4133aa54f76fc3799788dd3a7afd3060f074f12a0f85758f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
+            "sha256": "8133cedb40bb835a77afcdc857d86c3a84dbf15b002d92681c735066af670d79"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
+            "sha256": "5f726691ca6eda2d6dcacdbc283d33d451e90a35a2a59143de97a58dbe040749",
+            "vice_targets": {
+              "vice-cm-p30-p37": 169
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
+            "sha256": "f48fabba2f8e332b9f3ae272eb5f4cbaef6b7e63a23f58648963a9acdad2c53c"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P32-P33_P72-P73.agc",
