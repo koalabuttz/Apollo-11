@@ -9057,7 +9057,7 @@
             "src/agc_word.c",
             "src/agc_multiword.c"
           ],
-          "scope": "976 of the 991 words (31,2420-3760, 32,3263-3537, 11,2275-2375, 20,2115-2122, 22,3647-3660): the P63-P67 guidance pass (LUNLAND, ?GUIDSUB, GUIDSUB and the phase tables), GUILDEN, STARTP64-STARTP67, TTFINCR, REDESIG, CALCRGVG, RGVGCALC, TTF/8CL, QUADGUID, AFCCALC, CGCALC, EXTLOGIC, RATESTOP, the guidance displays, ROOTPSRS, INTPRETX, TDISPSET, FASTCHNG, RODTASK, RODCOMP, VHORCOMP, PITFALL, REDESMON and DESCBITS, as 258 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 15 channel words (READ CHAN30, RAND/READ CHAN31, WOR CHAN13), which wait for an I/O channel model.",
+          "scope": "987 of the 991 words (31,2420-3760, 32,3263-3537, 11,2275-2375, 20,2115-2122, 22,3647-3660): the P63-P67 guidance pass (LUNLAND, ?GUIDSUB, GUIDSUB and the phase tables), GUILDEN, STARTP64-STARTP67, TTFINCR, REDESIG, CALCRGVG, RGVGCALC, TTF/8CL, QUADGUID, AFCCALC, CGCALC, EXTLOGIC, RATESTOP, the guidance displays, ROOTPSRS, INTPRETX, TDISPSET, FASTCHNG, RODTASK, RODCOMP, VHORCOMP, PITFALL, REDESMON and DESCBITS, as 248 routines of the control-transfer ABI compiled by tools/interp_compile.py. READ CHAN30 and RAND/READ CHAN31 read the latched inputs of the run (channel_inputs). Not translated: WOR CHAN13 with its EXTEND in STARTP64 and REDESMON's RESETRPT, which wait for the output-channel model.",
           "verification": "docs/LM-LLGE.md"
         }
       ]

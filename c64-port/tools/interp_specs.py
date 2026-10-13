@@ -2071,7 +2071,16 @@ SPECS = {
         # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
         # build needs (unsigned is 16 bits there).
         'index_carry16': True,
-        'partial': {'lm': 'READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 wait for an I/O channel model'},
+        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 lands on
+        # WHATEXIT's TCF EXNORM, which loops back to DISPEXIT for ever.  The
+        # program only runs IGNALG (-1) with FLUNDISP set, so DISPEXIT never
+        # gets there; cases on the paths into it keep WCHPHOLD on 0..2.
+        'range_states': (('CGCALC', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
+                         ('1406P00', 'FASTCHNG', {'WCHPHOLD': [0, 1, 2]})),
+        # READ CHAN30 (STERN) and RAND/READ CHAN31: latched inputs.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
+        'partial': {'lm': 'WOR CHAN13 (STARTP64) waits for an output-channel model'},
         'target': 'tests/lm_llge_target.c',
         'freeze_stride': 32,
         'cover_stride': 8,
