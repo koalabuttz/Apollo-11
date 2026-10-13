@@ -15,23 +15,23 @@
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x10c0000180002dffffffff",
-   "cases": 36
+   "keep": "0x180000000ffffff",
+   "cases": 26
   },
   {
    "mission": "lm",
-   "keep": "0x1fc00003fffffeff800000",
-   "cases": 32
+   "keep": "0x1fc0000003ffffff800000",
+   "cases": 33
   },
   {
    "mission": "lm",
-   "keep": "0x39bfffffffffc00000000000000",
+   "keep": "0x7ffffffffc000000000000",
    "cases": 43
   },
   {
    "mission": "lm",
-   "keep": "0x3fc000000000000000000000000",
-   "cases": 10
+   "keep": "0x3ffffc000000000000000000000",
+   "cases": 23
   },
   {
    "mission": "cm",
@@ -40,13 +40,13 @@
   },
   {
    "mission": "cm",
-   "keep": "0x1fc07fffffffffc000000000",
-   "cases": 49
+   "keep": "0x1fc01fffffffffc000000000",
+   "cases": 47
   },
   {
    "mission": "cm",
-   "keep": "0x3ffffffff80060000000000000000",
-   "cases": 40
+   "keep": "0x3ffffffffe0060000000000000000",
+   "cases": 42
   }
  ],
  "stops": {
@@ -849,8 +849,8 @@
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: B5OFF, BANKCALL, CHANG1, CHANG2, ENDMARK, ENDOFJOB, FINDVAC, NOVAC, TASKOVER, WAITLIST; cm: B5OFF, BANKCALL, CHANG1, CHANG2, CHECKMM, ENDMARK, ENDOFJOB, FINDVAC, NOVAC, TASKOVER, WAITLIST)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "host_cases_traced": 14080,
- "host_branch_arcs": 1183,
- "c64_rows": 252,
- "c64_branch_arcs": 1183
+ "host_cases_traced": 14139,
+ "host_branch_arcs": 1204,
+ "c64_rows": 256,
+ "c64_branch_arcs": 1204
 }

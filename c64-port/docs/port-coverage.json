@@ -2293,7 +2293,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under EB 4, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p30-p37 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -2313,22 +2313,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "272d62a64184318b4133aa54f76fc3799788dd3a7afd3060f074f12a0f85758f"
+            "sha256": "1f81b3a0579b105392bd56565ff797cc61f2136e01e31d033d346172893c5d47"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
-            "sha256": "8133cedb40bb835a77afcdc857d86c3a84dbf15b002d92681c735066af670d79"
+            "sha256": "d94d58f4965377a71b23e05871f4786aed335bbb8902d4fa5dd6449bb451243b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "5f726691ca6eda2d6dcacdbc283d33d451e90a35a2a59143de97a58dbe040749",
+            "sha256": "f40172af5f680e34c04dbca248b7bda15af280ce54ef610c30cdbf618ec06290",
             "vice_targets": {
-              "vice-cm-p30-p37": 169
+              "vice-cm-p30-p37": 173
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "f48fabba2f8e332b9f3ae272eb5f4cbaef6b7e63a23f58648963a9acdad2c53c"
+            "sha256": "a1bcf4523b935da9f2f06d6cbc649f947ae7e995962876fbb435cbda3902d37a"
           }
         }
       }
@@ -3028,7 +3028,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -3047,7 +3047,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+            "sha256": "4d82674bb1898c372cdc0b1dd486fea5192f328ef124e53a455e0cf896b3e9f9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -3055,14 +3055,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "sha256": "4f73ba244dc62280d36fbe0b654c22168cc0cd96eb43d9c381d34ee1ba5a85c0",
             "vice_targets": {
-              "vice-r30": 252
+              "vice-r30": 256
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+            "sha256": "2cae62f1ddaac4bda6b3b85d6dd819b4c72eb9aab046e2dd1f008421ca59f4ef"
           }
         }
       }
@@ -8262,7 +8262,7 @@
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
-        "source_revision": "6e0a5a79bd5c07c5d1b327511f8ed3a0e121318f",
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
@@ -8281,7 +8281,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "dd5a4899b321ba39c1cab15ffd6c7264eda4c4ff17ac5ed8950addae8cdfec06"
+            "sha256": "4d82674bb1898c372cdc0b1dd486fea5192f328ef124e53a455e0cf896b3e9f9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -8289,14 +8289,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "db4cc8a51ba09e2fdf4e2555a356db14355b17860c1d7e59a846858cfe5f73d9",
+            "sha256": "4f73ba244dc62280d36fbe0b654c22168cc0cd96eb43d9c381d34ee1ba5a85c0",
             "vice_targets": {
-              "vice-r30": 252
+              "vice-r30": 256
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "d2e26fecca031b724e07acecdde627469ed62dff741604b65f2951f85ecdab49"
+            "sha256": "2cae62f1ddaac4bda6b3b85d6dd819b4c72eb9aab046e2dd1f008421ca59f4ef"
           }
         }
       }
