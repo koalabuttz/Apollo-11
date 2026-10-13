@@ -12,9 +12,9 @@ extern const agc_routine_table cm_p11_interpretive,cm_p11_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_p11_point;
-#define CM_P11_POINTS 61u
+#define CM_P11_POINTS 58u
 #define CM_P11_CADR_WORDS 1u
-#define CM_P11_EXTERNALS 17u
+#define CM_P11_EXTERNALS 15u
 #define CM_P11_FIRST 19957u
 #define CM_P11_LAST 36507u
 extern const cm_p11_point cm_p11_points[CM_P11_POINTS];

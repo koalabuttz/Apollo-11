@@ -300,13 +300,15 @@ SPECS = {
         # SATOUT's CADR NEEDLER, which the AGC runs as CS 2420 (on to
         # ATERSET), and so does the port.
         'execute_data': ('34,2472',),
+        # CA SATSW; CCS A: the -0 exit lands on STEERSAT's TLOAD TAD (an
+        # interpretive word), which no SATSW value takes; as basic code its
+        # TC returns would shadow the interpretive STORE AK at 34,2456.
+        'interp_landings': ('34,2453',),
         # NOPOLYM's RTB V1STO2S is the first order of its pair (RTB RTB): the
         # native V1STO2S, so the second RTB (DELSTOR, in this file) runs on.
         'rtb': {'V1STO2S': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
-        # C64 rows picked by branch outcome (tools/c64_row_cover.py).
-        'c64_rows': 'cover',
         'target': 'tests/cm_p11_target.c',
         'freeze_stride': 64,
         'c64_flags': ['-fno-inline'],
