@@ -8888,7 +8888,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,208 of 40,320 random cases. ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
+        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,223 of 40,336 cases (40,320 random, and 16 continuations that run a random case on past the end of a C64 segment group, tools/lm_servicer_chains.py). ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
         "external_continuations": [
           "PHASCHNG",
           "2PHSCHNG",
@@ -8929,22 +8929,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-servicer/lm-servicer-proof.json",
-            "sha256": "209d981d6cf11c848be8819d87bb7278b3c18d3ef4d0fef6859865e6b227e3c9"
+            "sha256": "fe4d8d405173608cbb0f49525a458d657453cf2d046b5d5c0ab8daf1c5962d90"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-servicer/lm-servicer-host.log",
-            "sha256": "a610e10d31c2fdce194749d625b386be3137246af3b670f585c67dae553fd1bb"
+            "sha256": "53b016ac47e24ca7299bb5e0c5790094b907ffb0f3c5c55f0059acb14dfd1231"
           },
           "c64_execution_results": {
             "path": "evidence/lm-servicer/lm-servicer-vice.log",
-            "sha256": "550de071fcb2f3d0bee5f36d8277bce37a907b38696add8b5538130a2dc56101",
+            "sha256": "09018a231f0466669b859d84e33f972b255d8a3e184f6d783bae8ac8bc8cd86b",
             "vice_targets": {
-              "vice-lm-servicer": 459
+              "vice-lm-servicer": 464
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-servicer/lm-servicer-c64-cover.json",
-            "sha256": "6c5c75e7a4d12c3782c0b71a58a2993d4276ab838c478ac6f375bbeb78b135a6"
+            "sha256": "b2549f7faea9b83d20db40b107f9103dda47049e76a6f26ac71a557aa8ee2230"
           }
         }
       }

@@ -102,6 +102,17 @@ def servicer_slots():
 SEGMENTS = {'lm-servicer': ('LMSV_C64_GROUP', servicer_slots, 'lm-servicer-g{}-digests.txt')}
 
 
+def case_slot(milestone, slots):
+    """A case's key slot: case % slots, but lm-servicer's continuation cases
+    (tests/lm_servicer_chains.h) start at the key their base run stopped at."""
+    if milestone != 'lm-servicer':
+        return lambda n: n % slots
+    base = int(re.search(r'#define LMSV_BASE_CASES (\d+)u', (R / 'tests/lm_servicer_cases.h').read_text()).group(1))
+    text = (R / 'tests/lm_servicer_chains.h').read_text()
+    extra = [int(x) for x in re.findall(r'(\d+)u,', re.search(r'lmsv_chain_slot\[[^]]*\]=\{(.*?)\};', text).group(1))]
+    return lambda n: n % slots if n < base else extra[n - base]
+
+
 def mk_var(milestone, name):
     text = (R / f'tools/mk/{milestone}.mk').read_text()
     return re.search(rf'^{name}\s*=\s*(.*)$', text, re.M).group(1).split()
@@ -156,12 +167,14 @@ def trace(milestone, npaths, extra=(), tag=''):
     return rows
 
 
-def cover(rows, slots):
+def cover(rows, slots, slot=None):
     """Cases taking every slot, kind and branch of `rows`: a greedy cover,
     then (latest pick first) each row dropped whose elements the others
-    still take."""
+    still take. slot: a case's key slot (default case % slots)."""
+    slot = slot or (lambda n: n % slots)
+
     def elements(r):
-        return {('slot', r[0] % slots), ('kind', r[1])} | {('path', p) for p in r[2]}
+        return {('slot', slot(r[0])), ('kind', r[1])} | {('path', p) for p in r[2]}
     need = set().union(*(elements(r) for r in rows))
     chosen, have = [], set()
     while have != need:
@@ -180,10 +193,10 @@ def cover(rows, slots):
     return [r[0] for r in chosen]
 
 
-def pick(rows, slots, budget, cases):
+def pick(rows, slots, budget, cases, slot=None):
     """Greedy cover of every slot, kind and branch of `rows`, then a stride
     fill (over the cases in `rows`) up to `budget`."""
-    chosen = cover(rows, slots)
+    chosen = cover(rows, slots, slot)
     picked, mine, i = set(chosen), {r[0] for r in rows}, 0
     while len(picked) < min(budget, len(mine)):
         if i * STRIDE % cases in mine:
@@ -197,12 +210,13 @@ def segments(milestone, npaths, cases, full, out):
     stem, mac, sym, slots, budget, srcvar, run = MODULES[milestone]
     macro, slot_groups, digest_file = SEGMENTS[milestone]
     of = slot_groups()
+    slot = case_slot(milestone, slots)
     host = {p for r in full for p in r[2] if p < npaths}
     c64, report, total = set(), {}, 0
     for g in sorted(set(of)):
-        rows = [r for r in trace(milestone, npaths, (f'-D{macro}={g}',), f'-g{g}') if of[r[0] % slots] == g]
+        rows = [r for r in trace(milestone, npaths, (f'-D{macro}={g}',), f'-g{g}') if of[slot(r[0])] == g]
         share = max(1, budget * sum(1 for x in of if x == g) // slots)
-        chosen, picked = pick(rows, slots, share, cases)
+        chosen, picked = pick(rows, slots, share, cases, slot)
         digests = {}
         for line in (B / digest_file.format(g)).read_text().split('\n'):
             if line:
