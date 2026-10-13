@@ -69,7 +69,8 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   /* (channel_inputs specs: the differential sets IRC_INPUTS) */
   if(inputs){agc_input_channels in;irc_inputs(&c,&in);machine.InputChannel[3]=(int16_t)in.channel3;machine.InputChannel[4]=(int16_t)in.channel4;
    machine.InputChannel[030]=(int16_t)in.channel30;machine.InputChannel[031]=(int16_t)in.channel31;
-   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;}
+   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;
+   machine.InputChannel[016]=(int16_t)in.channel16;}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<4000000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);

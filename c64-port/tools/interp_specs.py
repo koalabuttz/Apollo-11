@@ -133,7 +133,89 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
+# AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
+# and the surface mark slots (that area plus 6 words a mark).
+AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
+AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
+
 SPECS = {
+    # Lane D1: Luminary099 AOTMARK (probe).
+    'lm-aotmark': {
+        'missions': ('lm',),
+        'file': {'lm': 'AOTMARK.agc'},
+        'base': {'lm': 'lm_aotmark'},
+        'symbol': {'lm': 'lm_aotmark'},
+        'entries': ['@external'],
+        'externals': {'POSTJUMP': 'auto', 'NOVAC': 'auto', 'RESUME': 'auto', 'ALARM': 'auto', 'ENDMARK': 'auto', 'WAITLIST': 'auto', 'GOTOPOOH': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'FINDVAC': 'auto', 'BAILOUT1': 'auto', 'POODOO': 'auto', },
+        'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'basic_fixed_index': {'MKVB54': [0, 1, 2, 3]},
+        # MKVACFND's INDEX MARKSTAT; TS 0 -1 assembles as DXCH 1777 and
+        # becomes TS VACnUSE once the index is added.
+        'index_carry': {'07,2035': 0o54000},
+        # MKVACFND is reached from CCS VACnUSE: A holds the free area's address -1.
+        # MKDEX is the mark verb index (0-3) in flight, the mark's VAC slot
+        # (area +1, 6 words a mark) on the surface (FLAGWRD8 bit 8).
+        'states': dict({'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]},
+                        '07,2633': {'MKDEX': AOT_SLOTS}, '07,2634': {'MKDEX': AOT_SLOTS}},
+                       # The star vector code indexes a mark's slot with X1 = -slot
+                       # (AVESTAR), XYMARK holding the marks' VAC area (MARKCHEX);
+                       # AVESTAR empties the pushdown list, which stays shallow
+                       # (a deeper PUSHLOC would push over X1).
+                       **{'%02o,%04o' % (b, a): {'vac+046': [0o77777 - x for x in AOT_SLOTS],
+                                                 'XYMARK': [0o401, 0o455, 0o531, 0o605, 0o661],
+                                                 '0166': ['vac+%o' % n for n in range(0, 0o16, 2)]}
+                          for b, lo, hi in ((7, 0o2171, 0o2202), (7, 0o2255, 0o2316), (0o15, 0o2000, 0o2046))
+                          for a in range(lo, hi)},
+                       # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
+                       **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
+        'joint_states': {
+                         # 15,2041 VSL1 VAD from the state the original reaches it
+                         # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
+                         # VAD's overflow there carries into a word that does not
+                         # overflow, which random states almost never give.
+                         'JUSTOA-1': [{}, {}, {}, {
+                             '0120': 0o605, '0121': 0o1, '0154': 0o17573, '0155': 0o76534, '0156': 0o0,
+                             '0157': 0o70311, '0160': 0o70337, '0161': 0o10371, '0162': 0o14166,
+                             '0163': 0o77776, '0166': 0o613, '0605': 0o603, '0606': 0o2356, '0607': 0o1471,
+                             '0610': 0o21246, '0611': 0o25, '0612': 0o36514}],
+                         'CHANGEVB': [{'FLAGWRD8': f | o, 'MKDEX': m}
+                                      for f, ms in ((0, range(4)), (0o200, AOT_SLOTS))
+                                      for o in (0, 0o12345 & ~0o200, 0o77577) for m in ms]},
+        'ebank': 7,
+        # FRESH_START leaves a free VAC area holding its own address
+        # (VAC1ADRC ADRES VAC1USE); a busy one holds zero.
+        'all_states': {'VAC1USE': [0, 0o400], 'VAC2USE': [0, 0o454], 'VAC3USE': [0, 0o530],
+                       'VAC4USE': [0, 0o604], 'VAC5USE': [0, 0o660],
+                       # MARKSTAT: the VAC area's address +1 in the low 9
+                       # bits, mark flags in bits 10-14 (or zero: no marks).
+                       'MARKSTAT': AOT_MARKSTAT,
+                       # MARKCNTR: marks wanted or taken, 0 to 5.
+                       'MARKCNTR': list(range(6)),
+                       # AOTCODE: detent 0-7 in bits 7-9, star code below.
+                       'AOTCODE': [(d << 6) | c for d in range(8) for c in (0, 1, 0o45, 0o77)]},
+        'resume_keys': True,
+        'resume_orphans': 'all',
+        # Mid-file interpretive points start from the PUSHLOC, MODE and
+        # index registers the file's own runs reach them with.
+        'flow_states': True,
+        'resume_flow': True,
+        'channel_inputs': True,
+        'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
+        'target': 'tests/lm_aotmark_target.c',
+        # Host vectors and C64 rows chosen to reach every branch outcome
+        # (gcov arcs and clang edges, the shared bodies' edges per call
+        # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
+        # edge values in MPAC and the operands.
+        'c64_rows': 'cover',
+        'cover_stride': 8,
+        'site_edges': True,
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 32,
+    },
     'inflight-align': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc', 'cm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc'},

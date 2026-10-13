@@ -1522,7 +1522,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
+            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -1610,7 +1610,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "43efc541e01751eaa338607e1b31b1c031dab73694199fe51cb1aca537feea8f",
+            "sha256": "06134e8d2f00b4f4f4ee3c1b0739d3046ebf10c7e877f9d346ee5d962d48684d",
             "vice_targets": {
               "vice-cm-imu-calibration": 507
             }
@@ -4303,7 +4303,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
+            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -5691,8 +5691,59 @@
       "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
       "bytes": 16963,
       "lines": 695,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_aotmark.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (AOTMARK1 bank 07, AOTMARK2 OANB bank 04, P50S SURFSTAR bank 15: 511 words) as 122 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry, every return from a BANKCALL display or POSTJUMP, and every interpretive word after a DANZIG.",
+          "verification": "docs/LM-AOTMARK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it, NEWJOB +0 or positive. The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "external_continuations": [
+          "Basic: ALARM, BAILOUT1, BANKCALL (GOMARKF, GOMARK4 and the other display CADRs), ENDMARK, FINDVAC, GOTOPOOH, IBNKCALL, NOVAC, POODOO, POSTJUMP (DESCBITS), RESUME and WAITLIST, with their inline words",
+          "Interpretive CALL and STCALL to TRG*NBSM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "hardware_side_effects": "Channel 016 (NAVKEYIN, the mark and reject buttons) is read as a latched input; channels 1 and 2 are the L and Q registers. Raising MARKRUPT from the mark buttons is a device-adapter obligation.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-aotmark/lm-aotmark-source-map.json",
+            "sha256": "ece79a0622dbc0be892441bc830a5221092b8efa47ee9a34e494bc42a612c43b"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
+            "sha256": "39225e6c6b5859afcb604fb844c2d9af636c594205e5af9b84d1da9da78c5eea"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-aotmark/lm-aotmark-host.log",
+            "sha256": "268eb56f254dbcd04339d16e45dadb232fb5d7fb87afa455727c46d3a37df398"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
+            "sha256": "0e804e65ae6357a8d5412a16e58818c232bfadb6d9ebcbbbf952fa8560fbafea",
+            "vice_targets": {
+              "vice-lm-aotmark": 293
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
+            "sha256": "7858e6023de821e1454ae38b0ff718988cdbb76f78f6f58c7cb074b7c7f0be72"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ASCENT_GUIDANCE.agc",
@@ -7119,7 +7170,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "a76bf3f08e2dfa20d669ac952f1e56cda0c471432ae1fc52dbec9c28c7adb88b",
+            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -10210,7 +10261,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "234790769de49dc5c08bd35ab62d6a736c16ff98de4916d6c7c437c427e652dc",
+            "sha256": "b2e5ef771bed11b088e4dac6f3d6258f8f30e4ea3c9738de24810d92407cb23e",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
