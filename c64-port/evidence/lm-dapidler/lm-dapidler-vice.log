@@ -1,3 +1,3 @@
-lm-dapidler.prg sha256 69950073848d9d02a2391f33f0348d333c48ce005bd5e67d384048e4ec212c94 heap_start $b981
-lm-dapidler: 192 C64 rows (16 cover every entry, outcome, the 24 counted paths and the 265 edges of every linked source the host takes)
+lm-dapidler.prg sha256 1ad67a13c00a2ab17d948f4d6152302076e5a111001ed7e5e20798a193acc3bc heap_start $b0de
+lm-dapidler: 192 C64 rows (16 cover every entry, outcome, the 24 counted paths and the 310 edges of every linked source the host takes)
 PASS: VICE PAL lm-dapidler.prg: 192 checks, 0 failures
