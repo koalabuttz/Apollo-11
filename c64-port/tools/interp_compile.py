@@ -422,7 +422,7 @@ class Compiler:
         compiled table of the words the spec says the index reaches:
         'indexed_fixed': {label: (lowest, highest) offset from the base}."""
         a = ((~w & 0o77777) if w & 0o40000 else w) - 1
-        if a < 0o4000 or not takes_k:   # (erasable, or a shift count)
+        if a < 0o4000 or not takes_k or 'indexed_fixed' not in self.spec:   # (erasable, or a shift count)
             return '0'
         b = (a >> 10) | (0o20 if (bank & 0o20 and a < 0o10000) else 0)
         fp = b * 1024 + (a & 0o1777)
