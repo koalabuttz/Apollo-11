@@ -1016,7 +1016,7 @@ SPECS = {
                    **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
                                           '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
         'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
-                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
         'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
@@ -1080,6 +1080,9 @@ SPECS = {
         # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
         'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
                           '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # STATEINT (from P00 and V37) runs INTSTALL under a NOVAC job: its
+        # EXIT, the stall test and GOBAC's RVQ back to the caller.
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
         'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.

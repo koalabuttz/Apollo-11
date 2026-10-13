@@ -126,6 +126,7 @@ class Mission:
             # its first word (files that switch EBANK= between routines).
             self.ebank = self.listing_ebanks()
         self.edge = spec.get('edge_cases', False)
+        self.novac = set(self.cp.label_phys(k) for k in spec.get('novac', ()))
         self.rk = bool(spec.get('resume_keys'))
         self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
@@ -322,6 +323,10 @@ def case(mi, point, n, rng):
     # waiting, so the next DANZIG goes to CHANG2.
     E[0o67] = newjob = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
+    if point in mi.novac and rng.random() < 0.25:
+        # ('novac') A NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET): its
+        # work area is the core set's registers.
+        vac = 0o110
     E[0o120] = vac
     # Shapes: 0 the VAC area and operands as they are, 1 random words,
     # 2 random half-unit vectors, and a fourth with 'edge_values' (edge
@@ -485,6 +490,8 @@ def case(mi, point, n, rng):
                 E[a] = E[2]
         if point in mi.native_entries and dict(E).get(0o23):
             stop = mi.danzig
+    if vac == 0o110:
+        E[0o120] = vac   # (the work area holds FIXLOC itself)
     return seed, list(E.items()), n & 1, stop, sb
 
 
