@@ -72,6 +72,6 @@
   "17,3224",
   "17,3236 CLOSEOUT"
  ],
- "boundary": "each entry from a random image (FB bank 17, EB 6, random channels 4, 13 and 31, an eight-bit channel 5, a random interrupt-enable bit, erasable words of random widths with +-0 frequent) until the original leaves 17,2072-3251 and MAKERUPT (TC, TCF, DTCB or TC Q to a destination outside; LOOPER's TC RETJADR to a word other than the file's three return addresses); compared: outcome, channel 13, the interrupt-enable and interrupt-in-progress bits and all 2048 erasable words",
+ "boundary": "each entry from a random image (FB bank 17, EB 6, random channels 4, 13 and 31, an eight-bit channel 5, a random interrupt-enable bit, erasable words of random widths with +-0 frequent) until the original leaves 17,2072-3251 and MAKERUPT (TC, TCF, DTCB or TC Q to a destination outside; LOOPER's TC RETJADR to a word other than the file's three return addresses, which the native routines refuse at the entry); compared: outcome, channel 13, the interrupt-enable and interrupt-in-progress bits and all 2048 erasable words",
  "full_physical_words": 2048
 }

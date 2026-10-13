@@ -79,16 +79,18 @@ the C64 diagnostic.
     `CAF 13,14,15` (`20,2425`), just before `WOR CHAN14`.
   - The digests are frozen into `tests/lm_dapidler_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
-    (`tests/lm_dapidler_c64_vectors.h`, 192 cases). It runs every host case with
-    branch counting (`tools/lane_f_path_trace.c`) and takes, greedily, cases
-    until every entry, outcome and branch the host cases take is taken
-    (16 cases), then spreads the rest with a stride of 97. The per-branch
-    host and C64 counts are in `evidence/lm-dapidler/lm-dapidler-c64-cover.json`.
+    (`tests/lm_dapidler_c64_vectors.h`, 192 cases). It runs every host case
+    with its path counters on and every linked source built with clang
+    `-fsanitize-coverage=edge,trace-pc-guard` (`tools/lane_f_path_trace.c`),
+    and takes, greedily, cases until every entry, outcome, counted path and
+    control-flow edge the host cases take is taken (16 cases), then spreads
+    the rest with a stride of 97. The per-path and per-edge host and C64
+    counts are in `evidence/lm-dapidler/lm-dapidler-c64-cover.json`.
 - `make test-lm-dapidler` and `make sanitize-lm-dapidler` check every digest
   (strict and ASAN/UBSAN), require every case to reach its stop, require every
   routine and every reachable branch to be taken, and check the refusals.
 - `make vice-lm-dapidler` runs the 192 C64 rows in VICE: every entry, every
-  outcome and every branch the host cases take. The VICE log records the
+  outcome, path and edge the host cases take. The VICE log records the
   PRG's SHA-256.
 
 Branches no admitted input reaches, documented in the host test: the negative

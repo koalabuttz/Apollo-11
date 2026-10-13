@@ -182,6 +182,17 @@ static void dostore(apollo_overlay_state *s){
  }
  W[5]=next[kind];
 }
+/* Whether the store `code` (at NEWOPS, before lmi_store_code) would write
+ * past the end of the E-bank window (01777): the original then writes into
+ * fixed memory and reads it back into A and L, which the image does not
+ * hold. Mirrors DOSTORE's indexing and STORE's addressing and MODE count. */
+uint8_t lmi_store_spills(const apollo_overlay_state *s,agc_word code){
+ unsigned kind=(code>>11)&7u,a=code&03777u,n;agc_word m=W[rMODE];
+ if(kind==1u||kind==2u)a=(a+(~(unsigned)W[(W[rFIXLOC]+(unsigned)(kind==1u?tX1:tX2))&03777u]&077777u))%077777u;
+ if(a<=DEC45)return 0;   /* the work area (FIXLOC + a), or 45 itself */
+ n=m==0u||m==077777u?1u:(m&040000u)?5u:2u;   /* DP (+-0), vector, TP */
+ return (uint8_t)((a&0377u)+n>0377u);
+}
 void lmi_store_code(apollo_overlay_state *s,agc_word code){
  /* NEWOPS INDEX LOC, CA 0; CCS A (positive) TCF DOSTORE. */
  CAF(code);(void)CCS(rA);dostore(s);

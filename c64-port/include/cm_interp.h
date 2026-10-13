@@ -38,6 +38,7 @@ void cmi_diradres(apollo_overlay_state *, agc_word operand, agc_word target);
 void cmi_diradres_pushup(apollo_overlay_state *, agc_word next, agc_word target);
 void cmi_address_pushup(apollo_overlay_state *, agc_word next, agc_word target);
 void cmi_store_code(apollo_overlay_state *, agc_word code);
+uint8_t cmi_store_spills(const apollo_overlay_state *, agc_word code);
 void cmi_stadr(apollo_overlay_state *, agc_word word);
 void cmi_dodload(apollo_overlay_state *);
 void cmi_dovload(apollo_overlay_state *);

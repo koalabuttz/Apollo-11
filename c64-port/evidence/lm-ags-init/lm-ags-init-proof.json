@@ -2,10 +2,10 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen",
- "cases": 16896,
- "compared": 16896,
+ "cases": 29952,
+ "compared": 29952,
  "refused": {},
- "snapshot_sha256": "ff52c4b63f518a548df26b766f44720b312be692e7f5aa96a07ed8c0a5243a7e",
+ "snapshot_sha256": "2988c969a35810b24c112fee70ff964a28f48b5eda4964476d47a3573eb8e1c2",
  "stops": {
   "32,2005": {
    "ALARM": 384,
@@ -24,7 +24,17 @@
   "32,2027": {
    "BANKCALL": 768
   },
+  "32,2037": {
+   "BANKCALL": 640,
+   "CHANG2": 128
+  },
+  "32,2041": {
+   "BANKCALL": 768
+  },
   "32,2046": {
+   "RTB LOADTIME": 768
+  },
+  "32,2047": {
    "RTB LOADTIME": 768
   },
   "32,2051": {
@@ -38,6 +48,9 @@
    "CHANG2": 128,
    "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 640
   },
+  "32,2057": {
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 768
+  },
   "32,2061": {
    "CHANG2": 128,
    "RTB VECSGNAG": 640
@@ -45,6 +58,17 @@
   "32,2063": {
    "BANKCALL": 640,
    "CHANG2": 128
+  },
+  "32,2065": {
+   "BANKCALL": 640,
+   "CHANG2": 128
+  },
+  "32,2070": {
+   "BANKCALL": 640,
+   "CHANG2": 128
+  },
+  "32,2071": {
+   "BANKCALL": 768
   },
   "32,2077": {
    "BANKCALL": 384,
@@ -74,11 +98,52 @@
   "32,2131": {
    "ENDEXT": 768
   },
+  "32,2132": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2135": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2137": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2142": {
+   "RTB VECSGNAG": 768
+  },
   "32,2144": {
    "CHANG2": 128,
    "RTB VECSGNAG": 640
   },
+  "32,2146": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2151": {
+   "CHANG2": 128,
+   "RTB VECSGNAG": 640
+  },
+  "32,2153": {
+   "RTB VECSGNAG": 768
+  },
   "32,2156": {
+   "BANKCALL": 320,
+   "CHANG2": 128,
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 320
+  },
+  "32,2160": {
+   "BANKCALL": 320,
+   "CHANG2": 128,
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 320
+  },
+  "32,2163": {
+   "BANKCALL": 320,
+   "CHANG2": 128,
+   "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 320
+  },
+  "32,2166": {
    "BANKCALL": 320,
    "CHANG2": 128,
    "NEWOPS outside the file (LEMPREC, CSMPREC, a caller of SCALEVEC)": 320

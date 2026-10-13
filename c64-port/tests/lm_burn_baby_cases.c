@@ -92,9 +92,10 @@ void lmbb_input(apollo_overlay_state *m,lmbb_case *c,uint16_t n){
  if(v%8u!=1u)W[01163]=dispdex[below(&seed,8u)];
  if(v%16u!=11u)W[01142]=p40ret[below(&seed,3u)];
  /* KILLTSK2: L counts the list pairs (0, 2, .. 16), ITEMP1 the return,
-  * and in half the states the list holds the CADR's task. */
+  * and in half the states the list holds the CADR's task. In a sixteenth
+  * L is any word, as a DTCB into the file can leave it (#147). */
  W[061]=dest(&seed);
- if(bank==027u&&ph!=PH(027u,02200u))W[1]=(agc_word)(2u*below(&seed,9u));
+ if(bank==027u&&ph!=PH(027u,02200u))W[1]=v%16u==13u?agc_extend(r15(&seed)):(agc_word)(2u*below(&seed,9u));
  /* The caller's BBANK (L at KILLTSK2, ITEMP2 after it): a bank of
   * switched fixed (FB 2 .. 37, any EB). */
  {agc_word bb=(agc_word)(((2u+below(&seed,036u))<<10)|below(&seed,8u));
