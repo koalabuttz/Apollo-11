@@ -7006,8 +7006,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/findcduw.md",
-            "sha256": "ef71c681ddd6b56529c1fa11b2b51162c2f3ed369aa4f31888c5c9b630d0a464"
+            "path": "docs/audits/a2-248.md",
+            "sha256": "41de9a267cb01d5482b0bc63d8f92f79ac295e65f3be397346fa00cbd9ff26f2"
           },
           "c64_branch_outcomes": {
             "path": "evidence/findcduw/findcduw-proof.json",
