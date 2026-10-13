@@ -41,6 +41,7 @@ Steps, per mission:
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import collections
+import functools
 import json
 import os
 from pathlib import Path
@@ -86,16 +87,55 @@ BASE_IO = {'lm': 'P66', 'cm': 'CM_NATIVE'}
 TABLE_DEF = re.compile(r'^const agc_routine_table\s+([A-Za-z0-9_]+)\s*=', re.M)
 
 
+# The record type of each kind (include/flight_io.h flight_io_buffer).
+IO_TYPE = {'P66': 'p66_bias_io', 'CM_NATIVE': 'cm_native_io', 'LM_FRESH': 'lm_fresh_io',
+           'LM_FLIGHT': 'lm_flight_io', 'LM_SV': 'lm_sv_io', 'LM_LLD': 'lm_lld_io', 'LM_IPT': 'lm_ipt_io',
+           'LM_BB': 'lm_bb_io', 'LM_AGS': 'lm_ags_io', 'LM_IMU': 'lm_imu_io', 'LM_DNTM': 'lm_dntm_io',
+           'CM_FRESH': 'cm_fresh_io', 'CM_DNTM': 'cm_dntm_io', 'LM_CHANNEL': 'lm_channel_io',
+           'CM_CHANNEL': 'cm_channel_io'}
+# Record types a routine never takes as its io (component records, the
+# flight record itself).
+IO_INTERNAL = {'flight_io', 'apollo_noun_reader_io', 'dsky_charin_io', 'dsky_key_irq_io', 'dsky_lamp_io',
+               'dsky_relay_io', 'dsky_reset_io', 'enema_io', 'cm_enema_io', 'gimbal_io', 'imu_pulse_io',
+               'imu_standby_io', 'lanec_io', 'lm_torque_io', 'p66_task_io'}
+
+
+@functools.lru_cache(maxsize=None)
+def io_types():
+    """Every struct typedef named *_io in include/."""
+    return {t for h in (ROOT / 'include').glob('*.h')
+            for t in re.findall(r'\}\s*([A-Za-z0-9_]+_io)\s*;', h.read_text(errors='replace'))}
+
+
 def io_kind(m, stem):
     """The io record a source's tables take: from IO_KIND, else the base
     record followed by the input channels (include/agc_input_channels.h) for
-    a source whose wrappers take lm_channel_io or cm_channel_io."""
+    a source whose wrappers take lm_channel_io or cm_channel_io. Refuses a
+    source naming an io record no kind maps field by field, and a kind whose
+    record the source never names, so a new layout fails here rather than
+    running with a mismatched record."""
+    path = ROOT / 'src' / f'{stem}.c'
+    text = path.read_text(errors='replace') if path.exists() else ''
     if stem in IO_KIND[m]:
-        return IO_KIND[m][stem]
-    text = (ROOT / 'src' / f'{stem}.c').read_text(errors='replace') if (ROOT / 'src' / f'{stem}.c').exists() else ''
-    if f'{m}_channel_io' in text:
-        return f'{m.upper()}_CHANNEL'
-    return BASE_IO[m]
+        kind = IO_KIND[m][stem]
+    elif f'{m}_channel_io' in text:
+        kind = f'{m.upper()}_CHANNEL'
+    else:
+        kind = BASE_IO[m]
+    if text:
+        named = set(re.findall(r'\b([A-Za-z0-9_]+_io)\b', text)) & io_types()
+        unknown = named - set(IO_TYPE.values()) - IO_INTERNAL
+        if unknown:
+            raise SystemExit(f'src/{stem}.c: io record {", ".join(sorted(unknown))} has no flight_io kind '
+                             '(add it to include/flight_io.h, src/flight_io.c and IO_TYPE)')
+        if IO_TYPE[kind] not in named and kind != BASE_IO[m]:
+            raise SystemExit(f'src/{stem}.c: mapped to {kind} but never names {IO_TYPE[kind]}')
+        # A file shared by both missions names the other mission's record too.
+        special = {t for t in named & set(IO_TYPE.values()) if t.startswith(f'{m}_') and t != 'cm_native_io'}
+        if kind == BASE_IO[m] and special:
+            raise SystemExit(f'src/{stem}.c: names {", ".join(sorted(special))} but maps to the base record '
+                             f'{IO_TYPE[kind]} (add it to IO_KIND)')
+    return kind
 
 
 def table_names():
