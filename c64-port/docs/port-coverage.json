@@ -1584,7 +1584,7 @@
       "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
       "bytes": 9277,
       "lines": 368,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1596,7 +1596,7 @@
           "verification": "docs/IMU-COMPENSATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1608,7 +1608,6 @@
           "PIPUSE (SERVICER207)",
           "ENDOFJOB (EXECUTIVE)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-compensation/imu-compensation-source-map.json",
@@ -1629,6 +1628,10 @@
               "vice-imu-compensation": 381
             }
           },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
+          },
           "c64_branch_outcomes": {
             "path": "evidence/imu-compensation/imu-compensation-c64-cover.json",
             "sha256": "426e57ede5f2c97a6dac515ba6b7ab6ab98406eb214acd0af6579a36a5bee85c",
@@ -1643,7 +1646,7 @@
       "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
       "bytes": 23181,
       "lines": 1066,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1700,7 +1703,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1715,7 +1718,6 @@
           "UPFLAG, DOWNFLAG (FLAG routines)",
           "PHASCHNG (RESTART_CONTROL)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
@@ -1735,6 +1737,10 @@
             "vice_targets": {
               "vice-imu-mode-switching": 1288
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
@@ -6873,7 +6879,7 @@
       "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
       "bytes": 23400,
       "lines": 1067,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6930,7 +6936,7 @@
           "verification": "docs/IMU-MODE-WHOLE-SOURCE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6946,7 +6952,6 @@
           "PHASCHNG (RESTART_CONTROL)",
           "BAILOUT1 (ALARM_AND_ABORT, Luminary MODABORT)"
         ],
-        "awaiting": "auditor review",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-source-map.json",
@@ -6966,6 +6971,10 @@
             "vice_targets": {
               "vice-imu-mode-switching": 1288
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/imu-mode-switching-compensation.md",
+            "sha256": "e056367a309ef790d37092370e0e1df76a2482253d5571846656befa0aa69e49"
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
