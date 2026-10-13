@@ -24,36 +24,41 @@ typedef apollo_overlay_state agc_image;
 static NI unsigned ai_ea(unsigned address);
 static NI agc_word ai_word(unsigned address);
 static NI void ai_put(unsigned address, agc_word);
+#if !INTERP_K_OPS   /* else the resident's k_ ops (below) */
 static NI void ai_ca_w(unsigned);
 static NI void ai_caf_w(agc_word);
-static NI void ai_caf_b(uint8_t);
 static NI void ai_cs_w(unsigned);
 static NI void ai_csf_w(agc_word);
-static NI void ai_csf_b(uint8_t);
 static NI void ai_ad_w(unsigned);
 static NI void ai_adf_w(agc_word);
+static NI void ai_maskf_w(agc_word);
+static NI uint8_t ai_ts_w(unsigned);
+static NI void ai_ads_w(unsigned);
+static NI void ai_dcaf(const agc_word[2]);
+static NI void ai_dxch_w(unsigned);
+static NI uint8_t ai_ccs_w(unsigned);
+static NI uint8_t ai_bzf(void);
+static NI uint8_t ai_bzmf(void);
+static NI void ai_tc(agc_word return_address);
+#endif
+static NI void ai_caf_b(uint8_t);
+static NI void ai_csf_b(uint8_t);
 static NI void ai_adf_b(uint8_t);
 static NI void ai_su_w(unsigned);
 static NI void ai_mask_w(unsigned);
-static NI void ai_maskf_w(agc_word);
 static NI void ai_maskf_b(uint8_t);
-static NI uint8_t ai_ts_w(unsigned);
 static NI uint8_t ai_ovsk(void);
-static NI void ai_ads_w(unsigned);
 static NI void ai_incr_w(unsigned);
 static NI void ai_aug_w(unsigned);
 static NI void ai_dim_w(unsigned);
 static NI void ai_das_w(unsigned);
 static NI void ai_dca_w(unsigned);
-static NI void ai_dcaf(const agc_word[2]);
 static NI void ai_dcs_w(unsigned);
 static NI void ai_dcsf(const agc_word[2]);
-static NI void ai_dxch_w(unsigned);
 static NI void ai_mp_w(unsigned);
 static NI void ai_mpf_w(agc_word);
 static NI void ai_mpf_b(uint8_t);
 static NI void ai_dv_w(unsigned);
-static NI uint8_t ai_ccs_w(unsigned);
 static NI void ai_ca_b(uint8_t);
 static NI void ai_cs_b(uint8_t);
 static NI void ai_ad_b(uint8_t);
@@ -99,9 +104,6 @@ static NI uint8_t ai_ccs_b(uint8_t);
 #define ai_ccs(a) (B8(a)?ai_ccs_b((uint8_t)(a)):ai_ccs_w(a))
 static NI uint8_t ai_ccsf_w(agc_word);
 static NI uint8_t ai_ccsf_b(uint8_t);
-static NI uint8_t ai_bzf(void);
-static NI uint8_t ai_bzmf(void);
-static NI void ai_tc(agc_word return_address);
 #define ai_double() ai_ad(0u)
 #define ai_com() ai_cs(0u)
 #define ai_dcom() ai_dcs(0u)
@@ -235,7 +237,9 @@ static NI agc_word ai_word(unsigned a){return (agc_word)(W[ai_ea(a)]&077777u);}
  * its sixteenth bit too (TPAGREE parks NEGMAX there); a canonical image at
  * an interpretive frontier holds Q in 15 bits, as the reference rows do. */
 static NI agc_register reg(unsigned a){return W[a];}
+#if !INTERP_K_OPS
 static NI void setreg(unsigned a,agc_register v){W[a]=v;}
+#endif
 static NI void ai_put(unsigned a,agc_word v){
  v&=077777u;a=ai_ea(a);
  if(a>=024u){W[a]=v;return;}
@@ -255,7 +259,9 @@ static NI void ai_put(unsigned a,agc_word v){
 }
 /* Memory operand read with the editing write-back of reading orders (by
  * physical location; DCA/DCS re-edit only when named as 020-023). */
+#if !INTERP_K_OPS
 static NI uint8_t edited(unsigned a){a=ai_ea(a);return a>=020u&&a<=023u;}
+#endif
 static NI agc_word rd(unsigned a){
  agc_word v;
  a=ai_ea(a);v=(agc_word)(W[a]&077777u);
@@ -263,21 +269,61 @@ static NI agc_word rd(unsigned a){
  return v;
 }
 
+/* INTERP_K_OPS (the flight module): the resident kernel's image ops, ABI 2
+ * services k_ca ... k_bzmf (platform/c64/flight_image_op_services.c). They
+ * are agc_image_ops on the canonical image at APOLLO_SHARED_ADDRESS, the
+ * image this core runs on; the other ops stay here. */
+#ifndef INTERP_K_OPS
+#define INTERP_K_OPS 0
+#endif
+#if INTERP_K_OPS
+void k_ca(unsigned);void k_caf(agc_word);void k_cs(unsigned);void k_csf(agc_word);void k_ad(unsigned);
+void k_adf(agc_word);void k_maskf(agc_word);uint8_t k_ts(unsigned);void k_xch(unsigned);void k_lxch(unsigned);
+void k_ads(unsigned);void k_dxch(unsigned);uint8_t k_ccs(unsigned);void k_tc(agc_word);void k_dcaf(const agc_word *);
+uint8_t k_bzf(void);uint8_t k_bzmf(void);
+#if !(defined(__mos__) && AGC_FIXED_IMAGE)
+extern apollo_overlay_state *interp_core_k_image;
+#endif
+#endif
+#if INTERP_K_OPS
+#define ai_ca_w k_ca
+#else
 static NI void ai_ca_w(unsigned a){if(a>=3u)W[0]=sx(rd(a));else if(a)W[0]=reg(a);endi();}
+#endif
 static NI void ai_ca_b(uint8_t a){ai_ca_w(a);}
+#if INTERP_K_OPS
+#define ai_caf_w k_caf
+#else
 static NI void ai_caf_w(agc_word k){W[0]=sx(k);endi();}
+#endif
 static NI void ai_caf_b(uint8_t k){ai_caf_w(k);}
+#if INTERP_K_OPS
+#define ai_cs_w k_cs
+#else
 static NI void ai_cs_w(unsigned a){
  if(a>=3u)W[0]=sx((agc_word)(~rd(a)&077777u));
  else W[0]=(agc_register)(~reg(a)&M16);
  endi();
 }
+#endif
 static NI void ai_cs_b(uint8_t a){ai_cs_w(a);}
+#if INTERP_K_OPS
+#define ai_csf_w k_csf
+#else
 static NI void ai_csf_w(agc_word k){W[0]=sx((agc_word)(~k&077777u));endi();}
+#endif
 static NI void ai_csf_b(uint8_t k){ai_csf_w(k);}
+#if INTERP_K_OPS
+#define ai_ad_w k_ad
+#else
 static NI void ai_ad_w(unsigned a){W[0]=add16(W[0],a>=3u?sx(rd(a)):reg(a));endi();}
+#endif
 static NI void ai_ad_b(uint8_t a){ai_ad_w(a);}
+#if INTERP_K_OPS
+#define ai_adf_w k_adf
+#else
 static NI void ai_adf_w(agc_word k){W[0]=add16(W[0],sx(k));endi();}
+#endif
 static NI void ai_adf_b(uint8_t k){ai_adf_w(k);}
 static NI void ai_su_w(unsigned a){
  if(a==0u)W[0]=M16;
@@ -290,9 +336,16 @@ static NI void ai_mask_w(unsigned a){
  endi();
 }
 static NI void ai_mask_b(uint8_t a){ai_mask_w(a);}
+#if INTERP_K_OPS
+#define ai_maskf_w k_maskf
+#else
 static NI void ai_maskf_w(agc_word k){W[0]=sx((agc_word)(oc(W[0])&k));endi();}
+#endif
 static NI void ai_maskf_b(uint8_t k){ai_maskf_w(k);}
 static NI uint8_t ai_ovsk(void){return ovf(W[0])!=0u;}
+#if INTERP_K_OPS
+#define ai_ts_w k_ts
+#else
 static NI uint8_t ai_ts_w(unsigned a){
  agc_register acc=W[0],o=ovf(acc);
  if(a==0u){endi();return o!=0u;}
@@ -300,17 +353,29 @@ static NI uint8_t ai_ts_w(unsigned a){
  if(o)W[0]=o;
  endi();return o!=0u;
 }
+#endif
 static NI uint8_t ai_ts_b(uint8_t a){return ai_ts_w(a);}
 /* Register-or-memory operand of the exchanging and modifying instructions
  * (memory read without the editing write-back, written back edited). */
 static NI agc_register get16(unsigned a){return a<3u?W[a]:sx(ai_word(a));}
 static NI void set16(unsigned a,agc_register v){if(a<3u)W[a]=v;else ai_put(a,oc(v));}
+#if INTERP_K_OPS
+static NI void xchr(unsigned r,unsigned a){
+ if(r==0u)k_xch(a);else if(r==1u)k_lxch(a);
+ else{agc_register v=get16(a);set16(a,W[r]);W[r]=v;endi();}
+}
+#else
 static NI void xchr(unsigned r,unsigned a){agc_register v=get16(a);set16(a,W[r]);W[r]=v;endi();}
+#endif
 static NI void xchr_b(uint8_t r,uint8_t a){xchr(r,a);}
 #define ai_xch(a) (B8(a)?xchr_b(0u,(uint8_t)(a)):xchr(0u,(a)))
 #define ai_lxch(a) (B8(a)?xchr_b(1u,(uint8_t)(a)):xchr(1u,(a)))
 #define ai_qxch(a) (B8(a)?xchr_b(2u,(uint8_t)(a)):xchr(2u,(a)))
+#if INTERP_K_OPS
+#define ai_ads_w k_ads
+#else
 static NI void ai_ads_w(unsigned a){W[0]=add16(W[0],get16(a));set16(a,W[0]);endi();}
+#endif
 static NI void ai_ads_b(uint8_t a){ai_ads_w(a);}
 static NI void ai_incr_w(unsigned a){set16(a,add16(1u,get16(a)));endi();}
 static NI void ai_incr_b(uint8_t a){ai_incr_w(a);}
@@ -341,7 +406,11 @@ static NI void ai_dca_w(unsigned k){
  W[1]=sx(oc(get16(lo)));W[0]=get16(k);reedit(lo);reedit(k);endi();
 }
 static NI void ai_dca_b(uint8_t a){ai_dca_w(a);}
+#if INTERP_K_OPS
+#define ai_dcaf k_dcaf
+#else
 static NI void ai_dcaf(const agc_word k[2]){W[1]=sx(k[1]);W[0]=sx(k[0]);endi();}
+#endif
 static NI void ai_dcs_w(unsigned k){
  unsigned lo=k+1u;
  W[1]=sx(oc((agc_register)(~get16(lo)&M16)));W[0]=(agc_register)(~get16(k)&M16);reedit(lo);reedit(k);endi();
@@ -350,12 +419,16 @@ static NI void ai_dcs_b(uint8_t a){ai_dcs_w(a);}
 static NI void ai_dcsf(const agc_word k[2]){
  W[1]=sx((agc_word)(~k[1]&077777u));W[0]=sx((agc_word)(~k[0]&077777u));endi();
 }
+#if INTERP_K_OPS
+#define ai_dxch_w k_dxch
+#else
 static NI void ai_dxch_w(unsigned k){
  agc_register op=get16(k+1u);
  set16(k+1u,W[1]);W[1]=sx(oc(op));
  op=get16(k);set16(k,W[0]);W[0]=op;
  endi();
 }
+#endif
 static NI void ai_dxch_b(uint8_t a){ai_dxch_w(a);}
 static NI void ai_mpf_w(agc_word k){
  agc_register_pair p=agc_multiply(W[0],k);
@@ -376,6 +449,9 @@ static NI uint8_t ccs15(agc_word v){
  if(v&040000u){agc_word m=(agc_word)(~v&037777u);W[0]=(agc_register)(m>1u?m-1u:0u);return 2;}
  W[0]=(agc_register)(v>1u?v-1u:0u);return 0;
 }
+#if INTERP_K_OPS
+#define ai_ccs_w k_ccs
+#else
 static NI uint8_t ai_ccs_w(unsigned a){
  uint8_t c;
  if(a<3u){
@@ -388,12 +464,25 @@ static NI uint8_t ai_ccs_w(unsigned a){
  if(edited(a))ai_put(a,ai_word(a));
  endi();return c;
 }
+#endif
 static NI uint8_t ai_ccs_b(uint8_t a){return ai_ccs_w(a);}
 static NI uint8_t ai_ccsf_w(agc_word k){uint8_t c=ccs15((agc_word)(k&077777u));endi();return c;}
 static NI uint8_t ai_ccsf_b(uint8_t k){return ai_ccsf_w(k);}
+#if INTERP_K_OPS
+#define ai_bzf k_bzf
+#else
 static NI uint8_t ai_bzf(void){return W[0]==0u||W[0]==M16;}
+#endif
+#if INTERP_K_OPS
+#define ai_bzmf k_bzmf
+#else
 static NI uint8_t ai_bzmf(void){return W[0]==0u||(W[0]&0100000u)!=0u;}
+#endif
+#if INTERP_K_OPS
+#define ai_tc k_tc
+#else
 static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
+#endif
 
 
 /* ---- steps ---- */
@@ -2146,6 +2235,9 @@ static NI uint8_t bind(apollo_overlay_state *s)
     return s == (apollo_overlay_state *)APOLLO_SHARED_ADDRESS;
 #else
     ic_image = s ? s->words : 0;
+#if INTERP_K_OPS
+    interp_core_k_image = s;   /* the host k_ ops (tools/interp_core_kops.c) */
+#endif
     return s != 0;
 #endif
 }

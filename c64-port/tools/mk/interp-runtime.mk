@@ -11,7 +11,9 @@
 # interp-runtime-size: each mission's compact interpreter linked as one ABI 2
 # job-slot module with the flight store's flags (build/interp-runtime/size.json).
 # interp-core-fuzz: random interpretive programs, the compact interpreter
-# against the verification one (INTERP_CORE_FUZZ cases, default 100000).
+# against the verification one (INTERP_CORE_FUZZ cases, default 100000),
+# built both ways: with its own image ops, and with the flight module's
+# INTERP_K_OPS (the resident's k_ ops; host stand-ins tools/interp_core_kops.c).
 # interp-core-cycles: 6502 cycles per order (build/interp-cycles/<m>.json).
 # The differentials and size need the listings, ropes and yaAGC objects, as
 # the compiled-routine differentials do; none gates `test` yet.
@@ -32,7 +34,12 @@ interp-runtime-size: interp-runtime-check | build
 	python3 tools/interp_runtime_size.py
 build/interp-core-fuzz: $(INTERP_CORE_FUZZ_SRC) | build
 	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit $(INTERP_CORE_FUZZ_SRC) -o $@
-interp-core-fuzz: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
+build/interp-core-fuzz-kops: $(INTERP_CORE_FUZZ_SRC) tools/interp_core_kops.c | build
+	$(CC) -std=gnu99 -O2 -Wall -Wextra -Werror -Iinclude -Itests -Dexit=interp_core_fuzz_exit -DINTERP_K_OPS=1 \
+	  $(INTERP_CORE_FUZZ_SRC) tools/interp_core_kops.c -o $@
+interp-core-fuzz: build/interp-core-fuzz build/interp-core-fuzz-kops build/fixed-data/Luminary099/MAIN.agc.bin \
+  build/fixed-data/Comanche055/MAIN.agc.bin
 	build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin $(INTERP_CORE_FUZZ) 11
+	build/interp-core-fuzz-kops build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin $(INTERP_CORE_FUZZ) 12
 interp-core-cycles: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
 	python3 tools/interp_core_cycles.py

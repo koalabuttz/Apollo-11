@@ -60,7 +60,10 @@ translation unit for the C64 job slot:
 - One image: with `AGC_FIXED_IMAGE` on llvm-mos the bodies address the
   canonical image at $7000 directly, and the entry refuses any other.
 - Its own instruction helpers (`ai_*`), with one-byte entries for constant
-  register addresses and small constants, chosen at compile time.
+  register addresses and small constants, chosen at compile time. The
+  flight module builds with `INTERP_K_OPS`: the ops the resident kernel
+  exports as ABI 2 services (`k_ca` ... `k_bzmf`, docs/FLIGHT-STORE.md)
+  come from the resident, and only the rest are linked in.
 - Table dispatch for the address, miscellaneous and unary orders.
 - Its own module entry, `platform/c64/interp_module.c`. It runs slots until Z
   leaves the interpreter, so it needs no transfer-ABI table wrapper.
@@ -72,6 +75,9 @@ It must equal the verification interpreter word for word:
   words, the status and the io record. Inputs no program produces are left
   out and counted (an EBANK window over the registers, an index register or
   store run wild, MODE outside -1..+1).
+- The fuzz runs a second build with `INTERP_K_OPS`, in which
+  `tools/interp_core_kops.c` stands in for the resident's ops
+  (agc_image_ops on the bound image).
 - `make interp-core-differential` runs the yaAGC differential above with the
   compact interpreter.
 
@@ -85,6 +91,12 @@ simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
 - It checks every slot's 6502 result against the host's.
 - It adds the measured REU rope read cost.
 - Results go to `build/interp-cycles/<m>.json`.
+
+`tools/interp_order_rates.py` counts the orders yaAGC runs in the flight
+scenarios (`tools/interp_order_trace.c`). It counts one per pass through the
+INDJUMP, MISCJUMP and UNAJUMP tables. It also prices a set of orders kept in
+a second module at 30K cycles a load. From a fresh start these scenarios run
+almost no interpretive code (0-8 orders a second).
 
 ## Tests
 
