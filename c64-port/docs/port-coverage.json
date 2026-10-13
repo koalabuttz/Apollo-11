@@ -3450,6 +3450,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
@@ -9291,6 +9292,7 @@
         {
           "native_files": [
             "src/lanec_pin_gaps.c",
+            "src/lanec_pin_routines.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
             "include/lanec_symbols.h"
