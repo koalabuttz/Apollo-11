@@ -10158,6 +10158,17 @@
           ],
           "scope": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
           "verification": "docs/LUMINARY-RCS-MONITOR.md"
+        },
+        {
+          "native_files": [
+            "src/lm_rcsmon.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (69 words, 06,3156-3262): RCSMON/RCSMONIT, VOPENED, 1/ACCFIX and the two fail tables, as 2 routines of the control-transfer ABI compiled by tools/interp_compile.py (channel 32 a latched input).",
+          "verification": "docs/LM-RCSMON.md"
         }
       ],
       "withdrawn_certificate": {
@@ -10187,6 +10198,42 @@
               "path": "evidence/lm-rcs-monitor-proof.json",
               "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Entry at RCSMON (06,3156) with FB of bank 06 under any EB, PVALVEST 0-0377 (a higher bit never ends the DOUBLE loop, in the original too), any latched channel 32 and any other erasable words, NEWJOB +0 or positive (T4RUPT runs it whatever job waits); and the NOVAC return (06,3242).",
+        "external_continuations": [
+          "RESUME (TCF RCSMONEX)",
+          "NOVAC with 2CADR 1/ACCJOB"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-source-map.json",
+            "sha256": "e8ca47f62e0a663021d7953aa25afb3b3c8132aa6bc1c1f51fe7795198569e26"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
+            "sha256": "ed286e30995183d8fd188918f39ba07af09d06e2ac114af609117c862ef9b0d8"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
+            "sha256": "5ce841928e5c1483dce2f5dc000e14eead4b83557438687055e198848c13c43b"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
+            "sha256": "47e655bb6bdba0d0da01ab005ae293c80ccfe5ef27dbfb58ea6a171777f27bb6",
+            "vice_targets": {
+              "vice-lm-rcsmon": 18
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
+            "sha256": "f21b07723089045c314221c0fff9d05be93bdd96f3339d75ca940503eba5bf2e"
           }
         }
       }
