@@ -88,7 +88,7 @@
       "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
       "bytes": 13911,
       "lines": 513,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -104,12 +104,15 @@
           "verification": "docs/SELF-CHECK.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
             "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
@@ -147,7 +150,7 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -240,47 +243,53 @@
           "verification": "docs/CM-ALARM-SITES.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": {
-          "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
-          "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
-          "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
-          "fixed_read_domain": "inline alarm words at fixed Q come from the compiled cm_alarm_sites table (62 genuine call sites, checked against source text and rope at generation); a fixed Q that is no genuine site is out of scope. No runtime rope reader is linked.",
-          "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
-          "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
-          "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
-          "resume_frame": "WHIMPER ZRUPT is a genuine source12-bit interruptedPC<=7777; source BRUPT substitution and InISR clearing are explicitly modeled. Malformed hardware frames outside normal source execution excluded."
-        },
-        "external_continuations": [
-          "full P51/P32/P37/T4/selfcheck upstream algorithms",
-          "queued flashing MAKEPLAY and all astronaut callbacks after PRIODSPR",
-          "ENEMA selected MMDSPLAY/PTBAD/DOFSTART bodies beyond their genuine entry",
-          "final resident mission registry, recurring time/control/event processing and both complete applications",
-          "arbitrary asynchronous interruption outside compiled source safepoints or malformed hardware/code-storage execution"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/cm-alarm-wholefile-review.json",
-            "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": {
+            "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
+            "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
+            "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
+            "fixed_read_domain": "inline alarm words at fixed Q come from the compiled cm_alarm_sites table (62 genuine call sites, checked against source text and rope at generation); a fixed Q that is no genuine site is out of scope. No runtime rope reader is linked.",
+            "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
+            "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
+            "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
+            "resume_frame": "WHIMPER ZRUPT is a genuine source12-bit interruptedPC<=7777; source BRUPT substitution and InISR clearing are explicitly modeled. Malformed hardware frames outside normal source execution excluded."
           },
-          "independent_assembly_comparison": {
-            "path": "evidence/cm-alarm-root-independent-review.json",
-            "sha256": "3ec296a8f1387db947ab1aedea7f9661edf90979d44b97a078dbf93a34c68ef2"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/cm-alarm-sites/cm-alarm-wholefile-host.log",
-            "sha256": "d5f782e45c28176f62bde9e6a6f4fd59d6aceff0557f362e00d0cbf74777319f"
-          },
-          "c64_execution_results": {
-            "path": "evidence/cm-alarm-sites/cm-alarm-sites-vice.log",
-            "sha256": "fa20007fa1544617a9c90dcaac2cd27693a239e5c3b0fdaff6b3c69699cef7d6"
-          },
-          "native_transfer_round_trip": {
-            "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
-            "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
+          "external_continuations": [
+            "full P51/P32/P37/T4/selfcheck upstream algorithms",
+            "queued flashing MAKEPLAY and all astronaut callbacks after PRIODSPR",
+            "ENEMA selected MMDSPLAY/PTBAD/DOFSTART bodies beyond their genuine entry",
+            "final resident mission registry, recurring time/control/event processing and both complete applications",
+            "arbitrary asynchronous interruption outside compiled source safepoints or malformed hardware/code-storage execution"
+          ],
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/cm-alarm-wholefile-review.json",
+              "sha256": "6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/cm-alarm-root-independent-review.json",
+              "sha256": "3ec296a8f1387db947ab1aedea7f9661edf90979d44b97a078dbf93a34c68ef2"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/cm-alarm-sites/cm-alarm-wholefile-host.log",
+              "sha256": "d5f782e45c28176f62bde9e6a6f4fd59d6aceff0557f362e00d0cbf74777319f"
+            },
+            "c64_execution_results": {
+              "path": "evidence/cm-alarm-sites/cm-alarm-sites-vice.log",
+              "sha256": "fa20007fa1544617a9c90dcaac2cd27693a239e5c3b0fdaff6b3c69699cef7d6"
+            },
+            "native_transfer_round_trip": {
+              "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
+              "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
+            }
           }
         }
       }
@@ -1171,7 +1180,7 @@
       "sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
       "bytes": 32186,
       "lines": 1480,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1226,12 +1235,15 @@
           "verification": "docs/CM-STATEUP.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-c64.json",
             "sha256": "57dc80bb33c185d1fd1cb40f478ce41b914e5ce63c324cb150643463cd284ea6"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-host.json",
@@ -1269,7 +1281,7 @@
       "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
       "bytes": 2157,
       "lines": 98,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -1294,29 +1306,35 @@
           "verification": "docs/GIMBAL_COMPLETE.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "review": "evidence/gimbal-complete-independent-review.txt",
-        "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
-        "domain_certificate": "docs/gimbal-complete-certificates.json",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/gimbal-complete-source-audit.json.gz",
-            "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/gimbal-complete-source-observations.json",
-            "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/gimbal-complete-host.log",
-            "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
-          },
-          "c64_execution_results": {
-            "path": "evidence/gimbal-complete-target.log",
-            "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "review": "evidence/gimbal-complete-independent-review.txt",
+          "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
+          "domain_certificate": "docs/gimbal-complete-certificates.json",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/gimbal-complete-source-audit.json.gz",
+              "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/gimbal-complete-source-observations.json",
+              "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/gimbal-complete-host.log",
+              "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
+            },
+            "c64_execution_results": {
+              "path": "evidence/gimbal-complete-target.log",
+              "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
+            }
           }
         }
       }
@@ -1583,7 +1601,7 @@
       "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
       "bytes": 5747,
       "lines": 183,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -1616,40 +1634,46 @@
           "verification": "docs/CM-INTERBANK-TRANSFER.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
-        "external_continuations": [
-          "caller-owned compiled sourcecallee/caller",
-          "interpretedcoding nativecontinuation",
-          "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/COMANCHE-INTERBANK.md",
-            "sha256": "bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/cm-interbank-complete-source-audit.json",
-            "sha256": "fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/cm-interbank-complete-proof.json",
-            "sha256": "569a7a6ea91ca69c4ad5d92d335c45ab38090285891fd901a7365d831b8510d9"
-          },
-          "c64_execution_results": {
-            "path": "evidence/cm-interbank-complete-vice-results.json",
-            "sha256": "0bb21f230f28c757ec6c8c82173dcb8da9435dc8353cfed60f1238a3952cb688"
-          },
-          "independent_review": {
-            "path": "evidence/cm-interbank-complete-independent-review.txt",
-            "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
-          },
-          "native_transfer_round_trip": {
-            "path": "evidence/cm-interbank-transfer/cm-interbank-transfer-proof.json",
-            "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
+          "external_continuations": [
+            "caller-owned compiled sourcecallee/caller",
+            "interpretedcoding nativecontinuation",
+            "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
+          ],
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/COMANCHE-INTERBANK.md",
+              "sha256": "bf32e1683113acc5fb92e892c2bbccbde315a6eb3d55002d01e536a20a9900c3"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/cm-interbank-complete-source-audit.json",
+              "sha256": "fbcdcafd7ed3e2b2b19b6dd23451c14221c97898974fcb25e05c8f88a552d938"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/cm-interbank-complete-proof.json",
+              "sha256": "569a7a6ea91ca69c4ad5d92d335c45ab38090285891fd901a7365d831b8510d9"
+            },
+            "c64_execution_results": {
+              "path": "evidence/cm-interbank-complete-vice-results.json",
+              "sha256": "0bb21f230f28c757ec6c8c82173dcb8da9435dc8353cfed60f1238a3952cb688"
+            },
+            "independent_review": {
+              "path": "evidence/cm-interbank-complete-independent-review.txt",
+              "sha256": "3b6c886d45aa667874a445b290c59ebd13fe2083be4efb5a2a2a7cf313938421"
+            },
+            "native_transfer_round_trip": {
+              "path": "evidence/cm-interbank-transfer/cm-interbank-transfer-proof.json",
+              "sha256": "14dfcb95ab08b75cf44ceb690fc961448d9d8b9a6ef517a58b451a26298d2a3b"
+            }
           }
         }
       }
@@ -2851,7 +2875,7 @@
       "sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
       "bytes": 10390,
       "lines": 371,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -2883,35 +2907,41 @@
           "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": {
-          "axis_rotation": "A signextended+3/-3, VBUF vector; original physical safety guarantee magnitude belowunity unchanged",
-          "basic_saved_return": "fixed direct code Q02000..07777",
-          "interpreter": "five source VACbases, ordinaryMODE, original bank23 entry and coherent controlwords; no-queued-job arithmetic oracle NEWJOB+0",
-          "legacy_nbsm": "stable S1 sixword erasable angle array0400..3772; final indirect saved fixedFCADR004000..077777",
-          "rvq": "all ordinary saved fixedFCADR000000..077777 (source entersGOTO+4 directly)",
-          "SMCDURES": "stable ordinaryraw DTHETASM/trig pairs, source stack offsetbase, exact raw zero/overflow division behavior",
-          "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations"
-        },
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/cm-powered-file-source-map.json",
-            "sha256": "ba492f1ab6929c568940ab49fb74abf5967d4decaf5e10afb84405953be599de"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": {
+            "axis_rotation": "A signextended+3/-3, VBUF vector; original physical safety guarantee magnitude belowunity unchanged",
+            "basic_saved_return": "fixed direct code Q02000..07777",
+            "interpreter": "five source VACbases, ordinaryMODE, original bank23 entry and coherent controlwords; no-queued-job arithmetic oracle NEWJOB+0",
+            "legacy_nbsm": "stable S1 sixword erasable angle array0400..3772; final indirect saved fixedFCADR004000..077777",
+            "rvq": "all ordinary saved fixedFCADR000000..077777 (source entersGOTO+4 directly)",
+            "SMCDURES": "stable ordinaryraw DTHETASM/trig pairs, source stack offsetbase, exact raw zero/overflow division behavior",
+            "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations"
           },
-          "independent_assembly_comparison": {
-            "path": "evidence/cm-powered-file-independent-review.txt",
-            "sha256": "cf1038a71e79f0c7d848b64d23b5845f517b6d7431009f201208d1481405d4f8"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/cm-powered-file-proof.json",
-            "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
-          },
-          "c64_execution_results": {
-            "path": "evidence/cm-powered-file-proof.json",
-            "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/cm-powered-file-source-map.json",
+              "sha256": "ba492f1ab6929c568940ab49fb74abf5967d4decaf5e10afb84405953be599de"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/cm-powered-file-independent-review.txt",
+              "sha256": "cf1038a71e79f0c7d848b64d23b5845f517b6d7431009f201208d1481405d4f8"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/cm-powered-file-proof.json",
+              "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+            },
+            "c64_execution_results": {
+              "path": "evidence/cm-powered-file-proof.json",
+              "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
+            }
           }
         }
       }
@@ -2988,7 +3018,7 @@
       "sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
       "bytes": 2352,
       "lines": 85,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -3000,27 +3030,33 @@
           "verification": "docs/COMANCHE-RCS-MATRIX.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/cm-rcs-matrix-source-map.json",
-            "sha256": "ed21bc702714acb813d64a090caa1503d7dce5238546061809a7a6fcd246b3c1"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/cm-rcs-matrix-independent-review.txt",
-            "sha256": "afa1dff575ad162c28c8e53cf8e7445a8003d51d47d71d9241345903311cda26"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/cm-rcs-matrix-proof.json",
-            "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
-          },
-          "c64_execution_results": {
-            "path": "evidence/cm-rcs-matrix-proof.json",
-            "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/cm-rcs-matrix-source-map.json",
+              "sha256": "ed21bc702714acb813d64a090caa1503d7dce5238546061809a7a6fcd246b3c1"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/cm-rcs-matrix-independent-review.txt",
+              "sha256": "afa1dff575ad162c28c8e53cf8e7445a8003d51d47d71d9241345903311cda26"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/cm-rcs-matrix-proof.json",
+              "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
+            },
+            "c64_execution_results": {
+              "path": "evidence/cm-rcs-matrix-proof.json",
+              "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
+            }
           }
         }
       }
@@ -3398,7 +3434,7 @@
       "sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
       "bytes": 6410,
       "lines": 279,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -3408,41 +3444,47 @@
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
-        "external_continuations": [
-          "DLY2-1WAITLIST",
-          "JOBSLEEP",
-          "JOBWAKE",
-          "TASKOVER",
-          "BAILOUT1/BAILOUT",
-          "ENDOFJOB",
-          "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
-          "originalcallers"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/NATIVE-SERVICE-ROUTINES.md",
-            "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/service-routines-source-audit.json",
-            "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/service-routines-proof.json",
-            "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
-          },
-          "c64_execution_results": {
-            "path": "evidence/service-routines-vice-results.json",
-            "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
-          },
-          "independent_review": {
-            "path": "evidence/service-routines-independent-review.txt",
-            "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
+          "external_continuations": [
+            "DLY2-1WAITLIST",
+            "JOBSLEEP",
+            "JOBWAKE",
+            "TASKOVER",
+            "BAILOUT1/BAILOUT",
+            "ENDOFJOB",
+            "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
+            "originalcallers"
+          ],
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/NATIVE-SERVICE-ROUTINES.md",
+              "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/service-routines-source-audit.json",
+              "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/service-routines-proof.json",
+              "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
+            },
+            "c64_execution_results": {
+              "path": "evidence/service-routines-vice-results.json",
+              "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
+            },
+            "independent_review": {
+              "path": "evidence/service-routines-independent-review.txt",
+              "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+            }
           }
         }
       }
@@ -3554,7 +3596,7 @@
       "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
       "bytes": 3827,
       "lines": 150,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -3576,31 +3618,37 @@
           "verification": "docs/CM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/SYSTEM_TEST_LEAD_INS.md",
-            "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/standard-lead-source-audit.json",
-            "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/standard-lead-host.log",
-            "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
-          },
-          "c64_execution_results": {
-            "path": "evidence/standard-lead-proof.json",
-            "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
-          },
-          "native_transfer_round_trip": {
-            "path": "evidence/cm-standard-lead-transfer/cm-standard-lead-transfer-proof.json",
-            "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+              "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/standard-lead-source-audit.json",
+              "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/standard-lead-host.log",
+              "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
+            },
+            "c64_execution_results": {
+              "path": "evidence/standard-lead-proof.json",
+              "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+            },
+            "native_transfer_round_trip": {
+              "path": "evidence/cm-standard-lead-transfer/cm-standard-lead-transfer-proof.json",
+              "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66"
+            }
           }
         }
       }
@@ -4051,7 +4099,7 @@
       "sha256": "d41dbe2cafed15061ac3744bd6fabc0da30aee43d0210c7d2011a0f07f75fe6d",
       "bytes": 16798,
       "lines": 555,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4064,12 +4112,15 @@
           "verification": "docs/CM-UPDATE.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-update/cm-update-vice.log",
             "sha256": "b2aee743cf0a1f88eacb0d10d8087ef22f1c1202444b6edeb879c70e55f20f54"
+          },
+          "independent_review": {
+            "path": "docs/audits/update-program.md",
+            "sha256": "9dce412be6b8215fc0dfb24c6698f1b0f74a0d18ba17e1cef4041a800c83c89f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-update/cm-update-host.log",
@@ -4213,7 +4264,7 @@
       "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
       "bytes": 13695,
       "lines": 513,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4229,8 +4280,7 @@
           "verification": "docs/SELF-CHECK.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
@@ -4238,6 +4288,10 @@
             "vice_targets": {
               "vice-self-check": 84
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
@@ -5606,7 +5660,7 @@
       "sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
       "bytes": 27861,
       "lines": 1242,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "STARTSB1 cleanup, phase agreement validation and MR.KLEAN/P00KLEAN/V37KLEAN; complete ENEMA/fresh-start/device initialization remain incomplete.",
@@ -5660,12 +5714,15 @@
           "verification": "docs/LM-STATEUP.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64.json",
             "sha256": "9126383948660bf4687b796b02f930d90734b507e8f5779b5f4778eb0a7f1947"
+          },
+          "independent_review": {
+            "path": "docs/audits/fresh-start-self-check.md",
+            "sha256": "e3b380ed58efd88f955570d264a897895b36502edde7ea9fa12e741e3484d948"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-host.json",
@@ -5724,7 +5781,7 @@
       "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
       "bytes": 2293,
       "lines": 76,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -5749,29 +5806,35 @@
           "verification": "docs/GIMBAL_COMPLETE.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "review": "evidence/gimbal-complete-independent-review.txt",
-        "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
-        "domain_certificate": "docs/gimbal-complete-certificates.json",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/gimbal-complete-source-audit.json.gz",
-            "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/gimbal-complete-source-observations.json",
-            "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/gimbal-complete-host.log",
-            "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
-          },
-          "c64_execution_results": {
-            "path": "evidence/gimbal-complete-target.log",
-            "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "review": "evidence/gimbal-complete-independent-review.txt",
+          "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
+          "domain_certificate": "docs/gimbal-complete-certificates.json",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/gimbal-complete-source-audit.json.gz",
+              "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/gimbal-complete-source-observations.json",
+              "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/gimbal-complete-host.log",
+              "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
+            },
+            "c64_execution_results": {
+              "path": "evidence/gimbal-complete-target.log",
+              "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
+            }
           }
         }
       }
@@ -6242,7 +6305,7 @@
       "sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
       "bytes": 5886,
       "lines": 177,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -6261,40 +6324,46 @@
           "verification": "docs/LM-INTERBANK-TRANSFER.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
-        "external_continuations": [
-          "caller-owned compiled sourcecallee/caller",
-          "interpretedcoding nativecontinuation",
-          "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/LUMINARY-INTERBANK.md",
-            "sha256": "4eb31aab156d3528b3136f78a8754dd2e3b4d7853096f1a11609f705b6b39e14"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-interbank-source-audit.json",
-            "sha256": "927a763f86480d66a87fd9a3d7d46d5eeae22ea2cbdd0243080cf300d1d636d0"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-interbank-proof.json",
-            "sha256": "7f1b219224219268585226f1e1b0e8a19e72935ab4ef69f31e2e5219a243a960"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-interbank-vice-results.json",
-            "sha256": "55309196c9c0a962727b9a55fc61eb4c06671e64b18d72acf860ac8d6a165a18"
-          },
-          "independent_review": {
-            "path": "evidence/lm-interbank-independent-review.txt",
-            "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d"
-          },
-          "native_transfer_round_trip": {
-            "path": "evidence/lm-interbank-transfer/lm-interbank-transfer-proof.json",
-            "sha256": "b235d6f6f38ca482201f7ba7b8f245d6b9f37ded04cdb6671fad07bd4a50df3d"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
+          "external_continuations": [
+            "caller-owned compiled sourcecallee/caller",
+            "interpretedcoding nativecontinuation",
+            "PC2/Q-1 invalidregisterfaultfrontier beforeexternalwordfetch"
+          ],
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/LUMINARY-INTERBANK.md",
+              "sha256": "4eb31aab156d3528b3136f78a8754dd2e3b4d7853096f1a11609f705b6b39e14"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/lm-interbank-source-audit.json",
+              "sha256": "927a763f86480d66a87fd9a3d7d46d5eeae22ea2cbdd0243080cf300d1d636d0"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/lm-interbank-proof.json",
+              "sha256": "7f1b219224219268585226f1e1b0e8a19e72935ab4ef69f31e2e5219a243a960"
+            },
+            "c64_execution_results": {
+              "path": "evidence/lm-interbank-vice-results.json",
+              "sha256": "55309196c9c0a962727b9a55fc61eb4c06671e64b18d72acf860ac8d6a165a18"
+            },
+            "independent_review": {
+              "path": "evidence/lm-interbank-independent-review.txt",
+              "sha256": "3056dd280e3361436d2626a1149a0876f860f8402c250c46f1fff2bbcbf47a2d"
+            },
+            "native_transfer_round_trip": {
+              "path": "evidence/lm-interbank-transfer/lm-interbank-transfer-proof.json",
+              "sha256": "b235d6f6f38ca482201f7ba7b8f245d6b9f37ded04cdb6671fad07bd4a50df3d"
+            }
           }
         }
       }
@@ -7811,7 +7880,7 @@
       "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
       "bytes": 10932,
       "lines": 447,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -7836,27 +7905,33 @@
           "verification": "docs/LUMINARY-POWERED-FLIGHT.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "All emitted containing-source words mapped to reviewed native arithmetic, explicit source controls/returns and immutable constants. Source entry contracts are canonical ordinary words and documented fixed returns; mathematical routines retain raw signed zero/overflow semantics. This is whole-file numerical/control qualification, not a completed resident application. FLESHPOT bank return requires normalized FINISH output; arbitrary raw-overflow entries are excluded. Original AX line288 positive-zero TC RTNSAVER is unreachable under documented +3/-3 DIM direction contract; both directions reach negative zero and execute line290.",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-powered-file-source-map.json",
-            "sha256": "1e7e81ea7807499271faf437e844c363c73bfaa709249667eb55a1e456a0e2fb"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-powered-file-independent-review.txt",
-            "sha256": "d2f5dc8eca8364e6799b7d3db65ff4bcd0ff5dad61df5377615f571bd2b34a46"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-powered-file-proof.json",
-            "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-powered-file-proof.json",
-            "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "All emitted containing-source words mapped to reviewed native arithmetic, explicit source controls/returns and immutable constants. Source entry contracts are canonical ordinary words and documented fixed returns; mathematical routines retain raw signed zero/overflow semantics. This is whole-file numerical/control qualification, not a completed resident application. FLESHPOT bank return requires normalized FINISH output; arbitrary raw-overflow entries are excluded. Original AX line288 positive-zero TC RTNSAVER is unreachable under documented +3/-3 DIM direction contract; both directions reach negative zero and execute line290.",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/lm-powered-file-source-map.json",
+              "sha256": "1e7e81ea7807499271faf437e844c363c73bfaa709249667eb55a1e456a0e2fb"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/lm-powered-file-independent-review.txt",
+              "sha256": "d2f5dc8eca8364e6799b7d3db65ff4bcd0ff5dad61df5377615f571bd2b34a46"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/lm-powered-file-proof.json",
+              "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+            },
+            "c64_execution_results": {
+              "path": "evidence/lm-powered-file-proof.json",
+              "sha256": "ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9"
+            }
           }
         }
       }
@@ -8029,7 +8104,7 @@
       "sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
       "bytes": 5834,
       "lines": 173,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -8039,27 +8114,33 @@
           "verification": "docs/LUMINARY-RCS-MONITOR.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-rcs-monitor-source-map.json",
-            "sha256": "2ca6a15690ddfbea832b36b6c77952f0378ff752a211652171059246b50a1f8f"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-rcs-monitor-independent-review.txt",
-            "sha256": "c49683325304d8b10376dfb7257f6f01bf772b9493833d6b380235a65c1d1342"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-rcs-monitor-proof.json",
-            "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-rcs-monitor-proof.json",
-            "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "All69 byte-original containing source words: actual06,3156 RCSMON/RCSMONIT entry, channel32 highest-changed-bit selection, both valve-mask directions, actual NOVAC admission and all18 containing data words. IRQ 0/canonical ordinary image, coherentEB/BB and valid Executive pool contract. Stops before external RESUME 05270 or BAILOUT1 05716; neither external service nor admitted ACCJOB executes here. Complete current/PVAL low8 combination sweep twice; other contexts varied, not Cartesian. No complete resident application claimed.",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/lm-rcs-monitor-source-map.json",
+              "sha256": "2ca6a15690ddfbea832b36b6c77952f0378ff752a211652171059246b50a1f8f"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/lm-rcs-monitor-independent-review.txt",
+              "sha256": "c49683325304d8b10376dfb7257f6f01bf772b9493833d6b380235a65c1d1342"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/lm-rcs-monitor-proof.json",
+              "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
+            },
+            "c64_execution_results": {
+              "path": "evidence/lm-rcs-monitor-proof.json",
+              "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
+            }
           }
         }
       }
@@ -8477,7 +8558,7 @@
       "sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
       "bytes": 5418,
       "lines": 221,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -8487,41 +8568,47 @@
           "verification": "docs/NATIVE-SERVICE-ROUTINES.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
-        "external_continuations": [
-          "DLY2-1WAITLIST",
-          "JOBSLEEP",
-          "JOBWAKE",
-          "TASKOVER",
-          "BAILOUT1/BAILOUT",
-          "ENDOFJOB",
-          "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
-          "originalcallers"
-        ],
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/NATIVE-SERVICE-ROUTINES.md",
-            "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/service-routines-source-audit.json",
-            "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/service-routines-proof.json",
-            "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
-          },
-          "c64_execution_results": {
-            "path": "evidence/service-routines-vice-results.json",
-            "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
-          },
-          "independent_review": {
-            "path": "evidence/service-routines-independent-review.txt",
-            "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
+          "external_continuations": [
+            "DLY2-1WAITLIST",
+            "JOBSLEEP",
+            "JOBWAKE",
+            "TASKOVER",
+            "BAILOUT1/BAILOUT",
+            "ENDOFJOB",
+            "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
+            "originalcallers"
+          ],
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/NATIVE-SERVICE-ROUTINES.md",
+              "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/service-routines-source-audit.json",
+              "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/service-routines-proof.json",
+              "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
+            },
+            "c64_execution_results": {
+              "path": "evidence/service-routines-vice-results.json",
+              "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
+            },
+            "independent_review": {
+              "path": "evidence/service-routines-independent-review.txt",
+              "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+            }
           }
         }
       }
@@ -8572,7 +8659,7 @@
       "sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
       "bytes": 5909,
       "lines": 196,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -8582,27 +8669,33 @@
           "verification": "docs/LUMINARY-SPS-RCS.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-sps-rcs-source-map.json",
-            "sha256": "628688fa3a3fab0e1f6912c73c1384a39d17cbdff33b2177865c1f5d0fbd6257"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-sps-rcs-independent-review.txt",
-            "sha256": "609ff0fd243b801f7c25957a889f3d20aab6fc1362aa172a9463f59c70bf9fa3"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-sps-rcs-proof.json",
-            "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-sps-rcs-proof.json",
-            "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#85",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "evidence/lm-sps-rcs-source-map.json",
+              "sha256": "628688fa3a3fab0e1f6912c73c1384a39d17cbdff33b2177865c1f5d0fbd6257"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/lm-sps-rcs-independent-review.txt",
+              "sha256": "609ff0fd243b801f7c25957a889f3d20aab6fc1362aa172a9463f59c70bf9fa3"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/lm-sps-rcs-proof.json",
+              "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
+            },
+            "c64_execution_results": {
+              "path": "evidence/lm-sps-rcs-proof.json",
+              "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
+            }
           }
         }
       }
@@ -8622,7 +8715,7 @@
       "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
       "bytes": 3636,
       "lines": 125,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -8644,31 +8737,37 @@
           "verification": "docs/LM-STANDARD-LEAD-TRANSFER.md"
         }
       ],
-      "complete_native_coverage": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "docs/SYSTEM_TEST_LEAD_INS.md",
-            "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/standard-lead-source-audit.json",
-            "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/standard-lead-host.log",
-            "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
-          },
-          "c64_execution_results": {
-            "path": "evidence/standard-lead-proof.json",
-            "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
-          },
-          "native_transfer_round_trip": {
-            "path": "evidence/lm-standard-lead-transfer/lm-standard-lead-transfer-proof.json",
-            "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf"
+      "withdrawn_certificate": {
+        "withdrawn_by": "port auditor",
+        "date": "2026-10-13",
+        "issue": "#129",
+        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
+        "certificate": {
+          "reviewed_all_source_paths": true,
+          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+          "qualification_kind": "native_translation",
+          "supported_domain": "original EBUF2/BUF2 and VAC/scratch ownership; wake IRQ inhibited; inherited valid admitted cores; no new Executive polls",
+          "evidence": {
+            "source_to_native_map": {
+              "path": "docs/SYSTEM_TEST_LEAD_INS.md",
+              "sha256": "0bb63604865f0125c681602a406fb5bb5d445707d2a21cc5aecedb6d243aa5fb"
+            },
+            "independent_assembly_comparison": {
+              "path": "evidence/standard-lead-source-audit.json",
+              "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+            },
+            "host_and_sanitizer_results": {
+              "path": "evidence/standard-lead-host.log",
+              "sha256": "de0ea367699f047f319e8d0008401b3c99b885e3def3facc9e7b9cd39c6cdbf1"
+            },
+            "c64_execution_results": {
+              "path": "evidence/standard-lead-proof.json",
+              "sha256": "af1e8728c09d77f5a3c2a244eaf25ef26e3df1e48ac061fff8360b92b57c1852"
+            },
+            "native_transfer_round_trip": {
+              "path": "evidence/lm-standard-lead-transfer/lm-standard-lead-transfer-proof.json",
+              "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf"
+            }
           }
         }
       }
@@ -9119,7 +9218,7 @@
       "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
       "bytes": 17802,
       "lines": 556,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9132,12 +9231,15 @@
           "verification": "docs/LM-UPDATE.md"
         }
       ],
-      "pending_complete_certificate": {
-        "awaiting": "certificate reviewer",
+      "complete_native_coverage": {
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-update/lm-update-vice.log",
             "sha256": "f843dee5162c02617fe0aa52d6ec94d4fbf7eb8139dfe6d031b749fcb69f2bc0"
+          },
+          "independent_review": {
+            "path": "docs/audits/update-program.md",
+            "sha256": "9dce412be6b8215fc0dfb24c6698f1b0f74a0d18ba17e1cef4041a800c83c89f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-update/lm-update-host.log",
