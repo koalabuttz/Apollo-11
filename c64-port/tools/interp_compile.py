@@ -297,37 +297,49 @@ class Compiler:
                         self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', ln.op + ' ' + ln.operand)
         self.blocks = {}
         self.owner = {}
-        while self.work:
-            phys = self.work.pop()
-            kind = self.starts[phys][0]
-            if kind == 'b' and self.basic:
-                self.basic.enter(phys)
-                self.blocks[phys] = None
-            else:
-                self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
-            if not self.work and self.spec.get('resume_orphans'):
-                # Basic words nothing in the file reaches are entered from
-                # outside (display and restart returns): routines of their own.
-                # (The words of the spec's native_ranges run natively.)
-                native = set(self.label_phys(lab) + i for lab, (n, _) in self.spec.get('native_ranges', {}).items()
-                             if self.label_phys(lab) is not None for i in range(n))
-                for q in sorted(self.code):
-                    if q in native:
-                        continue
-                    prev = self.code.get(q - 1)
-                    if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
-                        continue    # (a prefixed word is its prefix's)
-                    if self.is_basic(q) and self.in_file(q) and q not in self.owner and q not in self.starts and not (
-                            self.basic and (q in self.basic.words or q in self.basic.operands)):
-                        self.add_start(q, 'b', 'resumed from outside')
-                        break
-                    # With 'all', also an order word nothing reaches (the EXIT
-                    # after LITTLSUB's GOTO QPLAC), entered at NEWOPS.
-                    ln = self.code[q]
-                    if self.spec.get('resume_orphans') == 'all' and ln.op and is_interp_op(ln.op) \
-                            and q not in self.owner and q not in self.starts:
-                        self.add_start(q, 'i', 'resumed from outside')
-                        break
+        while True:
+            while self.work:
+                phys = self.work.pop()
+                kind = self.starts[phys][0]
+                if kind == 'b' and self.basic:
+                    self.basic.enter(phys)
+                    self.blocks[phys] = None
+                else:
+                    self.blocks[phys] = self.interp_block(phys) if kind == 'i' else self.basic_block(phys)
+                if not self.work and self.spec.get('resume_orphans'):
+                    # Basic words nothing in the file reaches are entered from
+                    # outside (display and restart returns): routines of their own.
+                    # (The words of the spec's native_ranges run natively.)
+                    native = set(self.label_phys(lab) + i for lab, (n, _) in self.spec.get('native_ranges', {}).items()
+                                 if self.label_phys(lab) is not None for i in range(n))
+                    for q in sorted(self.code):
+                        if q in native:
+                            continue
+                        prev = self.code.get(q - 1)
+                        if prev is not None and prev.op in ('EXTEND', 'INDEX', 'NDX'):
+                            continue    # (a prefixed word is its prefix's)
+                        if self.is_basic(q) and self.in_file(q) and q not in self.owner and q not in self.starts and not (
+                                self.basic and (q in self.basic.words or q in self.basic.operands)):
+                            self.add_start(q, 'b', 'resumed from outside')
+                            break
+                        # With 'all', also an order word nothing reaches (the EXIT
+                        # after LITTLSUB's GOTO QPLAC), entered at NEWOPS.
+                        ln = self.code[q]
+                        if self.spec.get('resume_orphans') == 'all' and ln.op and is_interp_op(ln.op) \
+                                and q not in self.owner and q not in self.starts:
+                            self.add_start(q, 'i', 'resumed from outside')
+                            break
+            # Spec 'basic_parts': the basic code is cut into part functions
+            # (each routine's link closure then holds one part); a transfer
+            # into another part hands Z to that word's routine, so every
+            # such word is a routine of its own (a part key).
+            if self.basic and self.spec.get('basic_parts'):
+                new = [t for t in sorted(self.basic.partition()) if t not in self.starts]
+                for t in new:
+                    self.add_start(t, 'b', 'part key')
+                if new:
+                    continue
+            break
         # Second pass: a block stops where another starts.
         self.owner = {}        # word phys -> routine phys that compiles it
         for phys in list(self.blocks):
@@ -1518,7 +1530,7 @@ class Compiler:
                 q = ln.phys + i
                 if self.owner.get(q) == 'basic':
                     # Basic words compile into the file's one basic_run.
-                    use = {'routine': 'basic code', 'function': self.basic.run_name(q // 1024)}
+                    use = {'routine': 'basic code', 'function': self.basic.run_name(q // 1024, q)}
                 elif q in self.owner:
                     use = {'routine': self.where(self.owner[q]), 'function': 'r%o' % self.owner[q]}
                 elif q in native:
@@ -1796,10 +1808,13 @@ class Compiler:
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
-                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0%05ou))return EXEC_OUT_OF_SCOPE;' % bfb)
+                # (A part key in fixed-fixed memory runs under the FB its
+                # caller left, as the step machine it was cut from did.)
+                sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb
+                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
                 if self.uses_channels:
                     c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
-                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024), phys))
+                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
                 c.append('}')
                 c.append('#endif')
                 continue

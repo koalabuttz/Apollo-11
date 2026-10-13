@@ -1105,6 +1105,10 @@ SPECS = {
         'base': {'cm': 'cm_tvc_init'},
         'symbol': {'cm': 'cm_tvc_init'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1196,6 +1200,10 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a DAP pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1242,6 +1250,10 @@ SPECS = {
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1296,6 +1308,10 @@ SPECS = {
         'target': 'tests/cm_jet_select_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
     },
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
@@ -1311,6 +1327,10 @@ SPECS = {
         'execute_data': ('20,3714', '20,3715'),
         'symbol': {'cm': 'cm_entry_dap'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
