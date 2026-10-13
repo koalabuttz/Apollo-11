@@ -1144,19 +1144,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/exec-closure/exec-closure-source-map-cm-executive.json",
-            "sha256": "feb5f53debd79a9209cf4969600d27a6581fe3b30ceffb2033d459e08d6135e0"
+            "sha256": "aa522508740a8326c4e5e28359918afb87486d5a91f6390d0f5c35e7c3e9ff47"
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
+            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
+            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -1164,12 +1164,12 @@
               "vice-cm-exec-services": 487,
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -1929,22 +1929,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "901cffc73bd3f2dbf86bea39673ec3ac1ef403261fa2de91da9a0700b22d6f20"
+            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "4c40e19865373e1fcc044ea9a90eda66ac3dc515dc89bbb14d988a4fae26fadf"
+            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "011a50919f6b42a6556f0f7513e9536f8e6ac6f8b7035092fd749c94fe1fae18",
+            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
             "vice_targets": {
-              "vice-interbank-oracle": 723
+              "vice-interbank-oracle": 722
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "c2809c6fb619615d1e6ebe0d891f39e1f4fc54953ce6305daec16fdcae8dba03"
+            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
           }
         }
       }
@@ -2115,7 +2115,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in cm_native_io; InIsr in agc_hardware.",
           "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T6RUPT 04004, T5RUPT 04010 and its body 04065, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and HANDRUPT 04050 inside the interrupt (cm_lead_in_routines); T3RUPT 04014 in cm_exec_routines.",
-          "index_domains": "T6LOC and T5LOC hold 2CADRs whose CADRs are in fixed memory 02000-07777 (as the T6 and T5 schedulers and the restart store them); TIME5 any value. Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "index_domains": "T6LOC and T5LOC hold 2CADRs whose CADRs are in fixed memory 02000-07777 (as the T6 and T5 schedulers and the restart store them); TIME5 any value. Vectors other than GOPROG need the interrupt in progress. RESUME, NOQRSM and NOQBRSM need BRUPT equal to the word before ZRUPT (fixed words read under the interrupted FB and the current SUPERBNK), which is what the interrupt stores and what no Comanche055 program rewrites BRUPT and resumes through this file. WHIMPER (ALARM_AND_ABORT) also stores BRUPT but executes its own RESUME instruction, outside this file. The comparison's refused cases are exactly those with BRUPT changed in one bit, which no producer reaches. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
         },
         "external_continuations": [
@@ -2127,26 +2127,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-cm.json",
-            "sha256": "b6eca388d62d1a108948652cda84fd3b808d6dae333fef8c3e402bf379c1872b"
+            "sha256": "d72158fb99b6f786dbff21c6df1f5165de13761374910b1e58232c2336fb32da"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
+            "sha256": "85a354486b29c46ef2e720165d2d8b3c156246d9f842b2a503474ed6c3b5bd90"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
+            "sha256": "19279ed1cb779b033a233851de2091f39b012879709dcabf171d404f71a2e197"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "sha256": "6bffd2d252a7ff4d6d40ffa414499eea2154e8e5a36a91e9421080257f80c561",
             "vice_targets": {
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
-            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
+            "sha256": "ce5ce8644e9e6af8073dab403d94a4845feaea5224037143f0d3e511933c4885"
           }
         }
       }
@@ -4286,26 +4286,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
-            "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25"
+            "sha256": "b4deaf3cb67cd3aa6ca32926d916be603a1635f24d4ae4f64bc32831bd57a7ae"
           },
           "independent_assembly_comparison": {
             "path": "evidence/service-transfer/service-transfer-proof.json",
-            "sha256": "40dbbb3adecedeb3ee779424142ae97a854bbdd058a036965607d691887570d5"
+            "sha256": "26083da3d6db70d2b159baf730f6cba22423774e34d12cea753acb4b6f713616"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/service-transfer/service-transfer-host.log",
-            "sha256": "8709c074658d26ac3019a7ce4ef321fde5da4a6f3c7717cc2cba93b84c471280"
+            "sha256": "6bb09ab8226c45084b026af676914aa20d4a956918d0c0e2d2bdccb6e4cbbe64"
           },
           "c64_execution_results": {
             "path": "evidence/service-transfer/service-transfer-vice.log",
-            "sha256": "327614e9ea4bbe203be6adb8d55524d78547a85774c1233f351f48f58c0f2bff",
+            "sha256": "2f5659ca4288aad3f4ce9dc68ff5f619960ffb3f1571659fd7f064fdc3a1f24c",
             "vice_targets": {
-              "vice-service-transfer": 575
+              "vice-service-transfer": 569
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
-            "sha256": "979e69a8ac163ae0d98938ee9b8b8ae21514068bec22438c6f63fd5814a36ad1"
+            "sha256": "d0e5050a67a83e2dc221a1fe56707412743ec8988793da583b932f4f4567b0d2"
           }
         }
       }
@@ -4484,22 +4484,23 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "5b6712daf784e69aa7ce445bffb1bbe123f0287d5370943a0d173a961b8f7c14"
+            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "f9c69200965dba280e3abf68a059ea556a788a92b95840a147a66e2aec01768c"
+            "sha256": "cffc2554c905ec34ea9349a0d8ee984656936ff63b2b5ef55fa844b6209ae2b0"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "dd65ddea1219f211dc0df3b5d196c9c364cef5980d19ee6b1b09dfaa96a6943c",
+            "sha256": "0d036922f3ab3131f8abddc23a71d3713ce8a4cf8b4c5d1b8af87ccce6d99899",
             "vice_targets": {
-              "vice-standard-lead-oracle": 475
+              "vice-standard-lead-oracle": 477,
+              "vice-cm-lead-tests": 390
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "7640fab3f8b17c5de83a32f37db54507e2c0bb98c9a575436658412f896abd54"
+            "sha256": "7108eac55e932698c988d273c10861b2e071560013db517425dde43f6a7a6dea"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -5245,19 +5246,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/exec-closure/exec-closure-source-map-cm-waitlist.json",
-            "sha256": "d0abc82f82e1178c8f061471d3812f2f29f514512ab03979809733f0b65a8503"
+            "sha256": "7a4372f26442eb4978409650d6e64e4b3af1ecd598630ab17c0c457fb3eae0d0"
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
+            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
+            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5265,12 +5266,13 @@
               "vice-cm-exec-services": 487,
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195,
+              "vice-waitlist-entries": 328
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -6397,15 +6399,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
+            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
+            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -6413,12 +6415,12 @@
               "vice-cm-exec-services": 487,
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -7466,22 +7468,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "901cffc73bd3f2dbf86bea39673ec3ac1ef403261fa2de91da9a0700b22d6f20"
+            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "4c40e19865373e1fcc044ea9a90eda66ac3dc515dc89bbb14d988a4fae26fadf"
+            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "011a50919f6b42a6556f0f7513e9536f8e6ac6f8b7035092fd749c94fe1fae18",
+            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
             "vice_targets": {
-              "vice-interbank-oracle": 723
+              "vice-interbank-oracle": 722
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "c2809c6fb619615d1e6ebe0d891f39e1f4fc54953ce6305daec16fdcae8dba03"
+            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
           }
         }
       }
@@ -7684,7 +7686,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; InIsr in agc_hardware.",
           "entry_contracts": "Every vector is a routine entered at its fixed-fixed address: GOPROG 04000 at restart; T5RUPT 04010, T4RUPT 04020, KEYRUPT1 04024, KEYRUPT2 04030, UPRUPT 04034, DOWNRUPT 04040, RADAR 04044 and RUPT10 04050 inside the interrupt (lm_lead_in_routines); T6RUPT 04004 in lm_t6rupt_routines and T3RUPT 04014 in lm_exec_task routines.",
-          "index_domains": "T5ADR holds a 2CADR whose CADR is in fixed memory 02000-07777 (as the DAP and restart store it). Vectors other than GOPROG need the interrupt in progress. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "index_domains": "T5ADR holds a 2CADR whose CADR is in fixed memory 02000-07777 (as the DAP and restart store it). Vectors other than GOPROG need the interrupt in progress. RESUME, NOQRSM and NOQBRSM need BRUPT equal to the word before ZRUPT (fixed words read under the interrupted FB and the current SUPERBNK), which is what the interrupt stores and what the one producer that rewrites BRUPT and resumes through this file leaves: the LM DAP's SUPERJOB set-up (P-AXIS_RCS_AUTOPILOT and Q_R-AXIS_RCS_AUTOPILOT: BRUPT = SUPERJOB's TCF RATELOOP, ZRUPT = SUPERJOB +1, then TCF NOQBRSM +1). WHIMPER (ALARM_AND_ABORT) and CONTABRT (P70-P71) also store BRUPT but execute their own RESUME instruction, outside this file. The comparison's refused cases are exactly those with BRUPT changed in one bit, which no producer reaches. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond the interrupt-enable bit (GOPROG INHINT, RESUME RELINT) and InIsr; raising the interrupts and the restart that enter these vectors are device-adapter obligations."
         },
         "external_continuations": [
@@ -7696,26 +7698,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-source-map-lm.json",
-            "sha256": "50d27e76bfbd793f040a8688acd1e46aea66faeeddfd0ecb94fcda35ca4854c9"
+            "sha256": "ba258a58db894e42878f4988de0cd52d821a01782064d3a92af131e601e5d3e1"
           },
           "independent_assembly_comparison": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-proof.json",
-            "sha256": "ed757d7fe589eacc28da8ad5961e3a83d05af70b7cff9bcf198ebb01fe6c33f0"
+            "sha256": "85a354486b29c46ef2e720165d2d8b3c156246d9f842b2a503474ed6c3b5bd90"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-host.log",
-            "sha256": "a41140588a97a4d1726080d3604d782c2f1f2522eb5beefd3e0d5b1a875b71cb"
+            "sha256": "19279ed1cb779b033a233851de2091f39b012879709dcabf171d404f71a2e197"
           },
           "c64_execution_results": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-vice.log",
-            "sha256": "f462356d63bb922fe4206d6150430954d6bd6e79f41e6cf258a31e5261e23bdd",
+            "sha256": "6bffd2d252a7ff4d6d40ffa414499eea2154e8e5a36a91e9421080257f80c561",
             "vice_targets": {
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
-            "sha256": "1f5e09ae9b65933bbdcc24ec7db22eed66e363badbd4fe9ef85e3d08bedd8c8e"
+            "sha256": "ce5ce8644e9e6af8073dab403d94a4845feaea5224037143f0d3e511933c4885"
           }
         }
       }
@@ -10102,26 +10104,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
-            "sha256": "36a3202f55c96b43acd7cb0629f227ac72f620c01e6019d2cd566db509455d25"
+            "sha256": "b4deaf3cb67cd3aa6ca32926d916be603a1635f24d4ae4f64bc32831bd57a7ae"
           },
           "independent_assembly_comparison": {
             "path": "evidence/service-transfer/service-transfer-proof.json",
-            "sha256": "40dbbb3adecedeb3ee779424142ae97a854bbdd058a036965607d691887570d5"
+            "sha256": "26083da3d6db70d2b159baf730f6cba22423774e34d12cea753acb4b6f713616"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/service-transfer/service-transfer-host.log",
-            "sha256": "8709c074658d26ac3019a7ce4ef321fde5da4a6f3c7717cc2cba93b84c471280"
+            "sha256": "6bb09ab8226c45084b026af676914aa20d4a956918d0c0e2d2bdccb6e4cbbe64"
           },
           "c64_execution_results": {
             "path": "evidence/service-transfer/service-transfer-vice.log",
-            "sha256": "327614e9ea4bbe203be6adb8d55524d78547a85774c1233f351f48f58c0f2bff",
+            "sha256": "2f5659ca4288aad3f4ce9dc68ff5f619960ffb3f1571659fd7f064fdc3a1f24c",
             "vice_targets": {
-              "vice-service-transfer": 575
+              "vice-service-transfer": 569
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
-            "sha256": "979e69a8ac163ae0d98938ee9b8b8ae21514068bec22438c6f63fd5814a36ad1"
+            "sha256": "d0e5050a67a83e2dc221a1fe56707412743ec8988793da583b932f4f4567b0d2"
           }
         }
       }
@@ -10286,22 +10288,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "5b6712daf784e69aa7ce445bffb1bbe123f0287d5370943a0d173a961b8f7c14"
+            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "f9c69200965dba280e3abf68a059ea556a788a92b95840a147a66e2aec01768c"
+            "sha256": "cffc2554c905ec34ea9349a0d8ee984656936ff63b2b5ef55fa844b6209ae2b0"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "dd65ddea1219f211dc0df3b5d196c9c364cef5980d19ee6b1b09dfaa96a6943c",
+            "sha256": "0d036922f3ab3131f8abddc23a71d3713ce8a4cf8b4c5d1b8af87ccce6d99899",
             "vice_targets": {
-              "vice-standard-lead-oracle": 475
+              "vice-standard-lead-oracle": 477
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "7640fab3f8b17c5de83a32f37db54507e2c0bb98c9a575436658412f896abd54"
+            "sha256": "7108eac55e932698c988d273c10861b2e071560013db517425dde43f6a7a6dea"
           }
         }
       }
@@ -10348,7 +10350,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in p66_bias_io; channels 5, 6 and 13 (CPU-writable bits 043777) and InIsr in agc_hardware.",
           "entry_contracts": "T6RUPT vector 04004 and DOT6RUPT 17,2065 inside the T6 interrupt (DOT6RUPT with FB 17, EB 6); T6JOBCHK 17,2027 and WRITEP-1/WRITEU-1/WRITEV-1 with EB 6; WRITEP/WRITEU/WRITEV from any bank. Every labelled entry and every DAP call target in the file is a routine.",
-          "index_domains": "NXT6ADR 0, 4 or 13 (the INDEXES and DAPIDLER values); TIME6 positive, +0 or -0 (a negative nonzero TIME6 reaches the T6JOBCHK +3 self-loop and has no producer); TC Q return addresses in fixed memory 02000-07777; no overflow in A at WRITEU/WRITEV. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "index_domains": "NXT6ADR 0, 4 or 13 (the INDEXES and DAPIDLER values); TIME6 positive, +0 or -0 (a negative nonzero TIME6 reaches the T6JOBCHK +3 self-loop and has no producer); TC Q return addresses in fixed memory 02000-07777; no overflow in A at WRITEU/WRITEV. RESUME, NOQRSM and NOQBRSM need BRUPT equal to the word before ZRUPT (fixed words read under the interrupted FB and the current SUPERBNK), which is what the interrupt stores and what any producer that resumes through this file leaves: the programs that rewrite BRUPT resume elsewhere (the LM DAP's SUPERJOB set-up through INTERRUPT_LEAD_INS' NOQBRSM, with BRUPT = SUPERJOB's TCF RATELOOP and ZRUPT = SUPERJOB +1, again the word before ZRUPT). WHIMPER (ALARM_AND_ABORT) and CONTABRT (P70-P71) also store BRUPT but execute their own RESUME instruction, outside this file. The comparison's refused cases are exactly those with BRUPT changed in one bit, which no producer reaches. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "Channel values are kept exactly (WAND/WOR/RAND/WRITE results as yaAGC computes them); firing the jets from channels 5 and 6 and running the TIME6 counter from channel 13 bit 15 are device-adapter obligations."
         },
         "external_continuations": [
@@ -10359,26 +10361,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-source-map.json",
-            "sha256": "24de8d6efaf1da650a5cd57f174c3456c2343076c434da48b08da58dd9e7388f"
+            "sha256": "e3a961328a710f5665523106e821b9028991ff3e732cf3dfb4dd158e22c74921"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-proof.json",
-            "sha256": "621d52b27b6aa118fbc09e8931037822b476ba0c6e2c64e2eac08dd8e401843e"
+            "sha256": "913e32e498f7bdb131e3152871fcaba63d47587bafd9d230235d1b7ecc6e35ba"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-host.log",
-            "sha256": "0cb38501d950f3992f71647158f98dc1141035b1c0b3270572e0240f62a56b8b"
+            "sha256": "c4972bf82af1c62b62a7ba72992614400f1cfc31aa6aa3fbbce2cf22dcc599f5"
           },
           "c64_execution_results": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-vice.log",
-            "sha256": "de3fc32e76827049baa6e73763fba99d1c9c435f54af16aa2b0c12008b9e9ff7",
+            "sha256": "fbd5209ae74074229d3db2172b64d76a720c66f3fd5ad1e76b47663f164b3b7f",
             "vice_targets": {
-              "vice-lm-t6rupt": 242
+              "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-c64-cover.json",
-            "sha256": "da8211a96d82d216d85dff3de2930b600649d0908c14f8371526e765ec2a24a9"
+            "sha256": "175e2670765719e46dcc93be7e9d8435229111ba1cb2f47430815b961db55c86"
           }
         }
       }
@@ -10973,15 +10975,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "6d014e4c61264903cc6ade99dcd50e8cdd613f9572c62e55d73eef75a17ea735"
+            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "06fee0de44b4b6dbc7bc18460df7b4c8db7ea3677a6286f37aafe4e9b2ff647d"
+            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0d73ad450f3d7134d1e22c16af727b3663d90d171076e68bf5cb4433f52f4ed3",
+            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -10989,12 +10991,14 @@
               "vice-cm-exec-services": 487,
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
-              "vice-rupt-lead-ins": 193
+              "vice-rupt-lead-ins": 195,
+              "vice-waitlist-entries": 328,
+              "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "f2f9e1bd11e1ff0e59fff69497c3da1280207cd3f206fdc31224d3e167a71e74"
+            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
