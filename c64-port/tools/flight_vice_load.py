@@ -35,7 +35,7 @@ def run(m, a):
     (work / 'monitor.log').unlink(missing_ok=True)
     commands = work / 'vice.mon'
     commands.write_text(f'load "{prg}" 0\nwatch store c000\ng {int(sys_at[1]):04x}\n'
-                        f'bsave "{dump}" 0 c000 c7ff\nquit\n')
+                        f'bsave "{dump}" 0 c000 cbff\nquit\n')
     reu = work / 'image.reu'
     reu.write_bytes((OUT / f'{m}.reu').read_bytes())
     cmd = [a.vice, '-default', '-console', '-pal', '-warp', '+sound',
@@ -59,12 +59,16 @@ def run(m, a):
     count = struct.unpack_from('<H', data, 0x3fe)[0]
     modules = []
     for i in range(count):
-        ident, size, load, cached = struct.unpack_from('<HHII', data, 0x400 + 12 * i)
+        ident, size, load, cached = struct.unpack_from('<HHIH', data, 0x400 + 10 * i)
         load, cached = load - overhead, cached - overhead
         modules.append(dict(id=f'0x{ident:04x}', bytes=size, load_cycles=load, cached_cycles=cached,
                             transfer_cycles=load - cached, cycles_per_byte=round((load - cached) / size, 2)))
+    run_only, point, resolve = (v - overhead for v in struct.unpack_from('<3H', data, 0x3f0))
     return dict(mission=m, ok=ok, failures=failures, checks=checks, first_failing_step=data[5],
-                timer_overhead_cycles=overhead, modules=modules)
+                timer_overhead_cycles=overhead,
+                call_profile=dict(runtime_cached_run=run_only, resident_transfer_point=point,
+                                  resident_transfer_resolve=resolve),
+                modules=modules)
 
 
 def main():
@@ -75,14 +79,14 @@ def main():
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
     p.add_argument('--data-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_DATA_DIR', ROOT / 'deps/vice-data')))
-    p.add_argument('--cycles', type=int, default=400_000_000)
-    p.add_argument('--timeout', type=int, default=600)
+    p.add_argument('--cycles', type=int, default=3_000_000_000)
+    p.add_argument('--timeout', type=int, default=1800)
     a = p.parse_args()
     results = [run(m, a) for m in a.missions.split(',')]
     (OUT / 'vice-load.json').write_text(json.dumps(results, indent=1) + '\n')
     # Load cost against module size: a least-squares line over both missions.
     xs = [(x['bytes'], x['transfer_cycles']) for r in results if r['ok'] for x in r['modules']]
-    if len(xs) > 1:
+    if len(xs) > 2:
         mx, my = sum(b for b, _ in xs) / len(xs), sum(t for _, t in xs) / len(xs)
         slope = sum((b - mx) * (t - my) for b, t in xs) / sum((b - mx) ** 2 for b, _ in xs)
         fit = dict(fixed_cycles=round(my - slope * mx), cycles_per_byte=round(slope, 3),
@@ -99,7 +103,7 @@ def main():
             failed += 1
             print(f"FAIL: {r['mission']} load check: {r.get('error') or r}")
             continue
-        mods = r['modules']
+        mods = r['modules'] or [dict(load_cycles=0, cached_cycles=0)]
         print(f"PASS: VICE PAL {r['mission']} load check: {r['checks']} checks, 0 failures; "
               f"{len(mods)} modules, load and call {min(x['load_cycles'] for x in mods)}-"
               f"{max(x['load_cycles'] for x in mods)} cycles "

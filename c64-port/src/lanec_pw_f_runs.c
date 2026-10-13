@@ -32,7 +32,7 @@ static uint8_t dynamic_display_step(apollo_overlay_state *s, cm_native_io *c, ui
 LANEC_PW_F_CM_STEPS(lanec_pw_cm_dynamic_display_run, dynamic_display_step, 53u)
 
 enum lanec_status lanec_pw_cm_formatter_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     cm_native_io c;
     uint16_t z = s->words[LANEC_Z];
     enum cm_formatter_status st;
@@ -53,7 +53,7 @@ LANEC_PW_F_CM_STEPS(lanec_pw_cm_normal_display_run, cm_normal_display_step, 30u)
 LANEC_PW_F_CM_STEPS(lanec_pw_cm_nv85_run, cm_nv85_step, 26u)
 
 enum lanec_status lanec_pw_cm_pinball_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
-{
+{ LANEC_ONE_MISSION(mission);
     cm_native_io c;
     uint16_t z = s->words[LANEC_Z];
     enum dsky_pinball_entry e = z == 03227u ? DSKY_DSPIN : z == 03311u ? DSKY_11DSPIN : DSKY_2BLANK;

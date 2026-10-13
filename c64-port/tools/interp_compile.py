@@ -17,6 +17,7 @@ Usage: interp_compile.py <spec> [--check]
   writes src/<base>.c and include/<base>.h (or compares them with --check)
   for each mission of the spec in tools/interp_specs.py."""
 import os
+import re
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_listing as IL
@@ -154,6 +155,9 @@ class Compiler:
         # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
         # Executive's resume (NEWOPS at LOC +1) has its key.
         self.rk = bool(spec.get('resume_keys'))
+        # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
+        # (tasks and NOVAC jobs call them too), not only a VAC area.
+        self.any_fixloc = bool(spec.get('any_fixloc'))
         self.sload_k = False
         self.uses_channels = False
         self.kx = {}           # index_guard fixed tables: window start -> (words, base)
@@ -1273,6 +1277,12 @@ class Compiler:
         ln = self.code.get(q)
         return (ln is not None and ln.op and (ln.op == 'INCR' or not is_interp_op(ln.op)) and ln.op not in DATA_OPS)
 
+    def novac(self, phys):
+        """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
+        and does not enter the interpreter (TC INTPRET)."""
+        return (self.any_fixloc and self.starts[phys][0] == 'b'
+                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys]))
+
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
         reachable from it without leaving the file, in address order, with
@@ -1522,6 +1532,16 @@ class Compiler:
         c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
         c.append(' return 1;')
         c.append('}')
+        if self.any_fixloc:
+            c.append('/* The same for a basic routine that never names FIXLOC: any FIXLOC. */')
+            c.append('static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){')
+            c.append(' unsigned i;')
+            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
+                     % ('W[067]>037777u' if self.rk else 'W[067]'))
+            c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+            c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+            c.append(' return 1;')
+            c.append('}')
         c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
         c.append(' * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */')
         # Only a file in banks 030-043 can depend on the superbank bit.
@@ -1572,6 +1592,10 @@ class Compiler:
         c.append('static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
         c.append(' return %s&&sane(s,io);' % sb)
         c.append('}')
+        if self.any_fixloc:
+            c.append('static MAYBE_UNUSED uint8_t at_basic_nv(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+            c.append(' return %s&&sane_nv(s,io);' % sb)
+            c.append('}')
         c.append('')
         if self.basic:
             c.extend(self.basic.emit(sym))
@@ -1626,10 +1650,11 @@ class Compiler:
                 c.append('#endif')
                 continue
             c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
+            nv = '_nv' if self.novac(phys) else ''
             if kind == 'b' and phys // 1024 in (2, 3):
-                c.append(' if(!sane(s,io))return EXEC_OUT_OF_SCOPE;')
+                c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = 'at_newops' if kind == 'i' else 'at_basic'
+                chk = 'at_newops' if kind == 'i' else 'at_basic' + nv
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')

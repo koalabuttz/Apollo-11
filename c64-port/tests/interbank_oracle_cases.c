@@ -19,6 +19,8 @@ static const uint16_t entry_z[2][IBO_ENTRIES]={
  {04616u,04622u,04631u,04635u,04640u,04643u,04645u,04651u,04674u,04700u,04707u,04713u,04727u,04621u},
  {04662u,04666u,04675u,04701u,04704u,04707u,04711u,04715u,04740u,04744u,04753u,04757u,04773u,04665u}};
 uint16_t ibo_data_physical(uint8_t cm,uint16_t i){uint32_t x=0xda7au+cm*977u+i*2654435761u;uint16_t bank=(uint16_t)(rnd(&x)%044u);
+ /* Every fourth in banks 040-043 (SUPDACAL with superbank 0100), which the draw alone may miss (#198). */
+ if(i%4u==3u)bank=(uint16_t)(040u+bank%4u);
  return (uint16_t)(bank*1024u+rnd(&x)%02000u);}
 static uint8_t data_cm;
 static bool data_word(const agc_native_program *p,uint16_t physical,agc_word *word){uint16_t i;uint8_t cm=data_cm;(void)p;

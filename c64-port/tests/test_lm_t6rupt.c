@@ -33,7 +33,8 @@ int main(void){static apollo_overlay_state s,in;p66_bias_io io;agc_hardware h0;u
   for(i=0;i<12u;++i)if(in.words[5]==entries[i])++reached[i];
   k=lm_t6_run(&s,&io,&hw,(uint16_t)n);
   check(lm_t6_digest(&s,(uint16_t)n)==lm_t6_expected[n],"digest",n);
-  check(k==LM_T6_RETURNED,"outcome",n);if(k<3u)++kind[k];
+  /* Only the rope-reader RESUME cases (every fourth) may refuse: BRUPT not the word at ZRUPT-1. */
+  check(k==LM_T6_RETURNED||(c==LM_T6_RESUME&&(n-lm_t6_first(c))%4u==3u&&k==LM_T6_REFUSED),"outcome",n);if(k<3u)++kind[k];
   if(c==LM_T6_DOT6RUPT||c==LM_T6_T6JOBCHK){agc_word t=in.words[LM_TIME6];
    if(t==0u)++path[P_CCSHOLE];else if(t!=077777u)++path[P_RETURN];
    else{agc_word x=in.words[E6(LM_NXT6ADR)];++path[x==0u?P_JET_P:x==4u?P_JET_U:P_JET_V];

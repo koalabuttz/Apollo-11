@@ -48,6 +48,7 @@ jobs:
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
       host_shards: ${{ steps.plan.outputs.host_shards }}
       c64_full: ${{ steps.plan.outputs.c64_full }}
+      sha: ${{ steps.sha.outputs.sha }}
     steps:
       - &checkout
         name: Lean checkout
@@ -58,6 +59,11 @@ jobs:
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
           git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
           git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      # A nightly calls this workflow with a branch name as ref: every later
+      # job checks out the commit plan resolved, not the branch tip at its own
+      # start (shards built different commits, and the manifest mixed them).
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - id: plan
         working-directory: c64-port
         env:
@@ -96,6 +102,8 @@ jobs:
 
   ledgers-and-coverage:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     runs-on: ubuntu-24.04
     steps:
       - *checkout
@@ -118,6 +126,8 @@ jobs:
 
   host:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.host == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -166,6 +176,8 @@ jobs:
 
   c64:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.c64 == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -225,6 +237,8 @@ jobs:
   # maps in the c64 job instead.
   c64-maps:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: github.event_name == 'push' && needs.plan.outputs.c64_full != '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -255,6 +269,8 @@ jobs:
   # don't take every runner for hours; the nightly catches legacy breaks.
   c64-legacy:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -292,6 +308,8 @@ jobs:
   # manifest records the gaps and tools/cert_precheck.py judges them.
   cover-check:
     needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -322,6 +340,8 @@ jobs:
   # against.
   vice-manifest:
     needs: [plan, c64, c64-legacy, cover-check]
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
     if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     steps:
