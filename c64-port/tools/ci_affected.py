@@ -37,8 +37,16 @@ def database():
     text = subprocess.run(['make', '-pRrq', 'SKIP_EVIDENCE_RESTORE=1', '__ci_affected_none__'],
                           cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                           text=True).stdout
+    implicit, files = text.split('# Files', 1) if '# Files' in text else ('', text)
+    patterns = []
+    # Pattern rules (build/r30-%.prg: ...) sit before '# Files'; a group
+    # PRG such as build/r30-3.prg has no explicit rule, so without them a
+    # change to its sources or vectors selected no C64 target (#235).
+    for match in re.finditer(r'^([^\s:=#]*%[^\s:=#]*):(?!=)\s*(.*)\n((?:#.*\n)*)((?:\t.*\n)*)', implicit, re.M):
+        patterns.append((match.group(1), set(match.group(2).replace('|', ' ').split()),
+                         '\n'.join(l[1:] for l in match.group(4).splitlines())))
     rules, current = {}, None
-    for line in text.split('# Files', 1)[-1].splitlines():
+    for line in files.splitlines():
         if line.startswith('\t'):
             if current:
                 rules[current][1].append(line[1:])
@@ -55,7 +63,25 @@ def database():
             rule[0].update(prereqs)
         else:
             current = None
-    return {target: (prereqs, '\n'.join(recipe)) for target, (prereqs, recipe) in rules.items()}
+    out = {target: (prereqs, '\n'.join(recipe)) for target, (prereqs, recipe) in rules.items()}
+    out[PATTERNS] = patterns
+    return out
+
+
+PATTERNS = '%patterns'
+
+
+def rule_for(node, rules):
+    """The node's explicit rule, merged with the first pattern rule it matches."""
+    prereqs, recipe = rules.get(node, ((), ''))
+    if recipe or node.startswith('%'):
+        return prereqs, recipe
+    for pattern, pre, rec in rules.get(PATTERNS, ()):
+        head, _, tail = pattern.partition('%')
+        if node.startswith(head) and node.endswith(tail) and len(node) >= len(head) + len(tail):
+            stem = node[len(head):len(node) - len(tail)]
+            return set(prereqs) | {p.replace('%', stem) for p in pre}, rec
+    return prereqs, recipe
 
 
 def script_words(path, cache):
@@ -98,7 +124,7 @@ def closure(target, rules, seen, scripts):
             continue
         seen.add(node)
         words.add(node)
-        prereqs, recipe = rules.get(node, ((), ''))
+        prereqs, recipe = rule_for(node, rules)
         stack.extend(prereqs)
         for word in WORD.findall(recipe):
             words.add(word)
