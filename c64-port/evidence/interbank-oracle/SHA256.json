@@ -4,8 +4,8 @@
   "release": "evidence-interbank-oracle",
   "files": {
     "interbank-oracle-c64-cover.json": {
-      "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820",
-      "bytes": 716,
+      "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca",
+      "bytes": 778,
       "store": "tree"
     },
     "interbank-oracle-differential.log": {
@@ -14,23 +14,23 @@
       "store": "tree"
     },
     "interbank-oracle-host.log": {
-      "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a",
-      "bytes": 1010,
+      "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b",
+      "bytes": 1106,
       "store": "release"
     },
     "interbank-oracle-proof.json": {
-      "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf",
-      "bytes": 2994,
+      "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400",
+      "bytes": 3188,
       "store": "tree"
     },
     "interbank-oracle-source-map.json": {
-      "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f",
-      "bytes": 38517,
+      "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25",
+      "bytes": 38927,
       "store": "tree"
     },
     "interbank-oracle-vice.log": {
-      "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
-      "bytes": 614,
+      "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
+      "bytes": 610,
       "store": "release"
     }
   }

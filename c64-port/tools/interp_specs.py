@@ -506,6 +506,39 @@ SPECS = {
         # called from tasks and NOVAC jobs (V37): any FIXLOC.
         'any_fixloc': True,
     },
+    # Lane A: Comanche055 T4RUPT_PROGRAM.agc optics monitor and drive
+    # (OPTMON 06,2765-3262, OPTDRIVE 10,2000-2202), basic only. The IMU
+    # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
+    'cm-t4rupt-optics': {
+        'missions': ('cm',),
+        'file': {'cm': 'T4RUPT_PROGRAM.agc'},
+        'base': {'cm': 'cm_t4rupt_optics'},
+        'symbol': {'cm': 'cm_t4rupt_optics'},
+        'basic': 'full',
+        # T4JUMP's TCF OPTMON, OPTTEST's IBNKCALL OPTDRIVE, and ENDZOPT
+        # (SETZOEND's WAITLIST task).
+        'entries': ['OPTMON', 'OPTDRIVE', 'ENDZOPT'],
+        # T4RUPT through 90SECS (06,2000-2764) is t4rupt_core and
+        # cm_t4rupt_imu, with the IMU monitor's own task CADRs.
+        'outside': {'T4RUPT': 501},
+        'partial': {'cm': 'native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)'},
+        # CDUT and CDUS (counters, 0 otherwise): around 0, the 45-degree and
+        # 90-degree tests of OPTDRIVE and its shaft-stop avoidance, and +-180.
+        'cells': {a: [0, 1, 0o7777, 0o10000, 0o10001, 0o17777, 0o20000, 0o20001, 0o37777,
+                      0o40000, 0o57777, 0o60000, 0o67777, 0o70000, 0o77776, 0o77777] for a in (0o35, 0o36)},
+        # SETOFF's BZF TCQ (no lamp change) returns from OCDUFTST through
+        # the interpreter's TC Q word (TCQ = Q+2 +1, 06711).
+        'tcq_words': (0o6711,),
+        # One body per bank, so OPTMON (06) and OPTDRIVE (10) are separate
+        # flight-store modules.
+        'basic_split': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'target': 'tests/cm_t4rupt_optics_target.c',
+    },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
         'rope_fallback': True,
@@ -676,6 +709,223 @@ SPECS = {
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
+    # Lane G: Comanche055 TIME_OF_FREE_FALL, the whole file as routines at
+    # its original addresses (Lane B's LM form is lm-time-free-fall).
+    'cm-time-free-fall': {
+        'rope_fallback': True,
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'TIME_OF_FREE_FALL.agc'},
+        'base': {'cm': 'cm_time_free_fall'},
+        'symbol': {'cm': 'cm_time_free_fall'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'target': 'tests/cm_time_free_fall_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
+    # Lane G: Comanche055 ORBITAL_INTEGRATION, the whole file as routines at its
+    # original addresses.
+    'cm-orbital-integration': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'ORBITAL_INTEGRATION.agc'},
+        'base': {'cm': 'cm_orbital_integration'},
+        'symbol': {'cm': 'cm_orbital_integration'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'noreturn': ['POODOO'],
+        'cgoto': {'DIFEQTAB': 3},
+        # Bank 13's constants indexed by the body (X2 = PBODY: 0 Earth, 2
+        # Moon) or, for ASCALE,1, by X1 = PBODY plus GETRPSV's INCR,1 4s.
+        # (MUEARTH,2 and MUEARTH -2,2 also run with X2 at -2, 4 and the
+        # DIFEQ stages -12D and -24D, as resumes in ACCOMP and GAMCOMP
+        # find it.)
+        'fixed_index': {'MUEARTH': [2, 0, -2, -4, 12, 24], 'J2REQSQ': [0, -2], 'J4REQ/J3': [0, -2], '2J3RE/J2': [0, -2],
+                        'RDE': [0, -2], 'ASCALE': list(range(0, -50, -2))},
+        # (an index that takes the address below 02000 reads erasable)
+        'fixed_index_erasable': True,
+        # PBODY (E4,1550) is 0 or 2; X2 holds it, and S1/S2 index steps
+        # (LXA,1 S2 before the J-terms). DIFEQCNT (1500) is the
+        # DIFEQ stage, 0, -12D or -24D (NBRANCH's DMP CGOTO); COLREG (1102)
+        # a W column, 0 to -42D by -6.
+        'all_states': {'2150': [0, 2], 'vac+046': [0, 2, 4, 6], 'vac+047': [0, 2], 'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6], '1500': [0, 0o77763, 0o77747],
+                       '1102': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                       # The pushdown list stays below 14D (as on the LM).
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # Mid-sequence resumes start from the registers the file's own runs
+        # reach them with.
+        'flow_states': True,
+        # A CHANG2 resume starts from the state the routine before it
+        # reaches it in.
+        'resume_flow': True,
+        # NBRANCH's DMP CGOTO resumed: MPAC holds the stage SLOAD DIFEQCNT
+        # left (DP).
+        'states': {'11,3223': {'0154': [0, 0o77763, 0o77747], '0155': [0], '0163': [0]},
+                   # (resumes no run reaches: OBLATE after SETPD 0 and DSU*; the
+                   # W column store after VSL3 BOV)
+                   '11,3022': {'0166': ['vac+0'], '0163': [0]},
+                   # R-TO-RP returns a vector with PUSHLOC at 0.
+                   '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
+                   '11,3522': {'0163': [0o77776],
+                               'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
+        'max_steps': 1000,
+        # A DIFEQ or iteration run that does not fit one C64 diagnostic
+        # drops every case whose run reaches at least its routines.
+        'c64_drop_superset': True,
+        'target': 'tests/cm_orbital_integration_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane G: Comanche055 INTEGRATION_INITIALIZATION, the whole file as routines at its
+    # original addresses.
+    'cm-integration-init': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'INTEGRATION_INITIALIZATION.agc'},
+        'base': {'cm': 'cm_integration_init'},
+        'symbol': {'cm': 'cm_integration_init'},
+        'basic': 'full',
+        # ERASTAL1/2 and ERASWAK1/2: the erasable-integration stall and wake
+        # entries; nothing in Comanche055 calls them (WAKESTAL's CADRs
+        # name ERASTAL1+1 and ERASTAL2+1), so they are listed here.
+        'entries': ['@external', 'ERASTAL1', 'ERASTAL2', 'ERASWAK1', 'ERASWAK2'],
+        # (TC DANZIG goes on in interpretive code: the word after it is no
+        # return point.)
+        'noreturn': ['POODOO', 'BANKJUMP', 'JOBSLEEP', 'DANZIG'],
+        # TBASE2 holds INTSTALL's saved QPRET, a return outside the file.
+        'return_words': ['1055'],
+        # Bank 13's constants indexed by the body (X2 = PBODY: 0 Earth, 2
+        # Moon).
+        'fixed_index': {'MUEARTH': [2, 0, -2, -4, 12, 24], 'J2REQSQ': [0, -2], 'J4REQ/J3': [0, -2],
+                        '2J3RE/J2': [0, -2], 'RDE': [0, -2], 'RME': [0, -2],
+                        'ASCALE': list(range(0, -50, -2))},
+        'fixed_index_erasable': True,
+        # As ORBITAL_INTEGRATION's: PBODY 0 or 2, X1/X2 small steps,
+        # DIFEQCNT a DIFEQ stage, COLREG a W column, the pushdown list below
+        # 14D. (S1 and S2 hold saved returns here: STQ S2.)
+        'all_states': {'2150': [0, 2], 'vac+046': [0, 2, 4, 6], 'vac+047': [0, 2], '1500': [0, 0o77763, 0o77747],
+                       '1102': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        'flow_states': True,
+        'resume_flow': True,
+        # The stall areas (L, STALTEM: 0 to 2) index INTBITAB, WAKESTAL and
+        # INTFLBIT; ALLSTALL and WAKE take them in A.
+        'fixed_tables': {'INTBITAB': (0, 2), 'WAKESTAL': (0, 2), '5002': (0, 2)},
+        'states': {'13,3444': {'0': [0, 1, 2]}, '13,3500': {'0': [0, 1, 2]}, '13,3505': {'0154': [0, 1, 2],
+                              # JOBWAKE's LOCCTR: a core set it woke (12D on) or -1, none
+                              '0064': [0o14, 0o30, 0o44, 0o60, 0o74, 0o110, 0o77776]},
+                   # INTWAKUQ holds INTWAKEU's caller's Q (QXCH), a fixed
+                   # return (TC INTWAKEU at 27,3703) that TC INTWAKUQ runs.
+                   '27,2745': {'0330': [0o3704]}},
+        # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
+        # land on interpretive words, never run as basic code.
+        'interp_not_basic': True,
+        'max_steps': 1000,
+        'target': 'tests/cm_integration_init_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
+    # original addresses.
+    'cm-stable-orbit': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'STABLE_ORBIT_-_P38-P39.agc'},   # (the listing's name for STABLE_ORBIT.agc)
+        'source_path': {'cm': 'STABLE_ORBIT.agc'},
+        'base': {'cm': 'cm_stable_orbit'},
+        'symbol': {'cm': 'cm_stable_orbit'},
+        'basic': 'full',
+        'entries': ['@external'],
+        # DSPLY81 (in the file) goes on in interpretive code after its
+        # displays; TC DSPLY81 never returns.
+        'noreturn': ['DSPLY81'],
+        # GOFLASH/GOFLASHR returns (terminate, proceed, recycle, enter
+        # after a BANKCALL) land on words only the display reaches.
+        'resume_orphans': True,
+        # VNDSPLY's QXCH RTRN saves its caller's return, and TC RTRN runs
+        # that word (TC <return>): RTRN (E4,1767) holds one of the four
+        # TC VNDSPLY returns, which the erasable continuation accepts.
+        'erasable_points': {'E4,1767': [0o2750, 0o3041, 0o3152, 0o3154]},
+        'states': {'04,3272': {'RTRN': [0o2750, 0o3041, 0o3152, 0o3154]}},
+        # The file runs under EBANK=SUBEXIT (E4).
+        'ebank': 'listing',
+        'flow_states': True,
+        'resume_flow': True,
+        'max_steps': 1000,
+        'target': 'tests/cm_stable_orbit_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
+    # its original addresses.
+    'cm-conics': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'CONIC_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_conics'},
+        'symbol': {'cm': 'cm_conics'},
+        'basic': 'full',
+        'entries': ['@external'],
+        # (TC DANZIG goes on in interpretive code: the word after it is no
+        # return point.)
+        'noreturn': ['DANZIG'],
+        # MUTABLE,1 (and +-n,1) with X1 -2 (Earth) or -10D (Moon), the
+        # callers' AXT,1; the file never sets X1 itself.
+        'fixed_index': {'MUTABLE': [2, 10]},
+        'all_states': {'vac+046': [0o77775, 0o77765]},
+        # KEPLER's and the time-theta iterations run hundreds of orders.
+        'max_steps': 2000,
+        # KEPLERN to PERIODCH (12,2045-12,2142): the pushdown list as
+        # SETPD 0 leaves it (vac+2 between the two PDDLs and after
+        # PERIODCH's), a positive period (MPAC at PERIODCH, 0D after it) and
+        # a small TAU. (E4,1711), so PERIODCH's subtraction loop ends as
+        # the flight code's does; MODE as the orders before leave it
+        # (vector after VLOAD*, UNIT, VSQ's operand load, DP otherwise).
+        # 04,3650 (GEOM's return) is in DP mode.
+        'states': {
+            **{'12,%o' % a: {'0166': ['vac+2' if a in (0o2122, 0o2124) or a >= 0o2133 else 'vac+0'],
+                             '02311': [0, 0o77777], '02312': [1, 0o40, 0o77, 0o77700, 0o77776],
+                             '0163': [0o77776 if a in (0o2047, 0o2051, 0o2054, 0o2060, 0o2066) else 0],
+                             **({'0154': [0o100, 0o1000, 0o10000]} if a == 0o2131 else {}),
+                             **({'vac+0': [0o100, 0o1000, 0o10000]} if a >= 0o2133 else {})}
+               for a in range(0o2045, 0o2143)},
+            '04,3650': {'0163': [0]},
+            # STOREs into E7's last words (EPSILONL, COGA) after a DP
+            # order: a vector store there would run past erasable.
+            '12,3241': {'0163': [0]}, '12,3506': {'0163': [0]},
+            # APSIDES, TIMETHET and TIMERAD after their SETPD 0: PDVL's
+            # push stays below X1.
+            '12,3706': {'0166': ['vac+0']}, '12,3710': {'0166': ['vac+0']}, '12,3713': {'0166': ['vac+6']},
+            '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
+            '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
+        },
+        # Half of GETX's cases take CSTH and SNTH so that its DDV (12,3016)
+        # divides SNTH/64 by 1/4 - CSTH/2 with equal majors (both exactly
+        # or a few low-word units apart), so DDV's MAXDV/MAXTEST paths run
+        # in a case short enough for one C64 diagnostic.
+        'joint_states': {'GETX': [{'CSTH': c, 'CSTH+1': cl, 'SNTH': sn, 'SNTH+1': sl}
+                                  for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
+                                  for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
+                                 + [{}] * 9},
+        # A DIFEQ or iteration run that does not fit one C64 diagnostic
+        # drops every case whose run reaches at least its routines.
+        'c64_drop_superset': True,
+        'target': 'tests/cm_conics_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a
         # restart enters (terminate, proceed, enter after a BANKCALL).
@@ -877,10 +1127,13 @@ SPECS = {
         # TC HACK at 20,2540, 2542, 2742, 2744) or TCTSKOVR (TC TASKOVER).
         'erasable_points': {'E6,1657': [0o2541, 0o2543, 0o2743, 0o2745, 0o5324]},
         # CARD (E6,1661) counts -4 (CS FCARD) up to -1 between sets: INDEX
-        # CARD reads FCARD +1 .. +6.
+        # CARD reads FCARD +1 .. +6. STROKILL leaves CARD -0 with one
+        # HACKWLST still pending, which INCRs it to +1 and reads FCARD +5
+        # and FCARD +8 (HACK's own words; issue #219); one more from +1
+        # reads FCARD +6 and +9.
         'cells': {0o3257: [0o2541, 0o2543, 0o2743, 0o2745, 0o5324],
-                  0o3261: [0o77773, 0o77774, 0o77775, 0o77776]},
-        'fixed_tables': {'FCARD': (0, 6)},
+                  0o3261: [0o77773, 0o77774, 0o77775, 0o77776, 0o77777, 1]},
+        'fixed_tables': {'FCARD': (0, 9)},
         'ebank': 6,
         # HACK is entered by the DAPs' TC HACK: Q one of their returns.
         'states': {'HACK': {'2': [0o2541, 0o2543, 0o2743, 0o2745]}},
@@ -899,6 +1152,10 @@ SPECS = {
         'base': {'cm': 'cm_tvc_init'},
         'symbol': {'cm': 'cm_tvc_init'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -990,6 +1247,10 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a DAP pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1036,6 +1297,10 @@ SPECS = {
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1090,6 +1355,10 @@ SPECS = {
         'target': 'tests/cm_jet_select_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
     },
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
@@ -1105,6 +1374,10 @@ SPECS = {
         'execute_data': ('20,3714', '20,3715'),
         'symbol': {'cm': 'cm_entry_dap'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',

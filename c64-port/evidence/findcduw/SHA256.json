@@ -4,8 +4,8 @@
   "release": "evidence-findcduw",
   "files": {
     "findcduw-c64-cover.json": {
-      "sha256": "88d5652950940c3e82313aedb48705e7a61c4db20773085e66b4bc7ff7d4d095",
-      "bytes": 4794,
+      "sha256": "2440a8e0ba1c54a8d247c0b2821dd02327b7414bfad3df2c826244fcfb5db4d0",
+      "bytes": 4932,
       "store": "tree"
     },
     "findcduw-differential.log": {
@@ -19,7 +19,7 @@
       "store": "release"
     },
     "findcduw-proof.json": {
-      "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6",
+      "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485",
       "bytes": 13016,
       "store": "tree"
     },
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "findcduw-vice.log": {
-      "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
-      "bytes": 2997,
+      "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
+      "bytes": 14028,
       "store": "release"
     }
   }

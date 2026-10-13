@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-restarts-proof.json": {
-      "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49",
-      "bytes": 3563,
+      "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950",
+      "bytes": 3562,
       "store": "tree"
     },
     "cm-tvc-restarts-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-restarts-vice.log": {
-      "sha256": "cdaeeb5820d8a127806a44cffc1ea8ecb9aab330138c6acdb942dee3d96ebeef",
-      "bytes": 423,
+      "sha256": "719c37a83247508f98cbd517ee41f6f6f093fa833becd45c714958e00c922121",
+      "bytes": 522,
       "store": "tree"
     }
   }

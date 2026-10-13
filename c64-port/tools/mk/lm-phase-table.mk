@@ -2,7 +2,7 @@
 # Milestone lm-phase-table (lane A2): Luminary099 PHASE_TABLE_MAINTENANCE
 # (NEWMODEX/MMDSPLAY/SETUPDSP, CHECKMM, PHASCHNG/2PHSCHNG/PHSCHNGA) as native routines
 # of the control-transfer ABI.
-LM_PT_SRC = src/lm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_phase_table_cases.c
+LM_PT_SRC = src/lm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_phase_table_cases.c
 LM_PT_HDR = include/lm_phase_table.h include/lm_interbank_routines.h include/agc_transfer.h include/agc_image_ops.h src/lm_phase_sites.inc tests/lm_phase_table_cases.h
 .PHONY: test-lm-phase-table sanitize-lm-phase-table c64-lm-phase-table vice-lm-phase-table lm-phase-table-differential
 all: build/test-lm-phase-table

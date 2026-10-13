@@ -12,7 +12,7 @@ extern const agc_routine_table cm_auto_man_interpretive,cm_auto_man_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_auto_man_point;
-#define CM_AUTO_MAN_POINTS 6u
+#define CM_AUTO_MAN_POINTS 39u
 #define CM_AUTO_MAN_CADR_WORDS 1u
 #define CM_AUTO_MAN_EXTERNALS 5u
 #define CM_AUTO_MAN_FIRST 18088u

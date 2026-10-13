@@ -15,8 +15,8 @@ import collections, hashlib, json, os, pathlib, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
-NATIVE = ['tests/interbank_oracle_cases.c', 'src/agc_transfer.c', 'src/lm_interbank_routines.c', 'src/lm_interbank.c',
-          'src/cm_interbank_routines.c', 'src/cm_interbank_complete.c', 'src/agc_word.c']
+NATIVE = ['tests/interbank_oracle_cases.c', 'src/agc_transfer.c', 'src/lm_interbank_routines.c', 'src/lm_interbank_idle.c', 'src/lm_interbank.c',
+          'src/cm_interbank_routines.c', 'src/cm_interbank_idle.c', 'src/cm_interbank_complete.c', 'src/agc_word.c']
 HEADERS = ['include/agc_transfer.h', 'include/lm_interbank_routines.h', 'include/lm_interbank.h',
            'include/cm_interbank_routines.h', 'include/cm_interbank_complete.h', 'src/lm_interbank_sites.inc',
            'src/cm_interbank_sites.inc', 'tests/interbank_oracle_cases.h', 'tests/interbank_oracle_data.h']

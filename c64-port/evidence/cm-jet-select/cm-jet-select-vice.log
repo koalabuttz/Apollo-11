@@ -1,7 +1,8 @@
 PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-3b4751f79c372ae113e1a8689f13e49ece63a7f2067b5ee7c503b8ff76566b90  build/cm-jet-select-1.prg
+ec3b65d66212dec32597f52f6a7604a0f8512907660cf0509c47716c6482d3a3  build/cm-jet-select-1.prg
 
 $ make vice-cm-jet-select
 for p in build/cm-jet-select-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-jet-select-1.prg: 28 checks, 0 failures
+PASS: VICE PAL cm-jet-select-1.prg: 27 checks, 0 failures
+PRG sha256: ec3b65d66212dec32597f52f6a7604a0f8512907660cf0509c47716c6482d3a3 cm-jet-select-1.prg
 exit 0

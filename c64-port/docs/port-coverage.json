@@ -93,6 +93,7 @@
         {
           "native_files": [
             "src/cm_self_check.c",
+            "src/cm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/cm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -100,7 +101,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -108,7 +109,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
             "vice_targets": {
               "vice-self-check": 85
             }
@@ -119,19 +120,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
-            "sha256": "69012cf6a828dddc78308947152f11f1c43cb037b12fc1d3597fcebffbd9e25c"
+            "sha256": "bcb69dd2bad76e57614843b15bcc8c0fb804d8fd0d3aefb58b0ca49f40cffdba"
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "e194f987bfc8f0323a18fd7e448f020ba7e59ae84b0c875855990762304dd964"
+            "sha256": "a3562a47664eed60ac79b7c7dc550ffd7fbb3caf8af569f27a1dac520e891e9c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
-            "sha256": "3aa087a1519d33efa8a186e211c4e05e61a43133d4a18fb71a8b6cdffe293b9b"
+            "sha256": "53b43bb75ea43bc3ac14c652b99009a808116266d42edbab228387aa1e2bf2ab"
           }
         },
         "external_continuations": [
@@ -412,7 +413,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (333 words): The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. As 6 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at AHFNOROT, JETS, T6PROG and the continuations after outside calls.",
+          "scope": "Every word of the file (333 words): The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. As 39 routines of the control-transfer ABI (33 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at AHFNOROT, JETS, T6PROG and the continuations after outside calls.",
           "verification": "docs/CM-AUTO-MAN.md"
         }
       ],
@@ -433,11 +434,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-auto-man/cm-auto-man-source-map.json",
-            "sha256": "5aab2365427fe8959d2ae25f2f68c6f181c536024892d9da009da094b5f08cde"
+            "sha256": "b07d19db7cd2fbd8dd5d428fdebdb6b709787cb1eeca6d70af42b6c3730a3eff"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235"
+            "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
@@ -445,14 +446,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "6fe16bf5d929616f9f5e3f3c9e6a6038aabdfa567af3af00091bf03520df1171",
+            "sha256": "cc0bfbccf53aa9df2289a41cf0ab589bb21de1e2e2c3e72ad788f11a324edb45",
             "vice_targets": {
               "vice-cm-auto-man": 24
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235"
+            "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -539,7 +540,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (813 words): The entry autopilot: READGYMB and the body rates, the atmospheric and exo-atmospheric DAP modes, CM/RCS roll control, the FDAI needles and the CM/DUMPR telemetry file. As 28 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at ATTRATES, CM/DAPIC, CM/DAPON, EXDAP4, JETACTN, JETCALL, READGYMB, SETJTAG and the continuations after outside calls.",
+          "scope": "Every word of the file (813 words): The entry autopilot: READGYMB and the body rates, the atmospheric and exo-atmospheric DAP modes, CM/RCS roll control, the FDAI needles and the CM/DUMPR telemetry file. As 138 routines of the control-transfer ABI (110 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at ATTRATES, CM/DAPIC, CM/DAPON, EXDAP4, JETACTN, JETCALL, READGYMB, SETJTAG and the continuations after outside calls.",
           "verification": "docs/CM-ENTRY-DAP.md"
         }
       ],
@@ -567,11 +568,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-source-map.json",
-            "sha256": "a8edce8bb4660f78a0f1da9477269c62e6c9edbae4036f502feb9a945c00e771"
+            "sha256": "5f8762889e6ec862477c2b81d353a08f7975d0477ab5c9f14923ead93753c527"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c"
+            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -579,14 +580,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "fd6305391bc1cb33c6bf8cdf4ed930686e940a73b737bc27acabea6cc79f61b7",
+            "sha256": "f63e1fadefbea15c63f4eaf8f7374f0a50bc8aa2722299422cf8aa960eea9bf1",
             "vice_targets": {
               "vice-cm-entry-dap": 79
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "80db1c38391157a70b9ea807d1d627bd6ee60a678900e4d3352fcd433fea7f5c"
+            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -601,8 +602,62 @@
       "sha256": "b71ca76c2835831676ed58e7708132fe30a239fedffaf8a17decea177569d6af",
       "bytes": 47233,
       "lines": 1922,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_conics.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (1079 words): The conic subroutines: KEPLER (KEPLERN, its iteration and PERIODCH), LAMBERT, TIMETHET, TIMERAD, APSIDES, GEOM, PARAM, GETX/DELTIME and the iterator, all interpretive with their basic helpers. As 445 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at 1/WLOOP, 1REV, 360CHECK, 360LAMB, ABTCONIC, APSIDES, BADR2, BADX, BIGTIME, BRNCHCTR, CHECKCTR, CIRCULAR, CMNTOVFL, COGAOVFL, COLINEAR, COMMNOUT, COMMONLM, DELOK, DELTIME, DXCOMP, FIRSTIME, GEOM, GETECC, GETX, HAVENORM, HIENERGY, INFINAPO, INFINITY, INITV, INVRSEQN, ITERATOR, KEPCONVG, KEPLERN, KEPLOOP, LAMBERT, LAMBLOOP, LAMENTER, LOENERGY, LOLIM, MAXCHECK, MAXCOGA, MINCHECK, MINCOGA, MODDONE, MODNGDEL, MODPSDEL, NDXCHNGE, NEGP, NEGTOVFL, NEWDEL, NEWDELX, NEWSTATE, NOGUESS, OVFLCLR, PARAM, PDXCHNGE, PERIODCH, POLYCOEF, POSDEL, POSDELX, RESETX2, SGNCHECK, STORBNDS, STOREMAX, STOREMIN, SUFFCHEK, TARGETV, TERMNVEC, TIMEOVFL, TIMERAD, TIMETHET, TRUE360X, UNITNORM, UPLIM, WLOOP, XCOMMON, XDIFF and the continuations after outside calls.",
+          "verification": "docs/CM-CONICS.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH TAU. is small and the period positive so PERIODCH ends as in flight. Other conic erasables take any value.",
+        "external_continuations": [
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DANZIG (outside basic routine)",
+          "POLY (outside basic routine)",
+          "POODOO (outside basic routine)",
+          "RTB TPMODE (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-conics/cm-conics-source-map.json",
+            "sha256": "0479188dd837d058bc7b17ff366844a89e4bb893c89133093cca94943e623a94"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-conics/cm-conics-proof.json",
+            "sha256": "8eefc643ca5d491641f73e4a89353898aa4b06de7c1906e346dc0dd5312934b4"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-conics/cm-conics-host.log",
+            "sha256": "f842156a090c3cd31ff2113f0ec3427c2a4a69a6ec284029acb2b9d5582cbfb1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-conics/cm-conics-vice.log",
+            "sha256": "a6382cd10d7b9c08fd4ad459946bd7774dfa90741b692b924cd5fcf757a420d6",
+            "vice_targets": {
+              "vice-cm-conics": 616
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-conics/cm-conics-proof.json",
+            "sha256": "8eefc643ca5d491641f73e4a89353898aa4b06de7c1906e346dc0dd5312934b4"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
@@ -1918,8 +1973,74 @@
       "sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
       "bytes": 26531,
       "lines": 1174,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_integration_init.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (685 words): State-vector integration set-up and exit: INTSTALL and the INTWAKE family, SETIFLGS, STATEINT, INTEGRV, the CSM/LM state moves (MOVEACSM, PTOACSM, ...), AVETOMID, MIDTOAV1/2, TIMEINC and INTEXIT, basic and interpretive. As 235 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at A-PCHK, ALOADED, ANDOUT, ATOPCSM, ATOPLEM, AVETOMID, CKMID2, CLRMOON, CSMCONIC, CSMPREC, DT/2COMP, ENDINT, ENTMID1, ENTMID2, ERASTAL1, ERASTAL2, ERASWAK1, ERASWAK2, GETMAXDT, GRP2PC, IFLAGC, IFLAGP, INT/W, INTEGRV, INTEGRV1, INTEGRV2, INTEGRVS, INTEXIT, INTSTALL, INTWAKE, INTWAKE0, INTWAKE1, INTWAKEC, INTWAKEM, INTWAKEU, INTWAKEX, INTWAKLM, INTWAKUP, LEMCONIC, LEMPREC, MAXDT, MID2, MIDTOAV1, MIDTOAV2, MOVEACSM, MOVEALEM, MOVEPCSM, MOVEPLEM, NOINT, NORFINAL, NOTIME, P00HCHK, PHEXIT, PTOACSM, PTOALEM, RECTOUT, RVCON, SETCOAST, SETIFLGS, SETMOON, STATEINT, STATINT1, TESTLOOP, TIMEINC, USEMAXDT, USEPIOS and the continuations after outside calls.",
+          "verification": "docs/CM-INTEGRATION-INIT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return. Other erasables take any value.",
+        "external_continuations": [
+          "ALARM (outside basic routine)",
+          "BANKJUMP (outside basic routine)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DANZIG (outside basic routine)",
+          "DOWNFLAG (outside basic routine)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "FINDVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "JOBSLEEP (outside basic routine; Lane A Executive/Waitlist)",
+          "JOBWAKE (outside basic routine; Lane A Executive/Waitlist)",
+          "LONGCALL (outside basic routine)",
+          "PHASCHNG (outside basic routine)",
+          "RTB LOADTIME (outside basic routine)",
+          "RTB SGNAGREE (outside basic routine)",
+          "RTB SIGNMPAC (outside basic routine)",
+          "TASKOVER (outside basic routine; Lane A Executive/Waitlist)",
+          "TPAGREE (outside basic routine)",
+          "UPFLAG (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-integration-init/cm-integration-init-source-map.json",
+            "sha256": "5b5e7d834a553a8983a3a1a46db0759db14cd029cd1b0695327582a4a0a0bd8c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
+            "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-integration-init/cm-integration-init-host.log",
+            "sha256": "f7c41463d442356d7dbd4f37057e6a0c3e0d4760cdc8a79f37995fc6b235fe01"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
+            "sha256": "2da5c2ca32c1d8580cfd5682ffcc9ab0ce2ae60f1b4e3acb8a4548dc0ab096b2",
+            "vice_targets": {
+              "vice-cm-integration-init": 322
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
+            "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
@@ -1996,19 +2117,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
@@ -2019,7 +2140,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
           }
         }
       }
@@ -2254,7 +2375,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (629 words): JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. As 2 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at JETSLECT, T6START.",
+          "scope": "Every word of the file (629 words): JETSLECT (translation and rotation jet tables, jet on-times, the T6 sort) and the T6 program T6START with REPLACE/REPLACER. As 76 routines of the control-transfer ABI (74 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at JETSLECT, T6START.",
           "verification": "docs/CM-JET-SELECT.md"
         }
       ],
@@ -2271,11 +2392,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-jet-select/cm-jet-select-source-map.json",
-            "sha256": "6cac9bd71563334f098a770124e5e7ae490bde8aca9e3e6ef3ca3bc00ba4d9ed"
+            "sha256": "79c27762f7de19db5003ba82f85320f4f53a91920b841b2fcb2bf16f0214dc06"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020"
+            "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
@@ -2283,14 +2404,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "8d7b6d158307a197a4b0efdd3cdf8b1dc517e887d80e7974af8234b61236dea4",
+            "sha256": "cf7c471a70af860b424086115664f349acefe95b9f707c9bd4745951ddf7ddb2",
             "vice_targets": {
               "vice-cm-jet-select": 28
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020"
+            "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -2481,7 +2602,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -2489,7 +2610,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -2500,7 +2621,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -2680,8 +2801,21 @@
       "sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
       "bytes": 14885,
       "lines": 944,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_orbital_integration.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (816 words): Encke integration: TIMESTEP, the DIFEQ stages (DIFEQ+0/1/2), ACCOMP with the oblateness and solar/lunar terms (GAMCOMP, OBLATE, NBRANCH), RECTIFY and the end-of-step bookkeeping, all interpretive with their basic helpers. As 333 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at ACCOMP, AMOVED, CALLRECT, CHKSWTCH, COMTERM, COSPHIE, DIFEQ+0, DIFEQ+1, DIFEQ+2, DIFEQ0, DIFEQCOM, DOSWITCH, DOW.., DOW..1, EARSPH, ENDSTATE, FBR3, GAMCOMP, GETRPSV, GOBAQUE, INT-ABRT, INTGRATE, KEPPREP, MINIRECT, NBRANCH, NEXTCOL, OBLATE, ORIGCHNG, QUALITY3, RECTEST, RECTIFY, RELOADSV, RPQOK, TIMESTEP, WMATEND and the continuations after outside calls. Not yet offered as complete: the C64 rows miss 50 of the branch outcomes the host cases take, reached only by DIFEQ runs too big for one C64 diagnostic (host_branches_missing_on_c64 in the proof).",
+          "verification": "docs/CM-ORBITAL-INTEGRATION.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P11.agc",
@@ -3704,7 +3838,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -3712,7 +3846,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -3723,7 +3857,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
@@ -4021,7 +4155,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (611 words): The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. As 17 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at NEEDLE11, NEEDLER, NEEDLER2, NEEDLES, RCSATT, REDORCS, REINIT, STICKCHK, T6PROGM, ZEROJET and the continuations after outside calls.",
+          "scope": "Every word of the file (611 words): The CSM RCS autopilot: REDORCS, RCSATT with the rate filter loops (DRHOLOOP, ADOTLOOP, DELOOP), the needles (NEEDLER, NEEDLE11, NEEDLER2, NEEDLES), REINIT, ZEROJET, T6PROGM and STICKCHK. As 71 routines of the control-transfer ABI (54 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at NEEDLE11, NEEDLER, NEEDLER2, NEEDLES, RCSATT, REDORCS, REINIT, STICKCHK, T6PROGM, ZEROJET and the continuations after outside calls.",
           "verification": "docs/CM-RCS-DAP.md"
         }
       ],
@@ -4046,11 +4180,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-source-map.json",
-            "sha256": "edbf36fd3df9c369024d2782e63203b7e3f84b4d534d9d27f1ade445d6f8dd8f"
+            "sha256": "03667a44a6b710c967fd49c4c98aa8134935fce2418c9ef77eb651677961d654"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
+            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
@@ -4058,14 +4192,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "b419ccca455c1853201942b4ee86f37221d9ead87401652bac50122b8831332d",
+            "sha256": "c56f2e956712da37aeed740a3201f6623294071c640817c5a318815bc2f507ff",
             "vice_targets": {
               "vice-cm-rcs-dap": 43
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "15d5e3f488b4905f16e2c2b3c750db285977bb92ffc6787b841de4e4990290cf"
+            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -4632,8 +4766,67 @@
       "sha256": "ced73fe04353aa9e58b875714fc8f4769e75b776622f7d6994e929b68374fc55",
       "bytes": 9172,
       "lines": 422,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_stable_orbit.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (225 words): The stable-orbit rendezvous programs P38 and P39 (and the P78 and P79 entries) with their precision updates, recycle tests and V06 displays, basic and interpretive. As 104 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at DSPLY58, DSPLY81, INTRPVP, JUNCTN1, JUNCTN2, MAINRTN1, MAINRTNE, OPTN1, OPTN2, OTHERV, P38, P39, P39/P79B, P39P79, P78, P79, PREC/TT, RECYCLE, TEST3979 and the continuations after outside calls.",
+          "verification": "docs/CM-STABLE-ORBIT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the program erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area, resume points starting from the state the preceding orders leave.",
+        "external_continuations": [
+          "AVFLAGA (outside basic routine)",
+          "AVFLAGP (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "BLANKET (outside basic routine)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
+          "GOTOPOOH (outside basic routine)",
+          "P20FLGON (outside basic routine)",
+          "RTB LOADTIME (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
+          "Erasable continuation E4,1767 (this file): accepts only TC 02750, TC 03041, TC 03152, TC 03154"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-stable-orbit/cm-stable-orbit-source-map.json",
+            "sha256": "e7e75083785a66e4eea524ca996dbb118945d6453dbe69182fc656bfb5f8554a"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
+            "sha256": "d340184cccb8e5a47c1bbd784d35ef7544db4ab06d37bd9ef7b50164596efa10"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-stable-orbit/cm-stable-orbit-host.log",
+            "sha256": "ea69cd19e9f49b6875918d9110f68c3ec324b05f2ad2313deb451d479560c6a0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-stable-orbit/cm-stable-orbit-vice.log",
+            "sha256": "26f8fa1b31edab81af67739beb216885198e375ad2885cbd937ce240e5a4eea1",
+            "vice_targets": {
+              "vice-cm-stable-orbit": 139
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
+            "sha256": "d340184cccb8e5a47c1bbd784d35ef7544db4ab06d37bd9ef7b50164596efa10"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/STAR_TABLES.agc",
@@ -4804,15 +4997,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
             "vice_targets": {
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
@@ -4824,7 +5017,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -4856,6 +5049,14 @@
           ],
           "scope": "IMUMON through 90SECS (bank 06,2174-2764) and ZOPFIN3 (06,3065-3067, shared with the optics code): the channel 30 and channel 33 IMU monitors with their bit-change handlers (TLIM, ITURNON, ENDTNON, UNZ2, ISSUP, SETISSW, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST), the gimbal lock check, CAGESUB and LAMPTEST, as control-transfer ABI routines (cm_t4rupt_imu_routines, 22 bank 06 entries) on the image through agc_image_ops, with channels 11, 12, 14, 30 and 33 in agc_hardware. Every instruction word of the range was executed by the original in the comparison; OPTMON and the rest of the optics code remain unported.",
           "verification": "docs/CM-T4RUPT-IMU.md"
+        },
+        {
+          "native_files": [
+            "src/cm_t4rupt_optics.c",
+            "include/cm_t4rupt_optics.h"
+          ],
+          "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
+          "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
       ]
     },
@@ -4907,8 +5108,61 @@
       "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
       "bytes": 23513,
       "lines": 683,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_time_free_fall.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (268 words): The conic time-of-free-fall routines: CALCTPER and CALCTFF (time to the perigee or a radius), TFFCONIC (the conic parameters), with their helpers TFFRP/RA, TFFQ1, TFFX and the DUMPTFF exits, all interpretive. As 121 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALCTFF, CALCTPER, DUMPCNIC, DUMPRPRA, DUMPTFF1, DUMPTFF2, ENDT(X), ENDTFF, INBOUND, MAXRA, MAXTFF, MAXTFF1, NEGTFF, SAVEDEN, T(X), TFFCONIC, TFFCONMU, TFFEL1, TFFELL, TFFRP/RA, TFFXTEST.",
+          "verification": "docs/CM-TIME-FREE-FALL.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area.",
+        "external_continuations": [
+          "BOVB SIGNMPAC (outside basic routine)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "DANZIG (outside basic routine)",
+          "POLY (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-source-map.json",
+            "sha256": "ef8cdd9209a40bd1e5f46c9dd0919474c5c3d1ef7cee21dfc933b966610cf403"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
+            "sha256": "8536b1f259ccfe511c60a8a7c7f0a19327d9577cd5077d43f9f617dad92898d5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-host.log",
+            "sha256": "165a4360dff84fc087c0a21bf12bd1b553dfa146ea24476a0f7301240367b8c1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-vice.log",
+            "sha256": "ea575c5639f987e9bea402b773948b68d1632f17080e801bc376f078596aad53",
+            "vice_targets": {
+              "vice-cm-time-free-fall": 192
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
+            "sha256": "8536b1f259ccfe511c60a8a7c7f0a19327d9577cd5077d43f9f617dad92898d5"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TPI_SEARCH.agc",
@@ -5012,7 +5266,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
-            "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0"
+            "sha256": "e4f1644129f16efc04df033f88f95e145182519f0fc01a1b3e7f0853f154e806"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-host.log",
@@ -5020,14 +5274,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-vice.log",
-            "sha256": "d0bf5c28ac6629a2e40c3aae241a2bb028a087d8f82cfde95ad27938da857140",
+            "sha256": "3be2e30a7ff9e984777b6fec5892b7569de6eb6daaf8acf44e5a808fcd8f87ad",
             "vice_targets": {
               "vice-cm-tvc-daps": 18
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-daps/cm-tvc-daps-proof.json",
-            "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0"
+            "sha256": "e4f1644129f16efc04df033f88f95e145182519f0fc01a1b3e7f0853f154e806"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5074,7 +5328,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
-            "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631"
+            "sha256": "8cb18f95f71abfda0949a068458e5cfc210b39d3fb71dd6f4f8006de96a69682"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-host.log",
@@ -5082,14 +5336,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-vice.log",
-            "sha256": "0d6839298d1447601a5ee913cbbea377b8b0ed8b4a93db1fd0c41247934639de",
+            "sha256": "9b877308a8042666b4786135f0339d769a70b1fb9c595313e8ae555e18733543",
             "vice_targets": {
               "vice-cm-tvc-exec": 25
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-exec/cm-tvc-exec-proof.json",
-            "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631"
+            "sha256": "8cb18f95f71abfda0949a068458e5cfc210b39d3fb71dd6f4f8006de96a69682"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5113,7 +5367,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (259 words): TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. As 11 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py, entered at MRCLEAN, PRESWTCH, S40.15, TVCDAPON, TVCINIT1, TVCINIT4 and the continuations after outside calls.",
+          "scope": "Every word of the file (259 words): TVCDAPON, MRCLEAN, TVCINIT1 to TVCINIT4 with the filter coefficient load LOADCOEF, attitude-error initialisation, the CSM/LM V46 switch-over PRESWTCH/SWICHOVR and the gain computation S40.15. As 22 routines of the control-transfer ABI (11 of them part keys, where the step machine hands Z from one part function to the next so each routine fits its flight-store slot) compiled whole-file by tools/basic_compile.py, entered at MRCLEAN, PRESWTCH, S40.15, TVCDAPON, TVCINIT1, TVCINIT4 and the continuations after outside calls.",
           "verification": "docs/CM-TVC-INIT.md"
         }
       ],
@@ -5134,11 +5388,11 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-source-map.json",
-            "sha256": "c918f4a2777c879ba96ecff2b003f83139f433855e15a0c11dd506503946c626"
+            "sha256": "13771dc64bfc1da9705bdffa952477bfabea276aee690a2386ddbe0ab4448a8e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "0b3a5cd64c85d10bf818b5263013f4e1eb1fe7d078e25c9a49ebf57e5c0d27b0"
+            "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-host.log",
@@ -5146,14 +5400,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-vice.log",
-            "sha256": "1b9a4421e8a31db74fcf7a89dfccc841319a58a659ccc72dc0b695ab217a07f0",
+            "sha256": "bd96035ee578824d6fba389e67a1972e98a5e9e045834b0dea51fb2906b5a778",
             "vice_targets": {
               "vice-cm-tvc-init": 14
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-init/cm-tvc-init-proof.json",
-            "sha256": "0b3a5cd64c85d10bf818b5263013f4e1eb1fe7d078e25c9a49ebf57e5c0d27b0"
+            "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5197,7 +5451,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
-            "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3"
+            "sha256": "d00b58d2ab8c214f83d83c157831a4a98b8b0fb568269de3ec4be135877d7b6e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-host.log",
@@ -5205,14 +5459,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
-            "sha256": "68bfbdd80341c9a973abeda2761a43f79e36f32106ee39f3ea2e32f03f820448",
+            "sha256": "d199abd0f331ad4506688ab778b907df73559077139dc59cb8cc13737a6cdecc",
             "vice_targets": {
               "vice-cm-tvc-massprop": 6
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-proof.json",
-            "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3"
+            "sha256": "d00b58d2ab8c214f83d83c157831a4a98b8b0fb568269de3ec4be135877d7b6e"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5262,7 +5516,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
-            "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49"
+            "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-host.log",
@@ -5270,14 +5524,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-vice.log",
-            "sha256": "cdaeeb5820d8a127806a44cffc1ea8ecb9aab330138c6acdb942dee3d96ebeef",
+            "sha256": "719c37a83247508f98cbd517ee41f6f6f093fa833becd45c714958e00c922121",
             "vice_targets": {
               "vice-cm-tvc-restarts": 19
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-restarts/cm-tvc-restarts-proof.json",
-            "sha256": "5b10035c33d1d19c703d88d5ff02a4380984becd110545d30411123629657a49"
+            "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5323,7 +5577,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
-            "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554"
+            "sha256": "43bc683be6cf8a2a70e556bdbdda68cff547a4dbd5340d8eca93154e21eb9338"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-host.log",
@@ -5331,14 +5585,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-vice.log",
-            "sha256": "6ce334926eb0c1a3a9083110f40083a455180e99ade441feda59facbc089a560",
+            "sha256": "c941e4a0c02a2d51bdc394eafe53234dbf5d3803ebf9dab7f16adbf202cd27e1",
             "vice_targets": {
               "vice-cm-tvc-roll": 16
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-roll/cm-tvc-roll-proof.json",
-            "sha256": "a33718af41533629eebf23f033e7b9d433a0e899480c64231eb088f0e3efe554"
+            "sha256": "43bc683be6cf8a2a70e556bdbdda68cff547a4dbd5340d8eca93154e21eb9338"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -5366,11 +5620,11 @@
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "withdrawn_certificate": {
+      "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6).",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. HACK entered with Q one of the DAP returns 2541, 2543, 2743, 2745 (bank 20). BUNKER (E6,1657) holds what the file stores there: one of those returns or TCTSKOVR. CARD counts -4 to -1 between waveform sets (INDEX CARD reads FCARD +1 to +6), or is -0 or +1 after STROKILL with one more HACKWLST still to run, which reads FCARD +5 to +9 (issue #219).",
         "external_continuations": [
           "ENDOFJOB (outside basic routine; Lane A Executive/Waitlist)",
           "WAITLIST (outside basic routine; Lane A Executive/Waitlist)",
@@ -5385,7 +5639,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
-            "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74"
+            "sha256": "ccfe884f7ecc07276773eb252c70147405fd7232d2aa787fd96a7160f91fd624"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-host.log",
@@ -5393,20 +5647,21 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
-            "sha256": "77a91c3c21802f097a006c805c0c16d679129137a1336e68726a7ff633abe449",
+            "sha256": "dbab541ebe590f753f399348964282869322eebfb862c331233fe1fadd43c1af",
             "vice_targets": {
               "vice-cm-tvc-stroke": 12
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-proof.json",
-            "sha256": "95045b1fd30a4ad7b9309a7b02b29a0f85fcb2e4ca3dff447225b4b287ce5e74"
+            "sha256": "ccfe884f7ecc07276773eb252c70147405fd7232d2aa787fd96a7160f91fd624"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
             "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
           }
-        }
+        },
+        "awaiting": "certificate reviewer"
       }
     },
     {
@@ -5588,12 +5843,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5602,12 +5857,12 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328
+              "vice-waitlist-entries": 365
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -5627,6 +5882,7 @@
         {
           "native_files": [
             "src/lm_self_check.c",
+            "src/lm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/lm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -5634,7 +5890,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -5642,7 +5898,7 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
-            "sha256": "6e170ec128880a18507bddb7a5a8e20c023c060dd301d3b1e3be9eedfccf1e6a",
+            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
             "vice_targets": {
               "vice-self-check": 84
             }
@@ -5653,19 +5909,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
-            "sha256": "aa4915ed825fcf945b482b32f3ab5c8b927661a3eb50ec7acab21f525076e6b7"
+            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
-            "sha256": "bea2c13939fa9fff4aa5efc27167297c1502d34fd67f24338df5f5915909765f"
+            "sha256": "afac6d9b44b2b44d804f4e6c9548670e6294e1defb1094e7e29afaba3ef74ab6"
           },
           "source_to_native_map": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
-            "sha256": "c1bad20bc3065ebd07154b3f6c7d81e2f32227562cece8f606ad34a15dd77b2c"
+            "sha256": "697aca0da88ce924e082fba1b3af3871f29bcd5980a56485ad95dc8d35d4b1b3"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64-cover.json",
-            "sha256": "eda6da832371015d3535a62e199fcf058daa5137eaabd6b7b7fb4068a58f90b9"
+            "sha256": "a9382b79438a91d1e0546b13f09d68d177440929ccb2933e5e09ad959515d159"
           }
         },
         "external_continuations": [
@@ -6843,8 +7099,8 @@
       "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
       "bytes": 37260,
       "lines": 1681,
-      "status": "partial",
-      "pending_complete_certificate": {
+      "status": "complete",
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6888,6 +7144,10 @@
               "vice-lanec-ev-lmi": 40,
               "vice-lanec-ev-transfer": 64
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-c-240.md",
+            "sha256": "1c7134f8afbfcc57b1826b2058f7e1990c7e1030652f44ec30d081cdb3c6d37c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
@@ -7036,7 +7296,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/findcduw/findcduw-host.log",
@@ -7044,7 +7304,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/findcduw/findcduw-vice.log",
-            "sha256": "e0da1b989a2ff87a582ec8d0110ffdb27f2662155a313d60745bbc631a25bd12",
+            "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
             "vice_targets": {
               "vice-findcduw": 146
             }
@@ -7055,7 +7315,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "ab94a5bc5e3c119a5b3479b557a8405d893d4525017b844a1106a5a01926c5c6"
+            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
           }
         }
       }
@@ -7955,19 +8215,19 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "bdde817ca3edd8c1c6e1fd7e0e5fe23a567b34aa0b7335229fb161ca43985d3f"
+            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "0723c2bb94bd060867fe4f46c85075f157ef4f22430bcc1a3d91dc036732bfbf"
+            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "07bee4a23dc823afe60a77d5d060c8e2ff114f9f0fd5d7f697f308d1054d929a"
+            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "555f2b4503153d6a8842fda5a48b9d48617b377e9e476cc42e0d2a279ac6d73d",
+            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
@@ -7978,7 +8238,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "8ccc426b241ae962bd367f18cefe5274333e40ac2cec713e927456477a615820"
+            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
           }
         }
       }
@@ -8514,7 +8774,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "7534187c8fa654ca814be3735698baa03eb409df3e3243f26b276983be8bf628"
+            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
@@ -8522,7 +8782,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "29a545d6ba310acb32d7ab56db8a549810ccce98710b46d06a544ba79dd167df",
+            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
             "vice_targets": {
               "vice-lat-long": 197
             }
@@ -8533,7 +8793,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "daba63dff1a0a08afda568cbfb4d73aead6d604712c7eb0ba43310d30a43ac39"
+            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
           }
         }
       }
@@ -9827,7 +10087,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "ef6422cb01013abfd1c7c5cb0d68f30dc31d71870d9ab5f304592defff2075e4"
+            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
@@ -9835,7 +10095,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "6d60c0601087aed906f5c57c993e742f6a953f5d291b84de41e5b437556ac409",
+            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
             "vice_targets": {
               "vice-planetary": 204
             }
@@ -9846,7 +10106,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "cd7fc11acbce4454b8286349bb95c443f3f7e01eb9b9bda12e3aaf9e3cbd4df5"
+            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
           }
         }
       }
@@ -10752,7 +11012,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since AOSTASK already runs with interrupts inhibited); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since they sit in 1/ACCS after its own INHINT); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
@@ -10972,15 +11232,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "20fb66437dcbebefca33855105a2bd507591a313d3d9eb625a369c618baf6db0"
+            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "67c709b5ed860ee49973733c4b64cf99b22a77a13a7446ae1cd81032da3b4ad8"
+            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "22a952f99336bbc489a04f7fbca472c2cdab9df542e5c59b2678eb14a2058a17",
+            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
             "vice_targets": {
               "vice-standard-lead-oracle": 477
             }
@@ -10991,7 +11251,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "2a9dc8d2b3b064360f7487db310848e64d3d81c803b3746075bddd048b42880f"
+            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
           }
         }
       }
@@ -11747,12 +12007,12 @@
             "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
+            "path": "evidence/waitlist-entries/waitlist-closure-host.log",
+            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
           },
           "c64_execution_results": {
-            "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+            "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
+            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -11761,13 +12021,13 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 328,
+              "vice-waitlist-entries": 365,
               "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
-            "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
+            "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
+            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",

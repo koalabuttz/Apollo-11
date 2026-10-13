@@ -1,0 +1,1193 @@
+PASS: 113920 cm-conics cases equal the original programs (445 routines)
+  CM 04,3637 PARAM: 05170 x67, 06037 x189
+  CM 04,3642 : 05170 x66, 06037 x190
+  CM 04,3644 : 05170 x65, 06037 x191
+  CM 04,3650 : 05170 x71, 06037 x185
+  CM 04,3651 : 05170 x72, 06037 x184
+  CM 04,3654 : 05170 x61, 06037 x195
+  CM 04,3656 : 05170 x73, 06037 x183
+  CM 04,3660 : 05170 x57, 06037 x199
+  CM 04,3662 : 05170 x56, 06037 x200
+  CM 04,3665 : 05170 x63, 06037 x193
+  CM 04,3667 : 05170 x69, 06037 x187
+  CM 04,3671 : 05170 x65, 06037 x191
+  CM 04,3672 : 05170 x73, 06037 x183
+  CM 04,3675 : 05170 x62, 06037 x194
+  CM 04,3700 : 06037 x256
+  CM 04,3702 GEOM: 05170 x57, 06037 x199
+  CM 04,3703 : 05170 x64, 06037 x192
+  CM 04,3705 : 05170 x70, 06037 x186
+  CM 04,3706 : 05170 x68, 06037 x188
+  CM 04,3707 : 05170 x62, 06037 x194
+  CM 04,3710 : 05170 x77, 06037 x179
+  CM 04,3712 : 05170 x60, 06037 x196
+  CM 04,3714 : 05170 x86, 06037 x170
+  CM 04,3716 : 05170 x47, 06037 x209
+  CM 04,3720 : 05170 x61, 06037 x195
+  CM 04,3724 : 05170 x84, 06037 x172
+  CM 04,3726 UNITNORM: 05170 x55, 06037 x201
+  CM 04,3730 : 06037 x256
+  CM 04,3732 COLINEAR: 05170 x59, 06037 x197
+  CM 04,3734 HAVENORM: 05170 x66, 06037 x190
+  CM 04,3736 : 06037 x256
+  CM 12,2042 KEPLERN: 05170 x62, 07171 x194
+  CM 12,2045 : 05170 x73, 07171 x183
+  CM 12,2047 : 05170 x60, 07171 x196
+  CM 12,2051 : 05170 x64, 07171 x192
+  CM 12,2054 : 05170 x63, 07171 x193
+  CM 12,2056 : 05170 x66, 07171 x190
+  CM 12,2060 : 05170 x65, 07171 x191
+  CM 12,2062 : 05170 x78, 07171 x178
+  CM 12,2064 : 05170 x72, 07171 x184
+  CM 12,2066 : 05170 x56, 07171 x200
+  CM 12,2070 : 05170 x65, 07171 x191
+  CM 12,2072 : 05170 x71, 07171 x185
+  CM 12,2074 : 05170 x70, 07171 x186
+  CM 12,2075 : 05170 x72, 07171 x184
+  CM 12,2077 : 05170 x48, 07171 x208
+  CM 12,2101 : 05170 x62, 07171 x194
+  CM 12,2102 : 05170 x66, 05721 x41, 07171 x149
+  CM 12,2105 : 05170 x58, 05721 x40, 07171 x158
+  CM 12,2110 : 05170 x24, 05721 x130, 07171 x102
+  CM 12,2112 1REV: 05170 x24, 05721 x135, 07171 x97
+  CM 12,2114 : 05170 x75, 07171 x181
+  CM 12,2116 STOREMAX: 05170 x62, 07171 x194
+  CM 12,2117 : 05170 x64, 07171 x192
+  CM 12,2122 : 05170 x65, 07171 x191
+  CM 12,2124 : 05170 x68, 07171 x188
+  CM 12,2126 : 05170 x61, 07171 x195
+  CM 12,2131 PERIODCH: 05170 x52, 07171 x204
+  CM 12,2133 : 05170 x60, 07171 x196
+  CM 12,2136 : 05170 x62, 07171 x194
+  CM 12,2140 : 05170 x59, 07171 x197
+  CM 12,2141 : 05170 x62, 07171 x194
+  CM 12,2143 MODDONE: 05170 x61, 07171 x195
+  CM 12,2146 : 05170 x60, 07171 x196
+  CM 12,2147 : 05170 x64, 07171 x192
+  CM 12,2152 : 05170 x56, 07171 x200
+  CM 12,2154 : 05170 x63, 07171 x193
+  CM 12,2157 STORBNDS: 05170 x60, 07171 x196
+  CM 12,2162 : 05170 x69, 07171 x187
+  CM 12,2164 : 05170 x74, 07171 x182
+  CM 12,2166 : 05170 x55, 07171 x201
+  CM 12,2170 STOREMIN: 05170 x55, 07171 x201
+  CM 12,2172 : 05170 x80, 07171 x176
+  CM 12,2173 DXCOMP: 05170 x76, 07171 x180
+  CM 12,2176 : 05170 x67, 07171 x189
+  CM 12,2177 : 05170 x69, 07171 x187
+  CM 12,2201 XDIFF: 05170 x67, 07171 x189
+  CM 12,2203 : 05170 x57, 07171 x199
+  CM 12,2204 KEPLOOP: 05170 x52, 07171 x204
+  CM 12,2206 : 05170 x62, 07171 x194
+  CM 12,2210 : 05170 x66, 07171 x190
+  CM 12,2213 : 07171 x256
+  CM 12,2215 : 05170 x62, 06030 x172, 06037 x22
+  CM 12,2220 : 05170 x51, 06030 x165, 06037 x40
+  CM 12,2221 : 05170 x59, 06030 x161, 06037 x36
+  CM 12,2223 : 05170 x60, 06030 x91, 06037 x105
+  CM 12,2226 : 05170 x58, 06030 x198
+  CM 12,2231 : 05170 x67, 06030 x189
+  CM 12,2234 : 05170 x62, 06030 x191, 06037 x3
+  CM 12,2237 : 05170 x62, 06030 x194
+  CM 12,2241 : 05170 x72, 06030 x184
+  CM 12,2242 : 05170 x54, 06030 x202
+  CM 12,2245 : 05170 x57, 06030 x199
+  CM 12,2246 : 05170 x63, 06030 x193
+  CM 12,2250 : 05170 x70, 06030 x186
+  CM 12,2253 : 05170 x71, 06030 x185
+  CM 12,2256 NDXCHNGE: 05170 x62, 06030 x194
+  CM 12,2261 : 05170 x67, 06030 x189
+  CM 12,2264 POSDELX: 05170 x57, 06030 x199
+  CM 12,2266 : 05170 x64, 06030 x192
+  CM 12,2267 : 05170 x71, 06030 x185
+  CM 12,2271 : 05170 x50, 06030 x206
+  CM 12,2274 : 05170 x56, 06030 x200
+  CM 12,2276 NEWDELX: 05170 x63, 06030 x193
+  CM 12,2277 : 05170 x68, 06030 x188
+  CM 12,2302 : 05170 x60, 06030 x196
+  CM 12,2304 : 05170 x65, 06030 x191
+  CM 12,2305 BRNCHCTR: 06030 x256
+  CM 12,2310 : 05170 x64, 07171 x192
+  CM 12,2312 PDXCHNGE: 05170 x73, 06030 x183
+  CM 12,2315 : 05170 x71, 06030 x185
+  CM 12,2320 BADX: 05170 x62, 07171 x194
+  CM 12,2322 : 05170 x55, 07171 x201
+  CM 12,2324 : 05170 x70, 07171 x186
+  CM 12,2326 TIMEOVFL: 05170 x65, 06030 x191
+  CM 12,2331 : 05170 x60, 06030 x196
+  CM 12,2332 CMNTOVFL: 05170 x70, 06030 x186
+  CM 12,2334 : 05170 x61, 06030 x195
+  CM 12,2335 : 05170 x73, 06030 x183
+  CM 12,2340 : 05170 x63, 06030 x193
+  CM 12,2342 : 06030 x256
+  CM 12,2344 NEGTOVFL: 05170 x59, 06030 x197
+  CM 12,2346 KEPCONVG: 05170 x48, 06037 x208
+  CM 12,2350 : 05170 x72, 06037 x184
+  CM 12,2353 : 05170 x70, 06037 x186
+  CM 12,2355 : 05170 x56, 06037 x200
+  CM 12,2357 : 05170 x69, 06037 x187
+  CM 12,2362 : 05170 x63, 06037 x193
+  CM 12,2365 : 05170 x55, 06037 x201
+  CM 12,2367 : 05170 x58, 06037 x198
+  CM 12,2371 : 05170 x51, 06037 x205
+  CM 12,2372 : 05170 x69, 06037 x187
+  CM 12,2373 : 05170 x62, 06037 x194
+  CM 12,2374 : 05170 x67, 06037 x189
+  CM 12,2376 : 05170 x54, 06037 x202
+  CM 12,2400 : 05170 x66, 06037 x190
+  CM 12,2403 : 05170 x62, 06037 x194
+  CM 12,2405 : 05170 x69, 06037 x187
+  CM 12,2410 : 05170 x65, 06037 x191
+  CM 12,2413 : 05170 x58, 06037 x198
+  CM 12,2415 : 05170 x65, 06037 x191
+  CM 12,2420 : 05170 x67, 06037 x189
+  CM 12,2423 : 05170 x74, 06037 x182
+  CM 12,2424 : 05170 x64, 06037 x192
+  CM 12,2427 : 05170 x65, 06037 x191
+  CM 12,2431 : 06037 x256
+  CM 12,2433 DELTIME: 07171 x256
+  CM 12,2434 : 07171 x256
+  CM 12,2462 : 05170 x61, 07171 x195
+  CM 12,2463 : 05170 x65, 07171 x191
+  CM 12,2465 : 07171 x256
+  CM 12,2466 : 07171 x256
+  CM 12,2514 : 03565 x181, 05170 x75
+  CM 12,2515 : 03565 x202, 05170 x54
+  CM 12,2520 : 03565 x196, 05170 x60
+  CM 12,2521 : 03565 x186, 05170 x70
+  CM 12,2523 : 03565 x256
+  CM 12,2525 : 03565 x196, 05170 x60
+  CM 12,2530 : 03565 x191, 05170 x65
+  CM 12,2532 : 03565 x256
+  CM 12,2535 : 05170 x61, 06037 x195
+  CM 12,2537 : 05170 x55, 06037 x201
+  CM 12,2542 : 05170 x58, 06037 x198
+  CM 12,2544 : 05170 x66, 06037 x190
+  CM 12,2546 : 05170 x53, 06037 x203
+  CM 12,2547 : 06037 x256
+  CM 12,2550 ITERATOR: 05170 x60, 06037 x196
+  CM 12,2554 : 05170 x54, 06037 x202
+  CM 12,2557 : 05170 x71, 06037 x185
+  CM 12,2562 : 05170 x72, 06037 x184
+  CM 12,2565 : 05170 x75, 06037 x181
+  CM 12,2567 : 05170 x63, 06037 x193
+  CM 12,2572 : 05170 x63, 06037 x193
+  CM 12,2574 SGNCHECK: 05170 x66, 06037 x190
+  CM 12,2576 : 05170 x71, 06037 x185
+  CM 12,2602 : 05170 x59, 06037 x197
+  CM 12,2603 MINCHECK: 05170 x66, 06037 x190
+  CM 12,2605 : 05170 x58, 06037 x198
+  CM 12,2610 : 05170 x61, 06037 x195
+  CM 12,2612 MODNGDEL: 05170 x70, 06037 x186
+  CM 12,2615 : 05170 x56, 06037 x200
+  CM 12,2620 FIRSTIME: 05170 x73, 06037 x183
+  CM 12,2623 : 05170 x67, 06037 x189
+  CM 12,2626 : 05170 x57, 06037 x199
+  CM 12,2627 : 05170 x60, 06037 x196
+  CM 12,2632 POSDEL: 05170 x75, 06037 x181
+  CM 12,2636 : 05170 x71, 06037 x185
+  CM 12,2637 MAXCHECK: 05170 x59, 06037 x197
+  CM 12,2641 : 05170 x63, 06037 x193
+  CM 12,2644 DELOK: 05170 x66, 06037 x190
+  CM 12,2646 NEWDEL: 05170 x60, 06037 x196
+  CM 12,2647 : 06037 x256
+  CM 12,2650 MODPSDEL: 05170 x58, 06037 x198
+  CM 12,2653 : 05170 x63, 06037 x193
+  CM 12,2656 CHECKCTR: 06030 x256
+  CM 12,2665 NEWSTATE: 05170 x68, 06037 x188
+  CM 12,2667 : 05170 x53, 06037 x203
+  CM 12,2672 : 05170 x64, 06037 x192
+  CM 12,2674 : 05170 x60, 06037 x196
+  CM 12,2676 : 05170 x52, 06037 x204
+  CM 12,2701 : 05170 x57, 06037 x199
+  CM 12,2704 : 05170 x53, 06037 x203
+  CM 12,2706 : 05170 x75, 06037 x181
+  CM 12,2710 : 05170 x53, 06037 x203
+  CM 12,2711 : 05170 x66, 06037 x190
+  CM 12,2712 : 05170 x63, 06037 x193
+  CM 12,2713 LAMENTER: 05170 x71, 06037 x185
+  CM 12,2715 : 05170 x65, 06037 x191
+  CM 12,2717 : 05170 x68, 06037 x188
+  CM 12,2722 : 05170 x69, 06037 x187
+  CM 12,2724 : 05170 x65, 06037 x191
+  CM 12,2727 : 05170 x64, 06037 x192
+  CM 12,2732 : 05170 x71, 06037 x185
+  CM 12,2734 : 05170 x70, 06037 x186
+  CM 12,2737 : 05170 x64, 06037 x192
+  CM 12,2741 : 05170 x72, 06037 x184
+  CM 12,2743 : 06037 x256
+  CM 12,2744 TIMETHET: 03565 x1, 05170 x80, 05721 x130, 07171 x45
+  CM 12,2747 : 03565 x3, 05170 x64, 05721 x137, 07171 x52
+  CM 12,2751 : 03565 x4, 05170 x61, 05721 x136, 07171 x55
+  CM 12,2754 : 03565 x3, 05170 x50, 05721 x153, 07171 x50
+  CM 12,2756 : 03565 x13, 05170 x52, 05721 x176, 07171 x15
+  CM 12,2761 COMMNOUT: 05170 x30, 05721 x115, 07171 x111
+  CM 12,2765 : 07171 x256
+  CM 12,2770 : 05170 x39, 06037 x217
+  CM 12,2774 : 06037 x256
+  CM 12,2776 COGAOVFL: 05721 x256
+  CM 12,3001 GETX: 03565 x37, 05170 x57, 05721 x149, 06037 x6, 07171 x7
+  CM 12,3005 : 03565 x41, 05170 x70, 05721 x110, 06037 x19, 07171 x16
+  CM 12,3007 : 03565 x46, 05170 x26, 05721 x154, 06037 x15, 07171 x15
+  CM 12,3011 : 03565 x54, 05170 x61, 05721 x46, 06037 x61, 07171 x34
+  CM 12,3013 : 03565 x64, 05170 x60, 05721 x61, 06037 x40, 07171 x31
+  CM 12,3016 : 03565 x73, 05170 x65, 05721 x83, 06037 x23, 07171 x12
+  CM 12,3017 : 03565 x58, 05170 x57, 05721 x72, 06037 x49, 07171 x20
+  CM 12,3021 : 03565 x73, 05170 x54, 05721 x64, 06037 x45, 07171 x20
+  CM 12,3023 : 03565 x82, 05170 x58, 05721 x80, 06037 x26, 07171 x10
+  CM 12,3025 WLOOP: 03565 x50, 05170 x55, 05721 x60, 06037 x62, 07171 x29
+  CM 12,3026 : 03565 x37, 05170 x70, 05721 x24, 06037 x97, 07171 x28
+  CM 12,3031 : 03565 x21, 05170 x69, 05721 x34, 06037 x100, 07171 x32
+  CM 12,3032 : 03565 x40, 05170 x41, 05721 x25, 06037 x127, 07171 x23
+  CM 12,3034 : 03565 x57, 05170 x57, 05721 x61, 06037 x48, 07171 x33
+  CM 12,3035 : 03565 x51, 05170 x77, 05721 x34, 06037 x52, 07171 x42
+  CM 12,3040 : 05170 x46, 06037 x141, 07171 x69
+  CM 12,3043 POLYCOEF: 05170 x55, 06037 x123, 07171 x78
+  CM 12,3045 : 05170 x64, 07171 x192
+  CM 12,3046 : 05170 x64, 07171 x192
+  CM 12,3051 : 07171 x256
+  CM 12,3053 : 07171 x256
+  CM 12,3073 : 05170 x73, 05721 x92, 06037 x91
+  CM 12,3074 : 05170 x68, 05721 x101, 06037 x87
+  CM 12,3075 : 05170 x59, 05721 x102, 06037 x95
+  CM 12,3100 XCOMMON: 05170 x69, 05721 x147, 06037 x40
+  CM 12,3102 : 05170 x57, 05721 x146, 06037 x53
+  CM 12,3105 : 05170 x55, 05721 x141, 06037 x60
+  CM 12,3107 : 05170 x16, 05721 x183, 06037 x57
+  CM 12,3110 : 05170 x66, 05721 x97, 06037 x93
+  CM 12,3111 : 05170 x62, 05721 x101, 06037 x93
+  CM 12,3112 : 05170 x72, 05721 x90, 06037 x94
+  CM 12,3113 : 05170 x69, 05721 x89, 06037 x98
+  CM 12,3115 : 05170 x58, 05721 x96, 06037 x102
+  CM 12,3120 : 05170 x34, 05721 x141, 06037 x81
+  CM 12,3121 : 05170 x59, 06037 x197
+  CM 12,3123 : 05170 x60, 06037 x196
+  CM 12,3125 : 05170 x59, 06037 x197
+  CM 12,3130 : 05170 x49, 06037 x207
+  CM 12,3131 : 06037 x256
+  CM 12,3132 RESETX2: 03565 x109, 05170 x72, 05721 x75
+  CM 12,3134 360CHECK: 03565 x95, 05170 x44, 05721 x117
+  CM 12,3137 : 03565 x96, 05170 x61, 05721 x99
+  CM 12,3141 INVRSEQN: 03565 x107, 05170 x29, 05721 x120
+  CM 12,3143 : 03565 x191, 05170 x65
+  CM 12,3146 : 03565 x192, 05170 x64
+  CM 12,3150 : 03565 x193, 05170 x63
+  CM 12,3152 : 03565 x194, 05170 x62
+  CM 12,3153 : 03565 x201, 05170 x55
+  CM 12,3156 : 03565 x200, 05170 x56
+  CM 12,3160 : 03565 x192, 05170 x64
+  CM 12,3161 : 03565 x184, 05170 x72
+  CM 12,3163 1/WLOOP: 03565 x182, 05170 x74
+  CM 12,3164 : 03565 x256
+  CM 12,3167 : 03565 x61, 05170 x54, 06037 x124, 07171 x17
+  CM 12,3171 : 03565 x50, 05170 x66, 06037 x111, 07171 x29
+  CM 12,3172 : 03565 x46, 05170 x52, 06037 x134, 07171 x24
+  CM 12,3174 : 03565 x101, 05170 x65, 06037 x38, 07171 x52
+  CM 12,3175 : 03565 x105, 05170 x74, 06037 x38, 07171 x39
+  CM 12,3200 : 05170 x61, 06037 x100, 07171 x95
+  CM 12,3201 : 05170 x46, 06037 x110, 07171 x100
+  CM 12,3204 TRUE360X: 05170 x50, 05721 x73, 06037 x133
+  CM 12,3207 : 05170 x37, 05721 x195, 06037 x24
+  CM 12,3211 : 05170 x52, 05721 x150, 06037 x54
+  CM 12,3214 : 05170 x77, 05721 x127, 06037 x52
+  CM 12,3215 : 05170 x66, 05721 x126, 06037 x64
+  CM 12,3217 INFINITY: 05170 x48, 06037 x208
+  CM 12,3222 OVFLCLR: 06037 x256
+  CM 12,3224 LAMBERT: 03565 x2, 05170 x62, 05721 x19, 06037 x62, 07171 x111
+  CM 12,3227 : 03565 x2, 05170 x75, 05721 x96, 06037 x36, 07171 x47
+  CM 12,3231 : 03565 x5, 05170 x56, 05721 x109, 06037 x31, 07171 x55
+  CM 12,3235 : 03565 x2, 05170 x60, 05721 x90, 06037 x42, 07171 x62
+  CM 12,3237 : 03565 x1, 05170 x57, 05721 x94, 06037 x44, 07171 x60
+  CM 12,3241 : 03565 x1, 05170 x57, 05721 x88, 06037 x43, 07171 x67
+  CM 12,3242 : 03565 x1, 05170 x71, 05721 x99, 06037 x29, 07171 x56
+  CM 12,3245 : 03565 x1, 05170 x68, 05721 x91, 06037 x32, 07171 x64
+  CM 12,3250 : 05170 x58, 05721 x95, 06037 x60, 07171 x43
+  CM 12,3252 : 03565 x1, 05170 x73, 05721 x103, 06037 x45, 07171 x34
+  CM 12,3255 : 05170 x62, 05721 x112, 06037 x48, 07171 x34
+  CM 12,3256 : 03565 x1, 05170 x62, 05721 x118, 06037 x39, 07171 x36
+  CM 12,3260 : 05170 x65, 05721 x100, 06037 x57, 07171 x34
+  CM 12,3262 : 05170 x63, 05721 x89, 06037 x62, 07171 x42
+  CM 12,3264 : 05170 x70, 05721 x93, 06037 x51, 07171 x42
+  CM 12,3265 : 05170 x65, 05721 x93, 06037 x61, 07171 x37
+  CM 12,3267 : 05170 x56, 05721 x108, 06037 x53, 07171 x39
+  CM 12,3272 : 03565 x2, 05170 x72, 05721 x97, 06037 x47, 07171 x38
+  CM 12,3273 : 03565 x2, 05170 x32, 05721 x139, 06037 x48, 07171 x35
+  CM 12,3275 : 03565 x3, 05170 x66, 05721 x5, 06037 x105, 07171 x77
+  CM 12,3300 : 03565 x3, 05170 x62, 05721 x4, 06037 x98, 07171 x89
+  CM 12,3302 : 03565 x1, 05170 x66, 05721 x4, 06037 x108, 07171 x77
+  CM 12,3304 : 03565 x2, 05170 x73, 05721 x3, 06037 x106, 07171 x72
+  CM 12,3307 : 03565 x3, 05170 x66, 05721 x3, 06037 x119, 07171 x65
+  CM 12,3312 UPLIM: 03565 x1, 05170 x62, 06037 x110, 07171 x83
+  CM 12,3314 : 03565 x4, 05170 x64, 05721 x6, 06037 x103, 07171 x79
+  CM 12,3315 MAXCOGA: 03565 x5, 05170 x57, 05721 x4, 06037 x109, 07171 x81
+  CM 12,3317 : 03565 x3, 05170 x66, 05721 x3, 06037 x105, 07171 x79
+  CM 12,3321 : 03565 x4, 05170 x59, 05721 x3, 06037 x114, 07171 x76
+  CM 12,3324 : 03565 x3, 05170 x69, 05721 x5, 06037 x106, 07171 x73
+  CM 12,3327 : 03565 x5, 05170 x62, 05721 x3, 06037 x90, 07171 x96
+  CM 12,3331 : 03565 x4, 05170 x71, 05721 x2, 06037 x128, 07171 x51
+  CM 12,3333 MINCOGA: 05170 x67, 05721 x4, 06037 x132, 07171 x53
+  CM 12,3334 : 03565 x2, 05170 x62, 05721 x3, 06037 x118, 07171 x71
+  CM 12,3341 : 03565 x2, 05170 x77, 05721 x3, 06037 x117, 07171 x57
+  CM 12,3343 LAMBLOOP: 03565 x3, 05170 x57, 05721 x5, 06037 x126, 07171 x65
+  CM 12,3345 : 03565 x2, 05170 x76, 05721 x2, 06037 x115, 07171 x61
+  CM 12,3347 : 03565 x4, 05170 x67, 05721 x1, 06037 x102, 07171 x82
+  CM 12,3352 : 03565 x3, 05170 x59, 05721 x4, 06037 x113, 07171 x77
+  CM 12,3354 : 03565 x2, 05170 x59, 05721 x1, 06037 x122, 07171 x72
+  CM 12,3357 : 03565 x4, 05170 x72, 05721 x37, 06037 x79, 07171 x64
+  CM 12,3361 : 03565 x7, 05170 x57, 05721 x39, 06037 x103, 07171 x50
+  CM 12,3363 : 03565 x3, 05170 x69, 05721 x18, 06037 x99, 07171 x67
+  CM 12,3366 : 03565 x20, 05170 x79, 05721 x28, 06037 x79, 07171 x50
+  CM 12,3371 : 03565 x36, 05170 x77, 05721 x74, 06037 x42, 07171 x27
+  CM 12,3373 : 03565 x15, 05170 x65, 05721 x102, 06037 x51, 07171 x23
+  CM 12,3376 : 05170 x63, 05721 x1, 06037 x65, 07171 x127
+  CM 12,3400 : 03565 x2, 05170 x59, 05721 x1, 06037 x81, 07171 x113
+  CM 12,3402 : 05170 x28, 05721 x2, 06037 x62, 07171 x164
+  CM 12,3406 : 03565 x2, 05170 x58, 05721 x19, 06030 x114, 06037 x61, 07171 x2
+  CM 12,3411 : 05170 x65, 05721 x17, 06030 x150, 06037 x24
+  CM 12,3412 : 05170 x64, 05721 x23, 06030 x155, 06037 x14
+  CM 12,3414 : 05170 x32, 05721 x65, 06030 x118, 06037 x41
+  CM 12,3417 : 03565 x5, 05170 x62, 05721 x4, 06037 x126, 07171 x59
+  CM 12,3422 : 03565 x2, 05170 x63, 05721 x6, 06037 x126, 07171 x59
+  CM 12,3425 : 05170 x66, 05721 x1, 06037 x138, 07171 x51
+  CM 12,3427 : 03565 x6, 05170 x71, 05721 x2, 06037 x116, 07171 x61
+  CM 12,3431 NEGP: 03565 x3, 05170 x47, 05721 x1, 06037 x138, 07171 x67
+  CM 12,3434 HIENERGY: 03565 x1, 05170 x56, 05721 x2, 06037 x127, 07171 x70
+  CM 12,3437 : 03565 x1, 05170 x59, 05721 x6, 06037 x139, 07171 x51
+  CM 12,3440 COMMONLM: 03565 x2, 05170 x74, 05721 x3, 06037 x119, 07171 x58
+  CM 12,3442 : 05170 x64, 05721 x5, 06037 x131, 07171 x56
+  CM 12,3443 : 03565 x1, 05170 x58, 05721 x3, 06037 x117, 07171 x77
+  CM 12,3446 : 03565 x4, 05170 x56, 05721 x2, 06037 x129, 07171 x65
+  CM 12,3450 BIGTIME: 03565 x1, 05170 x63, 05721 x5, 06037 x125, 07171 x62
+  CM 12,3452 : 03565 x2, 05170 x72, 06037 x125, 07171 x57
+  CM 12,3453 LOENERGY: 05170 x54, 05721 x3, 06037 x138, 07171 x61
+  CM 12,3456 : 03565 x1, 05170 x61, 05721 x3, 06037 x116, 07171 x75
+  CM 12,3460 SUFFCHEK: 05170 x60, 05721 x4, 06037 x192
+  CM 12,3462 : 05170 x57, 05721 x46, 06037 x153
+  CM 12,3465 : 05170 x66, 05721 x49, 06037 x141
+  CM 12,3467 : 05170 x38, 05721 x48, 06037 x170
+  CM 12,3473 360LAMB: 06037 x256
+  CM 12,3477 NOGUESS: 05170 x65, 05721 x1, 06037 x123, 07171 x67
+  CM 12,3503 : 03565 x1, 05170 x69, 05721 x1, 06037 x108, 07171 x77
+  CM 12,3505 : 03565 x1, 05170 x75, 05721 x3, 06037 x93, 07171 x84
+  CM 12,3506 : 05170 x59, 05721 x9, 06037 x109, 07171 x79
+  CM 12,3510 : 03565 x6, 05170 x66, 05721 x3, 06037 x121, 07171 x60
+  CM 12,3512 LOLIM: 03565 x4, 05170 x75, 05721 x3, 06037 x109, 07171 x65
+  CM 12,3515 INITV: 05170 x65, 05721 x87, 06037 x104
+  CM 12,3520 : 05170 x66, 05721 x96, 06037 x94
+  CM 12,3522 : 05170 x68, 05721 x94, 06037 x94
+  CM 12,3523 : 05170 x36, 05721 x132, 06037 x88
+  CM 12,3525 : 05170 x70, 06037 x186
+  CM 12,3527 : 05170 x61, 06037 x195
+  CM 12,3531 : 05170 x65, 06037 x191
+  CM 12,3534 : 05170 x60, 06037 x196
+  CM 12,3535 : 05170 x64, 06037 x192
+  CM 12,3537 : 05170 x49, 06037 x207
+  CM 12,3541 : 05170 x72, 06037 x184
+  CM 12,3543 : 05170 x72, 06037 x184
+  CM 12,3544 : 05170 x62, 06037 x194
+  CM 12,3547 : 06037 x256
+  CM 12,3551 TARGETV: 05170 x66, 06037 x190
+  CM 12,3554 : 06037 x256
+  CM 12,3556 TIMERAD: 03565 x16, 05170 x67, 05721 x139, 07171 x34
+  CM 12,3561 : 03565 x15, 05170 x69, 05721 x131, 07171 x41
+  CM 12,3563 : 03565 x11, 05170 x51, 05721 x154, 07171 x40
+  CM 12,3566 : 03565 x23, 05170 x64, 05721 x131, 07171 x38
+  CM 12,3570 : 03565 x2, 05170 x47, 05721 x201, 07171 x6
+  CM 12,3573 : 03565 x1, 05170 x55, 05721 x200
+  CM 12,3576 : 03565 x1, 05170 x32, 05721 x219, 07171 x4
+  CM 12,3600 : 03565 x1, 05170 x60, 05721 x195
+  CM 12,3602 : 05170 x57, 05721 x199
+  CM 12,3605 : 05170 x64, 05721 x190, 07171 x2
+  CM 12,3607 : 03565 x1, 05170 x60, 05721 x187, 07171 x8
+  CM 12,3610 : 03565 x37, 05170 x62, 05721 x138, 07171 x19
+  CM 12,3612 : 03565 x60, 05170 x60, 05721 x116, 07171 x20
+  CM 12,3615 : 03565 x50, 05170 x71, 05721 x111, 07171 x24
+  CM 12,3620 : 03565 x51, 05170 x58, 05721 x119, 07171 x28
+  CM 12,3622 : 03565 x55, 05170 x65, 05721 x117, 07171 x19
+  CM 12,3625 : 03565 x57, 05170 x65, 05721 x115, 07171 x19
+  CM 12,3626 : 03565 x62, 05170 x58, 05721 x113, 07171 x23
+  CM 12,3630 : 03565 x55, 05170 x54, 05721 x124, 07171 x23
+  CM 12,3633 : 03565 x29, 05170 x31, 05721 x187, 07171 x9
+  CM 12,3635 : 03565 x60, 05170 x74, 05721 x107, 07171 x15
+  CM 12,3637 TERMNVEC: 03565 x60, 05170 x70, 05721 x113, 07171 x13
+  CM 12,3641 : 03565 x48, 05170 x68, 05721 x123, 07171 x17
+  CM 12,3643 : 03565 x62, 05170 x56, 05721 x121, 07171 x17
+  CM 12,3645 : 03565 x67, 05170 x53, 05721 x116, 07171 x20
+  CM 12,3646 : 03565 x72, 05170 x49, 05721 x119, 07171 x16
+  CM 12,3651 : 03565 x57, 05170 x56, 05721 x115, 07171 x28
+  CM 12,3653 : 03565 x69, 05170 x62, 05721 x110, 07171 x15
+  CM 12,3655 : 03565 x61, 05170 x66, 05721 x110, 07171 x19
+  CM 12,3656 : 03565 x56, 05170 x76, 05721 x100, 07171 x24
+  CM 12,3660 : 03565 x42, 05170 x71, 05721 x127, 07171 x16
+  CM 12,3662 : 03565 x37, 05170 x72, 05721 x132, 07171 x15
+  CM 12,3664 : 05170 x33, 05721 x138, 07171 x85
+  CM 12,3667 CIRCULAR: 05721 x256
+  CM 12,3673 BADR2: 03565 x41, 05170 x70, 05721 x119, 07171 x26
+  CM 12,3676 : 03565 x61, 05170 x52, 05721 x120, 07171 x23
+  CM 12,3700 : 03565 x66, 05170 x58, 05721 x115, 07171 x17
+  CM 12,3703 APSIDES: 05170 x68, 05721 x2, 06037 x186
+  CM 12,3706 : 05170 x68, 05721 x1, 06037 x187
+  CM 12,3710 : 05170 x72, 05721 x4, 06037 x180
+  CM 12,3713 : 05170 x67, 05721 x14, 06037 x175
+  CM 12,3715 : 05170 x55, 05721 x89, 06037 x112
+  CM 12,3717 GETECC: 05170 x66, 05721 x84, 06037 x106
+  CM 12,3721 : 05170 x29, 05721 x127, 06037 x100
+  CM 12,3723 : 05170 x53, 06037 x203
+  CM 12,3724 : 05170 x62, 06037 x194
+  CM 12,3727 : 05170 x64, 06037 x192
+  CM 12,3731 : 05170 x60, 06037 x196
+  CM 12,3732 : 05170 x61, 06037 x195
+  CM 12,3735 : 05170 x59, 06037 x197
+  CM 12,3740 : 05170 x64, 06037 x192
+  CM 12,3741 : 05170 x33, 06037 x223
+  CM 12,3744 : 06037 x256
+  CM 12,3746 INFINAPO: 06037 x256
+  CM 12,3751 ABTCONIC: 05721 x256
+  CM 12,3752 : 05721 x256
+case 75283 (10900) does not fit one C64 diagnostic: host only
+case 75305 (10900) does not fit one C64 diagnostic: host only
+case 75317 (10900) does not fit one C64 diagnostic: host only
+case 75320 (10900) does not fit one C64 diagnostic: host only
+case 75335 (10900) does not fit one C64 diagnostic: host only
+case 75341 (10900) does not fit one C64 diagnostic: host only
+case 75349 (10900) does not fit one C64 diagnostic: host only
+case 75350 (10900) does not fit one C64 diagnostic: host only
+case 75361 (10900) does not fit one C64 diagnostic: host only
+case 75365 (10900) does not fit one C64 diagnostic: host only
+case 75386 (10900) does not fit one C64 diagnostic: host only
+case 75387 (10900) does not fit one C64 diagnostic: host only
+case 75395 (10900) does not fit one C64 diagnostic: host only
+case 75416 (10900) does not fit one C64 diagnostic: host only
+case 75424 (10900) does not fit one C64 diagnostic: host only
+case 75443 (10900) does not fit one C64 diagnostic: host only
+case 75448 (10900) does not fit one C64 diagnostic: host only
+case 75462 (10900) does not fit one C64 diagnostic: host only
+case 75470 (10900) does not fit one C64 diagnostic: host only
+case 75507 (10900) does not fit one C64 diagnostic: host only
+case 75516 (10900) does not fit one C64 diagnostic: host only
+case 75522 (10903) does not fit one C64 diagnostic: host only
+case 75535 (10903) does not fit one C64 diagnostic: host only
+case 75537 (10903) does not fit one C64 diagnostic: host only
+case 75553 (10903) does not fit one C64 diagnostic: host only
+case 75592 (10903) does not fit one C64 diagnostic: host only
+case 75593 (10903) does not fit one C64 diagnostic: host only
+case 75597 (10903) does not fit one C64 diagnostic: host only
+case 75604 (10903) does not fit one C64 diagnostic: host only
+case 75631 (10903) does not fit one C64 diagnostic: host only
+case 75644 (10903) does not fit one C64 diagnostic: host only
+case 75657 (10903) does not fit one C64 diagnostic: host only
+case 75676 (10903) does not fit one C64 diagnostic: host only
+case 75695 (10903) does not fit one C64 diagnostic: host only
+case 75701 (10903) does not fit one C64 diagnostic: host only
+case 75706 (10903) does not fit one C64 diagnostic: host only
+case 75733 (10903) does not fit one C64 diagnostic: host only
+case 75754 (10903) does not fit one C64 diagnostic: host only
+case 75768 (10903) does not fit one C64 diagnostic: host only
+case 75776 (10905) does not fit one C64 diagnostic: host only
+case 75784 (10905) does not fit one C64 diagnostic: host only
+case 75794 (10905) does not fit one C64 diagnostic: host only
+case 75797 (10905) does not fit one C64 diagnostic: host only
+case 75799 (10905) does not fit one C64 diagnostic: host only
+case 75806 (10905) does not fit one C64 diagnostic: host only
+case 75823 (10905) does not fit one C64 diagnostic: host only
+case 75845 (10905) does not fit one C64 diagnostic: host only
+case 75857 (10905) does not fit one C64 diagnostic: host only
+case 75862 (10905) does not fit one C64 diagnostic: host only
+case 75875 (10905) does not fit one C64 diagnostic: host only
+case 75887 (10905) does not fit one C64 diagnostic: host only
+case 75893 (10905) does not fit one C64 diagnostic: host only
+case 75904 (10905) does not fit one C64 diagnostic: host only
+case 75926 (10905) does not fit one C64 diagnostic: host only
+case 75957 (10905) does not fit one C64 diagnostic: host only
+case 75958 (10905) does not fit one C64 diagnostic: host only
+case 75962 (10905) does not fit one C64 diagnostic: host only
+case 75964 (10905) does not fit one C64 diagnostic: host only
+case 75976 (10905) does not fit one C64 diagnostic: host only
+case 75977 (10905) does not fit one C64 diagnostic: host only
+case 75978 (10905) does not fit one C64 diagnostic: host only
+case 75980 (10905) does not fit one C64 diagnostic: host only
+case 75984 (10905) does not fit one C64 diagnostic: host only
+case 76012 (10905) does not fit one C64 diagnostic: host only
+case 76031 (10905) does not fit one C64 diagnostic: host only
+case 76037 (10909) does not fit one C64 diagnostic: host only
+case 76038 (10909) does not fit one C64 diagnostic: host only
+case 76040 (10909) does not fit one C64 diagnostic: host only
+case 76044 (10909) does not fit one C64 diagnostic: host only
+case 76053 (10909) does not fit one C64 diagnostic: host only
+case 76064 (10909) does not fit one C64 diagnostic: host only
+case 76097 (10909) does not fit one C64 diagnostic: host only
+case 76110 (10909) does not fit one C64 diagnostic: host only
+case 76140 (10909) does not fit one C64 diagnostic: host only
+case 76170 (10909) does not fit one C64 diagnostic: host only
+case 76173 (10909) does not fit one C64 diagnostic: host only
+case 76179 (10909) does not fit one C64 diagnostic: host only
+case 76194 (10909) does not fit one C64 diagnostic: host only
+case 76212 (10909) does not fit one C64 diagnostic: host only
+case 76215 (10909) does not fit one C64 diagnostic: host only
+case 76216 (10909) does not fit one C64 diagnostic: host only
+case 76221 (10909) does not fit one C64 diagnostic: host only
+case 76266 (10909) does not fit one C64 diagnostic: host only
+case 76272 (10909) does not fit one C64 diagnostic: host only
+case 76321 (10911) does not fit one C64 diagnostic: host only
+case 76336 (10911) does not fit one C64 diagnostic: host only
+case 76344 (10911) does not fit one C64 diagnostic: host only
+case 76369 (10911) does not fit one C64 diagnostic: host only
+case 76372 (10911) does not fit one C64 diagnostic: host only
+case 76387 (10911) does not fit one C64 diagnostic: host only
+case 76402 (10911) does not fit one C64 diagnostic: host only
+case 76403 (10911) does not fit one C64 diagnostic: host only
+case 76420 (10911) does not fit one C64 diagnostic: host only
+case 76474 (10911) does not fit one C64 diagnostic: host only
+case 76476 (10911) does not fit one C64 diagnostic: host only
+case 76504 (10911) does not fit one C64 diagnostic: host only
+case 76508 (10911) does not fit one C64 diagnostic: host only
+case 76541 (10911) does not fit one C64 diagnostic: host only
+case 76557 (10913) does not fit one C64 diagnostic: host only
+case 76583 (10913) does not fit one C64 diagnostic: host only
+case 76612 (10913) does not fit one C64 diagnostic: host only
+case 76620 (10913) does not fit one C64 diagnostic: host only
+case 76702 (10913) does not fit one C64 diagnostic: host only
+case 76703 (10913) does not fit one C64 diagnostic: host only
+case 76726 (10913) does not fit one C64 diagnostic: host only
+case 76760 (10913) does not fit one C64 diagnostic: host only
+case 76764 (10913) does not fit one C64 diagnostic: host only
+case 76783 (10913) does not fit one C64 diagnostic: host only
+case 76812 (10914) does not fit one C64 diagnostic: host only
+case 76815 (10914) does not fit one C64 diagnostic: host only
+case 76827 (10914) does not fit one C64 diagnostic: host only
+case 76830 (10914) does not fit one C64 diagnostic: host only
+case 76869 (10914) does not fit one C64 diagnostic: host only
+case 76877 (10914) does not fit one C64 diagnostic: host only
+case 76925 (10914) does not fit one C64 diagnostic: host only
+case 76943 (10914) does not fit one C64 diagnostic: host only
+case 76953 (10914) does not fit one C64 diagnostic: host only
+case 76963 (10914) does not fit one C64 diagnostic: host only
+case 76977 (10914) does not fit one C64 diagnostic: host only
+case 77012 (10914) does not fit one C64 diagnostic: host only
+case 77086 (10917) does not fit one C64 diagnostic: host only
+case 77109 (10917) does not fit one C64 diagnostic: host only
+case 77149 (10917) does not fit one C64 diagnostic: host only
+case 77199 (10917) does not fit one C64 diagnostic: host only
+case 77200 (10917) does not fit one C64 diagnostic: host only
+case 77221 (10917) does not fit one C64 diagnostic: host only
+case 77271 (10917) does not fit one C64 diagnostic: host only
+case 77292 (10917) does not fit one C64 diagnostic: host only
+case 77308 (10917) does not fit one C64 diagnostic: host only
+case 77311 (10917) does not fit one C64 diagnostic: host only
+case 99594 (11118) does not fit one C64 diagnostic: host only
+case 99630 (11118) does not fit one C64 diagnostic: host only
+case 99678 (11118) does not fit one C64 diagnostic: host only
+case 99699 (11118) does not fit one C64 diagnostic: host only
+case 99756 (11118) does not fit one C64 diagnostic: host only
+case 99786 (11118) does not fit one C64 diagnostic: host only
+case 99997 (11121) does not fit one C64 diagnostic: host only
+case 100019 (11121) does not fit one C64 diagnostic: host only
+case 100084 (11121) does not fit one C64 diagnostic: host only
+case 75422 (10900) does not fit one C64 diagnostic: host only
+case 75466 (10900) does not fit one C64 diagnostic: host only
+case 75582 (10903) does not fit one C64 diagnostic: host only
+case 75667 (10903) does not fit one C64 diagnostic: host only
+case 75683 (10903) does not fit one C64 diagnostic: host only
+case 75714 (10903) does not fit one C64 diagnostic: host only
+case 75742 (10903) does not fit one C64 diagnostic: host only
+case 75896 (10905) does not fit one C64 diagnostic: host only
+case 76074 (10909) does not fit one C64 diagnostic: host only
+case 76172 (10909) does not fit one C64 diagnostic: host only
+case 76188 (10909) does not fit one C64 diagnostic: host only
+case 76277 (10909) does not fit one C64 diagnostic: host only
+case 76297 (10911) does not fit one C64 diagnostic: host only
+case 76422 (10911) does not fit one C64 diagnostic: host only
+case 76428 (10911) does not fit one C64 diagnostic: host only
+case 76489 (10911) does not fit one C64 diagnostic: host only
+case 76506 (10911) does not fit one C64 diagnostic: host only
+case 76676 (10913) does not fit one C64 diagnostic: host only
+case 77250 (10917) does not fit one C64 diagnostic: host only
+case 77274 (10917) does not fit one C64 diagnostic: host only
+case 100148 (11123) does not fit one C64 diagnostic: host only
+case 100310 (11123) does not fit one C64 diagnostic: host only
+case 100325 (11123) does not fit one C64 diagnostic: host only
+case 100445 (11126) does not fit one C64 diagnostic: host only
+case 100488 (11126) does not fit one C64 diagnostic: host only
+case 100604 (11126) does not fit one C64 diagnostic: host only
+case 75279 (10900) does not fit one C64 diagnostic: host only
+case 75292 (10900) does not fit one C64 diagnostic: host only
+case 75353 (10900) does not fit one C64 diagnostic: host only
+case 75400 (10900) does not fit one C64 diagnostic: host only
+case 75439 (10900) does not fit one C64 diagnostic: host only
+case 75566 (10903) does not fit one C64 diagnostic: host only
+case 75709 (10903) does not fit one C64 diagnostic: host only
+case 75783 (10905) does not fit one C64 diagnostic: host only
+case 75921 (10905) does not fit one C64 diagnostic: host only
+case 75990 (10905) does not fit one C64 diagnostic: host only
+case 76013 (10905) does not fit one C64 diagnostic: host only
+case 76069 (10909) does not fit one C64 diagnostic: host only
+case 76142 (10909) does not fit one C64 diagnostic: host only
+case 76167 (10909) does not fit one C64 diagnostic: host only
+case 76354 (10911) does not fit one C64 diagnostic: host only
+case 76384 (10911) does not fit one C64 diagnostic: host only
+case 76414 (10911) does not fit one C64 diagnostic: host only
+case 76499 (10911) does not fit one C64 diagnostic: host only
+case 76560 (10913) does not fit one C64 diagnostic: host only
+case 76568 (10913) does not fit one C64 diagnostic: host only
+case 76597 (10913) does not fit one C64 diagnostic: host only
+case 76640 (10913) does not fit one C64 diagnostic: host only
+case 76688 (10913) does not fit one C64 diagnostic: host only
+case 76777 (10913) does not fit one C64 diagnostic: host only
+case 76809 (10914) does not fit one C64 diagnostic: host only
+case 76916 (10914) does not fit one C64 diagnostic: host only
+case 76956 (10914) does not fit one C64 diagnostic: host only
+case 77119 (10917) does not fit one C64 diagnostic: host only
+case 77220 (10917) does not fit one C64 diagnostic: host only
+case 100383 (11126) does not fit one C64 diagnostic: host only
+case 100482 (11126) does not fit one C64 diagnostic: host only
+case 100497 (11126) does not fit one C64 diagnostic: host only
+case 100503 (11126) does not fit one C64 diagnostic: host only
+case 100554 (11126) does not fit one C64 diagnostic: host only
+case 100560 (11126) does not fit one C64 diagnostic: host only
+case 75266 (10900) does not fit one C64 diagnostic: host only
+case 75268 (10900) does not fit one C64 diagnostic: host only
+case 75272 (10900) does not fit one C64 diagnostic: host only
+case 75278 (10900) does not fit one C64 diagnostic: host only
+case 75281 (10900) does not fit one C64 diagnostic: host only
+case 75284 (10900) does not fit one C64 diagnostic: host only
+case 75285 (10900) does not fit one C64 diagnostic: host only
+case 75287 (10900) does not fit one C64 diagnostic: host only
+case 75288 (10900) does not fit one C64 diagnostic: host only
+case 75289 (10900) does not fit one C64 diagnostic: host only
+case 75293 (10900) does not fit one C64 diagnostic: host only
+case 75294 (10900) does not fit one C64 diagnostic: host only
+case 75296 (10900) does not fit one C64 diagnostic: host only
+case 75298 (10900) does not fit one C64 diagnostic: host only
+case 75301 (10900) does not fit one C64 diagnostic: host only
+case 75303 (10900) does not fit one C64 diagnostic: host only
+case 75304 (10900) does not fit one C64 diagnostic: host only
+case 75306 (10900) does not fit one C64 diagnostic: host only
+case 75307 (10900) does not fit one C64 diagnostic: host only
+case 75310 (10900) does not fit one C64 diagnostic: host only
+case 75313 (10900) does not fit one C64 diagnostic: host only
+case 75319 (10900) does not fit one C64 diagnostic: host only
+case 75322 (10900) does not fit one C64 diagnostic: host only
+case 75323 (10900) does not fit one C64 diagnostic: host only
+case 75325 (10900) does not fit one C64 diagnostic: host only
+case 75326 (10900) does not fit one C64 diagnostic: host only
+case 75327 (10900) does not fit one C64 diagnostic: host only
+case 75330 (10900) does not fit one C64 diagnostic: host only
+case 75333 (10900) does not fit one C64 diagnostic: host only
+case 75337 (10900) does not fit one C64 diagnostic: host only
+case 75338 (10900) does not fit one C64 diagnostic: host only
+case 75342 (10900) does not fit one C64 diagnostic: host only
+case 75345 (10900) does not fit one C64 diagnostic: host only
+case 75346 (10900) does not fit one C64 diagnostic: host only
+case 75351 (10900) does not fit one C64 diagnostic: host only
+case 75352 (10900) does not fit one C64 diagnostic: host only
+case 75354 (10900) does not fit one C64 diagnostic: host only
+case 75355 (10900) does not fit one C64 diagnostic: host only
+case 75356 (10900) does not fit one C64 diagnostic: host only
+case 75357 (10900) does not fit one C64 diagnostic: host only
+case 75360 (10900) does not fit one C64 diagnostic: host only
+case 75364 (10900) does not fit one C64 diagnostic: host only
+case 75367 (10900) does not fit one C64 diagnostic: host only
+case 75369 (10900) does not fit one C64 diagnostic: host only
+case 75370 (10900) does not fit one C64 diagnostic: host only
+case 75372 (10900) does not fit one C64 diagnostic: host only
+case 75376 (10900) does not fit one C64 diagnostic: host only
+case 75377 (10900) does not fit one C64 diagnostic: host only
+case 75378 (10900) does not fit one C64 diagnostic: host only
+case 75380 (10900) does not fit one C64 diagnostic: host only
+case 75382 (10900) does not fit one C64 diagnostic: host only
+case 75385 (10900) does not fit one C64 diagnostic: host only
+case 75388 (10900) does not fit one C64 diagnostic: host only
+case 75393 (10900) does not fit one C64 diagnostic: host only
+case 75404 (10900) does not fit one C64 diagnostic: host only
+case 75406 (10900) does not fit one C64 diagnostic: host only
+case 75408 (10900) does not fit one C64 diagnostic: host only
+case 75410 (10900) does not fit one C64 diagnostic: host only
+case 75415 (10900) does not fit one C64 diagnostic: host only
+case 75417 (10900) does not fit one C64 diagnostic: host only
+case 75418 (10900) does not fit one C64 diagnostic: host only
+case 75419 (10900) does not fit one C64 diagnostic: host only
+case 75421 (10900) does not fit one C64 diagnostic: host only
+case 75427 (10900) does not fit one C64 diagnostic: host only
+case 75431 (10900) does not fit one C64 diagnostic: host only
+case 75432 (10900) does not fit one C64 diagnostic: host only
+case 75434 (10900) does not fit one C64 diagnostic: host only
+case 75436 (10900) does not fit one C64 diagnostic: host only
+case 75437 (10900) does not fit one C64 diagnostic: host only
+case 75440 (10900) does not fit one C64 diagnostic: host only
+case 75441 (10900) does not fit one C64 diagnostic: host only
+case 75447 (10900) does not fit one C64 diagnostic: host only
+case 75449 (10900) does not fit one C64 diagnostic: host only
+case 75450 (10900) does not fit one C64 diagnostic: host only
+case 75452 (10900) does not fit one C64 diagnostic: host only
+case 75465 (10900) does not fit one C64 diagnostic: host only
+case 75467 (10900) does not fit one C64 diagnostic: host only
+case 75468 (10900) does not fit one C64 diagnostic: host only
+case 75469 (10900) does not fit one C64 diagnostic: host only
+case 75474 (10900) does not fit one C64 diagnostic: host only
+case 75475 (10900) does not fit one C64 diagnostic: host only
+case 75479 (10900) does not fit one C64 diagnostic: host only
+case 75480 (10900) does not fit one C64 diagnostic: host only
+case 75482 (10900) does not fit one C64 diagnostic: host only
+case 75483 (10900) does not fit one C64 diagnostic: host only
+case 75485 (10900) does not fit one C64 diagnostic: host only
+case 75488 (10900) does not fit one C64 diagnostic: host only
+case 75489 (10900) does not fit one C64 diagnostic: host only
+case 75491 (10900) does not fit one C64 diagnostic: host only
+case 75493 (10900) does not fit one C64 diagnostic: host only
+case 75496 (10900) does not fit one C64 diagnostic: host only
+case 75497 (10900) does not fit one C64 diagnostic: host only
+case 75500 (10900) does not fit one C64 diagnostic: host only
+case 75501 (10900) does not fit one C64 diagnostic: host only
+case 75503 (10900) does not fit one C64 diagnostic: host only
+case 75504 (10900) does not fit one C64 diagnostic: host only
+case 75505 (10900) does not fit one C64 diagnostic: host only
+case 75508 (10900) does not fit one C64 diagnostic: host only
+case 75509 (10900) does not fit one C64 diagnostic: host only
+case 75510 (10900) does not fit one C64 diagnostic: host only
+case 75517 (10900) does not fit one C64 diagnostic: host only
+case 75518 (10900) does not fit one C64 diagnostic: host only
+case 75524 (10903) does not fit one C64 diagnostic: host only
+case 75525 (10903) does not fit one C64 diagnostic: host only
+case 75530 (10903) does not fit one C64 diagnostic: host only
+case 75541 (10903) does not fit one C64 diagnostic: host only
+case 75542 (10903) does not fit one C64 diagnostic: host only
+case 75564 (10903) does not fit one C64 diagnostic: host only
+case 75587 (10903) does not fit one C64 diagnostic: host only
+case 75594 (10903) does not fit one C64 diagnostic: host only
+case 75601 (10903) does not fit one C64 diagnostic: host only
+case 75605 (10903) does not fit one C64 diagnostic: host only
+case 75606 (10903) does not fit one C64 diagnostic: host only
+case 75612 (10903) does not fit one C64 diagnostic: host only
+case 75614 (10903) does not fit one C64 diagnostic: host only
+case 75630 (10903) does not fit one C64 diagnostic: host only
+case 75634 (10903) does not fit one C64 diagnostic: host only
+case 75636 (10903) does not fit one C64 diagnostic: host only
+case 75641 (10903) does not fit one C64 diagnostic: host only
+case 75646 (10903) does not fit one C64 diagnostic: host only
+case 75653 (10903) does not fit one C64 diagnostic: host only
+case 75656 (10903) does not fit one C64 diagnostic: host only
+case 75668 (10903) does not fit one C64 diagnostic: host only
+case 75674 (10903) does not fit one C64 diagnostic: host only
+case 75707 (10903) does not fit one C64 diagnostic: host only
+case 75720 (10903) does not fit one C64 diagnostic: host only
+case 75734 (10903) does not fit one C64 diagnostic: host only
+case 75737 (10903) does not fit one C64 diagnostic: host only
+case 75739 (10903) does not fit one C64 diagnostic: host only
+case 75744 (10903) does not fit one C64 diagnostic: host only
+case 75748 (10903) does not fit one C64 diagnostic: host only
+case 75749 (10903) does not fit one C64 diagnostic: host only
+case 75750 (10903) does not fit one C64 diagnostic: host only
+case 75755 (10903) does not fit one C64 diagnostic: host only
+case 75756 (10903) does not fit one C64 diagnostic: host only
+case 75771 (10903) does not fit one C64 diagnostic: host only
+case 75796 (10905) does not fit one C64 diagnostic: host only
+case 75804 (10905) does not fit one C64 diagnostic: host only
+case 75805 (10905) does not fit one C64 diagnostic: host only
+case 75815 (10905) does not fit one C64 diagnostic: host only
+case 75820 (10905) does not fit one C64 diagnostic: host only
+case 75826 (10905) does not fit one C64 diagnostic: host only
+case 75828 (10905) does not fit one C64 diagnostic: host only
+case 75836 (10905) does not fit one C64 diagnostic: host only
+case 75855 (10905) does not fit one C64 diagnostic: host only
+case 75861 (10905) does not fit one C64 diagnostic: host only
+case 75865 (10905) does not fit one C64 diagnostic: host only
+case 75876 (10905) does not fit one C64 diagnostic: host only
+case 75877 (10905) does not fit one C64 diagnostic: host only
+case 75878 (10905) does not fit one C64 diagnostic: host only
+case 75880 (10905) does not fit one C64 diagnostic: host only
+case 75895 (10905) does not fit one C64 diagnostic: host only
+case 75899 (10905) does not fit one C64 diagnostic: host only
+case 75900 (10905) does not fit one C64 diagnostic: host only
+case 75907 (10905) does not fit one C64 diagnostic: host only
+case 75908 (10905) does not fit one C64 diagnostic: host only
+case 75914 (10905) does not fit one C64 diagnostic: host only
+case 75915 (10905) does not fit one C64 diagnostic: host only
+case 75922 (10905) does not fit one C64 diagnostic: host only
+case 75927 (10905) does not fit one C64 diagnostic: host only
+case 75929 (10905) does not fit one C64 diagnostic: host only
+case 75931 (10905) does not fit one C64 diagnostic: host only
+case 75956 (10905) does not fit one C64 diagnostic: host only
+case 75960 (10905) does not fit one C64 diagnostic: host only
+case 75965 (10905) does not fit one C64 diagnostic: host only
+case 75971 (10905) does not fit one C64 diagnostic: host only
+case 75975 (10905) does not fit one C64 diagnostic: host only
+case 76006 (10905) does not fit one C64 diagnostic: host only
+case 76010 (10905) does not fit one C64 diagnostic: host only
+case 76018 (10905) does not fit one C64 diagnostic: host only
+case 76020 (10905) does not fit one C64 diagnostic: host only
+case 76025 (10905) does not fit one C64 diagnostic: host only
+case 76030 (10905) does not fit one C64 diagnostic: host only
+case 76039 (10909) does not fit one C64 diagnostic: host only
+case 76043 (10909) does not fit one C64 diagnostic: host only
+case 76056 (10909) does not fit one C64 diagnostic: host only
+case 76059 (10909) does not fit one C64 diagnostic: host only
+case 76063 (10909) does not fit one C64 diagnostic: host only
+case 76068 (10909) does not fit one C64 diagnostic: host only
+case 76075 (10909) does not fit one C64 diagnostic: host only
+case 76082 (10909) does not fit one C64 diagnostic: host only
+case 76089 (10909) does not fit one C64 diagnostic: host only
+case 76093 (10909) does not fit one C64 diagnostic: host only
+case 76095 (10909) does not fit one C64 diagnostic: host only
+case 76099 (10909) does not fit one C64 diagnostic: host only
+case 76101 (10909) does not fit one C64 diagnostic: host only
+case 76102 (10909) does not fit one C64 diagnostic: host only
+case 76106 (10909) does not fit one C64 diagnostic: host only
+case 76112 (10909) does not fit one C64 diagnostic: host only
+case 76117 (10909) does not fit one C64 diagnostic: host only
+case 76127 (10909) does not fit one C64 diagnostic: host only
+case 76133 (10909) does not fit one C64 diagnostic: host only
+case 76146 (10909) does not fit one C64 diagnostic: host only
+case 76156 (10909) does not fit one C64 diagnostic: host only
+case 76159 (10909) does not fit one C64 diagnostic: host only
+case 76161 (10909) does not fit one C64 diagnostic: host only
+case 76162 (10909) does not fit one C64 diagnostic: host only
+case 76168 (10909) does not fit one C64 diagnostic: host only
+case 76171 (10909) does not fit one C64 diagnostic: host only
+case 76177 (10909) does not fit one C64 diagnostic: host only
+case 76186 (10909) does not fit one C64 diagnostic: host only
+case 76195 (10909) does not fit one C64 diagnostic: host only
+case 76200 (10909) does not fit one C64 diagnostic: host only
+case 76203 (10909) does not fit one C64 diagnostic: host only
+case 76209 (10909) does not fit one C64 diagnostic: host only
+case 76217 (10909) does not fit one C64 diagnostic: host only
+case 76236 (10909) does not fit one C64 diagnostic: host only
+case 76250 (10909) does not fit one C64 diagnostic: host only
+case 76270 (10909) does not fit one C64 diagnostic: host only
+case 76275 (10909) does not fit one C64 diagnostic: host only
+case 76279 (10909) does not fit one C64 diagnostic: host only
+case 76286 (10909) does not fit one C64 diagnostic: host only
+case 76306 (10911) does not fit one C64 diagnostic: host only
+case 76327 (10911) does not fit one C64 diagnostic: host only
+case 76330 (10911) does not fit one C64 diagnostic: host only
+case 76332 (10911) does not fit one C64 diagnostic: host only
+case 76333 (10911) does not fit one C64 diagnostic: host only
+case 76346 (10911) does not fit one C64 diagnostic: host only
+case 76352 (10911) does not fit one C64 diagnostic: host only
+case 76356 (10911) does not fit one C64 diagnostic: host only
+case 76361 (10911) does not fit one C64 diagnostic: host only
+case 76367 (10911) does not fit one C64 diagnostic: host only
+case 76373 (10911) does not fit one C64 diagnostic: host only
+case 76379 (10911) does not fit one C64 diagnostic: host only
+case 76390 (10911) does not fit one C64 diagnostic: host only
+case 76394 (10911) does not fit one C64 diagnostic: host only
+case 76404 (10911) does not fit one C64 diagnostic: host only
+case 76410 (10911) does not fit one C64 diagnostic: host only
+case 76416 (10911) does not fit one C64 diagnostic: host only
+case 76419 (10911) does not fit one C64 diagnostic: host only
+case 76423 (10911) does not fit one C64 diagnostic: host only
+case 76429 (10911) does not fit one C64 diagnostic: host only
+case 76451 (10911) does not fit one C64 diagnostic: host only
+case 76454 (10911) does not fit one C64 diagnostic: host only
+case 76467 (10911) does not fit one C64 diagnostic: host only
+case 76473 (10911) does not fit one C64 diagnostic: host only
+case 76482 (10911) does not fit one C64 diagnostic: host only
+case 76493 (10911) does not fit one C64 diagnostic: host only
+case 76502 (10911) does not fit one C64 diagnostic: host only
+case 76516 (10911) does not fit one C64 diagnostic: host only
+case 76521 (10911) does not fit one C64 diagnostic: host only
+case 76523 (10911) does not fit one C64 diagnostic: host only
+case 76524 (10911) does not fit one C64 diagnostic: host only
+case 76528 (10911) does not fit one C64 diagnostic: host only
+case 76558 (10913) does not fit one C64 diagnostic: host only
+case 76559 (10913) does not fit one C64 diagnostic: host only
+case 76565 (10913) does not fit one C64 diagnostic: host only
+case 76567 (10913) does not fit one C64 diagnostic: host only
+case 76574 (10913) does not fit one C64 diagnostic: host only
+case 76587 (10913) does not fit one C64 diagnostic: host only
+case 76595 (10913) does not fit one C64 diagnostic: host only
+case 76599 (10913) does not fit one C64 diagnostic: host only
+case 76604 (10913) does not fit one C64 diagnostic: host only
+case 76610 (10913) does not fit one C64 diagnostic: host only
+case 76614 (10913) does not fit one C64 diagnostic: host only
+case 76615 (10913) does not fit one C64 diagnostic: host only
+case 76636 (10913) does not fit one C64 diagnostic: host only
+case 76641 (10913) does not fit one C64 diagnostic: host only
+case 76644 (10913) does not fit one C64 diagnostic: host only
+case 76655 (10913) does not fit one C64 diagnostic: host only
+case 76657 (10913) does not fit one C64 diagnostic: host only
+case 76661 (10913) does not fit one C64 diagnostic: host only
+case 76662 (10913) does not fit one C64 diagnostic: host only
+case 76670 (10913) does not fit one C64 diagnostic: host only
+case 76675 (10913) does not fit one C64 diagnostic: host only
+case 76685 (10913) does not fit one C64 diagnostic: host only
+case 76686 (10913) does not fit one C64 diagnostic: host only
+case 76697 (10913) does not fit one C64 diagnostic: host only
+case 76704 (10913) does not fit one C64 diagnostic: host only
+case 76722 (10913) does not fit one C64 diagnostic: host only
+case 76725 (10913) does not fit one C64 diagnostic: host only
+case 76728 (10913) does not fit one C64 diagnostic: host only
+case 76731 (10913) does not fit one C64 diagnostic: host only
+case 76739 (10913) does not fit one C64 diagnostic: host only
+case 76740 (10913) does not fit one C64 diagnostic: host only
+case 76742 (10913) does not fit one C64 diagnostic: host only
+case 76747 (10913) does not fit one C64 diagnostic: host only
+case 76752 (10913) does not fit one C64 diagnostic: host only
+case 76757 (10913) does not fit one C64 diagnostic: host only
+case 76758 (10913) does not fit one C64 diagnostic: host only
+case 76765 (10913) does not fit one C64 diagnostic: host only
+case 76774 (10913) does not fit one C64 diagnostic: host only
+case 76775 (10913) does not fit one C64 diagnostic: host only
+case 76778 (10913) does not fit one C64 diagnostic: host only
+case 76782 (10913) does not fit one C64 diagnostic: host only
+case 76788 (10913) does not fit one C64 diagnostic: host only
+case 76790 (10913) does not fit one C64 diagnostic: host only
+case 76791 (10913) does not fit one C64 diagnostic: host only
+case 76796 (10913) does not fit one C64 diagnostic: host only
+case 76797 (10913) does not fit one C64 diagnostic: host only
+case 76836 (10914) does not fit one C64 diagnostic: host only
+case 76844 (10914) does not fit one C64 diagnostic: host only
+case 76858 (10914) does not fit one C64 diagnostic: host only
+case 76861 (10914) does not fit one C64 diagnostic: host only
+case 76870 (10914) does not fit one C64 diagnostic: host only
+case 76871 (10914) does not fit one C64 diagnostic: host only
+case 76878 (10914) does not fit one C64 diagnostic: host only
+case 76886 (10914) does not fit one C64 diagnostic: host only
+case 76890 (10914) does not fit one C64 diagnostic: host only
+case 76906 (10914) does not fit one C64 diagnostic: host only
+case 76915 (10914) does not fit one C64 diagnostic: host only
+case 76917 (10914) does not fit one C64 diagnostic: host only
+case 76918 (10914) does not fit one C64 diagnostic: host only
+case 76933 (10914) does not fit one C64 diagnostic: host only
+case 76939 (10914) does not fit one C64 diagnostic: host only
+case 76958 (10914) does not fit one C64 diagnostic: host only
+case 76983 (10914) does not fit one C64 diagnostic: host only
+case 76984 (10914) does not fit one C64 diagnostic: host only
+case 76986 (10914) does not fit one C64 diagnostic: host only
+case 76993 (10914) does not fit one C64 diagnostic: host only
+case 77020 (10914) does not fit one C64 diagnostic: host only
+case 77023 (10914) does not fit one C64 diagnostic: host only
+case 77025 (10914) does not fit one C64 diagnostic: host only
+case 77033 (10914) does not fit one C64 diagnostic: host only
+case 77054 (10914) does not fit one C64 diagnostic: host only
+case 77083 (10917) does not fit one C64 diagnostic: host only
+case 77099 (10917) does not fit one C64 diagnostic: host only
+case 77100 (10917) does not fit one C64 diagnostic: host only
+case 77105 (10917) does not fit one C64 diagnostic: host only
+case 77116 (10917) does not fit one C64 diagnostic: host only
+case 77124 (10917) does not fit one C64 diagnostic: host only
+case 77141 (10917) does not fit one C64 diagnostic: host only
+case 77154 (10917) does not fit one C64 diagnostic: host only
+case 77170 (10917) does not fit one C64 diagnostic: host only
+case 77171 (10917) does not fit one C64 diagnostic: host only
+case 77174 (10917) does not fit one C64 diagnostic: host only
+case 77194 (10917) does not fit one C64 diagnostic: host only
+case 77203 (10917) does not fit one C64 diagnostic: host only
+case 77224 (10917) does not fit one C64 diagnostic: host only
+case 77227 (10917) does not fit one C64 diagnostic: host only
+case 77245 (10917) does not fit one C64 diagnostic: host only
+case 77249 (10917) does not fit one C64 diagnostic: host only
+case 77263 (10917) does not fit one C64 diagnostic: host only
+case 77284 (10917) does not fit one C64 diagnostic: host only
+case 77291 (10917) does not fit one C64 diagnostic: host only
+case 77373 (10920) does not fit one C64 diagnostic: host only
+case 77455 (10920) does not fit one C64 diagnostic: host only
+case 77509 (10920) does not fit one C64 diagnostic: host only
+case 77598 (10922) does not fit one C64 diagnostic: host only
+case 77768 (10922) does not fit one C64 diagnostic: host only
+case 77816 (10922) does not fit one C64 diagnostic: host only
+case 99591 (11118) does not fit one C64 diagnostic: host only
+case 99597 (11118) does not fit one C64 diagnostic: host only
+case 99600 (11118) does not fit one C64 diagnostic: host only
+case 99603 (11118) does not fit one C64 diagnostic: host only
+case 99612 (11118) does not fit one C64 diagnostic: host only
+case 99615 (11118) does not fit one C64 diagnostic: host only
+case 99618 (11118) does not fit one C64 diagnostic: host only
+case 99621 (11118) does not fit one C64 diagnostic: host only
+case 99624 (11118) does not fit one C64 diagnostic: host only
+case 99636 (11118) does not fit one C64 diagnostic: host only
+case 99639 (11118) does not fit one C64 diagnostic: host only
+case 99642 (11118) does not fit one C64 diagnostic: host only
+case 99645 (11118) does not fit one C64 diagnostic: host only
+case 99657 (11118) does not fit one C64 diagnostic: host only
+case 99666 (11118) does not fit one C64 diagnostic: host only
+case 99669 (11118) does not fit one C64 diagnostic: host only
+case 99681 (11118) does not fit one C64 diagnostic: host only
+case 99684 (11118) does not fit one C64 diagnostic: host only
+case 99690 (11118) does not fit one C64 diagnostic: host only
+case 99693 (11118) does not fit one C64 diagnostic: host only
+case 99698 (11118) does not fit one C64 diagnostic: host only
+case 99705 (11118) does not fit one C64 diagnostic: host only
+case 99708 (11118) does not fit one C64 diagnostic: host only
+case 99711 (11118) does not fit one C64 diagnostic: host only
+case 99725 (11118) does not fit one C64 diagnostic: host only
+case 99726 (11118) does not fit one C64 diagnostic: host only
+case 99729 (11118) does not fit one C64 diagnostic: host only
+case 99732 (11118) does not fit one C64 diagnostic: host only
+case 99741 (11118) does not fit one C64 diagnostic: host only
+case 99747 (11118) does not fit one C64 diagnostic: host only
+case 99750 (11118) does not fit one C64 diagnostic: host only
+case 99753 (11118) does not fit one C64 diagnostic: host only
+case 99762 (11118) does not fit one C64 diagnostic: host only
+case 99765 (11118) does not fit one C64 diagnostic: host only
+case 99771 (11118) does not fit one C64 diagnostic: host only
+case 99774 (11118) does not fit one C64 diagnostic: host only
+case 99776 (11118) does not fit one C64 diagnostic: host only
+case 99788 (11118) does not fit one C64 diagnostic: host only
+case 99798 (11118) does not fit one C64 diagnostic: host only
+case 99807 (11118) does not fit one C64 diagnostic: host only
+case 99810 (11118) does not fit one C64 diagnostic: host only
+case 99813 (11118) does not fit one C64 diagnostic: host only
+case 99819 (11118) does not fit one C64 diagnostic: host only
+case 99821 (11118) does not fit one C64 diagnostic: host only
+case 99822 (11118) does not fit one C64 diagnostic: host only
+case 99831 (11118) does not fit one C64 diagnostic: host only
+case 99834 (11118) does not fit one C64 diagnostic: host only
+case 99841 (11121) does not fit one C64 diagnostic: host only
+case 99842 (11121) does not fit one C64 diagnostic: host only
+case 99847 (11121) does not fit one C64 diagnostic: host only
+case 99853 (11121) does not fit one C64 diagnostic: host only
+case 99856 (11121) does not fit one C64 diagnostic: host only
+case 99857 (11121) does not fit one C64 diagnostic: host only
+case 99859 (11121) does not fit one C64 diagnostic: host only
+case 99868 (11121) does not fit one C64 diagnostic: host only
+case 99871 (11121) does not fit one C64 diagnostic: host only
+case 99880 (11121) does not fit one C64 diagnostic: host only
+case 99883 (11121) does not fit one C64 diagnostic: host only
+case 99886 (11121) does not fit one C64 diagnostic: host only
+case 99889 (11121) does not fit one C64 diagnostic: host only
+case 99892 (11121) does not fit one C64 diagnostic: host only
+case 99895 (11121) does not fit one C64 diagnostic: host only
+case 99902 (11121) does not fit one C64 diagnostic: host only
+case 99904 (11121) does not fit one C64 diagnostic: host only
+case 99907 (11121) does not fit one C64 diagnostic: host only
+case 99910 (11121) does not fit one C64 diagnostic: host only
+case 99916 (11121) does not fit one C64 diagnostic: host only
+case 99919 (11121) does not fit one C64 diagnostic: host only
+case 99922 (11121) does not fit one C64 diagnostic: host only
+case 99925 (11121) does not fit one C64 diagnostic: host only
+case 99928 (11121) does not fit one C64 diagnostic: host only
+case 99934 (11121) does not fit one C64 diagnostic: host only
+case 99937 (11121) does not fit one C64 diagnostic: host only
+case 99940 (11121) does not fit one C64 diagnostic: host only
+case 99949 (11121) does not fit one C64 diagnostic: host only
+case 99952 (11121) does not fit one C64 diagnostic: host only
+case 99955 (11121) does not fit one C64 diagnostic: host only
+case 99967 (11121) does not fit one C64 diagnostic: host only
+case 99973 (11121) does not fit one C64 diagnostic: host only
+case 99979 (11121) does not fit one C64 diagnostic: host only
+case 99982 (11121) does not fit one C64 diagnostic: host only
+case 99985 (11121) does not fit one C64 diagnostic: host only
+case 99988 (11121) does not fit one C64 diagnostic: host only
+case 99991 (11121) does not fit one C64 diagnostic: host only
+case 100003 (11121) does not fit one C64 diagnostic: host only
+case 100006 (11121) does not fit one C64 diagnostic: host only
+case 100012 (11121) does not fit one C64 diagnostic: host only
+case 100015 (11121) does not fit one C64 diagnostic: host only
+case 100024 (11121) does not fit one C64 diagnostic: host only
+case 100030 (11121) does not fit one C64 diagnostic: host only
+case 100033 (11121) does not fit one C64 diagnostic: host only
+case 100036 (11121) does not fit one C64 diagnostic: host only
+case 100039 (11121) does not fit one C64 diagnostic: host only
+case 100045 (11121) does not fit one C64 diagnostic: host only
+case 100048 (11121) does not fit one C64 diagnostic: host only
+case 100060 (11121) does not fit one C64 diagnostic: host only
+case 100068 (11121) does not fit one C64 diagnostic: host only
+case 100069 (11121) does not fit one C64 diagnostic: host only
+case 100072 (11121) does not fit one C64 diagnostic: host only
+case 100075 (11121) does not fit one C64 diagnostic: host only
+case 100081 (11121) does not fit one C64 diagnostic: host only
+case 100093 (11121) does not fit one C64 diagnostic: host only
+case 100109 (11123) does not fit one C64 diagnostic: host only
+case 100112 (11123) does not fit one C64 diagnostic: host only
+case 100115 (11123) does not fit one C64 diagnostic: host only
+case 100118 (11123) does not fit one C64 diagnostic: host only
+case 100121 (11123) does not fit one C64 diagnostic: host only
+case 100124 (11123) does not fit one C64 diagnostic: host only
+case 100127 (11123) does not fit one C64 diagnostic: host only
+case 100129 (11123) does not fit one C64 diagnostic: host only
+case 100130 (11123) does not fit one C64 diagnostic: host only
+case 100133 (11123) does not fit one C64 diagnostic: host only
+case 100142 (11123) does not fit one C64 diagnostic: host only
+case 100151 (11123) does not fit one C64 diagnostic: host only
+case 100154 (11123) does not fit one C64 diagnostic: host only
+case 100157 (11123) does not fit one C64 diagnostic: host only
+case 100163 (11123) does not fit one C64 diagnostic: host only
+case 100166 (11123) does not fit one C64 diagnostic: host only
+case 100171 (11123) does not fit one C64 diagnostic: host only
+case 100187 (11123) does not fit one C64 diagnostic: host only
+case 100191 (11123) does not fit one C64 diagnostic: host only
+case 100199 (11123) does not fit one C64 diagnostic: host only
+case 100202 (11123) does not fit one C64 diagnostic: host only
+case 100204 (11123) does not fit one C64 diagnostic: host only
+case 100205 (11123) does not fit one C64 diagnostic: host only
+case 100208 (11123) does not fit one C64 diagnostic: host only
+case 100214 (11123) does not fit one C64 diagnostic: host only
+case 100217 (11123) does not fit one C64 diagnostic: host only
+case 100219 (11123) does not fit one C64 diagnostic: host only
+case 100220 (11123) does not fit one C64 diagnostic: host only
+case 100223 (11123) does not fit one C64 diagnostic: host only
+case 100226 (11123) does not fit one C64 diagnostic: host only
+case 100229 (11123) does not fit one C64 diagnostic: host only
+case 100242 (11123) does not fit one C64 diagnostic: host only
+case 100244 (11123) does not fit one C64 diagnostic: host only
+case 100253 (11123) does not fit one C64 diagnostic: host only
+case 100259 (11123) does not fit one C64 diagnostic: host only
+case 100271 (11123) does not fit one C64 diagnostic: host only
+case 100280 (11123) does not fit one C64 diagnostic: host only
+case 100286 (11123) does not fit one C64 diagnostic: host only
+case 100295 (11123) does not fit one C64 diagnostic: host only
+case 100301 (11123) does not fit one C64 diagnostic: host only
+case 100304 (11123) does not fit one C64 diagnostic: host only
+case 100307 (11123) does not fit one C64 diagnostic: host only
+case 100313 (11123) does not fit one C64 diagnostic: host only
+case 100316 (11123) does not fit one C64 diagnostic: host only
+case 100322 (11123) does not fit one C64 diagnostic: host only
+case 100324 (11123) does not fit one C64 diagnostic: host only
+case 100328 (11123) does not fit one C64 diagnostic: host only
+case 100337 (11123) does not fit one C64 diagnostic: host only
+case 100343 (11123) does not fit one C64 diagnostic: host only
+case 100346 (11123) does not fit one C64 diagnostic: host only
+case 100362 (11126) does not fit one C64 diagnostic: host only
+case 100365 (11126) does not fit one C64 diagnostic: host only
+case 100374 (11126) does not fit one C64 diagnostic: host only
+case 100389 (11126) does not fit one C64 diagnostic: host only
+case 100392 (11126) does not fit one C64 diagnostic: host only
+case 100395 (11126) does not fit one C64 diagnostic: host only
+case 100397 (11126) does not fit one C64 diagnostic: host only
+case 100398 (11126) does not fit one C64 diagnostic: host only
+case 100399 (11126) does not fit one C64 diagnostic: host only
+case 100401 (11126) does not fit one C64 diagnostic: host only
+case 100407 (11126) does not fit one C64 diagnostic: host only
+case 100413 (11126) does not fit one C64 diagnostic: host only
+case 100416 (11126) does not fit one C64 diagnostic: host only
+case 100422 (11126) does not fit one C64 diagnostic: host only
+case 100425 (11126) does not fit one C64 diagnostic: host only
+case 100431 (11126) does not fit one C64 diagnostic: host only
+case 100443 (11126) does not fit one C64 diagnostic: host only
+case 100452 (11126) does not fit one C64 diagnostic: host only
+case 100453 (11126) does not fit one C64 diagnostic: host only
+case 100455 (11126) does not fit one C64 diagnostic: host only
+case 100461 (11126) does not fit one C64 diagnostic: host only
+case 100464 (11126) does not fit one C64 diagnostic: host only
+case 100470 (11126) does not fit one C64 diagnostic: host only
+case 100473 (11126) does not fit one C64 diagnostic: host only
+case 100476 (11126) does not fit one C64 diagnostic: host only
+case 100479 (11126) does not fit one C64 diagnostic: host only
+case 100481 (11126) does not fit one C64 diagnostic: host only
+case 100485 (11126) does not fit one C64 diagnostic: host only
+case 100486 (11126) does not fit one C64 diagnostic: host only
+case 100491 (11126) does not fit one C64 diagnostic: host only
+case 100494 (11126) does not fit one C64 diagnostic: host only
+case 100500 (11126) does not fit one C64 diagnostic: host only
+case 100502 (11126) does not fit one C64 diagnostic: host only
+case 100512 (11126) does not fit one C64 diagnostic: host only
+case 100515 (11126) does not fit one C64 diagnostic: host only
+case 100524 (11126) does not fit one C64 diagnostic: host only
+case 100527 (11126) does not fit one C64 diagnostic: host only
+case 100534 (11126) does not fit one C64 diagnostic: host only
+case 100539 (11126) does not fit one C64 diagnostic: host only
+case 100547 (11126) does not fit one C64 diagnostic: host only
+case 100548 (11126) does not fit one C64 diagnostic: host only
+case 100557 (11126) does not fit one C64 diagnostic: host only
+case 100566 (11126) does not fit one C64 diagnostic: host only
+case 100569 (11126) does not fit one C64 diagnostic: host only
+case 100572 (11126) does not fit one C64 diagnostic: host only
+case 100575 (11126) does not fit one C64 diagnostic: host only
+case 100578 (11126) does not fit one C64 diagnostic: host only
+case 100590 (11126) does not fit one C64 diagnostic: host only
+case 100593 (11126) does not fit one C64 diagnostic: host only
+case 100596 (11126) does not fit one C64 diagnostic: host only
+case 100597 (11126) does not fit one C64 diagnostic: host only
+case 100599 (11126) does not fit one C64 diagnostic: host only
+case 100602 (11126) does not fit one C64 diagnostic: host only
+froze 3560 vectors to tests/cm_conics_vectors.h

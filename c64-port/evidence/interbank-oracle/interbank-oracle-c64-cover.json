@@ -6,15 +6,17 @@
     "src/agc_transfer.c",
     "src/agc_word.c",
     "src/cm_interbank_complete.c",
+    "src/cm_interbank_idle.c",
     "src/cm_interbank_routines.c",
     "src/lm_interbank.c",
+    "src/lm_interbank_idle.c",
     "src/lm_interbank_routines.c",
     "tests/interbank_oracle_cases.c",
     "tests/interbank_oracle_check.c"
   ],
   "defines": [],
   "host_cases": 2146,
-  "host_branch_arcs": 481,
+  "host_branch_arcs": 501,
   "c64_rows": 720,
   "stride_rows": 716,
   "cover_rows": 4,
@@ -24,6 +26,6 @@
     1298,
     1790
   ],
-  "c64_branch_arcs": 481,
+  "c64_branch_arcs": 501,
   "host_branches_missing_on_c64": []
 }

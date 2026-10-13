@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-t4rupt-optics",
+  "release": "evidence-cm-t4rupt-optics",
+  "files": {
+    "cm-t4rupt-optics-differential.log": {
+      "sha256": "d7334ba4ae74144027ff7f14afa3dfe9443d1aab03e5692133462065e623b0af",
+      "bytes": 395,
+      "store": "release"
+    },
+    "cm-t4rupt-optics-host.log": {
+      "sha256": "3ab44f5da4b52060f770dd8d068c54d8a802121cab2d69ca650bd1b44b198777",
+      "bytes": 82,
+      "store": "release"
+    },
+    "cm-t4rupt-optics-proof.json": {
+      "sha256": "6d3350debdcadc3540e03182940bca52e1c8f8aa4a285df7487899361e37bf00",
+      "bytes": 12424,
+      "store": "tree"
+    },
+    "cm-t4rupt-optics-source-map.json": {
+      "sha256": "50b7c0f8c3c2a0725a8ec2df0035ac8771b16b79efcad4dd92abc316e5544bec",
+      "bytes": 143407,
+      "store": "tree"
+    },
+    "cm-t4rupt-optics-vice.log": {
+      "sha256": "eaf75d6f94f1331404fb0570b6a2900f4ee01a4a7847bfca038431d61bc789a0",
+      "bytes": 161,
+      "store": "release"
+    }
+  }
+}
