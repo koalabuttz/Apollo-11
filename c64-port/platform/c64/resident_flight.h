@@ -20,7 +20,7 @@ typedef p66_bias_io rk_io;
 typedef cm_native_io rk_io;
 #define RK_MISSION APOLLO_OV2_CM
 #endif
-#define RK_SERVICES_VERSION 0x0201u
+#define RK_SERVICES_VERSION 0x0202u
 /* CIA1 timer A latch for one interrupt per 10 ms (PAL, 985,248 Hz: the
  * timer counts latch..0). */
 #define RK_CIA_LATCH 9851u
