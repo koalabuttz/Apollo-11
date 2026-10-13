@@ -10566,7 +10566,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Entry at RCSMON (06,3156) with FB of bank 06 under any EB, PVALVEST 0-0377 (a higher bit never ends the DOUBLE loop, in the original too), any latched channel 32 and any other erasable words, NEWJOB +0 or positive (T4RUPT runs it whatever job waits); and the NOVAC return (06,3242).",
+        "supported_domain": "Entry at RCSMON (06,3156) with FB of bank 06 under any EB, PVALVEST 0-0377 (a higher bit never ends the DOUBLE loop, in the original too), any latched channel 32 and any other erasable words, NEWJOB +0, -0 (DUMMYJOB idling) or positive and FIXLOC anywhere (T4RUPT runs it whatever job waits or idles; #285); and the NOVAC return (06,3242).",
         "external_continuations": [
           "RESUME (TCF RCSMONEX)",
           "NOVAC with 2CADR 1/ACCJOB"
@@ -10579,22 +10579,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
-            "sha256": "ed286e30995183d8fd188918f39ba07af09d06e2ac114af609117c862ef9b0d8"
+            "sha256": "a0c900e9c464164e93218cf7538c3e3b84a83bf588032fbfcafe24644ad116bc"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
-            "sha256": "5ce841928e5c1483dce2f5dc000e14eead4b83557438687055e198848c13c43b"
+            "sha256": "7ddeefdc3edffe0e7c6bbd8d779930172d4c7ab3e807d37cac96d205ceaea02c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
-            "sha256": "47e655bb6bdba0d0da01ab005ae293c80ccfe5ef27dbfb58ea6a171777f27bb6",
+            "sha256": "d430b681ac3b1d7a5efa36f1c8cb25d6978184fe46d2efe93a3b50bc1eaf6f59",
             "vice_targets": {
               "vice-lm-rcsmon": 18
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
-            "sha256": "f21b07723089045c314221c0fff9d05be93bdd96f3339d75ca940503eba5bf2e"
+            "sha256": "c6f3d308e883fe639252015a7fe5326f99360ab26edec3b9c3098022551f26d9"
           }
         }
       }

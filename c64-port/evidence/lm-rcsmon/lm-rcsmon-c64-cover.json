@@ -15,9 +15,9 @@
   "tests/interp_case.c"
  ],
  "host_cases_traced": 1024,
- "host_branch_arcs": 219,
- "c64_rows": 18,
- "c64_branch_arcs": 219,
+ "host_branch_arcs": 220,
+ "c64_rows": 17,
+ "c64_branch_arcs": 220,
  "host_branches_missing_on_c64": [],
  "c64_vectors": "tests/lm_rcsmon_c64_vectors.h"
 }

@@ -9,7 +9,7 @@
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
 #include "agc_input_channels.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -52,6 +52,14 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
  return 1;
 }
+/* The same for a basic routine that never names FIXLOC: any FIXLOC. */
+static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){
+ unsigned i;
+ if(W[7]||(W[067]>037777u&&W[067]!=077777u)||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+ return 1;
+}
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
  * trampoline): BANKSET is BBANK, FB its bank, INTBIT15 its bit 15. */
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
@@ -61,8 +69,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -91,6 +99,9 @@ static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
+static MAYBE_UNUSED uint8_t at_basic_nv(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[4]==fb&&sane_nv(s,io);
+}
 
 /* LM_RCSMON_KEEP<n> bit i (i = 60n+bit, the order of lm_rcsmon_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
@@ -100,7 +111,7 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
 #if (LM_RCSMON_KEEP0 >> 0) & 1
 /* 06,3156 RCSMON (entry RCSMON) */
 static enum exec_status r15156(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,014000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,014000u))return EXEC_OUT_OF_SCOPE;
  /* 06,3156 CS ZERO */
  ai_csf(s,000000);
  /* 06,3160 RXOR CHAN32 */
@@ -225,7 +236,7 @@ static enum exec_status r15156(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_RCSMON_KEEP0 >> 1) & 1
 /* 06,3242  (return from NOVAC) */
 static enum exec_status r15242(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,014000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,014000u))return EXEC_OUT_OF_SCOPE;
  /* 06,3242 TCF RCSMONEX */
  W[5]=05270;return EXEC_OK;
 }

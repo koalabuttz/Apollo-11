@@ -2171,8 +2171,14 @@ SPECS = {
         # with a higher bit the DOUBLE loop never overflows (the original
         # runs forever too).
         'all_states': {'PVALVEST': list(range(0o400))},
-        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive.
+        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive, or
+        # -0 while DUMMYJOB idles (any_newjob), and from any FIXLOC
+        # (any_fixloc): it never names either.
         'resume_keys': True,
+        'any_fixloc': True,
+        'any_newjob': True,
+        'index_carry16': True,
+        'image_w': True,
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
