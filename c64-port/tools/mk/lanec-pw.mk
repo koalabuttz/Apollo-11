@@ -26,7 +26,7 @@ LANEC_PW_C64_SRC = src/agc_word.c src/lanec.c tests/lanec_case.c tests/lanec_pw.
   src/lanec_pw_a_runs.c src/lanec_pw_b_runs.c src/lanec_pw_c_runs.c src/lanec_pw_e_runs.c src/lanec_pw_f_runs.c \
   src/lanec_pw_g_runs.c tools/lanec/c64_diag.c \
   $(sort $(filter src/dsky_% src/cm_% src/agc_% src/fixed_% src/noun_% src/guidance_% src/executive% src/lm_basic_% \
-  src/p66_% src/lanec_pin_gaps% src/lm_admission% src/lm_waitlist% src/lm_fixed% src/lm_pinball% src/gimbal% \
+  src/p66_% src/lanec_pin_gaps% src/lm_admission% src/lm_interbank.c src/lm_waitlist% src/lm_fixed% src/lm_pinball% src/gimbal% \
   src/matrix% src/waitlist% tests/dsky_% tests/p66_% tests/cm_%_cases.c tests/lm_busy_cases.c tests/matrix_cases.c \
   tests/throttle_bridge_cases.c tests/lanec_p66_dispatch.c,$(LANEC_SUITE_SRC)))
 LANEC_PW_PRGS = $(foreach s,$(LANEC_PW_SUITES),build/lanec-$(s).prg)
@@ -34,7 +34,8 @@ define LANEC_PW_C64_RULE
 build/lanec-$(1).prg: $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c tests/lanec_$(subst -,_,$(1))_c64.h $$(LANEC_HDR) | build
 	$$(MOS_CC) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Iinclude -Itests \
 	  -DLANEC_SUITE=lanec_suite_$(subst -,_,$(1)) -DLANEC_FROZEN='"lanec_$(subst -,_,$(1))_c64.h"' \
-	  $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c -o $$@
+	  $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c -Wl,-Map,$$@.map -o $$@
+	python3 -c "import re,sys;m=open('$$@.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else '$$@: code and BSS reach the mailbox page: '+hex(e))" || { rm -f $$@; exit 1; }
 endef
 $(foreach s,$(LANEC_PW_SUITES),$(eval $(call LANEC_PW_C64_RULE,$(s))))
 .PHONY: c64-lanec-pw vice-lanec-pw
@@ -48,7 +49,17 @@ vice-lanec-pw: $(LANEC_PW_PRGS)
 # that mission's INTER-BANK and the module's points and runs those rows.
 LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/agc_transfer.c src/lm_interbank_routines.c \
   src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_complete.c tests/lanec_pin_transfer_cases.c
-LANEC_PIN_C64_MODULES := $(shell sed -n 's/^\#ifdef LANEC_PIN_C64_MOD_//p' tests/lanec_pin_transfer_c64_rows.h 2>/dev/null)
+# These modules' programs do not fit below the mailbox page with INTER-BANK
+# and the harness (their rows' arcs are taken on the C64 by the module's own
+# pw-* program and the other round-trip programs: tools/lanec/cover.py record
+# --pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
+LANEC_PIN_C64_TOO_BIG = pw_address_request_cm pw_address_request_lm pw_cm_dynamic_display_cm pw_cm_minutes_seconds_cm \
+  pw_decimal_consumer_cm pw_decimal_consumer_lm pw_decimal_time_consumer_cm pw_decimal_time_consumer_lm \
+  pw_fixed_display_cm pw_fixed_display_lm pw_jam_control_cm pw_jam_control_lm pw_lamp_lifecycle_cm pw_lamp_lifecycle_lm \
+  pw_load_complete_cm pw_load_complete_lm pw_load_request_cm pw_load_request_lm pw_operator_release_cm \
+  pw_operator_release_lm pw_operator_response_cm pw_operator_response_lm
+LANEC_PIN_C64_MODULES := $(filter-out $(LANEC_PIN_C64_TOO_BIG),$(shell sed -n 's/^\#ifdef LANEC_PIN_C64_MOD_//p' \
+  tests/lanec_pin_transfer_c64_rows.h 2>/dev/null))
 LANEC_PIN_C64_PRGS = $(foreach m,$(LANEC_PIN_C64_MODULES),build/lanec-pin-transfer-$(m).prg)
 define LANEC_PIN_C64_RULE
 build/lanec-pin-transfer-$(1).prg: $$(sort $$(LANEC_PIN_C64_SRC) tests/lanec_$(2)_cases.c) tests/lanec_pin_transfer_cases.inc \
@@ -57,7 +68,8 @@ build/lanec-pin-transfer-$(1).prg: $$(sort $$(LANEC_PIN_C64_SRC) tests/lanec_$(2
 	  -DLANEC_PIN_TRANSFER_C64 -DLANEC_PIN_C64_MOD_$(1) $(if $(filter %_cm,$(1)),-DLANEC_PIN_C64_CM) \
 	  -DLANEC_PIN_C64_SUITE=lanec_suite_$(2) -DLANEC_PIN_C64_RUN=$(if $(filter pin_gaps,$(2)),lanec_pin_gaps_dispatch,lanec_$(2)_run) \
 	  -DLANEC_SUITE=lanec_suite_pin_transfer_c64 -DLANEC_FROZEN='"lanec_pin_transfer_c64_rows.h"' \
-	  -DLANEC_C64_SKIP=lanec_pin_c64_skip $$(sort $$(LANEC_PIN_C64_SRC) tests/lanec_$(2)_cases.c) -o $$@
+	  -DLANEC_C64_SKIP=lanec_pin_c64_skip $$(sort $$(LANEC_PIN_C64_SRC) tests/lanec_$(2)_cases.c) -Wl,-Map,$$@.map -o $$@
+	python3 -c "import re,sys;m=open('$$@.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else '$$@: code and BSS reach the mailbox page: '+hex(e))" || { rm -f $$@; exit 1; }
 endef
 $(foreach m,$(LANEC_PIN_C64_MODULES),$(eval $(call LANEC_PIN_C64_RULE,$(m),$(patsubst %_lm,%,$(patsubst %_cm,%,$(m))))))
 .PHONY: c64-lanec-pin-transfer vice-lanec-pin-transfer

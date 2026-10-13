@@ -27,6 +27,10 @@ p = argparse.ArgumentParser()
 p.add_argument('mode', choices=('pick', 'check', 'record'))
 p.add_argument('args', nargs='+')
 p.add_argument('--budget', type=int)
+p.add_argument('--not-run', action='append', default=[], metavar='SUITE=N,N,...',
+               help='record: frozen rows no C64 program runs (they do not fit one); their arcs do not count')
+p.add_argument('--pool', action='store_true',
+               help='record: a host arc counts as taken on the C64 when any suite\'s C64 rows take it')
 a = p.parse_args()
 env = dict(os.environ, SKIP_EVIDENCE_RESTORE='1')
 subprocess.run(['make', '-s', 'build/lanec-cover/lanec-native'], cwd=ROOT, env=env, check=True)
@@ -68,19 +72,31 @@ else:
         '(-O0 --coverage) and the branch arcs it takes in every linked source read with gcov -b '
         '(tools/c64_row_cover.py); the C64 rows are the cases frozen in tests/lanec_<suite>_c64.h (every case '
         'when the suite has none), and their arcs are compared with the whole host suite\'s'), 'suites': {}}
-    missing_all = []
+    missing_all, skip, seen = [], {}, {}
+    for item in a.not_run:
+        suite, ns = item.split('=')
+        skip[suite] = {int(n) for n in ns.split(',') if n}
     for suite in a.args[1:]:
         t = traced(suite)
-        host = frozenset().union(*t.values())
         rows = frozen(suite)
-        on_c64 = frozenset().union(*(t[n] for n in (rows if rows is not None else t)))
-        missing = sorted(host - on_c64)
+        run = [n for n in (rows if rows is not None else t) if n not in skip.get(suite, ())]
+        seen[suite] = (t, rows, run, frozenset().union(*t.values()), frozenset().union(*(t[n] for n in run)))
+    pool = frozenset().union(*(s[4] for s in seen.values())) if a.pool else None
+    for suite, (t, rows, run, host, on_c64) in seen.items():
+        missing = sorted(host - (pool if a.pool else on_c64))
         missing_all += [f'{suite}: {m}' for m in missing]
         record['suites'][suite] = {'host_cases': len(t), 'c64_rows': rows if rows is not None else 'all',
                                    'host_branch_arcs': len(host), 'c64_branch_arcs': len(on_c64 & host),
                                    'sources_measured': sorted({x.split(':')[0] for x in host})}
-        print(f'{suite}: {len(rows) if rows is not None else len(t)} C64 rows take {len(on_c64 & host)} of '
-              f'{len(host)} host branch arcs')
+        if suite in skip:
+            record['suites'][suite]['c64_rows_not_run'] = sorted(skip[suite])
+        if a.pool:
+            record['suites'][suite]['c64_branch_arcs_with_other_suites'] = len(pool & host)
+        print(f'{suite}: {len(run)} C64 rows take {len(on_c64 & host)} of {len(host)} host branch arcs'
+              + (f', {len(pool & host)} with the other suites\' C64 rows' if a.pool else ''))
+    if a.pool:
+        record['method'] += ('; with --pool, a host arc of one suite counts as taken on the C64 when the C64 rows '
+                             'of any suite in the record take it (the same source line and branch in the same build)')
     record['host_branches_missing_on_c64'] = missing_all
     out.write_text(json.dumps(record, indent=1) + '\n')
     if missing_all:

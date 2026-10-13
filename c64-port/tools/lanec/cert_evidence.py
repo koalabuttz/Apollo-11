@@ -73,7 +73,7 @@ for item in a.c64:
     suite, target = item.split('=')
     run(['make', '-s', f'c64-{target}'])
     lines = run(['make', '-s', f'vice-{target}']).strip().splitlines()
-    line = lines[-1]
+    line = ([x for x in lines if x.startswith(('PASS', 'FAIL'))] or lines)[-1]
     if not line.startswith('PASS'):
         sys.exit(f'FAIL: {line}')
     results.append(line)

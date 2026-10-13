@@ -16,7 +16,8 @@ checks = 0
 for prg in prgs:
     run = subprocess.run([sys.executable, str(ROOT / 'tools/vice_run.py'), '--cycles', '900000000', prg],
                          cwd=ROOT, capture_output=True, text=True)
-    line = (run.stdout + run.stderr).strip().splitlines()[-1:] or ['no output']
+    out = (run.stdout + run.stderr).strip().splitlines()
+    line = [x for x in out if x.startswith(('PASS', 'FAIL'))][-1:] or out[-1:] or ['no output']
     print(line[0])
     m = re.match(r'PASS: VICE PAL \S+: (\d+) checks, 0 failures', line[0])
     if run.returncode or not m:

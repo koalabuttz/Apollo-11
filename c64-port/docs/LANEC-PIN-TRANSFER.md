@@ -75,12 +75,29 @@ leave the modules' domains after the first routine. 1,212 cases are
 identical to the original and 836 are refused unchanged, in strict and
 ASan/UBSan builds.
 
-`pin-transfer-c64` (32 Luminary099 cases) runs the decimal display's entry
-chains (DSPDECWD, DSPDECNR, 16 cases each) with only INTER-BANK and the
-decimal display's routines registered (`lanec_pin_lm_c64`), against the
-oracle with the same boundaries less the Executive's services: 28 are
-identical and 4 refused; `make vice-lanec-pin-transfer` runs all 32 on a
-VICE PAL C64.
+`pin-transfer-c64` runs the round trips as the C64 does. Every module does
+not fit one C64 program, so each program registers one mission's INTER-BANK
+routines and one module's points (those it claims first,
+`lanec_pin_c64_select`) and runs that module alone. Its 2,040 cases are
+every routine from its own entry, in both missions, with up to four cases
+of that module. The oracle has the host cases' ranges and stops at the
+services that hand control away; a chain that ends at another module's
+point, at the display interface or in the Executive (which the program
+lacks) is refused, as in `pin-transfer`, which compares those chains. The
+other modules' points are not oracle stops: a module runs through some of
+them inline. 908 cases are identical and 1,132 refused unchanged.
+
+The C64 rows (712, `tests/lanec_pin_transfer_c64_c64.h`) are the cases
+`tools/lanec/cover.py` picks to take every host branch arc, plus one case
+of every routine (an accepted one where the routine has one).
+`routines.py pin` groups them by module and mission
+(`tests/lanec_pin_transfer_c64_rows.h`), and `tools/mk/lanec-pw.mk` builds
+one program per group. 108 programs (560 rows) fit below the mailbox page
+and pass on a VICE PAL C64 (`make vice-lanec-pin-transfer`). The 22 that do
+not (`LANEC_PIN_C64_TOO_BIG`: eleven modules whose code and state, with
+INTER-BANK and the harness, pass $C000) leave 152 rows to the host; the
+Pinball certificate's C64 branch record shows that the other C64 programs
+take every host arc of those rows.
 
 ## Harness changes
 
@@ -97,9 +114,9 @@ VICE PAL C64.
 Hashes: `evidence/lanec-pin-transfer/SHA256.json`.
 
 - Independent assembly comparison: `lanec-pin-transfer-diff.json` and
-  `lanec-pin-transfer-c64-diff.json` with their oracle CRCs (2,048 and 32
-  cases, zero differing).
+  `lanec-pin-transfer-c64-diff.json` with their oracle CRCs (2,048 and
+  2,040 cases, zero differing).
 - Host and sanitizer results: `make test-lanec-pin-transfer
   sanitize-lanec-pin-transfer` (`lanec-pin-transfer-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-transfer`, 32 checks
-  (`lanec-pin-transfer-vice.txt`).
+- C64 execution results: `make vice-lanec-pin-transfer`, 108 programs and
+  560 checks (`lanec-pin-transfer-vice.txt`).
