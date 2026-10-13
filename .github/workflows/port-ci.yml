@@ -124,6 +124,37 @@ jobs:
           python3 tools/evidence.py fetch --coverage
           python3 tools/port_coverage.py
 
+  # Reports C lines a PR changed but left unformatted (tools/format_changed.py,
+  # .clang-format). Advisory while lanes install the hook (`make hooks`): it
+  # warns and passes.
+  format:
+    needs: plan
+    if: github.event_name == 'pull_request'
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - name: Toolchain cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Changed C lines are formatted
+        working-directory: c64-port
+        run: |
+          if [ ! -x deps/llvm-mos/bin/clang-format ]; then
+            echo "::warning::format check skipped: toolchain cache missed"; exit 0
+          fi
+          if ! python3 tools/format_changed.py --check --base "${{ needs.plan.outputs.base }}" > build-format.diff; then
+            cat build-format.diff
+            echo "::warning::changed C lines are not formatted; run 'make format' (installs the pre-commit hook)"
+          fi
+
   host:
     needs: plan
     env:

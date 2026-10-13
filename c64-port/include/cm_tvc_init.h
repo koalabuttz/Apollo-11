@@ -12,7 +12,7 @@ extern const agc_routine_table cm_tvc_init_interpretive,cm_tvc_init_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_tvc_init_point;
-#define CM_TVC_INIT_POINTS 10u
+#define CM_TVC_INIT_POINTS 21u
 #define CM_TVC_INIT_CADR_WORDS 1u
 #define CM_TVC_INIT_EXTERNALS 4u
 #define CM_TVC_INIT_FIRST 15463u

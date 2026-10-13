@@ -14,9 +14,12 @@
   "src/lm_interp_steps.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 18596,
- "host_vector_edges": 18596,
- "c64_edges": 18596,
- "host_branches_missing_on_c64": [],
- "c64_rows": 293
+ "host_edges": 18674,
+ "host_vector_edges": 18674,
+ "c64_edges": 18672,
+ "host_branches_missing_on_c64": [
+  "src/agc_image_ops.c:193 from src/lm_aotmark.c:5473",
+  "src/lm_interp_orders.c:290 from src/lm_aotmark.c:5678"
+ ],
+ "c64_rows": 300
 }

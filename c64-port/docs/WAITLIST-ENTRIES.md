@@ -19,7 +19,7 @@ They are in `lm_exec_task_routines` (`src/lm_exec_tasks.c`, 6 entries),
 
 ## Proof
 
-`tools/waitlist_entries_freeze.py` runs the 1,380 cases of
+`tools/waitlist_entries_freeze.py` runs the 1,437 cases of
 `tests/waitlist_entries_cases.c` through `agc_transfer_run` and in yaAGC from
 the original ropes:
 
@@ -27,7 +27,7 @@ the original ropes:
 |---|---|---|
 | LM T3RUPT 01,3407 | 512 | 512 |
 | CM T3RUPT 01,3416 | 512 | 512 |
-| LM DLY2 -1, from DELAYJOB | 114 | 95 |
+| LM DLY2 -1, from DELAYJOB | 171 | 152 |
 | CM DLY2 -1, from DELAYJOB | 114 | 100 |
 | LM NOQBRSM +1 | 128 | 128 |
 
@@ -37,12 +37,22 @@ inputs, run with the service and Executive tables together, so the run goes
 DELAYJOB, DLY2 -1, WAIT2, TCGETCAD to JOBSLEEP or BAILOUT. Each DELAYJOB input
 runs twice: on its own random image, where WAIT2 almost always finds a broken
 list and aborts, and (base `| WLE_SANE`) with a sane waitlist: a free DELAYLOC,
-a positive delay, TIME3 on both sides of its overflow test, and 0-8 queued
-tasks (one case in sixteen a full list of 9). Of those, 45 LM and 52 CM cases
-insert the task and reach JOBSLEEP, 4 LM and 5 CM overflow the list and abort,
-and one LM case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
+a positive delay, TIME3 on both sides of its overflow test or exactly 0200
+(where WAIT2's -TIME3 + 0200 is -0), and 0-8 queued tasks (one case in
+sixteen a full list of 9). Of those, 43 LM and 53 CM cases insert the task
+and reach JOBSLEEP, 6 LM and 4 CM overflow the list and abort, and one LM
+case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
 native DELAYJOB refuses (most with a delay near 1.0, whose WAIT2 sum would
-overflow); they are compared as refusals.
+overflow); they are compared as refusals. Each LM input runs a third time
+(base `| WLE_SANE | WLE_EDGE`): a sane list of 1-8 tasks with the new task
+due exactly 1 cs before queued task j, so WAIT2's list search ends on
+`CCS` -0 at j (`lm_delay_image.c` line 25, the -0 break) and the task is
+inserted there. All 57 reach the continuation (56 JOBSLEEP, one JOBWAKE).
+Two +0 outcomes in `lm_delay_image.c` are never taken, because they cannot
+be: the `CCS` after -TIME3 + 0200 (line 22) and the one that ends the search
+(line 27) would need a +0 sum, and a ones'-complement add gives +0 only from
++0 + +0. -TIME3 + 0200 is never +0 (TIME3 = 0200 gives -0), and the search
+adds a queued task's negative delta T to a positive remainder.
 yaAGC stops at the native Z (and FB when banked) or when it leaves the
 interrupt. All 2048 erasable words, the superbank and the inhibit and
 interrupt flags are identical. The proof
@@ -52,10 +62,10 @@ the native sources it depends on.
 `tests/test_waitlist_entries.c` checks the frozen digests, one refusal per
 kind, and TASKOVER's RESUME check in both missions under BANKRUPT's
 superbank (BANKRUPT 060100 with channel 7 at 060: TASKOVER writes BANKRUPT
-to SUPERBNK before RESUME): 1,389 checks. The C64 programs (`waitlist-entries-0` .. `-4`, one per
-kind) run every fourth case, each kind's first two, and the cover rows of
+to SUPERBNK before RESUME): 1,446 checks. The C64 programs (`waitlist-entries-0` .. `-4`, one per
+kind) run every fourth case, cases 0 and 1, each kind's first two, and the cover rows of
 `tests/waitlist_entries_c64_rows.h`: with them the C64 rows take every branch
-arc (gcov -b, per object, all linked sources) the 1,380 host cases take
+arc (gcov -b, per object, all linked sources) the 1,437 host cases take
 (`python3 tools/lane_a_c64_cover.py --check waitlist-entries`; record
 `evidence/waitlist-entries/waitlist-closure-c64-cover.json`). The CM DLY2 -1 program is
 built with `CM_EXEC_DLY2_ONLY` and `CM_SERVICE_DELAYJOB_ONLY`, which add the
@@ -68,6 +78,6 @@ lives at $E000 under the banked-out ROMs.
 The WAITLIST certificates (both missions) take their host, C64 and branch
 evidence from `evidence/waitlist-entries/`: `waitlist-closure-host.log`,
 `waitlist-closure-vice.log` and `waitlist-closure-c64-cover.json` are the
-exec-closure records with this milestone's section rerun (365 VICE checks)
+exec-closure records with this milestone's section rerun (379 VICE checks)
 and its cover record added; the exec-closure files, which the EXECUTIVE
 certificates pin, are unchanged.

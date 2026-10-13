@@ -78,8 +78,8 @@
   },
   {
    "mission": "cm",
-   "keep": "0x3fffffff",
-   "cases": 57,
+   "keep": "0x1fffffff",
+   "cases": 56,
    "case_ids": [
     12328,
     12468,
@@ -136,15 +136,15 @@
     25731,
     26116,
     26624,
-    26844,
-    27144
+    26844
    ]
   },
   {
    "mission": "cm",
    "keep": "0xfffe0000000",
-   "cases": 31,
+   "cases": 32,
    "case_ids": [
+    27144,
     27296,
     27648,
     28028,

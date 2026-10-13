@@ -53,6 +53,8 @@ M = {
     'lm-t4rupt-chain': ('lm_t4rupt_chain_cases.h', 'lch_digest(&image,n)', 'LCH_SRC', '$(LCH_FLAGS)', 'lch', 'LCH'),
     # Five programs, one per kind: each runs every fourth case of its kind and the kind's first two.
     'waitlist-entries': ('waitlist_entries_cases.h', 'wle_digest(&image,n)', 'WLE_SRC', '$(WLE_FLAGS)', 'wle', 'WLE'),
+    'cm-alarm': ('cm_alarm_cases.h', 'cm_al_digest(&image,n,&(enum exec_status){EXEC_OK})', 'CM_AL_SRC', '', 'cm_al',
+                 'CM_AL'),
 }
 TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES')}
 
@@ -143,7 +145,10 @@ def main():
         c64_row_cover.save(trace_path, trace)
     rows_h = R / f'tests/{under}_c64_rows.h'
     if a.check:
-        extra = [int(x) for x in re.findall(r'\b(\d+)u', rows_h.read_text().split('_row[')[1].split('}')[0])]
+        text = rows_h.read_text()
+        # With no cover rows the array holds a single 0u placeholder.
+        k = int(re.search(rf'#define {prefix}_C64_ROWS (\d+)u', text).group(1))
+        extra = [int(x) for x in re.findall(r'\b(\d+)u', text.split('_row[')[1].split('}')[0])][:k]
         c64_row_cover.check(trace, sorted(set(seed) | set(extra)))
         print(f'{name}: {len(seed)} stride rows and {len(extra)} cover rows take every host branch arc')
         return

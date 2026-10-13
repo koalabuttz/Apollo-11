@@ -204,6 +204,49 @@ def lat_long_axis_joint():
 # AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
 # and the surface mark slots (that area plus 6 words a mark).
 AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
+
+
+# SXTMARK (#255): marks whose CDUs are within a few bits of the current
+# ones, so DIFCHK's accept path (|mark - current| <= 3) and its 121 alarm
+# at 4 both run. At MARKDIF all three axes (CDUCHKWD > 0); at DIFCHK one
+# axis (MKNDX -1, 0, 1 picks CDUX, CDUY, CDUZ; A the mark CDU). Half the
+# cases keep the random states.
+SXT_CDU_BASES = (0, 3, 0o17777, 0o37775, 0o40002, 0o77775)
+SXT_CDU_DIFFS = ((0, 0, 0), (1, -1, 2), (-2, 3, -3), (3, 0, -1), (-3, -2, 1), (2, 1, 0),
+                 (4, 0, 0), (0, -4, 0), (0, 0, 4), (-1, 1, -4))
+
+
+def sxt_markdif_joint():
+    sets = []
+    for i, x in enumerate(SXT_CDU_BASES):
+        for d in SXT_CDU_DIFFS:
+            v = {'CDUCHKWD': 1 + i}
+            for k, (axis, e) in enumerate(zip('XYZ', d)):
+                m = (x + 0o1111 * k) & 0o77777
+                v['MKCDU' + axis] = m
+                v['%04o' % (0o32 + k)] = (m - e) & 0o77777   # CDUX-CDUZ
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
+
+def sxt_difchk_joint():
+    sets = [{'MKNDX': k, '0': x, cdu: (x - e) & 0o77777}
+            for k, cdu in ((0o77776, '0032'), (0, '0033'), (1, '0034'))   # CDUX-CDUZ
+            for x in SXT_CDU_BASES if x < 0o40000
+            for e in range(-4, 5)]
+    return sets + [{}] * len(sets)
+
+
+# MARKCONT with no marks wanted (MARKSTAT +0) and STATE+2 bit 14 clear (or
+# set: R21's MARKIT1): the marking system (EXTVBACT bit 2) and V59FLAG
+# (STATE+5 bit 12) on or off, so MARKET3's alarm 122 and the P23 calibration
+# display both run. A third of the cases keep the random states.
+def sxt_markcont_joint():
+    sets = [{'MARKSTAT': 0, 'STATE+2': s2, 'EXTVBACT': ev, 'STATE+5': v59}
+            for s2 in (0, 0o17777, 0o20000)
+            for ev in (0, 2, 0o77775, 0o77777)
+            for v59 in (0, 0o4000, 0o73777, 0o77777)]
+    return sets + [{}] * (len(sets) // 2)
 AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
 
 # LLGE's ROOTPSRS work words (MPAC +3 to +6, PWRPTR, DERPTR, RETROOT)
@@ -244,7 +287,14 @@ SPECS = {
                           for a in range(lo, hi)},
                        # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
                        **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
+        # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
+        # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
+        'any_fixloc': True,
         'joint_states': {
+                         # AOTMARK's entry with no marks in progress (MARKSTAT
+                         # +0) in half the cases: the VAC area search and
+                         # BAILOUT1 when none is free.
+                         'AOTMARK': [{'MARKSTAT': 0}, {}],
                          # 15,2041 VSL1 VAD from the state the original reaches it
                          # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
                          # VAD's overflow there carries into a word that does not
@@ -283,11 +333,17 @@ SPECS = {
         # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
         # edge values in MPAC and the operands.
         'c64_rows': 'cover',
-        'cover_stride': 8,
+        # Two DDV arcs (V/SC with the high words equal) only runs too long
+        # for one diagnostic take: truncated rows (tests/interp_cut.h).
+        'c64_cuts': True,
+        'cover_stride': 4,
         'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     # Lane D1: Comanche055 SXTMARK, the whole file (basic code) as routines
@@ -324,6 +380,10 @@ SPECS = {
         # DIFCHK is entered with MKNDX -1, 0 or 1 (it indexes CDUX-CDUZ).
         'states': {'DIFCHK': {'MKNDX': [0o77776, 0, 1]},
                    'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]}},
+        # (#255) Marks close to the current CDUs at MARKDIF and DIFCHK, and
+        # MARKCONT with no marks wanted.
+        'joint_states': {'MARKDIF': sxt_markdif_joint(), 'DIFCHK': sxt_difchk_joint(),
+                         'MARKCONT': sxt_markcont_joint()},
         'channel_inputs': True,
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS', '-DIRC_CHANNELS'],
         'target': 'tests/cm_sxtmark_target.c',
@@ -332,6 +392,9 @@ SPECS = {
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     'inflight-align': {
@@ -677,6 +740,44 @@ SPECS = {
         'basic': 'full',
         'entries': ['@external'],
         'target': 'tests/cm_time_free_fall_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
+    # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
+    # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
+    # LUNVEL and SOLPOS are routine keys of the transfer ABI).
+    'cm-ephemeris': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_ephemeris'},
+        'symbol': {'cm': 'cm_ephemeris'},
+        # SOLPOS has no caller in Comanche055: a public entry of its own.
+        # RES, RESA, REM and VEM are where LSTIME's GOTO X1 (and RES's
+        # GOTO X2) go: the AXT,1/AXT,2 operands of the four entries.
+        'entries': ['@external', 'SOLPOS', 'RES', 'RESA', 'REM', 'VEM'],
+        # (the file's EBANK= END-E7: VECOEM and the other ephemeris cells)
+        'ebank': 'listing',
+        # Mid-sequence resumes (REMA/VEMA's TIX loops, RES's pushdown chain)
+        # start from the registers the file's own runs reach them with, and
+        # a CHANG2 resume from the state the routine before it reaches.
+        'flow_states': True,
+        'resume_flow': True,
+        # The pushdown list stays low in the VAC area (LSTIME's SETPD 0D;
+        # RES pushes to 16D): a push near X1 would overwrite the index.
+        'all_states': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
+        # the GOTO X1 (26,2141) into RES, REM or VEM (S1 = 0 would loop
+        # forever). Up to the SSP, S1 is any value (P20-P25 leave 108, 18
+        # or 54), so the SSP's write is compared.
+        'range_states': [('LSTIME+11', 'NINEB4', {'vac+050': [6]})],
+        # C64 rows: the cases that take every branch outcome the host cases take.
+        'c64_rows': 'cover',
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        'target': 'tests/cm_ephemeris_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
@@ -1105,6 +1206,10 @@ SPECS = {
         'base': {'cm': 'cm_tvc_init'},
         'symbol': {'cm': 'cm_tvc_init'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1196,6 +1301,10 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a DAP pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1242,6 +1351,10 @@ SPECS = {
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1296,6 +1409,10 @@ SPECS = {
         'target': 'tests/cm_jet_select_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # Part functions for the flight store's 8 KB task slot; each
+        # hand-off is a routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
     },
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
@@ -1311,6 +1428,10 @@ SPECS = {
         'execute_data': ('20,3714', '20,3715'),
         'symbol': {'cm': 'cm_entry_dap'},
         'basic': 'full',
+        # Part functions for the flight store's slots; each hand-off is a
+        # routine step, so a pass runs more of them.
+        'basic_parts': {'budget': 6000},
+        'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
         'channels': 'all',
@@ -1670,6 +1791,10 @@ SPECS = {
         'target': 'tests/rtb_op_codes_target.c',
         # RTB runs in NOVAC jobs too: the routines that never name FIXLOC
         # take any FIXLOC.
+        # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
+        # unsigned too)
+        'index_carry16': True,
+        'image_w': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
@@ -2016,7 +2141,16 @@ SPECS = {
         # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
         # build needs (unsigned is 16 bits there).
         'index_carry16': True,
-        'partial': {'lm': 'READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 wait for an I/O channel model'},
+        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 lands on
+        # WHATEXIT's TCF EXNORM, which loops back to DISPEXIT for ever.  The
+        # program only runs IGNALG (-1) with FLUNDISP set, so DISPEXIT never
+        # gets there; cases on the paths into it keep WCHPHOLD on 0..2.
+        'range_states': (('CGCALC', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
+                         ('1406P00', 'FASTCHNG', {'WCHPHOLD': [0, 1, 2]})),
+        # READ CHAN30 (STERN) and RAND/READ CHAN31: latched inputs.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
+        'partial': {'lm': 'WOR CHAN13 (STARTP64) waits for an output-channel model'},
         'target': 'tests/lm_llge_target.c',
         'freeze_stride': 32,
         'cover_stride': 8,

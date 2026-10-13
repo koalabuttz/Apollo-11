@@ -11,7 +11,7 @@ extern const agc_routine_table lm_llge_interpretive,lm_llge_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_llge_point;
-#define LM_LLGE_POINTS 258u
+#define LM_LLGE_POINTS 248u
 #define LM_LLGE_CADR_WORDS 1u
 #define LM_LLGE_EXTERNALS 23u
 #define LM_LLGE_FIRST 9405u

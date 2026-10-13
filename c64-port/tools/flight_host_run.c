@@ -254,6 +254,47 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
   hw->channel3=timed_hw.channel3;hw->channel4=timed_hw.channel4;hw->channel13=timed_hw.channel13;*pending|=got_first;}
  return -1;}
 
+/* Comanche's channels 5, 6 and 30-33 live in cm_channels (include/
+ * cm_native_image.h) until agc_hardware carries them: a CM routine reads
+ * them there and writes 5 and 6 there, so they follow hw around each call. */
+static void channels_in(const agc_hardware *hw){
+#if RK_LM
+ (void)hw;
+#else
+ cm_channels.channel05=hw->channel5;cm_channels.channel06=hw->channel6;cm_channels.channel30=hw->channel30;
+ cm_channels.channel31=hw->channel31;cm_channels.channel32=hw->channel32;cm_channels.channel33=hw->channel33;
+#endif
+}
+static void channels_out(agc_hardware *hw){
+#if RK_LM
+ (void)hw;
+#else
+ hw->channel5=cm_channels.channel05;hw->channel6=cm_channels.channel06;
+#endif
+}
+
+/* A native routine reads the scalers (channels 3 and 4) latched for its
+ * whole run, yaAGC at the moment of each READ: one LOSCALAR count is about
+ * 27 MCTs, so FINETIME's L can be a count apart. When a routine misses,
+ * step yaAGC from its start state to the native continuation; if it READs
+ * channel 3 or 4 on the way, latch each as yaAGC had it at its last READ
+ * (in hw) and say so, so the routine runs again with them (FINETIME reads
+ * LOSCALAR again when it ticked between two READs). Routines that match,
+ * or read no scaler, cost nothing more. */
+static int scaler_latch(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw,const apollo_overlay_state *after,
+                        agc_word superbank,long limit){
+ long n;int in,tin,read=0;uint16_t target=point(after->words,superbank,&tin),got=0;agc_word c3=hw->channel3,c4=hw->channel4;
+ load(before,io0,hw);
+ for(n=0;n<limit;++n){
+  if(n&&quiet()&&point(view(),(agc_word)m.OutputChannel7,&in)==target&&in==tin)break;
+  if(m.ExtraCode&&!m.IndexValue&&!m.PendFlag){
+   agc_word w=rope_word((agc_word)(*cell(5)&07777),(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);
+   if(w==3u){c3=(agc_word)(m.InputChannel[3]&077777);read=1;}
+   if(w==4u){c4=(agc_word)(m.InputChannel[4]&077777);read=1;}}
+  if(step(&got))return 0;}
+ if(n==limit||!read||(c3==hw->channel3&&c4==hw->channel4))return 0;
+ hw->channel3=c3;hw->channel4=c4;return 1;}
+
 /* Routines whose result yaAGC never matched. */
 enum { MISSES=256 };
 static struct { const char *name; uint16_t key; uint8_t in; unsigned long count; agc_word word[2048],ref[2048]; int arrived; } misses[MISSES];
@@ -390,11 +431,18 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
 #else
    p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #endif
-x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
-   if(st==EXEC_OK){
-    if((n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first))>=0)locked+=(unsigned long)n;
-    else miss(e->name,before.words,io0.superbank,s.words,first);
-    continue;}
+x=flight_io_enter(e->io,&io,&hw,&b);channels_in(&hw);st=call(&p,&s,x);channels_out(&hw);flight_io_leave(e->io,&io,&hw,&b);
+   if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;
+    n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);
+    /* Again with the scalers yaAGC read (scaler_latch). */
+    if(n<0&&scaler_latch(&before,&io0,&hw1,&s,io.superbank,50000l)){
+     s=before;io=io0;hw=hw1;pending=pending0;
+     x=flight_io_enter(e->io,&io,&hw,&b);channels_in(&hw);st=call(&p,&s,x);channels_out(&hw);flight_io_leave(e->io,&io,&hw,&b);
+     if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
+    if(st==EXEC_OK){
+     if(n>=0)locked+=(unsigned long)n;
+     else miss(e->name,before.words,io0.superbank,s.words,first);
+     continue;}}
    /* A refusal: undo whatever the routine did and bridge the point. */
    s=before;io=io0;hw=hw0;}
   {agc_word w[2048];long n;memcpy(w,s.words,sizeof w);

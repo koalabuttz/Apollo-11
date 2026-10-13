@@ -104,17 +104,18 @@ services that hand control away; a chain that ends at another module's
 point, at the display interface or in the Executive (which the program
 lacks) is refused, as in `pin-transfer`, which compares those chains. The
 other modules' points are not oracle stops: a module runs through some of
-them inline. 927 cases are identical and 1,161 refused unchanged.
+them inline. 989 cases are identical and 1,171 refused unchanged.
 
-The C64 rows (727, `tests/lanec_pin_transfer_c64_c64.h`) are the cases
-`tools/lanec/cover.py` picks to take every host branch arc, plus one case
-of every routine (an accepted one where the routine has one).
+The C64 rows (443, `tests/lanec_pin_transfer_c64_c64.h`) are the fewest
+cases `tools/lanec/cover.py pick` finds that take every host branch arc
+(re-picked when the keypress routines moved to their own tables,
+docs/LANEC-PIN-KEYS.md, which renumbered the cases).
 `routines.py pin` groups them by module and mission
 (`tests/lanec_pin_transfer_c64_rows.h`), and `tools/mk/lanec-pw.mk` builds
-one program per group. 108 programs (575 rows) fit below the mailbox page
-and pass on a VICE PAL C64 (`make vice-lanec-pin-transfer`). The 22 that do
-not (`LANEC_PIN_C64_TOO_BIG`: eleven modules whose code and state, with
-INTER-BANK and the harness, pass $C000) leave 152 rows to the host; the
+one program per group. 102 programs (339 rows) fit below the mailbox page
+and pass on a VICE PAL C64 (`make vice-lanec-pin-transfer`). The programs
+that do not (`LANEC_PIN_C64_TOO_BIG`: modules whose code and state, with
+INTER-BANK and the harness, pass $C000) leave 104 rows to the host; the
 Pinball certificate's C64 branch record (`tools/lanec/cover.py record
 --not-run`) counts those rows' host arcs only where another C64 program
 takes them.

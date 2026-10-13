@@ -13,7 +13,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "sband_trig.h"
-#define W s->words
+#include "agc_image_w.h"
 
 /* Erasable (EB 5 window where the source's EBANK is POSITON or XSM). */
 #define A_ 0u
