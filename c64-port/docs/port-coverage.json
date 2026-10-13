@@ -6842,11 +6842,11 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/imu-compensation/imu-compensation-proof.json",
-            "sha256": "71934272e1e952eaa85889b4cd8b8bdb93a18b8e874368ce93ca87dcc56a2ba5"
+            "sha256": "68468e4a7cffa85fab27bd4e682e10fec75a1ac81f454944e3d7a88314e8cd83"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/imu-compensation/imu-compensation-host.log",
-            "sha256": "587d5e9bd070819b05217cb789ba3b3438dc4cfdf48f5fbd19ee3874e0887c3f"
+            "sha256": "47c6e15e0fc8c887cc59de350a7760b732bea1a7c6aad4e6104b58900622497e"
           },
           "c64_execution_results": {
             "path": "evidence/imu-compensation/imu-compensation-vice.log",
