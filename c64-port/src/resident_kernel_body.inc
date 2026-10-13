@@ -28,6 +28,17 @@
  * ends the interrupt. */
 #include "agc_image_ops.h"
 #define W ks->words
+/* Overlay ABI 2 seams follow their job (include/resident_kernel.h): with
+ * RK_SEAMS the kernel reports CHANJOB's core-set exchange (NEWJOB names
+ * the set exchanged with set 0) and ENDOFJOB's end of the job in set 0.
+ * The reports change nothing in the image. */
+#if RK_SEAMS
+#define SEAMS_EXCHANGE() rk_seams_exchange(W[K_NEWJOB])
+#define SEAMS_RELEASE() rk_seams_release()
+#else
+#define SEAMS_EXCHANGE() ((void)0)
+#define SEAMS_RELEASE() ((void)0)
+#endif
 /* Basic instructions. Erasable operands are as the instruction names them
  * (01400-01777 under EB); f forms take a fixed word by value. */
 /* The image every kernel instruction works on (the one canonical image);
@@ -281,6 +292,7 @@ CHANJOB_1:
 CHANJOB:
  INHINT();ror7();XCH(L_);
 CHANJOB4:
+ SEAMS_EXCHANGE();
  DXCH(ix(K_LOC,K_NEWJOB));DXCH(K_LOC);CA(K_BANKSET);write7();
  for(i=0;i<8u;i=(uint8_t)(i+2u)){DXCH(K_MPAC+i);DXCH(ix(K_MPAC+i,K_NEWJOB));DXCH(K_MPAC+i);}
  CAF(0u);XCH(K_OVFIND);
@@ -373,6 +385,7 @@ PRIOCH2:
 PRIOCH2_1:
  CAF(0u);TS(K_BUF);CAF(KW_LOW9);MASK(K_PRIORITY);AD(K_NEWPRIO);TS(K_PRIORITY);COM();goto JOBSLP2;
 ENDOFJOB:
+ SEAMS_RELEASE();
  CAF(KW_EXECBANK);TS(FB_);
  INHINT();CSF(0u);TS(K_BUF+1u);XCH(K_PRIORITY);MASKF(KW_LOW9);TS(L_);CSF(KW_FAKEPRET);AD(L_);
  if(BZMF())goto EJSCAN;
