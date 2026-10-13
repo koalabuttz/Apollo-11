@@ -16,6 +16,7 @@
 static agc_word *ic_image;
 #define W ic_image
 #endif
+static p66_bias_io *io;
 
 typedef apollo_overlay_state agc_image;
 static NI unsigned ai_ea(unsigned address);
@@ -69,11 +70,11 @@ static NI void lmi_indexed(agc_word operand, agc_word target);
 static NI void lmi_misc(agc_word operand, agc_word target);
 static NI void lmi_unary(agc_word target);
 static NI void lmi_sload(void);
-static NI void lmi_setpd(void);
-static NI void lmi_vdef(void);
-static NI void lmi_axt(void);
-static NI void lmi_incr(void);
-static NI uint8_t lmi_switch(p66_bias_io *);
+static NI void lmi_setpd(const agc_word *);
+static NI uint8_t lmi_vdef(void);
+static NI uint8_t lmi_axt(void);
+static NI uint8_t lmi_incr(void);
+static NI uint8_t lmi_switch(void);
 static NI void lmi_swbranch(agc_word target_word);
 static NI void lmi_goto(void);
 static NI void lmi_rvq(void);
@@ -88,7 +89,7 @@ static NI void lmi_dload_op(const agc_word *k);
 static NI void lmi_vload(const agc_word *k);
 static NI void lmi_pdvl(const agc_word *k);
 static NI void lmi_pddl_op(const agc_word *k);
-static NI void lmi_push(void);
+static NI uint8_t lmi_push(void);
 static NI void lmi_dad(const agc_word *k);
 static NI void lmi_dsu(const agc_word *k);
 static NI void lmi_bdsu(const agc_word *k);
@@ -97,20 +98,20 @@ static NI void lmi_dmpr(const agc_word *k);
 static NI void lmi_short_dispatch(void);
 static NI void lmi_shortt(void);
 static NI void lmi_shortv(void);
-static NI void lmi_gshift(void);
+static NI void lmi_gshift(const agc_word *);
 static NI void lmi_genshift(void);
-static NI void lmi_tslc(void);
-static NI void lmi_comp(void);
+static NI void lmi_tslc(const agc_word *);
+static NI uint8_t lmi_comp(void);
 static NI void lmi_sign(const agc_word *k);
 static NI void lmi_abs(void);
-static NI void lmi_dsq(void);
-static NI void lmi_vsq(void);
+static NI uint8_t lmi_dsq(void);
+static NI uint8_t lmi_vsq(void);
 static NI void lmi_dot(const agc_word *k);
 static NI void lmi_ddv(const agc_word *k);
 static NI void lmi_bddv(const agc_word *k);
 static NI uint8_t lmi_sqrt(void);
-static NI void lmi_sin(void);
-static NI void lmi_cos(void);
+static NI uint8_t lmi_sin(void);
+static NI uint8_t lmi_cos(void);
 static NI uint8_t lmi_acos(void);
 static NI uint8_t lmi_asin(void);
 static NI uint8_t lmi_abvalabs(void);
@@ -131,15 +132,15 @@ static NI void lmi_vad(const agc_word *k);
 static NI void lmi_vsu(const agc_word *k);
 static NI void lmi_bvsu(const agc_word *k);
 static NI void lmi_tad(const agc_word *k);
-static NI void lmi_round(void);
+static NI uint8_t lmi_round(void);
 static NI void lmi_ssp(agc_word word);
-static NI void lmi_xad(void);
-static NI void lmi_xsu(void);
-static NI void lmi_lxa(void);
-static NI void lmi_lxc(void);
-static NI void lmi_sxa(void);
-static NI void lmi_xchx(void);
-static NI void lmi_axc(void);
+static NI uint8_t lmi_xad(void);
+static NI uint8_t lmi_xsu(void);
+static NI uint8_t lmi_lxa(void);
+static NI uint8_t lmi_lxc(void);
+static NI uint8_t lmi_sxa(void);
+static NI uint8_t lmi_xchx(void);
+static NI uint8_t lmi_axc(void);
 static NI void lmi_ita(void);
 static NI uint8_t lmi_tix(void);
 static NI uint8_t lmi_bhiz(void);
@@ -151,7 +152,7 @@ static NI void lmi_tload(void);
 static NI void lmi_tload_fixed(const agc_word *k);
 static NI void lmi_sload_fixed(const agc_word *k);
 static NI void lmi_exit(void);
-static NI void lmi_intpret(p66_bias_io *);
+static NI void lmi_intpret(void);
 
 /* ---- agc_image_ops ---- */
 /* SPDX-License-Identifier: MIT */
@@ -464,29 +465,32 @@ static NI void lmi_sload(void){
  /* SLOAD ZL; INDEX ADDRWD, CA 0; TCF SLOAD2. */
  W[1]=0;ai_ca(W[0116]);ai_dxch(0154);ai_caf(0);(void)ai_ts(0156);(void)ai_ts(0163);danzig_entry();
 }
-static NI void lmi_setpd(void){
+static NI void lmi_setpd(const agc_word *k){(void)k;
  /* SETPD CA ADDRWD; TS PUSHLOC; TCF NOIBNKSW (DANZIG without BBANK). */
  ai_ca(0116);(void)ai_ts(0166);W[5]=IF_(06063,06032);
 }
-static NI void lmi_vdef(void){
+static NI uint8_t lmi_vdef(void){
  /* VDEF CS FOUR; ADS PUSHLOC; EXTEND, INDEX A, DCA 2; DXCH MPAC +3;
   * EXTEND, INDEX PUSHLOC, DCA 0; DXCH MPAC +5; VMODE CS ONE; NEWMODE. */
  unsigned at;
  ai_csf(4);ai_ads(0166);at=(unsigned)agc_correct(W[0]);ai_dca(at+2u);ai_dxch(0157);ai_dca(W[0166]);ai_dxch(0161);ai_csf(1);(void)ai_ts(0163);danzig_entry();
+ return 0;
 }
 /* TAGSUB CA FIXLOC; TS INDEXLOC; CCS CYR; [INCR INDEXLOC]; TC Q. The
  * TC Q return executes the TC held in Q, leaving Q = 3. */
 static NI void tagsub(void){
  ai_ca(0120);(void)ai_ts(0130);if(ai_ccs(020)==0u)ai_incr(0130);W[2]=3;
 }
-static NI void lmi_axt(void){
+static NI uint8_t lmi_axt(void){
  /* AXT TC TAGSUB; CA POLISH; XSTORE INDEX INDEXLOC, TS X1. TAGSUB's
   */
  tagsub();ai_ca(0117);(void)ai_ts((unsigned)(W[0130]+046u));danzig_entry();
+ return 0;
 }
-static NI void lmi_incr(void){
+static NI uint8_t lmi_incr(void){
  /* INCR TC TAGSUB; CA POLISH; XAD2 INDEX INDEXLOC, ADS X1. */
  tagsub();ai_ca(0117);ai_ads((unsigned)(W[0130]+046u));danzig_entry();
+ return 0;
 }
 
 /* GOTO +4: CA BANKSET; TS BBANK; CA POLISH; TS FBANK; MASK LOW10; AD 2K;
@@ -511,7 +515,7 @@ static NI void lmi_rvq(void){
 /* SWITCHES: SWBIT/SWWORD in BUF +1/BUF, STATE word in Q, set/invert/clear
  * by POLISH bits 7-8 under INHINT, RELINT, then branch/skip/noop by bits
  * 5-6. The INHINT/RELINT pair leaves interrupts enabled. */
-static NI uint8_t lmi_switch(p66_bias_io *io){
+static NI uint8_t lmi_switch(void){
  static const agc_word bits[16]={040000,020000,010000,04000,02000,01000,0400,0200,0100,040,020,010,4,2,1,0};
  unsigned op,word;agc_word old;
  ai_caf(017);ai_mask(0117);ai_caf(bits[W[0]&017u]);(void)ai_ts(0131);ai_caf(0100);ai_mpf(W[0117]);(void)ai_ts(0130);
@@ -759,16 +763,18 @@ static NI void lmi_pdvl(const agc_word *k){
 static NI void lmi_pddl_op(const agc_word *k){
  uint8_t c;
  dca_op(k,0);DXCH(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
- if(c==0u){(void)TS(rMODE);XCH(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));danzig();return;}
- if(c==1u){(void)TS(rMPAC+2);danzig();return;}
- (void)TS(rMODE);(void)TS(rMPAC+2);DXCH(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DXCH(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));danzig();
+ if(c==0u){(void)TS(rMODE);XCH(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));}
+ else if(c==1u)(void)TS(rMPAC+2);
+ else{(void)TS(rMODE);(void)TS(rMPAC+2);DXCH(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DXCH(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));}
+ danzig();
 }
-static NI void lmi_push(void){
+static NI uint8_t lmi_push(void){
  uint8_t c;
  DCA(rMPAC);DXCH(W[rPUSHLOC]);CAF(nowds(signed_word(W[rMODE])));ADS(rPUSHLOC);c=CCS(rMODE);
- if(c==0u){CA(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));danzig();return;}
- if(c==1u){danzig();return;}
- DCA(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DCA(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));danzig();
+ if(c==0u){CA(rMPAC+2);(void)TS(AT(W[rPUSHLOC]-1u));}
+ else if(c!=1u){DCA(rMPAC+3);DXCH(AT(W[rPUSHLOC]-4u));DCA(rMPAC+5);DXCH(AT(W[rPUSHLOC]-2u));}
+ danzig();
+ return 0;
 }
 
 /* ---- Shared basic subroutines (INTERPRETER.agc) ---------------------- */
@@ -1034,9 +1040,9 @@ static NI void lmi_genshift(void){
  }
 }
 /* GSHIFT CAF LOW7; TS FBANK; TCF GENSHIFT. */
-static NI void lmi_gshift(void){CAF(LOW7);(void)TS(rFB);lmi_genshift();}
+static NI void lmi_gshift(const agc_word *k){(void)k;CAF(LOW7);(void)TS(rFB);lmi_genshift();}
 /* TSLC CAF ZERO; TS FBANK; TSLC2 ... ENDTSLC CS MPTEMP; STORE1. */
-static NI void lmi_tslc(void){
+static NI void lmi_tslc(const agc_word *k){(void)k;
  uint8_t c;
  CAF(ZERO);(void)TS(rFB);(void)TS(rMPTEMP);TC(02174);c=branch();
  if(c!=1u){
@@ -1057,7 +1063,7 @@ static NI void comp(void){
  if(CCS(rMODE)<2u){CS(rMPAC+2);(void)TS(rMPAC+2);danzig();return;}
  DCS(rMPAC+3);DXCH(rMPAC+3);DCS(rMPAC+5);DXCH(rMPAC+5);danzig();
 }
-static NI void lmi_comp(void){comp();}
+static NI uint8_t lmi_comp(void){comp();return 0;}
 static NI void lmi_sign(const agc_word *k){
  uint8_t c=k?ai_ccsf(k[0]):CCS(W[rADDRWD]);
  if(c==0u){danzig();return;}
@@ -1071,7 +1077,7 @@ static NI void dsqsub(void){
  CA(rMPAC+1);SQUARE();(void)TS(rMPAC+2);CAF(ZERO);XCH(rMPAC+1);MP(rMPAC);DDOUBL();DAS(rMPAC+1);
  XCH(rMPAC);SQUARE();DAS(rMPAC);RETQ();
 }
-static NI void lmi_dsq(void){TC(03175);dsqsub();danzig();}
+static NI uint8_t lmi_dsq(void){TC(03175);dsqsub();danzig();return 0;}
 /* ENDDOT 07205 to TC DOTRET (Q = DOTRET +1). */
 static NI void enddot(void){
  DXCH(rBUF+1);DAS(rMPAC+1);AD(rMPAC);AD(rBUF);
@@ -1088,7 +1094,7 @@ static NI void vsqsub(void){
 }
 /* DMODE CAF ZERO; TCF NEWMODE. */
 static NI void dmode(void){CAF(ZERO);newmode();}
-static NI void lmi_vsq(void){TC(03246);vsqsub();dmode();}
+static NI uint8_t lmi_vsq(void){TC(03246);vsqsub();dmode();return 0;}
 /* DOTSUB 07156 (DOTINC set) with the vector operand at C(ADDRWD) or `k`. */
 static NI void dotsub(const agc_word *k){
  unsigned base=W[rADDRWD];
@@ -1599,13 +1605,14 @@ static NI void sine(void){
  for(i=0;i<2u;++i){DCA(rMPAC+1);DAS(rMPAC+1);AD(rMPAC);ADS(rMPAC);}
  danzig();
 }
-static NI void lmi_sin(void){sine();}
-static NI void lmi_cos(void){
+static NI uint8_t lmi_sin(void){sine();return 0;}
+static NI uint8_t lmi_cos(void){
  /* COSINE 00,3517: COS(X) = SIN(PI/2 - ABS(X)). */
  TC(IF_(03520,03517));
  if(branch()==0u){DCS(rMPAC);DXCH(rMPAC);}
  /* PRESINE CAF QUARTER; ADS MPAC. */
  CAF(QUARTER);ADS(rMPAC);sine();
+ return 0;
 }
 
 /* ---- ARCSIN/ARCCOS (bank 0) -------------------------------------------- */
@@ -1729,9 +1736,10 @@ static NI void lmi_tad(const agc_word *k){
  if(!TS(rMPAC)){danzig();return;}
  TC(IF_(07004,06753));(void)overflow();danzig();
 }
-static NI void lmi_round(void){
+static NI uint8_t lmi_round(void){
  /* ROUND 02116 (bank 0): TC ROUNDSUB; TCF DANZIG. */
  TC(02117);roundsub(0);danzig();
+ return 0;
 }
 static NI void lmi_ssp(agc_word word){
  /* SSP 06620: INCR LOC; INDEX LOC, CA 0 (the word given); STORE1 INDEX
@@ -1753,22 +1761,24 @@ static NI void adrers15(void){
  RETQ();
 }
 static NI void xad2(void){ADS(AT(W[rINDEXLOC]+tX1));danzig();}
-static NI void lmi_xad(void){TC(IF_(02401,02426));adrers15();CA(AT(W[rPOLISH]));xad2();}
-static NI void lmi_xsu(void){TC(IF_(02412,02437));adrers15();CS(AT(W[rPOLISH]));xad2();}
-static NI void lmi_lxa(void){TC(IF_(02355,02402));adrers15();CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig();}
+static NI uint8_t lmi_xad(void){TC(IF_(02401,02426));adrers15();CA(AT(W[rPOLISH]));xad2();return 0;}
+static NI uint8_t lmi_xsu(void){TC(IF_(02412,02437));adrers15();CS(AT(W[rPOLISH]));xad2();return 0;}
+static NI uint8_t lmi_lxa(void){TC(IF_(02355,02402));adrers15();CA(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig();return 0;}
 /* AXC 01,2351: TC TAGSUB (INDEXLOC = FIXLOC, +1 for X2); CS POLISH; TC
  * XSTORE; XSTORE INDEX INDEXLOC, TS X1; TCF DANZIG. */
-static NI void lmi_axc(void){
+static NI uint8_t lmi_axc(void){
  CA(rFIXLOC);(void)TS(rINDEXLOC);if(CCS(rCYR)==0u)INCR(rINDEXLOC);W[2]=3;
  CS(rPOLISH);TC(IF_(02354,02401));(void)TS(AT(W[rINDEXLOC]+tX1));danzig();
+ return 0;
 }
 /* LXC 01,2360 (Comanche 01,2405): TC 15ADRERS; INDEX POLISH, CS 0; XSTORE. */
-static NI void lmi_lxc(void){TC(IF_(02361,02406));adrers15();CS(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig();}
-static NI void lmi_sxa(void){TC(IF_(02365,02412));adrers15();CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig();}
-static NI void lmi_xchx(void){
+static NI uint8_t lmi_lxc(void){TC(IF_(02361,02406));adrers15();CS(AT(W[rPOLISH]));(void)TS(AT(W[rINDEXLOC]+tX1));danzig();return 0;}
+static NI uint8_t lmi_sxa(void){TC(IF_(02365,02412));adrers15();CA(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig();return 0;}
+static NI uint8_t lmi_xchx(void){
  /* XCHX TC 15ADRERS; INDEX POLISH, CA 0; INDEX INDEXLOC, XCH X1;
   * MSTORE1 INDEX POLISH, TS 0; TCF DANZIG. */
  TC(IF_(02373,02420));adrers15();CA(AT(W[rPOLISH]));XCH(AT(W[rINDEXLOC]+tX1));(void)TS(AT(W[rPOLISH]));danzig();
+ return 0;
 }
 static NI void lmi_ita(void){
  /* CALL/ITA CCS CYR (negative: ITA/STQ); TC 15ADRERS; INDEX FIXLOC,
@@ -1839,7 +1849,7 @@ static NI void lmi_exit(void){
  unsigned loc;
  CA(rBANKSET);(void)TS(rBB);loc=W[rLOC];TC(IF_(06747,06716));W[5]=(agc_word)((loc+1u)&07777u);
 }
-static NI void lmi_intpret(p66_bias_io *io){
+static NI void lmi_intpret(void){
  /* TC INTPRET (Q = the word after the TC): RELINT; QXCH LOC; CA BBANK;
   * TS BANKSET; MASK BIT15; TS INTBIT15; TS EDOP; TCF NEWOPS. */
  io->interrupt_enabled=1;ai_qxch(rLOC);CA(rBB);(void)TS(rBANKSET);MASKF(BIT15);(void)TS(rINTBIT15);(void)TS(rEDOP);W[5]=IF_(06070,06037);
@@ -1867,33 +1877,35 @@ static const agc_word t_indjump[32] = IRT_INDJUMP, miscjump[16] = IRT_MISCJUMP, 
 /* Physical rope address of fixed logical address a under bank register b
  * (FB or BANKSET's bits 14-11) and the channel-7 superbank bits; 0xffff for
  * erasable or outside the rope. */
-static NI uint16_t phys(unsigned a, agc_word b, unsigned superbank)
+static NI uint16_t phys(unsigned a, agc_word b)
 {
-    unsigned bank;
+    unsigned bank, sb = io->superbank & 0160u;
     if (a >= 04000u) return (uint16_t)(2048u + (a & 07777u) - 04000u);
     if (a < 02000u) return 0xffffu;
     bank = (b >> 10) & 037u;
-    if (bank >= 030u && (superbank & 0160u)) {
-        if ((superbank & 0160u) != 0100u) return 0xffffu;
+    if (bank >= 030u && sb) {
+        if (sb != 0100u) return 0xffffu;
         bank += 010u;
     }
     return (uint16_t)(bank * 1024u + (a & 01777u));
 }
 static NI uint8_t rope(uint16_t p, agc_word *w) { return p != 0xffffu && apollo_rope_read(MISSION, p, w); }
-/* The word off words after LOC in the interpretive program. */
-static NI uint8_t code_word(unsigned superbank, unsigned off, agc_word *w)
+/* The word off words after LOC in the interpretive program, into cw. */
+static agc_word cw;
+static NI uint8_t code_word(unsigned off)
 {
-    return rope(phys((W[rLOC] + off) & 077777u, W[rBANKSET], superbank), w);
+    return rope(phys((W[rLOC] + off) & 077777u, W[rBANKSET]), &cw);
 }
 /* Fixed operand words at ADDRWD under FB (n words; past the rope's end
- * reads as zero, which no order uses). Returns k, or 0 for an erasable
+ * reads as zero, which no order uses). Returns them, or 0 for an erasable
  * operand (the bodies then read C(ADDRWD) from the image). */
-static const agc_word *operand(unsigned superbank, agc_word *k, unsigned n)
+static agc_word kw[18];
+static NI const agc_word *operand(unsigned n)
 {
     unsigned i, a = W[rADDRWD] & 077777u;
     if (a < 02000u) return 0;
-    for (i = 0; i < n; ++i) if (!rope(phys(a + i, W[4], superbank), &k[i])) k[i] = 0;
-    return k;
+    for (i = 0; i < n; ++i) if (!rope(phys(a + i, W[4]), &kw[i])) kw[i] = 0;
+    return kw;
 }
 
 /* DANZIG's job switch: NEWJOB positive goes to CHANG2 (CCS EDOP +0; CCS
@@ -1907,58 +1919,43 @@ static NI void chang2(uint8_t bank)
 /* CGOTO 04 (ADDRWD names the modifier, the word after the operand the CADR
  * list): INDEX LOC, CA 1; INDEX ADDRWD, AD 0; TS FBANK; MASK LOW10; INDEX A,
  * CA 10000; TS POLISH; TCF GOTO +1. */
-static NI uint8_t cgoto(unsigned superbank)
+static NI uint8_t cgoto(void)
 {
-    agc_word list, v, cadr;
+    agc_word list, v;
     int i;
-    if (!code_word(superbank, 1u, &list)) return REFUSE;
+    if (!code_word(1u)) return REFUSE;
+    list = cw;
     v = ai_word(W[rADDRWD]);
     i = (v & 040000u) ? -(int)(~v & 037777u) : (int)v;
     if (i < 0 || (list & 01777u) + (unsigned)i > 01777u) return REFUSE;
-    if (!rope(phys(02000u + ((list & 01777u) + (unsigned)i), list, superbank), &cadr)) return REFUSE;
+    if (!rope(phys(02000u + ((list & 01777u) + (unsigned)i), list), &cw)) return REFUSE;
     ai_caf(list); ai_ad(W[rADDRWD]); (void)ai_ts(4); ai_maskf(01777u);
-    ai_caf(cadr); (void)ai_ts(rPOLISH); lmi_goto_any();
+    ai_caf(cw); (void)ai_ts(rPOLISH); lmi_goto_any();
     return DONE;
 }
 
-/* The address order idx (INDJUMP) after its address formation. */
-static NI uint8_t addr_body(unsigned superbank, unsigned idx)
+/* The address orders (INDJUMP) after address formation, by table index;
+ * 004 CGOTO and 011 SSP read a further code word, 015 CCALL (no program
+ * uses it) and 035 (unassigned) refuse. */
+typedef void (*addr_order)(const agc_word *);
+static NI void tload_any(const agc_word *k) { if (k) lmi_tload_fixed(k); else lmi_tload(); }
+static NI void sload_any(const agc_word *k) { if (k) lmi_sload_fixed(k); else lmi_sload(); }
+static const addr_order addr_orders[32] = {
+    lmi_vload, lmi_tad, lmi_sign, lmi_vxsc, 0, tload_any, lmi_dload_op, lmi_vsc,
+    sload_any, 0, lmi_pddl_op, lmi_mxv, lmi_pdvl, 0, lmi_vxm, lmi_tslc,
+    lmi_dmpr, lmi_ddv, lmi_bddv, lmi_gshift, lmi_vad, lmi_vsu, lmi_bvsu, lmi_dot,
+    lmi_vxv, lmi_vproj, lmi_dsu, lmi_bdsu, lmi_dad, 0, lmi_dmp, lmi_setpd
+};
+static NI uint8_t addr_body(unsigned idx)
 {
-    agc_word kw[18], v;
-    const agc_word *k = operand(superbank, kw, idx == 013u || idx == 016u ? 18u : 6u);
-    switch (idx) {
-    case 000: lmi_vload(k); break;
-    case 001: lmi_tad(k); break;
-    case 002: lmi_sign(k); break;
-    case 003: lmi_vxsc(k); break;
-    case 004: return cgoto(superbank);
-    case 005: if (k) lmi_tload_fixed(k); else lmi_tload(); break;
-    case 006: lmi_dload_op(k); break;
-    case 007: lmi_vsc(k); break;
-    case 010: if (k) lmi_sload_fixed(k); else lmi_sload(); break;
-    case 011: if (!code_word(superbank, 1u, &v)) return REFUSE; lmi_ssp(v); break;
-    case 012: lmi_pddl_op(k); break;
-    case 013: lmi_mxv(k); break;
-    case 014: lmi_pdvl(k); break;
-    case 016: lmi_vxm(k); break;
-    case 017: lmi_tslc(); break;
-    case 020: lmi_dmpr(k); break;
-    case 021: lmi_ddv(k); break;
-    case 022: lmi_bddv(k); break;
-    case 023: lmi_gshift(); break;
-    case 024: lmi_vad(k); break;
-    case 025: lmi_vsu(k); break;
-    case 026: lmi_bvsu(k); break;
-    case 027: lmi_dot(k); break;
-    case 030: lmi_vxv(k); break;
-    case 031: lmi_vproj(k); break;
-    case 032: lmi_dsu(k); break;
-    case 033: lmi_bdsu(k); break;
-    case 034: lmi_dad(k); break;
-    case 036: lmi_dmp(k); break;
-    case 037: lmi_setpd(); break;
-    default: return REFUSE;   /* 015 CCALL (no program uses it), 035 unassigned */
+    const agc_word *k = operand(idx == 013u || idx == 016u ? 18u : 6u);
+    if (idx == 004u) return cgoto();
+    if (idx == 011u) {
+        if (!code_word(1u)) return REFUSE;
+        lmi_ssp(cw); return MORE;
     }
+    if (!addr_orders[idx]) return REFUSE;
+    addr_orders[idx](k);
     return MORE;
 }
 
@@ -1969,61 +1966,57 @@ static NI void swbranch(agc_word w)
     ai_ca(rBANKSET); (void)ai_ts(4); ai_caf(w); (void)ai_ts(rPOLISH); lmi_goto_any();
 }
 
+/* MISCJUMP 000-013 and UNAJUMP 000-013 bodies: nonzero is the branch
+ * (GOTO) for the miscellaneous orders, the end of the slot for the unary
+ * ones. */
+typedef uint8_t (*plain_order)(void);
+static const plain_order misc_orders[12] = {
+    lmi_axt, lmi_axc, lmi_lxa, lmi_lxc, lmi_sxa, lmi_xchx, lmi_incr, lmi_tix,
+    lmi_xad, lmi_xsu, lmi_bzegoto, lmi_bplbmn
+};
+static const plain_order unary_orders[12] = {
+    lmi_sqrt, lmi_sin, lmi_cos, lmi_asin, lmi_acos, lmi_dsq, lmi_round, lmi_comp,
+    lmi_vdef, lmi_unit, lmi_abvalabs, lmi_vsq
+};
+
 /* One order with code c (OPJUMP done: CYR holds it, A its CCS). */
-static NI uint8_t order(p66_bias_io *io, unsigned c)
+static NI uint8_t order(unsigned c)
 {
-    unsigned sb = io->superbank, idx;
-    agc_word w;
+    unsigned idx;
+    uint8_t g;
     if (c == 0u) { lmi_exit(); return DONE; }
     if (c & 1u) {
         idx = c >> 2;
-        if (!code_word(sb, 1u, &w)) return REFUSE;
-        if (c & 2u) lmi_indexed(w, t_indjump[idx]);
-        else if (w & 040000u) {
+        if (!code_word(1u)) return REFUSE;
+        if (c & 2u) lmi_indexed(cw, t_indjump[idx]);
+        else if (cw & 040000u) {
             if (idx == 037u || idx == 004u || idx == 011u) return REFUSE;   /* SETPD, CGOTO, SSP push up: never assembled */
-            lmi_address_pushup(w, t_indjump[idx]);
-        } else lmi_direct(w, t_indjump[idx]);
-        return addr_body(sb, idx);
+            lmi_address_pushup(cw, t_indjump[idx]);
+        } else lmi_direct(cw, t_indjump[idx]);
+        return addr_body(idx);
     }
     if (c & 2u) {
         idx = c >> 3;
-        if (!code_word(sb, 1u, &w)) return REFUSE;
-        lmi_misc(w, miscjump[idx]);
-        switch (idx) {
-        case 000: lmi_axt(); break;
-        case 001: lmi_axc(); break;
-        case 002: lmi_lxa(); break;
-        case 003: lmi_lxc(); break;
-        case 004: lmi_sxa(); break;
-        case 005: lmi_xchx(); break;
-        case 006: lmi_incr(); break;
-        case 007: if (lmi_tix()) { lmi_goto_any(); return DONE; } break;
-        case 010: lmi_xad(); break;
-        case 011: lmi_xsu(); break;
-        case 012: if (lmi_bzegoto()) { lmi_goto_any(); return DONE; } break;
-        case 013: if (lmi_bplbmn()) { lmi_goto_any(); return DONE; } break;
-        case 014:
+        if (!code_word(1u)) return REFUSE;
+        lmi_misc(cw, miscjump[idx]);
+        if (idx < 014u) g = misc_orders[idx]();
+        else if (idx == 014u) {
             (void)ai_ccs(rCYR);
             if (!(c & 4u)) { lmi_rtb(); return DONE; }
-            if (lmi_bhiz()) { lmi_goto_any(); return DONE; }
-            break;
-        case 015:
-            if (c & 4u) { lmi_ita(); break; }
-            lmi_call(); lmi_goto_any(); return DONE;
-        case 016:
-            if (lmi_switch(io)) {
-                if (!code_word(sb, 1u, &w)) return REFUSE;
-                swbranch(w); return DONE;
-            }
-            break;
-        default:
-            switch (lmi_bov()) {
-            case LMI_BOV_NONE: break;
-            case LMI_BOV_GOTO: lmi_goto_any(); return DONE;
-            case LMI_BOV_RTB: lmi_rtb(); return DONE;
-            default: return DONE;
-            }
+            g = lmi_bhiz();
+        } else if (idx == 015u) {
+            if (c & 4u) { lmi_ita(); return MORE; }
+            lmi_call(); g = 1;
+        } else if (idx == 016u) {
+            if (!lmi_switch()) return MORE;
+            if (!code_word(1u)) return REFUSE;
+            swbranch(cw); return DONE;
+        } else {
+            g = lmi_bov();
+            if (g == LMI_BOV_RTB) { lmi_rtb(); return DONE; }
+            if (g == LMI_BOV_OUT_OF_SCOPE) return DONE;
         }
+        if (g) { lmi_goto_any(); return DONE; }
         return MORE;
     }
     if (c & 4u) {
@@ -2033,69 +2026,55 @@ static NI uint8_t order(p66_bias_io *io, unsigned c)
     }
     idx = (c >> 3) - 1u;
     lmi_unary(unajump[idx]);
-    switch (idx + 1u) {
-    case 001: if (lmi_sqrt()) return DONE; break;
-    case 002: lmi_sin(); break;
-    case 003: lmi_cos(); break;
-    case 004: if (lmi_asin()) return DONE; break;
-    case 005: if (lmi_acos()) return DONE; break;
-    case 006: lmi_dsq(); break;
-    case 007: lmi_round(); break;
-    case 010: lmi_comp(); break;
-    case 011: lmi_vdef(); break;
-    case 012: if (lmi_unit()) return DONE; break;
-    case 013: if (lmi_abvalabs()) return DONE; break;
-    case 014: lmi_vsq(); break;
-    case 015:
-        if (!code_word(sb, 1u, &w)) return REFUSE;
-        lmi_stadr(w); break;
-    case 016: lmi_rvq(); return DONE;
-    default: lmi_push(); break;
+    if (idx < 014u) return unary_orders[idx]() ? DONE : MORE;
+    if (idx == 014u) {
+        if (!code_word(1u)) return REFUSE;
+        lmi_stadr(cw); return MORE;
     }
-    return MORE;
+    if (idx == 015u) { lmi_rvq(); return DONE; }
+    lmi_push(); return MORE;
 }
 
 /* From the image's Z through the dispatch paths and bodies to the end of
  * the slot. */
-static NI enum exec_status run(p66_bias_io *io)
+static NI enum exec_status run(void)
 {
-    agc_word w;
     uint8_t r = MORE, load = 0;
     unsigned guard;
     for (guard = 0; guard < 16u && r == MORE; ++guard) {
         switch (W[5]) {
         case IRT_NEWOPS:
-            if (!code_word(io->superbank, 0u, &w)) return EXEC_OUT_OF_SCOPE;
-            if (!(w & 040000u)) { lmi_store_code(w); break; }
-            lmi_newops(w);
-            r = order(io, ((~(unsigned)w & 077777u) - 1u) & 0177u); break;
+            if (!code_word(0u)) return EXEC_OUT_OF_SCOPE;
+            if (!(cw & 040000u)) { lmi_store_code(cw); break; }
+            lmi_newops(cw);
+            r = order(((~(unsigned)cw & 077777u) - 1u) & 0177u); break;
         case IRT_DANZIG:
-            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_danzig_right(); r = order(io, c); break; }
+            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_danzig_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(1); return EXEC_OK; }
             lmi_danzig_next(); return EXEC_OK;
         case IRT_NOIBNKSW:
-            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_noibnksw_right(); r = order(io, c); break; }
+            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_noibnksw_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(0); return EXEC_OK; }
             (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB); ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
         case IRT_DODLOAD: lmi_dodload(); load = 0; break;
         case IRT_DOVLOAD: lmi_dovload(); load = 1; break;
         case IRT_DIRADRES:
-            if (!code_word(io->superbank, 1u, &w)) return EXEC_OUT_OF_SCOPE;
-            if (w & 040000u) lmi_diradres_pushup(w, t_indjump[load ? 000 : 006]);
-            else lmi_diradres(w, t_indjump[load ? 000 : 006]);
-            r = addr_body(io->superbank, load ? 000 : 006); break;
+            if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
+            if (cw & 040000u) lmi_diradres_pushup(cw, t_indjump[load ? 000 : 006]);
+            else lmi_diradres(cw, t_indjump[load ? 000 : 006]);
+            r = addr_body(load ? 000 : 006); break;
         case IRT_DODLOADX: case IRT_DOVLOADX:
             load = W[5] == IRT_DOVLOADX;
-            if (!code_word(io->superbank, 1u, &w)) return EXEC_OUT_OF_SCOPE;
+            if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
             ai_caf(load ? 040001u : IRT_DLOADX_WORD); (void)ai_ts(rCYR);
-            lmi_indexed(w, t_indjump[load ? 000 : 006]);
-            r = addr_body(io->superbank, load ? 000 : 006); break;
+            lmi_indexed(cw, t_indjump[load ? 000 : 006]);
+            r = addr_body(load ? 000 : 006); break;
         case IRT_B15BITADR:
-            if (!code_word(io->superbank, 1u, &w)) return EXEC_OUT_OF_SCOPE;
-            lmi_15bitadr(w, miscjump[015]); lmi_call(); lmi_goto_any(); return EXEC_OK;
+            if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
+            lmi_15bitadr(cw, miscjump[015]); lmi_call(); lmi_goto_any(); return EXEC_OK;
         case IRT_GOTO: lmi_goto_any(); return EXEC_OK;
         case IRT_SWRETURN: lmi_swreturn(); break;
-        case IRT_INTPRET: lmi_intpret(io); return EXEC_OK;
+        case IRT_INTPRET: lmi_intpret(); return EXEC_OK;
         default: return EXEC_OK;   /* outside the interpreter */
         }
     }
@@ -2103,7 +2082,7 @@ static NI enum exec_status run(p66_bias_io *io)
 }
 
 /* The image as the bodies need it (the compiled routines' sane()). */
-static NI uint8_t sane(const p66_bias_io *io)
+static NI uint8_t sane(void)
 {
     unsigned vac = W[rFIXLOC];
     if (W[7] || W[rNEWJOB] > 037777u || W[3] > 03400u || (W[3] & 0377u) || W[6] != (agc_word)((W[4] & 076000u) | (W[3] >> 8))) return 0;
@@ -2127,24 +2106,25 @@ static NI uint8_t bind(apollo_overlay_state *s)
 #include "cm_native_image.h"
 static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_state *s, void *v)
 {
-    cm_native_io *io = v;
-    p66_bias_io l;
+    cm_native_io *cio = v;
+    static p66_bias_io l;
     enum exec_status st;
     (void)p;
-    if (!bind(s) || !io) return EXEC_OUT_OF_SCOPE;
-    l.superbank = io->superbank; l.interrupt_enabled = io->interrupt_enabled;
-    if (!sane(&l)) return EXEC_OUT_OF_SCOPE;
-    st = run(&l);
-    io->superbank = l.superbank; io->interrupt_enabled = l.interrupt_enabled;
+    if (!bind(s) || !cio) return EXEC_OUT_OF_SCOPE;
+    l.superbank = cio->superbank; l.interrupt_enabled = cio->interrupt_enabled;
+    io = &l;
+    if (!sane()) return EXEC_OUT_OF_SCOPE;
+    st = run();
+    cio->superbank = l.superbank; cio->interrupt_enabled = l.interrupt_enabled;
     return st;
 }
 #else
 static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_state *s, void *v)
 {
-    p66_bias_io *io = v;
     (void)p;
-    if (!bind(s) || !io || !sane(io)) return EXEC_OUT_OF_SCOPE;
-    return run(io);
+    io = v;
+    if (!bind(s) || !io || !sane()) return EXEC_OUT_OF_SCOPE;
+    return run();
 }
 #endif
 const agc_routine lm_interp_core = entry;
