@@ -834,7 +834,7 @@ static NI agc_word fixed_indexed(unsigned k,agc_word v){
 #define BIT15_AT IF_(04735u,05001u)
 #define BIT14_AT IF_(04736u,05002u)
 /* INDEX r; CAF BIT14. */
-static NI agc_word bit14_indexed(unsigned r){return fixed_indexed(BIT14_AT,W[r]);}
+static NI agc_word bit14_indexed(uint8_t r){return fixed_indexed(BIT14_AT,W[r]);}
 
 /* BRANCH 06723 (Q holds the caller's return): 0 positive (TC Q),
  * 1 zero (INDEX Q, TC 1), 2 negative (INDEX Q, TC 2). -0 is passed over. */
@@ -875,7 +875,7 @@ static NI void lmi_bdsu(const agc_word *k){
  dca_op(k,0);DXCH(rMPAC);ai_dcom();endvxv();
 }
 /* VROUND/ROUNDSUB 07136-07153. `entry` 0 ROUNDSUB, 1 ROUNDSUB +1, 2 VROUND. */
-static NI void roundsub(unsigned entry){
+static NI void roundsub(uint8_t entry){
  if(entry==0u)CAF(ZERO);
  if(entry<2u)(void)TS(rMODE);
  XCH(rMPAC+2);DOUBLE();
@@ -1926,7 +1926,7 @@ static NI uint16_t phys(unsigned a, agc_word b)
 static NI uint8_t rope(uint16_t p, agc_word *w) { return p != 0xffffu && apollo_rope_read(MISSION, p, w); }
 /* The word off words after LOC in the interpretive program, into cw. */
 static agc_word cw;
-static NI uint8_t code_word(unsigned off)
+static NI uint8_t code_word(uint8_t off)
 {
     return rope(phys((W[rLOC] + off) & 077777u, W[rBANKSET]), &cw);
 }
@@ -1980,7 +1980,7 @@ static const addr_order addr_orders[32] = {
     lmi_dmpr, lmi_ddv, lmi_bddv, lmi_gshift, lmi_vad, lmi_vsu, lmi_bvsu, lmi_dot,
     lmi_vxv, lmi_vproj, lmi_dsu, lmi_bdsu, lmi_dad, 0, lmi_dmp, lmi_setpd
 };
-static NI uint8_t addr_body(unsigned idx)
+static NI uint8_t addr_body(uint8_t idx)
 {
     const agc_word *k = operand(idx == 013u || idx == 016u ? 18u : 6u);
     if (idx == 004u) return cgoto();
@@ -2014,9 +2014,9 @@ static const plain_order unary_orders[12] = {
 };
 
 /* One order with code c (OPJUMP done: CYR holds it, A its CCS). */
-static NI uint8_t order(unsigned c)
+static NI uint8_t order(uint8_t c)
 {
-    unsigned idx;
+    uint8_t idx;
     uint8_t g;
     if (c == 0u) { lmi_exit(); return DONE; }
     if (c & 1u) {
@@ -2081,13 +2081,13 @@ static NI enum exec_status run(void)
             if (!code_word(0u)) return EXEC_OUT_OF_SCOPE;
             if (!(cw & 040000u)) { lmi_store_code(cw); break; }
             lmi_newops(cw);
-            r = order(((~(unsigned)cw & 077777u) - 1u) & 0177u); break;
+            r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
         case IRT_DANZIG:
-            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_danzig_right(); r = order(c); break; }
+            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_danzig_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(1); return EXEC_OK; }
             lmi_danzig_next(); return EXEC_OK;
         case IRT_NOIBNKSW:
-            if (W[rEDOP]) { unsigned c = W[rEDOP] - 1u; lmi_noibnksw_right(); r = order(c); break; }
+            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); lmi_noibnksw_right(); r = order(c); break; }
             if (W[rNEWJOB]) { chang2(0); return EXEC_OK; }
             (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB); ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
         case IRT_DODLOAD: lmi_dodload(); load = 0; break;
