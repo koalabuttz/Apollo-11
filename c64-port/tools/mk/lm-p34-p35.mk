@@ -24,7 +24,7 @@ lm-p34-p35-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/lm-p34-p35.groups
 LP34_C64_PRGS = $(foreach g,$(LM_P34_P35_GROUPS),build/lm-p34-p35-$(g).prg)
-LP34_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c tests/interp_cut.c tests/lm_p34_p35_target.c
+LP34_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c tests/lm_p34_p35_target.c
 LP34_C64_lm = src/lm_p34_p35.c src/lm_interp_orders.c src/lm_interp_steps.c
 c64-lm-p34-p35: $(LP34_C64_PRGS)
 build/lm-p34-p35-%.prg: $(LP34_SRC) platform/c64/lm_p34_p35_diagnostic.c tools/mk/lm-p34-p35.groups $(LP34_HDR) | build

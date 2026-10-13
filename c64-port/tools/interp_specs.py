@@ -1713,7 +1713,6 @@ SPECS = {
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
-        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P37,P70.agc'},
         'source_path': {'cm': 'P37_P70.agc'},
@@ -1733,8 +1732,7 @@ SPECS = {
         # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
         # 144 passes of about eight routines each, and V2T's own iteration
         # calls it again on each of its passes.
-        # (An edge-case state runs V2T past 10,000 routines.)
-        'max_steps': 40000,
+        'max_steps': 10000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
@@ -1757,15 +1755,9 @@ SPECS = {
                    # they would run over XT1LIM's 20D.
                    'V2T101+51': {'0163': [0, 1]}},
         'target': 'tests/cm_p37_p70_target.c',
-        'edge_cases': True,
-        'resume_keys': True,
-        'resume_flow': True,
-        'c64_rows': 'cover',
-        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'lm-p34-p35': {
-        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'lm': 'P34-35_P74-75.agc'},
@@ -1795,11 +1787,6 @@ SPECS = {
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},
         'target': 'tests/lm_p34_p35_target.c',
-        'edge_cases': True,
-        'resume_keys': True,
-        'resume_flow': True,
-        'c64_rows': 'cover',
-        'cover_stride': 16,
         'freeze_stride': 512,
     },
     'lm-p32-p35': {

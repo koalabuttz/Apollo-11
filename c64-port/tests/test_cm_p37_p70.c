@@ -16,7 +16,7 @@ static void run(const char *set, const irc_case *cases, const uint32_t *expected
         unsigned kind;
         uint32_t d;
         irc_build(&s, &cases[i]);
-        kind = irc_run(irc_program(cases[i].cm), &s, &cases[i], 40000, &ie);
+        kind = irc_run(irc_program(cases[i].cm), &s, &cases[i], 10000, &ie);
         d = irc_digest(kind, &s, ie);
         ++checks;
         if (kind != IRC_STOPPED || d != expected[i]) {
