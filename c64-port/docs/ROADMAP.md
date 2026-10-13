@@ -2056,6 +2056,10 @@ All of Comanche055 CM_BODY_ATTITUDE (195 words) is native C on the control-trans
 
 All of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (813 words) is native C on the control-transfer ABI, as 138 routines compiled whole-file by `tools/basic_compile.py`. All 7,168 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 224 frozen cases, and 3 C64 diagnostics pass 79 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-ENTRY-DAP.md`.
 
+## Translate Comanche LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES
+
+All of Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (71 words) is native C on the control-transfer ABI, as 32 routines compiled whole-file by `tools/basic_compile.py`. All 8,192 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 256 frozen cases, and 2 C64 diagnostics pass 39 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-EPHEMERIS.md`.
+
 ## Translate Comanche JET_SELECTION_LOGIC
 
 All of Comanche055 JET_SELECTION_LOGIC (629 words) is native C on the control-transfer ABI, as 76 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 27 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-JET-SELECT.md`.
