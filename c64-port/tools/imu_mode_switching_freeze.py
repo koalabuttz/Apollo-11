@@ -124,6 +124,7 @@ def main():
              'rope_sha256': [hashlib.sha256(p.read_bytes()).hexdigest() for p in ROPES],
              'oracle_engine': 'pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block '
                               '(build/no-imu-device.patch)',
+             'source_sha256': {s: hashlib.sha256((R / s).read_bytes()).hexdigest() for s in NATIVE},
              'cases': len(rows), 'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'stops': {k: dict(sorted(v.items())) for k, v in stops.items()},
              'boundary': 'entry cases: from the routine to the first external address, the subroutine '
