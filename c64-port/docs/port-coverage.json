@@ -154,8 +154,18 @@
       "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
       "bytes": 4448,
       "lines": 230,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_alarm.c",
+            "src/cm_alarm_operands.inc",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "verification": "docs/CM-ALARM.md",
+          "scope": "Every instruction: ALARM/ALARM2/BORTENT/PRIOENT/LARMENT, CHKFAIL1/CHKFAIL2/FAIL3/PROGLARM/MULTEXIT/MULTFAIL, PRIOLARM, BAILOUT (= ABORT), WHIMPER, POODOO/ABORT2, CCSHOLE, CURTAINS and VARALARM as control-transfer ABI routines (21 entries incl. MULTEXIT, BANKCALL and DOWNFLAG return points and the ALMCADR erasable continuation); alarm codes of all 62 caller sites compiled from the source listing."
+        },
         {
           "native_files": [
             "src/cm_alarm_record.c"
@@ -294,6 +304,47 @@
               "path": "evidence/cm-alarm-sites/cm-alarm-sites-proof.json",
               "sha256": "138ef51a1d5bdc8ecbbd3c51ccc69ee50fa3eb16b8c42b54576f83f8f7011f8d"
             }
+          }
+        }
+      },
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "entries from their 62 compiled TC sites (ALARM, ALARM2, BAILOUT = ABORT, POODOO), CCSHOLE/CURTAINS/VARALARM/PRIOLARM as their callers enter them with a positive alarm code in A where one is passed, the MULTEXIT, BANKCALL (VAC5STOR, MR.KLEAN) and DOWNFLAG return points (BAILOUT's and POODOO's VAC5STOR returns with ALMCADR at a compiled site), and ALMCADR holding a return address 2000-7777; cm_native_io plus agc_hardware for WHIMPER's RESUME (TS overflow, a negative CCS after MASK FLAGWRD7 and MULTEXIT words other than TC/TCF refuse)",
+        "external_continuations": [
+          "callers' returns",
+          "PRIODSPR (PINBALL)",
+          "DOWNFLAG (SERVICE_ROUTINES)",
+          "BANKCALL/POSTJUMP (cm_interbank_routines) to VAC5STOR, MR.KLEAN and ENEMA"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "docs/CM-ALARM.md",
+            "sha256": "d6a10b9acd40756961c6d77d1c5c46c3c505ed7d6e4a68e5bb5614450147d365"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-alarm/cm-alarm-proof.json",
+            "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-alarm/cm-alarm-host.log",
+            "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-alarm/cm-alarm-vice.log",
+            "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+            "vice_targets": {
+              "vice-cm-alarm": 256
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-265.md",
+            "sha256": "36b1805f87222fb9f4a81e5017954b5d86a3a5afe3d8886fe83068feef8e5513"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-alarm/cm-alarm-c64-cover.json",
+            "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2"
           }
         }
       }
@@ -2636,64 +2687,51 @@
       "native_coverage": [
         {
           "native_files": [
-            "src/cm_ephemeris_time.c",
-            "src/cm_ephemeris_moon_callers.c",
-            "src/cm_ephemeris_velocity.c",
-            "src/cm_ephemeris_solar.c",
-            "src/cm_ephemeris_positions.c"
+            "src/cm_ephemeris.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_transfer.c"
           ],
-          "scope": "Complete local71-word source union and all actual caller return frames under frozen compiled producer/canonical state contracts.",
-          "verification": "docs/CM-EPHEMERIS-COMPLETE.md"
+          "scope": "Every word of the file (71 words): The ephemeris routines LSPOS, LUNPOS, LUNVEL and SOLPOS (SOLPOS has no caller in Comanche055 and is a public entry), LSTIME (the time since the ephemeris epoch) and the evaluators RES/RESA (the Sun), REM/REMA (the Moon's position polynomial) and VEM/VEMA (its velocity), all interpretive. The legacy packets (src/cm_ephemeris_*.c) are superseded and no longer cited. As 32 routines of the control-transfer ABI compiled whole-file by tools/interp_compile.py, entered at LSPOS, LSTIME, LUNPOS, LUNVEL, REM, REMA, RES, RESA, SOLPOS, VEM, VEMA.",
+          "verification": "docs/CM-EPHEMERIS.md"
         }
       ],
       "pending_complete_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": {
-          "canonical_state": "Sole canonical2048-word image; ordinary live time/coefficient words, coherent original entry banks and five VACs.",
-          "producer_ownership": "Quiesced computational producers throughout explicit native source stages; source NEWJOB and BANK/IRQ controls retain frozen guards.",
-          "caller_returns": {
-            "LSPOS": [
-              "022557",
-              "030231"
-            ],
-            "LUNPOS": [
-              "065673",
-              "062742",
-              "023327"
-            ],
-            "LUNVEL": [
-              "023377"
-            ],
-            "SOLPOS": [
-              "023377 declared public entry; no original CALL sites"
-            ]
-          },
-          "data_validity": "Original prelaunch and15-day physical validity requirements; no widened validity claim."
-        },
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 = 6 (LSTIME's SSP S1 6D, the TIX step) and PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
         "external_continuations": [
-          "Caller entry/resume services and application scheduling",
-          "Restart policy and physical timing",
-          "Prelaunch coefficients and original 15-day validity",
-          "Complete native C64 mission application and restart acceptance"
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
+        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-source-map.json",
+            "sha256": "47d9a7c5217ca8a094b9b7a936dc63b0c821448553dac8fbf3e33df8226d5a1a"
           },
           "independent_assembly_comparison": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
+            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
           },
           "host_and_sanitizer_results": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-host.log",
+            "sha256": "6b0056da4012486302053f984d655d8549c2e86801a7a0dde72e3df8b38bb3c7"
           },
           "c64_execution_results": {
-            "path": "evidence/cm-ephemeris-complete-root-review.json",
-            "sha256": "239b2fb97828c919b0370bc4386334d91bf3ae661e7aba4a0dfd987ba5df5cbf"
+            "path": "evidence/cm-ephemeris/cm-ephemeris-vice.log",
+            "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+            "vice_targets": {
+              "vice-cm-ephemeris": 39
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
+            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
           }
         }
       },
@@ -5804,7 +5842,7 @@
             "src/cm_waitlist_internal.c",
             "src/agc_transfer.c"
           ],
-          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "scope": "T3RUPT body (01,3416) and DLY2 -1 (05255) registered in cm_exec_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 114 DELAYJOB-to-DLY2 -1 cases (57 inputs on their own image and on a sane waitlist) equal yaAGC through agc_transfer_run.",
           "verification": "docs/milestones/waitlist-entries.md"
         },
         {
@@ -5844,11 +5882,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
+            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
+            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5857,12 +5895,12 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 365
+              "vice-waitlist-entries": 379
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
+            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -11960,7 +11998,7 @@
             "src/lm_delay_image.c",
             "src/agc_transfer.c"
           ],
-          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 57 DELAYJOB-to-DLY2 -1 cases equal yaAGC through agc_transfer_run.",
+          "scope": "T3RUPT body (01,3407) and DLY2 -1 (05211) registered in lm_exec_task_routines: the body sets BANKRUPT, QXCH QRUPT and enters the dispatch admission; DLY2 -1 stores WAITADR and runs the internal Waitlist with the caller's BB. 512 T3RUPT and 171 DELAYJOB-to-DLY2 -1 cases (57 inputs on their own image, on a sane waitlist, and on a sane waitlist with the new task due 1 cs before a queued one, so WAIT2's search ends on CCS -0) equal yaAGC through agc_transfer_run.",
           "verification": "docs/milestones/waitlist-entries.md"
         },
         {
@@ -11988,7 +12026,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines, lm_lead_in_routines and lm_t6rupt_routines (the RESUME family, milestone lm-t6rupt), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body, DLY2 -1 and NOQBRSM +1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines, lm_lead_in_routines and lm_t6rupt_routines (the RESUME family, milestone lm-t6rupt), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body, DLY2 -1 and NOQBRSM +1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change. The Waitlist takes a positive delay of at most 16250 cs (WL_MAX_DELAY in include/waitlist.h); a larger positive delay returns EXEC_OUT_OF_SCOPE.",
           "unreached": "Named in the source map with reasons: the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1). No producer reaches these words.",
           "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
         },
@@ -12008,11 +12046,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
-            "sha256": "3096239edb1d36537edf7dc993dab365e430df384c20bc382f9281c0aa71bd61"
+            "sha256": "f44c1c591c74f2b53aa1abb071b016cc990e1cfa4127f8027055640b50c54e36"
           },
           "c64_execution_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-vice.log",
-            "sha256": "e8406807abb22ab01ae189ce21fff79bec8181bf515e52a44991384fe8f79bcb",
+            "sha256": "ad174e6336a085f83cc885ca47dc21f36f899e33a9795d42e6dd7e0cc42b6df7",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -12021,13 +12059,13 @@
               "vice-cm-exec-jobs": 388,
               "vice-cm-exec-idle": 325,
               "vice-rupt-lead-ins": 195,
-              "vice-waitlist-entries": 365,
+              "vice-waitlist-entries": 379,
               "vice-lm-t6rupt": 244
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
-            "sha256": "892475a3b2418ba489d4bda9a3794d41d4ac5322ff65367bc42ec99dafdf0e4b"
+            "sha256": "d4b1c008f1a1f2fbbc1efbb8abe291543a6e990fb011d301fa85073e65f55902"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",

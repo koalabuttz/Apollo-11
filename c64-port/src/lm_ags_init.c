@@ -11,7 +11,7 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Coverage hook for the host test (empty in flight builds): path a - 02005
  * for each basic instruction address a reached, 0200 + the pair's offset
  * for each order pair (02037-02071 and SCALEVEC's 02132-02167 at 0240),

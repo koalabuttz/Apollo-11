@@ -1,0 +1,11 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+b22d2fcb4bbb1de8b615404209eab5014faad101904f83c89eaf00d06daffabd  build/cm-ephemeris-1.prg
+b642f290212e330d80d71a3280b4442d5d1e8974dff30a9cac1f22ee680cd03d  build/cm-ephemeris-2.prg
+
+$ make vice-cm-ephemeris
+for p in build/cm-ephemeris-1.prg build/cm-ephemeris-2.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-ephemeris-1.prg: 19 checks, 0 failures
+PRG sha256: b22d2fcb4bbb1de8b615404209eab5014faad101904f83c89eaf00d06daffabd cm-ephemeris-1.prg
+PASS: VICE PAL cm-ephemeris-2.prg: 20 checks, 0 failures
+PRG sha256: b642f290212e330d80d71a3280b4442d5d1e8974dff30a9cac1f22ee680cd03d cm-ephemeris-2.prg
+exit 0

@@ -12,7 +12,7 @@
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
-#define W s->words
+#include "agc_image_w.h"
 /* The C64 runs the cases in two PRGs (LLD_C64_GROUP): group 1 registers
  * every routine but DDUMCALC and P63SPOT2, group 2 those two, with the
  * order pairs each reaches (the ignition iteration, DDUMGOOD and

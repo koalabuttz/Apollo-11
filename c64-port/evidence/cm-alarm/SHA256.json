@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-alarm",
+  "release": "evidence-cm-alarm",
+  "files": {
+    "cm-alarm-c64-cover.json": {
+      "sha256": "d69facf40ed98e0685de5f5bf54e3dde19edfc775c31227eeddb958610b88bf2",
+      "bytes": 692,
+      "store": "tree"
+    },
+    "cm-alarm-data.json": {
+      "sha256": "e445fd95662b1cd2e18c34b2dd09e5d8bb82e8e956444039052123f60029cfd9",
+      "bytes": 11420,
+      "store": "release"
+    },
+    "cm-alarm-host.log": {
+      "sha256": "35af24c2c858ec09408d3c0f18a160de3ca45952c015cb205893295a1c6bd5d1",
+      "bytes": 1172,
+      "store": "release"
+    },
+    "cm-alarm-proof.json": {
+      "sha256": "c5bb9900b374240ce4785e69d8d385a483f93ed2be5676fdc0fea2e4ecf654e9",
+      "bytes": 625,
+      "store": "tree"
+    },
+    "cm-alarm-vice.log": {
+      "sha256": "a44d7e93aecd19d7664c86d82ea2cefe516e402ada5ed8039892c95e92329ea8",
+      "bytes": 142,
+      "store": "release"
+    }
+  }
+}

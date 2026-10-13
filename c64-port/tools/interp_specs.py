@@ -727,6 +727,41 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
+    # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
+    # LUNVEL and SOLPOS are routine keys of the transfer ABI).
+    'cm-ephemeris': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_ephemeris'},
+        'symbol': {'cm': 'cm_ephemeris'},
+        # SOLPOS has no caller in Comanche055: a public entry of its own.
+        # RES, RESA, REM and VEM are where LSTIME's GOTO X1 (and RES's
+        # GOTO X2) go: the AXT,1/AXT,2 operands of the four entries.
+        'entries': ['@external', 'SOLPOS', 'RES', 'RESA', 'REM', 'VEM'],
+        # (the file's EBANK= END-E7: VECOEM and the other ephemeris cells)
+        'ebank': 'listing',
+        # Mid-sequence resumes (REMA/VEMA's TIX loops, RES's pushdown chain)
+        # start from the registers the file's own runs reach them with, and
+        # a CHANG2 resume from the state the routine before it reaches.
+        'flow_states': True,
+        'resume_flow': True,
+        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
+        # the GOTO X1 into RES, REM or VEM (S1 = 0 would loop forever).
+        # The pushdown list stays low in the VAC area (LSTIME's SETPD 0D;
+        # RES pushes to 16D): a push near X1 would overwrite the index.
+        'all_states': {'vac+050': [6], '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # C64 rows: the cases that take every branch outcome the host cases take.
+        'c64_rows': 'cover',
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        'target': 'tests/cm_ephemeris_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline'],
+    },
     # Lane G: Comanche055 ORBITAL_INTEGRATION, the whole file as routines at its
     # original addresses.
     'cm-orbital-integration': {

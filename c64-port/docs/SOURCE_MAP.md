@@ -2035,6 +2035,10 @@ All of Comanche055 CM_BODY_ATTITUDE (195 words) is native C on the control-trans
 
 All of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (813 words) is native C on the control-transfer ABI, as 138 routines compiled whole-file by `tools/basic_compile.py`. All 7,168 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 224 frozen cases, and 3 C64 diagnostics pass 79 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-ENTRY-DAP.md`.
 
+## Translate Comanche LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES
+
+All of Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (71 words) is native C on the control-transfer ABI, as 32 routines compiled whole-file by `tools/basic_compile.py`. All 8,192 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 256 frozen cases, and 2 C64 diagnostics pass 39 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-EPHEMERIS.md`.
+
 ## Translate Comanche JET_SELECTION_LOGIC
 
 All of Comanche055 JET_SELECTION_LOGIC (629 words) is native C on the control-transfer ABI, as 76 routines compiled whole-file by `tools/basic_compile.py`. All 512 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 16 frozen cases, and 1 C64 diagnostic passes 27 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-JET-SELECT.md`.
@@ -2073,7 +2077,7 @@ Luminary099 P40-P47.agc (P40, P41, P42 and P47, the S40.x burn set-up, the engin
 
 ## WAITLIST entries reached from other files in the transfer ABI
 
-The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,380 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together, half of them on a sane waitlist so the task is inserted and the job sleeps (45 LM, 52 CM). The 1,389 strict and sanitizer checks pass, and the C64 rows take every host branch arc. See `docs/WAITLIST-ENTRIES.md`.
+The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,437 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together, half of them on a sane waitlist so the task is inserted and the job sleeps (45 LM, 52 CM), and 57 more LM cases with the new task due 1 cs before a queued one, so WAIT2's list search ends on CCS -0. The 1,446 strict and sanitizer checks pass, and the C64 rows take every host branch arc. See `docs/WAITLIST-ENTRIES.md`.
 
 ## Translate Comanche055 R31
 
@@ -2234,3 +2238,7 @@ All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-tra
 ## Translate Luminary RCS_FAILURE_MONITOR on the transfer ABI
 
 Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 71 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take all 219 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-RCSMON.md`.
+
+## Translate Comanche ALARM_AND_ABORT as transfer-ABI routines
+
+Every instruction of Comanche055 ALARM_AND_ABORT runs as routines of the control-transfer ABI: ALARM through VARALARM and BAILOUT/WHIMPER in fixed-fixed memory, PRIOLARM in bank 10, the points control comes back to (MULTEXIT targets, BANKCALL and DOWNFLAG returns) and the erasable ALMCADR continuation. The flight image reached ALARM 02,3650 with no routine table before. The alarm codes after all 62 genuine caller TCs, the file's own BANKCALL/POSTJUMP CADRs and its constants are compiled from the source listing. 4,096 cases from every caller site and entry, with each FAILREG state, equal the original Comanche055 program in the interrupt-enable, SUPERBNK and in-interrupt states and all 2,048 erasable words (all 21 entries reached), and every 16th case, which takes every host branch arc, matches in VICE. See `docs/CM-ALARM.md`.

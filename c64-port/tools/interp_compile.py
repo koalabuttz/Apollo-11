@@ -1576,7 +1576,10 @@ class Compiler:
             c.append('#include "agc_input_channels.h"')
         for inc in s.get('includes', []):
             c.append('#include "%s"' % inc)
-        c.append('#define W s->words')
+        # Spec 'image_w': W from include/agc_image_w.h, the fixed $7000 image in
+        # flight builds (RK_FIXED_IMAGE), s->words elsewhere. Opt-in so existing
+        # files and their pinned evidence stay byte-identical until a refreeze.
+        c.append('#include "agc_image_w.h"' if self.spec.get('image_w') else '#define W s->words')
         c.append('/* A group build (KEEP masks below) leaves some helpers and operands unused. */')
         c.append('#ifdef __GNUC__')
         c.append('#define MAYBE_UNUSED __attribute__((unused))')

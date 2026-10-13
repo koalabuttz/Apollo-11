@@ -1,0 +1,503 @@
+{
+ "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": {
+  "native_file": "src/cm_ephemeris.c",
+  "words": 71,
+  "untranslated_words": 0,
+  "routines": 32,
+  "map": [
+   {
+    "address": "26,2110",
+    "word": "77774",
+    "source": "LSPOS AXT,2 ",
+    "routine": "26,2110",
+    "function": "r54110"
+   },
+   {
+    "address": "26,2111",
+    "word": "54161",
+    "source": "  RESA",
+    "routine": "26,2110",
+    "function": "r54110"
+   },
+   {
+    "address": "26,2112",
+    "word": "52170",
+    "source": " AXT,1 GOTO",
+    "routine": "26,2112",
+    "function": "r54112"
+   },
+   {
+    "address": "26,2113",
+    "word": "54143",
+    "source": "  RES",
+    "routine": "26,2112",
+    "function": "r54112"
+   },
+   {
+    "address": "26,2114",
+    "word": "54126",
+    "source": "  LSTIME",
+    "routine": "26,2112",
+    "function": "r54112"
+   },
+   {
+    "address": "26,2115",
+    "word": "52170",
+    "source": "LUNPOS AXT,1 GOTO",
+    "routine": "26,2115",
+    "function": "r54115"
+   },
+   {
+    "address": "26,2116",
+    "word": "54162",
+    "source": "  REM",
+    "routine": "26,2115",
+    "function": "r54115"
+   },
+   {
+    "address": "26,2117",
+    "word": "54126",
+    "source": "  LSTIME",
+    "routine": "26,2115",
+    "function": "r54115"
+   },
+   {
+    "address": "26,2120",
+    "word": "52170",
+    "source": "LUNVEL AXT,1 GOTO",
+    "routine": "26,2120",
+    "function": "r54120"
+   },
+   {
+    "address": "26,2121",
+    "word": "54173",
+    "source": "  VEM",
+    "routine": "26,2120",
+    "function": "r54120"
+   },
+   {
+    "address": "26,2122",
+    "word": "54126",
+    "source": "  LSTIME",
+    "routine": "26,2120",
+    "function": "r54120"
+   },
+   {
+    "address": "26,2123",
+    "word": "76020",
+    "source": "SOLPOS STQ AXT,1",
+    "routine": "26,2123",
+    "function": "r54123"
+   },
+   {
+    "address": "26,2124",
+    "word": "00047",
+    "source": "  X2",
+    "routine": "26,2123",
+    "function": "r54123"
+   },
+   {
+    "address": "26,2125",
+    "word": "54143",
+    "source": "  RES",
+    "routine": "26,2123",
+    "function": "r54123"
+   },
+   {
+    "address": "26,2126",
+    "word": "54201",
+    "source": "LSTIME SETPD SR",
+    "routine": "26,2126",
+    "function": "r54126"
+   },
+   {
+    "address": "26,2127",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "26,2126",
+    "function": "r54126"
+   },
+   {
+    "address": "26,2130",
+    "word": "20617",
+    "source": "  14D",
+    "routine": "26,2126",
+    "function": "r54126"
+   },
+   {
+    "address": "26,2131",
+    "word": "57571",
+    "source": " TAD DCOMP",
+    "routine": "26,2131",
+    "function": "r54131"
+   },
+   {
+    "address": "26,2132",
+    "word": "01707",
+    "source": "  TEPHEM",
+    "routine": "26,2131",
+    "function": "r54131"
+   },
+   {
+    "address": "26,2133",
+    "word": "57571",
+    "source": " TAD DCOMP",
+    "routine": "26,2133",
+    "function": "r54133"
+   },
+   {
+    "address": "26,2134",
+    "word": "02034",
+    "source": "  TIMEMO",
+    "routine": "26,2133",
+    "function": "r54133"
+   },
+   {
+    "address": "26,2135",
+    "word": "66261",
+    "source": " SL SSP",
+    "routine": "26,2135",
+    "function": "r54135"
+   },
+   {
+    "address": "26,2136",
+    "word": "20221",
+    "source": "  16D",
+    "routine": "26,2135",
+    "function": "r54135"
+   },
+   {
+    "address": "26,2137",
+    "word": "00051",
+    "source": "  S1",
+    "routine": "26,2135",
+    "function": "r54135"
+   },
+   {
+    "address": "26,2140",
+    "word": "00006",
+    "source": "  6D",
+    "routine": "26,2135",
+    "function": "r54135"
+   },
+   {
+    "address": "26,2141",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "26,2141",
+    "function": "r54141"
+   },
+   {
+    "address": "26,2142",
+    "word": "00046",
+    "source": "  X1",
+    "routine": "26,2141",
+    "function": "r54141"
+   },
+   {
+    "address": "26,2143",
+    "word": "41206",
+    "source": "RES PUSH DMP",
+    "routine": "26,2143",
+    "function": "r54143"
+   },
+   {
+    "address": "26,2144",
+    "word": "02147",
+    "source": "  OMEGAES",
+    "routine": "26,2143",
+    "function": "r54143"
+   },
+   {
+    "address": "26,2145",
+    "word": "71406",
+    "source": " PUSH COS",
+    "routine": "26,2145",
+    "function": "r54145"
+   },
+   {
+    "address": "26,2146",
+    "word": "65361",
+    "source": " VXSC PDDL",
+    "routine": "26,2146",
+    "function": "r54146"
+   },
+   {
+    "address": "26,2147",
+    "word": "02133",
+    "source": "  RESO",
+    "routine": "26,2146",
+    "function": "r54146"
+   },
+   {
+    "address": "26,2150",
+    "word": "63356",
+    "source": " SIN PDVL",
+    "routine": "26,2150",
+    "function": "r54150"
+   },
+   {
+    "address": "26,2151",
+    "word": "02133",
+    "source": "  RESO",
+    "routine": "26,2150",
+    "function": "r54150"
+   },
+   {
+    "address": "26,2152",
+    "word": "53406",
+    "source": " PUSH UNIT",
+    "routine": "26,2152",
+    "function": "r54152"
+   },
+   {
+    "address": "26,2153",
+    "word": "53435",
+    "source": " VXV UNIT",
+    "routine": "26,2153",
+    "function": "r54153"
+   },
+   {
+    "address": "26,2154",
+    "word": "02141",
+    "source": "  VESO",
+    "routine": "26,2153",
+    "function": "r54153"
+   },
+   {
+    "address": "26,2155",
+    "word": "76435",
+    "source": " VXV VSL1",
+    "routine": "26,2155",
+    "function": "r54155"
+   },
+   {
+    "address": "26,2156",
+    "word": "53361",
+    "source": " VXSC VAD",
+    "routine": "26,2156",
+    "function": "r54156"
+   },
+   {
+    "address": "26,2157",
+    "word": "52172",
+    "source": " VSL1 GOTO",
+    "routine": "26,2157",
+    "function": "r54157"
+   },
+   {
+    "address": "26,2160",
+    "word": "00047",
+    "source": "  X2",
+    "routine": "26,2157",
+    "function": "r54157"
+   },
+   {
+    "address": "26,2161",
+    "word": "14003",
+    "source": "RESA STODL 2D",
+    "routine": "26,2161",
+    "function": "r54161"
+   },
+   {
+    "address": "26,2162",
+    "word": "63370",
+    "source": "REM AXT,1 PDVL",
+    "routine": "26,2162",
+    "function": "r54162"
+   },
+   {
+    "address": "26,2163",
+    "word": "00066",
+    "source": "  54D",
+    "routine": "26,2162",
+    "function": "r54162"
+   },
+   {
+    "address": "26,2164",
+    "word": "02037",
+    "source": "  VECOEM",
+    "routine": "26,2162",
+    "function": "r54162"
+   },
+   {
+    "address": "26,2165",
+    "word": "52761",
+    "source": "REMA VXSC VAD*",
+    "routine": "26,2165",
+    "function": "r54165"
+   },
+   {
+    "address": "26,2166",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "26,2165",
+    "function": "r54165"
+   },
+   {
+    "address": "26,2167",
+    "word": "02133",
+    "source": "  VECOEM     +60D,1",
+    "routine": "26,2165",
+    "function": "r54165"
+   },
+   {
+    "address": "26,2170",
+    "word": "72500",
+    "source": " TIX,1 VSL2",
+    "routine": "26,2170",
+    "function": "r54170"
+   },
+   {
+    "address": "26,2171",
+    "word": "54165",
+    "source": "  REMA",
+    "routine": "26,2170",
+    "function": "r54170"
+   },
+   {
+    "address": "26,2172",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "26,2172",
+    "function": "r54172"
+   },
+   {
+    "address": "26,2173",
+    "word": "65370",
+    "source": "VEM AXT,1 PDDL",
+    "routine": "26,2173",
+    "function": "r54173"
+   },
+   {
+    "address": "26,2174",
+    "word": "00060",
+    "source": "  48D",
+    "routine": "26,2173",
+    "function": "r54173"
+   },
+   {
+    "address": "26,2175",
+    "word": "14214",
+    "source": "  NINEB4",
+    "routine": "26,2173",
+    "function": "r54173"
+   },
+   {
+    "address": "26,2176",
+    "word": "74206",
+    "source": " PUSH VXSC",
+    "routine": "26,2176",
+    "function": "r54176"
+   },
+   {
+    "address": "26,2177",
+    "word": "02037",
+    "source": "  VECOEM",
+    "routine": "26,2176",
+    "function": "r54176"
+   },
+   {
+    "address": "26,2200",
+    "word": "77761",
+    "source": "VEMA VXSC ",
+    "routine": "26,2200",
+    "function": "r54200"
+   },
+   {
+    "address": "26,2201",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "26,2200",
+    "function": "r54200"
+   },
+   {
+    "address": "26,2202",
+    "word": "14005",
+    "source": " STODL 4D",
+    "routine": "26,2202",
+    "function": "r54202"
+   },
+   {
+    "address": "26,2203",
+    "word": "41425",
+    "source": " DSU PUSH",
+    "routine": "26,2203",
+    "function": "r54203"
+   },
+   {
+    "address": "26,2204",
+    "word": "14216",
+    "source": "  ONEB4",
+    "routine": "26,2203",
+    "function": "r54203"
+   },
+   {
+    "address": "26,2205",
+    "word": "53357",
+    "source": " VXSC* VAD",
+    "routine": "26,2205",
+    "function": "r54205"
+   },
+   {
+    "address": "26,2206",
+    "word": "02125",
+    "source": "  VECOEM     +54D,1",
+    "routine": "26,2205",
+    "function": "r54205"
+   },
+   {
+    "address": "26,2207",
+    "word": "00005",
+    "source": "  4D",
+    "routine": "26,2205",
+    "function": "r54205"
+   },
+   {
+    "address": "26,2210",
+    "word": "72500",
+    "source": " TIX,1 VSL2",
+    "routine": "26,2210",
+    "function": "r54210"
+   },
+   {
+    "address": "26,2211",
+    "word": "54200",
+    "source": "  VEMA",
+    "routine": "26,2210",
+    "function": "r54210"
+   },
+   {
+    "address": "26,2212",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "26,2212",
+    "function": "r54212"
+   },
+   {
+    "address": "26,2213",
+    "word": "22000",
+    "source": "NINEB4 2DEC 9.0        B-4",
+    "constant": "K54213"
+   },
+   {
+    "address": "26,2214",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K54213"
+   },
+   {
+    "address": "26,2215",
+    "word": "02000",
+    "source": "ONEB4 2DEC 1.0        B-4",
+    "constant": "K54213"
+   },
+   {
+    "address": "26,2216",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K54213"
+   }
+  ]
+ }
+}

@@ -55,6 +55,7 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - VPROJ is an address order. BHIZ runs RTB/BHIZ's `CCS CYR` before its own test, as the original does.
 - A TC into the file followed by data (`TC SBANDANT +2`, which never returns) has no return point.
 - Files in banks 040-043 run as FB 030-033 under superbank 4 (channel 7 bit 0100). Their routines are keyed by that FB and refuse unless the superbank bit is set; a file in banks 030-037 refuses with it set. Fixed operands and CADR targets decode through the superbank. Files below bank 030 are not affected.
+- `image_w` (off by default): the file takes `W` from `include/agc_image_w.h`, so flight builds (`RK_FIXED_IMAGE`) address the fixed $7000 image directly, about a fifth smaller on the C64. Host and diagnostic builds are unchanged. Turn it on at the spec's next refreeze; existing files stay byte-identical until then, so their pinned evidence does too.
 - `resume_keys` (off by default) is for files that run as jobs. The word after every DANZIG is a routine of its own. A DANZIG that finds NEWJOB positive stops at CHANG2, where the Executive suspends the job; it resumes at NEWOPS with LOC +1, which is that routine's key. Without it, every routine requires NEWJOB +0.
 - RTB to a routine with a native implementation (`rtb` in the spec, such as `rtb_angles`) calls it. BOVB's branch to basic code ends the routine at that address.
 - Every routine first checks that the image is one the original could be in. Anything else is `EXEC_OUT_OF_SCOPE` with the image unchanged.
@@ -144,6 +145,14 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 - `refuse_unextended`: a CCS arm on the word after an EXTEND is refused instead of compiled unextended.
 - `basic_edges` (differential): the erasable words interp_compile's own basic code names get the same ±0, small and saturating values as `'basic': 'full'` files' words.
 - `index_carry16`: the generated `ixw` (INDEX's ones'-complement add) takes the end-around carry without a 17-bit sum. Without it, a C64 build (16-bit `unsigned`) drops the carry of an INDEX by a negative value (A = -1 on SPARCSIN's `INDEX A; CS LIMITS`) and refuses; other specs' generated files keep the old form.
+
+## INDEX 16-bit carry on the other specs (steward)
+
+The steward did not regenerate every spec with `index_carry16`: 69 sources' sha256 are pinned in milestone evidence, and regenerating would stale about 36 lanes. Instead:
+
+- `tools/cert_precheck.py` WARNs (never FAILs), once per pending or complete certificate, when the certificate's interp spec lacks `index_carry16`. The spec is found from the `evidence/<id>/` records the certificate cites (spec keys are milestone ids), or from the spec's `file`. Files without an interp spec are skipped. The fix hint tells the lane to set the key at its next refreeze. The keys are listed in `REFREEZE_SPEC_KEYS`; `image_w` (steward PR #260) joins it when it lands.
+- An audit of every spec's frozen C64 rows (the cases in `tests/<id>_c64_vectors.h`, through a host runner that logs each `ixw` call whose 16-bit and 17-bit results differ) found one spec without the key whose C64 rows are affected: `rtb-op-codes`, 18 of 144 rows (`INDEX A; CAF LIMITS` with A = -1, Luminary099/RTB_OP_CODES.agc:116-117 and 142-143, Comanche055/RT8_OP_CODES.agc:140-141 and 185-186). Those rows read LIMITS -2 for LIMITS -1, and both words are 37777, so their digests still match. `lm-p70-p71` has host-only cases (INDEX by -0, P70-P71.agc:138-139). `findcduw` and `lm-llge` exercise the carry but already have the key.
+- `msu()` (MSU K, k < 3) also sums `ui+uj+1` in an `unsigned`, but it only keeps bits 0-15 of the sum, so it is the same with a 16-bit `unsigned` (checked under mos-sim). It is unchanged and does not depend on `index_carry16`.
 
 ## Additions from the CM flight lane (Comanche conics, integration, P38-P39)
 
