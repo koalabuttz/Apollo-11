@@ -6,7 +6,7 @@
  * The native side runs agc_transfer_run over a program of the mission's
  * INTER-BANK routines (lm_interbank_routines / cm_interbank_routines, with
  * their compiled site tables), the display-interface routines
- * (lanec_di_lm_routines / lanec_di_cm_routines) and, for Luminary099, the
+ * (every module's table, LANEC_DI_LM_TABLES / LANEC_DI_CM_TABLES) and, for Luminary099, the
  * Executive's job services (lm_exec_routines, lm_exec_job_routines, with
  * lm_exec_sites), and ends where a continuation has no registered routine
  * (EXEC_UNMAPPED). The oracle runs the original program until Z leaves the
@@ -96,9 +96,12 @@ static const agc_site_operand *lm_operands(void)
     return lm_sites;
 }
 
+static const agc_routine_table *const lm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_LM_TABLES };
+static const agc_routine_table *const cm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_CM_TABLES };
+
 static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[4];
+    static agc_routine_table tables[3 + LANEC_DI_TABLE_COUNT];
     static agc_native_program program;
     static agc_hardware hardware;
     static p66_bias_io lm;
@@ -107,20 +110,20 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
     uint16_t steps = 0, count;
     memset(&program, 0, sizeof program);
     memset(&hardware, 0, sizeof hardware);
-    program.basic = tables; program.basic_count = 2u;
+    program.basic = tables;
     program.interpreter_fetch = AGC_TRANSFER_NONE; program.loc = 0164u; program.bankset = 0165u;
     program.hardware = &hardware;
     hardware.channel11 = io->channel[011];
     if (mission == LANEC_LM) {
-        tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines;
-        tables[2] = lm_exec_routines; tables[3] = lm_exec_job_routines; program.basic_count = 4u;
+        tables[0] = lm_interbank_routines; program.basic_count = (uint8_t)(1u + lanec_put_tables(tables + 1, lm_di, LANEC_DI_TABLE_COUNT));
+        tables[program.basic_count++] = lm_exec_routines; tables[program.basic_count++] = lm_exec_job_routines;
         program.operands = lm_operands(); program.operand_count = lm_operand_count;
         lm.superbank = io->superbank; lm.interrupt_enabled = io->interrupt_enabled;
         status = agc_transfer_run(&program, s, &lm, &lm.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
         io->superbank = lm.superbank; io->interrupt_enabled = lm.interrupt_enabled;
         io->channel[011] = hardware.channel11;
     } else {
-        tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_routines;
+        tables[0] = cm_interbank_routines; program.basic_count = (uint8_t)(1u + lanec_put_tables(tables + 1, cm_di, LANEC_DI_TABLE_COUNT));
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.superbank = io->superbank; cm.interrupt_enabled = io->interrupt_enabled; cm.channel11 = io->channel[011];

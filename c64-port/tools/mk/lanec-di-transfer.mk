@@ -2,7 +2,9 @@
 # Milestone lanec-di-transfer (lane C): DISPLAY_INTERFACE_ROUTINES, LM and CM,
 # as routines of the control-transfer ABI, with round trips from every genuine
 # BANKCALL/POSTJUMP caller through INTER-BANK_COMMUNICATION.
-LANEC_DI_ABI = src/lanec_di_routines.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank.c \
+# each module's routine tables (tools/lanec/routines.py di)
+LANEC_DI_TABLES = $(patsubst %,src/lanec_di_%_routines.c,dsp mark play sleep idle nvdsp)
+LANEC_DI_ABI = src/lanec_di_routines.c $(LANEC_DI_TABLES) src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank.c \
   src/cm_interbank_routines.c src/cm_interbank_complete.c
 # Luminary099 Executive job services (lane A, as in lm-exec-jobs), so LM round
 # trips continue through PRIOCHNG, JOBSLEEP, NOVAC... back into the file.
@@ -14,7 +16,7 @@ LANEC_DI_SRC = src/lanec_di_dsp.c tests/lanec_di_dsp_cases.c src/lanec_di_mark.c
   src/lanec_di_play.c tests/lanec_di_play_cases.c src/lanec_di_sleep.c tests/lanec_di_sleep_cases.c \
   src/lanec_di_idle.c tests/lanec_di_idle_cases.c src/lanec_di_nvdsp.c tests/lanec_di_nvdsp_cases.c
 LANEC_SUITE_SRC += $(LANEC_DI_TRANSFER_SRC)
-LANEC_SUITE_HDR += include/lanec_di_routines.h src/lanec_di_routines.inc tests/lanec_di_transfer_cases.inc \
+LANEC_SUITE_HDR += include/lanec_di_routines.h tests/lanec_di_transfer_cases.inc \
   src/lm_interbank_sites.inc src/cm_interbank_sites.inc src/lm_exec_sites.inc include/lm_exec_routines.h
 .PHONY: test-lanec-di-transfer sanitize-lanec-di-transfer c64-lanec-di-transfer vice-lanec-di-transfer \
   c64-lanec-di-transfer-cm vice-lanec-di-transfer-cm

@@ -50,8 +50,8 @@ GOPLAY, LINUS) to those rows, since other files call through them.
 ## Transfer ABI
 
 Every labelled entry and every return into the file from a callee is an
-`exec_status` routine in `lanec_di_lm_routines` / `lanec_di_cm_routines`
-(165 / 164), and 996 round trips through `agc_transfer_run` match the
+`exec_status` routine in its module's table, `lanec_di_lm_<module>` /
+`lanec_di_cm_<module>` (165 / 164), and 996 round trips through `agc_transfer_run` match the
 original program; see `docs/LANEC-DI-TRANSFER.md` (milestone
 `lanec-di-transfer`). `lanec_di_*` is the canonical translation of the file.
 

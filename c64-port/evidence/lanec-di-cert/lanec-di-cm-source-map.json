@@ -25,7 +25,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (BLANKET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[2902] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2902] -> mark_cm"
   },
   {
    "line": 510,
@@ -98,7 +98,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (BLANKET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[2908] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2908] -> mark_cm"
   },
   {
    "line": 518,
@@ -123,7 +123,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: clearmrk (BLANKET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[2910] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2910] -> mark_cm"
   },
   {
    "line": 521,
@@ -148,7 +148,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: clearmrk (BLANKET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[2912] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2912] -> mark_cm"
   },
   {
    "line": 524,
@@ -221,7 +221,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8555] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8555] -> mark_cm"
   },
   {
    "line": 544,
@@ -246,7 +246,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8557] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8557] -> mark_cm"
   },
   {
    "line": 549,
@@ -259,7 +259,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8558] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8558] -> mark_cm"
   },
   {
    "line": 550,
@@ -284,7 +284,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8560] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8560] -> mark_cm"
   },
   {
    "line": 553,
@@ -297,7 +297,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8561] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8561] -> mark_cm"
   },
   {
    "line": 555,
@@ -334,7 +334,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8564] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8564] -> mark_cm"
   },
   {
    "line": 559,
@@ -347,7 +347,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8565] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8565] -> mark_cm"
   },
   {
    "line": 560,
@@ -372,7 +372,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8567] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8567] -> mark_cm"
   },
   {
    "line": 563,
@@ -409,7 +409,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8570] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8570] -> mark_cm"
   },
   {
    "line": 567,
@@ -446,7 +446,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8573] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8573] -> mark_cm"
   },
   {
    "line": 572,
@@ -483,7 +483,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8576] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8576] -> mark_cm"
   },
   {
    "line": 577,
@@ -520,7 +520,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8579] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8579] -> mark_cm"
   },
   {
    "line": 581,
@@ -557,7 +557,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8582] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8582] -> mark_cm"
   },
   {
    "line": 585,
@@ -594,7 +594,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_makemark (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8585] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8585] -> mark_cm"
   },
   {
    "line": 589,
@@ -727,7 +727,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: markplay (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8596] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8596] -> mark_cm"
   },
   {
    "line": 605,
@@ -800,7 +800,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: gogomark (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8602] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8602] -> mark_cm"
   },
   {
    "line": 612,
@@ -873,7 +873,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: markcop (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8608] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8608] -> mark_cm"
   },
   {
    "line": 619,
@@ -898,7 +898,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8610] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8610] -> mark_cm"
   },
   {
    "line": 622,
@@ -923,7 +923,7 @@
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: copypacs (MARKEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8612] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8612] -> mark_cm"
   },
   {
    "line": 625,
@@ -1020,7 +1020,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_chkprio (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8620] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8620] -> dsp_cm"
   },
   {
    "line": 645,
@@ -1129,7 +1129,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8629] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8629] -> dsp_cm"
   },
   {
    "line": 658,
@@ -1166,7 +1166,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8632] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8632] -> dsp_cm"
   },
   {
    "line": 663,
@@ -1179,7 +1179,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8633] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8633] -> dsp_cm"
   },
   {
    "line": 664,
@@ -1204,7 +1204,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8635] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8635] -> dsp_cm"
   },
   {
    "line": 668,
@@ -1241,7 +1241,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8638] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8638] -> dsp_cm"
   },
   {
    "line": 673,
@@ -1254,7 +1254,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8639] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8639] -> dsp_cm"
   },
   {
    "line": 674,
@@ -1267,7 +1267,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_godspr2 (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8640] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8640] -> dsp_cm"
   },
   {
    "line": 676,
@@ -1304,7 +1304,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8643] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8643] -> dsp_cm"
   },
   {
    "line": 691,
@@ -1317,7 +1317,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8644] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8644] -> dsp_cm"
   },
   {
    "line": 693,
@@ -1354,7 +1354,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8647] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8647] -> dsp_cm"
   },
   {
    "line": 698,
@@ -1391,7 +1391,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8650] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8650] -> dsp_cm"
   },
   {
    "line": 704,
@@ -1428,7 +1428,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8653] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8653] -> dsp_cm"
   },
   {
    "line": 708,
@@ -1465,7 +1465,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8656] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8656] -> dsp_cm"
   },
   {
    "line": 712,
@@ -1490,7 +1490,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_goflash2 (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8658] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8658] -> dsp_cm"
   },
   {
    "line": 715,
@@ -1539,7 +1539,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8662] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8662] -> dsp_cm"
   },
   {
    "line": 723,
@@ -1576,7 +1576,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8665] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8665] -> dsp_cm"
   },
   {
    "line": 728,
@@ -1589,7 +1589,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (CHKPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8666] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8666] -> dsp_cm"
   },
   {
    "line": 729,
@@ -1614,7 +1614,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: makeprio (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8668] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8668] -> play_cm"
   },
   {
    "line": 732,
@@ -1663,7 +1663,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: makeprio (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8672] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8672] -> play_cm"
   },
   {
    "line": 737,
@@ -1712,7 +1712,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: hiprio (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8676] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8676] -> play_cm"
   },
   {
    "line": 742,
@@ -1761,7 +1761,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8680] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8680] -> play_cm"
   },
   {
    "line": 747,
@@ -1786,7 +1786,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: askifnrm (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8682] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8682] -> play_cm"
   },
   {
    "line": 750,
@@ -1835,7 +1835,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8686] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8686] -> play_cm"
   },
   {
    "line": 756,
@@ -1860,7 +1860,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: oktocopy (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8688] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8688] -> play_cm"
   },
   {
    "line": 759,
@@ -1897,7 +1897,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: oktocopy (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8691] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8691] -> play_cm"
   },
   {
    "line": 765,
@@ -1910,7 +1910,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: redoprio (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8692] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8692] -> play_cm"
   },
   {
    "line": 766,
@@ -1935,7 +1935,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8694] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8694] -> play_cm"
   },
   {
    "line": 769,
@@ -1960,7 +1960,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8696] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8696] -> play_cm"
   },
   {
    "line": 772,
@@ -2021,7 +2021,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8701] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8701] -> play_cm"
   },
   {
    "line": 779,
@@ -2094,7 +2094,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: iflegal (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8707] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8707] -> play_cm"
   },
   {
    "line": 786,
@@ -2143,7 +2143,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: iflegal (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8711] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8711] -> play_cm"
   },
   {
    "line": 792,
@@ -2240,7 +2240,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8719] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8719] -> play_cm"
   },
   {
    "line": 802,
@@ -2265,7 +2265,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: oktoplay (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8721] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8721] -> play_cm"
   },
   {
    "line": 807,
@@ -2422,7 +2422,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: oktoplay (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8734] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8734] -> play_cm"
   },
   {
    "line": 827,
@@ -2435,7 +2435,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8735] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8735] -> play_cm"
   },
   {
    "line": 828,
@@ -2448,7 +2448,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: prioplay (MAKEPRIO block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8736] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8736] -> play_cm"
   },
   {
    "line": 830,
@@ -2473,7 +2473,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8738] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8738] -> dsp_cm"
   },
   {
    "line": 834,
@@ -2510,7 +2510,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8741] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8741] -> dsp_cm"
   },
   {
    "line": 838,
@@ -2535,7 +2535,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8743] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8743] -> dsp_cm"
   },
   {
    "line": 842,
@@ -2572,7 +2572,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8746] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8746] -> dsp_cm"
   },
   {
    "line": 847,
@@ -2609,7 +2609,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8749] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8749] -> dsp_cm"
   },
   {
    "line": 852,
@@ -2634,7 +2634,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8751] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8751] -> dsp_cm"
   },
   {
    "line": 856,
@@ -2659,7 +2659,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_godsprs (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8753] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8753] -> dsp_cm"
   },
   {
    "line": 859,
@@ -2684,7 +2684,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: godsprs1 (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8755] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8755] -> dsp_cm"
   },
   {
    "line": 862,
@@ -2830,7 +2830,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: godsprs1 (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8768] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8768] -> dsp_cm"
   },
   {
    "line": 879,
@@ -2915,7 +2915,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8775] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8775] -> dsp_cm"
   },
   {
    "line": 888,
@@ -3084,7 +3084,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8789] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8789] -> dsp_cm"
   },
   {
    "line": 907,
@@ -3109,7 +3109,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8791] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8791] -> dsp_cm"
   },
   {
    "line": 911,
@@ -3146,7 +3146,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8794] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8794] -> dsp_cm"
   },
   {
    "line": 916,
@@ -3183,7 +3183,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8797] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8797] -> dsp_cm"
   },
   {
    "line": 921,
@@ -3352,7 +3352,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: savelocr (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8811] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8811] -> dsp_cm"
   },
   {
    "line": 943,
@@ -3389,7 +3389,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_dsp_dispatch (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8814] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8814] -> dsp_cm"
   },
   {
    "line": 947,
@@ -3402,7 +3402,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_copies (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8815] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8815] -> dsp_cm"
   },
   {
    "line": 948,
@@ -3415,7 +3415,7 @@
    "owner": "lanec-di-dsp",
    "native": "src/lanec_di_dsp.c: lanec_di_copies2 (EXDSPRET block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8816] -> dsp_cm"
+   "abi_routine": "lanec_di_cm_dsp[8816] -> dsp_cm"
   },
   {
    "line": 949,
@@ -3584,7 +3584,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8830] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8830] -> sleep_cm"
   },
   {
    "line": 968,
@@ -3645,7 +3645,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8835] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8835] -> sleep_cm"
   },
   {
    "line": 973,
@@ -3682,7 +3682,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: xchsleep (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8838] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8838] -> sleep_cm"
   },
   {
    "line": 977,
@@ -3731,7 +3731,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: xchsleep (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8842] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8842] -> sleep_cm"
   },
   {
    "line": 983,
@@ -3744,7 +3744,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: xchsleep (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8843] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8843] -> sleep_cm"
   },
   {
    "line": 984,
@@ -3781,7 +3781,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8846] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8846] -> sleep_cm"
   },
   {
    "line": 988,
@@ -3818,7 +3818,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8849] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8849] -> sleep_cm"
   },
   {
    "line": 991,
@@ -3879,7 +3879,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8854] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8854] -> sleep_cm"
   },
   {
    "line": 998,
@@ -3940,7 +3940,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8859] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8859] -> sleep_cm"
   },
   {
    "line": 1003,
@@ -4001,7 +4001,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8864] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8864] -> sleep_cm"
   },
   {
    "line": 1009,
@@ -4062,7 +4062,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8869] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8869] -> sleep_cm"
   },
   {
    "line": 1015,
@@ -4075,7 +4075,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8870] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8870] -> sleep_cm"
   },
   {
    "line": 1017,
@@ -4148,7 +4148,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8876] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8876] -> sleep_cm"
   },
   {
    "line": 1024,
@@ -4197,7 +4197,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8880] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8880] -> sleep_cm"
   },
   {
    "line": 1035,
@@ -4210,7 +4210,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8881] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8881] -> sleep_cm"
   },
   {
    "line": 1036,
@@ -4259,7 +4259,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8885] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8885] -> sleep_cm"
   },
   {
    "line": 1042,
@@ -4284,7 +4284,7 @@
    "owner": "lanec-di-sleep",
    "native": "src/lanec_di_sleep.c: lanec_di_sleep_dispatch (GOSLEEPS block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8887] -> sleep_cm"
+   "abi_routine": "lanec_di_cm_sleep[8887] -> sleep_cm"
   },
   {
    "line": 1045,
@@ -4321,7 +4321,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8890] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8890] -> nvdsp_cm"
   },
   {
    "line": 1049,
@@ -4430,7 +4430,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8899] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8899] -> nvdsp_cm"
   },
   {
    "line": 1061,
@@ -4455,7 +4455,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8901] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8901] -> nvdsp_cm"
   },
   {
    "line": 1064,
@@ -4516,7 +4516,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8906] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8906] -> nvdsp_cm"
   },
   {
    "line": 1072,
@@ -4529,7 +4529,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8907] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8907] -> nvdsp_cm"
   },
   {
    "line": 1073,
@@ -4734,7 +4734,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8924] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8924] -> nvdsp_cm"
   },
   {
    "line": 1094,
@@ -4747,7 +4747,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8925] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8925] -> nvdsp_cm"
   },
   {
    "line": 1095,
@@ -4796,7 +4796,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8929] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8929] -> nvdsp_cm"
   },
   {
    "line": 1099,
@@ -4809,7 +4809,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8930] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8930] -> nvdsp_cm"
   },
   {
    "line": 1100,
@@ -4822,7 +4822,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8931] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8931] -> nvdsp_cm"
   },
   {
    "line": 1101,
@@ -4835,7 +4835,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8932] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8932] -> nvdsp_cm"
   },
   {
    "line": 1103,
@@ -4848,7 +4848,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8933] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8933] -> nvdsp_cm"
   },
   {
    "line": 1104,
@@ -4861,7 +4861,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8934] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8934] -> nvdsp_cm"
   },
   {
    "line": 1105,
@@ -4886,7 +4886,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8936] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8936] -> nvdsp_cm"
   },
   {
    "line": 1108,
@@ -4911,7 +4911,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8938] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8938] -> nvdsp_cm"
   },
   {
    "line": 1110,
@@ -4936,7 +4936,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8940] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8940] -> nvdsp_cm"
   },
   {
    "line": 1112,
@@ -4961,7 +4961,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8942] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8942] -> nvdsp_cm"
   },
   {
    "line": 1114,
@@ -4974,7 +4974,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8943] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8943] -> nvdsp_cm"
   },
   {
    "line": 1115,
@@ -5023,7 +5023,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8947] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8947] -> nvdsp_cm"
   },
   {
    "line": 1120,
@@ -5072,7 +5072,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8951] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8951] -> nvdsp_cm"
   },
   {
    "line": 1125,
@@ -5121,7 +5121,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8955] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8955] -> nvdsp_cm"
   },
   {
    "line": 1130,
@@ -5170,7 +5170,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8959] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8959] -> nvdsp_cm"
   },
   {
    "line": 1135,
@@ -5243,7 +5243,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8965] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8965] -> nvdsp_cm"
   },
   {
    "line": 1143,
@@ -5292,7 +5292,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8969] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8969] -> nvdsp_cm"
   },
   {
    "line": 1148,
@@ -5437,7 +5437,7 @@
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8981] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8981] -> nvdsp_cm"
   },
   {
    "line": 1162,
@@ -5462,7 +5462,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_witchone (WITCHONE block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8983] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8983] -> play_cm"
   },
   {
    "line": 1165,
@@ -5619,7 +5619,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: xchtoend (WITCHONE block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8996] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8996] -> play_cm"
   },
   {
    "line": 1181,
@@ -5632,7 +5632,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_xchnyloc (WITCHONE block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[8997] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[8997] -> play_cm"
   },
   {
    "line": 1182,
@@ -5729,7 +5729,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9005] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9005] -> idle_cm"
   },
   {
    "line": 1192,
@@ -5767,7 +5767,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9009] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9009] -> idle_cm"
   },
   {
    "line": 1198,
@@ -5780,7 +5780,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9010] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9010] -> idle_cm"
   },
   {
    "line": 1199,
@@ -5841,7 +5841,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9015] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9015] -> idle_cm"
   },
   {
    "line": 1204,
@@ -5890,7 +5890,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9019] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9019] -> idle_cm"
   },
   {
    "line": 1211,
@@ -5939,7 +5939,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9023] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9023] -> idle_cm"
   },
   {
    "line": 1216,
@@ -5976,7 +5976,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9026] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9026] -> idle_cm"
   },
   {
    "line": 1221,
@@ -5989,7 +5989,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9027] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9027] -> idle_cm"
   },
   {
    "line": 1222,
@@ -6062,7 +6062,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9033] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9033] -> idle_cm"
   },
   {
    "line": 1230,
@@ -6171,7 +6171,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9042] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9042] -> idle_cm"
   },
   {
    "line": 1241,
@@ -6184,7 +6184,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9043] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9043] -> idle_cm"
   },
   {
    "line": 1243,
@@ -6197,7 +6197,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9044] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9044] -> idle_cm"
   },
   {
    "line": 1245,
@@ -6210,7 +6210,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9045] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9045] -> idle_cm"
   },
   {
    "line": 1246,
@@ -6283,7 +6283,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9051] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9051] -> idle_cm"
   },
   {
    "line": 1253,
@@ -6296,7 +6296,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9052] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9052] -> idle_cm"
   },
   {
    "line": 1254,
@@ -6381,7 +6381,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9059] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9059] -> idle_cm"
   },
   {
    "line": 1263,
@@ -6502,7 +6502,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9069] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9069] -> idle_cm"
   },
   {
    "line": 1275,
@@ -6527,7 +6527,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9071] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9071] -> idle_cm"
   },
   {
    "line": 1278,
@@ -6576,7 +6576,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9075] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9075] -> idle_cm"
   },
   {
    "line": 1282,
@@ -6661,7 +6661,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9082] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9082] -> idle_cm"
   },
   {
    "line": 1291,
@@ -6686,7 +6686,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9084] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9084] -> idle_cm"
   },
   {
    "line": 1294,
@@ -6699,7 +6699,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9085] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9085] -> idle_cm"
   },
   {
    "line": 1295,
@@ -6736,7 +6736,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9088] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9088] -> idle_cm"
   },
   {
    "line": 1298,
@@ -6761,7 +6761,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9090] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9090] -> idle_cm"
   },
   {
    "line": 1301,
@@ -6834,7 +6834,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9096] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9096] -> idle_cm"
   },
   {
    "line": 1309,
@@ -6847,7 +6847,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9097] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9097] -> idle_cm"
   },
   {
    "line": 1310,
@@ -6884,7 +6884,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (CLEANEND block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9100] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9100] -> idle_cm"
   },
   {
    "line": 1314,
@@ -6909,7 +6909,7 @@
    "owner": "lanec-di-play",
    "native": "src/lanec_di_play.c: lanec_di_play_dispatch (LINUSCHR block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9102] -> play_cm"
+   "abi_routine": "lanec_di_cm_play[9102] -> play_cm"
   },
   {
    "line": 1317,
@@ -7066,7 +7066,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9115] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9115] -> idle_cm"
   },
   {
    "line": 1334,
@@ -7091,7 +7091,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9117] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9117] -> idle_cm"
   },
   {
    "line": 1346,
@@ -7164,7 +7164,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9123] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9123] -> idle_cm"
   },
   {
    "line": 1354,
@@ -7237,7 +7237,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9129] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9129] -> idle_cm"
   },
   {
    "line": 1362,
@@ -7286,7 +7286,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9133] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9133] -> idle_cm"
   },
   {
    "line": 1367,
@@ -7335,7 +7335,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9137] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9137] -> idle_cm"
   },
   {
    "line": 1372,
@@ -7384,7 +7384,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9141] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9141] -> idle_cm"
   },
   {
    "line": 1376,
@@ -7470,7 +7470,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9149] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9149] -> idle_cm"
   },
   {
    "line": 1387,
@@ -7483,7 +7483,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9150] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9150] -> idle_cm"
   },
   {
    "line": 1388,
@@ -7544,7 +7544,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9155] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9155] -> idle_cm"
   },
   {
    "line": 1394,
@@ -7641,7 +7641,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9163] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9163] -> idle_cm"
   },
   {
    "line": 1403,
@@ -7666,7 +7666,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9165] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9165] -> idle_cm"
   },
   {
    "line": 1405,
@@ -7679,7 +7679,7 @@
    "owner": "lanec-di-idle",
    "native": "src/lanec_di_idle.c: lanec_di_idle_dispatch (PROCEED block)",
    "executed_by_oracle": true,
-   "abi_routine": "lanec_di_cm_routines[9166] -> idle_cm"
+   "abi_routine": "lanec_di_cm_idle[9166] -> idle_cm"
   },
   {
    "line": 1407,
@@ -8158,7 +8158,7 @@
    "address": "10,3272",
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
-   "abi_routine": "lanec_di_cm_routines[8890] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8890] -> nvdsp_cm"
   },
   {
    "line": 1428,
@@ -8167,7 +8167,7 @@
    "address": "10,2555",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
-   "abi_routine": "lanec_di_cm_routines[8557] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8557] -> mark_cm"
   },
   {
    "line": 1429,
@@ -8176,7 +8176,7 @@
    "address": "10,2575",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
-   "abi_routine": "lanec_di_cm_routines[8573] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8573] -> mark_cm"
   },
   {
    "line": 1430,
@@ -8185,7 +8185,7 @@
    "address": "10,2561",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
-   "abi_routine": "lanec_di_cm_routines[8561] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8561] -> mark_cm"
   },
   {
    "line": 1431,
@@ -8194,7 +8194,7 @@
    "address": "10,2600",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (MARKEND block)",
-   "abi_routine": "lanec_di_cm_routines[8576] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[8576] -> mark_cm"
   },
   {
    "line": 1432,
@@ -8203,7 +8203,7 @@
    "address": "FF,5534",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (BLANKET block)",
-   "abi_routine": "lanec_di_cm_routines[2908] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2908] -> mark_cm"
   },
   {
    "line": 1449,
@@ -8212,7 +8212,7 @@
    "address": "10,3312",
    "owner": "lanec-di-nvdsp",
    "native": "src/lanec_di_nvdsp.c: lanec_di_nvdsp_dispatch (PINBRNCH block)",
-   "abi_routine": "lanec_di_cm_routines[8906] -> nvdsp_cm"
+   "abi_routine": "lanec_di_cm_nvdsp[8906] -> nvdsp_cm"
   },
   {
    "line": 1464,
@@ -8221,7 +8221,7 @@
    "address": "FF,5526",
    "owner": "lanec-di-mark",
    "native": "src/lanec_di_mark.c: lanec_di_mark_dispatch (BLANKET block)",
-   "abi_routine": "lanec_di_cm_routines[2902] -> mark_cm"
+   "abi_routine": "lanec_di_cm_mark[2902] -> mark_cm"
   }
  ],
  "abi_entries": 164,

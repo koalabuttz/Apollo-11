@@ -91,9 +91,9 @@ static int registered(const agc_routine_table *const *tables, uint16_t physical)
             if ((*tables)->entries[i].physical == physical) return 1;
     return 0;
 }
-static const agc_routine_table *const lm_program[] = { &lm_interbank_routines, &lanec_di_lm_routines, &lm_exec_routines,
+static const agc_routine_table *const lm_program[] = { &lm_interbank_routines, LANEC_DI_LM_TABLES, &lm_exec_routines,
                                                        &lm_exec_job_routines, 0 };
-static const agc_routine_table *const cm_program[] = { &cm_interbank_routines, &lanec_di_cm_routines, 0 };
+static const agc_routine_table *const cm_program[] = { &cm_interbank_routines, LANEC_DI_CM_TABLES, 0 };
 #endif
 static void stops_of(lanec_meta *m, lanec_point *out, const lanec_point *exits, uint16_t n)
 {
@@ -211,9 +211,12 @@ static const agc_site_operand *lm_operands(void)
     return lm_sites;
 }
 
+static const agc_routine_table *const lm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_LM_TABLES };
+static const agc_routine_table *const cm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_CM_TABLES };
+
 static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[5];
+    static agc_routine_table tables[4 + LANEC_DI_TABLE_COUNT];
     static agc_native_program program;
     static agc_hardware hardware;
     static lm_dntm_io lm;
@@ -230,8 +233,9 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
     program.hardware = &hardware;
     hardware.channel11 = io->channel[011];
     if (mission == LANEC_LM) {
-        tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines; tables[2] = lanec_pin_lm_routines;
-        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines; program.basic_count = 5u;
+        tables[0] = lm_interbank_routines; program.basic_count = (uint8_t)(1u + lanec_put_tables(tables + 1, lm_di, LANEC_DI_TABLE_COUNT));
+        tables[program.basic_count++] = lanec_pin_lm_routines;
+        tables[program.basic_count++] = lm_exec_routines; tables[program.basic_count++] = lm_exec_job_routines;
         program.operands = lm_operands(); program.operand_count = lm_operand_count;
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
@@ -241,8 +245,8 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         io->channel[011] = hardware.channel11;
         io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
     } else {
-        tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_routines; tables[2] = lanec_pin_cm_routines;
-        program.basic_count = 3u;
+        tables[0] = cm_interbank_routines; program.basic_count = (uint8_t)(1u + lanec_put_tables(tables + 1, cm_di, LANEC_DI_TABLE_COUNT));
+        tables[program.basic_count++] = lanec_pin_cm_routines;
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;

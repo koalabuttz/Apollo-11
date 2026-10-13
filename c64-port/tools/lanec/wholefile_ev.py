@@ -23,7 +23,7 @@ word gets exactly one owner:
 The suites' complete results match the native code (tools/lanec/diff.py), so
 every owned word is reproduced by its milestone. Each instruction row names
 the C function that carries it and, when the word is a transfer-ABI entry
-(src/lanec_ev_routines.inc; interpretive entries keyed by LOC), the routine
+(src/lanec_ev_*_routines.c; interpretive entries keyed by LOC), the routine
 it is registered as. Writes
 OUTDIR/lanec-ev-lm-source-map.json.
 """
@@ -110,7 +110,7 @@ def build(mission):
                      'evidence': f'executed under {executed[key]}'}
             at = wholefile.physical(r['bank'], r['addr'])
             if at in abi:
-                entry['abi_routine'] = f'lanec_ev_{mission.lower()}_routines[{at}] -> {abi[at]}'
+                entry['abi_routine'] = '{}[{}] -> {}'.format(abi[at][0], at, abi[at][1])
             call_owner = (ms, mod)
         elif key in interpreted and not op:
             ms, mod = milestone[interpreted[key]]
@@ -118,7 +118,7 @@ def build(mission):
                      'evidence': f'read by the interpreter under {interpreted[key]}'}
             at = wholefile.physical(r['bank'], r['addr'])
             if at in abi_i:
-                entry['abi_routine'] = f'lanec_ev_{mission.lower()}_interpretive[{at}] (LOC) -> {abi_i[at]}'
+                entry['abi_routine'] = '{}[{}] (LOC) -> {}'.format(abi_i[at][0], at, abi_i[at][1])
             call_owner = None
         elif key in UNREACHABLE:
             text, before, why = UNREACHABLE[key]

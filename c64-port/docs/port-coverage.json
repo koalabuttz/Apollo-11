@@ -727,6 +727,7 @@
         {
           "native_files": [
             "src/lanec_di_dsp.c",
+            "src/lanec_di_dsp_routines.c",
             "src/lanec.c",
             "include/lanec_di_dsp.h",
             "include/lanec_symbols.h"
@@ -737,6 +738,7 @@
         {
           "native_files": [
             "src/lanec_di_mark.c",
+            "src/lanec_di_mark_routines.c",
             "src/lanec_di_dsp.c",
             "src/lanec.c",
             "include/lanec_di_mark.h",
@@ -749,6 +751,7 @@
         {
           "native_files": [
             "src/lanec_di_play.c",
+            "src/lanec_di_play_routines.c",
             "src/lanec_di_mark.c",
             "src/lanec_di_dsp.c",
             "src/lanec.c",
@@ -762,6 +765,7 @@
         {
           "native_files": [
             "src/lanec_di_sleep.c",
+            "src/lanec_di_sleep_routines.c",
             "src/lanec_di_play.c",
             "src/lanec.c",
             "include/lanec_di_sleep.h",
@@ -774,6 +778,7 @@
         {
           "native_files": [
             "src/lanec_di_idle.c",
+            "src/lanec_di_idle_routines.c",
             "src/lanec.c",
             "include/lanec_di_idle.h",
             "include/lanec_symbols.h"
@@ -784,6 +789,7 @@
         {
           "native_files": [
             "src/lanec_di_nvdsp.c",
+            "src/lanec_di_nvdsp_routines.c",
             "src/lanec.c",
             "include/lanec_di_nvdsp.h",
             "include/lanec_symbols.h"
@@ -798,7 +804,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_cm_routines (src/lanec_di_routines.inc, 164 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in its module's table lanec_di_cm_<module> (src/lanec_di_<module>_routines.c, 164 entries over six tables, one flight-store module each, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
           "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains.",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
@@ -811,7 +817,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-cm-source-map.json",
-            "sha256": "6cd03228406cd62dc2aeb2a7d5411e0b0d4af12659c67061c822de0ba5f89494"
+            "sha256": "b522be15544f5723f678d21c548ea08239aaddb9e0a4d97dc082fc967ee885ce"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
@@ -1210,6 +1216,7 @@
         {
           "native_files": [
             "src/lanec_ev_front.c",
+            "src/lanec_ev_front_routines.c",
             "src/lanec.c",
             "include/lanec_ev_front.h",
             "include/lanec_symbols.h"
@@ -1220,6 +1227,7 @@
         {
           "native_files": [
             "src/lanec_ev_short.c",
+            "src/lanec_ev_short_routines.c",
             "src/lanec.c",
             "include/lanec_ev_short.h",
             "include/lanec_ev_internal.h",
@@ -1231,6 +1239,7 @@
         {
           "native_files": [
             "src/lanec_ev_align.c",
+            "src/lanec_ev_align_routines.c",
             "src/lanec.c",
             "include/lanec_ev_align.h",
             "include/lanec_ev_internal.h",
@@ -1242,6 +1251,7 @@
         {
           "native_files": [
             "src/lanec_ev_dap.c",
+            "src/lanec_ev_dap_routines.c",
             "src/lanec.c",
             "include/lanec_ev_dap.h",
             "include/lanec_ev_internal.h",
@@ -1253,6 +1263,7 @@
         {
           "native_files": [
             "src/lanec_ev_time.c",
+            "src/lanec_ev_time_routines.c",
             "src/lanec.c",
             "include/lanec_ev_time.h",
             "include/lanec_ev_internal.h",
@@ -1264,6 +1275,7 @@
         {
           "native_files": [
             "src/lanec_ev_track.c",
+            "src/lanec_ev_track_routines.c",
             "src/lanec.c",
             "include/lanec_ev_track.h",
             "include/lanec_ev_internal.h",
@@ -6036,6 +6048,7 @@
         {
           "native_files": [
             "src/lanec_di_dsp.c",
+            "src/lanec_di_dsp_routines.c",
             "src/lanec.c",
             "include/lanec_di_dsp.h",
             "include/lanec_symbols.h"
@@ -6046,6 +6059,7 @@
         {
           "native_files": [
             "src/lanec_di_mark.c",
+            "src/lanec_di_mark_routines.c",
             "src/lanec_di_dsp.c",
             "src/lanec.c",
             "include/lanec_di_mark.h",
@@ -6058,6 +6072,7 @@
         {
           "native_files": [
             "src/lanec_di_play.c",
+            "src/lanec_di_play_routines.c",
             "src/lanec_di_mark.c",
             "src/lanec_di_dsp.c",
             "src/lanec.c",
@@ -6071,6 +6086,7 @@
         {
           "native_files": [
             "src/lanec_di_sleep.c",
+            "src/lanec_di_sleep_routines.c",
             "src/lanec_di_play.c",
             "src/lanec.c",
             "include/lanec_di_sleep.h",
@@ -6083,6 +6099,7 @@
         {
           "native_files": [
             "src/lanec_di_idle.c",
+            "src/lanec_di_idle_routines.c",
             "src/lanec.c",
             "include/lanec_di_idle.h",
             "include/lanec_symbols.h"
@@ -6093,6 +6110,7 @@
         {
           "native_files": [
             "src/lanec_di_nvdsp.c",
+            "src/lanec_di_nvdsp_routines.c",
             "src/lanec.c",
             "include/lanec_di_nvdsp.h",
             "include/lanec_symbols.h"
@@ -6107,7 +6125,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
-          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_lm_routines (src/lanec_di_routines.inc, 165 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
+          "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in its module's table lanec_di_lm_<module> (src/lanec_di_<module>_routines.c, 165 entries over six tables, one flight-store module each, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
           "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains.",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
@@ -6120,7 +6138,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-di-cert/lanec-di-lm-source-map.json",
-            "sha256": "b5e2a24a5d1c00269390a344a3a0e206795835ce4bb6fa0c45ef0f39bdd564c1"
+            "sha256": "a059de53f4320d1032d83ff91bbacbc2810470f52cfba1e24d885b1f563dc686"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
@@ -6530,7 +6548,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in banks 01, 20, 23, 40, 42 and 43.",
-          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry and every compiled callee return address in the file (a block start inside a routine, such as DPDAT1's CCS targets, is reached only through its routine and is not an entry); for the interpretive words, NEWOPS with LOC at each word the interpreter resumes on, the first word after each basic TC INTPRET included. Each is a transfer-ABI routine at its physical address: 313 basic routines in lanec_ev_lm_routines and 29 interpretive routines keyed by LOC under BANKSET in lanec_ev_lm_interpretive (src/lanec_ev_routines.inc, generated and checked against the listing by tools/lanec/routines.py ev), with INTPRET for the file's own TC INTPRET callers in lanec_ev_lm_intpret; LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. The routines take an lm_dntm_io device record (docs/LANEC-EV-TRANSFER.md).",
+          "entry_contracts": "Each entry named in the eight milestone documents (LANEC-EV-FRONT, -SHORT, -ALIGN, -RADAR, -DAP, -TIME, -TRACK, -LMI): every labelled entry and every compiled callee return address in the file (a block start inside a routine, such as DPDAT1's CCS targets, is reached only through its routine and is not an entry); for the interpretive words, NEWOPS with LOC at each word the interpreter resumes on, the first word after each basic TC INTPRET included. Each is a transfer-ABI routine at its physical address: 313 basic routines in the seven basic modules' tables lanec_ev_lm_<module> and 29 interpretive routines keyed by LOC under BANKSET in lanec_ev_lm_interpretive (src/lanec_ev_<module>_routines.c, one flight-store module each, generated and checked against the listing by tools/lanec/routines.py ev), with INTPRET for the file's own TC INTPRET callers in lanec_ev_lm_intpret; LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. The routines take an lm_dntm_io device record (docs/LANEC-EV-TRANSFER.md).",
           "index_domains": "Saved return words in 02000-07777 where TCQ/XACT0Q transfer through them; RRDESK2 +3 with the job's VAC address 0 or 062-0777; R04X -1 and R04C +4 with a non-overflowed A; ATTCK2 +1 with the axis index 0-2; TCPIN with FIXLOC + QPRET below 02000; interpretive entries with NEWJOB not negative (a positive NEWJOB ends at CHANG2 after the first DANZIG), FIXLOC 0200-01317, and at NEWOPS EDOP +0, BANKSET = BB and INTBIT15 its bit 15. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite ev-refuse: 512 corrupted entry states).",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on output channel 12 (IMUATTCK's error-counter enable, the RR/LR bits of R04 and TRMTRAK1), WOR on channel 14 (ATTCK2's CDU drive bits), RAND of channels 12, 30 and 33 and RXOR of channel 31 (IMU and radar status). Driving the CDUs, radars and meters from those bits is a device-adapter obligation, as for the other Lane C modules. The oracle holds Virtual AGC's simulated CDU drive still (docs/LANEC-EV-TIME.md)."
         },
@@ -6544,7 +6562,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-ev-cert/lanec-ev-lm-source-map.json",
-            "sha256": "8bdd35aac676b78eaa3e661ff4d9abef3a34b2eb8ea308fe26cf20405aade034"
+            "sha256": "8d7988ada2c2e28b3da84c45bd9bc8c6b4e6af40b096ca326892d370b3fa0cac"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
@@ -6579,6 +6597,7 @@
         {
           "native_files": [
             "src/lanec_ev_front.c",
+            "src/lanec_ev_front_routines.c",
             "src/lanec.c",
             "include/lanec_ev_front.h",
             "include/lanec_symbols.h"
@@ -6589,6 +6608,7 @@
         {
           "native_files": [
             "src/lanec_ev_short.c",
+            "src/lanec_ev_short_routines.c",
             "src/lanec.c",
             "include/lanec_ev_short.h",
             "include/lanec_ev_internal.h",
@@ -6600,6 +6620,7 @@
         {
           "native_files": [
             "src/lanec_ev_align.c",
+            "src/lanec_ev_align_routines.c",
             "src/lanec.c",
             "include/lanec_ev_align.h",
             "include/lanec_ev_internal.h",
@@ -6611,6 +6632,7 @@
         {
           "native_files": [
             "src/lanec_ev_radar.c",
+            "src/lanec_ev_radar_routines.c",
             "src/lanec.c",
             "include/lanec_ev_radar.h",
             "include/lanec_ev_internal.h",
@@ -6622,6 +6644,7 @@
         {
           "native_files": [
             "src/lanec_ev_dap.c",
+            "src/lanec_ev_dap_routines.c",
             "src/lanec.c",
             "include/lanec_ev_dap.h",
             "include/lanec_ev_internal.h",
@@ -6633,6 +6656,7 @@
         {
           "native_files": [
             "src/lanec_ev_time.c",
+            "src/lanec_ev_time_routines.c",
             "src/lanec.c",
             "include/lanec_ev_time.h",
             "include/lanec_ev_internal.h",
@@ -6644,6 +6668,7 @@
         {
           "native_files": [
             "src/lanec_ev_track.c",
+            "src/lanec_ev_track_routines.c",
             "src/lanec.c",
             "include/lanec_ev_track.h",
             "include/lanec_ev_internal.h",
@@ -6655,6 +6680,7 @@
         {
           "native_files": [
             "src/lanec_ev_lmi.c",
+            "src/lanec_ev_lmi_routines.c",
             "src/lanec.c",
             "src/lm_interp_steps.c",
             "src/lm_interp_orders.c",

@@ -140,7 +140,7 @@ def build(mission, survey=False):
             entry = {'kind': 'instruction', 'owner': ms, 'native': mod, 'evidence': f'executed under {executed[key]}'}
             at = wholefile.physical(r['bank'], r['addr'])
             if at in abi:
-                entry['abi_routine'] = f'lanec_pin_{mission.lower()}_routines[{at}] -> {abi[at]}'
+                entry['abi_routine'] = '{}[{}] -> {}'.format(abi[at][0], at, abi[at][1])
             call_owner = (ms, mod)
         elif not op and (label, ' '.join(fields[1:] if labelled else fields)) in CLASSIFIED:
             kind, why = CLASSIFIED[(label, ' '.join(fields[1:] if labelled else fields))]

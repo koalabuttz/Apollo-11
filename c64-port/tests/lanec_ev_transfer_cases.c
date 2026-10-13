@@ -102,9 +102,14 @@ static const agc_site_operand *lm_operands(void)
     return lm_sites;
 }
 
+static const agc_routine_table *const lm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_LM_TABLES };
+static const agc_routine_table *const cm_di[LANEC_DI_TABLE_COUNT] = { LANEC_DI_CM_TABLES };
+static const agc_routine_table *const lm_ev[LANEC_EV_LM_TABLE_COUNT] = { LANEC_EV_LM_TABLES };
+static const agc_routine_table *const cm_ev[LANEC_EV_CM_TABLE_COUNT] = { LANEC_EV_CM_TABLES };
+
 static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[6], interpretive[1];
+    static agc_routine_table tables[4 + LANEC_DI_TABLE_COUNT + LANEC_EV_LM_TABLE_COUNT], interpretive[1];
     static agc_native_program program;
     static agc_hardware hardware;
     static lm_dntm_io lm;
@@ -118,9 +123,11 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
     program.hardware = &hardware;
     hardware.channel11 = io->channel[011];
     if (mission == LANEC_LM) {
-        tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines; tables[2] = lanec_ev_lm_routines;
-        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines; tables[5] = lanec_ev_lm_intpret;
-        program.basic_count = 6u;
+        tables[0] = lm_interbank_routines; program.basic_count = 1u;
+        program.basic_count += lanec_put_tables(tables + program.basic_count, lm_di, LANEC_DI_TABLE_COUNT);
+        program.basic_count += lanec_put_tables(tables + program.basic_count, lm_ev, LANEC_EV_LM_TABLE_COUNT);
+        tables[program.basic_count++] = lm_exec_routines; tables[program.basic_count++] = lm_exec_job_routines;
+        tables[program.basic_count++] = lanec_ev_lm_intpret;
         interpretive[0] = lanec_ev_lm_interpretive;
         program.interpretive = interpretive; program.interpretive_count = 1u;
         program.interpreter_fetch = LM_INTERPRETER_FETCH;
@@ -137,8 +144,9 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         io->channel[030] = lm.channel30; io->channel[031] = lm.channel31;
         io->channel[032] = lm.channel32; io->channel[033] = lm.channel33;
     } else {
-        tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_routines; tables[2] = lanec_ev_cm_routines;
-        program.basic_count = 3u;
+        tables[0] = cm_interbank_routines; program.basic_count = 1u;
+        program.basic_count += lanec_put_tables(tables + program.basic_count, cm_di, LANEC_DI_TABLE_COUNT);
+        program.basic_count += lanec_put_tables(tables + program.basic_count, cm_ev, LANEC_EV_CM_TABLE_COUNT);
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;
@@ -176,12 +184,14 @@ static void make_c64(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_me
     m->ranges = 2u; m->stops = 0; m->newops = 0; m->locs = 0;   /* INTER-BANK and the file only */
 #ifndef LANEC_EV_TRANSFER_C64           /* the oracle's stops (the C64 program has no oracle) */
     {
-        uint16_t j, k = 0, p, f = 0;
-        for (j = 0; j < lanec_ev_lm_routines.count && k < LANEC_EV_TRANSFER_C64_STOPS; ++j) {
-            p = lanec_ev_lm_routines.entries[j].physical;
-            while (f < lanec_ev_lm_front.count && lanec_ev_lm_front.entries[f].physical < p) ++f;
-            if (f < lanec_ev_lm_front.count && lanec_ev_lm_front.entries[f].physical == p) continue;
-            c64_stops[k].bank = (uint16_t)(p / 1024u); c64_stops[k].address = (uint16_t)(02000u + p % 1024u); ++k;
+        uint16_t j, k = 0, p;
+        uint8_t t;
+        for (t = 0; t < LANEC_EV_LM_TABLE_COUNT; ++t) {   /* every module's points but the front's */
+            if (lm_ev[t] == &lanec_ev_lm_front) continue;
+            for (j = 0; j < lm_ev[t]->count && k < LANEC_EV_TRANSFER_C64_STOPS; ++j) {
+                p = lm_ev[t]->entries[j].physical;
+                c64_stops[k].bank = (uint16_t)(p / 1024u); c64_stops[k].address = (uint16_t)(02000u + p % 1024u); ++k;
+            }
         }
         m->stop_list = c64_stops; m->stop_count = k;
     }

@@ -17,7 +17,7 @@ it (by label interval) or to the file's constant table, and requires:
   - every constant-table word the native code reads is a symbols.txt WORD row.
 Each instruction row names the C function that carries it (the static or
 exported function named after its label, else the module's dispatch) and,
-when the word is a transfer-ABI entry (src/lanec_di_routines.inc), the
+when the word is a transfer-ABI entry (src/lanec_di_*_routines.c), the
 routine table and physical address it is registered at. EQUALS aliases of
 the file's code labels get alias rows naming the label they stand for.
 Writes OUTDIR/lanec-di-{lm,cm}-source-map.json.
@@ -149,15 +149,27 @@ def read_addresses(mission, table, native):
 
 
 def abi_entries(mission, family='di', interpretive=False):
-    """Physical address -> wrapper of every transfer-ABI routine registered for
-    MISSION (basic, or interpretive keyed by LOC) in src/lanec_<family>_routines.inc."""
-    text = (ROOT / f'src/lanec_{family}_routines.inc').read_text()
-    name = f'{mission.lower()}_{"interp_" if interpretive else ""}entries['
-    if name not in text:
-        return {}
-    block = text[text.index(name):]
-    block = block[:block.index('};')]
-    return {int(a): w for a, w in re.findall(r'\{ (\d+)u, (\w+) \}', block)}
+    """Physical address -> (table, wrapper) of every transfer-ABI routine
+    registered for MISSION (basic, or interpretive keyed by LOC): in each
+    module's src/lanec_<family>_<module>_routines.c, or for pin in
+    src/lanec_pin_routines.inc."""
+    ml = mission.lower()
+    name = f'{ml}_{"interp_" if interpretive else ""}entries['
+    found = {}
+    if family == 'pin':
+        sources = [(ROOT / 'src/lanec_pin_routines.inc', f'lanec_pin_{ml}_routines')]
+    else:
+        sources = [(p, None) for p in sorted((ROOT / 'src').glob(f'lanec_{family}_*_routines.c'))]
+    for path, table in sources:
+        text = path.read_text()
+        if name not in text:
+            continue
+        block = text[text.index(name):]
+        block = block[:block.index('};')]
+        if table is None:   # the table that holds the array
+            table = re.search(rf'const agc_routine_table (\w+) = {{ {re.escape(name[:-1])},', text).group(1)
+        found.update({int(a): (table, w) for a, w in re.findall(r'\{ (\d+)u, (\w+) \}', block)})
+    return found
 
 
 def physical(bank, addr):
@@ -230,7 +242,7 @@ def build(mission):
                      'executed_by_oracle': ran}
             at = physical(r['bank'], r['addr'])
             if not op and at in abi:
-                entry['abi_routine'] = f'lanec_di_{mission.lower()}_routines[{at}] -> {abi[at]}'
+                entry['abi_routine'] = '{}[{}] -> {}'.format(abi[at][0], at, abi[at][1])
         elif r['bank'] == tb and r['addr'] >= ta:
             if not op:
                 sys.exit(f'FAIL: {mission} non-data word in the constant table: {r["text"]}')

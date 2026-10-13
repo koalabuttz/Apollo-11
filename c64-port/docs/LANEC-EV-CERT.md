@@ -12,7 +12,7 @@ translated.
 
 Every labelled entry and every return into the file from a callee is a
 routine of the native control-transfer ABI (`docs/NATIVE_TRANSFER_ABI.md`):
-313 basic routines in `lanec_ev_lm_routines` and the 29 interpretive entries,
+313 basic routines in the seven basic modules' tables (`lanec_ev_lm_<module>`) and the 29 interpretive entries,
 keyed by LOC, in `lanec_ev_lm_interpretive`, generated and checked against
 the listing by `tools/lanec/routines.py ev`. 468 round trips through
 `agc_transfer_run`, from Pinball's `POSTJUMP GOEXTVB` and every other

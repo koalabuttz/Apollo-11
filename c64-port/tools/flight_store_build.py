@@ -79,10 +79,12 @@ IO_KIND = {
            'lm_trim_gimbal': 'LM_FLIGHT', 'lm_landing_displays': 'LM_FLIGHT', 'lm_p_axis': 'LM_FLIGHT',
            'lm_throttle': 'LM_FLIGHT', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
-           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
-           'lanec_pin_routines': 'LM_DNTM'},
+           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_pin_routines': 'LM_DNTM',
+           **{f'lanec_ev_{g}_routines': 'LM_DNTM' for g in ('front', 'short', 'align', 'radar', 'dap', 'time', 'track',
+                                                            'lmi')}},
     'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM',
-           'lanec_ev_routines': 'CM_DNTM', 'lanec_pin_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66'},
+           'lanec_pin_routines': 'CM_DNTM', 'cm_p21_routines': 'P66', 'cm_p76_routines': 'P66', 'cm_stateup': 'P66',
+           **{f'lanec_ev_{g}_routines': 'CM_DNTM' for g in ('front', 'short', 'align', 'dap', 'time', 'track')}},
 }
 BASE_IO = {'lm': 'P66', 'cm': 'CM_NATIVE'}
 TABLE_DEF = re.compile(r'^const agc_routine_table\s+([A-Za-z0-9_]+)\s*=', re.M)
