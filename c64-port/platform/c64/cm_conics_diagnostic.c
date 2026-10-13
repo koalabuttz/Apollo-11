@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* cm-conics C64 diagnostic: group IRC_GROUP of the compiled
- * CM_CONICS (the routines of its KEEP mask,
+ * CONIC_SUBROUTINES (the routines of its KEEP mask,
  * tools/mk/cm-conics.groups) runs its cases
  * (tests/cm_conics_c64_vectors.h), each digest against the yaAGC
  * oracle's. */
@@ -24,7 +24,7 @@ int main(void) {
         uint16_t ie = 0;
         unsigned kind;
         irc_build(S, &irc_c64_cases[i]);
-        kind = irc_run(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], 200, &ie);
+        kind = irc_run(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], 2000, &ie);  /* (the spec's max_steps) */
         ++checks;
         if (kind != IRC_STOPPED || irc_digest(kind, S, ie) != irc_c64_expected[i]) ++failures;
     }

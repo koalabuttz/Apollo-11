@@ -107,3 +107,18 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 
 - `flow_states`: before the cases are drawn, the oracle runs each entry's cases with `IRC_FLOW=1`, and the reference prints PUSHLOC, MODE, X1, X2, S1 and S2 at every NEWOPS. Each other routine then draws those registers from the values the file's own runs reach it with. `states` still wins, and a routine no entry reaches keeps random ones. A PUSHLOC off the pushdown list (an entry case's own random one) is not collected. Without this, a resume inside PARAM or GETX starts with a pushdown pointer or loop count the file never has there.
 - A starred store tail (`STOVL* COGA / MUTABLE,1`) that reads a fixed table now goes through the same `KX` check as a starred load (`indexed_fixed`). Before, the load half of the tail read zeros.
+
+## Additions from the CM flight lane (Comanche conics, integration, P38-P39)
+
+Spec keys (all opt-in, so other specs compile byte-identically):
+
+- `seed_counters`: whole-file basic specs seed the counter cells and input channels a case reads (`counters` on other specs means TIME1/TIME2 and the CDU states). The milestone's mk files define `-DIRC_CHANNELS`, which turns on the channel and counter case code in `tests/interp_case.h`.
+- `rope_fallback`: a word the listing doesn't show (bank fillers such as V/SC's 200CS read) comes from the `MAIN.agc.bin` beside the listing.
+- `fixed_tables`: `{'LABEL' or 'bank addr': (lo, hi)}`, the index range of a basic indexed read from a fixed table (INTBITAB, WAKESTAL).
+- `fixed_index_erasable`: a starred operand listed in `fixed_index` whose effective address falls below 02000 reads erasable with no `K` table. INTEGRATION_INITIALIZATION's `DLOAD* MUEARTH,2` reads either a constant or an erasable copy depending on X2.
+- `interp_not_basic`: a CCS or skip whose landing word is an interpretive order (or a blank word) treats that word as data, so basic code is not decoded from it. Opcode names that are also basic instructions (INCR, AD, ...) still decode as basic.
+- `noreturn` also applies to a TC whose target is inside the file (P38-P39's TC DSPLY81, which ends in a TCF ENDOFJOB).
+
+The yaAGC reference now decides whether a case's first instruction is in the file before it runs, so a case that starts by running an erasable word (TC INTWAKUQ) still stops at the first fixed address outside the file.
+
+A spec's `max_steps` must match the `irc_run` limit in its `tests/test_<sym>.c` and `platform/c64/<sym>_diagnostic.c`; a lower limit fails long cases as kind 2.

@@ -201,10 +201,24 @@ class Basic:
                 continue
             self.nodes[k] = self.compile(*k)
 
+    BASIC_NAMES = ('TC', 'TCF', 'CCS', 'DAS', 'LXCH', 'INCR', 'ADS', 'CA', 'CAF', 'CAE', 'CS', 'INDEX', 'DXCH',
+                   'TS', 'XCH', 'AD', 'MASK', 'READ', 'WRITE', 'RAND', 'WAND', 'ROR', 'WOR', 'RXOR', 'EDRUPT',
+                   'DV', 'BZF', 'MSU', 'QXCH', 'AUG', 'DIM', 'DCA', 'DCS', 'SU', 'BZMF', 'MP', 'EXTEND',
+                   'RELINT', 'INHINT', 'NOOP', 'RETURN', 'COM', 'DOUBLE', 'ZL', 'ZQ', 'DDOUBL', 'DCOM',
+                   'SQUARE', 'OVSK', 'TCAA', 'RESUME', 'XLQ', 'XXALQ', 'DTCB', 'DTCF')
+
     def is_data(self, phys):
         ln = self.L.by_phys.get(phys)
         if ln is None:
             return True     # second word of a two-word constant
+        if self.spec.get('interp_not_basic'):
+            # Spec 'interp_not_basic': an interpretive order or operand word
+            # that a CCS exit or skip lands on is never run as basic code
+            # (CCS DIFEQCNT's negative exits after the MOVE* loops).
+            import interp_compile
+            op = ln.op.split(',')[0]
+            if ln.op == '' or (interp_compile.is_interp_op(ln.op) and op not in self.BASIC_NAMES):
+                return True
         return ln.op in self.CONST_OPS
 
     def outside_tc(self, phys, target_logical):
@@ -244,6 +258,10 @@ class Basic:
             return ['return EXEC_INVALID_ACTION; /* TCF +0 (TC trap) */']
         if tp is not None and self.in_file(tp):
             st.append('goto %s;' % self.add(tp, False, clean))
+            if call and self.L.label_at(tp) in self.spec.get('noreturn', ()):
+                # (an in-file routine the spec says never returns: DSPLY81
+                # goes on in interpretive code)
+                return st
             if call:
                 self.dispatch.add(here + 1)
                 self.add(here + 1)

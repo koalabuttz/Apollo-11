@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* cm-time-free-fall host test: the frozen cases (every 32nd of the
  * differential's, tests/cm_time_free_fall_vectors.h) run
- * through the compiled Comanche055 CM_TIME_FREE_FALL
+ * through the compiled Comanche055 TIME_OF_FREE_FALL
  * to their stops; each digest must equal the yaAGC oracle's. */
 #include <stdio.h>
 #include "interp_case.h"

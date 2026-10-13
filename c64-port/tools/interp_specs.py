@@ -360,6 +360,139 @@ SPECS = {
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
     },
+    # Lane G: Comanche055 ORBITAL_INTEGRATION, the whole file as routines at its
+    # original addresses.
+    'cm-orbital-integration': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'ORBITAL_INTEGRATION.agc'},
+        'base': {'cm': 'cm_orbital_integration'},
+        'symbol': {'cm': 'cm_orbital_integration'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'noreturn': ['POODOO'],
+        'cgoto': {'DIFEQTAB': 3},
+        # Bank 13's constants indexed by the body (X2 = PBODY: 0 Earth, 2
+        # Moon) or, for ASCALE,1, by X1 = PBODY plus GETRPSV's INCR,1 4s.
+        # (MUEARTH,2 and MUEARTH -2,2 also run with X2 at -2, 4 and the
+        # DIFEQ stages -12D and -24D, as resumes in ACCOMP and GAMCOMP
+        # find it.)
+        'fixed_index': {'MUEARTH': [2, 0, -2, -4, 12, 24], 'J2REQSQ': [0, -2], 'J4REQ/J3': [0, -2], '2J3RE/J2': [0, -2],
+                        'RDE': [0, -2], 'ASCALE': list(range(0, -50, -2))},
+        # (an index that takes the address below 02000 reads erasable)
+        'fixed_index_erasable': True,
+        # PBODY (E4,1550) is 0 or 2; X2 holds it, and S1/S2 index steps
+        # (LXA,1 S2 before the J-terms). DIFEQCNT (1500) is the
+        # DIFEQ stage, 0, -12D or -24D (NBRANCH's DMP CGOTO); COLREG (1102)
+        # a W column, 0 to -42D by -6.
+        'all_states': {'2150': [0, 2], 'vac+046': [0, 2, 4, 6], 'vac+047': [0, 2], 'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6], '1500': [0, 0o77763, 0o77747],
+                       '1102': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                       # The pushdown list stays below 14D (as on the LM).
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # Mid-sequence resumes start from the registers the file's own runs
+        # reach them with.
+        'flow_states': True,
+        # A CHANG2 resume starts from the state the routine before it
+        # reaches it in.
+        'resume_flow': True,
+        # NBRANCH's DMP CGOTO resumed: MPAC holds the stage SLOAD DIFEQCNT
+        # left (DP).
+        'states': {'11,3223': {'0154': [0, 0o77763, 0o77747], '0155': [0], '0163': [0]},
+                   # (resumes no run reaches: OBLATE after SETPD 0 and DSU*; the
+                   # W column store after VSL3 BOV)
+                   '11,3022': {'0166': ['vac+0'], '0163': [0]},
+                   # R-TO-RP returns a vector with PUSHLOC at 0.
+                   '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
+                   '11,3522': {'0163': [0o77776],
+                               'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
+        'max_steps': 1000,
+        'target': 'tests/cm_orbital_integration_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane G: Comanche055 INTEGRATION_INITIALIZATION, the whole file as routines at its
+    # original addresses.
+    'cm-integration-init': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'INTEGRATION_INITIALIZATION.agc'},
+        'base': {'cm': 'cm_integration_init'},
+        'symbol': {'cm': 'cm_integration_init'},
+        'basic': 'full',
+        # ERASTAL1/2 and ERASWAK1/2: the erasable-integration stall and wake
+        # entries; nothing in Comanche055 calls them (WAKESTAL's CADRs
+        # name ERASTAL1+1 and ERASTAL2+1), so they are listed here.
+        'entries': ['@external', 'ERASTAL1', 'ERASTAL2', 'ERASWAK1', 'ERASWAK2'],
+        'noreturn': ['POODOO', 'BANKJUMP', 'JOBSLEEP'],
+        # TBASE2 holds INTSTALL's saved QPRET, a return outside the file.
+        'return_words': ['1055'],
+        # Bank 13's constants indexed by the body (X2 = PBODY: 0 Earth, 2
+        # Moon).
+        'fixed_index': {'MUEARTH': [2, 0, -2, -4, 12, 24], 'J2REQSQ': [0, -2], 'J4REQ/J3': [0, -2],
+                        '2J3RE/J2': [0, -2], 'RDE': [0, -2], 'RME': [0, -2],
+                        'ASCALE': list(range(0, -50, -2))},
+        'fixed_index_erasable': True,
+        # As ORBITAL_INTEGRATION's: PBODY 0 or 2, X1/X2 small steps,
+        # DIFEQCNT a DIFEQ stage, COLREG a W column, the pushdown list below
+        # 14D. (S1 and S2 hold saved returns here: STQ S2.)
+        'all_states': {'2150': [0, 2], 'vac+046': [0, 2, 4, 6], 'vac+047': [0, 2], '1500': [0, 0o77763, 0o77747],
+                       '1102': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
+                       '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        'flow_states': True,
+        'resume_flow': True,
+        # The stall areas (L, STALTEM: 0 to 2) index INTBITAB, WAKESTAL and
+        # INTFLBIT; ALLSTALL and WAKE take them in A.
+        'fixed_tables': {'INTBITAB': (0, 2), 'WAKESTAL': (0, 2), '5002': (0, 2)},
+        'states': {'13,3444': {'0': [0, 1, 2]}, '13,3500': {'0': [0, 1, 2]}, '13,3505': {'0154': [0, 1, 2],
+                              # JOBWAKE's LOCCTR: a core set it woke (12D on) or -1, none
+                              '0064': [0o14, 0o30, 0o44, 0o60, 0o74, 0o110, 0o77776]},
+                   # INTWAKUQ holds INTWAKEU's caller's Q (QXCH), a fixed
+                   # return (TC INTWAKEU at 27,3703) that TC INTWAKUQ runs.
+                   '27,2745': {'0330': [0o3704]}},
+        # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
+        # land on interpretive words, never run as basic code.
+        'interp_not_basic': True,
+        'max_steps': 1000,
+        'target': 'tests/cm_integration_init_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
+    # original addresses.
+    'cm-stable-orbit': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('cm',),
+        'file': {'cm': 'STABLE_ORBIT_-_P38-P39.agc'},   # (the listing's name for STABLE_ORBIT.agc)
+        'base': {'cm': 'cm_stable_orbit'},
+        'symbol': {'cm': 'cm_stable_orbit'},
+        'basic': 'full',
+        'entries': ['@external'],
+        # DSPLY81 (in the file) goes on in interpretive code after its
+        # displays; TC DSPLY81 never returns.
+        'noreturn': ['DSPLY81'],
+        # GOFLASH/GOFLASHR returns (terminate, proceed, recycle, enter
+        # after a BANKCALL) land on words only the display reaches.
+        'resume_orphans': True,
+        # VNDSPLY's QXCH RTRN saves its caller's return, and TC RTRN runs
+        # that word (TC <return>): RTRN (E4,1767) holds one of the four
+        # TC VNDSPLY returns, which the erasable continuation accepts.
+        'erasable_points': {'E4,1767': [0o2750, 0o3041, 0o3152, 0o3154]},
+        'states': {'04,3272': {'RTRN': [0o2750, 0o3041, 0o3152, 0o3154]}},
+        # The file runs under EBANK=SUBEXIT (E4).
+        'ebank': 'listing',
+        'flow_states': True,
+        'resume_flow': True,
+        'max_steps': 1000,
+        'target': 'tests/cm_stable_orbit_target.c',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
     # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
     # its original addresses.
     'cm-conics': {
@@ -404,7 +537,7 @@ SPECS = {
         },
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a

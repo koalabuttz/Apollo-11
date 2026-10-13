@@ -58,6 +58,10 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
+  /* A basic start counts as in the file, so a first instruction that runs
+   * an erasable word (TC INTWAKUQ) still stops at the fixed address it goes
+   * to outside the file. */
+  {unsigned z0=z_physical(get(RegZ));if(z0<0xfffeu)was_in=!outside(t,z0);}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<4000000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);

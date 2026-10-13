@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* cm-time-free-fall C64 diagnostic: group IRC_GROUP of the compiled
- * CM_TIME_FREE_FALL (the routines of its KEEP mask,
+ * TIME_OF_FREE_FALL (the routines of its KEEP mask,
  * tools/mk/cm-time-free-fall.groups) runs its cases
  * (tests/cm_time_free_fall_c64_vectors.h), each digest against the yaAGC
  * oracle's. */

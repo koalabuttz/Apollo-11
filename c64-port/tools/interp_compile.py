@@ -612,6 +612,15 @@ class Compiler:
                     # An indexed fixed operand: the rope words at each
                     # address the spec's index values reach; any other
                     # effective address is refused.
+                    if self.spec.get('fixed_index_erasable'):
+                        # (An index that takes the address below 02000 reads
+                        # erasable, as the interpreter does: k = 0.)
+                        st[-1] += '{const agc_word *k=0;if(W[0116]>=02000u){' + self.superbank_guard(fx) + \
+                            'switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
+                        st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
+                        st.append('  default:return EXEC_OUT_OF_SCOPE;}}')
+                        st.append('%s%s(s,k);}' % (P, fn))
+                        return st, cur + 1, False, False
                     st[-1] += self.superbank_guard(fx) + '{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){'
                     st.extend('  case %du:k=K%o;break;' % (fp, fp) for fp in fx)
                     st.append('  default:return EXEC_OUT_OF_SCOPE;}')
