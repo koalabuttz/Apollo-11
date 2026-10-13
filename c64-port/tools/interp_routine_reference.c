@@ -41,7 +41,7 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;
  if(argc<4)return 2;
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
@@ -63,6 +63,10 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
+  /* (channel_inputs specs: the differential sets IRC_INPUTS) */
+  if(inputs){agc_input_channels in;irc_inputs(&c,&in);machine.InputChannel[3]=(int16_t)in.channel3;machine.InputChannel[4]=(int16_t)in.channel4;
+   machine.InputChannel[030]=(int16_t)in.channel30;machine.InputChannel[031]=(int16_t)in.channel31;
+   machine.InputChannel[032]=(int16_t)in.channel32;machine.InputChannel[033]=(int16_t)in.channel33;}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<4000000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
@@ -80,7 +84,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
     /* (any: only once Z has been in the file's own words.) */
     if(t->any&&was_in&&zp<0xfffeu&&zp!=t->intpret&&outside(t,zp))stopped=1;
     if(zp<0xfffeu)was_in=!outside(t,zp);
-    for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
+    for(i=0;i<t->n;++i)if(zp==t->ext[i]||(pc<02000u&&t->ext[i]==(0xc000u|pc))){stopped=1;break;}
     if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     if(stopped)break;
    }

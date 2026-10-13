@@ -115,7 +115,9 @@ class Mission:
             if any(a in named for a in dev):
                 raise SystemExit('device cells %s are named by the file' % dev)
             self.externals += list(dev)
-        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)))
+        # (An erasable program's address a call reaches is 0xC000 | Z.)
+        self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)
+                                     + [0xC000 | k for k in self.cp.erasable_calls]))
         self.returns = self.caller_returns(spec)
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
@@ -136,6 +138,10 @@ class Mission:
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         self.states = {self.point_of(k): v for k, v in spec.get('states', {}).items()}
+        # range_states: (FROM, TO, states) applies states to every point
+        # from label FROM up to (not including) label TO, after all_states.
+        self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
+                             for a, b, st in spec.get('range_states', ())]
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
         self.flow = {}   # ('flow_states') point -> states its entries' runs reach it in
         # Erasable cells every case of the milestone holds in range (physical
@@ -371,14 +377,17 @@ def case(mi, point, n, rng):
         if shape == 3:
             counter_edges(E, rng)
     held = pinned = set()
-    for k, choices in (list(mi.all_states.items()) + list(mi.flow.get(point, {}).items())
+    ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items()]
+    for k, choices in (list(mi.all_states.items()) + ranged + list(mi.flow.get(point, {}).items())
                        + list(mi.states.get(point, {}).items())):
         a = state_address(mi, k, vac)
         pinned.add(a)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
-        if isinstance(v, str) and v.startswith('vac+'):
+        if v == 'outside':
+            v = mi.outside(rng)
+        elif isinstance(v, str) and v.startswith('vac+'):
             v = vac + int(v[4:], 8)
         elif isinstance(v, str):
             lab, off = v.split('+')
@@ -780,6 +789,8 @@ def main():
                          'evidence/<id>/<id>-c64-cover.json, else -proof.json) and print it as JSON')
     a = ap.parse_args()
     spec = interp_specs.SPECS[a.spec]
+    if spec.get('channel_inputs'):
+        os.environ['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
@@ -1169,6 +1180,7 @@ def c64_probe(spec, sym, m, mask, text, pick=()):
     prg = os.path.join(d, 'probe.prg')
     # (Channel and counter edits need their case code on the C64 too.)
     io = ['-DIRC_CHANNELS'] if spec.get('seed_counters') or spec.get('channels') else []
+    io += ['-DIRC_INPUTS'] if spec.get('channel_inputs') else []
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *io, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick),
@@ -1433,7 +1445,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         if mi.m not in spec['missions']:
             continue
         # (every KEEP word is defined, so a group drops the routines past 60 too)
-        KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
+        if mi.m in spec['missions']:
+            KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'
     full, fits = None, {}
 

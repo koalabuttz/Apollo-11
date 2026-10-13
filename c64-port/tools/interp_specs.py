@@ -937,6 +937,36 @@ SPECS = {
         'max_steps': 1000,
         'freeze_stride': 256,
     },
+    'gimbal-lock': {
+        # (-DIRC_INPUTS: the input-latch code its VICE PRGs were built with)
+        'c64_flags': ['-DIRC_INPUTS'],
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'GIMBAL_LOCK_AVOIDANCE.agc', 'cm': 'GIMBAL_LOCK_AVOIDANCE.agc'},
+        'base': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
+        'symbol': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
+        # LOCSKIRT (LM NOGIMLOC, CM WCALC): KALCMANU's GOTO and BPL targets.
+        'entries': {'lm': ['NOGIMLOC', 'WCALC'], 'cm': ['WCALC']},
+        'externals': {},
+        'target': 'tests/gimbal_lock_target.c',
+        # KALCMANU runs as a job: any DANZIG can find a job waiting.
+        'resume_keys': True,
+        # EBANK= BCDU (E6).
+        'ebank': 6,
+        # ARATE,1 reads one of four rates: the KX window keeps X1 in it.
+        'index_guard': True,
+        # RATEINDX (LM 01325, CM 01130) picks the rate (0, 2, 4 or 6);
+        # after LXC,1 X1 is its complement.
+        'all_states': {'01325': [0, 2, 4, 6], '01130': [0, 2, 4, 6],
+                       'vac+046': [0o77777 ^ r for r in (0, 2, 4, 6)]},
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 32,
+    },
     'lm-orbital-integration': {
         'missions': ('lm',),
         'file': {'lm': 'ORBITAL_INTEGRATION.agc'},
@@ -1050,13 +1080,120 @@ SPECS = {
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
+        # Without inlining the runs that take every branch outcome fit one
+        # diagnostic (the C64 cover misses none).
+        'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
         'target': 'tests/sband_antenna_target.c',
         # V64 runs SBANDANT as a job: any DANZIG can find a job waiting.
         'resume_keys': True,
         # GOMARKFR's returns (terminate, proceed, recycle, immediate) land on
         # words nothing in the file reaches.
         'resume_orphans': True,
+        # X2 (VAC+39D) picks the sphere for SLOAD BHIZ X2: 0 Earth, 2 Moon,
+        # and -0.
+        'all_states': {'vac+047': [0, 2, 0o77777]},
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
         'freeze_stride': 32,
+    },
+    'cm-imu-calibration': {
+        'missions': ('cm',),
+        'file': {'cm': 'IMU_CALIBRATION_AND_ALIGNMENT.agc'},
+        'base': {'cm': 'cm_imu_calibration'},
+        'symbol': {'cm': 'cm_imu_calibration'},
+        # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
+        'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
+        'noreturn': ['POSTJUMP'],
+        'resume_keys': True,
+        'resume_orphans': 'all',
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
+                '1STO2S': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'},
+                'CDULOGIC': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
+                'PULSEIMU': None, 'SGNAGREE': None},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        # Without inlining the runs that take every branch outcome fit one
+        # diagnostic (the C64 cover misses none).
+        'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
+        'target': 'tests/cm_imu_calibration_target.c',
+        # EBANK= POSITON and XSM: the file's erasables are in E5.
+        'ebank': 5,
+        # CHECKG1 spins until a PIPA pulse moves PIPAX, FINETIME +1 while
+        # LOSCALAR reads 37777 (the scalers are latched for a run).
+        'idle': ['CHECKG1', 'FINETIME+1'],
+        # FINETIME reads the scalers and CHKCOMED channel 30 (liftoff).
+        'channel_inputs': True,
+        # INDEX POSITON and the like must leave a 12-bit operand erasable.
+        'index_guard': True,
+        # PIPACHK's and PIPJOBB's INDEX NDXCTR; TC +1 (NDXCTR 0 or 1).
+        'tc_tables': {'PIPACHK+1': 2, 'PIPJOBB+1': 2},
+        # ONCEMORE's TC LAT(SPL) (E7) calls the erasable program the
+        # performance test loads.
+        'erasable_calls': [0o1400],
+        # The states the test's own code leaves (E5 words at 02400 + their
+        # offset from 01400): small table indexes, CCS classes, and small
+        # index registers and steps for the ALFLT loops.
+        'all_states': {
+            '02423': list(range(8)),                                  # POSITON
+            '02422': [0, 1, 2],                                       # PIPINDEX
+            '02547': list(range(6)),                                  # RESULTCT
+            '02421': [0, 1],                                          # NDXCTR: 1 in gimbal lock
+            '02632': [0, 1, 2],                                       # PREMTRXC
+            '02412': [0, 1, 7, 0o77777, 0o77770],                     # LENGTHOT
+            '02450': [0, 1, 0o37777],                                 # TORQNDX: +0 or POSMAX
+            '02540': [0, 1, 7, 0o77777, 0o77770],                     # ALTIM
+            '02643': [0, 1],                                          # GEOCOMP1: 1 in compass
+            '02454': [12 * n for n in range(13)],                     # ALX1S: 144 down by 12
+            '02455': [1, 0o77776],                                    # CMPX1: +-1 alternately
+            '01304': [0, 1, 0o4000],                                  # LGYRO: free or a job
+            '02427': [0, 2],                                          # RUN: target 1 or 2
+            '02431': [0, 6],                                          # TARG1/2
+            'vac+046': [n for n in range(0o20)] + [0o77777 ^ n for n in range(0o20)],
+            'vac+047': [n for n in range(0o20)] + [0o77777 ^ n for n in range(0o20)],
+            'vac+050': [1, 2, 3, 6], 'vac+051': [1, 2, 3, 6],
+            '01330': [0, 0o401, 0o455, 0o531, 0o605, 0o661],            # MARKSTAT: a mark VAC or none
+            # The saved returns: the file's own call sites.
+            '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
+                      0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE
+            '02426': [0o2134, 0o2173, 0o2251, 0o2527, 0o3320],        # QPLACES
+            '02424': [0o3545, 0o3572]},                               # QPLAC
+        # The ALFLT filter's loops (33,2645-3033) run with S1 4 and S2 2
+        # (INTVAL) and their own index values; a wider index stores over
+        # CMPX1 or ALX1S and the next LXC/LXA loads data as an index.
+        'range_states': [
+            ('NORMLOP', 'PERFERAS', {'vac+050': [4], 'vac+051': [2], '00166': ['vac+0', 'vac+2']}),
+            ('ALKCG2', 'ALFLT3', {'vac+046': list(range(2, 146, 2)), 'vac+047': list(range(2, 14, 2))}),
+            ('DELMLP', 'ALILP', {'vac+046': [4, 8]}),
+            ('ALILP', 'ALKLP', {'vac+047': [2, 4]}),
+            ('ALKLP', 'LOOSE', {'vac+046': [1, 0o77776], 'vac+047': [2, 4, 6, 8]}),
+            ('LOOSE', 'BOOP', {'vac+046': [4, 8]}),
+            ('BOOP', 'PERFERAS', {'vac+046': [2, 4, 8], 'vac+047': [2, 4, 6]}),
+            # The compass and erection loop: X1 8 by 4 from SETPD 0.
+            ('ALWAYSG', 'COMPGS', {'vac+046': [4, 8], 'vac+050': [4], '00166': ['vac+0', 'vac+2']}),
+            # TAR1: X1 2 and X2 12, then 0 and 6, S2 6.
+            ('TAR1', 'CONTIN33', {'vac+046': [0, 2], 'vac+047': [6, 12], 'vac+051': [6], '00166': ['vac+0', 'vac+2']}),
+            # EARTHR keeps its CALL return in S2 (ITA S2) for GOTO S2.
+            ('EARTHR', 'EARTHR*', {'vac+051': ['outside']}),
+            # LITTLSUB keeps its CALL return (a CADR) in QPLAC (STQ) for GOTO QPLAC.
+            ('LITTLSUB', 'AZMTHCG1', {'02424': [0o67562, 0o67575]})],
+        # STOVL S1 stores INTVAL's 4 and 2; TARGDRVE's callers pass 0 or 6.
+        'states': {'NORMLOP+3': {'00154': [4], '00155': [2]}, 'TARGDRVE': {'00000': [0, 6]}},
+        # One case per routine: the cases carry many edits, and the header
+        # must stay under 1 MB.
+        # Host vectors and C64 cases chosen to reach every branch outcome;
+        # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
+        # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
+        # the operands.
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'freeze_stride': 640,
     },
     'lm-p40-p47': {
         'missions': ('lm',),
