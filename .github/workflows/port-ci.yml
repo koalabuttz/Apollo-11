@@ -196,6 +196,11 @@ jobs:
           if [ "$SHARD" = 0 ]; then
             make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
           fi
+      - &map-check
+        name: Every PRG ends below the $c000 mailbox
+        if: always()
+        working-directory: c64-port
+        run: python3 tools/map_check.py
       - *logs
       - &piece
         name: Vice manifest piece
@@ -213,6 +218,35 @@ jobs:
           name: vice-manifest-${{ github.job }}${{ matrix.shard }}
           path: c64-port/build/vice-manifest-*.json
           if-no-files-found: ignore
+
+  # On every push to the port branch, link every C64 PRG (no VICE) and check
+  # each map. Two PRs can each fit and still push another lane's PRG past
+  # $c000 together; this shows it on the merge commit. Full runs check the
+  # maps in the c64 job instead.
+  c64-maps:
+    needs: plan
+    if: github.event_name == 'push' && needs.plan.outputs.c64_full != '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Link every C64 PRG (shard ${{ matrix.shard }})
+        working-directory: c64-port
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          source deps/env.sh
+          targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(build\/[A-Za-z0-9_.-]*\.prg\):.*/\1/p' | sort -u \
+            | awk -v k="$SHARD" 'NF && (NR - 1) % 2 == k')
+          echo "$(echo "$targets" | wc -w) PRGs"
+          make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1 || echo "some PRGs did not link (see build/c64-maps.log); their own targets report that"
+      - *map-check
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
   # targets. Requested full runs only (nightly, dispatch): about 400 VICE
@@ -252,12 +286,42 @@ jobs:
       - *piece
       - *upload-piece
 
+  # Requested full runs only: re-derive every C64 branch cover a certificate
+  # cites on the current sources (tools/cover_check.py, host only), as
+  # manifest pieces carrying c64_cover. It reports and does not fail: the
+  # manifest records the gaps and tools/cert_precheck.py judges them.
+  cover-check:
+    needs: plan
+    if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Re-derive cited C64 branch covers (shard ${{ matrix.shard }} of 2)
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/cover_check.py --shard "${{ matrix.shard }}/2" --name "cover-check${{ matrix.shard }}" \
+            --out "build/vice-manifest-cover-check${{ matrix.shard }}.json"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest-cover-check${{ matrix.shard }}
+          path: c64-port/build/vice-manifest-cover-check*.json
+          if-no-files-found: ignore
+
   # The vice manifest (tools/vice_manifest.py): every vice-* target of this
   # full run, its PRG sha256, checks and result, as the `vice-manifest`
   # artifact that tools/cert_precheck.py checks certificates' vice_targets
   # against.
   vice-manifest:
-    needs: [plan, c64, c64-legacy]
+    needs: [plan, c64, c64-legacy, cover-check]
     if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
     runs-on: ubuntu-24.04
     steps:
@@ -273,8 +337,9 @@ jobs:
           MANIFEST_REF: ${{ inputs.ref || github.ref_name }}
         run: |
           shopt -s nullglob
-          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 12 \
+          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 14 \
             --job "c64=${{ needs.c64.result }}" --job "c64-legacy=${{ needs.c64-legacy.result }}" \
+            --job "cover-check=${{ needs.cover-check.result }}" \
             --out build/vice-manifest.json
       - uses: actions/upload-artifact@v4
         with:

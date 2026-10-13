@@ -106,6 +106,33 @@ def cdutodcm_states():
     return out
 
 
+
+# Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
+# +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
+# NEGCOS's BPL on -0: LONG 180 degrees) and COSTH +-0 (ASIN +-1), as
+# (hi, lo) doubles; the empty sets keep half the cases random.
+def lat_long_arctan_joint():
+    z, mz, h, mh = (0, 0), (0o77777, 0o77777), (0o20000, 0), (0o57777, 0o77777)
+    sets = []
+    for s_, c_ in ((z, z), (mz, mz), (z, mz), (mz, z), (z, h), (mz, h), (z, mh), (mz, mh),
+                   (h, z), (mh, z), (h, mz), (mh, mz)):
+        # SINTH and COSTH are 18D and 16D of the work area.
+        sets.append({'vac+22': s_[0], 'vac+23': s_[1], 'vac+20': c_[0], 'vac+21': c_[1]})
+    return sets + [{}] * len(sets)
+
+
+# The planetary vector LAT-LONG unitizes after R-TO-RP returns: on an axis,
+# so SINTH or COSTH of the latitude and longitude come out exact (+-0, 1/2).
+def lat_long_axis_joint():
+    sets = []
+    for axis in range(3):
+        for hi, lo in ((0o20000, 0), (0o57777, 0o77777)):
+            v = {'MPAC+%d' % k if k else 'MPAC': 0 for k in range(6)}
+            v['MPAC+%d' % (2 * axis) if axis else 'MPAC'] = hi
+            v['MPAC+%d' % (2 * axis + 1)] = lo
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -300,6 +327,12 @@ SPECS = {
         # RESCALES can return with overflow in A: TS AK2 then skips into
         # SATOUT's CADR NEEDLER, which the AGC runs as CS 2420 (on to
         # ATERSET), and so does the port.
+        # TIME2/TIME1 (024/025, counters) as P11 finds them: half of every routine's
+        # cases hold TIME2 at +0, as it is for the first 163.84 s after
+        # liftoff (P11's DXCH TIME2 zeroes it), with TIME1 at 0, small, at
+        # 2SECS (200: REP11A's CS TIME1, AD 2SECS gives -0), past it, or
+        # just below its wrap.
+        'joint_states': {'*': [{'24': 0, '25': t} for t in (0, 1, 100, 199, 200, 201, 3000, 0o37777)]},
         'execute_data': ('34,2472',),
         # CA SATSW; CCS A: the -0 exit lands on STEERSAT's TLOAD TAD (an
         # interpretive word), which no SATSW value takes; as basic code its
@@ -909,8 +942,10 @@ SPECS = {
         # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
-        # One C64 case per routine: KALCMAN3's run reaches most of the file.
-        'c64_per_point': 1,
+        # KALCMAN3's run reaches most of the file, more than one C64
+        # diagnostic holds: the outcomes only it takes before a CHANG2
+        # resume get segment rows.
+        'c64_segments': True,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
         # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
         'ebank': 6,
@@ -1529,6 +1564,11 @@ SPECS = {
             'RTORPB': {'163': [0o77776]},
             'RTORPB+3': {'163': [0o77776]},
         },
+        'edge_values': True,
+        # BHIZ (CCS MPAC) at RP-TO-R and R-TO-RP: MPAC +-0 is every Earth
+        # call (LAT-LONG loads ZEROVEC when LUNAFLAG is 0), COS(0) the Moon.
+        'joint_states': {lab: [{'MPAC': 0}, {'MPAC': 0o77777}, {'MPAC': 0o20000}, {}]
+                         for lab in ('RP-TO-R', 'R-TO-RP')},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/planetary_target.c',
@@ -1593,6 +1633,9 @@ SPECS = {
             'TSTRLSRM+4': {'163': [0o77776]},
             'TSTRLSRM+5': {'163': [0o0]},
         },
+        'edge_values': True,
+        'joint_states': {'ARCTAN': lat_long_arctan_joint(), 'CLROVFLW': lat_long_arctan_joint(),
+                         'CALLRTRP+2': lat_long_axis_joint()},
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'target': 'tests/lat_long_target.c',

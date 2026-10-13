@@ -4,7 +4,7 @@
   "release": "evidence-lanec-ev-transfer",
   "files": {
     "lanec-ev-refuse-diff.json": {
-      "sha256": "86caa4d502a3f02724598615325de109f0302ebbd1468a9fcfaea80fa1bdc6c2",
+      "sha256": "2861854b602f430817598a7f3e4dc3b4dd179a41ffe460fe9d63768eb8c6156c",
       "bytes": 158,
       "store": "tree"
     },
@@ -19,12 +19,12 @@
       "store": "tree"
     },
     "lanec-ev-transfer-diff.json": {
-      "sha256": "da0a0c5afb4fb25be4541bf1ba838177e1e5eab44c395069bb0eb7c7b03d3bba",
+      "sha256": "68cdee369ac8b1a1c94daa78753c443920ecdc7dfb01de04c8b4d1e96e4a0b96",
       "bytes": 237,
       "store": "tree"
     },
     "lanec-ev-transfer-oracle.crc": {
-      "sha256": "bf9f2581d63d28731269ca3083286a2d4dcbfe3d1ee9dc2d29c17a8a4d873991",
+      "sha256": "5b5628962cdc436e6089c23cae1574e0ee373c29167de896f3e1bb3b5ea1811c",
       "bytes": 5974,
       "store": "tree"
     },

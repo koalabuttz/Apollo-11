@@ -52,9 +52,9 @@
    "suite": "ev-dap",
    "cases": 2832,
    "differing": 0,
-   "native_sha256": "b79c4091b170a038a4f986ad048d7722f7320475f44691daca9891fe353e0b30",
-   "oracle_sha256": "b79c4091b170a038a4f986ad048d7722f7320475f44691daca9891fe353e0b30",
-   "oracle_crc_sha256": "f383c9013776143dd887098d74019fb76e1def3f7ed3382d3b82875b6e860301",
+   "native_sha256": "59144c6badf4c9b455243bfe91303c36e232f171a444574bf0a05ff12b619f1a",
+   "oracle_sha256": "59144c6badf4c9b455243bfe91303c36e232f171a444574bf0a05ff12b619f1a",
+   "oracle_crc_sha256": "42ea99319e5148007056ff19df76bc415512b149bbc1e11bb4590d496efd6c29",
    "accepted_cases_by_mission": {
     "CM": 1056,
     "LM": 1776
@@ -86,22 +86,22 @@
   },
   "ev-lmi": {
    "suite": "ev-lmi",
-   "cases": 960,
+   "cases": 1856,
    "differing": 0,
-   "native_sha256": "b3cd7043a18220717d23552a35f085873dffc991a76b528dddc7d77675d79eff",
-   "oracle_sha256": "b3cd7043a18220717d23552a35f085873dffc991a76b528dddc7d77675d79eff",
-   "oracle_crc_sha256": "519f020e3650dd367b2ab46cbd61cdd0d028472d72fa897d2e71cb7d827dbe09",
+   "native_sha256": "37f9898d4c5eda30efa4157a4175ad7895146be4f75284ad23d13ac03166564c",
+   "oracle_sha256": "37f9898d4c5eda30efa4157a4175ad7895146be4f75284ad23d13ac03166564c",
+   "oracle_crc_sha256": "6b06c56fada775030260245290d4b475e5e619d417494aaa6a78e81f21350726",
    "accepted_cases_by_mission": {
-    "LMI": 960
+    "LMI": 1856
    }
   },
   "ev-transfer": {
    "suite": "ev-transfer",
    "cases": 468,
    "differing": 0,
-   "native_sha256": "caf11976eaa6044651f4397728a2a6e11a46fe83717899c3527c184f936cbc79",
-   "oracle_sha256": "caf11976eaa6044651f4397728a2a6e11a46fe83717899c3527c184f936cbc79",
-   "oracle_crc_sha256": "bf9f2581d63d28731269ca3083286a2d4dcbfe3d1ee9dc2d29c17a8a4d873991",
+   "native_sha256": "7ec225fe0524d5def2815cf957fb5caf199add2f4e800e2dcedaa7ac92bc7d80",
+   "oracle_sha256": "7ec225fe0524d5def2815cf957fb5caf199add2f4e800e2dcedaa7ac92bc7d80",
+   "oracle_crc_sha256": "5b5628962cdc436e6089c23cae1574e0ee373c29167de896f3e1bb3b5ea1811c",
    "accepted_cases_by_mission": {
     "CM": 180,
     "LM": 288
@@ -122,10 +122,10 @@
    "suite": "ev-refuse",
    "cases": 512,
    "refused_unchanged": 512,
-   "native_sha256": "6dbc67dfb4477fa6f1a372f43f2fb2df8fd30560d8526b01570f80ab5752979f"
+   "native_sha256": "a3069567801cc3af5f6505275a40012324ca30f8265cfc9f7927e01f317f6dac"
   }
  },
- "total_cases": 27924,
+ "total_cases": 28820,
  "total_differing": 0,
  "total_refused_unchanged": 512
 }
