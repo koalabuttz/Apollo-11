@@ -5,6 +5,7 @@ assembly.lst): every assembled line with its source file, address, words,
 label, op and operand columns, the fixed-memory words by physical address,
 and the program's labels. Used by tools/interp_compile.py and the
 compiled-routine differential."""
+import os
 import re
 
 LISTINGS = {'lm': 'build/fixed-data/Luminary099/assembly.lst',
@@ -41,6 +42,8 @@ class Listing:
         self.by_phys = {}
         self.rope = {}
         self.labels = {}
+        image = os.path.join(os.path.dirname(path), 'MAIN.agc.bin')
+        self.image = open(image, 'rb').read() if os.path.exists(image) else None
         src = 'MAIN.agc'
         for raw in open(path, errors='replace'):
             raw = raw.rstrip('\n')
@@ -87,11 +90,44 @@ class Listing:
                 for i, w in enumerate(words):
                     self.rope[ln.phys + i] = w
 
+        # The rope itself, where the build left it beside the listing: the
+        # words no listing line shows (bank checksums, fillers) read as the
+        # hardware reads them. yaYUL writes banks 2, 3, 0, 1, 4, 5, ...
+        # (Used by specs with 'rope_bin'; others read such words as 0.)
+        self.bin_words = {}
+        binpath = os.path.join(os.path.dirname(path), 'MAIN.agc.bin')
+        if os.path.exists(binpath):
+            data = open(binpath, 'rb').read()
+            for fb in range(len(data) // 2048):
+                bank = {0: 2, 1: 3, 2: 0, 3: 1}.get(fb, fb)
+                for off in range(1024):
+                    i = (fb * 1024 + off) * 2
+                    self.bin_words[bank * 1024 + off] = (data[i] << 8 | data[i + 1]) >> 1
+
     def file_lines(self, name):
         return [l for l in self.lines if l.src == name]
 
+    # Spec 'rope_fallback': words the listing does not show come from the
+    # rope image instead of 0.
+    rope_fallback = False
+
     def word(self, phys):
-        return self.rope.get(phys, 0)
+        if phys in self.rope:
+            return self.rope[phys]
+        return self.image_word(phys) if self.rope_fallback else 0
+
+    def image_word(self, phys):
+        """Rope word from MAIN.agc.bin beside the listing, for words the
+        listing does not show (filler past a constant that an order reads)."""
+        if self.image is None:
+            return 0
+        bank, off = divmod(phys, 1024)
+        if bank < 4:
+            bank ^= 2
+        o = 2 * (bank * 1024 + off)
+        if o + 1 >= len(self.image):
+            return 0
+        return (self.image[o] << 8 | self.image[o + 1]) >> 1
 
     def label_at(self, phys):
         for k, v in self.labels.items():

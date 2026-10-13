@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-auto-man-proof.json": {
-      "sha256": "e57191505e8db474086c4446976f226935682ffb9f6e4fbba69e60a8e0cce6df",
-      "bytes": 3452,
+      "sha256": "91924d6d658efb76b8b0e76684ebe2d094dd1f93e1ca9aa7bc3d84ebf4589235",
+      "bytes": 3489,
       "store": "tree"
     },
     "cm-auto-man-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-auto-man-vice.log": {
-      "sha256": "fe060c1034edc5d6fd07eaa9ed9e618c1780dea2af0fb27521de4f70d31ec4d9",
-      "bytes": 408,
+      "sha256": "6fe16bf5d929616f9f5e3f3c9e6a6038aabdfa567af3af00091bf03520df1171",
+      "bytes": 407,
       "store": "tree"
     }
   }

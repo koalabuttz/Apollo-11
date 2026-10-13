@@ -29,19 +29,28 @@ static const agc_word K46521[6] MAYBE_UNUSED={000000,000000,000000,000000,000000
 static const agc_word K47533[6] MAYBE_UNUSED={005520,026075,005252,025253,077776,003547}; /* 23,3533 QTSN45 */
 static const agc_word K47535[6] MAYBE_UNUSED={005252,025253,077776,003547,006037,077616}; /* 23,3535 .166... */
 
-static MAYBE_UNUSED void next(apollo_overlay_state *s){lmi_danzig_next(s);}
+/* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive
+ * goes to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF
+ * CHANG2) and the routine stops there. */
+static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){
+ if(!W[067]){lmi_danzig_next(s);return 0;}
+ ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=05126u;return 1;
+}
 static MAYBE_UNUSED void right(apollo_overlay_state *s){lmi_danzig_right(s);}
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
-static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06070;}
+static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){
+ (void)ai_ccs(s,023);if(!W[067]){(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06070;return 0;}
+ (void)ai_ccs(s,067);W[5]=05126u;return 1;
+}
 static MAYBE_UNUSED void shorts(apollo_overlay_state *s){lmi_short_dispatch(s);if(W[5]==02017u)lmi_shortt(s);else lmi_shortv(s);}
 
 /* The image as the routines need it: ordinary words (A, L and Q may
- * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the
+ * hold 16 bits), coherent banks, NEWJOB +0 or positive, FIXLOC a VAC area and the
  * latches in range. */
 static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){
  unsigned i,vac=W[0120];
- if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
@@ -77,6 +86,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
+}
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
@@ -85,6 +100,9 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
  * a build that defines them keeps only a group (the C64 diagnostics). */
 #ifndef LM_INFLIGHT_ALIGN_KEEP0
 #define LM_INFLIGHT_ALIGN_KEEP0 0xfffffffffffffff
+#endif
+#ifndef LM_INFLIGHT_ALIGN_KEEP1
+#define LM_INFLIGHT_ALIGN_KEEP1 0xfffffffffffffff
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 0) & 1
 /* 23,3247 CALCGTA (entry CALCGTA) */
@@ -96,46 +114,102 @@ static enum exec_status r47247(apollo_overlay_state *s,p66_bias_io *io){
  lmi_misc(s,000051,002507);lmi_ita(s);
  right(s);
  lmi_direct(s,002665,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3252 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 1) & 1
+/* 23,3252  (CHANG2 resume) */
+static enum exec_status r47252(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3252 PDDL PDDL */
  TRACE(s);
  lmi_newops(s,065325);
  lmi_direct(s,006522,006523);lmi_pddl_op(s,K46521);
  right(s);
  lmi_direct(s,002671,006523);lmi_pddl_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3255 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 2) & 1
+/* 23,3255  (CHANG2 resume) */
+static enum exec_status r47255(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3255 DCOMP VDEF */
  TRACE(s);
  lmi_newops(s,055476);
  lmi_unary(s,007670);lmi_comp(s);
  right(s);
  lmi_unary(s,003232);lmi_vdef(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3256 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 3) & 1
+/* 23,3256  (CHANG2 resume) */
+static enum exec_status r47256(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3256 UNIT  */
  TRACE(s);
  lmi_newops(s,077656);
  lmi_unary(s,003023);if(lmi_unit(s))return EXEC_OK;
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3257 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 4) & 1
+/* 23,3257  (CHANG2 resume) */
+static enum exec_status r47257(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3257 STODL ZPRIME */
  TRACE(s);
  lmi_store_code(s,014027);
  lmi_dodload(s);lmi_diradres(s,000027,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3261 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 5) & 1
+/* 23,3261  (CHANG2 resume) */
+static enum exec_status r47261(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3261 SR1  */
  TRACE(s);
  lmi_newops(s,077742);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3262 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 6) & 1
+/* 23,3262  (CHANG2 resume) */
+static enum exec_status r47262(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3262 STODL SINTH */
  TRACE(s);
  lmi_store_code(s,014023);
  lmi_dodload(s);lmi_diradres(s,000033,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3264 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 7) & 1
+/* 23,3264  (CHANG2 resume) */
+static enum exec_status r47264(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3264 SR1  */
  TRACE(s);
  lmi_newops(s,077742);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3265 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 8) & 1
+/* 23,3265  (CHANG2 resume) */
+static enum exec_status r47265(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3265 STCALL COSTH */
  TRACE(s);
  lmi_store_code(s,034021);
@@ -144,7 +218,7 @@ static enum exec_status r47247(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 1) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 9) & 1
 /* 23,3267  (STCALL return) */
 static enum exec_status r47267(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -152,31 +226,66 @@ static enum exec_status r47267(apollo_overlay_state *s,p66_bias_io *io){
  TRACE(s);
  lmi_store_code(s,016742);
  lmi_dodload(s);lmi_diradres(s,002667,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3271 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 10) & 1
+/* 23,3271  (CHANG2 resume) */
+static enum exec_status r47271(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3271 SR1  */
  TRACE(s);
  lmi_newops(s,077742);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3272 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 11) & 1
+/* 23,3272  (CHANG2 resume) */
+static enum exec_status r47272(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3272 STODL SINTH */
  TRACE(s);
  lmi_store_code(s,014023);
  lmi_dodload(s);lmi_diradres(s,000027,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3274 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 12) & 1
+/* 23,3274  (CHANG2 resume) */
+static enum exec_status r47274(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3274 DMP PDDL */
  TRACE(s);
  lmi_newops(s,065205);
  lmi_direct(s,002671,007572);lmi_dmp(s,0);
  right(s);
  lmi_direct(s,000033,006523);lmi_pddl_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3277 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 13) & 1
+/* 23,3277  (CHANG2 resume) */
+static enum exec_status r47277(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3277 DMP DSU */
  TRACE(s);
  lmi_newops(s,045205);
  lmi_direct(s,002665,007572);lmi_dmp(s,0);
  right(s);
  lmi_address_pushup(s,077626,007005);lmi_dsu(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3301 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
+/* 23,3301  (CHANG2 resume) */
+static enum exec_status r47301(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3301 STADR  */
  TRACE(s);
  lmi_newops(s,077626);
@@ -186,7 +295,7 @@ static enum exec_status r47267(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 2) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
 /* 23,3304  (STCALL return) */
 static enum exec_status r47304(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -194,22 +303,50 @@ static enum exec_status r47304(apollo_overlay_state *s,p66_bias_io *io){
  TRACE(s);
  lmi_store_code(s,026744);
  lmi_dovload(s);lmi_diradres(s,000027,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3306 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 16) & 1
+/* 23,3306  (CHANG2 resume) */
+static enum exec_status r47306(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3306 DOT  */
  TRACE(s);
  lmi_newops(s,077641);
  lmi_direct(s,002701,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3310 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 17) & 1
+/* 23,3310  (CHANG2 resume) */
+static enum exec_status r47310(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3310 STOVL COSTH */
  TRACE(s);
  lmi_store_code(s,024021);
  lmi_dovload(s);lmi_diradres(s,000027,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3312 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 18) & 1
+/* 23,3312  (CHANG2 resume) */
+static enum exec_status r47312(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3312 DOT  */
  TRACE(s);
  lmi_newops(s,077641);
  lmi_direct(s,002673,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3314 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 19) & 1
+/* 23,3314  (CHANG2 resume) */
+static enum exec_status r47314(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3314 STCALL SINTH */
  TRACE(s);
  lmi_store_code(s,034023);
@@ -218,7 +355,7 @@ static enum exec_status r47304(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 3) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 20) & 1
 /* 23,3316  (STCALL return) */
 static enum exec_status r47316(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -230,7 +367,7 @@ static enum exec_status r47316(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 4) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 21) & 1
 /* 23,3320 ARCTRIG (entry ARCTRIG) */
 static enum exec_status r47320(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -240,7 +377,14 @@ static enum exec_status r47320(apollo_overlay_state *s,p66_bias_io *io){
  lmi_direct(s,000023,006052);lmi_dload_op(s,0);
  right(s);
  lmi_unary(s,003176);if(lmi_abvalabs(s))return EXEC_OK;
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3322 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 22) & 1
+/* 23,3322  (CHANG2 resume) */
+static enum exec_status r47322(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3322 DSU BMN */
  TRACE(s);
  lmi_newops(s,050025);
@@ -251,32 +395,60 @@ static enum exec_status r47320(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3325 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 23) & 1
+/* 23,3325  (CHANG2 resume) */
+static enum exec_status r47325(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3325 DLOAD SL1 */
  TRACE(s);
  lmi_newops(s,072545);
  lmi_direct(s,000021,006052);lmi_dload_op(s,0);
  right(s);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3327 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 24) & 1
+/* 23,3327  (CHANG2 resume) */
+static enum exec_status r47327(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3327 ACOS SIGN */
  TRACE(s);
  lmi_newops(s,075326);
  lmi_unary(s,003612);if(lmi_acos(s))return EXEC_OK;
  right(s);
  lmi_direct(s,000023,007655);lmi_sign(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3331 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 25) & 1
+/* 23,3331  (CHANG2 resume) */
+static enum exec_status r47331(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3331 STORE THETA */
  TRACE(s);
  lmi_store_code(s,000025);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3332 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 26) & 1
+/* 23,3332  (CHANG2 resume) */
+static enum exec_status r47332(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3332 RVQ  */
  TRACE(s);
  lmi_newops(s,077616);
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 5) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 27) & 1
 /* 23,3333 TRIG1 (BMN target) */
 static enum exec_status r47333(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -286,17 +458,38 @@ static enum exec_status r47333(apollo_overlay_state *s,p66_bias_io *io){
  lmi_direct(s,000023,006052);lmi_dload_op(s,0);
  right(s);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3335 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 28) & 1
+/* 23,3335  (CHANG2 resume) */
+static enum exec_status r47335(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3335 ASIN  */
  TRACE(s);
  lmi_newops(s,077736);
  lmi_unary(s,003610);if(lmi_asin(s))return EXEC_OK;
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3336 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 29) & 1
+/* 23,3336  (CHANG2 resume) */
+static enum exec_status r47336(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3336 STODL THETA */
  TRACE(s);
  lmi_store_code(s,014025);
  lmi_dodload(s);lmi_diradres(s,000021,006052);lmi_dload_op(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3340 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 30) & 1
+/* 23,3340  (CHANG2 resume) */
+static enum exec_status r47340(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3340 BMN  */
  TRACE(s);
  lmi_newops(s,077640);
@@ -305,7 +498,14 @@ static enum exec_status r47333(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3342 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 31) & 1
+/* 23,3342  (CHANG2 resume) */
+static enum exec_status r47342(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3342 DLOAD RVQ */
  TRACE(s);
  lmi_newops(s,043545);
@@ -314,7 +514,7 @@ static enum exec_status r47333(apollo_overlay_state *s,p66_bias_io *io){
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 6) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 32) & 1
 /* 23,3344 TRIG2 (BMN target) */
 static enum exec_status r47344(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -324,23 +524,44 @@ static enum exec_status r47344(apollo_overlay_state *s,p66_bias_io *io){
  lmi_direct(s,006520,006052);lmi_dload_op(s,K46517);
  right(s);
  lmi_direct(s,000023,007655);lmi_sign(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3347 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 33) & 1
+/* 23,3347  (CHANG2 resume) */
+static enum exec_status r47347(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3347 DSU  */
  TRACE(s);
  lmi_newops(s,077625);
  lmi_direct(s,000025,007005);lmi_dsu(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3351 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 34) & 1
+/* 23,3351  (CHANG2 resume) */
+static enum exec_status r47351(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3351 STORE THETA */
  TRACE(s);
  lmi_store_code(s,000025);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3352 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 35) & 1
+/* 23,3352  (CHANG2 resume) */
+static enum exec_status r47352(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3352 RVQ  */
  TRACE(s);
  lmi_newops(s,077616);
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 7) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 36) & 1
 /* 23,3353 CALCGA (entry CALCGA) */
 static enum exec_status r47353(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -348,38 +569,80 @@ static enum exec_status r47353(apollo_overlay_state *s,p66_bias_io *io){
  TRACE(s);
  lmi_newops(s,077601);
  lmi_direct(s,000001,007613);lmi_setpd(s);
- setpd_next(s);
+ if(setpd_next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3355 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 37) & 1
+/* 23,3355  (CHANG2 resume) */
+static enum exec_status r47355(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3355 VLOAD VXV */
  TRACE(s);
  lmi_newops(s,047375);
  lmi_direct(s,002665,006505);lmi_vload(s,0);
  right(s);
  lmi_direct(s,002651,007460);lmi_vxv(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3360 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 38) & 1
+/* 23,3360  (CHANG2 resume) */
+static enum exec_status r47360(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3360 UNIT PUSH */
  TRACE(s);
  lmi_newops(s,041456);
  lmi_unary(s,003023);if(lmi_unit(s))return EXEC_OK;
  right(s);
  lmi_unary(s,003247);lmi_push(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3361 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 39) & 1
+/* 23,3361  (CHANG2 resume) */
+static enum exec_status r47361(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3361 DOT ITA */
  TRACE(s);
  lmi_newops(s,044041);
  lmi_direct(s,002701,007331);lmi_dot(s,0);
  right(s);
  lmi_misc(s,000051,002507);lmi_ita(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3364 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 40) & 1
+/* 23,3364  (CHANG2 resume) */
+static enum exec_status r47364(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3364 STOVL COSTH */
  TRACE(s);
  lmi_store_code(s,024021);
  lmi_dovload(s);lmi_diradres(s,000001,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3366 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 41) & 1
+/* 23,3366  (CHANG2 resume) */
+static enum exec_status r47366(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3366 DOT  */
  TRACE(s);
  lmi_newops(s,077641);
  lmi_direct(s,002673,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3370 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 42) & 1
+/* 23,3370  (CHANG2 resume) */
+static enum exec_status r47370(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3370 STCALL SINTH */
  TRACE(s);
  lmi_store_code(s,034023);
@@ -388,7 +651,7 @@ static enum exec_status r47353(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 8) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 43) & 1
 /* 23,3372  (STCALL return) */
 static enum exec_status r47372(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -396,29 +659,64 @@ static enum exec_status r47372(apollo_overlay_state *s,p66_bias_io *io){
  TRACE(s);
  lmi_store_code(s,026740);
  lmi_dovload(s);lmi_diradres(s,000001,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3374 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 44) & 1
+/* 23,3374  (CHANG2 resume) */
+static enum exec_status r47374(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3374 VXV DOT */
  TRACE(s);
  lmi_newops(s,050235);
  lmi_direct(s,002665,007460);lmi_vxv(s,0);
  right(s);
  lmi_direct(s,002651,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3377 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 45) & 1
+/* 23,3377  (CHANG2 resume) */
+static enum exec_status r47377(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3377 SL1  */
  TRACE(s);
  lmi_newops(s,077752);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3400 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 46) & 1
+/* 23,3400  (CHANG2 resume) */
+static enum exec_status r47400(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3400 STOVL COSTH */
  TRACE(s);
  lmi_store_code(s,024021);
  lmi_dovload(s);lmi_diradres(s,002651,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3402 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 47) & 1
+/* 23,3402  (CHANG2 resume) */
+static enum exec_status r47402(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3402 DOT  */
  TRACE(s);
  lmi_newops(s,077641);
  lmi_direct(s,002665,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3404 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 48) & 1
+/* 23,3404  (CHANG2 resume) */
+static enum exec_status r47404(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3404 STCALL SINTH */
  TRACE(s);
  lmi_store_code(s,034023);
@@ -427,21 +725,35 @@ static enum exec_status r47372(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 9) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 49) & 1
 /* 23,3406  (STCALL return) */
 static enum exec_status r47406(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3406 STORE MGC */
  TRACE(s);
  lmi_store_code(s,002744);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3407 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 50) & 1
+/* 23,3407  (CHANG2 resume) */
+static enum exec_status r47407(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3407 ABS DSU */
  TRACE(s);
  lmi_newops(s,045246);
  lmi_unary(s,003176);if(lmi_abvalabs(s))return EXEC_OK;
  right(s);
  lmi_direct(s,007536,007005);lmi_dsu(s,K47535);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3411 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 51) & 1
+/* 23,3411  (CHANG2 resume) */
+static enum exec_status r47411(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3411 BPL  */
  TRACE(s);
  lmi_newops(s,077644);
@@ -450,12 +762,12 @@ static enum exec_status r47406(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 23,3413 */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 10) & 1
-/* 23,3413 CALCGA1 (GOTO target) */
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 52) & 1
+/* 23,3413 CALCGA1 (CHANG2 resume) */
 static enum exec_status r47413(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3413 VLOAD DOT */
@@ -464,12 +776,26 @@ static enum exec_status r47413(apollo_overlay_state *s,p66_bias_io *io){
  lmi_direct(s,002657,006505);lmi_vload(s,0);
  right(s);
  lmi_direct(s,000001,007331);lmi_dot(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3416 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 53) & 1
+/* 23,3416  (CHANG2 resume) */
+static enum exec_status r47416(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3416 STOVL COSTH */
  TRACE(s);
  lmi_store_code(s,024021);
  lmi_dovload(s);lmi_diradres(s,002643,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3420 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 54) & 1
+/* 23,3420  (CHANG2 resume) */
+static enum exec_status r47420(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3420 DOT STADR */
  TRACE(s);
  lmi_newops(s,045441);
@@ -481,7 +807,7 @@ static enum exec_status r47413(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 11) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 55) & 1
 /* 23,3423  (STCALL return) */
 static enum exec_status r47423(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -489,13 +815,27 @@ static enum exec_status r47423(apollo_overlay_state *s,p66_bias_io *io){
  TRACE(s);
  lmi_store_code(s,026742);
  lmi_dovload(s);lmi_diradres(s,002740,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3425 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 56) & 1
+/* 23,3425  (CHANG2 resume) */
+static enum exec_status r47425(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3425 RTB  */
  TRACE(s);
  lmi_newops(s,077634);
  lmi_misc(s,021620,002447);(void)ai_ccs(s,020);lmi_rtb(s);
  if(rtb_angles(s,io,RTB_LM,RTB_VECTOR_ONE_TO_TWO)!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* V1STO2S */
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3427 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 57) & 1
+/* 23,3427  (CHANG2 resume) */
+static enum exec_status r47427(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3427 STCALL THETAD */
  TRACE(s);
  lmi_store_code(s,034322);
@@ -504,7 +844,7 @@ static enum exec_status r47423(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 12) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 58) & 1
 /* 23,3431 GIMLOCK1 (BPL target) */
 static enum exec_status r47431(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -514,7 +854,7 @@ static enum exec_status r47431(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 13) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 59) & 1
 /* 23,3432  (after EXIT) */
 static enum exec_status r47432(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -523,7 +863,7 @@ static enum exec_status r47432(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05567;return EXEC_OK; /* ALARM */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 0) & 1
 /* 23,3434  (return from ALARM) */
 static enum exec_status r47434(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -532,7 +872,7 @@ static enum exec_status r47434(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05504;return EXEC_OK; /* UPFLAG */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 1) & 1
 /* 23,3436  (return from UPFLAG) */
 static enum exec_status r47436(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -541,7 +881,7 @@ static enum exec_status r47436(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06037;lmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 16) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 2) & 1
 /* 23,3437  (after TC INTPRET) */
 static enum exec_status r47437(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -551,7 +891,7 @@ static enum exec_status r47437(apollo_overlay_state *s,p66_bias_io *io){
  lmi_misc(s,047413,002467);lmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 17) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 3) & 1
 /* 23,3441 AXISGEN (entry AXISGEN) */
 static enum exec_status r47441(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -561,17 +901,24 @@ static enum exec_status r47441(apollo_overlay_state *s,p66_bias_io *io){
  lmi_misc(s,002714,002344);lmi_axt(s);
  right(s);
  lmi_direct(s,000051,006620);lmi_ssp(s,002700);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3445 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 4) & 1
+/* 23,3445  (CHANG2 resume) */
+static enum exec_status r47445(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3445 SETPD  */
  TRACE(s);
  lmi_newops(s,077601);
  lmi_direct(s,000001,007613);lmi_setpd(s);
- setpd_next(s);
+ if(setpd_next(s))return EXEC_OK;
  return EXEC_OK; /* on to 23,3447 */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 18) & 1
-/* 23,3447 AXISGEN1 (TIX target) */
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 5) & 1
+/* 23,3447 AXISGEN1 (CHANG2 resume) */
 static enum exec_status r47447(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3447 VLOAD* VXV* */
@@ -580,32 +927,74 @@ static enum exec_status r47447(apollo_overlay_state *s,p66_bias_io *io){
  lmi_indexed(s,002723,006505);lmi_vload(s,0);
  right(s);
  lmi_indexed(s,002731,007460);lmi_vxv(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3452 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 6) & 1
+/* 23,3452  (CHANG2 resume) */
+static enum exec_status r47452(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3452 UNIT  */
  TRACE(s);
  lmi_newops(s,077656);
  lmi_unary(s,003023);if(lmi_unit(s))return EXEC_OK;
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3453 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 7) & 1
+/* 23,3453  (CHANG2 resume) */
+static enum exec_status r47453(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3453 STORE STARAD     +18D,1 */
  TRACE(s);
  lmi_store_code(s,006731);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3454 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 8) & 1
+/* 23,3454  (CHANG2 resume) */
+static enum exec_status r47454(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3454 VLOAD*  */
  TRACE(s);
  lmi_newops(s,077773);
  lmi_indexed(s,002723,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3456 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 9) & 1
+/* 23,3456  (CHANG2 resume) */
+static enum exec_status r47456(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3456 VXV* VSL1 */
  TRACE(s);
  lmi_newops(s,076433);
  lmi_indexed(s,002731,007460);lmi_vxv(s,0);
  right(s);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3460 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 10) & 1
+/* 23,3460  (CHANG2 resume) */
+static enum exec_status r47460(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3460 STORE STARAD     +24D,1 */
  TRACE(s);
  lmi_store_code(s,006737);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3461 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 11) & 1
+/* 23,3461  (CHANG2 resume) */
+static enum exec_status r47461(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3461 TIX,1  */
  TRACE(s);
  lmi_newops(s,077700);
@@ -614,33 +1003,54 @@ static enum exec_status r47447(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3463 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 12) & 1
+/* 23,3463  (CHANG2 resume) */
+static enum exec_status r47463(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3463 AXC,1 SXA,1 */
  TRACE(s);
  lmi_newops(s,066160);
  lmi_misc(s,000006,002351);lmi_axc(s);
  right(s);
  lmi_misc(s,000036,002364);lmi_sxa(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3466 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 13) & 1
+/* 23,3466  (CHANG2 resume) */
+static enum exec_status r47466(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3466 AXT,1 SSP */
  TRACE(s);
  lmi_newops(s,066370);
  lmi_misc(s,000022,002344);lmi_axt(s);
  right(s);
  lmi_direct(s,000051,006620);lmi_ssp(s,000006);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3472 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 14) & 1
+/* 23,3472  (CHANG2 resume) */
+static enum exec_status r47472(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3472 AXT,2 SSP */
  TRACE(s);
  lmi_newops(s,066374);
  lmi_misc(s,000006,002344);lmi_axt(s);
  right(s);
  lmi_direct(s,000052,006620);lmi_ssp(s,000002);
- next(s);
+ if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 23,3476 */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 19) & 1
-/* 23,3476 AXISGEN2 (TIX target) */
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 15) & 1
+/* 23,3476 AXISGEN2 (CHANG2 resume) */
 static enum exec_status r47476(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3476 XCHX,1 VLOAD* */
@@ -649,49 +1059,105 @@ static enum exec_status r47476(apollo_overlay_state *s,p66_bias_io *io){
  lmi_misc(s,000036,002372);lmi_xchx(s);
  right(s);
  lmi_indexed(s,000001,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3501 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 16) & 1
+/* 23,3501  (CHANG2 resume) */
+static enum exec_status r47501(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3501 VXSC* PDVL* */
  TRACE(s);
  lmi_newops(s,062757);
  lmi_indexed(s,075062,007401);lmi_vxsc(s,0);
  right(s);
  lmi_indexed(s,000007,006557);lmi_pdvl(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3504 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 17) & 1
+/* 23,3504  (CHANG2 resume) */
+static enum exec_status r47504(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3504 VXSC*  */
  TRACE(s);
  lmi_newops(s,077757);
  lmi_indexed(s,075054,007401);lmi_vxsc(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3506 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 18) & 1
+/* 23,3506  (CHANG2 resume) */
+static enum exec_status r47506(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3506 STOVL* 24D */
  TRACE(s);
  lmi_store_code(s,030031);
  ai_caf(s,040001);(void)ai_ts(s,020);lmi_indexed(s,000015,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3510 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 19) & 1
+/* 23,3510  (CHANG2 resume) */
+static enum exec_status r47510(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3510 VXSC* VAD */
  TRACE(s);
  lmi_newops(s,053357);
  lmi_indexed(s,075046,007401);lmi_vxsc(s,0);
  right(s);
  lmi_address_pushup(s,076455,006751);lmi_vad(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3512 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 20) & 1
+/* 23,3512  (CHANG2 resume) */
+static enum exec_status r47512(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3512 VAD VSL1 */
  TRACE(s);
  lmi_newops(s,076455);
  lmi_direct(s,000031,006751);lmi_vad(s,0);
  right(s);
  shorts(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3514 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 21) & 1
+/* 23,3514  (CHANG2 resume) */
+static enum exec_status r47514(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3514 XCHX,1 UNIT */
  TRACE(s);
  lmi_newops(s,053520);
  lmi_misc(s,000036,002372);lmi_xchx(s);
  right(s);
  lmi_unary(s,003023);if(lmi_unit(s))return EXEC_OK;
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3516 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 22) & 1
+/* 23,3516  (CHANG2 resume) */
+static enum exec_status r47516(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3516 STORE XDC        +18D,1 */
  TRACE(s);
  lmi_store_code(s,006707);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3517 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 23) & 1
+/* 23,3517  (CHANG2 resume) */
+static enum exec_status r47517(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3517 TIX,1  */
  TRACE(s);
  lmi_newops(s,077700);
@@ -700,11 +1166,11 @@ static enum exec_status r47476(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 23,3521 */
 }
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 20) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 24) & 1
 /* 23,3521 AXISGEN3 (TIX target) */
 static enum exec_status r47521(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -716,26 +1182,61 @@ static enum exec_status r47521(apollo_overlay_state *s,p66_bias_io *io){
    lmi_goto(s);
    return EXEC_OK;
  }
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3523 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 25) & 1
+/* 23,3523  (CHANG2 resume) */
+static enum exec_status r47523(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3523 VLOAD  */
  TRACE(s);
  lmi_newops(s,077775);
  lmi_direct(s,002665,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3525 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 26) & 1
+/* 23,3525  (CHANG2 resume) */
+static enum exec_status r47525(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3525 STOVL STARAD */
  TRACE(s);
  lmi_store_code(s,026707);
  lmi_dovload(s);lmi_diradres(s,002673,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3527 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 27) & 1
+/* 23,3527  (CHANG2 resume) */
+static enum exec_status r47527(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3527 STOVL STARAD     +6 */
  TRACE(s);
  lmi_store_code(s,026715);
  lmi_dovload(s);lmi_diradres(s,002701,006505);lmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3531 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 28) & 1
+/* 23,3531  (CHANG2 resume) */
+static enum exec_status r47531(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3531 STORE STARAD     +12D */
  TRACE(s);
  lmi_store_code(s,002723);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 23,3532 */
+}
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 29) & 1
+/* 23,3532  (CHANG2 resume) */
+static enum exec_status r47532(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3532 RVQ  */
  TRACE(s);
  lmi_newops(s,077616);
@@ -748,64 +1249,271 @@ static enum exec_status r47521(apollo_overlay_state *s,p66_bias_io *io){
 WRAP(r47247)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 1) & 1
-WRAP(r47267)
+WRAP(r47252)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 2) & 1
-WRAP(r47304)
+WRAP(r47255)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 3) & 1
-WRAP(r47316)
+WRAP(r47256)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 4) & 1
-WRAP(r47320)
+WRAP(r47257)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 5) & 1
-WRAP(r47333)
+WRAP(r47261)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 6) & 1
-WRAP(r47344)
+WRAP(r47262)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 7) & 1
-WRAP(r47353)
+WRAP(r47264)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 8) & 1
-WRAP(r47372)
+WRAP(r47265)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 9) & 1
-WRAP(r47406)
+WRAP(r47267)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 10) & 1
-WRAP(r47413)
+WRAP(r47271)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 11) & 1
-WRAP(r47423)
+WRAP(r47272)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 12) & 1
-WRAP(r47431)
+WRAP(r47274)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 13) & 1
-WRAP(r47432)
+WRAP(r47277)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
-WRAP(r47434)
+WRAP(r47301)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
-WRAP(r47436)
+WRAP(r47304)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 16) & 1
-WRAP(r47437)
+WRAP(r47306)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 17) & 1
-WRAP(r47441)
+WRAP(r47310)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 18) & 1
-WRAP(r47447)
+WRAP(r47312)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 19) & 1
-WRAP(r47476)
+WRAP(r47314)
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 20) & 1
+WRAP(r47316)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 21) & 1
+WRAP(r47320)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 22) & 1
+WRAP(r47322)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 23) & 1
+WRAP(r47325)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 24) & 1
+WRAP(r47327)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 25) & 1
+WRAP(r47331)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 26) & 1
+WRAP(r47332)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 27) & 1
+WRAP(r47333)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 28) & 1
+WRAP(r47335)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 29) & 1
+WRAP(r47336)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 30) & 1
+WRAP(r47340)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 31) & 1
+WRAP(r47342)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 32) & 1
+WRAP(r47344)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 33) & 1
+WRAP(r47347)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 34) & 1
+WRAP(r47351)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 35) & 1
+WRAP(r47352)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 36) & 1
+WRAP(r47353)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 37) & 1
+WRAP(r47355)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 38) & 1
+WRAP(r47360)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 39) & 1
+WRAP(r47361)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 40) & 1
+WRAP(r47364)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 41) & 1
+WRAP(r47366)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 42) & 1
+WRAP(r47370)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 43) & 1
+WRAP(r47372)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 44) & 1
+WRAP(r47374)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 45) & 1
+WRAP(r47377)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 46) & 1
+WRAP(r47400)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 47) & 1
+WRAP(r47402)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 48) & 1
+WRAP(r47404)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 49) & 1
+WRAP(r47406)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 50) & 1
+WRAP(r47407)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 51) & 1
+WRAP(r47411)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 52) & 1
+WRAP(r47413)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 53) & 1
+WRAP(r47416)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 54) & 1
+WRAP(r47420)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 55) & 1
+WRAP(r47423)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 56) & 1
+WRAP(r47425)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 57) & 1
+WRAP(r47427)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 58) & 1
+WRAP(r47431)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 59) & 1
+WRAP(r47432)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 0) & 1
+WRAP(r47434)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 1) & 1
+WRAP(r47436)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 2) & 1
+WRAP(r47437)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 3) & 1
+WRAP(r47441)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 4) & 1
+WRAP(r47445)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 5) & 1
+WRAP(r47447)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 6) & 1
+WRAP(r47452)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 7) & 1
+WRAP(r47453)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 8) & 1
+WRAP(r47454)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 9) & 1
+WRAP(r47456)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 10) & 1
+WRAP(r47460)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 11) & 1
+WRAP(r47461)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 12) & 1
+WRAP(r47463)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 13) & 1
+WRAP(r47466)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 14) & 1
+WRAP(r47472)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 15) & 1
+WRAP(r47476)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 16) & 1
+WRAP(r47501)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 17) & 1
+WRAP(r47504)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 18) & 1
+WRAP(r47506)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 19) & 1
+WRAP(r47510)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 20) & 1
+WRAP(r47512)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 21) & 1
+WRAP(r47514)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 22) & 1
+WRAP(r47516)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 23) & 1
+WRAP(r47517)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 24) & 1
 WRAP(r47521)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 25) & 1
+WRAP(r47523)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 26) & 1
+WRAP(r47525)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 27) & 1
+WRAP(r47527)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 28) & 1
+WRAP(r47531)
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 29) & 1
+WRAP(r47532)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
 static const agc_routine_entry interpretive_entries[]={
@@ -813,67 +1521,274 @@ static const agc_routine_entry interpretive_entries[]={
  {20135,r47247_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 1) & 1
- {20151,r47267_abi},
+ {20138,r47252_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 2) & 1
- {20164,r47304_abi},
+ {20141,r47255_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 3) & 1
- {20174,r47316_abi},
+ {20142,r47256_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 4) & 1
- {20176,r47320_abi},
+ {20143,r47257_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 5) & 1
- {20187,r47333_abi},
+ {20145,r47261_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 6) & 1
- {20196,r47344_abi},
+ {20146,r47262_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 7) & 1
- {20203,r47353_abi},
+ {20148,r47264_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 8) & 1
- {20218,r47372_abi},
+ {20149,r47265_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 9) & 1
- {20230,r47406_abi},
+ {20151,r47267_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 10) & 1
- {20235,r47413_abi},
+ {20153,r47271_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 11) & 1
- {20243,r47423_abi},
+ {20154,r47272_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 12) & 1
- {20249,r47431_abi},
+ {20156,r47274_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 13) & 1
+ {20159,r47277_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
+ {20161,r47301_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
+ {20164,r47304_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 16) & 1
- {20255,r47437_abi},
+ {20166,r47306_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 17) & 1
- {20257,r47441_abi},
+ {20168,r47310_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 18) & 1
- {20263,r47447_abi},
+ {20170,r47312_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 19) & 1
- {20286,r47476_abi},
+ {20172,r47314_abi},
 #endif
 #if (LM_INFLIGHT_ALIGN_KEEP0 >> 20) & 1
+ {20174,r47316_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 21) & 1
+ {20176,r47320_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 22) & 1
+ {20178,r47322_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 23) & 1
+ {20181,r47325_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 24) & 1
+ {20183,r47327_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 25) & 1
+ {20185,r47331_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 26) & 1
+ {20186,r47332_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 27) & 1
+ {20187,r47333_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 28) & 1
+ {20189,r47335_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 29) & 1
+ {20190,r47336_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 30) & 1
+ {20192,r47340_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 31) & 1
+ {20194,r47342_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 32) & 1
+ {20196,r47344_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 33) & 1
+ {20199,r47347_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 34) & 1
+ {20201,r47351_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 35) & 1
+ {20202,r47352_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 36) & 1
+ {20203,r47353_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 37) & 1
+ {20205,r47355_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 38) & 1
+ {20208,r47360_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 39) & 1
+ {20209,r47361_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 40) & 1
+ {20212,r47364_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 41) & 1
+ {20214,r47366_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 42) & 1
+ {20216,r47370_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 43) & 1
+ {20218,r47372_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 44) & 1
+ {20220,r47374_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 45) & 1
+ {20223,r47377_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 46) & 1
+ {20224,r47400_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 47) & 1
+ {20226,r47402_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 48) & 1
+ {20228,r47404_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 49) & 1
+ {20230,r47406_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 50) & 1
+ {20231,r47407_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 51) & 1
+ {20233,r47411_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 52) & 1
+ {20235,r47413_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 53) & 1
+ {20238,r47416_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 54) & 1
+ {20240,r47420_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 55) & 1
+ {20243,r47423_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 56) & 1
+ {20245,r47425_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 57) & 1
+ {20247,r47427_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 58) & 1
+ {20249,r47431_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 2) & 1
+ {20255,r47437_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 3) & 1
+ {20257,r47441_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 4) & 1
+ {20261,r47445_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 5) & 1
+ {20263,r47447_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 6) & 1
+ {20266,r47452_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 7) & 1
+ {20267,r47453_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 8) & 1
+ {20268,r47454_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 9) & 1
+ {20270,r47456_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 10) & 1
+ {20272,r47460_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 11) & 1
+ {20273,r47461_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 12) & 1
+ {20275,r47463_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 13) & 1
+ {20278,r47466_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 14) & 1
+ {20282,r47472_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 15) & 1
+ {20286,r47476_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 16) & 1
+ {20289,r47501_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 17) & 1
+ {20292,r47504_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 18) & 1
+ {20294,r47506_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 19) & 1
+ {20296,r47510_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 20) & 1
+ {20298,r47512_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 21) & 1
+ {20300,r47514_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 22) & 1
+ {20302,r47516_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 23) & 1
+ {20303,r47517_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 24) & 1
  {20305,r47521_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 25) & 1
+ {20307,r47523_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 26) & 1
+ {20309,r47525_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 27) & 1
+ {20311,r47527_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 28) & 1
+ {20313,r47531_abi},
+#endif
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 29) & 1
+ {20314,r47532_abi},
 #endif
  {0xffffu,0}
 };
 const agc_routine_table lm_inflight_align_interpretive={interpretive_entries,(uint16_t)(sizeof interpretive_entries/sizeof interpretive_entries[0]-1u)};
 static const agc_routine_entry basic_entries[]={
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 13) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP0 >> 59) & 1
  {20250,r47432_abi},
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 14) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 0) & 1
  {20252,r47434_abi},
 #endif
-#if (LM_INFLIGHT_ALIGN_KEEP0 >> 15) & 1
+#if (LM_INFLIGHT_ALIGN_KEEP1 >> 1) & 1
  {20254,r47436_abi},
 #endif
  {0xffffu,0}
@@ -881,26 +1796,95 @@ static const agc_routine_entry basic_entries[]={
 const agc_routine_table lm_inflight_align_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
 const lm_inflight_align_point lm_inflight_align_points[LM_INFLIGHT_ALIGN_POINTS]={
  {20135,1},
+ {20138,1},
+ {20141,1},
+ {20142,1},
+ {20143,1},
+ {20145,1},
+ {20146,1},
+ {20148,1},
+ {20149,1},
  {20151,1},
+ {20153,1},
+ {20154,1},
+ {20156,1},
+ {20159,1},
+ {20161,1},
  {20164,1},
+ {20166,1},
+ {20168,1},
+ {20170,1},
+ {20172,1},
  {20174,1},
  {20176,1},
+ {20178,1},
+ {20181,1},
+ {20183,1},
+ {20185,1},
+ {20186,1},
  {20187,1},
+ {20189,1},
+ {20190,1},
+ {20192,1},
+ {20194,1},
  {20196,1},
+ {20199,1},
+ {20201,1},
+ {20202,1},
  {20203,1},
+ {20205,1},
+ {20208,1},
+ {20209,1},
+ {20212,1},
+ {20214,1},
+ {20216,1},
  {20218,1},
+ {20220,1},
+ {20223,1},
+ {20224,1},
+ {20226,1},
+ {20228,1},
  {20230,1},
+ {20231,1},
+ {20233,1},
  {20235,1},
+ {20238,1},
+ {20240,1},
  {20243,1},
+ {20245,1},
+ {20247,1},
  {20249,1},
  {20250,0},
  {20252,0},
  {20254,0},
  {20255,1},
  {20257,1},
+ {20261,1},
  {20263,1},
+ {20266,1},
+ {20267,1},
+ {20268,1},
+ {20270,1},
+ {20272,1},
+ {20273,1},
+ {20275,1},
+ {20278,1},
+ {20282,1},
  {20286,1},
- {20305,1}
+ {20289,1},
+ {20292,1},
+ {20294,1},
+ {20296,1},
+ {20298,1},
+ {20300,1},
+ {20302,1},
+ {20303,1},
+ {20305,1},
+ {20307,1},
+ {20309,1},
+ {20311,1},
+ {20313,1},
+ {20314,1}
 };
 const agc_word lm_inflight_align_cadr_words[LM_INFLIGHT_ALIGN_CADR_WORDS]={00051};
-const agc_word lm_inflight_align_externals[LM_INFLIGHT_ALIGN_EXTERNALS]={05504,05567};
+const agc_word lm_inflight_align_externals[LM_INFLIGHT_ALIGN_EXTERNALS]={05126,05504,05567};

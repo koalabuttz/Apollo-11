@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-servicer",
+  "release": "evidence-lm-servicer",
+  "files": {
+    "lm-servicer-c64-cover.json": {
+      "sha256": "6c5c75e7a4d12c3782c0b71a58a2993d4276ab838c478ac6f375bbeb78b135a6",
+      "bytes": 5904,
+      "store": "tree"
+    },
+    "lm-servicer-host.log": {
+      "sha256": "a610e10d31c2fdce194749d625b386be3137246af3b670f585c67dae553fd1bb",
+      "bytes": 1970,
+      "store": "tree"
+    },
+    "lm-servicer-proof.json": {
+      "sha256": "209d981d6cf11c848be8819d87bb7278b3c18d3ef4d0fef6859865e6b227e3c9",
+      "bytes": 32012,
+      "store": "tree"
+    },
+    "lm-servicer-source-map.json": {
+      "sha256": "76726f55562fc56282796feee90e3657c032610f6dd496b50a495fe4714e49b1",
+      "bytes": 44003,
+      "store": "tree"
+    },
+    "lm-servicer-vice.log": {
+      "sha256": "550de071fcb2f3d0bee5f36d8277bce37a907b38696add8b5538130a2dc56101",
+      "bytes": 1336,
+      "store": "tree"
+    }
+  }
+}

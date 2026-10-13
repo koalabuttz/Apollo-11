@@ -21,7 +21,7 @@ Lane D1b (alignment and maneuvers). Milestone `geometry`. How the routines are m
 | 23,2155 LOG, 23,2161, 23,2173, 23,2203, 23,2210 | logarithm: NORM, EXIT, TC POLY with its table, then SHORTMP, DAS and TC INTPRET | POLY, SHORTMP, the caller |
 | 23,2215 EARROT1, 23,2225 EARROT2, 23,2245 OVERADAY | earth rotation of the landmark vector | TCDANZIG (BOVB), the caller |
 
-Not yet translated (148 Comanche words, recorded in the source map): SXTNB, SXTLOGIC, CALCSXA, SXTANG and the NB2NB1/NB1NB2 matrices with their constants. They wait for a Comanche MXV body (Lane D1's #66 adds the Luminary one) and native TRANSP1/TRANSP2.
+Not yet translated (109 Comanche words, recorded in the source map): SXTNB, SXTLOGIC, CALCSXA and SXTANG. They wait for native TRANSP1/TRANSP2 (the Comanche MXV body came with #48).
 
 Destinations outside the file stop with `EXEC_UNMAPPED` until their files have routines.
 
@@ -29,7 +29,8 @@ Destinations outside the file stop with `EXEC_UNMAPPED` until their files have r
 
 Hashes: `evidence/geometry/SHA256.json`. Bulk files are assets of the `evidence-geometry` release.
 
-- **Source map.** `geometry-source-map.json` lists every emitted word with the routine that compiles it. Luminary has 113 words, all compiled. Comanche has 253 words, of which 105 are compiled and 148 are untranslated as above.
-- **Independent assembly comparison.** `make geometry-differential`: 512 states per routine and program (10,752 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. The stops reached per routine are in `geometry-proof.json`. Every 32nd case is frozen in `tests/geometry_vectors.h`.
-- **Host and sanitizer results.** `make test-geometry sanitize-geometry` runs the 336 frozen cases (`geometry-host.log`).
-- **C64 execution results.** `make vice-geometry` runs four diagnostics, two per program, with 42 cases (`geometry-vice.log`).
+- **Source map.** `geometry-source-map.json` lists every emitted word with the routine that compiles it. Luminary has 113 words, all compiled. Comanche has 253 words: 105 compiled, 39 data words no instruction reads (the NB2NB1/NB1NB2 matrices and other constants), and 109 untranslated as above.
+- **Independent assembly comparison.** `make geometry-differential`: 512 states per routine and program (49,664 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. A quarter of the cases put edge values into MPAC and every operand the file names: +0 and -0, one LSB, 1/2, 1/4, just below 1, half-unit axis vectors (with a matrix's rows as a signed permutation, so identity and 90° rotations occur), unit vectors in a coordinate plane, and tiny vectors. In those cases the CDUs sit at 0, 45, 90, 180 or 270°. TIME1, TIME2 and the CDUs vary in every case. The stops reached per routine are in `geometry-proof.json`. Every 128th case is frozen in `tests/geometry_vectors.h`.
+- **Resume points.** Resume points: a DANZIG that finds NEWJOB positive goes to CHANG2 and the job resumes later at the next word, so with `resume_keys` every word after a DANZIG is a routine of its own (the routine counts include them). A quarter of the cases at those routines have NEWJOB positive, and the run stops at CHANG2 as the original does. Each resume point starts from the MODE, PUSHLOC and index registers the code before it leaves there (per-point `states`). Runs may take up to 1,000 routines (`max_steps`).
+- **Host and sanitizer results.** `make test-geometry sanitize-geometry` runs the 426 frozen cases (every 128th plus a greedy cover of every branch outcome any case reaches) (`geometry-host.log`).
+- **C64 execution results.** `make vice-geometry` runs eight diagnostics with 136 cases, chosen so all 1,401 branch outcomes the host vectors reach are reached on the C64 too (`geometry-vice.log`, with each PRG's sha256).

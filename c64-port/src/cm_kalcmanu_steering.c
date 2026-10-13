@@ -22,19 +22,28 @@ void interp_routine_trace(const apollo_overlay_state *);
 #define TRACE(s) ((void)0)
 #endif
 
-static MAYBE_UNUSED void next(apollo_overlay_state *s){cmi_danzig_next(s);}
+/* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive
+ * goes to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF
+ * CHANG2) and the routine stops there. */
+static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){
+ if(!W[067]){cmi_danzig_next(s);return 0;}
+ ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=05170u;return 1;
+}
 static MAYBE_UNUSED void right(apollo_overlay_state *s){cmi_danzig_right(s);}
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
-static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06037;}
+static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){
+ (void)ai_ccs(s,023);if(!W[067]){(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06037;return 0;}
+ (void)ai_ccs(s,067);W[5]=05170u;return 1;
+}
 static MAYBE_UNUSED void shorts(apollo_overlay_state *s){cmi_short_dispatch(s);if(W[5]==02017u)cmi_shortt(s);else cmi_shortv(s);}
 
 /* The image as the routines need it: ordinary words (A, L and Q may
- * hold 16 bits), coherent banks, NEWJOB +0, FIXLOC a VAC area and the
+ * hold 16 bits), coherent banks, NEWJOB +0 or positive, FIXLOC a VAC area and the
  * latches in range. */
 static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io *io){
  unsigned i,vac=W[0120];
- if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
@@ -69,6 +78,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  agc_word q=W[2];
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
+}
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
 }
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
@@ -572,7 +587,14 @@ static enum exec_status r45032(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,003320,002376);cmi_axc(s);
  right(s);
  cmi_misc(s,003425,002376);cmi_axc(s);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3035 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 16) & 1
+/* 22,3035  (CHANG2 resume) */
+static enum exec_status r45035(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3035 CALL  */
  TRACE(s);
  cmi_newops(s,077624);
@@ -581,7 +603,7 @@ static enum exec_status r45032(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 16) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 17) & 1
 /* 22,3037  (CALL return) */
 static enum exec_status r45037(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -592,18 +614,39 @@ static enum exec_status r45037(apollo_overlay_state *s,p66_bias_io *io){
  right(s);
  cmi_unary(s,006323);cmi_stadr(s,050442);
  cmi_dovload(s);cmi_diradres_pushup(s,077626,006454);cmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3041 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 18) & 1
+/* 22,3041  (CHANG2 resume) */
+static enum exec_status r45041(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3041 STADR  */
  TRACE(s);
  cmi_newops(s,077626);
  cmi_unary(s,006323);cmi_stadr(s,050450);
  cmi_dovload(s);cmi_diradres_pushup(s,077626,006454);cmi_vload(s,0);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3043 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 19) & 1
+/* 22,3043  (CHANG2 resume) */
+static enum exec_status r45043(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3043 STADR  */
  TRACE(s);
  cmi_newops(s,077626);
  cmi_unary(s,006323);cmi_stadr(s,074456);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3045 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 20) & 1
+/* 22,3045  (CHANG2 resume) */
+static enum exec_status r45045(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3045 AXC,1 CALL */
  TRACE(s);
  cmi_newops(s,045160);
@@ -614,7 +657,7 @@ static enum exec_status r45037(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 17) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 21) & 1
 /* 22,3050  (CALL return) */
 static enum exec_status r45050(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -623,11 +666,25 @@ static enum exec_status r45050(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,077634);
  cmi_misc(s,045552,002474);(void)ai_ccs(s,020);cmi_rtb(s);
  if(rtb_angles(s,io,RTB_CM,RTB_VECTOR_ONE_TO_TWO)!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* V1STO2S */
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3052 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 22) & 1
+/* 22,3052  (CHANG2 resume) */
+static enum exec_status r45052(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3052 STORE NCDU */
  TRACE(s);
  cmi_store_code(s,003267);
- next(s);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 22,3053 */
+}
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 23) & 1
+/* 22,3053  (CHANG2 resume) */
+static enum exec_status r45053(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_newops(s,io,044000u))return EXEC_OUT_OF_SCOPE;
  /* 22,3053 BONCLR EXIT */
  TRACE(s);
  cmi_newops(s,077414);
@@ -638,7 +695,7 @@ static enum exec_status r45050(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 18) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 24) & 1
 /* 22,3056  (entry INCRDCDU-1) */
 static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -669,6 +726,7 @@ static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  ai_mpf(s,003146);
  /* 22,3072 DXCH DELCDUX */
  {agc_word iw=ixw(s,053576,01665u);if((iw^053576u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-1u)<=6u&&(unsigned)((iw&01777u)-1u)+1u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_dxch(s,(unsigned)((iw&01777u)-1u));
  }
  /* 22,3074 CA NCDU */
@@ -677,10 +735,12 @@ static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  }
  /* 22,3076 XCH BCDU */
  {agc_word iw=ixw(s,057661,01664u);if((iw^057661u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    ai_xch(s,(unsigned)((iw&01777u)-0u));
  }
  /* 22,3100 TS CDUXD */
  {agc_word iw=ixw(s,055646,01665u);if((iw^055646u)&076000u)return EXEC_OUT_OF_SCOPE;
+   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
    if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L45102;
  }
  /* 22,3101 CCS KSPNDX */
@@ -756,7 +816,7 @@ static enum exec_status r45056(apollo_overlay_state *s,p66_bias_io *io){
  switch(W[2]){case 03105u:W[2]=3u;goto L45105;case 03107u:W[2]=3u;goto L45107;case 03110u:W[2]=3u;goto L45110;default:return tc_q(s);}
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 19) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 25) & 1
 /* 22,3105  (return from TIMECHK) */
 static enum exec_status r45105(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -765,7 +825,7 @@ static enum exec_status r45105(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04701;return EXEC_OK; /* POSTJUMP */
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 20) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 26) & 1
 /* 22,3113  (return from WAITLIST) */
 static enum exec_status r45113(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -775,7 +835,7 @@ static enum exec_status r45113(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05217;return EXEC_OK;
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 21) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 27) & 1
 /* 22,3142 LOADCDUD (entry LOADCDUD) */
 static enum exec_status r45142(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -797,7 +857,7 @@ static enum exec_status r45142(apollo_overlay_state *s,p66_bias_io *io){
  return tc_q(s);
 }
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 22) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 28) & 1
 /* 22,3144 LOADYZ (entry LOADYZ) */
 static enum exec_status r45144(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,044000u))return EXEC_OUT_OF_SCOPE;
@@ -873,24 +933,42 @@ WRAP(r45031)
 WRAP(r45032)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 16) & 1
-WRAP(r45037)
+WRAP(r45035)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 17) & 1
-WRAP(r45050)
+WRAP(r45037)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 18) & 1
-WRAP(r45056)
+WRAP(r45041)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 19) & 1
-WRAP(r45105)
+WRAP(r45043)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 20) & 1
-WRAP(r45113)
+WRAP(r45045)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 21) & 1
-WRAP(r45142)
+WRAP(r45050)
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 22) & 1
+WRAP(r45052)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 23) & 1
+WRAP(r45053)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 24) & 1
+WRAP(r45056)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 25) & 1
+WRAP(r45105)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 26) & 1
+WRAP(r45113)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 27) & 1
+WRAP(r45142)
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 28) & 1
 WRAP(r45144)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -902,10 +980,28 @@ static const agc_routine_entry interpretive_entries[]={
  {18970,r45032_abi},
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 16) & 1
- {18975,r45037_abi},
+ {18973,r45035_abi},
 #endif
 #if (CM_KALCMANU_STEERING_KEEP0 >> 17) & 1
+ {18975,r45037_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 18) & 1
+ {18977,r45041_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 19) & 1
+ {18979,r45043_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 20) & 1
+ {18981,r45045_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 21) & 1
  {18984,r45050_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 22) & 1
+ {18986,r45052_abi},
+#endif
+#if (CM_KALCMANU_STEERING_KEEP0 >> 23) & 1
+ {18987,r45053_abi},
 #endif
  {0xffffu,0}
 };
@@ -953,19 +1049,19 @@ static const agc_routine_entry basic_entries[]={
 #if (CM_KALCMANU_STEERING_KEEP0 >> 14) & 1
  {18969,r45031_abi},
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 18) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 24) & 1
  {18990,r45056_abi},
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 19) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 25) & 1
  {19013,r45105_abi},
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 20) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 26) & 1
  {19019,r45113_abi},
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 21) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 27) & 1
  {19042,r45142_abi},
 #endif
-#if (CM_KALCMANU_STEERING_KEEP0 >> 22) & 1
+#if (CM_KALCMANU_STEERING_KEEP0 >> 28) & 1
  {19044,r45144_abi},
 #endif
  {0xffffu,0}
@@ -988,8 +1084,14 @@ const cm_kalcmanu_steering_point cm_kalcmanu_steering_points[CM_KALCMANU_STEERIN
  {18966,0},
  {18969,0},
  {18970,1},
+ {18973,1},
  {18975,1},
+ {18977,1},
+ {18979,1},
+ {18981,1},
  {18984,1},
+ {18986,1},
+ {18987,1},
  {18990,0},
  {19013,0},
  {19019,0},
@@ -997,4 +1099,4 @@ const cm_kalcmanu_steering_point cm_kalcmanu_steering_points[CM_KALCMANU_STEERIN
  {19044,0}
 };
 const agc_word cm_kalcmanu_steering_cadr_words[CM_KALCMANU_STEERING_CADR_WORDS]={0};
-const agc_word cm_kalcmanu_steering_externals[CM_KALCMANU_STEERING_EXTERNALS]={04701,04740,05147,05160,05217,05245,05324,044726};
+const agc_word cm_kalcmanu_steering_externals[CM_KALCMANU_STEERING_EXTERNALS]={04701,04740,05147,05160,05170,05217,05245,05324,044726};

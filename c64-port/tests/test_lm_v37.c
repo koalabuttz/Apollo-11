@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "lm_v37_cases.h"
 #include "lm_v37_vectors.h"
+#include "lm_v37_c64_vectors.h"
 #include "lm_interbank_routines.h"
 #include "../src/lm_v37_operands.inc"
 #include "../src/lm_fresh_start_operands.inc"
@@ -43,6 +44,7 @@ int main(void){apollo_overlay_state s;lm_fresh_io io;agc_hardware hw;enum exec_s
  const agc_site_operand *table=lm_interbank_site_table(&sites);
  for(i=0;i<ENDS;++i)ended[i]=0;
  check(LM_V37_VECTORS==LM_V37_CASES,"vector count",0);
+ for(n=0;n<LM_V37_C64_COUNT;++n)check(lm_v37_c64_case[n]<LM_V37_CASES&&(n==0u||lm_v37_c64_case[n-1u]<lm_v37_c64_case[n])&&lm_v37_c64[n]==lm_v37_expected[lm_v37_c64_case[n]],"C64 row",n);
  for(n=1;n<LM_V37_OPERAND_COUNT;++n)check(lm_v37_operands[n-1u].physical<lm_v37_operands[n].physical,"operands sorted",n);
  for(n=1;n<LM_V37_ROUTINES;++n)check(lm_v37_routines.entries[n-1u].physical<lm_v37_routines.entries[n].physical,"routines sorted",n);
  /* The CADRs after the bank's TC BANKCALL/POSTJUMP/IBNKCALL (bank 04, 2024-2377) are the site table's. */

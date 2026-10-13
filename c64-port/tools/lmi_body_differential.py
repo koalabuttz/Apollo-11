@@ -112,6 +112,38 @@ def tame_index(r,img,code):
    sv=v if v<0o40000 else -(0o77777-v);e=(code&0o3777)-sv
    if e>=0:img[x]=v;eff=e;break
  if eff>=0o55 and (eff&0o377)>0o372:img[0o163]=0
+def vsc_shape(r,img,hdr):
+ # V/SC: mode picks which side is the vector. Shape the scalar (MPAC or
+ # the operand) so dividends usually fit: small, zero major part (the
+ # shift-left-14 path), zero, or a vector component near the divisor.
+ img[0o163]=r.choice([0o77776,0o77776,0,1])
+ vec=img[0o163]==0o77776
+ if hdr[15]:ops=hdr[9:15]
+ else:
+  a=img[0o116];e=(img[3]>>8)*0o400+a-0o1400 if a>=0o1400 else a
+  if e in range(0o115-5,0o117) or e in range(0o154-5,0o164) or e in range(0o130-5,0o142):img[0o116]=a=0o200;e=a
+  ops=None
+ def put(i,v):
+  if ops is None:img[e+i]=v       # (fixed operands stay as the rope has them)
+ def get(i):return hdr[9+i] if ops is not None else img[e+i]
+ sc=(lambda i,v:put(i,v)) if vec else (lambda i,v:img.__setitem__(0o154+i,v))
+ vc=(lambda i:0o154+i) if vec else None
+ c=r.random()
+ if c<.15:sc(0,0);sc(1,r.choice([0,0o77777,r.getrandbits(15)]))
+ elif c<.2:sc(0,r.choice([0,0o77777]));sc(1,r.choice([0,0o77777]))
+ elif c<.3:sc(0,0o37777);sc(1,0o37777)
+ # Shrink vector components often so the quotient fits.
+ for i in range(6):
+  if r.random()<.5:
+   v=r.getrandbits(r.randrange(1,14))
+   v=v if r.random()<.6 else 0o77777-v
+   if vec:img[0o154+i]=v
+   else:put(i,v)
+ if r.random()<.1:
+  for i in range(6):
+   v=r.choice([0,0o77777])
+   if vec:img[0o154+i]=v
+   else:put(i,v)
 def case(g,body):
  r=g.r;img=base_image(r);hdr=[body,0,0,0,0,r.randrange(2),r.choice([0,0o20,0o100]),0,0]+[0]*6+[0]
  if body in(0,1,2):
@@ -217,12 +249,13 @@ def case(g,body):
    for i in range(7):img[0o154+i]=r.choice([0,0o77777])
   elif c<.2:img[0o154]=img[0o155]=0o37777
   return hdr,img
- if body in(31,32):
-  img[5]={31:A(0o7401),32:A(0o7460)}[body]
+ if body in(31,32,71):
+  img[5]={31:A(0o7401),32:A(0o7460),71:A(0o7624)}[body]
   if r.random()<.35:
    b=r.randrange(0o30);setbanks(img,b);a=r.randrange(0o2000,0o3770);img[0o116]=a
    hdr[9:15]=[fixed(b,a-0o2000+i) for i in range(6)];hdr[15]=1
   else:img[0o116]=r.randrange(0o61,0o1370) if r.random()<.7 else r.randrange(0o1410,0o1770)
+  if body==71:vsc_shape(r,img,hdr)
   return hdr,img
  if body==33:
   setbanks(img,1);img[5]=A(0o2457,1);hdr[2]=A(0o6646);hdr[3]=A(0o2450,1)
@@ -454,7 +487,7 @@ NAMES=['DIRADRES','DIRADRES PUSHUP','ADDRESS PUSHUP','STORE codes','STADR','DODL
  'DAD','DSU','BDSU','DMP','DMPR','short shifts','GSHIFT','TSLC','COMP','SIGN','ABS','DSQ','VSQ','DOT',
  'DDV','BDDV','SQRT','ABVAL/ABS','UNIT','VXSC','VXV','BOV(B)','RTB','SWRETURN','POLY','BPL/BMN',
  'VAD','VSU','BVSU','TAD','ROUND','SSP','XAD','XSU','LXA','SXA','BHIZ','CALL','GOTO indirect','EXIT','INTPRET','TPMODE','15BITADR','BZE/GOTO','ITA/STQ','TIX','TLOAD','VPROJ','TLOAD fixed','AXC',
- 'XCHX','ARCCOS','ARCSIN','SIN','COS','ACOSABRT return','MXV','VXM','LXC']
+ 'XCHX','ARCCOS','ARCSIN','SIN','COS','ACOSABRT return','MXV','VXM','LXC','V/SC']
 def main():
  global rom,MISSION,ROPES,LST,ROM
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--cases',type=int,default=3000);p.add_argument('--seed',type=int,default=1969)

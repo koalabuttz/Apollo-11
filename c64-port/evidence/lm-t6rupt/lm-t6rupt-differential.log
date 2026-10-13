@@ -1,0 +1,5 @@
+python3 tools/lm_t6rupt_freeze.py
+PASS: 3840 lm-t6rupt cases equal the original program: {'dot6rupt:returned': 1536, 'resume:returned': 768, 't6jobchk:returned': 512, 'vector:returned': 256, 'write:returned': 768}
+python3 tools/lm_t6rupt_source_map.py
+PASS: 53 assembled lines of Luminary099/T6-RUPT_PROGRAMS.agc; every instruction but the refused T6JOBCHK +3 executed by the original program in the lm-t6rupt oracle run and translated in src/lm_t6rupt.c
+git diff --exit-code -- tests/lm_t6rupt_vectors.h tests/lm_t6rupt_c64_vectors.h

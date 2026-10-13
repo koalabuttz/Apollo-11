@@ -69,6 +69,12 @@ static MAYBE_UNUSED enum exec_status tc_q(apollo_overlay_state *s){
  if((q&070000u)||q<010u)return EXEC_OUT_OF_SCOPE;
  W[2]=3u;W[5]=(agc_word)(q&07777u);return EXEC_OK;
 }
+/* TC K, K erasable: C(K) runs as an instruction; a TC leaves Q = K+1. */
+static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
+ agc_word w=W[k];
+ if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;
+ W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;
+}
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
@@ -88,7 +94,7 @@ static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_b
  io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}
 /* Channel orders on the mission's output channels, as yaAGC's. */
 static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){
- switch(k){case 05:return &io->channel05;case 06:return &io->channel06;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &io->channel30;case 031:return &io->channel31;case 032:return &io->channel32;case 033:return &io->channel33; default:return 0;}
+ switch(k){case 05:return &cm_channels.channel05;case 06:return &cm_channels.channel06;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &cm_channels.channel30;case 031:return &cm_channels.channel31;case 032:return &cm_channels.channel32;case 033:return &cm_channels.channel33; default:return 0;}
 }
 static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}

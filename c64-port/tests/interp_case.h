@@ -24,6 +24,14 @@ typedef struct {
  * editing registers and the counters: TIME1-TIME6, the CDUs, PIPAs and the
  * rest) from the seed, before its other edits; without one they stay 0. */
 #define IRC_COUNTERS 0x4000u
+/* Both edits work on the host; a C64 diagnostic carries their code (about
+ * 1.3 KB, which the bigger groups of other files need for their soft stack)
+ * only when built with -DIRC_CHANNELS, as the Lane G specs' are. */
+#if !defined(__mos__) || defined(IRC_CHANNELS)
+#define IRC_IO 1
+#else
+#define IRC_IO 0
+#endif
 enum { IRC_NCH = 10 };
 extern const uint8_t irc_ch_num[IRC_NCH];
 extern agc_word irc_ch[IRC_NCH], irc_trap[3];
@@ -32,9 +40,6 @@ extern uint8_t irc_ch_on;
  * and counter registers 010-061 and ZERO cleared unless the case has the
  * IRC_COUNTERS edit), then apply the edits. */
 void irc_build(apollo_overlay_state *, const irc_case *);
-/* The case's SUPERBNK: an IRC_CHANNEL|07 edit (routines in banks 40-43),
- * else c->superbank. */
-agc_word irc_superbank(const irc_case *);
 enum { IRC_STOPPED = 0, IRC_REFUSED = 1, IRC_FAILED = 2 };
 /* Run from the image's point until a point no routine covers (the case's
  * stop), at most max_steps routines. Returns IRC_STOPPED at an unmapped

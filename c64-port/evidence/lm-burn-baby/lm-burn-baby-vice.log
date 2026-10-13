@@ -1,5 +1,5 @@
-lm-burn-baby-1.prg sha256 896ceb619909bfd596f978c95c742a3cf2167ef8059ca02313e79fb8f6a80c14
-lm-burn-baby-2.prg sha256 0b8146e64eb6b6e811c8046be6da19b58fca0279bbed301640e2266c956f4004
-224 C64 rows (tests/lm_burn_baby_c64_vectors.h), split by key: group 2 runs the bank-17 and bank-35 routines, group 1 the rest
-PASS: VICE PAL lm-burn-baby-1.prg: 204 checks, 0 failures
-PASS: VICE PAL lm-burn-baby-2.prg: 20 checks, 0 failures
+lm-burn-baby-1.prg sha256 f66f815d345841a5b301ce11076a9bdbaa4b4b5bb15366deceabaf1fcf1932ff heap_start $bcf5
+lm-burn-baby-2.prg sha256 359c246afdf532296456abf1e4e38e204ebe8d02c45b3a75bb3fb18ab9b4fe12 heap_start $3396
+lm-burn-baby: 267 C64 rows in 2 PRGs (each takes every entry, outcome, branch and edge of every linked source its runnable cases take; together the 585 branches of the whole module; 0 cases reach another PRG's code)
+PASS: VICE PAL lm-burn-baby-1.prg: 246 checks, 0 failures
+PASS: VICE PAL lm-burn-baby-2.prg: 21 checks, 0 failures

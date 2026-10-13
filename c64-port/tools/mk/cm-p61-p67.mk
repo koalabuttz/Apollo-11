@@ -5,7 +5,7 @@
 CM_P61_P67_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 CM_P61_P67_SRC = src/cm_p61_p67.c tests/cm_p61_p67_target.c $(CM_P61_P67_COMMON)
 CM_P61_P67_HDR = include/cm_p61_p67.h tests/interp_case.h tests/cm_p61_p67_vectors.h tests/cm_p61_p67_c64_vectors.h
-CM_P61_P67_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_P61_P67_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-p61-p67 sanitize-cm-p61-p67 c64-cm-p61-p67 vice-cm-p61-p67 cm-p61-p67-differential
 all: build/test-cm-p61-p67
 test: test-cm-p61-p67

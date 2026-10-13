@@ -9,8 +9,7 @@
  ],
  "oracle_engine": "pinned yaAGC agc_engine.c without its gyro, IMU CDU drive and optics block (build/no-imu-device.patch)",
  "cases": 63488,
- "snapshot_sha256": "d49bef08d377be6cb8f8316c705a6244a4781ffd0c026425f87abf808f525e71",
- "interbank_gap_stops": 928,
+ "snapshot_sha256": "f1eff392d8d5d59c3cd455f3fa7d5d21f59ec6796da649eee22e2faa93bc9922",
  "stops": {
   "LM routine 0": {
    "caller return": 384
@@ -526,19 +525,19 @@
    "GOTOPOOH": 384
   },
   "LM round trip site 0": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 1": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 2": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 3": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 4": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 5": {
    "JOBSLEEP": 14,
@@ -550,7 +549,7 @@
   },
   "LM round trip site 7": {
    "SETISSW": 31,
-   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 33
+   "caller continuation": 33
   },
   "LM round trip site 8": {
    "JOBWAKE": 64
@@ -745,7 +744,7 @@
    "caller continuation": 32
   },
   "LM round trip site 61": {
-   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "LM round trip site 62": {
    "UPFLAG": 32,
@@ -791,22 +790,22 @@
    "BAILOUT1": 64
   },
   "CM round trip site 0": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 1": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 2": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 3": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 4": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 5": {
-   "ISWRETRN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 6": {
    "JOBSLEEP": 14,
@@ -818,7 +817,7 @@
   },
   "CM round trip site 8": {
    "SETISSW": 33,
-   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 31
+   "caller continuation": 31
   },
   "CM round trip site 9": {
    "JOBWAKE": 64
@@ -892,7 +891,7 @@
    "VARALARM": 32
   },
   "CM round trip site 28": {
-   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 64
+   "caller continuation": 64
   },
   "CM round trip site 29": {
    "POODOO": 64
@@ -926,7 +925,7 @@
   },
   "CM round trip site 37": {
    "SETISSW": 32,
-   "SWRETURN (Q outside 0100-07775: INTER-BANK gap stop)": 32
+   "caller continuation": 32
   },
   "CM round trip site 38": {
    "JOBSLEEP": 15,
@@ -991,6 +990,6 @@
    "POODOO": 64
   }
  },
- "boundary": "entry cases: from the routine to the first external address, the subroutine return at 04000, or an erasable TC target; round trips: TC BANKCALL or IBNKCALL from every genuine site through native INTER-BANK to the caller continuation, an external, SETISSW, or SWRETURN/ISWRETRN entered with Q outside 0100-07775",
+ "boundary": "entry cases: from the routine to the first external address, the subroutine return at 04000, or an erasable TC target; round trips: TC BANKCALL or IBNKCALL from every genuine site through native INTER-BANK to the caller continuation, an external or SETISSW",
  "compared": "2048 erasable words (A, L 16-bit), the interrupt-enable state and channels 11-14"
 }

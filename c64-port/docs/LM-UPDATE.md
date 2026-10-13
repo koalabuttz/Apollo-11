@@ -16,6 +16,7 @@ UPDATE_PROGRAM is P27, the ground uplink. The extended verbs V70 (liftoff time),
   - The restart points UPOUT+1 (PHASCHNG's 2CADR) and TIMEDIDR (group 6).
   - The return point after every TC to code outside the file: TESTXACT, PHASCHNG, NEWMODEX, FALTON, FINDVAC, UPFLAG, TPAGREE, INTWAKEU and NEWMODEX+3, plus BANKCALL GOXDSPF with its three returns (V34, V33, data).
 - Each routine runs until Z reaches one of those external entries, or ENDOFJOB, ENDEXT or INTPRET.
+- Interpretive entries (`lm_update_interpretive`, 2): UPJOB's `CALL INTSTALL` (04,3552) and `UPWAKE EXIT` (04,3554), keyed by LOC under BANKSET at NEWOPS (06070). They are the CHANG2 resume LOCs: a job running UPJOB that is switched out comes back at NEWOPS with LOC on one of them. Each is the compiled `lm_interp` path of R00's identical words in `src/lm_stateup.c`. CALL INTSTALL leaves at INTSTALL's NEWOPS with QPRET = 3554. EXIT leaves the interpreter for 3555 (TC PHASCHNG, a basic entry), and the run goes on there. No DANZIG follows either word, so NEWJOB is not read; the cases set it positive in a fifth of the runs and yaAGC agrees. Refused, as in STATEUP: a state the interpreter does not run in at NEWOPS (EDOP nonzero, BBANK not bank 04 or not under BANKSET, a work area outside the five VAC areas or PUSHLOC outside it) and a missing io.
 - Internal transfers with a run-time target go through `jump`, which accepts only the targets the original can reach:
   - `INDEX UPVERB; TCF +1` (both tables).
   - CK4V32's `TC Q` and `INDEX Q; TC 0 -6`.
@@ -44,7 +45,7 @@ Paths with no producer: a TS that overflows refuses (no input in the program's d
 Hashes: `evidence/lm-update/SHA256.json`. Bulk files are assets of the `evidence-lm-update` release (`python3 tools/evidence.py fetch lm-update`).
 
 - Independent assembly comparison: `evidence/lm-update/lm-update-proof.json`. `make lm-update-differential` runs the unmodified Luminary099 rope in yaAGC (host-only), 4,096 cases.
-  - Case n enters entry n % 35, with the image pseudo-random within the program's domain:
+  - Case n enters entry n % 37 (slots 35 and 36 are the two interpretive words at NEWOPS, with BANKSET = BBANK, EDOP +0, a work area of one of the five VAC areas with PUSHLOC inside it, and NEWJOB +0 or, in a fifth of the cases, positive), with the image pseudo-random within the program's domain:
     - UPVERB is 0-3.
     - COMPNUMB is what OHWELL1 accepts for that verb (2 for V70/V73, 3-20 for V71 and V72; UPEND72 rejects an even count), and UPCOUNT is 1 to COMPNUMB.
     - After the II load (CK4V32 returning to 3432) UPBUFF is often a small number: below 3, 3-20 or above 20.
@@ -52,12 +53,12 @@ Hashes: `evidence/lm-update/SHA256.json`. Bulk files are assets of the `evidence
     - UPBUFF holds update addresses in any erasable bank where V71/V72 store through them. EB0 addresses start at 61, above the registers and counters, and keep clear of MPAC, which the loop itself counts in. A quarter of the V71 cases load one word at a bank's first word (UPEND71's `BZF STORLP71`, A = -0). Another quarter start within COMPNUMB words of a bank's end, so some run past it into UPEND71's EBANK-overflow error.
     - MODREG is +0, -0 or a mode.
     - FB/EB, SUPERBNK, TIME1/TIME2, channel 11 and the interrupt-enable state are pseudo-random.
-  - Each case runs to the first point neither this file nor INTER-BANK_COMMUNICATION owns.
+  - Each case runs to the first point neither this file nor INTER-BANK_COMMUNICATION owns. An interpretive case also owns the interpreter's code; NEWOPS with LOC outside UPJOB's two words (INTSTALL) ends it.
   - The oracle also traces the words each case executes (`tools/case_trace.h`). The freeze fails if any instruction of the file is never executed. The only words left unexecuted are constants, CADRs, interpretive words and the instruction after an EXTEND or INDEX, which runs in the same step as its prefix. The list is in the proof.
   - Compared: the interrupt-enable state, SUPERBNK, channel 11 and all 2,048 erasable words. The digests are frozen into `tests/lm_update_vectors.h`.
 - Host and sanitizer results: `make test-lm-update sanitize-lm-update` (`evidence/lm-update/lm-update-host.log`). Beyond the oracle digests, the test checks that:
-  - all 35 entries are reached;
-  - each case ends at one of the 13 external entries, and every one of them is reached;
+  - all 35 entries and both interpretive entries are reached;
+  - each case ends at one of the 13 external entries or NEWOPS with LOC at INTSTALL, and every one of them is reached;
   - the C64 rows are host cases with their host digests;
-  - a TC UPTEMP or `INDEX UPTEMP; TC 1` word TIMEDIDL never stores, an UPVERB with no branch, an update into a register or counter, a missing io and UPACTOFF without the hardware record are refused.
-- C64 execution results: `make vice-lm-update` (`evidence/lm-update/lm-update-vice.log`). The rows are chosen by outcome (`tools/c64_rows.py`): every 16th case, plus greedily added cases until the rows together execute every word the 4,096 host cases execute. Each branch outcome lands on a word of its own, so the C64 takes every outcome the host takes.
+  - a TC UPTEMP or `INDEX UPTEMP; TC 1` word TIMEDIDL never stores, an UPVERB with no branch, an update into a register or counter, a missing io, UPACTOFF without the hardware record, and an interpretive word with EDOP not +0 or without io are refused.
+- C64 execution results: `make vice-lm-update` (`evidence/lm-update/lm-update-vice.log`). 268 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 16th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 518 arcs the host cases take). `src/lm_update.c` is compiled for the cover through `tools/a2_call_sites.h`, so each DAS, ADS and BZF call site also has the helper's outcome as arcs on its own line (DAS: low-word carry, borrow or neither and overflow +1, -1 or none; ADS: overflow; BZF: A +0, -0 or nonzero). Branch arcs alone missed per-call-site outcomes the helpers take elsewhere: the borrow from TEPHEM +2 into TEPHEM +1 in UPEND70's DAS (case 2282), carries and borrows of its DAS TETCSM and TETLEM, and the carry, borrow and overflow arms of TIMEDIDR's and DELTATOK's DAS TIME2; the rows now take every call-site outcome the host cases take. A word cover (the earlier `tools/c64_rows.py`) missed outcomes that share words: `BZMF UPVERIFY` taken (the normal end of every V71/V72 load), `BZF STORLP71` taken and the BZMF on component index +0; the rows now take them. The proof records the host and C64 arc counts. `evidence/lm-update/lm-update-c64-cover.json` is the c64_branch_outcomes record: each linked source with its sha256 and its [host, rows] arc counts, the rows, the host arcs they miss (none) and the host cases and rows per entry slot. The VICE log names the PRG sha256.

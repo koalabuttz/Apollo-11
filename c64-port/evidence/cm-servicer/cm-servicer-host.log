@@ -1,8 +1,8 @@
 $ make test-cm-servicer sanitize-cm-servicer
 cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_servicer.c tests/cm_servicer_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_servicer.c -o build/test-cm-servicer
 ./build/test-cm-servicer
-cm-servicer: 104 checks, 0 failures
+cm-servicer: 160 checks, 0 failures
 cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_servicer.c tests/cm_servicer_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_servicer.c -o build/test-cm-servicer-sanitize
 ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-servicer-sanitize
-cm-servicer: 104 checks, 0 failures
+cm-servicer: 160 checks, 0 failures
 exit 0

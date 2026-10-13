@@ -22,6 +22,8 @@ address outside the order's field (which would change the order) is
 EXEC_INVALID_ACTION, as is a fixed read outside the spec's 'fixed_tables'.
 """
 
+import re
+
 QUARTER = {1: 'CCS', 2: ('DAS', 'LXCH', 'INCR', 'ADS'), 5: ('INDEX', 'DXCH', 'TS', 'XCH')}
 EXT_QUARTER = {1: 'DV', 2: ('MSU', 'QXCH', 'AUG', 'DIM'), 6: 'SU'}
 CHANNEL_OPS = ('READ', 'WRITE', 'RAND', 'WAND', 'ROR', 'WOR', 'RXOR', 'EDRUPT')
@@ -112,7 +114,9 @@ class Basic:
         self.channels = self.spec.get('channels', {})
         if self.channels == 'all':
             # Every channel of the CM io record (include/cm_native_image.h).
-            self.channels = {k: 'channel%02o' % k for k in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33)}
+            # (5, 6 and 30-33 in cm_channels, beside it.)
+            self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
+            self.channels.update({k: 'cm_channels.channel%02o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
         self.work = []
         self.words = set()       # every word compiled as basic code
         self.operands = set()    # inline operand words of outside TCs
@@ -161,7 +165,7 @@ class Basic:
     def add(self, phys, ext=False, clean=False):
         """Label of the word at phys reached with EXTEND state ext and A
         known free of overflow (clean), queued for compiling."""
-        if not self.in_file(phys):
+        if not self.in_file(phys) and not self.spec.get('fall_out'):
             raise BasicError('basic flow leaves the file at %s' % self.where(phys))
         k = (phys, ext, clean)
         if k not in self.nodes:
@@ -179,23 +183,23 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
-            if (self.is_data(k[0]) or self.is_interp(k[0])) and self.where(k[0]) not in self.spec.get('execute_data', ()):
-                # Control reaching a constant or an interpretive word (P11's
-                # CCS SATSW -0 exit into STEERSAT's TLOAD): the file's flow
-                # never does (the paths here are CCS exits and TS skips no
-                # admitted state takes); the differential checks none is
-                # taken.
+            if not self.in_file(k[0]):
+                # Spec 'fall_out': a TS overflow skip or CCS exit past the
+                # file's last word, which no admitted state takes (the
+                # differential checks it never is).
+                self.data_landings.add(k[0])
+                self.nodes[k] = ['/* %s: past the end of the file, never reached */' % self.where(k[0]),
+                                 'return EXEC_INVALID_ACTION;']
+                continue
+            if self.is_data(k[0]) and self.where(k[0]) not in self.spec.get('execute_data', ()):
+                # Control reaching a constant: the file's flow never does
+                # (the paths here are CCS exits and TS skips no admitted
+                # state takes); the differential checks none is taken.
                 self.data_landings.add(k[0])
                 self.nodes[k] = ['/* %s %s: data, never executed */' % (self.where(k[0]), self.text(k[0])),
                                  'return EXEC_INVALID_ACTION;']
                 continue
             self.nodes[k] = self.compile(*k)
-
-    def is_interp(self, phys):
-        from interp_compile import is_interp_op
-        ln = self.L.by_phys.get(phys)
-        # (INCR names a basic instruction and an interpretive order alike.)
-        return ln is not None and ln.op != 'INCR' and is_interp_op(ln.op)
 
     def is_data(self, phys):
         ln = self.L.by_phys.get(phys)
@@ -243,6 +247,11 @@ class Basic:
             if call:
                 self.dispatch.add(here + 1)
                 self.add(here + 1)
+                # Spec 'call_skips' {label: n}: a subroutine that may return
+                # up to n words past the call's +1 (INCR Q; TC Q).
+                for i in range(self.spec.get('call_skips', {}).get(self.L.label_at(tp), 0)):
+                    self.dispatch.add(here + 2 + i)
+                    self.add(here + 2 + i)
             return st
         if tp is not None and self.L.labels.get('INTPRET') == tp and call:
             # TC INTPRET: the interpretive code at the next word.
@@ -426,11 +435,20 @@ class Basic:
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
-            if 0o10 <= a < 0o200 and call and not 0o20 <= a <= 0o23:
-                # TC to an unswitched erasable word below 0200 (SERVICER207's
-                # TC RUPTREG1 after QXCH RUPTREG1): the stored word runs as a
-                # TC, Q = K+1, as for TC Q; anything but a TC is refused.
+            if 0o10 <= a < 0o1400 and call and not 0o20 <= a <= 0o23:
+                # TC to an unswitched erasable word (SERVICER207's TC RUPTREG1
+                # after QXCH RUPTREG1, P40-P47's TC TEMPR60): the stored word
+                # runs as a TC, Q = K+1, as for TC Q; anything but a TC is
+                # refused.
                 st.append('e=(long)(W[0%o]&077777u);' % a)
+                # The words the spec's states hold there (TEMPR60: the TC
+                # OUTPUT returns) are dispatch targets in the file.
+                for held in self.spec.get('states', {}).values():
+                    for v in held.get('%o' % a, []):
+                        t = self.phys_of(v, here) if isinstance(v, int) and v >= 0o2000 else None
+                        if t is not None and self.in_file(t) and not self.is_data(t):
+                            self.dispatch.add(t)
+                            self.add(t)
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
@@ -645,6 +663,10 @@ class Basic:
         c.append('#else')
         c.append('#define IRC_COVER(n) ((void)0)')
         c.append('#endif')
+        order = sorted(self.nodes)
+        self.node_banks = [k[0] // 1024 for k in order]
+        if self.spec.get('basic_split'):
+            return c + self.emit_split(sym, order)
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){')
         c.append(' long ix=0,e=0;uint16_t p;')
@@ -686,11 +708,100 @@ class Basic:
         c.append('}')
         return c
 
+    def run_name(self, bank):
+        return 'basic_run_%o' % bank if self.spec.get('basic_split') else 'basic_run'
+
+    def emit_split(self, sym, order):
+        """Spec 'basic_split': one function per bank (basic_run_<bank>),
+        each kept only when <SYM>_BANKS has the bank's bit, so a C64 group
+        links the banks its cases run in (a file whose basic code does not
+        fit one diagnostic). A transfer to another bank's word calls that
+        bank's function."""
+        S = sym.upper()
+        banks = sorted(set(self.node_banks))
+        c = ['#ifndef %s_BANKS' % S, '#define %s_BANKS 0xffffffffffffffffull' % S, '#endif',
+             '#define %s_HAS(b) ((%s_BANKS >> (b)) & 1u)' % (S, S)]
+        lab = {}
+        for k in order:
+            lab[self.label(*k)] = k
+        # Words another bank's code may reach (computed transfers) and
+        # the entries, per bank.
+        into = {b: set() for b in banks}
+        for p in self.entries | self.dispatch:
+            if (p, False, False) in self.nodes:
+                into[p // 1024].add(p)
+        for b in banks:
+            c.append('#if %s_HAS(0%o)' % (S, b))
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at);' % b)
+            c.append('#endif')
+        c += self.callee_defs(sym)
+        for b in banks:
+            mine = [(n, k) for n, k in enumerate(order) if k[0] // 1024 == b]
+            body = []
+            for n, k in mine:
+                body.append('%s:' % self.label(*k))
+                body.append(' IRC_COVER(%du);' % n)
+                twin = (k[0], k[1], False)
+                if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in self.nodes[k]]:
+                    body.append(' goto %s;' % self.label(*twin))
+                    continue
+                for x in self.nodes[k]:
+                    body.append(' ' + x)
+            # A goto into another bank's words calls that bank's function.
+            def cross(m):
+                k = lab.get(m.group(1))
+                if k is None or k[0] // 1024 == b:
+                    return m.group(0)
+                if k[1]:
+                    raise BasicError('extended transfer across banks at %s' % self.where(k[0]))
+                into[k[0] // 1024].add(k[0])
+                return 'return %s(s,io,%uu);' % (self.callee(S, k[0] // 1024), k[0])
+            body = [re.sub(r'goto ([A-Z][0-7]+c?);', cross, x) for x in body]
+            c.append('#if %s_HAS(0%o)' % (S, b))
+            c.append('/* The basic words of bank %02o. */' % b)
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % b)
+            c.append(' long ix=0,e=0;uint16_t p;')
+            c.append(' (void)ix;(void)e;(void)p;')
+            c.append(' switch(at){')
+            for q in sorted(into[b]):
+                c.append(' case %uu:goto %s;' % (q, self.label(q)))
+            c.append(' default:return EXEC_OUT_OF_SCOPE;')
+            c.append(' }')
+            c.extend(body)
+            if any('goto dispatch' in x for x in body):
+                c.append('dispatch:')
+                c.append(' p=agc_fixed_physical(W[5],W[4],io->superbank);')
+                c.append(' switch(p){')
+                for q in sorted(self.dispatch):
+                    if (q, False, False) not in self.nodes:
+                        continue
+                    if q // 1024 == b:
+                        c.append(' case %uu:goto %s;' % (q, self.label(q)))
+                    else:
+                        c.append(' case %uu:return %s(s,io,%uu);' % (q, self.callee(S, q // 1024), q))
+                c.append(' default:return EXEC_OK;')
+                c.append(' }')
+            c.append('}')
+            c.append('#endif')
+        # (Labels a function never jumps to are fine: C labels need no use.)
+        return c
+
+    def callee(self, S, b):
+        return '%s_RUN_%o' % (S, b)
+
+    def callee_defs(self, sym):
+        S = sym.upper()
+        out = []
+        for b in sorted(set(self.node_banks)):
+            out += ['#if %s_HAS(0%o)' % (S, b), '#define %s_RUN_%o basic_run_%o' % (S, b, b), '#else',
+                    '#define %s_RUN_%o(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)' % (S, b), '#endif']
+        return out
+
     def channel_helpers(self):
         c = ['/* Channel orders on the mission\'s output channels, as yaAGC\'s. */']
         c.append('static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){')
         c.append(' switch(k){%s default:return 0;}' % ''.join(
-            'case 0%o:return &io->%s;' % (k, v) for k, v in sorted(self.channels.items())))
+            'case 0%o:return &%s;' % (k, v if '.' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
         c.append('}')
         c.append('static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}')
         c.append('static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}')

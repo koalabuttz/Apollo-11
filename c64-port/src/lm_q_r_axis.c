@@ -670,7 +670,8 @@ closeout: /* CLOSEOUT: CA ADRRUPT; TC MAKERUPT. MAKERUPT: EXTEND;
  W[5]=LM_QR_NOQRSM;return EXEC_OK;
 }
 
-static int skips(const agc_image *s){agc_word u=ai_word(s,SKIPU),v=ai_word(s,SKIPV);return (u==0u||u==4u)&&(v==0u||v==4u);}
+/* (Ifs, so each compare's outcome is its own edge for the C64 rows.) */
+static int skips(const agc_image *s){agc_word u=ai_word(s,SKIPU),v=ai_word(s,SKIPV);if(u!=0u&&u!=4u)return 0;if(v==0u||v==4u)return 1;return 0;}
 static int rjok(const agc_image *s){agc_word w=ai_word(s,RETJADR);return w==MINADR||w==HANDADR||w==TJLAWADR;}
 /* Refused with the image unchanged: values no producer stores, where the
  * original would read them before storing them. CALLQERR, ALARMRET, MINRET,

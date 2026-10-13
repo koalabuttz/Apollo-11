@@ -5,7 +5,7 @@
 CM_TVC_ROLL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TVC_ROLL_SRC = src/cm_tvc_roll.c tests/cm_tvc_roll_target.c $(CM_TVC_ROLL_COMMON)
 CM_TVC_ROLL_HDR = include/cm_tvc_roll.h tests/interp_case.h tests/cm_tvc_roll_vectors.h tests/cm_tvc_roll_c64_vectors.h
-CM_TVC_ROLL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline
+CM_TVC_ROLL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
 .PHONY: test-cm-tvc-roll sanitize-cm-tvc-roll c64-cm-tvc-roll vice-cm-tvc-roll cm-tvc-roll-differential
 all: build/test-cm-tvc-roll
 test: test-cm-tvc-roll

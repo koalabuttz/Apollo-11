@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -fdata-sections -Wl,--gc-sections src/rupt_lead_ins.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/rupt_lead_ins_cases.c tests/test_rupt_lead_ins.c -o build/test-rupt-lead-ins
+./build/test-rupt-lead-ins
+rupt-lead-ins: 1152 LM and 1920 CM cases (3072 returned, 0 refused); CM T5RUPT to NOQBRSM 122, to T5LOC 134; 8992 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -fsanitize=address,undefined src/rupt_lead_ins.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/rupt_lead_ins_cases.c tests/test_rupt_lead_ins.c -o build/test-rupt-lead-ins-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-rupt-lead-ins-sanitize
+rupt-lead-ins: 1152 LM and 1920 CM cases (3072 returned, 0 refused); CM T5RUPT to NOQBRSM 122, to T5LOC 134; 8992 checks, 0 failures

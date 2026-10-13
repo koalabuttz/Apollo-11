@@ -1,5 +1,5 @@
-lm-lunar-landing-1.prg sha256 0be3a3cdf23f8798db3eb4ae285c518d17e857a7906c4cc4c7aa887c8ecc1062
-lm-lunar-landing-2.prg sha256 d5f5588d7b67c9d38326573b28d69541801606d26471a30e44ca031db5a12019
-120 C64 rows (tests/lm_lunar_landing_c64_vectors.h), split by key: group 2 runs DDUMCALC and P63SPOT2, group 1 the rest
-PASS: VICE PAL lm-lunar-landing-1.prg: 111 checks, 0 failures
-PASS: VICE PAL lm-lunar-landing-2.prg: 9 checks, 0 failures
+lm-lunar-landing-1.prg sha256 02446545e77df00d56121790792229a79d186041e031ec5f7276e01c78f9f58d heap_start $89e6
+lm-lunar-landing-2.prg sha256 5d19e316eec9ed83f09b1f7100a91bf6bfce7be640db0c85789a7b700d03c654 heap_start $b4fc
+lm-lunar-landing: 120 C64 rows (95 cover every entry, outcome, the 128 counted paths and the 735 edges of every linked source the host takes)
+PASS: VICE PAL lm-lunar-landing-1.prg: 81 checks, 0 failures
+PASS: VICE PAL lm-lunar-landing-2.prg: 38 checks, 0 failures

@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-daps-proof.json": {
-      "sha256": "c1006b231019a474d5f24c165f1a84ec795ea2f4f199247753a2272aaa858f79",
-      "bytes": 9687,
+      "sha256": "ce428da90296457df99b55daf22b4413628482a0f7b5a7b1ef274c8209b78ea0",
+      "bytes": 9724,
       "store": "tree"
     },
     "cm-tvc-daps-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-daps-vice.log": {
-      "sha256": "ddeb4b84686d371c52a576b618dd57942fabe75253542250ddae98873381f842",
-      "bytes": 408,
+      "sha256": "d0bf5c28ac6629a2e40c3aae241a2bb028a087d8f82cfde95ad27938da857140",
+      "bytes": 407,
       "store": "tree"
     }
   }

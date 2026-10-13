@@ -32,4 +32,4 @@ c64-kalcmanu-steering: $(KAL_C64_PRGS)
 build/kalcmanu-steering-%.prg: $(KAL_SRC) platform/c64/kalcmanu_steering_diagnostic.c tools/mk/kalcmanu-steering.groups $(KAL_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(KAL_MOS_FLAGS) $(KALCMANU_STEERING_GROUP_FLAGS_$*) -Wl,-Map,build/kalcmanu-steering-$*.map $(KAL_C64_$(KALCMANU_STEERING_GROUP_MISSION_$*)) $(KAL_C64_COMMON) platform/c64/kalcmanu_steering_diagnostic.c -o $@
 vice-kalcmanu-steering: $(KAL_C64_PRGS)
-	for p in $(KAL_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(KAL_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done

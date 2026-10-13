@@ -7,8 +7,10 @@ Lane F. Milestone `lm-ags-init`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 `Luminary099/AGS_INITIALIZATION.agc` (R47, entered by V47), all of it: bank
 32 `02005`-`02216`, 138 assembled words. Nothing is left in the file.
 
-`src/lm_ags_init.c` registers fifteen basic and seven interpretive routines
-(`lm_ags_init_routines`, `lm_ags_init_interpretive`). One step machine runs
+`src/lm_ags_init.c` registers fifteen basic and twenty-four interpretive
+routines (`lm_ags_init_routines`, `lm_ags_init_interpretive`). Every
+interpretive label is a key, and so is every word after a DANZIG, where the
+Executive resumes a job that CHANG2 suspended. One step machine runs
 from each key (Z, or LOC at NEWOPS for an interpretive key) through the
 file's basic code, its interpretive code and the interpreter, until control
 leaves the file:
@@ -68,7 +70,7 @@ Refused (`EXEC_OUT_OF_SCOPE`, image and io restored from the undo image):
 
 ## Verification
 
-`tests/lm_ags_init_cases.c` builds 16,896 cases, 768 for each of the 22
+`tests/lm_ags_init_cases.c` builds 29,952 cases, 768 for each of the 39
 keys. Each case starts from a random image with FB bank 32.
 
 - EB is E4 (`EBANK= AGSBUFF`, as V47's 2CADR sets it), another bank in a
@@ -81,6 +83,14 @@ keys. Each case starts from a random image with FB bank 32.
   one of the three.
 - At the SCALEVEC keys, QPRET is the CALL's (32,2055 or 32,2063), or a CADR
   elsewhere in a quarter.
+- For `DSU DDV AGSK TSCALE`, a sixth of the states under E4 sample AGSK near
+  TAT, as a V32 ENTER followed soon by LOADTIME leaves them: TAT - AGSK is
+  0, or under 2^14 cs of either sign (a +-0 dividend high word). Others take
+  an old AGSK, with TAT - AGSK at TSCALE's major part (equal majors) or
+  exactly TSCALE (an exact division).
+- At the VAD AGSRND1 and AGSRND2 keys (32,2137, 32,2151, 32,2153), a sixth
+  of the states hold a component (MPAC, +3 or +5) whose sum carries into a
+  high word of 037777.
 
 - `make lm-ags-init-differential` runs `tools/lm_ags_init_freeze.py`.
   - It builds the yaAGC oracle `tools/lm_ags_init_reference.c` on yaAGC
@@ -90,12 +100,13 @@ keys. Each case starts from a random image with FB bank 32.
     code, its erasable words and SWCALL) or, at NEWOPS, the file's
     interpretive words (`ags_leaves`).
   - It requires the native snapshot to be byte-identical for every case:
-    all 16,896. The comparison covers all 2,048 erasable words and the
+    all 29,952. The comparison covers all 2,048 erasable words and the
     interrupt-enable bit.
   - The digests are frozen into `tests/lm_ags_init_vectors.h`.
   - `tools/lane_f_c64_rows.py` chooses the C64 rows
     (`tests/lm_ags_init_c64_vectors.h`, 128 cases): every key, outcome,
-    path and basic block of `src/lm_ags_init.c` the host cases take (27
+    path and control-flow edge of every linked source (clang
+    `-fsanitize-coverage=edge,trace-pc-guard`) the host cases take (46
     cases), then a stride of 97. The counts
     are in `evidence/lm-ags-init/lm-ags-init-c64-cover.json`.
   - The proof (`evidence/lm-ags-init/lm-ags-init-proof.json`) counts where
@@ -114,7 +125,20 @@ Paths no admitted input reaches are documented in the host test:
 - the negative and -0 exits of AGSINIT's and the IMUSE test's CCS A after
   MASK of a positive constant (REFSMBIT, IMUSEBIT), which is never
   negative;
-- TS DNLSTCOD's overflow skip after CA AGSWORD, which never overflows.
+- TS DNLSTCOD's overflow skip after CA AGSWORD, which never overflows;
+- ROUNDSUB's overflow into OVFIND after `VXSC VSCALE` and `VXSC RSCALE`:
+  each component is below 1 in magnitude and the scale factors are 0.641
+  (VSCALE, 3.280839 E2 B-9) and 0.410 (RSCALE, 3.280839 B-3), so the
+  rounded product's major word stays below 0.65 and never overflows;
+- DDV's MAXDV and MAXTEST's +0 and -0 exits: MAXDVSW becomes +0 only when
+  the dividend's and TSCALE's major words are equal, and TSCALE's minor
+  word is +0 (100 B-10 is exactly 03100 B-14), so the minor test that
+  follows always takes DVOVF;
+- GENDDV's minor corrections `DIM MPAC` (a negative remainder term) and
+  `INCR MPAC` (a remainder at least the divisor): TSCALE's minor word is +0,
+  so the correction term is the division's remainder alone, which is never
+  negative and always below the divisor. The exact division (remainder +0
+  to FINALDV +3) is taken.
 
 ## Source map
 

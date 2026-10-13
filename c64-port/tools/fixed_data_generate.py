@@ -9,6 +9,7 @@ the binary rope. Placement/declaration files are audited, not executable ports.
 import argparse
 import hashlib
 import json
+import os
 import gzip
 from pathlib import Path
 import re
@@ -288,8 +289,13 @@ def generate_native(mission, segments, nouns, source_digest, output):
 def assemble(mission, output_root):
     base = ROOT / ('deps/fixture' if mission == 'Luminary099' else 'deps/cm-services-fixture')
     assert (base / 'MAIN.agc.bin').exists(), f'Prepare existing {mission} oracle fixture first'
-    work = output_root / mission
-    work.mkdir(parents=True, exist_ok=True)
+    # Assemble in a private directory, then move each file into place with
+    # os.replace: parallel test recipes read build/fixed-data/<mission> while
+    # another recipe re-assembles it, and must never find a file missing.
+    final = output_root / mission
+    work = output_root / f'.{mission}.tmp-{os.getpid()}'
+    shutil.rmtree(work, ignore_errors=True)
+    work.mkdir(parents=True)
     for path in base.glob('*.agc'):
         shutil.copyfile(path, work / path.name)
     includes = re.findall(r'^\$(\S+)', (work / 'MAIN.agc').read_text(), re.M)
@@ -318,6 +324,11 @@ def assemble(mission, output_root):
     with (work / 'assembly.lst').open('w') as log:
         subprocess.run([str(ROOT / 'deps/virtualagc/yaYUL/yaYUL'), 'MAIN.agc'],
                        cwd=work, stdout=log, stderr=subprocess.STDOUT, check=True)
+    final.mkdir(parents=True, exist_ok=True)
+    for path in work.iterdir():
+        os.replace(path, final / path.name)
+    work.rmdir()
+    work = final
     rope = (work / 'MAIN.agc.bin').read_bytes()
     records = listing_records(work / 'assembly.lst', aliases, originals, rope)
     selected_data = [record for record in records

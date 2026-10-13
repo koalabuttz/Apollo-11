@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-massprop-proof.json": {
-      "sha256": "5d4806eafadc20ecdbf8f63e690aef00a980087fabaee29c63de0365cb173c9d",
-      "bytes": 9655,
+      "sha256": "9e3b065b26ab2a86b0167211bb7a8ca4df1abd8bf5affa192b754e30a10124a3",
+      "bytes": 9692,
       "store": "tree"
     },
     "cm-tvc-massprop-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-massprop-vice.log": {
-      "sha256": "d5272a55669b8a5fca2c834ae462ba7cb23981f32fe66fda73f9eb05e1f0abf2",
-      "bytes": 423,
+      "sha256": "68bfbdd80341c9a973abeda2761a43f79e36f32106ee39f3ea2e32f03f820448",
+      "bytes": 422,
       "store": "tree"
     }
   }

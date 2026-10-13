@@ -12,9 +12,9 @@ extern const agc_routine_table cm_reentry_interpretive,cm_reentry_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_reentry_point;
-#define CM_REENTRY_POINTS 102u
+#define CM_REENTRY_POINTS 390u
 #define CM_REENTRY_CADR_WORDS 2u
-#define CM_REENTRY_EXTERNALS 14u
+#define CM_REENTRY_EXTERNALS 15u
 #define CM_REENTRY_FIRST 21504u
 #define CM_REENTRY_LAST 23251u
 extern const cm_reentry_point cm_reentry_points[CM_REENTRY_POINTS];

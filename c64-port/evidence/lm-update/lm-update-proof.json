@@ -3,14 +3,11 @@
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "oracle": "yaAGC (deps/virtualagc), host only",
  "cases": 4096,
- "snapshot_sha256": "f9da431bde286fd592753730c7be5becf4505a678ab10dcbb7baad9be9f7f89a",
- "entries": "V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35)",
- "boundary": "entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT)",
+ "snapshot_sha256": "66a92ee56d016f8827242227c2642f186e65dac7773df1e817bb826a8a7c3740",
+ "entries": "V70UPDAT-V73UPDAT, UPPART2, UPERROUT+2, UPJOB, UPOUT+1, TIMEDIDR, UPWAKE+1 and the return point after every TC out of the file (35 basic), and UPJOB's interpretive words CALL INTSTALL and UPWAKE EXIT at NEWOPS (2 interpretive, NEWOPS points)",
+ "boundary": "entry state to the first point neither UPDATE_PROGRAM nor INTER-BANK_COMMUNICATION owns (TESTXACT, PHASCHNG, NEWMODEX, GOXDSPF, FALTON, FINDVAC, ENDOFJOB, INTPRET, UPFLAG, TPAGREE, INTWAKEU, NEWMODEX+3, ENDEXT, NEWOPS with LOC at INTSTALL); an interpretive case also owns the interpreter",
  "full_physical_words": 2048,
- "c64_rows": 262,
- "c64_row_selection": "every stride-th case plus a greedy cover: the C64 rows execute every fixed word the host cases execute (each branch outcome lands on its own word)",
- "host_words_executed": 237,
- "c64_words_executed": 237,
+ "host_words_executed": 279,
  "owned_words_never_executed": [
   "04,3402",
   "04,3403",
@@ -48,8 +45,10 @@
   "04,3626",
   "04,3631",
   "04,3641",
+  "04,3656",
   "04,3662",
   "04,3675",
+  "04,3706",
   "04,3720",
   "04,3724",
   "04,3731",
@@ -60,5 +59,12 @@
   "43,3737",
   "43,3741",
   "43,3751"
- ]
+ ],
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 4096,
+ "host_branch_arcs": 518,
+ "c64_rows": 268,
+ "c64_branch_arcs": 518,
+ "c64_row_seed_stride": 16,
+ "c64_missing_branch_arcs": []
 }

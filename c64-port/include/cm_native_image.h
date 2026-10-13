@@ -13,10 +13,13 @@ typedef struct {
  agc_word channel11,channel12,channel13,channel14;
  agc_word main_keys,navigation_keys,superbank,interrupt_enabled;
  agc_word trap31a,trap31b,trap32,executive_alarm,waitlist_alarm;
- /* Lane G: the RCS jet output channels 5 and 6 and the input channels
-  * 30-33, for the DAP, TVC and entry routines. */
- agc_word channel05,channel06,channel30,channel31,channel32,channel33;
 } cm_native_io;
+/* Lane G: the RCS jet output channels 5 and 6 and the input channels 30-33
+ * the DAP, TVC and entry routines use. They sit outside cm_native_io, whose
+ * C64 layouts hold it to 0x20 bytes, until agc_hardware carries them; one
+ * record (src/cm_interp_orders.c), as the AGC has one set of channels. */
+typedef struct { agc_word channel05,channel06,channel30,channel31,channel32,channel33; } cm_native_channels;
+extern cm_native_channels cm_channels;
 void cm_native_gather_executive(const apollo_overlay_state *,const cm_native_io *,cm_executive *);
 void cm_native_commit_executive(apollo_overlay_state *,cm_native_io *,const cm_executive *);
 void cm_native_gather_waitlist(const apollo_overlay_state *,const cm_native_io *,cm_waitlist *);

@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-exec-proof.json": {
-      "sha256": "5b3bda48aac023cd9d240659d9108bda6b2ca838bbaaa2f9a78230d8e6007b03",
-      "bytes": 3688,
+      "sha256": "a8808b6ce734773a8d5e941d1e4a0154624f8fe1d937a37815805ddd2a858631",
+      "bytes": 3725,
       "store": "tree"
     },
     "cm-tvc-exec-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-tvc-exec-vice.log": {
-      "sha256": "3533de46a75e5291884e20928be63a587f3bfa1a6f44ca723e1d633eca346d1e",
-      "bytes": 408,
+      "sha256": "0d6839298d1447601a5ee913cbbea377b8b0ed8b4a93db1fd0c41247934639de",
+      "bytes": 407,
       "store": "tree"
     }
   }

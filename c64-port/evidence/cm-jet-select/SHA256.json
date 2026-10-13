@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-jet-select-proof.json": {
-      "sha256": "e3e66121b68eb5bb0930c58e89e3c1e4c55597d305ae0ec1563ad557cdd378c3",
-      "bytes": 3210,
+      "sha256": "b1b0a806cab37c9ec0260e7c609f4926ca189435976c0ba748a7f7bfb1220020",
+      "bytes": 3247,
       "store": "tree"
     },
     "cm-jet-select-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-jet-select-vice.log": {
-      "sha256": "75d06d081da1fcc4952a4ee8f473b63aac4b04a02a5a865433ee7ab7cd36e99e",
-      "bytes": 416,
+      "sha256": "8d7b6d158307a197a4b0efdd3cdf8b1dc517e887d80e7974af8234b61236dea4",
+      "bytes": 415,
       "store": "tree"
     }
   }
