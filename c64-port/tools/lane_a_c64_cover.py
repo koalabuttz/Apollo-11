@@ -40,6 +40,7 @@ M = {
                      'CM_EXJ'),
     'cm-exec-idle': ('cm_exec_idle_cases.h', 'cm_exi_digest(&image,n)', 'CM_EXI_SRC', '$(CM_EXI_FLAGS)', 'cm_exi',
                      'CM_EXI'),
+    'service-transfer': ('service_transfer_cases.h', 'svt_digest(&image,n)', 'SVT_SRC', '', 'svt', 'SVT'),
     'interbank-oracle': ('interbank_oracle_cases.h', 'ibo_digest(&image,n)', 'IBO_SRC', '', 'ibo', 'IBO'),
     'standard-lead-oracle': ('standard_lead_oracle_cases.h', 'slo_digest(&image,n)', 'SLO_SRC', '', 'slo', 'SLO'),
     'lm-t6rupt': ('lm_t6rupt_cases.h', 'lm_t6_digest(&image,n)', 'LM_T6_SRC', '$(LM_T6_FLAGS)', 'lm_t6', 'LM_T6'),

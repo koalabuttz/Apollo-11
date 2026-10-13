@@ -44,7 +44,7 @@ A at +1 or -1 and skips `LXCH ITEMP3`; then `RELINT` and `TC L` (Z = L,
 Q = 2). Both refuse a return register that is not a plain TC to 0100..07777,
 an A that overflows on DEBIT's `AD ONE`, and flag numbers past 14459 or flag
 words outside ordinary erasable. LM entry kinds 7 and 8 (formerly repeats of
-B5OFF) are DEBIT and COMFLAG cases: 57 each, 107 of 114 reaching the
+B5OFF) are DEBIT and COMFLAG cases: 57 and 56, 107 of 113 reaching the
 continuation.
 
 ## Proof
@@ -55,13 +55,21 @@ the original ropes. There are two cases per genuine UPFLAG, DOWNFLAG and
 GENTRAN site of each mission, entered at the callee with Q at the operand word
 and random erasable, banks and interrupt inhibit. There are also 256 entry
 cases per mission over the other entries, half of the Q-free ones with Q below
-0100 and with free and busy delay slots. yaAGC stops where Z and FB first equal
-the native continuation. 1,640 cases reach it; the other two are GENTRAN
-blocks whose operands the step refuses. The inhibit flag and all 2048 erasable
+0100 and with free and busy delay slots; a random Q inside the file's
+fixed-fixed code moves to 04400-04777, since the oracle stops at the first Z
+equal to the native one and would stop mid-routine. yaAGC stops where Z and FB
+first equal the native continuation. 1,635 cases reach it; the others are
+refusals (GENTRAN blocks whose operands the step refuses, DEBIT and COMFLAG
+outside their domain). The inhibit flag and all 2048 erasable
 words are identical. The proof
 (`evidence/service-transfer/service-transfer-proof.json`) lists the hashes of
 every native source it depends on.
 
 `tests/test_service_transfer.c` checks the frozen digests, the refusals (UPFLAG
 and DOWNFLAG at Q 077 and at a fixed Q that is no site) and the table order:
-1,654 checks. The C64 diagnostic runs every fifth case and the refusals.
+1,654 checks. The C64 diagnostic runs every third case (frozen into
+`tests/service_transfer_c64_vectors.h`) and the cover rows
+`tools/lane_a_c64_cover.py service-transfer` picks
+(`tests/service_transfer_c64_rows.h`), so its rows take every gcov branch arc
+the host cases take in every linked source, plus the refusals; the image sits
+at $e000 under the KERNAL.

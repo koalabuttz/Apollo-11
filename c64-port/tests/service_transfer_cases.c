@@ -20,7 +20,9 @@ static const struct {uint16_t z;uint8_t bank,q,cm_only;} kinds[2][9]={
  {{07722u,0xffu,1,0},{07740u,0xffu,1,0},{03732u,0u,1,0},{03755u,0u,0,0},{03761u,0u,0,0},{03765u,0u,0,0},{05625u,0xffu,0,0},{05631u,0xffu,1,1},{05643u,0xffu,1,1}}};
 void svt_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint16_t n){uint32_t x=0x5e41u+n*2654435761u;uint16_t i,bank,fb,eb,m,k,row,phys,q,z;
  const agc_site_operand *t;const agc_word *callee;
- init();for(i=0;i<APOLLO_SHARED_WORDS;++i)s->words[i]=(uint16_t)(rnd(&x)&077777u);
+ init();
+ /* The image from a 16-bit xorshift (cheap on the 6502), the rest from the LCG. */
+ {uint16_t r=(uint16_t)(rnd(&x)|1u);for(i=0;i<APOLLO_SHARED_WORDS;++i){r^=(uint16_t)(r<<7);r^=(uint16_t)(r>>9);r^=(uint16_t)(r<<8);s->words[i]=(uint16_t)(r&077777u);}}
  m=svt_mission(n);fb=(uint16_t)(rnd(&x)%040u);eb=(uint16_t)(rnd(&x)%8u);*superbank=(rnd(&x)&1u)?0100u:0060u;*inhint=(uint16_t)(rnd(&x)&1u);
  s->words[0]=(agc_word)(rnd(&x)&0177777u);s->words[1]=(agc_word)(rnd(&x)&0177777u);
  if(n<2u*(lm_n+cm_n)){
@@ -34,6 +36,9 @@ void svt_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint
   k=(uint16_t)((n-2u*(lm_n+cm_n))/2u%9u);
   z=kinds[m][k].z;if(kinds[m][k].bank!=0xffu)fb=kinds[m][k].bank;
   if(kinds[m][k].q||(rnd(&x)&1u))q=(uint16_t)(02000u+rnd(&x)%(07776u-02000u));else q=(uint16_t)(rnd(&x)%0100u);
+  /* A return into the file's fixed-fixed code would stop the oracle mid-routine (it stops at the first Z
+   * equal to the native one): such Q move to 04400-04777. */
+  if(q>=05400u&&q<06000u)q=(uint16_t)(q-01000u);
   if(rnd(&x)&1u){uint16_t delayloc=m?01141u:01326u,count=m?3u:2u;for(i=0;i<=count;++i)if(rnd(&x)&1u)s->words[delayloc+i]=0;}
   s->words[070]=(agc_word)(rnd(&x)%(m?4u:3u));
  /* LM DEBIT: A at an ADRES word, a genuine site's (fixed) or an erasable one,
