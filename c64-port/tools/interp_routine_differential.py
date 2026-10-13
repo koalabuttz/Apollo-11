@@ -26,6 +26,7 @@ build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
 by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
 import collections
+import concurrent.futures
 import functools
 import hashlib
 import json
@@ -1786,6 +1787,11 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
                 by[visits[i]].append(i)
             limit = {}
+            # (The probes are independent compiles: the largest case of each
+            # set first, on every core.)
+            with concurrent.futures.ThreadPoolExecutor(os.cpu_count() or 1) as ex:
+                list(ex.map(lambda v: c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [by[v][-1]])], cases, rows)),
+                            list(by)))
             for v, ii in by.items():
                 def fit(i, v=v):
                     if (v, i) not in fits:
@@ -1939,8 +1945,14 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                 who = allw[:5]
                 sys.stderr.write('%s: cases %s chosen %s ok %s edits %s\n' % (
                     arc, who, [i in chosen for i in who], [i in okall for i in who], [len(cases[i]['edits']) for i in who]))
-        c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
-        extra = c64_row_cover.summary(arcs, picked)
+        if spec.get('c64_cover_partial'):
+            # (A partial file: the arcs only runs too long for one C64
+            # program take are listed in the proof instead.)
+            extra = c64_row_cover.summary(arcs, picked)
+            extra['c64_missed_arcs'] = c64_row_cover.missing(arcs, picked)
+        else:
+            c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
+            extra = c64_row_cover.summary(arcs, picked)
         write_cover_record(spec_id, spec, arcs, picked, full, [
             {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
              'routines_run': cases[i]['ran']} for i in sorted(picked) if cases[i].get('cut')])

@@ -114,6 +114,20 @@ A spec with `resume_keys` keeps the case's chosen NEWJOB after the operands are 
 - `flow_states`: before the cases are drawn, the oracle runs each entry's cases with `IRC_FLOW=1`, and the reference prints PUSHLOC, MODE, X1, X2, S1 and S2 at every NEWOPS. Each other routine then draws those registers from the values the file's own runs reach it with. `states` still wins, and a routine no entry reaches keeps random ones. A PUSHLOC off the pushdown list (an entry case's own random one) is not collected. Without this, a resume inside PARAM or GETX starts with a pushdown pointer or loop count the file never has there.
 - A starred store tail (`STOVL* COGA / MUTABLE,1`) that reads a fixed table now goes through the same `KX` check as a starred load (`indexed_fixed`). Before, the load half of the tail read zeros.
 
+## Additions from LUNAR_LANDING_GUIDANCE_EQUATIONS (Lane F, `lm-llge`)
+
+- `index_tcf`: `INDEX K; TCF T` and `INDEX K; BZMF T` into a table of the file (`INDEX WCHPHASE; TCF WHATGUID`), with the offsets C(K) can hold. Each offset is a `case` of a switch; any other value refuses.
+- `basic_fixed_index` also covers `EXTEND; INDEX K; INDEX T` with T a fixed table (CGCALC's `INDEX WCHPHASE; INDEX TARGTDEX; DCA TCGFBRAK`). The second INDEX adds the rope word T + C(K) for the listed offsets.
+- `index_erasable`: an `INDEX` whose sum leaves erasable memory refuses (`INDEX MPAC +3; CA 5` reads a power table).
+- `intpret_via`: subroutines the file `TC`s to that end in `TCF INTPRET` (INTPRETX). The interpretive code starts at the caller's Q, as after `TC INTPRET`.
+- `in_file_returns`: returns a callee makes past its caller's `TC` (ROOTPSRS's `INDEX RETROOT; TCF 2`). Each is a key of its own.
+- `returns` 0: a callee that never returns (`BANKCALL DISPEXIT +3` ends the job). Only its inline CADR belongs to the call.
+- `rtb` with `(call, 'stops')`: the call returns `RTB_OK` to go on and 2 when the run ends outside the file (`lm_normunit` at the 1302 alarm).
+- `TC A` (FASTCHNG's return) runs the word in A as an erasable program. `INCR BBANK` (TDISPSET's EBANK 5 to 7) is EB + 1, and past EB 7 it refuses.
+- `c64_cover_partial`: C64 rows take every arc they can. The arcs only runs too big for one diagnostic take are listed in the proof (`c64_missed_arcs`) instead of failing the freeze. Only for files that stay partial.
+- The freeze's C64 size probes run in parallel (one compile per core).
+- LLGE uses `index_carry16` (below) for `INDEX WCHPHASE` with WCHPHASE -1.
+
 ## Additions from FINDCDUW (lane A2)
 
 - `basic_fixed_index` also covers `INDEX K; MP T`.

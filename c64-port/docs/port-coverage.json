@@ -8703,6 +8703,24 @@
           ],
           "scope": "STARTP66 guidance display END idle hardware clock IRQ1 RODTASK and second P66 iteration with continuous canonical image; source one-shot RODTASK does not requeue itself.",
           "verification": "docs/P66-APPLICATION-RECURRENCE.md"
+        },
+        {
+          "native_files": [
+            "src/lm_llge.c",
+            "src/lm_normunit.c",
+            "src/rtb_angles.c",
+            "src/rtb_vector.c",
+            "src/rtb_unit.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "976 of the 991 words (31,2420-3760, 32,3263-3537, 11,2275-2375, 20,2115-2122, 22,3647-3660): the P63-P67 guidance pass (LUNLAND, ?GUIDSUB, GUIDSUB and the phase tables), GUILDEN, STARTP64-STARTP67, TTFINCR, REDESIG, CALCRGVG, RGVGCALC, TTF/8CL, QUADGUID, AFCCALC, CGCALC, EXTLOGIC, RATESTOP, the guidance displays, ROOTPSRS, INTPRETX, TDISPSET, FASTCHNG, RODTASK, RODCOMP, VHORCOMP, PITFALL, REDESMON and DESCBITS, as 258 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 15 channel words (READ CHAN30, RAND/READ CHAN31, WOR CHAN13), which wait for an I/O channel model.",
+          "verification": "docs/LM-LLGE.md"
         }
       ]
     },
