@@ -6,7 +6,7 @@
  "aggregates": {
   "cm-fresh-start": {
    "record": "evidence/cm-fresh-start/cm-fresh-start-proof.json",
-   "sha256": "a1319ba483fa4e050aeb8a4750338c6a893600cc141df8dd55ab106de403d867",
+   "sha256": "f4f49842d8c79fdb659ce8f631d6a4368c0175136aaa118f8d2daf2805179414",
    "cases": 4096,
    "snapshot_sha256": "f3e3a6b6126d5e4d9b82e25dd15d5746af87ab97063cbcb33d3368e9bfab346d",
    "rerun_snapshot_sha256": "f3e3a6b6126d5e4d9b82e25dd15d5746af87ab97063cbcb33d3368e9bfab346d",
@@ -14,7 +14,7 @@
   },
   "cm-v37": {
    "record": "evidence/cm-v37/cm-v37-proof.json",
-   "sha256": "c61d6ab3d372b66c99ad03cba0ccdd98a26194506de88c4298eb9b2734ec9c73",
+   "sha256": "1350bc725e33299690ae98aee3ac02d306c565f5253b96e80f17f88dccf48205",
    "cases": 4096,
    "snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",
    "rerun_snapshot_sha256": "b72b72f5af5582bfbcef90f6e2a075baeb69ae87014cc9e2e1cd76091f33eea3",

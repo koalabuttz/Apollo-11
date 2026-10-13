@@ -38,12 +38,22 @@ static agc_word indexed(agc_word word,agc_register idx){
  return (agc_word)(agc_correct(agc_add_register(agc_extend((agc_word)(agc_correct(idx)&077777u)),agc_extend(word)))&077777u);
 }
 #define TS(a) do{if(ai_ts(s,(a)))return EXEC_OUT_OF_SCOPE;}while(0)
-/* TS after a load from memory or a channel (CA, CS, DCA, DXCH, XCH, CH_*),
- * then only MASKs and other such TSs: A holds no overflow, so TS never skips. */
+/* TS when A cannot hold overflow, so TS never skips: after a load from memory
+ * or a channel (CA, CS, DCA, DXCH, XCH, CH_*) followed only by MASKs and other
+ * such TSs, or when A is a nonnegative value below 040000 built from constants
+ * (CAF, CS of a negative constant, MASK, ADF of positive constants). */
 #define TSU(a) (void)ai_ts(s,(a))
 /* CAF k; TS a (a TSU: CAF loads a constant). */
 static void cafts(apollo_overlay_state *s,agc_word k,unsigned a){ai_caf(s,k);(void)ai_ts(s,a);}
 #define CAFTS(k,a) cafts(s,(k),(a))
+/* AD k; TS a and MASK a; TS a (TSUs). */
+static void adfts(apollo_overlay_state *s,agc_word k,unsigned a){ai_adf(s,k);(void)ai_ts(s,a);}
+#define ADFTS(k,a) adfts(s,(k),(a))
+static void maskts(apollo_overlay_state *s,unsigned a){ai_mask(s,a);(void)ai_ts(s,a);}
+#define MASKTS(a) maskts(s,(a))
+/* TS of A into each of a list of words (TSUs). */
+static void tsus(apollo_overlay_state *s,const uint16_t *a,uint8_t n){uint8_t i;for(i=0;i<n;++i)(void)ai_ts(s,a[i]);}
+#define TSUS(...) do{static const uint16_t a_[]={__VA_ARGS__};tsus(s,a_,(uint8_t)(sizeof a_/sizeof a_[0]));}while(0)
 /* DCA NEG0; DXCH -PHASEn. */
 static void neg0x(apollo_overlay_state *s,unsigned a){ai_dcaf(s,neg0);ai_dxch(s,a);}
 #define NEG0(a) neg0x(s,(a))
@@ -105,17 +115,16 @@ L2447: /* SLAP1 */
  ai_tc(s,02451u);goto L3107;                                /* 2450 TC STARTSUB */
 L2451: /* STARTSW TCF SKIPSIM; STARTSIM 2452-2455 runs only if this word is patched */
  ai_ca(s,01036u); ai_maskf(s,LM_FRESH_K_BITS4_6); ai_adf(s,LM_FRESH_K_BIT15);/* 2456-2460 */
- TS(01036u); CAFTS(LM_FRESH_K_BIT12,0333u); ai_caf(s,LM_FRESH_K_ZERO);/* 2461-2464 */
- TSU(01365u); TSU(0375u); TSU(0376u); TSU(0377u); TSU(0320u); ai_csf(s,LM_FRESH_K_PRIO12);/* 2465-2472 */
+ TS(01036u); CAFTS(LM_FRESH_K_BIT12,0333u); /* 2461-2464 */
+ CAFTS(LM_FRESH_K_ZERO,01365u); TSUS(0375u,0376u,0377u,0320u); ai_csf(s,LM_FRESH_K_PRIO12);/* 2465-2472 */
  TSU(01313u);                                               /* 2473 */
 L2474: /* DOFSTART */
  ai_caf(s,LM_FRESH_K_BIT14); CH_WRITE(011u); ai_csf(s,LM_FRESH_K_ZERO);/* 2474-2477 */
  TSU(055u);                                                 /* 2500 */
 L2501: /* DOFSTRT1 */
- CAFTS(LM_FRESH_K_FOUR,01273u); ai_caf(s,LM_FRESH_K_PRIO30);/* 2501-2503 */
- TSU(0366u); CAFTS(LM_FRESH_K_ZERO,01246u); TSU(0371u);/* 2504-2507 */
- TSU(01072u); TSU(01262u); TSU(01263u); TSU(01276u); TSU(01360u);/* 2510-2514 */
- TSU(01362u); TSU(0332u); TSU(01324u); TSU(01501u); CH_WRITE(05u);/* 2515-2522 */
+ CAFTS(LM_FRESH_K_FOUR,01273u); /* 2501-2503 */
+ CAFTS(LM_FRESH_K_PRIO30,0366u); CAFTS(LM_FRESH_K_ZERO,01246u); TSUS(0371u,01072u,01262u,01263u,01276u,01360u,01362u,0332u,01324u,01501u);/* 2504-2514 */
+ CH_WRITE(05u);/* 2515-2522 */
  CH_WRITE(06u); CH_WRITE(012u); CH_WRITE(013u); CH_WRITE(014u);/* 2524-2532 */
  ai_cs(s,01036u); ai_maskf(s,LM_FRESH_K_BITS4_6);          /* 2533-2534 */
  c=ai_ccs(s,A);                                             /* 2535 */
@@ -125,22 +134,22 @@ L2501: /* DOFSTRT1 */
 L2542:
  ai_tc(s,02543u);goto L2643;                                /* TC MR.KLEAN */
 L2543:
- ai_csf(s,LM_FRESH_K_ZERO); TSU(01011u); ai_caf(s,LM_FRESH_K_IM30INIF);/* 2543-2545 */
- TSU(01302u); CAFTS(LM_FRESH_K_MAXDB,01346u); ai_caf(s,LM_FRESH_K_FOUR);/* 2546-2551 */
- TSU(01325u); CAFTS(LM_FRESH_K_BOOLSTRT,0111u); ai_caf(s,LM_FRESH_K_EBANK6);/* 2552-2555 */
- TSU(03u); CAFTS(LM_FRESH_K_STIKSTRT,01444u); ai_caf(s,LM_FRESH_K_RATESTRT);/* 2556-2561 */
- TSU(01476u); CAFTS(LM_FRESH_K_FULLAPS,01400u); ai_caf(s,LM_FRESH_K_77001OCT);/* 2562-2565 */
- TSU(01403u); TSU(01406u); CAFTS(LM_FRESH_K_60DEC,01405u);/* 2566-2571 */
- TSU(01410u); CAFTS(LM_FRESH_K_ZERO,01407u); ai_caf(s,LM_FRESH_K_TEN);/* 2572-2575 */
- TSU(01404u); CAFTS(LM_FRESH_K_BIT8,01411u); ai_caf(s,LM_FRESH_K_IM33INIT);/* 2576-2601 */
- ai_adf(s,LM_FRESH_K_BIT6); TS(01303u); ai_dcaf(s,lm_fresh_k_swinit_);/* 2602-2605 */
+ ai_csf(s,LM_FRESH_K_ZERO); TSU(01011u); /* 2543-2545 */
+ CAFTS(LM_FRESH_K_IM30INIF,01302u); CAFTS(LM_FRESH_K_MAXDB,01346u); /* 2546-2551 */
+ CAFTS(LM_FRESH_K_FOUR,01325u); CAFTS(LM_FRESH_K_BOOLSTRT,0111u); /* 2552-2555 */
+ CAFTS(LM_FRESH_K_EBANK6,03u); CAFTS(LM_FRESH_K_STIKSTRT,01444u); /* 2556-2561 */
+ CAFTS(LM_FRESH_K_RATESTRT,01476u); CAFTS(LM_FRESH_K_FULLAPS,01400u); /* 2562-2565 */
+ CAFTS(LM_FRESH_K_77001OCT,01403u); TSU(01406u); CAFTS(LM_FRESH_K_60DEC,01405u);/* 2566-2571 */
+ TSU(01410u); CAFTS(LM_FRESH_K_ZERO,01407u); /* 2572-2575 */
+ CAFTS(LM_FRESH_K_TEN,01404u); CAFTS(LM_FRESH_K_BIT8,01411u); ai_caf(s,LM_FRESH_K_IM33INIT);/* 2576-2601 */
+ ADFTS(LM_FRESH_K_BIT6,01303u); ai_dcaf(s,lm_fresh_k_swinit_);/* 2602-2605 */
  ai_dxch(s,074u); CAFTS(LM_FRESH_K_SWINIT_P2,076u); ai_caf(s,LM_FRESH_K_REFSMBIT);/* 2606-2611 */
- ai_mask(s,077u); ai_adf(s,LM_FRESH_K_SWINIT_P3); TS(077u); ai_dcaf(s,lm_fresh_k_swinit_p4_);/* 2612-2616 */
+ ai_mask(s,077u); ADFTS(LM_FRESH_K_SWINIT_P3,077u); ai_dcaf(s,lm_fresh_k_swinit_p4_);/* 2612-2616 */
  ai_dxch(s,0100u); ai_dcaf(s,lm_fresh_k_swinit_p6_); ai_dxch(s,0102u);/* 2617-2622 */
  ai_caf(s,LM_FRESH_K_SURFFBIT); ai_adf(s,LM_FRESH_K_CMOONBIT);/* 2623-2624 */
  ai_adf(s,LM_FRESH_K_LMOONBIT); ai_mask(s,0104u); ai_adf(s,LM_FRESH_K_SWINIT_P8);/* 2625-2627 */
- TS(0104u); CAFTS(LM_FRESH_K_SWINIT_P9,0105u); ai_caf(s,LM_FRESH_K_APSFLBIT);/* 2630-2633 */
- ai_mask(s,0106u); ai_adf(s,LM_FRESH_K_SWINIT_P10); TS(0106u);/* 2634-2636 */
+ TSU(0104u); CAFTS(LM_FRESH_K_SWINIT_P9,0105u); ai_caf(s,LM_FRESH_K_APSFLBIT);/* 2630-2633 */
+ ai_mask(s,0106u); ADFTS(LM_FRESH_K_SWINIT_P10,0106u);/* 2634-2636 */
  CAFTS(LM_FRESH_K_SWINIT_P11,0107u);               /* 2637-2640 */
 L2641: /* ENDRSTRT */
  OUT(02642u,POSTJUMP);                                      /* CADR DUMMYJOB +2 */
@@ -177,10 +186,10 @@ L2704:
 L2730: /* DORSTART */
  ai_tc(s,02731u);goto L3107;                                /* TC STARTSUB */
 L2731: /* SETINFL */
- ai_csf(s,LM_FRESH_K_INTFLBIT); ai_mask(s,0106u); TSU(0106u);/* 2731-2733 */
+ ai_csf(s,LM_FRESH_K_INTFLBIT); MASKTS(0106u);/* 2731-2733 */
  ai_caf(s,LM_FRESH_K_9_6_4); ai_mask(s,01036u); ai_adf(s,LM_FRESH_K_BIT15);/* 2734-2736 */
  ai_xch(s,01036u); ai_caf(s,LM_FRESH_K_IFAILINH); ai_mask(s,01302u);/* 2737-2741 */
- ai_adf(s,LM_FRESH_K_IM30INIR); TS(01302u); ai_ca(s,01324u);/* 2742-2744 */
+ ADFTS(LM_FRESH_K_IM30INIR,01302u); ai_ca(s,01324u);/* 2742-2744 */
  TSU(0332u); ai_caf(s,LM_FRESH_K_BIT4); CH_WOR(014u); ai_cs(s,0101u);/* 2745-2751 */
  ai_maskf(s,LM_FRESH_K_ENGONBIT);                          /* 2752 */
  c=ai_ccs(s,A);                                             /* 2753 */
@@ -199,7 +208,7 @@ L2770: /* GOPROG2 */
 L2771: /* GOPROG2A */
  ai_tc(s,02772u);goto L3070;                                /* TC LIGHTSET */
 L2772:
- ai_csf(s,LM_FRESH_K_RSFLGBTS); ai_mask(s,0106u); TSU(0106u);/* 2772-2774 */
+ ai_csf(s,LM_FRESH_K_RSFLGBTS); MASKTS(0106u);/* 2772-2774 */
 L2775: /* GOPROG3 */
  ai_caf(s,LM_FRESH_K_NUMGRPS);
 L2776: /* PCLOOP: each restart group's phase and its complement must agree */
@@ -216,8 +225,8 @@ L2776: /* PCLOOP: each restart group's phase and its complement must agree */
  OUT(03015u,MMDSPLAY);                                      /* 3014 */
 L3015:
  x->control.interrupt_enabled=0u; ai_csf(s,LM_FRESH_K_DIDFLBIT);/* 3015-3016 */
- ai_mask(s,075u); TSU(075u); ai_csf(s,LM_FRESH_K_RODFLBIT); ai_mask(s,075u);/* 3017-3022 */
- TSU(075u); ai_csf(s,LM_FRESH_K_P21FLBIT); ai_mask(s,074u); TSU(074u);/* 3023-3026 */
+ MASKTS(075u); ai_csf(s,LM_FRESH_K_RODFLBIT); ai_mask(s,075u);/* 3017-3022 */
+ TSU(075u); ai_csf(s,LM_FRESH_K_P21FLBIT); MASKTS(074u);/* 3023-3026 */
  ai_caf(s,LM_FRESH_K_NUMGRPS);                             /* 3027 */
 L3030: /* NXTRST */
  TS(0161u);ai_ad(s,A);                                      /* 3030-3031 TS MPAC +5; DOUBLE */
@@ -262,32 +271,31 @@ L3107: /* STARTSUB */
  CH_RAND(033u); ai_adf(s,LM_FRESH_K_RMODINIT); TS(0110u);  /* 3113-3115 */
 L3116: /* STARTSB1 */
  CAFTS(LM_FRESH_K_POSMAX,026u); ai_adf(s,LM_FRESH_K_MINUS2);/* 3116-3120 */
- TS(027u); ai_adf(s,LM_FRESH_K_NEGONE); TS(030u); ai_caf(s,LM_FRESH_K_EBANK6);/* 3121-3124 */
- TSU(03u); ai_csf(s,LM_FRESH_K_BIT13); ai_mask(s,01273u); TSU(01273u);/* 3125-3130 */
- CAFTS(LM_FRESH_K_POSMAX,01466u); CH_WAND(013u); ai_caf(s,LM_FRESH_K_ZERO);/* 3131-3135 */
- TSU(01465u); TSU(01472u); ai_csf(s,LM_FRESH_K_ACCSOKAY); ai_mask(s,0111u);/* 3136-3141 */
+ TS(027u); ai_adf(s,LM_FRESH_K_NEGONE); TS(030u); /* 3121-3124 */
+ CAFTS(LM_FRESH_K_EBANK6,03u); ai_csf(s,LM_FRESH_K_BIT13); MASKTS(01273u);/* 3125-3130 */
+ CAFTS(LM_FRESH_K_POSMAX,01466u); CH_WAND(013u); /* 3131-3135 */
+ CAFTS(LM_FRESH_K_ZERO,01465u); TSU(01472u); ai_csf(s,LM_FRESH_K_ACCSOKAY); ai_mask(s,0111u);/* 3136-3141 */
  TSU(0111u); ai_dcaf(s,lm_fresh_k_idleadr_); ai_dxch(s,01274u);/* 3142-3145 */
 L3146: /* STARTSB2 */
  ai_caf(s,LM_FRESH_K_OCT30001); CH_WAND(011u); ai_csf(s,LM_FRESH_K_READRBIT);/* 3146-3151 */
- ai_mask(s,077u); TSU(077u); ai_cs(s,077u); ai_maskf(s,LM_FRESH_K_NR29FBIT);/* 3152-3155 */
+ MASKTS(077u); ai_cs(s,077u); ai_maskf(s,LM_FRESH_K_NR29FBIT);/* 3152-3155 */
  if(!ai_bzf(s))ai_caf(s,LM_FRESH_K_BIT10);                  /* 3156-3160 BZF +2 */
  ai_adf(s,LM_FRESH_K_OCT32001); ai_cs(s,A); ai_mask(s,0110u);/* 3161-3163 */
  TSU(0110u); ai_caf(s,LM_FRESH_K_OCT27470); CH_WAND(012u); ai_csf(s,LM_FRESH_K_NORRMBIT);/* 3164-3170 */
- ai_mask(s,0101u); TSU(0101u); ai_csf(s,LM_FRESH_K_R77FLBIT);/* 3171-3173 */
- ai_mask(s,0101u); TSU(0101u); ai_caf(s,LM_FRESH_K_OCT74160);/* 3174-3176 */
+ MASKTS(0101u); ai_csf(s,LM_FRESH_K_R77FLBIT);/* 3171-3173 */
+ MASKTS(0101u); ai_caf(s,LM_FRESH_K_OCT74160);/* 3174-3176 */
  CH_WAND(013u); ai_caf(s,LM_FRESH_K_BIT12); CH_WOR(013u); ai_caf(s,LM_FRESH_K_BIT6);/* 3200-3204 */
- CH_WAND(014u); CAFTS(LM_FRESH_K_STARTEB,03u); ai_caf(s,LM_FRESH_K_NEG1_2);/* 3206-3211 */
- TSU(01407u); TSU(01406u); TSU(01405u); TSU(01404u); TSU(01403u);/* 3212-3216 */
- TSU(01402u); TSU(01401u); TSU(01400u); ai_csf(s,LM_FRESH_K_ENDTASK);/* 3217-3222 */
- TSU(01410u); TSU(01412u); TSU(01414u); TSU(01416u); TSU(01420u);/* 3223-3227 */
- TSU(01422u); TSU(01424u); TSU(01426u); TSU(01430u); ai_csf(s,LM_FRESH_K_ENDTASK_P1);/* 3230-3234 */
- TSU(01411u); TSU(01413u); TSU(01415u); TSU(01417u); TSU(01421u);/* 3235-3241 */
- TSU(01423u); TSU(01425u); TSU(01427u); TSU(01431u); ai_csf(s,LM_FRESH_K_ZERO);/* 3242-3246 */
- TSU(0167u); TSU(0203u); TSU(0217u); TSU(0233u); TSU(0247u); TSU(0263u);/* 3247-3254 */
- TSU(0277u); TSU(0313u); TSU(01313u); TSU(067u); ai_caf(s,LM_FRESH_K_VAC1ADRC);/* 3255-3261 */
- TSU(0400u); ai_adf(s,LM_FRESH_K_LTHVACA); TS(0454u); ai_adf(s,LM_FRESH_K_LTHVACA);/* 3262-3265 */
- TS(0530u); ai_adf(s,LM_FRESH_K_LTHVACA); TS(0604u); ai_adf(s,LM_FRESH_K_LTHVACA);/* 3266-3271 */
- TS(0660u); ai_caf(s,LM_FRESH_K_TEN);                      /* 3272-3273 */
+ CH_WAND(014u); CAFTS(LM_FRESH_K_STARTEB,03u); /* 3206-3211 */
+ CAFTS(LM_FRESH_K_NEG1_2,01407u); TSUS(01406u,01405u,01404u,01403u,01402u,01401u,01400u); /* 3212-3216 */
+ ai_csf(s,LM_FRESH_K_ENDTASK);/* 3217-3222 */
+ TSUS(01410u,01412u,01414u,01416u,01420u,01422u,01424u,01426u,01430u); /* 3223-3227 */
+ ai_csf(s,LM_FRESH_K_ENDTASK_P1);/* 3230-3234 */
+ TSUS(01411u,01413u,01415u,01417u,01421u,01423u,01425u,01427u,01431u); /* 3235-3241 */
+ ai_csf(s,LM_FRESH_K_ZERO);/* 3242-3246 */
+ TSUS(0167u,0203u,0217u,0233u,0247u,0263u,0277u,0313u,01313u,067u); /* 3247-3261 */
+ CAFTS(LM_FRESH_K_VAC1ADRC,0400u); ADFTS(LM_FRESH_K_LTHVACA,0454u); ai_adf(s,LM_FRESH_K_LTHVACA);/* 3262-3265 */
+ TSU(0530u); ADFTS(LM_FRESH_K_LTHVACA,0604u); ai_adf(s,LM_FRESH_K_LTHVACA);/* 3266-3271 */
+ TSU(0660u); ai_caf(s,LM_FRESH_K_TEN);                      /* 3272-3273 */
 L3274: /* DSPOFF */
  TS(0154u);ai_csf(s,LM_FRESH_K_BIT12);                      /* 3274-3275 */
  ins=indexed(055023u,agc_extend(ai_word(s,0154u)));         /* 3276-3277 INDEX MPAC; TS DSPTAB */
@@ -302,7 +310,7 @@ L3274: /* DSPOFF */
  TS(01044u); TS(01304u); TS(01305u); TS(01306u); TS(01307u);/* 3322-3326 */
  TS(01314u); TS(0100u); CAFTS(LM_FRESH_K_NOUTCON,01016u);/* 3327-3332 */
  ai_csf(s,LM_FRESH_K_ONE); TSU(01100u); ai_caf(s,LM_FRESH_K_BIT6);/* 3333-3335 */
- ai_mask(s,01303u); ai_adf(s,LM_FRESH_K_IM33INIT); TS(01303u);/* 3336-3340 */
+ ai_mask(s,01303u); ADFTS(LM_FRESH_K_IM33INIT,01303u);/* 3336-3340 */
  CAFTS(LM_FRESH_K_LESCHK,01361u); ai_csf(s,LM_FRESH_K_VD1);/* 3341-3343 */
  TSU(0777u);                                                /* 3344 */
  goto retq;                                                 /* 3345 TC Q */
