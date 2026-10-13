@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -7738,8 +7738,70 @@
       "sha256": "92061c017abffeac794f349bee080dcb01186b1188d95679ace07fecf6bc85de",
       "bytes": 4407,
       "lines": 243,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p12.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "All 183 words (30,2061-2320 and 23,2432-2460): P12LM, P12LMB, NEWLOAD, P12RET, YAWDUN, P12INIT, COMMINIT and GUIDINIT, as 91 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-P12.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= DVCNTR, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 30 or 23) or with Z at any of its basic ones (FB 30 or 23): P12LM, P12LMB, P12RET, P12INIT, COMMINIT, GUIDINIT, the BANKCALL, PHASCHNG and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1, S2 and TEMPR60 caller returns outside the file, the flag words, and any values of the ascent erasables; 0 of 46,592 random cases refused.",
+        "external_continuations": [
+          "PHASCHNG with its inline OCT",
+          "BANKCALL with its inline CADR (R02BOTH, GOFLASH with its three returns)",
+          "IBNKCALL PFLITEDB",
+          "UPFLAG and DOWNFLAG with their inline ADRES",
+          "CLRADMOD",
+          "GOTOPOOH",
+          "POSTJUMP BURNBABY (no return)",
+          "Interpretive CALL of LEMPREC, MUNGRAV, YCOMP and RP-TO-R",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "The caller's return through QPRET or TEMPR60",
+          "CHANG2 when a DANZIG finds a job waiting"
+        ],
+        "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively.",
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p12/lm-p12-source-map.json",
+            "sha256": "6fcb22e91a857ac526b1538e4ca17c821cb7ac7146429e6d82c3fe0682a8ae18"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p12/lm-p12-proof.json",
+            "sha256": "7a5b7f445ccd12e9724383c9895091738919332d80ca9faff95d16c9c260fb34"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p12/lm-p12-host.log",
+            "sha256": "1124d6b9be0bdb47cad8b859f089e81a2a1e8e9a4bfb146830cd7e27c5bab405"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p12/lm-p12-vice.log",
+            "sha256": "c1b81b2ffff3f54d4b2b9aceb2fb9d2d131f1167d3a736b1ab6e0e3ef8cb454a",
+            "vice_targets": {
+              "vice-lm-p12": 112
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p12/lm-p12-c64-cover.json",
+            "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P20-P25.agc",
@@ -8003,8 +8065,24 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p70_p71.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c",
+            "src/rtb_angles.c"
+          ],
+          "scope": "290 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 88 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for the channel model.",
+          "verification": "docs/LM-P70-P71.md"
+        }
+      ]
     },
     {
       "path": "Luminary099/P76.agc",
@@ -8715,8 +8793,65 @@
       "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
       "bytes": 4925,
       "lines": 156,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_r63.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_hardware_divide.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "All 65 words (26,2022-2122): V89CALL, V89RECL, ALINEX, V89CALL1 and ALINEZ, as 30 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-R63.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB of the file's EBANK= RONE, entered at NEWOPS with LOC at any of the file's interpretive routines (BANKSET bank 26) or with Z at any of its basic ones (FB 26): V89CALL, V89RECL, the BANKCALL and GOFLASH returns (terminate, proceed, data in) and every word after a DANZIG; FIXLOC a VAC area with PUSHLOC within it, MODE, OVFIND, NEWJOB +0 or positive (CHANG2), Q, QPRET, S1 and S2 caller returns outside the file, and any values of the R63 erasables (OPTIONX, TSTART82, TDEC1, RONE, RATT, POINTVSM, SCAXIS, CPHI); 0 of 15,360 random cases refused.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (R02BOTH, GOFLASH with its three returns, BALLANGS, R60LEM)",
+          "DOWNFLAG with its inline ADRES",
+          "ENDEXT and ENDMARK",
+          "Interpretive CALL of CSMCONIC, LEMCONIC and VECPOINT",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c); RTB NORMUNIT (no native body yet: the run ends there)",
+          "CHANG2 when a DANZIG finds a job waiting"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-r63/lm-r63-source-map.json",
+            "sha256": "e2dc71348cfe2d680fc352a536722fbd3cac661f48190d583d00f455f556c680"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-r63/lm-r63-proof.json",
+            "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-r63/lm-r63-host.log",
+            "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-r63/lm-r63-vice.log",
+            "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+            "vice_targets": {
+              "vice-lm-r63": 34
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-r63/lm-r63-c64-cover.json",
+            "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+          }
+        },
+        "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively."
+      }
     },
     {
       "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
@@ -9134,7 +9269,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,208 of 40,320 random cases. ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
+        "supported_domain": "basic keys at Z under their bank's FB, interpretive keys at LOC with Z at NEWOPS and BANKSET the key's bank, any EBANK, with the lm_sv_io record (channels 11, 12, 32 and 33); DANZIG with NEWJOB 0 dispatches as the interpreter does, NEWJOB positive goes to CHANG2; refused with the image unchanged (undo image restored): another FB or BANKSET, a work area off the VAC areas, PUSHLOC outside it or EDOP set, NEWJOB negative, a fixed operand outside the constants the orders name, an erasable operand running past erasable into fixed memory, an INDEX value no producer stores (ITEMP1 in COPYCYC, A at ALTCHK, FIXLOC at VELUPDAT, VSELECT*, BUF in GNURVST, Q in SETPOS), TC Q, TC A or TC LRADRET to a word that is not a TC into fixed memory, LOTHRUST with PHASE4 negative, a computed transfer, TS overflow skip or CCS outcome onto a word that runs only after its EXTEND or INDEX, or no io record or undo image; 5,223 of 40,336 cases (40,320 random, and 16 continuations that run a random case on past the end of a C64 segment group, tools/lm_servicer_chains.py). ABVAL's, ABS's and UNIT's alarm, READACCS's CCS of +0, the negative and -0 CCS outcomes of MASK results, ITEMP1 and VSELECT are translated but no admitted input reaches them",
         "external_continuations": [
           "PHASCHNG",
           "2PHSCHNG",
@@ -9175,22 +9310,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-servicer/lm-servicer-proof.json",
-            "sha256": "209d981d6cf11c848be8819d87bb7278b3c18d3ef4d0fef6859865e6b227e3c9"
+            "sha256": "fe4d8d405173608cbb0f49525a458d657453cf2d046b5d5c0ab8daf1c5962d90"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-servicer/lm-servicer-host.log",
-            "sha256": "a610e10d31c2fdce194749d625b386be3137246af3b670f585c67dae553fd1bb"
+            "sha256": "53b016ac47e24ca7299bb5e0c5790094b907ffb0f3c5c55f0059acb14dfd1231"
           },
           "c64_execution_results": {
             "path": "evidence/lm-servicer/lm-servicer-vice.log",
-            "sha256": "550de071fcb2f3d0bee5f36d8277bce37a907b38696add8b5538130a2dc56101",
+            "sha256": "09018a231f0466669b859d84e33f972b255d8a3e184f6d783bae8ac8bc8cd86b",
             "vice_targets": {
-              "vice-lm-servicer": 459
+              "vice-lm-servicer": 464
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-servicer/lm-servicer-c64-cover.json",
-            "sha256": "6c5c75e7a4d12c3782c0b71a58a2993d4276ab838c478ac6f375bbeb78b135a6"
+            "sha256": "b2549f7faea9b83d20db40b107f9103dda47049e76a6f26ac71a557aa8ee2230"
           }
         }
       }

@@ -1068,11 +1068,37 @@ class Compiler:
                 return st + ['ai_%s(s,%s);' % (fn, eras(a, fn))], [nxt]
             if op in (3, 4, 6, 7):
                 fn = {3: 'ca', 4: 'cs', 6: 'ad', 7: 'mask'}[op]
+                if k12 >= 0o2000 and index is not None:
+                    # INDEX K; CAF T (ABRTJASK's INDEX Q; CAF MODE70): the
+                    # spec's basic_fixed_index lists the offsets K can hold;
+                    # any other effective address is refused.
+                    offs = self.spec.get('basic_fixed_index', {}).get(ln.operand.split()[0])
+                    if offs is None:
+                        raise CompileError('INDEX on a fixed operand at %s (no basic_fixed_index)' % self.where(p))
+                    self._ix = (w, index, 0o7777)
+                    cases = []
+                    for off in offs:
+                        fp = self.phys_of(k12 + off, bank)
+                        self.basic_fixed.add(fp)
+                        cases.append('case 0%04ou:ai_%sf(s,0%05o);break;' % (k12 + off, fn, self.L.word(fp)))
+                    return st + ['switch(iw&07777u){%sdefault:return EXEC_OUT_OF_SCOPE;}' % ''.join(cases)], [nxt]
                 if k12 >= 0o2000:
                     fp = fixed(k12)
                     return st + ['ai_%sf(s,0%05o);' % (fn, self.L.word(fp))], [nxt]
                 return st + ['ai_%s(s,%s);' % (fn, eras(k12, fn))], [nxt]
             if op == 5:
+                if qc == 0 and k10 == 0o17 and index is None:
+                    # RESUME (INDEX 17): the next instruction is BRUPT's,
+                    # run in place (yaAGC's substitute instruction); here a
+                    # TCF, as CONTABRT stores (any other word is refused).
+                    return st + ['{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
+                                 'W[5]=(agc_word)(b&07777u);return EXEC_OK;}'], []
+                if qc == 1 and k10 - 1 == 5 and index is None:
+                    # DTCB (DXCH Z): Z,BB <-> A,L; BB sets FB and EB. The
+                    # run loop goes on from the new Z under the new FB.
+                    return st + ['{agc_word z=agc_correct(W[0]),bb=agc_correct(W[1]);W[0]=0%04o;W[1]=agc_extend(W[6]);'
+                                 'W[6]=(agc_word)(bb&076007u);W[3]=(agc_word)((bb&7u)<<8);W[4]=(agc_word)(bb&076000u);'
+                                 'W[5]=z;return EXEC_OK;}' % (ln.loc + 1)], []
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
                 if qc == 2:

@@ -1418,6 +1418,9 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
     extra = {}
     if cover:
         picked = [i for m, mask, pick in groups for i in pick]
+        # Cases that wait for an I/O channel are listed, not compared, on
+        # the host too: their arcs are no C64 row's to take.
+        arcs = {i: a for i, a in arcs.items() if i not in chan}
         if os.environ.get('IRC_C64_DEBUG'):
             for arc in sorted(c64_row_cover.missing(arcs, picked))[:3]:
                 allw = [i for i in arcs if arc in arcs[i]]
