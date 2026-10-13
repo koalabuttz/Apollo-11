@@ -17,7 +17,8 @@ than 3) must equal the oracle run with the same chained-step stops (the
 keys the part leaves out), and the part-0 replay of the part. The C64 rows
 (tests/lm_imu_performance_c64_vectors.h) are the rows covering every edge
 the host stream takes and every key (tools/lm_imu_performance_cover.c) and
-every STRIDE-th case in the first part that runs it;
+every STRIDE-th case in the first part that runs it, and the EXTRA_ROWS
+of tools/lm_imu_performance_cover.py;
 tools/lm_imu_performance_cover.py checks their gcov against the host's.
 """
 import collections
@@ -28,6 +29,8 @@ import re
 import subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(R / 'tools'))
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
@@ -156,6 +159,8 @@ def main():
         part = next((p for p in range(1, PARTS + 1) if part_kinds[p][i] != 3), None)
         if part:
             chosen.add((part, i))
+    from lm_imu_performance_cover import EXTRA_ROWS
+    chosen |= set(EXTRA_ROWS)
     chosen = sorted(chosen)
     assert all(part_kinds[p][i] != 3 for p, i in chosen)
     (B / 'lm-imu-performance-c64-rows.txt').write_text(''.join(f'{p} {i}\n' for p, i in chosen))

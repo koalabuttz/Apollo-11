@@ -5,7 +5,7 @@
 SBA_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 SBA_SRC = src/lm_sband_antenna.c src/cm_sband_antenna.c tests/sband_antenna_target.c $(SBA_COMMON)
 SBA_HDR = include/lm_sband_antenna.h include/cm_sband_antenna.h tests/interp_case.h tests/sband_antenna_vectors.h tests/sband_antenna_c64_vectors.h
-SBA_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+SBA_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS
 .PHONY: test-sband-antenna sanitize-sband-antenna c64-sband-antenna vice-sband-antenna sband-antenna-differential
 all: build/test-sband-antenna
 test: test-sband-antenna
@@ -32,4 +32,4 @@ c64-sband-antenna: $(SBA_C64_PRGS)
 build/sband-antenna-%.prg: $(SBA_SRC) platform/c64/sband_antenna_diagnostic.c tools/mk/sband-antenna.groups $(SBA_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(SBA_MOS_FLAGS) $(SBAND_ANTENNA_GROUP_FLAGS_$*) -Wl,-Map,build/sband-antenna-$*.map $(SBA_C64_$(SBAND_ANTENNA_GROUP_MISSION_$*)) $(SBA_C64_COMMON) platform/c64/sband_antenna_diagnostic.c -o $@
 vice-sband-antenna: $(SBA_C64_PRGS)
-	for p in $(SBA_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+	for p in $(SBA_C64_PRGS); do echo "PRG $$(basename $$p) sha256 $$(sha256sum $$p | cut -c1-64)"; python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
