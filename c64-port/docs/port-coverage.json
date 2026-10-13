@@ -5772,7 +5772,7 @@
       "sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
       "bytes": 14011,
       "lines": 556,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5856,7 +5856,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5897,6 +5897,10 @@
               "vice-rupt-lead-ins": 195,
               "vice-waitlist-entries": 379
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-270.md",
+            "sha256": "799cd4de9bc709e51e9546b6565a205ab30ba96e5de833cad986a41846aa20d6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
@@ -11900,7 +11904,7 @@
       "sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
       "bytes": 14816,
       "lines": 564,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded WAITLIST admission/T3 task transfer/completion; complete timed wrappers/LONGCALL/live producer integration remain incomplete.",
@@ -12020,7 +12024,7 @@
           "verification": "docs/RESIDENT-KERNEL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12062,6 +12066,10 @@
               "vice-waitlist-entries": 379,
               "vice-lm-t6rupt": 244
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-270.md",
+            "sha256": "799cd4de9bc709e51e9546b6565a205ab30ba96e5de833cad986a41846aa20d6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/waitlist-entries/waitlist-closure-c64-cover.json",
