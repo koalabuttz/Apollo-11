@@ -2702,7 +2702,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 = 6 (LSTIME's SSP S1 6D, the TIX step) and PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. EBANK= as the listing has it (E7: VECOEM, TEPHEM, the Moon and Sun coefficients); S1 any value up to LSTIME's SSP S1 6D and 6 (the TIX step it sets) from its GOTO X1 at 26,2141 on; PUSHLOC 0D to 10D of the VAC area (LSTIME's SETPD 0D), as the entries leave them. The yaAGC reference runs with interrupts inhibited.",
         "external_continuations": [
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
           "The caller's return through Q (TC Q runs the TC word held in Q)",
@@ -2716,7 +2716,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
-            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
+            "sha256": "e21c4214c7dbe48802816a130177ba9cd0f1c0e2df9d810b58d21c7a8355de2d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-host.log",
@@ -2724,14 +2724,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-vice.log",
-            "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+            "sha256": "69d6818b524d4672db8a688ba05a5386498aa589fa507f57f74ab4854f791303",
             "vice_targets": {
-              "vice-cm-ephemeris": 39
+              "vice-cm-ephemeris": 38
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
-            "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba"
+            "sha256": "e21c4214c7dbe48802816a130177ba9cd0f1c0e2df9d810b58d21c7a8355de2d"
           }
         }
       },
