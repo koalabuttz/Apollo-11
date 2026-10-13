@@ -134,6 +134,10 @@ class Mission:
         # (Lane G) 010-061 from the case seed (IRC_COUNTERS) plus relate().
         self.seed_counters = spec.get('seed_counters', False)
         self.edges = spec.get('edge_values', False)
+        # edge_skip: (FROM, TO) label ranges whose cases keep the as-is shape
+        # instead of the edge one (an edge input the original loops on).
+        self.edge_skip = [(self.cp.label_phys(a), self.cp.label_phys(b))
+                          for a, b in spec.get('edge_skip', ())]
         js = spec.get('joint_states', {})
         self.joint_any = js.get('*', [])
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
@@ -332,6 +336,8 @@ def case(mi, point, n, rng):
     # 2 random half-unit vectors, and a fourth with 'edge_values' (edge
     # vectors below) or 'edge_cases' (tools/edge_cases.py).
     shape = n % 4 if (mi.edges or mi.edge) else n % 3
+    if shape == 3 and any(lo <= point < hi for lo, hi in mi.edge_skip):
+        shape = 0
     if shape >= 1:
         for a in range(vac, vac + 0o46):
             w = rng.randrange(0o4000)

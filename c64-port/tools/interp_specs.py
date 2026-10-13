@@ -1888,6 +1888,10 @@ SPECS = {
         # TAU. and period pins above; a snapshot from a random TAU. loops
         # for millions of passes.)
         'edge_cases': True,
+        # KEPLERN's routines before PERIODCH take no edge inputs: from an
+        # edge state vector PERIODCH can loop forever in the original as
+        # well (yaAGC times out, the native run stops at max_steps).
+        'edge_skip': [('KEPLERN', 'PERIODCH')],
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         'rope_bin': True,
