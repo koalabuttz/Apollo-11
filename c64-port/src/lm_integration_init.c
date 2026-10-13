@@ -671,8 +671,8 @@ static enum exec_status r26667(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2674 MOVEACSM (native entry MOVEACSM) */
 static enum exec_status r26674(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_ACSM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEACSM, DANZIG */
 }
 #endif
@@ -745,8 +745,8 @@ static enum exec_status r26722(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2723 MOVEPCSM (native entry MOVEPCSM) */
 static enum exec_status r26723(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_PCSM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEPCSM, DANZIG */
 }
 #endif
@@ -798,8 +798,8 @@ static enum exec_status r26742(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2747 MOVEALEM (native entry MOVEALEM) */
 static enum exec_status r26747(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_ALEM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEALEM, DANZIG */
 }
 #endif
@@ -838,8 +838,8 @@ static enum exec_status r26764(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2770 MOVEPLEM (native entry MOVEPLEM) */
 static enum exec_status r26770(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_PLEM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEPLEM, DANZIG */
 }
 #endif

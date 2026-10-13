@@ -31,6 +31,10 @@ As in every compiled file, each case is a random 2,048-word image with the routi
 
 These are the values the file itself stores.
 
+The cases also draw flight edge values (review #165, `integration_joint` in `tools/interp_specs.py`): the fourth case shape of `tools/edge_cases.py`; TIME2/TIME1 and the CDUs across their range (`counters`); and, in half of the cases, TDEC = TET, UPSVFLAG +0 or ±2, MODREG +0 or 27 (P27 running, the BHIZ after `SLOAD DSU MODREG OCT27`), or a small ALPHAV after RECTIFY.
+
+A CHANG2 resume starts from the state the original program is in when it gets there (`resume_flow`: the oracle runs each case of the routine before it to that LOC). Before, the 11,2674 `STORE S1` resume drew a random MODE: entered in vector mode it stored 6 words into QPRET, which the program never does, since the `DLOAD* ASCALE,1` before it always leaves MODE in DP.
+
 A quarter of the cases have a job waiting (NEWJOB positive). A resume in the middle of a sequence keeps that sequence's invariant. Between ACCOMP's `XCHX,2 DIFEQCNT` pairs, X2 holds the DIFEQ stage and DIFEQCNT holds PBODY. Inside GAMCOMP's `XCHX,2 S1` pair, S1 holds PBODY. NBRANCH's `DMP CGOTO` has stage 0 loaded (NBRANCH itself runs every stage). TIMESTEP's W stores follow a VLOAD and index by COLREG. A case may run up to 1,000 routines, because one DIFEQ step runs several hundred pairs.
 
 ## Evidence

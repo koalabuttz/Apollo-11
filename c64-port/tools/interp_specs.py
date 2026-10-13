@@ -98,6 +98,22 @@ def cdutodcm_states():
     return out
 
 
+def integration_joint():
+    """Flight values of the integration erasables that only mean something
+    together or at one value (review #165): TDEC = TET (the last pass of an
+    integration, DT/2COMP +0), UPSVFLAG +0 (UPDATE_PROGRAM's normal
+    INTWAKEU) and +-2, MODREG +0 and 27 (P27 running), and a small ALPHAV
+    after RECTIFY. One set per case, in half of every routine's cases."""
+    out = []
+    for hi, lo in ((0, 0), (0o1234, 0o4567), (0o37777, 0o37777), (ones(-0o1234), ones(-0o4567))):
+        out.append({'TDEC': hi, 'TDEC+1': lo, 'TET': hi, 'TET+1': lo})
+    out += [{'UPSVFLAG': v} for v in (0, 2, ones(-2))]
+    out += [{'MODREG': v} for v in (0, 0o27)]
+    for v in ((0, 3, 0, ones(-5), 0, 1), (0, 0o40, ones(-0o20), 0, 0, 0o100), (0, 1, 0, 0, 0, 0)):
+        out.append({'ALPHAV+%d' % k: x for k, x in enumerate(v)})
+    return out
+
+
 SPECS = {
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -352,6 +368,16 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint()},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
     },
     'lm-integration-init': {
@@ -377,7 +403,11 @@ SPECS = {
         # Their DANZIG resumes the RTB that called them as its pair's right
         # order: LOC its address word (this file's own RTBs; MOVEPCSM's are
         # left orders, so a word of bank 14), BANKSET its bank, INTBIT15 0.
-        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0]}
+        # EDOP: +0, or the right order a left-hand RTB leaves (MEASUREMENT_
+        # INCORPORATION's RTB GOTO and RTB CALL: 0127, 0153), which DANZIG
+        # takes at OPJUMP.
+        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0],
+                         '0023': [0, 0, 0o127, 0o153]}
                    for lab, loc, bank in (('MOVEACSM', 0o2663, 0o26000), ('MOVEPCSM', 0o2500, 0o30000),
                                           ('MOVEALEM', 0o2736, 0o26000), ('MOVEPLEM', 0o2763, 0o26000))},
         'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
@@ -410,6 +440,16 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint()},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
     },
     'sband-antenna': {
@@ -809,6 +849,11 @@ SPECS = {
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # A CHANG2 resume starts from the state the program reaches it in.
+        'resume_flow': True,
+        'edge_cases': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
     },
     'lm-stable-orbit': {
@@ -838,6 +883,8 @@ SPECS = {
         'c64_rows': 'cover',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # A CHANG2 resume starts from the state the program reaches it in.
+        'resume_flow': True,
         'rope_bin': True,
     },
 }

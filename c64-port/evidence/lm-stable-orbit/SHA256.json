@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-stable-orbit",
+  "release": "evidence-lm-stable-orbit",
+  "files": {
+    "lm-stable-orbit-c64-cover.json": {
+      "sha256": "179230046e0fc568a2b4fea7cf1d1cf08b283b20536caccfb618c765c589f866",
+      "bytes": 3483,
+      "store": "tree"
+    },
+    "lm-stable-orbit-differential.log": {
+      "sha256": "0a53f40dfd02bb33f5f697d704aa187c4450c1e2bf4d54723cd5218a901d5bba",
+      "bytes": 5686,
+      "store": "release"
+    },
+    "lm-stable-orbit-host.log": {
+      "sha256": "cf2c547a1dcb38e26c9318bc5cd7ae6fdb73ab6d977b1c45517184a3ddb779b2",
+      "bytes": 942,
+      "store": "release"
+    },
+    "lm-stable-orbit-proof.json": {
+      "sha256": "3ce832a248e51e82c1f7acd8a88c103dfadd834fc1dec4c7f8ae7da75c82262d",
+      "bytes": 9497,
+      "store": "tree"
+    },
+    "lm-stable-orbit-source-map.json": {
+      "sha256": "30b2038428e71e961af476d784328831fc50fcd234995e975665ee4904682f85",
+      "bytes": 32098,
+      "store": "tree"
+    },
+    "lm-stable-orbit-vice.log": {
+      "sha256": "d634b4e026ba28d511e86ded0eb3b08e953a9d8609fef00b538df24fb95d9945",
+      "bytes": 477,
+      "store": "release"
+    }
+  }
+}

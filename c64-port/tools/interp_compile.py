@@ -276,10 +276,12 @@ class Compiler:
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
             self.starts[phys] = ('b', 'native entry ' + lab)
-            # (they end TC DANZIG, run here as a pair's end: a left-hand RTB,
-            # EDOP holding its pair's right order, is out of scope)
-            self.blocks[phys] = ['if(W[023])return EXEC_OUT_OF_SCOPE;',
-                                 'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+            # (they end TC DANZIG, run here as a pair's end. After a
+            # left-hand RTB, EDOP holds the pair's right order, and DANZIG
+            # takes it at OPJUMP: the routine stops at DANZIG, the caller's
+            # interpreter continuation.)
+            self.blocks[phys] = ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+                                 'if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */',
                                  '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
         self.channel_blocks = set(p for p, b in self.blocks.items() if any('I/O channel */' in x for x in b))

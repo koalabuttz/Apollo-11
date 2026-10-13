@@ -6421,9 +6421,10 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB that ends its pair (EDOP +0), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB (EDOP +0, or a left-hand RTB's right order, where the run ends at their TC DANZIG), TIME2/TIME1 and the CDUs, flight edge values (TDEC = TET, UPSVFLAG, MODREG, small ALPHAV), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "DANZIG with EDOP holding a left-hand RTB's right order (MEASUREMENT_INCORPORATION's RTB GOTO MOVEPCSM and RTB CALL MOVEACSM), where the interpreter takes the order at OPJUMP",
           "ORBITAL_INTEGRATION (TIMESTEP and the integration loop) at NEWOPS",
           "PHASCHNG, UPFLAG, DOWNFLAG and ALARM with their inline words",
           "FINDVAC, LONGCALL, JOBSLEEP, JOBWAKE, TASKOVER, ENDOFJOB and BANKJUMP (Executive/Waitlist)",
@@ -6439,18 +6440,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "fb6d5c2fb15f4f88d653e05150ae9356248bba59a4ee839b8d3c371ce00b1ad8"
+            "sha256": "3813e22e2b4ee1332212312ee88938ee1eecc93e2775fd270ec18b9223809262"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "03982b4c140571bed24777391fe6f1d2f165921b81c494cafdeb29b0ea1dca51"
+            "sha256": "6c8d7ca60dac7f8ed0c6da351fecf8e555ca99558402b8b9bfee98596a6ad8b0"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "baa761f1f405ff3e9e4e3f273e14710884baef682bef6c933e931e1a74d29c15",
+            "sha256": "ea50ba5af73d240eb603572267519eb447452f7a25d2739f2ac0527ee4be8fb0",
             "vice_targets": {
-              "vice-lm-integration-init": 434
+              "vice-lm-integration-init": 258
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
+            "sha256": "abb827b9091effdbb85c96ff304f1cbecac37438e8d884e6af529ce1e6b2e789"
           }
         }
       }
@@ -8956,8 +8961,62 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_stable_orbit.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (233 words in bank 34): P38, P78, P39 and P79 with their displays (VNDSPLY and the GOFLASH/GOFLASHR returns), the SOI and SOR options, RECYCLE, MAINRTNE, TEST3979, MAINRTN1, P39/P79A and B, PREC/TT, INTRPVP and OTHERV, as 101 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG and at every display return); LOADTIME through RTB as the native rtb_angles.",
+          "verification": "docs/LM-STABLE-ORBIT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EBANK 7 entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of bank 34), NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, Q, QPRET and RTRN returns outside the file, and any values of the P38/P39 erasables (OPTION1/2, TINT, TINTSOI, DELTAR, KT, TIG, CENTANG, the flags).",
+        "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "BANKCALL with its inline CADR (AVFLAGA, AVFLAGP, P20FLGON, GOFLASH, GOFLASHR), whose returns are routines of the file",
+          "BLANKET, TCF ENDOFJOB and TCF GOTOPOOH",
+          "SELECTMU, PRECSET, S34/35.1, S3435.25, TIMETHET, PERIAPO1, SHIFTR1, VN1645, CSMPREC and LEMPREC through CALL (interpretive)",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "TC RTRN to the saved return outside the file",
+          "The interpreter exits POODOO1 and ALARM1"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
+            "sha256": "30b2038428e71e961af476d784328831fc50fcd234995e975665ee4904682f85"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-proof.json",
+            "sha256": "3ce832a248e51e82c1f7acd8a88c103dfadd834fc1dec4c7f8ae7da75c82262d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-host.log",
+            "sha256": "cf2c547a1dcb38e26c9318bc5cd7ae6fdb73ab6d977b1c45517184a3ddb779b2"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-vice.log",
+            "sha256": "d634b4e026ba28d511e86ded0eb3b08e953a9d8609fef00b538df24fb95d9945",
+            "vice_targets": {
+              "vice-lm-stable-orbit": 122
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
+            "sha256": "179230046e0fc568a2b4fea7cf1d1cf08b283b20536caccfb618c765c589f866"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",

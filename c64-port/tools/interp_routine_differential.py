@@ -108,6 +108,10 @@ class Mission:
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         self.states = {self.cp.label_phys(k): v for k, v in spec.get('states', {}).items()}
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
+        # Native entries other files reach from a left-hand RTB: with EDOP
+        # set (the pair's right order) the run ends at their TC DANZIG.
+        self.native_entries = set(self.cp.label_phys(k) for k in spec.get('native_entries', {}))
+        self.danzig = L.labels['DANZIG']
         self.flow = {}   # ('flow_states') point -> states its entries' runs reach it in
 
     def caller_returns(self, spec):
@@ -354,7 +358,7 @@ def case(mi, point, n, rng):
             a = k if k < 0o1400 else eb * 0o400 + k - 0o1400
             if a not in pinned:
                 E[a] = logical(q)
-        stop = q
+        stop = mi.danzig if point in mi.native_entries and dict(E).get(0o23) else q
     return seed, list(E.items()), n & 1, stop, sb
 
 
@@ -904,6 +908,8 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges
     the groups and the row cover's proof fields."""
     per = spec.get('c64_per_point', 2)
     for mi in missions:
+        if mi.m not in spec['missions']:
+            continue
         # (every KEEP word is defined, so a group drops the routines past 60 too)
         KEEP_WORDS[spec['symbol'][mi.m]] = max(1, (len(mi.points) + 59) // 60)
     cover = spec.get('c64_rows') == 'cover'

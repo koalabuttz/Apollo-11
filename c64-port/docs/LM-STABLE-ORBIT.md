@@ -14,7 +14,7 @@ Lane B (orbital math). Milestone `lm-stable-orbit`. How the routines are made an
 
 ## States the cases start from
 
-As in every compiled file, each case is a random 2,048-word image with the routine's legal entry state, under EBANK 7 (`EBANK= SUBEXIT`).
+As in every compiled file, each case is a random 2,048-word image with the routine's legal entry state, under EBANK 7 (`EBANK= SUBEXIT`). The file runs as a job, so the word after every DANZIG is a routine (`resume_keys`), and a CHANG2 resume starts from the state the original program is in when it gets there (`resume_flow`). A quarter of the cases have a job waiting.
 
 ## Evidence
 
@@ -23,4 +23,5 @@ Hashes: `evidence/lm-stable-orbit/SHA256.json`. Bulk files are assets of the `ev
 - **Source map.** `lm-stable-orbit-source-map.json` lists every word with the routine that compiles it: 233 words, none untranslated.
 - **Independent assembly comparison.** `lm-stable-orbit-proof.json` and `lm-stable-orbit-differential.log`, made by `make lm-stable-orbit-differential`. 256 states per routine (25,856 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Every 128th case is frozen in `tests/lm_stable_orbit_vectors.h`.
 - **Host and sanitizer results.** `make test-lm-stable-orbit sanitize-lm-stable-orbit` runs the 202 frozen cases (`lm-stable-orbit-host.log`).
-- **C64 execution results.** `make vice-lm-stable-orbit` runs 2 diagnostics with all 202 frozen cases in VICE (`lm-stable-orbit-vice.log`). No routine is host-only. The image lives in the RAM under KERNAL at $e000, and the programs build without inlining, with a static stack and with 110 zero-page bytes.
+- **C64 execution results.** `make vice-lm-stable-orbit` runs 3 diagnostics with 122 cases in VICE (`lm-stable-orbit-vice.log`). No routine is host-only.
+- **C64 branch outcomes.** `lm-stable-orbit-c64-cover.json`: the C64 cases are the fewest that take every gcov branch arc the 25,856 host cases take over all 13 linked sources (`'c64_rows': 'cover'`, `tools/c64_row_cover.py`). All 1,002 host arcs are taken on the C64. The image lives in the RAM under KERNAL at $e000, and the programs build without inlining, with a static stack and with 110 zero-page bytes.
