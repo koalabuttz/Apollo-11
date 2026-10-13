@@ -53,7 +53,7 @@ continuation.
 `tests/service_transfer_cases.c` through `agc_transfer_run` and in yaAGC from
 the original ropes. There are two cases per genuine UPFLAG, DOWNFLAG and
 GENTRAN site of each mission, entered at the callee with Q at the operand word
-and random erasable, banks and interrupt inhibit. There are also 256 entry
+and random erasable, banks and interrupt inhibit. There are also 512 entry
 cases per mission over the other entries, half of the Q-free ones with Q below
 0100 and with free and busy delay slots; a random Q inside the file's
 fixed-fixed code moves to 04400-04777, since the oracle stops at the first Z

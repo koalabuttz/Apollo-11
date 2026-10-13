@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 #include <string.h>
 #include "rupt_lead_ins_cases.h"
+#define RESUME_ROPE_CM
+#include "resume_rope_words.h"
 static const agc_word lm_z[9]={04000,04010,04020,04024,04030,04034,04040,04044,04050};
 static const agc_word cm_z[15]={04000,04004,04010,04020,04024,04030,04034,04040,04044,04050,04065,05333,05335,05336,05337};
 unsigned rli_cases(unsigned mission){return mission?RLI_CM_CASES:RLI_LM_CASES;}
@@ -28,10 +30,25 @@ void rli_input(unsigned mission,apollo_overlay_state *m,rli_io *io,uint16_t n){u
   * 05336, else the current one). */
  {agc_word at=(agc_word)(m->words[015]-1u),eb=z==05333u||z==05335u?(agc_word)(m->words[016]&7u):z==05336u?(agc_word)(agc_correct(m->words[0])&7u):(agc_word)(m->words[3]>>8);
   if(at<01400u)m->words[017]=m->words[at];else if(at<02000u)m->words[017]=m->words[eb*0400u+(at-01400u)];}
+ /* A quarter of the CM RESUME family interrupted in banks 030-033 (SUPERBNK 0060) or 040-043 (0100):
+  * the restored BB (BANKRUPT, A at 05336, the current one at NOQBRSM) a plain BB, which never holds
+  * superbank bits, and BRUPT the rope word at ZRUPT-1 (one in eight not), read through the program's
+  * fixed_data as the resident kernel does (#198). */
+ if(mission&&z>=05333u&&n%4u==3u){uint16_t i=(uint16_t)(rnd(&r)%RESUME_ROPE_WORDS),ph=cm_resume_rope_physical[i],b=(uint16_t)(ph/1024u);
+  agc_word fbx=(agc_word)((b>=040u?b-8u:b)<<10),eb=(agc_word)(rnd(&r)%8u);
+  *sb=b>=040u?0100u:0060u;m->words[015]=(agc_word)(02000u+ph%1024u+1u);
+  if(z==05337u){m->words[4]=fbx;m->words[6]=(agc_word)(fbx|(m->words[3]>>8));}
+  else if(z==05336u)m->words[0]=agc_extend((agc_word)(fbx|eb));
+  else m->words[016]=(agc_word)(fbx|eb);
+  m->words[017]=(agc_word)(cm_resume_rope_word[i]^(rnd(&r)%8u?0u:1u));}
 }
+/* The program's fixed words: only the CM RESUME cases' rope words. */
+static bool rope(const agc_native_program *p,uint16_t physical,agc_word *word){uint16_t i;(void)p;
+ for(i=0;i<RESUME_ROPE_WORDS;++i)if(cm_resume_rope_physical[i]==physical){*word=cm_resume_rope_word[i];return true;}
+ return false;}
 unsigned rli_run(unsigned mission,apollo_overlay_state *s,rli_io *io,uint16_t n){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;void *v;
- program.basic=mission?&cm_lead_in_routines:&lm_lead_in_routines;program.basic_count=1;program.hardware=&io->hw;
+ program.basic=mission?&cm_lead_in_routines:&lm_lead_in_routines;program.basic_count=1;program.hardware=&io->hw;if(mission)program.fixed_data=rope;
  rli_input(mission,s,io,n);v=mission?(void *)&io->cm:(void *)&io->lm;
  call=agc_transfer_resolve(&program,s,mission?io->cm.superbank:io->lm.superbank);
  if(!call)return 3u;

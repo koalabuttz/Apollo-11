@@ -2,8 +2,8 @@
  * diagnostic runs besides every SLO_C64_STRIDE-th, so its rows take every branch arc
  * (gcov -b, all linked sources) the 1408 host cases take; native digests, equal to
  * yaAGC's by the host test. */
-#define SLO_C64_ROWS 2u
-static const uint16_t slo_c64_row[2]={
-100u,470u};
-static const uint32_t slo_c64_row_digest[2]={
-0x00000000ul,0x00000000ul};
+#define SLO_C64_ROWS 4u
+static const uint16_t slo_c64_row[4]={
+254u,470u,650u,892u};
+static const uint32_t slo_c64_row_digest[4]={
+0x82f90ba6ul,0x00000000ul,0x00b1fab3ul,0xec0bfb7eul};

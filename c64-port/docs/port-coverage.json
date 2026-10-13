@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -4252,7 +4252,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (152 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (152 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
@@ -4272,11 +4272,11 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
           "entry_contracts": "UPENT2 07722 and DOWNENT2 07740; DELAYJOB 00,3732, TCGETCAD 00,3755, WAKER 00,3761 and its finish 00,3765 with FB 0; UPFLAG 05546, DOWNFLAG 05560, GENTRAN 05606 and GENTRAN +1, B5OFF 05625, TRFAILOF 05631, TRFAILON 05643 from any bank; the flag and block-transfer operands of every genuine call site compiled.",
-          "index_domains": "Flag descriptors 0..14459; GENTRAN N-1 nonnegative; return addresses (Q) 0100..07777; DELAYJOB with an allocated delay slot or none (BAILOUT1); WAKER BB 0..7. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
+          "index_domains": "Flag descriptors 0..14459; GENTRAN N-1 nonnegative; return addresses (Q) 0100..07777; DELAYJOB with an allocated delay slot or none (BAILOUT); WAKER BB 0..7. Other inputs return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "INHINT/RELINT as the interrupt-enable bit; no channels."
         },
         "external_continuations": [
-          "DLY2 -1 (WAITLIST) and JOBSLEEP (EXECUTIVE) for DELAYJOB; BAILOUT1 (ALARM_AND_ABORT) when no delay slot is free",
+          "DLY2 -1 (WAITLIST) and JOBSLEEP (EXECUTIVE) for DELAYJOB; BAILOUT (ALARM_AND_ABORT) when no delay slot is free",
           "JOBWAKE and TASKOVER for WAKER",
           "The caller's return through Q or Q+2",
           "Integrated C64 application acceptance"
@@ -5233,7 +5233,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_exec_routines, cm_exec_job_routines, cm_exec_idle_routines and cm_lead_in_routines (the RESUME family, milestone rupt-lead-ins), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body and DLY2 -1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
           "unreached": "Named in the source map with reasons: the NOOP marked CAN'T GET HERE in LONGCYCL (+0 class of LONGTIME +1). No producer reaches these words.",
           "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
         },
@@ -10068,7 +10068,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 11 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 256 entry cases equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
@@ -10957,7 +10957,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines and lm_lead_in_routines, called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of lm_exec_routines, lm_exec_job_routines, lm_exec_task_routines, lm_exec_idle_routines, lm_lead_in_routines and lm_t6rupt_routines (the RESUME family, milestone lm-t6rupt), called from its genuine call sites through the trampoline; each routine's documented input domain (the milestone docs; the T3RUPT body, DLY2 -1 and NOQBRSM +1 in milestone waitlist-entries) applies, and inputs outside it return EXEC_OUT_OF_SCOPE before any change.",
           "unreached": "Named in the source map with reasons: the two NOOPs marked CAN'T GET HERE (WTABORT after TC FILLED, LONGCYCL's +0 class of LONGTIME +1). No producer reaches these words.",
           "data_validity": "Original constants and scaling; DELAYEX and the -CCS/-2CADR words are read as data."
         },
