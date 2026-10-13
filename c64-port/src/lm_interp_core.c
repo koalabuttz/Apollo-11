@@ -444,13 +444,15 @@ static NI void ai_dca_b(uint8_t a){ai_dca_w(a);}
 #else
 static NI void ai_dcaf(const agc_word k[2]){W[1]=sx(k[1]);W[0]=sx(k[0]);endi();}
 #endif
+/* DCS is DCA complemented (complement commutes with the L and sign
+ * editing); a DCS whose upper word is L reads it after L is loaded, as the
+ * original's order of reads does, so it complements twice. */
 static NI void ai_dcs_w(unsigned k){
- unsigned lo=k+1u;
- W[1]=sx(oc((agc_register)(~get16(lo)&M16)));W[0]=(agc_register)(~get16(k)&M16);reedit(lo);reedit(k);endi();
+ ai_dca_w(k);W[1]=(agc_register)(~W[1]&M16);if(ai_ea(k)!=1u)W[0]=(agc_register)(~W[0]&M16);
 }
 static NI void ai_dcs_b(uint8_t a){ai_dcs_w(a);}
 static NI void ai_dcsf(const agc_word k[2]){
- W[1]=sx((agc_word)(~k[1]&077777u));W[0]=sx((agc_word)(~k[0]&077777u));endi();
+ ai_dcaf(k);W[1]=(agc_register)(~W[1]&M16);W[0]=(agc_register)(~W[0]&M16);
 }
 #if INTERP_K_OPS
 #define ai_dxch_w k_dxch
@@ -672,13 +674,16 @@ static void lmi_rvq(void){
  * 5-6. The INHINT/RELINT pair leaves interrupts enabled. */
 static NI uint8_t lmi_switch(void){
  static const agc_word bits[16]={040000,020000,010000,04000,02000,01000,0400,0200,0100,040,020,010,4,2,1,0};
- unsigned op,word;agc_word old;
+ static agc_word old;unsigned op;   /* (old static: no callee-saved registers) */
  ai_caf(017);ai_mask(0117);ai_caf(bits[W[0]&017u]);(void)ai_ts(0131);ai_caf(0100);ai_mpf(W[0117]);(void)ai_ts(0130);
- io->interrupt_enabled=0;word=(unsigned)W[0];ai_ca(074u+word);W[2]=oc(W[0]);old=W[2];
+ io->interrupt_enabled=0;ai_ca(074u+(unsigned)W[0]);W[2]=oc(W[0]);old=W[2];
  ai_caf(02000);ai_mpf(W[0117]);ai_maskf(014);op=(unsigned)W[0];
- if(op==0u){ai_ca(0131);W[0]=(agc_register)(W[0]|agc_extend(old));(void)ai_ts(074u+W[0130]);}
- else if(op==4u){ai_ca(0131);W[0]=(agc_register)(W[0]^agc_extend(old));(void)ai_ts(074u+W[0130]);}
- else if(op==010u){ai_cs(0131);ai_maskf(old);(void)ai_ts(074u+W[0130]);}
+ /* (MASK 014 leaves 0 set, 4 invert, 010 clear, 014 no change) */
+ if(op!=014u){
+  if(op==010u){ai_cs(0131);ai_maskf(old);}
+  else{ai_ca(0131);W[0]=(agc_register)(op?W[0]^agc_extend(old):W[0]|agc_extend(old));}
+  (void)ai_ts(074u+W[0130]);
+ }
  io->interrupt_enabled=1;ai_caf(010000);ai_mpf(W[0117]);ai_maskf(014);op=(unsigned)W[0];
  if(op==014u){danzig_entry();return 0;}
  if(op==4u)return 1; /* +5 TCF SWBRANCH */
@@ -1860,13 +1865,15 @@ static NI XT uint8_t lmi_asin(void){return arccos_body(1);}
 /* VSU 06747 / VAD 06751: ADS ADDRWD with BIT15 or PRIO30 turns the indexed
  * READs into DCS or DCA of the operand's +2, +4 and +0 words; ADDRWD keeps
  * the sum. Ends through ENDVXV at DANZIG. */
-static NI void vaddsub(uint8_t sub){const agc_word *k=kop();
- unsigned a=W[rADDRWD];unsigned i;static const unsigned off[3]={2u,4u,0u};
+static NI void vaddsub(uint8_t sub){
+ /* (statics: no callee-saved registers across the calls) */
+ static const agc_word *k;static unsigned a;static uint8_t i,dcs;static const uint8_t off[3]={2u,4u,0u};
+ k=kop();a=W[rADDRWD];dcs=sub;
  if(sub)CAF(BIT15);else CAF(030000u);
  ADS(rADDRWD);
  for(i=0;i<3u;++i){
-  if(sub){if(k)ai_dcsf(k+off[i]);else DCS(AT(a+off[i]));}
-  else{if(k)ai_dcaf(k+off[i]);else DCA(AT(a+off[i]));}
+  if(k){if(dcs)ai_dcsf(k+off[i]);else ai_dcaf(k+off[i]);}
+  else if(dcs)DCS(AT(a+off[i]));else DCA(AT(a+off[i]));
   if(i==2u)break;
   DAS(AT(rMPAC+3u+2u*i));
   if(!ai_bzf()){if(i==0u){TC(IF_(06762,06731));overflwy();}else{TC(IF_(06771,06740));overflwz();}}

@@ -25,7 +25,7 @@ CC = os.environ.get('MOS_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-c64-clang')
 ROPES = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 STRIDE = 0x2400
 MAX_RECORDS = (BASES['Luminary099'] - STRIDE) // STRIDE
-FLAGS = ['-Oz', '-DAGC_FIXED_IMAGE=1', '-DINTERP_K_OPS=1', '-DINTERP_EXTENSION=1', '-Wall', '-Wextra', '-Werror',
+FLAGS = ['-Oz', '-fno-static-stack', '-mlto-zp=0', '-DAGC_FIXED_IMAGE=1', '-DINTERP_K_OPS=1', '-DINTERP_EXTENSION=1', '-Wall', '-Wextra', '-Werror',
          '-Iinclude', '-Itests', '-Iplatform/c64', '-mllvm', '-inline-threshold=-50']
 SOURCES = ['src/agc_image_ops.c', 'src/agc_word.c', 'src/agc_multiword.c',
            'src/agc_hardware_divide.c', 'platform/c64/rope_image_reu.c', 'src/overlay_reu.c',
@@ -88,7 +88,7 @@ def main():
     # The harness (with the k_ ops) outside LTO: in flight the ops are the
     # resident's, which the module's code cannot inline.
     harness = prg + '.o'
-    subprocess.run([CC, *FLAGS, *(['-DINTERP_VICE_CM=1'] if a.mission == 'cm' else []), '-fno-lto', '-c',
+    subprocess.run([CC, *[f for f in FLAGS if f != '-mlto-zp=0'], *(['-DINTERP_VICE_CM=1'] if a.mission == 'cm' else []), '-fno-lto', '-c',
                     'tools/interp_core_vice.c', '-o', harness], cwd=R, check=True)
     subprocess.run([CC, *FLAGS, '-T', 'tools/interp_core_vice.ld', '-Wl,-Map,%s.map' % prg, *core, harness, *SOURCES,
                     '-o', prg], cwd=R, check=True)

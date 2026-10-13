@@ -69,8 +69,10 @@ __attribute__((interrupt)) static void nmi(void) {}
 
 extern char __interp_ext_start[], __interp_ext_end[], __interp_ext_load[];
 
-static agc_word want[128];
-static uint16_t pairs[2 * 96 + 1];
+/* Buffers above the image ($8000-$81FF; the program ends below $7000). */
+#define want ((agc_word *)0x8000u)
+#define pairs ((uint16_t *)0x8100u)
+#define PAIRS_BYTES (2u * (2u * 96u + 1u))
 
 int main(void)
 {
@@ -90,7 +92,7 @@ int main(void)
         enum exec_status st;
         uint8_t bad = 0;
         at = (uint32_t)(k + 1u) * 0x2400u;
-        (void)apollo_reu_transfer(APOLLO_REU_FETCH, pairs, at + 8192u, sizeof pairs);
+        (void)apollo_reu_transfer(APOLLO_REU_FETCH, pairs, at + 8192u, PAIRS_BYTES);
         for (i = 0; i < pairs[0] && i < 96u; ++i)
             (void)apollo_reu_transfer(APOLLO_REU_STASH, &pairs[1 + 2 * i + 1], ROPE_BASE + 2u * (uint32_t)pairs[1 + 2 * i], 2u);
         (void)apollo_reu_transfer(APOLLO_REU_FETCH, IMG->words, at, 4096u);
