@@ -1166,15 +1166,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
+            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
+            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
+            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -1191,7 +1191,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
+            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -1877,7 +1877,7 @@
       "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
       "bytes": 5747,
       "lines": 183,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1927,7 +1927,7 @@
           "verification": "docs/INTERBANK-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1943,7 +1943,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
@@ -1963,6 +1962,10 @@
             "vice_targets": {
               "vice-interbank-oracle": 722
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
@@ -2120,7 +2123,7 @@
       "sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
       "bytes": 2247,
       "lines": 122,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2139,7 +2142,7 @@
           "verification": "docs/RUPT-LEAD-INS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2174,6 +2177,10 @@
             "vice_targets": {
               "vice-rupt-lead-ins": 195
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/rupt-lead-ins/rupt-lead-ins-c64-cover.json",
@@ -4361,7 +4368,7 @@
       "sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
       "bytes": 6410,
       "lines": 279,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4390,7 +4397,7 @@
           "verification": "docs/SERVICE-TRANSFER.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4407,7 +4414,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/service-transfer/service-transfer-source-map.json",
@@ -4427,6 +4433,10 @@
             "vice_targets": {
               "vice-service-transfer": 569
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/service-transfer/service-transfer-c64-cover.json",
@@ -4542,7 +4552,7 @@
       "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
       "bytes": 3827,
       "lines": 150,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4583,7 +4593,7 @@
           "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4601,7 +4611,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
@@ -4622,6 +4631,10 @@
               "vice-standard-lead-oracle": 477,
               "vice-cm-lead-tests": 390
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
@@ -5154,7 +5167,7 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "complete",
+      "status": "partial",
       "native_coverage": [
         {
           "native_files": [
@@ -5167,7 +5180,7 @@
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "complete_native_coverage": {
+      "withdrawn_certificate": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5386,15 +5399,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
+            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
+            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
+            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -5408,7 +5421,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
+            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -6553,15 +6566,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
+            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
+            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
+            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -6578,7 +6591,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
+            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",
@@ -10276,7 +10289,7 @@
             "src/service_routines.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (171 words); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
+          "scope": "All 13 entries registered as native routines at their original addresses; the ADRES operands of every genuine UPFLAG/DOWNFLAG/GENTRAN site compiled (175 words, including the two ADRES pairs after AOSTASK's TC GENTRAN +1 at 20,3574 and 20,3615, which load the count (CA NINE) and skip GENTRAN's INHINT, since AOSTASK already runs with interrupts inhibited); TCGETCAD, WAKER and B5OFF at any Q. Continuations in other files resolve to EXEC_UNMAPPED. Every site and 512 entry cases per mission equal yaAGC through agc_transfer_run.",
           "verification": "docs/SERVICE-TRANSFER.md"
         },
         {
@@ -10436,7 +10449,7 @@
       "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
       "bytes": 3636,
       "lines": 125,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10469,7 +10482,7 @@
           "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10486,7 +10499,6 @@
           "Integrated C64 application acceptance"
         ],
         "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
@@ -10507,6 +10519,10 @@
               "vice-standard-lead-oracle": 477
             }
           },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
+          },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
             "sha256": "d2a3d19a86e93d5c176cf9a4cdc7b29a4c7bbf6c095d6f3b574a38fea880cf3a"
@@ -10520,7 +10536,7 @@
       "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
       "bytes": 37085,
       "lines": 1354,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10559,7 +10575,7 @@
           "verification": "docs/LM-T4RUPT-CHAIN.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10598,6 +10614,10 @@
               "vice-lm-t4rupt-chain": 266
             }
           },
+          "independent_review": {
+            "path": "docs/audits/lm-t4rupt.md",
+            "sha256": "6932614d3a71bcdac35ab355fc0a24396b47c7782604df712c791409a8cce70c"
+          },
           "c64_branch_outcomes": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-chain-c64-cover.json",
             "sha256": "d033949ebbdea350a8e7dc2131e46e0fa79ee9649721ee81a87ab89120c288d5"
@@ -10611,7 +10631,7 @@
       "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
       "bytes": 4500,
       "lines": 163,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10622,7 +10642,7 @@
           "verification": "docs/LM-T6RUPT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10656,6 +10676,10 @@
             "vice_targets": {
               "vice-lm-t6rupt": 244
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/kernel-212.md",
+            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-t6rupt/lm-t6rupt-c64-cover.json",
@@ -11253,15 +11277,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "87db20f9f4d7c0a56ca7a70b2a1d82b1260457357eb5e62301499227e3823f9d"
+            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
-            "sha256": "f4b190db75b49e1923f402e5a10fdfec23680b5c49a1d169e8cca1b1b7e8c069"
+            "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c"
           },
           "c64_execution_results": {
             "path": "evidence/exec-closure/exec-closure-vice.log",
-            "sha256": "0dcf395ac1941cb80b67d32b29d25e7ab0144dfd729f925edb0b4a74f0015aa7",
+            "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
             "vice_targets": {
               "vice-lm-exec-services": 581,
               "vice-lm-exec-jobs": 596,
@@ -11276,7 +11300,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/exec-closure/exec-closure-c64-cover.json",
-            "sha256": "34022acd7f165ffb1c6748f26a41b5cec51e3842fca3b567e422bfd5fcd370ff"
+            "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667"
           },
           "flight_edges": {
             "path": "evidence/exec-closure/kernel-edges.json",

@@ -51,7 +51,7 @@
   },
   "lm-exec-jobs": {
    "manifest": "evidence/lm-exec-jobs/SHA256.json",
-   "sha256": "0dddc371c99727e408c90fc6487fd2c1be7790365242ce85e8e2b4270bb18b43",
+   "sha256": "1afc44d2561355e87fec39b90f7c4af254f88819dd3bf3fb1a5f053584082960",
    "oracle_cases": {
     "run": {
      "mission": "Luminary099",
@@ -73,7 +73,7 @@
   },
   "rupt-lead-ins": {
    "manifest": "evidence/rupt-lead-ins/SHA256.json",
-   "sha256": "5df1cb3ba21a49bbdee93148f1826b4502b355a05ac2c9c5bf159c251e644359",
+   "sha256": "ce16a1a64592d8eac86ce8c147ca63aa94b96dc49a2c71047dd06aa6d6337df6",
    "oracle_cases": {
     "lm": {
      "mission": "Luminary099",
@@ -89,7 +89,7 @@
   },
   "cm-exec-services": {
    "manifest": "evidence/cm-exec-services/SHA256.json",
-   "sha256": "2544179777ceb993d735f8daffa4e9b4b20308f6c8a78c9db4b86403d8f6ecce",
+   "sha256": "215938a5f669d2425528f469400e7877d2145c4859aae5c69cb0992a3f4e6cfe",
    "oracle_cases": {
     "run": {
      "mission": "Comanche055",
