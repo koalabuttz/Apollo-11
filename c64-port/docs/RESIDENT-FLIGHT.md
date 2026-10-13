@@ -228,11 +228,11 @@ about 0.3 KB.
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step, boundary-word reader and direct calls | 1,499 | 1,516 |
+| Resident state, step, boundary-word reader and direct calls | 1,471 | 1,489 |
 | IRQ entry (saves and restores $01) | 26 | 26 |
 | C runtime and library (crt0, multiply, divide, memcpy, memset) | 480 | 480 |
-| **Resident, $0801 to the end of bss** | **24,301** | **24,007** |
-| Free below the service table (of 26,367) | 2,066 | 2,360 |
+| **Resident, $0801 to the end of bss** | **24,273** | **23,980** |
+| Free below the service table (of 26,367) | 2,094 | 2,387 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 boot load) | 3,794 | 3,763 |
 

@@ -67,7 +67,7 @@ kind whose record starts with the base record (LM_*, CM_*), and the builder
 refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
 conversion adds about 330 bytes to the module main (1,076 bytes in the
 pinned LM DAP set, against about 750 for a base-kind module); the set
-measures 47,513 bytes. Every CM module links the resident's
+measures 39,341 bytes. Every CM module links the resident's
 `cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
 
 ### Fit on 6b6ed2dc
