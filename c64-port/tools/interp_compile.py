@@ -569,7 +569,7 @@ class Compiler:
                 if self.spec.get('index_guard'):
                     k = self.guarded_k(nxt, bank, takes_k, name, st) if name != 'GSHIFT' else '0'
                 else:
-                    k = self.indexed_k(nxt, bank, takes_k, op) if self.spec.get('indexed_fixed') else '0'
+                    k = self.indexed_k(nxt, bank, takes_k, op)
                     if k != '0':
                         st[-1] += '{const agc_word *k;if(!kix(s,%s,&k))return EXEC_OUT_OF_SCOPE;%s%s(s,k);}' % (k, P, fn)
                         return st, cur, False, name == 'SETPD'

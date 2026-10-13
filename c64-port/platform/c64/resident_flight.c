@@ -3,6 +3,7 @@
  * slot) and one resident step (resident_flight.h). */
 #include "resident_flight.h"
 #include "sp_routines.h"
+#include "resident_rupt.h"
 #if RK_LM
 #include "lm_exec_routines.h"
 #else
@@ -12,6 +13,7 @@
 #define BOOT __attribute__((noinline,section(".boot.text")))
 
 extern void ov2_irq_entry(void);
+extern volatile uint16_t ov2_irq_count;
 extern void ov2_nmi_entry(void);
 uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 
@@ -19,6 +21,7 @@ apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
 agc_hardware rk_hardware;
+uint16_t rk_pending,rk_ticks;
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
 
 /* The kernel's routine tables and SPSIN/SPCOS, filled at boot. */
@@ -34,6 +37,11 @@ uint8_t BOOT rk_boot(void) {
     *(volatile uint8_t *)1=0x35;
     *(volatile uint16_t *)0xfffe=(uint16_t)(uintptr_t)ov2_irq_entry;
     *(volatile uint16_t *)0xfffa=(uint16_t)(uintptr_t)ov2_nmi_entry;
+    /* CIA1 timer A: one interrupt per AGC 10 ms scaler period. */
+    *(volatile uint8_t *)0xdc04=(uint8_t)RK_CIA_LATCH;
+    *(volatile uint8_t *)0xdc05=(uint8_t)(RK_CIA_LATCH>>8);
+    *(volatile uint8_t *)0xdc0e=0x11;
+    rk_ticks=ov2_irq_count;
     __asm__ volatile("cli");
 #if RK_LM
     basic[0]=lm_kernel_routines; basic[1]=lm_kernel_job_routines;
@@ -60,13 +68,28 @@ void rk_seams_exchange(agc_word newjob) {
 }
 void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
 
-/* The trampoline and the module runner each have one caller, so LTO would
- * inline them into the step; keeping them out of line costs a call each
- * and lets the size report (tools/resident_flight_build.py) count them as
- * their own components. */
+/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step,
+ * then the highest pending interrupt if it can be taken at this boundary.
+ * The count is read twice so an interrupt between its two bytes cannot
+ * tear it. Out of line, so the size report counts it with the timers. */
+__attribute__((noinline)) static void rk_rupts(void) {
+    uint16_t now;
+    do now=ov2_irq_count; while(now!=ov2_irq_count);
+    while(rk_ticks!=now) { rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); ++rk_ticks; }
+    rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
+}
+
+/* One kernel routine, or EXEC_UNMAPPED where there is none. The step
+ * returns after each routine so that a pending interrupt is taken at the
+ * next native boundary. The trampoline and the module runner each have one
+ * caller, so LTO would inline them into the step; keeping them out of line
+ * costs a call each and lets the size report
+ * (tools/resident_flight_build.py) count them as their own components. */
 __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_physical) {
-    uint16_t steps;
-    return agc_transfer_run(&rk_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,0xffffu,&steps);
+    agc_routine call;
+    if(agc_transfer_point(&rk_program,IMAGE,rk_device.superbank)==stop_physical) return EXEC_OK;
+    call=agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);
+    return call ? call(&rk_program,IMAGE,&rk_device) : EXEC_UNMAPPED;
 }
 __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at) {
     apollo_ov2_cont resume;
@@ -77,7 +100,9 @@ __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical) {
     apollo_overlay_state *s=IMAGE;
     apollo_ov2_cont at;
-    enum exec_status status=rk_trampoline(stop_physical);
+    enum exec_status status;
+    rk_rupts();
+    status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
     if(!rk_runtime.store.resolve(rk_runtime.store.user,
         (uint16_t)((s->words[4]&076000u)|(rk_device.superbank&0160u)),s->words[5],&at))

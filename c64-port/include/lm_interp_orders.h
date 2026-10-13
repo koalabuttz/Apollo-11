@@ -20,6 +20,7 @@ void lmi_address_pushup(apollo_overlay_state *, agc_word next, agc_word target);
  * word: the store, then Z at its continuation (DANZIG, DODLOAD 06460,
  * DODLOAD* 06144, DOVLOAD 06463, DOVLOAD* 06466, or 15BITADR for STOTC). */
 void lmi_store_code(apollo_overlay_state *, agc_word code);
+uint8_t lmi_store_spills(const apollo_overlay_state *, agc_word code);
 void lmi_stadr(apollo_overlay_state *, agc_word word);
 /* DODLOAD/DOVLOAD: load code into CYR, ending at DIRADRES 06106. */
 void lmi_dodload(apollo_overlay_state *);

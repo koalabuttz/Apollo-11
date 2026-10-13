@@ -14,7 +14,7 @@
  * negative, KILLTASK under a caller's CADR); the rest exercise the
  * refusals, which tests/test_lm_burn_baby.c also checks. */
 #define LMBB_STATES 128u
-#define LMBB_CASES 20992u    /* LMBB_ROUTINES * LMBB_STATES */
+#define LMBB_CASES 22272u    /* LMBB_ROUTINES * LMBB_STATES */
 #define LMBB_STOPPED 0u
 #define LMBB_REFUSED 2u
 typedef struct {

@@ -1,2 +1,3 @@
-lm-q-r-axis.prg sha256 d06d0557d9258cc96b2c2c229bf3d9d7f8d1da619a61f5b46d46ed76c035a0e7, 128 C64 rows (tests/lm_q_r_axis_c64_vectors.h)
+lm-q-r-axis.prg sha256 f53938615de40964adf2ce39551bb10b02b107932fe0282618395dcfee0a0b1e heap_start $9a7f
+lm-q-r-axis: 128 C64 rows (56 cover every entry, outcome, the 138 counted paths and the 364 edges of every linked source the host takes)
 PASS: VICE PAL lm-q-r-axis.prg: 128 checks, 0 failures

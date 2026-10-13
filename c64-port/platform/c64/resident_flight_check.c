@@ -11,20 +11,27 @@
  * one resident step (rk_resident_step) from a point with no kernel routine
  * must resolve through the store to the services module's probe, and one
  * from SPSIN must return to Q through the resident's SPSIN/SPCOS table. Build
- * with RK_PART 1 (services), 2 (jobs) or 3 (idle), one program each.
+ * with RK_PART 1 (services), 2 (jobs), 3 (idle) or 4 (the AGC clock and
+ * T3RUPT through resident steps, tests/resident_rupt_c64_rows.h), one
+ * program each.
  * Mailbox (tools/vice_run.py): $c001-2 failures, $c003-4 checks, $a5 at $c000;
  * $c005 the first failing step, $c006-7 interrupts seen. */
 #include <stdint.h>
 #include "resident_flight.h"
 #include "resident_flight_check.h"
 #include "resident_kernel_cases.h"
+#include "resident_rupt.h"
+#include "resident_rupt_c64_rows.h"
 #if RK_LM
 #define JOB_PARTS 3u
+#define RUPT_ROWS rr_lm_c64_rows
 #else
 #define JOB_PARTS 1u
+#define RUPT_ROWS rr_cm_c64_rows
 #endif
 /* RK_PART 1, 2 or 3 checks only that module's rows (each program's test
- * code must fit beside the resident and in the task slot). */
+ * code must fit beside the resident and in the task slot); 4 checks the
+ * AGC clock and T3RUPT through resident steps. */
 #ifdef RK_PART
 #define PART(p) (RK_PART==(p))
 #else
@@ -33,7 +40,7 @@
 extern volatile uint16_t ov2_irq_count;
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 static uint16_t failures,checks;
-static rk_case c;
+static rk_case c __attribute__((unused));   /* unused in part 4 */
 static const rk_check_data none={0,0,0,0};
 static const rk_check_data *rows;
 static void expect(uint8_t ok,uint8_t step){++checks;if(!ok){++failures;if(!mail[5])mail[5]=step;}}
@@ -42,9 +49,53 @@ static uint16_t call(uint8_t context,uint16_t module,uint16_t value){apollo_ov2_
  at.module=module;at.selector=0;
  if(apollo_ov2_run(&rk_runtime,context,at,&value,&action,&resume)!=APOLLO_OV2_OK||action!=APOLLO_OV2_DONE)return 2u;
  return value;}
+#if PART(1)||PART(2)||PART(3)
 static uint8_t load_case(uint16_t module){return (uint8_t)call(0,module,(uint16_t)(uintptr_t)&c);}
+#endif
+#if PART(4)
+/* T3RUPT rows (tests/resident_rupt_c64_rows.h): with the CIA interrupt
+ * held off, so no clock tick lands, the T3RUPT case module
+ * (resident_flight_rupt_cases.c) writes each row's state, and with T3RUPT
+ * pending it
+ * runs through resident steps (the entry, the kernel's T3RUPT, its tasks
+ * and TASKOVER) until RESUME brings Z back where it was; the image,
+ * channel 7, the interrupt enable and the interrupt flag must give yaAGC's
+ * digest. */
+static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16_t r,i,stop;uint8_t guard;uint32_t h;
+ __asm__ volatile("sei");
+ rk_ticks=ov2_irq_count;            /* drop the ticks since boot */
+ for(r=0;r<RR_C64_ROWS;++r){
+  row.n=(uint16_t)(r*RR_C64_STRIDE);
+  if(call(0,RK_MODULE_RUPT,(uint16_t)(uintptr_t)&row)!=1u){expect(0,10);continue;}
+  rk_device.superbank=row.c.superbank;rk_device.interrupt_enabled=row.c.interrupt_enabled;rk_hardware.in_interrupt=0;
+  rk_pending=RK_RUPT_BIT(RK_RUPT_T3);
+  stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
+  for(guard=0;guard<64u;++guard){
+   if(rk_resident_step(stop)!=EXEC_OK)break;
+   if(!rk_hardware.in_interrupt&&agc_transfer_point(&rk_program,image,rk_device.superbank)==stop)break;}
+  h=rr_mix(RR_BASIS,(uint16_t)(guard<64u&&!rk_hardware.in_interrupt));
+  for(i=0;i<2048u;++i)h=rr_mix(h,image->words[i]);
+  h=rr_mix(h,rk_device.superbank);h=rr_mix(h,rk_device.interrupt_enabled);h=rr_mix(h,rk_hardware.in_interrupt);
+  expect(h==RUPT_ROWS[r],10);}
+ __asm__ volatile("cli");
+}
+/* The AGC clock: TIME1 must count exactly the CIA interrupts the steps
+ * consumed, and CIA1 timer A must be counting from the 10 ms latch. */
+static void clock_check(apollo_overlay_state *image){uint16_t t,irq;
+ image->words[025]=0;rk_device.interrupt_enabled=0;
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ image->words[025]=0;t=rk_ticks;irq=ov2_irq_count;
+ while((uint16_t)(ov2_irq_count-irq)<5u){}
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==(uint16_t)(rk_ticks-t),11);
+ expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
+}
+#endif
 int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)APOLLO_SHARED_ADDRESS;
- uint16_t i,n,irq;uint8_t got;uint32_t d;
+ uint16_t i,n,irq;uint32_t d;
+#if PART(1)||PART(2)||PART(3)
+ uint8_t got;
+#endif
 #if PART(2)
  uint8_t part=1;
 #endif
@@ -83,6 +134,10 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
 #endif
   }
   expect(d==rows->digests[i],5);}
+#if PART(4)
+ rupt_rows(image);
+ clock_check(image);
+#endif
  /* The dispatcher: no kernel routine at the probe point, so the step
   * resolves it through the store and runs the probe. */
  image->words[4]=RK_PROBE_FB;image->words[5]=RK_PROBE_LOC;rk_device.superbank=0;rk_hardware.in_interrupt=0;
