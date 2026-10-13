@@ -81,6 +81,43 @@ build carries those rows only, one program per mission
 `LANEC_DI_C64_CM`): `make vice-lanec-di-transfer` runs both on a VICE PAL C64
 (54 and 9 checks).
 
+## The other four modules on the C64 (`di-transfer-c64m`)
+
+`di-transfer-c64`'s program has no room for the mark, sleep, idle and nvdsp
+modules, so `di-transfer-c64m` (1,148 cases) runs their round trips in
+programs of their own (certificate review #125):
+
+- every Luminary099 and Comanche055 caller of their entries, as in
+  `di-transfer` (POSTJUMP PINBRNCH from FRESH_START, TVCINITIALIZE, P70-P71,
+  IMU_CALIBRATION, PINBALL and EXTENDED_VERBS; POSTJUMP MARKEND from
+  BLANKET/ENDMARK; BANKCALL GOMARK*, GOXDSPF*, ENDMARK, KLEENEX, INITDSP...),
+  through INTER-BANK's BANKCALL, POSTJUMP and SWRETURN;
+- every point of theirs from its own entry, with up to four accepted cases of
+  its module.
+
+A case registers INTER-BANK and its destination's module only. A module's
+routines run on through some of the other modules' points (a mark display
+runs the display-start code to its exits), so the oracle stops at the other
+modules' points that the module's own suite never runs through
+(`c64m_stops_<mission>_<module>`, from the oracle's `LANEC_TRACE` of
+`di-<module>`), which is where the native chain ends too. 1,116 cases are
+identical and 32 refused with the state restored: chains that end inside
+INTER-BANK or the file at a point only an unlinked module claims, reached
+through a module case's random return address.
+
+The C64 runs the rows `tools/lanec/cover.py pick di-transfer-c64m` chose
+(`tests/lanec_di_transfer_c64m_c64.h`), one program per module and mission
+(`build/lanec-di-transfer-<module>-<lm|cm>.prg`, macro
+`LANEC_DI_C64M_<MODULE>_<LM|CM>`; `routines.py di` writes each program's rows
+to `tests/lanec_di_transfer_c64m_rows.h`). `make vice-lanec-di-transfer-c64m`
+runs all eight.
+
+The host suite `di-transfer` has no C64 program of its own (with the
+Executive the round trip does not fit one). The certificate's
+`c64_branch_outcomes` record (`cover.py record --pool`) lists it with no rows
+(`tests/lanec_di_transfer_c64.h`), so each of its host branch arcs must be
+taken by some other suite's C64 rows.
+
 ## Refusals
 
 `tests/lanec_di_refuse_cases.c` (suite `di-refuse`, 384 cases) takes cases

@@ -190,6 +190,22 @@ def integration_joint():
     return out
 
 
+def ddv_majors_joint():
+    """COMTERM's DDV ALPHAM with the divisor's major part one above the
+    dividend's (lm_interp_orders.c's equal-majors normalisation after
+    MPAC+ AD BUF), signs varied, MODE DP. Otherwise only long 11,2606-2620
+    runs reach it. Half the cases keep the random states."""
+    sets = []
+    for hi in (0o1, 0o1234, 0o17777, 0o30000):
+        for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
+            for sm in (1, -1):
+                for sa in (1, -1):
+                    sgn = lambda v, x: v if x > 0 else ones(-v)
+                    sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, sm), '0163': 0,
+                                 'ALPHAM': sgn(hi + 1, sa), 'ALPHAM+1': sgn(alo, sa)})
+    return sets + [{}] * len(sets)
+
+
 # Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
 # +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
 # NEGCOS's BPL on -0: LONG 180 degrees) and COSTH +-0 (ASIN +-1), as
@@ -1730,7 +1746,8 @@ SPECS = {
         # TIME2/TIME1 and the CDUs, and integration_joint's sets.
         'edge_cases': True,
         'counters': True,
-        'joint_states': {'*': integration_joint()},
+        'joint_states': {'*': integration_joint(),
+                         **{'COMTERM+%d' % n: ddv_majors_joint() for n in (26, 38, 42)}},
         # A CHANG2 resume starts from the state the program reaches it in
         # (MODE DP after a DLOAD; review #165).
         'resume_flow': True,
@@ -1740,6 +1757,9 @@ SPECS = {
         # truncated rows ('c64_cuts').
         'c64_cuts': True,
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'lm-integration-init': {
         'missions': ('lm',),
@@ -1815,6 +1835,9 @@ SPECS = {
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'rtb-op-codes': {
         'missions': ('lm', 'cm'),
@@ -2807,6 +2830,9 @@ SPECS = {
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'lm-stable-orbit': {
         'missions': ('lm',),
@@ -2838,6 +2864,9 @@ SPECS = {
         # A CHANG2 resume starts from the state the program reaches it in.
         'resume_flow': True,
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.
