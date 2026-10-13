@@ -1,0 +1,80 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+dea36dc5711e8cf1d0b3875da53fa7cf206b84c8992169fc65410f60f45a297d  build/cm-orbital-integration-1.prg
+7cbf2dcbada61c4c53030c65d1ac59b9a28ec8abb72035b86b95141576e76a9e  build/cm-orbital-integration-10.prg
+5da30227578c1dc5276e15961131714d457fd0b568628ba7f7efc975fc4816db  build/cm-orbital-integration-11.prg
+047d8eab8f10ce9032f9aa187e523f8a0d64f80687f37a6e587d37bef275eeed  build/cm-orbital-integration-12.prg
+bcfc4964926a6828b53ac3fd4eebda98127ddc46fc6c7e6dbe60f7eec7039101  build/cm-orbital-integration-13.prg
+1c954392d7af42ab2c40a695110bc0b325edb390ac588a00ec1ba39bb6409d62  build/cm-orbital-integration-14.prg
+929065b59c29cfc66ce1bac40594fbf4ad0ad211344eaab32940cb4f7589cdde  build/cm-orbital-integration-15.prg
+05da3af94dbae14cab11ac4df306333d741370e463f650ce57b8c4afc3ebb51e  build/cm-orbital-integration-16.prg
+e110b9b0b30de04a319d92fb5e1f692439e179cf463fd946d2a7abe9666da7dd  build/cm-orbital-integration-17.prg
+5a1d6a935fe26d42ee18e5a1a7a6aa3fe29a53218dace7d3c1c253ec9c6b372d  build/cm-orbital-integration-18.prg
+38ba2dfc492330957fe3fa97dc4f0edf8bae993f6aefaf7195ecf4bd29ad1727  build/cm-orbital-integration-19.prg
+a10170ee5d98f9d350bb3cee1724a195e712a170c524631c9515293de164bc17  build/cm-orbital-integration-2.prg
+536e8008666e096e06922525b5d243294644800579bf73afeba6ad32c5016ef8  build/cm-orbital-integration-20.prg
+32435598563899be565fedfe9939ec423976b94ed02214e56766c7346d0b0811  build/cm-orbital-integration-21.prg
+0d01d47cc72d1b41fdfcddee769284b9d22a97a5a3879affa485e5cc027a2435  build/cm-orbital-integration-22.prg
+6c4547acd7cc8aaea71132f3ebb26d48e84e24fa20a3cf32d23285d5810e19d6  build/cm-orbital-integration-23.prg
+a0ec19a08f8fa9d3446701b5dd43339c449619635b989e7fb60987feec3423a3  build/cm-orbital-integration-24.prg
+7ba4f648c3b0cfaf06845cdcd1288788a8f964a12e10d2952b32caca1a801505  build/cm-orbital-integration-25.prg
+c105eaea45ef5f6cc223e6082b41da07001af00cf7911ee1c7ffed126ce1ad4e  build/cm-orbital-integration-3.prg
+c6086ded3a8d46f1686cebe6d0639db4acab90ababa20cdd866ac582d2fe5330  build/cm-orbital-integration-4.prg
+59e390fcddf38c9d305ba84db7b71d55396f4ae357a9397b228bf12fdae7ace4  build/cm-orbital-integration-5.prg
+bd6cb5c765659bedc7e64744ba260d7894cb9a98ff23013935c200be669c9139  build/cm-orbital-integration-6.prg
+6d59f9d0175c2cc8b108b76636e59f741a395a8226182702682c5cfd6e36f407  build/cm-orbital-integration-7.prg
+cc39c9257f0ca87bf112eaa2bb292995f17f0f91f7938d68a5ef0c03f3a1a15a  build/cm-orbital-integration-8.prg
+84d35e2765c1250a1f7ef59bc7b5d2ca91ab2df52614016c4f170966ad2ace27  build/cm-orbital-integration-9.prg
+
+$ make vice-cm-orbital-integration
+for p in build/cm-orbital-integration-1.prg build/cm-orbital-integration-2.prg build/cm-orbital-integration-3.prg build/cm-orbital-integration-4.prg build/cm-orbital-integration-5.prg build/cm-orbital-integration-6.prg build/cm-orbital-integration-7.prg build/cm-orbital-integration-8.prg build/cm-orbital-integration-9.prg build/cm-orbital-integration-10.prg build/cm-orbital-integration-11.prg build/cm-orbital-integration-12.prg build/cm-orbital-integration-13.prg build/cm-orbital-integration-14.prg build/cm-orbital-integration-15.prg build/cm-orbital-integration-16.prg build/cm-orbital-integration-17.prg build/cm-orbital-integration-18.prg build/cm-orbital-integration-19.prg build/cm-orbital-integration-20.prg build/cm-orbital-integration-21.prg build/cm-orbital-integration-22.prg build/cm-orbital-integration-23.prg build/cm-orbital-integration-24.prg build/cm-orbital-integration-25.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-orbital-integration-1.prg: 29 checks, 0 failures
+PRG sha256: dea36dc5711e8cf1d0b3875da53fa7cf206b84c8992169fc65410f60f45a297d cm-orbital-integration-1.prg
+PASS: VICE PAL cm-orbital-integration-2.prg: 20 checks, 0 failures
+PRG sha256: a10170ee5d98f9d350bb3cee1724a195e712a170c524631c9515293de164bc17 cm-orbital-integration-2.prg
+PASS: VICE PAL cm-orbital-integration-3.prg: 11 checks, 0 failures
+PRG sha256: c105eaea45ef5f6cc223e6082b41da07001af00cf7911ee1c7ffed126ce1ad4e cm-orbital-integration-3.prg
+PASS: VICE PAL cm-orbital-integration-4.prg: 1 checks, 0 failures
+PRG sha256: c6086ded3a8d46f1686cebe6d0639db4acab90ababa20cdd866ac582d2fe5330 cm-orbital-integration-4.prg
+PASS: VICE PAL cm-orbital-integration-5.prg: 5 checks, 0 failures
+PRG sha256: 59e390fcddf38c9d305ba84db7b71d55396f4ae357a9397b228bf12fdae7ace4 cm-orbital-integration-5.prg
+PASS: VICE PAL cm-orbital-integration-6.prg: 1 checks, 0 failures
+PRG sha256: bd6cb5c765659bedc7e64744ba260d7894cb9a98ff23013935c200be669c9139 cm-orbital-integration-6.prg
+PASS: VICE PAL cm-orbital-integration-7.prg: 1 checks, 0 failures
+PRG sha256: 6d59f9d0175c2cc8b108b76636e59f741a395a8226182702682c5cfd6e36f407 cm-orbital-integration-7.prg
+PASS: VICE PAL cm-orbital-integration-8.prg: 3 checks, 0 failures
+PRG sha256: cc39c9257f0ca87bf112eaa2bb292995f17f0f91f7938d68a5ef0c03f3a1a15a cm-orbital-integration-8.prg
+PASS: VICE PAL cm-orbital-integration-9.prg: 16 checks, 0 failures
+PRG sha256: 84d35e2765c1250a1f7ef59bc7b5d2ca91ab2df52614016c4f170966ad2ace27 cm-orbital-integration-9.prg
+PASS: VICE PAL cm-orbital-integration-10.prg: 13 checks, 0 failures
+PRG sha256: 7cbf2dcbada61c4c53030c65d1ac59b9a28ec8abb72035b86b95141576e76a9e cm-orbital-integration-10.prg
+PASS: VICE PAL cm-orbital-integration-11.prg: 4 checks, 0 failures
+PRG sha256: 5da30227578c1dc5276e15961131714d457fd0b568628ba7f7efc975fc4816db cm-orbital-integration-11.prg
+PASS: VICE PAL cm-orbital-integration-12.prg: 22 checks, 0 failures
+PRG sha256: 047d8eab8f10ce9032f9aa187e523f8a0d64f80687f37a6e587d37bef275eeed cm-orbital-integration-12.prg
+PASS: VICE PAL cm-orbital-integration-13.prg: 14 checks, 0 failures
+PRG sha256: bcfc4964926a6828b53ac3fd4eebda98127ddc46fc6c7e6dbe60f7eec7039101 cm-orbital-integration-13.prg
+PASS: VICE PAL cm-orbital-integration-14.prg: 19 checks, 0 failures
+PRG sha256: 1c954392d7af42ab2c40a695110bc0b325edb390ac588a00ec1ba39bb6409d62 cm-orbital-integration-14.prg
+PASS: VICE PAL cm-orbital-integration-15.prg: 8 checks, 0 failures
+PRG sha256: 929065b59c29cfc66ce1bac40594fbf4ad0ad211344eaab32940cb4f7589cdde cm-orbital-integration-15.prg
+PASS: VICE PAL cm-orbital-integration-16.prg: 16 checks, 0 failures
+PRG sha256: 05da3af94dbae14cab11ac4df306333d741370e463f650ce57b8c4afc3ebb51e cm-orbital-integration-16.prg
+PASS: VICE PAL cm-orbital-integration-17.prg: 13 checks, 0 failures
+PRG sha256: e110b9b0b30de04a319d92fb5e1f692439e179cf463fd946d2a7abe9666da7dd cm-orbital-integration-17.prg
+PASS: VICE PAL cm-orbital-integration-18.prg: 30 checks, 0 failures
+PRG sha256: 5a1d6a935fe26d42ee18e5a1a7a6aa3fe29a53218dace7d3c1c253ec9c6b372d cm-orbital-integration-18.prg
+PASS: VICE PAL cm-orbital-integration-19.prg: 11 checks, 0 failures
+PRG sha256: 38ba2dfc492330957fe3fa97dc4f0edf8bae993f6aefaf7195ecf4bd29ad1727 cm-orbital-integration-19.prg
+PASS: VICE PAL cm-orbital-integration-20.prg: 25 checks, 0 failures
+PRG sha256: 536e8008666e096e06922525b5d243294644800579bf73afeba6ad32c5016ef8 cm-orbital-integration-20.prg
+PASS: VICE PAL cm-orbital-integration-21.prg: 19 checks, 0 failures
+PRG sha256: 32435598563899be565fedfe9939ec423976b94ed02214e56766c7346d0b0811 cm-orbital-integration-21.prg
+PASS: VICE PAL cm-orbital-integration-22.prg: 59 checks, 0 failures
+PRG sha256: 0d01d47cc72d1b41fdfcddee769284b9d22a97a5a3879affa485e5cc027a2435 cm-orbital-integration-22.prg
+PASS: VICE PAL cm-orbital-integration-23.prg: 49 checks, 0 failures
+PRG sha256: 6c4547acd7cc8aaea71132f3ebb26d48e84e24fa20a3cf32d23285d5810e19d6 cm-orbital-integration-23.prg
+PASS: VICE PAL cm-orbital-integration-24.prg: 3 checks, 0 failures
+PRG sha256: a0ec19a08f8fa9d3446701b5dd43339c449619635b989e7fb60987feec3423a3 cm-orbital-integration-24.prg
+PASS: VICE PAL cm-orbital-integration-25.prg: 19 checks, 0 failures
+PRG sha256: 7ba4f648c3b0cfaf06845cdcd1288788a8f964a12e10d2952b32caca1a801505 cm-orbital-integration-25.prg
+exit 0
