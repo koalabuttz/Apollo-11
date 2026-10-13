@@ -2590,7 +2590,7 @@
       "sha256": "6e4354e10fb62c7db74c60293ae3442136d6886fd6301c24966b974846985a99",
       "bytes": 21763,
       "lines": 928,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2606,7 +2606,7 @@
           "verification": "docs/CM-P11.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2619,7 +2619,6 @@
           "The interpreter bodies' POODOO/ALARM exits",
           "The caller's return through Q (TC Q runs the TC word held in Q)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p11/cm-p11-source-map.json",
@@ -2639,6 +2638,10 @@
             "vice_targets": {
               "vice-cm-p11": 202
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-p11.md",
+            "sha256": "99c11805f514b217f6470c35c4dd7ff85fd776b154021539dfa632714611d06b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p11/cm-p11-proof.json",
