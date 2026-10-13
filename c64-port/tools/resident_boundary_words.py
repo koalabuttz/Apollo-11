@@ -6,7 +6,9 @@ The interrupt entry (src/resident_rupt.c) stores the instruction word at Z in
 BRUPT and refuses to vector at RELINT, INHINT or EXTEND, so it needs the word
 at every fixed point where the resident can stop between two routines. Those
 points are the keys of the routine tables (the resident's, and the interrupt
-bodies its task-slot wrappers run) and of the store's resolver records. This
+bodies its task-slot wrappers run), the store's resolver records, and the
+interpreter's fetch point and DANZIG (where Z stands at an interpretive
+order, whose key is LOC's). This
 tool collects them (tools/resident_boundary_keys.c, built with the host cc),
 takes each word from the unmodified rope
 (evidence/fixed-data-<m>-original.rope.bin), checks it against the assembly
@@ -42,6 +44,11 @@ EXTRA = {
     'lm': ['src/lm_kernel.c', 'src/sp_routines.c', 'src/lm_single_trig.c', 'src/lm_t6rupt.c'],
     'cm': ['src/cm_kernel.c', 'src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c'],
 }
+# Where Z stands when the resident resolves an interpretive order: the
+# interpreter's fetch point (NEWOPS, include/standard_lead_routines.h) and
+# DANZIG with a right-hand order pending (include/agc_transfer.h). An
+# interrupt there takes the word at Z, not at the order's LOC key.
+INTERPRETER_POINTS = {'lm': [2048 + 0o6070 - 0o4000, 3121], 'cm': [2048 + 0o6037 - 0o4000, 3096]}
 COMMON = ['src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_word.c', 'src/agc_multiword.c',
           'src/agc_transfer.c', 'src/rupt_lead_ins.c', 'src/t4rupt_core.c', 'src/keyrupt_uprupt.c']
 
@@ -126,6 +133,8 @@ def header_text(cc, m, resolver):
     out_dir = ROOT / 'build'
     out_dir.mkdir(exist_ok=True)
     keys = table_keys(cc, m, out_dir)
+    for k in INTERPRETER_POINTS[m]:
+        keys.setdefault(k, 'interpreter points')
     for r in resolver:
         k = fixed_physical(r['loc'], r['bank'])
         if k is not None:
