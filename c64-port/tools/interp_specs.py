@@ -295,8 +295,8 @@ SPECS = {
                    'CSINEXT4': {'vac+046': [0o77775, 0o77765]},
                    # ROTATE and ADVANCE's returns push vectors: PUSHLOC low in the
                    # VAC area, so the pushes don't run over X1-QPRET.
-                   'ROTATE': {'0166': ['vac+0', 'vac+6', 'vac+14']},
-                   'ADVANCE+5': {'0166': ['vac+0', 'vac+6', 'vac+14']},
+                   'ROTATE': {'0166': ['vac+0', 'vac+6']},
+                   'ADVANCE+5': {'0166': ['vac+0', 'vac+6']},
                    'ADVANCE+20': {'0166': ['vac+0', 'vac+6', 'vac+14']}},
         # P32/P72F subtracts 60MIN until negative: hundreds of passes.
         'self_loops': True,
@@ -341,5 +341,50 @@ SPECS = {
         'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         'target': 'tests/cm_p34_p35_target.c',
         'freeze_stride': 512,
+    },
+    'cm-p37-p70': {
+        'missions': ('cm',),
+        'file': {'cm': 'P37,P70.agc'},
+        'source_path': {'cm': 'P37_P70.agc'},
+        'base': {'cm': 'cm_p37_p70'},
+        'symbol': {'cm': 'cm_p37_p70'},
+        # P37/P70 (return to earth): the program, its displays and the
+        # RTE subroutines (TMRAD, RTEDISP, INVC, PREC, RTENCK, V2T, GAMDV,
+        # DVCALC, XT1LIM).
+        'entries': ['P37', 'P370ALRM', 'TMRAD100', 'RTEDISP', 'INVC100', 'PREC100', 'RTENCK1',
+                    'RTENCK2', 'RTENCK3', 'V2T100', 'GAMDV10', 'DVCALC', 'XT1LIM'],
+        'externals': {'BANKCALL': 'auto', 'PHASCHNG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None, 'POLY': 'auto', 'BLANKET': 'auto', 'VARALARM': 'auto', 'POODOO': None},
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
+        # 144 passes of about eight routines each, and V2T's own iteration
+        # calls it again on each of its passes.
+        'max_steps': 10000,
+        # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
+        'index_returns': True,
+        # EBANK= RTEDVD: the RTE temporaries are E7 words.
+        'ebank': 7,
+        # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small
+        # negatives (and +0 high words), so a case runs a few passes.
+        # QPRET holds a CADR outside the file where a routine's STQ saves
+        # it (a random one can name the middle of a routine here).
+        'all_states': {'03731': [0o77777, 0], '03732': [0o77776, 0o77700, 0o77557],
+                       '0117': [0o4100, 0o5000],
+                       # PUSHLOC low: pushes stay below 20D and 31D-33D, the saved
+                       # returns of XT1LIM, GAMDV10, DVCALC and V2T100.
+                       '0166': ['vac+0', 'vac+6']},
+        # P370ALRM's GOTO SPRTEX takes it as a CADR (STQ saved it), where
+        # basic code's TC SPRTEX takes it as an address.
+        # GAMDV30 stores MPAC (NN2 +1) as the pass count: small too.
+        'states': {'P370ALRM+9': {'03762': [0o4100, 0o5000]}, 'P370ALRM+10': {'03762': [0o4100, 0o5000]},
+                   'GAMDV30': {'0154': [0o77777, 0], '0155': [0o77776, 0o77700, 0o77557]},
+                   # (CALL XT1LIM's return) pushes four scalars: in vector mode
+                   # they would run over XT1LIM's 20D.
+                   'V2T101+51': {'0163': [0, 1]}},
+        'target': 'tests/cm_p37_p70_target.c',
+        'freeze_stride': 256,
     },
 }

@@ -690,6 +690,15 @@ class Compiler:
 
         self._ix = None
         self._ix_write = None
+        if (index is not None and not extended and op == 1 and qc == 0 and k10 < 0o10
+                and self.spec.get('index_returns')):
+            # INDEX K; TCF 0 +n with K a saved Q (P37's INDEX SPRTEX, TCF 0
+            # +1): a return n words past the caller's. The sum is a TCF
+            # when it carries into the address's top bits; the run loop
+            # takes Z from there.
+            return [here, '{agc_word iw=ixw(s,0%05o,0%ou);' % (w, index) +
+                    'if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;' +
+                    'W[5]=(agc_word)(iw&07777u);return EXEC_OK;}'], []
 
         def ea(k):
             if index is None:

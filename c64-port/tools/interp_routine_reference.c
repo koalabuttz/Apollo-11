@@ -8,7 +8,9 @@
  * from its image to its stop: NEWOPS with LOC outside the file's ranges,
  * an exit of the interpreter's own bodies, or (reached from the file) one
  * of its outside basic addresses or the case's own stop (a caller's
- * return, or its skip return one past: INCR Q, RETURN), all as physical fixed addresses. Prints the case, the kind (0), Z, the
+ * return, or up to four words past it: a skip return, INCR Q and RETURN,
+ * or P37's INDEX RTENCKEX, TCF 0 +4), all as physical fixed addresses.
+ * Prints the case, the kind (0), Z, the
  * digest and, with argv[4] = "dump", the 2048 words. */
 static agc_t baseline[2];
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
@@ -43,14 +45,14 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   machine=baseline[c.cm];
   for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=c.interrupt_enabled;
-  for(cycles=0;cycles<400000u;++cycles){
+  for(cycles=0;cycles<4000000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
     if(pc==t->newops){unsigned p=loc_physical();if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
     if(trace==n&&getenv("IRC_ZTRACE"))fprintf(stderr,"Z %05o FB %05o A %06o L %06o Q %05o MPAC %05o %05o %05o BUF %05o %05o %05o BUF2 %05o %05o MPTEMP %05o IE %d\n",pc,get(4),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,get(2),get(0154),get(0155),get(0156),get(0130),get(0131),get(0132),get(0134),get(0135),get(0136),machine.AllowInterrupt);
     zp=z_physical(pc);
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
-    if(prev_in){if(zp==stop||(stop!=0xffffu&&zp==stop+1u)){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
+    if(prev_in){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp))){stopped=1;break;}for(i=0;i<t->nf;++i)if(zp==t->from_file[i]){stopped=1;break;}}
     for(i=0;i<t->n;++i)if(zp==t->ext[i]){stopped=1;break;}
     if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     if(stopped)break;

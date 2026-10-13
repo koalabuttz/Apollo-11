@@ -2266,8 +2266,21 @@
       "sha256": "c91e95ca3befe5cf49b39c78af6f38758b115726a5fc7a3c28a3006abcfccf86",
       "bytes": 37716,
       "lines": 1950,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p37_p70.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/rtb_modes.c"
+          ],
+          "scope": "Every word of the file (1,368 words): P37/P70 and its displays, P37PROC, P370ALRM, TMRAD100, RTEDISP, INVC100, PREC100, RTENCK1-3, V2T100, GAMDV10, DVCALC and XT1LIM, as 194 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/CM-P37-P70.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P40-P47.agc",
