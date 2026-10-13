@@ -2528,9 +2528,21 @@ All of Luminary099 P32-P35_P72-P75 (923 words: CSI and CDH with the CSI search, 
 
 All of Luminary099 CONIC_SUBROUTINES (1,072 words) is native C on the control-transfer ABI, as 455 routines compiled by `tools/interp_compile.py`, with CHECKCTR as `lm_conic_checkctr`. Every entry (KEPLERN, TIMETHET, LAMBERT, TIMERAD, APSIDES and the rest) and every point a job resumes at after CHANG2 is a routine. All 29,120 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 228 frozen cases, and 13 C64 diagnostics pass 910 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/LM-CONIC-COMPILED.md`.
 
+## INTER-BANK_COMMUNICATION of both missions against yaAGC
+
+Every genuine inline-CADR call site (448 LM, 354 CM) and every one of the 14 registered entries of INTER-BANK_COMMUNICATION in each mission now runs through `agc_transfer_run` against the original program in yaAGC. 2,146 cases match on all 2048 erasable words, the interrupt inhibit and SUPERBNK; 2,145 reach a continuation. The 2,150 strict and sanitizer checks and 723 VICE checks pass, and a source map shows the oracle executed every instruction of the file in both missions. This is re-certification evidence for the INTER-BANK items of #129. See `docs/INTERBANK-ORACLE.md`.
+
+## SYSTEM_TEST_STANDARD_LEAD_INS of both missions against yaAGC, with its CALL and EXIT words
+
+Every registered entry of SYSTEM_TEST_STANDARD_LEAD_INS in both missions, the interpreter entries they reach, and the file's interpretive CALL and EXIT words now run through `agc_transfer_run` against the original program in yaAGC. The CALL word is a new registered interpretive key (`standard_lead_interp_call_order`), and the EXIT key is registered at its word. 1,408 cases match yaAGC on all 2048 erasable words, the interrupt inhibit and SUPERBNK; 1,344 reach a continuation. The 1,414 strict and sanitizer checks and 475 VICE checks pass, and a source map shows every instruction executed by the oracle (COMPVER, GTSCPSS1 and REDO in cm-lead-tests). This is re-certification evidence for the STANDARD_LEAD_INS items of #129. See `docs/STANDARD-LEAD-ORACLE.md`.
+
 ## Thin resident Executive and Waitlist on the canonical image
 
 One thin resident Executive and Waitlist for both missions (`src/resident_kernel_body.inc`, `src/lm_kernel.c`, `src/cm_kernel.c`) translates EXECUTIVE.agc and WAITLIST.agc instruction by instruction onto the canonical image, with no gather/commit view and no domain refusals, as drop-in routine tables for the certified ones (`include/resident_kernel.h`). On every case of the six certified service milestones, 23,250 Luminary099 and 18,786 Comanche055 cases, each run equals the original program in yaAGC in all 2,048 erasable words and the device words, and equals the certified routines' final image word for word. The strict and sanitizer builds pass, and 400 LM and 329 CM rows, which take every kernel branch arc the host cases take, pass in VICE with the kernel on the image at $7000. The kernel links in 10.3 KB (LM) and 10.0 KB (CM) at -Oz, against 54-56 KB for the certified routines. See `docs/RESIDENT-KERNEL.md`.
+
+## Kernel C64 rows by branch cover, flight edges, and the #143/#144 fixes
+
+The C64 programs of the nine kernel milestones (`lm-t6rupt`, `rupt-lead-ins`, `keyrupt-uprupt` and the six Executive milestones) now run, beyond every third case, the fewest extra cases that take every branch arc the host corpus takes in every linked source (`tools/lane_a_c64_cover.py`); all nine pass in VICE. The Executive, Waitlist and T6 generators now produce flight edges on purpose (TIME3 wrap, tasks due together or 1 cs apart, equal priorities, NEWJOB -0, Q and QRUPT holding data, TIME6 1-3). QXCH now moves any Q (#143), and RESUME re-executes BRUPT only when it is the word at ZRUPT-1 (#144). The certificates of EXECUTIVE, WAITLIST, INTERRUPT_LEAD_INS, KEYRUPT_UPRUPT (both missions) and T6-RUPT_PROGRAMS cite the cover records and their VICE targets. See `docs/KERNEL-C64-COVER.md`.
 
 ## Translate Luminary R63
 
