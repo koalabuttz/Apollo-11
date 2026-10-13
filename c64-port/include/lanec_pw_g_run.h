@@ -12,7 +12,7 @@
  * p66_bias_io `p`; CM cases are refused. */
 #define LANEC_PW_G_P66_RUN(name, CALL)                                                             \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         p66_bias_io p;                                                                             \
         if (mission != LANEC_LM) return LANEC_OUT_OF_SCOPE;                                        \
         p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;                  \
@@ -24,7 +24,7 @@
 /* The same on the dsky_charin_io `p` (channel 11 passes through). */
 #define LANEC_PW_G_CHARIN_RUN(name, CALL)                                                          \
     enum lanec_status name(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission) \
-    {                                                                                              \
+    { LANEC_ONE_MISSION(mission);                                                                  \
         dsky_charin_io p;                                                                          \
         if (mission != LANEC_LM) return LANEC_OUT_OF_SCOPE;                                        \
         p.control.superbank = io->superbank; p.control.interrupt_enabled = io->interrupt_enabled; \

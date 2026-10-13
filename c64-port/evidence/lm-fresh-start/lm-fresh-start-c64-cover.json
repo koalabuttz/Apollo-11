@@ -2,7 +2,7 @@
  "milestone": "lm-fresh-start",
  "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_fresh_start.c": "ea7b1d5a095706aaab0cb77f6546b1079d666805abe9cf2061aba47c798ab4d0",
+  "src/lm_fresh_start.c": "2598955fddec1f7cfc4354049fd924943d3552bf9a89520a559f9b568103b433",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/lm_interbank_routines.c": "1ce4bc11a80c244b0e4d35440f9da513df49235d625e3c25b38cecd1f401026d",
@@ -282,8 +282,8 @@
   4080
  ],
  "c64_row_seed_stride": 16,
- "host_branch_arcs": 397,
- "c64_branch_arcs": 397,
+ "host_branch_arcs": 389,
+ "c64_branch_arcs": 389,
  "arcs_by_source_host_c64": {
   "build/lm-fresh-start-cover/runner.c": [
    1,
@@ -310,8 +310,8 @@
    2
   ],
   "src/lm_fresh_start.c": [
-   172,
-   172
+   164,
+   164
   ],
   "src/lm_interbank.c": [
    60,

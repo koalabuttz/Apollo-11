@@ -153,6 +153,7 @@ and zero private zero page.
 | C DSKY and verbs | `$03` | G CM flight, entry, TVC | `$08` |
 | D1 IMU and alignment | `$04` | H integration | `$09` |
 | D2 rendezvous navigation | `$05` | proof and test data | `$0F` |
+| I runtime interpreter | `$0A` | | |
 
 Ids `$0100..$0FFF` are valid, so each lane gets 255 per mission. The LM and CM
 stores are separate, so the same id can name different modules in each.

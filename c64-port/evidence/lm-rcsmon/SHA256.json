@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-rcsmon",
+  "release": "evidence-lm-rcsmon",
+  "files": {
+    "lm-rcsmon-c64-cover.json": {
+      "sha256": "f21b07723089045c314221c0fff9d05be93bdd96f3339d75ca940503eba5bf2e",
+      "bytes": 653,
+      "store": "tree"
+    },
+    "lm-rcsmon-differential.log": {
+      "sha256": "88b9f81362d2b9bcadec531e8891d07357e8afe6a266eb1f2c420efa372fc44c",
+      "bytes": 182,
+      "store": "tree"
+    },
+    "lm-rcsmon-host.log": {
+      "sha256": "5ce841928e5c1483dce2f5dc000e14eead4b83557438687055e198848c13c43b",
+      "bytes": 95,
+      "store": "tree"
+    },
+    "lm-rcsmon-proof.json": {
+      "sha256": "ed286e30995183d8fd188918f39ba07af09d06e2ac114af609117c862ef9b0d8",
+      "bytes": 2341,
+      "store": "tree"
+    },
+    "lm-rcsmon-source-map.json": {
+      "sha256": "e8ca47f62e0a663021d7953aa25afb3b3c8132aa6bc1c1f51fe7795198569e26",
+      "bytes": 9461,
+      "store": "tree"
+    },
+    "lm-rcsmon-vice.log": {
+      "sha256": "47e655bb6bdba0d0da01ab005ae293c80ccfe5ef27dbfb58ea6a171777f27bb6",
+      "bytes": 295,
+      "store": "tree"
+    }
+  }
+}

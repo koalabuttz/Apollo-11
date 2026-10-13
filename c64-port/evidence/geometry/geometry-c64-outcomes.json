@@ -15,9 +15,10 @@
   "src/lm_interp_steps.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 1401,
- "host_vector_edges": 1401,
- "c64_edges": 1401,
+ "host_edges": 1404,
+ "host_vector_edges": 1404,
+ "c64_edges": 1404,
  "host_branches_missing_on_c64": [],
- "c64_rows": 136
+ "c64_rows": 136,
+ "c64_segment_rows": 0
 }

@@ -3,6 +3,7 @@
 """Choose and check a Lane C suite's C64 rows by branch outcome.
 
   python3 tools/lanec/cover.py pick SUITE [--budget K]   # prints the rows
+  python3 tools/lanec/cover.py pick SUITE --keep          # the frozen rows plus the fewest that add the arcs they miss
   python3 tools/lanec/cover.py check SUITE                # the frozen rows take every host arc
   python3 tools/lanec/cover.py record OUT SUITE...        # the c64_branch_outcomes record of a certificate
 
@@ -27,6 +28,7 @@ p = argparse.ArgumentParser()
 p.add_argument('mode', choices=('pick', 'check', 'record'))
 p.add_argument('args', nargs='+')
 p.add_argument('--budget', type=int)
+p.add_argument('--keep', action='store_true', help='pick: keep the frozen rows and add rows for the arcs they miss')
 p.add_argument('--not-run', action='append', default=[], metavar='SUITE=N,N,...',
                help='record: frozen rows no C64 program runs (they do not fit one); their arcs do not count')
 p.add_argument('--legacy', action='append', default=[], metavar='SUITE=TARGET',
@@ -64,7 +66,16 @@ def frozen(suite):
 if a.mode == 'pick':
     t = traced(a.args[0])
     host = frozenset().union(*t.values())
-    chosen = rc.cover(t, budget=a.budget)
+    if a.keep:
+        chosen = list(frozen(a.args[0]) or [])
+        missing = host - frozenset().union(*(t[n] for n in chosen))
+        while missing:
+            best = max(sorted(t), key=lambda n: len(t[n] & missing))
+            chosen.append(best)
+            missing -= t[best]
+        chosen.sort()
+    else:
+        chosen = rc.cover(t, budget=a.budget)
     print(','.join(map(str, chosen)))
     print(f'{a.args[0]}: {len(chosen)} of {len(t)} cases take all {len(host)} host branch arcs', file=sys.stderr)
 elif a.mode == 'check':
@@ -76,7 +87,9 @@ elif a.mode == 'check':
 else:
     out, record = pathlib.Path(a.args[0]), {'method': (
         'tools/lanec/cover.py: every host case of each suite run alone through build/lanec-cover/lanec-native '
-        '(-O0 --coverage) and the branch arcs it takes in every linked source read with gcov -b '
+        '(-O0 --coverage, with LANEC_COVER_SITES so each call of a shared helper (lanec_ccs, lanec_ccs_a, '
+        'lanec_ts, lanec_ev_zero, lanec_ev_nonpositive, lanec_ev_mp) branches on its outcome at the call line) '
+        'and the branch arcs it takes in every linked source read with gcov -b '
         '(tools/c64_row_cover.py); the C64 rows are the cases frozen in tests/lanec_<suite>_c64.h (every case '
         'when the suite has none), and their arcs are compared with the whole host suite\'s'), 'suites': {}}
     missing_all, skip, seen = [], {}, {}
