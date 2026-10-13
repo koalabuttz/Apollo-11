@@ -1,5 +1,5 @@
-PASS: VICE PAL lm-t6rupt.prg: 240 checks, 0 failures
-
-real	1m48.508s
-user	1m47.327s
-sys	0m0.081s
+$ make vice-lm-t6rupt
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,-Map,build/lm-t6rupt.map src/lm_t6rupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/lm_t6rupt_cases.c platform/c64/lm_t6rupt_diagnostic.c -o build/lm-t6rupt.prg
+python3 tools/vice_run.py build/lm-t6rupt.prg --cycles 3000000000 --timeout 1200
+PASS: VICE PAL lm-t6rupt.prg: 242 checks, 0 failures
+PRG sha256: 45ae887abb650a75d508aea1ef098a79de2f4af9d6e3305acc337be9c3b1b71a lm-t6rupt.prg

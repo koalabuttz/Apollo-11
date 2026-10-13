@@ -23,7 +23,7 @@ keyrupt-uprupt-differential: build/keyrupt-uprupt-native
 	python3 tools/keyrupt_uprupt_source_map.py
 	git diff --exit-code -- tests/keyrupt_uprupt_vectors.h tests/keyrupt_uprupt_c64_vectors.h
 c64-keyrupt-uprupt: build/keyrupt-uprupt.prg
-build/keyrupt-uprupt.prg: $(KU_SRC) platform/c64/keyrupt_uprupt_diagnostic.c tests/keyrupt_uprupt_c64_vectors.h $(KU_HDR) | build
+build/keyrupt-uprupt.prg: $(KU_SRC) platform/c64/keyrupt_uprupt_diagnostic.c tests/keyrupt_uprupt_c64_vectors.h tests/keyrupt_uprupt_c64_rows.h $(KU_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(KU_FLAGS) -Wl,-Map,build/keyrupt-uprupt.map $(KU_SRC) platform/c64/keyrupt_uprupt_diagnostic.c -o $@
 vice-keyrupt-uprupt: build/keyrupt-uprupt.prg
 	python3 tools/vice_run.py build/keyrupt-uprupt.prg --cycles 3000000000 --timeout 1200

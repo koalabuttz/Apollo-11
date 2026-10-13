@@ -2,15 +2,15 @@
  "mission": "Luminary099",
  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
  "cases": 9208,
- "snapshot_sha256": "756c5c58ed34d7008c9c0b279fd8065948de94b4c3ee5afe8303a3ee6af7eaf9",
+ "snapshot_sha256": "f1791d74479ba1e0d894b640bf1989ef6997bea2c2cd57d73319bdaab4859b0b",
  "outcomes": {
-  "restart:alarm": 824,
-  "restart:returned": 3272,
-  "site:alarm": 1074,
-  "site:returned": 3014,
-  "task:alarm": 137,
+  "restart:alarm": 856,
+  "restart:returned": 3240,
+  "site:alarm": 1288,
+  "site:returned": 2800,
+  "task:alarm": 242,
   "task:refused": 38,
-  "task:returned": 849
+  "task:returned": 744
  },
  "entries": [
   "05072 NOVAC",

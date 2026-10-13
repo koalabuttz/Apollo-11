@@ -9,8 +9,12 @@
  * one 10 ms period of TIME1-TIME6, the requests it raises and channel 13.
  * The word at Z comes from the unmodified rope
  * (evidence/fixed-data-<m>-original.rope.bin) through program->fixed_data.
+ * Other vectors (tests/resident_vector_cases.h): the run through the
+ * resident and the wrapped interrupt bodies (tests/resident_vector_run.h)
+ * against yaAGC run to the same point.
  *   test-resident-rupt [ROPE.bin]   (build with -DRK_LM=1 or -DRK_CM=1)
- * RR_SHOW=n prints T3RUPT case n's final state (as the reference does). */
+ * RR_SHOW=n prints T3RUPT case n's final state (as the
+ * reference does), RR_SHOW_V=n other-vector case n's. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +22,7 @@
 #include "resident_rupt_cases.h"
 #include "resident_rupt_vectors.h"
 #include "resident_kernel.h"
+#include "resident_vector_run.h"
 #if RK_LM
 #include "p66_bias.h"
 typedef p66_bias_io rk_io;
@@ -45,7 +50,8 @@ static int load(const char *path){FILE *f=fopen(path,"rb");unsigned i,bank;unsig
   rope_words[bank*1024u+i%1024u]=(agc_word)((((unsigned)b[0]<<8)|b[1])>>1);}
  fclose(f);return 1;}
 int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-data-" NAME "-original.rope.bin";
- const char *show=getenv("RR_SHOW");uint32_t t3_steps=0,n,h,block=RR_BASIS,failures=0,checks=0;unsigned i,t3_done=0,taken=0,why[5]={0,0,0,0,0},raised[11]={0};
+ const char *show=getenv("RR_SHOW");uint32_t t3_steps=0,n,h,block=RR_BASIS,failures=0,checks=0;unsigned i,t3_done=0,taken=0,why[5]={0,0,0,0,0},raised[11]={0},vkind[5]={0};
+ uint32_t v_routines=0;const char *show_v=getenv("RR_SHOW_V");
  if(!load(path)){fprintf(stderr,"FAIL: resident-rupt %s: cannot read %s\n",NAME,path);return 1;}
  for(n=0;n<RR_ENTRY_CASES;++n){static rr_case c;static apollo_overlay_state image;agc_hardware hw={0};agc_native_program p={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};
   uint16_t pending;uint8_t got;
@@ -78,6 +84,23 @@ int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-d
   if(show&&(unsigned)atoi(show)==n)fprintf(stderr,"digest %08x\n",(unsigned)h);
   block=rr_fold(block,h);
   if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.t3[n/RR_BLOCK]){++failures;fprintf(stderr,"T3RUPT cases %u-%u differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n);}block=RR_BASIS;}}
+ /* The other vectors through the resident and the wrapped interrupt
+  * bodies, to RESUME or the first point no table holds. */
+ for(n=0;n<RR_VECTOR_CASES;++n){static rr_vcase c;static apollo_overlay_state image;uint16_t point,routines;uint8_t kind;
+  c.s=&image;rr_vector_input(MISSION,(uint16_t)n,&c);
+  kind=rr_vector_run(MISSION,&c,fixed,&point,&routines);
+  ++vkind[kind];v_routines+=routines;
+  if(show_v&&(unsigned)atoi(show_v)==n){fprintf(stderr,"native vector %u (request %u): kind %u point %u routines %u ch7 %o inten %o isr %u ch5 %o ch6 %o ch10 %o ch11 %o ch13 %o\n",(unsigned)n,rr_vector((uint16_t)n),kind,point,routines,
+    (unsigned)(MISSION?c.cm.superbank:c.lm.superbank),(unsigned)(MISSION?c.cm.interrupt_enabled:c.lm.interrupt_enabled),(unsigned)c.hw.in_interrupt,(unsigned)c.hw.channel5,(unsigned)c.hw.channel6,
+    (unsigned)c.hw.channel10,(unsigned)c.hw.channel11,(unsigned)c.hw.channel13);
+   for(i=0;i<2048u;++i)fprintf(stderr,"%04o %06o\n",i,(unsigned)(c.s->words[i]&(i<3u?0177777u:077777u)));}
+  block=rr_fold(block,rr_vector_digest(MISSION,&c,kind));
+  if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.vector[n/RR_BLOCK]){++failures;fprintf(stderr,"vector cases %u-%u (request %u) differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n,rr_vector((uint16_t)n));}block=RR_BASIS;}}
+ /* No key in two tables: the C64 resident runs a wrapper's table alone. */
+ {uint8_t count,resident,a,b;const agc_routine_table *t=rr_vector_tables(MISSION,&count,&resident);uint16_t x,y;
+  for(a=0;a<count;++a)for(b=(uint8_t)(a+1u);b<count;++b)for(x=0;x<t[a].count;++x)for(y=0;y<t[b].count;++y)
+   if(t[a].entries[x].physical==t[b].entries[y].physical){++failures;fprintf(stderr,"key %u in tables %u and %u\n",t[a].entries[x].physical,a,b);}
+  ++checks;}
  for(n=0;n<RR_TIMER_CASES;++n){static apollo_overlay_state s;agc_word t[6];agc_hardware hw={0};uint16_t pending=0;
   rr_timer_input(n,t,&hw.channel13);for(i=0;i<6u;++i)s.words[024u+i]=t[i];
   rk_timer_tick(&s,&hw,&pending);
@@ -86,8 +109,9 @@ int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-d
   block=rr_fold(block,h);
   if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.timer[n/RR_BLOCK]){++failures;fprintf(stderr,"timer cases %u-%u differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n);}block=RR_BASIS;}}
  printf("%s: resident-rupt %s: %u entry cases (%u taken; not taken: %u nothing pending, %u in an interrupt, %u inhibited, %u overflow in A, %u RELINT/INHINT/EXTEND at Z), "
-        "%u T3RUPT cases (%u to RESUME, %u kernel routines), %u timer periods (T6 %u, T5 %u, T3 %u, T4 %u raised); %u checks, %u failures\n",
-        failures?"FAIL":"PASS",NAME,(unsigned)RR_ENTRY_CASES,taken,why[0],why[1],why[2],why[3],why[4],(unsigned)RR_T3_CASES,t3_done,(unsigned)t3_steps,(unsigned)RR_TIMER_CASES,
+        "%u T3RUPT cases (%u to RESUME, %u kernel routines), %u other-vector cases (%u to RESUME, %u to a point no table holds, %u refused, %u not taken, %u runaway; %u routines), %u timer periods (T6 %u, T5 %u, T3 %u, T4 %u raised); %u checks, %u failures\n",
+        failures?"FAIL":"PASS",NAME,(unsigned)RR_ENTRY_CASES,taken,why[0],why[1],why[2],why[3],why[4],(unsigned)RR_T3_CASES,t3_done,(unsigned)t3_steps,
+        (unsigned)RR_VECTOR_CASES,vkind[0],vkind[1],vkind[2],vkind[3],vkind[4],(unsigned)v_routines,(unsigned)RR_TIMER_CASES,
         raised[1],raised[2],raised[3],raised[4],(unsigned)checks,(unsigned)failures);
  return failures?1:0;
 }

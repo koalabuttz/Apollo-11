@@ -1,0 +1,93 @@
+{
+ "cases": 1266,
+ "reached": 1244,
+ "native_equals_yaagc": true,
+ "by_kind": {
+  "LM T3RUPT 01,3407": {
+   "cases": 512,
+   "reached": 512
+  },
+  "CM T3RUPT 01,3416": {
+   "cases": 512,
+   "reached": 512
+  },
+  "LM DLY2 -1 05211": {
+   "cases": 57,
+   "reached": 49
+  },
+  "CM DLY2 -1 05255": {
+   "cases": 57,
+   "reached": 43
+  },
+  "LM NOQBRSM +1 05275": {
+   "cases": 128,
+   "reached": 128
+  }
+ },
+ "ropes": {
+  "Luminary099": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ },
+ "oracle": "yaAGC (agc_engine) running the original rope of each mission",
+ "oracle_sha256": "3f45112d6d4295a781f7cfd1d29d1f50ce6916bd5ffb0fc5502e0290b3a40bc3",
+ "dependencies": {
+  "src/lm_exec_jobs.c": "51b394b672f7c55ecad20507af07ad56b733dea18582ea5a63d7a46b22769f72",
+  "src/lm_exec_tasks.c": "54f3f42a64409b1bbdfc9555d7da1f82a67b6b46a4d5f716edd8717acc2c4511",
+  "src/lm_exec_routines.c": "d981332eda55f7028c37430780fff87ae004ce52e41eb09a546f5c551fb30ee8",
+  "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
+  "src/lm_admission_image.c": "79952101a1b19a7c90bb6c94b706d4a89f74347c820902da00267692a004deab",
+  "src/lm_basic_sleep.c": "d7ad6b83618968bf5943307b9b4f54c12bab0e326c06b1965f8abeab6969edc2",
+  "src/lm_basic_wake.c": "b3e1034cbebfad88fbb7328485d501d170778a34d1642e40229fb45e60935e5d",
+  "src/lm_basic_priority.c": "171b82202052dd49977ce06502e1ce5e565cb27c298d09e1655e7250e9d30f47",
+  "src/lm_basic_finish.c": "bbcc6b9d9ef840d7c9eb36007528ab7212aba9a6c3389a010b9cbe515dc3bb6a",
+  "src/lm_basic_change.c": "bc9b8758b918ecfda500635485441377becf0afb4c004094bb076b5b9ab78291",
+  "src/lm_interpreter_change.c": "25c1ded1e6884eb2bbda1880674cfe97c9095e5fcbcecf6da32b758fe4f6f817",
+  "src/lm_delay_image.c": "be64666330ab3d1490925d9ab85f3f71ac3ec8b72d74c967fad8f9a122f38d28",
+  "src/lm_taskover_resume.c": "e1f245faad9cb600fa9cbdfeaa72b6fac37d55fdea6ac75733a63cdd2bd60651",
+  "src/lm_waitlist_dispatch.c": "612a7cab64f75c91b4ad0568085ef7d0e62a8c4af702ef1a1d20d29b29469459",
+  "src/lm_waitlist_irq_dispatch.c": "566365cd402c0450b346de6de6f345d99c49cc559d6961e4487061e4719a642e",
+  "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
+  "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+  "src/p66_native.c": "bbcb6cc6e4cb1c6bd5e10efa888eb38b762255975bd522bb4146bdf968c0447a",
+  "src/agc_transfer.c": "b477eed83d18e40c78cb013157d6cfb988833249abaad1e008afa882666a3ebf",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/lm_admission_image_cases.c": "862178bd4da47252c9a0f885961f9deb4a440b68128eb2316801b861d8f72756",
+  "tests/lm_basic_change_cases.c": "1f622d34dfc363597df4592e73a24768c722cebd80d28672606b3c221f328934",
+  "tests/lm_interpreter_change_cases.c": "d4598d4252d25465ebe7ef17355f2123bc97f664c4212d9b23c4deedc77b747c",
+  "tests/lm_sleep_cases.c": "20fdccde739805f4dcdc32c010946c393ec98b6ad23b13fd41f6f84a59a4d9fa",
+  "tests/lm_wake_cases.c": "6dbfa6b727bc0ceaa220db32205bb3084e946273321f0094c7e08b6d4221106e",
+  "tests/lm_priority_cases.c": "01277b6b24d7c396a5749aa38f4c19e625f922ac2a2c002ad8df69416273ec15",
+  "tests/lm_finish_cases.c": "2715bae884812a5651e05480e1dd227faad771f2b3548a4dce4f1026d9bcc5b1",
+  "tests/lm_delay_image_cases.c": "380319051289d85b9ddc3298fb9976df6db98b110ee1c01b6123d46c97024109",
+  "tests/lm_waitlist_image_cases.c": "6cdec7d9b30f311193c1236135a3182c51cbf722a8023dd9afc9656b42d34f1c",
+  "tests/lm_taskover_resume_cases.c": "524077add292e101e68fcdf475878682eb4adb562692034ab50053b9042d79e7",
+  "tests/lm_waitlist_dispatch_cases.c": "1bf94f67b23e3530554f8170661f8f70c955a2538b2438c4d89e0887002e2cd8",
+  "tests/throttle_bridge_cases.c": "ff017285d26479485fd3896ea4d21b2d7692eafa0b4f187a603c1d7fe8396e14",
+  "tests/lm_exec_jobs_cases.c": "e53f23081b164121ecd5b8ca0972cc85a5e66b64ef7a6632f79d0b7255ce1359",
+  "src/cm_exec_routines.c": "835b5bf289256dcf50affc8232cf1fa9402b4cff077db67f08cf59665bc8f5a9",
+  "src/cm_admission_zero.c": "e865643cd9d8f54fb87f7e5456e2c4cd45b9d016a3f212246cf99ec27ddef253",
+  "src/cm_waitlist_extended.c": "c4909d471846944e7018dfc70cca8606062cb5604906ec857363d9bb61829e87",
+  "src/cm_waitlist_internal.c": "58eaaf498a2a8497be5377e07ed1f395cf294efb78478da56f3910e04dfac9c5",
+  "src/cm_task_transfer.c": "1867f3a5fb68f4a4ddbb2ae25bc6232f780aae08ecc8b2e2483293bb8947d971",
+  "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
+  "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+  "src/cm_waitlist.c": "ff80e11e7934a3d494a3a85144925335af0234d1f036be6f072c778d05b45d45",
+  "tests/cm_exec_services_cases.c": "1f4ae83278674f4c5d365ceeee70f4025a30205e4da78746209187e2aef2a027",
+  "src/lm_t6rupt.c": "b5e7fefbdfcb9f46424c76629f8fbcd2b2ecad3b7a8f50faad4550917fd5c423",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "tests/lm_t6rupt_cases.c": "d0507d9e6d92f43ed17a2e48b3c41ae01f6e6f629bda7b778c1ebcb12e0dce51",
+  "tests/service_transfer_cases.c": "a45b879d502e0a2e2df3a30d9483a55f43dc58c19f562fc465f9507d3ed14782",
+  "src/service_transfer.c": "ff4e3f3382bc6292103fd1362144be949f8aa3d8db653b798a9f52f40e650712",
+  "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
+  "tests/waitlist_entries_cases.c": "c05f65934d53dd7fd8751ba66e1dac93200f445c16bf55a05ee6364d492d6fab",
+  "include/agc_transfer.h": "41e856d63ea78cfdb6d36c1f07e538bc61fc9a9e869eca96b4afb26c2bf42a98",
+  "include/lm_exec_routines.h": "5eb5020b4cc645164f0e75f6740432402efc2cd641d75ca381b0fc05aa4de4a8",
+  "include/cm_exec_routines.h": "3109fec2df17ef77ceaf34bea0c734803835e5a341b5c86738c377e14851c5df",
+  "include/lm_t6rupt_routines.h": "62f628d317b76956b8dfc83904de9a4f9a9bb52a03b6460f366de67fbc5cdb07",
+  "include/service_transfer.h": "d96b2a1b23f7c092ee0adb2554598e8e7f473e77a39a0c81535212a172117d7f",
+  "tests/waitlist_entries_cases.h": "8824872797ff53c87ebeaaebc6df202b1ef9d6740e30c21f938b4344d2412a71"
+ },
+ "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears"
+}

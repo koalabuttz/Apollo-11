@@ -292,7 +292,11 @@ enum {GO=0,STOP=1,REFUSE=2};
 #define NOINL __attribute__((noinline,unused))
 #define RUN_LIMIT 2000u
 static __attribute__((unused)) agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
-static __attribute__((unused)) int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
+static __attribute__((unused)) int tc_word(agc_register w){
+ if(w<02000u)return 0;
+ if(w>07777u)return 0;
+ return 1;
+}
 
 /* ---- Interpretive helpers (as lm_burn_baby.c) ------------------------ */
 /* INDJUMP/MISCJUMP/UNAJUMP body entries. */
@@ -455,7 +459,9 @@ static const uint8_t SEG_LABELS[2][160]={{
 static int seg_end(uint16_t ph,int interp){unsigned b=ph/1024u,a=ph%1024u+02000u,p;
  p=b==033u?a-02206u:b==037u?01600u+a-03410u:b==022u?02100u+a-03661u:b==027u?02140u+a-03321u:
    b==032u?02200u+a-03770u:b==023u?02210u+a-02461u:b==021u?02240u+a-02130u:02270u+a-03716u;
- return p<1280u&&(SEG_LABELS[interp][p>>3]>>(p&7)&1u)?STOP:REFUSE;}
+ if(p>=1280u)return REFUSE;
+ if(SEG_LABELS[interp][p>>3]>>(p&7)&1u)return STOP;
+ return REFUSE;}
 #endif
 #define IC(b,a) case PH(b,a): SV_PATH(PATHOF(b,a))
 /* One order-pair word at LOC (Z at NEWOPS), by its physical address. */
@@ -838,7 +844,14 @@ static NOINL int ixr(agc_register w,unsigned n,unsigned step,unsigned *v){
 }
 static NOINL int ix(const apollo_overlay_state *s,unsigned x,unsigned n,unsigned step,unsigned *v){return ixr(ai_word(s,x),n,step,v);}
 #define IX(x,n,step) do{if(!ix(s,(x),(n),(step),&v))return REFUSE;}while(0)
-static __attribute__((unused)) int vac(agc_word f){return f==0401u||f==0455u||f==0531u||f==0605u||f==0661u;}
+static __attribute__((unused)) int vac(agc_word f){
+ if(f==0401u)return 1;
+ if(f==0455u)return 1;
+ if(f==0531u)return 1;
+ if(f==0605u)return 1;
+ if(f==0661u)return 1;
+ return 0;
+}
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #define AT(b,a) case PH(b,a): L##b##_##a: __attribute__((unused)) SV_PATH(PATHOF(b,a))
 #define GOTO(b,a) goto L##b##_##a
@@ -2005,15 +2018,12 @@ static int basic(apollo_overlay_state *s,lm_sv_io *io,uint16_t ph){
 }
 /* The file's words (code and data). A data word reached as code is
  * refused (basic's default). */
-static __attribute__((unused)) int in_code(uint16_t ph){
- return (ph>=PH(21,02130)&&ph<=PH(21,02153))||
-        (ph>=PH(22,03661)&&ph<=PH(22,03710))||
-        (ph>=PH(23,02461)&&ph<=PH(23,02510))||
-        (ph>=PH(27,03321)&&ph<=PH(27,03357))||
-        (ph>=PH(32,03770)&&ph<=PH(32,03772))||
-        (ph>=PH(33,02206)&&ph<=PH(33,03776))||
-        (ph>=PH(34,03716)&&ph<=PH(34,03774))||
-        (ph>=PH(37,03410)&&ph<=PH(37,03654));
+static const uint16_t code_ranges[][2]={
+ {PH(21,02130),PH(21,02153)},{PH(22,03661),PH(22,03710)},{PH(23,02461),PH(23,02510)},{PH(27,03321),PH(27,03357)},
+ {PH(32,03770),PH(32,03772)},{PH(33,02206),PH(33,03776)},{PH(34,03716),PH(34,03774)},{PH(37,03410),PH(37,03654)}};
+static __attribute__((unused)) int in_code(uint16_t ph){unsigned i;
+ for(i=0;i<sizeof code_ranges/sizeof code_ranges[0];++i)if(ph>=code_ranges[i][0]&&ph<=code_ranges[i][1])return 1;
+ return 0;
 }
 /* The words that run only after the EXTEND or INDEX before them (an
  * extracode, an indexed operand): a computed transfer that lands on one
@@ -2030,7 +2040,8 @@ static __attribute__((unused)) int here(const apollo_overlay_state *s,const lm_s
  *interp=0;
  if(z==NEWOPS){*interp=1;*ph=agc_fixed_physical(W[LOC],W[BANKSET],io->control.superbank);}
  else *ph=agc_fixed_physical(z,W[FBANK],io->control.superbank);
- return *ph!=AGC_TRANSFER_NONE&&in_code(*ph);
+ if(*ph==AGC_TRANSFER_NONE)return 0;
+ return in_code(*ph);
 }
 /* FIXLOC one of the five VAC areas, PUSHLOC inside it, no order code left
  * over in EDOP. */
@@ -2038,7 +2049,9 @@ static __attribute__((unused)) int work_area(const apollo_overlay_state *s){
  agc_word f=W[FIXLOC],p=W[PUSHLOC];
  if(W[EDOP])return 0;
  if(f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
- return p>=f&&p<=f+042u;
+ if(p<f)return 0;
+ if(p>f+042u)return 0;
+ return 1;
 }
 /* A computed transfer (TC Q, TC A, TC LRADRET, DTCB) out of the file onto
  * the interpreter's own code (fixed-fixed 06037-07707 but NEWOPS, SWCALL
@@ -2050,12 +2063,18 @@ static __attribute__((unused)) int inner(const apollo_overlay_state *s,const lm_
  if(z<02000u||(z>=04621u&&z<=04630u)||(z>=06037u&&z<=07707u))return 1;
  if(z>=04000u)return 0;
  ph=agc_fixed_physical(z,W[FBANK],io->control.superbank);
- return ph<=03734u-02000u||(ph>=1024u+0344u&&ph<=1024u+0600u);
+ if(ph<=03734u-02000u)return 1;
+ if(ph<1024u+0344u)return 0;
+ if(ph>1024u+0600u)return 0;
+ return 1;
 }
 static enum exec_status steps(apollo_overlay_state *s,lm_sv_io *io){
  unsigned n;int st,interp;uint16_t ph;
  for(n=0;n<RUN_LIMIT;++n){
-  if(!here(s,io,&interp,&ph))return n&&!inner(s,io)?EXEC_OK:EXEC_OUT_OF_SCOPE;
+  if(!here(s,io,&interp,&ph)){
+   if(!n)return EXEC_OUT_OF_SCOPE;
+   if(inner(s,io))return EXEC_OUT_OF_SCOPE;
+   return EXEC_OK;}
   /* NEWOPS reads the order word under FB, which DANZIG set from BANKSET. */
   if(interp&&(((W[FBANK]^W[BANKSET])&076000u)||!work_area(s)))return EXEC_OUT_OF_SCOPE;
   if(!interp&&dependent_word(ph))return EXEC_OUT_OF_SCOPE;

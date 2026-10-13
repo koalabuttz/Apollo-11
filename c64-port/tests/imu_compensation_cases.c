@@ -19,8 +19,10 @@
 #endif
 #if !defined ICP_ENTRY_ONLY && !defined ICP_NO_EXEC
 #include "lm_exec_routines.h"
+#include "cm_exec_routines.h"
 #include "p66_native.h"
 #include "../src/lm_exec_sites.inc"
+#include "../src/cm_exec_sites.inc"
 #define ICP_EXEC 1
 #endif
 #define ANY_FB 0177777u
@@ -31,14 +33,15 @@ static const agc_word cm_points[ICP_ROUTINES-ICP_LM_ROUTINES]={CM_ICP_1PIPA,CM_I
 static const agc_word lm_ext[6]={LM_ICP_SWRETURN,LM_ICP_BANKCALL,LM_ICP_IBNKCALL,LM_ICP_NOVAC,LM_ICP_ENDOFJOB,0};
 static const agc_word cm_ext[5]={CM_ICP_SWRETURN,CM_ICP_BANKCALL,CM_ICP_NOVAC,CM_ICP_ENDOFJOB,0};
 /* Round trips stop at the caller's continuation, or where native code ends:
- * Luminary's NOVAC alarms (BAILOUT1 05716, POODOO1 05726) through native
- * NOVAC, or the NOVAC entry itself (Comanche, and the Luminary cohort run
- * without the Executive). */
+ * NOVAC's alarms through native NOVAC (Luminary BAILOUT1 05716 and POODOO1
+ * 05726, Comanche BAILOUT 07755 and POODOO 05721), or the NOVAC entry
+ * itself in the plain cohort, run without the Executive. */
 static const agc_word lm_trip_ext[3]={05716u,05726u,0};
 static const agc_word lm_plain_ext[2]={LM_ICP_NOVAC,0};
-static const agc_word cm_trip_ext[2]={CM_ICP_NOVAC,0};
+static const agc_word cm_trip_ext[3]={07755u,05721u,0};
+static const agc_word cm_plain_ext[2]={CM_ICP_NOVAC,0};
 const agc_word *icp_externals(const icp_case *c){
- if(c->stop_z)return c->cm?cm_trip_ext:c->exec?lm_trip_ext:lm_plain_ext;
+ if(c->stop_z)return c->cm?(c->exec?cm_trip_ext:cm_plain_ext):c->exec?lm_trip_ext:lm_plain_ext;
  return c->cm?cm_ext:lm_ext;
 }
 static uint32_t rnd(uint32_t *s){*s=*s*1664525u+1013904223u;return *s;}
@@ -67,7 +70,7 @@ static uint16_t site_physical(uint8_t cm,uint16_t k){
 /* Site and state of round trip n. */
 static uint16_t trip(uint16_t n,unsigned *v){
  if(n<ICP_PLAIN_FIRST){*v=(n-ICP_TRIP_FIRST)/ICP_SITES;return (uint16_t)((n-ICP_TRIP_FIRST)%ICP_SITES);}
- *v=(n-ICP_PLAIN_FIRST)/ICP_LM_SITES;return (uint16_t)((n-ICP_PLAIN_FIRST)%ICP_LM_SITES);
+ *v=(n-ICP_PLAIN_FIRST)/ICP_SITES;return (uint16_t)((n-ICP_PLAIN_FIRST)%ICP_SITES);
 }
 #endif
 #ifdef ICP_EXEC
@@ -78,6 +81,13 @@ static void canon(apollo_overlay_state *m,uint8_t cores,uint8_t vacs){executive 
  for(i=0;i<EXEC_CORE_COUNT;++i)e.core[i][EXEC_PRIORITY]=i<cores?(agc_word)(010110u+i*01000u):AGC_NEG_ZERO;
  for(i=0;i<EXEC_VAC_COUNT;++i)e.vac[i][0]=i<vacs?0:(agc_word)(0400u+i*44u);
  p66_native_export_executive(m,&e);
+}
+/* Comanche's (as the cm-exec-services cases): PRIORITY of each core set at
+ * 0167 + 12k, VAC areas from 0400, 44 words apart. */
+static void canon_cm(apollo_overlay_state *m,uint8_t cores,uint8_t vacs){unsigned i;
+ for(i=0;i<7u;++i)m->words[0167u+12u*i]=i<cores?(agc_word)(010110u+i*01000u):AGC_NEG_ZERO;
+ for(i=0;i<5u;++i)m->words[0400u+44u*i]=i<vacs?0:(agc_word)(0400u+i*44u);
+ m->words[067]=0;   /* NEWJOB */
 }
 #endif
 static void set_banks(apollo_overlay_state *m,agc_word fb,agc_word eb){m->words[4]=fb;m->words[3]=eb;m->words[6]=(agc_word)(fb|(eb>>8));}
@@ -103,9 +113,10 @@ void icp_input(apollo_overlay_state *m,icp_case *c,uint16_t n){uint32_t seed=0x1
   fb=(agc_word)((ph/1024u)<<10);z=cm?CM_ICP_BANKCALL:LM_ICP_BANKCALL;
   m->words[2]=(agc_word)(02000u+ph%1024u);
   c->stop_z=(agc_word)(m->words[2]+1u);c->stop_fb=fb;c->interrupt_enabled=1;
-  c->exec=(uint8_t)(!cm&&n<ICP_PLAIN_FIRST);
+  c->exec=(uint8_t)(n<ICP_PLAIN_FIRST);
 #ifdef ICP_EXEC
-  if(c->exec)canon(m,(uint8_t)(v%9u==0u?8u:1u+v%7u),(uint8_t)(v%11u==0u?5u:v%5u));
+  if(c->exec&&!cm)canon(m,(uint8_t)(v%9u==0u?8u:1u+v%7u),(uint8_t)(v%11u==0u?5u:v%5u));
+  if(c->exec&&cm)canon_cm(m,(uint8_t)(v%9u==0u?7u:1u+v%6u),(uint8_t)(v%11u==0u?5u:v%5u));
 #endif
 #endif
  }
@@ -145,6 +156,13 @@ static const agc_site_operand *lm_trip_operands(uint16_t *count){static uint16_t
    lm_operands[n++]=(j>=LM_EXEC_SITES_COUNT||(i<LM_INTERBANK_SITES_COUNT&&lm_interbank_sites[i].physical<lm_exec_sites[j].physical))?lm_interbank_sites[i++]:lm_exec_sites[j++];}
  *count=n;return lm_operands;
 }
+static agc_site_operand cm_operands[CM_INTERBANK_SITES_COUNT+CM_EXEC_SITES_COUNT];
+static const agc_site_operand *cm_trip_operands(uint16_t *count){static uint16_t n;
+ if(!n){uint16_t i=0,j=0;
+  while(i<CM_INTERBANK_SITES_COUNT||j<CM_EXEC_SITES_COUNT)
+   cm_operands[n++]=(j>=CM_EXEC_SITES_COUNT||(i<CM_INTERBANK_SITES_COUNT&&cm_interbank_sites[i].physical<cm_exec_sites[j].physical))?cm_interbank_sites[i++]:cm_exec_sites[j++];}
+ *count=n;return cm_operands;
+}
 #endif
 static const agc_routine_table *mine(uint8_t cm){return cm?&cm_imu_compensation_routines:&lm_imu_compensation_routines;}
 static int external(const icp_case *c,agc_word z){const agc_word *e=icp_externals(c);for(;*e;++e)if(*e==z)return 1;return 0;}
@@ -161,7 +179,14 @@ unsigned icp_run(apollo_overlay_state *s,uint16_t n,uint16_t *ie){icp_case c;agc
 #else
   if(c.cm>1u)return 3u;
 #ifdef ICP_CM_TRIPS
-  if(c.cm){tables[1]=cm_interbank_routines;program.basic_count=2;program.operands=cm_interbank_site_table(&program.operand_count);}
+  if(c.cm&&!c.exec){tables[1]=cm_interbank_routines;program.basic_count=2;program.operands=cm_interbank_site_table(&program.operand_count);}
+  else if(c.cm){
+#ifdef ICP_EXEC
+   tables[1]=cm_interbank_routines;tables[2]=cm_exec_routines;program.basic_count=3;program.operands=cm_trip_operands(&program.operand_count);
+#else
+   return 3u;
+#endif
+  }
 #else
   if(c.cm)return 3u;
 #endif

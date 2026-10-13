@@ -22,7 +22,12 @@ apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
 agc_hardware rk_hardware;
 uint16_t rk_pending,rk_ticks;
+rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
+/* The boundary-word table: its REU bank and address (in its module's
+ * image, within one 64 KB bank) and record count. */
+static uint16_t boundary_address,boundary_count;
+static uint8_t boundary_bank;
 
 /* The kernel's routine tables and SPSIN/SPCOS, filled at boot. */
 #if RK_LM
@@ -30,7 +35,13 @@ static agc_routine_table basic[5];
 #else
 static agc_routine_table basic[4];
 #endif
-agc_native_program rk_program={basic,sizeof basic/sizeof basic[0],0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,&rk_hardware};
+agc_native_program rk_program={basic,sizeof basic/sizeof basic[0],0,0,0,0,AGC_TRANSFER_NONE,0,0,rk_fixed_word,0,
+                               &rk_hardware};
+
+static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at);
+/* The last module run's result value and action (boot reads them). */
+static uint16_t run_value;
+static uint8_t run_action;
 
 uint8_t BOOT rk_boot(void) {
     __asm__ volatile("sei");
@@ -57,7 +68,48 @@ uint8_t BOOT rk_boot(void) {
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);
+    {
+        /* Run through the step's module runner, which LTO then keeps as
+         * the runtime's only caller. */
+        apollo_ov2_cont at={RK_MODULE_BOUNDARY,0};
+        apollo_ov2_dirent d;
+        const rk_boundary_table *t;
+        uint32_t first,last;
+        if(rk_run_module(at)!=APOLLO_OV2_OK || run_action!=APOLLO_OV2_DONE ||
+           !rk_runtime.store.lookup(rk_runtime.store.user,RK_MODULE_BOUNDARY,&d))
+            return 3;
+        /* The module image sits at its page of the store, loaded at the
+         * task slot's base. */
+        t=(const rk_boundary_table *)(uintptr_t)run_value;
+        first=rk_store.base+((uint32_t)d.page<<8)+(uint16_t)((uintptr_t)t->words-APOLLO_OV2_TASK_ADDRESS);
+        last=first+(uint32_t)t->count*sizeof(agc_site_operand)-1u;
+        if(!t->count || (first>>16)!=(last>>16)) return 3;
+        boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; boundary_count=t->count;
+    }
     return 0;
+}
+
+/* One 4-byte REU fetch per probe, by register (as apollo_reu_transfer does,
+ * without its 32-bit address arithmetic). */
+bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word) {
+    uint16_t low=0,high=boundary_count;
+    static agc_site_operand probe;   /* DMA target */
+    volatile uint8_t *reu=(volatile uint8_t *)0xdf00u;
+    (void)p;
+    while(low<high) {
+        uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
+        uint16_t at=(uint16_t)(boundary_address+middle*sizeof probe);
+        (void)reu[APOLLO_REU_STATUS];
+        reu[APOLLO_REU_ADDR_CONTROL]=0;
+        reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)&probe; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)&probe>>8);
+        reu[APOLLO_REU_REU_LO]=(uint8_t)at; reu[APOLLO_REU_REU_HI]=(uint8_t)(at>>8); reu[APOLLO_REU_REU_BANK]=boundary_bank;
+        reu[APOLLO_REU_LEN_LO]=sizeof probe; reu[APOLLO_REU_LEN_HI]=0;
+        reu[APOLLO_REU_COMMAND]=APOLLO_REU_FETCH;
+        if((reu[APOLLO_REU_STATUS]&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))!=APOLLO_REU_STATUS_END) return false;
+        if(probe.physical==physical) { *word=probe.word; return true; }
+        if(probe.physical<physical) low=(uint16_t)(middle+1u); else high=middle;
+    }
+    return false;
 }
 
 /* The kernel's seam reports (RK_SEAMS): a job's native seams move with its
@@ -93,19 +145,29 @@ __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_ph
 }
 __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at) {
     apollo_ov2_cont resume;
-    uint16_t value=0;
-    uint8_t action;
-    return apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&value,&action,&resume);
+    run_value=(uint16_t)(uintptr_t)&rk_env;
+    rk_env.status=EXEC_OK;
+    return apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
+}
+/* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): the physical
+ * bank in FB form. Fixed-fixed 04000-07777 is bank 2 or 3 whatever FB and
+ * the superbank hold; banked, FB alone, plus 0100 for banks 040-043 (FB
+ * 030-037 with superbank bit 0100), so superbank 0 and 060 key the same. */
+uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
+    if(loc>=04000u) return loc<06000u ? 04000u : 06000u;
+    fb&=076000u;
+    return (uint16_t)(fb>=060000u && (superbank&0100u) ? fb|0100u : fb);
 }
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical) {
     apollo_overlay_state *s=IMAGE;
     apollo_ov2_cont at;
     enum exec_status status;
+    uint16_t loc;
     rk_rupts();
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
-    if(!rk_runtime.store.resolve(rk_runtime.store.user,
-        (uint16_t)((s->words[4]&076000u)|(rk_device.superbank&0160u)),s->words[5],&at))
+    loc=(uint16_t)(s->words[5]&07777u);
+    if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
-    return rk_run_module(at)==APOLLO_OV2_OK ? EXEC_OK : EXEC_UNMAPPED;
+    return rk_run_module(at)==APOLLO_OV2_OK ? rk_env.status : EXEC_UNMAPPED;
 }

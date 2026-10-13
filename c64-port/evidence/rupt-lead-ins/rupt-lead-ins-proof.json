@@ -3,7 +3,7 @@
   "mission": "Luminary099",
   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "cases": 1152,
-  "snapshot_sha256": "a71967a1d5c8baed2d8f4ab85f9ef062f5ee13d5c0a0b5b33fdca98470d04845",
+  "snapshot_sha256": "da8ad6cc524837a12a7472d7b96f7f6a02a4b9464bc0e506c154a0c9731950ce",
   "outcomes": {
    "04000 GOPROG lead-in:returned": 128,
    "04010 T5RUPT:returned": 128,
@@ -31,7 +31,7 @@
   "mission": "Comanche055",
   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
   "cases": 1920,
-  "snapshot_sha256": "93e4fd14e943db96d85d2e83a12a91f41ecb4df66157655f00ce9088a9e054e4",
+  "snapshot_sha256": "e5aef8c3de9e5cb46ea3107eb1b41da3ed797329e5d8e3286dad833834234a2c",
   "outcomes": {
    "04000 GOPROG lead-in:returned": 128,
    "04004 T6RUPT:returned": 128,
@@ -69,5 +69,6 @@
  },
  "boundary": "one lead-in from its vector to the handler it leaves in Z (the GOPROG restart, the banked handler, the 2CADR target, or NOQBRSM); the original runs to the first time it reaches that Z (and FB in banked memory), or for the Comanche RESUME family until the interrupt ends",
  "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr",
- "full_physical_words": 2048
+ "full_physical_words": 2048,
+ "oracle": "yaAGC (agc_engine) running the original rope of each mission"
 }

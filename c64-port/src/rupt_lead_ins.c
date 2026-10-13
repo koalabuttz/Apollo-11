@@ -65,6 +65,10 @@ static enum exec_status cm_resume(const agc_native_program *p,apollo_overlay_sta
  if(!s||!io||!in_rupt(p)||W[015]==0u||W[015]>010000u)return EXEC_OUT_OF_SCOPE;
  z=W[5];
  if(z==05335u||z==05333u){if(W[016]&(agc_word)~076167u)return EXEC_OUT_OF_SCOPE;}
+ /* BRUPT must be the word at ZRUPT-1 under the banks restored (#144):
+  * BANKRUPT's, A's at 05336 (XCH BBANK), the current ones at NOQBRSM. */
+ {agc_word bb=z==05337u?W[6]:z==05336u?agc_correct(W[0]):W[016],sb=z==05337u||z==05336u?io->superbank:(agc_word)(W[016]&0160u);
+  if(!agc_resume_exact(p,s,(agc_word)(bb&076000u),(agc_word)((bb&7u)<<8),sb))return EXEC_OUT_OF_SCOPE;}
  if(z==05333u)ai_qxch(s,012u);
  if(z==05333u||z==05335u)ai_ca(s,016u);
  if(z!=05337u)ai_xch(s,6u);

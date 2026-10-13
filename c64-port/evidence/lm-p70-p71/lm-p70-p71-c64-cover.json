@@ -1,0 +1,24 @@
+{
+ "milestone": "lm-p70-p71",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "measured_sources": [
+  "src/agc_hardware_divide.c",
+  "src/agc_image_ops.c",
+  "src/agc_multiword.c",
+  "src/agc_transfer.c",
+  "src/agc_word.c",
+  "src/cm_interp_orders.c",
+  "src/cm_interp_steps.c",
+  "src/lm_interp_orders.c",
+  "src/lm_interp_steps.c",
+  "src/lm_p70_p71.c",
+  "src/rtb_angles.c",
+  "tests/interp_case.c"
+ ],
+ "host_cases_traced": 37747,
+ "host_branch_arcs": 854,
+ "c64_rows": 101,
+ "c64_branch_arcs": 854,
+ "host_branches_missing_on_c64": [],
+ "c64_vectors": "tests/lm_p70_p71_c64_vectors.h"
+}

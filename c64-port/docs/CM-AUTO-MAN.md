@@ -1,77 +1,35 @@
-# Translate Comanche AUTOMATIC_MANEUVERS (CM RCS DAP hold and jet timing)
+# Translate Comanche AUTOMATIC_MANEUVERS
 
-Lane G. Milestone `cm-auto-man`.
+Lane G (CM flight). Milestone `cm-auto-man`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
+
+`Comanche055/AUTOMATIC_MANEUVERS.agc` (`src/cm_auto_man.c`) is native C in full: The RCS automatic maneuver logic (the J-series phase-plane tests, jet on-times and DOJET) and its returns from STICKCHK. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
+
+This replaces the earlier hand translation, which the certificate reviewer rejected in #84: its comparison was a listing check rather than a yaAGC run, and none of its entries was a routine of the control-transfer ABI. Now every entry another file names is a registered routine, and the comparison runs the original rope in yaAGC.
 
 ## Scope
 
-`Comanche055/AUTOMATIC_MANEUVERS.agc`, all of it: bank 21 `3250`-`3764`,
-333 assembled words. That includes the MINTAU table, the WLH/SLOP, WL-H/SLP,
-WLH, WLMH, WL and SLOPE2 constants, and the JETADDR 2CADR. Nothing is left
-in the file.
+6 routines, keyed by physical address in `cm_auto_man_basic`:
 
-`cm_auto_man(image, io)` runs one entry to its exit. `io` holds channels 31
-and 32, which the file only reads (hold/free switches and the
-translation-controller bits).
+| Entry | Kind | Why it is a routine |
+|---|---|---|
+| 21,3250 AHFNOROT | basic | entry AHFNOROT (RCS-CSM_DIGITAL_AUTOPILOT.agc BZMF AHFNOROT) |
+| 21,3304  | basic | return from STICKCHK |
+| 21,3441 JETS | basic | entry JETS (RCS-CSM_DIGITAL_AUTOPILOT.agc TCF JETS) |
+| 21,3732  | basic | return from SMALLMP |
+| 21,3734  | basic | return from SMALLMP |
+| 21,3757 T6PROG | basic | entry T6PROG (RCS-CSM_DIGITAL_AUTOPILOT.agc TCF T6PROG) |
 
-| Entry | Reached from |
-|---|---|
-| `3250` AHFNOROT | RCSATT T5PHASE2, `BZMF AHFNOROT` (no hand-controller rotation) |
-| `3441` JETS | RCSATT SETWBODY loop, `TCF JETS` |
-| `3757` T6PROG | RCSATT T6PROGM, `TCF T6PROG` |
-| `3304` | STICKCHK return (FREECONT) |
-| `3732`, `3734` | SMALLMP returns (JTIME) |
+Destinations outside the file: REINIT, RESUME, SMALLMP, STICKCHK, T6PROGM. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
-Admitted state: FB bank 21, EB E6, BB `042006`, any raw A/L/Q, erasable
-contents and channels. RMANNDX/PMANNDX/YMANNDX must be 0..3 at `3304`
-(STICKCHK leaves them so), and SPNDX 0..2 at `3732`/`3734` (the JLOOP
-counter). `CM_AUTO_MAN_OK` leaves `Z` at RESUME, at REINIT or T6PROGM
-(RCS-CSM_DIGITAL_AUTOPILOT), or at STICKCHK/SMALLMP with Q the TC's return.
+## Domain
 
-### How it is translated
-
-As in `cm-rcs-dap`: one qualified `agc_image_ops` primitive per original
-word, under C labels named for the original addresses. READ and MSU are
-written from the yaAGC definitions. The SIGNCK sequences (a CCS of the high
-word whose +0/-0 slots fall to a CCS of the low word) are compiled as that
-pair of CCS words.
-
-- `TS T5TEMP` at `3443` (ADB + 4) overflows when ADB is within 3 of
-  POSMAX. The skip runs JLOOP with SPNDX = +1.
-- ADB + 4 cannot overflow negatively, so SPNDX never goes negative. The CCS
-  SPNDX negative slots (ZEROCMDS) are translated but unreachable.
-- The INDEX tables (MINTAU, OCT01400 and its neighbours, BIT13 and its
-  neighbours) are native arrays equal to the rope.
-
-## Source map
-
-`evidence/cm-auto-man/cm-auto-man-source-map.json` (`tools/cm_auto_man_source.py`)
-records every word with its source line, rope check and native label. It
-also matches against the rope:
-
-- the 19 fixed-constant reads, to the native literals;
-- the double words, the 2CADR and the INDEX tables;
-- the internal TC J6. and the frontier TCs, which must set Q to their
-  returns.
-
-Independent assembly comparison: `evidence/cm-auto-man/cm-auto-man-assembly-comparison.json`.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. SPNDX 0-2 and RMANNDX/PMANNDX/YMANNDX 0-3 as the RCS DAP leaves them; MINTAU (0-3), BIT13 (0-2) and OCT01400 (0-2) indexed by them.
 
 ## Evidence
 
-Hashes: `evidence/cm-auto-man/SHA256.json`; bulk files in release
-`evidence-cm-auto-man`.
+Hashes: `evidence/cm-auto-man/SHA256.json`; all files are in the tree.
 
-- Oracle: `deps/cm-flight-fixture` (original CM rope `6e3150ae...`). The
-  runner stops at RESUME, REINIT, T6PROGM, STICKCHK or SMALLMP.
-- Host and sanitizer results: `make test-cm-auto-man sanitize-cm-auto-man`.
-  - 65536 cases (`tests/cm_auto_man_cases.c`).
-  - Every phase-plane region and the TAU limits occur. That includes
-    the rates on the WLH/WLMH boundaries for the SIGNCK low-word tests.
-  - Every case reaches an exit, and the two sides agree on all of them.
-  - Untaken native lines: the refusal default and ZEROCMDS (unreachable,
-    above).
-- C64 execution results: `make vice-cm-auto-man`, 128 frozen rows.
-  `cm-auto-man-results.json`.
-
-## Open
-
-ABI registration of the entries follows in the Lane G routine-table step.
+- **Source map.** `cm-auto-man-source-map.json` lists all 333 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-auto-man-differential` runs 256 states per routine (1,536 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 31, 32 and the 31A/31B/32 trap flags. The cases and the stops reached per routine are in `cm-auto-man-proof.json` (`cm-auto-man-differential.log` is the run). One case in 32 is frozen in `tests/cm_auto_man_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-auto-man sanitize-cm-auto-man` runs the 48 frozen cases (`cm-auto-man-host.log`).
+- **C64 execution results.** `make vice-cm-auto-man` runs 1 diagnostic program with 24 cases (`cm-auto-man-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 1,536 differential cases take: 642 of 642 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 293 of 293 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 367 of the 367 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

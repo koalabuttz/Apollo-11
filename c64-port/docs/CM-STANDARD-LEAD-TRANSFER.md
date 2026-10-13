@@ -13,6 +13,7 @@ Comanche055 SYSTEM_TEST_STANDARD_LEAD_INS.agc, the CM counterpart of `lm-standar
 | AGC | Native |
 |---|---|
 | E/JOBWAK 04,2606; E/BKCALL 13,2036; returns 13,2047/2050/2051; E/CALL 13,2055; resume 13,2067 | `cm_standard_lead_routines` (`src/standard_lead_routines.c`) |
+| COMPVER 33,2000, GTSCPSS1 33,2001, REDO 33,2002 (one TC each; milestone `cm-lead-tests`, 384 yaAGC cases) | `cm_standard_lead_routines` |
 | INTPRET 06006, INTPRET+2 06010 | `cm_interpreter_routines` |
 | EXIT at LOC 13,2066 | `cm_standard_lead_interpretive_routines`, fetch point `CM_INTERPRETER_FETCH` |
 

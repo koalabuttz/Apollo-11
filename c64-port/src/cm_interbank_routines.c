@@ -23,10 +23,15 @@ ROUTINE(iswcall,CM_IC_ISWCALL)
 ROUTINE(iswretrn,CM_IC_ISWRETRN)
 ROUTINE(usprcadr,CM_IC_USPRCADR)
 ROUTINE(supersw,CM_IC_SUPERSW)
+/* SWCALL -1 (04665, BANKCALL's INCR Q): RTB's `TC SWCALL -1` enters here so
+ * that SWCALL returns one word later. Q is a return address from that TC. */
+static enum exec_status swcall_m1(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;
+ if(!s||!io||s->words[7]!=0||s->words[2]>07776u)return EXEC_OUT_OF_SCOPE;
+ s->words[2]=(agc_word)(s->words[2]+1u);s->words[5]=04666u;return EXEC_OK;}
 /* Fixed-fixed bank 2: physical 2048+(Z-04000). PRIO12 (04710) is a constant. */
 #define AT(z) (uint16_t)(2048u+((z)-04000u))
-static const agc_routine_entry entries[13]={
- {AT(04662),bankcall},{AT(04666),swcall},{AT(04675),swreturn},{AT(04701),postjump},{AT(04704),bankjump},
+static const agc_routine_entry entries[14]={
+ {AT(04662),bankcall},{AT(04665),swcall_m1},{AT(04666),swcall},{AT(04675),swreturn},{AT(04701),postjump},{AT(04704),bankjump},
  {AT(04707),qjump},{AT(04711),makecadr},{AT(04715),supdacal},{AT(04740),ibnkcall},{AT(04744),iswcall},
  {AT(04753),iswretrn},{AT(04757),usprcadr},{AT(04773),supersw}};
-const agc_routine_table cm_interbank_routines={entries,13};
+const agc_routine_table cm_interbank_routines={entries,14};

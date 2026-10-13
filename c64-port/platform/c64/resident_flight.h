@@ -24,6 +24,22 @@ typedef cm_native_io rk_io;
 /* CIA1 timer A latch for one interrupt per 10 ms (PAL, 985,248 Hz: the
  * timer counts latch..0). */
 #define RK_CIA_LATCH 9851u
+/* The resident's own modules (lane A numbers 0xe0-0xef). */
+#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
+/* What the boundary-word module (resident_boundary_module.c) hands boot. */
+typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_table;
+/* What the step hands every module in frame value: the resident program
+ * (tables, hardware, fixed_data, site operands) and io. A module that
+ * runs AGC routines (the interrupt-body wrappers) reports a routine's
+ * failure in status, which the step returns; the step resets it to
+ * EXEC_OK before each run. */
+typedef struct { const agc_native_program *program; void *io; enum exec_status status; } rk_module_env;
+extern rk_module_env rk_env;
+/* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). */
+#define RK_MODULE_LEAD_INS APOLLO_OV2_ID(APOLLO_LANE_A,0xe1)   /* task slot */
+#define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
+#define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
+#define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
 /* 256 bytes of boot scratch for apollo_reu_store_verify. */
 #define RK_BOOT_SCRATCH 0xc100u
 
@@ -37,22 +53,34 @@ extern agc_native_program rk_program;
 extern uint16_t rk_pending, rk_ticks;
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
- * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and verified, the runtime
- * initialized on the image at $7000. Returns 0, or 1 (store header) or 2
- * (store contents). Lives in the job slot: call it once, before any module
- * runs. */
+ * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
+ * verified, the runtime initialized on the image at $7000, and the
+ * boundary-word module run once for its table (rk_fixed_word). Returns 0,
+ * or 1 (store header), 2 (store contents) or 3 (boundary-word module).
+ * Lives in the job slot: call it once, before any module runs. */
 uint8_t rk_boot(void);
 
 /* One resident step. First the AGC clock: one 10 ms timer period
  * (rk_timer_tick) per CIA1 interrupt since the last step. Then the highest
  * pending interrupt, if it can be taken here (rk_rupt_take). Then one
  * kernel routine from the image's Z, unless Z is already at stop. At a
- * point with no kernel routine the store's resolver maps the bank (FB with
- * the channel 7 superbank bits, as BBCON holds them) and Z to a module
- * continuation, and the runtime runs it in context 0 (the running job is
- * always core set 0) or 8 (inside an interrupt). A module leaves Z where
- * the program continues. Returns EXEC_OK at stop or after a routine or
- * module ran, otherwise the routine's status or EXEC_UNMAPPED for a point
- * no module resolves. */
+ * point with no kernel routine the store's resolver maps the canonical bank
+ * (rk_resolver_bank) and Z to a module continuation, and the runtime runs
+ * it in context 0 (the running job is always core set 0) or 8 (inside an
+ * interrupt), with rk_env as its value. A module leaves Z where the
+ * program continues. Returns EXEC_OK at stop or after a routine or module
+ * ran, otherwise the routine's status, the module's rk_env.status, or
+ * EXEC_UNMAPPED for a point no module resolves. */
 enum exec_status rk_resident_step(uint16_t stop_physical);
+
+/* The canonical resolver bank for 12-bit address loc, the physical bank in
+ * FB form: 04000 or 06000 for fixed-fixed, otherwise FB (bits 14-10), plus
+ * 0100 where FB is 030-037 and the superbank bit 0100 is set (banks 040-043). */
+uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc);
+
+/* rk_program.fixed_data: the word at a fixed point from the boundary-word
+ * table in the REU store (binary search, one 4-byte record read per probe).
+ * False for a key the table does not hold, so the interrupt entry does not
+ * vector there and the request stays pending. */
+bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word);
 #endif
