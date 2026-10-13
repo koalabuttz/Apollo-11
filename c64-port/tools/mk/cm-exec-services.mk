@@ -25,7 +25,7 @@ cm-exec-services-differential: build/cm-exec-services-native
 	python3 tools/cm_exec_services_freeze.py
 	git diff --exit-code -- tests/cm_exec_services_vectors.h tests/cm_exec_services_c64_vectors.h
 c64-cm-exec-services: build/cm-exec-services.prg
-build/cm-exec-services.prg: $(CM_EXS_SRC) platform/c64/cm_exec_services_diagnostic.c tests/cm_exec_services_c64_vectors.h $(CM_EXS_HDR) | build
+build/cm-exec-services.prg: $(CM_EXS_SRC) platform/c64/cm_exec_services_diagnostic.c tests/cm_exec_services_c64_vectors.h tests/cm_exec_services_c64_rows.h $(CM_EXS_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(CM_EXS_FLAGS) -Wl,-Map,build/cm-exec-services.map $(CM_EXS_SRC) platform/c64/cm_exec_services_diagnostic.c -o $@
 vice-cm-exec-services: build/cm-exec-services.prg
 	python3 tools/vice_run.py build/cm-exec-services.prg --cycles 3000000000 --timeout 1200

@@ -1,0 +1,6 @@
+$ python3 tools/standard_lead_oracle_freeze.py
+PASS: 1408 standard-lead-oracle cases identical to yaAGC, 1344 reach a continuation
+$ python3 tools/lane_a_source_map.py standard-lead-oracle --check
+standard-lead-oracle Luminary099: 32 assembled lines, 32/32 instructions executed by the oracle; not executed without a reason: []
+standard-lead-oracle Comanche055: 36 assembled lines, 32/36 instructions executed by the oracle; not executed without a reason: []
+PASS: every instruction of SYSTEM_TEST_STANDARD_LEAD_INS.agc executed by the oracle or refused with a reason

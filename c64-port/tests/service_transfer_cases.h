@@ -12,6 +12,7 @@
 #define SVT_ENTRY_CASES 512u
 #define SVT_MAX_STEPS 64u
 uint16_t svt_cases(void);
+#define SVT_CASES svt_cases()
 /* Mission (0 LM, 1 CM) and logical Z of the entry. */
 uint8_t svt_mission(uint16_t n);
 void svt_input(apollo_overlay_state *s, uint16_t *superbank, uint16_t *inhint, uint16_t n);

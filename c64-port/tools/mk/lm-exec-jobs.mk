@@ -26,7 +26,7 @@ lm-exec-jobs-differential: build/lm-exec-jobs-native
 	python3 tools/lm_exec_jobs_freeze.py
 	git diff --exit-code -- tests/lm_exec_jobs_vectors.h tests/lm_exec_jobs_c64_vectors.h
 c64-lm-exec-jobs: build/lm-exec-jobs-1.prg build/lm-exec-jobs-2.prg build/lm-exec-jobs-3.prg
-build/lm-exec-jobs-%.prg: $(LM_EXJ_SRC) platform/c64/lm_exec_jobs_diagnostic.c tests/lm_exec_jobs_c64_vectors.h $(LM_EXJ_HDR) | build
+build/lm-exec-jobs-%.prg: $(LM_EXJ_SRC) platform/c64/lm_exec_jobs_diagnostic.c tests/lm_exec_jobs_c64_vectors.h tests/lm_exec_jobs_c64_rows.h $(LM_EXJ_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -DP66_NATIVE_DISPATCH_ONLY -DLM_EXJ_PART=$* -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-exec-jobs-$*.map $(LM_EXJ_SRC) platform/c64/lm_exec_jobs_diagnostic.c -o $@
 vice-lm-exec-jobs: build/lm-exec-jobs-1.prg build/lm-exec-jobs-2.prg build/lm-exec-jobs-3.prg
 	python3 tools/vice_run.py build/lm-exec-jobs-1.prg --cycles 3000000000 --timeout 1200

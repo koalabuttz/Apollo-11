@@ -1,0 +1,2449 @@
+{
+ "milestone": "service-transfer",
+ "oracle": "yaAGC agc_engine from the original ropes, tools/service_transfer_reference.c",
+ "missions": {
+  "Luminary099": {
+   "source_path": "Luminary099/SERVICE_ROUTINES.agc",
+   "source_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+   "registered_entries": 13,
+   "source_words": 96,
+   "source_lines_with_words": 96,
+   "instructions": 93,
+   "instructions_executed_by_oracle": 93,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 35,
+     "address": "10,3544",
+     "source": "UPENT2 INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 36,
+     "address": "10,3545",
+     "source": "MASK OCT77770",
+     "words": [
+      "75660"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 37,
+     "address": "10,3546",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 38,
+     "address": "10,3547",
+     "source": "CS FLAGWRD4",
+     "words": [
+      "40100"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 39,
+     "address": "10,3550",
+     "source": "MASK L",
+     "words": [
+      "70001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 40,
+     "address": "10,3551",
+     "source": "ADS FLAGWRD4",
+     "words": [
+      "26100"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 41,
+     "address": "10,3552",
+     "source": "JOIN RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 42,
+     "address": "10,3553",
+     "source": "TCF Q+1",
+     "words": [
+      "16737"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 44,
+     "address": "10,3554",
+     "source": "DOWNENT2 INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 45,
+     "address": "10,3555",
+     "source": "MASK OCT77770",
+     "words": [
+      "75660"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 46,
+     "address": "10,3556",
+     "source": "COM",
+     "words": [
+      "40000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 47,
+     "address": "10,3557",
+     "source": "MASK FLAGWRD4",
+     "words": [
+      "70100"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 48,
+     "address": "10,3560",
+     "source": "TS FLAGWRD4",
+     "words": [
+      "54100"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 49,
+     "address": "10,3561",
+     "source": "TCF JOIN",
+     "words": [
+      "13552"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 74,
+     "address": "FF,5504",
+     "source": "UPFLAG CA Q",
+     "words": [
+      "30002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 75,
+     "address": "FF,5505",
+     "source": "TC DEBIT",
+     "words": [
+      "05522"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 76,
+     "address": "FF,5506",
+     "source": "COM",
+     "words": [
+      "40000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 77,
+     "address": "FF,5507",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 78,
+     "address": "FF,5510",
+     "source": "ROR LCHAN",
+     "words": [
+      "04001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 79,
+     "address": "FF,5511",
+     "source": "COMFLAG INDEX ITEMP1",
+     "words": [
+      "50061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_comflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 80,
+     "address": "FF,5512",
+     "source": "TS FLAGWRD0",
+     "words": [
+      "54074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_comflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 81,
+     "address": "FF,5513",
+     "source": "LXCH ITEMP3",
+     "words": [
+      "22063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_comflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 82,
+     "address": "FF,5514",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_comflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 83,
+     "address": "FF,5515",
+     "source": "TC L",
+     "words": [
+      "00001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_comflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 85,
+     "address": "FF,5516",
+     "source": "DOWNFLAG CA Q",
+     "words": [
+      "30002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 86,
+     "address": "FF,5517",
+     "source": "TC DEBIT",
+     "words": [
+      "05522"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 87,
+     "address": "FF,5520",
+     "source": "MASK L",
+     "words": [
+      "70001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 88,
+     "address": "FF,5521",
+     "source": "TCF COMFLAG",
+     "words": [
+      "15511"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 90,
+     "address": "FF,5522",
+     "source": "DEBIT AD ONE",
+     "words": [
+      "64753"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 91,
+     "address": "FF,5523",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 92,
+     "address": "FF,5524",
+     "source": "TS ITEMP3",
+     "words": [
+      "54063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 93,
+     "address": "FF,5525",
+     "source": "CA LOW4",
+     "words": [
+      "34762"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 94,
+     "address": "FF,5526",
+     "source": "TS ITEMP1",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 95,
+     "address": "FF,5527",
+     "source": "INDEX ITEMP3",
+     "words": [
+      "50063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 96,
+     "address": "FF,5530",
+     "source": "CA 0 -1",
+     "words": [
+      "27777"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 97,
+     "address": "FF,5531",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 98,
+     "address": "FF,5532",
+     "source": "CA ZERO",
+     "words": [
+      "34755"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 100,
+     "address": "FF,5533",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 101,
+     "address": "FF,5534",
+     "source": "DV ITEMP1",
+     "words": [
+      "10061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 102,
+     "address": "FF,5535",
+     "source": "DXCH ITEMP1",
+     "words": [
+      "52062"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 103,
+     "address": "FF,5536",
+     "source": "INDEX ITEMP1",
+     "words": [
+      "50061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 104,
+     "address": "FF,5537",
+     "source": "CA FLAGWRD0",
+     "words": [
+      "30074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 105,
+     "address": "FF,5540",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 106,
+     "address": "FF,5541",
+     "source": "INDEX ITEMP2",
+     "words": [
+      "50062"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 107,
+     "address": "FF,5542",
+     "source": "CS BIT15",
+     "words": [
+      "44735"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 108,
+     "address": "FF,5543",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_debit)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 125,
+     "address": "00,3735",
+     "source": "DELAYJOB INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 126,
+     "address": "00,3736",
+     "source": "TS Q",
+     "words": [
+      "54002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 127,
+     "address": "00,3737",
+     "source": "CAF DELAYNUM",
+     "words": [
+      "34752"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 128,
+     "address": "00,3740",
+     "source": "DELLOOP TS RUPTREG1",
+     "words": [
+      "54070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 129,
+     "address": "00,3741",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 130,
+     "address": "00,3742",
+     "source": "CA DELAYLOC",
+     "words": [
+      "31326"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 131,
+     "address": "00,3743",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 132,
+     "address": "00,3744",
+     "source": "BZF OK2DELAY",
+     "words": [
+      "13752"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 134,
+     "address": "00,3745",
+     "source": "CCS RUPTREG1",
+     "words": [
+      "10070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 135,
+     "address": "00,3746",
+     "source": "TCF DELLOOP",
+     "words": [
+      "13740"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 137,
+     "address": "00,3747",
+     "source": "DXCH BUF2",
+     "words": [
+      "52134"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 138,
+     "address": "00,3750",
+     "source": "TC BAILOUT1",
+     "words": [
+      "05716"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 139,
+     "address": "00,3751",
+     "source": "OCT 1104",
+     "words": [
+      "01104"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": false
+    },
+    {
+     "line": 141,
+     "address": "00,3752",
+     "source": "OK2DELAY CA TCSLEEP",
+     "words": [
+      "33772"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 142,
+     "address": "00,3753",
+     "source": "TS WAITEXIT",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 144,
+     "address": "00,3754",
+     "source": "CA FBANK",
+     "words": [
+      "30004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 145,
+     "address": "00,3755",
+     "source": "AD RUPTREG1",
+     "words": [
+      "60070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 146,
+     "address": "00,3756",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 148,
+     "address": "00,3757",
+     "source": "CAF WAKECAD",
+     "words": [
+      "33773"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 149,
+     "address": "00,3760",
+     "source": "TCF DLY2 -1",
+     "words": [
+      "15211"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 151,
+     "address": "00,3761",
+     "source": "TCGETCAD TC MAKECADR",
+     "words": [
+      "04645"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 153,
+     "address": "00,3762",
+     "source": "INDEX RUPTREG1",
+     "words": [
+      "50070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 154,
+     "address": "00,3763",
+     "source": "TS DELAYLOC",
+     "words": [
+      "55326"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 156,
+     "address": "00,3764",
+     "source": "TC JOBSLEEP",
+     "words": [
+      "05133"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 158,
+     "address": "00,3765",
+     "source": "WAKER CAF ZERO",
+     "words": [
+      "34755"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 159,
+     "address": "00,3766",
+     "source": "INDEX BBANK",
+     "words": [
+      "50006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 160,
+     "address": "00,3767",
+     "source": "XCH DELAYLOC",
+     "words": [
+      "57326"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 162,
+     "address": "00,3770",
+     "source": "TC JOBWAKE",
+     "words": [
+      "05137"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 164,
+     "address": "00,3771",
+     "source": "TC TASKOVER",
+     "words": [
+      "05261"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_waker_finish)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 166,
+     "address": "00,3772",
+     "source": "TCSLEEP GENADR TCGETCAD -2",
+     "words": [
+      "03757"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (lm_waker_finish)",
+     "executed_by_oracle": false
+    },
+    {
+     "line": 167,
+     "address": "00,3773",
+     "source": "WAKECAD GENADR WAKER",
+     "words": [
+      "03765"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (lm_waker_finish)",
+     "executed_by_oracle": false
+    },
+    {
+     "line": 196,
+     "address": "FF,5544",
+     "source": "GENTRAN INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 197,
+     "address": "FF,5545",
+     "source": "TS ITEMP1",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 198,
+     "address": "FF,5546",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 199,
+     "address": "FF,5547",
+     "source": "AD 0",
+     "words": [
+      "60000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 200,
+     "address": "FF,5550",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 201,
+     "address": "FF,5551",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 202,
+     "address": "FF,5552",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 203,
+     "address": "FF,5553",
+     "source": "CA ITEMP1",
+     "words": [
+      "30061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 204,
+     "address": "FF,5554",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 205,
+     "address": "FF,5555",
+     "source": "AD 1",
+     "words": [
+      "60001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 206,
+     "address": "FF,5556",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 207,
+     "address": "FF,5557",
+     "source": "LXCH 0",
+     "words": [
+      "22000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 208,
+     "address": "FF,5560",
+     "source": "CCS ITEMP1",
+     "words": [
+      "10061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 209,
+     "address": "FF,5561",
+     "source": "TCF GENTRAN +1",
+     "words": [
+      "15545"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 210,
+     "address": "FF,5562",
+     "source": "TCF Q+2",
+     "words": [
+      "16741"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 218,
+     "address": "FF,5563",
+     "source": "B5OFF CS BIT5",
+     "words": [
+      "44747"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 219,
+     "address": "FF,5564",
+     "source": "MASK EXTVBACT",
+     "words": [
+      "71044"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 220,
+     "address": "FF,5565",
+     "source": "TS EXTVBACT",
+     "words": [
+      "55044"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 221,
+     "address": "FF,5566",
+     "source": "TC ENDOFJOB",
+     "words": [
+      "05155"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (lm_b5off)",
+     "executed_by_oracle": true
+    }
+   ]
+  },
+  "Comanche055": {
+   "source_path": "Comanche055/SERVICE_ROUTINES.agc",
+   "source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "registered_entries": 13,
+   "source_words": 123,
+   "source_lines_with_words": 123,
+   "instructions": 120,
+   "instructions_executed_by_oracle": 120,
+   "instructions_not_executed_without_reason": [],
+   "line_map": [
+    {
+     "line": 40,
+     "address": "FF,7722",
+     "source": "UPENT2 TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 41,
+     "address": "FF,7723",
+     "source": "MASK OCT7",
+     "words": [
+      "75023"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 42,
+     "address": "FF,7724",
+     "source": "XCH L",
+     "words": [
+      "56001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 44,
+     "address": "FF,7725",
+     "source": "MASK OCT77770",
+     "words": [
+      "75731"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 45,
+     "address": "FF,7726",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 46,
+     "address": "FF,7727",
+     "source": "TS ITEMP1",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 48,
+     "address": "FF,7730",
+     "source": "NDX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 49,
+     "address": "FF,7731",
+     "source": "CS FLAGWRD0",
+     "words": [
+      "40074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 50,
+     "address": "FF,7732",
+     "source": "MASK ITEMP1",
+     "words": [
+      "70061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 51,
+     "address": "FF,7733",
+     "source": "NDX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 52,
+     "address": "FF,7734",
+     "source": "ADS FLAGWRD0",
+     "words": [
+      "26074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 53,
+     "address": "FF,7735",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 55,
+     "address": "FF,7736",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 56,
+     "address": "FF,7737",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 58,
+     "address": "FF,7740",
+     "source": "DOWNENT2 TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 59,
+     "address": "FF,7741",
+     "source": "MASK OCT7",
+     "words": [
+      "75023"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 60,
+     "address": "FF,7742",
+     "source": "XCH L",
+     "words": [
+      "56001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 62,
+     "address": "FF,7743",
+     "source": "MASK OCT77770",
+     "words": [
+      "75731"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 63,
+     "address": "FF,7744",
+     "source": "COM",
+     "words": [
+      "40000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 65,
+     "address": "FF,7745",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 66,
+     "address": "FF,7746",
+     "source": "NDX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 67,
+     "address": "FF,7747",
+     "source": "MASK FLAGWRD0",
+     "words": [
+      "70074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 68,
+     "address": "FF,7750",
+     "source": "NDX L",
+     "words": [
+      "50001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 69,
+     "address": "FF,7751",
+     "source": "TS FLAGWRD0",
+     "words": [
+      "54074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 70,
+     "address": "FF,7752",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 72,
+     "address": "FF,7753",
+     "source": "INCR Q",
+     "words": [
+      "24002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 73,
+     "address": "FF,7754",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downent2)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 102,
+     "address": "FF,5546",
+     "source": "UPFLAG CA Q",
+     "words": [
+      "30002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 103,
+     "address": "FF,5547",
+     "source": "TC DEBIT",
+     "words": [
+      "05564"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 104,
+     "address": "FF,5550",
+     "source": "COM",
+     "words": [
+      "40000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 105,
+     "address": "FF,5551",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 106,
+     "address": "FF,5552",
+     "source": "ROR LCHAN",
+     "words": [
+      "04001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 107,
+     "address": "FF,5553",
+     "source": "COMFLAG INDEX ITEMP1",
+     "words": [
+      "50061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 108,
+     "address": "FF,5554",
+     "source": "TS FLAGWRD0",
+     "words": [
+      "54074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 109,
+     "address": "FF,5555",
+     "source": "LXCH ITEMP3",
+     "words": [
+      "22063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 110,
+     "address": "FF,5556",
+     "source": "RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 111,
+     "address": "FF,5557",
+     "source": "TC L",
+     "words": [
+      "00001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_upflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 114,
+     "address": "FF,5560",
+     "source": "DOWNFLAG CA Q",
+     "words": [
+      "30002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 115,
+     "address": "FF,5561",
+     "source": "TC DEBIT",
+     "words": [
+      "05564"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 116,
+     "address": "FF,5562",
+     "source": "MASK L",
+     "words": [
+      "70001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 117,
+     "address": "FF,5563",
+     "source": "TCF COMFLAG",
+     "words": [
+      "15553"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 120,
+     "address": "FF,5564",
+     "source": "DEBIT AD ONE",
+     "words": [
+      "65017"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 121,
+     "address": "FF,5565",
+     "source": "INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 122,
+     "address": "FF,5566",
+     "source": "TS ITEMP3",
+     "words": [
+      "54063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 123,
+     "address": "FF,5567",
+     "source": "CA LOW4",
+     "words": [
+      "35026"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 124,
+     "address": "FF,5570",
+     "source": "TS ITEMP1",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 125,
+     "address": "FF,5571",
+     "source": "INDEX ITEMP3",
+     "words": [
+      "50063"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 126,
+     "address": "FF,5572",
+     "source": "CA 0 -1",
+     "words": [
+      "27777"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 127,
+     "address": "FF,5573",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 128,
+     "address": "FF,5574",
+     "source": "CA ZERO",
+     "words": [
+      "35021"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 130,
+     "address": "FF,5575",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 131,
+     "address": "FF,5576",
+     "source": "DV ITEMP1",
+     "words": [
+      "10061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 132,
+     "address": "FF,5577",
+     "source": "DXCH ITEMP1",
+     "words": [
+      "52062"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 133,
+     "address": "FF,5600",
+     "source": "INDEX ITEMP1",
+     "words": [
+      "50061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 134,
+     "address": "FF,5601",
+     "source": "CA FLAGWRD0",
+     "words": [
+      "30074"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 135,
+     "address": "FF,5602",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 136,
+     "address": "FF,5603",
+     "source": "INDEX ITEMP2",
+     "words": [
+      "50062"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 137,
+     "address": "FF,5604",
+     "source": "CS BIT15",
+     "words": [
+      "45001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 138,
+     "address": "FF,5605",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_downflag)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 156,
+     "address": "00,3732",
+     "source": "DELAYJOB INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 157,
+     "address": "00,3733",
+     "source": "TS Q",
+     "words": [
+      "54002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 159,
+     "address": "00,3734",
+     "source": "CAF DELAYNUM",
+     "words": [
+      "36214"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 160,
+     "address": "00,3735",
+     "source": "DELLOOP TS RUPTREG1",
+     "words": [
+      "54070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 161,
+     "address": "00,3736",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 162,
+     "address": "00,3737",
+     "source": "CA DELAYLOC",
+     "words": [
+      "31141"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 163,
+     "address": "00,3740",
+     "source": "EXTEND",
+     "words": [
+      "00006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 164,
+     "address": "00,3741",
+     "source": "BZF OK2DELAY",
+     "words": [
+      "13746"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 166,
+     "address": "00,3742",
+     "source": "CCS RUPTREG1",
+     "words": [
+      "10070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 167,
+     "address": "00,3743",
+     "source": "TCF DELLOOP",
+     "words": [
+      "13735"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 169,
+     "address": "00,3744",
+     "source": "TC BAILOUT",
+     "words": [
+      "07755"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 170,
+     "address": "00,3745",
+     "source": "OCT 1104",
+     "words": [
+      "01104"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 172,
+     "address": "00,3746",
+     "source": "OK2DELAY CA TCSLEEP",
+     "words": [
+      "33766"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 173,
+     "address": "00,3747",
+     "source": "TS WAITEXIT",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 175,
+     "address": "00,3750",
+     "source": "CA FBANK",
+     "words": [
+      "30004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 176,
+     "address": "00,3751",
+     "source": "AD RUPTREG1",
+     "words": [
+      "60070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 177,
+     "address": "00,3752",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 179,
+     "address": "00,3753",
+     "source": "CAF WAKECAD",
+     "words": [
+      "33767"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 180,
+     "address": "00,3754",
+     "source": "TCF DLY2 -1",
+     "words": [
+      "15255"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_delayjob)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 182,
+     "address": "00,3755",
+     "source": "TCGETCAD TC MAKECADR",
+     "words": [
+      "04711"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 184,
+     "address": "00,3756",
+     "source": "INDEX RUPTREG1",
+     "words": [
+      "50070"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 185,
+     "address": "00,3757",
+     "source": "TS DELAYLOC",
+     "words": [
+      "55141"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 187,
+     "address": "00,3760",
+     "source": "TC JOBSLEEP",
+     "words": [
+      "05175"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_tcgetcad)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 189,
+     "address": "00,3761",
+     "source": "WAKER CAF ZERO",
+     "words": [
+      "35021"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 190,
+     "address": "00,3762",
+     "source": "INDEX BBANK",
+     "words": [
+      "50006"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 191,
+     "address": "00,3763",
+     "source": "XCH DELAYLOC",
+     "words": [
+      "57141"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 193,
+     "address": "00,3764",
+     "source": "TC JOBWAKE",
+     "words": [
+      "05201"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_waker)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 195,
+     "address": "00,3765",
+     "source": "TC TASKOVER",
+     "words": [
+      "05324"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_waker_finish)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 197,
+     "address": "00,3766",
+     "source": "TCSLEEP GENADR TCGETCAD -2",
+     "words": [
+      "03753"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (cm_waker_finish)",
+     "executed_by_oracle": false
+    },
+    {
+     "line": 198,
+     "address": "00,3767",
+     "source": "WAKECAD GENADR WAKER",
+     "words": [
+      "03761"
+     ],
+     "kind": "constant",
+     "native": "src/service_transfer.c (cm_waker_finish)",
+     "executed_by_oracle": false
+    },
+    {
+     "line": 231,
+     "address": "FF,5606",
+     "source": "GENTRAN INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 232,
+     "address": "FF,5607",
+     "source": "TS ITEMP1",
+     "words": [
+      "54061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 233,
+     "address": "FF,5610",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 234,
+     "address": "FF,5611",
+     "source": "AD 0",
+     "words": [
+      "60000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 235,
+     "address": "FF,5612",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 236,
+     "address": "FF,5613",
+     "source": "CA 0",
+     "words": [
+      "30000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 237,
+     "address": "FF,5614",
+     "source": "TS L",
+     "words": [
+      "54001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 238,
+     "address": "FF,5615",
+     "source": "CA ITEMP1",
+     "words": [
+      "30061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 239,
+     "address": "FF,5616",
+     "source": "INDEX Q",
+     "words": [
+      "50002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 240,
+     "address": "FF,5617",
+     "source": "AD 1",
+     "words": [
+      "60001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 241,
+     "address": "FF,5620",
+     "source": "INDEX A",
+     "words": [
+      "50000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 242,
+     "address": "FF,5621",
+     "source": "LXCH 0",
+     "words": [
+      "22000"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 243,
+     "address": "FF,5622",
+     "source": "CCS ITEMP1",
+     "words": [
+      "10061"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 244,
+     "address": "FF,5623",
+     "source": "TCF GENTRAN +1",
+     "words": [
+      "15607"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 245,
+     "address": "FF,5624",
+     "source": "TCF Q+2",
+     "words": [
+      "16710"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_gentran_loop)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 254,
+     "address": "FF,5625",
+     "source": "B5OFF CS BIT5",
+     "words": [
+      "45013"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 255,
+     "address": "FF,5626",
+     "source": "MASK EXTVBACT",
+     "words": [
+      "71044"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 256,
+     "address": "FF,5627",
+     "source": "TS EXTVBACT",
+     "words": [
+      "55044"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 257,
+     "address": "FF,5630",
+     "source": "TC ENDOFJOB",
+     "words": [
+      "05217"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_b5off)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 263,
+     "address": "FF,5631",
+     "source": "TRFAILOF INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 264,
+     "address": "FF,5632",
+     "source": "CS OCT40200",
+     "words": [
+      "47704"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 265,
+     "address": "FF,5633",
+     "source": "MASK DSPTAB +11D",
+     "words": [
+      "71036"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 266,
+     "address": "FF,5634",
+     "source": "AD BIT15",
+     "words": [
+      "65001"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 267,
+     "address": "FF,5635",
+     "source": "TS DSPTAB +11D",
+     "words": [
+      "55036"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 268,
+     "address": "FF,5636",
+     "source": "CS OPTMODES",
+     "words": [
+      "41331"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 269,
+     "address": "FF,5637",
+     "source": "MASK BIT7",
+     "words": [
+      "75011"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 270,
+     "address": "FF,5640",
+     "source": "ADS OPTMODES",
+     "words": [
+      "27331"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 272,
+     "address": "FF,5641",
+     "source": "REQ RELINT",
+     "words": [
+      "00003"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 273,
+     "address": "FF,5642",
+     "source": "TC Q",
+     "words": [
+      "00002"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailof)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 275,
+     "address": "FF,5643",
+     "source": "TRFAILON INHINT",
+     "words": [
+      "00004"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailon)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 276,
+     "address": "FF,5644",
+     "source": "CS DSPTAB +11D",
+     "words": [
+      "41036"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailon)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 277,
+     "address": "FF,5645",
+     "source": "MASK OCT40200",
+     "words": [
+      "77704"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailon)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 278,
+     "address": "FF,5646",
+     "source": "ADS DSPTAB +11D",
+     "words": [
+      "27036"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailon)",
+     "executed_by_oracle": true
+    },
+    {
+     "line": 279,
+     "address": "FF,5647",
+     "source": "TCF REQ",
+     "words": [
+      "15641"
+     ],
+     "kind": "instruction",
+     "native": "src/service_transfer.c (cm_trfailon)",
+     "executed_by_oracle": true
+    }
+   ]
+  }
+ },
+ "native": {
+  "src/service_transfer.c": "44679a891524b6f49781af9273647f9f93d85afe29cb7229b0b611eacf27dff0",
+  "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
+  "src/lm_service_sites.inc": "904bcb337ff8280c22571b642831649ad70daddb658cdbd0b3e2fcdf44b20554",
+  "src/cm_service_sites.inc": "24de18f1a870fe2f53f0aea49806f7f0991d51dd2698478797954ae711af5ed3",
+  "include/service_transfer.h": "d96b2a1b23f7c092ee0adb2554598e8e7f473e77a39a0c81535212a172117d7f",
+  "include/service_routines.h": "deae63dcce21def6653dde748f2f053f17461fd0dfd023982423b5a09dc46175"
+ }
+}

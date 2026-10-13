@@ -20,6 +20,6 @@ danzig-pending-differential:
 	git diff --exit-code -- tests/danzig_pending_vectors.h
 c64-danzig-pending: build/danzig-pending.prg
 build/danzig-pending.prg: $(DZP_SRC) platform/c64/danzig_pending_diagnostic.c $(DZP_HDR) | build
-	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/danzig-pending.map $(DZP_SRC) platform/c64/danzig_pending_diagnostic.c -o $@
+	$(MOS_CC) $(CPPFLAGS) -DAGC_TRANSFER_DANZIG_MARKER -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/danzig-pending.map $(DZP_SRC) platform/c64/danzig_pending_diagnostic.c -o $@
 vice-danzig-pending: build/danzig-pending.prg
 	python3 tools/vice_run.py build/danzig-pending.prg --cycles 3000000000 --timeout 1200
