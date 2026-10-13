@@ -388,6 +388,11 @@ def main():
         return 0
     args.log_dir.mkdir(parents=True, exist_ok=True)
     (ROOT / 'build').mkdir(exist_ok=True)
+    # VICE exits 1 at startup when its XDG cache/config directory is missing;
+    # some *_vice_test.py scripts point XDG there without creating it, and on
+    # a c64 shard no earlier target may have.
+    for name in ('vice-cache', 'vice-config'):
+        (ROOT / 'build' / name).mkdir(exist_ok=True)
     results = []
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as pool:
         futures = [pool.submit(run, t, args.log_dir, args.make_arg, args.attempts) for t in targets]
