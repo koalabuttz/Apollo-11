@@ -6,8 +6,9 @@
 KAL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 KAL_SRC = src/lm_kalman.c tests/lm_kalman_target.c $(KAL_COMMON)
 KAL_HDR = include/lm_kalman.h tests/interp_case.h tests/lm_kalman_vectors.h tests/lm_kalman_c64_vectors.h
-# (the spec's c64_flags; -DIRC_CHANNELS for its seeded counters and channels)
-KAL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+# (the spec's c64_flags; -DIRC_CHANNELS for its seeded counters and channels,
+# -DIRC_INPUTS for the latched input channels)
+KAL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS
 .PHONY: test-lm-kalman sanitize-lm-kalman c64-lm-kalman vice-lm-kalman lm-kalman-differential
 all: build/test-lm-kalman
 test: test-lm-kalman

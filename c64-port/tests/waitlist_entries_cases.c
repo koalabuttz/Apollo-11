@@ -83,11 +83,22 @@ static void sane_waitlist(apollo_overlay_state *s,uint8_t cm,uint16_t base){uint
  i=(uint16_t)(rnd(&x)%8u);s->words[0]=(agc_word)(i==0u?1u:i==1u?2u:i==2u?037777u:1u+rnd(&x)%(i<5u?0200u:037777u));
  i=(uint16_t)(rnd(&x)%4u);s->words[026]=(agc_word)(i==0u?rnd(&x)%0200u:i==1u?037600u+rnd(&x)%0200u:rnd(&x)%040000u);
  c=(uint16_t)(rnd(&x)%16u==0u?9u:rnd(&x)%9u);
+ if(base&WLE_EDGE)c=(uint16_t)(1u+c%8u);
  for(i=0;i<8u;++i)s->words[01400u+i]=(agc_word)(i<c?077777u-rnd(&x)%(i==0u?040u:02000u):057777u);
  /* One rnd() per statement: gcc and clang order calls within an expression differently. */
  for(i=0;i<9u;++i){uint16_t fb=(uint16_t)(rnd(&x)%040u),sb=(rnd(&x)&1u)?0100u:0060u,eb=(uint16_t)(rnd(&x)%8u);
   s->words[01410u+2u*i]=(agc_word)(i<c?02000u+rnd(&x)%01776u:end);
-  s->words[01411u+2u*i]=(agc_word)(i<c?(uint16_t)(fb<<10|sb|eb):04063u);}}
+  s->words[01411u+2u*i]=(agc_word)(i<c?(uint16_t)(fb<<10|sb|eb):04063u);}
+ /* WLE_EDGE: the new task falls due exactly 1 cs before queued task j, so
+  * WAIT2's list search ends on CCS -0 at j. TIME3 at least 0400, the delay
+  * past the next TIME3 overflow by p cs; each earlier task j' takes e of the
+  * p left (CCS then leaves p-e-1), and task j's delta T is -p. */
+ if(base&WLE_EDGE){uint16_t j=(uint16_t)(rnd(&x)%c),p,e;
+  s->words[026]=(agc_word)(0400u+rnd(&x)%037400u);
+  p=(uint16_t)(1u+3u*j+rnd(&x)%(037572u-(040000u-s->words[026])-3u*j));
+  s->words[0]=(agc_word)(040000u-s->words[026]+p);
+  for(i=0;i<j;++i){e=(uint16_t)(1u+rnd(&x)%(p-2u*(j-i)));s->words[01400u+i]=(agc_word)(077777u-e);p=(uint16_t)(p-e-1u);}
+  s->words[01400u+j]=(agc_word)(077777u-p);}}
 #endif
 void wle_io(const void *io,uint8_t kind,uint16_t *superbank,uint16_t *enabled){
  if(kind==1u||kind==3u){const cm_native_io *c=io;*superbank=(uint16_t)c->superbank;*enabled=(uint16_t)c->interrupt_enabled;}
@@ -107,7 +118,7 @@ void wle_input(apollo_overlay_state *s,void *io,agc_hardware *hw,uint8_t kind,ui
  else if(kind==1u){static cm_exs_case c;cm_exs_input(s,io,&c,base);*hw=c.hw;vector_words(s,03416u);}
 #endif
 #if HAS(2)||HAS(3)
- else if(kind==2u||kind==3u){uint16_t superbank,inhint;svt_input(s,&superbank,&inhint,(uint16_t)(base&~WLE_SANE));
+ else if(kind==2u||kind==3u){uint16_t superbank,inhint;svt_input(s,&superbank,&inhint,(uint16_t)(base&~(WLE_SANE|WLE_EDGE)));
   if(base&WLE_SANE)sane_waitlist(s,(uint8_t)(kind==3u),base);
   if(kind==2u){p66_bias_io *l=io;l->superbank=superbank;l->interrupt_enabled=(uint16_t)!inhint;}
   else{cm_native_io *c=io,cz={0};*c=cz;c->superbank=superbank;c->interrupt_enabled=!inhint;}}

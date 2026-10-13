@@ -12,6 +12,7 @@ reruns the target, so the suite needs only the evidence it actually reads.
 """
 import argparse
 import concurrent.futures
+import contextlib
 import gzip
 import json
 import lzma
@@ -38,6 +39,24 @@ def missing_build(output):
     found = {next(filter(None, m)) for m in BUILD_OUTPUT.findall(output)}
     return {p if p.startswith('build/') else 'build/' + p for p in found}
 LOCK = threading.Lock()
+# Build scripts write fixed build/ paths (module manifests, generated headers).
+# Two targets running one at once, or a target's recipe and another target's
+# producer, interleave those writes (nightly c64-legacy 5: p66_guidance_build.py
+# ran twice at once and vice-legacy-p66-outlined linked a mixed header). One
+# lock per script name; a target holds the locks of the scripts its recipe
+# runs, in name order, and a producer holds its own, so no thread waits on
+# a second lock while holding one.
+_SCRIPT_LOCKS = {}
+
+
+def script_lock(name):
+    with LOCK:
+        return _SCRIPT_LOCKS.setdefault(name, threading.RLock())
+
+
+def recipe_scripts(target):
+    recipe = ci_rules().get(target, ((), ''))[1]
+    return sorted(set(re.findall(r'tools/([A-Za-z0-9_]+_build\.py)', recipe)))
 # Recipe text that writes the path that follows it.
 WRITES = r'(>|-o|-Map[,=])\s*'
 TOOL_ARGS = {'--cc': 'MOS_CC', '--mos-cc': 'MOS_CC', '--c1541': 'C1541'}
@@ -296,7 +315,13 @@ def produce(path, target, log_dir, make_args, attempts, stack=()):
                 cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', *what]
                 log = log_dir / '-'.join([pathlib.Path(what[0]).stem, *what[1:]]).replace('=', '')
                 log = log.with_name(log.name + '.log')
-            ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
+            if kind == 'script':
+                with script_lock(what.name):
+                    # Another target's producer may have written it meanwhile.
+                    ok = (ROOT / path).exists() or produce_with(cmd, log, label, log_dir, make_args,
+                                                                attempts, stack)
+            else:
+                ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
         if (ROOT / path).exists():
             if ok:
                 return True
@@ -339,9 +364,12 @@ def run(target, log_dir, make_args, attempts, stack=()):
     start = time.monotonic()
     tried = set()
     for _ in range(attempts):
-        proc = subprocess.run(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
-                              cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                              env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'))
+        with contextlib.ExitStack() as held:
+            for name in recipe_scripts(target):
+                held.enter_context(script_lock(name))
+            proc = subprocess.run(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
+                                  cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                                  env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'))
         log.write_text(proc.stdout)
         if proc.returncode == 0:
             return target, True, time.monotonic() - start, ''

@@ -4,10 +4,10 @@
  * spread with a stride of 97. */
 #define LM_DI_C64_COUNT 192u
 static const uint16_t lm_di_c64_case[192]={
-0u,1u,2u,4u,5u,6u,7u,9u,
-20u,96u,97u,98u,137u,191u,193u,194u,
-233u,290u,291u,372u,387u,388u,484u,485u,
-581u,582u,678u,679u,775u,776u,827u,872u,
+0u,1u,2u,3u,4u,5u,6u,7u,
+9u,96u,97u,98u,137u,191u,193u,194u,
+233u,290u,291u,387u,388u,484u,485u,581u,
+582u,678u,679u,740u,775u,776u,827u,872u,
 873u,969u,970u,1066u,1067u,1163u,1164u,1260u,
 1261u,1357u,1358u,1454u,1455u,1551u,1552u,1648u,
 1649u,1745u,1746u,1842u,1843u,1939u,1940u,2036u,
@@ -30,10 +30,10 @@ static const uint16_t lm_di_c64_case[192]={
 8536u,8633u,8730u,8827u,8924u,9021u,9118u,9215u,
 };
 static const uint32_t lm_di_c64[192]={
-0x761d9db3ul,0xb507b453ul,0x692690f5ul,0xde61d24bul,0xafe8d9a0ul,0x601eaa65ul,0x7b544339ul,0xd0ee8300ul,
-0x8e6e6cfdul,0x9163fcc6ul,0xd2b1634eul,0xdc314c5aul,0x84db0ee3ul,0xe9fea3a0ul,0x2f9dcfd6ul,0xafda5311ul,
-0x2e8037deul,0xb2891518ul,0x40d68a25ul,0x3d9b4880ul,0xc230708bul,0x36982de0ul,0x56574c78ul,0x83933a12ul,
-0xf0395a8dul,0xbb4de4bbul,0x91adeb29ul,0xdb819e8ful,0x8508b3ccul,0x1d7f32d6ul,0xf2a4b3adul,0xfdcb13deul,
+0x761d9db3ul,0xb507b453ul,0x692690f5ul,0xc9b9d350ul,0xde61d24bul,0xafe8d9a0ul,0x601eaa65ul,0x7b544339ul,
+0xd0ee8300ul,0x9163fcc6ul,0xd2b1634eul,0xdc314c5aul,0x84db0ee3ul,0xe9fea3a0ul,0x2f9dcfd6ul,0xafda5311ul,
+0x2e8037deul,0xb2891518ul,0x40d68a25ul,0xc230708bul,0x36982de0ul,0x56574c78ul,0x83933a12ul,0xf0395a8dul,
+0xbb4de4bbul,0x91adeb29ul,0xdb819e8ful,0xdbd9dbb6ul,0x8508b3ccul,0x1d7f32d6ul,0xf2a4b3adul,0xfdcb13deul,
 0xf6ae549cul,0xa3221bedul,0xc07a431cul,0x9e0ca319ul,0x727424a2ul,0x3f556257ul,0xff0005b4ul,0x00e9a8eful,
 0x4c5cd75dul,0xf0302f8eul,0xfc4c36f1ul,0xa30b2fc3ul,0x2ec40489ul,0x6e323381ul,0xc31cb9c1ul,0x1e7da5d2ul,
 0x19fe5661ul,0xdcd86b4bul,0xfa777a53ul,0x0da37dbcul,0x185a438bul,0x947e8aa2ul,0x78ff30eful,0xa9396801ul,

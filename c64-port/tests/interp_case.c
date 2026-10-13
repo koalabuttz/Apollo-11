@@ -19,14 +19,17 @@ void irc_cm_io(void *cm_io,unsigned save){cm_native_io *io=(cm_native_io *)cm_io
 }
 #endif
 #if IRC_IO && !defined(IRC_BUILD_ONLY) && !defined(IRC_CM_ONLY)
-/* Luminary: the outputs in the program's agc_hardware, the inputs 30-33 in
- * the run's lm_channel_io (AGC_CHANNEL). No trap bits: channel 13 keeps
- * 043777 (tools/basic_compile.py lm_channel_helpers). */
+/* Luminary ('channels': 'all', include/agc_channel_ops.h): the outputs in
+ * the program's agc_hardware (h may be NULL), 030-033 in the run's latched
+ * inputs, the traps in channel 013's bits 12-14 there. */
 static void irc_lm_io(agc_hardware *h,agc_input_channels *in,unsigned save){
- agc_word *f[IRC_NCH];unsigned i;
- f[0]=&h->channel5;f[1]=&h->channel6;f[2]=&h->channel11;f[3]=&h->channel12;f[4]=&h->channel13;
- f[5]=&h->channel14;f[6]=&in->channel30;f[7]=&in->channel31;f[8]=&in->channel32;f[9]=&in->channel33;
+ static agc_word none[6];agc_word *f[IRC_NCH];unsigned i;
+ for(i=0;i<6u;++i)f[i]=&none[i];
+ if(h){f[0]=&h->channel5;f[1]=&h->channel6;f[2]=&h->channel11;f[3]=&h->channel12;f[4]=&h->channel13;f[5]=&h->channel14;}
+ f[6]=&in->channel30;f[7]=&in->channel31;f[8]=&in->channel32;f[9]=&in->channel33;
  for(i=0;i<IRC_NCH;++i){if(save)irc_ch[i]=*f[i];else *f[i]=irc_ch[i];}
+ if(save){for(i=0;i<3u;++i)irc_trap[i]=(agc_word)((irc_ch[4]>>(11u+i))&1u);irc_ch[4]&=043777u;}
+ else for(i=0;i<3u;++i)if(irc_trap[i])*f[4]|=(agc_word)(1u<<(11u+i));
 }
 #endif
 void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;unsigned i,k;
@@ -70,15 +73,15 @@ unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_c
  if(irc_ch_on)irc_cm_io(&cio.io,0);
 #endif
 #if IRC_IO && !defined(IRC_CM_ONLY)
- if(!c->cm&&p->hardware){agc_hardware z={0};*p->hardware=z;if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
+ if(!c->cm){if(p->hardware){agc_hardware z={0};*p->hardware=z;}if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
 #endif
  io=c->cm?(void *)&cio:(void *)&lio;
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);
 #if IRC_IO && !defined(IRC_LM_ONLY)
- if(irc_ch_on&&c->cm)irc_cm_io(&cio.io,1);
+ if(irc_ch_on)irc_cm_io(&cio.io,1);
 #endif
 #if IRC_IO && !defined(IRC_CM_ONLY)
- if(irc_ch_on&&!c->cm&&p->hardware)irc_lm_io(p->hardware,&lio.in,1);
+ if(irc_ch_on&&!c->cm)irc_lm_io(p->hardware,&lio.in,1);
 #endif
  if(ie)*ie=c->cm?cio.io.interrupt_enabled:lio.io.interrupt_enabled;
  return st==EXEC_UNMAPPED||st==EXEC_IDLE?IRC_STOPPED:st==EXEC_OUT_OF_SCOPE&&steps==0u?IRC_REFUSED:IRC_FAILED;

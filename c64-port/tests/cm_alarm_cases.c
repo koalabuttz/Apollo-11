@@ -14,8 +14,13 @@ uint16_t cm_al_kinds(void){return (uint16_t)(CM_ALARM_SITE_COUNT+OTHERS);}
 /* A switched bank other than 2 and 3 (fixed-fixed) and 10 (which holds PRIOLARM). */
 static unsigned free_bank(uint32_t *seed){unsigned b;do b=4u+(rnd(seed)>>20)%034u;while(b==010u);return b;}
 static agc_word word(uint32_t *seed){return (agc_word)((rnd(seed)>>12)&AGC_MASK);}
-/* A return address in 02000-03777 (for ALMCADR and the callers' Q). */
-static agc_word ret(uint32_t *seed){return (agc_word)(02000u+(rnd(seed)>>16)%02000u);}
+/* A return address in 02000-07777 (for ALMCADR and the callers' Q): banked
+ * or fixed-fixed, outside this file's words and the interbank routines
+ * (04662-04775). */
+static agc_word ret(uint32_t *seed){agc_word q;
+ do q=(agc_word)(02000u+(rnd(seed)>>16)%06000u);
+ while((q>=04662u&&q<=04775u)||(q>=05650u&&q<=05772u)||(q>=07755u&&q<=07774u));
+ return q;}
 /* Q (and bank) a TC at physical site `at` leaves. */
 static void site_q(unsigned at,unsigned *bank,agc_word *q){
  if(at<2048u||at>=4096u){*bank=at/1024u;*q=(agc_word)(02000u+at%1024u);}else *q=(agc_word)(04000u+(at-2048u));

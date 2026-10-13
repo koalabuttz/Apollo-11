@@ -7,8 +7,9 @@
 RLR_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 RLR_SRC = src/lm_radar_leadin_routines.c tests/lm_radar_leadin_routines_target.c $(RLR_COMMON)
 RLR_HDR = include/lm_radar_leadin_routines.h tests/interp_case.h tests/lm_radar_leadin_routines_vectors.h tests/lm_radar_leadin_routines_c64_vectors.h
-# (the spec's c64_flags; -DIRC_CHANNELS for its seeded counters and channels)
-RLR_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+# (the spec's c64_flags; -DIRC_CHANNELS for its seeded counters and channels,
+# -DIRC_INPUTS for the latched input channels)
+RLR_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS
 .PHONY: test-lm-radar-leadin-routines sanitize-lm-radar-leadin-routines c64-lm-radar-leadin-routines vice-lm-radar-leadin-routines lm-radar-leadin-routines-differential
 all: build/test-lm-radar-leadin-routines
 test: test-lm-radar-leadin-routines

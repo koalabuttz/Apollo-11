@@ -702,11 +702,14 @@ SPECS = {
         # a CHANG2 resume from the state the routine before it reaches.
         'flow_states': True,
         'resume_flow': True,
-        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
-        # the GOTO X1 into RES, REM or VEM (S1 = 0 would loop forever).
         # The pushdown list stays low in the VAC area (LSTIME's SETPD 0D;
         # RES pushes to 16D): a push near X1 would overwrite the index.
-        'all_states': {'vac+050': [6], '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        'all_states': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
+        # the GOTO X1 (26,2141) into RES, REM or VEM (S1 = 0 would loop
+        # forever). Up to the SSP, S1 is any value (P20-P25 leave 108, 18
+        # or 54), so the SSP's write is compared.
+        'range_states': [('LSTIME+11', 'NINEB4', {'vac+050': [6]})],
         # C64 rows: the cases that take every branch outcome the host cases take.
         'c64_rows': 'cover',
         # (INDEX's end-around carry kept within 16 bits for the C64)
@@ -1725,6 +1728,10 @@ SPECS = {
         'target': 'tests/rtb_op_codes_target.c',
         # RTB runs in NOVAC jobs too: the routines that never name FIXLOC
         # take any FIXLOC.
+        # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
+        # unsigned too)
+        'index_carry16': True,
+        'image_w': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
@@ -2071,7 +2078,16 @@ SPECS = {
         # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
         # build needs (unsigned is 16 bits there).
         'index_carry16': True,
-        'partial': {'lm': 'READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 wait for an I/O channel model'},
+        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 lands on
+        # WHATEXIT's TCF EXNORM, which loops back to DISPEXIT for ever.  The
+        # program only runs IGNALG (-1) with FLUNDISP set, so DISPEXIT never
+        # gets there; cases on the paths into it keep WCHPHOLD on 0..2.
+        'range_states': (('CGCALC', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
+                         ('1406P00', 'FASTCHNG', {'WCHPHOLD': [0, 1, 2]})),
+        # READ CHAN30 (STERN) and RAND/READ CHAN31: latched inputs.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
+        'partial': {'lm': 'WOR CHAN13 (STARTP64) waits for an output-channel model'},
         'target': 'tests/lm_llge_target.c',
         'freeze_stride': 32,
         'cover_stride': 8,
@@ -2687,6 +2703,7 @@ SPECS = {
         'basic': 'full',
         'entries': ['@external'],
         'channels': 'all',
+        'channel_inputs': True,
         'io_channels': 'auto',
         'engine': 'flight-device',
         'externals': {},
@@ -2731,6 +2748,7 @@ SPECS = {
         'basic': 'full',
         'entries': ['@external'],
         'channels': 'all',
+        'channel_inputs': True,
         'io_channels': 'auto',
         'engine': 'flight-device',
         'externals': {},
@@ -2758,6 +2776,7 @@ SPECS = {
         'basic': 'full',
         'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP2', 'VARADAR'],
         'channels': 'all',
+        'channel_inputs': True,
         'io_channels': 'auto',
         'engine': 'flight-device',
         'externals': {},

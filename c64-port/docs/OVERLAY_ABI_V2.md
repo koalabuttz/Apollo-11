@@ -77,12 +77,14 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FFF` | Resident service jump table (85 entries max) | 256 |
+| `$6F00..$6FDB` | Resident service jump table (73 entries max; the resident linker script asserts it ends at or below `$6FDC`) | 220 |
+| `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
+| `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$C7FF` | Transient views; overflow space for resident BSS if Lane A needs it | 2,048 |
 | `$C800..$CFFF` | LLVM-MOS software stack (measured peak so far 773 bytes) | 2,048 |
-| `$D000..$DFFF` | I/O; REU controller at `$DF00` | 4,096 |
+| `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
 | `$E000..$FFF9` | Task slot | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
 
@@ -128,7 +130,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 0 | 4 | `NATV` |
 | 4 | 1 | ABI version, 2 |
 | 5 | 1 | Header size, 24 |
-| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`) |
+| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267) |
 | 7 | 1 | Mission: 1 LM, 2 CM |
 | 8 | 2 | Module identity (lane << 8 \| number) |
 | 10 | 2 | Entry address, slot base + 24 |

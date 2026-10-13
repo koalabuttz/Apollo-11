@@ -91,24 +91,6 @@ static MAYBE_UNUSED void dtcf(apollo_overlay_state *s,agc_word at){agc_word fb=a
  W[0]=agc_extend(W[4]);W[1]=(agc_word)(at+1u);W[5]=(agc_word)(z&07777u);ai_put(s,4,fb);}
 /* TC INTPRET: the interpreter entry with the latches the bodies use. */
 static MAYBE_UNUSED void intpret(apollo_overlay_state *s,p66_bias_io *io){lmi_intpret(s,io);}
-/* Channel orders on the program's agc_hardware and input channels, as yaAGC's. */
-static MAYBE_UNUSED agc_hardware *hw;
-static MAYBE_UNUSED agc_word chan(p66_bias_io *io,unsigned k){
- (void)io;switch(k){ default:return 0;}
-}
-static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
-static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend(chan(io,k));}
-/* A write reaches the output channels; the inputs keep what READ returns. */
-static MAYBE_UNUSED void ch_out(p66_bias_io *io,unsigned k,agc_word v){
- (void)io;(void)v;if(k==013u)v&=043777u;
- switch(k){ default:break;}
-}
-static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,p66_bias_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}
-static MAYBE_UNUSED void ch_rand(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])&chan(io,k)));}
-static MAYBE_UNUSED void ch_wand(apollo_overlay_state *s,p66_bias_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])&chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
-static MAYBE_UNUSED void ch_ror(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])|chan(io,k)));}
-static MAYBE_UNUSED void ch_wor(apollo_overlay_state *s,p66_bias_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])|chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
-static MAYBE_UNUSED void ch_rxor(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])^chan(io,k)));}
 /* A fixed word read under INDEX (logical e under this bank), from the
  * tables above: 0 outside them. */
 static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){
@@ -484,8 +466,8 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
 #if (LM_KALMAN_KEEP0 >> 0) & 1
 /* 16,3641 RATELOOP (entry RATELOOP (P-AXIS_RCS_AUTOPILOT.agc TCF RATELOOP)) */
 static enum exec_status r35641_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(p66_bias_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
+ (void)p;
  return basic_run(s,(p66_bias_io *)v,15265u);
 }
 #endif

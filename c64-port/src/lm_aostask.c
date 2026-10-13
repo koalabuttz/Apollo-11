@@ -8,6 +8,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
+#include "agc_channel_ops.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -24,6 +25,10 @@ void interp_routine_trace(const apollo_overlay_state *);
 
 static MAYBE_UNUSED void next(apollo_overlay_state *s){lmi_danzig_next(s);}
 static MAYBE_UNUSED void right(apollo_overlay_state *s){lmi_danzig_right(s);}
+/* The input channels of the run (READ, RAND, ROR, RXOR), set by the wrappers. */
+static MAYBE_UNUSED agc_input_channels *agc_channels_in;
+/* The program's output channels (agc_ch_op), set by the wrappers. */
+static MAYBE_UNUSED agc_hardware *agc_channels_hw;
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
 static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06070;}
@@ -91,24 +96,6 @@ static MAYBE_UNUSED void dtcf(apollo_overlay_state *s,agc_word at){agc_word fb=a
  W[0]=agc_extend(W[4]);W[1]=(agc_word)(at+1u);W[5]=(agc_word)(z&07777u);ai_put(s,4,fb);}
 /* TC INTPRET: the interpreter entry with the latches the bodies use. */
 static MAYBE_UNUSED void intpret(apollo_overlay_state *s,p66_bias_io *io){lmi_intpret(s,io);}
-/* Channel orders on the program's agc_hardware and input channels, as yaAGC's. */
-static MAYBE_UNUSED agc_hardware *hw;
-static MAYBE_UNUSED agc_word chan(p66_bias_io *io,unsigned k){
- (void)io;switch(k){case 012:return hw->channel12; default:return 0;}
-}
-static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
-static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend(chan(io,k));}
-/* A write reaches the output channels; the inputs keep what READ returns. */
-static MAYBE_UNUSED void ch_out(p66_bias_io *io,unsigned k,agc_word v){
- (void)io;(void)v;if(k==013u)v&=043777u;
- switch(k){case 012:hw->channel12=(agc_word)(v&077777u);break; default:break;}
-}
-static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,p66_bias_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}
-static MAYBE_UNUSED void ch_rand(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])&chan(io,k)));}
-static MAYBE_UNUSED void ch_wand(apollo_overlay_state *s,p66_bias_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])&chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
-static MAYBE_UNUSED void ch_ror(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])|chan(io,k)));}
-static MAYBE_UNUSED void ch_wor(apollo_overlay_state *s,p66_bias_io *io,unsigned k){agc_word v=(agc_word)(oc16(W[0])|chan(io,k));W[0]=agc_extend(v);ch_out(io,k,v);}
-static MAYBE_UNUSED void ch_rxor(apollo_overlay_state *s,p66_bias_io *io,unsigned k){W[0]=agc_extend((agc_word)(oc16(W[0])^chan(io,k)));}
 /* Fixed words the file reads under INDEX (rope words). */
 static const agc_word T40000[1]={001150}; /* 20,2000 TORKJET1+0 .. +0 */
 static const agc_word T41000[73]={050002,030000,024002,050000,030000,000006,013035,054162,010000,064753,013014,064753,056161,000006,063020,040000,060161,000006,063027,030160,000006,010162,000002,010160,010162,013035,010162,034735,000002,034733,000002,001240,022513,000141,007416,000030,021261,000021,003766,000153,007111,000072,024103,000135,011511,004754,077142,000061,000217,000464,075642,000536,075705,000001,077616,005154,000052,000231,077174,001400,001000,006000,004000,023146,013241,000337,026501,051276,062362,034753,054160,034753,054161}; /* 20,3000 INERCONA-33 .. +39 */
@@ -1061,7 +1048,7 @@ B40722c:
 X40723c:
  IRC_COVER(178u);
  /* 20,2723 EXTENDED READ CHAN12 */
- ch_read(s,io,012);
+ if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,0,012))return EXEC_OUT_OF_SCOPE;
  goto B40724c;
 B40724c:
  IRC_COVER(179u);
@@ -3726,85 +3713,96 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
 #if (LM_AOSTASK_KEEP0 >> 0) & 1
 /* 20,2447 1/ACCSET (entry 1/ACCSET (DAPIDLER_PROGRAM.agc 2CADR 1/ACCSET)) */
 static enum exec_status r40447_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16679u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 1) & 1
 /* 20,2454 1/ACCJOB (entry 1/ACCJOB (RCS_FAILURE_MONITOR.agc 2CADR 1/ACCJOB)) */
 static enum exec_status r40454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16684u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 2) & 1
 /* 20,2456  (return from BANKCALL) */
 static enum exec_status r40456_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16686u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 3) & 1
 /* 20,2457 1/ACCS (entry 1/ACCS (SERVICER.agc CADR 1/ACCS)) */
 static enum exec_status r40457_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16687u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 4) & 1
 /* 20,2462  (return from MAKECADR) */
 static enum exec_status r40462_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16690u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 5) & 1
 /* 20,2773 DOCKTEST (return from IBNKCALL) */
 static enum exec_status r40773_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,16891u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 6) & 1
 /* 20,3250  (return from IBNKCALL) */
 static enum exec_status r41250_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,17064u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 7) & 1
 /* 20,3577  (return from 5545) */
 static enum exec_status r41577_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,17279u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 8) & 1
 /* 20,3620  (return from 5545) */
 static enum exec_status r41620_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,17296u);
 }
 #endif
 #if (LM_AOSTASK_KEEP0 >> 9) & 1
 /* 20,3700 INVERT (entry INVERT (P51-P53.agc BOFF INVERT)) */
 static enum exec_status r41700_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!p->hardware||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
- hw=p->hardware;
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((lm_channel_io *)v)->in;
+ agc_channels_hw=p->hardware;
  return basic_run(s,(p66_bias_io *)v,17344u);
 }
 #endif
 
-#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}
+/* The routines take lm_channel_io: the mission record, then the inputs. */
+#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){agc_channels_hw=p->hardware;if(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}
 /* Each table ends with a sentinel the count leaves out. */
 const agc_routine_table lm_aostask_interpretive={0,0};
 static const agc_routine_entry basic_entries[]={
