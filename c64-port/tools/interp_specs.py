@@ -909,8 +909,10 @@ SPECS = {
         # Job code: a DANZIG that finds NEWJOB positive stops at CHANG2, and
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
-        # One C64 case per routine: KALCMAN3's run reaches most of the file.
-        'c64_per_point': 1,
+        # KALCMAN3's run reaches most of the file, more than one C64
+        # diagnostic holds: the outcomes only it takes before a CHANG2
+        # resume get segment rows.
+        'c64_segments': True,
         # EBANK= BCDU (E6). X1 and X2 (VAC+046/047) hold the complemented
         # matrix addresses the callers' AXC orders load (MIS, KEL, MFS...).
         'ebank': 6,
