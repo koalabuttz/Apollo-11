@@ -2793,9 +2793,9 @@ SPECS = {
         'base': {'lm': 'lm_p20_p25'},
         'symbol': {'lm': 'lm_p20_p25'},
         # PROG20/22/25 from FRESH_START, the rest the labels other files call.
-        # Channel instructions wait for the shared output-channel model
-        # (spec 'channels', from Lane F and Lane D2): a case reaching one
-        # refuses and is listed, not compared. So does RRLIMCHK's entry.
+        # Channel instructions run on the shared I/O channel model ('channels',
+        # #259); channels 010 and 015 are not modelled and still refuse, as
+        # does RRLIMCHK's entry.
         # (Shared compiler options every refreeze sets now: the C64 INDEX
         # end-around carry, the fixed $7000 image, and a CCS arm on the
         # word after an EXTEND refused.)
@@ -2811,9 +2811,13 @@ SPECS = {
         # an EXTEND would run it unextended (DGCHECK's TS ITEMP1 skipping
         # RAND CHAN33's EXTEND): refused.
         'refuse_skip_unextended': True,
-        'partial': {'lm': 'the channel instructions (RAND, WAND, WOR and RXOR on channels 12, 13 and 14, '
-                          'LCHAN and SUPERBNK) wait for the shared I/O channel model; RRLIMCHK\'s double index '
-                          '(EXTEND, INDEX Q, INDEX 0) is not compiled yet'},
+        'partial': {'lm': 'channel orders on channels 010 and 015, not in the shared I/O channel model yet, '
+                          'refuse; RRLIMCHK\'s double index (EXTEND, INDEX Q, INDEX 0) is not compiled yet'},
+        'channels': 'all',
+        # RROUT's WOR CHAN14 sets the RR CDU drive bits, and yaAGC's optics
+        # model then dumps CDUT/CDUS (its OPTY/OPTX) at once: the oracle
+        # runs without its IMU and optics device models.
+        'engine': 'flight-device',
         'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM', 'CLRADMOD', 'DORREPOS', 'GOTOV56', 'LRALT', 'LRPOS2',
                     'LRVEL', 'LRVELX', 'LRVELY', 'LRVELZ', 'P20LEMC1', 'P25LEM1', 'R12LITES', 'R22RSTRT',
                     'R29', 'RADAREAD', 'RRDESNB', 'RRLIMCHK', 'RRRANGE', 'RRRDOT', 'RRTURNON', 'RRZERO', 'SETTRKF',
@@ -2832,6 +2836,17 @@ SPECS = {
         # LODSAMPT's address stands in for it, the case's Q and stop too.)
         'states': {'LITIT+3': {'ITEMP6': [0o4400], '2': [0o4400]},
                    'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+                   # (LPS20.2's and LRS22.2's MPAC: 0 or 1, for the INDEX MPAC
+                   # after the CALL's EXIT and after the BANKCALL)
+                   'P20LEM1+11': {'0154': [0, 1]}, 'P20LEM1+12': {'0154': [0, 1]},
+                   'R22LEM2+10': {'0154': [0, 1]},
+                   # (SPCOS's A, no overflow: the TS SAVECDUT +1 it returns
+                   # to never skips into the EXTEND, MP pair; and R29's pass
+                   # flag, as at TESTCOS +6)
+                   '32,2662': {'0000': [0, 0o20000, 0o37777, 0o177777, 0o140000, 0o157777], 'TANG': [0, 1]},
+                   # (LRVEL's A: the beam's VBEAM index, 0, 2 or 4, from its
+                   # callers' CAF)
+                   'LRVEL': {'0000': [0, 2, 4]},
                    # (X1 an index, as the STORE,1 that TC INTPRET at
                    # R21LEM7 +1 is to the interpreter assumes)
                    'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},

@@ -1562,7 +1562,12 @@ class Compiler:
         if not heads:
             raise CompileError('INDEX Q inline read at %s: no caller in the file' % self.where(p))
         start = max(heads)
-        lg = self.logical_of(start)
+        # (and the entries that fall into it: INITREAD -1's CAF ONE)
+        jumps = ('TC', 'TCF', 'RETURN', 'CCS', 'BZF', 'BZMF', 'INDEX', 'TCR', 'NOOP')
+        entries = {self.logical_of(h) for h in heads
+                   if all(self.code.get(q) is not None and self.code[q].op not in jumps
+                          for q in self.words if h <= q < start)
+                   and all(q in self.words for q in range(h, start))}
         cases = {}
         # (every caller in the rope: T4RUPT's TC RRLIMCHK too)
         for ln in self.L.lines:
@@ -1570,8 +1575,9 @@ class Compiler:
             if ln.op != 'TC' or not ln.words or q is None or q // 1024 >= 0o40:
                 continue
             w = ln.words[0]
-            if (w & 0o70000) or (w & 0o7777) != lg:
+            if (w & 0o70000) or (w & 0o7777) not in entries:
                 continue
+            lg = w & 0o7777
             if lg >= 0o4000 or q // 1024 == start // 1024 or start // 1024 in (2, 3):
                 ret = self.logical_of(q + 1)
                 fb = (q // 1024 << 10) if q // 1024 not in (2, 3) else None
