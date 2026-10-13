@@ -42,7 +42,8 @@ runs.
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
-cut module loads from about 4,200 a second to the rates below.
+cut module loads from about 4,200 a second to the rates below. It only
+fits once self-check and the interbank routines shrink (fit, above).
 
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
@@ -50,22 +51,23 @@ mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
 
-### Fit on facddf23
+### Fit on 8564ca79
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |
 |---|---|---|---|---|---|---|---|
-| LM | 128 | 62 | 16 | 46 | 213 | 650 (25 table pairs) | 270,592 bytes |
-| CM | 113 | 51 | 15 | 36 | 185 | 405 (12 table pairs) | 257,536 bytes |
+| LM | 112 | 62 | 16 | 46 | 213 | 650 (25 table pairs) | 270,592 bytes |
+| CM | 88 | 51 | 16 | 35 | 202 | 405 (12 table pairs) | 274,176 bytes |
 
-All but one failure per mission is a module bigger than its 16 KB slot
-(median overflow about 34 KB, largest 136 KB LM and 170 KB CM; only 2 LM
-and 3 CM are within 4 KB of fitting). LM `service_transfer` misses by 65
-bytes since it carries its own 171 operand sites (684 bytes). The other
-failure is `<m>_self_check`, which needs the resident's
-`apollo_reu_transfer` through the service table (services 0x0202, Kernel
-lane). The store itself is far below the 2 MB REU. So the VICE
-whole-program run waits on the modules fitting. Interpretive modules wait on
-the interpreter decision (`/mnt/project-files/steward/interpreter-proposal.md`).
+Every failure is a module bigger than its 16 KB slot (median overflow about
+34 KB, largest 136 KB LM and 170 KB CM). LM `service_transfer` misses by 65
+bytes since it carries its own 171 operand sites (684 bytes). `<m>_self_check`
+links since services 0x0202 (`apollo_reu_transfer`) but misses by about
+1.1 KB on its own (its step machine `body` is 10 KB) and by about 9 KB with
+the interbank tables co-located, so the co-location below is the target
+layout rather than one that fits yet. The store itself is far below the 2 MB
+REU. So the VICE whole-program run waits on the modules fitting.
+Interpretive modules wait on the interpreter decision
+(`/mnt/project-files/steward/interpreter-proposal.md`).
 
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied by
@@ -128,7 +130,7 @@ port) runs one mission:
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.
 
-## Results on facddf23
+## Results on 8564ca79
 
 | Scenario | Samples equal | Major mode native / yaAGC | Routines yaAGC did not match | Module loads per second |
 |---|---|---|---|---|
@@ -167,8 +169,8 @@ where the point is periodic.
 
 | Lane | Mission | Points |
 |---|---|---|
-| A | LM | T4RUPT_PROGRAM: GPMATRIX 06,3132 (84), IMUMON 06,2172 (84), RRAUTCHK 06,3006 (83). SERVICE_ROUTINES: GENTRAN+1 02,3545 refused by `lm_service_routines`, because `tools/agc_sites_generate.py` takes `TC GENTRAN` sites but not the two `TC GENTRAN +1` sites in AOSTASK_AND_AOSJOB (20,3574 and 20,3615; no other `TC <callee> +n` site exists in either mission). INTERPRETER: INTPRET 03,2037 refused by `lanec_ev_lm_intpret`, Q+1 03,2737. FRESH_START_AND_RESTART: R00+1 04,2144 and DUMMYAD 04,2146 refused by `lm_stateup_interpretive` |
-| A | CM | T4RUPT_PROGRAM: IMUMON 06,2174 (84), OPTMON 06,2765 (83), OPTDRIVE 10,2000 (83). ALARM_AND_ABORT: ALARM 02,3650 (native code, no routine table). INTERPRETER: INTPRET 03,2006, Q+1 03,2706, and in V37E00E NOIBNKSW, SWSTORE, VLOAD+3, NEG4+1, TSSL+5, OPJUMP+2, VSHR2+11, VPDVL+3, NEWOPS+1, DSQSUB+15. FRESH_START_AND_RESTART: ROC+1 04,2131 and DUMMYAD 04,2133 refused by `cm_stateup_interpretive` |
+| A | LM | T4RUPT_PROGRAM: GPMATRIX 06,3132 (84), IMUMON 06,2172 (84), RRAUTCHK 06,3006 (83). SERVICE_ROUTINES: GENTRAN+1 02,3545 refused by `lm_service_routines`, because `tools/agc_sites_generate.py` takes `TC GENTRAN` sites but not the two `TC GENTRAN +1` sites in AOSTASK_AND_AOSJOB (20,3574 and 20,3615; no other `TC <callee> +n` site exists in either mission). INTERPRETER: INTPRET 03,2037 refused by `lanec_ev_lm_intpret`, Q+1 03,2737 |
+| A | CM | T4RUPT_PROGRAM: IMUMON 06,2174 (84), OPTMON 06,2765 (83), OPTDRIVE 10,2000 (83). ALARM_AND_ABORT: ALARM 02,3650 (native code, no routine table). INTERPRETER: INTPRET 03,2006, Q+1 03,2706, and in V37E00E NOIBNKSW, SWSTORE, VLOAD+3, NEG4+1, TSSL+5, OPJUMP+2, VSHR2+11, VPDVL+3, NEWOPS+1, DSQSUB+15 |
 | B | LM | INTEGRATION_INITIALIZATION: INTSTALL 13,3414/3415 and GOBAC+1 13,3464 refused by `lm_integration_init_*` |
 | B | CM | INTEGRATION_INITIALIZATION (V37E00E): STATINT1, INTEGRV, MOVEPCSM, MOVEACSM, ATOPCSM+6, MOVEPLEM, ATOPLEM+6, MOVEALEM, ANDOUT+5/+7, GRP2PC+4, INTWAKE+11, WAKE1+4, INTSTALL, SETIFLGS, ENDINT, ENDINT+4/+11 |
 | C | both | PINBALL_GAME_BUTTONS_AND_LIGHTS: CHARIN, LODSAMPT, ENTER, MMCHANG, MMCHANG+15, REQMM+10, 2BLANK, RELDSP, DSPMMJB, NVMONOPT, GOVNUPDT, UPDAT1+2, FLASHON, FLASHOFF, BLANKSUB, ENDIDLE; CM also DSPA, DSPOCTIN, OCTBACK, DSLV+1 |
