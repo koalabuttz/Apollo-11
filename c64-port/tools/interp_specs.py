@@ -170,7 +170,17 @@ SPECS = {
                           for a in range(lo, hi)},
                        # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
                        **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
-        'joint_states': {'CHANGEVB': [{'FLAGWRD8': f | o, 'MKDEX': m}
+        'joint_states': {
+                         # 15,2041 VSL1 VAD from the state the original reaches it
+                         # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
+                         # VAD's overflow there carries into a word that does not
+                         # overflow, which random states almost never give.
+                         'JUSTOA-1': [{}, {}, {}, {
+                             '0120': 0o605, '0121': 0o1, '0154': 0o17573, '0155': 0o76534, '0156': 0o0,
+                             '0157': 0o70311, '0160': 0o70337, '0161': 0o10371, '0162': 0o14166,
+                             '0163': 0o77776, '0166': 0o613, '0605': 0o603, '0606': 0o2356, '0607': 0o1471,
+                             '0610': 0o21246, '0611': 0o25, '0612': 0o36514}],
+                         'CHANGEVB': [{'FLAGWRD8': f | o, 'MKDEX': m}
                                       for f, ms in ((0, range(4)), (0o200, AOT_SLOTS))
                                       for o in (0, 0o12345 & ~0o200, 0o77577) for m in ms]},
         'ebank': 7,

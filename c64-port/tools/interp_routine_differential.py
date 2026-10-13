@@ -1796,34 +1796,16 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
                        ([i for i in mine if i in chosen] or mine[:1]) if cover else mine[:per])
         if edges is not None:
             sets = edges[0]
-            fits, exact, forced = {}, {}, set()
+            fits = {}
 
             def alone(i):
-                if i in forced:
-                    return True
                 v = visits[i]
                 if v not in fits:
                     fits[v] = c64_size(spec, sym, mi.m, v, group_text(sym, [(mi.m, v, [i])], cases, rows)) is not None
                 return fits[v]
-
-            def alone_exact(i):
-                k = (visits[i], len(cases[i]['edits']))
-                if k not in exact:
-                    exact[k] = c64_size(spec, sym, mi.m, visits[i],
-                                        group_text(sym, [(mi.m, visits[i], [i])], cases, rows)) is not None
-                return exact[k]
             live = [i for i, c in enumerate(cases) if c['cm'] == cm and i not in chan]
             base = set().union(*(sets[i] for p in mi.points for i in need[p] if alone(i)))
-            more, got = greedy_cover(live, sets, base, key=fewest, accept=alone)
-            # (alone() judges a routine set by the first case it probes: an
-            # edge that only cases of a set judged too big reach gets a probe
-            # of each such case itself, fewest edits first.)
-            left = set().union(*(sets[i] for i in live)) - got
-            if left:
-                extra, _ = greedy_cover([i for i in live if sets[i] & left and not alone(i)], sets, got,
-                                        key=fewest, accept=alone_exact)
-                forced.update(extra)
-                more = list(more) + extra
+            more, _ = greedy_cover(live, sets, base, key=fewest, accept=alone)
             for i in more:
                 need[cases[i]['point']].append(i)
             segs = {}
