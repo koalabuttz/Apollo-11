@@ -290,6 +290,10 @@ void lmi_gshift_prologue(apollo_overlay_state *s){
  caf(s,LOW7);(void)ts(s,4);W[5]=02214;
 }
 
+void lmi_sload_fixed(apollo_overlay_state *s,const agc_word operand[1]){
+ /* SLOAD with ADDRWD naming a fixed word in the selected bank. */
+ W[1]=0;caf(s,operand[0]);dxch(s,0154);caf(s,0);(void)ts(s,0156);(void)ts(s,0163);danzig_entry(s);
+}
 void lmi_dload_fixed(apollo_overlay_state *s,const agc_word operand[2]){
  /* DLOAD with ADDRWD naming a fixed DP operand in the selected bank. */
  dcaf(s,operand);dxch(s,0154);caf(s,0);(void)ts(s,0156);(void)ts(s,0163);danzig_entry(s);

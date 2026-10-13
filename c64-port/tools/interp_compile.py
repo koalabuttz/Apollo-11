@@ -77,6 +77,8 @@ def entries(spec, m):
 def split_op(op):
     """(base mnemonic, starred, index tag) of an order column entry."""
     tag = 0
+    if op == 'CALRB':
+        op = 'CALL'     # CALRB assembles as CALL
     if op.endswith(',1') or op.endswith(',2'):
         tag = int(op[-1])
         op = op[:-2]
@@ -220,6 +222,15 @@ class Compiler:
             return
         self.starts[phys] = (kind, why)
         self.work.append(phys)
+
+    def call_return(self, phys, why):
+        """A CALL's return point, unless basic code follows it: then the CALL
+        is a transfer that never returns there (STCALL DELLT4 with QTEMP1, a
+        saved QPRET, as its target)."""
+        ln = self.code.get(phys)
+        if ln is not None and not is_interp_op(ln.op):
+            return
+        self.add_start(phys, 'i', why)
 
     # ---- decoding --------------------------------------------------------
     def decode(self):
@@ -388,8 +399,14 @@ class Compiler:
                 k = '0'
             else:
                 st = ['%sdirect(s,0%05o,0%05o);' % (P, nxt, T[name])]
-                k = self.operand_k(nxt, bank, takes_k, False, name)
+                # A general shift's word is its count and direction
+                # (SR 10D is 20613), not an address.
+                k = '0' if name == 'GSHIFT' else self.operand_k(nxt, bank, takes_k or name == 'SLOAD', False, name)
                 cur += 1
+                if name == 'SLOAD' and k != '0':
+                    # SLOAD of a fixed constant (SLOAD DPSVEX).
+                    st[-1] += '%ssload_fixed(s,%s);' % (P, k)
+                    return st, cur, False, False
             if takes_k:
                 st[-1] += '%s%s(s,%s);' % (P, fn, k)
             else:
@@ -444,7 +461,7 @@ class Compiler:
             return st, cur, True, False
         if base == 'CALL':
             st[-1] += '%scall(s);' % P
-            self.add_start(cur, 'i', 'CALL return')
+            self.call_return(cur, 'CALL return')
             st.extend(self.goto(w, 'CALL target', call=True))
             return st, cur, True, False
         if base in ('ITA', 'STQ'):
@@ -501,7 +518,7 @@ class Compiler:
             w = self.word(cur)
             cur += 1
             st = ['%s15bitadr(s,0%05o,0%05o);%scall(s);' % (P, w, T['CALL/ITA'], P)]
-            self.add_start(cur, 'i', 'STCALL return')
+            self.call_return(cur, 'STCALL return')
             return st + self.goto(w, 'STCALL target', call=True), cur, True
         w = self.word(cur)
         load, fn = ('DLOAD', 'dload_op') if sop.startswith('STODL') else ('VLOAD', 'vload')
@@ -624,6 +641,10 @@ class Compiler:
             return ['W[5]=0%04o;return EXEC_OK;%s' % (self.logical_of(z_phys), note)], []
 
         st = [here]
+        if index is None and 5 in (k10, k12) and not (not extended and (op == 0 or (op == 1 and qc != 0))):
+            # An operand Z reads the address of the next instruction, as
+            # Z holds it while this one runs (POSTBURN's CA Z).
+            st.append('W[5]=0%04o;' % (ln.loc + 1))
         if not extended:
             if op == 0:
                 if index is not None:

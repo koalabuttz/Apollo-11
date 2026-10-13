@@ -1,6 +1,6 @@
 # Compiling a source file into native routines (`tools/interp_compile.py`)
 
-Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...) and Lane D1's `sband-antenna`. Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
+Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, `r60-r62`, `attitude-maneuver`, ...), Lane D1 (`sband-antenna`) and Lane F (`lm-p40-p47`). Any lane can use it for files mixing interpretive and basic code. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 
 ## What it emits
 
@@ -20,6 +20,9 @@ Used by Lane D1b milestones (`inflight-align`, `geometry`, `kalcmanu-steering`, 
 - An outside call's inline words can be counted from the listing (`'auto'` in `externals`): the data words after the TC.
 - Words nothing in the file reaches, such as the returns of a display or restart (GOPERF +1/+2), become routines of their own with `resume_orphans`. Words after an EXTEND or INDEX prefix are not.
 - I/O channel instructions (extended opcode 0: READ, WRITE, RAND, WAND, ROR, WOR, RXOR) refuse with `EXEC_OUT_OF_SCOPE` until the ABI has a channel model. The source map records those words as untranslated, with the spec's `partial` reason.
+- An instruction whose operand is Z reads the address of the next instruction, as the hardware does (`CA Z`).
+- A CALL or STCALL followed by basic code has no return point. Its target is a saved return (`STCALL DELLT4` with `QTEMP1`).
+- A general shift's word (`SR 10D`) is its count, not an address. `SLOAD` of a fixed constant reads it from a `K` array (`lmi_sload_fixed`). `CALRB` is CALL.
 - A TC to an erasable address (TC MPAC +2, TC TBASE2) runs the word there with Q set to its return, as the hardware does.
 - An INDEX-modified write that could reach a bank or Z register checks the address at run time and refuses if it would.
 - MXV and VXM read their 18-word matrix operand as a `K` array. LXC is an indexed misc order.

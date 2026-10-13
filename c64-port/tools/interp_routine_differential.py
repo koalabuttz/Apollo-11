@@ -136,6 +136,20 @@ class Mission:
                 return cadr(phys)
 
 
+class Absent:
+    """A mission the spec does not compile (a Luminary-only milestone): no
+    ranges, stops or routines, so its cases never exist."""
+    class _cp:
+        ranges = []
+    def __init__(self, m):
+        self.m = m
+        self.cp = self._cp()
+        self.newops = 0
+        self.points = []
+        self.body_exits = []
+        self.externals = []
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -275,7 +289,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
-    missions = [Mission(spec, m) for m in ('lm', 'cm')]
+    missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     rng = random.Random('interp-routine:' + a.spec)
     cases = []
     for cm, mi in enumerate(missions):
@@ -543,8 +557,9 @@ def freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, chan=()):
                 want |= visits[i]
             trial = mask | want
             tp = pick + part
-            if mask and c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
-                if c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
+            if c64_size(spec, sym, mi.m, trial, group_text(sym, [(mi.m, trial, tp)], cases, rows)) is None:
+                # (With mask 0 the trial is the routine's own run.)
+                if not mask or c64_size(spec, sym, mi.m, want, group_text(sym, [(mi.m, want, part)], cases, rows)) is None:
                     # The routine's whole run (with every routine it reaches)
                     # does not fit one diagnostic: its cases stay host-only.
                     if '%s %s' % (mi.m, mi.cp.where(p)) not in C64_HOST_ONLY:

@@ -13,6 +13,7 @@
 #define lmi_dload cmi_dload
 #define lmi_sload cmi_sload
 #define lmi_dload_fixed cmi_dload_fixed
+#define lmi_sload_fixed cmi_sload_fixed
 #define lmi_pddl cmi_pddl
 #define lmi_setpd cmi_setpd
 #define lmi_vdef cmi_vdef
