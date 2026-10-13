@@ -1728,6 +1728,7 @@ SPECS = {
         # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
         # unsigned too)
         'index_carry16': True,
+        'image_w': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
