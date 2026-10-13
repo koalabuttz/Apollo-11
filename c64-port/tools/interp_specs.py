@@ -709,6 +709,8 @@ SPECS = {
         'all_states': {'vac+050': [6], '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # C64 rows: the cases that take every branch outcome the host cases take.
         'c64_rows': 'cover',
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
         'target': 'tests/cm_ephemeris_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
