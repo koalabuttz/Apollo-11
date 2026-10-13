@@ -28,7 +28,8 @@ static bool interpreting(const agc_native_program *p,const apollo_overlay_state 
  z=agc_fixed_physical(s->words[5],s->words[4],superbank);
  if(p->interpreter_fetch!=AGC_TRANSFER_NONE&&z==p->interpreter_fetch)return true;
  /* The marker is the first interpretive table, keyed at the mission's DANZIG. */
- if(!p->interpretive_count||(m=p->interpretive[0].entries)->call!=danzig_marker||m->physical!=z)return false;
+ if(!p->interpretive_count||!p->interpretive[0].count||(m=p->interpretive[0].entries)->call!=danzig_marker||
+    m->physical!=z)return false;
  edop=(agc_word)(s->words[AGC_EDOP]&077777u);
  return edop!=0u&&edop<040000u;
 }
