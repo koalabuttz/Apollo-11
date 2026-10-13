@@ -2,8 +2,8 @@
 # Milestone lanec-di-transfer (lane C): DISPLAY_INTERFACE_ROUTINES, LM and CM,
 # as routines of the control-transfer ABI, with round trips from every genuine
 # BANKCALL/POSTJUMP caller through INTER-BANK_COMMUNICATION.
-LANEC_DI_ABI = src/lanec_di_routines.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank.c \
-  src/cm_interbank_routines.c src/cm_interbank_complete.c
+LANEC_DI_ABI = src/lanec_di_routines.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank_idle.c src/lm_interbank.c \
+  src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c
 # Luminary099 Executive job services (lane A, as in lm-exec-jobs), so LM round
 # trips continue through PRIOCHNG, JOBSLEEP, NOVAC... back into the file.
 LANEC_LM_EXEC = src/lm_exec_jobs.c src/lm_exec_routines.c src/lm_admission_image.c src/lm_basic_sleep.c \

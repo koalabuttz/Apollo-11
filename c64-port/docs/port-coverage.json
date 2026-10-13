@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -93,6 +93,7 @@
         {
           "native_files": [
             "src/cm_self_check.c",
+            "src/cm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/cm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -100,7 +101,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -5399,6 +5400,7 @@
         {
           "native_files": [
             "src/lm_self_check.c",
+            "src/lm_self_check_idle.c",
             "src/self_check_body.inc",
             "src/lm_self_check_operands.inc",
             "src/rope_image_host.c",
@@ -5406,7 +5408,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],

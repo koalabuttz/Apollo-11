@@ -12,4 +12,14 @@
 #include "cm_interbank_complete.h"
 extern const agc_routine_table cm_interbank_routines;
 const agc_site_operand *cm_interbank_site_table(uint16_t *count);
+/* BANKCALL, SWCALL -1, SWCALL, SWRETURN and POSTJUMP (src/cm_interbank_idle.c):
+ * cm_interbank_routines' first five entries, also as a table of their own for
+ * the flight store to pack beside another module (not a routine table of the
+ * program: the same keys are cm_interbank_routines'). */
+enum exec_status cm_ib_bankcall(const agc_native_program *,apollo_overlay_state *,void *);
+enum exec_status cm_ib_swcall_m1(const agc_native_program *,apollo_overlay_state *,void *);
+enum exec_status cm_ib_swcall(const agc_native_program *,apollo_overlay_state *,void *);
+enum exec_status cm_ib_swreturn(const agc_native_program *,apollo_overlay_state *,void *);
+enum exec_status cm_ib_postjump(const agc_native_program *,apollo_overlay_state *,void *);
+extern const agc_routine_table cm_interbank_idle_chunk;
 #endif

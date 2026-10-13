@@ -22,4 +22,11 @@ bool lm_interbank_literal(uint16_t physical_fixed_word,agc_word *out);
  * rejection preserves complete image and external latches. */
 bool lm_interbank(apollo_overlay_state *,p66_bias_io *,enum lm_interbank_entry,agc_word fixed_inline_cadr,agc_word passive_fetched_word);
 bool lm_interbank_data_address(const apollo_overlay_state *,const p66_bias_io *,uint16_t *physical_fixed_word);
+/* lm_interbank for one group of entries each (false for any other entry), so
+ * a routine table registering only those entries links only their code:
+ * BANKCALL, SWCALL, IBNKCALL and ISWCALLL; SWRETURN and ISWRETRN; POSTJUMP
+ * and BANKJUMP. */
+bool lm_interbank_call(apollo_overlay_state *,p66_bias_io *,enum lm_interbank_entry,agc_word fixed_inline_cadr);
+bool lm_interbank_return(apollo_overlay_state *,p66_bias_io *,enum lm_interbank_entry);
+bool lm_interbank_jump(apollo_overlay_state *,p66_bias_io *,enum lm_interbank_entry,agc_word fixed_inline_cadr);
 #endif

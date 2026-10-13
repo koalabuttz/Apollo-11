@@ -2,7 +2,7 @@
 # Milestone cm-phase-table (lane A2): Comanche055 PHASE_TABLE_MAINTENANCE
 # (NEWMODEX/MMDSPLAY/SETUPDSP, CHECKMM, PHASCHNG/2PHSCHNG) as native routines
 # of the control-transfer ABI.
-CM_PT_SRC = src/cm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_phase_table_cases.c
+CM_PT_SRC = src/cm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_phase_table_cases.c
 CM_PT_HDR = include/cm_phase_table.h include/agc_transfer.h include/agc_image_ops.h src/cm_phase_sites.inc tests/cm_phase_table_cases.h
 .PHONY: test-cm-phase-table sanitize-cm-phase-table c64-cm-phase-table vice-cm-phase-table cm-phase-table-differential
 all: build/test-cm-phase-table

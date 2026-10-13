@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-v37 (lane A2): Comanche055 FRESH_START_AND_RESTART bank 04 (V37, R00, P00, INITSUB)
 # and bank 20 (VAC5STOR) as native routines of the control-transfer ABI.
-CM_V37_SRC = src/cm_v37.c src/cm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_v37_cases.c
+CM_V37_SRC = src/cm_v37.c src/cm_fresh_start.c src/agc_image_ops.c src/agc_hardware_divide.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/cm_v37_cases.c
 CM_V37_HDR = include/cm_v37.h include/cm_fresh_start.h include/cm_interbank_routines.h include/cm_interbank_complete.h include/agc_transfer.h include/agc_image_ops.h src/cm_v37_operands.inc src/cm_fresh_start_operands.inc tests/cm_v37_cases.h
 .PHONY: test-cm-v37 sanitize-cm-v37 c64-cm-v37 vice-cm-v37 cm-v37-differential
 all: build/test-cm-v37
