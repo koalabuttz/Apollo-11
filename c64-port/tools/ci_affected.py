@@ -63,20 +63,23 @@ def database():
             rule[0].update(prereqs)
         else:
             current = None
-    out = {target: (prereqs, '\n'.join(recipe)) for target, (prereqs, recipe) in rules.items()}
-    out[PATTERNS] = patterns
+    out = Rules((target, (prereqs, '\n'.join(recipe))) for target, (prereqs, recipe) in rules.items())
+    out.patterns = patterns
     return out
 
 
-PATTERNS = '%patterns'
+class Rules(dict):
+    """{target: (prerequisites, recipe)}, with the pattern rules as .patterns
+    (callers such as ci_run.py iterate the targets)."""
+    patterns = ()
 
 
 def rule_for(node, rules):
     """The node's explicit rule, merged with the first pattern rule it matches."""
     prereqs, recipe = rules.get(node, ((), ''))
-    if recipe or node.startswith('%'):
+    if recipe:
         return prereqs, recipe
-    for pattern, pre, rec in rules.get(PATTERNS, ()):
+    for pattern, pre, rec in getattr(rules, 'patterns', ()):
         head, _, tail = pattern.partition('%')
         if node.startswith(head) and node.endswith(tail) and len(node) >= len(head) + len(tail):
             stem = node[len(head):len(node) - len(tail)]
