@@ -6,10 +6,15 @@
  * per original instruction, under labels L<address>; internal transfers
  * whose target is computed at run time (INDEX UPVERB; TCF, CK4V32's INDEX Q;
  * TC 0 -6, TC Q, TC UPTEMP, INDEX UPTEMP; TC 1) go through `jump`, which
- * takes only the targets the original can reach. */
+ * takes only the targets the original can reach. UPJOB's interpretive
+ * words (CALL INTSTALL at 3552, UPWAKE EXIT at 3554) are the interpretive
+ * table lm_update_interpretive, the CHANG2 resume LOCs a job running them
+ * comes back to. */
 #include "lm_update.h"
 #include "agc_image_ops.h"
 #include "lm_update_operands.inc"
+#include "lm_interp_steps.h"
+#include "lm_interp_orders.h"
 
 #define W s->words
 #define B04(z) (uint16_t)(04u*1024u+((z)-02000u))
@@ -365,3 +370,31 @@ static const agc_routine_entry entries[LM_UP_ROUTINES]={
  {B04(03714),e3714},{B04(03740),e3740},{B04(03757),e3757},{B04(03761),e3761},{B04(03762),e3762},{B04(03763),e3763},
  {B43(03724),v70updat},{B43(03726),v71updat},{B43(03730),v72updat},{B43(03732),v73updat},{B43(03735),testxact_ret}};
 const agc_routine_table lm_update_routines={entries,LM_UP_ROUTINES};
+
+/* UPJOB's interpretive words, entered at NEWOPS with LOC on the word and
+ * BANKSET's bank 04, as R00's CALL INTSTALL; EXIT in src/lm_stateup.c: each
+ * is a single order (no DANZIG follows either, so NEWJOB, +0 or a positive
+ * core-set address, is not read). CALL INTSTALL leaves for INTSTALL's
+ * NEWOPS (QPRET = 3554); EXIT leaves the interpreter for the basic word
+ * after it (3555 TC PHASCHNG, a basic entry of lm_update_routines). The
+ * interpreter's own state at NEWOPS: EDOP +0, a work area (one of the five
+ * VAC areas, PUSHLOC inside it) and BBANK under BANKSET in bank 04. */
+#define CALLITA 02507u
+static p66_bias_io *ictx(const apollo_overlay_state *s,void *io){
+ p66_bias_io *x=ctx(s,io);agc_word f;
+ if(!x)return 0;
+ if(W[5]!=LM_UP_NEWOPS||(W[4]&076000u)!=(04u<<10)||((W[LM_UP_BANKSET]^W[4])&076000u)||W[023])return 0;
+ f=W[0120];
+ if(f!=0401u&&f!=0455u&&f!=0531u&&f!=0605u&&f!=0661u)return 0;
+ if(W[0166]<f||W[0166]>f+042u)return 0;
+ return x;
+}
+static enum exec_status upjob(const agc_native_program *p,apollo_overlay_state *s,void *io){
+ (void)p;
+ if(!ictx(s,io))return EXEC_OUT_OF_SCOPE;
+ if(W[LM_UP_LOC]==03552u){lmi_newops(s,077624);lmi_misc(s,027414,CALLITA);lmi_call(s);lmi_goto(s);return EXEC_OK;} /* CALL INTSTALL */
+ lmi_newops(s,077776);lmi_exit(s);return EXEC_OK;  /* 3554 UPWAKE EXIT: the table keys LOC 3552 and 3554 only */
+}
+const uint16_t lm_up_interp_entries[LM_UP_INTERPRETIVE]={03552u,03554u};
+static const agc_routine_entry interp_entries[LM_UP_INTERPRETIVE]={{B04(03552),upjob},{B04(03554),upjob}};
+const agc_routine_table lm_update_interpretive={interp_entries,LM_UP_INTERPRETIVE};

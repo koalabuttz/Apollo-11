@@ -1,0 +1,292 @@
+{
+ "c64_rows": {
+  "cm": {
+   "arc_cover_rows": 37,
+   "c64_rows": 329,
+   "host_branch_arcs": 157,
+   "host_cases_traced": 18786
+  },
+  "lm": {
+   "arc_cover_rows": 36,
+   "c64_rows": 400,
+   "host_branch_arcs": 173,
+   "host_cases_traced": 23250
+  },
+  "selection": "tools/resident_kernel_rows.py (tools/c64_row_cover.py over the kernel translation unit) plus every 64th case with an oracle"
+ },
+ "c64_size_bytes": {
+  "cm-Os": {
+   "kernel_bytes": 11311,
+   "kernel_bytes_without_operand_reader": 10628,
+   "prg_bytes": 11439,
+   "runtime_bytes": 128
+  },
+  "cm-Oz": {
+   "kernel_bytes": 9985,
+   "kernel_bytes_without_operand_reader": 9336,
+   "prg_bytes": 10113,
+   "runtime_bytes": 128
+  },
+  "lm-Os": {
+   "kernel_bytes": 11702,
+   "kernel_bytes_without_operand_reader": 11021,
+   "prg_bytes": 11830,
+   "runtime_bytes": 128
+  },
+  "lm-Oz": {
+   "kernel_bytes": 10273,
+   "kernel_bytes_without_operand_reader": 9604,
+   "prg_bytes": 10401,
+   "runtime_bytes": 128
+  }
+ },
+ "cases": {
+  "cm": {
+   "idle": {
+    "compared": 5120,
+    "refused_by_certified": 0
+   },
+   "jobs": {
+    "compared": 6144,
+    "refused_by_certified": 0
+   },
+   "services": {
+    "compared": 7522,
+    "refused_by_certified": 126
+   }
+  },
+  "differing": 0,
+  "lm": {
+   "idle": {
+    "compared": 4864,
+    "refused_by_certified": 0
+   },
+   "jobs": {
+    "compared": 9216,
+    "refused_by_certified": 0
+   },
+   "services": {
+    "compared": 9170,
+    "refused_by_certified": 38
+   }
+  }
+ },
+ "flight_resident": {
+  "boundary_words": {
+   "doc": "docs/RESIDENT-FLIGHT.md#the-boundary-word-table",
+   "generator": "tools/resident_boundary_words.py (keys from tools/resident_boundary_keys.c)",
+   "module": "0x01E0 (task slot, data)",
+   "records": {
+    "lm": 66,
+    "cm": 59
+   },
+   "check": "make resident-boundary-words",
+   "check_lines": [
+    "lm: 66 boundary words match the rope and build/fixed-data/Luminary099/assembly.lst",
+    "cm: 59 boundary words match the rope and build/fixed-data/Comanche055/assembly.lst"
+   ],
+   "vice_steps": {
+    "13": "every key gives its word, the next absent key none",
+    "14": "BRUPT from the table at a fixed-fixed key; no entry at a key not in it",
+    "15": "fixed-fixed resolver key is canonical (07753 under FB 036000, superbank 0160)"
+   },
+   "mutation": "table REU address 4 bytes off and canonical key removed: LM part 4 fails 2 checks"
+  },
+  "doc": "docs/RESIDENT-FLIGHT.md",
+  "interrupts": {
+   "c64_t3rupt_rows": 64,
+   "cases_per_mission": {
+    "entry": 8192,
+    "t3rupt_to_resume": 2048,
+    "timer_periods": 40960
+   },
+   "doc": "docs/RESIDENT-FLIGHT.md#the-agc-clock-and-interrupts",
+   "log": "resident-rupt-host.log",
+   "log_lines": [
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures",
+    "PASS: resident-rupt lm: 8192 entry cases (3328 taken; not taken: 902 nothing pending, 926 in an interrupt, 782 inhibited, 1401 overflow in A, 853 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4999 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5664 checks, 0 failures",
+    "PASS: resident-rupt cm: 8192 entry cases (3342 taken; not taken: 945 nothing pending, 902 in an interrupt, 800 inhibited, 1382 overflow in A, 821 RELINT/INHINT/EXTEND at Z), 2048 T3RUPT cases (2048 to RESUME, 4989 kernel routines), 40960 timer periods (T6 2337, T5 515, T3 516, T4 515 raised); 5650 checks, 0 failures"
+   ],
+   "mutations": {
+    "BRUPT off by one": "160 failing checks",
+    "TIME3 overflow raising T4RUPT": "115 failing checks"
+   },
+   "oracle": "yaAGC agc_engine (deps/virtualagc/yaAGC) linked by tools/resident_rupt_reference.c, frozen by tools/resident_rupt_vectors.py",
+   "ropes": {
+    "cm": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "lm": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+   },
+   "test": "make test-resident-rupt sanitize-resident-rupt"
+  },
+  "native": {
+   "include/resident_rupt.h": "0096770181db3d3098e04b3f467406d37a33cba96ec47c37e50a1afd15f1c12a",
+   "include/sp_routines.h": "4fd5c6cadf7110083b170a322376a258abb2892b5f55a77dcfa59617407eda14",
+   "platform/c64/resident_boundary_module.c": "371945f101bd6f93834be7ff39e563e8448a31773ea73aef6209d8e536fdda6d",
+   "platform/c64/resident_boundary_words_cm.h": "37789461b2f52fe287ed8eca7e151c7fe86a429aaac4eeaf239379b9ce610005",
+   "platform/c64/resident_boundary_words_lm.h": "60e417b5f31b73d6354f66ab9ed69c350bb1d7f84b61b2654bf048c4c6e40479",
+   "platform/c64/resident_flight.c": "59e747a44d4586ca86e5d40303dca7945f1e8f12bf79f3cdd97e0354639e5d84",
+   "platform/c64/resident_flight.h": "dcbdaa709b9ab820066c5cb371df61c82472209441fba69510971c0996345672",
+   "platform/c64/resident_flight.ld": "b2a93ac566bd7770210aac7b4cacb6ad6f3aa7d4113575e9dc2b579147636996",
+   "platform/c64/resident_flight_cases.c": "71dd486a2015da8a64876981c0fc7827cd93027e76945475703bb0a83a4f1ed9",
+   "platform/c64/resident_flight_check.c": "3ad22533052e3062d75825798d2a21b35a3e2f9dfbfd1ef3be04bff9cb3ccc63",
+   "platform/c64/resident_flight_check.h": "bd9dc63fdfd68b85c73158145e63152b7e91f414feaa5a7823059a5d94998221",
+   "platform/c64/resident_flight_data.c": "cc21a603ec7438b86c14b13671548a2965fcf6939935b8897e06677ff88e55cb",
+   "platform/c64/resident_flight_main.c": "1f5bc735d979663378dee37b8e5fa081339992a2b9fdbbdebd584c617d098cdf",
+   "platform/c64/resident_flight_rupt_cases.c": "c24181e71ae03f3020dcfdb72733e39ca5a6b117efecfb0b965781062d085e3f",
+   "src/resident_rupt.c": "e6ff48d8ef9ef9e3ed946a6ad31f8b3b9295271d6b6312d4127300b56d1f9ef1",
+   "src/sp_routines.c": "4a1a8329f83ca4e44a2c27f20023927108e53dede8d4dfef95ee3c34f4d432dd",
+   "tests/resident_kernel_cases.c": "d43f5cb96f181046ea787f1e9bff072ef599cbc20c02768cdcf68ddb6f9b7b93",
+   "tests/resident_rupt_c64_rows.h": "6379e39c8afbcdb349e295265cc6604bf86518ad3cdb6ed8ba2c8678517727d6",
+   "tests/resident_rupt_cases.c": "702117fe73f399ffbc5c5f667931e22b5ed3e0dbb0dc4bb18b6b2a3c61980a75",
+   "tests/resident_rupt_cases.h": "f1f379b106003d96457455eeaeb0ae70ab28bbac49e4c7e2878a595034fe1302",
+   "tests/resident_rupt_vectors.h": "973655ce913d0291fd899c74a602521e33992d78db123e360a654cffbf99c0bd",
+   "tests/test_resident_rupt.c": "0b68e7851caa4dbb7cff53f916744f0ad3de6d3912a322a33b1c7467049c4ae9",
+   "tests/test_sp_routines.c": "1ef3aadb265e7b167b398209878e8dba237ff17bb38ce362728098e894b3b684",
+   "tools/mk/resident-kernel.mk": "fbe155a668f1ad74b1ec0f2490edac3f028595d3841252244f490f008d9795c5",
+   "tools/resident_boundary_keys.c": "f324fe449e6d9ec80c858e0235b1b79b4ed4783f929bbfbefb93a7f1f6bcd845",
+   "tools/resident_boundary_words.py": "bea997bfd7f5e1513025d528568a66bbc0a688593c320556da54acaac961be56",
+   "tools/resident_flight_build.py": "7555699d052f4b1ffd504690f8d3bee0fc0ceade8826bd35319a14e00b9249f7",
+   "tools/resident_rupt_reference.c": "2af70c25650028ed3609a96b17eb6ff86e93dbef7bf1c441417c960b8b1c5747",
+   "tools/resident_rupt_vectors.py": "eb089a6b17785929cb52f1da1802fbeb66779adab70bbfac978fa579c082cafe"
+  },
+  "seams": {
+   "cm": {
+    "exchanges": 4851,
+    "not_a_core_set": 0,
+    "releases": 1042
+   },
+   "host_log": "resident-kernel-host.log",
+   "kernel_define": "RK_SEAMS",
+   "lm": {
+    "exchanges": 5131,
+    "not_a_core_set": 0,
+    "releases": 1042
+   }
+  },
+  "sizes": {
+   "lm": {
+    "boot_only_bytes": 3248,
+    "components": {
+     "ABI 2 runtime and REU store": 5166,
+     "AGC timers and interrupt entry": 1092,
+     "BASIC header and alignment": 0,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "kernel": 10475,
+     "resident state and step": 878,
+     "service table exports": 637,
+     "single-precision subroutines": 1299,
+     "transfer ABI trampoline and Executive call sites": 2680
+    },
+    "free_bytes": 3644,
+    "resident_bytes": 22723,
+    "resident_capacity": 26367,
+    "service_table_bytes": 6
+   },
+   "cm": {
+    "boot_only_bytes": 3218,
+    "components": {
+     "ABI 2 runtime and REU store": 5166,
+     "AGC timers and interrupt entry": 1092,
+     "BASIC header and alignment": 0,
+     "C runtime and library": 480,
+     "IRQ entry": 16,
+     "kernel": 10232,
+     "resident state and step": 896,
+     "service table exports": 637,
+     "single-precision subroutines": 1299,
+     "transfer ABI trampoline and Executive call sites": 2612
+    },
+    "free_bytes": 3937,
+    "resident_bytes": 22430,
+    "resident_capacity": 26367,
+    "service_table_bytes": 6
+   }
+  },
+  "sp_routines": {
+   "checks_per_mission": 128,
+   "log": "sp-routines-host.log",
+   "log_lines": [
+    "PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines lm: 64 full-return states and 64 refusals; 128 checks, 0 failures",
+    "PASS: sp-routines cm: 64 full-return states and 64 refusals; 128 checks, 0 failures"
+   ],
+   "oracle": "frozen yaAGC full-return states of lm-single-trig (selectors 2-3) and cm-single-return (selectors 0-1)",
+   "test": "make test-sp-routines sanitize-sp-routines"
+  },
+  "vice_log": [
+   "PASS: VICE PAL lm-check-1.prg: 312 checks, 0 failures",
+   "PRG sha256: f2789ed0bb30a8b770ce1ef953aa49381d44f96ed68b6d5c8380e32c662766a1 lm-check-1.prg",
+   "PASS: VICE PAL lm-check-2.prg: 328 checks, 0 failures",
+   "PRG sha256: 3a39668978afef7988a6ca3ab88d5aa7c2165b0a35797bf4b2cbdd9a7fdf73f6 lm-check-2.prg",
+   "PASS: VICE PAL lm-check-3.prg: 178 checks, 0 failures",
+   "PRG sha256: 45173ffdace691ccffb039df5e41c476754d791e11fac68345fea6d40beac145 lm-check-3.prg",
+   "PASS: VICE PAL lm-check-4.prg: 75 checks, 0 failures",
+   "PRG sha256: 12e1314d7ba89fc4f9649b08e62373749c642c1bfb6bc5e0097226bbfd3f2f11 lm-check-4.prg",
+   "PASS: VICE PAL cm-check-1.prg: 264 checks, 0 failures",
+   "PRG sha256: 98ebedc67330fae4e45753acc8f9a3b58429740392902d0c6de07ddb7b32f706 cm-check-1.prg",
+   "PASS: VICE PAL cm-check-2.prg: 226 checks, 0 failures",
+   "PRG sha256: 26c7e420d62ffa08343426ac4c0f27eaf6d3bf00d1aa141b1f0dbbeef03a974e cm-check-2.prg",
+   "PASS: VICE PAL cm-check-3.prg: 186 checks, 0 failures",
+   "PRG sha256: f81d318aa38112a106d1b2c97478aaa8a15457a353304d2789101ab75ee6f00e cm-check-3.prg",
+   "PASS: VICE PAL cm-check-4.prg: 75 checks, 0 failures",
+   "PRG sha256: 062171b5491fe4f86708e817d21d9dc2320c6a1da9935e156c2af9e0269fb38f cm-check-4.prg"
+  ]
+ },
+ "host_log": [
+  "PASS: src/lm_kernel_labels.inc matches the Luminary099 listing",
+  "PASS: src/cm_kernel_labels.inc matches the Comanche055 listing",
+  "PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; seams 5131 exchanges (0 not a core set), 1042 releases; 46902 checks, 0 failures",
+  "PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; seams 4851 exchanges (0 not a core set), 1042 releases; 37903 checks, 0 failures",
+  "PASS: resident-kernel lm: services 9170/9170 (38 refused by the certified routines) jobs 9216/9216 (0 refused by the certified routines) idle 4864/4864 (0 refused by the certified routines); 400 C64 rows; seams 5131 exchanges (0 not a core set), 1042 releases; 46902 checks, 0 failures",
+  "PASS: resident-kernel cm: services 7522/7522 (126 refused by the certified routines) jobs 6144/6144 (0 refused by the certified routines) idle 5120/5120 (0 refused by the certified routines); 329 C64 rows; seams 4851 exchanges (0 not a core set), 1042 releases; 37903 checks, 0 failures"
+ ],
+ "milestone": "resident-kernel",
+ "native": {
+  "include/resident_kernel.h": "722fd1ad6cb1e81efdf9b12b375f169596c1679d55ff6720e8607ad3fd8aa9e6",
+  "src/cm_kernel.c": "bc00a259d53a7d6262c02d716baa3b3f36889b94d2d81a5121e245fd6c9c3629",
+  "src/cm_kernel_labels.inc": "864e96316af0fa7a79f816bae83635ca8e6566eb695905bc939ca7a7753bb894",
+  "src/lm_kernel.c": "cf67d31e4e2bb4e4452ab2d74ea10a010cbc589e4c75935342d9cba42060ec8c",
+  "src/lm_kernel_labels.inc": "2f6238bab66bc7aa88b4f5beaa21195088be2c8f0cb185648e6c7f9df131449e",
+  "src/resident_kernel_body.inc": "2ea1a75a780cdea6216bdb0651dfb3e00b38ccd3b5a0940a99b34fb48973405d"
+ },
+ "oracle": {
+  "kind": "yaAGC digests of the original programs, frozen by the six certified service milestones",
+  "second_oracle": "the certified routines (lm_/cm_exec_routines, job, task and idle tables): final image equal word for word",
+  "vectors": {
+   "tests/cm_exec_idle_vectors.h": "aea3cc750904cd3aa2899c5bd80be8628d2bc7507cb5dd1679733c5cd5291672",
+   "tests/cm_exec_jobs_vectors.h": "b794662b5a81861d797c30b84291a108fc3ece4590eb1777d5252c5c76ceba09",
+   "tests/cm_exec_services_vectors.h": "0a9a9b0fa03a8873ceeb8f2b69b3e5c6a7d8204e3c39029208d386596b7f0d61",
+   "tests/lm_exec_idle_vectors.h": "48b2c1de2ed4809bf91148c6eed26a35740c471dbbc137ab7041714dec237377",
+   "tests/lm_exec_jobs_vectors.h": "e663a59f0e0d9c39a51c457dad5dc5992d273c6a464de37cff5dbe4809a33bb0",
+   "tests/lm_exec_services_vectors.h": "8794c43915b560d826c742363abf67a87d107e8464e32eae0f743ab0fca17116"
+  }
+ },
+ "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+ "sources": [
+  "Luminary099/EXECUTIVE.agc",
+  "Luminary099/WAITLIST.agc",
+  "Comanche055/EXECUTIVE.agc",
+  "Comanche055/WAITLIST.agc"
+ ],
+ "vice_log": [
+  "PASS: VICE PAL resident-kernel-lm-1.prg: 153 checks, 0 failures",
+  "PRG sha256: f6845ae97fe841383ccfe25533f8486849dfac44637018f4b559eb5367bc6022 resident-kernel-lm-1.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-1.prg: 45 checks, 0 failures",
+  "PRG sha256: 56754e5389bd4405e8b79c1eb49f4a248c0a8276f0f71217be9056f382e82196 resident-kernel-lm-2-1.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-2.prg: 63 checks, 0 failures",
+  "PRG sha256: 8435fd9107af30680b204f4088452ce4d1d05b2bca70bc725490531f84dc06ce resident-kernel-lm-2-2.prg",
+  "PASS: VICE PAL resident-kernel-lm-2-3.prg: 53 checks, 0 failures",
+  "PRG sha256: d980e82caab37ad60d48665ee8446ed141af850a9c0f51af736cec3f104fc9a8 resident-kernel-lm-2-3.prg",
+  "PASS: VICE PAL resident-kernel-lm-3.prg: 86 checks, 0 failures",
+  "PRG sha256: dce9c41803bedd7618a1ebafa88b3bd8f312118211b575037b556f68a0ed5091 resident-kernel-lm-3.prg",
+  "PASS: VICE PAL resident-kernel-cm-1.prg: 129 checks, 0 failures",
+  "PRG sha256: 56b0db405c6e9b15639027b18831f910d91768c7598a693b9e57baadc1b767d8 resident-kernel-cm-1.prg",
+  "PASS: VICE PAL resident-kernel-cm-2.prg: 110 checks, 0 failures",
+  "PRG sha256: 59bc130b636c112e956415b7aa79cf81a56aceb19ba24ca4077ba3efcb8d0392 resident-kernel-cm-2.prg",
+  "PASS: VICE PAL resident-kernel-cm-3.prg: 90 checks, 0 failures",
+  "PRG sha256: dd59136600405e801f3adc94f10d9d1a97da13036509b46fac0010f3adfd8576 resident-kernel-cm-3.prg"
+ ]
+}

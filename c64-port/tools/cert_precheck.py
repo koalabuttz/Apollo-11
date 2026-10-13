@@ -33,8 +33,16 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               record names its runner; otherwise the c64_branch_outcomes record:
               host outcomes, entries or branches the C64 rows miss (#76 #82 #88
               #93 #99 #108 #109 #115 #117 #118).
+  manifest    every target the C64 record's vice_targets names PASSED with at
+              least the certified checks in the newest complete nightly vice
+              manifest (tools/vice_manifest.py), which is under MANIFEST_DAYS
+              old; WARN instead when the manifest predates those vice_targets,
+              when a certificate names none and claims no c64_exempt (#127
+              migration), or when no manifest is available (#127).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
               #84), and every cited native file exists (#51).
+  revision    reviewed_all_source_paths and the pinned source_revision, the
+              rule tools/port_coverage.py applies to a complete certificate.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -45,7 +53,9 @@ reopening them is the auditor's call, not a CI block.
 Mechanical limits: a reachable path the case generator never produces (a ±0,
 an edge Q, an even count) shows up here only as a refusal site or a missing
 C64 outcome; gcov over the oracle producer is still the reviewer's job.
-Release-stored evidence is read only when present; --fetch downloads it.
+Release-stored evidence is read only when present; --fetch downloads it and
+the newest vice manifest (else the one cached under build/vice-manifest/, or
+--manifest PATH).
 
 Label addresses, the file each code word belongs to, cross-file references and
 interpretive resume words are assembler facts of the immutable original
@@ -56,6 +66,7 @@ that prints them (host cc; nothing else is linked or run).
 """
 import argparse
 import concurrent.futures
+import datetime
 import hashlib
 import json
 import os
@@ -69,6 +80,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 REPOSITORY = ROOT.parent
 INVENTORY = 'docs/port-coverage.json'
 FACTS = ROOT / 'tools/cert_precheck_facts.json'
+sys.path.insert(0, str(ROOT / 'tools'))
+from port_coverage import BASE  # noqa: E402
 MISSIONS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 CATEGORIES = ('source_to_native_map', 'independent_assembly_comparison',
               'host_and_sanitizer_results', 'c64_execution_results')
@@ -275,7 +288,7 @@ def code_rows(path):
 
 
 def write_facts(check):
-    facts = {'source_revision': '911e5c0283c629c50cb97666f34065e8c07d71a5', 'missions': {}}
+    facts = {'source_revision': BASE, 'missions': {}}
     for mission in MISSIONS:
         base = ROOT / 'build/fixed-data' / mission
         listing = base / 'assembly.lst'
@@ -590,6 +603,13 @@ def check_text(report, label, certificate):
                        'a complete certificate cannot carry open work (#77, #84); finish it or keep the file partial')
 
 
+def check_revision(report, label, certificate):
+    if certificate.get('reviewed_all_source_paths') is not True or certificate.get('source_revision') != BASE:
+        report.add('FAIL', label, f'source_revision {certificate.get("source_revision")!r}, reviewed_all_source_paths '
+                   f'{certificate.get("reviewed_all_source_paths")!r}: tools/port_coverage.py fails the flip',
+                   f'review every source path at the pinned revision {BASE} and say so')
+
+
 def native_files(entry, certificate):
     """The certificate's native sources: those its source map names, else the entry's."""
     found = []
@@ -612,6 +632,13 @@ def native_files(entry, certificate):
 
 REFUSAL = re.compile(r'\b\w*OUT_OF_SCOPE\b|\brefuse\w*\s*\(|EXEC_UNMAPPED')
 NEWJOB = re.compile(r'NEWJOB|\[\s*0+67u?\s*\]')
+# A range or multiple-of-12 test on NEWJOB refuses only values the Executive
+# never stores (standard_lead_cm.c), not a waiting job.
+NEWJOB_VALID = re.compile(r'(NEWJOB\w*|\[\s*0+67u?\s*\])\s*(>|%)')
+# A test for NEWJOB +0 whose branch returns is the DANZIG that goes on to
+# NEWOPS; NEWJOB set takes CHANG2 (tools/interp_compile.py next()). It
+# refuses nothing unless the line also says so.
+NEWJOB_ZERO = re.compile(r'!\s*(NEWJOB\w*|\w*\[\s*0+67u?\s*\])')
 
 
 def check_refusals(report, label, entry, certificate, notes):
@@ -630,7 +657,9 @@ def check_refusals(report, label, entry, certificate, notes):
             code = line.split('//', 1)[0]
             if REFUSAL.search(code) and not code.lstrip().startswith(('#', '*', '/*')):
                 sites.append(number)
-            if NEWJOB.search(code) and re.search(r'\breturn\b|OUT_OF_SCOPE|refuse', code) and \
+            if NEWJOB.search(code) and not NEWJOB_VALID.search(code) and \
+                    re.search(r'\breturn\b|OUT_OF_SCOPE|refuse', code) and \
+                    not (NEWJOB_ZERO.search(code) and not re.search(r'OUT_OF_SCOPE|refuse', code)) and \
                     not code.lstrip().startswith(('*', '/*')):
                 newjob.append(f'{source}:{number}')
         if sites and notes:
@@ -733,6 +762,53 @@ def check_c64(report, label, certificate):
                    ' (#108, #109, #115)', 'measure branch outcomes over every linked source')
 
 
+MANIFEST_DAYS = 3
+
+
+def check_manifest(report, label, path, certificate, manifest, now=None):
+    """The certificate's vice_targets against the nightly vice manifest (#127)."""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import vice_manifest  # noqa: E402
+    record = (certificate.get('evidence') or {}).get('c64_execution_results') or {}
+    named = record.get('vice_targets') if isinstance(record, dict) else None
+    hint = ('name the vice-<m> targets that prove the C64 run: "vice_targets": {"vice-<m>": <checks>} in '
+            'c64_execution_results, or "c64_exempt": "<reason>" when no C64 run applies')
+    if named is None:
+        if not certificate.get('c64_exempt'):
+            report.add('WARN', label, 'names no vice_targets or c64_exempt; WARN, not FAIL, while certificates '
+                       'migrate (#127)', hint)
+        return
+    targets = vice_manifest.normalized(named)
+    if targets is None:
+        report.add('FAIL', label, 'vice_targets is not a list or {target: checks} of vice-* targets', hint)
+        return
+    if manifest is None:
+        return  # one WARN for the run, from precheck()
+    run = f'vice manifest run {manifest.get("run_id")} ({str(manifest.get("commit"))[:12]}, {manifest.get("date")})'
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    try:
+        age = now - datetime.datetime.strptime(manifest['date'], '%Y-%m-%dT%H:%M:%SZ').replace(
+            tzinfo=datetime.timezone.utc)
+    except (KeyError, TypeError, ValueError):
+        age = datetime.timedelta(days=MANIFEST_DAYS + 1)
+    if age > datetime.timedelta(days=MANIFEST_DAYS):
+        report.add('FAIL', label, f'{run} is over {MANIFEST_DAYS} days old, so it does not prove the tip',
+                   'run port-ci with full from the Actions tab, or fix the nightly')
+    covered = targets in (manifest.get('certificates') or {}).get(path, {}).values()
+    level, note = ('FAIL', '') if covered else (
+        'WARN', '; the manifest predates these vice_targets, so the next nightly decides')
+    for target, checks in targets.items():
+        row = (manifest.get('targets') or {}).get(target)
+        if row is None:
+            report.add(level, label, f'{target} is not in {run}{note}', 'name a vice-* target the nightly runs')
+        elif row.get('status') != 'pass':
+            report.add(level, label, f'{target} FAILED in {run} ({row.get("failures")} failures){note}',
+                       'fix the target, or the certificate no longer holds')
+        elif (row.get('checks') or 0) < checks:
+            report.add(level, label, f'{target} ran {row.get("checks")} checks in {run}, fewer than the '
+                       f'{checks} certified{note}', 'restore the C64 rows or certify what runs')
+
+
 # ---------------------------------------------------------------- driver
 
 
@@ -765,8 +841,16 @@ def shares_records(a, b):
     return bool(cited(a) & cited(b))
 
 
-def precheck(paths, report, notes=True, fetch_missing=False, keys=None):
+def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest=False):
+    """manifest: a vice manifest dict, None for none, or False to fetch (with
+    fetch_missing) or read the cached one."""
     entries = inventory_entries((ROOT / INVENTORY).read_text())
+    if manifest is False:
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import vice_manifest  # noqa: E402
+        manifest, why = vice_manifest.latest(remote=fetch_missing)
+        if manifest is None:
+            report.add('WARN', 'vice-manifest', f'{why}; vice_targets not checked')
     facts = json.loads(FACTS.read_text())
     if keys is None:
         try:
@@ -789,6 +873,9 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None):
             label = path + (f' ({key})' if key else '')
             documentation = (certificate or {}).get('qualification_kind') == 'documentation_preservation' or \
                 'review_scope' in (certificate or {})
+            if certificate:
+                check_revision(report, label, certificate)
+                check_manifest(report, label, path, certificate, manifest)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)
                 check_text(report, label, certificate)
@@ -809,7 +896,9 @@ def main():
     parser.add_argument('files', nargs='*', help='AGC files, e.g. Luminary099/TJET_LAW.agc')
     parser.add_argument('--changed', action='store_true', help='every certificate changed since --base')
     parser.add_argument('--base', help='git ref for --changed')
-    parser.add_argument('--fetch', action='store_true', help='download release-stored evidence that is cited')
+    parser.add_argument('--fetch', action='store_true',
+                        help='download release-stored evidence that is cited and the newest vice manifest')
+    parser.add_argument('--manifest', help='a vice-manifest.json to check vice_targets against')
     parser.add_argument('--quiet', action='store_true', help='omit NOTE lines')
     parser.add_argument('--write-facts', action='store_true', help='regenerate the facts from the listings')
     parser.add_argument('--check-facts', action='store_true', help='fail when the facts are stale')
@@ -824,7 +913,13 @@ def main():
     if not paths:
         print('PASS: no certificate to check')
         return 0
-    report = precheck(list(dict.fromkeys(paths)), Report(), notes=not args.quiet, fetch_missing=args.fetch)
+    manifest = False
+    if args.manifest:
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import vice_manifest  # noqa: E402
+        manifest = vice_manifest.latest(path=args.manifest)[0]
+    report = precheck(list(dict.fromkeys(paths)), Report(), notes=not args.quiet, fetch_missing=args.fetch,
+                      manifest=manifest)
     for line in report.lines:
         print(line)
     verdict = 'FAIL' if report.fails else 'PASS'

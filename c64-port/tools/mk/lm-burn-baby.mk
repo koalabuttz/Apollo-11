@@ -25,10 +25,11 @@ lm-burn-baby-differential: build/lm-burn-baby-native
 # Two PRGs (LMBB_C64_GROUP): group 2 registers the bank-17 and bank-35
 # routines with their code, group 1 bank 36, KILLTSK2 and KILLTASK. Both keep their images
 # in the RAM under KERNAL ($e000, undo $f000) and are built without
-# inlining; the link fails if code or BSS reaches the mailbox page.
+# inlining, with llvm-mos's static stack; the link fails if code or BSS
+# reaches the mailbox page.
 c64-lm-burn-baby: build/lm-burn-baby-1.prg build/lm-burn-baby-2.prg
 build/lm-burn-baby-%.prg: $(LM_BB_SRC) platform/c64/lm_burn_baby_diagnostic.c tests/lm_burn_baby_c64_vectors.h $(LM_BB_HDR) | build
-	$(MOS_CC) $(CPPFLAGS) -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DLMBB_C64_GROUP=$* -DLMBB_UNDO_ADDRESS=0xf000u -fno-inline -ffunction-sections -fdata-sections -Wl,--gc-sections -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-burn-baby-$*.map $(LM_BB_SRC) platform/c64/lm_burn_baby_diagnostic.c -o $@
+	$(MOS_CC) $(CPPFLAGS) -std=c99 -Oz -DAPOLLO_FIXED_LM_ONLY -DP66_NATIVE_DISPATCH_ONLY -DLMBB_C64_GROUP=$* -DLMBB_UNDO_ADDRESS=0xf000u -fno-inline -ffunction-sections -fdata-sections -Wl,--gc-sections -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-burn-baby-$*.map $(LM_BB_SRC) platform/c64/lm_burn_baby_diagnostic.c -o $@
 	python3 -c "import re,sys;m=open('build/lm-burn-baby-$*.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else 'code and BSS reach the mailbox page: '+hex(e))"
 vice-lm-burn-baby: c64-lm-burn-baby
 	python3 tools/vice_run.py build/lm-burn-baby-1.prg --cycles 3000000000 --timeout 1200

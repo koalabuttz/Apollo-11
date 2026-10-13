@@ -7,7 +7,7 @@ LM_V37_HDR = include/lm_v37.h include/lm_fresh_start.h include/lm_interbank_rout
 all: build/test-lm-v37
 test: test-lm-v37
 sanitize: sanitize-lm-v37
-build/test-lm-v37: $(LM_V37_SRC) tests/test_lm_v37.c tests/lm_v37_vectors.h $(LM_V37_HDR) | build
+build/test-lm-v37: $(LM_V37_SRC) tests/test_lm_v37.c tests/lm_v37_vectors.h tests/lm_v37_c64_vectors.h $(LM_V37_HDR) | build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LM_V37_SRC) tests/test_lm_v37.c -o $@
 test-lm-v37: build/test-lm-v37
 	python3 tools/file_operands_generate.py lm-v37 --check

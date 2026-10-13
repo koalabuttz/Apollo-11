@@ -22,6 +22,8 @@ typedef struct {
  cm_native_io control;            /* channels 11-14, 15 (main_keys), 16 (navigation_keys), SUPERBNK */
  agc_word channel5,channel6;      /* outputs this file writes */
  agc_word channel33;              /* input; a write sets bits 11-15 (yaAGC CpuWriteIO) */
+ agc_word warning;                /* nonzero: the AGC warning condition persists (yaAGC WarningFilter
+                                     over its threshold), so a write leaves channel 33 bit 14 at 0 */
 } cm_fresh_io;
 #define CM_FS_ROUTINES 17u
 #define CM_FS_ERESTORE 01360u

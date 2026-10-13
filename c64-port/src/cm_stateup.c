@@ -29,8 +29,14 @@ enum {DLOAD=06021,RVQ=03274,CALLITA=02534,SWITCH=02543};
 static enum exec_status next(apollo_overlay_state *s){
  agc_word j=W[NEWJOB];
  if(j==0u){cmi_danzig_next(s);return EXEC_OK;}
- if(j>037777u)return EXEC_OUT_OF_SCOPE;     /* NEWJOB is +0 or a positive VAC/core address */
- ai_ca(s,BANKSET);(void)ai_ts(s,6);(void)ai_ccs(s,EDOP);(void)ai_ccs(s,NEWJOB);W[5]=X_CHANG2;return EXEC_OK;
+ /* A job switch (positive: the new job's core-set relative address) is
+  * taken below. Negative is refused: EXECUTIVE stores only +0, positive
+  * core-set addresses and DUMMYJOB's idle -0 there, and DUMMYJOB leaves -0
+  * only while no job runs (ADVAN starts the next job through CHANJOB, which
+  * sets +0), so a running interpretive job never finds -0 or negative. */
+ if(j>037777u)return EXEC_OUT_OF_SCOPE;
+ ai_ca(s,BANKSET);(void)ai_ts(s,6);(void)ai_ccs(s,EDOP);(void)ai_ccs(s,NEWJOB);W[5]=X_CHANG2;
+ return EXEC_OK;
 }
 static void right(apollo_overlay_state *s){cmi_danzig_right(s);}
 /* A switch order (word = its switch/operation word): 1 when it branches. */

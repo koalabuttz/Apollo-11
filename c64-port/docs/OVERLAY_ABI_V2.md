@@ -96,11 +96,25 @@ The resident holds the Executive and WAITLIST kernel, SPSIN/SPCOS, the
 fixed-fixed constants, the ABI 2 runtime and REU store, IRQ entry and device
 adapters. INTER-BANK_COMMUNICATION and INTERRUPT_LEAD_INS turn into the
 trampoline/resolver and the native IRQ entry rather than translated bodies.
-PHASE_TABLE_MAINTENANCE moves to the task slot. At the mid estimate that is
-24.0 to 24.6 KB against 25.7 KB of capacity. The Executive is already about
-17 KB at today's translation density, so **Lane A must keep resident code to
-roughly 16 bytes per AGC word or move cold paths into modules**. The resident
+PHASE_TABLE_MAINTENANCE moves to the task slot. The disk loader and the REU
+store verify run at boot only and are not resident.
+
+**The resident Executive and WAITLIST is a thin kernel** (David, 2026-10-13).
+The certified exec-closure routines measure 54-56 KB per mission (92 bytes per
+AGC word), because of their gather/commit and scope-refusal layers; they stay
+as the kernel's test oracle, not as resident code. The thin kernel (the LM
+`executive.c` + `waitlist.c` measure 7.6 KB) runs at 12-19 bytes per word, so
+the resident projects to 20.5-21.0 KB at the mid estimate and at most 23.7 KB
+at the high one, against 25.7 KB (`tools/overlay_allocation.py`). The resident
 linker script enforces the ceiling (`overlay_v2_resident.ld`).
+
+Measured (#155, #156): the linked flight resident (`resident_flight.ld`) is
+21,219 B (LM) and 20,926 B (CM) of 26,367, with 2.8 KB of boot-only code run
+from the job slot. `evidence/resident-kernel/resident-flight-sizes.json` holds
+the current figures per component, and `tools/overlay_allocation.py` copies them
+into `docs/overlay-allocation.json` (`resident_measured`). Interrupt bodies
+(lead-ins, T4RUPT, KEYRUPT/UPRUPT, LM T6RUPT) do not fit beside the kernel. They
+are task-slot modules; only the timer/RUPT scheduler and entry are resident.
 
 ## Module store
 
@@ -193,6 +207,14 @@ outputs `next`, `ret`, `hist_bank` and `hist_loc`. The return value is an action
 | `JUMP_HISTORICAL` | Resolves (`hist_bank`, `hist_loc`) through the store's resolver, then continues |
 | `>= 0x10` | Kernel action. Returned to the Executive/WAITLIST with `next` as the resume point (sleep, yield, priority change, end of task, and so on: Lane A defines the codes) |
 
+Resolver keys are canonical, so a caller and the store builder always agree.
+`hist_loc` is the 12-bit address. For 04000-07777 (fixed-fixed), `hist_bank` is
+the physical bank in FB form, `02 << 10` or `03 << 10`, whatever FB and the
+superbank bit hold; this is the bank `agc_fixed_physical` gives. Banked
+addresses (02000-03777) are keyed by physical bank too: banks 00-037 as
+`bank << 10` with no superbank bits, banks 040-047 as `(bank - 8) << 10 | 0100`.
+Superbank 0 and 060 therefore give the same key for FB 030-037.
+
 Loads only happen inside `apollo_ov2_run`, between bodies, while no module
 frame is live. A nested run is refused with `BUSY`. Any failure latches a fault
 until restart and never touches the canonical image. Failure cases: unmapped id,
@@ -263,7 +285,12 @@ Estimated modules per lane at the mid expansion (job + task slots):
 | G | — | 11 + 13 |
 
 These are budgets, not targets. A lane replaces its estimate with measured
-module sizes as modules land. The per-routine placement inside a file belongs to
+module sizes as modules land.
+
+The REU above `0x1c0000` is reserved for the two rope images
+(`include/rope_image.h`). The generator fails when either mission's high module
+store estimate crosses that limit (today about 1.25 MB of the 1.75 MB below
+it). The per-routine placement inside a file belongs to
 the lane, under one rule: anything entered at interrupt level is a task-slot
 body.
 

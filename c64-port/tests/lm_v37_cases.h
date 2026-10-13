@@ -12,7 +12,8 @@
  * pseudo-random within the program's domain: the requested major mode (A at
  * V37, MMNUMBER) a mode in PREMM1, P00, P70, P71 or any of 0-0177, at V37
  * mostly with IMODES30 bit 6 and NODOFLAG clear; MINDEX
- * 0-29; MODREG P20, P22, P25, a neighbour, P00, a mode as above or random; the flag words,
+ * 0-29; MODREG P20, P22, P25, a neighbour, P00, a mode as above or random
+ * (P20 in a third of the P20 or P25 requests); the flag words,
  * IMODES30, FB/EB, SUPERBNK, the channels and restart groups as in
  * tests/lm_fresh_start_cases.c. tools/lm_v37_reference.c does the same in
  * the original program. */

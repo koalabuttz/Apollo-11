@@ -17,7 +17,11 @@ manifest naming the per-milestone records it aggregates with their sha256:
       (tools/cert_trace.h) and must print exactly its frozen snapshot, and
       every translated instruction must be executed by those runs
   lm-fresh-start-complete-host.json         the three host and sanitizer logs
-  lm-fresh-start-complete-c64.json          the three VICE logs
+  lm-fresh-start-complete-c64.json          the three VICE logs, with the PRG sha256 each names
+  lm-fresh-start-complete-c64-cover.json    the three milestones' c64_branch_outcomes records
+      (evidence/<milestone>/<milestone>-c64-cover.json, tools/a2_c64_rows.py):
+      no host branch arc the C64 rows miss, every entry slot run on the C64,
+      and every linked source unchanged since the cover was taken
 
 It fails on any hash mismatch, ownership gap or overlap, oracle snapshot
 difference, unexecuted instruction or failed check.
@@ -37,6 +41,7 @@ import sys
 R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'tools'))
 from agc_sites_generate import listing_lines  # noqa: E402
+import a2_c64_rows  # noqa: E402
 
 OUT = R / 'evidence/lm-fresh-start-complete'
 PREFIX = 'lm-fresh-start-complete'
@@ -219,6 +224,10 @@ def main():
             ok = bool(found) and not any(failures)
             agg[name] = {'record': log, 'sha256': sha(log), 'pass_lines': passes,
                          'checks': checks, 'failures': sum(failures), 'result': 'PASS' if ok else 'FAIL'}
+            if kind == 'vice':
+                agg[name]['prg_sha256'] = a2_c64_rows.prg_hashes((R / log).read_text())
+                if not agg[name]['prg_sha256']:
+                    errors.append(f'{log}: names no PRG sha256')
             manifest_sha = json.loads((R / f'evidence/{name}/SHA256.json').read_text())['files'][f'{name}-{kind}.log']['sha256']
             if manifest_sha != agg[name]['sha256']:
                 errors.append(f'{log}: sha256 differs from evidence/{name}/SHA256.json')
@@ -227,6 +236,8 @@ def main():
         manifests[f'{PREFIX}-{category}.json'] = {
             'category': 'host_and_sanitizer_results' if category == 'host' else 'c64_execution_results',
             'aggregates': agg, 'result': 'PASS' if all(a['result'] == 'PASS' for a in agg.values()) else 'FAIL'}
+    manifests[f'{PREFIX}-c64-cover.json'] = a2_c64_rows.cover_aggregate(
+        {n: f'evidence/{n}/{n}-c64-cover.json' for n in MILESTONES}, errors)
     for name in MILESTONES:
         proof_sha = json.loads((R / f'evidence/{name}/SHA256.json').read_text())['files'][f'{name}-proof.json']['sha256']
         if proof_sha != suites[name]['sha256']:
