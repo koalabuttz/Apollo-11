@@ -17,8 +17,9 @@ routine.
 | GENTRAN, GENTRAN +1 | 05544, 05545 | 05606, 05607 | `TC GENTRAN` then two `ADRES` words; the back edge |
 | B5OFF | 05563 | 05625 | `TC B5OFF` from extended verbs |
 | TRFAILOF, TRFAILON | | 05631, 05643 | `TC` with Q a return address |
+| COMFLAG, DEBIT | 05511, 05522 | | BURN_BABY_BURN's INVFLAG: `CA Q`, `TC DEBIT`, ..., `TCF COMFLAG` |
 
-`src/service_transfer.c` holds `lm_service_routines` (11 entries) and
+`src/service_transfer.c` holds `lm_service_routines` (13 entries) and
 `cm_service_routines` (13). The `ADRES` words after every genuine fixed
 `TC UPFLAG`, `TC DOWNFLAG` and `TC GENTRAN` are compiled constants
 (`src/lm_service_sites.inc`, 171 words; `src/cm_service_sites.inc`, 152;
@@ -31,6 +32,20 @@ TCGETCAD, WAKER, its finish after JOBWAKE and B5OFF never read Q (their first
 `service_routines_step` now admits any Q for them. A waitlist task or a woken
 job reaches them with Q left by the executive (yaAGC runs WAKER and B5OFF at
 Q = 3). The other entries keep the compiled-caller range 0100..07775.
+
+COMFLAG and DEBIT (LM only; Comanche's INVFLAG callers do not exist) are the
+inner points of UPFLAG and DOWNFLAG. DEBIT takes A at the caller's `ADRES`
+word (erasable, with ITEMP1 and ITEMP3 read as DEBIT has just set them, or
+fixed through the site table or the program's constant reader), splits the
+flag number by `DV` into ITEMP1 and ITEMP2, loads the flag word into L and
+the complemented bit into A, and returns by `TC Q` (Z = Q, Q = 3, interrupts
+off). COMFLAG stores A in the flag word; `TS` with an overflowing A leaves
+A at +1 or -1 and skips `LXCH ITEMP3`; then `RELINT` and `TC L` (Z = L,
+Q = 2). Both refuse a return register that is not a plain TC to 0100..07777,
+an A that overflows on DEBIT's `AD ONE`, and flag numbers past 14459 or flag
+words outside ordinary erasable. LM entry kinds 7 and 8 (formerly repeats of
+B5OFF) are DEBIT and COMFLAG cases: 57 each, 107 of 114 reaching the
+continuation.
 
 ## Proof
 
