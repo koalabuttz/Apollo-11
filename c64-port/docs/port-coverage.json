@@ -1532,7 +1532,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1"
+            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
@@ -6180,7 +6183,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
-            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1"
+            "sha256": "3a3311816cf6cd0de71309a48286bf236e2003d05322e5b0251395351b7555b1",
+            "vice_targets": {
+              "vice-imu-mode-switching": 1288
+            }
           },
           "c64_branch_outcomes": {
             "path": "evidence/imu-mode-switching/imu-mode-switching-c64-cover.json",
