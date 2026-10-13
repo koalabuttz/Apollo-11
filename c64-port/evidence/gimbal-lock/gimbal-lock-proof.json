@@ -16,19 +16,41 @@
   {
    "mission": "lm",
    "keep": "0x1ff",
-   "cases": 14
+   "cases": 16
   },
   {
    "mission": "cm",
    "keep": "0x7ff",
-   "cases": 17
+   "cases": 20
   }
  ],
+ "c64_gcov_branches": {
+  "host_taken": 462,
+  "c64_taken": 462,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_gimbal_lock.c",
+   "src/cm_gimbal_lock.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/gimbal_lock_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 635,
-  "edges_host_vectors": 635,
-  "edges_c64": 635,
+  "edges_all_cases": 636,
+  "edges_host_vectors": 636,
+  "edges_c64": 636,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -110,5 +132,11 @@
   }
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: CHANG2; cm: CHANG2)",
- "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state"
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 1330,
+ "host_branch_arcs": 488,
+ "c64_rows": 36,
+ "c64_branch_arcs": 488,
+ "host_branches_missing_on_c64": []
 }

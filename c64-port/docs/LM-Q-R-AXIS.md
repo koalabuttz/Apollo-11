@@ -8,8 +8,9 @@ Lane F. Milestone `lm-q-r-axis`. Interface: `docs/NATIVE_TRANSFER_ABI.md`.
 and MAKERUPT at fixed-fixed `07754`-`07755`, 626 assembled words. Nothing is
 left in the file.
 
-`src/lm_q_r_axis.c` registers seventeen routines in `lm_q_r_axis_routines`.
-Each runs from its entry until the original program leaves the file, and
+`src/lm_q_r_axis.c` registers seventeen entries in `lm_q_r_axis_routines`,
+and thirteen part keys (below). Each entry runs until the original program
+leaves the file, and
 every source instruction is one `agc_image_ops` call (register effects checked
 against yaAGC by `tools/agc_image_ops_differential.py`), named with its
 erasable address or the source's fixed constant. MSU, DTCB, EDRUPT and the
@@ -23,6 +24,19 @@ channel orders (READ, RAND, WOR) are small helpers with yaAGC's effect.
 | QERRCALC `17,2626` | from DAPIDLER's IBNKCALL: the Q,R attitude errors; `TC Q` |
 | JTLST `17,3114` | from P-AXIS's IBNKCALL: the T6 jet list; `TC Q` |
 | ROT-TOUV `17,3146` | from AOSTASK's IBNKCALL: Q,R to U,V; `TC Q` |
+
+CALLQERR's step machine runs as parts so that a flight module links only the
+code its routine reaches (every routine of the file fits the 8 KB task slot,
+`tools/flight_store_build.py`). A part ends where the original runs on to
+the next part's first word, with Z there and every register as the original
+leaves it, and that word is a key of its own: RCS, RCS +1, QRCONTRL,
+CHEKSTIK, MINRTN, BACKHAND, TRYGTS, STILLRCS, TJLAW +3, LOOPER, DOSKIP,
+DOSKIP +1 and XTRANS (LOOPER's `TC RETJADR` hands Z to MINRTN, BACKHAND or
+TJLAW +3 with Q at RETJADR +1). The transfer loop runs the next part at
+once, as the original does; the case harness counts a run through the parts
+as the one routine it was (`lm_qr_run`), so the digests are the ones frozen
+before the split. AFTERTJ, NOROTAT, FEEDBACK, CLOSEOUT, GOTOGTS and the
+returns' short bodies are called directly.
 
 The calls that leave the file end a routine with Z at the destination and
 Q (or the IBNKCALL operand) as the original leaves it: `TC ALARM`,

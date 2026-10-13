@@ -42,7 +42,7 @@ word after a caller's `TC` by reading a copy of the original rope at runtime
   channel 10 (the last DSKY relay word) and input channel 32 (the PRO key) that
   T4RUPT uses (`docs/T4RUPT-CORE.md`). It also holds output channels 12 and
   14, input channels 30, 31 and 33, and the scaler channels 3 and 4, for the
-  IMU monitor, the DAP and compiled READ/RXOR orders. Input channels hold
+  IMU monitor (`docs/LM-T4RUPT-IMU.md`), the DAP and compiled READ/RXOR orders. Input channels hold
   what READ returns, output channels the last word written, and channel 13
   only the CPU-writable bits (043777). This is the one channel record for
   every lane; new channels are appended by Lane A, not kept in mission I/O
@@ -126,7 +126,8 @@ transferring file.
 | Luminary099 and Comanche055 IMU_COMPENSATION_PACKAGE | 11 Luminary and 9 Comanche entries in `lm_`/`cm_imu_compensation_routines` (1/PIPA, the NOVAC and BANKCALL returns, NBDONLY, GCOMPZER...) | BANKCALL/IBNKCALL CADRs in `lm_interbank_sites`/`cm_interbank_sites`; Luminary 1/GYRO 2CADR in `lm_exec_sites` | `imu-compensation` |
 | Luminary099 RESTARTS_ROUTINE and RESTART_TABLES | RESTARTS, GETPART2, PHSPART2, the display return and the GOLOC-1/GOLOC+2 erasable words in `lm_restart_routines` | table words compiled from the source (`src/lm_restart_table_data.inc`); INITDSP 2CADR in `lm_restart_operands` | `lm-restart-select` |
 | Luminary099 and Comanche055 DISPLAY_INTERFACE_ROUTINES | 165 LM / 164 CM entries (every label and every callee return) in `lanec_di_lm_routines` / `lanec_di_cm_routines`, one table per module for subsets | through `lm_interbank_sites`, `cm_interbank_sites` and `lm_exec_sites`; CM NOVAC/FINDVAC operands wait for `cm_exec_sites` | `lanec-di-transfer` |
-| Luminary099 and Comanche055 EXTENDED_VERBS | 313 LM / 241 CM basic entries in `lanec_ev_lm_routines` / `lanec_ev_cm_routines`, 15 LM interpretive entries (keyed by LOC) in `lanec_ev_lm_interpretive`, INTPRET for the file's own callers in `lanec_ev_lm_intpret`; io is `lm_dntm_io` / `cm_dntm_io` (channels 12, 14, 30-33) | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites`; CM interpretive words not yet translated | `lanec-ev-transfer` |
+| Luminary099 and Comanche055 EXTENDED_VERBS | 313 LM / 241 CM basic entries in `lanec_ev_lm_routines` / `lanec_ev_cm_routines`, 29 LM interpretive entries (keyed by LOC) in `lanec_ev_lm_interpretive`, INTPRET for the file's own callers in `lanec_ev_lm_intpret`; io is `lm_dntm_io` / `cm_dntm_io` (channels 12, 14, 30-33) | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites`; CM interpretive words not yet translated | `lanec-ev-transfer` |
+| Luminary099 and Comanche055 PINBALL_GAME_BUTTONS_AND_LIGHTS | 267 LM / 262 CM entries in `lanec_pin_lm_routines` / `lanec_pin_cm_routines` (every point a Pinball module is entered at, every label but internal subroutines, every external-callee return, the BANKCALL return points through SWRETURN); a routine ending at a return cell holding a TC or TCF (TC WDRET, TC DSEXIT, TC Q, ...) takes that one instruction; io is `lm_dntm_io` / `cm_dntm_io` | `lm_interbank_sites`, `cm_interbank_sites`, `lm_exec_sites` | `lanec-pin-transfer` |
 
 Luminary099 RESTART_TABLES and RESTARTS_ROUTINE carry a pending complete
 certificate for the auditor's review.

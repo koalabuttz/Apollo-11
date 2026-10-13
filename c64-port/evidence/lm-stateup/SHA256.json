@@ -4,23 +4,23 @@
   "release": "evidence-lm-stateup",
   "files": {
     "lm-stateup-c64-cover.json": {
-      "sha256": "2fd20cbd631b60945b1c158d77bfbbc5d6ae08ab0468e8e418449dff9ed0f6c3",
+      "sha256": "15d882f9c2b2dba71ff4b99e811ed53698b16a7be47aac61b439f1fdc8eb43a7",
       "bytes": 4331,
       "store": "tree"
     },
     "lm-stateup-host.log": {
-      "sha256": "951d3e4cbee0ffd790b093e02ecf8c340274553d9db5cfbddff1be607cbaf278",
-      "bytes": 194,
+      "sha256": "33a32775278a064f7463b8a045afeb1b1923952a53f2abeb80b55b50bb2222c9",
+      "bytes": 1608,
       "store": "release"
     },
     "lm-stateup-proof.json": {
-      "sha256": "4dd29cc642637fa2ef46a2989228abf4377eeeaa2e60ee0152126280cbbcaf67",
+      "sha256": "ef7cfc6434b33cd56faf52314e18a31752b1b0820476635aab0ebbfa47ebe64d",
       "bytes": 860,
       "store": "tree"
     },
     "lm-stateup-vice.log": {
-      "sha256": "6c766604ab0aaa9094105c83e4ed9518085b4cb13cc0b9f2a7d182a387023f55",
-      "bytes": 146,
+      "sha256": "b2581b5ce9baf109ae2ad7310cb93a2143ab83457fae33f4ae0db5a8e1775e64",
+      "bytes": 198,
       "store": "release"
     }
   }

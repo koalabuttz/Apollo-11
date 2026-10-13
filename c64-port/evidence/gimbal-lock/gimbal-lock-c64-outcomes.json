@@ -14,9 +14,9 @@
   "src/lm_interp_orders.c",
   "src/lm_interp_steps.c"
  ],
- "host_edges": 635,
- "host_vector_edges": 635,
- "c64_edges": 635,
+ "host_edges": 636,
+ "host_vector_edges": 636,
+ "c64_edges": 636,
  "host_branches_missing_on_c64": [],
- "c64_rows": 31
+ "c64_rows": 36
 }

@@ -10,9 +10,10 @@
  * Native side: each point resolves to the first table that holds it; the
  * table's routine runs with its own io record (include/flight_io.h), and
  * rk_rupt_take vectors a pending interrupt at a routine boundary, as the
- * flight resident does. Inline operands come from one site table, every
- * src/<m>_*sites.inc merged (build/flight-store/<m>-sites.inc), and no
- * routine reads the rope as data. Every routine is checked in lockstep: yaAGC runs
+ * flight resident does. Each routine reads inline operands from its source's
+ * own site arrays (build/flight-store/<m>-sites.inc), as its module does on
+ * the C64; only the self-check module reads the rope image. Module loads
+ * per slot are counted. Every routine is checked in lockstep: yaAGC runs
  * from the state the routine started in until it reaches the routine's
  * continuation with the same erasable memory; the routine took that long
  * (the clock counters, the scaler and the interrupt requests come from
@@ -71,11 +72,13 @@ static int idle(const agc_word *w,agc_word sb,int isr){agc_word z=(agc_word)(w[5
  if(z>=IDLE_LO&&z<IDLE_HI)return 1;
  f=z>=02000u?agc_fixed_physical(z,w[4],sb):AGC_TRANSFER_NONE;
  return f!=AGC_TRANSFER_NONE&&f/1024u==043u;}
-#define FLIGHT_TABLE(t,i,k) extern const agc_routine_table t;
+#include FLIGHT_HOST_SITES
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also) extern const agc_routine_table t;
 #include FLIGHT_HOST_TABLES
 #undef FLIGHT_TABLE
-typedef struct { const agc_routine_table *t; const char *name; uint8_t interp; enum flight_io_kind io; } entry;
-#define FLIGHT_TABLE(t,i,k) {&t,#t,i,k},
+typedef struct { const agc_routine_table *t; const char *name; uint8_t interp; enum flight_io_kind io; const char *module; uint8_t slot;
+                 const agc_site_operand *sites; uint16_t nsites; const char *also; } entry;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also) {&t,#t,i,k,mod,slot,sites,n,also},
 static const entry tables[]={
 #include FLIGHT_HOST_TABLES
 };
@@ -101,9 +104,6 @@ static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable
  m.Erasable[0][5]=04000;m.AllowInterrupt=1;}
 
 /* The word at fixed address z under FB and the superbank. */
-static const agc_site_operand sites[]={
-#include FLIGHT_HOST_SITES
-};
 /* Reference side only: the rope word yaAGC holds (KEYRUPT1's BRUPT). */
 static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){uint16_t p=agc_fixed_physical(z,fb,sb);return p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u];}
 static agc_routine find(const agc_routine_table *t,uint16_t key){uint16_t lo=0,hi=t->count,mid;
@@ -245,6 +245,41 @@ static void miss(const char *name,const agc_word *before,agc_word sb,const agc_w
   memcpy(misses[nmisses].word,after,sizeof misses[nmisses].word);memcpy(misses[nmisses].ref,first,sizeof misses[nmisses].ref);
   misses[nmisses].arrived=first[5]!=077777u;++nmisses;}}
 
+/* The flight resident's fixed_data hook (platform/c64/resident_flight.c
+ * rk_fixed_word): the rope word at every point where it stops between
+ * routines, the keys of every table it can resolve
+ * (tools/resident_boundary_words.py with the store's resolver records). */
+static agc_site_operand boundary[8192];
+static uint16_t nboundary;
+static int by_key(const void *a,const void *b){return (int)((const agc_site_operand *)a)->physical-(int)((const agc_site_operand *)b)->physical;}
+/* Interrupts take the word at Z: at a basic routine Z is its key, at an
+ * interpretive one Z is the interpreter fetch point or DANZIG (the key is
+ * LOC's), so those two words are boundary words too. */
+static void boundary_build(void){unsigned i,j;
+ for(i=0;i<=TABLES;++i)for(j=0;j<(i<TABLES?tables[i].t->count:2u);++j){uint16_t k=i<TABLES?tables[i].t->entries[j].physical:j?DANZIG:FETCH;agc_word w=0;
+  if(k<APOLLO_ROPE_WORDS&&nboundary<sizeof boundary/sizeof boundary[0]&&apollo_rope_read(MISSION,k,&w)){boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
+ qsort(boundary,nboundary,sizeof boundary[0],by_key);
+ for(i=j=0;i<nboundary;++i)if(!j||boundary[j-1].physical!=boundary[i].physical)boundary[j++]=boundary[i];
+ nboundary=(uint16_t)j;}
+static bool boundary_word(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return agc_site_lookup(boundary,nboundary,physical,word);}
+
+/* Module loads: the C64 keeps one module per slot (job, task); a routine of
+ * another module in its slot loads that module (a swap). Counted at each
+ * native call, refused or not, by module and by the point that entered it. */
+#define LOADS 512u
+static const char *in_slot[2];
+static unsigned long nloads;
+static struct { const char *module; uint16_t key; uint8_t in, slot; unsigned long count; } loads[LOADS];
+static unsigned nload_points;
+static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uint16_t key;unsigned i;
+ if(in_slot[e->slot]==e->module)return;
+ /* A table packed into the loaded module too runs there (CO_LOCATE). */
+ if(in_slot[e->slot]&&*e->also){const char *a=strstr(e->also,in_slot[e->slot]);size_t n=strlen(in_slot[e->slot]);
+  if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
+ in_slot[e->slot]=e->module;++nloads;key=point(w,sb,&in);
+ for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
+ if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
+  loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[0x10000/16][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
@@ -288,15 +323,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  memset(&s,0,sizeof s);memset(&io,0,sizeof io);memset(&hw,0,sizeof hw);memset(&p,0,sizeof p);
  io.undo=&undo;s.words[5]=04000u;io.interrupt_enabled=1;
  hw.channel30=037777u;hw.channel31=hw.channel32=hw.channel33=077777u;
- /* Every inline operand the lanes compiled (src/<m>_*sites.inc), merged by
-  * tools/flight_store_build.py: the flight image's whole-program site table. */
- p.operands=sites;p.operand_count=(uint16_t)(sizeof sites/sizeof sites[0]); /* AGC_BLOCK_TWO_SELF-CHECK reads the rope image (in the REU on the C64),
-  * and gives SUPDACAL the same image while ROPECHK runs. */
-#if RK_LM
- p.fixed_data=lm_self_check_rope_data;
-#else
- p.fixed_data=cm_self_check_rope_data;
-#endif
+ boundary_build();
+ /* Operands and fixed_data are set per call, as the module holding the
+  * routine sets them on the C64 (platform/c64/flight_table_module.c). */
  p.hardware=&hw;
  /* The program a routine sees holds every table (DANZIG's marker first among
   * the interpretive ones), for routines that resolve a continuation
@@ -324,10 +353,19 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     if(substitute&&brupt!=s.words[017]&&++lost_brupt==1ul)printf("interrupt at a RESUME point replaced BRUPT %05o with %05o at %lu cs\n",(unsigned)brupt,(unsigned)s.words[017],now(s.words));
     substitute=0;}}
   e=holder(s.words,io.superbank,&call);
+  if(e&&*e->module)module_load(e,s.words,io.superbank);
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;
-   before=s;x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+   before=s;p.operands=e->sites;p.operand_count=e->nsites;
+   /* Only the self-check module reads the rope image (its fixed_data hook);
+    * every other routine has the resident's boundary words. */
+#if RK_LM
+   p.fixed_data=strstr(e->module,"self_check")?lm_self_check_rope_data:boundary_word;
+#else
+   p.fixed_data=strstr(e->module,"self_check")?cm_self_check_rope_data:boundary_word;
+#endif
+x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
    if(st==EXEC_OK){
     if((n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first))>=0)locked+=(unsigned long)n;
     else miss(e->name,before.words,io0.superbank,s.words,first);
@@ -350,6 +388,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  for(i=0;i<nholes;++i)printf("  %s %02o,%04o Z %05o FB %05o Q %05o: %lu arrivals, %lu instructions%s%s\n",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q,holes[i].count,holes[i].instructions,
   holes[i].by?", refused by ":"",holes[i].by?holes[i].by:"");
+ printf("module loads (%lu in %lu cs):\n",nloads,now(s.words));
+ for(i=0;i<nload_points;++i)printf("  load %s slot %u %s %02o,%04o: %lu\n",loads[i].module,loads[i].slot,loads[i].in?"interp":"basic ",
+  loads[i].key/1024u,loads[i].key%1024u+02000u,loads[i].count);
  printf("last routines:\n");
  for(i=0;i<TRACE&&i<steps;++i){unsigned long t=(steps-1u-i)%TRACE;printf("  Z %05o FB %05o %s\n",trace[t][0],trace[t][1],names[t]);}
  return 0;}

@@ -49,13 +49,26 @@ bool lm_p_axis_data(uint16_t physical,agc_word *word);
 #define LM_PA_AFTERCHEK 02224u
 #define LM_PA_AFTERACDT 02653u
 #define LM_PA_SUPERJOB 02666u
+#define LM_PA_PRETIMCK 02667u
+#define LM_PA_CHKVISFZ 02740u
 #define LM_PA_BACKP 02316u
+#define LM_PA_TRAPS 02451u    /* CA DAPBOOLS before LMONLY */
+#define LM_PA_QRATE 02544u    /* Q-RATE */
+#define LM_PA_RRATE 02602u    /* R-RATE */
 #define LM_PA_ABORTYZ2 02773u
+#define LM_PA_TSNEXTP1 03013u   /* TSNEXTP -1 */
+#define LM_PA_TSNEXTP 03014u
+#define LM_PA_DETENTCK 03071u
 #define LM_PA_ZATTRET 03154u
+#define LM_PA_RATERROR 03227u
+#define LM_PA_PJETSLEC6 03350u  /* PJETSLEC -6 */
+#define LM_PA_PJETSLEC1 03355u  /* PJETSLEC -1 */
 #define LM_PA_WRITEPRET 03403u
 #define LM_PA_JTLSTRET 03424u
 #define LM_PA_JETSOFFRET 03443u
 #define LM_PA_CALCPERR 03446u
+#define LM_PA_PURGENCY 03463u
+#define LM_PA_PURGENCY4 03467u  /* PURGENCY +4 */
 #define LM_PA_SPSRET 03500u
 #define LM_PA_TJETRET 03512u
 #define LM_PA_SELALARM 03550u

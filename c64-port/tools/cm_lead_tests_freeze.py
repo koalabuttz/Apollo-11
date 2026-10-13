@@ -12,7 +12,7 @@ import hashlib, json, pathlib, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
-NATIVE = ['tests/cm_lead_tests_cases.c', 'src/agc_transfer.c', 'src/standard_lead_routines.c', 'src/standard_lead.c',
+NATIVE = ['tests/cm_lead_tests_cases.c', 'src/agc_transfer.c', 'src/standard_lead_routines.c', 'src/interp_entry.c', 'src/standard_lead.c',
           'src/standard_lead_interp.c', 'src/standard_lead_wake.c', 'src/lm_basic_wake.c', 'src/executive.c',
           'src/cm_basic_wake.c', 'src/cm_native_image.c', 'src/cm_dispatch.c', 'src/cm_executive.c', 'src/agc_word.c']
 HEADERS = ['include/agc_transfer.h', 'include/standard_lead_routines.h', 'tests/cm_lead_tests_cases.h']

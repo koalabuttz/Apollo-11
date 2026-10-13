@@ -25,14 +25,15 @@
 #include "p66_bias.h"
 #include "cm_native_image.h"
 
+/* site: the caller's physical address, or with module | 0200 the routine's
+ * own (the case starts at the routine's entry, as the module's case does). */
 typedef struct { uint16_t site, callee; uint16_t n; uint8_t module; uint8_t mission; } transfer_case;
-#define LANEC_DI_TRANSFER_C64_STOPS 128u
 #include "lanec_di_transfer_cases.inc"
 #ifndef LANEC_DI_TRANSFER_C64
 static const lanec_suite *const modules[] = { &lanec_suite_di_dsp, &lanec_suite_di_mark, &lanec_suite_di_play,
                                               &lanec_suite_di_sleep, &lanec_suite_di_idle, &lanec_suite_di_nvdsp };
-#else   /* the C64 program's cases all start from display-start cases */
-static const lanec_suite *const modules[] = { &lanec_suite_di_dsp };
+#else   /* the C64 program's cases all start from display-start or MAKEPLAY cases */
+static const lanec_suite *const modules[] = { &lanec_suite_di_dsp, 0, &lanec_suite_di_play };
 #endif
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
@@ -43,10 +44,11 @@ static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
     uint16_t bank = (uint16_t)(c->site / 1024u), offset = (uint16_t)(c->site % 1024u), i;
-    modules[c->module]->make(c->n, s, io, m);
+    modules[c->module & 0177u]->make(c->n, s, io, m);
     memset(m, 0, sizeof *m);
     m->mission = (enum lanec_mission)c->mission;
-    if (bank == 2u || bank == 3u) {   /* fixed-fixed caller: keep the case's FB */
+    if (c->module & 0200u) {          /* the routine's own entry: the module case as it is */
+    } else if (bank == 2u || bank == 3u) {   /* fixed-fixed caller: keep the case's FB */
         lanec_enter(s, io, lanec_current_bank(s, io), c->callee);
         s->words[LANEC_Q] = (uint16_t)(04000u + (bank - 2u) * 02000u + offset);
     } else {
@@ -135,32 +137,69 @@ const lanec_suite lanec_suite_di_transfer = { "di-transfer", LANEC_DI_TRANSFER_C
 #endif
 
 /* di-transfer-c64: the part of the round trip that fits one C64 program.
- * Luminary099 callers of the display-start entries (BANKCALL GOFLASH,
- * GODSP, PRIODSP...) through SAVELOCS, MAKECADR and BOTHJOBS to MAKEPLAY
- * and BANKJUMP, with only the INTER-BANK, display-start (lanec_di_dsp) and
- * MAKEPLAY (lanec_di_play) routines registered. The oracle also stops at
- * every point of the other four modules, where the native program has no
- * routine. */
+ * Every Luminary099 and Comanche055 caller of the display-start and MAKEPLAY
+ * entries (BANKCALL GOFLASH, GODSP, PRIODSP, CLOCPLAY...), through SAVELOCS,
+ * MAKECADR and BOTHJOBS to MAKEPLAY and BANKJUMP, with only the INTER-BANK,
+ * display-start (lanec_di_dsp) and MAKEPLAY (lanec_di_play) routines
+ * registered. The oracle also stops at every point of the other four
+ * modules, where the native program has no routine, and (as the C64 program
+ * has no Executive) at none of the Executive's. The C64 rows are picked by
+ * branch arc (tools/lanec/cover.py). */
+static uint8_t c64_entry;              /* the case starts at the routine's own entry */
+static const lanec_meta *c64_meta;
+
+/* The chain stopped where the original goes on: inside the case's ranges
+ * (INTER-BANK or the file, at a point no routine of this program claims,
+ * reached through a random return address) and not at a stop. The ABI has no
+ * routine there, so the case is out of scope rather than a result. */
+static int unregistered_c64(const apollo_overlay_state *s, const lanec_io *io)
+{
+    const lanec_meta *m = c64_meta;
+    uint16_t z = s->words[LANEC_Z], fb = lanec_current_bank(s, io), i;
+    for (i = 0; i < m->stop_count; ++i)
+        if (m->stop_list[i].address == z && (m->stop_list[i].bank == LANEC_ANY_BANK || m->stop_list[i].bank == fb)) return 0;
+    for (i = 0; i < m->ranges; ++i)
+        if (z >= m->range[i].lo && z <= m->range[i].hi &&
+            (m->range[i].bank == LANEC_ANY_BANK || (z >= 02000u && z < 04000u && m->range[i].bank == fb))) return 1;
+    return 0;
+}
+
+/* The C64 build runs one mission per program (both do not fit one):
+ * LANEC_DI_C64_CM selects Comanche055, otherwise Luminary099. */
 #ifndef LANEC_DI_TRANSFER_C64
-static lanec_point c64_stops[LANEC_DI_TRANSFER_C64_STOPS];
+#define C64_LM 1
+#define C64_CM 1
+#elif defined(LANEC_DI_C64_CM)
+#define C64_LM 0
+#define C64_CM 1
+#else
+#define C64_LM 1
+#define C64_CM 0
 #endif
+static const transfer_case *c64_case;
+static uint8_t c64_skip;               /* the other mission's row (tools/lanec/c64_diag.c skips it) */
+int lanec_di_c64_skip(void);
+int lanec_di_c64_skip(void) { return c64_skip; }
+
 static void make_c64(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
-    make_case(&c64_cases[n], s, io, m);
-    m->ranges = 4u; m->stops = 0;       /* no Executive routines in this program */
-#ifndef LANEC_DI_TRANSFER_C64           /* the oracle's stops (the C64 program has no oracle) */
-    {
-        const agc_routine_table *other[4] = { &lanec_di_lm_mark, &lanec_di_lm_sleep, &lanec_di_lm_idle, &lanec_di_lm_nvdsp };
-        uint16_t i, j, k = 0, p;
-        for (i = 0; i < 4u; ++i)
-            for (j = 0; j < other[i]->count && k < LANEC_DI_TRANSFER_C64_STOPS; ++j, ++k) {
-                p = other[i]->entries[j].physical;
-                c64_stops[k].bank = p < 4096u ? LANEC_ANY_BANK : (uint16_t)(p / 1024u);
-                c64_stops[k].address = (uint16_t)(p < 4096u ? 04000u + (p - 2048u) : 02000u + p % 1024u);
-            }
-        m->stop_list = c64_stops; m->stop_count = k;
-    }
+#ifdef LANEC_DI_TRANSFER_C64            /* the C64 program carries its mission's frozen rows only */
+    uint16_t i = 0;
+    while (i < sizeof c64_frozen / sizeof c64_frozen[0] && c64_frozen[i].n != n) ++i;
+    c64_skip = i == sizeof c64_frozen / sizeof c64_frozen[0];
+    if (c64_skip) return;
+    c64_case = &c64_frozen[i].c;
+#else
+    c64_case = &c64_cases[n];
 #endif
+    make_case(c64_case, s, io, m);
+    c64_entry = (uint8_t)(c64_case->module & 0200u);
+    c64_meta = m;
+    m->ranges = 4u; m->stops = 0;       /* no Executive routines in this program */
+    /* the other four modules' points: the oracle stops there */
+    m->stop_list = m->mission == LANEC_CM ? c64_stops_cm : c64_stops_lm;
+    m->stop_count = (uint16_t)(m->mission == LANEC_CM ? sizeof c64_stops_cm / sizeof c64_stops_cm[0]
+                                                       : sizeof c64_stops_lm / sizeof c64_stops_lm[0]);
 }
 
 static enum lanec_status run_c64(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
@@ -169,21 +208,38 @@ static enum lanec_status run_c64(apollo_overlay_state *s, lanec_io *io, enum lan
     static agc_native_program program;
     static agc_hardware hardware;
     static p66_bias_io lm;
-    enum exec_status status;
+    static cm_native_io cm;
+    enum exec_status status = EXEC_OUT_OF_SCOPE;
     uint16_t steps = 0, count;
-    if (mission != LANEC_LM) return LANEC_OUT_OF_SCOPE;
     memset(&program, 0, sizeof program);
     memset(&hardware, 0, sizeof hardware);
-    tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_dsp; tables[2] = lanec_di_lm_play;
     program.basic = tables; program.basic_count = 3u;
     program.interpreter_fetch = AGC_TRANSFER_NONE; program.loc = 0164u; program.bankset = 0165u;
     program.hardware = &hardware;
-    program.operands = lm_interbank_site_table(&count); program.operand_count = count;
     hardware.channel11 = io->channel[011];
-    lm.superbank = io->superbank; lm.interrupt_enabled = io->interrupt_enabled;
-    status = agc_transfer_run(&program, s, &lm, &lm.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
-    io->superbank = lm.superbank; io->interrupt_enabled = lm.interrupt_enabled;
-    io->channel[011] = hardware.channel11;
-    return status == EXEC_UNMAPPED && steps >= 2u ? LANEC_OK : LANEC_OUT_OF_SCOPE;
+    if (C64_LM && mission == LANEC_LM) {
+        tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_dsp; tables[2] = lanec_di_lm_play;
+        program.operands = lm_interbank_site_table(&count); program.operand_count = count;
+        lm.superbank = io->superbank; lm.interrupt_enabled = io->interrupt_enabled;
+        status = agc_transfer_run(&program, s, &lm, &lm.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        io->superbank = lm.superbank; io->interrupt_enabled = lm.interrupt_enabled;
+        io->channel[011] = hardware.channel11;
+    } else if (C64_CM && mission == LANEC_CM) {
+        tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_dsp; tables[2] = lanec_di_cm_play;
+        program.operands = cm_interbank_site_table(&count); program.operand_count = count;
+        memset(&cm, 0, sizeof cm);
+        cm.superbank = io->superbank; cm.interrupt_enabled = io->interrupt_enabled; cm.channel11 = io->channel[011];
+        status = agc_transfer_run(&program, s, &cm, &cm.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        io->superbank = cm.superbank; io->interrupt_enabled = cm.interrupt_enabled;
+        io->channel[011] = cm.channel11;
+    }
+    /* a call site's chain runs at least the INTER-BANK entry and the routine */
+    if (status == EXEC_UNMAPPED && steps >= (c64_entry ? 1u : 2u) && !unregistered_c64(s, io)) return LANEC_OK;
+    {   /* refused: the entry state again (a copy does not fit the C64 program) */
+        static lanec_meta again;
+        memset(&again, 0, sizeof again);
+        make_case(c64_case, s, io, &again);
+    }
+    return LANEC_OUT_OF_SCOPE;
 }
 const lanec_suite lanec_suite_di_transfer_c64 = { "di-transfer-c64", LANEC_DI_TRANSFER_C64_CASES, make_c64, run_c64 };

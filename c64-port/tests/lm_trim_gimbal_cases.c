@@ -64,10 +64,19 @@ void lm_tg_input(apollo_overlay_state *m,lm_flight_io *io,lm_tg_case *c,uint16_t
  * src/lm_interbank_sites.inc (the host test checks it against
  * lm_interbank_site_table). */
 const agc_site_operand lm_tg_sites[LM_TG_SITES]={{18204u,035736}};
+/* The program's passive fixed_data: the rope words DOSHIFT's CA can read
+ * after the zero root (bank 21 and fixed-fixed). */
+#include "lm_trim_gimbal_ca_table.inc"
+static bool tg_fixed(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;
+ if(physical>=021u*1024u&&physical<022u*1024u){*word=gts_ca_fixed[physical-021u*1024u];return true;}
+ if(physical>=2048u&&physical<4096u){*word=gts_ca_fixed[1024u+physical-2048u];return true;}
+ return false;
+}
 unsigned lm_tg_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};lm_tg_case c;enum exec_status st;uint16_t stop;
  tables[0]=lm_trim_gimbal_routines;tables[1]=lm_interbank_routines;
  program.basic=tables;program.basic_count=2;program.operands=lm_tg_sites;program.operand_count=LM_TG_SITES;
+ program.fixed_data=tg_fixed;
  lm_tg_input(s,io,&c,n);
  stop=c.stop_z==0u?(uint16_t)(AGC_TRANSFER_NONE-1u):agc_fixed_physical(c.stop_z,c.stop_fb==ANY_FB?0u:c.stop_fb,c.superbank);
  st=agc_transfer_run(&program,s,io,&c.superbank,stop,8,steps);
