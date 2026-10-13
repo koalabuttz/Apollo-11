@@ -285,6 +285,16 @@ class Basic:
                        % ((self.logical(here) + 1) & 0o7777, self.cp.intpret)]
             self.cp.add_start(here + 1, 'i', 'after TC INTPRET')
             return st
+        if (tp is not None and not call and self.L.word(tp) == 0o2
+                and target_logical in self.spec.get('tcq_words', ())):
+            # Spec 'tcq_words' (fixed-fixed addresses): an outside word that
+            # is TC Q (TCQ, the interpreter's 06711) runs here as the file's
+            # own TC Q: Q's word runs as a TC from 2, so Q = 3.
+            self.cp.basic_fixed.add(tp)
+            st.append('e=(long)(agc_correct(W[2])&077777u); /* %04o: TC Q */' % target_logical)
+            st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
+            st.append('ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;')
+            return st
         if tp is None:
             raise BasicError('transfer to erasable %04o at %s' % (target_logical, self.where(here)))
         name = self.outside_tc(here, target_logical) if call else (self.L.label_at(tp) or '%04o' % target_logical)
@@ -574,11 +584,17 @@ class Basic:
             st.append(cont())
             return st
         if op == 'MSU':
-            # On an ordinary erasable word, as yaAGC takes it.
-            if dyn or a < 0o20 or a >= 0o2000:
+            # On an ordinary erasable word, as yaAGC takes it. INDEXed
+            # (OPTDRIVE's INDEX OPTIND; MSU CDUT), the word it lands on must
+            # be one too.
+            if a >= 0o2000 or (not dyn and a < 0o20):
                 raise BasicError('MSU on %o at %s' % (a, self.where(here)))
             self.uses_msu = True
-            st.append('msu(s,0%o);' % a)
+            if dyn:
+                st.append('if(e<020||e>=02000)return EXEC_INVALID_ACTION;')
+                st.append('msu(s,(unsigned)e);')
+            else:
+                st.append('msu(s,0%o);' % a)
             st.append(cont())
             return st
         # Memory orders.

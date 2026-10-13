@@ -177,6 +177,10 @@ class Compiler:
                 self.ranges[-1][1] = q
             else:
                 self.ranges.append([q, q])
+        # Outside TC Q words the basic code runs in place (spec 'tcq_words',
+        # fixed-fixed): the oracle runs through them as the file's own.
+        for a in spec.get('tcq_words', ()):
+            self.ranges.append([2048 + a - 0o4000, 2048 + a - 0o4000])
         self.T = {}
         self.T.update(self.L.jump_table('INDJUMP', 32))
         self.T.update(self.L.jump_table('MISCJUMP', 16))

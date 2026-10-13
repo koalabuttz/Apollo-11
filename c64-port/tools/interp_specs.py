@@ -459,6 +459,39 @@ SPECS = {
         # called from tasks and NOVAC jobs (V37): any FIXLOC.
         'any_fixloc': True,
     },
+    # Lane A: Comanche055 T4RUPT_PROGRAM.agc optics monitor and drive
+    # (OPTMON 06,2765-3262, OPTDRIVE 10,2000-2202), basic only. The IMU
+    # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
+    'cm-t4rupt-optics': {
+        'missions': ('cm',),
+        'file': {'cm': 'T4RUPT_PROGRAM.agc'},
+        'base': {'cm': 'cm_t4rupt_optics'},
+        'symbol': {'cm': 'cm_t4rupt_optics'},
+        'basic': 'full',
+        # T4JUMP's TCF OPTMON, OPTTEST's IBNKCALL OPTDRIVE, and ENDZOPT
+        # (SETZOEND's WAITLIST task).
+        'entries': ['OPTMON', 'OPTDRIVE', 'ENDZOPT'],
+        # T4RUPT through 90SECS (06,2000-2764) is t4rupt_core and
+        # cm_t4rupt_imu, with the IMU monitor's own task CADRs.
+        'outside': {'T4RUPT': 501},
+        'partial': {'cm': 'native in t4rupt_core and cm_t4rupt_imu (T4RUPT through 90SECS, 06,2000-2764)'},
+        # CDUT and CDUS (counters, 0 otherwise): around 0, the 45-degree and
+        # 90-degree tests of OPTDRIVE and its shaft-stop avoidance, and +-180.
+        'cells': {a: [0, 1, 0o7777, 0o10000, 0o10001, 0o17777, 0o20000, 0o20001, 0o37777,
+                      0o40000, 0o57777, 0o60000, 0o67777, 0o70000, 0o77776, 0o77777] for a in (0o35, 0o36)},
+        # SETOFF's BZF TCQ (no lamp change) returns from OCDUFTST through
+        # the interpreter's TC Q word (TCQ = Q+2 +1, 06711).
+        'tcq_words': (0o6711,),
+        # One body per bank, so OPTMON (06) and OPTDRIVE (10) are separate
+        # flight-store modules.
+        'basic_split': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'target': 'tests/cm_t4rupt_optics_target.c',
+    },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-servicer': {
         'rope_fallback': True,
