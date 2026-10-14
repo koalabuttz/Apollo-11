@@ -160,7 +160,7 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
 #endif
 #if PART(5)
 /* Other-vector rows (tests/resident_rupt_c64_rows.h): with the CIA
- * interrupt held off, the other-vector case module
+ * interrupt held off (and the work clock held), the other-vector case module
  * (resident_flight_vector_cases.c) writes each row's state, and with that
  * vector pending it runs through resident steps (the entry, the lead-in and
  * the interrupt body from their task-slot wrappers, the kernel where a body
@@ -182,6 +182,9 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
   stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
   kind=RR_V_RUNAWAY;
   for(n=0;n<RR_V_MAX;++n){
+#ifdef RK_WORK_CLOCK
+   rk_work=0;   /* the work clock held too */
+#endif
    st=rk_resident_step(stop);
    if(st==EXEC_UNMAPPED){kind=RR_V_STOPPED;break;}
    if(st!=EXEC_OK){kind=RR_V_REFUSED;break;}
