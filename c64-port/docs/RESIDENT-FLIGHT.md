@@ -129,9 +129,12 @@ ASan/UBSan.
   EB from 01400), or from fixed memory through `program->fixed_data`. A
   fixed word it cannot read takes nothing, and the request stays pending.
 
-The step calls both through `rk_rupts`. That consumes one tick per CIA1
-interrupt counted by `overlay_v2_irq.S` since the last step, at most
-`RK_TICK_LAG` of them (scaled time, below), then tries the entry. T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
+The step calls both through `rk_rupts`. That consumes the ticks due
+since the last step, then tries the entry. Under the work clock (the
+flight default, below) a tick is due when the work the resident ran
+reaches the next 10 ms period; under the CIA wall clock (`RK_WALL_CLOCK=1`)
+it is one per CIA1 interrupt counted by `overlay_v2_irq.S`, at most
+`RK_TICK_LAG` of them (scaled time, below). T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
 each task due and TASKOVER, to RESUME.
 
 ### Scaled time
@@ -222,6 +225,54 @@ case reaches RESUME: 4,984 LM and 5,006 CM kernel routines. Two
 mutations fail the test: BRUPT off by one (160 checks) and TIME3's
 overflow raising T4RUPT (115 checks). The fixed words come from the
 unmodified ropes in `evidence/fixed-data-<m>-original.rope.bin`.
+
+### The work clock
+
+The CIA wall clock above starves the AGC on a C64: module loads and
+dispatch take wall time the AGC never spends, so the cap drops most ticks
+(measured: one T5RUPT a second instead of ten). The flight default is
+instead a work clock: AGC time advances by the work the resident ran.
+
+- Every routine is charged a calibrated MCT weight. `rk_work` counts the
+  MCT since the last tick, and one tick is 853⅓ MCT (periods 854, 853,
+  853, `RK_TICK_MCT(phase)`), taken at the next routine boundary. Nothing
+  is dropped, and module loads, IRQs and dispatch are not counted, so the
+  same state and inputs always give the same tick schedule.
+- Weights are per module, one byte (`FS_MCT`, 4-255): the module's total
+  MCT over its total runs, from Lane B's shared calibration
+  `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
+  `tools/resident_flight_build.py` and `tools/flight_store_build.py`
+  compute them. The resident's weight leaves out the Executive idle table
+  (LM 35, CM 73). The interrupt wrappers report their weight in
+  `rk_module_env.scale`, and a module reports its routine count in
+  `rk_module_env.work`.
+- A module runs at most `rk_module_limit(budget, mct)` routines before it
+  hands back, so a tick is never more than one routine late.
+- The self-check idle tables (`*_self_check_idle_routines`) carry weight
+  0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick. Without it
+  the AGC background fills each second with about 85,000 MCT of
+  self-check, and the LM DAP hold ran at 221x real time. The LM idle
+  module also packs the interbank tables (`CO_LOCATE` in
+  `tools/flight_store_build.py`), so an idle pass loads nothing.
+
+Measured in VICE (LM, 100 AGC cs from the cs 3000 snapshot,
+`tools/dap_pass_vice.py`): the DAP hold runs at 16.7x real time and
+firing at 16.9x, with 10 T5RUPT, 9 T4RUPT and no tick dropped. The rest is
+background work (12 M cycles per AGC second) and job reloads (118 per AGC
+second).
+
+The host replay schedules ticks the same way (`FLIGHT_SCALED=W` in
+`tools/flight_host_run.c`, with the idle rule and no swap charge), and
+every routine of the work rows matches yaAGC:
+
+| Scenario | Native routines | yaAGC did not match | Periods taken / dropped |
+|---|---|---|---|
+| LM V37E12E | 14,697 | 0 | 3,000 / 0 |
+| LM V37E12E, DAP running | 18,203 | 0 | 3,000 / 0 |
+| CM V37E06E | 10,380 | 0 | 3,000 / 0 |
+
+`make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead;
+`make vice-resident-flight-half` builds it at x0.5.
 
 ### The interrupt bodies
 
