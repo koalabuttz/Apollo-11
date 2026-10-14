@@ -9,6 +9,7 @@
       "data": 1,
       "instructions": 32,
       "executed": 32,
+      "interpreted": 0,
       "unreached": 0,
       "map": [
         {
