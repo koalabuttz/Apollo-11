@@ -10,8 +10,9 @@ the C64 flight store it is the restart burst so far (see Gaps).
 `FLIGHT_GOJAM=CS[,CS...]` (`tools/flight_gojam.h`, read by
 `tools/flight_host_run.c`) restarts the AGC at the first sample point at or
 after each CS, on both sides. A sample point is a clean point: idle at
-ADVAN, no interrupt in progress or pending, no instruction half done. The
-harness runs no DOWNRUPT, so no restart lands inside one. The pokes for that
+ADVAN, no interrupt in progress or pending, no instruction half done. With
+`FLIGHT_DOWNRUPT` (docs/FLIGHT-DOWNLINK.md) no DOWNRUPT is pending there either, so no restart
+lands inside one. The pokes for that
 point go in first, and the key for that point waits for the next sample
 point.
 
@@ -124,19 +125,12 @@ GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 - **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.
   `platform/x86/flight_scenario.h` is Lane B's.
 
-## Telemetry next
+## Telemetry
 
-The harness runs no DOWNRUPT, so DOWNTELEMETRY's word stream is not yet
-compared. In this scenario, the restart sets the stream back.
-
-- STARTSUB points DNTMGOTO at LDNPHAS1, so the next DOWNRUPT starts the
-  current downlist from its first word.
-- SETINFL copies AGSWORD into DNLSTCOD.
-- The hardware GOJAM zeroes channels 34 and 35.
-
-To compare the stream, a DOWNRUPT request would be raised every 20 ms of
-AGC time on both sides (`rk_timer_tick` schedule natively,
-`InterruptRequests[8]` in yaAGC). Each channel 34 and 35 pair written
-would be logged with its time. The two logs would then be compared
-(yaAGC's `DecodeDigitalDownlink` names the lists). The lockstep compares
-erasable memory, not output channels, so this log is the check.
+With `FLIGHT_DOWNRUPT=1` the harness raises DOWNRUPT every 20 ms of AGC time
+on both sides. The downlink word stream is then checked against yaAGC
+through each of these restarts (docs/FLIGHT-DOWNLINK.md,
+`make flight-downlink-check`). After the GOJAM the stream starts the current
+list again from its ID word: STARTSUB points DNTMGOTO at LDNPHAS1, SETINFL
+copies AGSWORD into DNLSTCOD, and the hardware GOJAM zeroes channels 34 and
+35. Every check here still passes with the knob on.

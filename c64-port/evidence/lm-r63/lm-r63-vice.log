@@ -1,3 +1,3 @@
-lm-r63-1.prg sha256 693b6955e4d8e202b47c965080d5274ccca59be1cb50da44f2f46eb6e650d04b
-lm-r63: 1 C64 diagnostic, 34 frozen cases (tests/lm_r63_c64_vectors.h) compared with yaAGC digests; they take all 408 host branch arcs
-PASS: VICE PAL lm-r63-1.prg: 34 checks, 0 failures
+lm-r63-1.prg sha256 7ca34a3060d690214dda9641a6694bc7ef2f6a6af39ca43cd07e860bfa7a0867
+lm-r63: 1 C64 diagnostics, 35 frozen cases (tests/lm_r63_c64_vectors.h) compared with yaAGC digests; they take all 442 of the 442 host branch arcs
+PASS: VICE PAL lm-r63-1.prg: 35 checks, 0 failures

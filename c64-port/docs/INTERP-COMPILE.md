@@ -102,6 +102,10 @@ With `resume_flow` (and `resume_keys`), a resume LOC's cases start from the stat
 - With `partial`, the proof's `c64_gcov_branches` and `--cover-check` leave the cases waiting for an I/O channel model (never compared, so no C64 row takes them) out of the host side.
 - `build/<id>-source-map.json`: each word of the file with the routine that compiles it. A word no routine compiles fails the freeze, unless the spec's `partial` entry names why.
 
+### Reviewer self-check (`tools/cert_selfcheck.py`)
+
+`python3 tools/cert_selfcheck.py <spec> [--jobs 2] [--skip-differential] [--keep]` runs the second certificate reviewer's semantic checks before a lane asks for review. It runs the differential at the proof's frozen case count and checks `cases_sha256` and that the frozen files are committed. It matches every row of both vector headers to its frozen case (a resumed row to its `-c64-cover.json` parent and snapshot) and re-runs each one, cut or segment stop included, on yaAGC against its header digest. It then builds each C64 group with its KEEP mask, runs only that group's rows (which must give their digests) and diffs gcov branch outcomes per object against all host cases. Every `GAP` line is something the reviewer would reject on, and the tool exits 1 if there are any. Lane F modules (`tools/lane_f_c64_rows.py`) get the branch diff only.
+
 ### Fitting the C64 groups (whole-file basic specs)
 
 Specs with `'basic': 'full'` choose their C64 cases by edge coverage (each case's clang trace-pc-guard/trace-cmp edges over every linked source) rather than a fixed count per routine. Some runs are too big to fit one diagnostic on their own, because they reach too many routines and banks. Such a case stays host-only and is listed in the proof's `c64_too_big_cases`. So are the other cases of its routine whose runs reach at least the same routines with at least as many edits, so one pass drops them all. The proof's `c64_gcov_branches` and `host_branches_missing_on_c64` show the C64 cases still take every branch outcome the host cases take.
