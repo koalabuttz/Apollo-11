@@ -4,7 +4,7 @@
   "release": "evidence-cm-ephemeris",
   "files": {
     "cm-ephemeris-differential.log": {
-      "sha256": "58cc1d3699922547f8f8a32c0334c4ba4b22e04ac7cf2883d4827307bc334458",
+      "sha256": "db8a651618d71927590427ae8be13f56b52c7a85ba094064d0598aacbea630ee",
       "bytes": 1462,
       "store": "tree"
     },
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-ephemeris-proof.json": {
-      "sha256": "72b2267a80260595534ab0f8fabd9904ec67e5db1467bde97780d346bec52fba",
-      "bytes": 4526,
+      "sha256": "e21c4214c7dbe48802816a130177ba9cd0f1c0e2df9d810b58d21c7a8355de2d",
+      "bytes": 4517,
       "store": "tree"
     },
     "cm-ephemeris-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-ephemeris-vice.log": {
-      "sha256": "05c8feb90931795a4ad6ad55f2689a88c97d753808376bb2b0f1d29a8cd8231b",
+      "sha256": "69d6818b524d4672db8a688ba05a5386498aa589fa507f57f74ab4854f791303",
       "bytes": 776,
       "store": "tree"
     }

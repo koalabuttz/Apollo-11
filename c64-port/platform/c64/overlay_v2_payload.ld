@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: MIT
  * ABI 2 module, fixed slot. The driver passes, with -Wl,--defsym:
- *   __ov2_slot      0 (job slot $8000..$BFFF) or 1 (task slot $E000..$FFF9)
+ *   __ov2_slot      0 (job slot $8000..$BFFF), 1 (task slot $E000..$FFF9) or
+ *                   3 (pinned, $C000..$CBFF)
  *   __ov2_mission   1 LM, 2 CM
  *   __ov2_id        lane<<8 | number
  *   __ov2_services  service-table version the module was built against
  *   __ov2_selectors number of entry selectors
- * and includes overlay_v2_slot_job.ld or overlay_v2_slot_task.ld first for
+ * and includes overlay_v2_slot_job.ld, _task.ld or _pinned.ld first for
  * MEMORY. Resident services resolve through overlay_v2_services.ld. No CRT,
  * no private zero page, no AGC rope. */
 __rc0 = 0x02;

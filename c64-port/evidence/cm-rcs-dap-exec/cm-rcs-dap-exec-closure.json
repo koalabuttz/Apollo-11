@@ -1,0 +1,216 @@
+{
+  "milestone": "cm-rcs-dap-exec",
+  "tool": "tools/interp_executed_closure.py",
+  "source_map_sha256": "7b2642c1b7d52fb4bd090c990804b3a5a03dc4ba0dbdb9b8dd4408623ac67618",
+  "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
+  "files": {
+    "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc": {
+      "words": 33,
+      "data": 1,
+      "instructions": 32,
+      "executed": 32,
+      "interpreted": 0,
+      "unreached": 0,
+      "map": [
+        {
+          "address": "22,3447",
+          "source": "AMBGUPDT CA FLAGWRD6",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3450",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3451",
+          "source": "BZMF ENDOFJOB",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3452",
+          "source": "MASK BIT14",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3453",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3454",
+          "source": "BZF ENDOFJOB",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3455",
+          "source": "CA CDUZ",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3456",
+          "source": "TC SPSIN2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3457",
+          "source": "TS AMGB1",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3460",
+          "source": "CA CDUZ",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3461",
+          "source": "TC SPCOS2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3462",
+          "source": "TS CAPSI",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3463",
+          "source": "CAF QUADANGL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3464",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3465",
+          "source": "MSU CDUX",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3466",
+          "source": "COM",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3467",
+          "source": "TC SPCOS1",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3470",
+          "source": "TS AMGB8",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3471",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3472",
+          "source": "MP CAPSI",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3473",
+          "source": "TS AMGB4",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3474",
+          "source": "CAF QUADANGL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3475",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3476",
+          "source": "MSU CDUX",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3477",
+          "source": "COM",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3500",
+          "source": "TC SPSIN1",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3501",
+          "source": "TS AMGB5",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3502",
+          "source": "EXTEND",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3503",
+          "source": "MP CAPSI",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3504",
+          "source": "COM",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3505",
+          "source": "TS AMGB7",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3506",
+          "source": "TCF ENDOFJOB",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "22,3507",
+          "source": "QUADANGL DEC 660        B-14",
+          "data": true,
+          "executed": false
+        }
+      ]
+    }
+  }
+}

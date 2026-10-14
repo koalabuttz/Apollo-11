@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-aostask",
+  "release": "evidence-lm-aostask",
+  "files": {
+    "lm-aostask-differential.log": {
+      "sha256": "098ff59037b3d675afc13f35467c2a852a0d507fc851154b6d8b6dba0ef916f4",
+      "bytes": 2231,
+      "store": "tree"
+    },
+    "lm-aostask-host.log": {
+      "sha256": "7ae6be9181ba3720437aa62bf97fbcd0d16454dbfd7802ce953bbada7ecb1ea6",
+      "bytes": 900,
+      "store": "tree"
+    },
+    "lm-aostask-proof.json": {
+      "sha256": "93e2b3476fa7f1a03ce0ae9295e0c3eca56a1451796951d2f47a43ac74951490",
+      "bytes": 6427,
+      "store": "tree"
+    },
+    "lm-aostask-source-map.json": {
+      "sha256": "423022411762be64612aa7fee33b6ee89e76fc7f49d37ac7ffa5838d4e92803f",
+      "bytes": 103513,
+      "store": "tree"
+    },
+    "lm-aostask-vice.log": {
+      "sha256": "7f80e16c13fe483a928ff8982d7dfddc47537b83f96e327076b527c8e3c8856a",
+      "bytes": 144,
+      "store": "tree"
+    }
+  }
+}

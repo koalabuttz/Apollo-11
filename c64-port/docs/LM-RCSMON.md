@@ -14,13 +14,13 @@ The older `src/lm_rcs_monitor.c` (`docs/LUMINARY-RCS-MONITOR.md`) is a hand-writ
 
 Two routines: RCSMON, and the word NOVAC returns to (`TCF RCSMONEX`). `INDEX L` on `CA BIT8 -1` and on the two fail tables is compiled for L = 1 to 8, the count the `INCR L; DOUBLE; OVSK` loop leaves (`basic_fixed_index`); any other L refuses. Channel 32 is a latched input (`channel_inputs`, `AGC_CHANNEL(32)`), set by the caller for the run as yaAGC's input channel is.
 
-Domain: entry at RCSMON with FB of bank 06 under any EB (CH5MASK, CH6MASK and PVALVEST are unswitched E2 words), PVALVEST 0 to 0377 (the valve bits RCSMON records itself), any channel 32 and any other erasable. With a PVALVEST bit above bit 8 the original's DOUBLE loop never overflows and runs forever, so that state is outside the domain.
+Domain: entry at RCSMON with FB of bank 06 under any EB (CH5MASK, CH6MASK and PVALVEST are unswitched E2 words), PVALVEST 0 to 0377 (the valve bits RCSMON records itself), NEWJOB +0, -0 (DUMMYJOB idling) or positive (a job waiting), FIXLOC anywhere in erasable (neither routine names it), any channel 32 and any other erasable. Both routines check the image with `sane_nv` (`any_fixloc`, `any_newjob`; #285). With a PVALVEST bit above bit 8 the original's DOUBLE loop never overflows and runs forever, so that state is outside the domain.
 
 ## Evidence
 
 Hashes: `evidence/lm-rcsmon/SHA256.json`.
 
 - **Source map.** `lm-rcsmon-source-map.json` lists all 69 words (51 instructions and 18 data words) with the routine that compiles each; none is untranslated.
-- **Independent assembly comparison.** `make lm-rcsmon-differential`: 512 states for each of the 2 routines (1,024 cases; channel 32 drawn per case, NEWJOB positive in a quarter: T4RUPT runs RCSMON whatever job waits) run the unmodified Luminary099 rope in yaAGC to the same stop. All 1,024 equal it in Z, all 2,048 erasable words and the interrupt-enable state. RCSMON ends at NOVAC in 509 cases and at RESUME in 3.
-- **Host and sanitizer results.** `make test-lm-rcsmon sanitize-lm-rcsmon` run the 71 frozen cases (every 16th, plus the edge cover).
-- **C64 execution results.** `make vice-lm-rcsmon` runs 1 diagnostic with 18 cases chosen by `tools/c64_row_cover.py`: they take all 219 branch arcs (gcov, every linked source) the 1,024 host cases take (`lm-rcsmon-c64-cover.json`), and all 148 clang edges.
+- **Independent assembly comparison.** `make lm-rcsmon-differential`: 512 states for each of the 2 routines (1,024 cases; channel 32 drawn per case, NEWJOB positive in a quarter and -0 in a quarter, FIXLOC anywhere in erasable in half: T4RUPT runs RCSMON whatever job waits or idles) run the unmodified Luminary099 rope in yaAGC to the same stop. All 1,024 equal it in Z, all 2,048 erasable words and the interrupt-enable state.
+- **Host and sanitizer results.** `make test-lm-rcsmon sanitize-lm-rcsmon` run the 72 frozen cases (every 16th, plus the edge cover).
+- **C64 execution results.** `make vice-lm-rcsmon` runs 1 diagnostic with 17 cases chosen by `tools/c64_row_cover.py`: they take all 220 branch arcs (gcov, every linked source) the 1,024 host cases take (`lm-rcsmon-c64-cover.json`).

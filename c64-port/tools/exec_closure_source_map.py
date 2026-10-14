@@ -148,6 +148,15 @@ def main():
                         'oracle_cases': {k: {'mission': v['mission'], 'rope_sha256': v['rope_sha256'], 'cases': v['cases']}
                                          for k, v in ([('run', run)] if 'cases' in run else run.items())
                                          if isinstance(v, dict) and 'cases' in v}}
+    # waitlist-entries compares the WAITLIST entries other files reach (T3RUPT, DLY2 -1, NOQBRSM +1, and
+    # TASKOVER's RESUME check from yaAGC's own T3RUPT) with yaAGC; its words are already in the traced runs above.
+    wle = R / 'evidence/waitlist-entries/SHA256.json'
+    wle_run = json.loads((R / 'evidence/waitlist-entries/waitlist-entries-proof.json').read_text())
+    manifests['waitlist-entries'] = {'manifest': str(wle.relative_to(R)), 'sha256': hashlib.sha256(wle.read_bytes()).hexdigest(),
+                                     'oracle_cases': {'run': {'missions': sorted(wle_run['ropes']), 'ropes_sha256': wle_run['ropes'],
+                                                              'cases': wle_run['cases']}},
+                                     'taskover_superbank': wle_run['taskover_superbank']['result'],
+                                     'traced': False}
     proof = {'files': summary, 'milestone_evidence': manifests,
              'method': 'each milestone differential rerun with tools/oracle_trace linked into its yaAGC reference; '
                        'a word is executed when the original program ran it in that comparison (each run ends where '

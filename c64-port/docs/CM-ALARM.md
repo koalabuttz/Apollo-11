@@ -20,7 +20,7 @@ ALARM_AND_ABORT records an alarm code in the FAILREG words, lights PROG, and eit
   - ALARM and ALARM2 read the word after the caller's TC with `INDEX Q; CA 0`.
   - BAILOUT and POODOO read it after VAC5STOR with `INDEX ALMCADR; CAF 0`, where ALMCADR holds the caller's Q.
   - `tools/cm_alarm_generate.py` compiles that word for all 62 genuine TC ALARM, ALARM2, BAILOUT and POODOO sites (the same 62 as `src/cm_alarm_sites.inc`) into `src/cm_alarm_operands.inc`. It also compiles the CADRs after this file's own TC BANKCALL and TC POSTJUMP and the fixed constants the file reads, and checks each against the listing and the rope.
-  - A program running these routines uses `cm_alarm_operands` as its operand table. A Q or ALMCADR at no compiled site refuses; an erasable one reads erasable memory.
+  - A program running these routines uses `cm_alarm_operands` as its operand table. A Q or ALMCADR at no compiled site refuses, and so does one in erasable (no caller runs from erasable).
 - WHIMPER's `CA TWO; AD Z; TS BRUPT; RESUME` runs as yaAGC runs it. RESUME clears the in-interrupt state (`agc_hardware`) and executes BRUPT (TC 7773) at ZRUPT-1, which reaches `TC POSTJUMP; CADR ENEMA`. Without `program->hardware`, WHIMPER refuses.
 - Interrupt state: INHINT and RELINT act on `cm_native_io.interrupt_enabled`; ROR SUPERBNK reads `cm_native_io.superbank`.
 - External continuations: the callers' returns, PRIODSPR (PINBALL), DOWNFLAG (SERVICE_ROUTINES), and BANKCALL/POSTJUMP (`cm_interbank_routines`) with, through them, VAC5STOR, MR.KLEAN and ENEMA.
@@ -42,7 +42,7 @@ Paths with no producer:
 Hashes: `evidence/cm-alarm/SHA256.json`. Bulk files are assets of the `evidence-cm-alarm` release (`python3 tools/evidence.py fetch cm-alarm`).
 
 - Independent assembly comparison: `evidence/cm-alarm/cm-alarm-proof.json`. `make cm-alarm-differential` runs the unmodified Comanche055 rope in yaAGC (host-only), 4,096 cases.
-  - Case n enters kind n % 79: each of the 62 TC sites (Q at its alarm code, FB of its bank), then CCSHOLE, CURTAINS, VARALARM, PRIOLARM, the twelve return points, and ALMCADR. The VAC5STOR returns of BAILOUT and POODOO have ALMCADR at a random BAILOUT or POODOO site.
+  - Case n enters kind n % 79: each of the 62 TC sites (Q at its alarm code, FB of its bank), then CCSHOLE, CURTAINS, VARALARM, PRIOLARM, the twelve return points, and ALMCADR. The VAC5STOR returns of BAILOUT and POODOO have ALMCADR at a random BAILOUT or POODOO site. Other return addresses (Q, ALARM2's A, ALMCADR) are random in 2000-7777, banked or fixed-fixed, outside this file's words and the interbank routines.
   - Images, FB/EB, SUPERBNK, the interrupt-enable and in-interrupt states are pseudo-random. Each FAILREG word is +0, -0, positive or negative a quarter of the time, so every CHKFAIL/FAIL3 branch, PROGLARM and MULTFAIL run.
   - Each case runs to the first point neither this file nor INTER-BANK_COMMUNICATION owns. The interrupt-enable state, SUPERBNK, the in-interrupt state and all 2,048 erasable words are compared.
   - The digests are frozen into `tests/cm_alarm_vectors.h`. `evidence/cm-alarm/cm-alarm-data.json` lists every compiled word with its source line.
@@ -50,6 +50,6 @@ Hashes: `evidence/cm-alarm/SHA256.json`. Bulk files are assets of the `evidence-
   - every compiled site code is a positive word in the operand table;
   - all 21 entries are reached;
   - each case ends at a caller's return, PRIODSPR, ENEMA, MR.KLEAN, VAC5STOR or DOWNFLAG, and each of those ends is reached;
-  - a Q or ALMCADR at no compiled site, an ALMCADR word that is no return address, a negative code that overflows MULTFAIL, a missing io and WHIMPER without the hardware record are refused.
+  - a Q or ALMCADR at no compiled site or in erasable, an ALMCADR word that is no return address, a negative code that overflows MULTFAIL, a missing io and WHIMPER without the hardware record are refused.
 - C64 execution results: `make vice-cm-alarm` (`evidence/cm-alarm/cm-alarm-vice.log`): every 16th case (256).
-- C64 branch outcomes: `evidence/cm-alarm/cm-alarm-c64-cover.json` (`python3 tools/lane_a_c64_cover.py --check cm-alarm`). The 256 stride rows already take all 287 branch arcs the 4,096 host cases take in every linked source, so the C64 program runs no extra cover rows.
+- C64 branch outcomes: `evidence/cm-alarm/cm-alarm-c64-cover.json` (`python3 tools/lane_a_c64_cover.py --check cm-alarm`). The 256 stride rows already take all 298 branch arcs the 4,096 host cases take in every linked source, so the C64 program runs no extra cover rows.

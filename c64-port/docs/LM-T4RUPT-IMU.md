@@ -33,7 +33,7 @@ Hashes: `evidence/lm-t4rupt-imu/SHA256.json`.
 - **Source map.** `tools/lm_t4rupt_imu_source_map.py` (`evidence/lm-t4rupt-imu/lm-t4rupt-imu-source-map.json`) lists the 396 words of 06,2172-3005. The original executed every instruction in the oracle run below. The script also checks the 37 fixed constants and the 9 external entry addresses built into the native code against the assembled program.
 - **Independent assembly comparison.** `make lm-t4rupt-imu-differential` runs the unmodified Luminary099 rope in yaAGC (host-only, `tools/lm_t4rupt_imu_reference.c`). It uses 2,048 cases at IMUMON and 128 at each other entry, 4,736 in all.
   - The erasable image is random. In a quarter of the cases IMODES30 and IMODES33 are near their flight values, and channels 30 and 33 are near IMODES30 and IMODES33 in half, so a scan has few changes.
-  - Every sixteenth case gives CDUZ +0 or -0, and one IMUMON case in sixteen gives the TEMP change with IMODES30 left +0, to reach those branches of CCS.
+  - Every sixteenth case gives CDUZ +0 or -0, and one IMUMON case in sixteen gives the TEMP change with IMODES30 left +0, and another gives it with IMODES30 left -0 (every other bit already set, TEMP rising), to reach those branches of CCS.
   - Scan entries get a valid scan state. Channels 11, 12 and 14 are random.
   - The CDU and gyro command counters (047, 050-052) and the optics counters (035, 036) are +0 on entry. yaAGC's peripheral model empties them when the matching channel 14 drive bit is set, which is the outside world, not the program.
 
@@ -42,6 +42,6 @@ Hashes: `evidence/lm-t4rupt-imu/SHA256.json`.
   - the digests;
   - that every continuation is reached: RESUME, ALARM, VARALARM, WAITLIST, VARDELAY, TASKOVER, IBNKCALL, POSTJUMP, ZEROICDU and SETISSW's caller;
   - five refusals with the image unchanged, and that the entry addresses do not resolve in another bank.
-- **C64 execution results.** `make vice-lm-t4rupt-imu` (`evidence/lm-t4rupt-imu/lm-t4rupt-imu-vice.log`) runs 300 cases: every sixteenth, plus the four that `tools/c64_case_cover.py` adds so that the C64 rows run every branch outcome (control-flow edge) of the native routine that the full host case set runs. The proof records the edge counts.
+- **C64 execution results.** `make vice-lm-t4rupt-imu` (`evidence/lm-t4rupt-imu/lm-t4rupt-imu-vice.log`) runs 301 cases: every sixteenth, plus the five that `tools/c64_case_cover.py` adds so that the C64 rows run every branch outcome (control-flow edge) of the native routine that the full host case set runs. The proof records the edge counts.
 
 RRAUTCHK and GPMATRIX (DAPT4S), the rest of the file, are `lm-t4rupt-rr` (`docs/LM-T4RUPT-RR.md`).

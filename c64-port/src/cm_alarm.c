@@ -9,7 +9,7 @@
 #include "agc_image_ops.h"
 #include "cm_alarm_operands.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B10(z) (uint16_t)(010u*1024u+((z)-02000u))
 #define L 1u
@@ -41,15 +41,21 @@ static agc_word indexed(agc_word word,agc_register idx){
  return (agc_word)(agc_correct(agc_add_register(agc_extend((agc_word)(agc_correct(idx)&077777u)),agc_extend(word)))&077777u);
 }
 /* INDEX idx; CA 0 (ALARM2's idx is Q, BAILOUT's and POODOO's ALMCADR): the
- * word at the caller's return address, its compiled alarm code (or an
- * erasable word). */
-static int code(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *x,agc_register idx){
- agc_word ins=indexed(030000u,idx),address=(agc_word)(ins&07777u),w;
+ * word at the caller's return address, its compiled alarm code. A return
+ * address in erasable (no caller runs from erasable) is refused. */
+static int lookup(const agc_native_program *p,apollo_overlay_state *s,const cm_native_io *x,agc_register idx,agc_word *w){
+ agc_word ins=indexed(030000u,idx),address=(agc_word)(ins&07777u);
  if((ins>>12)!=3u||address<010u)return 0;
- if(address<02000u){ai_ca(s,address);return 1;}
- if(!agc_transfer_operand(p,s,x->superbank,address,&w))return 0;
+ if(address<02000u)return 0;
+ return agc_transfer_operand(p,s,x->superbank,address,w);
+}
+static int code(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *x,agc_register idx){
+ agc_word w;
+ if(!lookup(p,s,x,idx,&w))return 0;
  ai_caf(s,w);return 1;
 }
+/* A 16-bit register whose two top bits differ (TS would skip). */
+static int overflowed(agc_register r){return ((r>>14)&1u)!=((r>>15)&1u);}
 #define TS(a) do{if(ai_ts(s,(a)))return EXEC_OUT_OF_SCOPE;}while(0)
 #define CODE(i) do{if(!code(p,s,x,(i)))return EXEC_OUT_OF_SCOPE;}while(0)
 #define INHINT() (x->interrupt_enabled=0u)
@@ -64,6 +70,15 @@ enum entry { E_ALARM,E_ALARM2,E_POODOO,E_POODOO_RET,E_POODOO_ABORT,E_DOWNFLAG1_R
 static enum exec_status body(const agc_native_program *p,apollo_overlay_state *s,void *io,enum entry entry){
  cm_native_io *x=ctx(s,io);uint8_t c;agc_word ins;
  if(!x)return EXEC_OUT_OF_SCOPE;
+ /* Refuse before the first write (#318): ALARM and ALARM2 store A in
+  * ALMCADR (TS) and only then read the caller's code at Q. A TS that
+  * would skip refuses after its write, so an entry that stores Q (CA Q;
+  * TS) or A (ALARM2, PRIOLARM, VARALARM's TS L) checks that first. */
+ {agc_word w;
+  if((entry==E_ALARM||entry==E_ALARM2)&&!lookup(p,s,x,W[Q],&w))return EXEC_OUT_OF_SCOPE;
+  if(overflowed(W[Q])&&(entry==E_ALARM||entry==E_CURTAINS||entry==E_BAILOUT||entry==E_POODOO||entry==E_CCSHOLE||entry==E_VARALARM))
+   return EXEC_OUT_OF_SCOPE;
+  if(overflowed(W[0])&&(entry==E_ALARM2||entry==E_PRIOLARM||entry==E_VARALARM))return EXEC_OUT_OF_SCOPE;}
  switch(entry){
  case E_ALARM:goto L5650; case E_ALARM2:goto L5652; case E_POODOO:goto L5721; case E_POODOO_RET:goto L5726;
  case E_POODOO_ABORT:goto L5732; case E_DOWNFLAG1_RET:goto L5740; case E_DOWNFLAG2_RET:goto L5742;

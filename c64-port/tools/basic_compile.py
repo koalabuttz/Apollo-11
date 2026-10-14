@@ -41,6 +41,14 @@ class BasicError(Exception):
 # Input channels a 'channel_inputs' spec reads from the caller's latches
 # (as tools/interp_compile.py's INPUT_CHANNELS).
 INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+# The channels a Luminary 'channels': 'all' file's orders reach, by order
+# (bits 10-12: READ, WRITE, RAND, WAND, ROR, WOR, RXOR, EDRUPT), as
+# include/agc_channel_ops.h models them: the outputs in the program's
+# agc_hardware, the latched inputs and SUPERBNK (7).
+LM_OUTPUTS = {0o5, 0o6, 0o11, 0o12, 0o13, 0o14}
+LM_READS = LM_OUTPUTS | {0o3, 0o4, 0o7, 0o16, 0o30, 0o31, 0o32, 0o33}
+LM_WRITES = LM_OUTPUTS | {0o7, 0o30, 0o31, 0o32, 0o33}
+LM_CHANNELS = (LM_READS, LM_WRITES, LM_READS, LM_WRITES, LM_READS, LM_WRITES, LM_READS, set())
 
 
 def decode(w, ext):
@@ -84,6 +92,9 @@ def decode(w, ext):
 class Basic:
     def __init__(self, cp):
         self.cp = cp
+        # The mission's io record: Luminary routines take p66_bias_io, Comanche
+        # ones cm_native_io.
+        self.io = 'p66_bias_io' if cp.m == 'lm' else 'cm_native_io'
         self.L = cp.L
         self.spec = cp.spec
         self.nodes = {}          # (phys, ext) -> list of C statements (or None while walking)
@@ -118,7 +129,11 @@ class Basic:
             self.fixed_tables.append((b + lo, b + hi, lab, lo))
             self.cp.basic_fixed.update(range(b + lo, b + hi + 1))
         self.channels = self.spec.get('channels', {})
-        if self.channels == 'all':
+        # Luminary 'all': include/agc_channel_ops.h (no per-file helpers).
+        self.lm_channels = self.channels == 'all' and self.io == 'p66_bias_io'
+        if self.lm_channels:
+            self.channels = {}
+        elif self.channels == 'all':
             # Every channel of the CM io record (include/cm_native_image.h).
             # (5, 6 and 30-33 in cm_channels, beside it.)
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
@@ -234,15 +249,20 @@ class Basic:
         """TC to an outside routine: the return is the word after the
         inline operands (constant lines after the TC)."""
         ret = phys + 1
+        inline = []
         while True:
             ln = self.L.by_phys.get(ret)
             if ln is None or ln.op not in self.CONST_OPS:
                 break
             self.operands.update(range(ret, ret + len(ln.words)))
+            inline.append(ln.operand.split()[0] if ln.operand.split() else '')
             ret += len(ln.words)
         name = self.L.label_at(self.phys_of(target_logical, phys)) or ('%04o' % target_logical)
         self.cp.externals[self.phys_of(target_logical, phys)] = name
-        if self.in_file(ret) and name not in self.NORETURN + tuple(self.spec.get('noreturn', ())):
+        # Spec 'noreturn' also names routines reached through BANKCALL's
+        # CADR (INTWAKE1 ends the job; GOBAC's RVQ returns interpretively).
+        noreturn = self.NORETURN + tuple(self.spec.get('noreturn', ()))
+        if self.in_file(ret) and name not in noreturn and not (inline and inline[0] in noreturn):
             self.cp.add_start(ret, 'b', 'return from ' + name)
         return name
 
@@ -348,6 +368,11 @@ class Basic:
             st.append(self.index_value(a, phys))
             st.extend(self.indexed(nxt, ext, clean))
             return st
+        if op in ('CA', 'CS', 'AD', 'SU', 'MASK', 'MP', 'DV', 'DCA', 'DCS') and a is not None and \
+                (a == 5 or (op in DOUBLE and a == 6)):
+            # A read of Z (FLESHPOT's DCA Z, AD FOUR, DXCH LOC): Z holds the
+            # address of the next word, as the hardware has it then.
+            st.append('W[5]=0%o;' % ((self.logical(phys) + 1) & 0o7777))
         st.extend(self.order(op, a, lim, phys, False, ext, clean))
         return st
 
@@ -416,6 +441,14 @@ class Basic:
         if a is not None and 0o10 <= a < 0o2000 and op not in CHANNEL_OPS:
             self.erasable_refs.update(range(a, a + 3))
         st = ['/* %s %s(indexed) %s */' % (self.where(phys), 'EXTENDED ' if ext else '', self.text(phys))]
+        if op == 'INDEX' and a is not None and 0o10 <= a < 0o2000:
+            # INDEX of INDEX (AX*SR*T's INDEX BUF, INDEX DEX1, DCA VBUF): the
+            # second INDEX reads the erasable word at its address plus ix,
+            # and that word indexes the order after it.
+            st.append('e=(long)0%o+ix;if(e<010||e>01777||(e>=020&&e<=023))return EXEC_INVALID_ACTION;' % a)
+            st.append('ix=agc_to_int(ai_word(s,(unsigned)e));')
+            st.extend(self.indexed(phys + 1, ext, clean))
+            return st
         if a is None or op in ('EXTEND', 'INDEX', 'RESUME') or op in CHANNEL_OPS:
             raise BasicError('INDEX of %s at %s' % (op, self.where(phys)))
         if op in ('TC', 'TCF') and phys in self.index_targets:
@@ -486,6 +519,11 @@ class Basic:
                         if t is not None and self.in_file(t) and not self.is_data(t):
                             self.dispatch.add(t)
                             self.add(t)
+                if self.spec.get('tcf_words'):
+                    # Spec 'tcf_words': the stored word may be a TCF (a
+                    # stored instruction such as CA ACCHERE's TCF ACCTHERE),
+                    # which from there transfers as the TC does (Q K+1 kept).
+                    st.append('if(e>=012000&&e<=017777)e&=07777;')
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
@@ -557,6 +595,15 @@ class Basic:
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
             self.cp.uses_channels = True
+            st.append(cont())
+            return st
+        if op in CHANNEL_OPS and self.lm_channels:
+            k = CHANNEL_OPS.index(op)
+            if a not in LM_CHANNELS[k]:
+                raise BasicError('channel %o at %s' % (a, self.where(here)))
+            self.channels_used.add(a)
+            self.cp.uses_channels = self.cp.uses_hw = True
+            st.append('if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,%d,0%o))return EXEC_OUT_OF_SCOPE;' % (k, a))
             st.append(cont())
             return st
         if op in CHANNEL_OPS:
@@ -654,7 +701,7 @@ class Basic:
             fn = 'e%o' % phys
             c.append('/* %s: the TC words the file stores there (%s). */' % (k, ', '.join('%05o' % w for w in words)))
             c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
-            c.append(' cm_native_io *io=(cm_native_io *)v;agc_word w;(void)p;')
+            c.append(' %s *io=(%s *)v;agc_word w;(void)p;' % (self.io, self.io))
             c.append(' if(!s||!v||!basic_sane(s,io,W[4])||agc_erasable_point(W[5],W[3])!=%uu)return EXEC_OUT_OF_SCOPE;' % key)
             c.append(' w=W[0%o];' % phys)
             c.append(' switch(w){%s break;default:return EXEC_OUT_OF_SCOPE;}' % ''.join('case 0%05ou:' % x for x in words))
@@ -694,9 +741,12 @@ class Basic:
         c.append('static MAYBE_UNUSED void dtcf(apollo_overlay_state *s,agc_word at){agc_word fb=agc_correct(W[0]),z=agc_correct(W[1]);')
         c.append(' W[0]=agc_extend(W[4]);W[1]=(agc_word)(at+1u);W[5]=(agc_word)(z&07777u);ai_put(s,4,fb);}')
         c.append('/* TC INTPRET: the interpreter entry with the latches the bodies use. */')
-        c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_bias_io l;')
-        c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;cmi_intpret(s,&l);')
-        c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}')
+        if self.io == 'p66_bias_io':
+            c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,p66_bias_io *io){lmi_intpret(s,io);}')
+        else:
+            c.append('static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_bias_io l;')
+            c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;cmi_intpret(s,&l);')
+            c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}')
         if self.channels:
             c.extend(self.channel_helpers())
         if self.fixed_tables:
@@ -709,7 +759,14 @@ class Basic:
         c.append(' * tables above: 0 outside them. */')
         c.append('static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){')
         c.append(' unsigned p;(void)s;')
-        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo)))
+        fb = self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo))
+        # Switched tables all in one bank: e 02000-03777 is that bank (a file
+        # in two banks, such as Luminary's POWERED_FLIGHT_SUBROUTINES, reads
+        # INDEXI from bank 23 while its lowest entry is in bank 10).
+        tb = {self.bank(lo) for lo, hi, lab, off in self.fixed_tables if self.bank(lo) not in (2, 3)}
+        if len(tb) == 1:
+            fb = tb.pop()
+        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % fb)
         for lo, hi, lab, off in self.fixed_tables:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
@@ -731,7 +788,7 @@ class Basic:
         if self.spec.get('basic_parts'):
             return c + self.emit_parts(sym, order)
         c.append('/* Every basic word of the file. */')
-        c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){')
+        c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
         c.append(' long ix=0,e=0;uint16_t p;')
         c.append(' (void)ix;(void)e;')
         c.append(' switch(at){')
@@ -855,7 +912,7 @@ class Basic:
             body = [re.sub(r'goto ([BX][0-7]+c?);', cross, x) for x in body]
             into = sorted(p for p in self.entries if self.part_of(p) == j and (p, False, False) in self.nodes)
             fn = ['/* Basic words, part %d of %d. */' % (j + 1, nparts),
-                  'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % j,
+                  'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,%s *io,uint16_t at){' % (j, self.io),
                   ' long ix=0,e=0;uint16_t p;', ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
             fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in into]
             fn += [' default:return EXEC_OUT_OF_SCOPE;', ' }']
@@ -894,7 +951,7 @@ class Basic:
                 into[p // 1024].add(p)
         for b in banks:
             c.append('#if %s_HAS(0%o)' % (S, b))
-            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at);' % b)
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at);' % (b, self.io))
             c.append('#endif')
         c += self.callee_defs(sym)
         for b in banks:
@@ -921,7 +978,7 @@ class Basic:
             body = [re.sub(r'goto ([A-Z][0-7]+c?);', cross, x) for x in body]
             c.append('#if %s_HAS(0%o)' % (S, b))
             c.append('/* The basic words of bank %02o. */' % b)
-            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,cm_native_io *io,uint16_t at){' % b)
+            c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at){' % (b, self.io))
             c.append(' long ix=0,e=0;uint16_t p;')
             c.append(' (void)ix;(void)e;(void)p;')
             c.append(' switch(at){')

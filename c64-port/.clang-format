@@ -1,0 +1,18 @@
+# Layout for the port's C. tools/format_changed.py applies it to the lines a
+# change touches (pre-commit hook, `make format`); CI reports the rest.
+# Formatting never changes the compiled code (#251 thread: same sha256).
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 100
+# Include order can matter (headers that define W, AGC_CHANNEL).
+SortIncludes: Never
+# Octal rope words and aligned tables read better as written.
+AlignConsecutiveMacros: Consecutive
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+ReflowComments: false

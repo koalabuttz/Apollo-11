@@ -4,7 +4,7 @@
 # formatters, DSPDC2NR, M/SOUT, the V06N85, noun 40/85 and DYNDISP display
 # routes) and LM NVSUBUSY through the Lane C harness (tests/lanec_pw.h).
 LANEC_SUITE_SRC += tests/lanec_pw.c tests/lanec_pw_cm_pinball_cases.c tests/lanec_pw_cm_charin_number_cases.c \
-  tests/lanec_pw_cm_charin_nv_cases.c tests/lanec_pw_cm_formatter_cases.c tests/lanec_pw_cm_decimal_pair_cases.c \
+  tests/lanec_pw_cm_charin_nv_cases.c tests/lanec_pw_cm_formatter_cases.c tests/lanec_pw_cm_decimal_pair_cases.c tests/lanec_pw_cm_scale_cases.c \
   tests/lanec_pw_cm_minutes_seconds_cases.c tests/lanec_pw_cm_nv85_cases.c tests/lanec_pw_cm_dynamic_display_cases.c \
   tests/lanec_pw_cm_normal_display_cases.c tests/lanec_pw_lm_pinball_busy_cases.c \
   src/agc_multiword.c src/dsky_pinball.c src/cm_pinball.c src/dsky_charin_number.c src/cm_charin_number.c \
@@ -18,9 +18,9 @@ LANEC_SUITE_SRC += tests/lanec_pw.c tests/lanec_pw_cm_pinball_cases.c tests/lane
   src/matrix_native.c src/lm_pinball_busy.c \
   tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/dsky_charin_nv_cases.c \
   tests/cm_pinball_cases.c tests/cm_charin_number_cases.c tests/cm_charin_nv_cases.c tests/cm_formatter_cases.c \
-  tests/cm_decimal_pair_cases.c tests/cm_minutes_seconds_cases.c tests/cm_nv85_cases.c tests/cm_clockjob_cases.c \
+  tests/cm_decimal_pair_cases.c tests/cm_scale_cases.c tests/cm_minutes_seconds_cases.c tests/cm_nv85_cases.c tests/cm_clockjob_cases.c \
   tests/cm_trig_cases.c tests/cm_normal_display_cases.c tests/cm_dynamic_display_cases.c tests/cm_dyndisp_cases.c \
   tests/cm_dyndisp_apply.c tests/cm_nv85_apply.c tests/matrix_cases.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c
 LANEC_SUITE_HDR += tests/lanec_pw.h tests/lanec_pw_f.h
-LANEC_PW_SUITES += pw-cm-pinball pw-cm-charin-number pw-cm-charin-nv pw-cm-formatter pw-cm-decimal-pair \
+LANEC_PW_SUITES += pw-cm-pinball pw-cm-charin-number pw-cm-charin-nv pw-cm-formatter pw-cm-decimal-pair pw-cm-scale \
   pw-cm-minutes-seconds pw-cm-nv85 pw-cm-dynamic-display pw-cm-normal-display pw-lm-pinball-busy

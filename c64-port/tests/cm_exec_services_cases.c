@@ -126,7 +126,11 @@ void cm_exs_input(apollo_overlay_state *m,cm_native_io *io,cm_exs_case *c,uint16
   /* The interrupted program: ZRUPT, BANKRUPT (with SUPERBNK), ARUPT, LRUPT, QRUPT. */
   canon(m,1,0,(uint8_t)(j%10u),&seed);edges(m,n);
   set_banks(m,(agc_word)((r17(&seed)%32u)*02000u),(agc_word)((j%8u)*0400u));
-  m->words[0734]=AGC_NEG_ZERO;z=(agc_word)(02001u+r17(&seed)%06000u);m->words[015]=z;
+  m->words[0734]=AGC_NEG_ZERO;z=(agc_word)(02001u+r17(&seed)%06000u);
+  /* Not inside TASKOVER..RESUME (05324-05341), the interrupt-exit code the
+   * oracle runs before it reaches ZRUPT-1 (#318). */
+  if(z>=05325u&&z<=05342u)z=(agc_word)(z+020u);
+  m->words[015]=z;
   m->words[016]=(agc_word)(((r17(&seed)%32u)*02000u)|(j%8u)|((j/8u)%4u)*020u);
   m->words[010]=(agc_word)(r17(&seed)&077777u);m->words[011]=(agc_word)(r17(&seed)&077777u);m->words[012]=(agc_word)(r17(&seed)&07777u);
   m->words[2]=(agc_word)(r17(&seed)&07777u);io->superbank=(agc_word)((j%4u)*020u);
