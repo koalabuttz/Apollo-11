@@ -5285,7 +5285,7 @@
           "GCOMPVER, GTSCPSS and NEWMODEX (with the MM 07 operand)",
           "Integrated C64 application acceptance"
         ],
-        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129)",
+        "replaces": "the certificate withdrawn by the port auditor on 2026-10-13 (#129), and again in #319 for the E/JOBWAK core set 0 refusal (#318)",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-source-map.json",
@@ -5293,17 +5293,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
+            "sha256": "1de2891d80e4d0feb969fc877fff9ecdd256d87b777fa6e0a6352818d55a2d28"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
+            "sha256": "c5156e8ab99d0fd98535a8bf37f4235fb0f98ece3bc07da695b71bffd69ca89e"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
+            "sha256": "0d903b0a673cae95e8ad3848068ac824bc73a9ba64604d28be364a7854aefab4",
             "vice_targets": {
-              "vice-standard-lead-oracle": 477,
+              "vice-standard-lead-oracle": 478,
               "vice-cm-lead-tests": 390
             }
           },
@@ -5313,7 +5313,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
+            "sha256": "d6804851e98bb4b253bf5eb79263abb33b2693f3f5db348c31dfbfe001ad44e0"
           },
           "entry_words_comparison": {
             "path": "evidence/cm-lead-tests/cm-lead-tests-proof.json",
@@ -11881,17 +11881,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-proof.json",
-            "sha256": "d90287ac3ff58521ba06507ccd32779becc95ff2e49fcbe8e60f2063f9614588"
+            "sha256": "1de2891d80e4d0feb969fc877fff9ecdd256d87b777fa6e0a6352818d55a2d28"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-host.log",
-            "sha256": "cd5907c3e52c19b801efae7ba67466e78fc85c412aba37323cdad33887dba805"
+            "sha256": "c5156e8ab99d0fd98535a8bf37f4235fb0f98ece3bc07da695b71bffd69ca89e"
           },
           "c64_execution_results": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-vice.log",
-            "sha256": "e03d0e932f6841685184506ebb0c0bc4e03b77776864f2428d9ed44402ad1428",
+            "sha256": "0d903b0a673cae95e8ad3848068ac824bc73a9ba64604d28be364a7854aefab4",
             "vice_targets": {
-              "vice-standard-lead-oracle": 477
+              "vice-standard-lead-oracle": 478
             }
           },
           "independent_review": {
@@ -11900,7 +11900,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
-            "sha256": "4ce12238884998d304af01675a7fe9c9e0f5afe5e027d230edf2b2b9e13dccdd"
+            "sha256": "d6804851e98bb4b253bf5eb79263abb33b2693f3f5db348c31dfbfe001ad44e0"
           }
         }
       }
