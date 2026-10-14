@@ -164,6 +164,16 @@ void apollo_ov2_seam_release(apollo_ov2_runtime *,uint8_t context);
 /* GOJAM/fresh start: drop every native seam, both slot caches and the fault
  * latch. The canonical image is untouched; restart logic rebuilds from it. */
 void apollo_ov2_restart(apollo_ov2_runtime *);
+/* The hardware restart's variant (docs/FLIGHT-RESTART.md): what
+ * apollo_ov2_restart does for the killed jobs (every seam of every context
+ * dropped, both run-slot caches, busy and the fault latch cleared), while
+ * the boot-loaded slot classes stay loaded: the fixed extension at $d000
+ * (class 2), the pinned module at $c000 (class 3), whose table list the
+ * resident keeps calling, and the pinned task region at $e000 (class 4).
+ * It writes no slot, header or image byte, so the resident reloads none of
+ * them (it cannot: their loader ran in the job slot at boot), and in a store
+ * with a class-4 module the task slot's cache stays empty, as boot left it. */
+void apollo_ov2_restart_keep_pinned(apollo_ov2_runtime *);
 
 /* Header field offsets (little-endian two-byte fields). TABLES is 0, or
  * the address in the loaded image of the module's routine-table list (a
