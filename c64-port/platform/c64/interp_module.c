@@ -14,13 +14,29 @@
 #define IM_CORE cm_interp_core
 #endif
 #define IM_SLOTS 64u
+#ifdef RK_IRQ_COUNT
+/* The resident's IRQ tick count, pinned at RK_IRQ_COUNT (the store links
+ * it with --defsym, as it does rk_hardware). */
+extern volatile uint16_t ov2_irq_count;
+#endif
 uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  rk_module_env *e=(rk_module_env *)(uintptr_t)f->value;
  enum exec_status status;
  uint8_t n=0;
  (void)selector;
+#ifdef RK_IRQ_COUNT
+ /* Back to the step once an IRQ tick lands, so the resident takes the
+  * AGC interrupt at the next boundary (read twice: no torn count). */
+ uint16_t t0,t;
+ do t0=ov2_irq_count; while(t0!=ov2_irq_count);
+ do{
+  status=IM_CORE(e->program,f->state,e->io);
+  do t=ov2_irq_count; while(t!=ov2_irq_count);
+ }while(status==EXEC_OK&&++n<IM_SLOTS&&t==t0);
+#else
  do status=IM_CORE(e->program,f->state,e->io);
  while(status==EXEC_OK&&++n<IM_SLOTS);
+#endif
  /* Leaving the interpreter after at least one slot is where the module
   * hands back; the next step resolves the point. */
  if(status==EXEC_UNMAPPED&&n)status=EXEC_OK;
