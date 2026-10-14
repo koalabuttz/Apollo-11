@@ -37,7 +37,7 @@ typedef struct { uint8_t request, job_loads, task_loads, status; uint16_t steps;
 _Static_assert(sizeof(dp_record)==10u,"records are 10 bytes (tools/dap_pass_vice.py)");
 typedef struct {
     uint32_t cycles, dilation, steps;
-    uint16_t start_cs, end_cs, records, z, fb;
+    uint16_t start_cs, end_cs, records, z, fb, superbank;
     uint8_t status, lost;
 } __attribute__((packed)) dp_summary;
 #define DP_MAX ((0xcc00u-0xc040u)/sizeof(dp_record))
@@ -93,7 +93,7 @@ int main(void){
  t=now();
  for(;;){uint32_t s0=now(),s1;
 #ifdef DP_STEPS
-  uint16_t z0=IMAGE->words[5],fb0=IMAGE->words[4];
+  uint16_t z0=IMAGE->words[5],fb0=IMAGE->words[4],sb0=rk_device.superbank;
 #endif
   rk_rupt_last=0;
   st=rk_resident_step(AGC_TRANSFER_NONE);
@@ -103,9 +103,11 @@ int main(void){
    * interrupt can end and the next start between two steps, or one can
    * start and end in one step), and where an interrupt goes off. */
 #ifdef DP_STEPS
-  /* One record per step (debugging): the Z (steps) and FB bank (job_loads)
-   * it started at, and in task_loads 1 if the job slot changed, 2 the task slot. */
-  {r.request=rk_rupt_last;r.steps=z0;r.job_loads=(uint8_t)(fb0>>10);r.task_loads=0;
+  /* One record per step (debugging): the Z (steps) and physical bank
+   * (job_loads: FB, or 040-047 for FB 030-037 with superbank bit 0100) it
+   * started at, and in task_loads 1 if the job slot changed, 2 the task slot. */
+  {r.request=rk_rupt_last;r.steps=z0;r.task_loads=0;
+   r.job_loads=(uint8_t)((fb0>>10)+((fb0>=060000u&&(sb0&0100u))?010u:0u));
    if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job)r.task_loads|=1;
    if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task)r.task_loads|=2;
    job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];
@@ -122,7 +124,7 @@ int main(void){
  sum.cycles=now();
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
- sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];
+ sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];sum.superbank=rk_device.superbank;
  apollo_reu_transfer(APOLLO_REU_FETCH,RECORDS,DP_SCRATCH,sum.records*sizeof r);
  *SUMMARY=sum;
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
