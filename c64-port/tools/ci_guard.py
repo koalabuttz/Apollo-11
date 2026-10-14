@@ -84,7 +84,7 @@ def changed_certificates(base, errors, remote=False):
 # interpretive programs as the rope data they are, so it reads the rope too.
 # main-assembly checks MAIN.agc's include manifest against every rope word.
 ROPE_IMAGE_USERS = {'src/lm_interp_runtime.c', 'src/lm_interp_core.c', 'tools/interp_core_fuzz.c', 'tools/interp_core_cycles.c',
-                    'tools/interp_runtime_target.c', 'tools/interp_core_vice.c',
+                    'tools/interp_runtime_target.c', 'tools/interp_core_vice.c', 'tools/interp_flight_replay.c',
                     'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
                     'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c',
                     'tools/flight_host_run.c', 'platform/c64/flight_table_module.c',

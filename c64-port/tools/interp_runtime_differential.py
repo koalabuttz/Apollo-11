@@ -75,7 +75,7 @@ def build(spec_id, spec, missions):
     subprocess.run(['cc', *D.FLAGS, '-c', '-Dirc_program=irc_program_compiled', spec['target'], '-o', obj], cwd=R, check=True)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + D.common(spec)
     subprocess.run(['cc', *D.FLAGS, *(['-DIRT_RTB_TRACE'] if os.environ.get('IRT_RTB_TRACE') else []), '-DIRC_MAX_STEPS=%d' % steps, *CORE, *D.cut_flags(spec), *srcs, *RT, obj, rtb_table(spec_id, spec, missions),
-                    'tools/interp_routine_native.c', '-o', nat], cwd=R, check=True)
+                    *D.WRAP, 'tools/interp_routine_native.c', '-o', nat], cwd=R, check=True)
     return ref, nat
 
 

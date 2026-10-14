@@ -1,0 +1,414 @@
+{
+ "milestone": "cm-ground-track",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 25088,
+ "cases_sha256": "95cda13fa9e4d76ebbb46c55ac9fd7a7801595aedd0d1511ed94a10d98c2d757",
+ "oracle_sha256": "88febdafd1f1ac67aac209894bcaaa1c6033e0a42220b6e211e01abefd60e524",
+ "frozen_vectors": 1582,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xff7fff",
+   "cases": 27,
+   "case_ids": [
+    216,
+    489,
+    548,
+    1260,
+    1744,
+    2088,
+    2660,
+    3152,
+    3108,
+    3504,
+    3624,
+    4156,
+    4616,
+    4668,
+    5344,
+    5228,
+    5147,
+    5375,
+    5120,
+    5452,
+    5204,
+    5156,
+    5724,
+    6307,
+    6208,
+    6860,
+    7196
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7fff008000",
+   "cases": 3,
+   "case_ids": [
+    8135,
+    7969,
+    7995
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7fff008000",
+   "cases": 5,
+   "case_ids": [
+    8103,
+    7719,
+    8016,
+    8046,
+    7768
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xff008000",
+   "cases": 6,
+   "case_ids": [
+    7791,
+    7955,
+    7968,
+    7740,
+    7680,
+    8143
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7fff1f8000",
+   "cases": 7,
+   "case_ids": [
+    7775,
+    7923,
+    8300,
+    8764,
+    9296,
+    9728,
+    10240
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffe00000",
+   "cases": 6,
+   "case_ids": [
+    11088,
+    11312,
+    11780,
+    12427,
+    12440,
+    12475
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7ffe000000",
+   "cases": 5,
+   "case_ids": [
+    12803,
+    12824,
+    12858,
+    13175,
+    12899
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7ffc000000",
+   "cases": 8,
+   "case_ids": [
+    13356,
+    13619,
+    14208,
+    14226,
+    13848,
+    14024,
+    14108,
+    13955
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7ff0000000",
+   "cases": 9,
+   "case_ids": [
+    14695,
+    15236,
+    14980,
+    14851,
+    15579,
+    16297,
+    16276,
+    15996,
+    16548
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1fffe00000010",
+   "cases": 19,
+   "case_ids": [
+    17032,
+    17452,
+    17936,
+    17967,
+    18532,
+    18988,
+    19524,
+    20136,
+    20004,
+    20560,
+    21028,
+    21536,
+    22132,
+    22580,
+    23064,
+    23284,
+    23991,
+    24152,
+    24636
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 19,
+  "c64_labels": 19,
+  "host_edges": 1529,
+  "c64_edges": 1529,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 760,
+  "c64_taken": 760,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_ground_track.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_ground_track_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 762,
+  "edges_host_vectors": 762,
+  "edges_c64": 762,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 37,2001 PROG21": {
+   "04662": 512
+  },
+  "CM 37,2006 ": {
+   "04106": 512
+  },
+  "CM 37,2007 ": {
+   "04662": 512
+  },
+  "CM 37,2010 ": {
+   "04662": 512
+  },
+  "CM 37,2011 P21PROG1": {
+   "04662": 512
+  },
+  "CM 37,2014 ": {
+   "04106": 512
+  },
+  "CM 37,2015 ": {
+   "06037": 386,
+   "05170": 126
+  },
+  "CM 37,2016 ": {
+   "04662": 512
+  },
+  "CM 37,2020 ": {
+   "06037": 373,
+   "05170": 139
+  },
+  "CM 37,2022 ": {
+   "06037": 512
+  },
+  "CM 37,2024 ": {
+   "06037": 366,
+   "05170": 146
+  },
+  "CM 37,2030 ": {
+   "06037": 377,
+   "05170": 135
+  },
+  "CM 37,2032 ": {
+   "06037": 388,
+   "05170": 124
+  },
+  "CM 37,2035 ": {
+   "06037": 404,
+   "05170": 108
+  },
+  "CM 37,2040 ": {
+   "06037": 512
+  },
+  "CM 37,2042 ": {
+   "05650": 297,
+   "05170": 142,
+   "06037": 73
+  },
+  "CM 37,2044 P21CONT": {
+   "06037": 389,
+   "05170": 123
+  },
+  "CM 37,2046 ": {
+   "05170": 136,
+   "06037": 376
+  },
+  "CM 37,2050 ": {
+   "06037": 392,
+   "05170": 120
+  },
+  "CM 37,2052 ": {
+   "05170": 142,
+   "06037": 370
+  },
+  "CM 37,2053 ": {
+   "05170": 132,
+   "06037": 380
+  },
+  "CM 37,2056 ": {
+   "06037": 412,
+   "05170": 100
+  },
+  "CM 37,2061 ": {
+   "05170": 128,
+   "06037": 384
+  },
+  "CM 37,2063 ": {
+   "06037": 512
+  },
+  "CM 37,2065 P21VSAVE": {
+   "05170": 132,
+   "05650": 307,
+   "06037": 73
+  },
+  "CM 37,2067 ": {
+   "05170": 117,
+   "06037": 83,
+   "05650": 312
+  },
+  "CM 37,2071 ": {
+   "05170": 120,
+   "05650": 311,
+   "06037": 81
+  },
+  "CM 37,2073 ": {
+   "05650": 324,
+   "05170": 110,
+   "06037": 78
+  },
+  "CM 37,2074 ": {
+   "05650": 313,
+   "06037": 77,
+   "05170": 122
+  },
+  "CM 37,2076 ": {
+   "05650": 131,
+   "06037": 262,
+   "05170": 119
+  },
+  "CM 37,2100 ": {
+   "06037": 152,
+   "05650": 239,
+   "05170": 121
+  },
+  "CM 37,2102 ": {
+   "06037": 136,
+   "05650": 344,
+   "05170": 32
+  },
+  "CM 37,2104 ": {
+   "05170": 136,
+   "06037": 376
+  },
+  "CM 37,2105 ": {
+   "06037": 383,
+   "05170": 129
+  },
+  "CM 37,2110 P21DSP": {
+   "06037": 395,
+   "05170": 117
+  },
+  "CM 37,2113 ": {
+   "06037": 375,
+   "05170": 137
+  },
+  "CM 37,2116 ": {
+   "06037": 379,
+   "05170": 133
+  },
+  "CM 37,2120 ": {
+   "06037": 386,
+   "05170": 126
+  },
+  "CM 37,2122 ": {
+   "06037": 512
+  },
+  "CM 37,2125 ": {
+   "04662": 399,
+   "05170": 113
+  },
+  "CM 37,2127 ": {
+   "04662": 391,
+   "05170": 121
+  },
+  "CM 37,2130 ": {
+   "04662": 512
+  },
+  "CM 37,2131 ": {
+   "04662": 512
+  },
+  "CM 37,2134 ": {
+   "04106": 512
+  },
+  "CM 37,2135 ": {
+   "04106": 512
+  },
+  "CM 37,2136 ": {
+   "05170": 137,
+   "04662": 375
+  },
+  "CM 37,2137 ": {
+   "04662": 390,
+   "05170": 122
+  },
+  "CM 37,2142 ": {
+   "04662": 386,
+   "05170": 126
+  },
+  "CM 37,2143 ": {
+   "04662": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: BANKCALL, CHANG2, GOTOPOOH); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

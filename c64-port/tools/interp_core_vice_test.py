@@ -69,12 +69,16 @@ def records(m, count, seed):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    ap.add_argument('mission', choices=('lm', 'cm'))
+    ap.add_argument('mission', nargs='?', choices=('lm', 'cm'), help='one mission (default: both)')
     ap.add_argument('--records', type=int, default=180)
     ap.add_argument('--seed', type=int, default=71)
     a = ap.parse_args()
     if a.records > MAX_RECORDS:
         sys.exit('at most %d records' % MAX_RECORDS)
+    if a.mission is None:
+        # Both, as the legacy target (tools/legacy_vice.py) runs it.
+        return max(subprocess.run([sys.executable, __file__, m, '--records', str(a.records), '--seed', str(a.seed)],
+                                  cwd=R).returncode for m in ('lm', 'cm'))
     recs = records(a.mission, a.records, a.seed)
     reu = bytearray(2 * 1024 * 1024)
     struct.pack_into('<H', reu, 0, len(recs))

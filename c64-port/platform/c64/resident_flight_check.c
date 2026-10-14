@@ -89,8 +89,11 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
 static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
  image->words[025]=0;rk_device.interrupt_enabled=0;
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
- image->words[025]=0;t=rk_ticks;irq=ov2_irq_count;d=rk_dilation;
- while((uint16_t)(ov2_irq_count-irq)<5u){}
+ image->words[025]=0;t=rk_ticks;d=rk_dilation;
+ /* The count is read twice each time: one read between its two bytes'
+  * carry can tear (it ended the wait early in the x0.5 build). */
+ do irq=ov2_irq_count; while(irq!=ov2_irq_count);
+ for(;;){uint16_t a=ov2_irq_count;if(a==ov2_irq_count&&(uint16_t)(a-irq)>=5u)break;}
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
  expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==RK_TICK_LAG&&
         rk_dilation-d==(uint16_t)(rk_ticks-t-RK_TICK_LAG),11);
@@ -98,7 +101,8 @@ static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
 }
 /* A backlog past the cap with T5 and T6 both coming due in the first tick:
  * one step takes RK_TICK_LAG ticks, drops the rest, and enters T6RUPT
- * alone (AGC priority), with T5RUPT left pending for after its RESUME. */
+ * alone (AGC priority), with T5RUPT left pending for after its RESUME. The
+ * scalers count the periods taken, SCALER2 on SCALER1's overflow. */
 static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
  __asm__ volatile("sei");
  rk_ticks=(uint16_t)(ov2_irq_count-RK_TICK_LAG-7u);d=rk_dilation;
@@ -106,10 +110,12 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
  image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
  image->words[025]=0;image->words[026]=0;image->words[027]=0;
+ rk_hardware.channel4=037740u;rk_hardware.channel3=037777u;   /* SCALER1 overflows in the first period, and SCALER2 with it */
  expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
         rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
         image->words[025]==RK_TICK_LAG&&image->words[026]==RK_TICK_LAG&&
-        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u),18);
+        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u)&&
+        rk_hardware.channel4==(uint16_t)(32u*RK_TICK_LAG-32u)&&rk_hardware.channel3==0u,18);
  rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
  __asm__ volatile("cli");
 }

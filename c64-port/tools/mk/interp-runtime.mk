@@ -25,7 +25,7 @@ INTERP_CORE_FUZZ_SRC := tools/interp_core_fuzz.c src/lm_interp_runtime.c src/cm_
   src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c \
   src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c
 .PHONY: interp-runtime-check interp-runtime-differential interp-core-differential interp-runtime-size \
-  interp-core-fuzz interp-core-cycles vice-interp-core
+  interp-core-fuzz interp-core-cycles vice-interp-core interp-flight-vice
 interp-runtime-check:
 	python3 tools/interp_runtime_generate.py --check
 interp-runtime-differential: interp-runtime-check build/agc_engine_hardware_dv.o | build
@@ -48,3 +48,10 @@ interp-core-cycles: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc
 vice-interp-core: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin
 	python3 tools/interp_core_vice_test.py lm
 	python3 tools/interp_core_vice_test.py cm
+# interp-flight-vice: flight-scenario interpretive code (yaAGC's LM and CM
+# P00 from Fresh Start, at each arrival at an interpreter entry point)
+# through the flight resident and the store's interpreter in VICE, each
+# result a state yaAGC reaches (tools/interp_flight_test.py). Like
+# flight-store-vice it needs the whole store and does not gate `test`.
+interp-flight-vice: flight-store
+	python3 tools/interp_flight_test.py

@@ -50,7 +50,7 @@ def main():
         rows, counts = [], {'words': 0, 'data': 0, 'instructions': 0, 'executed': 0, 'interpreted': 0, 'unreached': 0}
         for w in rec['map']:
             op = (w['source'].split() + ['', ''])[1] if not w['source'].startswith(' ') else (w['source'].split() + [''])[0]
-            data = op.upper() in DATA
+            data = op.upper() in DATA or 'constant' in w
             p = physical(w['address'])
             ran = p in executed
             interp = w.get('function') not in (None, 'basic_run')

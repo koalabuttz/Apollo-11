@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "milestone": "interpreter",
+  "release": "evidence-interpreter",
+  "files": {
+    "interp-flight-vice.json": {
+      "sha256": "95a1f586ba3d789480acaeb53ebc0d3a0c261c9f58f11064f1172ceca1a82ab0",
+      "bytes": 28771,
+      "store": "tree"
+    }
+  }
+}

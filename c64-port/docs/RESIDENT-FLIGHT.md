@@ -106,7 +106,10 @@ ASan/UBSan.
 
 - `rk_timer_tick` is one 10 ms scaler period. TIME1 counts, and its
   overflow counts TIME2. TIME3, TIME4 and TIME5 count, and an overflow
-  requests T3RUPT, T4RUPT or T5RUPT. While channel 13 bit 15 is set, TIME6
+  requests T3RUPT, T4RUPT or T5RUPT. The scalers count AGC time with
+  them: SCALER1 (channel 4) by 32, as it counts 3,200 times a second, and
+  SCALER2 (channel 3) on its overflow. Before scaled time the C64 never
+  advanced them at all. While channel 13 bit 15 is set, TIME6
   takes its sixteen 1/1600 s DINCs. +1 and -1 step to -0 through the one's
   complement adder, and a DINC of ±0 requests T6RUPT and clears the bit.
   T6RUPT therefore lands at the end of the 10 ms period, not at its 0.625
@@ -141,8 +144,9 @@ which every flight build shares):
   of TIME3-TIME6 requests, and AGC time stretches by exactly the dropped
   ticks. Wall time is AGC time plus `rk_dilation` periods.
 - `RK_TIME_DIVISOR` (default 1): AGC time at 1/n of wall time, by a CIA1
-  latch of 9852 × n − 1. A fixed x0.5 build (`RK_TIME_DIVISOR=2`) runs
-  nightly only.
+  latch of 9852 × n − 1. `make vice-resident-flight-half` builds the
+  resident at x0.5 in build/resident-flight-half and runs the clock checks
+  (part 4). It has no `c64-` twin, so only full and nightly runs take it.
 
 Ticks are counted as wall-clock interrupts and dropped whole, so a
 dropped tick never splits a timer period: TIME1-TIME6 step together, in
@@ -154,6 +158,39 @@ discretes must reach the AGC on its clock (at a step, through the image or
 `rk_hardware`), never from a C64 wall-clock source in between. A lane that
 models an input against wall time breaks the equivalence and must instead
 schedule it in AGC periods.
+
+The proof is a replay against yaAGC (docs/FLIGHT-STORE.md, host
+differential, scaled time): `tools/flight_host_differential.py` runs
+`tools/flight_host_run.c` with yaAGC's own clock frozen and the AGC clock
+driven by a modeled C64 tick schedule through the same cap, and every
+native routine must match yaAGC run from the same state under the same
+periods, the clock counters included. Under every schedule both sides see
+the same AGC-time events, so the run is one yaAGC run on an AGC whose
+clock ran at the schedule's speed. On 30 s of AGC time:
+
+| Scenario | Schedule (K, D, lag, seed) | Native routines | yaAGC did not match | Periods taken / dropped |
+|---|---|---|---|---|
+| LM V37E12E | x1 (1, 1, 2) | 77,140 | 0 | 3,000 / 8 |
+| LM V37E12E | x0.5 (1.7, 2, 2) | 120,442 | 0 | 3,005 / 0 |
+| LM V37E12E | overrun (4, 1, 2, 1) | 16,839 | 0 | 3,000 / 1,228 |
+| LM V37E12E, DAP running | x1 | 52,885 | 0 | 3,004 / 47 |
+| LM V37E12E, DAP running | x0.5 | 98,239 | 0 | 3,000 / 0 |
+| LM V37E12E, DAP running | overrun | 12,534 | 0 | 3,101 / 1,304 |
+| CM V37E06E | x1 | 160,987 | 0 | 3,000 / 5 |
+| CM V37E06E | x0.5 | 209,481 | 0 | 3,000 / 0 |
+| CM V37E06E | overrun | 30,257 | 0 | 3,002 / 398 |
+
+K is the C64's slowdown over the AGC, D the time divisor; x0.5 is the
+half-speed build on a C64 1.7 times slower than the AGC (the measured LM
+DAP load), and overrun a C64 four times slower with every span jittered
+from 1/4 to 4 times, so module swaps and long spans drop ticks. With the
+DAP running (`FLIGHT_CH30=036377 FLIGHT_CH31=057777`, CDUY moved at
+15 s), the unscaled run misses six DAP routines 92 times each because
+yaAGC's IMU CDU drive drains the CDU command counters 050-052 on its own
+cycle clock and nothing drives them natively. That drive is an
+AGC-visible output the invariant above still has to bring onto AGC time.
+The tick schedule logged from a whole C64 flight run replaces the modeled
+one once the flight image runs end to end.
 
 The resident check (part 4) covers the cap: after five or more CIA
 interrupts TIME1 counts `RK_TICK_LAG` and `rk_dilation` the rest, and with
@@ -273,23 +310,24 @@ about 0.3 KB.
 
 | Component | LM bytes | CM bytes |
 |---|---|---|
-| Kernel (with the seam hooks) | 10,524 | 10,281 |
+| Kernel (with the seam hooks) | 10,493 | 10,256 |
 | Transfer ABI trampoline and Executive call sites | 3,501 | 3,433 |
 | ABI 2 runtime and REU store | 5,235 | 5,235 |
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
-| AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap) | 1,128 | 1,128 |
+| AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap and the scalers) | 1,183 | 1,183 |
 | Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,467 | 1,484 |
 | IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
-| C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
-| **Resident, $0801 to the end of bss** | **24,309** | **24,015** |
-| Free below the service table (of 26,367) | 2,058 | 2,352 |
+| C runtime and library (crt0, multiply, memcpy, memset) | 361 | 361 |
+| **Resident, $0801 to the end of bss** | **24,208** | **23,920** |
+| Free below the service table (of 26,367) | 2,159 | 2,447 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,216 | 4,195 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
-half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
-kernel, and the NEWJOB/12 in `rk_seams_exchange` pulls in the 125-byte
+half of the resident. The seam hooks add 194 LM and 197 CM bytes to the
+kernel. `rk_seams_exchange` finds the job context by comparing NEWJOB with
+each multiple of 12, because NEWJOB/12 pulled in the 125-byte
 `__udivmodqi4`. The single-precision component measures 172 bytes less
 with its table linked than without it. `rk_fixed_word` is 253 bytes: it
 programs the REU registers itself, because `apollo_reu_transfer`'s 32-bit
@@ -297,7 +335,7 @@ address arithmetic doubled it, and boot runs the boundary-word module
 through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
 LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
 resident: the step hands each module `rk_env` and returns its status. Both
-missions fit with 2.1-2.4 KB to spare, so the kernel stays as it is.
+missions fit with 2.2-2.4 KB to spare, so the kernel stays as it is.
 
 Since flight modules share the resident's runtime (docs/FLIGHT-STORE.md,
 runtime sharing), the resident exports 21 more services (service table
@@ -404,7 +442,8 @@ results with their PRG hashes (`resident-flight-vice.log`), the size report
 into docs/overlay-allocation.json), the host differential with the seam
 counts (`resident-kernel-host.log`), the SPSIN/SPCOS results
 (`sp-routines-host.log`), the clock and interrupt results against yaAGC
-(`resident-rupt-host.log`), and the `flight_resident` section (with the
+(`resident-rupt-host.log`), the scaled-time replay rows of the host
+differential (`scaled-time-replay.json`), and the `flight_resident` section (with the
 boundary-word table's check in `boundary_words`) of
 `resident-kernel-proof.json` with the source and rope hashes.
 
