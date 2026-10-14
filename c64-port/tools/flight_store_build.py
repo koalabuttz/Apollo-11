@@ -59,6 +59,7 @@ from resident_boundary_words import header_text  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
 NM = ROOT / 'deps/llvm-mos/bin/llvm-nm'
+PIN_LTO = ['-Wl,-mllvm,-inline-threshold=-50']
 REU_LIMIT = 0x1c0000          # tools/overlay_allocation.py REU_STORE_LIMIT
 SLOT_BYTES = {0: 0x4000, 1: 0x1FFA}
 LANE_BYTE = {'A': 0x01, 'B': 0x02, 'C': 0x03, 'D1': 0x04, 'D2': 0x05, 'E': 0x06, 'F': 0x07, 'G': 0x08, 'H': 0x09}
@@ -317,6 +318,13 @@ CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--
 # loaded once at boot and only called directly.
 SLOT_NAME = {0: 'job', 1: 'task', 3: 'pinned', 4: 'pinned_task'}
 SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072, 4: 8186}
+
+
+def map_symbols(path):
+    """The symbol names an lld map lists (address, VMA, size, align, name)."""
+    return {p[4] for p in (l.split() for l in Path(path).read_text().splitlines())
+            if len(p) == 5 and re.fullmatch(r'[0-9a-f]+', p[0]) and not p[4].startswith(('.', '<', '/', 'build'))
+            and '(' not in p[4] and '.' not in p[4]}
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
@@ -747,31 +755,51 @@ def main():
         def pin_pair(home, ts, measure, sources):
             """Class 3 beside the class-4 module, which homes the runtime
             both use: class 3 links only its own files (sources less the
-            home's) and its table list names the home's tables too; every
-            symbol it needs from the home's files is the home's
-            (--defsym from the home's map), and the home keeps each of them
-            (--undefined). Relinks both until class 3 resolves. Returns
-            class 3's link result, its bytes and the shared symbols."""
+            home's) and its table list names the home's tables too. Every
+            global function class 3 links is the home's: the home links
+            class 3's files too but keeps only those (--undefined; LTO and
+            --gc-sections drop the rest), and class 3 takes their addresses
+            from the home's map (--defsym). That moves the runtime and the
+            DAP files' shared helpers (include/lm_dap_shared.h) into class 4,
+            where the job-slot DAP modules can share them as well.
+            Relinks both until class 3 resolves. Returns class 3's link
+            result, its bytes and the shared symbols."""
             hp = params[f'pin-{SLOT_NAME[4]}']
             own = [f for f in sources if f not in set(hp['sources'])]
             basic = [t for t in ts if 'interpret' not in t] + hp['basic']
+            res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', (), own, basic)
+
+            def asked():
+                # Names class 3 linked (its map; a link over the slot still
+                # writes one), less the module's own entry and table list.
+                return {n for n in map_symbols(ROOT / OUT / m / f'pin-{SLOT_NAME[3]}.prg.map')
+                        if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in ts}
+            ask = asked()
             want = set()
             for _ in range(8):
-                hres = link(dict(hp, link_flags=[f'-Wl,--undefined={u}' for u in sorted(want)]))[2]
+                hres = link(dict(hp, sources=list(dict.fromkeys(hp['sources'] + own)),
+                                 link_flags=PIN_LTO + [f'-Wl,--undefined={u}' for u in sorted(ask | want)]))[2]
                 home.update(ok=hres['ok'], bytes=hres.get('bytes') or (
-                    SLOT_BYTES[4] + hres['overflow'] if hres.get('overflow') else None), shared=len(want))
+                    SLOT_BYTES[4] + hres['overflow'] if hres.get('overflow') else None))
                 if not hres['ok']:
                     return hres, None, want
                 nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
                                     text=True, check=True).stdout
-                addr = {p[2]: p[0] for p in (l.split() for l in nm.splitlines()) if len(p) == 3}
+                sym = {p[2]: p for p in (l.split() for l in nm.splitlines()) if len(p) == 3 and p[1].isupper()}
+                addr = {n: p[0] for n, p in sym.items()}
+                # Asked: functions only (a same-named object is each
+                # module's own); wanted: whatever class 3 left undefined.
+                share = sorted({n for n in ask if n in sym and sym[n][1] in 'TW'} | (want & set(addr)))
+                home['shared'] = len(share)
                 flags = ['-Wl,--error-limit=0'] + (
-                    ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in sorted(want))] if want else [])
+                    ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)] if share else [])
                 res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', flags, own, basic)
-                if res['ok'] or not set(res.get('undefined') or ()) - want:
-                    return res, nbytes, want
-                want |= set(res['undefined'])
-            return res, nbytes, want
+                more = asked() - ask - set(share)
+                if not set(res.get('undefined') or ()) - want and not more:
+                    return res, nbytes, share
+                want |= set(res.get('undefined') or ())
+                ask |= more
+            return res, nbytes, share
         for slot in sorted(PIN[m], reverse=True):
             ts = [t for t in PIN[m][slot] if t in packed]
             if not ts:
@@ -799,7 +827,8 @@ def main():
                            basic=basic or [t for t in ts if 'interpret' not in t],
                            interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
                            sources=sources or c64_sources(index, *stems, 'agc_transfer'), io=io,
-                           direct_only=direct_only, prg_name=name, link_flags=list(flags))
+                           direct_only=direct_only, prg_name=name, link_flags=PIN_LTO + list(flags),
+                           defines=['-DFS_PIN_HOME=1'] if slot == 4 and 3 in PIN[m] else [])
                 params[name] = mod
                 res = link(dict(mod))[2]
                 if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
