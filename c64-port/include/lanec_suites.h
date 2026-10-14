@@ -127,5 +127,9 @@ extern const lanec_suite lanec_suite_pin_transfer;
 extern const lanec_suite lanec_suite_pin_transfer_c64;
 extern const lanec_suite lanec_suite_pin_refuse;
 extern const lanec_suite lanec_suite_ev_refuse;
+extern const lanec_suite lanec_suite_pin_head_decount;
+extern const lanec_suite lanec_suite_pin_head_dpout;
+extern const lanec_suite lanec_suite_pin_head_twoint;
+extern const lanec_suite lanec_suite_pin_head_minsec;
 const lanec_suite *lanec_find_suite(const char *name);
 #endif
