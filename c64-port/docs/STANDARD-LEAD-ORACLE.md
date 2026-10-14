@@ -36,7 +36,10 @@ JOBWAKE or E/JOBWAK, where the oracle would stop mid-routine. Half of the
 core sets sleep, the current job's (core set 0) included. JOBWAKE searches
 from core set 0, so `cm_basic_wake` (`src/cm_basic_wake.c`) now does too, as
 `lm_basic_wake` does. Before this it refused any image whose core set 0 was
-asleep, so 31 of the 64 CM cases ended in a refusal.
+asleep, so 31 of the 64 CM cases ended in a refusal. About a third of
+core sets 1-7 are free (PRIORITY -0, which JOBWAKE skips). In an eighth of
+the cases, core set 0 is the sleeping job A names and NEWJOB is -0, so
+JOBWAKE takes SPECTEST (`src/cm_dispatch.c`, the slot-0 path).
 
 Native changes for this milestone: `standard_lead_interp_call_order()`
 (`src/standard_lead_interp.c`) runs the CALL word at the fetch point (like
@@ -56,10 +59,10 @@ and freezes one Fletcher digest per case in
 `tests/standard_lead_oracle_vectors.h`. `make test-standard-lead-oracle` and
 `make sanitize-standard-lead-oracle` check every digest (1,414 checks).
 
-The C64 diagnostic runs every third case plus the 5 cover rows that
-`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 673 branch
+The C64 diagnostic runs every third case plus the 7 cover rows that
+`tools/lane_a_c64_cover.py` adds so that the C64 rows take all 683 branch
 arcs the host corpus takes (`evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json`);
-`make vice-standard-lead-oracle` passes 478 checks in VICE.
+`make vice-standard-lead-oracle` passes 480 checks in VICE.
 
 ## Source map
 

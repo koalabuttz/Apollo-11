@@ -4,8 +4,8 @@
   "release": "evidence-standard-lead-oracle",
   "files": {
     "standard-lead-oracle-c64-cover.json": {
-      "sha256": "d6804851e98bb4b253bf5eb79263abb33b2693f3f5db348c31dfbfe001ad44e0",
-      "bytes": 1147,
+      "sha256": "b37a36e2108ea676c44953535370232b6d7f6fd3f4c9b917fd5b0fd861fa0f2a",
+      "bytes": 1165,
       "store": "tree"
     },
     "standard-lead-oracle-differential.log": {
@@ -14,12 +14,12 @@
       "store": "tree"
     },
     "standard-lead-oracle-host.log": {
-      "sha256": "c5156e8ab99d0fd98535a8bf37f4235fb0f98ece3bc07da695b71bffd69ca89e",
+      "sha256": "72d48a303fa9c0b340887e0021904906af18bbf7c1e98aaf97d782ef7c6612bf",
       "bytes": 1704,
       "store": "release"
     },
     "standard-lead-oracle-proof.json": {
-      "sha256": "1de2891d80e4d0feb969fc877fff9ecdd256d87b777fa6e0a6352818d55a2d28",
+      "sha256": "6047b336a0fa14f1016a978762406596e94451fe513ed41090dbfd7124485821",
       "bytes": 4086,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "standard-lead-oracle-vice.log": {
-      "sha256": "0d903b0a673cae95e8ad3848068ac824bc73a9ba64604d28be364a7854aefab4",
+      "sha256": "2f7de1e6926342b2d283ff1df7a50968018c641338fa36db7f5c4fa3861bd321",
       "bytes": 1143,
       "store": "release"
     }

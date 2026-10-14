@@ -32,9 +32,9 @@
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
  "oracle": "yaAGC agc_engine from the original ropes",
- "oracle_sha256": "1e500d8c7b7eb76c98f396dc51137f94cc4c83a8f594cb958c01c2a46c744ae9",
+ "oracle_sha256": "8a652e50ef5dc76311651219a5a8937b4b5668be8886e063e1df6da07c22f4c6",
  "dependencies": {
-  "tests/standard_lead_oracle_cases.c": "3d7914071952db7b7e95aa37be9215af92aba223733569f12cf5a6c5dac37530",
+  "tests/standard_lead_oracle_cases.c": "64a5b37e6d6ef1d84b8d6ec485a60704dd905d890599d02d83e12fc6e84fa14f",
   "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/standard_lead_routines.c": "9ed6595468ff67b0dde44029b3e54c07cf2d94126b349f6237e6c0a1ac7feda7",
   "src/interp_entry.c": "66571c3c34a4e15151aef563df31de87dd9250015ffd0a8553b5c7a477e30c1a",
