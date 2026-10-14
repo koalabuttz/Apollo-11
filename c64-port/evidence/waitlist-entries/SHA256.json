@@ -24,8 +24,8 @@
       "store": "release"
     },
     "waitlist-entries-proof.json": {
-      "sha256": "514f4ad4d3a8f589f5d536e07544f304a27d3f2115f00d96f4343f7393d73600",
-      "bytes": 6661,
+      "sha256": "93a497c1f0b4c40e1296fd3872e7f6e478e086ba38799dc7dc1f43062dcbb9c7",
+      "bytes": 7293,
       "store": "tree"
     },
     "waitlist-entries-vice.log": {

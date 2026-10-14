@@ -76,7 +76,9 @@ def arc_keys(taken, seen=()):
     N', so a two-mission runner does not merge the missions' arcs. A source
     in one object, and every header, keeps the plain key. seen: every
     (object, source) gcov reported, taken arcs or not, so the key does not
-    depend on whether a case happened to run both objects' copies."""
+    depend on whether a case happened to run both objects' copies. Every
+    interpreter runner links both copies, so single-mission runners split
+    the shared interpreter files too (file@object for the one copy run)."""
     objs = {}
     for obj, name in [*seen, *((t[0], t[1]) for t in taken)]:
         objs.setdefault(name, set()).add(obj)

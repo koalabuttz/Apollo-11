@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-powered-subs",
+  "release": "evidence-lm-powered-subs",
+  "files": {
+    "lm-powered-subs-closure.json": {
+      "sha256": "5447621a64fac17603ba45243ff80f6cd5538e6aa96600ba50d45024c7fa60b5",
+      "bytes": 38174,
+      "store": "tree"
+    },
+    "lm-powered-subs-differential.log": {
+      "sha256": "3bc9fe7db0eb99370fd52fa78c9698b0bb5b1631ee1607445b53a5acbc718a55",
+      "bytes": 2599,
+      "store": "release"
+    },
+    "lm-powered-subs-host.log": {
+      "sha256": "470f260cdbdd1c96ec940e2b3b1836e3a400827618d05ab4817a83570703cd7c",
+      "bytes": 1104,
+      "store": "release"
+    },
+    "lm-powered-subs-proof.json": {
+      "sha256": "d3432cc0cd56d3c2b91e5bd366a34a72b86f3902298565a5d0b30ba4f5f59e70",
+      "bytes": 5837,
+      "store": "tree"
+    },
+    "lm-powered-subs-source-map.json": {
+      "sha256": "4334369f70d1feff2e4458e400c26c43b0b1249e0aefeafe95a2fa08cccce83c",
+      "bytes": 38447,
+      "store": "tree"
+    },
+    "lm-powered-subs-vice.log": {
+      "sha256": "8421eb0fb8ff373fb34d7e126c4c0e22d6a5814e47d3a1b18f01b3722d50aad5",
+      "bytes": 927,
+      "store": "release"
+    }
+  }
+}

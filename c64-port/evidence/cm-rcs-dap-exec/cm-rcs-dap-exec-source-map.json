@@ -1,0 +1,240 @@
+{
+ "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc": {
+  "native_file": "src/cm_rcs_dap_exec.c",
+  "words": 33,
+  "untranslated_words": 0,
+  "routines": 5,
+  "map": [
+   {
+    "address": "22,3447",
+    "word": "30102",
+    "source": "AMBGUPDT CA FLAGWRD6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3450",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3451",
+    "word": "65217",
+    "source": " BZMF ENDOFJOB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3452",
+    "word": "75002",
+    "source": " MASK BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3453",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3454",
+    "word": "15217",
+    "source": " BZF ENDOFJOB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3455",
+    "word": "30034",
+    "source": " CA CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3456",
+    "word": "05075",
+    "source": " TC SPSIN2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3457",
+    "word": "55640",
+    "source": " TS AMGB1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3460",
+    "word": "30034",
+    "source": " CA CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3461",
+    "word": "05074",
+    "source": " TC SPCOS2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3462",
+    "word": "55645",
+    "source": " TS CAPSI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3463",
+    "word": "33507",
+    "source": " CAF QUADANGL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3464",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3465",
+    "word": "20032",
+    "source": " MSU CDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3466",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3467",
+    "word": "05074",
+    "source": " TC SPCOS1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3470",
+    "word": "55644",
+    "source": " TS AMGB8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3471",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3472",
+    "word": "71645",
+    "source": " MP CAPSI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3473",
+    "word": "55641",
+    "source": " TS AMGB4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3474",
+    "word": "33507",
+    "source": " CAF QUADANGL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3475",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3476",
+    "word": "20032",
+    "source": " MSU CDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3477",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3500",
+    "word": "05075",
+    "source": " TC SPSIN1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3501",
+    "word": "55642",
+    "source": " TS AMGB5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3502",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3503",
+    "word": "71645",
+    "source": " MP CAPSI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3504",
+    "word": "40000",
+    "source": " COM ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3505",
+    "word": "55643",
+    "source": " TS AMGB7",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3506",
+    "word": "15217",
+    "source": " TCF ENDOFJOB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "22,3507",
+    "word": "01224",
+    "source": "QUADANGL DEC 660        B-14",
+    "constant": "basic operand (inline)"
+   }
+  ]
+ }
+}

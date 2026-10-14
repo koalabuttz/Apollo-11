@@ -21,6 +21,9 @@ void t4_input(unsigned mission,apollo_overlay_state *m,t4_io *io,uint16_t n){uin
  if(rnd(&r)%8u==0u)m->words[01036]=0;   /* the lamps word (DSPTAB +11D) +0 */
  x=(agc_word)(rnd(&r)%4u);m->words[01016]=(agc_word)(x==0u?0u:x==1u?rnd(&r)%013u:rnd(&r)&AGC_MASK);
  m->words[070]=(agc_word)(rnd(&r)%8u);
+ /* FLAGWRD5 -0 (DSPOUT's CCS FLAGWRD5 takes its fourth branch); past the
+    first 128 cases, which the resident interrupt vectors share. */
+ if(n>=128u&&n%16u==15u)m->words[0101]=077777u;
  memset(io,0,sizeof *io);
  if(mission)io->cm.superbank=(agc_word)((rnd(&r)%8u)*020u);else io->lm.superbank=(agc_word)((rnd(&r)%8u)*020u);
  io->hw.in_interrupt=1;io->hw.channel10=(agc_word)(rnd(&r)&AGC_MASK);io->hw.channel32=(agc_word)(rnd(&r)&AGC_MASK);

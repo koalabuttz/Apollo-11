@@ -1,0 +1,436 @@
+{
+  "milestone": "lm-lambert-aim",
+  "tool": "tools/interp_executed_closure.py",
+  "source_map_sha256": "ac2f53bf9349cbc962ee134b9f0ed8277c11511eee00bbcbb13f817bca815a01",
+  "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
+  "files": {
+    "Luminary099/LAMBERT_AIMPOINT_GUIDANCE.agc": {
+      "words": 61,
+      "data": 0,
+      "instructions": 61,
+      "executed": 9,
+      "interpreted": 52,
+      "unreached": 0,
+      "map": [
+        {
+          "address": "35,2450",
+          "source": "P31 TC P20FLGON",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2451",
+          "source": "CAF V06N33",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2452",
+          "source": "TC VNPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2453",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2454",
+          "source": "CLEAR DLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2455",
+          "source": "UPDATFLG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2456",
+          "source": "TIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2457",
+          "source": "STCALL TDEC1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2460",
+          "source": "LEMPREC",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2461",
+          "source": "VLOAD SETPD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2462",
+          "source": "RATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2463",
+          "source": "0D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2464",
+          "source": "STORE RTIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2465",
+          "source": "STOVL RINIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2466",
+          "source": "VATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2467",
+          "source": "STORE VTIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2470",
+          "source": "STODL VINIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2471",
+          "source": "P30ZERO",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2472",
+          "source": "PUSH PDDL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2473",
+          "source": "DELLT4",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2474",
+          "source": "DAD SXA,1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2475",
+          "source": "TIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2476",
+          "source": "RTX1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2477",
+          "source": "STORE TPASS4",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2500",
+          "source": "SXA,2 CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2501",
+          "source": "RTX2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2502",
+          "source": "INITVEL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2503",
+          "source": "VLOAD PUSH",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2504",
+          "source": "DELVEET3",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2505",
+          "source": "STORE DELVSIN",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2506",
+          "source": "ABVAL CLEAR",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2507",
+          "source": "XDELVFLG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2510",
+          "source": "STCALL VGDISP",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2511",
+          "source": "GET.LVC",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2512",
+          "source": "VLOAD PDVL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2513",
+          "source": "RTIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2514",
+          "source": "VIPRIME",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2515",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2516",
+          "source": "PERIAPO1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2517",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2520",
+          "source": "SHIFTR1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2521",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2522",
+          "source": "MAXCHK",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2523",
+          "source": "STODL HPER",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2524",
+          "source": "4D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2525",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2526",
+          "source": "SHIFTR1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2527",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2530",
+          "source": "MAXCHK",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2531",
+          "source": "STORE HAPO",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2532",
+          "source": "EXIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2533",
+          "source": "CAF V06N81",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2534",
+          "source": "TC VNPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2535",
+          "source": "CAF V06N42",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2536",
+          "source": "TC VNPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2537",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "35,2540",
+          "source": "REVN1645 SET CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2541",
+          "source": "FINALFLG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2542",
+          "source": "VN1645",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2543",
+          "source": "GOTO",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "35,2544",
+          "source": "REVN1645",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        }
+      ]
+    }
+  }
+}

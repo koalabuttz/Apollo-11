@@ -9,14 +9,14 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 62464,
- "cases_sha256": "e0b34e9aa413de2e21dbda9cd9d3c01bf7af52b8708689eb6ae8f8d99af14fad",
- "oracle_sha256": "abbc68854b45df8d043861da2511b0853353891c61d81f830a2e41c842954047",
+ "cases_sha256": "5cd3184b7db40ee5ff8b4c1a003ee1d928edd32856bfe2abfe7e854173659ae3",
+ "oracle_sha256": "01c699dd0012a4430b079d0f145bebfddae62dff969a0e26ee5f73e638c2f4c6",
  "frozen_vectors": 2030,
  "c64_vectors": [
   {
    "mission": "lm",
    "keep": "0xfffff",
-   "cases": 26,
+   "cases": 25,
    "case_ids": [
     16,
     860,
@@ -39,18 +39,20 @@
     8308,
     8772,
     9520,
+    9240,
     9728,
     9752,
-    9760,
-    9788,
-    9880
+    9760
    ]
   },
   {
    "mission": "lm",
    "keep": "0x43ff80001",
-   "cases": 27,
+   "cases": 30,
    "case_ids": [
+    9848,
+    9876,
+    10016,
     9926,
     9930,
     10256,
@@ -111,22 +113,22 @@
   {
    "mission": "lm",
    "keep": "0x7ffc0007ffff",
-   "cases": 6,
+   "cases": 7,
    "case_ids": [
     17667,
     17499,
     17496,
     17463,
     18016,
-    18208
+    18208,
+    18119
    ]
   },
   {
    "mission": "lm",
-   "keep": "0xfff800000000",
-   "cases": 17,
+   "keep": "0xfff000000000",
+   "cases": 16,
    "case_ids": [
-    18119,
     18724,
     18875,
     18968,
@@ -462,8 +464,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1630,
-  "c64_taken": 1630,
+  "host_taken": 1638,
+  "c64_taken": 1638,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -485,9 +487,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c); with site_edges, every edge of the shared code and the milestone's own helpers counts once per call site (the routine block that made the call)",
-  "edges_all_cases": 18674,
-  "edges_host_vectors": 18674,
-  "edges_c64": 18672,
+  "edges_all_cases": 18693,
+  "edges_host_vectors": 18693,
+  "edges_c64": 18691,
   "edges_not_on_c64": [
    "src/agc_image_ops.c:193 from src/lm_aotmark.c:5473",
    "src/lm_interp_orders.c:290 from src/lm_aotmark.c:5678"
@@ -570,9 +572,9 @@
    "06070": 512
   },
   "LM 07,2000 AOTMARK": {
-   "05652": 260,
-   "05716": 195,
-   "05105": 57
+   "05652": 250,
+   "05105": 153,
+   "05716": 109
   },
   "LM 07,2003 ": {
    "05716": 382,
@@ -1301,9 +1303,9 @@
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: ALARM, BAILOUT1, BANKCALL, CHANG2, ENDMARK, FINDVAC, GOTOPOOH, IBNKCALL, NOVAC, POODOO, POSTJUMP, RESUME, TCF SWRETURN, WAITLIST)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "host_cases_traced": 15953,
- "host_branch_arcs": 1673,
- "c64_rows": 300,
- "c64_branch_arcs": 1673,
+ "host_cases_traced": 15937,
+ "host_branch_arcs": 1681,
+ "c64_rows": 302,
+ "c64_branch_arcs": 1681,
  "host_branches_missing_on_c64": []
 }

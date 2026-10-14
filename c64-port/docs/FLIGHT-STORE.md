@@ -43,6 +43,30 @@ reads every rope word from the mission rope image the store carries
 image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
 LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
 
+The 2 MB REU, by address:
+
+| REU range | Use |
+| --- | --- |
+| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1c0000 |
+| 0x1c0000-0x1d1fff | LM rope image (LM store only) |
+| 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
+| 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
+
+The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
+goes into the store as two modules linked by `tools/interp_runtime_size.py`
+`link_core`: $0A01 in the job slot (LM 15,847, CM 15,856 bytes) and its cold
+bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
+`INTERP_POINTS` gives the resolver a record to $0A01 at each of the
+interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
+unless a table record or a resident table already holds it: today DANZIG is
+the resident's, and SWRETURN and INTPRET are table records, so 9 of 12 are
+the interpreter's on each mission. CHANG2 is left out, since that is where
+the interpreter hands back to the Executive. The module returns to the step
+when the CIA1 count at $6FBC moves, so an interrupt waits at most one
+interpretive slot. The load check resolves the records; it does not run the
+interpreter (`make vice-interp-core` does).
+
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
@@ -54,6 +78,34 @@ new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
+
+On the C64 the resident hands every module its base record (`rk_io`:
+`p66_bias_io` or `cm_native_io`). A module whose tables take another kind
+(`module_io`; `FS_IO_KIND` in `platform/c64/flight_table_module.c`) builds
+that record with `flight_io_enter` from `rk_hardware`, `rk_flight` and
+`rk_device` before its run and writes it back with `flight_io_leave` after;
+on the CM it also copies `cm_channels` to and from `rk_hardware`'s channels
+5, 6 and 30-33. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
+leaves them to the module main. A module may mix the base kind only with a
+kind whose record starts with the base record (LM_*, CM_*), and the builder
+refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
+conversion adds about 330 bytes to the module main (1,076 bytes in the
+pinned LM DAP set, against about 750 for a base-kind module); the set
+measures 39,341 bytes. Every CM module links the resident's
+`cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
+
+A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
+engine, its main only builds the table list and returns `EXEC_OK`, and the
+resident runs its routines through `rk_direct` from the next step. That
+needs the base record, so a pinned set whose tables take another kind
+links the engine and conversion until the kind folds into `agc_hardware`;
+`report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
+measures 39,341 bytes today and 38,534 direct-only.
+
+The VICE load check also fills the free soft stack below the timings with a
+pattern and reports the deepest byte touched (`soft_stack_peak_bytes` in
+`vice-load.json`): 302 bytes LM and 174 bytes CM, over every module's main
+and one resolver record per module run through `rk_direct`.
 
 ### Fit on 6b6ed2dc
 
@@ -126,7 +178,16 @@ resolver records (keys the store can run) go up on both missions.
 DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
 (DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
 8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
-packed yet.
+packed yet. A slot-3 set goes to slot class 3 ($C000-$CBFF, 3,072 bytes;
+docs/RESIDENT-FLIGHT.md): when it fits direct-only the builder packs it into
+the store, the resident loads it at boot, and its routines run from there
+through `rk_direct` while the resolver still names their packed modules. Both
+missions pin the background self-check idle loop there (LM
+`lm_self_check_idle_routines` 1,897 bytes, CM `cm_self_check_idle_routines`
+1,920), so those routines run without loading a module. The load check runs one
+of the pinned set's points through the module that packs the same table and through
+`rk_direct` with only the pinned module present, compares them, and then
+drops the pinned module (its mailbox and timings use $C000-$CBFF).
 
 ### Direct calls into a loaded module
 
@@ -194,10 +255,18 @@ that module loaded. Status, image and channels must match. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
-what is left is the step itself: the transfer point (about 1,100 cycles)
-and the table search, which is the next thing to cut.
+what is left is the step itself: the transfer point and the table search.
 
-A cached call (no load) costs 7,000 to 9,400 cycles on its own: the ABI 2
+The step now computes the transfer point once (it was computed again to
+pick the table set), which cut it from about 1,100 to 880 cycles, and the
+search skips a table whose key range cannot hold the point.
+`flight_store_build.py` refuses a table whose keys do not strictly ascend,
+since both the binary search and the range skip rely on it. With this,
+cached calls are 6,081 to 8,158 cycles (from 7,287 to 11,407), and the
+check passes on both missions (LM 907 checks, CM 1,398). The resident
+resolve is still 4,200 to 4,900 cycles of each step.
+
+A cached call (no load) costs 6,100 to 8,200 cycles on its own: the ABI 2
 run, the module copying its program record and tables, and one resolve. So a
 swap to a 12 KB module costs about 21,000 cycles plus the call, about 30,000
 in all (3% of a second), and a full 16 KB slot about 35 ms. At the LM's 40
@@ -255,6 +324,24 @@ port) runs one mission:
    words at the first sample point at or after CS centiseconds (e.g.
    `5000:035=02000` moves CDUY). The reference keeps up to 8,191
    centiseconds.
+
+9. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
+   docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
+   `tools/flight_host_differential.py` builds a local engine variant whose
+   `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
+   cycles their counts take) and the IMU CDU drive, which bursts on
+   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   AGC clock then runs only as the flight resident runs it: a modeled C64
+   wall clock advances by each span's AGC machine cycles times K, plus
+   20 ms for each module swap (the VICE load cost), each optionally
+   jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
+   D × 10 ms of it, and at each native boundary at most LAG of them become
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
+   code takes its periods between instructions. Lockstep then compares the
+   clock counters too and adopts nothing from yaAGC, so every routine must
+   match yaAGC run from the same state under the same periods, and the
+   run as a whole is one yaAGC run under that tick schedule. No
+   free-running reference runs, and no samples are compared.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.
