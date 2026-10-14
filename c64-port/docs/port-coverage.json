@@ -11349,7 +11349,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
-            "sha256": "9a5d30bfde582453c970f29942c4417a1aee51cd0611af9d9066786a15ef7fc9"
+            "sha256": "768eb69c2497fa6ff451781db7ac265d458192609996952a40896f1770d8eee3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-host.log",
@@ -11357,14 +11357,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-vice.log",
-            "sha256": "92fdc07313e36e46aa11544bd6c536758655e697efbd234865160cca246c2d83",
+            "sha256": "b5d7d0edacaa1d89a99ff50d97b3a7d8dc503eb54d08d6a4c30b8e8e6e5786bb",
             "vice_targets": {
-              "vice-lm-radar-leadin-routines": 15
+              "vice-lm-radar-leadin-routines": 17
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
-            "sha256": "9a5d30bfde582453c970f29942c4417a1aee51cd0611af9d9066786a15ef7fc9"
+            "sha256": "768eb69c2497fa6ff451781db7ac265d458192609996952a40896f1770d8eee3"
           }
         }
       }
