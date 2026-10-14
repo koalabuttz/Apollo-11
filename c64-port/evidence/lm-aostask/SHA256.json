@@ -4,18 +4,18 @@
   "release": "evidence-lm-aostask",
   "files": {
     "lm-aostask-differential.log": {
-      "sha256": "098ff59037b3d675afc13f35467c2a852a0d507fc851154b6d8b6dba0ef916f4",
-      "bytes": 2231,
+      "sha256": "64889bb3b42ea72727672503e8f51c4a80bf6176cef4c2d6b9ccf9d40ebe564e",
+      "bytes": 2131,
       "store": "tree"
     },
     "lm-aostask-host.log": {
-      "sha256": "7ae6be9181ba3720437aa62bf97fbcd0d16454dbfd7802ce953bbada7ecb1ea6",
-      "bytes": 900,
+      "sha256": "59c2e6f963152d3a97503a470d7580ac429aa22e843652ab61d537f673eff462",
+      "bytes": 936,
       "store": "tree"
     },
     "lm-aostask-proof.json": {
-      "sha256": "93e2b3476fa7f1a03ce0ae9295e0c3eca56a1451796951d2f47a43ac74951490",
-      "bytes": 6427,
+      "sha256": "5f15df665d1d709181e82eb85cb46d6cca3193d11605199f7270434605cd79aa",
+      "bytes": 6327,
       "store": "tree"
     },
     "lm-aostask-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "lm-aostask-vice.log": {
-      "sha256": "7f80e16c13fe483a928ff8982d7dfddc47537b83f96e327076b527c8e3c8856a",
-      "bytes": 144,
+      "sha256": "7b2e409c353ae93d5a2cf133c9d9e7379aaeb10c058161edf35336d576583a2e",
+      "bytes": 238,
       "store": "tree"
     }
   }

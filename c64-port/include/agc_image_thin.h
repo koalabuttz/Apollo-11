@@ -18,7 +18,13 @@ static agc_image *ait_s;
 #define AIT_S ait_s
 #define AIT_BIND(x) ((void)(ait_s=(agc_image *)(x)))
 #endif
+/* In flight builds every DAP file's copies are one weak definition the
+ * linker keeps once; elsewhere each translation has its own. */
+#if RK_FIXED_IMAGE
+#define AIT_NI __attribute__((weak,noinline,unused))
+#else
 #define AIT_NI static __attribute__((noinline,unused))
+#endif
 #define AIT_OP(n) \
  AIT_NI void ait_##n(unsigned a){(ai_##n)(AIT_S,a);} \
  AIT_NI void ait_##n##8(uint8_t a){(ai_##n)(AIT_S,a);} \
