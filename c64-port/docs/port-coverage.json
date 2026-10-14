@@ -6554,7 +6554,7 @@
       "sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
       "bytes": 28653,
       "lines": 1069,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6568,7 +6568,7 @@
           "verification": "docs/LM-AOSTASK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6578,7 +6578,6 @@
           "BANKCALL, ENDOFJOB, TASKOVER and the other Executive and DAP destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-aostask/lm-aostask-source-map.json",
@@ -6598,6 +6597,10 @@
             "vice_targets": {
               "vice-lm-aostask": 38
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-aostask.md",
+            "sha256": "4a637dfdaf5daf2341ec1a689341367c971d6fbde72b62d889f842867a0cd808"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aostask/lm-aostask-proof.json",
@@ -11371,7 +11374,7 @@
       "sha256": "f27f4f9372e56e41ad44a810945ce6247e1f931bfa4d3b5d114089732d80e0ad",
       "bytes": 2538,
       "lines": 103,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -11392,7 +11395,7 @@
           "verification": "docs/LM-RADAR-LEADIN-ROUTINES.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -11401,7 +11404,6 @@
           "WAITLIST and NOVAC with their 2CADRs, BANKCALL RADSTALL, SWCALL to RRRANGE, RRRDOT, LRVELX, LRVELY, LRVELZ and LRALT, TASKOVER and ENDOFJOB stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-source-map.json",
@@ -11421,6 +11423,10 @@
             "vice_targets": {
               "vice-lm-radar-leadin-routines": 17
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-radar-leadin-routines.md",
+            "sha256": "e411bfd76c2c6f4c8a14aecae53322a003aea2bb6a2fc017f976608bcfa816f5"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
