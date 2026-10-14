@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-p20-p25 (lane B): Luminary099 P20-P25 (rendezvous navigation, R21-R25 radar, V67) compiled by
 # tools/interp_compile.py into native routines of the control-transfer ABI.
-LP20_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
+LP20_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/lm_integration_moves.c tests/interp_case.c
 LP20_SRC = src/lm_p20_p25.c tests/lm_p20_p25_target.c $(LP20_COMMON)
 LP20_HDR = include/lm_p20_p25.h tests/interp_case.h tests/lm_p20_p25_vectors.h tests/lm_p20_p25_c64_vectors.h
 LP20_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS
@@ -24,7 +24,7 @@ lm-p20-p25-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/lm-p20-p25.groups
 LP20_C64_PRGS = $(foreach g,$(LM_P20_P25_GROUPS),build/lm-p20-p25-$(g).prg)
-LP20_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/lm_p20_p25_target.c
+LP20_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/lm_integration_moves.c tests/interp_case.c tests/lm_p20_p25_target.c
 LP20_C64_lm = src/lm_p20_p25.c src/lm_interp_orders.c src/lm_interp_steps.c
 c64-lm-p20-p25: $(LP20_C64_PRGS)
 build/lm-p20-p25-%.prg: $(LP20_SRC) platform/c64/lm_p20_p25_diagnostic.c tools/mk/lm-p20-p25.groups $(LP20_HDR) | build

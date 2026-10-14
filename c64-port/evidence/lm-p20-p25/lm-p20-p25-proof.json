@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 127744,
- "cases_sha256": "3d928a928925c8f1728323e9622cb62633d6006da33360d1a803ef4f5f514f61",
- "oracle_sha256": "636e5f3392043c50df20de3c5a4e816c15048d6f05213a376892588a1e0739f2",
+ "cases_sha256": "d67b379c933419eb36d0955e1ecdfa4118c0e752b95463037be173ca09c0731c",
+ "oracle_sha256": "1270fe7d14c21a87434a60f59e3fd26fbe7219ed0eb986d39e96ea92e5963119",
  "frozen_vectors": 998,
  "c64_vectors": [
   {
@@ -479,7 +479,7 @@
   {
    "mission": "lm",
    "keep": "0x7ffffff8000000000000000000000000000000000000000000000000000000000000400000000000000000000",
-   "cases": 33,
+   "cases": 32,
    "case_ids": [
     41856,
     41996,
@@ -504,10 +504,9 @@
     44083,
     44176,
     44331,
-    44312,
-    44476,
+    44348,
     44495,
-    44632,
+    44634,
     44680,
     44821,
     44928,
@@ -1638,13 +1637,14 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 6318,
-  "c64_taken": 6318,
+  "host_taken": 6325,
+  "c64_taken": 6325,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
    "src/lm_p20_p25.c",
    "src/rtb_angles.c",
+   "src/lm_integration_moves.c",
    "src/lm_interp_orders.c",
    "src/lm_interp_steps.c",
    "src/cm_interp_orders.c",
@@ -3163,27 +3163,23 @@
    "06027": 128
   },
   "LM 24,3306 ": {
-   "04616": 51,
+   "04616": 70,
    "06070": 21,
-   "03753": 19,
    "05126": 37
   },
   "LM 24,3307 ": {
    "05126": 31,
-   "04616": 50,
-   "03753": 27,
+   "04616": 77,
    "06070": 20
   },
   "LM 24,3311 ": {
    "05126": 26,
-   "03753": 29,
-   "06070": 17,
-   "04616": 56
+   "04616": 85,
+   "06070": 17
   },
   "LM 24,3315 ": {
-   "03753": 70,
-   "05126": 17,
-   "04616": 41
+   "04616": 95,
+   "05126": 33
   },
   "LM 24,3317 ": {
    "05126": 29,
@@ -6077,12 +6073,12 @@
    "02570": 128
   }
  },
- "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: 2PHSCHNG, ALARM, BANKCALL, BANKJUMP, BLANKET, BOVB ENDT(X), BZF, BZMF, CHANG1, CHANG2, DOWNFLAG, FALTON, FINDVAC, FIXDELAY, GOTOPOOH, IBNKCALL, KILLTASK, LONGCALL, MAKECADR, MPACVBUF, NOVAC, PHASCHNG, POSTJUMP, PRIOCHNG, RESUME, RTB NORMUNX1, SPCOS, SPSIN, TASKOVER, TCF ENDEXT, TCF ENDOFJOB, TCF ISWRETRN, TCF NOR29NOW, TCF Q+1, TCF SUPDXCHZ, TCF SWRETURN, TCF TMODE, TWIDDLE, UPFLAG, USPRCADR, VARDELAY, WAITLIST)",
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: 2PHSCHNG, ALARM, BANKCALL, BANKJUMP, BLANKET, BZF, BZMF, CHANG1, CHANG2, DOWNFLAG, FALTON, FINDVAC, FIXDELAY, GOTOPOOH, IBNKCALL, KILLTASK, LONGCALL, MAKECADR, MPACVBUF, NOVAC, PHASCHNG, POSTJUMP, PRIOCHNG, RESUME, RTB NORMUNX1, SPCOS, SPSIN, TASKOVER, TCF ENDEXT, TCF ENDOFJOB, TCF ISWRETRN, TCF NOR29NOW, TCF Q+1, TCF SUPDXCHZ, TCF SWRETURN, TCF TMODE, TWIDDLE, UPFLAG, USPRCADR, VARDELAY, WAITLIST)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12, 13, 14, 33 and the 31A/31B/32 trap flags",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 127744,
- "host_branch_arcs": 6347,
- "c64_rows": 1350,
- "c64_branch_arcs": 6347,
+ "host_branch_arcs": 6354,
+ "c64_rows": 1349,
+ "c64_branch_arcs": 6354,
  "host_branches_missing_on_c64": []
 }

@@ -2,8 +2,9 @@
  "milestone": "lm-p20-p25",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_p20_p25.c": "d1f62ff82b81d69b33ff185f56342bc6870a4645f26712d1151ccbb4d6c978f5",
+  "src/lm_p20_p25.c": "3ed9b9aa916524900e418b2ef5ec79c8c294d753ceab6f24dc5852e3a3985149",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
+  "src/lm_integration_moves.c": "363cdb80fd3678c5e1dfdda9f0ba9b03d1ab97e4eff6ca23fd8bcab3996b8b3b",
   "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
   "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
@@ -13,7 +14,7 @@
   "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "f681650bc947abe5ee0e9103268fc1d003c14b5fa042fb00bde8904d2608b2b2",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
   "tests/lm_p20_p25_target.c": "881d02b2031e96a4b8c2a1d0f2d3cbfd968fc6d4f7a166591098015cd417a1b0"
  },
  "host_cases": 127744,
@@ -462,11 +463,10 @@
   43916,
   44083,
   44176,
-  44312,
   44331,
-  44476,
+  44348,
   44495,
-  44632,
+  44634,
   44680,
   44821,
   44928,
@@ -1370,8 +1370,8 @@
   127560,
   127616
  ],
- "host_branch_arcs": 6347,
- "c64_branch_arcs": 6347,
+ "host_branch_arcs": 6354,
+ "c64_branch_arcs": 6354,
  "arcs_by_source_host_c64": {
   "include/agc_channel_ops.h": [
    28,
@@ -1405,6 +1405,10 @@
    0,
    0
   ],
+  "src/lm_integration_moves.c": [
+   2,
+   2
+  ],
   "src/lm_interp_orders.c": [
    0,
    0
@@ -1422,16 +1426,16 @@
    51
   ],
   "src/lm_p20_p25.c": [
-   5619,
-   5619
+   5620,
+   5620
   ],
   "src/rtb_angles.c": [
    28,
    28
   ],
   "tests/interp_case.c": [
-   59,
-   59
+   63,
+   63
   ],
   "tests/lm_p20_p25_target.c": [
    0,

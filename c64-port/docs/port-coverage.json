@@ -10497,6 +10497,7 @@
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c",
             "src/rtb_angles.c",
+            "src/lm_integration_moves.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "include/agc_channel_ops.h"
@@ -10526,22 +10527,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
-            "sha256": "9de275526e1ace33c6b29db5f4dc357709f6e8a446675529871fdd94fb90c490"
+            "sha256": "a5b06640bd0d9f23cdbbce4987849317d5934edab9f04500b7b9fdc204ec7ff9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
-            "sha256": "f163c206239e2ae1bce989a0ba8b869c46fefb6609a43e99e7dc8f52108a28ab"
+            "sha256": "d1b15dff5be083ce3803344db377c507087c6db84564bdfaff0c997dfc543368"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
-            "sha256": "073ac6147aadedd4ffd78443d09b2ca8be27194cf617b63823dce0ed7d5e3a09",
+            "sha256": "12c7ae5edc1f303e7d650781ad5d615433c57803deda70ed07fdcda1a080a85b",
             "vice_targets": {
-              "vice-lm-p20-p25": 1350
+              "vice-lm-p20-p25": 1349
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
-            "sha256": "1fb449f2226e4f50c0fade7237329d429472e63dfede4c3f58dd4da3ea4734bf"
+            "sha256": "881f68525df8895fd146d2c49fb4fafb39295f85e8a5d1a29fcd756c545dc745"
           }
         }
       }

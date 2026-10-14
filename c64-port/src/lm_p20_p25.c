@@ -10,6 +10,7 @@
 #include "agc_image_ops.h"
 #include "agc_channel_ops.h"
 #include "rtb_angles.h"
+#include "lm_integration_moves.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -10868,7 +10869,7 @@ static enum exec_status r51315(apollo_overlay_state *s,p66_bias_io *io){
  switch(lmi_bov(s)){case LMI_BOV_NONE:break;case LMI_BOV_GOTO:
    lmi_goto(s);
    return EXEC_OK;
- case LMI_BOV_RTB:lmi_rtb(s);return EXEC_OK;
+ case LMI_BOV_RTB:lmi_rtb(s);if(lm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 24,3317 */
@@ -55607,4 +55608,4 @@ const lm_p20_p25_point lm_p20_p25_points[LM_P20_P25_POINTS]={
  {27773,0}
 };
 const agc_word lm_p20_p25_cadr_words[LM_P20_P25_CADR_WORDS]={01757,03675};
-const agc_word lm_p20_p25_externals[LM_P20_P25_EXTERNALS]={04364,04616,04631,04635,04640,04645,04674,04707,04713,05032,05033,05072,05105,05122,05126,05146,05155,05165,05173,05203,05221,05224,05261,05270,05277,05327,05353,05464,05472,05504,05516,05567,06001,06027,06477,06737,06741,06742,07532,021724,057753,066570};
+const agc_word lm_p20_p25_externals[LM_P20_P25_EXTERNALS]={04364,04616,04631,04635,04640,04645,04674,04707,04713,05032,05033,05072,05105,05122,05126,05146,05155,05165,05173,05203,05221,05224,05261,05270,05277,05327,05353,05464,05472,05504,05516,05567,06001,06027,06477,06737,06741,06742,07532,021724,066570};

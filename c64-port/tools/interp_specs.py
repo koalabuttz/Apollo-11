@@ -4103,9 +4103,12 @@ SPECS = {
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
                 'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
                 'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},
+                # BOVB TCDANZIG (P20-P25 3216): TC DANZIG, natively (#414);
+                # the word is ENDT(X) in TIME_OF_FREE_FALL.
+                'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'},
                 'NORMUNX1': None, 'READCDUD': None},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_integration_moves.c'],
         # INDEX MPAC; TC +1 after LPS20.2: within or beyond 400 n.m.
         'tc_tables': {'P20LEM1+13': 2, 'R22LEM12+20': 3, 'R22LEM2+11': 2, 'LRVEL+3': 5},
         'basic_fixed_index': {'HFLSHBIT': [0, -1]},   # (ONLITES, HLIGHT: H or V)

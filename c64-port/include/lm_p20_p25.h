@@ -13,7 +13,7 @@ extern const agc_routine_table lm_p20_p25_interpretive,lm_p20_p25_basic;
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_p20_p25_point;
 #define LM_P20_P25_POINTS 998u
 #define LM_P20_P25_CADR_WORDS 2u
-#define LM_P20_P25_EXTERNALS 42u
+#define LM_P20_P25_EXTERNALS 41u
 #define LM_P20_P25_FIRST 2378u
 #define LM_P20_P25_LAST 27775u
 extern const lm_p20_p25_point lm_p20_p25_points[LM_P20_P25_POINTS];
