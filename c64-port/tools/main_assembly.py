@@ -15,7 +15,7 @@ checks that
   is attributed to exactly one include, and the words equal the rope.
 It writes build/main-assembly-<lm|cm>.json: per include, in order, the
 checked-in file, the assembler's file name, the fixed words it emits (count,
-banks, runs, a 32-bit sum) and its coverage entry's status; and the native
+banks, runs, a 32-bit sum); and the native
 manifest src/main_manifest.c (--check: fail if that file is out of date).
 """
 import argparse
@@ -125,7 +125,9 @@ def mission_report(mission):
     checksums = sorted(fixed_address(f'{b},{a}') for _, b, a in
                        re.findall(r'Bugger word ([0-7]{5}) at ([0-7]{2}),([0-7]{4})\.', listing))
     assert len(checksums) == 36 and not set(checksums) & set(seen), mission
-    coverage = {e['path']: e.get('status') for e in json.loads((R / 'docs/port-coverage.json').read_text())['files']}
+    # (Every include has a coverage entry; its status is not recorded here, so
+    # a later certificate flip leaves the source map as it is.)
+    coverage = {e['path'] for e in json.loads((R / 'docs/port-coverage.json').read_text())['files']}
     rows = []
     for n, f, t in zip(ours, files, theirs):
         ws = words[t]
@@ -140,7 +142,8 @@ def mission_report(mission):
                      'erratum': n != f, 'words': len(ws), 'banks': [f'{b:02o}' for b in banks],
                      'first': f'{ws[0][0]:05o}' if ws else None, 'last': f'{ws[-1][0]:05o}' if ws else None,
                      'sum32': sum(w for _, w in ws) & 0xffffffff,
-                     'coverage_status': coverage[f'{mission}/{f}'], 'runs': runs})
+                     'runs': runs})
+        assert f'{mission}/{f}' in coverage, f
     return {'source_path': f'{mission}/MAIN.agc', 'source_sha256': hashlib.sha256(main.read_bytes()).hexdigest(),
             'assembled_main_sha256': hashlib.sha256((work / 'MAIN.agc').read_bytes()).hexdigest(),
             'rope_sha256': hashlib.sha256(rope).hexdigest(), 'includes': len(rows),

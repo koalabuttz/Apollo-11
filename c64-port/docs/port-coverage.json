@@ -2791,7 +2791,7 @@
       "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
       "bytes": 3545,
       "lines": 99,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2803,7 +2803,7 @@
           "verification": "docs/MAIN-ASSEMBLY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2819,7 +2819,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/main-assembly/main-assembly-source-map.json",
-            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+            "sha256": "750ef17a9f55ad210e93edd4297c501f865ba779b259082e70362c665ef3c247"
           },
           "independent_assembly_comparison": {
             "path": "evidence/main-assembly/main-assembly-proof.json",
@@ -2835,6 +2835,10 @@
             "vice_targets": {
               "vice-main-assembly": 177
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
           },
           "c64_branch_outcomes": {
             "path": "docs/MAIN-ASSEMBLY.md",
@@ -4008,6 +4012,14 @@
           ],
           "scope": "All original emitted executable and data words, all documented entry and numerical/return paths; source line312 positive-zero return unreachable from documented +/-3 AX input. Producer ownership, live scheduling and external continuation bodies remain application work.",
           "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_powered_subs.c",
+            "include/cm_powered_subs.h"
+          ],
+          "scope": "The whole file: CDUTRIG, CD*TR*G, CDUTRIGS, CD*TR*GS, QUICTRIG, NBSM, the SMNB/NBSM interface routines, AX*SR*T and SMCDURES, basic and interpretive (cm_powered_subs_basic, cm_powered_subs_interpretive), and the SINESLOC and INDEXI constants.",
+          "verification": "docs/CM-POWERED-SUBS.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4045,6 +4057,53 @@
               "path": "evidence/cm-powered-file-proof.json",
               "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (cm_powered_subs_interpretive, at NEWOPS with LOC there): 23,3477 CDUTRIG, 3502, 3503 CD*TR*G, 3506, 3606 NBSM, 3617, 3621 CDU*SMNB, 3624 TRG*SMNB, 3632, 3634 CDU*NBSM, 3637 TRG*NBSM, 3644 *SMNB*, 3646 *NBSM*, 3742 SMCDURES, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3610, 3613, 3615, 3745, 3750, 3751, 3753, 3754, 3756, 3760, 3762, 3765, 3767, 3770, 3771; a quarter of the cases have NEWJOB positive). Basic (cm_powered_subs_basic): 3500, 3504 (after EXIT), 3530, 3536, 3546 (CD*TR*GS after CDULOGIC, COSINE and SINE), 3555 QUICTRIG, 3566, 3575 (after SPSIN, SPCOS), 3622, 3625, 3635, 3640, 3645, 3647 (after EXIT), 3627, 3642 (after MPACVBUF), 3676, 3714 (AX*SR*T after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); NBSM's S1 an erasable address of three angles. Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "23,3732 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; 36 cases with DEXDEX +1 and BUF 0 take the -0 exit in yaAGC and natively. The oracle executed the other 131 basic instructions and read all 47 interpretive words (evidence/cm-powered-subs/cm-powered-subs-closure.json).",
+          "data_validity": "SINESLOC (ADRES SINCDU) and INDEXI (4, 2, 0, 4) are read as the original constants: SINESLOC by CA, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
+        },
+        "external_continuations": [
+          "CDULOGIC, COSINE and SINE through USPRCADR, which return to this file's registered return points",
+          "SPSIN and SPCOS (QUICTRIG)",
+          "MPACVBUF and DMPSUB (AX*SR*T)",
+          "The interpreter (INTPRET, NEWOPS) and the callers' returns (TC TEM2, TC A, TC RTNSAVER, RVQ)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-source-map.json",
+            "sha256": "15a5f917ba391ba99ab227be48be6cc3caeccdc501e9d91329626756a174b226"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
+            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-host.log",
+            "sha256": "2812bfc1dad19cc97404e68b22c2295772203a9dbc98d0a4eb487b69db0e4df8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-vice.log",
+            "sha256": "a5b7f4fab0046f10225c3238c4c46fd510b32d631beba50efba2699ef4cc9248",
+            "vice_targets": {
+              "vice-cm-powered-subs": 74
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
+            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-closure.json",
+            "sha256": "e90a9feeea3d6625cb213913ecb7874bff9170082473f6bb60b50b3f0ebfd6fe"
           }
         }
       }
@@ -4217,6 +4276,14 @@
           ],
           "scope": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
           "verification": "docs/COMANCHE-RCS-MATRIX.md"
+        },
+        {
+          "native_files": [
+            "src/cm_rcs_dap_exec.c",
+            "include/cm_rcs_dap_exec.h"
+          ],
+          "scope": "The whole file: AMBGUPDT and the returns after its four trig calls (cm_rcs_dap_exec_basic), and the QUADANGL constant.",
+          "verification": "docs/CM-RCS-DAP-EXEC.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4246,6 +4313,51 @@
               "path": "evidence/cm-rcs-matrix-proof.json",
               "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_rcs_dap_exec_basic at its original address: AMBGUPDT (22,3447, the job the RCS DAP starts with 2CADR AMBGUPDT) and the returns after TC SPSIN2, SPCOS2, SPCOS1 and SPSIN1 (22,3457, 22,3462, 22,3470, 22,3501). Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB not +0, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "None: the oracle executed all 32 instructions of the file (evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json).",
+          "data_validity": "QUADANGL (DEC 660, 7.25 degrees) is read as the original constant by CAF."
+        },
+        "external_continuations": [
+          "SPSIN and SPCOS (SPSIN1/2, SPCOS1/2), which return to this file's registered return points",
+          "ENDOFJOB (the Executive)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-source-map.json",
+            "sha256": "7b2642c1b7d52fb4bd090c990804b3a5a03dc4ba0dbdb9b8dd4408623ac67618"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-host.log",
+            "sha256": "f71b62d4e17f7a3f01ba821c417201286f1121a14f7fc27a009a85a631dee95d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-vice.log",
+            "sha256": "befa7dd4d357bdccbc75d0acded3479440ba76371225348c913184fb25bcafe1",
+            "vice_targets": {
+              "vice-cm-rcs-dap-exec": 13
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json",
+            "sha256": "7ff97e0f04ddc290b93c735106c15225321ff7759982feb7bde30b44e1eec76a"
           }
         }
       }
@@ -9209,7 +9321,7 @@
       "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
       "bytes": 3815,
       "lines": 91,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9221,7 +9333,7 @@
           "verification": "docs/MAIN-ASSEMBLY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9237,7 +9349,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/main-assembly/main-assembly-source-map.json",
-            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+            "sha256": "750ef17a9f55ad210e93edd4297c501f865ba779b259082e70362c665ef3c247"
           },
           "independent_assembly_comparison": {
             "path": "evidence/main-assembly/main-assembly-proof.json",
@@ -9253,6 +9365,10 @@
             "vice_targets": {
               "vice-main-assembly": 177
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
           },
           "c64_branch_outcomes": {
             "path": "docs/MAIN-ASSEMBLY.md",

@@ -37,8 +37,9 @@ CORE = {'lm': ['src/lm_interp_core.c'] + CORE_SRC, 'cm': ['src/cm_interp_core.c'
 
 
 def link_core(cc, m, prg, sources, library, ext=False):
-    """The compact interpreter as job-slot module $0A01 (link_module's flags
-    without its table wrapper); with ext, its cold math bodies in the $D000
+    """The compact interpreter as job-slot module $0A01 (link_module's flags,
+    the resident's fixed records and interrupt count among them, without its
+    table wrapper); with ext, its cold math bodies in the $D000
     extension (platform/c64/interp_ext.ld)."""
     xt = ['-DINTERP_EXTENSION=1'] if ext else []
     xl = ['-T', 'platform/c64/interp_ext.ld'] if ext else []
@@ -47,7 +48,8 @@ def link_core(cc, m, prg, sources, library, ext=False):
            '-T', 'platform/c64/overlay_v2_slot_job.ld', '-T', 'platform/c64/overlay_v2_payload.ld', *xl,
            f'-Wl,--gc-sections,--defsym=__ov2_slot=0,--defsym=__ov2_mission={1 if m == "lm" else 2},'
            f'--defsym=__ov2_id={0x0A01},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors=1,'
-           f'-Map,{prg}.map', *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt', '-o', prg]
+           f'-Map,{prg}.map', *F.CHANNELS[m], *sources, 'platform/c64/overlay_v2_entry.S', '-lc', library, '-lcrt',
+           '-o', prg]
     r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
     if r.returncode:
         over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", r.stderr)]

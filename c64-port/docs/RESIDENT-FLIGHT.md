@@ -33,8 +33,11 @@ reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
 (`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
 `rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
 `cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
-values yaAGC starts with. The service table must end at or below $6FBE (63
-entries); the linker script asserts it. One mission's resident is:
+values yaAGC starts with. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+`ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
+(the interpreter) can return to the step when an interrupt arrives. The
+service table must end at or below $6FBC (62 entries); the linker script
+asserts it. One mission's resident is:
 
 | Component | Sources |
 |---|---|
@@ -236,10 +239,10 @@ about 0.3 KB.
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
 | Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,508 | 1,525 |
-| IRQ entry (saves and restores $01) | 26 | 26 |
+| IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
 | C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
-| **Resident, $0801 to the end of bss** | **24,316** | **24,022** |
-| Free below the service table (of 26,367) | 2,051 | 2,345 |
+| **Resident, $0801 to the end of bss** | **24,314** | **24,020** |
+| Free below the service table (of 26,367) | 2,053 | 2,347 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,196 | 4,168 |
 
