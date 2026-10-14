@@ -99,6 +99,12 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {812u, 0xec3f6ba1u},
 };
 #endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_lm
+static const struct { uint32_t n, hash; } lanec_frozen[] = {
+    {20u, 0x0becc740u},
+    {24u, 0xf9bcaa77u},
+};
+#endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_proceed_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {1576u, 0xa86a02dcu},
@@ -657,8 +663,6 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_admission_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {20u, 0x0becc740u},
-    {24u, 0xf9bcaa77u},
     {992u, 0xd2a0d68fu},
 };
 #endif

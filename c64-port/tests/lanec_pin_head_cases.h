@@ -9,7 +9,7 @@
  * routine and the tables it calls, run from *s until Z reaches stop. */
 enum exec_status lanec_pin_chain(apollo_overlay_state *, lanec_io *, enum lanec_mission, uint16_t stop, uint16_t *steps);
 
-/* A state at bank,point (mission m) where the original gets to: a case of
+/* A state at bank,point (mission m; bank ignored for fixed-fixed 04000-07777) where the original gets to: a case of
  * src (the composite the head replaces) that src accepts, entered there or
  * run through the Pinball routines until it arrives. Tries `tries` cases
  * from number n on; 0 when none arrives (*s and *io are then junk). */

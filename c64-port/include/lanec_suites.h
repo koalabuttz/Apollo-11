@@ -10,6 +10,7 @@ extern const lanec_suite lanec_suite_pin_head_load;
 extern const lanec_suite lanec_suite_pin_head_lamp;
 extern const lanec_suite lanec_suite_pin_head_request;
 extern const lanec_suite lanec_suite_pin_head_proceed;
+extern const lanec_suite lanec_suite_pin_head_nvsub;
 extern const lanec_suite lanec_suite_pin_key_labels;
 extern const lanec_suite lanec_suite_pw_blanksub;
 extern const lanec_suite lanec_suite_pw_decimal_time_consumer;

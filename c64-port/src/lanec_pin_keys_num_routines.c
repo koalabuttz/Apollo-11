@@ -8,23 +8,23 @@
 #include "lanec_pin_gaps.h"
 #include "lanec_pin_keys.h"
 
-static const lanec_pin_dispatch try51[2] = { lanec_pin_keys_num, 0 };
-static enum exec_status try51_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_lm(p, s, v, try51); }
-static enum exec_status try51_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_cm(p, s, v, try51); }
 static const lanec_pin_dispatch try52[2] = { lanec_pin_keys_num, 0 };
 static enum exec_status try52_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_lm(p, s, v, try52); }
 static enum exec_status try52_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_cm(p, s, v, try52); }
+static const lanec_pin_dispatch try53[2] = { lanec_pin_keys_num, 0 };
+static enum exec_status try53_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_lm(p, s, v, try53); }
+static enum exec_status try53_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_cm(p, s, v, try53); }
 static const agc_routine_entry lm_entries[4] = {
-    { 32831u, try52_lm },   /* 40,2077 */
-    { 32881u, try51_lm },   /* 40,2161 */
-    { 32891u, try51_lm },   /* 40,2173 */
-    { 32893u, try51_lm },   /* 40,2175 */
+    { 32831u, try53_lm },   /* 40,2077 */
+    { 32881u, try52_lm },   /* 40,2161 */
+    { 32891u, try52_lm },   /* 40,2173 */
+    { 32893u, try52_lm },   /* 40,2175 */
 };
 const agc_routine_table lanec_pin_keys_num_lm_routines = { lm_entries, 4u };
 static const agc_routine_entry cm_entries[4] = {
-    { 32768u, try52_cm },   /* 40,2000 */
-    { 32818u, try51_cm },   /* 40,2062 */
-    { 32828u, try51_cm },   /* 40,2074 */
-    { 32830u, try51_cm },   /* 40,2076 */
+    { 32768u, try53_cm },   /* 40,2000 */
+    { 32818u, try52_cm },   /* 40,2062 */
+    { 32828u, try52_cm },   /* 40,2074 */
+    { 32830u, try52_cm },   /* 40,2076 */
 };
 const agc_routine_table lanec_pin_keys_num_cm_routines = { cm_entries, 4u };

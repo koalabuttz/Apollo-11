@@ -70,7 +70,8 @@ FAMILIES = {
                 # through other routines in one C call (docs/LANEC-PIN-HEADS.md)
                 heads={'load': ('load_request', 'load_complete'), 'lamp': ('lamp_lifecycle',),
                        'request': ('operator_request', 'operator_schedule'),
-                       'proceed': ('load_control',)},
+                       'proceed': ('load_control',),
+                       'nvsub': ('nv_admission', 'nv_consumer')},
                 # modules no routine tries (the rest of the try-list and the heads accept
                 # their states; their suites stay as host tests of the composite)
                 dropped=()),

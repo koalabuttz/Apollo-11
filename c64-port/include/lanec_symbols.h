@@ -965,6 +965,11 @@
 #define LANEC_LM_KILMONON 04204u /* KILMONON F fixed-fixed/unswitched */
 #define LANEC_LM_RECAL1 03552u /* RECAL1 F 40 */
 #define LANEC_LM_RECAL1_BANK 040u
+#define LANEC_LM_NVTEMP 0123u /* NVTEMP E fixed-fixed/unswitched */
+#define LANEC_LM_MONSAVE1 01021u /* MONSAVE1 E fixed-fixed/unswitched */
+#define LANEC_LM_MONSAVE2 01022u /* MONSAVE2 E fixed-fixed/unswitched */
+#define LANEC_LM_NVQTEM 01037u /* NVQTEM E fixed-fixed/unswitched */
+#define LANEC_LM_NVSUBCOM 04170u /* NVSUBCOM F fixed-fixed/unswitched */
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -1857,4 +1862,9 @@
 #define LANEC_CM_KILMONON 04220u /* KILMONON F fixed-fixed/unswitched */
 #define LANEC_CM_RECAL1 03457u /* RECAL1 F 40 */
 #define LANEC_CM_RECAL1_BANK 040u
+#define LANEC_CM_NVTEMP 0123u /* NVTEMP E fixed-fixed/unswitched */
+#define LANEC_CM_MONSAVE1 01021u /* MONSAVE1 E fixed-fixed/unswitched */
+#define LANEC_CM_MONSAVE2 01022u /* MONSAVE2 E fixed-fixed/unswitched */
+#define LANEC_CM_NVQTEM 01037u /* NVQTEM E fixed-fixed/unswitched */
+#define LANEC_CM_NVSUBCOM 04204u /* NVSUBCOM F fixed-fixed/unswitched */
 #endif
