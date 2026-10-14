@@ -3594,6 +3594,7 @@ SPECS = {
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'trusted_image': True,
         'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
@@ -3610,19 +3611,16 @@ SPECS = {
                     'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
                     'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
-                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
+                    'VNPOOH'],  # (P30_P37, P32-P33 and P34-P35 call it: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
                       'ENDEXT': None, 'ENDMARK': None,
                       'VNPOOH': 0},
-        # VNPOOH switches FBANK in basic code (XCH FBANK), which the compiled
-        # basic code does not model yet: its 15 words stay with the original.
-        'outside': {'VNPOOH': 15},
         'noreturn': ['POSTJUMP'],
         'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
         'resume_orphans': True,
-        'partial': {'cm': 'VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet'},
         # SGNAGREE (RT8_OP_CODES' TPAGREE) has no native routine yet: the
         # RTB ends the routine there. DPMODE is src/rtb_modes.c.
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
@@ -3632,7 +3630,16 @@ SPECS = {
         # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
         # (moon), as SELECTMU's AXC,1 sets it.
         'fixed_index': {'MUTABLE': [2, 10]},
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        # VNPOOH's way back (VNBANK-1 on proceed, VNBANK+1 after a
+        # recycle): TS FBANK puts TBASE5 back in FB and TC RTRN runs RTRN,
+        # the caller's Q. They hold one of this file's calls (bank 35):
+        # RTRN (E4,1767 as the routine names it, 1767 under the case's EB,
+        # so each EB's word).
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   **{lab: {'01063': [0o72000],
+                            **{'0%o' % (eb * 0o400 + 0o367): [0o2006, 0o2072, 0o2150, 0o2756, 0o2777]
+                               for eb in range(8)}}
+                      for lab in ('VNBANK-1', 'VNBANK+1')}},
         'target': 'tests/cm_p34_p35_target.c',
         'edge_cases': True,
         'resume_keys': True,
