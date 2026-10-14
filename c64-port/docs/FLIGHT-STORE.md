@@ -369,7 +369,8 @@ port) runs one mission:
 3. **Lockstep timing.** A native routine has no clock, so each call is
    checked by running yaAGC from the same before-state until it reaches the
    routine's continuation with equal erasable memory (024-031 and Z
-   excepted; a RESUME boundary with SubstituteInstruction set counts). On a
+   excepted; A, L and Q at 16 bits; a RESUME boundary with
+   SubstituteInstruction set counts). On a
    match the native side takes yaAGC's timers 024-031, channels 3/4, channel
    13 bit 15 and the interrupt requests raised up to the match. On a
    mismatch the routine is reported and the timing comes from yaAGC's first
@@ -394,10 +395,71 @@ port) runs one mission:
    `036377` and `057777` for IMU operate, PGNCS control and AUTO, so
    DAPIDLER starts the DAP); `FLIGHT_POKE=CS:ADDR=VALUE,...` sets erasable
    words at the first sample point at or after CS centiseconds (e.g.
-   `5000:035=02000` moves CDUY). The reference keeps up to 8,191
-   centiseconds.
+   `5000:035=02000` moves CDUY); `FLIGHT_LOAD=CS:FILE,...` sets the
+   erasable words of a load file (octal `ADDR VALUE` lines, `#` comments;
+   tools/flight_scenarios/) the same way; `FLIGHT_CH32` and `FLIGHT_CH33`
+   set those input channels as `FLIGHT_CH30` does. In the keys argument,
+   `@CS` holds the next key until CS centiseconds (keys otherwise go every
+   half second from 2 s). The reference keeps up to 32,767 centiseconds.
+   `FLIGHT_ENGINE=KG` (LM) adds a minimal descent engine, the same on both
+   sides at each sample point: from ENGONFLG it thrusts at 10% (373
+   throttle bits of 12.53 N), follows each throttle command (PSEUDO55 when
+   TTHROT changes) up to FMAXPOS, burns KG kilograms down at DPSVEX, and
+   adds its velocity to PIPAX-Z (1 cm/s a count) along body X from CDUY
+   and CDUZ. No attitude dynamics: while it burns, CDUX-Z are set to the
+   DAP's desired angles CDUXD-ZD. `FLIGHT_AERO=B` (CM) adds drag and lift
+   for a capsule of ballistic coefficient B kg/m^2 and L/D 0.3: while
+   SERVICER runs and the CM is below 140 km, each sample point takes the
+   trajectory from the AGC's own RN and VN (exact PIPAs make its
+   navigation the truth), puts drag (an exponential atmosphere, 6.7 km
+   scale height, against the earth-relative velocity) and lift turned by
+   the commanded roll ROLLC into PIPAX-Z (5.85 cm/s a count, through
+   REFSMMAT). No attitude dynamics: while P62 waits for the maneuver to
+   entry attitude (P63FLAG +1), CDUX-Z are set to the desired angles
+   THETAD.
 
-9. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
+9. **Flight scenarios** (tools/flight_scenarios/, `FLIGHT` in
+   tools/flight_host_differential.py). `lm-p63-descent`: lm_p63.py writes
+   lm-p63.load, a synthetic but self-consistent P63 start loaded at 20 s
+   (state vector in a 15 x 110 km descent orbit, REFSMMAT, Tranquility
+   RLS, braking and approach targets, ignition criteria, mass). With the
+   IMU operating, PGNCS, AUTO, auto throttle and the LR antenna in position
+   1, the keys run V37E63E, proceed at the TIG display, ENTER on fine align
+   (R51), proceed and then ENTER on the attitude maneuver (R60), and
+   proceed on V99N62: ignition at 146 s, SERVICER, LUNLAND and QUADGUID
+   every 2 s from 172 s. Without an engine DVMON flashes V97 (thrust fail).
+   `lm-p63-descent-thrust` adds `FLIGHT_ENGINE=15100`: DVMON passes and the
+   LLGE throttles and steers the braking phase (yaAGC alone reaches P64 at
+   787 s and 4,000 ft at 900 s). Both run under scaled time x1 with
+   `FLIGHT_SWAP_MCT=0` (the DAP pinned): unscaled, yaAGC's TIME3 can tick
+   between WAITLIST's CS TIME3 and XCH TIME3, which a native routine
+   cannot match (LST1 one count apart from 0.63 s on with the IMU
+   operating); with 20 ms swaps the DAP's ~40 loads a second leave the CPU
+   no idle time, and no key is taken.
+   On base df172441: `lm-p63-descent` runs 1,127,577 native routines in
+   250 s (154,791 bridged instructions) and `lm-p63-descent-thrust`
+   1,276,118 in 300 s (252,398 bridged), both in P63 at the end. Each has
+   8 routines yaAGC did not match, all compiled interpretive ones
+   (INTEGRATION_INITIALIZATION, GIMBAL_LOCK, KALCMANU_STEERING) leaving Q
+   without the sign extension yaAGC gives it (040000 for 0140000), and 75
+   unregistered or refused points, 47 of them in INTERPRETER.agc.
+   `cm-entry`: cm_entry.py writes cm-entry.load, a synthetic lunar-return
+   entry loaded at 20 s (CSM state vector 150 s before an entry interface
+   at 400,000 ft, 11.03 km/s and -6.5 degrees; REFSMMAT with Y along the
+   orbit normal, as S61.1 checks; splash point 2,400 km downrange; EMS
+   altitude, trim angle and L/D pads). With the IMU operating and
+   `FLIGHT_AERO=355`, the keys run V37E61E and proceed through P61 (N61,
+   N60, N63) and P62 (separation request V50N25 00041, then N61); P63
+   senses 0.05 g and P64 and P67 fly the roll. yaAGC alone: P63 at 99 s,
+   P64 at 204 s, P67 at 306 s, peak 6.7 g, and at drogue conditions
+   (470 s, 24 km, 650 m/s) N66 shows about 1 nm crossrange and 2 nm
+   downrange error. On base 4f0e3d4a the native run (32,000 cs, scaled x1)
+   takes 1,432,112 routines (11,557 bridged instructions) and is in P67
+   at the end; 1 routine yaAGC did not match (INTEGRATION_INITIALIZATION's
+   compiled interpretive Q, as above) and 16 unregistered or refused
+   points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
+
+10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
    `tools/flight_host_differential.py` builds a local engine variant whose
    `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
@@ -405,7 +467,8 @@ port) runs one mission:
    yaAGC's cycle counter; unset, the variant is the unchanged engine. The
    AGC clock then runs only as the flight resident runs it: a modeled C64
    wall clock advances by each span's AGC machine cycles times K, plus
-   20 ms for each module swap (the VICE load cost), each optionally
+   20 ms for each module swap (the VICE load cost; `FLIGHT_SWAP_MCT`
+   sets it in AGC machine cycles, 1,707 by default), each optionally
    jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
    D × 10 ms of it, and at each native boundary at most LAG of them become
    `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged

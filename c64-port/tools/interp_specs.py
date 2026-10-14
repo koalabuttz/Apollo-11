@@ -174,6 +174,42 @@ def cdutodcm_states():
     return out
 
 
+def integration_joint():
+    """Flight values of the integration erasables that only mean something
+    together or at one value (review #165): TDEC = TET (the last pass of an
+    integration, DT/2COMP +0), UPSVFLAG +0 (UPDATE_PROGRAM's normal
+    INTWAKEU) and +-2, MODREG +0 and 27 (P27 running), and a small ALPHAV
+    after RECTIFY. One set per case, in half of every routine's cases."""
+    out = []
+    for hi, lo in ((0, 0), (0o1234, 0o4567), (0o37777, 0o37777), (ones(-0o1234), ones(-0o4567))):
+        out.append({'TDEC': hi, 'TDEC+1': lo, 'TET': hi, 'TET+1': lo})
+    out += [{'UPSVFLAG': v} for v in (0, 2, ones(-2))]
+    out += [{'MODREG': v} for v in (0, 0o27)]
+    for v in ((0, 3, 0, ones(-5), 0, 1), (0, 0o40, ones(-0o20), 0, 0, 0o100), (0, 1, 0, 0, 0, 0)):
+        out.append({'ALPHAV+%d' % k: x for k, x in enumerate(v)})
+    return out
+
+
+def ddv_majors_joint():
+    """COMTERM's DDV ALPHAM with the divisor's major part equal to or one
+    above the dividend's (lm_interp_orders.c's near-equal-majors steps after
+    MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below the
+    other's, DVOVF), signs varied (each minor part of either sign, for the
+    sign-agreement fold), MODE DP. Otherwise only long 11,2606-2620 runs
+    reach them. Half the cases keep the random states."""
+    sgn = lambda v, x: v if x > 0 else ones(-v)
+    sets = []
+    for hi in (0o1, 0o1234, 0o17777, 0o30000):
+        for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
+            for d in (0, 1):
+                for sm in (1, -1):
+                    for sa in (1, -1):
+                        for ml in (sm, -sm):
+                            for sl in (sa, -sa):
+                                sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, ml), '0163': 0,
+                                             'ALPHAM': sgn(hi + d, sa), 'ALPHAM+1': sgn(alo, sl)})
+    return sets + [{}] * len(sets)
+
 
 # Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
 # +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
@@ -282,6 +318,12 @@ ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 
 # A as a sine or cosine across its range, +-0 in about a fifth of the
 # cases (16-bit -0).
 A_PM0 = [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777) for v in (k, 0o177777 - k)]
+
+# NVSUB's return (TC MPAC +1) in Comanche055 EXTENDED_VERBS: the Q
+# SETXTACT saved, the word after one of the TC TESTXACT (the file's own,
+# XACT0's TC SETXTACT and UPDATE_PROGRAM's at 43,3736).
+NVSUB_RETURNS = [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570,
+                 0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202, 0o3737]
 
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
@@ -427,7 +469,31 @@ SPECS = {
         # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
         'index_carry16': True,
         'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 32,
+    },
+    # Lane D1: Luminary099 ASCENT_GUIDANCE, the whole file (basic and
+    # interpretive) as routines at its original addresses.
+    'lm-ascent': {
+        'missions': ('lm',),
+        'file': {'lm': 'ASCENT_GUIDANCE.agc'},
+        'base': {'lm': 'lm_ascent'},
+        'symbol': {'lm': 'lm_ascent'},
+        'entries': ['@external', 'ENGOFF1', 'TERMASC'],
+        'externals': {'DOWNFLAG': 'auto', 'POSTJUMP': 1, 'UPFLAG': 'auto', 'SHORTMP': 'auto', 'POLY': 'auto', 'FINDVAC': 'auto', 'TWIDDLE': 'auto', 'TPAGREE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', },
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'noreturn': ['POSTJUMP'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'target': 'tests/lm_ascent_target.c',
+        'freeze_stride': 32,
+        'index_carry16': True,
+        'image_w': True, 'c64_cuts': True,
     },
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -909,20 +975,26 @@ SPECS = {
         # by TC Q or TCF Q+1 elsewhere (CHKPOOH, CKMODCAD, CKLFTBTS's
         # before-liftoff return at TRMATTCK +2), after CHECKMM's skip return
         # (the word after its inline mode), GOXDSPF's proceed and recycle
-        # returns, and the BANKCALL NEEDLE11 and NEEDLER2 returns.
+        # returns, and the BANKCALL NEEDLE11 and NEEDLER2 returns. Also the
+        # returns past an in-file TC +1 or TCF +1: NVSUB's normal return
+        # (NVSUBEND's NVQTEM, Q+1, at SETXTACT +6), IMUSTALL's success return
+        # (IMUZEROK +6) and GOXDSPF's data-loaded returns after V41 N20, V41 N91
+        # and V42 (ICORK2, OPTC1 +5, IMUFINEK +7).
         'entries': ['@external', 'XACTALM', 'XACT0', 'VBZERO', 'VBCOARK', 'STABLISH', 'DAPDISP',
                     'IMUZEROK+1', 'IMUCOARK+1', 'OPTCOARK+2', 'IMUFINEK+1', 'SYSTEST+1',
                     'IMUATTCK+1', 'VB64+1',
                     'CREWMANU+1', 'V89PERF+1', 'SHOWSUM+1', 'TRMATTCK+2',
                     'CKOPTVB+3', 'CHAZFOGC+3', 'VERB94+9', 'V52+3',
                     'IMUATTCK+15', 'IMUATTCK+16', 'DONOUN46+5', 'DONOUN47+5', 'NOKILL+6',
-                    'IMUATTCK+20', 'IMUATTCK+22'],
+                    'IMUATTCK+20', 'IMUATTCK+22',
+                    'SETXTACT+6', 'IMUZEROK+6', 'ICORK2', 'OPTC1+5', 'IMUFINEK+7'],
         'edge_values': True,
         'seed_counters': True,
         'cover': True,
         'ebank': 'listing',
         'index_carry16': True,
         'image_w': True,
+        'trusted_image': True,
         'superbank_bit': True,
         'channels': 'all',
         'io_channels': 'auto',
@@ -941,9 +1013,21 @@ SPECS = {
                    '43,2524': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0],
                                '3066': [0o20000, 0o60000, 0, 0o40000]},
                    '43,2552': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0]},
-                   # NVSUB's return (TC MPAC +1): the Q SETXTACT saved, the word
-                   # after one of the file's TC TESTXACT (or XACT0's TC SETXTACT).
-                   '43,2112': {'155': [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570, 0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202]}},
+                   # NVSUB's return (TC MPAC +1): NVSUB_RETURNS.
+                   '43,2112': {'155': NVSUB_RETURNS},
+                   '43,2113': {'155': NVSUB_RETURNS},
+                   # V55 (ALINTIME) after its load: MPAC 23 (V23, load the third
+                   # component) goes to UPDATIME, anything else ends the verb.
+                   '43,2334': {'0154': [23, 23, 23, 0, 22, 24]}},
+        # GOTOR21 and GOTOR23 go on after TESTXACT's NVSUB, at NVSUB's normal
+        # return (TC MPAC +1) to 43,2615. In an eighth of those cases MPAC +1
+        # is 02615 and RNDVZBIT (FLAGWRD0 bit 7), TRACKBIT (bit 5) and
+        # R23BIT (bit 9 of FLAGWRD1) choose REGR21, R23CSM or R22ALARM.
+        'joint_states': {'SETXTACT+6': [{}] * 7 + [
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o20},
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o420},
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0},
+            {'155': 0o2615, 'FLAGWRD0': 0, 'FLAGWRD1': 0o20}]},
         'index_targets': {'43,2001': 59},
         'target': 'tests/cm_extended_verbs_file_target.c',
     },
@@ -1548,6 +1632,10 @@ SPECS = {
         # Its basic code (banks 16, 20, 21, 24, 27, 42) does not fit one C64
         # diagnostic with interpretive bodies: one function per bank.
         'basic_split': True,
+        # ... nor one flight job slot: five flight modules, cut at banks 20,
+        # 21 and 27 and inside bank 24 (docs/FLIGHT-PARTS.md).
+        'flight_parts': [0o20 * 1024, 0o21 * 1024, 0o24 * 1024 + 0o2300 - 0o2000, 0o24 * 1024 + 0o3000 - 0o2000,
+                         0o24 * 1024 + 0o3300 - 0o2000],
         # RCSDAPON ends TS FLAGWRD6 / TC Q: the TS skip past the bank's
         # last word needs an overflowing A, which CS OCT60000 / MASK / AD
         # BIT14 never makes.
@@ -2064,6 +2152,104 @@ SPECS = {
         # Flight builds skip the entry checks' erasable scan (steward 10-14).
         'trusted_image': True,
     },
+    'cm-p20-p25': {
+        'missions': ('cm',),
+        'file': {'cm': 'P20-P25.agc'},
+        'base': {'cm': 'cm_p20_p25'},
+        'symbol': {'cm': 'cm_p20_p25'},
+        # Every word another file names: P20, P22 and P23 (rendezvous,
+        # orbital and cislunar navigation), R21-R23, R61 tracking, the
+        # V67/V89/V94 extended verbs, the VHF range read and the restart
+        # points the phase tables name.
+        # CNTCHK (27,2361) is a label nothing names: STQ POINTEX, then
+        # CONTCHK.
+        'entries': ['@external', 'CNTCHK'],
+        'partial': {'cm': 'the I/O channel orders and the EXTENDs before them wait for an I/O channel model: '
+                          'RANGERD\'s WAND CHAN13 and WOR CHAN13 (27,2420-2424) and VHFREAD\'s RAND CHAN33 (27,2532-2533), '
+                          'and AUTOCK\'s RXOR CHAN31 (34,3360-3361) and WOR DSALMOUT (34,3427-3430)'},
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
+                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto', 'LINUS': 'auto',
+                      'PRIOCHNG': 'auto', 'CHECKMM': 'auto', 'SWCALL': 'auto', 'SWRETURN': 'auto',
+                      'TWIDDLE': 'auto', 'CLEARMRK': 'auto', 'FALTON': 'auto', 'GENTRAN': 'auto',
+                      'NOVAC': 'auto', 'TRFAILOF': 'auto', 'TRFAILON': 'auto', 'POSTJUMP': 'auto',
+                      'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None, 'BANKJUMP': None,
+                      'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
+        'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
+        'resume_orphans': True,
+        # R61's INDEX MPAC; TC +1 picks R61END or R61C1.
+        'tc_tables': {'R61C1-2': 2},
+        # (CCS A after a MASK reaches only its first two arms; the others
+        # land on EXTEND and a channel order.)
+        'refuse_unextended': True,
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
+                'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}, 'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # EBANK= changes between routines (MRKBUF1, LANDMARK, QMIN...).
+        'ebank': 'listing',
+        # S22LOC points at one of the five 7-word mark sets in SVMRKDAT
+        # (ECADR 03537, stepped by SEVEN).
+        # MARKDATA holds VTEMP -2 (ECADR 01224) or an S22LOC; MARKSTAT a
+        # mark VAC area.
+        'all_states': {'cm': {'S22LOC': [0o3537 + 7 * k for k in range(5)],
+                              'MARKDATA': [0o1224] + [0o3537 + 7 * k for k in range(5)],
+                              'MARKSTAT': [0o401 + 0o54 * k for k in range(5)],
+                              # (star codes 1-37 and the planets 38-40 in bits 1-6)
+                              'STARCODE': [c + 0o100 * h for c in range(41) for h in (0, 1, 0o177)],
+                              'BESTI': list(range(6, 229, 6))}},
+        # LOWMEMRY's VLOAD* CATLOG,1: the star catalog, X1 -BESTI.
+        'indexed_fixed': {'CATLOG': (-228, 0)},
+        # 9DWTO6DW's counters live in the pushdown list: XTMP1 (6D, ROWDOT's
+        # shifting loop count), P (8D), I (10D), N (12D) and J (14D), each
+        # a DP-word index (even, J and I to 58, N in steps of 6), with the
+        # pushdown pointer past them.
+        'range_states': [('9DWTO6DW', 'ROWDOT3+2', {
+            'vac+006': [0o377 >> k for k in range(9)], 'vac+010': list(range(0, 42, 2)),
+            'vac+012': list(range(0, 60, 2)), 'vac+014': list(range(0, 60, 6)),
+            'vac+016': list(range(0, 60, 2)),
+            # (PUSHLOC: 18D after the three cleared vectors, 20D inside ROWDOT)
+            '0166': ['vac+022', 'vac+024']}),
+            # The W-matrix pass (9DWI=JA on) visits J 58..28, 2, 0 with N
+            # 3(58 - J) and I counting down from J: J, I near the loop's end
+            # (28 takes the I=26 and J=26 resets) keep each run short. J
+            # is 0 only on the way out (J=J-1 then 9DWI=JA's exit test);
+            # inside the loops J 0 would step past it forever.
+            ('9DWI=JA', '9DWEXITX', {'vac+012': [0, 2, 28], 'vac+014': [90, 96, 102],
+                                     'vac+016': [2, 28]}),
+            # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
+            # of 6 up to the 36 of S22NXTWI's AXT,1.
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]})],
+        # From P23.16's last check (TC INTPRET before P23.17) to its CALL
+        # LOWMEMRY the program runs with a catalog star code,
+        # as P23.16's checks leave it; LOWMEMRY with X1 6 times one.
+        'states': {'cm': dict({'LOWMEMRY': {'vac+046': list(range(6, 223, 6))},
+                               # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
+                               '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
+                               # RENDISP7 waits on TEMPOR1 (+0 loops until the
+                               # display job sets it -1 or +1).
+                               **{'RENDISP7+%d' % n: {'TEMPOR1': [0o77776, 1]} for n in range(4)}},
+                              **{'P23.17%+d' % n: {'STARCODE': list(range(1, 38))} for n in range(-1, 14)})},
+        # Loop and mid-sequence points start from the registers the file's
+        # own runs reach them with (the W-matrix and mark-data loops).
+        'flow_states': True,
+        'resume_flow': True,
+        # (an indexed erasable operand that leaves erasable is refused)
+        'index_guard': True,
+        'target': 'tests/cm_p20_p25_target.c',
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'resume_keys': True,
+        'index_states': True,
+        # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
+        # segment rows cut them at the next resume LOC.
+        'c64_segments': True,
+        'index_carry16': True,
+        'image_w': True,
+        'max_steps': 40000,
+        'freeze_stride': 192,
+    },
     'p51-p53': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'P51-P53.agc', 'cm': 'P51-P53.agc'},
@@ -2261,7 +2447,7 @@ SPECS = {
                    **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
                                           '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
         'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
-                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
         'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
@@ -2275,7 +2461,24 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint(),
+                         **{'COMTERM+%d' % n: ddv_majors_joint() for n in (26, 38, 42)}},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
+        # Arcs only runs too long for one diagnostic take come from
+        # truncated rows ('c64_cuts').
+        'c64_cuts': True,
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'lm-integration-init': {
         'missions': ('lm',),
@@ -2300,7 +2503,11 @@ SPECS = {
         # Their DANZIG resumes the RTB that called them as its pair's right
         # order: LOC its address word (this file's own RTBs; MOVEPCSM's are
         # left orders, so a word of bank 14), BANKSET its bank, INTBIT15 0.
-        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0]}
+        # EDOP: +0, or the right order a left-hand RTB leaves (MEASUREMENT_
+        # INCORPORATION's RTB GOTO and RTB CALL: 0127, 0153), which DANZIG
+        # takes at OPJUMP.
+        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0],
+                         '0023': [0, 0, 0o127, 0o153]}
                    for lab, loc, bank in (('MOVEACSM', 0o2663, 0o26000), ('MOVEPCSM', 0o2500, 0o30000),
                                           ('MOVEALEM', 0o2736, 0o26000), ('MOVEPLEM', 0o2763, 0o26000))},
         'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
@@ -2311,6 +2518,9 @@ SPECS = {
         # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
         'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
                           '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # STATEINT (from P00 and V37) runs INTSTALL under a NOVAC job: its
+        # EXIT, the stall test and GOBAC's RVQ back to the caller.
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
         'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.
@@ -2333,7 +2543,20 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint()},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'rtb-op-codes': {
         'missions': ('lm', 'cm'),
@@ -3488,7 +3711,54 @@ SPECS = {
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (No resume_flow: the CHANG2 resumes in PERIODCH's loop keep the
+        # TAU. and period pins above; a snapshot from a random TAU. loops
+        # for millions of passes.)
+        'edge_cases': True,
+        # KEPLERN's routines before PERIODCH take no edge inputs: from an
+        # edge state vector PERIODCH can loop forever in the original as
+        # well (yaAGC times out, the native run stops at max_steps).
+        'edge_skip': [('KEPLERN', 'PERIODCH')],
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
+    },
+    'lm-stable-orbit': {
+        'missions': ('lm',),
+        'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
+        'source_path': {'lm': 'STABLE_ORBIT.agc'},
+        'base': {'lm': 'lm_stable_orbit'},
+        'symbol': {'lm': 'lm_stable_orbit'},
+        # P38/P78 (stable orbit rendezvous) and P39/P79 (its midcourse), the
+        # major modes FRESH_START_AND_RESTART's tables start.
+        'entries': ['P38', 'P78', 'P39', 'P79'],
+        'externals': {'BANKCALL': 'auto', 'BLANKET': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        # GOFLASH returns to the first, second or third word after its CADR
+        # (terminate, proceed, recycle); GOFLASHR also to the fourth at once.
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'resume_keys': True,
+        # EBANK= SUBEXIT: the P38/P39 temporaries are E7 words.
+        'ebank': 7,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/lm_stable_orbit_target.c',
+        'edge_cases': True,
+        # The C64 rows are the fewest cases that take every branch arc of
+        # every traced host case (every case: 101 routines are cheap).
+        'c64_rows': 'cover',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # A CHANG2 resume starts from the state the program reaches it in.
+        'resume_flow': True,
+        'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     # Lane D2: Luminary099 AOSTASK_AND_AOSJOB (1/ACCS, the DAP's mass and
     # jet-acceleration interface, and the AOSTASK/AOSJOB offset filter), the

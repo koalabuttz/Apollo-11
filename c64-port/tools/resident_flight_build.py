@@ -55,14 +55,21 @@ MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1'
 
 @functools.lru_cache(maxsize=None)
 def _mct_data():
-    path = Path(__file__).resolve().parents[1] / 'docs/flight-mct.json'
-    return json.loads(path.read_text())['missions'] if path.exists() else {}
+    """docs/flight-routine-mct.json (tools/x86_flight_mct.py, shared with
+    the x86_64 build) by mission: 'table interp key' -> n, sum, sq, least,
+    most of the yaAGC MCT per run."""
+    path = Path(__file__).resolve().parents[1] / 'docs/flight-routine-mct.json'
+    if not path.exists():
+        return {}
+    return {m: {f'{t} {i} {k}': dict(n=n, sum=total, sq=sq, least=lo, most=hi)
+                for i, k, _median, n, total, sq, lo, hi, t in d['points']}
+            for m, d in json.loads(path.read_text()).items()}
 
 
 def mct_weight(m, tables, interp=False):
     """The work clock's weight for a module running these tables
     (platform/c64/resident_flight.h): the mean yaAGC MCT per routine run
-    over the calibration (tools/flight_mct.py, docs/flight-mct.json), of
+    over the calibration (docs/flight-routine-mct.json), of
     their basic keys (interp: their interpretive keys; tables None: every
     table's). Tables with no calibrated run take the mission's mean; no
     calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
@@ -78,10 +85,13 @@ def mct_weight(m, tables, interp=False):
     return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24
 
 
-# The work clock's weights (resident_flight.h): the trampoline's tables'.
-KERNEL_TABLES = {'lm': ['lm_kernel_routines', 'lm_kernel_job_routines', 'lm_kernel_task_routines',
-                        'lm_kernel_idle_routines', 'lm_sp_routines'],
-                 'cm': ['cm_kernel_routines', 'cm_kernel_job_routines', 'cm_kernel_idle_routines', 'cm_sp_routines']}
+# The work clock's weights (resident_flight.h): the trampoline's tables',
+# but for the Executive's idle loop (*_kernel_idle_routines, 16 MCT a run
+# against 59-83 for the others): its runs outnumber the rest 100 to 1 in the
+# calibration, and since the self-check idle module's pass takes the rest of
+# the tick (RK_MCT_IDLE) its own weight changes nothing.
+KERNEL_TABLES = {'lm': ['lm_kernel_routines', 'lm_kernel_job_routines', 'lm_kernel_task_routines', 'lm_sp_routines'],
+                 'cm': ['cm_kernel_routines', 'cm_kernel_job_routines', 'cm_sp_routines']}
 for _m in MISSION:
     MISSION[_m] += [f'-DRK_RESIDENT_MCT={mct_weight(_m, KERNEL_TABLES[_m])}u',
                     # 0x01E1-0x01E4 (WRAPPED, below), and the interpreter's per slot.
