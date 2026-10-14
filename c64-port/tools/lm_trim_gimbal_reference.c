@@ -12,7 +12,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,fb,kind;if(argc!=2)retur
  for(n=0;n<LM_TG_CASES;++n){apollo_overlay_state s;lm_flight_io io;lm_tg_case c;
   machine=baseline;lm_tg_input(&s,&io,&c,(uint16_t)n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=0;kind=LM_TG_NONE;
-  machine.InputChannel[012]=(int16_t)io.chan12;
+  machine.InputChannel[012]=(int16_t)io.hw.channel12;
   for(cycles=0;cycles<40000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);fb=(unsigned)get(4)&076000u;
     if(n%LM_TG_ENTRIES!=0u&&pc==c.stop_z&&(c.stop_fb==0177777u||fb==c.stop_fb)){kind=LM_TG_RETURNED;break;}

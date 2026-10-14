@@ -5,7 +5,7 @@
 CM_RCS_DAP_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_RCS_DAP_SRC = src/cm_rcs_dap.c tests/cm_rcs_dap_target.c $(CM_RCS_DAP_COMMON)
 CM_RCS_DAP_HDR = include/cm_rcs_dap.h tests/interp_case.h tests/cm_rcs_dap_vectors.h tests/cm_rcs_dap_c64_vectors.h
-CM_RCS_DAP_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_RCS_DAP_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-rcs-dap sanitize-cm-rcs-dap c64-cm-rcs-dap vice-cm-rcs-dap cm-rcs-dap-differential
 all: build/test-cm-rcs-dap
 test: test-cm-rcs-dap

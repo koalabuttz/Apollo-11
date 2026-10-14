@@ -5,7 +5,7 @@
 CM_BODY_ATTITUDE_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 CM_BODY_ATTITUDE_SRC = src/cm_body_attitude.c tests/cm_body_attitude_target.c $(CM_BODY_ATTITUDE_COMMON)
 CM_BODY_ATTITUDE_HDR = include/cm_body_attitude.h tests/interp_case.h tests/cm_body_attitude_vectors.h tests/cm_body_attitude_c64_vectors.h
-CM_BODY_ATTITUDE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_BODY_ATTITUDE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-body-attitude sanitize-cm-body-attitude c64-cm-body-attitude vice-cm-body-attitude cm-body-attitude-differential
 all: build/test-cm-body-attitude
 test: test-cm-body-attitude

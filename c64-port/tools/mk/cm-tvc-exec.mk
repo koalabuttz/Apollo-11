@@ -5,7 +5,7 @@
 CM_TVC_EXEC_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TVC_EXEC_SRC = src/cm_tvc_exec.c tests/cm_tvc_exec_target.c $(CM_TVC_EXEC_COMMON)
 CM_TVC_EXEC_HDR = include/cm_tvc_exec.h tests/interp_case.h tests/cm_tvc_exec_vectors.h tests/cm_tvc_exec_c64_vectors.h
-CM_TVC_EXEC_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_TVC_EXEC_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-tvc-exec sanitize-cm-tvc-exec c64-cm-tvc-exec vice-cm-tvc-exec cm-tvc-exec-differential
 all: build/test-cm-tvc-exec
 test: test-cm-tvc-exec

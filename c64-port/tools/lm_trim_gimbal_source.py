@@ -24,7 +24,7 @@ INLINE = {'gts': {0o3116, 0o3130, 0o3576, 0o3200, 0o3203, 0o3220, 0o3222, 0o3230
           'gtsqrt': {0o3460, 0o3445, 0o3451, 0o3454, 0o3461, 0o3473, 0o3507, 0o3465, 0o3467, 0o3636, 0o1752},
           'timegmbl': {0o3413, 0o3363, 0o3417, 0o3371, 0o3373, 0o3425, 0o3427, 0o3336, 0o3337},
           'acdtc12': {0o3752, 0o3757}}
-CHANNELS = {0o12: 'chan12'}
+CHANNELS = {0o12: 'channel12'}
 SITES = {'lm_interbank_sites': 'src/lm_interbank_sites.inc'}
 
 

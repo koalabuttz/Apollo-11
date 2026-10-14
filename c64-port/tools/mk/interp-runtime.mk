@@ -25,7 +25,7 @@ INTERP_CORE_FUZZ_SRC := tools/interp_core_fuzz.c src/lm_interp_runtime.c src/cm_
   src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c \
   src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c
 .PHONY: interp-runtime-check interp-runtime-differential interp-core-differential interp-runtime-size \
-  interp-core-fuzz interp-core-cycles vice-interp-core interp-flight-vice
+  interp-core-fuzz interp-core-cycles vice-interp-core interp-flight-vice interp-flight-flowed-vice
 interp-runtime-check:
 	python3 tools/interp_runtime_generate.py --check
 interp-runtime-differential: interp-runtime-check build/agc_engine_hardware_dv.o | build
@@ -55,3 +55,11 @@ vice-interp-core: build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.b
 # flight-store-vice it needs the whole store and does not gate `test`.
 interp-flight-vice: flight-store
 	python3 tools/interp_flight_test.py
+# interp-flight-flowed-vice: flowed states, not mission flight: each
+# FLIGHT_INTERP_STOP module's milestone cases run in yaAGC to every first
+# arrival at an interpreter entry point inside the file
+# (tools/interp_flight_flowed.c), those the verification interpreter keeps
+# to the contract for (tools/interp_flight_verify.c), through the flight
+# store in VICE as interp-flight-vice runs them, several boots.
+interp-flight-flowed-vice: flight-store build/agc_engine_hardware_dv.o
+	python3 tools/interp_flight_test.py --missions lm --flowed

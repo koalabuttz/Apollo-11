@@ -48,7 +48,7 @@ FLOW_INLINE = {0o2103, 0o2107, 0o2144, 0o2146, 0o2147, 0o2164, 0o2200, 0o2246, 0
                0o3146, 0o3173, 0o3236}
 INLINE = {**{f: FLOW_INLINE for f in PARTS}, 'qr_data': {0o2566}, 'jtlst_body': {0o3131, 0o3142},
           'rot_touv_body': {0o3163, 0o3171}, 'selctsub': {0o3203, 0o3204, 0o3205}}
-CHANNELS = {0o4: 'chan4', 0o5: 'chan5', 0o13: 'chan13', 0o31: 'chan31'}
+CHANNELS = {0o4: 'channel4', 0o5: 'channel5', 0o13: 'channel13', 0o31: 'channel31'}
 SITES = {'lm_interbank_sites': 'src/lm_interbank_sites.inc', 'lm_q_r_axis_sites': 'src/lm_q_r_axis_sites.inc'}
 
 

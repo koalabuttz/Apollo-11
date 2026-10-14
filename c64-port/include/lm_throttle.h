@@ -5,7 +5,8 @@
 #include "lm_flight_io.h"
 /* Luminary099 THROTTLE_CONTROL_ROUTINES (bank 31, 02216-02417) and the
  * LUNAR_LANDING_GUIDANCE_EQUATIONS FASTCHNG it calls (31,3740) as native
- * routines of the control-transfer ABI; io is lm_flight_io.
+ * routines of the control-transfer ABI; io is p66_bias_io, channel 14 the
+ * program's agc_hardware (include/lm_flight_io.h).
  *
  *   THROTTLE   31,2216  acceleration from ABDELV, then THROTTLE +3
  *   THROTTLE+3 31,2221  return saved in RTNHOLD; TC MASSMULT (AFDUMP)

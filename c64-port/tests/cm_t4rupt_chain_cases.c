@@ -42,7 +42,7 @@ static agc_word *hw_channel(agc_hardware *h,unsigned k){
   case 030:return &h->channel30;case 031:return &h->channel31;case 032:return &h->channel32;default:return &h->channel33;}}
 static agc_word *optics_channel(cch_io *io,unsigned k){
  switch(k){case 011:return &io->cm.io.channel11;case 012:return &io->cm.io.channel12;case 013:return &io->cm.io.channel13;case 014:return &io->cm.io.channel14;
-  case 030:return &cm_channels.channel30;case 031:return &cm_channels.channel31;case 032:return &cm_channels.channel32;case 033:return &cm_channels.channel33;default:return 0;}}
+  default:return 0;}}
 static const unsigned channels[9]={010,011,012,013,014,030,031,032,033};
 agc_word cch_channel(const cch_io *io,unsigned k){cch_io *v=(cch_io *)io;agc_word in=*hw_channel(&v->in,k),*o=optics_channel(v,k);
  if(*hw_channel(&v->hw,k)!=in||!o)return *hw_channel(&v->hw,k);
@@ -52,8 +52,6 @@ unsigned cch_run(apollo_overlay_state *s,cch_io *io,uint16_t n,uint16_t *steps){
  tables[0]=cm_t4rupt_core_routines;tables[1]=cm_t4rupt_imu_routines;tables[2]=cm_t4rupt_optics_basic;
  program.basic=tables;program.basic_count=3;program.hardware=&io->hw;
  cch_input(s,io,n);
- cm_channels.channel05=cm_channels.channel06=0;
- cm_channels.channel30=io->hw.channel30;cm_channels.channel31=io->hw.channel31;cm_channels.channel32=io->hw.channel32;cm_channels.channel33=io->hw.channel33;
  st=agc_transfer_run(&program,s,&io->cm,&io->cm.io.superbank,AGC_TRANSFER_NONE,CCH_MAX_STEPS,steps);
  for(i=0;i<9u;++i){agc_word in=*hw_channel(&io->in,channels[i]),*o=optics_channel(io,channels[i]);
   if(o&&*hw_channel(&io->hw,channels[i])!=in&&*o!=in)return 4u;}
