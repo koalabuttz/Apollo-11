@@ -401,10 +401,12 @@ class Compiler:
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
             self.starts[phys] = ('b', 'native entry ' + lab)
-            # (they end TC DANZIG, run here as a pair's end: a left-hand RTB,
-            # EDOP holding its pair's right order, is out of scope)
-            self.blocks[phys] = ['if(W[023])return EXEC_OUT_OF_SCOPE;',
-                                 'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+            # (they end TC DANZIG, run here as a pair's end. After a
+            # left-hand RTB, EDOP holds the pair's right order, and DANZIG
+            # takes it at OPJUMP: the routine stops at DANZIG, the caller's
+            # interpreter continuation.)
+            self.blocks[phys] = ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+                                 'if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */',
                                  '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
         self.channel_blocks = set(p for p, b in self.blocks.items() if b and any('I/O channel */' in x for x in b))
@@ -1877,7 +1879,10 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
-        c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
+        # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
+        # as STATEINT's INTSTALL runs under it.)
+        c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
+                 ' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.extend(self.image_scan())
         c.append(' return 1;')
         c.append('}')

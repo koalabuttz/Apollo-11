@@ -955,7 +955,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
           "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_cm_routines (src/lanec_di_routines.inc, 164 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains.",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains. The round trips into the mark, sleep, idle and nvdsp modules run on the C64 in di-transfer-c64m (one program per module group and mission: mark with nvdsp, sleep with idle), which refuses 38 such chains the same way. The host suite di-transfer has no C64 program of its own (with the Luminary099 Executive linked the round trip does not fit one): 705 of its 934 branch arcs are taken by the other suites' C64 rows, and the other 229 are marked host-only in the C64 record: the Executive sources (executive.c, lm_exec_*, lm_basic_*, lm_admission_image.c, p66_native.c, which run on the C64 in Lane A's Executive milestones such as vice-lm-exec-jobs), the host runner's merged LM interbank and Executive site and table set-up, and agc_classify's +0/-0 returns, which these chains reach only inside the Executive.",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -971,29 +971,30 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "55df85e92d80eefe1c4efaca6a67da053037d2af501fbe704312a5bb5e5a7d3f"
+            "sha256": "ed93ff3bd6e6139e5867c099ccb942979231bc0e7173afa529e4e2d4b5be42db"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "03270f18faa057b7a2f6d1b4e94befc59430a6d95c2e941ea11ef9e8e414a20c"
+            "sha256": "843f04327bc038400183fb0638f15484b59a273dd890d050d6ebd78797c3cc67"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "79284adba4521ea58df34459e377d13ef0d0e19bb6d4db1cbd0bab04de5be42b",
+            "sha256": "d7a7b67a85cf9e39415ea7234aaa9c2e1d0597159c2c57c3adcc7b6251b69a8b",
             "vice_targets": {
-              "vice-lanec-di-dsp": 37,
-              "vice-lanec-di-mark": 36,
-              "vice-lanec-di-play": 35,
+              "vice-lanec-di-dsp": 42,
+              "vice-lanec-di-mark": 46,
+              "vice-lanec-di-play": 36,
               "vice-lanec-di-sleep": 23,
-              "vice-lanec-di-idle": 38,
+              "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
-              "vice-lanec-di-transfer": 54,
-              "vice-lanec-di-transfer-cm": 9
+              "vice-lanec-di-transfer": 55,
+              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-c64m": 111
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-cover.json",
-            "sha256": "1c497bea4df823bc4778b9a5b80352bbecc851e9181d95fc75a5f539544ee922"
+            "sha256": "1e4a2a311fde1daf82fd1c24c752a4ce5b7de10cd4cc88f7b825037cd3c24c16"
           }
         }
       }
@@ -7294,18 +7295,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
-            "sha256": "88113e5b0826b179df4f61547698ee9655f6f3d3bee2471431c8e7cddab5fe5c"
+            "sha256": "91c7298311061dc7f17d4afbef439336b18bd54082c3643117aa95a3fe7e102a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
-            "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25"
+            "sha256": "6b6025d1f3febd0c34f3ed62c1a607a3af423dadf6c8c9710e4ee097f93b0de5"
           },
           "c64_execution_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
-            "sha256": "57806f8ceab965e221b47fb2e0d5ce621c26723b3357872022d3a2a245d56ff6",
+            "sha256": "56fa96e5bd5a6d60977f6586dfcbe35ab213356d117c02e40b0eb2756f350291",
             "vice_targets": {
-              "vice-lm-conic-compiled": 910
+              "vice-lm-conic-compiled": 522
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
+            "sha256": "88119a42842a3f752de21cdcbaa7d9053e1593580a65d1f04636f9bdfcc3dddb"
           }
         }
       }
@@ -7586,7 +7591,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. Every routine runs in bank 10 except the fixed-fixed BLANKET/ENDMARK/CLEARMRK.",
           "entry_contracts": "Each entry named in the six milestone documents (LANEC-DI-DSP, -MARK, -PLAY, -SLEEP, -IDLE, -NVDSP): every labelled entry, every compiled callee return address in the file, and in the block-translated parts every basic block start. Each is a transfer-ABI routine at its physical address in lanec_di_lm_routines (src/lanec_di_routines.inc, 165 entries, generated and checked against the listing by tools/lanec/routines.py di; fixed-fixed BLANKET/ENDMARK/CLEARMRK at 2048+(Z-04000)); LANEC_OUT_OF_SCOPE returns EXEC_OUT_OF_SCOPE. lanec_di_* is the canonical translation of this file; the older partial p66_*/cm_*/dsky_pinbranch paths are superseded (docs/LANEC-DI-TRANSFER.md).",
-          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains.",
+          "index_domains": "COPINDEX/COPMPAC 0-2 where they index the three-word PRIO/MARK/NORM tables and cells; FACEREG/TEMPOR2 0, 1 or -0; LOCCTR -1, 0 or a core-set offset keeping the indexed TS in erasable; DSPLOCK below 040000 where LINUSCHR runs; BLANKET offsets inside unswitched erasable; callers returning by TC Q from fixed memory outside the translated code. Other inputs return LANEC_OUT_OF_SCOPE with the image and I/O unchanged (suite di-refuse: 384 corrupted entry states; di-idle: 122 and di-nvdsp: 114 out-of-range COPINDEX/COPMPAC states, refused by the steps that index with them). On the C64, where each program links only the modules of one mission, di-transfer-c64 refuses 28 call chains, image and I/O unchanged, that end at an in-range point only an unlinked routine could continue; the host suite di-transfer, with every routine linked, compares those same chains. The round trips into the mark, sleep, idle and nvdsp modules run on the C64 in di-transfer-c64m (one program per module group and mission: mark with nvdsp, sleep with idle), which refuses 38 such chains the same way. The host suite di-transfer has no C64 program of its own (with the Luminary099 Executive linked the round trip does not fit one): 705 of its 934 branch arcs are taken by the other suites' C64 rows, and the other 229 are marked host-only in the C64 record: the Executive sources (executive.c, lm_exec_*, lm_basic_*, lm_admission_image.c, p66_native.c, which run on the C64 in Lane A's Executive milestones such as vice-lm-exec-jobs), the host runner's merged LM interbank and Executive site and table set-up, and agc_classify's +0/-0 returns, which these chains reach only inside the Executive.",
           "hardware_side_effects": "The file does channel I/O in two places: WITCHONE's WAND DSALMOUT writes channel 011 (clears bit 5, the KEY REL light), and OKTOPLAY/VACDSP's ROR SUPERBNK only read channel 07 into A to save the superbank with the bank. The channel 011 value is kept exactly in the carried I/O; lighting the DSKY lamp from it is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -7602,29 +7607,30 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-di-cert/lanec-di-comparison.json",
-            "sha256": "55df85e92d80eefe1c4efaca6a67da053037d2af501fbe704312a5bb5e5a7d3f"
+            "sha256": "ed93ff3bd6e6139e5867c099ccb942979231bc0e7173afa529e4e2d4b5be42db"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-di-cert/lanec-di-checks.log",
-            "sha256": "03270f18faa057b7a2f6d1b4e94befc59430a6d95c2e941ea11ef9e8e414a20c"
+            "sha256": "843f04327bc038400183fb0638f15484b59a273dd890d050d6ebd78797c3cc67"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-results.json",
-            "sha256": "79284adba4521ea58df34459e377d13ef0d0e19bb6d4db1cbd0bab04de5be42b",
+            "sha256": "d7a7b67a85cf9e39415ea7234aaa9c2e1d0597159c2c57c3adcc7b6251b69a8b",
             "vice_targets": {
-              "vice-lanec-di-dsp": 37,
-              "vice-lanec-di-mark": 36,
-              "vice-lanec-di-play": 35,
+              "vice-lanec-di-dsp": 42,
+              "vice-lanec-di-mark": 46,
+              "vice-lanec-di-play": 36,
               "vice-lanec-di-sleep": 23,
-              "vice-lanec-di-idle": 38,
+              "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
-              "vice-lanec-di-transfer": 54,
-              "vice-lanec-di-transfer-cm": 9
+              "vice-lanec-di-transfer": 55,
+              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-c64m": 111
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-cover.json",
-            "sha256": "1c497bea4df823bc4778b9a5b80352bbecc851e9181d95fc75a5f539544ee922"
+            "sha256": "1e4a2a311fde1daf82fd1c24c752a4ce5b7de10cd4cc88f7b825037cd3c24c16"
           }
         }
       }
@@ -9139,9 +9145,10 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB that ends its pair (EDOP +0), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), the MOVE* routines entered from an RTB (EDOP +0, or a left-hand RTB's right order, where the run ends at their TC DANZIG), TIME2/TIME1 and the CDUs, flight edge values (TDEC = TET, UPSVFLAG, MODREG, small ALPHAV), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area (or, at INTSTALL, INTSTALL +1 and GOBAC +1, which STATEINT runs under a NOVAC job, 0110: LOC(MPAC +6) - LOC(QPRET)), PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, INTWAKUQ at ENDOFJOB, QPRET/S1/S2 and TBASE2 (INTWAKE's saved QPRET) returns outside the file, Q a caller return, and any values of the integration erasables.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "DANZIG with EDOP holding a left-hand RTB's right order (MEASUREMENT_INCORPORATION's RTB GOTO MOVEPCSM and RTB CALL MOVEACSM), where the interpreter takes the order at OPJUMP",
           "ORBITAL_INTEGRATION (TIMESTEP and the integration loop) at NEWOPS",
           "PHASCHNG, UPFLAG, DOWNFLAG and ALARM with their inline words",
           "FINDVAC, LONGCALL, JOBSLEEP, JOBWAKE, TASKOVER, ENDOFJOB and BANKJUMP (Executive/Waitlist)",
@@ -9157,18 +9164,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "fb6d5c2fb15f4f88d653e05150ae9356248bba59a4ee839b8d3c371ce00b1ad8"
+            "sha256": "2c2bc5883407a6bc153a7534e00e5dffceba0f9bd2054d71e6ecc92d55b224c6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "03982b4c140571bed24777391fe6f1d2f165921b81c494cafdeb29b0ea1dca51"
+            "sha256": "8a11fcb8ac87c45509f15a6788f35f3c62a7f1eb05a1cc209952c5ff65a2bd6c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "baa761f1f405ff3e9e4e3f273e14710884baef682bef6c933e931e1a74d29c15",
+            "sha256": "d424916272d52862d3bb3742a76200976388667f92ffcace8a9cf2a2b351a8ae",
             "vice_targets": {
-              "vice-lm-integration-init": 434
+              "vice-lm-integration-init": 259
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
+            "sha256": "9ac7e0b0121fda20f1c5ae3e65e7d703c3f76e29e3c319b139ea2b4700bcbad8"
           }
         }
       }
@@ -10287,18 +10298,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "c438f220f5b4ef69473b146ba8d970677e6ead25004abdf95c6281be4e612762"
+            "sha256": "48af72876c3f4e9de2c6a0316da717765658ac8bb0f8e01bfa8339e52f34d025"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
-            "sha256": "2375fcef1d4efaa9524b8cb65748f10f7ce9b10f6e0bff5c83dccfd9eae4db6e"
+            "sha256": "8f6a8e34257c5bb4ccd624c67043f46a99ee6c3c6930d3441a2d3f57f02cd1c6"
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "40825c89bff7b99ba69e2ce4b288c214e00b1ab5aadd3bb797ba068b88933559",
+            "sha256": "5b07ff7c56c09c88033780c538d43a5ce8f1f0769b85dcd6a18721b07c43325f",
             "vice_targets": {
-              "vice-lm-orbital-integration": 706
+              "vice-lm-orbital-integration": 403
             }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
+            "sha256": "d3d5ee5b899e9ea47497d71f56f4001e555c1111e591f3709cdfde65753e5f7a"
           }
         }
       }
@@ -12820,8 +12835,62 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_stable_orbit.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (233 words in bank 34): P38, P78, P39 and P79 with their displays (VNDSPLY and the GOFLASH/GOFLASHR returns), the SOI and SOR options, RECYCLE, MAINRTNE, TEST3979, MAINRTN1, P39/P79A and B, PREC/TT, INTRPVP and OTHERV, as 101 routines of the control-transfer ABI compiled by tools/interp_compile.py (with a routine at the word after every DANZIG and at every display return); LOADTIME through RTB as the native rtb_angles.",
+          "verification": "docs/LM-STABLE-ORBIT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EBANK 7 entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of bank 34), NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, Q, QPRET and RTRN returns outside the file, and any values of the P38/P39 erasables (OPTION1/2, TINT, TINTSOI, DELTAR, KT, TIG, CENTANG, the flags).",
+        "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "BANKCALL with its inline CADR (AVFLAGA, AVFLAGP, P20FLGON, GOFLASH, GOFLASHR), whose returns are routines of the file",
+          "BLANKET, TCF ENDOFJOB and TCF GOTOPOOH",
+          "SELECTMU, PRECSET, S34/35.1, S3435.25, TIMETHET, PERIAPO1, SHIFTR1, VN1645, CSMPREC and LEMPREC through CALL (interpretive)",
+          "Interpreter LOADTIME through RTB (native, src/rtb_angles.c)",
+          "TC RTRN to the saved return outside the file",
+          "The interpreter exits POODOO1 and ALARM1"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
+            "sha256": "30b2038428e71e961af476d784328831fc50fcd234995e975665ee4904682f85"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-proof.json",
+            "sha256": "8fa084befdf3d6947a69122937ebe8fde36440d90c53501fbff1c7cd42251c89"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-host.log",
+            "sha256": "da36f02bb3063f3dad3db7ef77bdaf2bb55d5b2185805807379b6cca624f04eb"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-vice.log",
+            "sha256": "a906660015684a5402c1b955f9fab1e5e454f47c8491a125f85747fe7b5a6c73",
+            "vice_targets": {
+              "vice-lm-stable-orbit": 122
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
+            "sha256": "24c44da16577f113f668c2486de583ecd61d8585e97735dc5b28fcb1e08a426a"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
