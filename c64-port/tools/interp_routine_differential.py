@@ -69,6 +69,10 @@ def common(spec):
 MOS_CC = os.environ.get('MOS_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-c64-clang'))
 C64_FLAGS = ['-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']
 FLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
+# Host native runners end a case that calls exit(3) (lmi_goto_any on a cycle
+# of erasable CADRs) as a timeout row, kind 9, instead of ending the run
+# (tools/interp_routine_native.c, #224).
+WRAP = ['-DIRC_WRAP_EXIT', '-Wl,--wrap=exit']
 
 
 def logical(phys):
@@ -804,7 +808,7 @@ def build(spec_id, spec, extra=(), tag=''):
     nat = os.path.join(B, '%s-native%s' % (spec_id, tag))
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
     subprocess.run(['cc', *FLAGS, *extra, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
-                    'tools/interp_routine_native.c', '-o', nat],
+                    *WRAP, 'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -875,7 +879,7 @@ def build_edges(spec_id, spec, extra=(), tag=''):
     subprocess.run(['clang', '-std=c99', '-O0', '-g', '-no-pie', '-Iinclude', '-Itests', '-DIRC_EDGES',
                     *(['-DIRC_SITES', '-Wl,-Map,%s.map' % nat] if sites else []),
                     '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *objs,
-                    'tests/interp_case.c', spec['target'], 'tools/interp_routine_native.c', 'tools/irc_edges.c',
+                    'tests/interp_case.c', spec['target'], *WRAP, 'tools/interp_routine_native.c', 'tools/irc_edges.c',
                     '-o', nat], cwd=R, check=True)
     if sites:
         # 'site_edges' (tools/irc_edges.c): the code address ranges, from
@@ -1098,7 +1102,8 @@ def main():
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]
     if spec.get('flow_states'):
         flow_states(a.spec, spec, missions)
-    rng = random.Random('interp-routine:' + a.spec)
+    # IRC_SALT: another case set than the frozen one (audits).
+    rng = random.Random('interp-routine:' + a.spec + os.environ.get('IRC_SALT', ''))
     proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
     if a.cover_check is not None and os.path.exists(proof):
         # (The freeze's cases per routine, from the case count it froze.)
@@ -1123,6 +1128,16 @@ def main():
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
+    # A case both sides loop on (the oracle at its step limit, the native
+    # runner in lmi_goto_any's erasable-CADR cycle, kind 9) matches: the AGC
+    # loops there until the night watchman restarts it. Counted, then left
+    # out of the frozen set, as the C64 build would loop too (#224).
+    loops = {i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '9'}
+    if loops:
+        print('both sides loop (erasable CADR cycle): %d cases' % len(loops))
+        keep = [i for i in range(len(cases)) if i not in loops]
+        cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
+        write_cases(path, missions, cases)
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
     # A native run that ends refusing in a routine with an I/O channel
     # instruction waits for a channel model: counted, not compared.
@@ -1318,7 +1333,7 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
             subprocess.run(['gcc', '-std=c99', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, '-c', s, '-o', o],
                            cwd=R, check=True)
             objs.append(o)
-        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, *objs, 'tools/interp_routine_native.c',
+        subprocess.run(['gcc', '-O0', '--coverage', '-Iinclude', '-Itests', *defs, *objs, *WRAP, 'tools/interp_routine_native.c',
                         '-o', os.path.join(w, 'run')], cwd=R, check=True)
         subprocess.run([os.path.join(w, 'run'), os.path.join(w, 'cases.bin')], cwd=R, check=True,
                        stdout=subprocess.DEVNULL)
@@ -1369,7 +1384,7 @@ def edge_covers(spec, nat, path):
         subprocess.run(['clang', *flags, '-fsanitize-coverage=trace-pc-guard,trace-cmp', '-c', s, '-o', o],
                        cwd=R, check=True)
         objs.append(o)
-    subprocess.run(['clang', *flags, *objs, 'tools/irc_edge_cover.c', 'tools/interp_routine_native.c', '-o', cov],
+    subprocess.run(['clang', *flags, *objs, 'tools/irc_edge_cover.c', *WRAP, 'tools/interp_routine_native.c', '-o', cov],
                    cwd=R, check=True)
     out, dense = [], {}
     for r in run([cov, path, 'cover']):
@@ -1658,7 +1673,7 @@ def host_arcs(spec_id, spec, missions, cases):
     d = os.path.join(B, '%s-cover' % spec_id)
     exe = c64_row_cover.build(d, [*cover_sources(spec), 'tools/interp_routine_native.c'],
                               [f for f in FLAGS if f != '-O2'] + ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)] +
-                              cut_flags(spec))
+                              cut_flags(spec) + WRAP)
     one = os.path.join(d, 'cases')
     os.makedirs(one)
 
