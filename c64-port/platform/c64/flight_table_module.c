@@ -76,6 +76,17 @@ static agc_routine_table basic[0 FS_BASIC(FS_COUNT)];
 #ifdef FS_HAS_INTERP
 static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #endif
+/* The work clock's weight (resident_flight.h): the MCT one of this module's
+ * routines takes on average, from the calibration (tools/flight_store_build.py
+ * FS_MCT); a run chains no further than the step's budget reaches. */
+#ifndef FS_MCT
+#define FS_MCT RK_RESIDENT_MCT
+#endif
+#ifdef RK_WORK_CLOCK
+#define FS_LIMIT rk_module_limit(e->budget,FS_MCT)
+#else
+#define FS_LIMIT RK_MODULE_STEPS
+#endif
 /* FS_KEYS: the chunk's or pick's physical keys in entry order, which the
  * build reads from the same tables (tools/flight_store_build.py
  * table_keys). Copied as data in one loop, so the per-entry code at entry
@@ -160,6 +171,7 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   t->fixed_data=e->program->fixed_data;
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
+  t->mct=FS_MCT;
 #ifdef FS_IO_KIND
   t->ready=RK_TABLES_NOT_DIRECT;
 #else
@@ -190,9 +202,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   b.p66.superbank=io->superbank;b.p66.interrupt_enabled=io->interrupt_enabled;
 #endif
 #if FS_IO_CM
-  status=agc_transfer_run(&p,f->state,x,&((cm_native_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+  status=agc_transfer_run(&p,f->state,x,&((cm_native_io *)x)->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #else
-  status=agc_transfer_run(&p,f->state,x,&((p66_bias_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+  status=agc_transfer_run(&p,f->state,x,&((p66_bias_io *)x)->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #endif
   flight_io_leave(FS_IO_KIND,&rk_flight,hw,&b);
 #if FS_IO_CM==RK_CM
@@ -202,9 +214,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  }
 #else
- status=agc_transfer_run(&p,f->state,io,&io->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+ status=agc_transfer_run(&p,f->state,io,&io->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #endif
- e->status=rk_module_status(status,steps,RK_MODULE_STEPS);
+ e->status=rk_module_status(status,steps,FS_LIMIT);
+#ifdef RK_WORK_CLOCK
+ e->work=FS_MCT==RK_MCT_IDLE ? e->budget : (uint16_t)(steps*FS_MCT);
+#endif
  return APOLLO_OV2_DONE;
 #endif
 }

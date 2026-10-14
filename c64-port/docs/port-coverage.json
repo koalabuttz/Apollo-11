@@ -1860,11 +1860,13 @@
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
             "src/rtb_angles.c",
+            "src/agc_fast_window.c",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "include/agc_input_channels.h"
           ],
-          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 398 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
+          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 334 routines of the control-transfer ABI compiled by tools/interp_compile.py (its basic code whole-file), with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
           "verification": "docs/IMU-CALIBRATION.md"
         }
       ],
@@ -1885,21 +1887,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
-            "sha256": "27daa450c160ef5e9a11753f9389ccfb9162800b8ac21180476189b3ebde08dc"
+            "sha256": "266f109e83d90faa7553827be4ee0878aa0dce64701f5cf616b49cf3d931b3ab"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "2e230a59b9a5dbf4338976e94fad9a08a514c4e783c298aac2f158d25c17b201"
+            "sha256": "8e24d475b4e1dcd2fb819c966efef69fe4fe8f88718151a06b4735f904a558f6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "bc8582873ed8b6f4add59dad07fc4770a103894cb90612f37c58aff0530937fd"
+            "sha256": "4cd8e3ac59e844efc23a1ef94813ee7d2ecd11e123e10c75164feceffe461334"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "160a7997a3d615e348d2fe0664e87771724e359d11e4ae67a13a398950699a24",
+            "sha256": "2cbf46d9a7c4c0988599a203055f15694fce961ecc66d49139524c72351a7082",
             "vice_targets": {
-              "vice-cm-imu-calibration": 507
+              "vice-cm-imu-calibration": 448
             }
           },
           "independent_review": {
@@ -1908,7 +1910,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "3ccf0a7803454d7c83ed7bf071730e49741cdf90d4d9ec5d0ba6c0ecddba49f5"
+            "sha256": "44cf84c6738966c89e21b528d4241f34ba98db85ad72eb4f2cac36b20485a78e"
           }
         }
       }
@@ -3531,8 +3533,8 @@
             "sha256": "40e3748f3d395ba6dd9cd3d1a2959d91f3eb2e2fe04851897f25cbac82081c48"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-372.md",
-            "sha256": "64ee5b09d46bb8332d807644ceb47efdfe556fdbb47a793f7f7a8ee99f47c515"
+            "path": "docs/audits/rev2-recite-e465.md",
+            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
           }
         }
       }
@@ -7037,7 +7039,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which TWIDDLE and POSTJUMP reach from other files), every return from an outside call, and every interpretive word after a DANZIG.",
+          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which the file's own TC TWIDDLE at 14,2375 and POSTJUMP at 14,2434 reach, and ENGOFF1 again through the group 4 restart, PHASCHNG OCT 47014), every return from an outside call, and every interpretive word after a DANZIG.",
           "verification": "docs/LM-ASCENT.md"
         }
       ],
@@ -7045,7 +7047,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. ENGOFF1 and its returns run as a T3RUPT waitlist task over whatever job it interrupts, so they (and every other basic routine that never names FIXLOC or NEWJOB) take any FIXLOC in erasable and NEWJOB -0 as DUMMYJOB leaves it, as well as +0 or positive (spec any_fixloc and any_newjob). Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags); TIME1/TIME2 vary only in the edge quarter of the ENGOFF cases. A quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
         "external_continuations": [
           "Basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words; TCF ENDOFJOB, GOTOPOOH and TASKOVER",
           "Interpretive: NEWOPS with LOC outside the file, and the interpreter exits POODOO1 and ALARM1"
@@ -7058,22 +7060,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
+            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
+            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
+            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
             "vice_targets": {
-              "vice-lm-ascent": 255
+              "vice-lm-ascent": 250
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
+            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
           }
         }
       }

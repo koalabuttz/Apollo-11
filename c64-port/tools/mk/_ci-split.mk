@@ -23,3 +23,19 @@ $(foreach n,$(shell seq $(3)),$(eval $(call CI_SPLIT_PART,$(1),$(2),$(3),$(n),$(
 $(1)-c64: $(2)
 $(1)-vice: $(foreach n,$(shell seq $(3)),vice-$(1)-$(n))
 endef
+# A long host target (test-<m> or sanitize-<m>) is cut the same way into
+# <target>-<n>, each joining the test or sanitize list in its place; <target>
+# stays as the aggregate that runs every part. Every part depends on
+# <prereqs>; <recipe> is called as $(call <recipe>,<n>,<parts>).
+#   $(eval $(call CI_HOST_SPLIT_RULE,<target>,<parts>,<prereqs>,<recipe>))
+define CI_HOST_SPLIT_PART
+.PHONY: $(1)-$(3)
+$(firstword $(subst -, ,$(1))): $(1)-$(3)
+$(1)-$(3): $(4)
+	$$(call $(5),$(3),$(2))
+endef
+define CI_HOST_SPLIT_RULE
+$(foreach n,$(shell seq $(2)),$(eval $(call CI_HOST_SPLIT_PART,$(1),$(2),$(n),$(3),$(4))))
+.PHONY: $(1)
+$(1): $(foreach n,$(shell seq $(2)),$(1)-$(n))
+endef

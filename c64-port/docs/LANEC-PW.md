@@ -41,7 +41,8 @@ Hashes: `evidence/lanec-pw/SHA256.json`.
   108,063 cases, 108,043 identical and 20 refused unchanged, zero
   differing.
 - Host and sanitizer results: `make test-lanec-pw sanitize-lanec-pw`
-  (`lanec-pw-sanitize.txt`).
+  (`lanec-pw-sanitize.txt`). CI runs them as `test-lanec-pw-1` to `-5` and
+  `sanitize-lanec-pw-1` to `-4`, each a run of consecutive suites.
 - C64 execution: `make vice-lanec-pw` builds one program per suite with
   the frozen rows `tools/lanec/cover.py pick` chose to take every host
   branch arc (`tests/lanec_pw_*_c64.h`) and runs them on a VICE PAL C64:
