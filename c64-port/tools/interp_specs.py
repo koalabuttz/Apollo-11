@@ -4170,6 +4170,13 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'resume_keys': True,
         'resume_orphans': True,
+        # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
+        # job: the basic routines they reach (CLRADMOD and the RR/LR
+        # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule
+        # for interrupt-context specs; the P63 flight scenario reaches
+        # CLRADMOD with a NOVAC job's FIXLOC).
+        'any_fixloc': True,
+        'any_newjob': True,
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
                 'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
                 'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},
