@@ -2,6 +2,7 @@
 #include "lanec_pin_routines.h"
 #include "lanec_pw_runs.h"
 #include "lanec_pin_gaps.h"
+#include "lanec_pin_heads.h"
 #include "lanec_pin_keys.h"
 #include "lm_downtelemetry.h"
 #include "cm_downtelemetry.h"

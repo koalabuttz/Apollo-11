@@ -6,6 +6,7 @@ extern const lanec_suite lanec_suite_ev_front;
 extern const lanec_suite lanec_suite_pin_gaps;
 extern const lanec_suite lanec_suite_pin_keys;
 extern const lanec_suite lanec_suite_pin_decdsp3;
+extern const lanec_suite lanec_suite_pin_head_load;
 extern const lanec_suite lanec_suite_pin_key_labels;
 extern const lanec_suite lanec_suite_pw_blanksub;
 extern const lanec_suite lanec_suite_pw_decimal_time_consumer;
