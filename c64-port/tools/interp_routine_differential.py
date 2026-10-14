@@ -1199,10 +1199,10 @@ def greedy_cover(cands, sets, covered=(), key=lambda i: i, accept=lambda i: True
 RUN_TIMEOUT = int(os.environ.get('IRC_RUN_TIMEOUT', '1200'))
 
 
-def run(cmd):
+def run(cmd, env=None):
     try:
         out = subprocess.run(cmd, cwd=R, check=True, capture_output=True, text=True,
-                             timeout=RUN_TIMEOUT).stdout
+                             timeout=RUN_TIMEOUT, env=env).stdout
     except subprocess.TimeoutExpired:
         sys.exit('FAIL: %s ran over %d s (IRC_RUN_TIMEOUT); a case hangs' % (' '.join(cmd), RUN_TIMEOUT))
     except subprocess.CalledProcessError as e:
@@ -1264,8 +1264,26 @@ def main():
         for k, v in sorted(inside.items()):
             print('  %s x%d' % (k, v))
         sys.exit(0)
-    rows_r = run([ref, *ROPES, path])
-    rows_n = run([nat, path])
+    # Q at 16 bits (IRC_Q16): the digest keeps Q's 15 bits, as the frozen
+    # rows do, so the sixteenth bit is compared here and then dropped
+    # (SWITCH's TS Q leaves a negative STATE word sign-extended).
+    q16env = dict(os.environ, IRC_Q16='1')
+    rows_r = run([ref, *ROPES, path], q16env)
+    rows_n = run([nat, path], q16env)
+    q16_bad = []
+    for i, (x, y) in enumerate(zip(rows_r, rows_n)):
+        qx = x.pop() if x and x[-1].startswith('q') else None
+        qy = y.pop() if y and y[-1].startswith('q') else None
+        if qx is not None and qy is not None and qx != qy and x == y:
+            q16_bad.append((i, qx, qy))
+    if q16_bad:
+        for i, qx, qy in q16_bad[:a.show]:
+            mi = missions[cases[i]['cm']]
+            print('case %d %s %s: Q oracle %06o, native %06o (16 bits)' % (
+                i, mi.m, mi.cp.where(cases[i]['point']), int(qx[1:]), int(qy[1:])))
+        print('Q differs at 16 bits by routine: %s' % dict(collections.Counter(
+            '%s %s' % (missions[cases[i]['cm']].m, missions[cases[i]['cm']].cp.where(cases[i]['point'])) for i, _, _ in q16_bad)))
+        sys.exit('FAIL: %d of %d %s cases leave Q different at 16 bits' % (len(q16_bad), len(cases), a.spec))
     # A case both sides loop on (the oracle at its step limit, the native
     # runner in lmi_goto_any's erasable-CADR cycle, kind 9) matches: the AGC
     # loops there until the night watchman restarts it. Counted, then left

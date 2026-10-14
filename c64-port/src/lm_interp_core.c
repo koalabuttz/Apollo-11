@@ -700,7 +700,7 @@ static NI uint8_t lmi_switch(void){
  static const agc_word bits[16]={040000,020000,010000,04000,02000,01000,0400,0200,0100,040,020,010,4,2,1,0};
  static agc_word old;unsigned op;   /* (old static: no callee-saved registers) */
  ai_caf(017);ai_mask(0117);ai_caf(bits[W[0]&017u]);(void)ai_ts(0131);ai_caf(0100);ai_mpf(W[0117]);(void)ai_ts(0130);
- io->interrupt_enabled=0;ai_ca(074u+(unsigned)W[0]);W[2]=oc(W[0]);old=W[2];
+ io->interrupt_enabled=0;ai_ca(074u+(unsigned)W[0]);W[2]=W[0];old=oc(W[0]); /* TS Q: Q takes A's 16 bits (sign-extended) */
  ai_caf(02000);ai_mpf(W[0117]);ai_maskf(014);op=(unsigned)W[0];
  /* (MASK 014 leaves 0 set, 4 invert, 010 clear, 014 no change) */
  if(op!=014u){
