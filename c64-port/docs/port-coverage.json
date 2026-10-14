@@ -6950,7 +6950,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 207 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry, every return from an outside call, and every interpretive word after a DANZIG.",
+          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which TWIDDLE and POSTJUMP reach from other files), every return from an outside call, and every interpretive word after a DANZIG.",
           "verification": "docs/LM-ASCENT.md"
         }
       ],
@@ -6958,7 +6958,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 207 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
         "external_continuations": [
           "Basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words; TCF ENDOFJOB, GOTOPOOH and TASKOVER",
           "Interpretive: NEWOPS with LOC outside the file, and the interpreter exits POODOO1 and ALARM1"
@@ -6967,26 +6967,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-ascent/lm-ascent-source-map.json",
-            "sha256": "5f3035e951954ad071daba121b0769e039420e900aa1b348c0c91731b480bc4c"
+            "sha256": "73a40521c740e463a7906d1fe2a8c2c47a69ebfee82daa50a032d00e67e77471"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "864d8a47108f7e05cbfa85e5258b6669b3d3d3902aec2c3a122dad442f7a59fa"
+            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "12ad4fb204fb7316a06c1afebffe26bf23e5b39acdf6911b5bf3be86b9c5f5da"
+            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "5c889b21647298a113326dfbed688bb18949be4aabd6a8785c6ddebcd90172c6",
+            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
             "vice_targets": {
-              "vice-lm-ascent": 242
+              "vice-lm-ascent": 255
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "811dfe1134c0e0406bff42369989c294db572c0d096434b36cfb08b1280b52a7"
+            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
           }
         }
       }

@@ -3,7 +3,7 @@
   "native_file": "src/lm_ascent.c",
   "words": 531,
   "untranslated_words": 0,
-  "routines": 207,
+  "routines": 209,
   "map": [
    {
     "address": "34,3642",
@@ -2936,15 +2936,15 @@
     "address": "14,2410",
     "word": "04674",
     "source": "ENGOFF1 TC IBNKCALL",
-    "routine": "14,2401",
-    "function": "r30401"
+    "routine": "14,2410",
+    "function": "r30410"
    },
    {
     "address": "14,2411",
     "word": "75551",
     "source": " CADR ENGINOF2",
-    "routine": "14,2401",
-    "function": "r30401"
+    "routine": "14,2410",
+    "function": "r30410"
    },
    {
     "address": "14,2412",
@@ -3201,15 +3201,15 @@
     "address": "30,3007",
     "word": "05353",
     "source": "TERMASC TC PHASCHNG",
-    "routine": "30,3004",
-    "function": "r61004"
+    "routine": "30,3007",
+    "function": "r61007"
    },
    {
     "address": "30,3010",
     "word": "04024",
     "source": " OCT 04024",
-    "routine": "30,3004",
-    "function": "r61004"
+    "routine": "30,3007",
+    "function": "r61007"
    },
    {
     "address": "30,3011",
