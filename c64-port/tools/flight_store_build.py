@@ -541,6 +541,19 @@ INTERP_ONLY = {'lm': {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_r
                       'lm_interp_core_basic', 'lm_interp_runtime_basic'},
                'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic'}}
 
+# The host index's interpretive flag: a table keyed by LOC under BANKSET.
+# Generated interpretive tables end in _interpretive(_routines); the DANZIG
+# markers are looked up at interpretive points too; INTERP_KEYED tables hold
+# compiled interpretive code under other names. The INTERPRETER.agc basic
+# tables (lm/cm_interpreter_basic, _routines) are basic, though their names
+# say interpret.
+INTERP_KEYED = {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_routines'}
+
+
+def interpretive_table(t):
+    return bool(re.search(r'_interpretive(_routines)?$|_marker$', t)) or t in INTERP_KEYED
+
+
 # Files linked as several modules, one per define set
 # (docs/LM-SERVICER-FLIGHT-PARTS.md). A part's keys are what its own build's
 # tables hold (part_keys), which can include hand-off words the whole file
@@ -690,7 +703,7 @@ def main():
             'resident first, in resolution order: table, interpretive, io kind, module (empty when '
             'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table, '
             'fixed_data (0 boundary words, 1 self-check, 2 rope). */\n'
-            + ''.join(f'FLIGHT_TABLE({t}, {int("interpret" in t or t.endswith("_marker"))}, '
+            + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
                       f'FLIGHT_IO_{io_kind(m, tables[t])}, "{packed.get(t, "") if t not in RESIDENT[m] else ""}", '
                       f'{lane_slot(packed[t], m, owners, place)[1] if t in packed and t not in RESIDENT[m] else 0}, '
                       f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
