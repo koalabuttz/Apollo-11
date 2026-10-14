@@ -7028,7 +7028,7 @@
       "sha256": "bfcd1300884bc8ab69748562fe287178f56bdfe9b7f13460b6ae73a1db3406a2",
       "bytes": 11209,
       "lines": 647,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7039,15 +7039,15 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which TWIDDLE and POSTJUMP reach from other files), every return from an outside call, and every interpretive word after a DANZIG.",
+          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which the file's own TC TWIDDLE at 14,2375 and POSTJUMP at 14,2434 reach, and ENGOFF1 again through the group 4 restart, PHASCHNG OCT 47014), every return from an outside call, and every interpretive word after a DANZIG.",
           "verification": "docs/LM-ASCENT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. ENGOFF1 and its returns run as a T3RUPT waitlist task over whatever job it interrupts, so they (and every other basic routine that never names FIXLOC or NEWJOB) take any FIXLOC in erasable and NEWJOB -0 as DUMMYJOB leaves it, as well as +0 or positive (spec any_fixloc and any_newjob). Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags); TIME1/TIME2 vary only in the edge quarter of the ENGOFF cases. A quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
         "external_continuations": [
           "Basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words; TCF ENDOFJOB, GOTOPOOH and TASKOVER",
           "Interpretive: NEWOPS with LOC outside the file, and the interpreter exits POODOO1 and ALARM1"
@@ -7060,22 +7060,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
+            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
+            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
+            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
             "vice_targets": {
-              "vice-lm-ascent": 255
+              "vice-lm-ascent": 250
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
+            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-lm-ascent.md",
+            "sha256": "4aba504bbd90a03bff509f9e8dded1c0586b5c63c0fc0403ddf49ad6adf54774"
           }
         }
       }
@@ -7296,7 +7300,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), CHECKCTR entered from its RTB, FIXLOC a VAC area, PUSHLOC on its pushdown list, MODE, OVFIND, X1 -2 or -10D (MUTABLE,1 Earth or Moon, as SELECTMU and INTEGRATION_INITIALIZATION set it; review #165), X2 0 to 3 and S2 1 (GETX/INVRSEQN), PUSHLOC 0D at GETX's entry (its callers' PL), the registers each mid-file routine is reached with on the file's own runs, QPRET and the RTNxx return words outside the file, and any values of the conic erasables (a TAU. that PERIODCH reduces within a bounded number of periods).",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), CHECKCTR entered from its RTB, FIXLOC a VAC area, PUSHLOC on its pushdown list, MODE, OVFIND, X1 -2 or -10D (MUTABLE,1 Earth or Moon, as SELECTMU and INTEGRATION_INITIALIZATION set it; review #165), X2 0 to 3 and S2 1 (GETX/INVRSEQN), PUSHLOC 0D at GETX's entry (its callers' PL), ITERCTR 1 or 2 at BRNCHCTR (KEPLOOP's iteration limit), the registers each mid-file routine is reached with on the file's own runs, QPRET and the RTNxx return words outside the file, and any values of the conic erasables (a TAU. that PERIODCH reduces within a bounded number of periods).",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "The callers' returns at NEWOPS (QPRET, RTNLAMB, RTNTT, RTNTR, RTNAPSE, RTNPRM and the other saved returns)",
@@ -7311,7 +7315,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
-            "sha256": "3d1aacb5f10038e70f1aa22125e6b4c7839de5e27b7696d923c66fc77dd00ce8"
+            "sha256": "0ba74734f7987248b588f7c6df6fc3d20167e0da696166248c843964b9da04b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
@@ -7319,14 +7323,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
-            "sha256": "d790e86f8455d1875ea68375937bfed92214283b4d3a24a63019e724e64cd86e",
+            "sha256": "26f57c81376cffd869833e674e145e658ea3e8c3d1974d98ed2c692dd1334a3d",
             "vice_targets": {
-              "vice-lm-conic-compiled": 515
+              "vice-lm-conic-compiled": 516
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
-            "sha256": "9db21a32b4b3b9828942b34520d69563199a935bfdcab2d87aac3cd325fc416a"
+            "sha256": "91f4b1d8b98424eb6c2abc01a1a8b8769759f431deac86e2516e5c4ac070f9e2"
           }
         }
       }
@@ -10309,7 +10313,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow: in DOW.. X1 is the DIFEQ stage 0, -12 or -24), and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow), with X1 in DOW.. the DIFEQ stage -12, -24 or -36, and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "INTEGRATION_INITIALIZATION (A-PCHK, ATOPCSM, ATOPLEM, STATEINT) at NEWOPS",
@@ -10326,7 +10330,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "6c09706d86c907f4faba04c9cd54515766aa8553c169b43bd41658e6a372a427"
+            "sha256": "1630eb508dd04df5a539210a1873ce85e7a0872d28790b0da1c9528e374b5f3c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
@@ -10334,14 +10338,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "b87e452fa8f45dc3c1ba847c6b22640968a8fcba9c0f8c11596a254bc76cde88",
+            "sha256": "a9e1040b205e93705fa0000eaca37002ccd1a85b2c6b5e6bdac2a7b83b71b937",
             "vice_targets": {
-              "vice-lm-orbital-integration": 403
+              "vice-lm-orbital-integration": 400
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "4e3e3ae7b624fd87c8f4672b7150b67c548ed37f6570d54e8c203dff315b42c4"
+            "sha256": "f7dfa10ef17666f460205132436ab5fc5ffb0b5653ea97e9ea018e07bb52ca3f"
           }
         }
       }
@@ -10499,8 +10503,63 @@
       "sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f",
       "bytes": 121255,
       "lines": 5182,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p20_p25.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/lm_integration_moves.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "include/agc_channel_ops.h"
+          ],
+          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 998 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
+          "verification": "docs/LM-P20-P25.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, Q and caller returns outside the file, the INDEX MPAC table returns with the MPAC their producers leave (0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, DESCOUNT and PIPCTR not -0, and any values of the other erasables.",
+        "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "BANKCALL, IBNKCALL and POSTJUMP with their inline CADRs, whose returns are routines of the file",
+          "PHASCHNG, 2PHSCHNG, WAITLIST, FIXDELAY, VARDELAY, LONGCALL, TASKOVER, FINDVAC, NOVAC, ENDOFJOB, JOBSLEEP, JOBWAKE, PRIOCHNG, KILLTASK, TWIDDLE and BLANKET (Executive and Waitlist)",
+          "UPFLAG, DOWNFLAG, FALTON, ALARM, MAKECADR, SPSIN, SPCOS, MPACVBUF, USPRCADR, RESUME, CHANG1, BANKJUMP and GOTOPOOH",
+          "The interpreter's LOADTIME and CDULOGIC through RTB (native, src/rtb_angles.c)",
+          "The interpreter exits POODOO1 and ALARM1"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-source-map.json",
+            "sha256": "c7d58e5c237bb45b2f67e9ea4a00c5c7cd318a8fa04307f6837c40fb4829963d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
+            "sha256": "a5b06640bd0d9f23cdbbce4987849317d5934edab9f04500b7b9fdc204ec7ff9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
+            "sha256": "d1b15dff5be083ce3803344db377c507087c6db84564bdfaff0c997dfc543368"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
+            "sha256": "12c7ae5edc1f303e7d650781ad5d615433c57803deda70ed07fdcda1a080a85b",
+            "vice_targets": {
+              "vice-lm-p20-p25": 1349
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
+            "sha256": "881f68525df8895fd146d2c49fb4fafb39295f85e8a5d1a29fcd756c545dc745"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P30_P37.agc",

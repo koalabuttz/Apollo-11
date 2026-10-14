@@ -22,10 +22,10 @@ import interp_listing  # noqa: E402
 STORE = ROOT / 'build/flight-store'
 DUMP = r'''#include <stdio.h>
 #include "agc_transfer.h"
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) extern const agc_routine_table t;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
 #include TABLES
 #undef FLIGHT_TABLE
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) {unsigned j;for(j=0;j<t.count;++j)printf("%s %d %u\n",#t,i,(unsigned)t.entries[j].physical);}
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) {unsigned j;for(j=0;j<t.count;++j)printf("%s %d %u\n",#t,i,(unsigned)t.entries[j].physical);}
 int main(void){
 #include TABLES
 return 0;}

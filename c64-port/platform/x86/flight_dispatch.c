@@ -27,10 +27,10 @@
 extern const agc_routine CORE;
 
 #include FLIGHT_HOST_SITES
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) extern const agc_routine_table t;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
 #include FLIGHT_HOST_TABLES
 #undef FLIGHT_TABLE
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) {&t,#t,i,k,sites,n,fixed},
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) {&t,#t,i,k,sites,n,fixed},
 const fd_table fd_tables[]={
 #include FLIGHT_HOST_TABLES
 };

@@ -32,12 +32,40 @@ uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
 #endif
+/* The step profile (platform/c64/dap_pass_check.c -DRK_STEP_PROFILE): the
+ * check's rk_prof(n) charges the cycles since its last call to segment n. */
+#ifdef RK_STEP_PROFILE
+void rk_prof(uint8_t segment);
+#define RK_PROF(n) rk_prof(n)
+#else
+#define RK_PROF(n) ((void)0)
+#endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
-rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
+#ifdef RK_WORK_CLOCK
+uint16_t rk_work;
+uint8_t rk_tick_phase;
+/* The MCT left before the next tick (at least 1: rk_rupts drained the
+ * whole periods at the step's start). */
+__attribute__((noinline)) static uint16_t rk_budget(void) { return (uint16_t)(RK_TICK_MCT(rk_tick_phase)-rk_work); }
+/* n units of mct each: n added mct times (no multiply on the 6502; mct
+ * is a weight, at most 255, and 1 for a module that reports MCT), or for
+ * the idle loop (RK_MCT_IDLE), the rest of the tick. */
+__attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
+    uint16_t w=rk_work;
+    if(mct==RK_MCT_IDLE) { rk_work=RK_TICK_MCT(rk_tick_phase); return; }
+    do w+=n; while(--mct);
+    rk_work=w;
+}
+#ifndef RK_NO_DIRECT
+/* The routines a slot module's run may chain (rk_module_limit). */
+__attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_module_limit(rk_budget(),mct); }
+#endif
+#endif
+rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
-/* The boundary-word table: its REU bank and address (the store image's
- * tail, within one 64 KB bank) and record count. */
-static uint16_t boundary_address;
+/* The boundary-word table: its REU bank, its address and end (the store
+ * image's tail, within one 64 KB bank) and record count. */
+static uint16_t boundary_address,boundary_end;
 uint16_t rk_boundary_count;
 static uint8_t boundary_bank;
 
@@ -148,6 +176,7 @@ uint8_t BOOT rk_boot(void) {
         first=end-sizeof tail-(uint32_t)tail[0]*sizeof(agc_site_operand);
         if((first>>16)!=((end-1u)>>16) || first<rk_store.base+((uint32_t)rk_store.resolver_page<<8)) return 3;
         boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; rk_boundary_count=tail[0];
+        boundary_end=(uint16_t)(end-sizeof tail);
     }
     /* Then the boot-loaded modules; a class-4 module holds the task slot's
      * RAM, so the runtime has no task-slot module loaded. */
@@ -160,30 +189,34 @@ uint8_t BOOT rk_boot(void) {
     return 0;
 }
 
-/* One 4-byte REU fetch, by register (as apollo_reu_transfer does, without
- * its 32-bit address arithmetic: the table lies in one 64 KB bank). */
-bool rk_boundary_entry(uint16_t i,agc_site_operand *entry) {
-    uint16_t at=(uint16_t)(boundary_address+i*sizeof *entry);
+/* One 4-byte REU fetch into rk_boundary_probe from a table address, by
+ * register (as apollo_reu_transfer does, without its 32-bit address
+ * arithmetic: the table lies in one 64 KB bank). */
+agc_site_operand rk_boundary_probe;   /* DMA target */
+static bool boundary_fetch(uint16_t at) {
     volatile uint8_t *reu=(volatile uint8_t *)0xdf00u;
-    if(i>=rk_boundary_count) return false;
     (void)reu[APOLLO_REU_STATUS];
     reu[APOLLO_REU_ADDR_CONTROL]=0;
-    reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)entry; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)entry>>8);
+    reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)&rk_boundary_probe; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)&rk_boundary_probe>>8);
     reu[APOLLO_REU_REU_LO]=(uint8_t)at; reu[APOLLO_REU_REU_HI]=(uint8_t)(at>>8); reu[APOLLO_REU_REU_BANK]=boundary_bank;
-    reu[APOLLO_REU_LEN_LO]=sizeof *entry; reu[APOLLO_REU_LEN_HI]=0;
+    reu[APOLLO_REU_LEN_LO]=sizeof rk_boundary_probe; reu[APOLLO_REU_LEN_HI]=0;
     reu[APOLLO_REU_COMMAND]=APOLLO_REU_FETCH;
     return (reu[APOLLO_REU_STATUS]&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==APOLLO_REU_STATUS_END;
 }
-/* The word at a boundary key, by binary search of the table. */
+const agc_site_operand *rk_boundary_entry(uint16_t i) {
+    if(i>=rk_boundary_count || !boundary_fetch((uint16_t)(boundary_address+i*sizeof rk_boundary_probe))) return 0;
+    return &rk_boundary_probe;
+}
+/* The word at a boundary key, by binary search of the table over its
+ * addresses (entries are 4 bytes; boundary_end is one past the last). */
 bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word) {
-    uint16_t low=0,high=rk_boundary_count;
-    static agc_site_operand probe;   /* DMA target */
+    uint16_t low=boundary_address,high=boundary_end;
     (void)p;
     while(low<high) {
-        uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
-        if(!rk_boundary_entry(middle,&probe)) return false;
-        if(probe.physical==physical) { *word=probe.word; return true; }
-        if(probe.physical<physical) low=(uint16_t)(middle+1u); else high=middle;
+        uint16_t middle=(uint16_t)(low+((uint16_t)(high-low)>>1&~3u));
+        if(!boundary_fetch(middle)) return false;
+        if(rk_boundary_probe.physical==physical) { *word=rk_boundary_probe.word; return true; }
+        if(rk_boundary_probe.physical<physical) low=(uint16_t)(middle+4u); else high=middle;
     }
     return false;
 }
@@ -205,6 +238,14 @@ void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
  * checks step with it set) so one between its two bytes cannot tear it.
  * Out of line, so the size report counts it with the timers. */
 __attribute__((noinline)) static void rk_rupts(void) {
+#ifdef RK_WORK_CLOCK
+    /* Work clock: one period per RK_TICK_WORK of work since the last. */
+    while(rk_work>=RK_TICK_MCT(rk_tick_phase)) {
+        rk_work-=RK_TICK_MCT(rk_tick_phase);
+        rk_tick_phase=rk_tick_phase==2u ? 0u : (uint8_t)(rk_tick_phase+1u);
+        rk_timer_tick(IMAGE,&rk_hardware,&rk_pending);
+    }
+#else
     uint16_t now;
     uint8_t take=RK_TICK_LAG;
     __asm__ volatile("php\n\tsei" ::: "memory");
@@ -214,6 +255,7 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
         else ++rk_dilation;
     }
+#endif
 #ifdef RK_RUPT_TRACE
     /* The DAP pass check (platform/c64/dap_pass_check.c): which request
      * this step took, if any. */
@@ -232,13 +274,19 @@ __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_ph
     agc_routine call;
     if(agc_transfer_point(&rk_program,IMAGE,rk_device.superbank)==stop_physical) return EXEC_OK;
     call=agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);
-    return call ? call(&rk_program,IMAGE,&rk_device) : EXEC_UNMAPPED;
+    if(!call) return EXEC_UNMAPPED;
+#ifdef RK_WORK_CLOCK
+    rk_charge(RK_RESIDENT_MCT,1u);
+#endif
+    return call(&rk_program,IMAGE,&rk_device);
 }
 __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at) {
     apollo_ov2_cont resume;
+    enum apollo_ov2_status st;
     run_value=(uint16_t)(uintptr_t)&rk_env;
     rk_env.status=EXEC_OK;
-    return apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
+    st=apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
+    return st;
 }
 /* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): the physical
  * bank in FB form. Fixed-fixed 04000-07777 is bank 2 or 3 whatever FB and
@@ -273,12 +321,22 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
+#ifdef RK_WORK_CLOCK
+        uint16_t limit=rk_limit(t->mct);
+#else
+        const uint16_t limit=RK_MODULE_STEPS;
+#endif
         rk_module_program(&module_program,t);
-        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
+        RK_PROF(4);
+        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,limit,&steps);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. */
-        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) continue;
-        return rk_module_status(status,steps,RK_MODULE_STEPS);
+        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) { RK_PROF(5); continue; }
+        RK_PROF(6);
+#ifdef RK_WORK_CLOCK
+        rk_charge(steps,t->mct);
+#endif
+        return rk_module_status(status,steps,limit);
     }
     return EXEC_UNMAPPED;
 }
@@ -290,17 +348,29 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     uint16_t loc;
     /* The soft stack ran into the pinned module below it. */
     if(*(volatile uint8_t *)RK_STACK_CANARY!=RK_STACK_CANARY_VALUE) return EXEC_INVALID_ACTION;
+    RK_PROF(0);
     rk_rupts();
+    RK_PROF(1);
     status=rk_trampoline(stop_physical);
-    if(status!=EXEC_UNMAPPED) return status;
+    if(status!=EXEC_UNMAPPED) { RK_PROF(2); return status; }
+    RK_PROF(3);
 #ifndef RK_NO_DIRECT
     status=rk_direct(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
+    RK_PROF(7);
 #endif
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
+    RK_PROF(8);
+#ifdef RK_WORK_CLOCK
+    rk_env.budget=rk_budget(); rk_env.work=0; rk_env.scale=1u;
+#endif
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
+#ifdef RK_WORK_CLOCK
+    rk_charge(rk_env.work,rk_env.scale);
+#endif
+    RK_PROF(9);
 #ifndef RK_NO_DIRECT
     /* A direct-only module's main only builds its tables: the point runs
      * through them in this step. */
