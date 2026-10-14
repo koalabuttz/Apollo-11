@@ -212,6 +212,27 @@ def interp(sid, a, out):
     proof = json.load(open(proof_p))
     cover_p = os.path.join(ev, '%s-c64-cover.json' % sid)
     cover = json.load(open(cover_p)) if os.path.exists(cover_p) else {}
+    pins = cover.get('linked_sources')
+    if isinstance(pins, dict):
+        # A source other cover records also pin (interp orders/steps, interp_case/cut,
+        # agc_transfer, ...) goes stale whenever another lane changes it: report it,
+        # and let the branch re-derivation below decide (steward, #450). A stale pin
+        # on the spec's own sources means this record was not refrozen.
+        shared = collections.Counter()
+        for other in glob.glob(os.path.join(R, 'evidence', '*', '*-c64-cover.json')):
+            op = json.load(open(other)).get('linked_sources')
+            if isinstance(op, dict):
+                shared.update(op.keys())
+        for src, h in sorted(pins.items()):
+            f = os.path.join(R, src)
+            now = hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else 'missing'
+            if now == h:
+                continue
+            msg = '%s pins %s at %s, the tree has %s' % (os.path.relpath(cover_p, R), src, h[:8], now[:8])
+            if shared[src] > 1:
+                say('NOTE %s (a shared source; the branch check below re-derives it)' % msg)
+            else:
+                gap(msg + ': refreeze so the cover record matches this tree')
     if not all(os.path.exists(p) for p in D.ROPES):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):

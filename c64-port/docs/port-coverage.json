@@ -12226,22 +12226,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
-            "sha256": "e6b135788b31dbebf22845f84773e538412fdf535c0aebc29e21b4ee7eb67638"
+            "sha256": "b0eac6f649e1949cd42909e8225cdbce6e9aa96ab4202ed7555f987da28b7474"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
-            "sha256": "3d36401d5669c82909154d9b3aa92ef843c118f15edcf68326200d66cdce550b"
+            "sha256": "c0fce126138cba0f54b3c9254c9a133d4c61d11f977d626717b1c3657c5ee58f"
           },
           "c64_execution_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
-            "sha256": "67cae21f35c699ff26aca32326e6fd8a41cbc9366602d262d78549ec58164001",
+            "sha256": "b5b0fb5df77177be4986e7c055214e09b5621a211a4060012c5b0f0e7c0e3d48",
             "vice_targets": {
               "vice-lm-rcsmon": 17
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
-            "sha256": "966cfd9c19fffc1173addadbd62c114ce695f1c19167a9a0adf7482a8233dead"
+            "sha256": "3c03e0c7315f5cd73e0efa0f7b1b5a6e7ec03e038ff32a9e90e8b7283b4f20ca"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-287.md",
