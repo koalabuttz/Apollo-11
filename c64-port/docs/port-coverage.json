@@ -759,6 +759,7 @@
             "src/geometry_rtb.c",
             "src/rtb_angles.c",
             "src/rtb_agreement.c",
+            "src/cm_integration_moves.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
             "src/agc_image_ops.c",
@@ -772,10 +773,10 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). Runs take up to 1,000 routines.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). From EARROT1 to OVERADAY, DTEAROT 0 and QPRET (42D) a return outside the file, and at OVERADAY's BDSU and STORE MPAC 0 or +-1/WIE: from most other DTEAROT values the original's OVERADAY/EARROT2 loop swings between x and x - 1/WIE for thousands of passes or for good (yaAGC). Runs take up to 1,000 routines.",
         "external_continuations": [
           "The caller's return through QPRET, the CADR in S2, or GOTO 28D (VAC+034)",
-          "TCDANZIG and ENDT(X) through BOVB",
+          "TCDANZIG (ENDT(X)) through EARROT2's BOVB, native (src/cm_integration_moves.c)",
           "POLY (TC from LOG, with its coefficient table)",
           "SHORTMP (TC from LOG; from SXTLOGIC it runs natively, src/geometry_rtb.c)",
           "*SMNB* and ARCTRIG (CALL; native in src/cm_inflight_align.c, milestone inflight-align)",
@@ -789,22 +790,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "968a70e10d9c947d1da5de9ed3fbf6dc108d052704b24236fbda8774f6939ee6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
+            "sha256": "db2839251bbd0c0d1f8b44a0a3842e2f58805a3921bcaccb58e616c6bab8039f"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "2d4c825c488d29fd0ca500134a7022843b3ad51431d4cad356f7a20ae3893d8d",
             "vice_targets": {
-              "vice-geometry": 197
+              "vice-geometry": 191
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "10c3bdc089bc50655112404ed70f1c670385fea9ef380b83c74b94597b9c1f32"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -2122,7 +2123,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -2130,14 +2131,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -3655,7 +3656,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -3663,14 +3664,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -9067,7 +9068,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -9075,14 +9076,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -9949,22 +9950,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "968a70e10d9c947d1da5de9ed3fbf6dc108d052704b24236fbda8774f6939ee6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
+            "sha256": "db2839251bbd0c0d1f8b44a0a3842e2f58805a3921bcaccb58e616c6bab8039f"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "2d4c825c488d29fd0ca500134a7022843b3ad51431d4cad356f7a20ae3893d8d",
             "vice_targets": {
-              "vice-geometry": 197
+              "vice-geometry": 191
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "10c3bdc089bc50655112404ed70f1c670385fea9ef380b83c74b94597b9c1f32"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -10891,7 +10892,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -10899,14 +10900,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
