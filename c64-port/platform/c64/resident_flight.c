@@ -27,6 +27,9 @@ __attribute__((used,section(".rk_flight"))) flight_io rk_flight;
 __attribute__((used,section(".rk_channels"))) cm_native_channels cm_channels={0,0,037777u,077777u,077777u,077777u};
 #endif
 uint16_t rk_pending,rk_ticks;
+#ifdef RK_RUPT_TRACE
+uint8_t rk_rupt_last;
+#endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
@@ -210,6 +213,11 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
         else ++rk_dilation;
     }
+#ifdef RK_RUPT_TRACE
+    /* The DAP pass check (platform/c64/dap_pass_check.c): which request
+     * this step took, if any. */
+    rk_rupt_last=
+#endif
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
 }
 
