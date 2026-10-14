@@ -878,6 +878,14 @@ def main():
         # table record or resident table already holds the point.
         interp_prgs, interp = interp_modules(a.cc, m, library)
         good += interp_prgs
+        # INTPRET goes to the interpreter even where a table record holds
+        # it: such a table (lanec_ev_lm_intpret) enters only its own file's
+        # callers and refuses the rest, which stops the step, while the
+        # interpreter enters every caller. The table still runs from its
+        # module when that is loaded (rk_direct).
+        if interp_prgs:
+            z = INTERP_POINTS[m]['INTPRET']
+            resolver = [r for r in resolver if (r['bank'], r['loc']) != (0o6000 if z >= 0o6000 else 0o4000, z)]
         taken = {(r['bank'], r['loc']) for r in resolver + wrappers}
         # The DANZIG marker is not a routine: the flight resident's own
         # program has no marker, so DANZIG still needs the interpreter's record.

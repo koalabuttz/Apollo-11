@@ -22,6 +22,22 @@ void irc_edges_reset(void);void irc_edges_print(void);void irc_edges_map(void);
 #ifndef IRC_MAX_STEPS
 #define IRC_MAX_STEPS 200
 #endif
+#ifdef IRC_WRAP_EXIT
+/* Linked with -Wl,--wrap=exit: a routine that calls exit(3) during a case
+ * (lmi_goto_any on a cycle of erasable CADRs, which the AGC loops on until
+ * the night watchman restarts it) ends that case as a timeout row, as the
+ * oracle's step limit does, instead of ending the whole run (#224). */
+#include <setjmp.h>
+static jmp_buf irc_case_jmp;
+static int irc_in_case;
+void __real_exit(int);
+void __wrap_exit(int);
+void __wrap_exit(int code){
+ if(irc_in_case&&code==3){irc_in_case=0;longjmp(irc_case_jmp,1);}
+ __real_exit(code);
+}
+#endif
+enum { IRC_TIMEOUT = 9 };
 static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(stderr,"short case file\n");exit(2);}return (unsigned)a|(unsigned)b<<8;}
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
 /* visits: the points the run enters, in agc_transfer_run's order, so the
@@ -59,7 +75,8 @@ void irc_cover(unsigned k){if(k<8192u)cover[k>>3]=(uint8_t)(cover[k>>3]|1u<<(k&7
 #ifdef IRC_EDGE_COVER
 unsigned irc_edge_count(void);void irc_edges_reset(void);int irc_edge_hit(unsigned k);unsigned irc_edge_byte(unsigned k);
 #endif
-int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers,edges;FILE *f;static irc_edit edits[4096];
+int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,edges;static FILE *f;static irc_edit edits[4096];
+ /* (static: a case may longjmp back here, IRC_WRAP_EXIT) */
  if(argc<2)return 2;
  dump=argc>2&&!strcmp(argv[2],"dump");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  edges=argc>2&&!strcmp(argv[2],"edges");
@@ -75,6 +92,10 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers,edges;FIL
 #endif
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
   c.edits=edits;irc_build(&s,&c);
+#ifdef IRC_WRAP_EXIT
+  if(setjmp(irc_case_jmp)){printf("%u %u 0 0\n",n,(unsigned)IRC_TIMEOUT);continue;}
+  irc_in_case=1;
+#endif
   if(visits){irc_build(&s,&c);irc_visits(irc_program(c.cm),&s,&c,IRC_MAX_STEPS);irc_build(&s,&c);}
   memset(cover,0,sizeof cover);
 #ifdef IRC_EDGE_COVER
@@ -87,6 +108,9 @@ int main(int argc,char **argv){unsigned n,i,m,count,dump,visits,covers,edges;FIL
   kind=irc_run_cut(irc_program(c.cm),&s,&c,cut,IRC_MAX_STEPS,&ie);
 #else
   kind=irc_run(irc_program(c.cm),&s,&c,IRC_MAX_STEPS,&ie);
+#endif
+#ifdef IRC_WRAP_EXIT
+  irc_in_case=0;
 #endif
   printf("%u %u %u %lu",n,kind,(unsigned)(s.words[5]&077777u),(unsigned long)irc_digest(0,&s,ie));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
