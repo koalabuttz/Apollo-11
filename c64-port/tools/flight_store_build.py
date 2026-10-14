@@ -170,10 +170,20 @@ def host_index(cc, jobs):
     objs.mkdir(parents=True, exist_ok=True)
     sources = sorted((ROOT / 'src').glob('*.c'))
 
+    def stale(obj, dep):
+        # The object and the headers and .inc files it includes (-MMD), so an
+        # edit to a shared body (src/self_check_body.inc) rebuilds its includers.
+        if not obj.exists() or not dep.exists():
+            return True
+        made = obj.stat().st_mtime
+        words = dep.read_text().replace('\\\n', ' ').split()[1:]
+        return any(not (ROOT / w).exists() or (ROOT / w).stat().st_mtime > made for w in words)
+
     def build(src):
         obj = objs / (src.stem + '.o')
-        if not obj.exists() or obj.stat().st_mtime < src.stat().st_mtime:
-            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-c', src, '-o', obj])
+        dep = objs / (src.stem + '.d')
+        if stale(obj, dep):
+            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-MMD', '-MF', dep, '-c', src, '-o', obj])
         return src.stem, obj
     with ThreadPoolExecutor(jobs) as pool:
         built = list(pool.map(build, sources))
