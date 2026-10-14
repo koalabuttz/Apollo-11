@@ -819,7 +819,7 @@
       "sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
       "bytes": 40070,
       "lines": 1476,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -948,7 +948,7 @@
           "verification": "docs/LANEC-DI-NVDSP.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -995,6 +995,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-cover.json",
             "sha256": "1e4a2a311fde1daf82fd1c24c752a4ce5b7de10cd4cc88f7b825037cd3c24c16"
+          },
+          "independent_review": {
+            "path": "docs/audits/cert-fixes-329-di.md",
+            "sha256": "6058f235dd8c2243d3a9cb6d935d51813778e8414fb0608fb154db5d5aeac68f"
           }
         }
       }
@@ -7484,7 +7488,7 @@
       "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
       "bytes": 40245,
       "lines": 1459,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7584,7 +7588,7 @@
           "verification": "docs/LANEC-DI-NVDSP.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7631,6 +7635,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lanec-di-cert/lanec-di-c64-cover.json",
             "sha256": "1e4a2a311fde1daf82fd1c24c752a4ce5b7de10cd4cc88f7b825037cd3c24c16"
+          },
+          "independent_review": {
+            "path": "docs/audits/cert-fixes-329-di.md",
+            "sha256": "6058f235dd8c2243d3a9cb6d935d51813778e8414fb0608fb154db5d5aeac68f"
           }
         }
       }
