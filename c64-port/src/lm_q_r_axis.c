@@ -19,6 +19,7 @@
 #endif
 #define AFR_EBN (LM_QR_EB>>8)
 #include "agc_fast_redirect.h"
+#include "lm_dap_shared.h"
 #define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_QR_COUNT_PATHS
@@ -168,17 +169,17 @@ static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
 static int entry(const agc_image *s,const void *io){AFR_BIND(s);return s&&io&&(W[4]&076000u)==LM_QR_FB17&&W[3]==LM_QR_EB;}
 static agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 /* The signed value of an erasable word, and of the 16-bit A. */
-static int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
+LM_DAP_SHARED int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
 static int sa(const agc_image *s){agc_register a=W[0];return a&0100000u?-(int)(~a&077777u):(int)(a&077777u);}
 /* Channel orders on a 15-bit channel, as yaAGC's: READ, RAND, WOR. */
 static void rd(agc_image *s,agc_word chan){W[0]=agc_extend(chan);}
-static void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
+LM_DAP_SHARED void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
 /* WOR CHAN13: bits 12-14 written to channel 13 are the HANDRUPT trap
  * enables, which do not read back (yaAGC keeps 043777). */
 static void wor13(agc_image *s,agc_word *chan){agc_word v=(agc_word)((oc(W[0])|*chan)&077777u);*chan=(agc_word)(v&043777u);W[0]=agc_extend(v);}
 /* MSU K (K above the registers): two's-complement difference of the
  * overflow-corrected A and K, returned in ones' complement. */
-static void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
+LM_DAP_SHARED void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
  if(d&040000u){d|=0100000u;--d;}
  W[0]=agc_extend((agc_word)(d&077777u));
 }
@@ -190,7 +191,7 @@ static void dtcb(agc_image *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_c
 /* A TC at ret - 1 to z, which is outside this file. */
 static enum exec_status leave(agc_image *s,agc_word ret,agc_word z){ai_tc(s,ret);W[5]=z;return EXEC_OK;}
 /* TC Q at the end of a subroutine: Z = Q, Q = 3. */
-static void tcq(agc_image *s){ai_tc(s,QREG+1u);}
+LM_DAP_SHARED void tcq(agc_image *s){ai_tc(s,QREG+1u);}
 /* AXISCTR, which the file's loop holds at 0 (U) or 1 (V). */
 #define AX ((unsigned)ai_word(s,AXISCTR))
 
@@ -751,7 +752,7 @@ static int checks(agc_image *s,void *v,unsigned at){lm_flight_io *io=v;agc_word 
  }
  return 1;
 }
-#define ENTRY(name,at,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){ \
+#define ENTRY(name,at,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s); \
  lm_flight_io *io=v;(void)p;(void)io;if(!checks(s,v,at))return EXEC_OUT_OF_SCOPE; \
  body}
 ENTRY(callqerr,AT_CALLQERR,return callqerr_part(s,io);)
@@ -772,7 +773,7 @@ ENTRY(writeuret,AT_WRITEURET,return writeuret_part(s,io);)
 ENTRY(writevret,AT_WRITEVRET,return writevret_part(s,io);)
 ENTRY(selalarmret,AT_SELALARMRET,return norotat(s,io);)
 /* The parts' own keys. */
-#define PART(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){ \
+#define PART(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s); \
  lm_flight_io *io=v;(void)p;if(!entry(s,v))return EXEC_OUT_OF_SCOPE; \
  return body;}
 PART(rcs_e,rcs(s,io,LM_QR_RCS))
@@ -792,15 +793,15 @@ PART(xtrans_e,xtrans(s,io))
 PART(closeout,closeout_part(s,io))
 /* QERRCALC, JTLST and ROT-TOUV, entered by TC or IBNKCALL with the return
  * in Q. */
-static enum exec_status qerrcalc(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status qerrcalc(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];qerrcalc_body(s);return EXEC_OK;
 }
-static enum exec_status jtlst(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status jtlst(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];jtlst_body(s,v);return EXEC_OK;
 }
-static enum exec_status rottouv(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status rottouv(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];rot_touv_body(s);return EXEC_OK;
 }
@@ -828,3 +829,13 @@ static const agc_routine_entry entries[30]={
  {P17(LM_QR_WRITEVRET),writevret},{P17(LM_QR_JTLST),jtlst},{P17(LM_QR_ROTTOUV),rottouv},
  {P17(LM_QR_SELALARMRET),selalarmret},{P17(LM_QR_CLOSEOUT),closeout}};
 const agc_routine_table lm_q_r_axis_routines={entries,30};
+/* The entries one 100 ms DAP pass reaches in attitude hold or jet firing
+ * (Lane F's RCS DAP cycle trace, /mnt/project-files/lane-f/dap-cycle-trace.md):
+ * the pinned DAP set links this table, so the other entries stay in the
+ * file's packed module (docs/FLIGHT-STORE.md). */
+static const agc_routine_entry hot_entries[12]={
+ {P17(LM_QR_CALLQERR),callqerr},{P17(LM_QR_RCS),rcs_e},{P17(LM_QR_QRCONTRL),qrcontrl_e},{P17(LM_QR_TRYGTS),trygts_e},
+ {P17(LM_QR_STILLRCS),stillrcs_e},{P17(LM_QR_TJLAW3),tjlaw3_e},{P17(LM_QR_TJETRET),tjetret},
+ {P17(LM_QR_WRITEPRET),writepret},{P17(LM_QR_NOROTATRET),norotatret},{P17(LM_QR_LOOPER),looper_e},
+ {P17(LM_QR_DOSKIP),doskip_e},{P17(LM_QR_NOTMINRET),notminret}};
+const agc_routine_table lm_q_r_axis_hot_routines={hot_entries,12};

@@ -1878,7 +1878,7 @@ class Compiler:
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
                 if self.spec.get('fast_window'):
-                    c.append(' AFR_BIND(s);')
+                    c.append(' AFR_BIND(s);AFO_FIX(s);')
                 # (A part key in fixed-fixed memory runs under the FB its
                 # caller left, as the step machine it was cut from did.)
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb

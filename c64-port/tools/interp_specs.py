@@ -3203,6 +3203,7 @@ SPECS = {
         # its entry in flight.
         'fast_window': True,
         'trusted_image': True,
+        'short_index': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'index_carry16': True,
         'image_w': True,
@@ -3241,8 +3242,8 @@ SPECS = {
         # reads. RSAMPDT is the sample period or +0 (stop); -0 would run
         # RADSAMP's 2CADR as an instruction. DORSAMP2 stores -0 in RTSTLOC
         # on every wrap, and RTSTDEX may be -0 too (INDEX -0 reads RDRLOCS).
-        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': [*range(6), 0o77777], '2352': [0, 2, 4, 6, 0o77777],
-                                                  '2353': [0, 2], '2354': [0, 2, 4, 6],
+        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': [*range(6), 0o77777], '2352': [0, 2, 4, 6],
+                                                  '2353': [0, 2], '2354': [0, 2, 4, 6, 0o77777],
                                                   '2355': [0, 1, 0o144, 0o37777, 0o40000, 0o77776]})],
         'target': 'tests/lm_radar_leadin_routines_target.c',
         'index_carry16': True,
