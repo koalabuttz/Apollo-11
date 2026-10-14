@@ -65,6 +65,10 @@ RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4 5,build/resident-flight/$(m)-c
 test: resident-boundary-words
 resident-boundary-words: | build
 	python3 tools/resident_boundary_words.py --cc $(CC) --check
+# Scaled time (docs/RESIDENT-FLIGHT.md): `make ... RK_TICK_LAG=n` (ticks one
+# step catches up, default 2) and `RK_TIME_DIVISOR=n` (AGC time at 1/n of
+# wall time, default 1) reach tools/resident_flight_build.py, and so every
+# flight build, through the environment.
 .PHONY: c64-resident-flight vice-resident-flight resident-flight-size
 c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
 	python3 tools/resident_flight_build.py --cc $(MOS_CC)
