@@ -40,7 +40,8 @@ def main():
     args = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
     library = prepare(args.cc, ROOT / OUT)
-    subprocess.run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', str(OUT)], cwd=ROOT, check=True)
+    subprocess.run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', str(OUT),
+                    '--version', hex(SERVICES)], cwd=ROOT, check=True)
     common = [args.cc, '-Iinclude', '-Itests', '-Iplatform/c64', '-Ibuild', '-std=c99', '-Oz', '-fno-static-stack',
               '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']
     prgs, sizes = [], {}

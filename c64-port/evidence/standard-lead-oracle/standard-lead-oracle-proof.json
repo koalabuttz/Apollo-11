@@ -1,13 +1,13 @@
 {
  "cases": 1408,
- "reached_continuation": 1373,
+ "reached_continuation": 1404,
  "native_equals_yaagc": true,
  "reached_by_entry": {
   "CM CALL word": 64,
   "CM E/BKCALL": 64,
   "CM E/CALL": 62,
   "CM E/CALL resume": 64,
-  "CM E/JOBWAK": 33,
+  "CM E/JOBWAK": 64,
   "CM EXIT word": 64,
   "CM INTPRET": 64,
   "CM INTPRET+2": 64,
@@ -32,10 +32,10 @@
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
  "oracle": "yaAGC agc_engine from the original ropes",
- "oracle_sha256": "896c7edd04c1ac85b5da0e03cfab6598e825d59737f5be21662c62ace722bdfb",
+ "oracle_sha256": "8a652e50ef5dc76311651219a5a8937b4b5668be8886e063e1df6da07c22f4c6",
  "dependencies": {
-  "tests/standard_lead_oracle_cases.c": "6f9ddd174814441bd656d3c600329b9c19c707780c16691d91e5aa57429cfc89",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "tests/standard_lead_oracle_cases.c": "64a5b37e6d6ef1d84b8d6ec485a60704dd905d890599d02d83e12fc6e84fa14f",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/standard_lead_routines.c": "9ed6595468ff67b0dde44029b3e54c07cf2d94126b349f6237e6c0a1ac7feda7",
   "src/interp_entry.c": "66571c3c34a4e15151aef563df31de87dd9250015ffd0a8553b5c7a477e30c1a",
   "src/standard_lead.c": "9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7",
@@ -43,7 +43,7 @@
   "src/standard_lead_wake.c": "2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377",
   "src/lm_basic_wake.c": "b3e1034cbebfad88fbb7328485d501d170778a34d1642e40229fb45e60935e5d",
   "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
-  "src/cm_basic_wake.c": "4cb62726c6ec07d283e463ca508b27642365b60344e387fb985416f81f5b7979",
+  "src/cm_basic_wake.c": "95f81bde0ff47c5171149a73c95c838a7f4fa75690be692805493ece258cbbc7",
   "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
   "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
   "src/lm_interbank_routines.c": "10ba9f22b3e445a958fe874d7cd96e74834def56ac7e4fb5b8ba27fd102d875b",

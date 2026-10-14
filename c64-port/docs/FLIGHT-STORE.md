@@ -59,13 +59,41 @@ goes into the store as two modules linked by `tools/interp_runtime_size.py`
 bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
 `INTERP_POINTS` gives the resolver a record to $0A01 at each of the
 interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
-unless a table record or a resident table already holds it: today DANZIG is
-the resident's, and SWRETURN and INTPRET are table records, so 9 of 12 are
-the interpreter's on each mission. CHANG2 is left out, since that is where
+unless a table record or a resident routine already holds it: SWRETURN is
+a table record (the interbank tables), and INTPRET always goes to the
+interpreter (#335), so 11 of 12 are the interpreter's on each mission. DANZIG is one of them: the resident's DANZIG marker is not a
+routine, and the flight resident's own program has no marker table, so
+without the record a job left pending at DANZIG would not resolve. CHANG2 is left out, since that is where
 the interpreter hands back to the Executive. The module returns to the step
 when the CIA1 count at $6FBC moves, so an interrupt waits at most one
 interpretive slot. The load check resolves the records; it does not run the
 interpreter (`make vice-interp-core` does).
+
+Every C64 flight module compiles with `-DAGC_FLIGHT_INTERPRETER`. In the
+files listed in `FLIGHT_INTERP_STOP`, that flag ends a chain at NEWOPS
+([FLIGHT-INTERP-STOP.md](FLIGHT-INTERP-STOP.md)). The store leaves those
+files' interpretive tables, and the `INTERP_ONLY` tables (LM
+`lm_ephemeris_routines`, `lm_s3435_routines` and `lm_s3435b_routines`:
+compiled interpretive code entered and left at NEWOPS; and on both
+missions the compiled interpreter's `*_interp_core_basic` and
+`*_interp_runtime_basic`, whose SWRETURN, INTPRET and DANZIG keys the
+interbank tables, the interpreter's records and the DANZIG marker hold),
+to the interpreter. Their
+keys need no record: the step resolves by Z, which is NEWOPS there, and
+NEWOPS has the interpreter's record. The report counts these keys as
+`interpreter_keys`, separately from `unplaced_keys`. The host index and
+`<m>-host.inc` keep the compiled tables.
+
+`FLIGHT_PARTS` links one file as several modules, one per define set.
+Each part's keys are what its own build's tables hold. The builder reads
+them from a host object of the part, with the tables renamed, so a part
+can key hand-off words the whole file does not. LM `lm_servicer` is linked
+this way, as `-DLMSV_FLIGHT_PART=1` (85 keys, 14,581 bytes) and `=2`
+(80 keys, 14,302 bytes)
+([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)). Parts are
+never chunked. With both lists in place, the five LM files fit their
+slots. The LM load check then runs 1,269 checks (889 before) on
+67 modules, with 0 failures.
 
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
@@ -324,6 +352,24 @@ port) runs one mission:
    words at the first sample point at or after CS centiseconds (e.g.
    `5000:035=02000` moves CDUY). The reference keeps up to 8,191
    centiseconds.
+
+9. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
+   docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
+   `tools/flight_host_differential.py` builds a local engine variant whose
+   `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
+   cycles their counts take) and the IMU CDU drive, which bursts on
+   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   AGC clock then runs only as the flight resident runs it: a modeled C64
+   wall clock advances by each span's AGC machine cycles times K, plus
+   20 ms for each module swap (the VICE load cost), each optionally
+   jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
+   D × 10 ms of it, and at each native boundary at most LAG of them become
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
+   code takes its periods between instructions. Lockstep then compares the
+   clock counters too and adopts nothing from yaAGC, so every routine must
+   match yaAGC run from the same state under the same periods, and the
+   run as a whole is one yaAGC run under that tick schedule. No
+   free-running reference runs, and no samples are compared.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.

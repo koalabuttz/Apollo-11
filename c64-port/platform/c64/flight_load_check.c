@@ -76,7 +76,12 @@ static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
  * entry must restore I/O to acknowledge them, or the CPU never returns. */
 extern volatile uint16_t ov2_irq_count;
 static uint16_t BOOT irq_count(void){uint16_t n;do n=ov2_irq_count;while(n!=ov2_irq_count);return n;}
+/* The boot loaded the real class-2 module ($0A02) at $D000: its first page
+ * waits in the slot snapshot area (unused until the module loop) and comes
+ * back after the test. */
+#define FIXED_SAVE (FL_SCRATCH+FL_IMAGE_BYTES)
 static void BOOT fixed_extension(void){uint8_t b[256];uint16_t i,bad=0,t;   /* on the stack: $C000 holds the pinned module */
+ expect(rk_hidden_dma(APOLLO_REU_STASH,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u),8);
  for(i=0;i<256u;++i)b[i]=(uint8_t)(i^0x5au);
  apollo_reu_transfer(APOLLO_REU_STASH,b,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u);
  expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
@@ -91,7 +96,9 @@ static void BOOT fixed_extension(void){uint8_t b[256];uint16_t i,bad=0,t;   /* o
  *(volatile uint8_t *)1=0x35;
  __asm__ volatile("cli");
  expect(!bad,8);
- expect((uint16_t)(irq_count()-t)>=3u,9);}
+ expect((uint16_t)(irq_count()-t)>=3u,9);
+ expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u)&&
+        rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u),8);}
 
 /* CIA2 timer A counts cycles from $FFFF, timer B its underflows. */
 #define CIA2 ((volatile uint8_t *)0xdd00)

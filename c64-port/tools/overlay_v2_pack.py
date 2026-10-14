@@ -86,6 +86,11 @@ def build_image(modules, resolver, mission, services):
     ids = [m['id'] for m in modules]
     if len(set(ids)) != len(ids):
         raise ValueError('duplicate module identity')
+    # Classes 2 and 3 each load at one fixed address at boot: a second
+    # module of either class would silently replace the first.
+    for slot in (FIXED, PINNED):
+        if sum(m['slot'] == slot for m in modules) > 1:
+            raise ValueError(f'more than one slot class {slot} module')
     by_id = {m['id']: m for m in modules}
     keys = set()
     for r in resolver:

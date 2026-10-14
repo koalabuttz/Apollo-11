@@ -92,7 +92,9 @@ resident's boot loads once and verifies (`rk_load_fixed`):
 - It holds the cold math bodies (`XT`: SQRT, UNIT, VSQ, SIN, COS,
   ASIN, ACOS with POLY, DDV, BDDV, DOT, VPROJ, VXSC, MXV, VXM, V/SC), linked
   by `platform/c64/interp_ext.ld`.
-- None of these bodies reads the rope, since the REU registers are I/O.
+- None of these bodies reads the rope itself, since the REU registers are
+  I/O. Their one rope read, an indexed fixed constant (`fixed_indexed`, in
+  `$0A01`), banks I/O in around the read.
 - They are reached only from the address and unary order tables. Every call
   through a table banks I/O out ($01 = $34) and back in. The resident's IRQ
   entry saves $01 and banks I/O in.
@@ -100,10 +102,31 @@ resident's boot loads once and verifies (`rk_load_fixed`):
   extension's section from the ELF as `interp-ext.prg` (24-byte header, an
   RTS entry nothing calls, no BSS) and checks both PRGs with the store
   packer's `parse_module`.
-- With it, the module fits: LM 15,715 and CM 15,724 of 16,384 bytes, and
+- With it, the module fits: LM 16,029 and CM 16,063 of 16,384 bytes, and
   `$0A02` takes 4,038 and 4,029 of 4,096 bytes with its header.
 - Without it, the module is 3.7 KB over.
-- The flight store does not hold `$0A01` or `$0A02` yet.
+- The flight store packs both (`tools/flight_store_build.py`
+  `INTERP_POINTS`): the resolver sends each entry point below to `$0A01`,
+  except SWRETURN (BANKCALL's return, which a basic table holds).
+
+Every entry point is a place where a resident step can hand a job to the
+module, so each one enters from the AGC's own state there, as yaAGC has it:
+
+- NEWOPS, DANZIG, NOIBNKSW, GOTO and INTPRET need nothing beyond the
+  interpretive registers.
+- DODLOAD, DOVLOAD, DODLOAD* and DOVLOAD* set CYR themselves.
+- DIRADRES takes the INDJUMP index from CYR (20000 + index, as DODLOAD,
+  DOVLOAD or ADDRESS left it), and 15BITADR takes the MISCJUMP index and
+  the code's fourth bit from CYR (the code cycled right three places, or
+  STOTC's CALLCODE cycled once). Any other CYR is refused.
+- A NOVAC job's FIXLOC is FAKEPRET (MPAC -36D, so QPRET is MPAC +6); it is
+  accepted beside the five VAC areas.
+- GOTO through a cycle of erasable CADRs (GOTOERS, "arbitrary indirectness")
+  never reaches fixed memory; the AGC loops there until the night watchman
+  restarts it. After 64 hops the module hands the job back at GOTO with the
+  current POLISH, so the next step goes on looping and interrupts still run.
+- An INDEX'd fixed constant (the shift orders' BIT15/BIT14 tables) is the
+  rope word at the indexed address, wherever the index lands (#224).
 
 `make vice-interp-core` runs the flight build on a PAL C64 in VICE
 (`tools/interp_core_vice_test.py`, `tools/interp_core_vice.c`):
@@ -117,6 +140,31 @@ resident's boot loads once and verifies (`rk_load_fixed`):
 - The CIA timer IRQ runs throughout, through a RAM vector that saves $01.
 - It runs 180 fuzz slot records per mission and checks each 6502 result
   against the host's verification interpreter.
+
+`make interp-flight-vice` runs flight-scenario interpretive code through
+the flight resident in VICE (`tools/interp_flight_test.py`,
+`platform/c64/interp_flight_check.c`). It needs `make flight-store`.
+
+- `tools/interp_flight_capture.c` (host, links yaAGC) runs LM and CM P00
+  from Fresh Start for 30 s with V37E00E, as `tools/flight_host_run.c`
+  runs its reference. Each first arrival at an entry point the store sends
+  to `$0A01` (distinct entry, LOC and BANKSET) is a case: the erasable image
+  and the superbank. These are the fresh-start NOVAC jobs and P00's state
+  vector integration.
+- The C64 program boots like the flight resident on the store, with the
+  cases streamed into the REU above it. For each case it builds the image
+  at $7000 and runs `rk_resident_step` while Z stays at such an entry, with
+  interrupts off. The store's resolver, loader and trampoline all take part.
+- Each case's exit Z, FB and a digest of the image go back to the host,
+  where yaAGC runs from the case (interrupts held off) and must reach that
+  Z under that FB with that digest.
+- On the merged base (a376a718) both missions pass: 240 cases each (of
+  504 LM and 509 CM, evenly spread), every entry but DODLOAD* and DOVLOAD*
+  reached, every exit state reached by yaAGC. The rows are in
+  `evidence/interpreter/interp-flight-vice.json`.
+- `tools/interp_flight_replay.c` replays one case slot by slot on the host
+  with the same core, each slot checked against yaAGC: it found the
+  DIRADRES, 15BITADR and NOVAC entries above.
 
 `make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
 simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
