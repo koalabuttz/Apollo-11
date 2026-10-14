@@ -122,7 +122,7 @@ static int quiet(void){return !m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.Extr
  * second, so 853.33 per 10 ms). */
 extern int AgcFrozenClock;
 static int scaled;
-static double slow=1.0,wall;
+static double slow=1.0,wall,swap_mct=1707.0;
 static unsigned divisor=1u,lag=2u;
 static unsigned long seed,consumed,taken,dropped,span_mct;
 static double jitter(void){if(!seed)return 1.0;
@@ -134,11 +134,11 @@ static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*
  for(;consumed<now;++consumed){if(n<lag){++n;++taken;}else ++dropped;}
  return n;}
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
-static unsigned long chan30=037777u,chan31=077777u;
+static unsigned long chan30=037777u,chan31=077777u,chan32=077777u,chan33=077777u;
 /* yaAGC's GOJAM state (agc_engine_init) without its first DOWNRUPT. */
 static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable);
  for(i=0;i<NUM_CHANNELS;++i)m.InputChannel[i]=0;
- m.InputChannel[030]=(int16_t)chan30;m.InputChannel[031]=(int16_t)chan31;m.InputChannel[032]=m.InputChannel[033]=077777;
+ m.InputChannel[030]=(int16_t)chan30;m.InputChannel[031]=(int16_t)chan31;m.InputChannel[032]=(int16_t)chan32;m.InputChannel[033]=(int16_t)chan33;
  m.Erasable[0][5]=04000;m.AllowInterrupt=1;}
 
 /* The word at fixed address z under FB and the superbank. */
@@ -174,17 +174,30 @@ static int compared(unsigned a){return a>=020u&&!(a>=070u&&a<=073u)&&(getenv("FL
 #define KEY_AT 200ul
 #define KEY_GAP 50ul
 static const char *keys="";
+/* A key may be preceded by @CS (decimal): it and the keys after it are
+ * pressed from that centisecond on (e.g. V37E63E@9000P presses PRO at
+ * 90 s). Each key's time is set once, by keys_parse. */
+enum { KEYS=256 };
+static char keyc[KEYS+1];static unsigned long keyt[KEYS];
+static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;
+ while(*t&&n<KEYS){if(*t=='@'){char *e;unsigned long v=strtoul(t+1,&e,10);if(v>at)at=v;t=e;continue;}
+  keyc[n]=*t++;keyt[n++]=at;at+=KEY_GAP;}
+ keyc[n]=0;keys=keyc;}
 static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(agc_word)(c-'0');}
-static int key_due(unsigned long t,unsigned *pressed){if(!keys[*pressed]||t<KEY_AT+*pressed*KEY_GAP)return -1;return (int)keycode(keys[(*pressed)++]);}
+static int key_due(unsigned long t,unsigned *pressed){if(!keys[*pressed]||t<keyt[*pressed])return -1;return (int)keycode(keys[(*pressed)++]);}
 
 /* FLIGHT_CH30, FLIGHT_CH31 (octal): the input channels at start, on both
  * sides (e.g. FLIGHT_CH30=036377 FLIGHT_CH31=057777: IMU operate, PGNCS
  * control, AUTO, so DAPIDLER starts the DAP). FLIGHT_POKE=CS:ADDR=VALUE,...
  * (octal address and value): erasable words set at the first sample point
  * at or after CS centiseconds, on both sides (e.g. 5000:035=02000 moves
- * CDUY to drive the DAP's jets). */
-enum { POKES=8 };
+ * CDUY to drive the DAP's jets). FLIGHT_LOAD=CS:FILE,...: the same from a
+ * file of octal "ADDR VALUE" lines ('#' starts a comment), a scenario's
+ * erasable load (tools/flight_scenarios/). FLIGHT_CH32, FLIGHT_CH33 set
+ * those input channels as FLIGHT_CH30 does (e.g. FLIGHT_CH33=077737: the
+ * landing radar antenna in position 1, for P63). */
+enum { POKES=4096 };
 static struct { unsigned long cs; unsigned addr,value; } pokes[POKES];
 static unsigned npokes;
 /* FLIGHT_SNAPSHOT (above). Fields by name, so the layouts need not match. */
@@ -209,10 +222,55 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
 static void pokes_parse(const char *t){while(t&&*t&&npokes<POKES){unsigned long cs;unsigned a,v;int n=0;
   if(sscanf(t,"%lu:%o=%o%n",&cs,&a,&v,&n)<3||!n||a>=2048u)break;
   pokes[npokes].cs=cs;pokes[npokes].addr=a;pokes[npokes++].value=v&077777u;t+=n;if(*t==',')++t;}}
+static int load_parse(const char *t){while(t&&*t){unsigned long cs;int n=0;char path[512];FILE *f;char line[256];
+  if(sscanf(t,"%lu:%511[^,]%n",&cs,path,&n)<2||!n)return 0;
+  t+=n;if(*t==',')++t;
+  if(!(f=fopen(path,"r"))){fprintf(stderr,"FLIGHT_LOAD: cannot open %s\n",path);return 0;}
+  while(fgets(line,sizeof line,f)){unsigned a,v;char *c=strchr(line,'#');if(c)*c=0;
+   if(sscanf(line,"%o %o",&a,&v)!=2)continue;
+   if(a>=2048u||npokes>=POKES){fclose(f);fprintf(stderr,"FLIGHT_LOAD: bad address or too many words in %s\n",path);return 0;}
+   pokes[npokes].cs=cs;pokes[npokes].addr=a;pokes[npokes++].value=v&077777u;}
+  fclose(f);}
+ return 1;}
+/* poke_due takes them in time order. */
+static void pokes_sort(void){unsigned i,j;for(i=1;i<npokes;++i)for(j=i;j>0&&pokes[j-1].cs>pokes[j].cs;--j){unsigned long c=pokes[j].cs;unsigned a=pokes[j].addr,v=pokes[j].value;
+  pokes[j]=pokes[j-1];pokes[j-1].cs=c;pokes[j-1].addr=a;pokes[j-1].value=v;}}
 /* The pokes due at time t, once each side (done counts them). */
 static void poke_due(unsigned long t,unsigned *done,agc_word *words){
  while(*done<npokes&&t>=pokes[*done].cs){unsigned a=pokes[*done].addr,v=pokes[*done].value;
   ++*done;if(words)words[a]=(agc_word)v;else *cell(a)=(int16_t)v;}}
+
+/* FLIGHT_ENGINE=KG (LM): a minimal descent engine, the same on both
+ * sides, so DVMON sees thrust and the landing guidance flies. From the
+ * first sample point with ENGONFLG set (FLAGWRD5 bit 7) it thrusts at 10%
+ * (373 throttle bits of 12.53 N; BITPERF), moves by each new throttle
+ * command (PSEUDO55, taken when TTHROT changes) within 373 and FMAXPOS
+ * (3467), and burns KG kilograms down at DPSVEX (2955.9 m/s). The thrust
+ * acts along body X, put into stable-member axes from CDUY (inner gimbal)
+ * and CDUZ (middle): (cos IG cos MG, sin MG, -sin IG cos MG). Each sample
+ * point adds the velocity since the last one to PIPAX-Z (1 cm/s a count),
+ * carrying the fraction. No attitude dynamics: while the engine is on, each
+ * sample point sets CDUX-Z to the DAP's desired angles CDUXD-ZD (perfect
+ * attitude control). */
+static double engine_kg;
+static struct engine { int on; unsigned long t; agc_word tthrot; double bits,kg,carry[3]; } eng_ref,eng_nat;
+enum { FLAGWRD5=0101, ENGONBIT=0100, PSEUDO55=03614, TTHROT=03617, PIPAX=037, CDUX=032, CDUY=033, CDUZ=034, CDUXD=03235 };
+static agc_word eword(const agc_word *w,unsigned a){return w?w[a]:(agc_word)(*cell(a)&077777);}
+static long ones(agc_word v){return (v&040000u)?-(long)((~v)&037777u):(long)v;}
+static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,dt,ig,mg,dir[3];unsigned k;
+ if(!engine_kg)return;
+ if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
+ for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CDUXD+k);else *cell(CDUX+k)=(int16_t)eword(w,CDUXD+k);}
+ if(!e->on){e->on=1;e->t=t;e->tthrot=eword(w,TTHROT);if(!e->kg){e->kg=engine_kg;e->bits=373.0;}return;}
+ if(eword(w,TTHROT)!=e->tthrot){e->tthrot=eword(w,TTHROT);e->bits+=(double)ones(eword(w,PSEUDO55));
+  e->bits=e->bits<373.0?373.0:e->bits>3467.0?3467.0:e->bits;}
+ dt=(double)(t-e->t)*0.01;e->t=t;f=e->bits*12.53;a=f/e->kg;e->kg-=f/2955.9*dt;
+ ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0);mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0);
+ dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0;n=(long)e->carry[k];e->carry[k]-=(double)n;
+  v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
+  v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
+  if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
 
 /* FLIGHT_PATH=FROM,TO: print every registered point each side passes
  * between those centiseconds (a diagnostic for aligning the two runs). */
@@ -248,7 +306,8 @@ static void load(const apollo_overlay_state *s,const flight_io *io,agc_hardware 
  m.Trap31A=io->trap31a;m.Trap31B=io->trap31b;m.Trap32=io->trap32;
  memset(m.InterruptRequests,0,sizeof m.InterruptRequests);m.DownruptTimeValid=0;
  m.SubstituteInstruction=(unsigned)substitute;substitute=0;m.PendFlag=0;m.PendDelay=0;m.ExtraDelay=0;m.IndexValue=0;m.ExtraCode=0;}
-static agc_word mword(unsigned i){return (agc_word)(*cell(i)&(i<2u?0177777u:077777u));}
+/* A, L and Q are 16 bits (Q keeps the overflow pair a TS Q or XCH Q gives it). */
+static agc_word mword(unsigned i){return (agc_word)(*cell(i)&(i<3u?0177777u:077777u));}
 static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsigned i;
  for(i=0;i<2048u;++i)s->words[i]=mword(i);
  for(i=0;i<CHANNELS;++i)*hwc(hw,i)=(agc_word)(m.InputChannel[ch[i]]&077777);
@@ -401,29 +460,37 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
  in_slot[e->slot]=e->module;++nloads;key=point(w,sb,&in);
  /* Scaled time: a swap is about 20 ms of C64 time (docs/FLIGHT-STORE.md:
   * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. */
- if(scaled)wall+=1707.0*jitter();
+ if(scaled)wall+=swap_mct*jitter();
  for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
 static const char *snap_path;
-int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[8192][2048],first[2048];
+int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
  unsigned i,j,kref=0,knat=0,pref=0,pnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
- if(argc>3)keys=argv[3];
+ keys_parse(argc>3?argv[3]:"");
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
  if(getenv("FLIGHT_CH31"))chan31=strtoul(getenv("FLIGHT_CH31"),0,8)&077777u;
+ if(getenv("FLIGHT_CH32"))chan32=strtoul(getenv("FLIGHT_CH32"),0,8)&077777u;
+ if(getenv("FLIGHT_CH33"))chan33=strtoul(getenv("FLIGHT_CH33"),0,8)&077777u;
  pokes_parse(getenv("FLIGHT_POKE"));
  if(getenv("FLIGHT_SNAPSHOT")){static char path_buf[512];
   if(sscanf(getenv("FLIGHT_SNAPSHOT"),"%lu,%511s",&snap_cs,path_buf)!=2){fprintf(stderr,"FLIGHT_SNAPSHOT=CS,PATH\n");return 2;}
   snap_path=path_buf;}
+ if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
+ pokes_sort();
+#if RK_LM
+ if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
+#endif
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  if(cs>=sizeof ref/sizeof ref[0])cs=sizeof ref/sizeof ref[0]-1u;
  if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;
-  if(sscanf(getenv("FLIGHT_SCALED"),"%lf,%u,%u,%lu",&slow,&divisor,&lag,&seed)<3||slow<=0.0||!divisor||!lag){fprintf(stderr,"FLIGHT_SCALED=K,D,LAG[,SEED]\n");return 2;}}
+  if(sscanf(getenv("FLIGHT_SCALED"),"%lf,%u,%u,%lu",&slow,&divisor,&lag,&seed)<3||slow<=0.0||!divisor||!lag){fprintf(stderr,"FLIGHT_SCALED=K,D,LAG[,SEED]\n");return 2;}
+  if(getenv("FLIGHT_SWAP_MCT"))swap_mct=strtod(getenv("FLIGHT_SWAP_MCT"),0);}
  InhibitAlarms=1;
  /* Reference (none under FLIGHT_SCALED: the lockstep spans are it). */
  cold();
@@ -438,6 +505,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * which can delay the job it starts by a self-check pass). The entry
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
+    engine_due(now(w),&eng_ref,0);
     if((k=key_due(now(w),&kref))>=0){m.InputChannel[015]=(int16_t)k;
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_KEY1);m.InIsr=1;}
      else m.InterruptRequests[RK_RUPT_KEY1]=1;}}}
@@ -458,7 +526,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  cold();
  memset(&s,0,sizeof s);memset(&io,0,sizeof io);memset(&hw,0,sizeof hw);memset(&p,0,sizeof p);
  io.undo=&undo;s.words[5]=04000u;io.interrupt_enabled=1;
- hw.channel30=(agc_word)chan30;hw.channel31=(agc_word)chan31;hw.channel32=hw.channel33=077777u;
+ hw.channel30=(agc_word)chan30;hw.channel31=(agc_word)chan31;hw.channel32=(agc_word)chan32;hw.channel33=(agc_word)chan33;
  boundary_build();
  /* Operands and fixed_data are set per call, as the module holding the
   * routine sets them on the C64 (platform/c64/flight_table_module.c). */
@@ -482,6 +550,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
+   engine_due(now(s.words),&eng_nat,s.words);
    if((k=key_due(now(s.words),&knat))>=0){hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
    if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
