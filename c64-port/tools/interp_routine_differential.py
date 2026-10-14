@@ -1088,6 +1088,8 @@ def main():
     ap.add_argument('spec')
     ap.add_argument('--cases', type=int, default=64, help='cases per routine')
     ap.add_argument('--freeze', action='store_true')
+    ap.add_argument('--stops-only', action='store_true',
+                    help='run the native side only and count its stops inside the file (#325)')
     ap.add_argument('--show', type=int, default=3)
     ap.add_argument('--only', default='')
     ap.add_argument('--cover-check', metavar='RECORD', nargs='?', const='',
@@ -1126,6 +1128,12 @@ def main():
     write_cases(path, missions, cases)
     if a.cover_check is not None:
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
+    if a.stops_only:
+        inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
+        print('%s: %d native stops inside the file' % (a.spec, sum(inside.values())))
+        for k, v in sorted(inside.items()):
+            print('  %s x%d' % (k, v))
+        sys.exit(0)
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     # A case both sides loop on (the oracle at its step limit, the native
@@ -1186,6 +1194,10 @@ def main():
     timeouts = [r for i, r in enumerate(rows_r) if r[1] != '0' and i not in chan]
     if timeouts:
         sys.exit('FAIL: %d oracle timeouts' % len(timeouts))
+    inside = in_file_stops(missions, cases, rows_n, nat, path, chan)
+    if inside:
+        sys.exit('FAIL: %d native stops at words of the file no routine covers (yaAGC runs on there, #325): %s' % (
+            sum(inside.values()), ', '.join('%s x%d' % kv for kv in sorted(inside.items()))))
     print('PASS: %d %s cases equal the original programs (%d routines)' % (
         len(cases), a.spec, sum(len(mi.points) for mi in missions if mi.m in spec['missions'])))
     for k in sorted(stops):
@@ -1210,6 +1222,35 @@ def main():
         if spec.get('cover'):
             edges = edge_sets(build_edges(a.spec, spec), path)
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers)
+
+
+
+def in_file_stops(missions, cases, rows_n, nat, path, skip=()):
+    """{routine: cases} of native runs that stop (no routine covers Z) at a
+    word of the file under test, other than the case's own stop: yaAGC runs
+    on from there, so the stop is not the program's (#325); the spec's idle
+    points (where both sides stop by design) are left out. Z with the FB
+    the run ends under places the stop in a bank."""
+    out = collections.Counter()
+    if not any(r[1] == '0' for r in rows_n):
+        return out
+    for i, (c, r, l) in enumerate(zip(cases, rows_n, run([nat, path, 'fb']))):
+        if i in skip or r[1] != '0':
+            continue
+        z, fb = int(r[2]), int(l[4])
+        if 0o4000 <= z < 0o10000:
+            phys = 2048 + z - 0o4000
+        elif 0o2000 <= z < 0o4000:
+            b = (fb >> 10) & 0o37
+            if b >= 0o30 and (c.get('sb', 0) & 0o160) == 0o100:
+                b += 8
+            phys = b * 1024 + z - 0o2000
+        else:
+            continue
+        mi = missions[c['cm']]
+        if phys in mi.cp.words and phys != c['stop'] and phys not in mi.cp.idle:
+            out['%s %s -> %s' % (mi.m, mi.cp.where(c['point']), mi.cp.where(phys))] += 1
+    return out
 
 
 def cover_check(spec_id, spec, missions, cases, path, record):
