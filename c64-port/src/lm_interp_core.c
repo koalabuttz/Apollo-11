@@ -21,20 +21,27 @@ static agc_word *ic_image;
 #endif
 /* INTERP_EXTENSION (flight build): the cold math bodies (XT) live in the
  * interpreter extension, RAM under I/O at $D000-$DFFF, loaded once with
- * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope (the REU
- * registers are I/O) and are reached only through the order tables, whose
+ * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope themselves
+ * (the REU registers are I/O; fixed_indexed, in the job slot, banks I/O in
+ * for its read) and are reached only through the order tables, whose
  * calls bank I/O out ($01 = $34). */
 #if defined(__mos__) && AGC_FIXED_IMAGE && INTERP_EXTENSION
 #define XT __attribute__((section(".interp_ext")))
-/* Around every order-table call (no table body reads the rope); the
- * resident's IRQ entry saves $01 and banks I/O in. */
+/* Around every order-table call (a table body reads the rope only through
+ * fixed_indexed, which banks I/O back in); the resident's IRQ entry saves $01
+ * and banks I/O in. */
 static uint8_t xt_mem;
 #define XT_IN (xt_mem = *(volatile uint8_t *)1, *(volatile uint8_t *)1 = 0x34)
 #define XT_OUT (*(volatile uint8_t *)1 = xt_mem)
+/* A rope read from under an order-table call: I/O in for the REU. */
+#define RD_IN uint8_t rd_mem = *(volatile uint8_t *)1; *(volatile uint8_t *)1 = rd_mem | 1u
+#define RD_OUT (*(volatile uint8_t *)1 = rd_mem)
 #else
 #define XT
 #define XT_IN ((void)0)
 #define XT_OUT ((void)0)
+#define RD_IN ((void)0)
+#define RD_OUT ((void)0)
 #endif
 static p66_bias_io *io;
 static NI const agc_word *kop(void);
@@ -960,18 +967,19 @@ static NI uint8_t lmi_push(void){
 #define SQUARE() ai_square()
 #define DDOUBL() ai_ddoubl()
 #define AUGA() ai_aug(0u)
-/* INDEX v; CAF k for k in FIXED_FIXED 04730-04777 (the bit table runs
- * BIT15 04735 to BIT1 04753), v taken as a one's-complement index. */
+static NI uint16_t phys(unsigned a, agc_word b);
+static NI uint8_t rope(uint16_t p, agc_word *w);
+/* INDEX v; CAF k (k a FIXED_FIXED constant: the bit table runs BIT15 04735
+ * to BIT1 04753), v taken as a one's-complement index: the rope word at
+ * k + v (under FB in 02000-03777), as the AGC reads it, wherever the index
+ * lands (#224). One that leaves fixed memory (no legal state's does) reads 0.
+ * Order-table bodies call it with I/O banked out (XT_IN). */
 static NI agc_word fixed_indexed(unsigned k,agc_word v){
- static const agc_word t[]={01007,02,037777,037777,057777,040000,020000,010000,04000,02000,01000,0400,0200,0100,
-#ifdef INTERP_COMANCHE
-  /* Comanche055 has no OCT33 and OCT35 here (pool at 04774). */
-  040,020,010,04,02,01,077777,0,05,07,013,015,017,030,032,045,046,050,055,060,062,0120,0140,0144,0310,0401};
-#else
-  040,020,010,04,02,01,077777,0,05,07,013,015,017,030,033,035,032,045,046,050,055,060,062,0120,0140,0144};
-#endif
- int i=(int)k-(int)IF_(04730,04774)+signed_word((agc_word)(v&077777u));
- return i>=0&&i<(int)(sizeof t/sizeof t[0])?t[i]:0u;
+ uint16_t a=(uint16_t)(k+(unsigned)signed_word((agc_word)(v&077777u)));agc_word w=0;
+ RD_IN;
+ if(a>=02000u&&a<010000u)(void)rope(phys(a,W[rFB]),&w);
+ RD_OUT;
+ return w;
 }
 #define BIT15_AT IF_(04735u,05001u)
 #define BIT14_AT IF_(04736u,05002u)
@@ -1982,9 +1990,14 @@ static NI void lmi_call(void){
 }
 static NI void lmi_goto_any(void){
  /* GOTO CA POLISH; MASK HIGH4; BZF GOTOERS (an erasable CADR is fetched,
-  * through the work area or the EBANK it names, until a fixed one). */
+  * through the work area or the EBANK it names, until a fixed one). A cycle
+  * of erasable CADRs never ends (the AGC loops until the night watchman
+  * restarts it): after 64 hops the job is handed back at GOTO with the
+  * current POLISH, where the next step goes on looping, so interrupts and
+  * the resident still run (#224). */
+ uint8_t c,n=64u;
  for(;;){
-  uint8_t c;
+  if(!--n){W[5]=IF_(06646,06615);return;}
   CA(rPOLISH);MASKF(074000u);
   if(!ai_bzf())break;
   CA(rPOLISH);ADF(ENDVAC_NEG);c=CCS(rA);

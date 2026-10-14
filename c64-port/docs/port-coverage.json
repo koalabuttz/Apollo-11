@@ -3524,7 +3524,7 @@
       "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
       "bytes": 4804,
       "lines": 162,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3546,7 +3546,7 @@
           "verification": "docs/CM-P76-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3591,6 +3591,10 @@
           "executed_instruction_closure": {
             "path": "evidence/cm-p76-file/cm-p76-file-closure.json",
             "sha256": "f275a2522917ac6d99b2987527dda3f906f8ec3df33ea48639a8b35c04e5e9a3"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-344.md",
+            "sha256": "ed97fe4d651c9a9d95d4d177d398adac9aecf8cfa8eb1765a6608a87df6ba507"
           }
         }
       }
@@ -8073,7 +8077,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_lambert_aim_basic): 35,2450 P31, 2451 (after P20FLGON), 2453, 2535 and 2537 (after VNPOOH) and 2533 (after EXIT). Interpretive (lm_lambert_aim_interpretive, at NEWOPS with LOC there): 2454 (after TC INTPRET), 2540 REVN1645 (entered from P30,P37), the STCALL returns 2461 and 2512, the CALL returns 2503, 2517, 2521, 2523, 2527, 2531 and 2543, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2457, 2464, 2465, 2467, 2470, 2472, 2474, 2477, 2500, 2505, 2506, 2510, 2515, 2525, 2532; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 35 with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 35 (with SUPERBNK clear), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_lambert_aim_basic): 35,2450 P31, 2451 (after P20FLGON), 2453, 2535 and 2537 (after VNPOOH) and 2533 (after EXIT). Interpretive (lm_lambert_aim_interpretive, at NEWOPS with LOC there): 2454 (after TC INTPRET), 2540 REVN1645 (entered from P30,P37), the STCALL returns 2461 and 2512, the CALL returns 2503, 2517, 2521, 2523, 2527, 2531 and 2543, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2457, 2464, 2465, 2467, 2470, 2472, 2474, 2477, 2500, 2505, 2506, 2510, 2515, 2525, 2532; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 35 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, since sb_ok reads FB 35 without the superbank bit as bank 35): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 35 (with SUPERBNK clear), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
           "unreached": "None. The oracle executed all 9 basic instructions and read all 52 interpretive words (evidence/lm-lambert-aim/lm-lambert-aim-closure.json).",
           "data_validity": "The file has no data words; V06N33, V06N81, V06N42 and P30ZERO are assembled in other files and read from the rope."
         },
