@@ -10,6 +10,7 @@
 #include "rtb_angles.h"
 #include "rtb_agreement.h"
 #include "geometry_rtb.h"
+#include "cm_integration_moves.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -1152,7 +1153,7 @@ static enum exec_status r46225(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  right(s);
  cmi_direct(s,006256,007546);cmi_ddv(s,K46255);
@@ -1975,4 +1976,4 @@ const cm_geometry_point cm_geometry_points[CM_GEOMETRY_POINTS]={
  {19627,1}
 };
 const agc_word cm_geometry_cadr_words[CM_GEOMETRY_CADR_WORDS]={00034};
-const agc_word cm_geometry_externals[CM_GEOMETRY_EXTERNALS]={05170,07171,057352};
+const agc_word cm_geometry_externals[CM_GEOMETRY_EXTERNALS]={05170,07171};
