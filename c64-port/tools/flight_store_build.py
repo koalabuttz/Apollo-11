@@ -497,6 +497,11 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
 # naming both. P-AXIS and Q,R-AXIS run from their job-slot modules.
 PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_kalman_basic'], 3: ['lm_dapidler_hot_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
+# The excursion: hot subsets one job-slot module packs together, so a DAP
+# pass that leaves the pinned sets loads one module, not one per file. It
+# takes the runtime from the class-4 home (pin_pair) and is packed only
+# beside it; the resolver sends its keys to it before their files' modules.
+EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines'], 'cm': []}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
@@ -859,6 +864,29 @@ def main():
             for mod in modules:
                 if mod['slot'] == 1:
                     mod.update(slot=0, task_pinned_out=True)
+        excursion = None
+        home = next((p for p in pinned if p['packed'] and p['slot'] == 'pinned_task'), None)
+        ets = [t for t in EXCURSION[m] if t in packed]
+        if home and ets:
+            stems = list(dict.fromkeys(packed[t] for t in ets))
+            lane = lane_slot(stems[0], m, owners, place)[0]
+            sites = {}
+            for st in stems:
+                sites.update(file_sites(a.host_cc, m, st))
+            excursion = dict(stem=stems[0], lane=lane, slot=0, id=LANE_BYTE[lane] << 8 | 0xF5, basic=ets,
+                             interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
+                             sources=c64_sources(index, *stems, 'agc_transfer'), prg_name='excursion')
+            res = link(dict(excursion))[2]
+            # Every function it links that the home holds as a global is the
+            # home's (--defsym from the home's map), as for class 3.
+            nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
+                                text=True, check=True).stdout
+            addr = {p[2]: p[0] for p in (l.split() for l in nm.splitlines()) if len(p) == 3 and p[1] in 'TW'}
+            share = sorted(map_symbols(ROOT / OUT / m / 'excursion.prg.map') & set(addr))
+            excursion['shared'] = len(share)
+            if share:
+                excursion['link_flags'] = ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)]
+            modules.append(excursion)
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
         # A basic-only module over its slot is split into chunks of
@@ -900,7 +928,7 @@ def main():
                 todo = nxt
             return (kept, over) if kept else None
         for mod, prg, res in linked:
-            if res['ok'] or not res.get('overflow') or mod['interp'] or mod.get('defines'):
+            if res['ok'] or not res.get('overflow') or mod['interp'] or mod.get('defines') or mod.get('excursion'):
                 continue
             if res['overflow'] > SPLIT_LIMIT:
                 mod['chunking'] = 'too big to split'
@@ -941,6 +969,12 @@ def main():
                         continue  # resolved to the table's own module
                     for k in mod.get('key_slice', keys)[t]:
                         module_of[(t, k)] = mod['id']
+        # The excursion's keys resolve to it first: its hot entries are its
+        # files' tables' (hot_full), so the same routines run.
+        if excursion and excursion.get('ok'):
+            for t in excursion['basic']:
+                for k in keys[t]:
+                    module_of[(hot_full(t), k)] = excursion['id']
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
