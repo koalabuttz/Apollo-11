@@ -44,7 +44,7 @@ __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 #ifdef RK_WORK_CLOCK
 uint16_t rk_work;
 uint8_t rk_tick_phase;
-__attribute__((used)) uint8_t rk_cap;   /* read by name in rk_realtime_cap */
+__attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
 /* The MCT left before the next tick (at least 1: rk_rupts drained the
  * whole periods at the step's start). */
 __attribute__((noinline)) static uint16_t rk_budget(void) { return (uint16_t)(RK_TICK_MCT(rk_tick_phase)-rk_work); }
@@ -240,16 +240,20 @@ void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
  * machine that fell behind does not race later to catch up. A
  * slower-than-real-time C64 never waits here. */
 #define RK_CAP_ASM_(n) #n
-#define RK_CAP_ASM(n) RK_CAP_ASM_(n)
+#define RK_CAP_ASM(n)  RK_CAP_ASM_(n)
 /* In assembly: as C, the call or the inlined loop cost the step's
  * register allocation 18-40 bytes more than the loop itself. */
-static inline void rk_realtime_cap(void) {
+static inline void rk_realtime_cap(void)
+{
+    /* One instruction group per line. */
+    // clang-format off
     __asm__ volatile(
         "1:\n\tlda ov2_irq_count\n\tsec\n\tsbc rk_cap\n\tbeq 1b\n"
         "\tcmp #" RK_CAP_ASM(RK_CAP_LAG) "+1\n\tbcc 2f\n"
         "\tlda ov2_irq_count\n\tsbc #" RK_CAP_ASM(RK_CAP_LAG) "\n\tsta rk_cap\n"
         "2:\n\tinc rk_cap"
-        ::: "a","p");   /* rk_cap is the asm's alone: no memory clobber */
+        ::: "a", "p"); /* rk_cap is the asm's alone: no memory clobber */
+    // clang-format on
 }
 #endif
 /* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step
