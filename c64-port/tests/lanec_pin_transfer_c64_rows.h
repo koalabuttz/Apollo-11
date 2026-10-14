@@ -247,7 +247,7 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_general_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {350u, 0x88e40953u},
+    {350u, 0xe1f206d9u},
     {364u, 0x5a4617f0u},
     {365u, 0x814d0327u},
     {366u, 0xf6664b03u},
@@ -834,7 +834,7 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {1328u, 0x5147523au},
     {1329u, 0x95a57571u},
-    {1330u, 0x42150b22u},
+    {1330u, 0xe9324735u},
     {1372u, 0x6d56c02au},
     {1373u, 0x4fc7fd43u},
     {1374u, 0x5111dd7au},

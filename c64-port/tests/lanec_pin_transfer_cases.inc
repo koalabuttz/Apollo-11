@@ -362,9 +362,9 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33404u, 0u, 267u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 378u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33430u, 0u, 2u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 256u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 514u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 768u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 260u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 521u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 782u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
     { 33434u, 0u, 23u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 3403u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 6731u, 221u, LANEC_LM },   /* 40,3232 gaps */
@@ -1007,8 +1007,8 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34638u, 0u, 384u, 194u, LANEC_LM },   /* 41,3516 nv_blank */
     { 34660u, 0u, 256u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
     { 34660u, 0u, 288u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
-    { 34660u, 0u, 320u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
-    { 34660u, 0u, 352u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
+    { 34660u, 0u, 321u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
+    { 34660u, 0u, 353u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
     { 34678u, 0u, 455u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
     { 34678u, 0u, 483u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
     { 34678u, 0u, 512u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
@@ -1343,8 +1343,8 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33102u, 0u, 1177u, 213u, LANEC_CM },   /* 40,2516 scalar_output */
     { 33108u, 0u, 1639u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
     { 33108u, 0u, 1690u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
-    { 33108u, 0u, 1741u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
-    { 33108u, 0u, 1792u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
+    { 33108u, 0u, 1742u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
+    { 33108u, 0u, 1793u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
     { 33155u, 0u, 1229u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
     { 33155u, 0u, 1280u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
     { 33155u, 0u, 1331u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
@@ -2637,9 +2637,9 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33404u, 0u, 267u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 378u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33430u, 0u, 2u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 256u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 514u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
-    { 33430u, 0u, 768u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 260u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 521u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 782u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
     { 33434u, 0u, 23u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 3403u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 6731u, 221u, LANEC_LM },   /* 40,3232 gaps */
@@ -3282,8 +3282,8 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34638u, 0u, 384u, 194u, LANEC_LM },   /* 41,3516 nv_blank */
     { 34660u, 0u, 256u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
     { 34660u, 0u, 288u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
-    { 34660u, 0u, 320u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
-    { 34660u, 0u, 352u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
+    { 34660u, 0u, 321u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
+    { 34660u, 0u, 353u, 193u, LANEC_LM },   /* 41,3544 nv_admission */
     { 34678u, 0u, 455u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
     { 34678u, 0u, 483u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
     { 34678u, 0u, 512u, 197u, LANEC_LM },   /* 41,3566 nv_continuation */
@@ -3618,8 +3618,8 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33102u, 0u, 1177u, 213u, LANEC_CM },   /* 40,2516 scalar_output */
     { 33108u, 0u, 1639u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
     { 33108u, 0u, 1690u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
-    { 33108u, 0u, 1741u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
-    { 33108u, 0u, 1792u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
+    { 33108u, 0u, 1742u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
+    { 33108u, 0u, 1793u, 213u, LANEC_CM },   /* 40,2524 scalar_output */
     { 33155u, 0u, 1229u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
     { 33155u, 0u, 1280u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
     { 33155u, 0u, 1331u, 213u, LANEC_CM },   /* 40,2603 scalar_output */
@@ -4805,7 +4805,7 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_general_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
-    { 350u, { 33430u, 0u, 514u, 152u, LANEC_LM } },
+    { 350u, { 33430u, 0u, 521u, 152u, LANEC_LM } },
     { 364u, { 33458u, 0u, 0u, 152u, LANEC_LM } },
     { 365u, { 33458u, 0u, 254u, 152u, LANEC_LM } },
     { 366u, { 33458u, 0u, 510u, 152u, LANEC_LM } },
@@ -5392,7 +5392,7 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
 static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
     { 1328u, { 33108u, 0u, 1639u, 213u, LANEC_CM } },
     { 1329u, { 33108u, 0u, 1690u, 213u, LANEC_CM } },
-    { 1330u, { 33108u, 0u, 1741u, 213u, LANEC_CM } },
+    { 1330u, { 33108u, 0u, 1742u, 213u, LANEC_CM } },
     { 1372u, { 33195u, 0u, 1844u, 213u, LANEC_CM } },
     { 1373u, { 33195u, 0u, 1895u, 213u, LANEC_CM } },
     { 1374u, { 33195u, 0u, 1946u, 213u, LANEC_CM } },
