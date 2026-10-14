@@ -1712,8 +1712,63 @@
           ],
           "scope": "All of P21 (37,2001-37,2154), 108 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, P21ONENN, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO, or a NEWOPS outside 37,2020-2130 and 2137-2144). ASIN itself (ARCSIN) is another file's.",
           "verification": "docs/CM-P21.md"
+        },
+        {
+          "native_files": [
+            "src/cm_ground_track.c",
+            "include/cm_ground_track.h"
+          ],
+          "scope": "The whole file (37,2001-2154): PROG21 and P21PROG1 with their three BANKCALL returns each (terminate, proceed, loaded through the DSKY), the integration, P21CONT, P21VSAVE and P21DSP interpretive code, the V06N43 display and its V32E recycle, basic and interpretive (cm_ground_track_basic, cm_ground_track_interpretive), and the 600SEC, P21ONENN, V06N43, V6N34 and K.01 constants.",
+          "verification": "docs/CM-GROUND-TRACK.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (cm_ground_track_basic): 37,2001 PROG21, 2011 P21PROG1, the three returns after each BANKCALL (2006 terminate, 2007 proceed, 2010 loaded through the DSKY; 2014, 2015, 2016; 2134, 2135, 2136 after the V06N43 flash) and 2131 (after EXIT). Interpretive (cm_ground_track_interpretive, at NEWOPS with LOC there): 2020 and 2137 (after TC INTPRET), 2024 (STCALL INTSTALL return), 2042 and 2125 (CALL returns), the branch targets 2035, 2044 P21CONT, 2063, 2065 P21VSAVE, 2116, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2022, 2030, 2032, 2040, 2046, 2050, 2052, 2053, 2056, 2061, 2067, 2071, 2073, 2074, 2076, 2100, 2102, 2104, 2105, 2110 P21DSP, 2113, 2120, 2122, 2127, 2130, 2142, 2143; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 37 with BANKSET, FB, SUPERBNK and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 37 (with SUPERBNK clear), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. P21VSAVE's DDV P21VEL (2102) also starts from edge operands in half its cases: MPAC 0, -0 or small, and P21VEL 0, -0, small, major part +-1 with a minor of either sign, 1/2, or a major part equal to MPAC's; edge_values gives the other operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 18 basic instructions and read all 79 interpretive words (evidence/cm-ground-track/cm-ground-track-closure.json).",
+          "data_validity": "The CADRs after BANKCALL (GOPERF4, GOFLASH), 600SEC (2DEC 60000 B-28), V06N43, V6N34 and K.01 (2DEC .01) are read as the original constants: the CADRs by BANKCALL, the verb-nouns by CAF, and 600SEC and K.01 by the interpreter as DAD and DMP operands. P21ONENN (OCT 1, OCT 0) is not read by this file (TPI_SEARCH reads it) and stays in the rope as assembled."
+        },
+        "external_continuations": [
+          "BANKCALL to GOPERF4 and GOFLASH (the DSKY requests), which return to this file's registered return points",
+          "GOTOPOOH (terminate)",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: INTSTALL, INTEGRV, INTEGRVS, ASIN and LAT-LONG",
+          "The Executive's CHANG2 (05170) with a job waiting, and ALARM (05650) on an interpreter overflow",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-ground-track/cm-ground-track-source-map.json",
+            "sha256": "ea1d41fa605b521ee491c260f802f3aa9f3c643c287d3420662d7e6d5a07a7e8"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-ground-track/cm-ground-track-proof.json",
+            "sha256": "f5a968312ad17fd1924d4741315930388d98dcb020d4cc6a591a4aa14a33d6be"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-ground-track/cm-ground-track-host.log",
+            "sha256": "0a24cafbafed5bfa1f5fc20748216d8fc7abf074ef270e487445db152a937cf0"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-ground-track/cm-ground-track-vice.log",
+            "sha256": "3f943c43d1970542a372182693682d5b8b53d5f4feb9d5145d34645165427658",
+            "vice_targets": {
+              "vice-cm-ground-track": 95
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-ground-track/cm-ground-track-proof.json",
+            "sha256": "f5a968312ad17fd1924d4741315930388d98dcb020d4cc6a591a4aa14a33d6be"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-ground-track/cm-ground-track-closure.json",
+            "sha256": "3bd538bd3154392492798b1b4a21e9bda49e1f851c9dce30b8f2ea4f3168e783"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
@@ -7835,8 +7890,62 @@
           ],
           "scope": "P31 and REVN1645 (35,2450-35,2544), 61 words, the whole file, as six basic routines keyed by Z and eleven interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P31 with P20FLGON, the V06N33 display and INTPRET; UPDATFLG cleared, TIG and LEMPREC; RTIG/RINIT and VTIG/VINIT from RATT and VATT, P30ZERO and DELLT4 pushed, TPASS4 with SXA,1 and SXA,2, and INITVEL; DELVEET3 into DELVSIN, ABVAL into VGDISP with XDELVFLG cleared, and GET.LVC; RTIG, VIPRIME and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK, HAPO and EXIT; the V06N81 and V06N42 displays and INTPRET; and REVN1645 (SET FINALFLG, CALL VN1645, GOTO REVN1645): from each entry through the trampoline to the first point outside them (P20FLGON, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 35,2454-35,2544).",
           "verification": "docs/LM-P31.md"
+        },
+        {
+          "native_files": [
+            "src/lm_lambert_aim.c",
+            "include/lm_lambert_aim.h"
+          ],
+          "scope": "The whole file (35,2450-2544): P31 (P20FLGON, the V06N33 display), the interpretive targeting (LEMPREC to TIG, RTIG/VTIG, TPASS4, INITVEL, DELVSIN, VGDISP, PERIAPO1, SHIFTR1 and MAXCHK to HPER and HAPO), the V06N81 and V06N42 displays, and the REVN1645 loop, basic and interpretive (lm_lambert_aim_basic, lm_lambert_aim_interpretive).",
+          "verification": "docs/LM-LAMBERT-AIM.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_lambert_aim_basic): 35,2450 P31, 2451 (after P20FLGON), 2453, 2535 and 2537 (after VNPOOH) and 2533 (after EXIT). Interpretive (lm_lambert_aim_interpretive, at NEWOPS with LOC there): 2454 (after TC INTPRET), 2540 REVN1645 (entered from P30,P37), the STCALL returns 2461 and 2512, the CALL returns 2503, 2517, 2521, 2523, 2527, 2531 and 2543, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2457, 2464, 2465, 2467, 2470, 2472, 2474, 2477, 2500, 2505, 2506, 2510, 2515, 2525, 2532; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 35 with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 35 (with SUPERBNK clear), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 9 basic instructions and read all 52 interpretive words (evidence/lm-lambert-aim/lm-lambert-aim-closure.json).",
+          "data_validity": "The file has no data words; V06N33, V06N81, V06N42 and P30ZERO are assembled in other files and read from the rope."
+        },
+        "external_continuations": [
+          "P20FLGON and VNPOOH (35,2361 and 35,3712), which return to this file's registered return points",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: LEMPREC, INITVEL, VGDISP, GET.LVC, PERIAPO1, SHIFTR1, MAXCHK and VN1645",
+          "The Executive's CHANG2 (05126) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-source-map.json",
+            "sha256": "ac2f53bf9349cbc962ee134b9f0ed8277c11511eee00bbcbb13f817bca815a01"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-proof.json",
+            "sha256": "cdc7f150ea1538bac7c9646af4f19cc0a6878d4991fc7e2ff679d0078c68d13f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-host.log",
+            "sha256": "429a548c22d7e8f0774ce98eaec8162e06485919351d81ee4d3415a4fe3ab82e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-vice.log",
+            "sha256": "a982a9b59f6002059346b8929aed708eff338d3e37c6067a583f1c6be7c316d4",
+            "vice_targets": {
+              "vice-lm-lambert-aim": 55
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-proof.json",
+            "sha256": "cdc7f150ea1538bac7c9646af4f19cc0a6878d4991fc7e2ff679d0078c68d13f"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-lambert-aim/lm-lambert-aim-closure.json",
+            "sha256": "6c4d21304ebdb779258549f0fb042b2ffea239cc35ed85e9a91fe6ea8cb63e17"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
@@ -7972,8 +8081,63 @@
           ],
           "scope": "All of P21 (24,3505-24,3667), 115 words, as fourteen basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: PROG21 (OPTION2, GOPERF4) and P21PROG1 (V06N34 GOFLASH) with their terminate/proceed/recycle returns, DSPTEM1 into TDEC1 and INTSTALL, BON P21FLAG, VINTFLAG by OPTION2 (SR1, BHIZ), DIM0FLAG/INTYPFLG and INTEGRV, P21CONT (RCV, VCV, TET, MOONFLAG by P21ORIG, INTEGRVS), P21VSAVE (base vector, ABVAL SL* 0,2, UNIT, DOT, DDV) up to ASIN, then P21GAM, SXA,2 P21ORIG, P21FLAG by OPTION2 and SURFFLAG, P21DSP (LUNAFLAG by X2, ALPHAV, ERADFLAG, LAT-LONG), K.01 into P21ALT, EXIT, V06N43 and its returns, and the 600SEC recycle with RTB P21PROG1; the 600SEC, V06N43, V6N34 and K.01 data words are checked as native literals: from each entry through the trampoline to the first point outside them (BANKCALL, GOTOPOOH, INTPRET, ARCSIN, POODOO1, or a NEWOPS outside 24,3524-3645 and 3654-3661). ASIN itself (ARCSIN) is another file's.",
           "verification": "docs/LM-P21.md"
+        },
+        {
+          "native_files": [
+            "src/lm_ground_track.c",
+            "include/lm_ground_track.h"
+          ],
+          "scope": "The whole file (24,3505-3667): PROG21 and P21PROG1 with their three BANKCALL returns each (terminate, proceed, loaded through the DSKY), the integration, P21CONT, P21VSAVE and P21DSP interpretive code, the V06N43 display and its V32E recycle, basic and interpretive (lm_ground_track_basic, lm_ground_track_interpretive), and the 600SEC, V06N43, V6N34 and K.01 constants.",
+          "verification": "docs/LM-GROUND-TRACK.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_ground_track_basic): 24,3505 PROG21, 3515 P21PROG1, the three returns after each BANKCALL (3512 terminate, 3513 proceed, 3514 loaded through the DSKY; 3520, 3521, 3522; 3651, 3652, 3653 after the V06N43 flash) and 3646 (after EXIT). Interpretive (lm_ground_track_interpretive, at NEWOPS with LOC there): 3524 and 3654 (after TC INTPRET), 3530 (STCALL INTSTALL return), 3546 and 3642 (CALL returns), the branch targets 3541, 3550 P21CONT, 3567, 3571 P21VSAVE, 3620, 3623, 3633, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3526, 3534, 3536, 3544, 3552, 3554, 3556, 3557, 3562, 3565, 3573, 3575, 3577, 3600, 3602, 3604, 3606, 3610, 3611, 3614, 3616, 3625 P21DSP, 3630, 3635, 3637, 3644, 3645, 3657, 3660; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 24 with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 24, an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. P21VSAVE's DDV P21VEL (3606) also starts from edge operands in half its cases: MPAC 0, -0 or small, and P21VEL 0, -0, small, major part +-1 with a minor of either sign, 1/2, or a major part equal to MPAC's; edge_values gives the other operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 18 basic instructions and read all 88 interpretive words (evidence/lm-ground-track/lm-ground-track-closure.json).",
+          "data_validity": "The CADRs after BANKCALL (GOPERF4, GOFLASH), 600SEC (2DEC 60000 B-28), V06N43, V6N34 and K.01 (2DEC .01) are read as the original constants: the CADRs by BANKCALL, the verb-nouns by CAF, and 600SEC and K.01 by the interpreter as DAD and DMP operands."
+        },
+        "external_continuations": [
+          "BANKCALL to GOPERF4 and GOFLASH (the DSKY requests), which return to this file's registered return points",
+          "GOTOPOOH (terminate)",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: INTSTALL, INTEGRV, INTEGRVS, ASIN and LAT-LONG",
+          "The Executive's CHANG2 (05126) with a job waiting, and ALARM1 (05732) on an interpreter overflow",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ground-track/lm-ground-track-source-map.json",
+            "sha256": "648cfe6de12c8c39ca80c7ea55fc131549d7eebbb0e4e5d8edd76d035e63a6a9"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ground-track/lm-ground-track-proof.json",
+            "sha256": "b5d4e1e3c034dda9d862866352a41b37f8e66c6a4b43cf8f2e02836fdaebf78d"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ground-track/lm-ground-track-host.log",
+            "sha256": "bc5a1b16e39ea618071e7bfc700bc12dd3ae65056b6fb1d5f0f5e0f6c7388cc7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ground-track/lm-ground-track-vice.log",
+            "sha256": "bbffd39df02d04360f65f8e3f06cc7dfc7f5bbba24fb12691375b0b7b7298d54",
+            "vice_targets": {
+              "vice-lm-ground-track": 102
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-ground-track/lm-ground-track-proof.json",
+            "sha256": "b5d4e1e3c034dda9d862866352a41b37f8e66c6a4b43cf8f2e02836fdaebf78d"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-ground-track/lm-ground-track-closure.json",
+            "sha256": "47a1a84bd3ca43f4655fe9992a8517b51a3afb46d45fdf3cc1a659658daef985"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
@@ -9922,8 +10086,64 @@
           ],
           "scope": "P76 (13,2207-13,2350), 98 words, the whole file, as sixteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P76 with UPFLAG TRACKFLG and INTPRET; DELVLVC into DELVOV; the V06N84 and V06N33 GOFLASH displays and their returns; TIG and OTHPREC; COMPMAT (UNIT, VXV, VXM, VSL1, VAD) and INTSTALL; P76SUB1, the VCV/RCV/TET setup scaled by X2, INTYPFLG and INTEGRVS; RRECT/RCV/TET from RATT1, TAT, VATT1 and MINIRECT; PHASCHNG, UPFLAG REINTFLG; ATOPOTH, SSP QPRET OUT and BANKCALL INTWAKE1; OUT and ENDP76 (MARKCTR zero, GOTOPOOH); and P76SUB1 (X2, MOONFLAG by CMOONFLG, return to C(QPRET)): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO1, or a NEWOPS outside bank 13's 2212-2215, 2233-2315, 2323-2332 and 2340-2350).",
           "verification": "docs/LM-P76.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p76_file.c",
+            "include/lm_p76_file.h"
+          ],
+          "scope": "The whole file (13,2207-2350): P76 (TRACKFLG, DELVOV, the V06N84 and V06N33 displays with their three GOFLASH returns each), COMPMAT, INTOTHIS through ATOPOTH and BANKCALL INTWAKE1, OUT, ENDP76 and P76SUB1, basic and interpretive (lm_p76_file_basic, lm_p76_file_interpretive), and the V06N84 constants.",
+          "verification": "docs/LM-P76-FILE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_p76_file_basic): 13,2207 P76, 2211 and 2322 (after UPFLAG), 2320 (after PHASCHNG), 2221 and 2227 (after BANKCALL GOFLASH: terminate), 2222 and 2230 (proceed) and 2223 and 2231 (loaded through the DSKY), 2216, 2316 and 2330 (after EXIT), and 2333 ENDP76. Interpretive (lm_p76_file_interpretive, at NEWOPS with LOC there): 2212, 2233 and 2323 (after TC INTPRET), 2237 COMPMAT and 2302 (STCALL returns), the CALL returns 2261, 2263, 2304, 2315 and 2325, 2332 OUT (QPRET's return from INTWAKE1), 2340 P76SUB1, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2214, 2215, 2235, 2241, 2242, 2243, 2245, 2246, 2250, 2252, 2254, 2256, 2257, 2266, 2270, 2272, 2274, 2275, 2300 INTOTHIS, 2306, 2307, 2311, 2313, 2343, 2347; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 13 with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 13, an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 20 basic instructions and read all 70 interpretive words (evidence/lm-p76-file/lm-p76-file-closure.json).",
+          "data_validity": "ADRES TRACKFLG and REINTFLG (read by UPFLAG), OCT 04024 (read by PHASCHNG), the CADRs after BANKCALL (GOFLASH, INTWAKE1) and V06N84 / V06N84 +1 (NV 0684, 0633, read by CAF) are read as the original constants."
+        },
+        "external_continuations": [
+          "UPFLAG, PHASCHNG and BANKCALL GOFLASH, which return to this file's registered return points",
+          "BANKCALL INTWAKE1, which returns interpretively through QPRET to OUT",
+          "GOTOPOOH (ENDP76)",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: OTHPREC, INTSTALL, INTEGRVS, MINIRECT and ATOPOTH",
+          "The Executive's CHANG2 (05126) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p76-file/lm-p76-file-source-map.json",
+            "sha256": "d4ffb732a3c6c8f6a9a36dd74fb07635470c3e977718eff3fd46ad7bf553f26c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p76-file/lm-p76-file-proof.json",
+            "sha256": "d8135e34802ac0bc05968183d96a01315341cc2786700477a327f55b03cba5ba"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p76-file/lm-p76-file-host.log",
+            "sha256": "355131a0adaebf3ba80ea94759069a3079aa1709c1a063399a087322c51b9ed6"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p76-file/lm-p76-file-vice.log",
+            "sha256": "7f745a153e74a9ed757394721ac38ba0aa6bdd4f1ac0008934a024f1b463ed14",
+            "vice_targets": {
+              "vice-lm-p76-file": 77
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p76-file/lm-p76-file-proof.json",
+            "sha256": "d8135e34802ac0bc05968183d96a01315341cc2786700477a327f55b03cba5ba"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-p76-file/lm-p76-file-closure.json",
+            "sha256": "3e2f759fb9daefa52b078c57291b27a81ae9ec08d673ad74c2fc2e32378034ac"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",

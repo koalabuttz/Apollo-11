@@ -729,6 +729,103 @@ SPECS = {
         'image_w': True,
         'target': 'tests/lm_powered_subs_target.c',
     },
+    # Lane A: Luminary099 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
+    # basic and interpretive.
+    'lm-ground-track': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
+        'base': {'lm': 'lm_ground_track'},
+        'symbol': {'lm': 'lm_ground_track'},
+        'basic': 'full',
+        # The GOPERF4 and GOFLASH returns for a value loaded through the
+        # DSKY (TC -5, back to the request).
+        'entries': ['@external', 'PROG21+7', 'P21PROG1+5'],
+        # P21VSAVE's DDV P21VEL (24,3606), U(R).V over |V|: MPAC and P21VEL
+        # edge values (as SMCDURES, reviewer 1 #314).
+        'joint_states': {'P21VSAVE+13': ddv_joint(('MPAC', 'MPAC+1'), ('P21VEL', 'P21VEL+1'))},
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_ground_track_target.c',
+    },
+    # Lane A: Comanche055 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
+    # basic and interpretive.
+    'cm-ground-track': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
+        'base': {'cm': 'cm_ground_track'},
+        'symbol': {'cm': 'cm_ground_track'},
+        'basic': 'full',
+        # The GOPERF4 and GOFLASH returns for a value loaded through the
+        # DSKY (TC -5, back to the request).
+        'entries': ['@external', 'PROG21+7', 'P21PROG1+5'],
+        # P21VSAVE's DDV P21VEL, U(R).V over |V|: MPAC and P21VEL edge
+        # values (as lm-ground-track).
+        'joint_states': {'P21VSAVE+13': ddv_joint(('MPAC', 'MPAC+1'), ('P21VEL', 'P21VEL+1'))},
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_ground_track_target.c',
+    },
+    # Lane A: Luminary099 GENERAL_LAMBERT_AIMPOINT_GUIDANCE (P31), basic
+    # and interpretive.
+    'lm-lambert-aim': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'LAMBERT_AIMPOINT_GUIDANCE.agc'},
+        'base': {'lm': 'lm_lambert_aim'},
+        'symbol': {'lm': 'lm_lambert_aim'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_lambert_aim_target.c',
+    },
+    # Lane A: Luminary099 P76 (target delta-V), basic and interpretive.
+    'lm-p76-file': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'P76.agc'},
+        'base': {'lm': 'lm_p76_file'},
+        'symbol': {'lm': 'lm_p76_file'},
+        'basic': 'full',
+        # The GOFLASH returns after TCF ENDP76: proceed (TC +2) and a value
+        # loaded through the DSKY (TC -5, back to the request).
+        'entries': ['@external', 'P76+11', 'P76+12', 'P76+17', 'P76+18'],
+        # BANKCALL INTWAKE1 wakes the integration's sleepers and returns
+        # interpretively to QPRET (OUT, an EXIT), never to the next word.
+        'noreturn': ['INTWAKE1'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_p76_file_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2

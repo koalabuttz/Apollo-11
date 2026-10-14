@@ -249,15 +249,20 @@ class Basic:
         """TC to an outside routine: the return is the word after the
         inline operands (constant lines after the TC)."""
         ret = phys + 1
+        inline = []
         while True:
             ln = self.L.by_phys.get(ret)
             if ln is None or ln.op not in self.CONST_OPS:
                 break
             self.operands.update(range(ret, ret + len(ln.words)))
+            inline.append(ln.operand.split()[0] if ln.operand.split() else '')
             ret += len(ln.words)
         name = self.L.label_at(self.phys_of(target_logical, phys)) or ('%04o' % target_logical)
         self.cp.externals[self.phys_of(target_logical, phys)] = name
-        if self.in_file(ret) and name not in self.NORETURN + tuple(self.spec.get('noreturn', ())):
+        # Spec 'noreturn' also names routines reached through BANKCALL's
+        # CADR (INTWAKE1 ends the job; GOBAC's RVQ returns interpretively).
+        noreturn = self.NORETURN + tuple(self.spec.get('noreturn', ()))
+        if self.in_file(ret) and name not in noreturn and not (inline and inline[0] in noreturn):
             self.cp.add_start(ret, 'b', 'return from ' + name)
         return name
 

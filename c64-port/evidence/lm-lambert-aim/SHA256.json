@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-lambert-aim",
+  "release": "evidence-lm-lambert-aim",
+  "files": {
+    "lm-lambert-aim-closure.json": {
+      "sha256": "6c4d21304ebdb779258549f0fb042b2ffea239cc35ed85e9a91fe6ea8cb63e17",
+      "bytes": 10488,
+      "store": "tree"
+    },
+    "lm-lambert-aim-differential.log": {
+      "sha256": "c8415069ae95ee5b6eee3aa7ac0892c28f4dec4b98a5bb173494a308868b3bdc",
+      "bytes": 2122,
+      "store": "release"
+    },
+    "lm-lambert-aim-host.log": {
+      "sha256": "429a548c22d7e8f0774ce98eaec8162e06485919351d81ee4d3415a4fe3ab82e",
+      "bytes": 1090,
+      "store": "release"
+    },
+    "lm-lambert-aim-proof.json": {
+      "sha256": "cdc7f150ea1538bac7c9646af4f19cc0a6878d4991fc7e2ff679d0078c68d13f",
+      "bytes": 5185,
+      "store": "tree"
+    },
+    "lm-lambert-aim-source-map.json": {
+      "sha256": "ac2f53bf9349cbc962ee134b9f0ed8277c11511eee00bbcbb13f817bca815a01",
+      "bytes": 8544,
+      "store": "tree"
+    },
+    "lm-lambert-aim-vice.log": {
+      "sha256": "a982a9b59f6002059346b8929aed708eff338d3e37c6067a583f1c6be7c316d4",
+      "bytes": 913,
+      "store": "release"
+    }
+  }
+}
