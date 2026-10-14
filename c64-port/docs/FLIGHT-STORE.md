@@ -69,6 +69,25 @@ when the CIA1 count at $6FBC moves, so an interrupt waits at most one
 interpretive slot. The load check resolves the records; it does not run the
 interpreter (`make vice-interp-core` does).
 
+Every C64 flight module compiles with `-DAGC_FLIGHT_INTERPRETER`. In the
+files listed in `FLIGHT_INTERP_STOP`, that flag ends a chain at NEWOPS
+([FLIGHT-INTERP-STOP.md](FLIGHT-INTERP-STOP.md)). The store leaves those
+files' interpretive tables, and the `INTERP_ONLY` tables (LM
+`lm_ephemeris_routines`, all NEWOPS frontiers), to the interpreter. Their
+keys need no record: the step resolves by Z, which is NEWOPS there, and
+NEWOPS has the interpreter's record. The report counts these keys as
+`interpreter_keys`, separately from `unplaced_keys`. The host index and
+`<m>-host.inc` keep the compiled tables.
+
+`FLIGHT_PARTS` links one file as several modules, each with its own
+defines and its slice of the file's sorted keys. LM `lm_servicer` is linked
+this way, as `-DLMSV_FLIGHT_PART=1` (85 keys, 14,581 bytes) and `=2`
+(80 keys, 14,302 bytes)
+([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)). Parts are
+never chunked. With both lists in place, the five LM files fit their
+slots. The load check rises to LM 1,298 checks (from 889), with 0
+failures.
+
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
