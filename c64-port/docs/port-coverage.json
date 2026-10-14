@@ -3439,7 +3439,7 @@
       "sha256": "c91e95ca3befe5cf49b39c78af6f38758b115726a5fc7a3c28a3006abcfccf86",
       "bytes": 37716,
       "lines": 1950,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3450,11 +3450,11 @@
             "src/agc_transfer.c",
             "src/rtb_modes.c"
           ],
-          "scope": "Every word of the file (1,368 words): P37/P70 and its displays, P37PROC, P370ALRM, TMRAD100, RTEDISP, INVC100, PREC100, RTENCK1-3, V2T100, GAMDV10, DVCALC and XT1LIM, as 194 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "scope": "Every word of the file (1,368 words): P37/P70 and its displays, P37PROC, P370ALRM, TMRAD100, RTEDISP, INVC100, PREC100, RTENCK1-3, V2T100, GAMDV10, DVCALC and XT1LIM, as 595 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P37-P70.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3470,7 +3470,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-source-map.json",
@@ -3494,6 +3493,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
             "sha256": "5cd07e6a599745f6bde1a13f1e82cd9998ab4ec0caf64d566e000683b4563bf7"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-372.md",
+            "sha256": "64ee5b09d46bb8332d807644ceb47efdfe556fdbb47a793f7f7a8ee99f47c515"
           }
         }
       }
