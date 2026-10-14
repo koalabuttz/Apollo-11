@@ -1963,11 +1963,18 @@ SPECS = {
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
-        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
-                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
+        # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
+        # read latched input channels.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
         # KALCMANU's matrix loops run past 200 routines from some resume points.
         'max_steps': 1000,
         'freeze_stride': 128,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
     },
     'p51-p53': {
         'missions': ('lm', 'cm'),

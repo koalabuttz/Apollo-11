@@ -4598,10 +4598,49 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "225 of 227 words: R60CSM, TOBALL, STARTMNV, ENDMANUV, RELINUS, VECPOINT, ROT180, XROT, R62DISP, as 114 routines of the control-transfer ABI compiled by tools/interp_compile.py. TOBALLC's RXOR CHAN31 waits for an I/O channel model.",
+          "scope": "Every word of the file (227 words: bank 27): R60CSM, TOBALL and TOBALLC, STARTMNV, ENDMANUV, RELINUS, VECPOINT, ROT180, XROT, R62DISP, as 83 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R60-R62.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under the file's EBANK= settings, entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, MODE, PUSHLOC and the index registers the code before each mid-sequence resume point leaves there, BUF2 a fixed-memory return (as CHKLINUS's restart point assumes), TIME1, TIME2 and the CDUs any values, the latched input channels 30 and 31 any values (READ and RXOR as yaAGC does them), and any values of the other erasables the file reads; a quarter of the cases put edge values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and the operands. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 1,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, CURTAINS, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS and CHECKMM with their inline words",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S (src/rtb_angles.c), native; RTB READCDUK stops as an outside routine",
+          "Display interface, Executive, KALCMANU (through BANKCALL) and other destinations outside the file stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/r60-r62/r60-r62-source-map.json",
+            "sha256": "120b1aa405707b915ddf40572d2ce93d138fdae37123716b23e019aa9299ffbf"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/r60-r62/r60-r62-proof.json",
+            "sha256": "b3583566fc8e3902284f3789aa263bcb0e02899fa2a9fe9f08048c6f48a97e4a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/r60-r62/r60-r62-host.log",
+            "sha256": "bddecda7d1a2cca879409caa80d521eafa915db58936d4dc834b2011b0fbbb4f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/r60-r62/r60-r62-vice.log",
+            "sha256": "bd7fc46c833da6d88e04c138417342dd08e1be07c0e378911f5f98a4b2d56ab3",
+            "vice_targets": {
+              "vice-r60-r62": 260
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
+            "sha256": "42ee0206370c71be72344fc179ee2b5f792ddf2f49a85caccc492a61e3164e86"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
@@ -11523,10 +11562,49 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "293 of 296 words: R60LEM, TOBALL, TOBALLA, STARTMNV, ENDMANUV, RELINUS and CHKLINUS, BALLANGS, ROT180, XROT, VECPOINT and VECPNT1, R62FLASH, as 114 routines of the control-transfer ABI compiled by tools/interp_compile.py. G+N,AUTO and ISITAUTO (READ CHAN30, READ CHAN31) wait for an I/O channel model.",
+          "scope": "Every word of the file (296 words: banks 23, 26 and 27): R60LEM, TOBALL, TOBALLA, G+N,AUTO and ISITAUTO, STARTMNV, ENDMANUV, RELINUS and CHKLINUS, BALLANGS, ROT180, XROT, VECPOINT and VECPNT1, R62FLASH, as 113 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R60-R62.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under the file's EBANK= settings, entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, MODE, PUSHLOC and the index registers the code before each mid-sequence resume point leaves there, BUF2 a fixed-memory return (as CHKLINUS's restart point assumes), TIME1, TIME2 and the CDUs any values, the latched input channels 30 and 31 any values (READ and RXOR as yaAGC does them), and any values of the other erasables the file reads; a quarter of the cases put edge values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and the operands. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 1,000 routines.",
+        "external_continuations": [
+          "ALARM, BANKCALL, IBNKCALL, BLANKET, CURTAINS, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS and CHECKMM with their inline words",
+          "ENDOFJOB, GOTOPOOH, GOTOV56, BANKJUMP and TASKOVER",
+          "RTB V1STO2S (src/rtb_angles.c), native; RTB READCDUK stops as an outside routine",
+          "Display interface, Executive, KALCMANU (through BANKCALL) and other destinations outside the file stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/r60-r62/r60-r62-source-map.json",
+            "sha256": "120b1aa405707b915ddf40572d2ce93d138fdae37123716b23e019aa9299ffbf"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/r60-r62/r60-r62-proof.json",
+            "sha256": "b3583566fc8e3902284f3789aa263bcb0e02899fa2a9fe9f08048c6f48a97e4a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/r60-r62/r60-r62-host.log",
+            "sha256": "bddecda7d1a2cca879409caa80d521eafa915db58936d4dc834b2011b0fbbb4f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/r60-r62/r60-r62-vice.log",
+            "sha256": "bd7fc46c833da6d88e04c138417342dd08e1be07c0e378911f5f98a4b2d56ab3",
+            "vice_targets": {
+              "vice-r60-r62": 260
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
+            "sha256": "42ee0206370c71be72344fc179ee2b5f792ddf2f49a85caccc492a61e3164e86"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/R63.agc",
