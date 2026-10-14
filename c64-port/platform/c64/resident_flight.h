@@ -126,6 +126,10 @@ typedef struct {
     bool (*fixed_data)(const agc_native_program *,uint16_t physical,agc_word *word);
     uint8_t ready;   /* 0 not built, RK_TABLES_DIRECT or RK_TABLES_NOT_DIRECT */
     uint8_t mct;     /* work clock: MCT per routine (flight_table_module.c FS_MCT) */
+    /* The high byte of the lowest key the tables hold, and how far above
+     * it the highest key's is (FS_KEY_LO, FS_KEY_SPAN): 0 and 0xff when the
+     * module has interpretive tables (any point). */
+    uint8_t lo, span;
 } rk_module_tables;
 /* Built, and the resident may call the routines straight from the slot
  * (rk_direct); or built, but the tables take an io record other than rk_io
