@@ -3005,6 +3005,11 @@ SPECS = {
         # CONTABRT's RESUME ends an interrupt: in_interrupt (yaAGC's InIsr)
         # in each case and digest.
         'in_isr': True,
+        # R10,R11 is a Waitlist task: its T3RUPT interrupts whatever job runs,
+        # a NOVAC job's FIXLOC (0110) or DUMMYJOB's NEWJOB -0 among them. Its
+        # basic routines never name FIXLOC or NEWJOB, so they take any.
+        'any_fixloc': True,
+        'any_newjob': True,
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
