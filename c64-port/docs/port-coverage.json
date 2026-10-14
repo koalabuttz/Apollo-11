@@ -6251,7 +6251,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
-            "sha256": "4577d07d39fc48402d910e91782dda2cca6b4c42d38db0508c707d85ac57d5f3"
+            "sha256": "29735a22fb30232426a969b6d5c56b4951197c0314bfda38f2965e68f557d9f9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-host.log",
@@ -6259,14 +6259,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
-            "sha256": "11817ddb49e99d9cc5a4ff25f6b401fb724a1905dea7498e46a7793845b89207",
+            "sha256": "6a7089237204181a7c77ad822e33abf9b12c6ee6bef5ef6458fd4a29b6dab249",
             "vice_targets": {
-              "vice-lm-aotmark": 300
+              "vice-lm-aotmark": 302
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
-            "sha256": "e6a4ae1072c3ce1f54367f9438b0609dbef29c7b291be2aa931cff5f783e8cf0"
+            "sha256": "e85e834133a6e594b65ae6ae47010a2901b248e5d54564f181b49c9b16d34978"
           }
         }
       }
