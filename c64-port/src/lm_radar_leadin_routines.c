@@ -119,6 +119,7 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,p66_bias_
  case 21513u:goto B52011;
  case 21517u:goto B52015;
  case 21523u:goto B52023;
+ case 21524u:goto B52024;
  case 21526u:goto B52026;
  case 21527u:goto B52027;
  case 21543u:goto B52047;
@@ -199,7 +200,7 @@ B52023c:
  /* 25,2023 DORSAMP TC VARADAR */
  ai_tc(s,002024u);
  goto B52047c;
-B52024: __attribute__((unused));
+B52024:
  IRC_COVER(15u);
  /* 25,2024 TC BANKCALL */
  ai_tc(s,002025u);
@@ -374,6 +375,14 @@ static enum exec_status r52023_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 4) & 1
+/* 25,2024  (entry DORSAMP+1) */
+static enum exec_status r52024_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ if(!s||!v||!basic_sane(s,(p66_bias_io *)v,052000u))return EXEC_OUT_OF_SCOPE;
+ (void)p;
+ return basic_run(s,(p66_bias_io *)v,21524u);
+}
+#endif
+#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 5) & 1
 /* 25,2026  (return from BANKCALL) */
 static enum exec_status r52026_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,052000u))return EXEC_OUT_OF_SCOPE;
@@ -381,7 +390,7 @@ static enum exec_status r52026_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,21526u);
 }
 #endif
-#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 5) & 1
+#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 6) & 1
 /* 25,2027 DORSAMP2 (entry DORSAMP2) */
 static enum exec_status r52027_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,052000u))return EXEC_OUT_OF_SCOPE;
@@ -389,7 +398,7 @@ static enum exec_status r52027_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,21527u);
 }
 #endif
-#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 6) & 1
+#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 7) & 1
 /* 25,2047 VARADAR (entry VARADAR) */
 static enum exec_status r52047_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,052000u))return EXEC_OUT_OF_SCOPE;
@@ -415,12 +424,15 @@ static const agc_routine_entry basic_entries[]={
  {21523,r52023_abi},
 #endif
 #if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 4) & 1
- {21526,r52026_abi},
+ {21524,r52024_abi},
 #endif
 #if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 5) & 1
- {21527,r52027_abi},
+ {21526,r52026_abi},
 #endif
 #if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 6) & 1
+ {21527,r52027_abi},
+#endif
+#if (LM_RADAR_LEADIN_ROUTINES_KEEP0 >> 7) & 1
  {21543,r52047_abi},
 #endif
  {0xffffu,0}
@@ -431,6 +443,7 @@ const lm_radar_leadin_routines_point lm_radar_leadin_routines_points[LM_RADAR_LE
  {21513,0},
  {21517,0},
  {21523,0},
+ {21524,0},
  {21526,0},
  {21527,0},
  {21543,0}
