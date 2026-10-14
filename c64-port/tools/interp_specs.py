@@ -293,8 +293,12 @@ SPECS = {
         'joint_states': {
                          # AOTMARK's entry with no marks in progress (MARKSTAT
                          # +0) in half the cases: the VAC area search and
-                         # BAILOUT1 when none is free.
-                         'AOTMARK': [{'MARKSTAT': 0}, {}],
+                         # BAILOUT1 when none is free. A quarter of the cases
+                         # have only VAC5 free, with no extended verb active
+                         # (EXTVBACT bits 1-2 clear): the search's last area.
+                         'AOTMARK': [{'MARKSTAT': 0}, {},
+                                     {'MARKSTAT': 0, 'EXTVBACT': 0, 'VAC1USE': 0, 'VAC2USE': 0,
+                                      'VAC3USE': 0, 'VAC4USE': 0, 'VAC5USE': 0o660}, {}],
                          # 15,2041 VSL1 VAD from the state the original reaches it
                          # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
                          # VAD's overflow there carries into a word that does not
@@ -527,6 +531,8 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # (#260) C64 INDEX end-around carry.
+        'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
         'base': {'cm': 'cm_t4rupt_optics'},
         'symbol': {'cm': 'cm_t4rupt_optics'},

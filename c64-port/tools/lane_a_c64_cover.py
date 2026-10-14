@@ -51,6 +51,7 @@ M = {
                        '(uint16_t)(n-KU_CASES))', 'KU_SRC', '$(KU_FLAGS)', 'ku', 'KU'),
     't4rupt-core': ('t4rupt_core_cases.h', 'n<T4_LM_CASES?t4_digest(0,&image,n):t4_digest(1,&image,'
                     '(uint16_t)(n-T4_LM_CASES))', 'T4C_SRC', '$(T4C_FLAGS)', 't4', 'T4'),
+    'cm-t4rupt-chain': ('cm_t4rupt_chain_cases.h', 'cch_digest(&image,n)', 'CCH_SRC', '$(CCH_FLAGS)', 'cch', 'CCH'),
     # Whole T4RUPT interrupts: the diagnostic runs a picked case list (lch_c64_case), not a stride.
     'lm-t4rupt-chain': ('lm_t4rupt_chain_cases.h', 'lch_digest(&image,n)', 'LCH_SRC', '$(LCH_FLAGS)', 'lch', 'LCH'),
     # Five programs, one per kind: each runs every fourth case of its kind and the kind's first two.

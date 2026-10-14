@@ -14,8 +14,8 @@
       "store": "release"
     },
     "cm-t4rupt-optics-proof.json": {
-      "sha256": "6d3350debdcadc3540e03182940bca52e1c8f8aa4a285df7487899361e37bf00",
-      "bytes": 12424,
+      "sha256": "441a17f4bab48fb8458d9506e90b1b790e91ad798129d6b9c12f793a1f7ec513",
+      "bytes": 3606,
       "store": "tree"
     },
     "cm-t4rupt-optics-source-map.json": {
