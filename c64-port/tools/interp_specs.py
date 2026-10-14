@@ -799,6 +799,9 @@ SPECS = {
         'ebank': 'listing',
         'index_carry16': True,
         'image_w': True,
+        # DMP, TPAGREE and SHORTMP run on every pass of flight's periodic jobs:
+        # no image scan at their entries in flight (steward).
+        'trusted_image': True,
         'target': 'tests/%s_interpreter_target.c' % m,
     } for m in ('lm', 'cm')},
     # Lane A: Luminary099 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),

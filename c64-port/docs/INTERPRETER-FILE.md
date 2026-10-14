@@ -25,7 +25,7 @@ Five additions to the compiler and the differential. None of them changes any ot
 
 - **ADDRWD** (all entries): a VAC-relative operand (VAC+0, 2, 6, 14, 22) or unswitched erasable (0200, 0344, 0600, 01000, 01200, 01350). There is room for a vector past each one. This is what DMPSUB, TLOAD, VXV and the OVERFLOW returns index. MPAC and 01400 up are left out, because EBANK 0 puts 01400 over the central registers.
 - **POWRSERS**: A is the coefficient table (01660, 01720, VAC+6 or VAC+20), and L is N-1 (0 to 5). These match the callers' `DCA MPAC +3` and `DCA MPAC +5`.
-- **After TC SQRTSUB** (UNIT+16): MPTEMP is SQRTSUB's right-shift count, 0 to 13.
+- **After TC SQRTSUB** (UNIT+16): MPTEMP is SQRTSUB's right-shift count, 0 to 28 (14 and up: SMALL, the input's first two words 0).
 - **SN1+16**: where POLY returns past SN1's coefficients (Q+2N+4).
 - **BRANCH** returns to Q, Q+1 or Q+2 (`'call_skips'`).
 
