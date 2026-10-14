@@ -2294,7 +2294,7 @@ All of Luminary099 and Comanche055 MEASUREMENT_INCORPORATION (384 and 385 words:
 
 ## Translate AOSTASK_AND_AOSJOB
 
-All of Luminary099 AOSTASK_AND_AOSJOB (723 words: 1/ACCSET, 1/ACCJOB and 1/ACCS, the DAP's jet acceleration and inertia tables, and the AOSTASK/AOSJOB offset-acceleration filter) is native C on the control-transfer ABI, as 11 basic routines at their original addresses compiled by tools/interp_compile.py ('basic': 'full'). That is the first Luminary file compiled this way: basic_compile gained the per-mission io type, and channel orders go through the shared channel model. The new spec key 'tcf_words' runs a TCF stored in erasable (TC ARET). All 2,816 cases equal yaAGC; 88 frozen cases pass the strict and sanitizer host tests, and 38 C64 cases pass in VICE, taking all 704 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-AOSTASK.md`.
+All of Luminary099 AOSTASK_AND_AOSJOB (723 words: 1/ACCSET, 1/ACCJOB and 1/ACCS, the DAP's jet acceleration and inertia tables, and the AOSTASK/AOSJOB offset-acceleration filter) is native C on the control-transfer ABI, as 11 basic routines at their original addresses compiled by tools/interp_compile.py ('basic': 'full'). That is the first Luminary file compiled this way: basic_compile gained the per-mission io type, and channel orders go through the shared channel model. The new spec key 'tcf_words' runs a TCF stored in erasable (TC ARET). All 2,816 cases equal yaAGC; 88 frozen cases pass the strict and sanitizer host tests, and 33 C64 cases pass in VICE, taking all 700 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-AOSTASK.md`.
 
 ## Compile KALMAN_FILTER for the DAP
 
@@ -2302,4 +2302,4 @@ Luminary099 KALMAN_FILTER's RATELOOP is compiled as one basic routine of the con
 
 ## Translate RADAR_LEADIN_ROUTINES (compiled)
 
-All of Luminary099 RADAR_LEADIN_ROUTINES (47 words: RADSAMP, DORSAMP, DORSAMP2 and VARADAR) is native C on the control-transfer ABI, as 8 basic routines at their original addresses compiled by tools/interp_compile.py. All 2,048 cases equal yaAGC over the sampling words' flight domain; 64 frozen cases pass the strict and sanitizer host tests, and 15 C64 cases pass in VICE, taking all 184 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-RADAR-LEADIN-ROUTINES.md`.
+All of Luminary099 RADAR_LEADIN_ROUTINES (47 words: RADSAMP, DORSAMP, DORSAMP2 and VARADAR) is native C on the control-transfer ABI, as 7 basic routines at their original addresses compiled by tools/interp_compile.py. All 1,792 cases equal yaAGC over the sampling words' flight domain; 56 frozen cases pass the strict and sanitizer host tests, and 14 C64 cases pass in VICE, taking all 179 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-RADAR-LEADIN-ROUTINES.md`.
