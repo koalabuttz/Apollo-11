@@ -43,14 +43,24 @@ FAMILIES = {
     'di': dict(file='DISPLAY_INTERFACE_ROUTINES.agc', title='DISPLAY_INTERFACE_ROUTINES',
                modules=('dsp', 'mark', 'play', 'sleep', 'idle', 'nvdsp'), c64='dsp', data=wholefile.DATA,
                # the C64 round trips: callers of the display-start and MAKEPLAY entries, both missions
-               c64_modules=('dsp', 'play'), c64_missions=('LM', 'CM')),
+               c64_modules=('dsp', 'play'), c64_missions=('LM', 'CM'),
+               # di-transfer-c64m: the other modules' callers and points, one C64 program per group of modules
+               # and mission (a PINBRNCH chain runs nvdsp into mark; a sleep chain, idle)
+               c64m_modules=('mark', 'sleep', 'idle', 'nvdsp'), c64m_groups=(('mark', 'nvdsp'), ('sleep', 'idle'))),
     'ev': dict(file='EXTENDED_VERBS.agc', title='EXTENDED_VERBS',
                modules=('front', 'short', 'align', 'radar', 'dap', 'time', 'track', 'lmi'), c64='front',
                data=wholefile.DATA | {'REMADR', 'MM'}, fans=('LST2FAN',),
                # Comanche055's interpretive words wait for the CM interpreter library
                open_missions=('CM',), cases_per_site=64, file_ranges=True),
     'pin': dict(file='PINBALL_GAME_BUTTONS_AND_LIGHTS.agc', title='PINBALL_GAME_BUTTONS_AND_LIGHTS',
-                modules=None, c64='decimal', data=wholefile.DATA, multi=True, file_ranges=True,
+                modules=None, c64='decimal', data=wholefile.DATA, multi=True, file_ranges=True, first=('keys', 'key_labels'),
+                # keypress groups: their points' routines go in their own tables and source files
+                # (src/lanec_pin_<group>_routines.c), one flight module each, and run the group's
+                # own entry; labels None: the rest of pin-keys' points
+                groups={'keys_num': (('CHARIN', 'NUM', '89TEST', 'NUM-2'), 'lanec_pin_keys_num'),
+                        'keys_release': (('VBRELDSP',), 'lanec_pin_keys_release'),
+                        'keys_sign': (('POSGN', 'NEGSGN', 'ERROR'), 'lanec_pin_keys_sign'),
+                        'keys_clear': (('CLEAR',), 'lanec_pin_keys_clear'), 'keys_cmd': (None, 'lanec_pin_keys_cmd')},
                 # instruction words other code reads as constants (CAF/CS/AD/CA), never runs here
                 constants={'ENDINST': 1, 'TCNOVAC': 1, 'TCWAIT': 1, 'TCTSKOVR': 1, 'TCFINDVC': 1, 'NVSBENDL': 1,
                            'MIXAD': 1, 'DISPLACE': 3},
@@ -68,7 +78,8 @@ def suites(fam, cfg):
     names = sorted(set(re.findall(r'"pw-([a-z0-9-]+)"', ''.join(
         p.read_text() for p in (ROOT / 'tests').glob('lanec_pw_*_cases.c')))))
     return [(n.replace('-', '_'), f'pw-{n}', f'lanec_pw_{n.replace("-", "_")}_run') for n in names] + \
-        [('gaps', 'pin-gaps', 'lanec_pin_gaps_dispatch')]
+        [('gaps', 'pin-gaps', 'lanec_pin_gaps_dispatch'), ('keys', 'pin-keys', 'lanec_pin_keys_dispatch'),
+         ('key_labels', 'pin-key-labels', 'lanec_pin_keys_dispatch')]
 
 
 def physical(bank, z):
@@ -88,7 +99,8 @@ def main():
     out = ROOT / f'src/lanec_{fam}_routines.inc'
     cases_path = ROOT / f'tests/lanec_{fam}_transfer_cases.inc'
     up = fam.upper()
-    subprocess.run(['make', '-s', 'SKIP_EVIDENCE_RESTORE=1', 'build/lanec-native'] + (['build/lanec-oracle'] if cfg.get('multi') else []),
+    subprocess.run(['make', '-s', 'SKIP_EVIDENCE_RESTORE=1', 'build/lanec-native']
+                   + (['build/lanec-oracle'] if cfg.get('multi') or cfg.get('c64m_modules') else []),
                    cwd=ROOT, check=True)
     # mission -> kind ('' basic, 'I' interpretive) -> physical -> (module, bank, z)
     points = {m: {'': {}, 'I': {}} for m in ('LM', 'CM')}
@@ -100,7 +112,8 @@ def main():
         wholefile.FILE = cfg['file']
         for mission in ('LM', 'CM'):
             own[mission] = {physical(int(r['bank'] or '0', 8), r['addr']) for r in wholefile.listing_words(mission)}
-    for mod in cfg['modules']:
+    # pin-keys and pin-key-labels first: their points (CHARIN and the key labels) are theirs alone
+    for mod in sorted(cfg['modules'], key=lambda m: m not in cfg.get('first', ())):
         text = subprocess.run(['build/lanec-native', '--exits' if multi else '--entries', suite_of[mod]], cwd=ROOT,
                               check=True, capture_output=True, text=True).stdout
         for line in text.split('\n'):
@@ -121,6 +134,8 @@ def main():
             key = physical(bank, z)
             if multi:
                 got = points[mission][kind].setdefault(key, ([], bank, z))[0]
+                if got and got[0] in cfg.get('first', ()) and mod not in cfg['first']:
+                    continue
                 if mod not in got:
                     got.append(mod)
                 if not kind and got[0] == mod:
@@ -154,14 +169,17 @@ def main():
                     points[m][k][key] = (f'try{lists.index(tuple(got))}', bank, z)
     for mission in ('LM', 'CM'):
         check_listing(cfg, mission, points[mission], exits.get(mission, set()) if multi else None)
+    grouped = {m: groups(cfg, m, first[m]) for m in ('LM', 'CM')} if cfg.get('groups') else {'LM': {}, 'CM': {}}
     text = ['/* SPDX-License-Identifier: MIT */',
             f'/* Generated by tools/lanec/routines.py {fam}: every point at which a Lane C',
             f' * {cfg["title"]} suite enters its native module, keyed by',
             ' * physical address and sorted. Do not edit. */']
     if multi:   # pin: the modules each routine tries, in order; the C64 program has the c64 module's points only
         text.append(f'#ifndef LANEC_{up}_C64')
-        used = {m: {v[0] for v in points[m][''].values()} for m in points}
+        used = {m: {v[0] for key, v in points[m][''].items() if key not in grouped[m]} for m in points}
         for i, got in enumerate(lists):
+            if not any(f'try{i}' in used[m] for m in used):
+                continue
             ret = got[0] == 'SWRETURN'
             mods = got[1:] if ret else got
             text.append(f'static const dispatch try{i}[{len(mods) + 1}] = {{ ' + ', '.join(run_of[g] for g in mods) + ', 0 };')
@@ -174,7 +192,7 @@ def main():
     for mission in ('LM', 'CM'):
         ml = mission.lower()
         for kind, name in (('', ''), ('I', '_INTERP')):
-            rows = sorted(points[mission][kind].items())
+            rows = sorted(x for x in points[mission][kind].items() if kind or x[0] not in grouped[mission])
             if kind and not rows:
                 continue
             arr = f'{ml}_entries' if not kind else f'{ml}_interp_entries'
@@ -217,9 +235,12 @@ def main():
                  f'static const dispatch c64_runs[{len(cfg["modules"])}] = {{ '
                  + ', '.join(run_of[m] for m in cfg['modules']) + ' };', '#endif']
     text = '\n'.join(text) + '\n'
+    group_files = {ROOT / f'src/lanec_{fam}_{g}_routines.c': group_text(fam, cfg, g, points, grouped, lists, run_of)
+                   for g in cfg.get('groups', {})}
     cases = transfer_cases(fam, cfg, {m: points[m][''] for m in points}, accepted, first if multi else None, suite_of,
                            exits)
-    stale = [p for p, body in ((out, text), (cases_path, cases)) if not p.exists() or p.read_text() != body]
+    stale = [p for p, body in ((out, text), (cases_path, cases), *group_files.items())
+             if not p.exists() or p.read_text() != body]
     counts = ', '.join(f'{len(points[m][""])} {m}' + (f' + {len(points[m]["I"])} interpretive' if points[m]['I'] else '')
                        for m in ('LM', 'CM'))
     if '--check' in sys.argv:
@@ -229,7 +250,66 @@ def main():
     else:
         out.write_text(text)
         cases_path.write_text(cases)
+        for path, body in group_files.items():
+            path.write_text(body)
         print(f'wrote {out.relative_to(ROOT)} ({counts} routines) and {cases_path.relative_to(ROOT)}')
+
+
+def groups(cfg, mission, first):
+    """{physical: group} for the points of cfg['first'] (pin-keys): a group
+    names its labels (LABEL-N: N words before LABEL); None takes the rest."""
+    import symbols
+    fixture = dict((m, f) for m, _, f in symbols.MISSIONS)[mission]
+    table = symbols.symbols(fixture)
+    named, rest = {}, None
+    for g, (labels, _) in cfg['groups'].items():
+        if labels is None:
+            rest = g
+            continue
+        for label in labels:
+            base, _, back = label.partition('-')
+            kind, bank, addr = table[base]
+            named[physical(int(bank, 8), addr - int(back or 0))] = g
+    out = {}
+    for key, mod in first.items():
+        if mod in cfg['first']:
+            out[key] = named.get(key, rest)
+    missing = set(named) - set(out)
+    if missing:
+        sys.exit(f'FAIL: {mission} group points not claimed by pin-keys: {sorted(missing)}')
+    return out
+
+
+def group_text(fam, cfg, g, points, grouped, lists, run_of):
+    """src/lanec_<fam>_<g>_routines.c: the group's routines and tables."""
+    up = fam.upper()
+    text = ['/* SPDX-License-Identifier: MIT */',
+            f'/* Generated by tools/lanec/routines.py {fam}: the {g} group of {cfg["title"]}',
+            ' * routines (src/lanec_pin_keys.c), in its own tables so the flight store links them',
+            ' * as their own module. Routines run through the trampoline on the lm_dntm_io or',
+            ' * cm_dntm_io device record (include/lanec_pin_routines.h). Do not edit. */',
+            '#include "lanec_pin_routines.h"', '#include "lanec_pw_runs.h"', '#include "lanec_pin_gaps.h"',
+            '#include "lanec_pin_keys.h"', '']
+    rows = {m: sorted((k, v) for k, v in points[m][''].items() if grouped[m].get(k) == g) for m in ('LM', 'CM')}
+    names = sorted({v[0] for m in rows for _, v in rows[m]}, key=lambda n: int(n[3:]))
+    for name in names:
+        mods = lists[int(name[3:])]
+        # the group's points are pin-keys' alone: they run the group's own entry
+        text.append(f'static const lanec_pin_dispatch {name}[{len(mods) + 1}] = {{ '
+                    + ', '.join(cfg['groups'][g][1] if x in cfg['first'] else run_of[x] for x in mods) + ', 0 };')
+        for m in ('LM', 'CM'):
+            if any(v[0] == name for _, v in rows[m]):
+                ml = m.lower()
+                text.append(f'static enum exec_status {name}_{ml}(const agc_native_program *p, apollo_overlay_state *s, '
+                            f'void *v) {{ return lanec_pin_run_{ml}(p, s, v, {name}); }}')
+    for m in ('LM', 'CM'):
+        ml = m.lower()
+        text.append(f'static const agc_routine_entry {ml}_entries[{len(rows[m])}] = {{')
+        for key, (name, bank, z) in rows[m]:
+            text.append(f'    {{ {key}u, {name}_{ml} }},   /* {bank:02o},{z:04o} */')
+        text.append('};')
+        text.append(f'const agc_routine_table lanec_{fam}_{g}_{ml}_routines = {{ {ml}_entries, {len(rows[m])}u }};')
+    return '\n'.join(text) + '\n'
 
 
 def check_listing(cfg, mission, points, exits=None):
@@ -267,6 +347,16 @@ def check_listing(cfg, mission, points, exits=None):
                 fan.add(j)
                 j += 1
     internal, returns, missing = [], 0, []
+    # an in-file CADR or 2CADR naming a label in another bank: a BANKJUMP or
+    # BANKCALL through that table word enters there from another bank
+    # (CM DECDSP3's SFOUTABR), so the label must be registered
+    at_label = {fs[0]: i for i, (r, fs) in enumerate(zip(rows, fields))
+                if fs and not src[r['line'] - 1][:1].isspace()}
+    for i, (r, fs) in enumerate(zip(rows, fields)):
+        if len(fs) >= 2 and fs[-2] in ('CADR', '2CADR') and fs[-1] in at_label:
+            j = at_label[fs[-1]]
+            if rows[j]['bank'] != r['bank'] and not data[j] and where[j] not in registered:
+                missing.append(f'label {fs[-1]} is a CADR target from bank {r["bank"]} but not registered')
     for i, (r, fs) in enumerate(zip(rows, fields)):
         if data[i] or not fs:
             continue
@@ -422,6 +512,71 @@ def c64_frozen(fam, c64, names=()):
             + ['};', '#endif', '#endif'])
 
 
+def c64m_block(fam, cfg, c64m, points):
+    """di-transfer-c64m: its cases, each program's stops and, once
+    tests/lanec_<fam>_transfer_c64m_c64.h holds the rows tools/lanec/cover.py
+    picked, each program's frozen rows (here, and with their hashes in
+    tests/lanec_<fam>_transfer_c64m_rows.h). A program registers one group of
+    modules (cfg['c64m_groups']) and runs the rows whose destination is in it."""
+    up = fam.upper()
+    groups = cfg['c64m_groups']
+    gname = {m: '_'.join(g) for g in groups for m in g}
+    out = [f'/* {fam}-transfer-c64m: the cases whose destination is a {"/".join(cfg["c64m_modules"])} point (callers,',
+           ' * then every point from its own entry); one C64 program per group of modules and mission',
+           f' * (LANEC_{up}_C64M_<GROUP>_<LM|CM>: {", ".join("_".join(g).upper() for g in groups)}) registers INTER-BANK',
+           ' * and that group\'s modules only. */',
+           f'#define LANEC_{up}_TRANSFER_C64M_CASES {len(c64m)}u']
+    frozen = ROOT / f'tests/lanec_{fam}_transfer_c64m_c64.h'
+    ns = [int(n) for n in re.findall(r'\{(\d+)u, 0x', frozen.read_text())] if frozen.exists() else []
+    out += ([f'#ifndef LANEC_{up}_TRANSFER_C64M'] if ns else []) + \
+        [f'static const transfer_case c64m_cases[LANEC_{up}_TRANSFER_C64M_CASES] = {{'] + c64m + ['};'] + \
+        (['#endif'] if ns else [])
+    if ns:
+        hashes = dict(re.findall(r'\{(\d+)u, (0x[0-9a-f]+)u\}', frozen.read_text()))
+        rows_of = {}
+        for n in ns:
+            f = c64m[n].strip().split('/*')[0].strip().rstrip(',').strip('{} ').split(', ')
+            mod = cfg['modules'][int(f[3].rstrip('u')) & 0o177]
+            rows_of.setdefault(f'{gname[mod]}_{f[4][len("LANEC_"):].lower()}', []).append(n)
+        rows_h = ['/* SPDX-License-Identifier: MIT */',
+                  f'/* Generated by tools/lanec/routines.py {fam} from tests/lanec_{fam}_transfer_c64m_c64.h: each',
+                  f' * C64 program\'s frozen rows (LANEC_{up}_C64M_<GROUP>_<LM|CM>), for tools/lanec/c64_diag.c. Do not edit. */']
+        out.append(f'#ifdef LANEC_{up}_TRANSFER_C64M')
+        for name, mine in sorted(rows_of.items()):
+            mac = f'LANEC_{up}_C64M_{name.upper()}'
+            out += [f'#ifdef {mac}', f'static const struct {{ uint16_t n; transfer_case c; }} c64m_frozen[{len(mine)}] = {{']
+            out += [f'    {{ {n}u, {c64m[n].strip().split("/*")[0].strip().rstrip(",")} }},' for n in mine] + ['};', '#endif']
+            rows_h += [f'#ifdef {mac}', 'static const struct { uint32_t n, hash; } lanec_frozen[] = {']
+            rows_h += [f'    {{{n}u, {hashes[str(n)]}u}},' for n in mine] + ['};', '#endif']
+        out.append('#endif')
+        (ROOT / f'tests/lanec_{fam}_transfer_c64m_rows.h').write_text('\n'.join(rows_h) + '\n')
+    # A module's routines run on through some of the other modules' points (a
+    # mark display runs the display-start code to its exits): those are not
+    # stops. The others are where the module's own suite stops too.
+    ran = {}
+    trace = ROOT / f'build/lanec-{fam}-c64m-trace.txt'
+    for mod in cfg['c64m_modules']:
+        subprocess.run(['build/lanec-oracle', f'{fam}-{mod}', 'deps/lm-powered-fixture/MAIN.agc.bin',
+                        'deps/cm-powered-fixture/MAIN.agc.bin'], cwd=ROOT, check=True, stdout=subprocess.DEVNULL,
+                       env=dict(os.environ, LANEC_TRACE=str(trace)))
+        ran[mod] = {(line[:2], *(int(x, 8) for x in line.split()[1].split(',')))
+                    for line in trace.read_text().split('\n') if line[:2] in ('LM', 'CM') and line[2:3] != 'I'}
+    trace.unlink()
+    for mission in ('LM', 'CM'):
+        for g in groups:
+            v = [('LANEC_ANY_BANK' if z >= 0o4000 else f'0{bank:o}u', f'0{z:o}u')
+                 for key, (m, bank, z) in sorted(points[mission].items())
+                 if m not in g and not any((mission, 0 if z >= 0o4000 else bank, z) in ran[x] for x in g)]
+            name = '_'.join(g)
+            out.append(f'/* the points of every module but {"/".join(g)} that {", ".join(f"{fam}-{x}" for x in g)}\'s cases'
+                       f' do not run on through, {mission} (the oracle stops there) */')
+            out.append(f'#if !defined(LANEC_{up}_TRANSFER_C64M) || defined(LANEC_{up}_C64M_{name.upper()}_{mission})')
+            out.append(f'static const lanec_point c64m_stops_{mission.lower()}_{name}[{len(v)}] = {{ '
+                       + ', '.join(f'{{ {b}, {a} }}' for b, a in v) + ' };')
+            out.append('#endif')
+    return [f'#ifndef LANEC_{up}_TRANSFER_C64'] + out + ['#endif']
+
+
 def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=None):
     rows = []
     for mission in ('LM', 'CM'):
@@ -480,6 +635,24 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
                 for n in sorted({ns[i * len(ns) // per] for i in range(min(per, len(ns)))}):
                     c64.append(f'    {{ {key}u, 0u, {n}u, {cfg["modules"].index(mod) | 0o200}u, LANEC_{mission} }},'
                                f'   /* {where} {mod} */')
+    c64m, c64m_text = [], []
+    if cfg.get('c64m_modules') and not first:
+        # di-transfer-c64m: the callers of the other modules' entries and every
+        # point of theirs from its own entry; a program registers INTER-BANK and
+        # one module, and the oracle stops at every other module's points
+        mm = {f'{cfg["modules"].index(m)}u' for m in cfg['c64m_modules']}
+        c64m = [r for r in rows if r.split(', ')[3] in mm]
+        per = cfg.get('cases_per_entry', 4)
+        for mission in ('LM', 'CM'):
+            for key, (mod, bank, z) in sorted(points[mission].items()):
+                if mod not in cfg['c64m_modules'] or key not in accepted[mission]:
+                    continue
+                ns = accepted[mission][key]
+                where = f'{bank:02o},{z:04o}' if z < 0o4000 else f'FF,{z:04o}'
+                for n in sorted({ns[i * len(ns) // per] for i in range(min(per, len(ns)))}):
+                    c64m.append(f'    {{ {key}u, 0u, {n}u, {cfg["modules"].index(mod) | 0o200}u, LANEC_{mission} }},'
+                                f'   /* {where} {mod} */')
+        c64m_text = c64m_block(fam, cfg, c64m, points)
     if first:
         # pin: every routine from its own entry, with cases of the module that
         # claims it first, both missions; each C64 program runs one module's
@@ -538,7 +711,7 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
                          + ', '.join(f'{{ {"LANEC_ANY_BANK" if b is None else f"0{b:o}u"}, 0{lo:o}u, 0{hi:o}u }}'
                                      for b, lo, hi in runs) + ' };')
     frozen_rows = c64_frozen(fam, c64, [suite_of[m] for m in cfg['modules']] if first else ())
-    return '\n'.join(['/* SPDX-License-Identifier: MIT */',
+    text = '\n'.join(['/* SPDX-License-Identifier: MIT */',
                       f'/* Generated by tools/lanec/routines.py {fam}: {fam}-transfer round-trip cases',
                       ' * (site physical address, its TC target, case of the target\'s suite, suite',
                       ' * index in module order, mission). Do not edit. */',
@@ -552,15 +725,21 @@ def transfer_cases(fam, cfg, points, accepted, first=None, suite_of=None, exits=
                      + ([f'#ifndef LANEC_{up}_TRANSFER_C64'] if frozen_rows else [])
                      + [f'static const transfer_case c64_cases[LANEC_{up}_TRANSFER_C64_CASES] = {{'] + c64 + ['};']
                      + (['#endif'] if frozen_rows else []) + frozen_rows
+                     + ([f'#ifndef LANEC_{up}_TRANSFER_C64M'] if c64m_text else [])
                      + [f'/* the other modules\' {m} points (the oracle stops there) */\n'
                         f'static const lanec_point c64_stops_{m.lower()}[{len(v)}] = {{ '
                         + ', '.join(f'{{ {b}, {a} }}' for b, a in v) + ' };' for m, v in stops.items()]
+                     + (['#endif'] if c64m_text else []) + c64m_text
                      + ([f'/* the words of {cfg["file"]} (oracle ranges) */'] + spans if spans else [])
                      + (['/* the suites the cases come from, in module order */', f'#ifndef LANEC_{up}_TRANSFER_C64',
                          f'static const lanec_suite *const modules[{len(cfg["modules"])}] = {{ '
                          + ', '.join(f'&lanec_suite_{suite_of[m].replace("-", "_")}' for m in cfg['modules']) + ' };',
                          '#endif']
                         if first else [])) + '\n'
+    if c64m_text:   # the host-only and di-transfer-c64 tables stay out of the di-transfer-c64m programs
+        text = text.replace(f'#ifndef LANEC_{up}_TRANSFER_C64\n',
+                            f'#if !defined(LANEC_{up}_TRANSFER_C64) && !defined(LANEC_{up}_TRANSFER_C64M)\n', 2)
+    return text
 
 
 if __name__ == '__main__':

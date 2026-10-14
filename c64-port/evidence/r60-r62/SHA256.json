@@ -4,34 +4,34 @@
   "release": "evidence-r60-r62",
   "files": {
     "r60-r62-c64-outcomes.json": {
-      "sha256": "030d6ad1358304b35bd950b80a667334b50e67e51b8a091043ee8a732b49db89",
-      "bytes": 662,
+      "sha256": "42ee0206370c71be72344fc179ee2b5f792ddf2f49a85caccc492a61e3164e86",
+      "bytes": 696,
       "store": "tree"
     },
     "r60-r62-differential.log": {
-      "sha256": "14751d47cc601e65b61072a543951fc6ff65167c6de06a2491e3d656a20fbe15",
-      "bytes": 35199,
-      "store": "release"
+      "sha256": "666d00ffcb3fccd60e09aec8b4c9fd1f1d809493ea1387990ce2db19fa0067ab",
+      "bytes": 30136,
+      "store": "tree"
     },
     "r60-r62-host.log": {
-      "sha256": "63dba8c834a5e2a3382842bc4978499396ba3af3a1332cf52d2e7099338aa08a",
-      "bytes": 157,
-      "store": "release"
+      "sha256": "bddecda7d1a2cca879409caa80d521eafa915db58936d4dc834b2011b0fbbb4f",
+      "bytes": 1020,
+      "store": "tree"
     },
     "r60-r62-proof.json": {
-      "sha256": "10311d27b125d6aa72110ef3ab335bf07565658a5e7ce8971b584e0d499092f5",
-      "bytes": 57488,
+      "sha256": "b3583566fc8e3902284f3789aa263bcb0e02899fa2a9fe9f08048c6f48a97e4a",
+      "bytes": 50035,
       "store": "tree"
     },
     "r60-r62-source-map.json": {
-      "sha256": "14eff2a5c8fa595f0ea43c8866718dad0dc6d87625ce6bc45b0eb8ef357c82e9",
-      "bytes": 71965,
+      "sha256": "120b1aa405707b915ddf40572d2ce93d138fdae37123716b23e019aa9299ffbf",
+      "bytes": 71707,
       "store": "tree"
     },
     "r60-r62-vice.log": {
-      "sha256": "0a5dbd1109cbb4e9f1f04a2b70772d99c42931b5cd016f717d7ea7820bf0f3f6",
-      "bytes": 1278,
-      "store": "release"
+      "sha256": "bd7fc46c833da6d88e04c138417342dd08e1be07c0e378911f5f98a4b2d56ab3",
+      "bytes": 3347,
+      "store": "tree"
     }
   }
 }

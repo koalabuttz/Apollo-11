@@ -16,7 +16,7 @@ static agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};
 static unsigned reached[LM_LAD_ENTRIES];
 static void refused(apollo_overlay_state *s,lm_flight_io *io,const char *what){apollo_overlay_state before=*s;lm_flight_io bio=*io;agc_routine call;
  call=agc_transfer_resolve(&program,s,0);
- check(call&&call(&program,s,io)==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
+ check(call&&(program.hardware=&io->hw,call(&program,s,io))==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
 }
 int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;unsigned n,i,left=0,refusals=0;uint16_t steps;agc_routine call;
  /* Branches no admitted input reaches:
@@ -52,7 +52,7 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;unsigned n,i,left=0
  lm_lad_input(&s,&io,0);s.words[3]=03000u;refused(&s,&io,"LANDISP under EBANK6");
  lm_lad_input(&s,&io,1);call=agc_transfer_resolve(&program,&s,0);s.words[4]=s.words[6]=020000u;
  {apollo_overlay_state before=s;lm_flight_io bio=io;
-  check(call&&call(&program,&s,&io)==EXEC_OUT_OF_SCOPE&&!memcmp(&s,&before,sizeof s)&&!memcmp(&io,&bio,sizeof io),"INTLZE under FB 10",0);}
+  check(call&&(program.hardware=&io.hw,call(&program,&s,&io))==EXEC_OUT_OF_SCOPE&&!memcmp(&s,&before,sizeof s)&&!memcmp(&io,&bio,sizeof io),"INTLZE under FB 10",0);}
  lm_lad_input(&s,&io,3);call=agc_transfer_resolve(&program,&s,0);
  {apollo_overlay_state before=s;check(call&&call(&program,&s,0)==EXEC_OUT_OF_SCOPE&&!memcmp(&s,&before,sizeof s),"21,2476 without io",0);}
  printf("lm-landing-displays: %u cases left the file, %u refusals; entries",left,refusals);

@@ -9,7 +9,7 @@ static agc_t baseline;
 int main(int argc,char **argv){unsigned n,i,cycles,pc=0,fb;if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;
  for(n=0;n<LM_THR_CASES;++n){apollo_overlay_state s;lm_flight_io io;lm_thr_case c;int done=0;
   machine=baseline;lm_thr_input(&s,&io,&c,(uint16_t)n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
-  machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.InputChannel[014]=(int16_t)io.chan14;machine.AllowInterrupt=0;
+  machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.InputChannel[014]=(int16_t)io.hw.channel14;machine.AllowInterrupt=0;
   for(cycles=0;cycles<20000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);fb=(unsigned)get(4)&076000u;
     if(pc==c.stop_z&&(c.stop_fb==0177777u||fb==c.stop_fb)){done=1;break;}}

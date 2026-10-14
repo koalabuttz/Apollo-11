@@ -5,7 +5,8 @@
 #include "lm_flight_io.h"
 /* Luminary099 DAPIDLER_PROGRAM.agc, all of it (bank 16, 02000-02212, and
  * bank 20, 02226-02446), as native routines of the control-transfer ABI;
- * io is lm_flight_io (channels 5, 6, 12, 14, 30, 31).
+ * io is p66_bias_io; channels 5, 6, 12, 14, 30 and 31 are the program's
+ * agc_hardware (include/lm_flight_io.h).
  *
  *   CHEKBITS  16,2000  mode-select and IMU checks; JUMPDSP (DTCB to ALTDSPLY),
  *                      SHUTDOWN or MOREIDLE
@@ -32,6 +33,8 @@
  * record, and a CHEKBITS or CHEKMORE return in Q that is not a TC into fixed
  * memory. */
 extern const agc_routine_table lm_dapidler_routines;
+/* The entries an attitude-hold or jet-firing DAP pass reaches (the pinned DAP set). */
+extern const agc_routine_table lm_dapidler_hot_routines;
 #define LM_DI_FB16 034000u
 #define LM_DI_FB20 040000u
 #define LM_DI_EB 03000u

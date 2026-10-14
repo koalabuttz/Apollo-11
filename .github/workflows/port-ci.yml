@@ -118,6 +118,9 @@ jobs:
       - name: Milestone files render
         working-directory: c64-port
         run: python3 tools/ledgers.py --validate
+      - name: Each make variable is assigned in one tools/mk file
+        working-directory: c64-port
+        run: python3 tools/mk_vars_check.py
       - name: Coverage audit
         working-directory: c64-port
         run: |
@@ -191,7 +194,7 @@ jobs:
           source deps/env.sh
           targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("test",[])+a.get("sanitize",[])))')
           if echo "$AFFECTED" | grep -q '"full": true'; then
-            python3 tools/ci_run.py --group test --group sanitize --shard "$SHARD/4" --summary build/ci-summary.json
+            python3 tools/ci_run.py --group test --group sanitize --group ci-extra-host --shard "$SHARD/4" --summary build/ci-summary.json
           else
             python3 tools/ci_run.py $targets --summary build/ci-summary.json
           fi
@@ -230,7 +233,9 @@ jobs:
         run: |
           source deps/env.sh
           if [ "$C64_FULL" = 1 ]; then
-            targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-' | sort -u)
+            # tools/mk/ci-extra.mk's C64 checks join the c64-/vice- targets.
+            targets=$( (make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-'
+                        make -pRrq __none__ 2>/dev/null | sed -n 's/^ci-extra-c64: *//p' | tr ' ' '\n') | sort -u)
           else
             targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
           fi

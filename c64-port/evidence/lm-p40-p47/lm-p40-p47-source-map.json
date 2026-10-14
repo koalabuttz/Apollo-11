@@ -1556,22 +1556,22 @@
     "address": "36,3504",
     "word": "33762",
     "source": "P47BOD CAF V1683",
-    "routine": "36,3504",
-    "function": "r75504"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3505",
     "word": "04616",
     "source": " TC BANKCALL",
-    "routine": "36,3504",
-    "function": "r75504"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3506",
     "word": "20635",
     "source": " CADR GOFLASHR",
-    "routine": "36,3504",
-    "function": "r75504"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3507",
@@ -1605,8 +1605,8 @@
     "address": "36,3513",
     "word": "06037",
     "source": "P47BODY TC INTPRET",
-    "routine": "36,3511",
-    "function": "r75511"
+    "routine": "36,3513",
+    "function": "r75513"
    },
    {
     "address": "36,3514",
@@ -1654,29 +1654,29 @@
     "address": "36,3522",
     "word": "31517",
     "source": "IMPLBURN CA TGO        +1",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3523",
     "word": "03735",
     "source": " TC GETDT",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3524",
     "word": "05173",
     "source": " TC TWIDDLE",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3525",
     "word": "03542",
     "source": " ADRES ENGOFTSK",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3526",
@@ -2621,71 +2621,71 @@
     "address": "36,3735",
     "word": "10000",
     "source": "GETDT CCS A",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3736",
     "word": "13741",
     "source": " TCF +3",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3737",
     "word": "13741",
     "source": " TCF +2",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3740",
     "word": "34755",
     "source": " CAF ZERO",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3741",
     "word": "64753",
     "source": " AD ONE",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3742",
     "word": "56001",
     "source": " XCH L",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3743",
     "word": "34755",
     "source": " CAF ZERO",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3744",
     "word": "53517",
     "source": " DXCH TGO",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3745",
     "word": "31517",
     "source": " CA TGO        +1",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3746",
     "word": "00002",
     "source": " TC Q",
-    "routine": "36,3522",
-    "function": "r75522"
+    "routine": "36,3521",
+    "function": "r75521"
    },
    {
     "address": "36,3747",

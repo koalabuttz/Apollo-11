@@ -34,7 +34,11 @@ def run(m, a):
     dump.unlink(missing_ok=True)
     (work / 'monitor.log').unlink(missing_ok=True)
     commands = work / 'vice.mon'
-    commands.write_text(f'load "{prg}" 0\nwatch store c000\ng {int(sys_at[1]):04x}\n'
+    # With a pinned module, boot's DMA of it to $C000 is the first store
+    # there; the mailbox's done flag is the next.
+    pinned = '#define FL_PINNED ' in (OUT / f'{m}-load-check.h').read_text()
+    commands.write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
+                        + f'g {int(sys_at[1]):04x}\n'
                         f'bsave "{dump}" 0 c000 cbff\nquit\n')
     reu = work / 'image.reu'
     reu.write_bytes((OUT / f'{m}.reu').read_bytes())
@@ -59,17 +63,21 @@ def run(m, a):
     count = struct.unpack_from('<H', data, 0x3fe)[0]
     differ = set(struct.unpack_from('<8H', data, 0x3e0)[:data[0x3df]])
     modules = []
+    # Module ids and sizes in check order, from the check's data header.
+    listed = re.findall(r'\{0x([0-9a-f]+)u,(\d+)u,', (OUT / f'{m}-load-check.h').read_text().split('fl_modules', 1)[1])
     for i in range(count):
-        ident, size, load, cached, direct, main = struct.unpack_from('<HHIHHH', data, 0x400 + 14 * i)
+        ident, size = int(listed[i][0], 16), int(listed[i][1])
+        load, cached, direct, main = struct.unpack_from('<IHHH', data, 0x400 + 10 * i)
         load, cached = load - overhead, cached - overhead
         modules.append(dict(id=f'0x{ident:04x}', bytes=size, load_cycles=load, cached_cycles=cached,
                             direct_cycles=direct - overhead if direct else None,
-                            main_cycles=main - overhead if direct else None,
+                            main_cycles=main - overhead if direct and main else None,
+                            direct_only=bool(direct and not main),
                             direct_differs=i in differ,
                             transfer_cycles=load - cached, cycles_per_byte=round((load - cached) / size, 2)))
     run_only, point, resolve = (v - overhead for v in struct.unpack_from('<3H', data, 0x3f0))
-    return dict(mission=m, ok=ok, failures=failures, checks=checks, first_failing_step=data[5],
-                timer_overhead_cycles=overhead,
+    return dict(mission=m, ok=ok, failures=failures, checks=checks, first_failing_step=data[5], pinned_module=pinned,
+                timer_overhead_cycles=overhead, soft_stack_peak_bytes=struct.unpack_from('<H', data, 0x3f6)[0],
                 call_profile=dict(runtime_cached_run=run_only, resident_transfer_point=point,
                                   resident_transfer_resolve=resolve),
                 modules=modules)
@@ -115,7 +123,10 @@ def main():
               f"{min(x['cached_cycles'] for x in mods)}-{max(x['cached_cycles'] for x in mods)}"
               + (f", direct call saves {min(d)}-{max(d)} cycles over the module main ({len(d)} modules match)"
                  if (d := [x['main_cycles'] - x['direct_cycles'] for x in mods
-                           if x.get('direct_cycles') is not None]) else ''))
+                           if x.get('main_cycles') is not None]) else '')
+              + (f", {len(o)} direct-only modules run their point in {min(o)}-{max(o)} cycles"
+                 if (o := [x['direct_cycles'] for x in mods if x.get('direct_only')]) else '')
+              + f"; soft stack peak {r['soft_stack_peak_bytes']} bytes")
     return 1 if failed else 0
 
 

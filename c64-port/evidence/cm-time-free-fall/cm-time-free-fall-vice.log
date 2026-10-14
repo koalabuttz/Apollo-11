@@ -1,23 +1,23 @@
 PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-9f6210d66c4d6e3ea986857891cd61f92c611d53393ecd149706cc978d2c8213  build/cm-time-free-fall-1.prg
-eeb7359c1f2901c23f92c5c6b7ef9ac2728645a4723012ab7b2637bbeec56f86  build/cm-time-free-fall-2.prg
-b1b3e1b910d34414bffd9be3c508485c3c7c0a52a95c9af2f5dec409cd1e297f  build/cm-time-free-fall-3.prg
-c248099e4557533dacfe88bede250b6c85d39262f5cc03a432cc705cf7dddbc7  build/cm-time-free-fall-4.prg
-d633a4b4f91573ff605f161a9bfea5552a1480b98ef69015160ccc0addd176b6  build/cm-time-free-fall-5.prg
-3f80c748216b45065072daaeaf66024c3fed3a52ea72ff51d91027fb96d82d7e  build/cm-time-free-fall-6.prg
+d8acc3062e7c150e1e3204a8221ab213df37a6e301c449fd984842b5712b61a7  build/cm-time-free-fall-1.prg
+28ff297af66c8b178931fec70456355849e4020406a9472ac6d5278455b6cddc  build/cm-time-free-fall-2.prg
+b78d388be05baa395e1288cb3231a6ee3613743bfeecde49b998bee9bf7f8a19  build/cm-time-free-fall-3.prg
+50fccf56269261963dec1b838e77ca6d37ef6712f2fc0e44e86925a027e4a671  build/cm-time-free-fall-4.prg
+aac5dde63ce2d2c1b9017dfde2336723556835c1032b4ce0663010279f03d93f  build/cm-time-free-fall-5.prg
+a3dde3ac9bfef191a4128284ff89e98c8c4efd863f80505d94dda50e0ad29e4e  build/cm-time-free-fall-6.prg
 
 $ make vice-cm-time-free-fall
 for p in build/cm-time-free-fall-1.prg build/cm-time-free-fall-2.prg build/cm-time-free-fall-3.prg build/cm-time-free-fall-4.prg build/cm-time-free-fall-5.prg build/cm-time-free-fall-6.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-time-free-fall-1.prg: 21 checks, 0 failures
-PRG sha256: 9f6210d66c4d6e3ea986857891cd61f92c611d53393ecd149706cc978d2c8213 cm-time-free-fall-1.prg
+PASS: VICE PAL cm-time-free-fall-1.prg: 22 checks, 0 failures
+PRG sha256: d8acc3062e7c150e1e3204a8221ab213df37a6e301c449fd984842b5712b61a7 cm-time-free-fall-1.prg
 PASS: VICE PAL cm-time-free-fall-2.prg: 39 checks, 0 failures
-PRG sha256: eeb7359c1f2901c23f92c5c6b7ef9ac2728645a4723012ab7b2637bbeec56f86 cm-time-free-fall-2.prg
+PRG sha256: 28ff297af66c8b178931fec70456355849e4020406a9472ac6d5278455b6cddc cm-time-free-fall-2.prg
 PASS: VICE PAL cm-time-free-fall-3.prg: 24 checks, 0 failures
-PRG sha256: b1b3e1b910d34414bffd9be3c508485c3c7c0a52a95c9af2f5dec409cd1e297f cm-time-free-fall-3.prg
-PASS: VICE PAL cm-time-free-fall-4.prg: 14 checks, 0 failures
-PRG sha256: c248099e4557533dacfe88bede250b6c85d39262f5cc03a432cc705cf7dddbc7 cm-time-free-fall-4.prg
+PRG sha256: b78d388be05baa395e1288cb3231a6ee3613743bfeecde49b998bee9bf7f8a19 cm-time-free-fall-3.prg
+PASS: VICE PAL cm-time-free-fall-4.prg: 15 checks, 0 failures
+PRG sha256: 50fccf56269261963dec1b838e77ca6d37ef6712f2fc0e44e86925a027e4a671 cm-time-free-fall-4.prg
 PASS: VICE PAL cm-time-free-fall-5.prg: 41 checks, 0 failures
-PRG sha256: d633a4b4f91573ff605f161a9bfea5552a1480b98ef69015160ccc0addd176b6 cm-time-free-fall-5.prg
-PASS: VICE PAL cm-time-free-fall-6.prg: 53 checks, 0 failures
-PRG sha256: 3f80c748216b45065072daaeaf66024c3fed3a52ea72ff51d91027fb96d82d7e cm-time-free-fall-6.prg
+PRG sha256: aac5dde63ce2d2c1b9017dfde2336723556835c1032b4ce0663010279f03d93f cm-time-free-fall-5.prg
+PASS: VICE PAL cm-time-free-fall-6.prg: 52 checks, 0 failures
+PRG sha256: a3dde3ac9bfef191a4128284ff89e98c8c4efd863f80505d94dda50e0ad29e4e cm-time-free-fall-6.prg
 exit 0

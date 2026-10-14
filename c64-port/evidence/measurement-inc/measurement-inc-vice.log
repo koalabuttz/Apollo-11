@@ -1,0 +1,36 @@
+measurement-inc-1.prg sha256 c4abb273d2366f8fa1d47e26b9b2c8c1ebaae5d682dd8ed8222feb963cc4b26f
+measurement-inc-2.prg sha256 219db106f16c064eb7362d4b32179d8fccc906e27ceba06c823f385760ee7c39
+measurement-inc-3.prg sha256 7d44970b793ac0fda599aca62cc276489ac2ea4ba07cb75dc3ea1408697528ec
+measurement-inc-4.prg sha256 f0ecfe5c3c601d3837e9526819a39a1521b6e7d0a958f28b7696a9ca920e0eea
+measurement-inc-5.prg sha256 348d7adcade5a5e285d21573e0070b7414fb87c4ef156e6703b218b2e17ef007
+measurement-inc-6.prg sha256 5bfedebe14637ae69f1367df8cfe20a27d2ece3d427503a2d0915f1094a777e2
+measurement-inc-7.prg sha256 b5f88a77dc6aa74dc5bee04698fa80dc71216b18a9b65aa9c68b5f9c474ba824
+measurement-inc-8.prg sha256 e2224581d6d65b175044dd7b82e030b88970721f873e4c846713bb93c45920fa
+measurement-inc-9.prg sha256 d08553d1fc20b4eadfdb89885807db1d1134cccec073fb3dcec92e275c128c05
+measurement-inc-10.prg sha256 ea9cbacb4f00117379fe2e00800a5e5d2495315ed6a9017d30eccdd397d5dd25
+measurement-inc-11.prg sha256 da17f1ec9d4b830424a0a95dab0e9d2a010ccdc92be237ddf02537e8371db2a9
+measurement-inc-12.prg sha256 b1d579d2030ad9a61a850324b155faadb8bd60bf74823ae118e38c74be236473
+measurement-inc-13.prg sha256 7334385ff9f8e53044db0c618c6e57f2ab5eb03597a53c2555bb439e64d03f62
+measurement-inc-14.prg sha256 5386fd2f93e83158c1fa1965cd8bb8b7e1b14460c55405383ad2b76aa58eb1b6
+measurement-inc-15.prg sha256 9ffd7bfe4689c01fb93602c0ec72328aac2f7b0fc9989234f1337dfd76588f90
+measurement-inc-16.prg sha256 a102f3040507760b91dd32e715769d948b9dce3d73d1b8d3327a262157d5ab4e
+measurement-inc-17.prg sha256 3972933892ff360b8d513210385371083021a773b01d17212b03a0407bad1f7e
+measurement-inc-18.prg sha256 754c367c91cc6ee00ccd658ad8dcb298ab56ceb24331c2ca95650a31da04cd0b
+PASS: VICE PAL measurement-inc-1.prg: 23 checks, 0 failures
+PASS: VICE PAL measurement-inc-2.prg: 15 checks, 0 failures
+PASS: VICE PAL measurement-inc-3.prg: 1 checks, 0 failures
+PASS: VICE PAL measurement-inc-4.prg: 10 checks, 0 failures
+PASS: VICE PAL measurement-inc-5.prg: 6 checks, 0 failures
+PASS: VICE PAL measurement-inc-6.prg: 12 checks, 0 failures
+PASS: VICE PAL measurement-inc-7.prg: 17 checks, 0 failures
+PASS: VICE PAL measurement-inc-8.prg: 42 checks, 0 failures
+PASS: VICE PAL measurement-inc-9.prg: 34 checks, 0 failures
+PASS: VICE PAL measurement-inc-10.prg: 17 checks, 0 failures
+PASS: VICE PAL measurement-inc-11.prg: 23 checks, 0 failures
+PASS: VICE PAL measurement-inc-12.prg: 4 checks, 0 failures
+PASS: VICE PAL measurement-inc-13.prg: 5 checks, 0 failures
+PASS: VICE PAL measurement-inc-14.prg: 34 checks, 0 failures
+PASS: VICE PAL measurement-inc-15.prg: 15 checks, 0 failures
+PASS: VICE PAL measurement-inc-16.prg: 45 checks, 0 failures
+PASS: VICE PAL measurement-inc-17.prg: 36 checks, 0 failures
+PASS: VICE PAL measurement-inc-18.prg: 15 checks, 0 failures

@@ -37,21 +37,40 @@ inputs, run with the service and Executive tables together, so the run goes
 DELAYJOB, DLY2 -1, WAIT2, TCGETCAD to JOBSLEEP or BAILOUT. Each DELAYJOB input
 runs twice: on its own random image, where WAIT2 almost always finds a broken
 list and aborts, and (base `| WLE_SANE`) with a sane waitlist: a free DELAYLOC,
-a positive delay, TIME3 on both sides of its overflow test, and 0-8 queued
-tasks (one case in sixteen a full list of 9). Of those, 45 LM and 52 CM cases
-insert the task and reach JOBSLEEP, 4 LM and 5 CM overflow the list and abort,
-and one LM case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
+a positive delay, TIME3 on both sides of its overflow test or exactly 0200
+(where WAIT2's -TIME3 + 0200 is -0), and 0-8 queued tasks (one case in
+sixteen a full list of 9). Of those, 43 LM and 53 CM cases insert the task
+and reach JOBSLEEP, 6 LM and 4 CM overflow the list and abort, and one LM
+case ends at JOBWAKE. The remaining DLY2 -1 cases are inputs the
 native DELAYJOB refuses (most with a delay near 1.0, whose WAIT2 sum would
 overflow); they are compared as refusals. Each LM input runs a third time
 (base `| WLE_SANE | WLE_EDGE`): a sane list of 1-8 tasks with the new task
 due exactly 1 cs before queued task j, so WAIT2's list search ends on
 `CCS` -0 at j (`lm_delay_image.c` line 25, the -0 break) and the task is
-inserted there. All 57 reach the continuation.
+inserted there. All 57 reach the continuation (56 JOBSLEEP, one JOBWAKE).
+Two +0 outcomes in `lm_delay_image.c` are never taken, because they cannot
+be: the `CCS` after -TIME3 + 0200 (line 22) and the one that ends the search
+(line 27) would need a +0 sum, and a ones'-complement add gives +0 only from
++0 + +0. -TIME3 + 0200 is never +0 (TIME3 = 0200 gives -0), and the search
+adds a queued task's negative delta T to a positive remainder.
 yaAGC stops at the native Z (and FB when banked) or when it leaves the
 interrupt. All 2048 erasable words, the superbank and the inhibit and
 interrupt flags are identical. The proof
 (`evidence/waitlist-entries/waitlist-entries-proof.json`) lists the hashes of
 the native sources it depends on.
+
+The same freeze also checks TASKOVER's RESUME check (#144) against the real
+ropes (`tools/taskover_superbank_reference.c`, recorded under
+`taskover_superbank` in the proof). In each case, yaAGC takes T3RUPT in a
+program running in banks 030-033 under one superbank, so the hardware fills
+ZRUPT and BRUPT from the rope. BANKRUPT keeps that superbank, as T3RUPT's
+`ROR SUPERBNK` does, and channel 7 holds the task's superbank. The native
+TASKOVER, given the rope as `fixed_data`, resumes in every case, and its
+result equals yaAGC running TASKOVER until the interrupt ends: 488 Luminary099
+and 493 Comanche055 cases. In 364 and 366 of them the word under channel 7's
+superbank differs from BRUPT, so a check that read under channel 7 (the bug
+#144 fixed) would refuse those cases; with that bug put back, the oracle
+reports 364 Luminary099 failures.
 
 `tests/test_waitlist_entries.c` checks the frozen digests, one refusal per
 kind, and TASKOVER's RESUME check in both missions under BANKRUPT's

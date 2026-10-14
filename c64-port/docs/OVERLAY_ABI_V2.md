@@ -77,15 +77,18 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FDB` | Resident service jump table (73 entries max; the resident linker script asserts it ends at or below `$6FDC`) | 220 |
+| `$6F00..$6FB7` | Resident service jump table (61 entries max; the resident linker script asserts it ends at or below `$6FB8`) | 184 |
+| `$6FB8..$6FBB` | Flight: `rk_dilation`, the 32-bit count of clock ticks scaled time dropped (`RK_DILATION`, docs/RESIDENT-FLIGHT.md) | 4 |
+| `$6FBC..$6FBD` | Flight: `ov2_irq_count`, the CIA1 interrupt count (`RK_IRQ_COUNT`); a long-running module (the interpreter) returns to the step when it moves. Modules link it with `--defsym` | 2 |
+| `$6FBE..$6FDB` | Flight: `rk_hardware`, the resident's `agc_hardware` record; modules link it with `--defsym` | 30 |
 | `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
-| `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |
+| `$6FF4..$6FFF` | Free (was the CM's `cm_channels`; channels 5, 6 and 30-33 now live in `rk_hardware`) | 12 |
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
-| `$C000..$C7FF` | Transient views; overflow space for resident BSS if Lane A needs it | 2,048 |
-| `$C800..$CFFF` | LLVM-MOS software stack (measured peak so far 773 bytes) | 2,048 |
+| `$C000..$CBFF` | Slot class 3: pinned modules. Boot loads the store's class-3 module once by plain DMA, verifies it, zeroes its BSS and runs its main once to build its tables; from then on the resident only calls its routines directly (`rk_direct`, before the job and task slots). No resolver record names it, and a run never loads it. Before boot finishes, `$C100..$C1FF` is the store-verify scratch; test programs without a pinned module use the page for mailboxes | 3,072 |
+| `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_INVALID_ACTION`) | 1,024 |
 | `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
-| `$E000..$FFF9` | Task slot | 8,186 |
+| `$E000..$FFF9` | Task slot, or slot class 4: the pinned task region. A store with a class-4 module keeps this RAM for it: boot loads it once by plain DMA, verifies it and zeroes its BSS, and runs no main (the class-3 module's table list names its tables, so it is only called directly). Such a store has no task-slot module but one boot-only module no resolver record names (the flight resident's boundary-word module, which boot runs in the task slot before it loads class 4 over it, as boot itself runs in the job slot): every task module links for the job slot, and a task run evicts the job module between steps. No resolver record names it, and a run never loads it | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
 
 The canonical image rules from ABI 1 are unchanged. `$7000` is the only
@@ -130,7 +133,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 0 | 4 | `NATV` |
 | 4 | 1 | ABI version, 2 |
 | 5 | 1 | Header size, 24 |
-| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267) |
+| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267), 3 pinned (`$C000..$CBFF`: at most one module; boot loads it once by plain DMA, zeroes its BSS and runs its main once, after every boot-loaded module is in; no resolver records, called only directly), 4 pinned task region (`$E000..$FFF9`: at most one module, and beside it no slot-class-1 module but one boot-only module no resolver record names; boot loads it by plain DMA and zeroes its BSS, no main; no resolver records, called only directly through the class-3 module's table list) |
 | 7 | 1 | Mission: 1 LM, 2 CM |
 | 8 | 2 | Module identity (lane << 8 \| number) |
 | 10 | 2 | Entry address, slot base + 24 |
@@ -252,10 +255,10 @@ overlaps a live module frame. The REU's own interrupt is unused.
 
 At 1 MHz, a C translation of ones-complement arithmetic runs well below AGC
 speed, so the integrated programs cannot keep up with the AGC's real-time clock.
-Lane A's timer adapters need a mission clock that advances with executed work
-(TIME1/TIME3/TIME4/TIME5/TIME6 driven by the adapter), not by wall-clock CIA
-ticks. Otherwise WAITLIST tasks overrun. This is a requirement on Lane A's
-adapter, recorded here because the overlay latency figures feed it.
+The flight resident's clock is therefore scaled (docs/RESIDENT-FLIGHT.md,
+Scaled time): each step catches up at most `RK_TICK_LAG` 10 ms periods
+and drops the rest into `rk_dilation`, so AGC time falls behind wall time
+instead of WAITLIST tasks overrunning.
 
 ## Allocation plan
 

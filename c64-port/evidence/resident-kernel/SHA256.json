@@ -4,12 +4,12 @@
   "release": "evidence-resident-kernel",
   "files": {
     "resident-flight-sizes.json": {
-      "sha256": "514acc1188131616096d8535917a81070814061cf3fb1e383e42570264df8974",
-      "bytes": 1709,
+      "sha256": "5cb4fc4a6d73ef9a7d5cad8f63e6ae64eb3a8444f4dcda99bd39c2efc4f10b3f",
+      "bytes": 1691,
       "store": "tree"
     },
     "resident-flight-vice.log": {
-      "sha256": "d7a2750bab2cdcf39f823ecbd21e65f7b69d40b51ab4cbc82de38fa47c0c8de7",
+      "sha256": "d44197cc5e9e8fd88938f28aa40733c082d31526f733172f24749dd34113bbf9",
       "bytes": 1456,
       "store": "tree"
     },
@@ -31,6 +31,11 @@
     "resident-rupt-host.log": {
       "sha256": "2b4d52e63a821fe8e091511a3d238ec3914e3b52ab70e1d474a5ca0fa72b7c24",
       "bytes": 1760,
+      "store": "tree"
+    },
+    "scaled-time-replay.json": {
+      "sha256": "f426b2543523d4387c231c574fc996d264925f1395cd3f5a78c96196e0e4a1c6",
+      "bytes": 3499,
       "store": "tree"
     },
     "sp-routines-host.log": {

@@ -120,9 +120,10 @@ static enum apollo_ov2_status run(uint8_t context,uint16_t module,uint16_t selec
     apollo_ov2_cont c; c.module=module; c.selector=selector;
     return apollo_ov2_run(&rt,context,c,value,action,resume);
 }
+static uint8_t pinned_loaded;   /* $c000..$cbff holds the class-3 module */
 static void guards(void) {
     unsigned i;
-    for(i=0xc000u;i<0xd000u;++i) assert(ram[i]==GUARD);
+    for(i=pinned_loaded?0xcc00u:0xc000u;i<0xd000u;++i) assert(ram[i]==GUARD);
     for(i=0xfffau;i<0x10000u;++i) assert(ram[i]==GUARD);
     for(i=0x0000u;i<APOLLO_SHARED_ADDRESS;++i) assert(ram[i]==GUARD || (i>=0x0340u && i<0x0368u));
 }
@@ -135,6 +136,18 @@ static void check_loaded(uint16_t id,uint16_t base,unsigned body_bytes,unsigned 
 static unsigned long reu_page(uint16_t id) {
     const uint8_t *r=reu+256u+id*16u; assert(r[0]==(uint8_t)id);
     return ((unsigned long)r[2] | ((unsigned long)r[3]<<8))*256ul;
+}
+static unsigned fixed_seen;
+/* As the resident boots them: class 2 at $d000, class 3 at $c000 and class 4
+ * at $e000, each with its BSS (8 bytes after the body) zeroed. */
+static uint8_t fixed_load(void *user,uint32_t reu_address,const apollo_ov2_dirent *d) {
+    uint16_t base=apollo_ov2_slot_address(d->slot);
+    (void)user; ++fixed_seen;
+    assert((d->id==0x0a02 && d->slot==APOLLO_OV2_SLOT_FIXED) || (d->id==0x0a03 && d->slot==APOLLO_OV2_SLOT_PINNED) ||
+           (d->id==0x0a04 && d->slot==APOLLO_OV2_SLOT_PINNED_TASK));
+    if(d->slot==APOLLO_OV2_SLOT_PINNED) pinned_loaded=1;
+    if(d->slot!=APOLLO_OV2_SLOT_FIXED) memset(ram+base+d->bytes,0,8);
+    return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,ram+base,reu_address,d->bytes)&0x60u)==0x40u);
 }
 static void expect_fault(enum apollo_ov2_status expected,uint8_t context,uint16_t module,uint16_t selector) {
     uint16_t value=77; uint8_t action=99; apollo_ov2_cont resume={1,1};
@@ -149,7 +162,7 @@ static void expect_fault(enum apollo_ov2_status expected,uint8_t context,uint16_
 int main(int argc,char **argv) {
     FILE *file; uint16_t value; uint8_t action; apollo_ov2_cont resume;
     unsigned before,i; apollo_overlay_state saved;
-    assert(argc==2);
+    assert(argc==2 || argc==3);
     file=fopen(argv[1],"rb"); assert(file);
     fseek(file,0,SEEK_END); reu_size=(unsigned long)ftell(file); fseek(file,0,SEEK_SET);
     assert(reu_size==128ul*1024ul);
@@ -172,7 +185,7 @@ int main(int argc,char **argv) {
     /* Store open: magic, mission and service-table version gate the image. */
     reset_ram();
     assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
-    assert(store.module_count==4 && store.resolver_count==3 && store.index_page==1);
+    assert(store.module_count==6 && store.resolver_count==3 && store.index_page==1);
     assert(!apollo_reu_store_open(&store,0,2,SERVICES,RECORD));
     assert(!apollo_reu_store_open(&store,0,LM,SERVICES+1u,RECORD));
     reu[0]='X'; assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
@@ -199,6 +212,27 @@ int main(int argc,char **argv) {
     }
     boot(0); reu[(unsigned long)store.resolver_page*256ul+6u]=9;   /* selector out of range */
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_UNRESOLVED);
+    boot(0); {                                            /* record naming the fixed extension */
+        unsigned long r=(unsigned long)store.resolver_page*256ul;
+        reu[r+4u]=0x02; reu[r+5u]=0x0a; reu[r+6u]=0; reu[r+7u]=0;
+        assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_UNRESOLVED);
+    }
+    boot(0); {                                            /* record naming the pinned module */
+        unsigned long r=(unsigned long)store.resolver_page*256ul;
+        reu[r+4u]=0x03; reu[r+5u]=0x0a; reu[r+6u]=0; reu[r+7u]=0;
+        assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_UNRESOLVED);
+    }
+
+    /* Slot classes 2 and 3: boot lists the fixed extension for loading at
+     * $d000 and the pinned module at $c000; a run never loads either. */
+    boot(0); fixed_seen=0;
+    assert(apollo_reu_store_fixed(&store,fixed_load,0) && fixed_seen==2);
+    check_loaded(0x0a02,APOLLO_OV2_FIXED_ADDRESS,100,0);
+    check_loaded(0x0a03,APOLLO_OV2_PINNED_ADDRESS,120,8); guards(); pinned_loaded=0;
+    assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_FIXED)==0xd000u && apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_FIXED)==0x1000u);
+    assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_PINNED)==0xc000u && apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_PINNED)==0x0c00u);
+    boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a02,0);
+    boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a03,0);
 
     /* Load, cache and swap the job slot; BSS is zeroed, payload exact. */
     boot(1); value=41;
@@ -292,6 +326,34 @@ int main(int argc,char **argv) {
     assert(run(6,0x0101,1,&value,&action,&resume)==APOLLO_OV2_OK && rt.seams[6].depth==1);
     saved=*state; apollo_ov2_restart(&rt);
     assert(rt.seams[6].depth==0 && !rt.loaded[0] && !rt.loaded[1] && memcmp(state,&saved,sizeof saved)==0);
+
+    /* Slot class 4 (second image): boot loads the pinned task region at
+     * $e000 beside the class-3 module, over the boot-only task module; a run
+     * never loads it, and a job run leaves it in place. */
+    if(argc==3) {
+        file=fopen(argv[2],"rb"); assert(file);
+        assert(fread(pristine,1,reu_size,file)==reu_size && fgetc(file)==EOF); fclose(file);
+        boot(0); assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_OK);
+        assert(store.module_count==4 && store.resolver_count==1);
+        /* As the flight resident boots: the boot-only task-slot module runs
+         * first, then class 4 loads over it. */
+        boot(0); mode=3; value=0;   /* ends in a kernel action */
+        assert(run(8,0x0301,0,&value,&action,&resume)==APOLLO_OV2_OK && action==0x21u && rt.loaded[1]==0x0301);
+        mode=0;
+        check_loaded(0x0301,APOLLO_OV2_TASK_ADDRESS,200,8);
+        fixed_seen=0;
+        assert(apollo_reu_store_fixed(&store,fixed_load,0) && fixed_seen==2);
+        rt.loaded[1]=0;
+        check_loaded(0x0a03,APOLLO_OV2_PINNED_ADDRESS,120,8);
+        check_loaded(0x0a04,APOLLO_OV2_TASK_ADDRESS,150,8);
+        assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_PINNED_TASK)==0xe000u &&
+               apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_PINNED_TASK)==0x1ffau);
+        value=41; assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_OK && value==42);
+        check_loaded(0x0a04,APOLLO_OV2_TASK_ADDRESS,150,8); guards(); pinned_loaded=0;
+        boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a04,0);
+        boot(0); reu[256u+0x0a04u*16u+10u]=5;               /* no slot class 5 */
+        assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
+    }
 
     printf("overlay v2: %u invocations, %u DMA transfers, all checks passed\n",invocations,dmas);
     free(reu); free(pristine);

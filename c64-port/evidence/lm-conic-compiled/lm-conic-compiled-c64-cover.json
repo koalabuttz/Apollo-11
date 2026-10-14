@@ -2,9 +2,9 @@
  "milestone": "lm-conic-compiled",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_conic_compiled.c": "1b16874b9249cb39d30f9089c8531bd1529bbb600e589c262f7a204f93ff24ca",
-  "src/lm_conic_checkctr.c": "5d6b6c966e94b04ac6326ce3bfbf2c0b011d8c8e6c0a58dfe44d8a41aaf12af9",
-  "src/lm_interp_orders.c": "3e01539e4314e13e98f4407a24e23782f7b4acdaf484a48bf607375a6fa3fcdd",
+  "src/lm_conic_compiled.c": "d6eb9231857c3b2d3c7b8c1da2e398a96a815d83a44be3ef78fac22678ae6677",
+  "src/lm_conic_checkctr.c": "d728e38601b02031680bfaf5a4405ac5d6894b6b51fe31fc802d7a7e9057d1ab",
+  "src/lm_interp_orders.c": "e2996e140562d04d289224de90ada55f9fc328bb11bf899394619b3c27f5a71a",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
   "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
@@ -13,7 +13,7 @@
   "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "8929d9a08267aa85d2dff2635a3a78a54bb9fdc6544815fb301d66f8084ee613",
+  "tests/interp_case.c": "a5bf4f4bdda9311dd537d88fbfb1c0d56521ee1ea516fc1f5430c7722ac62153",
   "tests/lm_conic_compiled_target.c": "1e30b9755868f76b35eef7fd265a9644eef1ed11da0138e1bbd5dc007fdda9eb"
  },
  "host_cases": 29120,
@@ -542,8 +542,8 @@
   28992,
   29056
  ],
- "host_branch_arcs": 3067,
- "c64_branch_arcs": 3067,
+ "host_branch_arcs": 3072,
+ "c64_branch_arcs": 3072,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -582,16 +582,24 @@
    2394
   ],
   "src/lm_interp_orders.c": [
-   355,
-   355
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
+   356,
+   356
   ],
   "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
    49,
    49
   ],
   "tests/interp_case.c": [
-   32,
-   32
+   36,
+   36
   ],
   "tests/lm_conic_compiled_target.c": [
    0,

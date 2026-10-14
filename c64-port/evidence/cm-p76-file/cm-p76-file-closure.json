@@ -1,0 +1,660 @@
+{
+  "milestone": "cm-p76-file",
+  "tool": "tools/interp_executed_closure.py",
+  "source_map_sha256": "578bd8b0bb12b3348a1070073c3afa0be3f1c90d1d063120df0739b58e85a480",
+  "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
+  "files": {
+    "Comanche055/P76.agc": {
+      "words": 96,
+      "data": 8,
+      "instructions": 88,
+      "executed": 22,
+      "interpreted": 66,
+      "unreached": 0,
+      "map": [
+        {
+          "address": "13,2071",
+          "source": "P76 TC UPFLAG",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2072",
+          "source": "ADRES TRACKFLG",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2073",
+          "source": "CAF V06N84",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2074",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2075",
+          "source": "CADR GOFLASH",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2076",
+          "source": "TCF ENDP76",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2077",
+          "source": "TC +2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2100",
+          "source": "TC -5",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2101",
+          "source": "CAF V06N84     +1",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2102",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2103",
+          "source": "CADR GOFLASH",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2104",
+          "source": "TCF ENDP76",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2105",
+          "source": "TC +2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2106",
+          "source": "TC -5",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2107",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2110",
+          "source": "DLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2111",
+          "source": "TIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2112",
+          "source": "STCALL TDEC1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2113",
+          "source": "OTHPREC",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2114",
+          "source": "COMPMAT VLOAD UNIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2115",
+          "source": "RATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2116",
+          "source": "VCOMP",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2117",
+          "source": "STORE 24D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2120",
+          "source": "VXV UNIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2121",
+          "source": "VATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2122",
+          "source": "STORE 18D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2123",
+          "source": "VXV UNIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2124",
+          "source": "24D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2125",
+          "source": "STOVL 12D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2126",
+          "source": "DELVOV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2127",
+          "source": "VXM VSL1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2130",
+          "source": "12D",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2131",
+          "source": "VAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2132",
+          "source": "VATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2133",
+          "source": "STORE 6",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2134",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2135",
+          "source": "INTSTALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2136",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2137",
+          "source": "P76SUB1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2140",
+          "source": "VLOAD VSR*",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2141",
+          "source": "6",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2142",
+          "source": "0,2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2143",
+          "source": "STOVL VCV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2144",
+          "source": "RATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2145",
+          "source": "VSR*",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2146",
+          "source": "0,2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2147",
+          "source": "STODL RCV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2150",
+          "source": "TIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2151",
+          "source": "STORE TET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2152",
+          "source": "CLEAR DLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2153",
+          "source": "INTYPFLG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2154",
+          "source": "TETTHIS",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2155",
+          "source": "INTOTHIS STCALL TDEC1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2156",
+          "source": "INTEGRVS",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2157",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2160",
+          "source": "INTSTALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2161",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2162",
+          "source": "P76SUB1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2163",
+          "source": "VLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2164",
+          "source": "RATT1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2165",
+          "source": "STORE RRECT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2166",
+          "source": "STODL RCV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2167",
+          "source": "TAT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2170",
+          "source": "STOVL TET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2171",
+          "source": "VATT1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2172",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2173",
+          "source": "MINIRECT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2174",
+          "source": "EXIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2175",
+          "source": "TC PHASCHNG",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2176",
+          "source": "OCT 04024",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2177",
+          "source": "TC UPFLAG",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2200",
+          "source": "ADRES REINTFLG",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2201",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2202",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2203",
+          "source": "ATOPOTH",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2204",
+          "source": "SSP EXIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2205",
+          "source": "QPRET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2206",
+          "source": "OUT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2207",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2210",
+          "source": "CADR INTWAKE1",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2211",
+          "source": "OUT EXIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2212",
+          "source": "ENDP76 CAF ZERO",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2213",
+          "source": "TS MARKCTR",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2214",
+          "source": "TS VHFCNT",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2215",
+          "source": "CAF NEGONE",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2216",
+          "source": "TS MRKBUF2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2217",
+          "source": "TCF GOTOPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "13,2220",
+          "source": "V06N84 NV 0684",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2221",
+          "source": "NV 0633",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "13,2222",
+          "source": "P76SUB1 CLEAR SLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2223",
+          "source": "MOONFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2224",
+          "source": "X2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2225",
+          "source": "BHIZ SET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2226",
+          "source": "+2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2227",
+          "source": "MOONFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "13,2230",
+          "source": "RVQ",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        }
+      ]
+    }
+  }
+}

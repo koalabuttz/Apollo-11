@@ -23,6 +23,7 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {185u, 0xf6102c35u},
     {233u, 0x1b8d75e8u},
     {234u, 0x720ed06fu},
+    {245u, 0xab697afau},
     {259u, 0xbe91c95du},
     {292u, 0x3c55685eu},
     {348u, 0x867df06cu},

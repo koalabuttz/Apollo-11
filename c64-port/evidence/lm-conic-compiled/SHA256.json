@@ -4,23 +4,23 @@
   "release": "evidence-lm-conic-compiled",
   "files": {
     "lm-conic-compiled-c64-cover.json": {
-      "sha256": "6adecc0b3212baa2729b882c82ec69abd813dfdaff933a0f04ca2e16c2405c0b",
-      "bytes": 6969,
+      "sha256": "88119a42842a3f752de21cdcbaa7d9053e1593580a65d1f04636f9bdfcc3dddb",
+      "bytes": 7107,
       "store": "tree"
     },
     "lm-conic-compiled-differential.log": {
-      "sha256": "7c12e1eb65e04556b3c99d81556e64cd4e03486d76aba1620b5b99d2771ad7b2",
-      "bytes": 20571,
+      "sha256": "3d3c4eb19266090ebac31ad326de1b7c322accdf27e6d286379cc43123c3357a",
+      "bytes": 20524,
       "store": "release"
     },
     "lm-conic-compiled-host.log": {
-      "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25",
-      "bytes": 1070,
+      "sha256": "6b6025d1f3febd0c34f3ed62c1a607a3af423dadf6c8c9710e4ee097f93b0de5",
+      "bytes": 634,
       "store": "release"
     },
     "lm-conic-compiled-proof.json": {
-      "sha256": "9299013c5621e6cff243e35ff940bec465cccb964dcfb849242674ae73376c0a",
-      "bytes": 35897,
+      "sha256": "91c7298311061dc7f17d4afbef439336b18bd54082c3643117aa95a3fe7e102a",
+      "bytes": 42817,
       "store": "tree"
     },
     "lm-conic-compiled-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "lm-conic-compiled-vice.log": {
-      "sha256": "1a0e86d5ef42ea7a938a3a1ba92745ca94cd39c410809992e8c79c94e95a34e6",
-      "bytes": 4757,
+      "sha256": "56fa96e5bd5a6d60977f6586dfcbe35ab213356d117c02e40b0eb2756f350291",
+      "bytes": 5740,
       "store": "release"
     }
   }

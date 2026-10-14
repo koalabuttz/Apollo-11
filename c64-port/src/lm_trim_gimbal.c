@@ -181,14 +181,14 @@ scaldone: /* EXTEND; QXCH FUNCTION +1; EXTEND; MP BIT14; TS HALFARG;
  return 0;
 }
 /* GTS .. GOCLOSE. */
-static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){lm_flight_io *io=v;uint8_t c;int qr,k;
+static enum exec_status gts(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;p66_bias_io *io=v;uint8_t c;int qr,k;
  static const agc_word closeadr[2]={03236u,036106u}; /* 2CADR CLOSEOUT */
  static const agc_word limits[3]={037777u,057777u,040000u}; /* LIMITS -1, 0, +1 */
  static const agc_word gmblbita[4]={026501u,01400u,011276u,06000u}; /* GMBLBITA -1 (ROOTHALF), GMBLBITA, +1 (OCT11276), +2 (GMBLBITB) */
  agc_word saved[GTS_CELLS],chan12;unsigned i;
  if(!entry(s,io,LM_TG_FB21))return EXEC_OUT_OF_SCOPE;
  for(i=0;i<GTS_CELLS;++i)saved[i]=W[ai_ea(s,gts_cells[i])];
- chan12=io->chan12;
+ chan12=lmf_hw->channel12;
  /* GTS: CAF NEGONE; TS COTROLER; CAF FOUR; TS SKIPU; TS SKIPV; CAF TWO;
   * TS INGTS; TS QGIMTIMR; TS RGIMTIMR; CA SR; AD A; TS SAVESR;
   * GTSGO+ON CAF TWO; TCF GOQTRIMG +1. */
@@ -324,7 +324,7 @@ posdrive1: /* TS L; INDEX QRCNTR; XCH NEGUQ; EXTEND; MP L; CCS L; TCF LOUPE;
   if(c==2u){
    /* REVERSAL: INDEX QRCNTR; TS QACCDOT; INDEX QRCNTR; CS GMBLBITA;
     * EXTEND; WAND CHAN12. */
-   (void)ai_ts(s,at(QACCDOT,qr));ai_csf(s,gmblbita[qr+1]);wand(s,&io->chan12);
+   (void)ai_ts(s,at(QACCDOT,qr));ai_csf(s,gmblbita[qr+1]);wand(s,&lmf_hw->channel12);
   }
   if(c!=0u){
    /* ZEROLOUP: CS RCSFLAGS; MASK CALLGMBL; ADS RCSFLAGS. */
@@ -342,14 +342,14 @@ posdrive1: /* TS L; INDEX QRCNTR; XCH NEGUQ; EXTEND; MP L; CCS L; TCF LOUPE;
  return EXEC_OK;
 refuse:
  for(i=0;i<GTS_CELLS;++i)W[ai_ea(s,gts_cells[i])]=saved[i];
- io->chan12=chan12;return EXEC_OUT_OF_SCOPE;
+ lmf_hw->channel12=chan12;return EXEC_OUT_OF_SCOPE;
 }
 /* ACDT+C12: CS NEGUQ; EXTEND; MP ACCDOTQ; LXCH QACCDOT; CS NEGUR; EXTEND;
  * MP ACCDOTR; LXCH RACCDOT; CCS NEGUQ; CAF BIT10; TCF +2; CAF BIT9;
  * TS CHNL12; CCS NEGUR; CAF BIT12; TCF +2; CAF BIT11; ADS CHNL12; CS BGIM;
  * EXTEND; RAND CHAN12; AD CHNL12; EXTEND; WRITE CHAN12; CS CALLGMBL;
  * MASK RCSFLAGS; TS RCSFLAGS; TC Q. */
-static enum exec_status acdtc12(const agc_native_program *p,agc_image *s,void *v){lm_flight_io *io=v;uint8_t c;(void)p;
+static enum exec_status acdtc12(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;p66_bias_io *io=v;uint8_t c;(void)p;
  if(!entry(s,io,LM_TG_FB16)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  ai_cs(s,NEGUQ);ai_mp(s,ACCDOTQ);ai_lxch(s,QACCDOT);ai_cs(s,NEGUR);ai_mp(s,ACCDOTR);ai_lxch(s,RACCDOT);
  c=ai_ccs(s,NEGUQ);LM_TG_PATH(65u+c);
@@ -360,13 +360,13 @@ static enum exec_status acdtc12(const agc_native_program *p,agc_image *s,void *v
  if(c==0u)ai_caf(s,BIT12);
  if(c==2u)ai_caf(s,BIT11);
  ai_ads(s,CHNL12);
- ai_csf(s,BGIM);rand(s,io->chan12);ai_ad(s,CHNL12);wr(s,&io->chan12);
+ ai_csf(s,BGIM);rand(s,lmf_hw->channel12);ai_ad(s,CHNL12);wr(s,&lmf_hw->channel12);
  ai_csf(s,CALLGMBL);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);
  W[5]=W[QREG];ai_tc(s,QREG+1u); /* TC Q: Z = Q, Q = 3 */
  return EXEC_OK;
 }
 /* TIMEGMBL .. TC IBNKCALL; CADR ACDT+C12. */
-static enum exec_status timegmbl(const agc_native_program *p,agc_image *s,void *io){uint8_t c;int k;(void)p;
+static enum exec_status timegmbl(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;uint8_t c;int k;(void)p;
  if(!entry(s,io,LM_TG_FB21))return EXEC_OUT_OF_SCOPE;
  /* TIMEGMBL: CAF ONE; TS ALLOWGTS; CAF TWO; LXCH Q; LXCH RUPTREG2;
   * TCF +2. */
@@ -417,7 +417,7 @@ doneyet: /* CCS QRNDXER; TCF TIMQGMBL; DXCH RUPTREG3; DXCH ITEMP2;
  return EXEC_OK;
 }
 /* 21,3435 (IBNKCALL's return): DXCH ITEMP2; DXCH RUPTREG3; TC RUPTREG2. */
-static enum exec_status timeret(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status timeret(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_TG_FB21)||!tc_word(W[RUPTREG2]))return EXEC_OUT_OF_SCOPE;
  ai_dxch(s,ITEMP2);ai_dxch(s,RUPTREG3);
  W[5]=W[RUPTREG2];ai_tc(s,RUPTREG2+1u); /* the word in RUPTREG2 runs as its TC */

@@ -29,7 +29,7 @@
   "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  },
  "oracle": "yaAGC (agc_engine) running the original rope of each mission",
- "oracle_sha256": "51b2a632155d43c19bf9e96c26378187979482d85a9986d37f1ebdc2a555b272",
+ "oracle_sha256": "69e1b9d1240a6daf32f183427bd161253691ecc6631d67895aad77e2bcb50b7f",
  "dependencies": {
   "src/lm_exec_jobs.c": "51b394b672f7c55ecad20507af07ad56b733dea18582ea5a63d7a46b22769f72",
   "src/lm_exec_tasks.c": "11eb9b821d82bef55a54db08f61443a7257fbbac0450e0ffa16e61bcafca2d42",
@@ -49,7 +49,7 @@
   "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
   "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
   "src/p66_native.c": "bbcb6cc6e4cb1c6bd5e10efa888eb38b762255975bd522bb4146bdf968c0447a",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_admission_image_cases.c": "862178bd4da47252c9a0f885961f9deb4a440b68128eb2316801b861d8f72756",
@@ -81,7 +81,7 @@
   "tests/service_transfer_cases.c": "84f83fc9017dc5878644f0bd604fd69bd381be7f7e5a2708fc12adc21ca49d36",
   "src/service_transfer.c": "693f695f966efbe5ba1bbc0e570423bd6fe0e84be35c6f1a021152f8c3a1b12b",
   "src/service_routines.c": "f9af3a8180484a7e23f863ecedabe6a416b31420ac9095a66d6c405a78ff0bfb",
-  "tests/waitlist_entries_cases.c": "1c10fa39ba672e3852d4c79e90ecbb35c0a78403f9d9e935843230197d4b8b8c",
+  "tests/waitlist_entries_cases.c": "20126e92e7da3a1c0271d7e9962d74e08f06a7f3e56a5549d7e9bea9622d2d4e",
   "include/agc_transfer.h": "2b268250f6b0a454f8ae8a3083d65eb915b292233fa144633c31405416bd646f",
   "include/lm_exec_routines.h": "5eb5020b4cc645164f0e75f6740432402efc2cd641d75ca381b0fc05aa4de4a8",
   "include/cm_exec_routines.h": "3109fec2df17ef77ceaf34bea0c734803835e5a341b5c86738c377e14851c5df",
@@ -89,5 +89,13 @@
   "include/service_transfer.h": "1b5f86b679c41780cffb3b99380d1c5946c787693fa91ddd91b2ac2eb524d90e",
   "tests/waitlist_entries_cases.h": "411f131b8530992bdec2d3275ff676ac836320568c162b725fe69a82206b4a0e"
  },
- "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears"
+ "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears",
+ "taskover_superbank": {
+  "oracle": "tools/taskover_superbank_reference.c",
+  "result": [
+   "Luminary099: 488 TASKOVER RESUME cases from yaAGC's own T3RUPT, 364 where the word under the task's superbank differs",
+   "Comanche055: 493 TASKOVER RESUME cases from yaAGC's own T3RUPT, 366 where the word under the task's superbank differs"
+  ],
+  "check": "yaAGC takes T3RUPT in banks 030-033 under one superbank and fills ZRUPT and BRUPT from the rope; BANKRUPT keeps that superbank, channel 7 holds another; native TASKOVER with the rope as fixed_data resumes and equals yaAGC (SUPERBNK, interrupt enable, 2048 erasable words)"
+ }
 }

@@ -5,8 +5,9 @@
 #include "lm_flight_io.h"
 /* Luminary099 Q_R-AXIS_RCS_AUTOPILOT.agc, all of it (bank 17, 02072-03251,
  * and MAKERUPT at 07754-07755), as native routines of the control-transfer
- * ABI; io is lm_flight_io (channels 4, 5, 13 and 31, the interrupt-enable
- * bit and the interrupt-in-progress bit).
+ * ABI; io is p66_bias_io (the interrupt-enable bit); channels 4, 5, 13 and
+ * 31 and the interrupt-in-progress bit are the program's agc_hardware
+ * (include/lm_flight_io.h).
  *
  *   CALLQERR  17,2072  from P-AXIS: Q,R errors (QERRCALC), the control
  *                      system choice (GTS, TRYGTS, RCS), X-translation, the
@@ -38,6 +39,8 @@
  * entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP
  * above 5 (they index the jet tables; the file and TJETLAW store these). */
 extern const agc_routine_table lm_q_r_axis_routines;
+/* The entries an attitude-hold or jet-firing DAP pass reaches (the pinned DAP set). */
+extern const agc_routine_table lm_q_r_axis_hot_routines;
 /* The inline operands read through Q by the file's TC ALARM calls (OCT
  * 02002 in X-translation, OCT 02004 in SELCTSUB), as compiled site
  * operands. */

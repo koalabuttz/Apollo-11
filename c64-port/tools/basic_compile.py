@@ -134,16 +134,22 @@ class Basic:
         if self.lm_channels:
             self.channels = {}
         elif self.channels == 'all':
-            # Every channel of the CM io record (include/cm_native_image.h).
-            # (5, 6 and 30-33 in cm_channels, beside it.)
+            # Every channel of the CM io record (include/cm_native_image.h),
+            # and 5, 6 and 30-33 in the program's agc_hardware (set by the
+            # wrappers, which refuse a program without one).
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
-            self.channels.update({k: 'cm_channels.channel%02o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+            self.channels.update({k: 'agc_channels_hw->channel%o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+            self.cp.uses_hw = True
+            # SUPERBNK (7) too, only in files that name it (EXTENDED_VERBS'
+            # GOLOADLV), so no other file's helpers change.
+            self.cm_superbank = True
         self.work = []
         self.words = set()       # every word compiled as basic code
         self.operands = set()    # inline operand words of outside TCs
         self.data_landings = set()
         self.erasable_refs = set()   # erasable addresses the basic code names
         self.channels_used = set()   # I/O channels its channel orders name
+        self.inputs_used = set()     # latched input channels it reads (AGC_CHANNEL)
 
     # ---- addresses -------------------------------------------------------
     def bank(self, phys):
@@ -204,6 +210,12 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
+            if not self.in_file(k[0]) and k[0] in self.cp.cut_words and not k[1]:
+                # Spec 'inside': flow runs on into a segment the spec leaves
+                # to other code (INTERPRETER's core); the routine stops there.
+                self.nodes[k] = ['/* %s: outside the spec\'s segments */' % self.where(k[0]),
+                                 'W[5]=0%04ou;return EXEC_OK;' % self.logical(k[0])]
+                continue
             if not self.in_file(k[0]):
                 # Spec 'fall_out': a TS overflow skip or CCS exit past the
                 # file's last word, which no admitted state takes (the
@@ -249,15 +261,20 @@ class Basic:
         """TC to an outside routine: the return is the word after the
         inline operands (constant lines after the TC)."""
         ret = phys + 1
+        inline = []
         while True:
             ln = self.L.by_phys.get(ret)
             if ln is None or ln.op not in self.CONST_OPS:
                 break
             self.operands.update(range(ret, ret + len(ln.words)))
+            inline.append(ln.operand.split()[0] if ln.operand.split() else '')
             ret += len(ln.words)
         name = self.L.label_at(self.phys_of(target_logical, phys)) or ('%04o' % target_logical)
         self.cp.externals[self.phys_of(target_logical, phys)] = name
-        if self.in_file(ret) and name not in self.NORETURN + tuple(self.spec.get('noreturn', ())):
+        # Spec 'noreturn' also names routines reached through BANKCALL's
+        # CADR (INTWAKE1 ends the job; GOBAC's RVQ returns interpretively).
+        noreturn = self.NORETURN + tuple(self.spec.get('noreturn', ()))
+        if self.in_file(ret) and name not in noreturn and not (inline and inline[0] in noreturn):
             self.cp.add_start(ret, 'b', 'return from ' + name)
         return name
 
@@ -360,9 +377,17 @@ class Basic:
             if words is not None:
                 st.extend(self.indexed_words(a, phys, nxt, ext, clean, words))
                 return st
-            st.append(self.index_value(a, phys))
+            if self.spec.get('short_index'):
+                self.index_word = self.index_expr(a, phys)
+            else:
+                st.append(self.index_value(a, phys))
             st.extend(self.indexed(nxt, ext, clean))
             return st
+        if op in ('CA', 'CS', 'AD', 'SU', 'MASK', 'MP', 'DV', 'DCA', 'DCS') and a is not None and \
+                (a == 5 or (op in DOUBLE and a == 6)):
+            # A read of Z (FLESHPOT's DCA Z, AD FOUR, DXCH LOC): Z holds the
+            # address of the next word, as the hardware has it then.
+            st.append('W[5]=0%o;' % ((self.logical(phys) + 1) & 0o7777))
         st.extend(self.order(op, a, lim, phys, False, ext, clean))
         return st
 
@@ -408,6 +433,20 @@ class Basic:
         st.append('return EXEC_INVALID_ACTION;')
         return st
 
+    def index_expr(self, a, here):
+        """Spec 'short_index': the word INDEX adds, for ixe()."""
+        if a < 3:
+            return 'agc_correct(W[%d])' % a
+        self.index_value(a, here)
+        return 'ai_word(s,0%o)' % a
+
+    def index_sum(self, a, lim):
+        """e = a + the INDEX value, refused outside 0..lim."""
+        if self.spec.get('short_index'):
+            w, self.index_word = self.index_word, None
+            return 'e=ixe(%s,0%o,0%o);if(e<0)return EXEC_INVALID_ACTION;' % (w, a, lim)
+        return 'e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim)
+
     def index_value(self, a, here):
         if a == 0:
             return 'ix=areg(s);'
@@ -431,6 +470,19 @@ class Basic:
         if a is not None and 0o10 <= a < 0o2000 and op not in CHANNEL_OPS:
             self.erasable_refs.update(range(a, a + 3))
         st = ['/* %s %s(indexed) %s */' % (self.where(phys), 'EXTENDED ' if ext else '', self.text(phys))]
+        if op == 'INDEX' and a is not None and 0o10 <= a < 0o2000:
+            # INDEX of INDEX (AX*SR*T's INDEX BUF, INDEX DEX1, DCA VBUF): the
+            # second INDEX reads the erasable word at its address plus ix,
+            # and that word indexes the order after it.
+            if self.spec.get('short_index'):
+                st.append(self.index_sum(a, 0o1777))
+                st.append('if(e<010||(e>=020&&e<=023))return EXEC_INVALID_ACTION;')
+                self.index_word = 'ai_word(s,(unsigned)e)'
+            else:
+                st.append('e=(long)0%o+ix;if(e<010||e>01777||(e>=020&&e<=023))return EXEC_INVALID_ACTION;' % a)
+                st.append('ix=agc_to_int(ai_word(s,(unsigned)e));')
+            st.extend(self.indexed(phys + 1, ext, clean))
+            return st
         if a is None or op in ('EXTEND', 'INDEX', 'RESUME') or op in CHANNEL_OPS:
             raise BasicError('INDEX of %s at %s' % (op, self.where(phys)))
         if op in ('TC', 'TCF') and phys in self.index_targets:
@@ -443,10 +495,10 @@ class Basic:
         if op == 'CCS' and not ext:
             # Opcode 1: CCS on an erasable sum, TCF on a fixed one (INDEX A,
             # TCF 0 through a table of GENADRs).
-            st.append('e=(long)0%o+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;' % a)
+            st.append(self.index_sum(a, 0o7777))
             st.append('if(e>=02000){W[5]=(agc_word)e;goto dispatch;}')
         else:
-            st.append('e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim))
+            st.append(self.index_sum(a, lim))
         st.extend(self.order(op, a, lim, phys, True, False, clean))
         return st
 
@@ -458,6 +510,14 @@ class Basic:
         here = phys
         out = self.clean_after(op, a, dyn, clean)
         cont = lambda: 'goto %s;' % self.add(nxt, False, out)
+        if op == 'RESUME' and not dyn:
+            # RESUME (INDEX 17) outside an interrupt: the next instruction is
+            # BRUPT's, run in place (yaAGC's substitute instruction); here a
+            # TCF to fixed memory, as CONTABRT stores (any other word is
+            # refused).
+            st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
+                      'W[5]=(agc_word)(b&07777u);}goto dispatch;')
+            return st
         if op in ('TC', 'TCF'):
             call = op == 'TC'
             if dyn:
@@ -573,6 +633,7 @@ class Basic:
             # An input channel the caller latches (spec 'channel_inputs',
             # include/agc_input_channels.h), as tools/interp_compile.py reads it.
             v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            self.inputs_used.add(a)
             st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
@@ -589,6 +650,8 @@ class Basic:
             st.append(cont())
             return st
         if op in CHANNEL_OPS:
+            if a == 0o7 and getattr(self, 'cm_superbank', False):
+                self.channels[0o7] = 'superbank'
             if a not in self.channels:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
             if op == 'EDRUPT':
@@ -661,7 +724,11 @@ class Basic:
                 st.append('ai_%s(s,0%05ou); /* %s */' % (lo_name, self.L.word(fp), sym))
             st.append(cont())
             return st
-        if writes and a in (4, 5, 6) or (op == 'DXCH' and a in (4, 5, 6, 7)):
+        # Spec 'bb_writes': words that may write BBANK (INTRSM's LXCH BBANK,
+        # which TCFs to fixed-fixed code next, so no banked transfer follows
+        # under the new FB).
+        bb_ok = op in ('LXCH', 'TS', 'XCH') and a == 6 and self.where(here) in self.spec.get('bb_writes', ())
+        if writes and a in (4, 5, 6) and not bb_ok or (op == 'DXCH' and a in (4, 5, 6, 7)):
             raise BasicError('%s on %o at %s' % (op, a, self.where(here)))
         st.append(self.operand_stmt(op, a, here, False))
         st.append(cont())
@@ -711,8 +778,22 @@ class Basic:
             return [2048 + w - 0o4000]
         return [bk * 1024 + w - 0o2000 for bk in set(q // 1024 for q in self.cp.words)]
 
+    def index_locals(self):
+        """Spec 'short_index': 16-bit index locals (every e and ix the
+        orders form fits: a 12-bit address plus a 15-bit signed index, or a
+        15-bit register word), which the 6502 handles in a third of the code."""
+        return ' %s ix=0,e=0;uint16_t p;' % ('int' if self.spec.get('short_index') else 'long')
+
     def emit(self, sym):
         c = []
+        if self.spec.get('short_index'):
+            c.append('/* INDEX: address b plus the signed index word k, or -1 outside 0..lim')
+            c.append(' * (one out-of-line copy for the file\'s indexed orders). */')
+            c.append('#ifdef __GNUC__')
+            c.append('__attribute__((noinline))')
+            c.append('#endif')
+            c.append('static MAYBE_UNUSED int ixe(agc_word k,unsigned b,unsigned lim){')
+            c.append(' int e=(int)b+agc_to_int(k);return e<0||e>(int)lim?-1:e;}')
         c.append('/* Signed index values: A, L and Q are 16-bit registers. */')
         c.append('static MAYBE_UNUSED long areg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[0]));}')
         c.append('static MAYBE_UNUSED long lreg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[1]));}')
@@ -741,11 +822,33 @@ class Basic:
         c.append(' * tables above: 0 outside them. */')
         c.append('static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){')
         c.append(' unsigned p;(void)s;')
-        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo)))
+        fb = self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo))
+        # Switched tables all in one bank: e 02000-03777 is that bank (a file
+        # in two banks, such as Luminary's POWERED_FLIGHT_SUBROUTINES, reads
+        # INDEXI from bank 23 while its lowest entry is in bank 10).
+        tb = {self.bank(lo) for lo, hi, lab, off in self.fixed_tables if self.bank(lo) not in (2, 3)}
+        if len(tb) == 1:
+            fb = tb.pop()
+        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % fb)
         for lo, hi, lab, off in self.fixed_tables:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
         c.append('}')
+        if self.spec.get('fixed_rope'):
+            # Spec 'fixed_rope' (INTERPRETER's subroutines): an INDEX read of
+            # fixed memory reads the caller's word from the mission's rope
+            # image under FB and SUPERBNK, as the AGC does (DMP's ADRES after
+            # its TC, POLY's inline coefficients). The rope is the program's
+            # data here, as it is for the interpreter core that runs the
+            # same file (include/rope_image.h).
+            c.append('#include "rope_image.h"')
+            c.append('static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const %s *io,unsigned e,agc_word *k){' % self.io)
+            c.append(' unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;')
+            c.append(' if(e>=04000u)p=(uint16_t)(2048u+e-04000u);')
+            c.append(' else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
+            c.append(' return apollo_rope_read(%du,p,k);' % (0 if self.io == 'p66_bias_io' else 1))
+            c.append('}')
+            c.append('#define fx(s,e,k) fxr(s,io,e,k)')
         # (msu: tools/interp_compile.py's helper.)
         c.append('/* Host coverage builds (tools/interp_routine_differential.py --freeze)')
         c.append(' * count each label a case reaches, to pick C64 cases that take every')
@@ -764,17 +867,24 @@ class Basic:
             return c + self.emit_parts(sym, order)
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
-        c.append(' long ix=0,e=0;uint16_t p;')
+        c.append(self.index_locals())
         c.append(' (void)ix;(void)e;')
         c.append(' switch(at){')
         for p in sorted(self.entries):
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
+        # The spec's idle points (a word that spins until hardware moves,
+        # such as VERB69's TC VERB69): reached again, the run idles there,
+        # as the oracle stops there; an entry there runs its word once.
+        idle = getattr(self.cp, 'idle', set())
+        spin = {self.label(*k): '{W[5]=0%04o;return EXEC_IDLE;}' % self.logical(k[0]) for k in self.nodes if k[0] in idle}
         for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
             c.append(' IRC_COVER(%du);' % n)
             body = self.nodes[k]
+            if spin:
+                body = [re.sub(r'goto ([A-Za-z][A-Za-z0-9]*);', lambda m: spin.get(m.group(1), m.group(0)), x) for x in body]
             twin = (k[0], k[1], False)
             if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in body]:
                 # The same code as the copy reached with A unknown.
@@ -799,7 +909,9 @@ class Basic:
         c.append(' p=agc_fixed_physical(W[5],W[4],io->superbank);')
         c.append(' switch(p){')
         for p in sorted(self.dispatch):
-            if (p, False, False) in self.nodes:
+            if p in idle:
+                c.append(' case %uu:W[5]=0%04o;return EXEC_IDLE;' % (p, self.logical(p)))
+            elif (p, False, False) in self.nodes:
                 c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OK;')
         c.append(' }')
@@ -888,7 +1000,7 @@ class Basic:
             into = sorted(p for p in self.entries if self.part_of(p) == j and (p, False, False) in self.nodes)
             fn = ['/* Basic words, part %d of %d. */' % (j + 1, nparts),
                   'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,%s *io,uint16_t at){' % (j, self.io),
-                  ' long ix=0,e=0;uint16_t p;', ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
+                  self.index_locals(), ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
             fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in into]
             fn += [' default:return EXEC_OUT_OF_SCOPE;', ' }']
             fn += body
@@ -913,11 +1025,14 @@ class Basic:
         bank's function."""
         S = sym.upper()
         banks = sorted(set(self.node_banks))
-        c = ['#ifndef %s_BANKS' % S, '#define %s_BANKS 0xffffffffffffffffull' % S, '#endif',
-             '#define %s_HAS(b) ((%s_BANKS >> (b)) & 1u)' % (S, S)]
         lab = {}
         for k in order:
             lab[self.label(*k)] = k
+        c = self.flight_parts(S, lab) if self.spec.get('flight_parts') else []
+        cut_banks = {x // 1024 for x in getattr(self, 'flight_cuts', [])
+                     if any(k[0] // 1024 == x // 1024 and k[0] < x for k in order)}
+        c += ['#ifndef %s_BANKS' % S, '#define %s_BANKS 0xffffffffffffffffull' % S, '#endif',
+              '#define %s_HAS(b) ((%s_BANKS >> (b)) & 1u)' % (S, S)]
         # Words another bank's code may reach (computed transfers) and
         # the entries, per bank.
         into = {b: set() for b in banks}
@@ -934,7 +1049,11 @@ class Basic:
             body = []
             for n, k in mine:
                 body.append('%s:' % self.label(*k))
-                body.append(' IRC_COVER(%du);' % n)
+                if b in cut_banks:
+                    # (A flight part build leaves at a word of another part.)
+                    body.append(' %s_FP(%uu) IRC_COVER(%du);' % (S, k[0], n))
+                else:
+                    body.append(' IRC_COVER(%du);' % n)
                 twin = (k[0], k[1], False)
                 if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in self.nodes[k]]:
                     body.append(' goto %s;' % self.label(*twin))
@@ -954,11 +1073,25 @@ class Basic:
             c.append('#if %s_HAS(0%o)' % (S, b))
             c.append('/* The basic words of bank %02o. */' % b)
             c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at){' % (b, self.io))
-            c.append(' long ix=0,e=0;uint16_t p;')
+            c.append(self.index_locals())
             c.append(' (void)ix;(void)e;(void)p;')
+            if b in cut_banks:
+                c.append(' %s_FP(at)' % S)
             c.append(' switch(at){')
             for q in sorted(into[b]):
                 c.append(' case %uu:goto %s;' % (q, self.label(q)))
+            extra = [q for q in getattr(self, 'flight_extra', []) if q // 1024 == b and q not in into[b]]
+            if extra:
+                c.append('#ifdef %s_FLIGHT_PART' % S)
+                for q in extra:
+                    if (q, False, False) in self.nodes:
+                        c.append(' case %uu:goto %s;' % (q, self.label(q)))
+                    else:
+                        # (Only reached with A free of overflow: the part
+                        # that stopped there.)
+                        c.append(' case %uu:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto %s;' % (
+                            q, self.label(q, False, True)))
+                c.append('#endif')
             c.append(' default:return EXEC_OUT_OF_SCOPE;')
             c.append(' }')
             c.extend(body)
@@ -987,15 +1120,70 @@ class Basic:
         S = sym.upper()
         out = []
         for b in sorted(set(self.node_banks)):
-            out += ['#if %s_HAS(0%o)' % (S, b), '#define %s_RUN_%o basic_run_%o' % (S, b, b), '#else',
-                    '#define %s_RUN_%o(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)' % (S, b), '#endif']
+            out += ['#if %s_HAS(0%o)' % (S, b), '#define %s_RUN_%o basic_run_%o' % (S, b, b)]
+            if self.spec.get('flight_parts'):
+                out += ['#elif defined(%s_FLIGHT_PART)' % S,
+                        '#define %s_RUN_%o(s,io,at) ((void)(io),%s_leave((s),(at)))' % (S, b, S.lower())]
+            out += ['#else', '#define %s_RUN_%o(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)' % (S, b), '#endif']
         return out
+
+    # ---- flight parts (spec 'flight_parts') -------------------------------
+    # The C64 flight store links a module per part when the file's basic
+    # code does not fit one job slot. 'flight_parts' lists the cuts
+    # (physical addresses, ascending); <SYM>_FLIGHT_PART=j (1-based) builds
+    # part j: the banks it holds (<SYM>_BANKS), the words of a cut bank on
+    # its side of the cut (<SYM>_FP), and a routine table of its keys. A
+    # run that reaches a word of another part sets Z to it and returns
+    # EXEC_OK when the word is a key of some part, so the transfer engine
+    # goes on in that part's module; any other word is refused. Part keys
+    # (flight builds only) are the words a goto across a cut reaches and
+    # every computed-transfer target. Without <SYM>_FLIGHT_PART the file
+    # compiles as before.
+    def flight_parts(self, S, lab):
+        import bisect
+        cuts = sorted(self.spec['flight_parts'])
+        self.flight_cuts = cuts
+        part = lambda p: bisect.bisect_right(cuts, p)
+        extra = set()
+        for k, body in self.nodes.items():
+            for x in body or ():
+                for m in re.finditer(r'goto ([A-Z][0-7]+c?);', x):
+                    t = lab.get(m.group(1))
+                    if t is not None and part(t[0]) != part(k[0]):
+                        if t[1]:
+                            raise BasicError('extended word %s across a flight cut' % self.where(t[0]))
+                        extra.add(t[0])
+        extra |= {p for p in self.dispatch if (p, False, False) in self.nodes}
+        self.flight_extra = sorted(extra - self.entries)
+        if any(p // 1024 in (2, 3) for p in self.entries | extra):
+            raise BasicError('flight parts need every key in a switched bank')
+        words = sorted({k[0] for k in self.nodes})
+        bounds = [0] + cuts + [0o200000]
+        c = ['/* Flight parts (spec \'flight_parts\', docs/FLIGHT-PARTS.md): %s_FLIGHT_PART=j' % S,
+             ' * builds part j of %d for the C64 flight store, the basic words between' % (len(cuts) + 1),
+             ' * its cuts (%s_OUT: the others); a run that reaches another part\'s word stops there' % S,
+             ' * when it is a key (%s_leave), and is refused otherwise. */' % S.lower(),
+             '#ifdef %s_FLIGHT_PART' % S]
+        for j in range(len(cuts) + 1):
+            lo, hi = bounds[j], bounds[j + 1]
+            mask = 0
+            for w in words:
+                if lo <= w < hi:
+                    mask |= 1 << (w // 1024)
+            out = ' || '.join(t for t in ('(at)<%uu' % lo if j else '', '(at)>=%uu' % hi if j < len(cuts) else '') if t)
+            c += ['#%s %s_FLIGHT_PART==%d' % ('if' if j == 0 else 'elif', S, j + 1),
+                  '#define %s_BANKS 0x%xull' % (S, mask), '#define %s_OUT(at) (%s)' % (S, out)]
+        c += ['#else', '#error %s_FLIGHT_PART names no part' % S, '#endif',
+              'static MAYBE_UNUSED enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at);' % S.lower(),
+              '#define %s_FP(at) if(%s_OUT(at)){return %s_leave(s,(at));}' % (S, S, S.lower()),
+              '#else', '#define %s_FP(at)' % S, '#endif']
+        return c
 
     def channel_helpers(self):
         c = ['/* Channel orders on the mission\'s output channels, as yaAGC\'s. */']
         c.append('static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){')
         c.append(' switch(k){%s default:return 0;}' % ''.join(
-            'case 0%o:return &%s;' % (k, v if '.' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
+            'case 0%o:return &%s;' % (k, v if '->' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
         c.append('}')
         c.append('static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}')
         c.append('static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}')
@@ -1005,6 +1193,9 @@ class Basic:
         c.append('static MAYBE_UNUSED void ch_out(cm_native_io *io,unsigned k,agc_word v){')
         c.append(' if(k==013u){if(v&04000u)io->trap31a=1;if(v&010000u)io->trap31b=1;if(v&020000u)io->trap32=1;v&=043777u;}')
         c.append(' if(k==033u)v=(agc_word)(*chan(io,k)|076000u);')
+        if 0o7 in self.channels:
+            # Channel 7 keeps only bits 5-7 (superbank select).
+            c.append(' if(k==07u)v&=0160u;')
         c.append(' *chan(io,k)=(agc_word)(v&077777u);')
         c.append('}')
         c.append('static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,cm_native_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}')

@@ -17,6 +17,15 @@ agc_image *afo_s;
 #define Q W[2]
 #define M16 0177777u
 #define AFO_IN static inline __attribute__((always_inline))
+/* In flight builds (RK_FIXED_IMAGE) every helper stays one out-of-line
+ * copy: link-time inlining of the small ones (afo_caf, afo_bzmf, ...) into
+ * each call site made the LM DAP's per-pass set about a fifth larger
+ * (27,326 -> 21,916 bytes) for 2% fewer cycles. Other builds are unchanged. */
+#if RK_FIXED_IMAGE
+#define AFO_NI __attribute__((noinline))
+#else
+#define AFO_NI
+#endif
 
 /* One's complement 16-bit add with end-around carry. */
 AFO_IN agc_register add16(agc_register a,agc_register b){
@@ -33,47 +42,47 @@ AFO_IN agc_register ovf(agc_register v){
 AFO_IN void endi(void){agc_register l=L;L=(agc_register)((l&0137777u)|((l>>1)&040000u));}
 AFO_IN agc_word cell(const afo_cell *p){return (agc_word)(*p&077777u);}
 
-void afo_caf(agc_word k){A=sx(k);endi();}
-void afo_ca(const afo_cell *p){afo_caf(cell(p));}
-void afo_csf(agc_word k){A=sx((agc_word)(~k&077777u));endi();}
-void afo_cs(const afo_cell *p){afo_csf(cell(p));}
-void afo_adf(agc_word k){A=add16(A,sx(k));endi();}
-void afo_ad(const afo_cell *p){afo_adf(cell(p));}
-void afo_suf(agc_word k){A=add16(A,sx((agc_word)(~k&077777u)));endi();}
-void afo_su(const afo_cell *p){afo_suf(cell(p));}
-void afo_maskf(agc_word k){A=sx((agc_word)(oc(A)&k));endi();}
-void afo_mask(const afo_cell *p){afo_maskf(cell(p));}
-uint8_t afo_ts(afo_cell *p){
+AFO_NI void afo_caf(agc_word k){A=sx(k);endi();}
+AFO_NI void afo_ca(const afo_cell *p){afo_caf(cell(p));}
+AFO_NI void afo_csf(agc_word k){A=sx((agc_word)(~k&077777u));endi();}
+AFO_NI void afo_cs(const afo_cell *p){afo_csf(cell(p));}
+AFO_NI void afo_adf(agc_word k){A=add16(A,sx(k));endi();}
+AFO_NI void afo_ad(const afo_cell *p){afo_adf(cell(p));}
+AFO_NI void afo_suf(agc_word k){A=add16(A,sx((agc_word)(~k&077777u)));endi();}
+AFO_NI void afo_su(const afo_cell *p){afo_suf(cell(p));}
+AFO_NI void afo_maskf(agc_word k){A=sx((agc_word)(oc(A)&k));endi();}
+AFO_NI void afo_mask(const afo_cell *p){afo_maskf(cell(p));}
+AFO_NI uint8_t afo_ts(afo_cell *p){
  agc_register acc=A,o=ovf(acc);
  *p=oc(acc);
  if(o)A=o;
  endi();return o!=0u;
 }
-void afo_xch(afo_cell *p){agc_register acc=A;A=sx(cell(p));*p=oc(acc);endi();}
-void afo_lxch(afo_cell *p){agc_register l=L;L=sx(cell(p));*p=oc(l);endi();}
-void afo_qxch(afo_cell *p){agc_register q=Q;Q=sx(cell(p));*p=oc(q);endi();}
-void afo_ads(afo_cell *p){A=add16(A,sx(cell(p)));*p=oc(A);endi();}
-void afo_incr(afo_cell *p){*p=oc(add16(1u,sx(cell(p))));endi();}
-void afo_aug(afo_cell *p){
+AFO_NI void afo_xch(afo_cell *p){agc_register acc=A;A=sx(cell(p));*p=oc(acc);endi();}
+AFO_NI void afo_lxch(afo_cell *p){agc_register l=L;L=sx(cell(p));*p=oc(l);endi();}
+AFO_NI void afo_qxch(afo_cell *p){agc_register q=Q;Q=sx(cell(p));*p=oc(q);endi();}
+AFO_NI void afo_ads(afo_cell *p){A=add16(A,sx(cell(p)));*p=oc(A);endi();}
+AFO_NI void afo_incr(afo_cell *p){*p=oc(add16(1u,sx(cell(p))));endi();}
+AFO_NI void afo_aug(afo_cell *p){
  agc_register v=sx(cell(p));
  *p=oc(add16((v&0100000u)?M16-1u:1u,v));endi();
 }
-void afo_dim(afo_cell *p){
+AFO_NI void afo_dim(afo_cell *p){
  agc_register v=sx(cell(p));
  if(v!=0u&&v!=M16)*p=oc(add16((v&0100000u)?1u:M16-1u,v));
  endi();
 }
-void afo_das(afo_cell *p){
+AFO_NI void afo_das(afo_cell *p){
  agc_register lsw=add16(L,sx(cell(p+1))),msw=add16(A,sx(cell(p)));
  if((lsw&0140000u)==040000u)msw=add16(msw,1u);else if((lsw&0140000u)==0100000u)msw=add16(msw,M16-1u);
  A=ovf(msw);L=0;
  p[1]=oc(lsw);p[0]=oc(msw);
 }
-void afo_dca(const afo_cell *p){L=sx(cell(p+1));A=sx(cell(p));}
-void afo_dcaf(const agc_word k[2]){L=sx(k[1]);A=sx(k[0]);}
-void afo_dcs(const afo_cell *p){L=sx((agc_word)(~cell(p+1)&077777u));A=sx((agc_word)(~cell(p)&077777u));}
-void afo_dcsf(const agc_word k[2]){L=sx((agc_word)(~k[1]&077777u));A=sx((agc_word)(~k[0]&077777u));}
-void afo_dxch(afo_cell *p){
+AFO_NI void afo_dca(const afo_cell *p){L=sx(cell(p+1));A=sx(cell(p));}
+AFO_NI void afo_dcaf(const agc_word k[2]){L=sx(k[1]);A=sx(k[0]);}
+AFO_NI void afo_dcs(const afo_cell *p){L=sx((agc_word)(~cell(p+1)&077777u));A=sx((agc_word)(~cell(p)&077777u));}
+AFO_NI void afo_dcsf(const agc_word k[2]){L=sx((agc_word)(~k[1]&077777u));A=sx((agc_word)(~k[0]&077777u));}
+AFO_NI void afo_dxch(afo_cell *p){
  agc_register op=sx(cell(p+1));p[1]=oc(L);L=op;
  op=sx(cell(p));p[0]=oc(A);A=op;
 }
@@ -306,7 +315,7 @@ uint32_t afo_dvloop(uint16_t r,uint16_t payload,uint16_t d){
 #endif
 /* agc_multiply on A and k. */
 static __attribute__((noinline)) void mp_wide(agc_word k){agc_register_pair p=agc_multiply(A,k);A=p.a;L=p.l;endi();}
-void afo_mpf(agc_word k){
+AFO_NI void afo_mpf(agc_word k){
  uint32_t r;
  if(k>077777u){mp_wide(k);return;}
  if(k==0u||k==077777u){A=0;L=0;return;}
@@ -325,9 +334,9 @@ static void dv16(agc_register d){
  if(nn!=dn)q^=M16;
  A=q;L=nn?res:(agc_register)(res^M16);endi();
 }
-void afo_dvf(agc_word k){dv16(sx(k));}
-void afo_mp(const afo_cell *p){afo_mpf(cell(p));}
-void afo_dv(const afo_cell *p){afo_dvf(cell(p));}
+AFO_NI void afo_dvf(agc_word k){dv16(sx(k));}
+AFO_NI void afo_mp(const afo_cell *p){afo_mpf(cell(p));}
+AFO_NI void afo_dv(const afo_cell *p){afo_dvf(cell(p));}
 static uint8_t ccs15(agc_word v){
  v&=077777u;
  if(v==0u){A=0;return 1;}
@@ -335,8 +344,8 @@ static uint8_t ccs15(agc_word v){
  if(v&040000u){agc_word m=(agc_word)(~v&037777u);A=(agc_register)(m>1u?m-1u:0u);return 2;}
  A=(agc_register)(v>1u?v-1u:0u);return 0;
 }
-uint8_t afo_ccsf(agc_word k){uint8_t c=ccs15(k);endi();return c;}
-uint8_t afo_ccs(const afo_cell *p){return afo_ccsf(cell(p));}
-void afo_tc(agc_word r){Q=(agc_word)(r&077777u);endi();}
-uint8_t afo_bzf(void){return A==0u||A==M16;}
-uint8_t afo_bzmf(void){return A==0u||(A&0100000u)!=0u;}
+AFO_NI uint8_t afo_ccsf(agc_word k){uint8_t c=ccs15(k);endi();return c;}
+AFO_NI uint8_t afo_ccs(const afo_cell *p){return afo_ccsf(cell(p));}
+AFO_NI void afo_tc(agc_word r){Q=(agc_word)(r&077777u);endi();}
+AFO_NI uint8_t afo_bzf(void){return A==0u||A==M16;}
+AFO_NI uint8_t afo_bzmf(void){return A==0u||(A&0100000u)!=0u;}

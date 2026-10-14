@@ -28,6 +28,8 @@ The cases hold the erasables SXTMARK indexes at values the flight program gives 
 - **QPRET.** Each area's mark-slot pointer (its word 42D) is the area plus 7 words a mark taken, 0 to 5 marks.
 - **MKNDX.** DIFCHK is entered with -1, 0 or 1 (it indexes CDUX to CDUZ).
 - **Entry state.** MKVACFND's A is a free area's address -1.
+- **Marks near the current CDUs (#255).** Half the cases at MARKDIF (with CDUCHKWD positive) and at DIFCHK hold mark CDUs 0 to ±4 bits from CDUX-CDUZ, so the accept path (on to MARKCONT) and the 121 alarm both run: at MARKDIF 305 of 512 cases accept.
+- **No marks wanted (#255).** Two thirds of the cases at MARKCONT have MARKSTAT +0, with STATE+2 bit 14 (R21) on or off, EXTVBACT's marking bit and V59FLAG (STATE+5 bit 12) each on or off, so MARKET3's 122 alarm (179 cases) and the P23 calibration display both run.
 
 ## Evidence
 
@@ -35,5 +37,5 @@ Hashes: `evidence/cm-sxtmark/SHA256.json`. Bulk files are assets of the `evidenc
 
 - **Source map.** `cm-sxtmark-source-map.json` lists every emitted word with its routine: 315 words, none untranslated.
 - **Independent assembly comparison.** `make cm-sxtmark-differential`: 512 states per routine (21,504 cases) equal yaAGC in Z, all 2,048 erasable words, channel 12 and the interrupt-enable state. TIME1, TIME2, the CDUs and channel 16 vary in every case; a quarter of the cases put edge values into every operand the file names.
-- **Host and sanitizer results.** `make test-cm-sxtmark sanitize-cm-sxtmark` runs the 682 frozen cases: every 32nd, plus a greedy cover of every branch outcome any case reaches: 333 outcomes (`outcome_cover` in `cm-sxtmark-proof.json`).
-- **C64 execution results.** `make vice-cm-sxtmark` runs one diagnostic with 71 cases. They reach all 333 outcomes the host cases reach, every gcov branch arc (470; `c64_gcov_branches` in the proof) and all 676 comparison edges (`c64_coverage` in the proof; summary in `cm-sxtmark-c64-outcomes.json`). The diagnostic builds without inlining (`c64_flags`). The log gives the PRG's sha256.
+- **Host and sanitizer results.** `make test-cm-sxtmark sanitize-cm-sxtmark` runs the 679 frozen cases: every 32nd, plus a greedy cover of every branch outcome any case reaches: 345 outcomes (`outcome_cover` in `cm-sxtmark-proof.json`).
+- **C64 execution results.** `make vice-cm-sxtmark` runs one diagnostic with 74 cases. They reach all 345 outcomes the host cases reach, every gcov branch arc (491; `c64_gcov_branches` in the proof, strict `--cover-check` verified) and all 712 comparison edges (`c64_coverage` in the proof; summary in `cm-sxtmark-c64-outcomes.json`). The diagnostic builds without inlining (`c64_flags`). The log gives the PRG's sha256.
