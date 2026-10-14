@@ -427,6 +427,8 @@ SPECS = {
         # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
         'index_carry16': True,
         'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 32,
     },
     'inflight-align': {
