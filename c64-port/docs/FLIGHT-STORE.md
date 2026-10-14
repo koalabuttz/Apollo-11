@@ -207,20 +207,29 @@ each module. On def640e3d, against the same tree without sharing:
 Fewer modules link because more files fit whole and need no chunks; the
 resolver records (keys the store can run) go up on both missions.
 
-`PIN` names task-slot tables that must link as one module (the steward's
-DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
-(DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
-8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
-packed yet. A slot-3 set goes to slot class 3 ($C000-$CBFF, 3,072 bytes;
-docs/RESIDENT-FLIGHT.md): when it fits direct-only the builder packs it into
-the store, the resident loads it at boot, and its routines run from there
-through `rk_direct` while the resolver still names their packed modules. Both
-missions pin the background self-check idle loop there (LM
-`lm_self_check_idle_routines` 1,897 bytes, CM `cm_self_check_idle_routines`
-1,920), so those routines run without loading a module. The load check runs one
-of the pinned set's points through the module that packs the same table and through
-`rk_direct` with only the pinned module present, compares them, and then
-drops the pinned module (its mailbox and timings use $C000-$CBFF).
+`PIN` names the tables pinned in a region, each set linked as one module
+and reported (`report.json` `pinned`). A slot-3 set goes to slot class 3
+($C000-$CBFF, 3,072 bytes; docs/RESIDENT-FLIGHT.md): when it fits
+direct-only the builder packs it into the store, the resident loads it at
+boot, and its routines run from there through `rk_direct` while the resolver
+still names their packed modules. A slot-4 set goes to slot class 4, the
+task slot's $E000-$FFF9 (8,186 bytes), and is packed only beside a packed
+class-3 set, whose table list names its tables (the class-4 module runs no
+main). With a class-4 module in the store every task-slot module, the
+resident's interrupt wrappers included, links for the job slot
+(`task_pinned_out` in the module list). The boundary-word module stays in
+the task slot: boot runs it there once, before it loads class 4 over it. This is the steward's DAP rule
+in two regions: the LM RCS DAP hold cycle (DAPIDLER, P-axis, Q/R-axis, TJET
+law) is the LM slot-4 set; it measures about 38.5 KB direct-only, so it is
+reported and not packed until Rendezvous navigation (D2) splits it into hot
+subsets for both regions. CM pins the background self-check idle loop in
+class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
+without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 is kept for the DAP. The load check runs one of the class-3 set's
+points through the module that packs the same table and through `rk_direct`
+with only the pinned module present, compares them, checks the class-4
+header at $E000 when there is one, and then drops the pinned module (its
+mailbox and timings use $C000-$CBFF).
 
 ### Direct calls into a loaded module
 
