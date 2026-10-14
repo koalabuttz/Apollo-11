@@ -3061,7 +3061,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them; in FAZA-FAZB2 those flowed states also take the W-matrix loop's later passes (WIXA/WIXB 54 down to 6, ZIXA/ZIXB 0 down to -16, X1 as WIXA: flow_range_states), and INCORP1's DDV takes a +0 or -0 dividend in some cases. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
         "external_continuations": [
           "PHASCHNG and UPFLAG with their inline words",
           "POSTJUMP (no return)",
@@ -3077,22 +3077,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1"
+            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d"
+            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "44f97674bd2eac8e54e31ddb420380396f958d5e6c673ee2f39a69ed256de0e8",
+            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
             "vice_targets": {
-              "vice-measurement-inc": 353
+              "vice-measurement-inc": 354
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c"
+            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
           }
         }
       }
@@ -10082,7 +10082,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them; in FAZA-FAZB2 those flowed states also take the W-matrix loop's later passes (WIXA/WIXB 54 down to 6, ZIXA/ZIXB 0 down to -16, X1 as WIXA: flow_range_states), and INCORP1's DDV takes a +0 or -0 dividend in some cases. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
         "external_continuations": [
           "PHASCHNG and UPFLAG with their inline words",
           "POSTJUMP (no return)",
@@ -10098,22 +10098,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1"
+            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d"
+            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "44f97674bd2eac8e54e31ddb420380396f958d5e6c673ee2f39a69ed256de0e8",
+            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
             "vice_targets": {
-              "vice-measurement-inc": 353
+              "vice-measurement-inc": 354
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c"
+            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
           }
         }
       }
