@@ -19,8 +19,20 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  enum exec_status status;
  uint8_t n=0;
  (void)selector;
+#ifdef RK_IRQ_COUNT
+ /* Back to the step once an IRQ tick lands, so the resident takes the
+  * AGC interrupt at the next boundary (read twice: no torn count). */
+ volatile const uint16_t *c=(volatile const uint16_t *)RK_IRQ_COUNT;
+ uint16_t t0,t;
+ do t0=*c; while(t0!=*c);
+ do{
+  status=IM_CORE(e->program,f->state,e->io);
+  do t=*c; while(t!=*c);
+ }while(status==EXEC_OK&&++n<IM_SLOTS&&t==t0);
+#else
  do status=IM_CORE(e->program,f->state,e->io);
  while(status==EXEC_OK&&++n<IM_SLOTS);
+#endif
  /* Leaving the interpreter after at least one slot is where the module
   * hands back; the next step resolves the point. */
  if(status==EXEC_UNMAPPED&&n)status=EXEC_OK;
