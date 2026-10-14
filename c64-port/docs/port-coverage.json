@@ -5603,8 +5603,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-282-sxtmark.md",
-            "sha256": "2d99c7052b1b4925f1bde743d64190672f520237667946e89bcde2816257af5c"
+            "path": "docs/audits/lane-g-383.md",
+            "sha256": "2de5778947adfe60ce34f9a8808a50cea4be82b3d79552e6b30fb692c3ff4068"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
