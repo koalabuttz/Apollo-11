@@ -8,44 +8,45 @@
   "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
- "cases": 1792,
- "cases_sha256": "352ac0a4072a8138adaf7e9f326be6b774f5bcde5aac6e9924b93880c599ee75",
- "oracle_sha256": "40587846cacb3e8563b6e180ab0a600d532631849533960bdd2aed2e7a93f022",
- "frozen_vectors": 56,
+ "cases": 2048,
+ "cases_sha256": "7c9a6e17b2e9689c6ae2f12f826c6f501323f073d762498a3ac216d9cdd58627",
+ "oracle_sha256": "f282d2c014650c3a8799fdebc85be631894e7e281e2c0613d332ac49a94049d7",
+ "frozen_vectors": 64,
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x7f",
-   "cases": 14,
+   "keep": "0xff",
+   "cases": 15,
    "case_ids": [
-    240,
-    57,
-    128,
-    28,
-    232,
-    500,
-    612,
-    588,
-    768,
+    244,
+    41,
+    152,
+    76,
+    148,
+    380,
+    516,
+    660,
+    964,
     896,
-    1076,
-    1180,
-    1508,
-    1656
+    1176,
+    1288,
+    1428,
+    1540,
+    1816
    ]
   }
  ],
  "c64_coverage": {
-  "host_labels": 33,
-  "c64_labels": 33,
-  "host_edges": 315,
-  "c64_edges": 315,
+  "host_labels": 34,
+  "c64_labels": 34,
+  "host_edges": 322,
+  "c64_edges": 322,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 179,
-  "c64_taken": 179,
+  "host_taken": 184,
+  "c64_taken": 184,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -66,8 +67,8 @@
  },
  "stops": {
   "LM 25,2003 RADSAMP": {
-   "05203": 214,
-   "05261": 42
+   "05203": 223,
+   "05261": 33
   },
   "LM 25,2011 ": {
    "05072": 256
@@ -77,6 +78,9 @@
   },
   "LM 25,2023 DORSAMP": {
    "04622": 256
+  },
+  "LM 25,2024 ": {
+   "04616": 256
   },
   "LM 25,2026 ": {
    "05155": 256

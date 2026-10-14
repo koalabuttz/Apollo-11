@@ -50,6 +50,14 @@ static int code(const agc_native_program *p,apollo_overlay_state *s,p66_bias_io 
  if(!agc_transfer_operand(p,s,x->superbank,address,&w))return 0;
  ai_caf(s,w);return 1;
 }
+/* Whether code() would succeed, without the read into A. */
+static int code_ok(const agc_native_program *p,const apollo_overlay_state *s,const p66_bias_io *x){
+ agc_word ins=indexed(030000u,W[Q]),address=(agc_word)(ins&07777u),w;
+ if((ins>>12)!=3u||address<010u)return 0;
+ return address<02000u||agc_transfer_operand(p,s,x->superbank,address,&w);
+}
+/* A 16-bit register whose two top bits differ (TS would skip). */
+static int overflowed(agc_register r){return ((r>>14)&1u)!=((r>>15)&1u);}
 #define TS(a) do{if(ai_ts(s,(a)))return EXEC_OUT_OF_SCOPE;}while(0)
 #define CODE() do{if(!code(p,s,x))return EXEC_OUT_OF_SCOPE;}while(0)
 #define INHINT() (x->interrupt_enabled=0u)
@@ -64,6 +72,19 @@ enum entry { E_ALARM,E_ALARM2,E_BAILOUT,E_BAILOUT_RET,E_WHIMPER,E_POODOO,E_ABORT
 static enum exec_status body(const agc_native_program *p,apollo_overlay_state *s,void *io,enum entry entry){
  p66_bias_io *x=ctx(s,io);uint8_t c;agc_word ins;
  if(!x)return EXEC_OUT_OF_SCOPE;
+ /* Refuse before the first write (#318): these entries INHINT or store A
+  * or Q (TS) before they read the caller's code at Q, and a TS that would
+  * skip refuses after its write. CCSHOLE and CURTAINS read a code of their
+  * own; the other entries reach no CODE() before a write. */
+ switch(entry){
+ case E_ALARM:case E_ALARM2:case E_BAILOUT:case E_POODOO:case E_ABORT2:
+ case E_BAILOUT1:case E_POODOO1:case E_ALARM1:case E_ALMNCADR:
+  if(!code_ok(p,s,x))return EXEC_OUT_OF_SCOPE;
+  break;
+ default:break;}
+ if(overflowed(W[Q])&&(entry==E_ALARM||entry==E_BAILOUT||entry==E_POODOO||entry==E_CCSHOLE||entry==E_CURTAINS||entry==E_VARALARM))
+  return EXEC_OUT_OF_SCOPE;
+ if(overflowed(W[0])&&(entry==E_ALARM2||entry==E_ABORT2||entry==E_PRIOLARM||entry==E_VARALARM))return EXEC_OUT_OF_SCOPE;
  switch(entry){
  case E_ALARM:goto L5567; case E_ALARM2:goto L5571; case E_BAILOUT:goto L5634; case E_BAILOUT_RET:goto L5643;
  case E_WHIMPER:goto L5644; case E_POODOO:goto L5652; case E_ABORT2:goto L5654; case E_POODOO_RET:goto L5661;

@@ -31,6 +31,9 @@ IGNORED = re.compile(r'^(docs/|evidence/|README\.md$|CONTRIBUTING-port\.md$|tool
 WORD = re.compile(r'[A-Za-z0-9_./+-]+')
 INCLUDE = re.compile(r'^\s*#\s*include\s*"([^"]+)"', re.M)
 INCLUDE_DIRS = ('include', 'src', 'tests', 'platform/c64', 'tools')
+# Prerequisites of these aggregates (tools/mk/ci-extra.mk) join the host and
+# C64 lists. A ci-watch-<target> rule replaces the target's closure.
+EXTRA = {'test': 'ci-extra-host', 'c64': 'ci-extra-c64'}
 
 
 def database():
@@ -186,6 +189,11 @@ def main():
             for target in roots:
                 words = closure(target, rules, set(), scripts)
                 if target in defined or words & names:
+                    result[group].append(target)
+            for target in sorted(rules.get(EXTRA[group], (set(), ''))[0]) if group in EXTRA else ():
+                watch = 'ci-watch-' + target
+                words = closure(watch if watch in rules else target, rules, set(), scripts)
+                if (target in defined or words & names) and target not in result[group]:
                     result[group].append(target)
         for target in result['c64']:
             vice = 'vice-' + target[len('c64-'):]

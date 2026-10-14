@@ -6,6 +6,7 @@
  * an ALMCADR word that is no return address, a negative alarm code that
  * overflows MULTFAIL's TS, a missing io record and WHIMPER without the hardware record are refused. */
 #include <stdio.h>
+#include <string.h>
 #include "lm_alarm_cases.h"
 #include "lm_alarm_vectors.h"
 #include "lm_interbank_routines.h"
@@ -25,6 +26,12 @@ static enum exec_status once(apollo_overlay_state *s,p66_bias_io *io,agc_hardwar
  return call?call(&p,s,io):EXEC_UNMAPPED;
 }
 /* The input of the first case of kind k. */
+/* A refusal that leaves the image and the io record as they were (#318). */
+static enum exec_status clean(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw){
+ apollo_overlay_state s0=*s;p66_bias_io io0=*io;enum exec_status st=once(s,io,hw);
+ if(st==EXEC_OUT_OF_SCOPE&&(memcmp(&s0,s,sizeof s0)!=0||memcmp(&io0,io,sizeof io0)!=0))return EXEC_OK;
+ return st;
+}
 static void kind(apollo_overlay_state *s,p66_bias_io *io,agc_hardware *hw,unsigned k){lm_al_input(s,io,hw,(uint16_t)k);}
 int main(void){apollo_overlay_state s;p66_bias_io io;agc_hardware hw;enum exec_status st;unsigned n,i,ends[7]={0,0,0,0,0,0,0};
  check(LM_AL_VECTORS==LM_AL_CASES,"vector count",0);
@@ -54,7 +61,7 @@ int main(void){apollo_overlay_state s;p66_bias_io io;agc_hardware hw;enum exec_s
   for(i=0;i<7u;++i)if(i!=5u)check(ends[i]>0u,"end kind reached",i);}
  /* Refusals, each from the first case of a kind, entered once directly. */
  kind(&s,&io,&hw,0);s.words[2]=(agc_word)(s.words[2]+1u);           /* POODOO1 site: Q one past the code */
- check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q at no compiled site",0);
+ check(clean(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q at no compiled site",0);
  kind(&s,&io,&hw,lm_al_kinds()-2u);s.words[LM_AL_ALMCADR]=040000u;    /* ALMCADR */
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR word",0);
  kind(&s,&io,&hw,LM_ALARM_SITE_COUNT+2u);s.words[0]=0160000u;         /* VARALARM with a negative code */

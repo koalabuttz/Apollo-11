@@ -71,7 +71,8 @@ def run(m, a):
         load, cached = load - overhead, cached - overhead
         modules.append(dict(id=f'0x{ident:04x}', bytes=size, load_cycles=load, cached_cycles=cached,
                             direct_cycles=direct - overhead if direct else None,
-                            main_cycles=main - overhead if direct else None,
+                            main_cycles=main - overhead if direct and main else None,
+                            direct_only=bool(direct and not main),
                             direct_differs=i in differ,
                             transfer_cycles=load - cached, cycles_per_byte=round((load - cached) / size, 2)))
     run_only, point, resolve = (v - overhead for v in struct.unpack_from('<3H', data, 0x3f0))
@@ -122,7 +123,9 @@ def main():
               f"{min(x['cached_cycles'] for x in mods)}-{max(x['cached_cycles'] for x in mods)}"
               + (f", direct call saves {min(d)}-{max(d)} cycles over the module main ({len(d)} modules match)"
                  if (d := [x['main_cycles'] - x['direct_cycles'] for x in mods
-                           if x.get('direct_cycles') is not None]) else '')
+                           if x.get('main_cycles') is not None]) else '')
+              + (f", {len(o)} direct-only modules run their point in {min(o)}-{max(o)} cycles"
+                 if (o := [x['direct_cycles'] for x in mods if x.get('direct_only')]) else '')
               + f"; soft stack peak {r['soft_stack_peak_bytes']} bytes")
     return 1 if failed else 0
 
