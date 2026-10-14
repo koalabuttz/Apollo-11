@@ -2355,6 +2355,10 @@ Luminary099 KALMAN_FILTER's RATELOOP is compiled as one basic routine of the con
 
 All of Luminary099 RADAR_LEADIN_ROUTINES (47 words: RADSAMP, DORSAMP, DORSAMP2 and VARADAR) is native C on the control-transfer ABI, as 8 basic routines at their original addresses compiled by tools/interp_compile.py. All 2,048 cases equal yaAGC over the sampling words' flight domain; 64 frozen cases pass the strict and sanitizer host tests, and 17 C64 cases pass in VICE, taking all 186 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-RADAR-LEADIN-ROUTINES.md`.
 
+## LM ascent guidance as registered native routines
+
+Luminary099 ASCENT_GUIDANCE (ATMAG, ASCENT, AIMER, MAINLINE, the ASCTERM and EXITVR exits, KEEPVR, ENGOFF, CUTOFF, CHECKYAW and the attitude checks, 531 words in banks 34, 30, 27, 07, 05, 14 and 33) is compiled by `tools/interp_compile.py` into 209 routines of the control-transfer ABI. All 107,008 cases equal the original program in yaAGC, from random erasable states with edge values in a quarter of them. The host and sanitizer tests pass 3,344 frozen cases. In VICE, 29 C64 diagnostics pass 255 cases, 24 of them truncated, which take all 1,721 gcov arcs the host cases take. The C64 diagnostic now runs truncated rows to their cut. A complete certificate is drafted for the reviewer. See `docs/LM-ASCENT.md`.
+
 ## Translate Comanche CONIC_SUBROUTINES
 
 All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-transfer ABI, as 445 routines compiled whole-file by `tools/basic_compile.py`. All 113,920 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 3560 frozen cases, and 33 C64 diagnostics pass 616 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-CONICS.md`.
