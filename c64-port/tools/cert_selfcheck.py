@@ -212,6 +212,14 @@ def interp(sid, a, out):
     proof = json.load(open(proof_p))
     cover_p = os.path.join(ev, '%s-c64-cover.json' % sid)
     cover = json.load(open(cover_p)) if os.path.exists(cover_p) else {}
+    pins = cover.get('linked_sources')
+    if isinstance(pins, dict):
+        for src, h in sorted(pins.items()):
+            f = os.path.join(R, src)
+            now = hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else 'missing'
+            if now != h:
+                gap('%s pins %s at %s, the tree has %s: refreeze so the cover record matches this tree'
+                    % (os.path.relpath(cover_p, R), src, h[:8], now[:8]))
     if not all(os.path.exists(p) for p in D.ROPES):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):
