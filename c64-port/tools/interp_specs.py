@@ -3145,8 +3145,10 @@ SPECS = {
         'ebank': 6,
         'target': 'tests/lm_kalman_target.c',
         # RATELOOP runs on every DAP pass (P-AXIS's SUPERJOB), in the pinned
-        # per-cycle set: the EB 6 window fast forms.
+        # per-cycle set: the EB 6 window fast forms, and no image scan at
+        # its entry in flight.
         'fast_window': True,
+        'trusted_image': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'index_carry16': True,
         'image_w': True,
