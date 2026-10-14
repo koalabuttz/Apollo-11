@@ -679,6 +679,10 @@ SPECS = {
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
     },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
@@ -762,10 +766,22 @@ SPECS = {
                    '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
+        # BDDV's divisor (MPAC, from the NORM ROUND at 11,2734) zero in half
+        # the 11,2736 resumes (their flowed state otherwise): the divide
+        # overflow paths of either sign, which only long DIFEQ runs reach.
+        'resume_states': {'11,2736': {'0154': [0, 'flow']}},
         'max_steps': 1000,
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,
+        # DIFEQ runs that reach the outcomes no shorter case takes are too
+        # long for one C64 diagnostic: they get truncated rows, each run to
+        # the first routine past the outcome it takes.
+        'c64_cuts': True,
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
         'target': 'tests/cm_orbital_integration_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
@@ -1180,6 +1196,10 @@ SPECS = {
         'target': 'tests/cm_tvc_init_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
     },
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
