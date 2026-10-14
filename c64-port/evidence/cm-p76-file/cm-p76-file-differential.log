@@ -1,0 +1,59 @@
+# make cm-p76-file-closure at c3f443be53180189c139eabe814c7c9dd5800299
+rm -f build/cm-p76-file-executed.txt build/cm-p76-file-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
+PATH=/tmp/x/alarm/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/tmp/x/alarm/c64-port/build/cm-p76-file-executed.txt AGC_READ_WORDS=/tmp/x/alarm/c64-port/build/cm-p76-file-read.txt make --no-print-directory cm-p76-file-differential
+python3 tools/interp_routine_differential.py cm-p76-file --cases 512 --freeze
+PASS: 24576 cm-p76-file cases equal the original programs (48 routines)
+  CM 13,2071 P76: 05546 x512
+  CM 13,2073 : 04662 x512
+  CM 13,2076 : 04106 x512
+  CM 13,2077 : 04662 x512
+  CM 13,2100 : 04662 x512
+  CM 13,2104 : 04106 x512
+  CM 13,2105 : 05170 x114, 06037 x398
+  CM 13,2106 : 04662 x512
+  CM 13,2110 : 05170 x121, 06037 x391
+  CM 13,2112 : 06037 x512
+  CM 13,2114 COMPMAT: 05170 x136, 06037 x376
+  CM 13,2116 : 05170 x134, 06037 x378
+  CM 13,2117 : 05170 x136, 06037 x376
+  CM 13,2120 : 05170 x111, 06037 x401
+  CM 13,2122 : 05170 x115, 06037 x397
+  CM 13,2123 : 05170 x128, 06037 x384
+  CM 13,2125 : 05170 x125, 06037 x387
+  CM 13,2127 : 05170 x137, 06037 x375
+  CM 13,2131 : 05170 x141, 06037 x371
+  CM 13,2133 : 05170 x116, 06037 x396
+  CM 13,2134 : 06037 x512
+  CM 13,2136 : 05170 x121, 06037 x391
+  CM 13,2140 : 05170 x117, 06037 x395
+  CM 13,2143 : 05170 x113, 06037 x399
+  CM 13,2145 : 05170 x145, 06037 x367
+  CM 13,2147 : 05170 x139, 06037 x373
+  CM 13,2151 : 05170 x142, 06037 x370
+  CM 13,2152 : 05170 x136, 06037 x376
+  CM 13,2155 INTOTHIS: 06037 x512
+  CM 13,2157 : 06037 x512
+  CM 13,2161 : 05170 x137, 06037 x375
+  CM 13,2163 : 05170 x131, 06037 x381
+  CM 13,2165 : 05170 x119, 06037 x393
+  CM 13,2166 : 05170 x133, 06037 x379
+  CM 13,2170 : 05170 x132, 06037 x380
+  CM 13,2172 : 06037 x512
+  CM 13,2174 : 05412 x512
+  CM 13,2175 : 05412 x512
+  CM 13,2177 : 05546 x512
+  CM 13,2201 : 06037 x512
+  CM 13,2202 : 06037 x512
+  CM 13,2204 : 04662 x512
+  CM 13,2207 : 04662 x512
+  CM 13,2211 OUT: 04106 x512
+  CM 13,2212 ENDP76: 04106 x512
+  CM 13,2222 P76SUB1: 05170 x122, 06037 x390
+  CM 13,2225 : 05170 x119, 06037 x393
+  CM 13,2230 : 06037 x512
+froze 1543 vectors to tests/cm_p76_file_vectors.h
+git diff --exit-code -- tests/cm_p76_file_vectors.h tests/cm_p76_file_c64_vectors.h tools/mk/cm-p76-file.groups
+rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
+python3 tools/interp_executed_closure.py cm-p76-file
+PASS: Comanche055/P76.agc: 96 words, 88 instructions, 22 executed by the oracle, 66 interpreted, 0 named unreached, 8 data
+exit 0

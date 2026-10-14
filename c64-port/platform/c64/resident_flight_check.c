@@ -132,7 +132,7 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  * free RAM above the mailbox and the boot scratch: the check has no room
  * for it beside the resident. */
 #define VECTOR_ROW ((rk_vector_row *)0xc200)
-typedef char vector_row_fits[sizeof(rk_vector_row)<=0xd000u-0xc200u?1:-1];
+typedef char vector_row_fits[sizeof(rk_vector_row)<=RK_STACK_CANARY-0xc200u?1:-1];
 static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VECTOR_ROW;uint16_t r,stop,n;
  enum exec_status st;uint8_t kind;
  __asm__ volatile("sei");

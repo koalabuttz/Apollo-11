@@ -59,15 +59,41 @@ goes into the store as two modules linked by `tools/interp_runtime_size.py`
 bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
 `INTERP_POINTS` gives the resolver a record to $0A01 at each of the
 interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
-unless a table record or a resident routine already holds it: SWRETURN and
-INTPRET are table records, so 10 of 12 are the interpreter's on each
-mission. DANZIG is one of them: the resident's DANZIG marker is not a
+unless a table record or a resident routine already holds it: SWRETURN is
+a table record (the interbank tables), and INTPRET always goes to the
+interpreter (#335), so 11 of 12 are the interpreter's on each mission. DANZIG is one of them: the resident's DANZIG marker is not a
 routine, and the flight resident's own program has no marker table, so
 without the record a job left pending at DANZIG would not resolve. CHANG2 is left out, since that is where
 the interpreter hands back to the Executive. The module returns to the step
 when the CIA1 count at $6FBC moves, so an interrupt waits at most one
 interpretive slot. The load check resolves the records; it does not run the
 interpreter (`make vice-interp-core` does).
+
+Every C64 flight module compiles with `-DAGC_FLIGHT_INTERPRETER`. In the
+files listed in `FLIGHT_INTERP_STOP`, that flag ends a chain at NEWOPS
+([FLIGHT-INTERP-STOP.md](FLIGHT-INTERP-STOP.md)). The store leaves those
+files' interpretive tables, and the `INTERP_ONLY` tables (LM
+`lm_ephemeris_routines`, `lm_s3435_routines` and `lm_s3435b_routines`:
+compiled interpretive code entered and left at NEWOPS; and on both
+missions the compiled interpreter's `*_interp_core_basic` and
+`*_interp_runtime_basic`, whose SWRETURN, INTPRET and DANZIG keys the
+interbank tables, the interpreter's records and the DANZIG marker hold),
+to the interpreter. Their
+keys need no record: the step resolves by Z, which is NEWOPS there, and
+NEWOPS has the interpreter's record. The report counts these keys as
+`interpreter_keys`, separately from `unplaced_keys`. The host index and
+`<m>-host.inc` keep the compiled tables.
+
+`FLIGHT_PARTS` links one file as several modules, one per define set.
+Each part's keys are what its own build's tables hold. The builder reads
+them from a host object of the part, with the tables renamed, so a part
+can key hand-off words the whole file does not. LM `lm_servicer` is linked
+this way, as `-DLMSV_FLIGHT_PART=1` (85 keys, 14,581 bytes) and `=2`
+(80 keys, 14,302 bytes)
+([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)). Parts are
+never chunked. With both lists in place, the five LM files fit their
+slots. The LM load check then runs 1,269 checks (889 before) on
+67 modules, with 0 failures.
 
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
@@ -96,11 +122,16 @@ a base-kind module. The LM DAP tables take the base record (their channels
 are `rk_hardware`'s), so `rk_direct` calls them with no module main; the
 pinned LM DAP set measures 37,500 bytes.
 
-A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
-engine, its main only builds the table list and returns `EXEC_OK`, and the
-resident runs its routines through `rk_direct` from the next step. That
-needs the base record, so a pinned set whose tables take another kind
-links the engine and conversion until the kind folds into `agc_hardware`;
+Every module on the base record, pinned or not, is direct-only
+(`FS_DIRECT_ONLY`). It links no transfer engine, and its main only builds
+the table list and returns `EXEC_UNMAPPED` (nothing ran). After such a run
+`rk_resident_step` calls `rk_direct` in the same step, so the point runs
+through the new tables without an extra step. This saves about 490 bytes
+per module. Against the build before it on the same tables, the CM image
+fell from 1,417,728 to 1,368,576 bytes, because chunked CM DAP files need
+fewer chunks. Direct-only needs the base record, so a module or pinned set
+whose tables take another kind links the engine and conversion until the
+kind folds into `agc_hardware`;
 `report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
 measures 39,341 bytes today and 38,534 direct-only.
 
@@ -253,7 +284,12 @@ cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
 The check then runs one resolver record per module both ways: through the
 module's main (an ABI 2 run) and through `rk_direct`, from the same image,
 slot contents and channels (snapshotted in the REU's last 32 KB), with only
-that module loaded. Status, image and channels must match. On def640e3d
+that module loaded. Status, image and channels must match. A direct-only
+module's main must return `EXEC_UNMAPPED` and leave image and channels as
+they were (step 12). Its point then runs through `rk_direct` alone, and the
+report gives those cycles (`direct_only`; LM 25 modules at 3,344-27,187
+cycles, CM 45 at 4,155-22,076). The pinned check's reference run goes
+through a direct-only twin's tables with the pinned module set aside. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of

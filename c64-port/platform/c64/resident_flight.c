@@ -256,7 +256,9 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         enum exec_status status;
         rk_module_program(&module_program,t);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
-        if(status==EXEC_UNMAPPED && !steps) continue;   /* not this module's point */
+        /* Not this module's point, or its table refuses the entry: the next
+         * slot, then the resolver, may hold the point another way. */
+        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) continue;
         return rk_module_status(status,steps,RK_MODULE_STEPS);
     }
     return EXEC_UNMAPPED;
@@ -279,5 +281,11 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
-    return rk_run_module(at)==APOLLO_OV2_OK ? rk_env.status : EXEC_UNMAPPED;
+    if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
+#ifndef RK_NO_DIRECT
+    /* A direct-only module's main only builds its tables: the point runs
+     * through them in this step. */
+    if(rk_env.status==EXEC_UNMAPPED) return rk_direct(stop_physical);
+#endif
+    return rk_env.status;
 }

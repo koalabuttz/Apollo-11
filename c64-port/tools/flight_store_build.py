@@ -316,11 +316,12 @@ SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072}
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False):
+                io=None, direct_only=False, defines=()):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
     module's io kind (module_io). direct_only: no transfer engine, the
-    resident runs the routines (FS_DIRECT_ONLY; pinned modules)."""
+    resident runs the routines (FS_DIRECT_ONLY; pinned modules). defines:
+    the module's own -D flags (FLIGHT_PARTS)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
@@ -344,7 +345,8 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         + '#include "flight_table_module.c"\n')
     # Interpretive groups register the mission's DANZIG marker, which
     # agc_transfer.c defines on the C64 only when asked to.
-    cmd = [cc, *COMMON, *MISSION[m], *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
+    cmd = [cc, *COMMON, *MISSION[m], '-DAGC_FLIGHT_INTERPRETER', *defines,
+           *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
            '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{SLOT_NAME[slot]}.ld',
@@ -484,6 +486,41 @@ INTERP_POINTS = {
            'SWRETURN': 0o4675, 'INTPRET': 0o6006}}
 
 
+# Files whose step machines stop at NEWOPS under -DAGC_FLIGHT_INTERPRETER
+# (docs/FLIGHT-INTERP-STOP.md): the C64 store leaves their interpretive
+# tables to the interpreter module. INTERP_ONLY tables hold interpretive
+# frontiers only and are left out whole, as are the compiled interpreter's
+# own entry tables (SWRETURN, INTPRET, DANZIG: the interbank tables, the
+# interpreter module's records and the DANZIG marker hold them). The host
+# index and host.inc keep every compiled table (other targets choose
+# compiled routines).
+FLIGHT_INTERP_STOP = {'lm': {'lm_ags_init', 'lm_burn_baby', 'lm_lunar_landing', 'lm_servicer', 'lm_imu_performance'},
+                      'cm': set()}
+INTERP_ONLY = {'lm': {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_routines',
+                      'lm_interp_core_basic', 'lm_interp_runtime_basic'},
+               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic'}}
+
+# Files linked as several modules, one per define set
+# (docs/LM-SERVICER-FLIGHT-PARTS.md). A part's keys are what its own build's
+# tables hold (part_keys), which can include hand-off words the whole file
+# does not key.
+FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']]},
+                'cm': {}}
+
+
+def part_keys(cc, m, stem, tables):
+    """[{table: [keys]}] per FLIGHT_PARTS build of stem: its host object
+    with the part's defines and each table renamed, read by table_keys."""
+    parts = []
+    for j, defines in enumerate(FLIGHT_PARTS[m][stem], 1):
+        obj = ROOT / OUT / 'host' / f'{stem}.part{j}.o'
+        run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER', *defines,
+             *(f'-D{t}={t}_part{j}' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
+        got = table_keys(cc, [f'{t}_part{j}' for t in tables], [obj])
+        parts.append({t: got[f'{t}_part{j}'] for t in tables})
+    return parts
+
+
 def interp_modules(cc, m, library):
     """Link the interpreter's two modules for the store; their PRGs and
     link_core's result."""
@@ -576,9 +613,13 @@ def main():
         resident_keys = {('i' if 'interpret' in t else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
+        parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
+                                                           if o == stem and 'interpret' not in t))
+                 for stem in FLIGHT_PARTS[m] if stem in packed.values()}
         for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
             kind = 'i' if 'interpret' in t else 'b'
-            for k in keys[t]:
+            more = [k for p in parts.get(packed[t], []) for k in p.get(t, [])]
+            for k in sorted(set(keys[t]) | set(more)):
                 holders[(kind, k)].append(t)
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
@@ -613,39 +654,56 @@ def main():
                       for t in order if t in tables))
         if a.host_only:
             continue
+        to_interp = {t for t, o in packed.items()
+                     if t in INTERP_ONLY[m] or (o in FLIGHT_INTERP_STOP[m] and 'interpret' in t)}
         by_stem = collections.defaultdict(list)
         for t, o in packed.items():
-            by_stem[o].append(t)
+            if t not in to_interp:
+                by_stem[o].append(t)
         modules, seq = [], collections.Counter()
         for stem in sorted(by_stem):
             lane, slot, agc = lane_slot(stem, m, owners, place)
             seq[lane] += 1
             if seq[lane] > LANE_LIMIT.get(lane, 0xFF):
                 raise SystemExit(f'{m}: lane {lane} has more than {LANE_LIMIT.get(lane, 0xFF)} modules')
-            ident = LANE_BYTE[lane] << 8 | seq[lane]
             ts = sorted(by_stem[stem])
             extra = [t for t in CO_LOCATE[m].get(stem, []) if t in packed]
             sources = list(dict.fromkeys([stem] + [packed[t] for t in extra]))
             sites = {}
             for st in sources:
                 sites.update(file_sites(a.host_cc, m, st))
-            modules.append(dict(stem=stem, agc=agc, lane=lane, slot=slot, id=ident,
-                                basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
-                                interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
-                                also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
-                                sources=c64_sources(index, *sources, 'agc_transfer')))
+            mod = dict(stem=stem, agc=agc, lane=lane, slot=slot,
+                       basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
+                       interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
+                       also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
+                       sources=c64_sources(index, *sources, 'agc_transfer'))
+            for i, defines in enumerate(FLIGHT_PARTS[m].get(stem, [()])):
+                if i:
+                    seq[lane] += 1
+                    if seq[lane] > LANE_LIMIT.get(lane, 0xFF):
+                        raise SystemExit(f'{m}: lane {lane} has more than {LANE_LIMIT.get(lane, 0xFF)} modules')
+                part = dict(mod, id=LANE_BYTE[lane] << 8 | seq[lane])
+                if defines:
+                    if mod['interp'] or extra:
+                        raise SystemExit(f'{m}: {stem} parts link basic tables only')
+                    part.update(defines=list(defines), part=i + 1, prg_name=f'{stem}-part{i + 1}',
+                                key_slice=parts[stem][i])
+                modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
+            # A module on the base record links no transfer engine: the
+            # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
+            direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              mod.get('direct_only', False))
+                              direct_only, mod.get('defines', ()))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   mod.get('direct_only', False))
+                                   direct_only, mod.get('defines', ()))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -691,7 +749,7 @@ def main():
                 todo = nxt
             return (kept, over) if kept else None
         for mod, prg, res in linked:
-            if res['ok'] or not res.get('overflow') or mod['interp']:
+            if res['ok'] or not res.get('overflow') or mod['interp'] or mod.get('defines'):
                 continue
             if res['overflow'] > SPLIT_LIMIT:
                 mod['chunking'] = 'too big to split'
@@ -730,7 +788,7 @@ def main():
                 for t in mod['basic'] + mod['interp']:
                     if t in mod.get('also', []):
                         continue  # resolved to the table's own module
-                    for k in keys[t]:
+                    for k in mod.get('key_slice', keys)[t]:
                         module_of[(t, k)] = mod['id']
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
@@ -769,9 +827,12 @@ def main():
                                error=res.get('error'), id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
                                prg=str(OUT / m / f'pin-{SLOT_NAME[slot]}.prg'),
                                packed=slot == 3 and res['ok'] and not io))
-        records, erasable, unplaced = [], 0, 0
+        records, erasable, unplaced, interpreted = [], 0, 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
+                continue
+            if all(t in to_interp for t in ts):
+                interpreted += 1  # the interpreter's: reached by Z at NEWOPS
                 continue
             if k >= ERASABLE_BASE:
                 erasable += 1
@@ -849,7 +910,8 @@ def main():
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
-                        {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])},
+                        {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])}
+                        | {k for ps in parts.values() for p in ps for v in p.values() for k in v},
                         pin_check)
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
                        error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'),
@@ -859,7 +921,8 @@ def main():
         report[m] = dict(
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
-            unplaced_keys=unplaced, resolver_records=len(resolver),
+            unplaced_keys=unplaced, interpreter_keys=interpreted,
+            left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],
             modules=len(modules), modules_linked=len(good), failed=failed, boot_modules=[p.name for p in boot],
