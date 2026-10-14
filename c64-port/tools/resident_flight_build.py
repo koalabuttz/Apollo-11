@@ -66,6 +66,16 @@ def _mct_data():
             for m, d in json.loads(path.read_text()).items()}
 
 
+def _calibrated(table, named):
+    """The calibration's name for a table: a hot subset
+    (lm_p_axis_hot_routines, lm_t6rupt_jets_hot_routines) runs its full
+    table's routines, which the calibration keys by the full table."""
+    if table in named or '_hot_' not in table:
+        return table
+    full = table.replace('_hot_', '_')
+    return full if full in named else re.sub(r'_[a-z0-9]+_hot_', '_', table)
+
+
 def mct_weight(m, tables, interp=False):
     """The work clock's weight for a module running these tables
     (platform/c64/resident_flight.h): the mean yaAGC MCT per routine run
@@ -78,8 +88,10 @@ def mct_weight(m, tables, interp=False):
     if tables and any(t.endswith('_self_check_idle_routines') for t in tables):
         return 0
     keys = _mct_data().get(m, {})
+    named = {k.split()[0] for k in keys}
     mine = [v for k, v in keys.items()
-            if (tables is None or k.split()[0] in set(tables)) and k.split()[1] == str(int(interp))]
+            if (tables is None or k.split()[0] in {_calibrated(t, named) for t in tables})
+            and k.split()[1] == str(int(interp))]
     pool = mine if sum(v['n'] for v in mine) else list(keys.values())
     n = sum(v['n'] for v in pool)
     return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24
