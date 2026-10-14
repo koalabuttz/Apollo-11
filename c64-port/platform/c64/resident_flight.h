@@ -84,10 +84,12 @@ extern uint32_t rk_dilation;
 #define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* null module (resident_boundary_module.c) */
 /* The boundary-word table, which ends the REU store image
  * (tools/overlay_v2_pack.py --tail): its entries (sorted by physical key)
- * and their count, which boot reads; entry i, by REU fetch (false past the
- * end or on a DMA fault). */
+ * and their count, which boot reads; entry i, by REU fetch into
+ * rk_boundary_probe (null past the end or on a DMA fault; the next fetch
+ * overwrites it). */
 extern uint16_t rk_boundary_count;
-bool rk_boundary_entry(uint16_t i,agc_site_operand *entry);
+extern agc_site_operand rk_boundary_probe;
+const agc_site_operand *rk_boundary_entry(uint16_t i);
 /* What the step hands every module in frame value: the resident program
  * (tables, hardware, fixed_data, site operands) and io. A module that
  * runs AGC routines (the interrupt-body wrappers) reports a routine's

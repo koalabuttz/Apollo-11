@@ -57,7 +57,7 @@ static uint8_t load_case(uint16_t module){return (uint8_t)call(0,module,0,(uint1
 #endif
 #if PART(4)
 /* T3RUPT rows (tests/resident_rupt_c64_rows.h): with the CIA interrupt
- * held off, so no clock tick lands, the T3RUPT case module
+ * held off (and the work clock held), so no clock tick lands, the T3RUPT case module
  * (resident_flight_rupt_cases.c) writes each row's state, and with T3RUPT
  * pending it
  * runs through resident steps (the entry, the kernel's T3RUPT, its tasks
@@ -74,6 +74,9 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
   rk_pending=RK_RUPT_BIT(RK_RUPT_T3);
   stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
   for(guard=0;guard<64u;++guard){
+#ifdef RK_WORK_CLOCK
+   rk_work=0;   /* the work clock held too: no tick from the rows' own work */
+#endif
    if(rk_resident_step(stop)!=EXEC_OK)break;
    if(!rk_hardware.in_interrupt&&agc_transfer_point(&rk_program,image,rk_device.superbank)==stop)break;}
   h=rr_mix(RR_BASIS,(uint16_t)(guard<64u&&!rk_hardware.in_interrupt));
@@ -195,15 +198,15 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
  * that word in BRUPT, and at a fixed point missing from the table it takes
  * nothing and the request stays pending. */
 static void boundary_check(apollo_overlay_state *image){uint16_t i,k;agc_word w;uint8_t ok=1,taken=0;
- agc_site_operand e,next;
+ agc_site_operand e;const agc_site_operand *at;
  for(i=0;i<rk_boundary_count;++i){
-  if(!rk_boundary_entry(i,&e)){ok=0;break;}
-  k=e.physical;
+  if(!(at=rk_boundary_entry(i))){ok=0;break;}
+  e=*at;k=e.physical;
   if(!rk_fixed_word(&rk_program,k,&w)||w!=e.word)ok=0;
-  if((!rk_boundary_entry((uint16_t)(i+1u),&next)||next.physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
+  if((!(at=rk_boundary_entry((uint16_t)(i+1u)))||at->physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
  expect(ok&&rk_boundary_count>0u,13);
  image->words[0]=0;image->words[4]=RK_PROBE_FB;rk_device.superbank=0;rk_hardware.in_interrupt=0;
- for(i=0;rk_boundary_entry(i,&e);++i){k=e.physical;w=e.word;
+ for(i=0;(at=rk_boundary_entry(i));++i){k=at->physical;w=at->word;
   if(k<04000u||k>=010000u||w==3u||w==4u||w==6u)continue;   /* fixed-fixed: Z is the key */
   image->words[5]=(agc_word)k;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
   taken=(uint8_t)(rk_rupt_take(&rk_program,image,0,1,&rk_pending)==RK_RUPT_T3&&image->words[017]==w&&

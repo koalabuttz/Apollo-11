@@ -63,9 +63,9 @@ __attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_modu
 #endif
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
-/* The boundary-word table: its REU bank and address (the store image's
- * tail, within one 64 KB bank) and record count. */
-static uint16_t boundary_address;
+/* The boundary-word table: its REU bank, its address and end (the store
+ * image's tail, within one 64 KB bank) and record count. */
+static uint16_t boundary_address,boundary_end;
 uint16_t rk_boundary_count;
 static uint8_t boundary_bank;
 
@@ -176,6 +176,7 @@ uint8_t BOOT rk_boot(void) {
         first=end-sizeof tail-(uint32_t)tail[0]*sizeof(agc_site_operand);
         if((first>>16)!=((end-1u)>>16) || first<rk_store.base+((uint32_t)rk_store.resolver_page<<8)) return 3;
         boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; rk_boundary_count=tail[0];
+        boundary_end=(uint16_t)(end-sizeof tail);
     }
     /* Then the boot-loaded modules; a class-4 module holds the task slot's
      * RAM, so the runtime has no task-slot module loaded. */
@@ -188,30 +189,34 @@ uint8_t BOOT rk_boot(void) {
     return 0;
 }
 
-/* One 4-byte REU fetch, by register (as apollo_reu_transfer does, without
- * its 32-bit address arithmetic: the table lies in one 64 KB bank). */
-bool rk_boundary_entry(uint16_t i,agc_site_operand *entry) {
-    uint16_t at=(uint16_t)(boundary_address+i*sizeof *entry);
+/* One 4-byte REU fetch into rk_boundary_probe from a table address, by
+ * register (as apollo_reu_transfer does, without its 32-bit address
+ * arithmetic: the table lies in one 64 KB bank). */
+agc_site_operand rk_boundary_probe;   /* DMA target */
+static bool boundary_fetch(uint16_t at) {
     volatile uint8_t *reu=(volatile uint8_t *)0xdf00u;
-    if(i>=rk_boundary_count) return false;
     (void)reu[APOLLO_REU_STATUS];
     reu[APOLLO_REU_ADDR_CONTROL]=0;
-    reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)entry; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)entry>>8);
+    reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)&rk_boundary_probe; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)&rk_boundary_probe>>8);
     reu[APOLLO_REU_REU_LO]=(uint8_t)at; reu[APOLLO_REU_REU_HI]=(uint8_t)(at>>8); reu[APOLLO_REU_REU_BANK]=boundary_bank;
-    reu[APOLLO_REU_LEN_LO]=sizeof *entry; reu[APOLLO_REU_LEN_HI]=0;
+    reu[APOLLO_REU_LEN_LO]=sizeof rk_boundary_probe; reu[APOLLO_REU_LEN_HI]=0;
     reu[APOLLO_REU_COMMAND]=APOLLO_REU_FETCH;
     return (reu[APOLLO_REU_STATUS]&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==APOLLO_REU_STATUS_END;
 }
-/* The word at a boundary key, by binary search of the table. */
+const agc_site_operand *rk_boundary_entry(uint16_t i) {
+    if(i>=rk_boundary_count || !boundary_fetch((uint16_t)(boundary_address+i*sizeof rk_boundary_probe))) return 0;
+    return &rk_boundary_probe;
+}
+/* The word at a boundary key, by binary search of the table over its
+ * addresses (entries are 4 bytes; boundary_end is one past the last). */
 bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word) {
-    uint16_t low=0,high=rk_boundary_count;
-    static agc_site_operand probe;   /* DMA target */
+    uint16_t low=boundary_address,high=boundary_end;
     (void)p;
     while(low<high) {
-        uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
-        if(!rk_boundary_entry(middle,&probe)) return false;
-        if(probe.physical==physical) { *word=probe.word; return true; }
-        if(probe.physical<physical) low=(uint16_t)(middle+1u); else high=middle;
+        uint16_t middle=(uint16_t)(low+((uint16_t)(high-low)>>1&~3u));
+        if(!boundary_fetch(middle)) return false;
+        if(rk_boundary_probe.physical==physical) { *word=rk_boundary_probe.word; return true; }
+        if(rk_boundary_probe.physical<physical) low=(uint16_t)(middle+4u); else high=middle;
     }
     return false;
 }
