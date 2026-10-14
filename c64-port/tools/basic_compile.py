@@ -553,6 +553,8 @@ class Basic:
                 # runs as a TC, Q = K+1, as for TC Q; anything but a TC is
                 # refused.
                 st.append('e=(long)(W[0%o]&077777u);' % a)
+                if self.spec.get('switched_tc'):
+                    self.cp.tc_erasable.add(a)   # (the differential seeds a return there)
                 # The words the spec's states hold there (TEMPR60: the TC
                 # OUTPUT returns) are dispatch targets in the file.
                 for held in self.spec.get('states', {}).values():
@@ -566,6 +568,26 @@ class Basic:
                     # stored instruction such as CA ACCHERE's TCF ACCTHERE),
                     # which from there transfers as the TC does (Q K+1 kept).
                     st.append('if(e>=012000&&e<=017777)e&=07777;')
+                st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
+                st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
+                return st
+            if 0o1400 <= a < 0o2000 and call and self.spec.get('switched_tc') and a not in self.cp.erasable_calls:
+                # Spec 'switched_tc': TC to a switched erasable word
+                # (IMU_CALIBRATION's TC QPLACE after QXCH QPLACE) runs the
+                # word in the bank EB selects as a TC, Q = K+1, as
+                # tools/interp_compile.py's tc_e does. The spec's states for
+                # that word in its EBANK are dispatch targets, and the
+                # differential seeds a caller's return there (unswitched TC
+                # MPAC too), as for tc_e files.
+                st.append('e=(long)(ai_word(s,0%o)&077777u);' % a)
+                self.cp.tc_erasable.add(a)
+                for held in list(self.spec.get('states', {}).values()) + [self.spec.get('all_states', {})]:
+                    for key in ('%05o' % (self.spec['ebank'] * 0o400 + a - 0o1400),):
+                        for v in held.get(key, []):
+                            t = self.phys_of(v, here) if isinstance(v, int) and v >= 0o2000 else None
+                            if t is not None and self.in_file(t) and not self.is_data(t):
+                                self.dispatch.add(t)
+                                self.add(t)
                 st.append('if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;')
                 st.append('ai_tc(s,0%ou);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;' % (a + 1))
                 return st
@@ -812,6 +834,9 @@ class Basic:
             c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}')
         if self.channels:
             c.extend(self.channel_helpers())
+        elif any('oc16(' in x for body in self.nodes.values() for x in body):
+            # (latched input channels only: RAND/ROR/RXOR still take A's 16 bits)
+            c.append('static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}')
         if self.fixed_tables:
             c.append('/* Fixed words the file reads under INDEX (rope words). */')
             for lo, hi, lab, off in self.fixed_tables:
@@ -916,6 +941,13 @@ class Basic:
         c.append(' default:return EXEC_OK;')
         c.append(' }')
         c.append('}')
+        if spin:
+            # (A clean copy whose only jump an idle point replaced is never
+            # reached: FINETIME's INHINT ahead of its idle EXTEND.)
+            body = '\n'.join(c)
+            for i, x in enumerate(c):
+                if x.endswith(':') and x != 'dispatch:' and ('goto %s;' % x[:-1]) not in body:
+                    c[i] = x + ' __attribute__((unused));'
         return c
 
     def run_name(self, bank, phys=None):

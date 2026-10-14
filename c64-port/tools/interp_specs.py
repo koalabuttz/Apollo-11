@@ -2533,7 +2533,7 @@ SPECS = {
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        'native_sources': ['src/rtb_angles.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # Without inlining the runs that take every branch outcome fit one
         # diagnostic (the C64 cover misses none).
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
@@ -2569,7 +2569,7 @@ SPECS = {
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
         'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
-        'noreturn': ['POSTJUMP'],
+        'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
         'resume_orphans': 'all',
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
@@ -2577,11 +2577,29 @@ SPECS = {
                 'CDULOGIC': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
                 'PULSEIMU': None, 'SGNAGREE': None},
         'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        'native_sources': ['src/rtb_angles.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # Without inlining the runs that take every branch outcome fit one
         # diagnostic (the C64 cover misses none).
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
         'target': 'tests/cm_imu_calibration_target.c',
+        # The fine-align and gyro-compensation loops run as flight tasks and
+        # jobs: basic code compiled in one function with the EB 5 window fast
+        # forms, and no image scan at their entries in flight. (Whole-file
+        # basic entries check no FIXLOC or NEWJOB, so ALLOOP's task needs no
+        # any_fixloc/any_newjob.)
+        'basic': 'full',
+        'fast_window': True,
+        'trusted_image': True,
+        # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
+        # the caller's A overflowed: refused, never run as basic code.
+        'interp_not_basic': True,
+        # FINETIME (bank 02) runs under its caller's FB.
+        'fixed_fixed_any_fb': True,
+        # TC QPLACE/QPLACES (E5) runs the saved return stored there.
+        'switched_tc': True,
+        # ALKLP's DLOAD* ALSK +1,1 with X1 +1 or -1 (CMPX1): ALSK or the
+        # 2DEC after it.
+        'fixed_index': {'ALSK': [-1, 1]},
         # EBANK= POSITON and XSM: the file's erasables are in E5.
         'ebank': 5,
         # CHECKG1 spins until a PIPA pulse moves PIPAX, FINETIME +1 while
@@ -2590,7 +2608,6 @@ SPECS = {
         # FINETIME reads the scalers and CHKCOMED channel 30 (liftoff).
         'channel_inputs': True,
         # INDEX POSITON and the like must leave a 12-bit operand erasable.
-        'index_guard': True,
         # PIPACHK's and PIPJOBB's INDEX NDXCTR; TC +1 (NDXCTR 0 or 1).
         'tc_tables': {'PIPACHK+1': 2, 'PIPJOBB+1': 2},
         # ONCEMORE's TC LAT(SPL) (E7) calls the erasable program the
@@ -2661,6 +2678,9 @@ SPECS = {
         # Rows by gcov arc as well (the ?: outcomes clang folds, as DIM's
         # negative operand in ai_dim).
         'c64_rows': 'cover',
+        # (ALFLT's longest runs fit no diagnostic; their DAS carry arcs come
+        # back as truncated rows.)
+        'c64_cuts': True,
         'cover_stride': 64,
         'cover': True,
         'counters': True,

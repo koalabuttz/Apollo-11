@@ -359,8 +359,11 @@ class Compiler:
                         # With 'all', also an order word nothing reaches (the EXIT
                         # after LITTLSUB's GOTO QPLAC), entered at NEWOPS.
                         ln = self.code[q]
+                        # (Not a basic word the whole-file basic code reaches:
+                        # INCR NDXCTR reads as an interpretive INCR.)
                         if self.spec.get('resume_orphans') == 'all' and ln.op and is_interp_op(ln.op) \
-                                and q not in self.owner and q not in self.starts:
+                                and q not in self.owner and q not in self.starts and not (
+                                    self.basic and (q in self.basic.words or q in self.basic.operands)):
                             self.add_start(q, 'i', 'resumed from outside')
                             break
             # Spec 'basic_parts': the basic code is cut into part functions
@@ -2016,13 +2019,16 @@ class Compiler:
             c.append('}')
             c.append('#endif')
         c.append('')
-        # Wrappers: the mission's io record.
+        # Wrappers: the mission's io record. A fast_window file binds the
+        # image at every entry, interpretive ones too (W is AFO_S's words).
+        wrapped = any(not (r[1] == 'b' and self.basic) for r in routines)
+        bind = 'AFR_BIND(s);AFO_FIX(s);' if self.spec.get('fast_window') and wrapped else ''
         if self.m == 'lm' and self.uses_channels:
             c.append('/* The routines take lm_channel_io: the mission record, then the inputs. */')
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
-                '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
+                bind, '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}')
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}' % bind)
         else:
             c.append('/* Comanche routines take the two latches the bodies use from the')
             c.append(' * mission\'s cm_native_io and copy them back. */')
@@ -2034,7 +2040,7 @@ class Compiler:
             c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);')
             c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;return st;')
             c.append('}')
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return latched(f,s,v);}')
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s(void)p;return latched(f,s,v);}' % bind)
         index = {r[0]: i for i, r in enumerate(routines)}
         for i, (phys, kind, fn, lab, why) in enumerate(routines):
             if kind == 'b' and self.basic:
