@@ -3564,6 +3564,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
+        'trusted_image': True,
         'index_carry16': True,
         'image_w': True,
         'c64_cuts': True,
@@ -3580,9 +3581,12 @@ SPECS = {
         'externals': {'BANKCALL': 'auto', 'PHASCHNG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None, 'POLY': 'auto', 'BLANKET': 'auto', 'VARALARM': 'auto', 'POODOO': None},
         'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
         'resume_orphans': True,
-        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}},
-        'includes': ['rtb_angles.h', 'rtb_modes.h'],
-        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # GAMDV45's BOVB TCDANZIG (ENDT(X) in INTEGRATION_INITIALIZATION, TC
+        # DANZIG): label_at() names it ENDT(X), so both keys.
+        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'},
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c', 'src/cm_integration_moves.c'],
         # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
         # 144 passes of about eight routines each, and V2T's own iteration
         # calls it again on each of its passes.
