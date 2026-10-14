@@ -77,7 +77,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -4806,10 +4810,11 @@ static enum exec_status r50071(apollo_overlay_state *s,p66_bias_io *io){
 /* 31,3610 CSINEXT4 (GOTO target) */
 static enum exec_status r63610(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,062000u))return EXEC_OUT_OF_SCOPE;
+ if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;
  /* 31,3610 DSU* BMN */
  TRACE(s);
  cmi_newops(s,050023);
- cmi_indexed(s,033444,006754);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+ cmi_indexed(s,033444,006754);{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
    case 30501u:k=K73445;break;
    case 30509u:k=K73455;break;
    default:return EXEC_OUT_OF_SCOPE;}
@@ -4842,10 +4847,11 @@ static enum exec_status r63613(apollo_overlay_state *s,p66_bias_io *io){
 /* 31,3616  (CHANG2 resume) */
 static enum exec_status r63616(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,062000u))return EXEC_OUT_OF_SCOPE;
+ if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;
  /* 31,3616 DSU* BMN */
  TRACE(s);
  cmi_newops(s,050023);
- cmi_indexed(s,033444,006754);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+ cmi_indexed(s,033444,006754);{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
    case 30501u:k=K73445;break;
    case 30509u:k=K73455;break;
    default:return EXEC_OUT_OF_SCOPE;}
