@@ -1515,11 +1515,20 @@ SPECS = {
                    '27,2745': {'0330': [0o3704]}},
         # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
         # land on interpretive words, never run as basic code.
+        # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
+        # start): FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET).
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
+        # RTB-left pairs (PTOACSM's, DT/2COMP's) resume their right order
+        # from DANZIG.
+        'pending_danzig': True,
         'interp_not_basic': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'target': 'tests/cm_integration_init_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
@@ -3555,6 +3564,10 @@ SPECS = {
         'freeze_stride': 256,
     },
     'lm-p34-p35': {
+        'trusted_image': True,
+        'index_carry16': True,
+        'image_w': True,
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'lm': 'P34-35_P74-75.agc'},
@@ -3566,7 +3579,8 @@ SPECS = {
                     'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'GET+MGA', 'GET.LVC',
                     'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE', 'CSMSTORE',
-                    'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+                    'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
+                    'VNPOOH'],  # (P30_P37 calls it: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
@@ -3579,11 +3593,17 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_modes.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
         'fixed_index': {'MUTABLE': [2, 10]},
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        'states': {'INTLOOP+7': {'0154': [0], '0155': [0]},  # (BZE after its CALL: MPAC zero)
+                   'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},
         'target': 'tests/lm_p34_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
