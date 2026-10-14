@@ -16,7 +16,9 @@ Lane D1. Milestone `lm-ascent`. How the routines are made and checked: `docs/INT
 | 14 | 63 (14,2347-2445) | KEEPVR, KEEPVR1, ENGOFF, ENGOFF1, CUTOFF, CUTOFF1 |
 | 33 | 6 (33,2200-2205) | KT1, PRLIMIT, MINABDV |
 
-That is 531 words in 209 routines: every entry (ENGOFF1 and TERMASC too: TWIDDLE and POSTJUMP reach them from other files), every return from an outside call, and every interpretive word after a DANZIG (`resume_keys`; `resume_orphans` also registers the words that only a resume reaches).
+That is 531 words in 209 routines: every entry (ENGOFF1 and TERMASC too: the file's own TC TWIDDLE at 14,2375 and POSTJUMP at 14,2434 reach them, and the group 4 restart, PHASCHNG OCT 47014, re-establishes ENGOFF1), every return from an outside call, and every interpretive word after a DANZIG (`resume_keys`; `resume_orphans` also registers the words that only a resume reaches).
+
+ENGOFF1 and its returns run as a waitlist task over whatever job it interrupts: FIXLOC may be a core set and NEWJOB -0 while DUMMYJOB idles. With `any_fixloc` and `any_newjob`, every basic routine that never names FIXLOC or NEWJOB takes those states, and part of its cases draw them (#403). `trusted_image` drops the entry checks' image scan in flight builds only.
 
 Destinations outside the file stop with `EXEC_UNMAPPED` until their files have routines:
 - basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words, and TCF ENDOFJOB, GOTOPOOH and TASKOVER;
