@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 29120,
- "cases_sha256": "2a3a0d462025abb8138b27ac9b6ba9a7175894c1e33d71dfa0f554dacf104604",
- "oracle_sha256": "f6d4e9ac02f23a0703265d418165cca1ab767a172ac610b664d6019cf1f0d98b",
+ "cases_sha256": "e1a3e9f43278ab8f27bedbbdcbe77bd9342e3498e6667ceff67fa7d5713b1ef9",
+ "oracle_sha256": "458870518edba8af2a0f836703ed27cfcb80d24145be15fcacaa83f39e0459fd",
  "frozen_vectors": 228,
  "c64_vectors": [
   {
@@ -162,14 +162,15 @@
   {
    "mission": "lm",
    "keep": "0x3fffffffffffff00000100100000000000000000",
-   "cases": 55,
+   "cases": 56,
    "case_ids": [
     6656,
     6732,
     6804,
     6900,
     6948,
-    7012,
+    7030,
+    6988,
     7088,
     7108,
     7192,
@@ -705,8 +706,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 3058,
-  "c64_taken": 3058,
+  "host_taken": 3059,
+  "c64_taken": 3059,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -1187,8 +1188,9 @@
    "05126": 20
   },
   "LM 12,2267 BRNCHCTR": {
-   "07222": 45,
-   "05126": 19
+   "06070": 39,
+   "05126": 15,
+   "07222": 10
   },
   "LM 12,2272 ": {
    "05126": 16,
@@ -2876,8 +2878,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 29120,
- "host_branch_arcs": 3087,
- "c64_rows": 515,
- "c64_branch_arcs": 3087,
+ "host_branch_arcs": 3088,
+ "c64_rows": 516,
+ "c64_branch_arcs": 3088,
  "host_branches_missing_on_c64": []
 }
