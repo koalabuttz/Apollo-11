@@ -9132,7 +9132,7 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9149,7 +9149,7 @@
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9164,7 +9164,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET or Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
@@ -9184,6 +9183,10 @@
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-integration-init.md",
+            "sha256": "2ce18acd5cb83d8e762415fc83f12e114ebd6b4aee39b7bd3974ff0e75494d7c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
