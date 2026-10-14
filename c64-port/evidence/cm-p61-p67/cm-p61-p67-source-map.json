@@ -1129,294 +1129,295 @@
     "address": "26,2457",
     "word": "05560",
     "source": "P65.1 TC DOWNFLAG",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2460",
     "word": "00134",
     "source": " ADRES ENTRYDSP",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2461",
     "word": "32473",
     "source": " CA V16N69",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2462",
     "word": "04662",
     "source": " TC BANKCALL",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2463",
     "word": "21057",
     "source": " CADR GOFLASHR",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2464",
     "word": "02461",
     "source": " TC -3",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2465",
     "word": "02470",
     "source": " TC +3",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2466",
     "word": "02461",
     "source": " TC -5",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2467",
     "word": "02232",
     "source": " TC P61.3",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2470",
     "word": "05546",
     "source": " TC UPFLAG",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2471",
     "word": "00134",
     "source": " ADRES ENTRYDSP",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2472",
     "word": "02421",
     "source": " TC P63.1",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2473",
     "word": "04105",
     "source": "V16N69 VN 1669",
-    "constant": "basic operand (inline)"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2474",
     "word": "05354",
     "source": "P66 TC NEWMODEX",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2475",
     "word": "00102",
     "source": " MM 66         B-14",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2476",
     "word": "35052",
     "source": " CA V06N22",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2477",
     "word": "02503",
     "source": " TC P66END",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2500",
     "word": "05354",
     "source": "P67 TC NEWMODEX",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2501",
     "word": "00103",
     "source": " MM 67         B-14",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2502",
     "word": "32511",
     "source": " CA V06N66",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2503",
     "word": "55263",
     "source": "P66END TS ENTRYVN",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2504",
     "word": "05546",
     "source": " TC UPFLAG",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2505",
     "word": "00134",
     "source": " ADRES ENTRYDSP",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2506",
     "word": "05412",
     "source": "KILLGRP4 TC PHASCHNG",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2507",
     "word": "00004",
     "source": " OCT 00004",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2510",
     "word": "06030",
     "source": " TC DANZIG",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2511",
     "word": "01502",
     "source": "V06N66 VN 0666",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2512",
     "word": "32543",
     "source": "P67.1 CA V16N67",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2513",
     "word": "04662",
     "source": " TC BANKCALL",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2514",
     "word": "20720",
     "source": " CADR GOFLASH",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2515",
     "word": "02520",
     "source": " TC +3",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2516",
     "word": "02520",
     "source": " TC +2",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2517",
     "word": "02512",
     "source": " TC P67.1",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2520",
     "word": "46214",
     "source": " CS THREE",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2521",
     "word": "00004",
     "source": " INHINT ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2522",
     "word": "70102",
     "source": " MASK CM/FLAGS",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2523",
     "word": "54102",
     "source": " TS CM/FLAGS",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2524",
     "word": "00003",
     "source": " RELINT ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2525",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2526",
     "word": "32643",
     "source": " DCA SERVCAD2",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2527",
     "word": "53223",
     "source": " DXCH AVEGEXIT",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2530",
     "word": "14106",
     "source": " TCF GOTOPOOH",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2453",
+    "function": "r54453"
    },
    {
     "address": "26,2531",
@@ -1492,42 +1493,43 @@
     "address": "26,2543",
     "word": "04103",
     "source": "V16N67 VN 1667",
-    "constant": "basic operand (inline)"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2544",
     "word": "00006",
     "source": "S61.1 EXTEND ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2545",
     "word": "23773",
     "source": " QXCH 60GENRET",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2546",
     "word": "04662",
     "source": " TC BANKCALL",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2547",
     "word": "17653",
     "source": " CADR R02BOTH",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2550",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "basic code",
-    "function": "basic_run"
+    "routine": "26,2541",
+    "function": "r54541"
    },
    {
     "address": "26,2551",

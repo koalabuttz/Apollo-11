@@ -846,6 +846,10 @@ SPECS = {
         # which '@external' reads as register Q.
         # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
         'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
+        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
+        # flight store chunked it into 13, each with the whole basic_run
+        # (docs/FLIGHT-PARTS.md).
+        'flight_parts': [0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
@@ -1347,6 +1351,12 @@ SPECS = {
         'base': {'cm': 'cm_reentry'},
         'symbol': {'cm': 'cm_reentry'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
         'entries': ['@external'],
         'channels': 'all',
         'io_channels': 'auto',
@@ -1391,6 +1401,12 @@ SPECS = {
         'base': {'cm': 'cm_time_free_fall'},
         'symbol': {'cm': 'cm_time_free_fall'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively, and
+        # the routine goes on with the pair's right-hand order (#414, as
+        # measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
         'entries': ['@external'],
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
@@ -1399,6 +1415,9 @@ SPECS = {
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
         'image_w': True,
+        'trusted_image': True,
+        # (No 'fast_window': the file sets no EBANK= of its own, so there is
+        # no one window to bind; its erasables run under the caller's.)
     },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
@@ -1449,6 +1468,13 @@ SPECS = {
         'base': {'cm': 'cm_orbital_integration'},
         'symbol': {'cm': 'cm_orbital_integration'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
+        'trusted_image': True,
         'entries': ['@external'],
         'noreturn': ['POODOO'],
         'cgoto': {'DIFEQTAB': 3},
@@ -1555,8 +1581,8 @@ SPECS = {
         # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
         # start): FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET).
         'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
-        # RTB-left pairs (PTOACSM's, DT/2COMP's) resume their right order
-        # from DANZIG.
+        # The six RTB-left pairs (RTB MOVEPCSM, SGNAGREE, LOADTIME x3,
+        # MOVEACSM) resume their right order from DANZIG.
         'pending_danzig': True,
         'interp_not_basic': True,
         'index_carry16': True,
@@ -1740,9 +1766,16 @@ SPECS = {
         'entries': ['@external'],
         # P61.2's RTB LOADTIME is the first order of its pair (RTB DSU):
         # the native LOADTIME, so the DSU runs on in the same routine.
-        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/cm_integration_moves.c'],
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'channels': 'all',
         'io_channels': 'auto',
         'engine': 'flight-device',
@@ -3571,6 +3604,7 @@ SPECS = {
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
+        'trusted_image': True,
         'index_carry16': True,
         'image_w': True,
         'c64_cuts': True,
@@ -3587,9 +3621,12 @@ SPECS = {
         'externals': {'BANKCALL': 'auto', 'PHASCHNG': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None, 'POLY': 'auto', 'BLANKET': 'auto', 'VARALARM': 'auto', 'POODOO': None},
         'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
         'resume_orphans': True,
-        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}},
-        'includes': ['rtb_angles.h', 'rtb_modes.h'],
-        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # GAMDV45's BOVB TCDANZIG (ENDT(X) in INTEGRATION_INITIALIZATION, TC
+        # DANZIG): label_at() names it ENDT(X), so both keys.
+        'rtb': {'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}, 'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'},
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c', 'src/cm_integration_moves.c'],
         # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
         # 144 passes of about eight routines each, and V2T's own iteration
         # calls it again on each of its passes.
