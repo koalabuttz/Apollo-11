@@ -5,7 +5,7 @@
 #include "cm_integration_moves.h"
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "agc_image_w.h"
 /* Erasable (EB 3 window): DIFEQCNT 1500, RRECT 1502, RRECTCSM 1554,
  * RRECTLEM 1626. INTBANK BBCON INTEGRV (13,3070) = 026063; FORTYONE 051. */
 uint8_t cm_integration_move(apollo_overlay_state *s,p66_bias_io *io,enum cm_integration_move_kind kind){

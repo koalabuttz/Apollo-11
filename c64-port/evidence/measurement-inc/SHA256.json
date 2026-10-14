@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "measurement-inc",
+  "release": "evidence-measurement-inc",
+  "files": {
+    "measurement-inc-c64-cover.json": {
+      "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c",
+      "bytes": 6600,
+      "store": "tree"
+    },
+    "measurement-inc-differential.log": {
+      "sha256": "be1a8c51a29efc30d7acc5f4251b69340de6dc11aabc95e4d82bb1bf87365c6a",
+      "bytes": 13035,
+      "store": "tree"
+    },
+    "measurement-inc-host.log": {
+      "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d",
+      "bytes": 578,
+      "store": "tree"
+    },
+    "measurement-inc-proof.json": {
+      "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1",
+      "bytes": 27064,
+      "store": "tree"
+    },
+    "measurement-inc-source-map.json": {
+      "sha256": "ec61960e9daf1b020d0ae281c288e0dfc16223ce3bf31787b73f82ddd872bdfa",
+      "bytes": 105829,
+      "store": "tree"
+    },
+    "measurement-inc-vice.log": {
+      "sha256": "e5a168d86ef1c4bde908e64e51b39ebca3172149c13332191f677509eda063b7",
+      "bytes": 2941,
+      "store": "tree"
+    }
+  }
+}

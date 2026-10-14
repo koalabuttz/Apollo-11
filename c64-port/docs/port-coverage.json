@@ -2784,8 +2784,62 @@
       "sha256": "07939648f0f52a6b3dae03f6246acbbf28d66d36cf51c98936cc00b0d1e070a9",
       "bytes": 8790,
       "lines": 496,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_measurement_inc.c",
+            "src/cm_integration_moves.c",
+            "src/rtb_modes.c",
+            "src/rtb_angles.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (385 words, bank 36): INCORP1 (the Z vectors, GAMMA, the OMEGA vectors and DELTAX), NEWZCOMP and INCORP2 (the W-matrix update FAZA/FAZB, the state-vector update FAZC/FAZAB and its rectification, DOCSM/DOCSM1), as 160 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/MEASUREMENT-INCORPORATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
+        "external_continuations": [
+          "PHASCHNG and UPFLAG with their inline words",
+          "POSTJUMP (no return)",
+          "RTB TPMODE (src/rtb_modes.c), MOVEACSM, MOVEALEM, MOVEPCSM and MOVEPLEM (cm_integration_move (src/cm_integration_moves.c)) and BOVB TCDANZIG (cm_integration_tcdanzig), native",
+          "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/measurement-inc/measurement-inc-source-map.json",
+            "sha256": "ec61960e9daf1b020d0ae281c288e0dfc16223ce3bf31787b73f82ddd872bdfa"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/measurement-inc/measurement-inc-proof.json",
+            "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/measurement-inc/measurement-inc-host.log",
+            "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/measurement-inc/measurement-inc-vice.log",
+            "sha256": "e5a168d86ef1c4bde908e64e51b39ebca3172149c13332191f677509eda063b7",
+            "vice_targets": {
+              "vice-measurement-inc": 353
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
+            "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/MYSUBS.agc",
@@ -9077,8 +9131,62 @@
       "sha256": "735aebaba4df4159e83d48b4cbe509479a9d29fb66ce05adf4bcb79076302fdc",
       "bytes": 8613,
       "lines": 495,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_measurement_inc.c",
+            "src/lm_integration_moves.c",
+            "src/rtb_modes.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (384 words, bank 23): INCORP1 (the Z vectors, GAMMA, the OMEGA vectors and DELTAX), NEWZCOMP and INCORP2 (the W-matrix update FAZA/FAZB, the state-vector update FAZC/FAZAB and its rectification, DOCSM/DOCSM1), as 160 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "verification": "docs/MEASUREMENT-INCORPORATION.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= W), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FAZA), FIXLOC a VAC area, PUSHLOC within it. The entries INCORP1, INCORP2 and FAZA take any measurement geometry, W matrix, state vectors and the other erasables the file reads; every other routine starts from a state the original program reaches there from INCORP1 or INCORP2 (flow_from), so X1, X2, S1, S2, MODE, WIXA and ZIXA hold the values the program gives them. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Interpretive entries return through QPRET.",
+        "external_continuations": [
+          "PHASCHNG and UPFLAG with their inline words",
+          "POSTJUMP (no return)",
+          "RTB TPMODE (src/rtb_modes.c), MOVEACSM, MOVEALEM, MOVEPCSM and MOVEPLEM (lm_integration_move) and BOVB TCDANZIG (lm_integration_tcdanzig), native",
+          "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q or QPRET"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/measurement-inc/measurement-inc-source-map.json",
+            "sha256": "ec61960e9daf1b020d0ae281c288e0dfc16223ce3bf31787b73f82ddd872bdfa"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/measurement-inc/measurement-inc-proof.json",
+            "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/measurement-inc/measurement-inc-host.log",
+            "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/measurement-inc/measurement-inc-vice.log",
+            "sha256": "e5a168d86ef1c4bde908e64e51b39ebca3172149c13332191f677509eda063b7",
+            "vice_targets": {
+              "vice-measurement-inc": 353
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
+            "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ORBITAL_INTEGRATION.agc",

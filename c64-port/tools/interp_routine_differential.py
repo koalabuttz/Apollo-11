@@ -775,7 +775,7 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
                     # (the entry's caller return, which ends the run there: a
                     # pseudo-edit at 0xffff (Z) or 0xfffe (LOC) the
                     # reference takes out)
-                    c['edits'] = list(E.items()) + ([(ra, ret)] if ret != 0xffff else [])
+                    c['edits'] = Edits(list(E.items()) + ([(ra, ret)] if ret != 0xffff else []))
                 runs.append(c)
         write_cases(sub, missions, runs)
         out = subprocess.run([ref, *ROPES, sub], cwd=R, check=True, capture_output=True, text=True,
@@ -802,7 +802,7 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
             c, E, _ = got[j] if j in got else got[snaps[r][at[r].index(j) % len(snaps[r])]]
             E = collections.OrderedDict(E)
             E[0o67] = rng.randrange(1, 0o40000) if rng.random() < 0.25 else 0
-            cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=list(E.items()))
+            cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=Edits(E.items()))
             flowed.add(r)
     if os.path.exists(sub):
         os.remove(sub)
