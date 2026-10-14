@@ -1892,7 +1892,10 @@ SPECS = {
                     'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
                     'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
                     # dead code after a GOTO, kept as its own routine
-                    'S40.133'],
+                    'S40.133',
+                    # P47LM's FINDVAC job (2CADR P47BODY): the Executive
+                    # enters it.
+                    'P47BODY'],
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
                       '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
                       'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
@@ -1908,6 +1911,26 @@ SPECS = {
         'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
+        # C64 rows chosen by branch outcome over every linked source.
+        'c64_rows': 'cover',
+        # Trace every 5th case for the gcov arcs (a divisor of
+        # freeze_stride, so every frozen host vector is traced). (At 64,
+        # the only traced cases taking OVERFLOW's carry into OVFIND ran
+        # too long for one C64 program.)
+        'cover_stride': 5,
+        # Arcs only runs too long for one C64 program take (LM 27,3123)
+        # get truncated rows, run to a cut (tests/interp_cut.h).
+        'c64_cuts': True,
+        # A quarter of the cases put edge values (+-0, one LSB, 1/2, just
+        # below 1, axis and plane vectors) in MPAC and the operands, so
+        # short runs take the VROUND and DDV overflow paths too.
+        'edge_values': True,
+        # INDEX by a negative value: the end-around carry the C64 build
+        # needs (unsigned is 16 bits there).
+        'index_carry16': True,
+        # W from include/agc_image_w.h: flight builds address the fixed
+        # $7000 image.
+        'image_w': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },

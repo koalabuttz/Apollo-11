@@ -1210,7 +1210,15 @@ def cover_check(spec_id, spec, missions, cases, path, record):
     out = {'milestone': spec_id, 'record': record, 'cases': len(cases), 'c64_rows': len(rows)}
     sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
     out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
-    beyond = [i for i in rows if i >= len(cases)]
+    # 'c64_cuts' truncated rows (numbered after the cases): each its source
+    # case run to its cut, as the record lists them.
+    host_n, cut = len(cases), {t['row']: t for t in rec.get('truncated_rows', [])}
+    if cut and spec.get('c64_cuts'):
+        cases = list(cases) + [None] * (max(cut) + 1 - len(cases))
+        for n, t in cut.items():
+            b, a = t['cut'].split(',')
+            cases[n] = dict(cases[t['case']], cut=int(b, 8) * 1024 + int(a, 8) - 0o2000, of=t['case'])
+    beyond = [i for i in rows if i >= len(cases) or cases[i] is None]
     if not out.get('cases_match') or beyond or not rows:
         out.update(verified=False, reason='the record does not list its C64 rows (refreeze to record them)'
                    if not rows else 'neither the record nor its proof pins the frozen cases (cases_sha256); '
@@ -1220,7 +1228,16 @@ def cover_check(spec_id, spec, missions, cases, path, record):
         return 1
     if spec.get('cover'):
         build_edges(spec_id, spec)      # (a freeze links it: catch a broken link here)
-    g = gcov_branches(spec_id, spec, missions, cases, rows)
+    chan = set()
+    if spec.get('partial'):
+        # (The cases the freeze left uncompared, waiting for a channel model:
+        # a native refusal in a routine with an I/O channel instruction.)
+        for i, r in enumerate(run([BUILT[1], path])):
+            mi = missions[cases[i]['cm']]
+            if r[1] != '0' and any(mi.cp.logical_of(p) == int(r[2]) for p in mi.cp.channel_blocks):
+                chan.add(i)
+        out['waiting_for_io_channels'] = len(chan)
+    g = gcov_branches(spec_id, spec, missions, cases, rows, host_n=host_n, chan=chan)
     out.update(verified=True, host_taken=g['host_taken'], c64_taken=g['c64_taken'],
                missing=g['missing'], missing_count=g['host_taken_not_c64'])
     print(json.dumps(out))
@@ -1240,17 +1257,27 @@ def cover_counts(covers, c64_ids):
                     'differential\'s cases reach, and those the C64 cases reach'}
 
 
-def gcov_branches(spec_id, spec, missions, cases, c64_ids):
+def gcov_branches(spec_id, spec, missions, cases, c64_ids, host_n=None, chan=()):
     """The certificate reviewer's check: gcc -O0 --coverage builds of the
     host runner over every linked source, one run on all the differential's
-    cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
+    cases and one on the C64 cases; gcov -b's taken branch outcomes of each.
+    host_n: the differential's own cases when cases also holds 'c64_cuts'
+    truncated rows (after them); the C64 run then takes each to its cut.
+    chan: with 'partial', the cases waiting for an I/O channel model, which
+    no C64 row can take (they are not compared): left out of the host run."""
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
-    srcs = list(dict.fromkeys(srcs + [spec['target']]))
+    # (Truncated rows run to their cut: the runner links tests/interp_cut.c.
+    # Without them the build is the one it always was.)
+    cuts = any(cases[i].get('cut') for i in set(c64_ids))
+    srcs = list(dict.fromkeys(srcs + (CUT if cuts else []) + [spec['target']]))
     # The same step limit as the freeze (host_arcs), or a case that runs
     # past 200 routines reports FAILED instead of STOPPED.
-    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)]
+    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)] + (cut_flags(spec) if cuts else [])
     res = {}
-    for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
+    host = range(len(cases) if host_n is None else host_n)
+    if spec.get('partial') and chan:
+        host = [i for i in host if i not in chan]
+    for tag, sel in (('host', host), ('c64', sorted(set(c64_ids)))):
         w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
         shutil.rmtree(w, ignore_errors=True)
         os.makedirs(w)
@@ -1403,9 +1430,10 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
              'oracle_sha256': hashlib.sha256('\n'.join(' '.join(r) for r in rows).encode()).hexdigest(),
              'frozen_vectors': len(pick), 'c64_vectors': c64,
              **({'c64_coverage': cover_counts(covers, [i for g in c64 for i in g['case_ids']])} if covers else {}),
-             **({'c64_gcov_branches': gcov_branches(spec_id, spec, missions, cases,
+             **({'c64_gcov_branches': gcov_branches(spec_id, spec, missions, C64_CASES or cases,
                                                     [i for g in c64 for i in g['case_ids']] if covers else
-                                                    [i for g in C64_PICKS for i in g])}
+                                                    [i for g in C64_PICKS for i in g], host_n=len(cases),
+                                                    chan=chan)}
                 if covers or spec.get('c64_rows') == 'cover' else {}),
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
              **({'c64_segments': {'method': 'from the case\'s routine to the CHANG2 resume LOC after it (that routine '
@@ -1769,6 +1797,7 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
 
 
 C64_PICKS = []       # each group's cases, for the outcome cover
+C64_CASES = []       # the cases with 'c64_cuts' truncated rows after them, when there are any
 
 
 def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges=None):
@@ -1849,6 +1878,8 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             if want:
                 cases, rows, visits = list(cases), list(rows), list(visits)
                 cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want)
+                if len(cases) > len(C64_CASES):
+                    C64_CASES[:] = cases
                 chosen, okall = pick(arcs, sorted(chosen))
     groups = []
     for cm, mi in enumerate(missions):

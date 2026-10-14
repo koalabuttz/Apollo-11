@@ -9495,7 +9495,7 @@
             "src/agc_word.c",
             "src/agc_multiword.c"
           ],
-          "scope": "914 of the 931 words (27,2246-3272 and 36,3147-3764): P40, P41, P42 and P47, S40.1, S40.2,3, S40.8, S40.9, S40.13, S41.1, TRIMGIMB, POSTBURN, TIGNOW, ENGOFTSK, ENGINOF1-4, REDO6.7, CALCN85, IMPLBURN and UPDATEVG, as 403 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 17 output-channel words (WAND/WOR CHAN12, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for an output-channel model.",
+          "scope": "914 of the 931 words (27,2246-3272 and 36,3147-3764): P40, P41, P42 and P47 (P47BODY, the FINDVAC job, an entry), S40.1, S40.2,3, S40.8, S40.9, S40.13, S41.1, TRIMGIMB, POSTBURN, TIGNOW, ENGOFTSK, ENGINOF1-4, REDO6.7, CALCN85, IMPLBURN and UPDATEVG, as 403 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 17 output-channel words (27,3223, 27,3225-3226, 27,3232-3233, 27,3235-3236, 27,3245-3246, 27,3261-3262: WAND/WOR CHAN12 in TRIMGIMB and PITCHOFF; 36,3570-3571, 36,3573-3574: RAND/WRITE DSALMOUT in ENGINOF3; 36,3603-3604: WOR CHAN14), which wait for Lane D1's shared output-channel model.",
           "verification": "docs/LM-P40-P47.md"
         }
       ]
