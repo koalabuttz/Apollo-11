@@ -41,7 +41,10 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
           '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror',
           # The resident and every flight module resolve a pending DANZIG
           # (RTB right-hand order) through the mission's marker table.
-          '-DAGC_TRANSFER_DANZIG_MARKER']
+          '-DAGC_TRANSFER_DANZIG_MARKER',
+          # rk_boot verifies the whole store (apollo_reu_store_verify), so a
+          # module load checks only the header's id (src/overlay_v2.c).
+          '-DAPOLLO_OV2_STORE_VERIFIED']
 # Scaled time (docs/RESIDENT-FLIGHT.md), with RK_WALL_CLOCK: RK_TICK_LAG, the clock ticks one
 # step may catch up before the rest are dropped (default 2), and
 # RK_TIME_DIVISOR, AGC time at 1/n of wall time (default 1; the nightly
