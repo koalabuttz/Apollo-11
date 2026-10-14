@@ -8,14 +8,14 @@
 #include "lanec_pin_gaps.h"
 #include "lanec_pin_keys.h"
 
-static const lanec_pin_dispatch try49[2] = { lanec_pin_keys_release, 0 };
-static enum exec_status try49_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_lm(p, s, v, try49); }
-static enum exec_status try49_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_cm(p, s, v, try49); }
+static const lanec_pin_dispatch try51[2] = { lanec_pin_keys_release, 0 };
+static enum exec_status try51_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_lm(p, s, v, try51); }
+static enum exec_status try51_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lanec_pin_run_cm(p, s, v, try51); }
 static const agc_routine_entry lm_entries[1] = {
-    { 33585u, try49_lm },   /* 40,3461 */
+    { 33585u, try51_lm },   /* 40,3461 */
 };
 const agc_routine_table lanec_pin_keys_release_lm_routines = { lm_entries, 1u };
 static const agc_routine_entry cm_entries[1] = {
-    { 33526u, try49_cm },   /* 40,3366 */
+    { 33526u, try51_cm },   /* 40,3366 */
 };
 const agc_routine_table lanec_pin_keys_release_cm_routines = { cm_entries, 1u };

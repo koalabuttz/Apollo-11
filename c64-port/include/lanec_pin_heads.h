@@ -18,4 +18,7 @@ enum lanec_status lanec_pin_head_load_run(apollo_overlay_state *, lanec_io *, en
 enum lanec_status lanec_pin_head_lamp_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 /*   request  VBRQEXEC -> SETVAC or REQEX1, VBRQWAIT -> REQUESTC -1. */
 enum lanec_status lanec_pin_head_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+/*   proceed  VBPROC -> KILMONON, VBTERM and VBRESEQ -> VBPROC +1,
+ *            PROCKEY -> VBPROC, RECALTST -> RECAL1, ENDOFJOB or JOBWAKE (bank 40). */
+enum lanec_status lanec_pin_head_proceed_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #endif

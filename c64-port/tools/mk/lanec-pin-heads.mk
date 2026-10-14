@@ -2,7 +2,7 @@
 # Milestone lanec-pin-heads (lane C): Pinball's own words at the points
 # where an earlier module ran on through other routines in one C call
 # (docs/LANEC-PIN-HEADS.md), LM and CM. One suite per head family.
-LANEC_PIN_HEADS = load lamp request
+LANEC_PIN_HEADS = load lamp request proceed
 LANEC_PIN_HEADS_SRC = $(foreach h,$(LANEC_PIN_HEADS),src/lanec_pin_head_$(h).c tests/lanec_pin_head_$(h)_cases.c) \
   tests/lanec_pin_head_cases.c
 LANEC_SUITE_SRC += $(LANEC_PIN_HEADS_SRC)
