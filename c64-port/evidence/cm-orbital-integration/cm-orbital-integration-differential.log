@@ -1,7 +1,6 @@
 flow states: 233 routines reached from 448 entry cases
 resume_flow: 263 of 264 resume LOCs start from the original program's state there (random states: cm 11,2470)
 PASS: 85248 cm-orbital-integration cases equal the original programs (333 routines)
-(12815 lines "case N (point) does not fit one C64 diagnostic: host only" omitted: the proof's c64_too_big_cases lists those cases)
   CM 11,2372 KEPPREP: 03352 x179, 05170 x63, 06037 x14
   CM 11,2375 : 03352 x181, 05170 x65, 06037 x10
   CM 11,2377 : 03352 x178, 05170 x69, 06037 x9
@@ -106,11 +105,11 @@ PASS: 85248 cm-orbital-integration cases equal the original programs (333 routin
   CM 11,2730 : 03352 x27, 05170 x58, 06037 x171
   CM 11,2731 : 03352 x33, 05170 x50, 06037 x173
   CM 11,2734 : 03352 x29, 05170 x62, 06037 x165
-  CM 11,2736 : 03352 x32, 05170 x58, 06037 x166
-  CM 11,2741 : 03352 x25, 05170 x72, 06037 x159
-  CM 11,2742 : 03352 x28, 05170 x70, 06037 x158
-  CM 11,2745 : 03352 x27, 05170 x61, 06037 x168
-  CM 11,2750 : 03352 x27, 05170 x64, 06037 x165
+  CM 11,2736 : 03352 x19, 05170 x65, 06037 x172
+  CM 11,2741 : 03352 x14, 05170 x69, 06037 x173
+  CM 11,2742 : 03352 x13, 05170 x61, 06037 x182
+  CM 11,2745 : 03352 x14, 05170 x64, 06037 x178
+  CM 11,2750 : 03352 x18, 05170 x50, 06037 x188
   CM 11,2752 : 03352 x53, 05170 x62, 06037 x141
   CM 11,2755 : 03352 x48, 05170 x54, 06037 x154
   CM 11,2757 : 03352 x47, 05170 x68, 06037 x141
@@ -335,4 +334,8 @@ PASS: 85248 cm-orbital-integration cases equal the original programs (333 routin
   CM 11,3735 : 05170 x64, 06037 x192
   CM 11,3740 : 05170 x71, 06037 x185
   CM 11,3743 : 06037 x256
+  C64 cover: 6 arcs only untraced cases take; 48 more cases traced
+  C64 cuts: 33 truncated rows (0 cuts the oracle does not stop at, 0 differing), 0 arcs left
 froze 666 vectors to tests/cm_orbital_integration_vectors.h
+rc=0
+(12815 lines 'case N (point) does not fit one C64 diagnostic: host only' left out; the proof's c64_too_big_cases lists them)
