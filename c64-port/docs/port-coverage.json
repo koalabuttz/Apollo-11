@@ -2327,7 +2327,7 @@
       "sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
       "bytes": 78524,
       "lines": 3063,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2431,7 +2431,7 @@
           "verification": "docs/INTERPRETER-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2440,7 +2440,6 @@
           "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
           "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-interpreter/cm-interpreter-source-map.json",
@@ -2486,6 +2485,10 @@
               "path": "evidence/interpreter/interp-core-differential.log",
               "sha256": "3baf5f1e5c0c6c941637cd854ccaf33bba50ddb6969292e54bd9ae014c79d062"
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/interpreter-367.md",
+            "sha256": "96e09cb3e140e4a641baa36cb4a71d488fdfbd36509860b9f4b5282b9cd4aaa0"
           }
         }
       }
@@ -9138,7 +9141,7 @@
       "sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
       "bytes": 78662,
       "lines": 3075,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Selected native numerics/push/load/store, including fixed400 DDV; interpreter control and remaining operation paths remain untranslated.",
@@ -9247,7 +9250,7 @@
           "verification": "docs/INTERPRETER-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9256,7 +9259,6 @@
           "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
           "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-interpreter/lm-interpreter-source-map.json",
@@ -9302,6 +9304,10 @@
               "path": "evidence/interpreter/interp-core-differential.log",
               "sha256": "3baf5f1e5c0c6c941637cd854ccaf33bba50ddb6969292e54bd9ae014c79d062"
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/interpreter-367.md",
+            "sha256": "96e09cb3e140e4a641baa36cb4a71d488fdfbd36509860b9f4b5282b9cd4aaa0"
           }
         }
       }
@@ -11579,7 +11585,7 @@
       "sha256": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f",
       "bytes": 5012,
       "lines": 266,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -11605,7 +11611,7 @@
           "verification": "docs/LM-R31-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -11651,6 +11657,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-r31-file/lm-r31-file-closure.json",
             "sha256": "d4f2e0c9148e18842bcc6f53f2be8f7b1a4b55141b122b6ebe4fa73651ace139"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-371.md",
+            "sha256": "b5e9ad74353887816e1f88161b47ca117218721e48142e896342336cd8f83ced"
           }
         }
       }
