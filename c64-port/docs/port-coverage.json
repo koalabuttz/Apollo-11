@@ -5125,7 +5125,52 @@
           "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
           "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the native I/O record (cm_native_io); InIsr and channels 10-14, 30, 32 and 33 in agc_hardware for the core and IMU tables; channels 11-14 in cm_native_io and 30-33 in cm_channels for the optics routines (one record on a flight build: the shared channel model, Lane D1; docs/CM-T4RUPT-CHAIN.md).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_t4rupt_core_routines (3), cm_t4rupt_imu_routines (22) or cm_t4rupt_optics_basic (8) at its original address: T4RUPT, the T4JUMP targets, the IMU and optics tasks, OPTDRIVE, ENDZOPT, and the continuation after each call that leaves the file. The core and IMU routines run inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/CM-T4RUPT-IMU.md and docs/CM-T4RUPT-OPTICS.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "One instruction word is unreached: 10,2110, the positive slot of CCS A in OPTDRIVE's shaft stop check, where A is +0 or negative after MASK BIT15 and RXOR LCHAN of two sign bits (docs/CM-T4RUPT-CHAIN.md). Three constants (TABLNTH, 120MRUPT, OCT37737) would run as instructions only on paths no producer reaches (docs/T4RUPT-CORE.md).",
+          "data_validity": "Original constants and scaling; RELTAB, the IFAILJMP/C33JMP tables and the 2CADR/CADR/ADRES operands are read as data or followed as the original transfers. The checked-in scan spells ZOPFINI as ZOPFIN1 (marked in the source); the native code and the maps follow the listing's word. yaAGC's peripheral model empties the CDU, gyro and optics command counters when channel 14's drive bits are set; the comparisons start with those counters +0 and no drive in progress."
+        },
+        "external_continuations": [
+          "RESUME and the interrupted program (rupt-lead-ins); NOVAC for PROCKEY (cm-exec-services)",
+          "The IBNKCALL targets (OPTDRIVE from OPTTEST is in this file and native; SETCOARS), ZEROICDU",
+          "ALARM and VARALARM (ALARM_AND_ABORT), WAITLIST, VARDELAY and TASKOVER (cm-exec-services, cm-exec-jobs), and the tasks they start",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-source-map.json",
+            "sha256": "016a958e2f3244524f804a4dc27cade0854605136dc68cc40d7faaf18d11fd0d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-proof.json",
+            "sha256": "03b1a352b004eb495fd094317b744c5bcf6f0a054881315f2f56db6ebe9ac865"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-host.log",
+            "sha256": "df29b758b1bdf9be01b3030c71fc8f6314f5ea92cf9d2e30c555ea7c2cdfef40"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-vice.log",
+            "sha256": "85795238762cb784c9cab7122c2c56db3a2c96cb259f4926406b121131b95e2a",
+            "vice_targets": {
+              "vice-t4rupt-core": 279,
+              "vice-cm-t4rupt-imu": 300,
+              "vice-cm-t4rupt-optics": 46,
+              "vice-cm-t4rupt-chain": 269
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-chain-c64-cover.json",
+            "sha256": "d38a6a788528949b0822ad993dd76a1d158a441e28ed94a0d739d681fb91ffdf"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",

@@ -14,12 +14,12 @@
       "store": "tree"
     },
     "cm-t4rupt-closure-host.log": {
-      "sha256": "d9f8bcc24e967bc9982635ce8ce190edaa29b4ee2e2106aedf43a0818e29680d",
-      "bytes": 5485,
+      "sha256": "df29b758b1bdf9be01b3030c71fc8f6314f5ea92cf9d2e30c555ea7c2cdfef40",
+      "bytes": 4800,
       "store": "release"
     },
     "cm-t4rupt-closure-proof.json": {
-      "sha256": "48127682e49b304960bc7a8ff4941a729fbd8484c81aff2e677ed16457a4f5f8",
+      "sha256": "03b1a352b004eb495fd094317b744c5bcf6f0a054881315f2f56db6ebe9ac865",
       "bytes": 1926,
       "store": "tree"
     },
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-t4rupt-closure-vice.log": {
-      "sha256": "8a8147ef30bad6ab753bdc00be1b434ffdc10a511b2508f2d8915b99190d1594",
-      "bytes": 736,
+      "sha256": "85795238762cb784c9cab7122c2c56db3a2c96cb259f4926406b121131b95e2a",
+      "bytes": 1248,
       "store": "release"
     }
   }
