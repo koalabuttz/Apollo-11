@@ -108,7 +108,11 @@ def vice(a, m, prg, reu):
         sys.exit(f'FAIL: {prg.name} has no BASIC SYS header')
     dump = work / 'results.bin'
     dump.unlink(missing_ok=True)
-    (work / 'vice.mon').write_text(f'load "{prg}" 0\nwatch store c000\ng {int(sys_at[1]):04x}\n'
+    # With a pinned module (slot class 3), boot's DMA of it to $C000 is the
+    # first store there; the mailbox's done flag is the next.
+    pinned = '#define FL_PINNED ' in (STORE / f'{m}-load-check.h').read_text()
+    (work / 'vice.mon').write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
+                                   + f'g {int(sys_at[1]):04x}\n'
                                    f'bsave "{dump}" 0 c000 c0ff\nquit\n')
     cmd = [a.vice, '-default', '-console', '-pal', '-warp', '+sound',
            '-kernal', str(rom / 'kernal-901227-03.bin'), '-basic', str(rom / 'basic-901226-01.bin'),
@@ -153,12 +157,18 @@ def main():
     a = p.parse_args()
     m = a.mission
     report = json.loads((STORE / 'report.json').read_text())[m]
-    by_stem = {x['stem']: x for x in report['module_list'] if not x.get('chunk')}
+    # A stem's module, or its chunks (each a module) when the builder split it.
+    by_stem = {}
+    for x in report['module_list']:
+        if x.get('bytes'):
+            by_stem.setdefault(x['stem'], []).append(x['id'])
     stems = a.modules.split(',')
-    missing = [s for s in stems if s not in by_stem or not by_stem[s].get('bytes')]
+    missing = [s for s in stems if s not in by_stem]
     if missing:
         sys.exit(f'FAIL: {m}: not linked in the flight store: {" ".join(missing)}')
-    ids = [by_stem[s]['id'] for s in stems]
+    ids = [i for s in stems for i in by_stem[s]]
+    if len(ids) > 255:
+        sys.exit(f'FAIL: {m}: {len(ids)} modules under test; tools/module_test.c counts them in a byte')
     kinds = {io_kind(m, s) for s in stems}
     if len(kinds) != 1 or next(iter(kinds)) not in IO_DEFINE:
         sys.exit(f'FAIL: {m}: the modules take {sorted(kinds)}; tools/module_test.c carries {sorted(IO_DEFINE)}')
