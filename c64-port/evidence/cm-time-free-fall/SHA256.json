@@ -4,18 +4,18 @@
   "release": "evidence-cm-time-free-fall",
   "files": {
     "cm-time-free-fall-differential.log": {
-      "sha256": "65547548216d3e78a7f0a351948673cc9cccc6016e032ffe079b3cbc8f09fc77",
-      "bytes": 5585,
+      "sha256": "e591cd94622754646902e9ad8aadf0cd7f6d0beebfc139ec1e3d3d43d2c1ebec",
+      "bytes": 5378,
       "store": "tree"
     },
     "cm-time-free-fall-host.log": {
-      "sha256": "165a4360dff84fc087c0a21bf12bd1b553dfa146ea24476a0f7301240367b8c1",
-      "bytes": 1086,
+      "sha256": "d891373263b474d2ec62494870b24005de7a24d4513d1d0a7bce8d2586355a1d",
+      "bytes": 1140,
       "store": "tree"
     },
     "cm-time-free-fall-proof.json": {
-      "sha256": "2ab0c9132ebf0c6b73de45abd02abdc27e2dca89fe0366d3841b6b32617f00bc",
-      "bytes": 13478,
+      "sha256": "545419d89abf5e813c65d8dc935ef70ecb9e89d55f98a545a3dce16f9fc5b5e3",
+      "bytes": 13263,
       "store": "tree"
     },
     "cm-time-free-fall-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-time-free-fall-vice.log": {
-      "sha256": "7b5cb4bfaa6c85bcdf559e5a6c5965e821b2ab459a862d462f93893d0e1e76de",
-      "bytes": 1977,
+      "sha256": "359274c5fdd862361661b5487356bc20e7165bab98aeb1d89d1206b8f04af98c",
+      "bytes": 2265,
       "store": "tree"
     }
   }

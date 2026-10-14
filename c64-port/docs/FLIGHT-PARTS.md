@@ -32,6 +32,12 @@ function per bank) and a `'basic': 'full'` file (one `basic_run`) get the
 same guards, part keys and entry. Luminary parts read channels through
 `AGC_CH_HW_SET`, Comanche parts through the native I/O hooks.
 
+Keys in fixed-fixed memory (banks 02 and 03) are allowed only in a spec
+with `'fixed_fixed_any_fb'`, whose per-key routines already run there under
+any FB and SUPERBNK: the flight entry does the same for those banks, and
+`<sym>_leave` sets Z to the key's physical address, which for banks 02 and
+03 is its fixed-fixed address.
+
 Without `<SYM>_FLIGHT_PART` the file compiles to the same tokens as before.
 That holds for the host build, the coverage build and the C64 diagnostic
 groups (KEEP and BANKS masks), so the certified tests and evidence don't
@@ -75,6 +81,17 @@ As one module it did not fit a 16 KB job slot.
 `'basic': 'full'`, cut at bank 43 `02600`. Chunked by routine, the file
 took 32 modules of about 15.8 KB, because each one linked the whole
 `basic_run`. With the flight entry, its two parts replace them.
+
+## Luminary099 and Comanche055 INTERPRETER
+
+`'basic': 'full'` with `'fixed_fixed_any_fb'`, cut at fixed-fixed `07000`:
+part 1 is bank 00 and `06000`-`06777`, part 2 is `07000` up. Chunked by
+routine, `lm_interpreter_basic` took 13 modules (212 KB) on the LM store
+with Lane C's chunk packing, each with its own `basic_run` of about 10.7 KB.
+As parts it is two modules, 12,745 and 10,465 bytes on LM. The flight
+parts check needs the rope image the spec's target loads (DMP, POLY and
+the others read their callers' words from it); `tools/flight_parts_check.py`
+loads it whenever the spec's own target does.
 
 ## Store classification
 

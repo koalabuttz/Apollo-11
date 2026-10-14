@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 47872,
- "cases_sha256": "6f57ed812876a30e7508f2c0ab3bf3ac549bbb7ff8c8ab20d826c69767bf391c",
- "oracle_sha256": "8fc487954e4c5371c032519d6e54d9e23f056da6422fc4527b3bb747f7e94670",
+ "cases_sha256": "dc093eceed47a7706811f47ad47a30b8b55d48622698358974d63b56c021819d",
+ "oracle_sha256": "f9ff4af5131f6e58e6026796cb0ce3e89572ca1a60dd1b66fde2dac8acb79b47",
  "frozen_vectors": 374,
  "c64_vectors": [
   {
@@ -19,7 +19,7 @@
    "cases": 38,
    "case_ids": [
     213,
-    114,
+    248,
     93,
     78,
     334,
@@ -150,14 +150,13 @@
   {
    "mission": "cm",
    "keep": "0x7fffffe0000000006000000200000",
-   "cases": 34,
+   "cases": 33,
    "case_ids": [
-    23039,
+    22805,
     22874,
     22895,
     22862,
     22826,
-    22841,
     22787,
     22796,
     23055,
@@ -167,8 +166,8 @@
     24241,
     24410,
     24816,
-    24988,
-    25112,
+    24871,
+    25115,
     25431,
     25648,
     25955,
@@ -346,19 +345,20 @@
  "c64_coverage": {
   "host_labels": 142,
   "c64_labels": 142,
-  "host_edges": 2467,
-  "c64_edges": 2467,
+  "host_edges": 2498,
+  "c64_edges": 2498,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 1281,
-  "c64_taken": 1281,
+  "host_taken": 1357,
+  "c64_taken": 1357,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
    "src/cm_p61_p67.c",
    "src/rtb_angles.c",
+   "src/cm_integration_moves.c",
    "src/lm_interp_orders.c",
    "src/lm_interp_steps.c",
    "src/cm_interp_orders.c",
@@ -680,20 +680,18 @@
    "03611": 256
   },
   "CM 26,2550 ": {
-   "03672": 4,
+   "03672": 7,
    "06037": 131,
-   "05170": 25,
-   "05650": 68,
-   "03352": 26,
-   "04662": 2
+   "05170": 31,
+   "05650": 80,
+   "04662": 7
   },
   "CM 26,2551 ": {
    "06037": 117,
-   "05650": 72,
-   "04662": 6,
-   "05170": 25,
-   "03352": 31,
-   "03672": 5
+   "05650": 88,
+   "04662": 11,
+   "05170": 30,
+   "03672": 10
   },
   "CM 26,2555 ": {
    "05245": 256
@@ -714,18 +712,16 @@
    "04701": 256
   },
   "CM 26,2603 ": {
-   "05650": 133,
-   "03352": 65,
-   "05170": 42,
-   "03672": 7,
-   "04662": 9
+   "05650": 161,
+   "05170": 58,
+   "03672": 15,
+   "04662": 22
   },
   "CM 26,2604 S61.1A": {
-   "05650": 133,
-   "03352": 70,
-   "05170": 42,
-   "04662": 2,
-   "03672": 9
+   "05650": 162,
+   "03672": 22,
+   "05170": 59,
+   "04662": 13
   },
   "CM 26,2607 ": {
    "05650": 152,
@@ -1094,7 +1090,7 @@
    "06037": 256
   }
  },
- "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, BOVB ENDT(X), CHANG2, CLEARMRK, DANZIG, DOWNFLAG, ENDOFJOB, FINDVAC, GOTOPOOH, NEWMODEX, NOVAC, PHASCHNG, POSTJUMP, RTB CM/DAPIC, RTB REFAZE10, RTB SERVNOUT, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2PHSCHNG, ALARM, BANKCALL, CHANG2, CLEARMRK, DANZIG, DOWNFLAG, ENDOFJOB, FINDVAC, GOTOPOOH, NEWMODEX, NOVAC, PHASCHNG, POSTJUMP, RTB CM/DAPIC, RTB REFAZE10, RTB SERVNOUT, TASKOVER, UPFLAG, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
  "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
