@@ -10457,7 +10457,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
-            "sha256": "7b94eae6b3ed12329ac6450373c2409bfbbd20cfc4d7ea02c5039d7ea896addd"
+            "sha256": "9de275526e1ace33c6b29db5f4dc357709f6e8a446675529871fdd94fb90c490"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
@@ -10465,14 +10465,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
-            "sha256": "9fe4088d24498f7fc0b0ddbebcfae448bec25b5c8cdf076599a73080acb5ab80",
+            "sha256": "073ac6147aadedd4ffd78443d09b2ca8be27194cf617b63823dce0ed7d5e3a09",
             "vice_targets": {
-              "vice-lm-p20-p25": 1339
+              "vice-lm-p20-p25": 1350
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
-            "sha256": "35006d8f7b94e903d6bd5d2655b6c72fba32d04e4b847454e9c46d334deedf6b"
+            "sha256": "1fb449f2226e4f50c0fade7237329d429472e63dfede4c3f58dd4da3ea4734bf"
           }
         }
       }
