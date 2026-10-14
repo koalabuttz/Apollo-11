@@ -2267,3 +2267,15 @@ Every instruction of Comanche055 ALARM_AND_ABORT runs as routines of the control
 ## Translate MEASUREMENT_INCORPORATION
 
 All of Luminary099 and Comanche055 MEASUREMENT_INCORPORATION (384 and 385 words: INCORP1, NEWZCOMP and INCORP2, the rendezvous navigation filter's measurement update that P20-P25 run for every mark) are native C on the control-transfer ABI, as 160 routines per mission compiled by tools/interp_compile.py, with native RTB TPMODE and the MOVE* state-vector copies (the new src/cm_integration_moves.c for Comanche). The differential gained 'flow_from': every routine but the entries starts from the state the original program reaches there from INCORP1 or INCORP2, run on through the outside code it calls, with QPRET pinned to a fixed CADR so interpretive entries return where the run ends. All 163,840 cases equal the original programs in yaAGC, with all 314 resume points flowed. The strict and sanitizer host tests pass 2,560 frozen cases, and 19 C64 diagnostics pass 353 cases in VICE that take all 2,221 host branch outcomes. Both files have pending complete certificates for the certificate reviewer. See `docs/MEASUREMENT-INCORPORATION.md`.
+
+## Translate AOSTASK_AND_AOSJOB
+
+All of Luminary099 AOSTASK_AND_AOSJOB (723 words: 1/ACCSET, 1/ACCJOB and 1/ACCS, the DAP's jet acceleration and inertia tables, and the AOSTASK/AOSJOB offset-acceleration filter) is native C on the control-transfer ABI, as 11 basic routines at their original addresses compiled by tools/interp_compile.py ('basic': 'full'). That is the first Luminary file compiled this way: basic_compile gained the per-mission io type, and channel orders go through the shared channel model. The new spec key 'tcf_words' runs a TCF stored in erasable (TC ARET). All 2,816 cases equal yaAGC; 88 frozen cases pass the strict and sanitizer host tests, and 33 C64 cases pass in VICE, taking all 700 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-AOSTASK.md`.
+
+## Compile KALMAN_FILTER for the DAP
+
+Luminary099 KALMAN_FILTER's RATELOOP is compiled as one basic routine of the control-transfer ABI (`src/lm_kalman.c`) for the LM DAP's per-cycle set, alongside the complete hand-written `src/lm_torque.c`. The new spec key 'fast_window' routes its EB6 window operands to Lane F's one-byte afw_* helpers: 2,208 bytes on the flight image. All 2,048 cases equal yaAGC; 64 frozen cases pass the strict and sanitizer host tests, and 3 C64 cases pass in VICE, taking all 193 host branch outcomes. See `docs/LM-KALMAN-COMPILED.md`.
+
+## Translate RADAR_LEADIN_ROUTINES (compiled)
+
+All of Luminary099 RADAR_LEADIN_ROUTINES (47 words: RADSAMP, DORSAMP, DORSAMP2 and VARADAR) is native C on the control-transfer ABI, as 7 basic routines at their original addresses compiled by tools/interp_compile.py. All 1,792 cases equal yaAGC over the sampling words' flight domain; 56 frozen cases pass the strict and sanitizer host tests, and 14 C64 cases pass in VICE, taking all 179 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-RADAR-LEADIN-ROUTINES.md`.
