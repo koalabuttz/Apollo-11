@@ -2794,8 +2794,7 @@ SPECS = {
         'symbol': {'lm': 'lm_p20_p25'},
         # PROG20/22/25 from FRESH_START, the rest the labels other files call.
         # Channel instructions run on the shared I/O channel model ('channels',
-        # #259); channels 010 and 015 are not modelled and still refuse, as
-        # does RRLIMCHK's entry.
+        # #259); the file names no channel 010 or 015.
         # (Shared compiler options every refreeze sets now: the C64 INDEX
         # end-around carry, the fixed $7000 image, and a CCS arm on the
         # word after an EXTEND refused.)
@@ -2811,8 +2810,6 @@ SPECS = {
         # an EXTEND would run it unextended (DGCHECK's TS ITEMP1 skipping
         # RAND CHAN33's EXTEND): refused.
         'refuse_skip_unextended': True,
-        'partial': {'lm': 'channel orders on channels 010 and 015, not in the shared I/O channel model yet, '
-                          'refuse; RRLIMCHK\'s double index (EXTEND, INDEX Q, INDEX 0) is not compiled yet'},
         'channels': 'all',
         # RROUT's WOR CHAN14 sets the RR CDU drive bits, and yaAGC's optics
         # model then dumps CDUT/CDUS (its OPTY/OPTX) at once: the oracle

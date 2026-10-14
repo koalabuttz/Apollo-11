@@ -1168,7 +1168,9 @@ class Compiler:
             self._inline_index = True
             self._inline_ext = extended
             # (0157, a scratch word for the index, keeps its value)
+            outer = self.unit_words
             st, succ = self.basic_unit(nxt, bank)
+            self.unit_words = range(outer.start, self.unit_words.stop)
             if not self._ix:
                 raise CompileError('INDEX Q; INDEX 0 at %s: no indexed instruction' % self.where(p))
             self._ix = self._ix_write = None
