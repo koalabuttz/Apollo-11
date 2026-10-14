@@ -130,6 +130,28 @@ void irc_cover(unsigned n);
 #else
 #define IRC_COVER(n) ((void)0)
 #endif
+/* Flight parts (spec 'flight_parts', docs/FLIGHT-PARTS.md): LM_AOSTASK_FLIGHT_PART=j
+ * builds part j of 3 for the C64 flight store, the basic words between
+ * its cuts (LM_AOSTASK_OUT: the others); a run that reaches another part's word stops there
+ * when it is a key (lm_aostask_leave), and is refused otherwise. */
+#ifdef LM_AOSTASK_FLIGHT_PART
+#if LM_AOSTASK_FLIGHT_PART==1
+#define LM_AOSTASK_BANKS 0x10000ull
+#define LM_AOSTASK_OUT(at) ((at)>=16904u)
+#elif LM_AOSTASK_FLIGHT_PART==2
+#define LM_AOSTASK_BANKS 0x10000ull
+#define LM_AOSTASK_OUT(at) ((at)<16904u || (at)>=17180u)
+#elif LM_AOSTASK_FLIGHT_PART==3
+#define LM_AOSTASK_BANKS 0x10000ull
+#define LM_AOSTASK_OUT(at) ((at)<17180u)
+#else
+#error LM_AOSTASK_FLIGHT_PART names no part
+#endif
+static MAYBE_UNUSED enum exec_status lm_aostask_leave(apollo_overlay_state *s,uint16_t at);
+#define LM_AOSTASK_FP(at) if(LM_AOSTASK_OUT(at)){return lm_aostask_leave(s,(at));}
+#else
+#define LM_AOSTASK_FP(at)
+#endif
 /* Every basic word of the file. */
 static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,p66_bias_io *io,uint16_t at){
  long ix=0,e=0;uint16_t p;
@@ -146,86 +168,119 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,p66_bias_
  case 17279u:goto B41577;
  case 17296u:goto B41620;
  case 17344u:goto B41700;
+#ifdef LM_AOSTASK_FLIGHT_PART
+ case 16827u:goto B40673;
+ case 16828u:goto B40674;
+ case 16835u:goto B40703;
+ case 16836u:goto B40704;
+ case 16841u:goto B40711;
+ case 16842u:goto B40712;
+ case 16894u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B40776c;
+ case 16896u:goto B41000;
+ case 16904u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41010c;
+ case 16925u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41035c;
+ case 16965u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41105c;
+ case 17006u:goto B41156;
+ case 17007u:goto B41157;
+ case 17031u:goto B41207;
+ case 17032u:goto B41210;
+ case 17048u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41230c;
+ case 17049u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41231c;
+ case 17085u:goto B41275;
+ case 17104u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41320c;
+ case 17151u:goto B41377;
+ case 17170u:goto B41422;
+ case 17180u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41434c;
+ case 17198u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41456c;
+ case 17203u:goto B41463;
+ case 17217u:goto B41501;
+ case 17226u:goto B41512;
+ case 17239u:goto B41527;
+ case 17337u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41671c;
+ case 17350u:goto B41706;
+ case 17369u:goto B41731;
+ case 17371u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B41733c;
+#endif
  default:return EXEC_OUT_OF_SCOPE;
  }
 B40447:
- IRC_COVER(0u);
+ LM_AOSTASK_FP(16679u) IRC_COVER(0u);
  /* 20,2447 1/ACCSET CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B40450c;
 B40450c:
- IRC_COVER(1u);
+ LM_AOSTASK_FP(16680u) IRC_COVER(1u);
  /* 20,2450 TS AOSQ */
  (void)ai_ts(s,(unsigned)01537);
  goto B40451c;
 B40451c:
- IRC_COVER(2u);
+ LM_AOSTASK_FP(16681u) IRC_COVER(2u);
  /* 20,2451 TS AOSR */
  (void)ai_ts(s,(unsigned)01541);
  goto B40452c;
 B40452c:
- IRC_COVER(3u);
+ LM_AOSTASK_FP(16682u) IRC_COVER(3u);
  /* 20,2452 TS ALPHAQ */
  (void)ai_ts(s,(unsigned)01424);
  goto B40453c;
 B40453c:
- IRC_COVER(4u);
+ LM_AOSTASK_FP(16683u) IRC_COVER(4u);
  /* 20,2453 TS ALPHAR */
  (void)ai_ts(s,(unsigned)01425);
  goto B40454c;
 B40454:
- IRC_COVER(5u);
+ LM_AOSTASK_FP(16684u) IRC_COVER(5u);
  /* 20,2454 1/ACCJOB TC BANKCALL */
  ai_tc(s,002455u);
  W[5]=04616u;return EXEC_OK; /* BANKCALL */
 B40454c:
- IRC_COVER(6u);
+ LM_AOSTASK_FP(16684u) IRC_COVER(6u);
  goto B40454;
 B40456:
- IRC_COVER(7u);
+ LM_AOSTASK_FP(16686u) IRC_COVER(7u);
  /* 20,2456 TC ENDOFJOB */
  ai_tc(s,002457u);
  W[5]=05155u;return EXEC_OK; /* ENDOFJOB */
 B40457:
- IRC_COVER(8u);
+ LM_AOSTASK_FP(16687u) IRC_COVER(8u);
  /* 20,2457 1/ACCS CA EBANK6 */
  ai_caf(s,003000u); /* PRIO3 */
  goto B40460c;
 B40460c:
- IRC_COVER(9u);
+ LM_AOSTASK_FP(16688u) IRC_COVER(9u);
  /* 20,2460 TS EBANK */
  (void)ai_ts(s,(unsigned)03);
  goto B40461c;
 B40461:
- IRC_COVER(10u);
+ LM_AOSTASK_FP(16689u) IRC_COVER(10u);
  /* 20,2461 TC MAKECADR */
  ai_tc(s,002462u);
  W[5]=04645u;return EXEC_OK; /* MAKECADR */
 B40461c:
- IRC_COVER(11u);
+ LM_AOSTASK_FP(16689u) IRC_COVER(11u);
  goto B40461;
 B40462:
- IRC_COVER(12u);
+ LM_AOSTASK_FP(16690u) IRC_COVER(12u);
  /* 20,2462 TS ACCRETRN */
  if(ai_ts(s,(unsigned)0117))goto B40464c;
  goto B40463c;
 B40463c:
- IRC_COVER(13u);
+ LM_AOSTASK_FP(16691u) IRC_COVER(13u);
  /* 20,2463 CA DAPBOOLS */
  ai_ca(s,0111);
  goto B40464c;
 B40464c:
- IRC_COVER(14u);
+ LM_AOSTASK_FP(16692u) IRC_COVER(14u);
  /* 20,2464 MASK CSMDOCKD */
  ai_maskf(s,010000u); /* BIT13 */
  goto B40465c;
 B40465c:
- IRC_COVER(15u);
+ LM_AOSTASK_FP(16693u) IRC_COVER(15u);
  /* 20,2465 TS DOCKTEMP */
  (void)ai_ts(s,(unsigned)0157);
  goto B40466c;
 B40466c:
- IRC_COVER(16u);
+ LM_AOSTASK_FP(16694u) IRC_COVER(16u);
  /* 20,2466 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B40467c;
@@ -235,125 +290,125 @@ B40466c:
  }
  return EXEC_INVALID_ACTION;
 B40467c:
- IRC_COVER(17u);
+ LM_AOSTASK_FP(16695u) IRC_COVER(17u);
  /* 20,2467 CS CSMMASS */
  ai_cs(s,01332);
  goto B40470c;
 B40470c:
- IRC_COVER(18u);
+ LM_AOSTASK_FP(16696u) IRC_COVER(18u);
  /* 20,2470 AD MASS */
  ai_ad(s,01244);
  goto B40471;
 B40471:
- IRC_COVER(19u);
+ LM_AOSTASK_FP(16697u) IRC_COVER(19u);
  /* 20,2471 TS LEMMASS */
  if(ai_ts(s,(unsigned)01331))goto B40473c;
  goto B40472c;
 B40471c:
- IRC_COVER(20u);
+ LM_AOSTASK_FP(16697u) IRC_COVER(20u);
  /* 20,2471 TS LEMMASS */
  (void)ai_ts(s,(unsigned)01331);
  goto B40472c;
 B40472c:
- IRC_COVER(21u);
+ LM_AOSTASK_FP(16698u) IRC_COVER(21u);
  /* 20,2472 INHINT */
  io->interrupt_enabled=0;
  goto B40473c;
 B40473c:
- IRC_COVER(22u);
+ LM_AOSTASK_FP(16699u) IRC_COVER(22u);
  /* 20,2473 CAE FLGWRD10 */
  ai_ca(s,0106);
  goto B40474c;
 B40474c:
- IRC_COVER(23u);
+ LM_AOSTASK_FP(16700u) IRC_COVER(23u);
  /* 20,2474 MASK APSFLBIT */
  ai_maskf(s,010000u); /* BIT13 */
  goto B40475c;
 B40475c:
- IRC_COVER(24u);
+ LM_AOSTASK_FP(16701u) IRC_COVER(24u);
  /* 20,2475 EXTEND */
  goto X40476c;
 X40476c:
- IRC_COVER(25u);
+ LM_AOSTASK_FP(16702u) IRC_COVER(25u);
  /* 20,2476 EXTENDED BZF DPSFLITE */
  if(ai_bzf(s)){
    goto B40522c;
  }
  goto B40477c;
 B40477c:
- IRC_COVER(26u);
+ LM_AOSTASK_FP(16703u) IRC_COVER(26u);
  /* 20,2477 CS POSMAX */
  ai_csf(s,037777u); /* POSMAX */
  goto B40500c;
 B40500c:
- IRC_COVER(27u);
+ LM_AOSTASK_FP(16704u) IRC_COVER(27u);
  /* 20,2500 TS -2JETLIM */
  (void)ai_ts(s,(unsigned)01475);
  goto B40501c;
 B40501c:
- IRC_COVER(28u);
+ LM_AOSTASK_FP(16705u) IRC_COVER(28u);
  /* 20,2501 CAF OCT14 */
  ai_caf(s,000014u); /* OCT14 */
  goto B40502c;
 B40502c:
- IRC_COVER(29u);
+ LM_AOSTASK_FP(16706u) IRC_COVER(29u);
  /* 20,2502 TS MPAC */
  (void)ai_ts(s,(unsigned)0154);
  goto B40503c;
 B40503c:
- IRC_COVER(30u);
+ LM_AOSTASK_FP(16707u) IRC_COVER(30u);
  /* 20,2503 CS LEMMASS */
  ai_cs(s,01331);
  goto B40504c;
 B40504c:
- IRC_COVER(31u);
+ LM_AOSTASK_FP(16708u) IRC_COVER(31u);
  /* 20,2504 AD HIASCENT */
  ai_ad(s,01400);
  goto B40505;
 B40505:
- IRC_COVER(32u);
+ LM_AOSTASK_FP(16709u) IRC_COVER(32u);
  /* 20,2505 EXTEND */
  goto X40506;
 X40506:
- IRC_COVER(33u);
+ LM_AOSTASK_FP(16710u) IRC_COVER(33u);
  /* 20,2506 EXTENDED BZMF MASSFIX */
  if(ai_bzmf(s)){
    goto B40513;
  }
  goto B40507;
 B40507:
- IRC_COVER(34u);
+ LM_AOSTASK_FP(16711u) IRC_COVER(34u);
  /* 20,2507 CS LEMMASS */
  ai_cs(s,01331);
  goto B40510c;
 B40510c:
- IRC_COVER(35u);
+ LM_AOSTASK_FP(16712u) IRC_COVER(35u);
  /* 20,2510 AD LOASCENT */
  ai_adf(s,001046u); /* LOASCENT */
  goto B40511;
 B40511:
- IRC_COVER(36u);
+ LM_AOSTASK_FP(16713u) IRC_COVER(36u);
  /* 20,2511 EXTEND */
  goto X40512;
 X40512:
- IRC_COVER(37u);
+ LM_AOSTASK_FP(16714u) IRC_COVER(37u);
  /* 20,2512 EXTENDED BZMF F(MASS) */
  if(ai_bzmf(s)){
    goto B40540;
  }
  goto B40513;
 B40513:
- IRC_COVER(38u);
+ LM_AOSTASK_FP(16715u) IRC_COVER(38u);
  /* 20,2513 MASSFIX ADS LEMMASS */
  ai_ads(s,01331);
  goto B40514;
 B40514:
- IRC_COVER(39u);
+ LM_AOSTASK_FP(16716u) IRC_COVER(39u);
  /* 20,2514 ZL */
  ai_lxch(s,07);
  goto B40515;
 B40515:
- IRC_COVER(40u);
+ LM_AOSTASK_FP(16717u) IRC_COVER(40u);
  /* 20,2515 CCS DOCKTEMP */
  switch(ai_ccs(s,0157)){
   case 0:goto B40516c;
@@ -363,110 +418,110 @@ B40515:
  }
  return EXEC_INVALID_ACTION;
 B40516c:
- IRC_COVER(41u);
+ LM_AOSTASK_FP(16718u) IRC_COVER(41u);
  /* 20,2516 CAE CSMMASS */
  ai_ca(s,01332);
  goto B40517c;
 B40517c:
- IRC_COVER(42u);
+ LM_AOSTASK_FP(16719u) IRC_COVER(42u);
  /* 20,2517 AD LEMMASS */
  ai_ad(s,01331);
  goto B40520;
 B40520:
- IRC_COVER(43u);
+ LM_AOSTASK_FP(16720u) IRC_COVER(43u);
  /* 20,2520 DXCH MASS */
  ai_dxch(s,01244);
  goto B40521c;
 B40520c:
- IRC_COVER(44u);
+ LM_AOSTASK_FP(16720u) IRC_COVER(44u);
  goto B40520;
 B40521c:
- IRC_COVER(45u);
+ LM_AOSTASK_FP(16721u) IRC_COVER(45u);
  /* 20,2521 TCF F(MASS) */
  goto B40540c;
 B40522c:
- IRC_COVER(46u);
+ LM_AOSTASK_FP(16722u) IRC_COVER(46u);
  /* 20,2522 DPSFLITE CS BIT10 */
  ai_csf(s,001000u); /* BIT10 */
  goto B40523c;
 B40523c:
- IRC_COVER(47u);
+ LM_AOSTASK_FP(16723u) IRC_COVER(47u);
  /* 20,2523 TS -2JETLIM */
  (void)ai_ts(s,(unsigned)01475);
  goto B40524c;
 B40524c:
- IRC_COVER(48u);
+ LM_AOSTASK_FP(16724u) IRC_COVER(48u);
  /* 20,2524 CAF SIX */
  ai_caf(s,000006u); /* REVCNT */
  goto B40525c;
 B40525c:
- IRC_COVER(49u);
+ LM_AOSTASK_FP(16725u) IRC_COVER(49u);
  /* 20,2525 TS MPAC */
  (void)ai_ts(s,(unsigned)0154);
  goto B40526c;
 B40526c:
- IRC_COVER(50u);
+ LM_AOSTASK_FP(16726u) IRC_COVER(50u);
  /* 20,2526 CS LEMMASS */
  ai_cs(s,01331);
  goto B40527c;
 B40527c:
- IRC_COVER(51u);
+ LM_AOSTASK_FP(16727u) IRC_COVER(51u);
  /* 20,2527 AD HIDESCNT */
  ai_adf(s,007361u); /* HIDESCNT */
  goto B40530;
 B40530:
- IRC_COVER(52u);
+ LM_AOSTASK_FP(16728u) IRC_COVER(52u);
  /* 20,2530 EXTEND */
  goto X40531;
 X40531:
- IRC_COVER(53u);
+ LM_AOSTASK_FP(16729u) IRC_COVER(53u);
  /* 20,2531 EXTENDED BZMF MASSFIX */
  if(ai_bzmf(s)){
    goto B40513;
  }
  goto B40532;
 B40532:
- IRC_COVER(54u);
+ LM_AOSTASK_FP(16730u) IRC_COVER(54u);
  /* 20,2532 CS LEMMASS */
  ai_cs(s,01331);
  goto B40533c;
 B40533c:
- IRC_COVER(55u);
+ LM_AOSTASK_FP(16731u) IRC_COVER(55u);
  /* 20,2533 AD LODESCNT */
  ai_adf(s,000666u); /* LODESCNT */
  goto B40534;
 B40534:
- IRC_COVER(56u);
+ LM_AOSTASK_FP(16732u) IRC_COVER(56u);
  /* 20,2534 AD HIASCENT */
  ai_ad(s,01400);
  goto B40535;
 B40535:
- IRC_COVER(57u);
+ LM_AOSTASK_FP(16733u) IRC_COVER(57u);
  /* 20,2535 EXTEND */
  goto X40536;
 X40536:
- IRC_COVER(58u);
+ LM_AOSTASK_FP(16734u) IRC_COVER(58u);
  /* 20,2536 EXTENDED BZMF F(MASS) */
  if(ai_bzmf(s)){
    goto B40540;
  }
  goto B40537;
 B40537:
- IRC_COVER(59u);
+ LM_AOSTASK_FP(16735u) IRC_COVER(59u);
  /* 20,2537 TCF MASSFIX */
  goto B40513;
 B40540:
- IRC_COVER(60u);
+ LM_AOSTASK_FP(16736u) IRC_COVER(60u);
  /* 20,2540 F(MASS) RELINT */
  io->interrupt_enabled=1;
  goto B40541;
 B40540c:
- IRC_COVER(61u);
+ LM_AOSTASK_FP(16736u) IRC_COVER(61u);
  /* 20,2540 F(MASS) RELINT */
  io->interrupt_enabled=1;
  goto B40541c;
 B40541:
- IRC_COVER(62u);
+ LM_AOSTASK_FP(16737u) IRC_COVER(62u);
  /* 20,2541 CCS DOCKTEMP */
  switch(ai_ccs(s,0157)){
   case 0:goto B40542c;
@@ -476,42 +531,42 @@ B40541:
  }
  return EXEC_INVALID_ACTION;
 B40541c:
- IRC_COVER(63u);
+ LM_AOSTASK_FP(16737u) IRC_COVER(63u);
  goto B40541;
 B40542c:
- IRC_COVER(64u);
+ LM_AOSTASK_FP(16738u) IRC_COVER(64u);
  /* 20,2542 TCF DOCKED */
  goto B41105c;
 B40543c:
- IRC_COVER(65u);
+ LM_AOSTASK_FP(16739u) IRC_COVER(65u);
  /* 20,2543 CA TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B40544c;
 B40544c:
- IRC_COVER(66u);
+ LM_AOSTASK_FP(16740u) IRC_COVER(66u);
  /* 20,2544 STCTR TS MPAC       +1 */
  (void)ai_ts(s,(unsigned)0155);
  goto B40545c;
 B40545c:
- IRC_COVER(67u);
+ LM_AOSTASK_FP(16741u) IRC_COVER(67u);
  /* 20,2545 CS TWO */
  ai_csf(s,000002u); /* BIT2 */
  goto B40546c;
 B40546c:
- IRC_COVER(68u);
+ LM_AOSTASK_FP(16742u) IRC_COVER(68u);
  /* 20,2546 ADS MPAC */
  ai_ads(s,0154);
  goto B40547;
 B40547:
- IRC_COVER(69u);
+ LM_AOSTASK_FP(16743u) IRC_COVER(69u);
  /* 20,2547 STCTR1 CAE LEMMASS */
  ai_ca(s,01331);
  goto B40550c;
 B40547c:
- IRC_COVER(70u);
+ LM_AOSTASK_FP(16743u) IRC_COVER(70u);
  goto B40547;
 B40550c:
- IRC_COVER(71u);
+ LM_AOSTASK_FP(16744u) IRC_COVER(71u);
  /* 20,2550 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2551 (indexed) AD INERCONC */
@@ -521,16 +576,16 @@ B40550c:
  else ai_ad(s,(unsigned)e);
  goto B40552;
 B40552:
- IRC_COVER(72u);
+ LM_AOSTASK_FP(16746u) IRC_COVER(72u);
  /* 20,2552 TS MPAC       +2 */
  if(ai_ts(s,(unsigned)0156))goto B40554c;
  goto B40553c;
 B40553c:
- IRC_COVER(73u);
+ LM_AOSTASK_FP(16747u) IRC_COVER(73u);
  /* 20,2553 EXTEND */
  goto X40554c;
 B40554c:
- IRC_COVER(74u);
+ LM_AOSTASK_FP(16748u) IRC_COVER(74u);
  /* 20,2554 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2555 (indexed) DCA INERCONA */
@@ -540,7 +595,7 @@ B40554c:
  else ai_ca(s,(unsigned)e);
  goto B40556c;
 X40554c:
- IRC_COVER(75u);
+ LM_AOSTASK_FP(16748u) IRC_COVER(75u);
  /* 20,2554 EXTENDED INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2555 EXTENDED (indexed) DCA INERCONA */
@@ -550,16 +605,16 @@ X40554c:
  else ai_dca(s,(unsigned)(e-1));
  goto B40556c;
 B40556c:
- IRC_COVER(76u);
+ LM_AOSTASK_FP(16750u) IRC_COVER(76u);
  /* 20,2556 EXTEND */
  goto X40557c;
 X40557c:
- IRC_COVER(77u);
+ LM_AOSTASK_FP(16751u) IRC_COVER(77u);
  /* 20,2557 EXTENDED DV MPAC       +2 */
  ai_dv(s,0156);
  goto B40560c;
 B40560c:
- IRC_COVER(78u);
+ LM_AOSTASK_FP(16752u) IRC_COVER(78u);
  /* 20,2560 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2561 (indexed) AD INERCONB */
@@ -569,7 +624,7 @@ B40560c:
  else ai_ad(s,(unsigned)e);
  goto B40562;
 B40562:
- IRC_COVER(79u);
+ LM_AOSTASK_FP(16754u) IRC_COVER(79u);
  /* 20,2562 INDEX MPAC       +1 */
  ix=agc_to_int(ai_word(s,0155));
  /* 20,2563 (indexed) TS 1JACC */
@@ -578,7 +633,7 @@ B40562:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B40565c;
  goto B40564c;
 B40564c:
- IRC_COVER(80u);
+ LM_AOSTASK_FP(16756u) IRC_COVER(80u);
  /* 20,2564 CCS MPAC       +1 */
  switch(ai_ccs(s,0155)){
   case 0:goto B40565c;
@@ -588,288 +643,288 @@ B40564c:
  }
  return EXEC_INVALID_ACTION;
 B40565c:
- IRC_COVER(81u);
+ LM_AOSTASK_FP(16757u) IRC_COVER(81u);
  /* 20,2565 TCF STCTR */
  goto B40544c;
 B40566c:
- IRC_COVER(82u);
+ LM_AOSTASK_FP(16758u) IRC_COVER(82u);
  /* 20,2566 TCF COMMEQS */
  goto B40570c;
 B40567c:
- IRC_COVER(83u);
+ LM_AOSTASK_FP(16759u) IRC_COVER(83u);
  /* 20,2567 TCF LRESC */
  goto B40667c;
 B40570c:
- IRC_COVER(84u);
+ LM_AOSTASK_FP(16760u) IRC_COVER(84u);
  /* 20,2570 COMMEQS CS 1JACCR */
  ai_cs(s,01532);
  goto B40571c;
 B40571c:
- IRC_COVER(85u);
+ LM_AOSTASK_FP(16761u) IRC_COVER(85u);
  /* 20,2571 AD 1JACCQ */
  ai_ad(s,01531);
  goto B40572;
 B40572:
- IRC_COVER(86u);
+ LM_AOSTASK_FP(16762u) IRC_COVER(86u);
  /* 20,2572 EXTEND */
  goto X40573;
 X40573:
- IRC_COVER(87u);
+ LM_AOSTASK_FP(16763u) IRC_COVER(87u);
  /* 20,2573 EXTENDED BZMF BIGIQ */
  if(ai_bzmf(s)){
    goto B40617;
  }
  goto B40574;
 B40574:
- IRC_COVER(88u);
+ LM_AOSTASK_FP(16764u) IRC_COVER(88u);
  /* 20,2574 EXTEND */
  goto X40575;
 X40575:
- IRC_COVER(89u);
+ LM_AOSTASK_FP(16765u) IRC_COVER(89u);
  /* 20,2575 EXTENDED DV 1JACCQ */
  ai_dv(s,01531);
  goto B40576c;
 B40576c:
- IRC_COVER(90u);
+ LM_AOSTASK_FP(16766u) IRC_COVER(90u);
  /* 20,2576 TS EPSILON */
  (void)ai_ts(s,(unsigned)0155);
  goto B40577c;
 B40577c:
- IRC_COVER(91u);
+ LM_AOSTASK_FP(16767u) IRC_COVER(91u);
  /* 20,2577 AD -EPSMAX */
  ai_adf(s,062362u); /* -EPSMAX */
  goto B40600;
 B40600:
- IRC_COVER(92u);
+ LM_AOSTASK_FP(16768u) IRC_COVER(92u);
  /* 20,2600 EXTEND */
  goto X40601;
 X40601:
- IRC_COVER(93u);
+ LM_AOSTASK_FP(16769u) IRC_COVER(93u);
  /* 20,2601 EXTENDED BZMF GOODEPS1 */
  if(ai_bzmf(s)){
    goto B40604;
  }
  goto B40602;
 B40602:
- IRC_COVER(94u);
+ LM_AOSTASK_FP(16770u) IRC_COVER(94u);
  /* 20,2602 CS -EPSMAX */
  ai_csf(s,062362u); /* -EPSMAX */
  goto B40603c;
 B40603c:
- IRC_COVER(95u);
+ LM_AOSTASK_FP(16771u) IRC_COVER(95u);
  /* 20,2603 TS EPSILON */
  (void)ai_ts(s,(unsigned)0155);
  goto B40604c;
 B40604:
- IRC_COVER(96u);
+ LM_AOSTASK_FP(16772u) IRC_COVER(96u);
  /* 20,2604 GOODEPS1 CA EPSILON */
  ai_ca(s,0155);
  goto B40605c;
 B40604c:
- IRC_COVER(97u);
+ LM_AOSTASK_FP(16772u) IRC_COVER(97u);
  goto B40604;
 B40605c:
- IRC_COVER(98u);
+ LM_AOSTASK_FP(16773u) IRC_COVER(98u);
  /* 20,2605 EXTEND */
  goto X40606c;
 X40606c:
- IRC_COVER(99u);
+ LM_AOSTASK_FP(16774u) IRC_COVER(99u);
  /* 20,2606 EXTENDED MP 0.35356 */
  ai_mpf(s,013241u); /* 0.35356 */
  goto B40607c;
 B40607c:
- IRC_COVER(100u);
+ LM_AOSTASK_FP(16775u) IRC_COVER(100u);
  /* 20,2607 AD .7071 */
  ai_adf(s,026501u); /* .7071 */
  goto B40610;
 B40610:
- IRC_COVER(101u);
+ LM_AOSTASK_FP(16776u) IRC_COVER(101u);
  /* 20,2610 TS COEFFR */
  if(ai_ts(s,(unsigned)01630))goto B40612c;
  goto B40611c;
 B40611c:
- IRC_COVER(102u);
+ LM_AOSTASK_FP(16777u) IRC_COVER(102u);
  /* 20,2611 CS POSMAX */
  ai_csf(s,037777u); /* POSMAX */
  goto B40612c;
 B40612c:
- IRC_COVER(103u);
+ LM_AOSTASK_FP(16778u) IRC_COVER(103u);
  /* 20,2612 AD EPSILON */
  ai_ad(s,0155);
  goto B40613;
 B40613:
- IRC_COVER(104u);
+ LM_AOSTASK_FP(16779u) IRC_COVER(104u);
  /* 20,2613 EXTEND */
  goto X40614;
 X40614:
- IRC_COVER(105u);
+ LM_AOSTASK_FP(16780u) IRC_COVER(105u);
  /* 20,2614 EXTENDED MP COEFFR */
  ai_mp(s,01630);
  goto B40615c;
 B40615c:
- IRC_COVER(106u);
+ LM_AOSTASK_FP(16781u) IRC_COVER(106u);
  /* 20,2615 TS COEFFQ */
  (void)ai_ts(s,(unsigned)01627);
  goto B40616c;
 B40616c:
- IRC_COVER(107u);
+ LM_AOSTASK_FP(16782u) IRC_COVER(107u);
  /* 20,2616 TCF JACCUV */
  goto B40642c;
 B40617:
- IRC_COVER(108u);
+ LM_AOSTASK_FP(16783u) IRC_COVER(108u);
  /* 20,2617 BIGIQ EXTEND */
  goto X40620;
 X40620:
- IRC_COVER(109u);
+ LM_AOSTASK_FP(16784u) IRC_COVER(109u);
  /* 20,2620 EXTENDED DV 1JACCR */
  ai_dv(s,01532);
  goto B40621c;
 B40621c:
- IRC_COVER(110u);
+ LM_AOSTASK_FP(16785u) IRC_COVER(110u);
  /* 20,2621 TS -EPSILON */
  (void)ai_ts(s,(unsigned)0155);
  goto B40622c;
 B40622c:
- IRC_COVER(111u);
+ LM_AOSTASK_FP(16786u) IRC_COVER(111u);
  /* 20,2622 CS -EPSILON */
  ai_cs(s,0155);
  goto B40623c;
 B40623c:
- IRC_COVER(112u);
+ LM_AOSTASK_FP(16787u) IRC_COVER(112u);
  /* 20,2623 AD -EPSMAX */
  ai_adf(s,062362u); /* -EPSMAX */
  goto B40624;
 B40624:
- IRC_COVER(113u);
+ LM_AOSTASK_FP(16788u) IRC_COVER(113u);
  /* 20,2624 EXTEND */
  goto X40625;
 X40625:
- IRC_COVER(114u);
+ LM_AOSTASK_FP(16789u) IRC_COVER(114u);
  /* 20,2625 EXTENDED BZMF GOODEPS2 */
  if(ai_bzmf(s)){
    goto B40630;
  }
  goto B40626;
 B40626:
- IRC_COVER(115u);
+ LM_AOSTASK_FP(16790u) IRC_COVER(115u);
  /* 20,2626 CA -EPSMAX */
  ai_caf(s,062362u); /* -EPSMAX */
  goto B40627c;
 B40627c:
- IRC_COVER(116u);
+ LM_AOSTASK_FP(16791u) IRC_COVER(116u);
  /* 20,2627 TS -EPSILON */
  (void)ai_ts(s,(unsigned)0155);
  goto B40630c;
 B40630:
- IRC_COVER(117u);
+ LM_AOSTASK_FP(16792u) IRC_COVER(117u);
  /* 20,2630 GOODEPS2 CA -EPSILON */
  ai_ca(s,0155);
  goto B40631c;
 B40630c:
- IRC_COVER(118u);
+ LM_AOSTASK_FP(16792u) IRC_COVER(118u);
  goto B40630;
 B40631c:
- IRC_COVER(119u);
+ LM_AOSTASK_FP(16793u) IRC_COVER(119u);
  /* 20,2631 EXTEND */
  goto X40632c;
 X40632c:
- IRC_COVER(120u);
+ LM_AOSTASK_FP(16794u) IRC_COVER(120u);
  /* 20,2632 EXTENDED MP 0.35356 */
  ai_mpf(s,013241u); /* 0.35356 */
  goto B40633c;
 B40633c:
- IRC_COVER(121u);
+ LM_AOSTASK_FP(16795u) IRC_COVER(121u);
  /* 20,2633 AD -.7071 */
  ai_adf(s,051276u); /* -.7071 */
  goto B40634;
 B40634:
- IRC_COVER(122u);
+ LM_AOSTASK_FP(16796u) IRC_COVER(122u);
  /* 20,2634 TS COEFFQ */
  if(ai_ts(s,(unsigned)01627))goto B40636c;
  goto B40635c;
 B40635c:
- IRC_COVER(123u);
+ LM_AOSTASK_FP(16797u) IRC_COVER(123u);
  /* 20,2635 CS -EPSILON */
  ai_cs(s,0155);
  goto B40636c;
 B40636c:
- IRC_COVER(124u);
+ LM_AOSTASK_FP(16798u) IRC_COVER(124u);
  /* 20,2636 AD NEGMAX */
  ai_adf(s,040000u); /* BIT15 */
  goto B40637;
 B40637:
- IRC_COVER(125u);
+ LM_AOSTASK_FP(16799u) IRC_COVER(125u);
  /* 20,2637 EXTEND */
  goto X40640;
 X40640:
- IRC_COVER(126u);
+ LM_AOSTASK_FP(16800u) IRC_COVER(126u);
  /* 20,2640 EXTENDED MP COEFFQ */
  ai_mp(s,01627);
  goto B40641c;
 B40641c:
- IRC_COVER(127u);
+ LM_AOSTASK_FP(16801u) IRC_COVER(127u);
  /* 20,2641 TS COEFFR */
  (void)ai_ts(s,(unsigned)01630);
  goto B40642c;
 B40642c:
- IRC_COVER(128u);
+ LM_AOSTASK_FP(16802u) IRC_COVER(128u);
  /* 20,2642 JACCUV CS COEFFQ */
  ai_cs(s,01627);
  goto B40643c;
 B40643c:
- IRC_COVER(129u);
+ LM_AOSTASK_FP(16803u) IRC_COVER(129u);
  /* 20,2643 EXTEND */
  goto X40644c;
 X40644c:
- IRC_COVER(130u);
+ LM_AOSTASK_FP(16804u) IRC_COVER(130u);
  /* 20,2644 EXTENDED MP 1JACCQ */
  ai_mp(s,01531);
  goto B40645c;
 B40645c:
- IRC_COVER(131u);
+ LM_AOSTASK_FP(16805u) IRC_COVER(131u);
  /* 20,2645 TS 1JACCU */
  (void)ai_ts(s,(unsigned)01533);
  goto B40646c;
 B40646c:
- IRC_COVER(132u);
+ LM_AOSTASK_FP(16806u) IRC_COVER(132u);
  /* 20,2646 CA COEFFR */
  ai_ca(s,01630);
  goto B40647c;
 B40647c:
- IRC_COVER(133u);
+ LM_AOSTASK_FP(16807u) IRC_COVER(133u);
  /* 20,2647 EXTEND */
  goto X40650c;
 X40650c:
- IRC_COVER(134u);
+ LM_AOSTASK_FP(16808u) IRC_COVER(134u);
  /* 20,2650 EXTENDED MP 1JACCR */
  ai_mp(s,01532);
  goto B40651c;
 B40651c:
- IRC_COVER(135u);
+ LM_AOSTASK_FP(16809u) IRC_COVER(135u);
  /* 20,2651 AD 1JACCU */
  ai_ad(s,01533);
  goto B40652;
 B40652:
- IRC_COVER(136u);
+ LM_AOSTASK_FP(16810u) IRC_COVER(136u);
  /* 20,2652 EXTEND */
  goto X40653;
 X40653:
- IRC_COVER(137u);
+ LM_AOSTASK_FP(16811u) IRC_COVER(137u);
  /* 20,2653 EXTENDED MP BIT14 */
  ai_mpf(s,020000u); /* BIT14 */
  goto B40654c;
 B40654c:
- IRC_COVER(138u);
+ LM_AOSTASK_FP(16812u) IRC_COVER(138u);
  /* 20,2654 TS 1JACCU */
  (void)ai_ts(s,(unsigned)01533);
  goto B40655c;
 B40655c:
- IRC_COVER(139u);
+ LM_AOSTASK_FP(16813u) IRC_COVER(139u);
  /* 20,2655 TS 1JACCV */
  (void)ai_ts(s,(unsigned)01534);
  goto B40656c;
 B40656c:
- IRC_COVER(140u);
+ LM_AOSTASK_FP(16814u) IRC_COVER(140u);
  /* 20,2656 CCS MPAC */
  switch(ai_ccs(s,0154)){
   case 0:goto B40657c;
@@ -879,219 +934,219 @@ B40656c:
  }
  return EXEC_INVALID_ACTION;
 B40657c:
- IRC_COVER(141u);
+ LM_AOSTASK_FP(16815u) IRC_COVER(141u);
  /* 20,2657 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B40660c;
 B40660c:
- IRC_COVER(142u);
+ LM_AOSTASK_FP(16816u) IRC_COVER(142u);
  /* 20,2660 TS ALLOWGTS */
  (void)ai_ts(s,(unsigned)01502);
  goto B40661c;
 B40661c:
- IRC_COVER(143u);
+ LM_AOSTASK_FP(16817u) IRC_COVER(143u);
  /* 20,2661 TCF 1/ACCONT   -1 */
  goto B41230c;
 B40662c:
- IRC_COVER(144u);
+ LM_AOSTASK_FP(16818u) IRC_COVER(144u);
  /* 20,2662 CS TWO */
  ai_csf(s,000002u); /* BIT2 */
  goto B40663c;
 B40663c:
- IRC_COVER(145u);
+ LM_AOSTASK_FP(16819u) IRC_COVER(145u);
  /* 20,2663 TS MPAC */
  (void)ai_ts(s,(unsigned)0154);
  goto B40664c;
 B40664c:
- IRC_COVER(146u);
+ LM_AOSTASK_FP(16820u) IRC_COVER(146u);
  /* 20,2664 CS ONE */
  ai_csf(s,000001u); /* BIT1 */
  goto B40665c;
 B40665c:
- IRC_COVER(147u);
+ LM_AOSTASK_FP(16821u) IRC_COVER(147u);
  /* 20,2665 TS MPAC       +1 */
  (void)ai_ts(s,(unsigned)0155);
  goto B40666c;
 B40666c:
- IRC_COVER(148u);
+ LM_AOSTASK_FP(16822u) IRC_COVER(148u);
  /* 20,2666 TCF STCTR1 */
  goto B40547c;
 B40667c:
- IRC_COVER(149u);
+ LM_AOSTASK_FP(16823u) IRC_COVER(149u);
  /* 20,2667 LRESC CAE ABDELV */
  ai_ca(s,01246);
  goto B40670c;
 B40670c:
- IRC_COVER(150u);
+ LM_AOSTASK_FP(16824u) IRC_COVER(150u);
  /* 20,2670 EXTEND */
  goto X40671c;
 X40671c:
- IRC_COVER(151u);
+ LM_AOSTASK_FP(16825u) IRC_COVER(151u);
  /* 20,2671 EXTENDED MP MASS */
  ai_mp(s,01244);
  goto B40672c;
 B40672c:
- IRC_COVER(152u);
+ LM_AOSTASK_FP(16826u) IRC_COVER(152u);
  /* 20,2672 TC DVOVSUB */
  ai_tc(s,002673u);
  goto B40776c;
 B40673:
- IRC_COVER(153u);
+ LM_AOSTASK_FP(16827u) IRC_COVER(153u);
  /* 20,2673 ADRES GFACTM: data, never executed */
  return EXEC_INVALID_ACTION;
 B40674:
- IRC_COVER(154u);
+ LM_AOSTASK_FP(16828u) IRC_COVER(154u);
  /* 20,2674 EXTEND */
  goto X40675;
 X40675:
- IRC_COVER(155u);
+ LM_AOSTASK_FP(16829u) IRC_COVER(155u);
  /* 20,2675 EXTENDED MP L,PVT-CG */
  ai_mp(s,01527);
  goto B40676c;
 B40676c:
- IRC_COVER(156u);
+ LM_AOSTASK_FP(16830u) IRC_COVER(156u);
  /* 20,2676 INHINT */
  io->interrupt_enabled=0;
  goto B40677c;
 B40677c:
- IRC_COVER(157u);
+ LM_AOSTASK_FP(16831u) IRC_COVER(157u);
  /* 20,2677 TS MPAC */
  (void)ai_ts(s,(unsigned)0154);
  goto B40700c;
 B40700c:
- IRC_COVER(158u);
+ LM_AOSTASK_FP(16832u) IRC_COVER(158u);
  /* 20,2700 EXTEND */
  goto X40701c;
 X40701c:
- IRC_COVER(159u);
+ LM_AOSTASK_FP(16833u) IRC_COVER(159u);
  /* 20,2701 EXTENDED MP 1JACCR */
  ai_mp(s,01532);
  goto B40702c;
 B40702c:
- IRC_COVER(160u);
+ LM_AOSTASK_FP(16834u) IRC_COVER(160u);
  /* 20,2702 TC DVOVSUB */
  ai_tc(s,002703u);
  goto B40776c;
 B40703:
- IRC_COVER(161u);
+ LM_AOSTASK_FP(16835u) IRC_COVER(161u);
  /* 20,2703 ADRES TORKJET1: data, never executed */
  return EXEC_INVALID_ACTION;
 B40704:
- IRC_COVER(162u);
+ LM_AOSTASK_FP(16836u) IRC_COVER(162u);
  /* 20,2704 TS ACCDOTR */
  if(ai_ts(s,(unsigned)01511))goto B40706c;
  goto B40705c;
 B40705c:
- IRC_COVER(163u);
+ LM_AOSTASK_FP(16837u) IRC_COVER(163u);
  /* 20,2705 CA MPAC */
  ai_ca(s,0154);
  goto B40706c;
 B40706c:
- IRC_COVER(164u);
+ LM_AOSTASK_FP(16838u) IRC_COVER(164u);
  /* 20,2706 EXTEND */
  goto X40707c;
 X40707c:
- IRC_COVER(165u);
+ LM_AOSTASK_FP(16839u) IRC_COVER(165u);
  /* 20,2707 EXTENDED MP 1JACCQ */
  ai_mp(s,01531);
  goto B40710c;
 B40710c:
- IRC_COVER(166u);
+ LM_AOSTASK_FP(16840u) IRC_COVER(166u);
  /* 20,2710 TC DVOVSUB */
  ai_tc(s,002711u);
  goto B40776c;
 B40711:
- IRC_COVER(167u);
+ LM_AOSTASK_FP(16841u) IRC_COVER(167u);
  /* 20,2711 ADRES TORKJET1: data, never executed */
  return EXEC_INVALID_ACTION;
 B40712:
- IRC_COVER(168u);
+ LM_AOSTASK_FP(16842u) IRC_COVER(168u);
  /* 20,2712 SPSCONT TS ACCDOTQ */
  if(ai_ts(s,(unsigned)01507))goto B40714c;
  goto B40713c;
 B40712c:
- IRC_COVER(169u);
+ LM_AOSTASK_FP(16842u) IRC_COVER(169u);
  /* 20,2712 SPSCONT TS ACCDOTQ */
  (void)ai_ts(s,(unsigned)01507);
  goto B40713c;
 B40713c:
- IRC_COVER(170u);
+ LM_AOSTASK_FP(16843u) IRC_COVER(170u);
  /* 20,2713 EXTEND */
  goto X40714c;
 B40714c:
- IRC_COVER(171u);
+ LM_AOSTASK_FP(16844u) IRC_COVER(171u);
  /* 20,2714 MP DGBF */
  ai_maskf(s,023146u); /* DGBF */
  goto B40715c;
 X40714c:
- IRC_COVER(172u);
+ LM_AOSTASK_FP(16844u) IRC_COVER(172u);
  /* 20,2714 EXTENDED MP DGBF */
  ai_mpf(s,023146u); /* DGBF */
  goto B40715c;
 B40715c:
- IRC_COVER(173u);
+ LM_AOSTASK_FP(16845u) IRC_COVER(173u);
  /* 20,2715 TS KQ */
  (void)ai_ts(s,(unsigned)01504);
  goto B40716c;
 B40716c:
- IRC_COVER(174u);
+ LM_AOSTASK_FP(16846u) IRC_COVER(174u);
  /* 20,2716 CAE ACCDOTR */
  ai_ca(s,01511);
  goto B40717c;
 B40717c:
- IRC_COVER(175u);
+ LM_AOSTASK_FP(16847u) IRC_COVER(175u);
  /* 20,2717 EXTEND */
  goto X40720c;
 X40720c:
- IRC_COVER(176u);
+ LM_AOSTASK_FP(16848u) IRC_COVER(176u);
  /* 20,2720 EXTENDED MP DGBF */
  ai_mpf(s,023146u); /* DGBF */
  goto B40721c;
 B40721c:
- IRC_COVER(177u);
+ LM_AOSTASK_FP(16849u) IRC_COVER(177u);
  /* 20,2721 TS KRDAP */
  (void)ai_ts(s,(unsigned)01506);
  goto B40722c;
 B40722c:
- IRC_COVER(178u);
+ LM_AOSTASK_FP(16850u) IRC_COVER(178u);
  /* 20,2722 EXTEND */
  goto X40723c;
 X40723c:
- IRC_COVER(179u);
+ LM_AOSTASK_FP(16851u) IRC_COVER(179u);
  /* 20,2723 EXTENDED READ CHAN12 */
  if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,0,012))return EXEC_OUT_OF_SCOPE;
  goto B40724c;
 B40724c:
- IRC_COVER(180u);
+ LM_AOSTASK_FP(16852u) IRC_COVER(180u);
  /* 20,2724 TS MPAC       +1 */
  (void)ai_ts(s,(unsigned)0155);
  goto B40725c;
 B40725c:
- IRC_COVER(181u);
+ LM_AOSTASK_FP(16853u) IRC_COVER(181u);
  /* 20,2725 CAF BIT2 */
  ai_caf(s,000002u); /* BIT2 */
  goto B40726c;
 B40726c:
- IRC_COVER(182u);
+ LM_AOSTASK_FP(16854u) IRC_COVER(182u);
  /* 20,2726 TCF LOOP3 */
  goto B40730c;
 B40727c:
- IRC_COVER(183u);
+ LM_AOSTASK_FP(16855u) IRC_COVER(183u);
  /* 20,2727 CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B40730c;
 B40730c:
- IRC_COVER(184u);
+ LM_AOSTASK_FP(16856u) IRC_COVER(184u);
  /* 20,2730 LOOP3 TS MPAC */
  (void)ai_ts(s,(unsigned)0154);
  goto B40731c;
 B40731c:
- IRC_COVER(185u);
+ LM_AOSTASK_FP(16857u) IRC_COVER(185u);
  /* 20,2731 CA MPAC       +1 */
  ai_ca(s,0155);
  goto B40732c;
 B40732c:
- IRC_COVER(186u);
+ LM_AOSTASK_FP(16858u) IRC_COVER(186u);
  /* 20,2732 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2733 (indexed) MASK GIMBLBTS */
@@ -1101,23 +1156,23 @@ B40732c:
  else ai_mask(s,(unsigned)e);
  goto B40734c;
 B40734c:
- IRC_COVER(187u);
+ LM_AOSTASK_FP(16860u) IRC_COVER(187u);
  /* 20,2734 EXTEND */
  goto X40735c;
 X40735c:
- IRC_COVER(188u);
+ LM_AOSTASK_FP(16861u) IRC_COVER(188u);
  /* 20,2735 EXTENDED BZF ZACCDOT */
  if(ai_bzf(s)){
    goto B40751c;
  }
  goto B40736c;
 B40736c:
- IRC_COVER(189u);
+ LM_AOSTASK_FP(16862u) IRC_COVER(189u);
  /* 20,2736 CA MPAC       +1 */
  ai_ca(s,0155);
  goto B40737c;
 B40737c:
- IRC_COVER(190u);
+ LM_AOSTASK_FP(16863u) IRC_COVER(190u);
  /* 20,2737 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2740 (indexed) MASK GIMBLBTS   +1 */
@@ -1127,18 +1182,18 @@ B40737c:
  else ai_mask(s,(unsigned)e);
  goto B40741c;
 B40741c:
- IRC_COVER(191u);
+ LM_AOSTASK_FP(16865u) IRC_COVER(191u);
  /* 20,2741 EXTEND */
  goto X40742c;
 X40742c:
- IRC_COVER(192u);
+ LM_AOSTASK_FP(16866u) IRC_COVER(192u);
  /* 20,2742 EXTENDED BZF FRSTZERO */
  if(ai_bzf(s)){
    goto B40746c;
  }
  goto B40743c;
 B40743c:
- IRC_COVER(193u);
+ LM_AOSTASK_FP(16867u) IRC_COVER(193u);
  /* 20,2743 INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2744 (indexed) CS ACCDOTQ */
@@ -1148,11 +1203,11 @@ B40743c:
  else ai_cs(s,(unsigned)e);
  goto B40745c;
 B40745c:
- IRC_COVER(194u);
+ LM_AOSTASK_FP(16869u) IRC_COVER(194u);
  /* 20,2745 TCF STACCDOT */
  goto B40752c;
 B40746c:
- IRC_COVER(195u);
+ LM_AOSTASK_FP(16870u) IRC_COVER(195u);
  /* 20,2746 FRSTZERO INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2747 (indexed) CA ACCDOTQ */
@@ -1162,16 +1217,16 @@ B40746c:
  else ai_ca(s,(unsigned)e);
  goto B40750c;
 B40750c:
- IRC_COVER(196u);
+ LM_AOSTASK_FP(16872u) IRC_COVER(196u);
  /* 20,2750 TCF STACCDOT */
  goto B40752c;
 B40751c:
- IRC_COVER(197u);
+ LM_AOSTASK_FP(16873u) IRC_COVER(197u);
  /* 20,2751 ZACCDOT CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B40752c;
 B40752c:
- IRC_COVER(198u);
+ LM_AOSTASK_FP(16874u) IRC_COVER(198u);
  /* 20,2752 STACCDOT INDEX MPAC */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,2753 (indexed) TS QACCDOT */
@@ -1180,7 +1235,7 @@ B40752c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B40754c;
 B40754c:
- IRC_COVER(199u);
+ LM_AOSTASK_FP(16876u) IRC_COVER(199u);
  /* 20,2754 CCS MPAC */
  switch(ai_ccs(s,0154)){
   case 0:goto B40755c;
@@ -1190,57 +1245,57 @@ B40754c:
  }
  return EXEC_INVALID_ACTION;
 B40755c:
- IRC_COVER(200u);
+ LM_AOSTASK_FP(16877u) IRC_COVER(200u);
  /* 20,2755 TCF LOOP3      -1 */
  goto B40727c;
 B40756c:
- IRC_COVER(201u);
+ LM_AOSTASK_FP(16878u) IRC_COVER(201u);
  /* 20,2756 CS DAPBOOLS */
  ai_cs(s,0111);
  goto B40757c;
 B40757c:
- IRC_COVER(202u);
+ LM_AOSTASK_FP(16879u) IRC_COVER(202u);
  /* 20,2757 MASK USEQRJTS */
  ai_maskf(s,020000u); /* BIT14 */
  goto B40760c;
 B40760c:
- IRC_COVER(203u);
+ LM_AOSTASK_FP(16880u) IRC_COVER(203u);
  /* 20,2760 EXTEND */
  goto X40761c;
 X40761c:
- IRC_COVER(204u);
+ LM_AOSTASK_FP(16881u) IRC_COVER(204u);
  /* 20,2761 EXTENDED BZF DOWNGTS */
  if(ai_bzf(s)){
    goto B41706c;
  }
  goto B40762c;
 B40762c:
- IRC_COVER(205u);
+ LM_AOSTASK_FP(16882u) IRC_COVER(205u);
  /* 20,2762 CS T5ADR */
  ai_cs(s,01274);
  goto B40763c;
 B40763c:
- IRC_COVER(206u);
+ LM_AOSTASK_FP(16883u) IRC_COVER(206u);
  /* 20,2763 AD PAXISADR */
  ai_adf(s,002213u); /* PAXISADR */
  goto B40764;
 B40764:
- IRC_COVER(207u);
+ LM_AOSTASK_FP(16884u) IRC_COVER(207u);
  /* 20,2764 EXTEND */
  goto X40765;
 X40765:
- IRC_COVER(208u);
+ LM_AOSTASK_FP(16885u) IRC_COVER(208u);
  /* 20,2765 EXTENDED BZF +2 */
  if(ai_bzf(s)){
    goto B40767;
  }
  goto B40766;
 B40766:
- IRC_COVER(209u);
+ LM_AOSTASK_FP(16886u) IRC_COVER(209u);
  /* 20,2766 TCF DOWNGTS */
  goto B41706;
 B40767:
- IRC_COVER(210u);
+ LM_AOSTASK_FP(16887u) IRC_COVER(210u);
  /* 20,2767 CCS INGTS */
  switch(ai_ccs(s,01633)){
   case 0:goto B40770c;
@@ -1250,20 +1305,20 @@ B40767:
  }
  return EXEC_INVALID_ACTION;
 B40770c:
- IRC_COVER(211u);
+ LM_AOSTASK_FP(16888u) IRC_COVER(211u);
  /* 20,2770 TCF DOCKTEST */
  goto B40773c;
 B40771c:
- IRC_COVER(212u);
+ LM_AOSTASK_FP(16889u) IRC_COVER(212u);
  /* 20,2771 TC IBNKCALL */
  ai_tc(s,002772u);
  W[5]=04674u;return EXEC_OK; /* IBNKCALL */
 B40772c:
- IRC_COVER(213u);
+ LM_AOSTASK_FP(16890u) IRC_COVER(213u);
  /* 20,2772 CADR TIMEGMBL: data, never executed */
  return EXEC_INVALID_ACTION;
 B40773:
- IRC_COVER(214u);
+ LM_AOSTASK_FP(16891u) IRC_COVER(214u);
  /* 20,2773 DOCKTEST CCS DOCKTEMP */
  switch(ai_ccs(s,0157)){
   case 0:goto B40774c;
@@ -1273,28 +1328,28 @@ B40773:
  }
  return EXEC_INVALID_ACTION;
 B40773c:
- IRC_COVER(215u);
+ LM_AOSTASK_FP(16891u) IRC_COVER(215u);
  goto B40773;
 B40774c:
- IRC_COVER(216u);
+ LM_AOSTASK_FP(16892u) IRC_COVER(216u);
  /* 20,2774 TCF 1/ACCRET */
  goto B41671c;
 B40775c:
- IRC_COVER(217u);
+ LM_AOSTASK_FP(16893u) IRC_COVER(217u);
  /* 20,2775 TCF 1/ACCONT */
  goto B41231c;
 B40776c:
- IRC_COVER(218u);
+ LM_AOSTASK_FP(16894u) IRC_COVER(218u);
  /* 20,2776 DVOVSUB TS SCRATCHY */
  (void)ai_ts(s,(unsigned)0161);
  goto B40777c;
 B40777c:
- IRC_COVER(219u);
+ LM_AOSTASK_FP(16895u) IRC_COVER(219u);
  /* 20,2777 TS SCRATCHX */
  (void)ai_ts(s,(unsigned)0160);
  goto B41000c;
 B41000:
- IRC_COVER(220u);
+ LM_AOSTASK_FP(16896u) IRC_COVER(220u);
  /* 20,3000 INDEX Q */
  ix=qreg(s);
  /* 20,3001 (indexed) CA 0 */
@@ -1304,15 +1359,15 @@ B41000:
  else ai_ca(s,(unsigned)e);
  goto B41002c;
 B41000c:
- IRC_COVER(221u);
+ LM_AOSTASK_FP(16896u) IRC_COVER(221u);
  goto B41000;
 B41002c:
- IRC_COVER(222u);
+ LM_AOSTASK_FP(16898u) IRC_COVER(222u);
  /* 20,3002 INCR Q */
  ai_incr(s,02);
  goto B41003c;
 B41003c:
- IRC_COVER(223u);
+ LM_AOSTASK_FP(16899u) IRC_COVER(223u);
  /* 20,3003 INDEX A */
  ix=areg(s);
  /* 20,3004 (indexed) CA 0 */
@@ -1322,23 +1377,23 @@ B41003c:
  else ai_ca(s,(unsigned)e);
  goto B41005c;
 B41005c:
- IRC_COVER(224u);
+ LM_AOSTASK_FP(16901u) IRC_COVER(224u);
  /* 20,3005 EXTEND */
  goto X41006c;
 X41006c:
- IRC_COVER(225u);
+ LM_AOSTASK_FP(16902u) IRC_COVER(225u);
  /* 20,3006 EXTENDED BZF MAXPLUS */
  if(ai_bzf(s)){
    goto B41035c;
  }
  goto B41007c;
 B41007c:
- IRC_COVER(226u);
+ LM_AOSTASK_FP(16903u) IRC_COVER(226u);
  /* 20,3007 TS SCRATCHZ */
  (void)ai_ts(s,(unsigned)0162);
  goto B41010c;
 B41010c:
- IRC_COVER(227u);
+ LM_AOSTASK_FP(16904u) IRC_COVER(227u);
  /* 20,3010 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B41011c;
@@ -1348,89 +1403,89 @@ B41010c:
  }
  return EXEC_INVALID_ACTION;
 B41011c:
- IRC_COVER(228u);
+ LM_AOSTASK_FP(16905u) IRC_COVER(228u);
  /* 20,3011 AD BIT1 */
  ai_adf(s,000001u); /* BIT1 */
  goto B41012;
 B41012:
- IRC_COVER(229u);
+ LM_AOSTASK_FP(16906u) IRC_COVER(229u);
  /* 20,3012 TCF ZEROPLUS */
  goto B41014;
 B41012c:
- IRC_COVER(230u);
+ LM_AOSTASK_FP(16906u) IRC_COVER(230u);
  /* 20,3012 TCF ZEROPLUS */
  goto B41014c;
 B41013c:
- IRC_COVER(231u);
+ LM_AOSTASK_FP(16907u) IRC_COVER(231u);
  /* 20,3013 AD BIT1 */
  ai_adf(s,000001u); /* BIT1 */
  goto B41014;
 B41014:
- IRC_COVER(232u);
+ LM_AOSTASK_FP(16908u) IRC_COVER(232u);
  /* 20,3014 ZEROPLUS XCH SCRATCHY */
  ai_xch(s,0161);
  goto B41015c;
 B41014c:
- IRC_COVER(233u);
+ LM_AOSTASK_FP(16908u) IRC_COVER(233u);
  goto B41014;
 B41015c:
- IRC_COVER(234u);
+ LM_AOSTASK_FP(16909u) IRC_COVER(234u);
  /* 20,3015 EXTEND */
  goto X41016c;
 X41016c:
- IRC_COVER(235u);
+ LM_AOSTASK_FP(16910u) IRC_COVER(235u);
  /* 20,3016 EXTENDED BZMF GOODNEG */
  if(ai_bzmf(s)){
    goto B41020c;
  }
  goto B41017c;
 B41017c:
- IRC_COVER(236u);
+ LM_AOSTASK_FP(16911u) IRC_COVER(236u);
  /* 20,3017 CS A */
  ai_cs(s,00);
  goto B41020;
 B41020:
- IRC_COVER(237u);
+ LM_AOSTASK_FP(16912u) IRC_COVER(237u);
  /* 20,3020 GOODNEG AD SCRATCHY */
  ai_ad(s,0161);
  goto B41021;
 B41020c:
- IRC_COVER(238u);
+ LM_AOSTASK_FP(16912u) IRC_COVER(238u);
  goto B41020;
 B41021:
- IRC_COVER(239u);
+ LM_AOSTASK_FP(16913u) IRC_COVER(239u);
  /* 20,3021 EXTEND */
  goto X41022;
 X41022:
- IRC_COVER(240u);
+ LM_AOSTASK_FP(16914u) IRC_COVER(240u);
  /* 20,3022 EXTENDED BZMF MAKEMAX */
  if(ai_bzmf(s)){
    goto B41027;
  }
  goto B41023;
 B41023:
- IRC_COVER(241u);
+ LM_AOSTASK_FP(16915u) IRC_COVER(241u);
  /* 20,3023 CA SCRATCHX */
  ai_ca(s,0160);
  goto B41024c;
 B41024c:
- IRC_COVER(242u);
+ LM_AOSTASK_FP(16916u) IRC_COVER(242u);
  /* 20,3024 EXTEND */
  goto X41025c;
 X41025c:
- IRC_COVER(243u);
+ LM_AOSTASK_FP(16917u) IRC_COVER(243u);
  /* 20,3025 EXTENDED DV SCRATCHZ */
  ai_dv(s,0162);
  goto B41026c;
 B41026c:
- IRC_COVER(244u);
+ LM_AOSTASK_FP(16918u) IRC_COVER(244u);
  /* 20,3026 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B41027:
- IRC_COVER(245u);
+ LM_AOSTASK_FP(16919u) IRC_COVER(245u);
  /* 20,3027 MAKEMAX CCS SCRATCHX */
  switch(ai_ccs(s,0160)){
   case 0:goto B41030c;
@@ -1440,7 +1495,7 @@ B41027:
  }
  return EXEC_INVALID_ACTION;
 B41030c:
- IRC_COVER(246u);
+ LM_AOSTASK_FP(16920u) IRC_COVER(246u);
  /* 20,3030 CCS SCRATCHZ */
  switch(ai_ccs(s,0162)){
   case 0:goto B41031c;
@@ -1450,11 +1505,11 @@ B41030c:
  }
  return EXEC_INVALID_ACTION;
 B41031c:
- IRC_COVER(247u);
+ LM_AOSTASK_FP(16921u) IRC_COVER(247u);
  /* 20,3031 TCF MAXPLUS */
  goto B41035c;
 B41032c:
- IRC_COVER(248u);
+ LM_AOSTASK_FP(16922u) IRC_COVER(248u);
  /* 20,3032 CCS SCRATCHZ */
  switch(ai_ccs(s,0162)){
   case 0:goto B41033c;
@@ -1464,51 +1519,51 @@ B41032c:
  }
  return EXEC_INVALID_ACTION;
 B41033c:
- IRC_COVER(249u);
+ LM_AOSTASK_FP(16923u) IRC_COVER(249u);
  /* 20,3033 CAF NEGMAX */
  ai_caf(s,040000u); /* BIT15 */
  goto B41034c;
 B41034c:
- IRC_COVER(250u);
+ LM_AOSTASK_FP(16924u) IRC_COVER(250u);
  /* 20,3034 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B41035c:
- IRC_COVER(251u);
+ LM_AOSTASK_FP(16925u) IRC_COVER(251u);
  /* 20,3035 MAXPLUS CAF POSMAX */
  ai_caf(s,037777u); /* POSMAX */
  goto B41036c;
 B41036c:
- IRC_COVER(252u);
+ LM_AOSTASK_FP(16926u) IRC_COVER(252u);
  /* 20,3036 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B41105c:
- IRC_COVER(253u);
+ LM_AOSTASK_FP(16965u) IRC_COVER(253u);
  /* 20,3105 DOCKED CA ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B41106c;
 B41106c:
- IRC_COVER(254u);
+ LM_AOSTASK_FP(16966u) IRC_COVER(254u);
  /* 20,3106 SPSLOOP1 TS COEFCTR */
  (void)ai_ts(s,(unsigned)0160);
  goto B41107c;
 B41107c:
- IRC_COVER(255u);
+ LM_AOSTASK_FP(16967u) IRC_COVER(255u);
  /* 20,3107 CA ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B41110c;
 B41110c:
- IRC_COVER(256u);
+ LM_AOSTASK_FP(16968u) IRC_COVER(256u);
  /* 20,3110 TS MASSCTR */
  (void)ai_ts(s,(unsigned)0161);
  goto B41111c;
 B41111c:
- IRC_COVER(257u);
+ LM_AOSTASK_FP(16969u) IRC_COVER(257u);
  /* 20,3111 INDEX COEFCTR */
  ix=agc_to_int(ai_word(s,0160));
  /* 20,3112 (indexed) CA COEFF      -1 */
@@ -1518,25 +1573,25 @@ B41111c:
  else ai_ca(s,(unsigned)e);
  goto B41113c;
 B41113c:
- IRC_COVER(258u);
+ LM_AOSTASK_FP(16971u) IRC_COVER(258u);
  /* 20,3113 EXTEND */
  goto X41114c;
 X41114c:
- IRC_COVER(259u);
+ LM_AOSTASK_FP(16972u) IRC_COVER(259u);
  /* 20,3114 EXTENDED MP LEMMASS */
  ai_mp(s,01331);
  goto B41115c;
 B41115c:
- IRC_COVER(260u);
+ LM_AOSTASK_FP(16973u) IRC_COVER(260u);
  /* 20,3115 EXTEND */
  goto X41116c;
 X41116c:
- IRC_COVER(261u);
+ LM_AOSTASK_FP(16974u) IRC_COVER(261u);
  /* 20,3116 EXTENDED MP CSMMASS */
  ai_mp(s,01332);
  goto B41117c;
 B41117c:
- IRC_COVER(262u);
+ LM_AOSTASK_FP(16975u) IRC_COVER(262u);
  /* 20,3117 INDEX COEFCTR */
  ix=agc_to_int(ai_word(s,0160));
  /* 20,3120 (indexed) AD COEFF */
@@ -1546,30 +1601,30 @@ B41117c:
  else ai_ad(s,(unsigned)e);
  goto B41121;
 B41121:
- IRC_COVER(263u);
+ LM_AOSTASK_FP(16977u) IRC_COVER(263u);
  /* 20,3121 TS MPAC */
  if(ai_ts(s,(unsigned)0154))goto B41123c;
  goto B41122c;
 B41122c:
- IRC_COVER(264u);
+ LM_AOSTASK_FP(16978u) IRC_COVER(264u);
  /* 20,3122 TCF +4 */
  goto B41126c;
 B41123c:
- IRC_COVER(265u);
+ LM_AOSTASK_FP(16979u) IRC_COVER(265u);
  /* 20,3123 SPSLOOP2 TS MASSCTR */
  (void)ai_ts(s,(unsigned)0161);
  goto B41124c;
 B41124c:
- IRC_COVER(266u);
+ LM_AOSTASK_FP(16980u) IRC_COVER(266u);
  /* 20,3124 EXTEND */
  goto X41125c;
 X41125c:
- IRC_COVER(267u);
+ LM_AOSTASK_FP(16981u) IRC_COVER(267u);
  /* 20,3125 EXTENDED DIM COEFCTR */
  ai_dim(s,0160);
  goto B41126c;
 B41126c:
- IRC_COVER(268u);
+ LM_AOSTASK_FP(16982u) IRC_COVER(268u);
  /* 20,3126 INDEX COEFCTR */
  ix=agc_to_int(ai_word(s,0160));
  /* 20,3127 (indexed) CA COEFF      +2 */
@@ -1579,11 +1634,11 @@ B41126c:
  else ai_ca(s,(unsigned)e);
  goto B41130c;
 B41130c:
- IRC_COVER(269u);
+ LM_AOSTASK_FP(16984u) IRC_COVER(269u);
  /* 20,3130 EXTEND */
  goto X41131c;
 X41131c:
- IRC_COVER(270u);
+ LM_AOSTASK_FP(16985u) IRC_COVER(270u);
  /* 20,3131 EXTENDED INDEX MASSCTR */
  ix=agc_to_int(ai_word(s,0161));
  /* 20,3132 EXTENDED (indexed) MP LEMMASS */
@@ -1593,7 +1648,7 @@ X41131c:
  else ai_mp(s,(unsigned)e);
  goto B41133c;
 B41133c:
- IRC_COVER(271u);
+ LM_AOSTASK_FP(16987u) IRC_COVER(271u);
  /* 20,3133 INDEX COEFCTR */
  ix=agc_to_int(ai_word(s,0160));
  /* 20,3134 (indexed) AD COEFF      +4 */
@@ -1603,11 +1658,11 @@ B41133c:
  else ai_ad(s,(unsigned)e);
  goto B41135;
 B41135:
- IRC_COVER(272u);
+ LM_AOSTASK_FP(16989u) IRC_COVER(272u);
  /* 20,3135 EXTEND */
  goto X41136;
 X41136:
- IRC_COVER(273u);
+ LM_AOSTASK_FP(16990u) IRC_COVER(273u);
  /* 20,3136 EXTENDED INDEX MASSCTR */
  ix=agc_to_int(ai_word(s,0161));
  /* 20,3137 EXTENDED (indexed) MP LEMMASS */
@@ -1617,12 +1672,12 @@ X41136:
  else ai_mp(s,(unsigned)e);
  goto B41140c;
 B41140c:
- IRC_COVER(274u);
+ LM_AOSTASK_FP(16992u) IRC_COVER(274u);
  /* 20,3140 ADS MPAC */
  ai_ads(s,0154);
  goto B41141;
 B41141:
- IRC_COVER(275u);
+ LM_AOSTASK_FP(16993u) IRC_COVER(275u);
  /* 20,3141 CCS MASSCTR */
  switch(ai_ccs(s,0161)){
   case 0:goto B41142c;
@@ -1632,11 +1687,11 @@ B41141:
  }
  return EXEC_INVALID_ACTION;
 B41142c:
- IRC_COVER(276u);
+ LM_AOSTASK_FP(16994u) IRC_COVER(276u);
  /* 20,3142 TCF SPSLOOP2 */
  goto B41123c;
 B41143c:
- IRC_COVER(277u);
+ LM_AOSTASK_FP(16995u) IRC_COVER(277u);
  /* 20,3143 CCS COEFCTR */
  switch(ai_ccs(s,0160)){
   case 0:goto B41144c;
@@ -1646,284 +1701,284 @@ B41143c:
  }
  return EXEC_INVALID_ACTION;
 B41144c:
- IRC_COVER(278u);
+ LM_AOSTASK_FP(16996u) IRC_COVER(278u);
  /* 20,3144 TCF +7 */
  goto B41153c;
 B41145c:
- IRC_COVER(279u);
+ LM_AOSTASK_FP(16997u) IRC_COVER(279u);
  /* 20,3145 TORQCONS 2DEC 0.51443    B-14: data, never executed */
  return EXEC_INVALID_ACTION;
 B41146c:
- IRC_COVER(280u);
+ LM_AOSTASK_FP(16998u) IRC_COVER(280u);
  /* 20,3146 TORQCONS 2DEC 0.51443    B-14 (+1): data, never executed */
  return EXEC_INVALID_ACTION;
 B41147c:
- IRC_COVER(281u);
+ LM_AOSTASK_FP(16999u) IRC_COVER(281u);
  /* 20,3147 CA MPAC */
  ai_ca(s,0154);
  goto B41150c;
 B41150c:
- IRC_COVER(282u);
+ LM_AOSTASK_FP(17000u) IRC_COVER(282u);
  /* 20,3150 TS MPAC       +1 */
  (void)ai_ts(s,(unsigned)0155);
  goto B41151c;
 B41151c:
- IRC_COVER(283u);
+ LM_AOSTASK_FP(17001u) IRC_COVER(283u);
  /* 20,3151 CA SEVEN */
  ai_caf(s,000007u); /* SEVEN */
  goto B41152c;
 B41152c:
- IRC_COVER(284u);
+ LM_AOSTASK_FP(17002u) IRC_COVER(284u);
  /* 20,3152 TCF SPSLOOP1 */
  goto B41106c;
 B41153c:
- IRC_COVER(285u);
+ LM_AOSTASK_FP(17003u) IRC_COVER(285u);
  /* 20,3153 CA 1JACCCON */
  ai_caf(s,000167u); /* 1JACCCON */
  goto B41154c;
 B41154c:
- IRC_COVER(286u);
+ LM_AOSTASK_FP(17004u) IRC_COVER(286u);
  /* 20,3154 ZL */
  ai_lxch(s,07);
  goto B41155c;
 B41155c:
- IRC_COVER(287u);
+ LM_AOSTASK_FP(17005u) IRC_COVER(287u);
  /* 20,3155 TC DVOVSUB */
  ai_tc(s,003156u);
  goto B40776c;
 B41156:
- IRC_COVER(288u);
+ LM_AOSTASK_FP(17006u) IRC_COVER(288u);
  /* 20,3156 ADRES MASS: data, never executed */
  return EXEC_INVALID_ACTION;
 B41157:
- IRC_COVER(289u);
+ LM_AOSTASK_FP(17007u) IRC_COVER(289u);
  /* 20,3157 TS 1JACC */
  if(ai_ts(s,(unsigned)01530))goto B41161c;
  goto B41160c;
 B41160c:
- IRC_COVER(290u);
+ LM_AOSTASK_FP(17008u) IRC_COVER(290u);
  /* 20,3160 CA POSMAX */
  ai_caf(s,037777u); /* POSMAX */
  goto B41161c;
 B41161c:
- IRC_COVER(291u);
+ LM_AOSTASK_FP(17009u) IRC_COVER(291u);
  /* 20,3161 TS 1/ANETP */
  (void)ai_ts(s,(unsigned)01551);
  goto B41162c;
 B41162c:
- IRC_COVER(292u);
+ LM_AOSTASK_FP(17010u) IRC_COVER(292u);
  /* 20,3162 TS 1/ANET2    +1 */
  (void)ai_ts(s,(unsigned)01571);
  goto B41163c;
 B41163c:
- IRC_COVER(293u);
+ LM_AOSTASK_FP(17011u) IRC_COVER(293u);
  /* 20,3163 TS 1/ANET2    +2 */
  (void)ai_ts(s,(unsigned)01572);
  goto B41164c;
 B41164c:
- IRC_COVER(294u);
+ LM_AOSTASK_FP(17012u) IRC_COVER(294u);
  /* 20,3164 TS 1/ANET2    +17D */
  (void)ai_ts(s,(unsigned)01611);
  goto B41165c;
 B41165c:
- IRC_COVER(295u);
+ LM_AOSTASK_FP(17013u) IRC_COVER(295u);
  /* 20,3165 TS 1/ANET2    +18D */
  (void)ai_ts(s,(unsigned)01612);
  goto B41166c;
 B41166c:
- IRC_COVER(296u);
+ LM_AOSTASK_FP(17014u) IRC_COVER(296u);
  /* 20,3166 EXTEND */
  goto X41167c;
 X41167c:
- IRC_COVER(297u);
+ LM_AOSTASK_FP(17015u) IRC_COVER(297u);
  /* 20,3167 EXTENDED DCA TORQCONS */
  {static const agc_word k[2]={000000u,020354u};ai_dcaf(s,k);} /* TORQCONS */
  goto B41170c;
 B41170c:
- IRC_COVER(298u);
+ LM_AOSTASK_FP(17016u) IRC_COVER(298u);
  /* 20,3170 EXTEND */
  goto X41171c;
 X41171c:
- IRC_COVER(299u);
+ LM_AOSTASK_FP(17017u) IRC_COVER(299u);
  /* 20,3171 EXTENDED DV MPAC       +1 */
  ai_dv(s,0155);
  goto B41172c;
 B41172c:
- IRC_COVER(300u);
+ LM_AOSTASK_FP(17018u) IRC_COVER(300u);
  /* 20,3172 INHINT */
  io->interrupt_enabled=0;
  goto B41173c;
 B41173c:
- IRC_COVER(301u);
+ LM_AOSTASK_FP(17019u) IRC_COVER(301u);
  /* 20,3173 TS 1JACCQ */
  (void)ai_ts(s,(unsigned)01531);
  goto B41174c;
 B41174c:
- IRC_COVER(302u);
+ LM_AOSTASK_FP(17020u) IRC_COVER(302u);
  /* 20,3174 TS 1JACCR */
  (void)ai_ts(s,(unsigned)01532);
  goto B41175c;
 B41175c:
- IRC_COVER(303u);
+ LM_AOSTASK_FP(17021u) IRC_COVER(303u);
  /* 20,3175 CA -.7071 */
  ai_caf(s,051276u); /* -.7071 */
  goto B41176c;
 B41176c:
- IRC_COVER(304u);
+ LM_AOSTASK_FP(17022u) IRC_COVER(304u);
  /* 20,3176 TS COEFFQ */
  (void)ai_ts(s,(unsigned)01627);
  goto B41177c;
 B41177c:
- IRC_COVER(305u);
+ LM_AOSTASK_FP(17023u) IRC_COVER(305u);
  /* 20,3177 CA .7071 */
  ai_caf(s,026501u); /* .7071 */
  goto B41200c;
 B41200c:
- IRC_COVER(306u);
+ LM_AOSTASK_FP(17024u) IRC_COVER(306u);
  /* 20,3200 TS COEFFR */
  (void)ai_ts(s,(unsigned)01630);
  goto B41201c;
 B41201c:
- IRC_COVER(307u);
+ LM_AOSTASK_FP(17025u) IRC_COVER(307u);
  /* 20,3201 CA MASS */
  ai_ca(s,01244);
  goto B41202c;
 B41202c:
- IRC_COVER(308u);
+ LM_AOSTASK_FP(17026u) IRC_COVER(308u);
  /* 20,3202 EXTEND */
  goto X41203c;
 X41203c:
- IRC_COVER(309u);
+ LM_AOSTASK_FP(17027u) IRC_COVER(309u);
  /* 20,3203 EXTENDED MP MPAC */
  ai_mp(s,0154);
  goto B41204c;
 B41204c:
- IRC_COVER(310u);
+ LM_AOSTASK_FP(17028u) IRC_COVER(310u);
  /* 20,3204 EXTEND */
  goto X41205c;
 X41205c:
- IRC_COVER(311u);
+ LM_AOSTASK_FP(17029u) IRC_COVER(311u);
  /* 20,3205 EXTENDED MP ABDELV */
  ai_mp(s,01246);
  goto B41206c;
 B41206c:
- IRC_COVER(312u);
+ LM_AOSTASK_FP(17030u) IRC_COVER(312u);
  /* 20,3206 TC DVOVSUB */
  ai_tc(s,003207u);
  goto B40776c;
 B41207:
- IRC_COVER(313u);
+ LM_AOSTASK_FP(17031u) IRC_COVER(313u);
  /* 20,3207 ADRES MPAC       +1: data, never executed */
  return EXEC_INVALID_ACTION;
 B41210:
- IRC_COVER(314u);
+ LM_AOSTASK_FP(17032u) IRC_COVER(314u);
  /* 20,3210 TS ACCDOTR */
  if(ai_ts(s,(unsigned)01511))goto B41212c;
  goto B41211c;
 B41211c:
- IRC_COVER(315u);
+ LM_AOSTASK_FP(17033u) IRC_COVER(315u);
  /* 20,3211 TCF SPSCONT */
  goto B40712c;
 B41212c:
- IRC_COVER(316u);
+ LM_AOSTASK_FP(17034u) IRC_COVER(316u);
  /* 20,3212 1JACCCON OCT 00167: data, never executed */
  return EXEC_INVALID_ACTION;
 B41230c:
- IRC_COVER(317u);
+ LM_AOSTASK_FP(17048u) IRC_COVER(317u);
  /* 20,3230 -1 TS INGTS */
  (void)ai_ts(s,(unsigned)01633);
  goto B41231c;
 B41231c:
- IRC_COVER(318u);
+ LM_AOSTASK_FP(17049u) IRC_COVER(318u);
  /* 20,3231 1/ACCONT CA DB */
  ai_ca(s,01346);
  goto B41232c;
 B41232c:
- IRC_COVER(319u);
+ LM_AOSTASK_FP(17050u) IRC_COVER(319u);
  /* 20,3232 EXTEND */
  goto X41233c;
 X41233c:
- IRC_COVER(320u);
+ LM_AOSTASK_FP(17051u) IRC_COVER(320u);
  /* 20,3233 EXTENDED MP BIT13 */
  ai_mpf(s,010000u); /* BIT13 */
  goto B41234c;
 B41234c:
- IRC_COVER(321u);
+ LM_AOSTASK_FP(17052u) IRC_COVER(321u);
  /* 20,3234 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B41235c;
 B41235c:
- IRC_COVER(322u);
+ LM_AOSTASK_FP(17053u) IRC_COVER(322u);
  /* 20,3235 AD A */
  ai_ad(s,00);
  goto B41236;
 B41236:
- IRC_COVER(323u);
+ LM_AOSTASK_FP(17054u) IRC_COVER(323u);
  /* 20,3236 TS DBVAL3 */
  if(ai_ts(s,(unsigned)0115))goto B41240c;
  goto B41237c;
 B41237c:
- IRC_COVER(324u);
+ LM_AOSTASK_FP(17055u) IRC_COVER(324u);
  /* 20,3237 CS DBVAL1 */
  ai_cs(s,01346);
  goto B41240c;
 B41240c:
- IRC_COVER(325u);
+ LM_AOSTASK_FP(17056u) IRC_COVER(325u);
  /* 20,3240 AD L */
  ai_ad(s,01);
  goto B41241;
 B41241:
- IRC_COVER(326u);
+ LM_AOSTASK_FP(17057u) IRC_COVER(326u);
  /* 20,3241 TS DBVAL2 */
  if(ai_ts(s,(unsigned)0114))goto B41243c;
  goto B41242c;
 B41242c:
- IRC_COVER(327u);
+ LM_AOSTASK_FP(17058u) IRC_COVER(327u);
  /* 20,3242 GETAOSUV INHINT */
  io->interrupt_enabled=0;
  goto B41243c;
 B41243c:
- IRC_COVER(328u);
+ LM_AOSTASK_FP(17059u) IRC_COVER(328u);
  /* 20,3243 CAE AOSR */
  ai_ca(s,01541);
  goto B41244c;
 B41244c:
- IRC_COVER(329u);
+ LM_AOSTASK_FP(17060u) IRC_COVER(329u);
  /* 20,3244 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B41245c;
 B41245c:
- IRC_COVER(330u);
+ LM_AOSTASK_FP(17061u) IRC_COVER(330u);
  /* 20,3245 CAE AOSQ */
  ai_ca(s,01537);
  goto B41246c;
 B41246c:
- IRC_COVER(331u);
+ LM_AOSTASK_FP(17062u) IRC_COVER(331u);
  /* 20,3246 TC IBNKCALL */
  ai_tc(s,003247u);
  W[5]=04674u;return EXEC_OK; /* IBNKCALL */
 B41250:
- IRC_COVER(332u);
+ LM_AOSTASK_FP(17064u) IRC_COVER(332u);
  /* 20,3250 DXCH AOSU */
  ai_dxch(s,01543);
  goto B41251c;
 B41251c:
- IRC_COVER(333u);
+ LM_AOSTASK_FP(17065u) IRC_COVER(333u);
  /* 20,3251 RELINT */
  io->interrupt_enabled=1;
  goto B41252c;
 B41252c:
- IRC_COVER(334u);
+ LM_AOSTASK_FP(17066u) IRC_COVER(334u);
  /* 20,3252 CA DAPBOOLS */
  ai_ca(s,0111);
  goto B41253c;
 B41253c:
- IRC_COVER(335u);
+ LM_AOSTASK_FP(17067u) IRC_COVER(335u);
  /* 20,3253 MASK DRIFTBIT */
  ai_maskf(s,000200u); /* BIT8 */
  goto B41254c;
 B41254c:
- IRC_COVER(336u);
+ LM_AOSTASK_FP(17068u) IRC_COVER(336u);
  /* 20,3254 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B41255c;
@@ -1933,22 +1988,22 @@ B41254c:
  }
  return EXEC_INVALID_ACTION;
 B41255c:
- IRC_COVER(337u);
+ LM_AOSTASK_FP(17069u) IRC_COVER(337u);
  /* 20,3255 CA ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B41256c;
 B41256c:
- IRC_COVER(338u);
+ LM_AOSTASK_FP(17070u) IRC_COVER(338u);
  /* 20,3256 TS DRIFTER */
  (void)ai_ts(s,(unsigned)0116);
  goto B41257c;
 B41257c:
- IRC_COVER(339u);
+ LM_AOSTASK_FP(17071u) IRC_COVER(339u);
  /* 20,3257 AD ALLOWGTS */
  ai_ad(s,01502);
  goto B41260;
 B41260:
- IRC_COVER(340u);
+ LM_AOSTASK_FP(17072u) IRC_COVER(340u);
  /* 20,3260 CCS A */
  switch(ai_ccs(s,00)){
   case 0:goto B41261c;
@@ -1958,35 +2013,35 @@ B41260:
  }
  return EXEC_INVALID_ACTION;
 B41260c:
- IRC_COVER(341u);
+ LM_AOSTASK_FP(17072u) IRC_COVER(341u);
  goto B41260;
 B41261c:
- IRC_COVER(342u);
+ LM_AOSTASK_FP(17073u) IRC_COVER(342u);
  /* 20,3261 CA FLATVAL */
  ai_caf(s,000443u); /* FLATVAL */
  goto B41262c;
 B41262c:
- IRC_COVER(343u);
+ LM_AOSTASK_FP(17074u) IRC_COVER(343u);
  /* 20,3262 TS FLATEMP */
  (void)ai_ts(s,(unsigned)0151);
  goto B41263c;
 B41263c:
- IRC_COVER(344u);
+ LM_AOSTASK_FP(17075u) IRC_COVER(344u);
  /* 20,3263 EXTEND */
  goto X41264c;
 B41264c:
- IRC_COVER(345u);
+ LM_AOSTASK_FP(17076u) IRC_COVER(345u);
  /* 20,3264 BZF DOPAXIS */
  goto B41270c;
 X41264c:
- IRC_COVER(346u);
+ LM_AOSTASK_FP(17076u) IRC_COVER(346u);
  /* 20,3264 EXTENDED BZF DOPAXIS */
  if(ai_bzf(s)){
    goto B41270c;
  }
  goto B41265c;
 B41265c:
- IRC_COVER(347u);
+ LM_AOSTASK_FP(17077u) IRC_COVER(347u);
  /* 20,3265 CCS DRIFTER */
  switch(ai_ccs(s,0116)){
   case 0:goto B41266c;
@@ -1996,115 +2051,115 @@ B41265c:
  }
  return EXEC_INVALID_ACTION;
 B41266c:
- IRC_COVER(348u);
+ LM_AOSTASK_FP(17078u) IRC_COVER(348u);
  /* 20,3266 CA ZONE3MAX */
  ai_caf(s,000110u); /* ZONE3MAX */
  goto B41267c;
 B41267c:
- IRC_COVER(349u);
+ LM_AOSTASK_FP(17079u) IRC_COVER(349u);
  /* 20,3267 TS Z3TEM */
  (void)ai_ts(s,(unsigned)0152);
  goto B41270c;
 B41270c:
- IRC_COVER(350u);
+ LM_AOSTASK_FP(17080u) IRC_COVER(350u);
  /* 20,3270 DOPAXIS CA 1JACC */
  ai_ca(s,01530);
  goto B41271c;
 B41271c:
- IRC_COVER(351u);
+ LM_AOSTASK_FP(17081u) IRC_COVER(351u);
  /* 20,3271 AD BIT9 */
  ai_adf(s,000400u); /* BIT9 */
  goto B41272;
 B41272:
- IRC_COVER(352u);
+ LM_AOSTASK_FP(17082u) IRC_COVER(352u);
  /* 20,3272 TS FUNTEM */
  if(ai_ts(s,(unsigned)0157))goto B41274c;
  goto B41273c;
 B41273c:
- IRC_COVER(353u);
+ LM_AOSTASK_FP(17083u) IRC_COVER(353u);
  /* 20,3273 CA 1JACC */
  ai_ca(s,01530);
  goto B41274c;
 B41274c:
- IRC_COVER(354u);
+ LM_AOSTASK_FP(17084u) IRC_COVER(354u);
  /* 20,3274 TC INVERT */
  ai_tc(s,003275u);
  goto B41700c;
 B41275:
- IRC_COVER(355u);
+ LM_AOSTASK_FP(17085u) IRC_COVER(355u);
  /* 20,3275 INHINT */
  io->interrupt_enabled=0;
  goto B41276;
 B41276:
- IRC_COVER(356u);
+ LM_AOSTASK_FP(17086u) IRC_COVER(356u);
  /* 20,3276 TS 1/ANETP */
  if(ai_ts(s,(unsigned)01551))goto B41300c;
  goto B41277c;
 B41277c:
- IRC_COVER(357u);
+ LM_AOSTASK_FP(17087u) IRC_COVER(357u);
  /* 20,3277 TS 1/ANETP    +1 */
  (void)ai_ts(s,(unsigned)01552);
  goto B41300c;
 B41300c:
- IRC_COVER(358u);
+ LM_AOSTASK_FP(17088u) IRC_COVER(358u);
  /* 20,3300 CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B41301c;
 B41301c:
- IRC_COVER(359u);
+ LM_AOSTASK_FP(17089u) IRC_COVER(359u);
  /* 20,3301 EXTEND */
  goto X41302c;
 X41302c:
- IRC_COVER(360u);
+ LM_AOSTASK_FP(17090u) IRC_COVER(360u);
  /* 20,3302 EXTENDED MP 1/ANETP */
  ai_mp(s,01551);
  goto B41303c;
 B41303c:
- IRC_COVER(361u);
+ LM_AOSTASK_FP(17091u) IRC_COVER(361u);
  /* 20,3303 EXTEND */
  goto X41304c;
 X41304c:
- IRC_COVER(362u);
+ LM_AOSTASK_FP(17092u) IRC_COVER(362u);
  /* 20,3304 EXTENDED DV FUNTEM */
  ai_dv(s,0157);
  goto B41305c;
 B41305c:
- IRC_COVER(363u);
+ LM_AOSTASK_FP(17093u) IRC_COVER(363u);
  /* 20,3305 TS PACCFUN */
  (void)ai_ts(s,(unsigned)01557);
  goto B41306c;
 B41306c:
- IRC_COVER(364u);
+ LM_AOSTASK_FP(17094u) IRC_COVER(364u);
  /* 20,3306 TS PACCFUN    +1 */
  (void)ai_ts(s,(unsigned)01560);
  goto B41307c;
 B41307c:
- IRC_COVER(365u);
+ LM_AOSTASK_FP(17095u) IRC_COVER(365u);
  /* 20,3307 CA 1/.03 */
  ai_caf(s,037777u); /* POSMAX */
  goto B41310c;
 B41310c:
- IRC_COVER(366u);
+ LM_AOSTASK_FP(17096u) IRC_COVER(366u);
  /* 20,3310 TS 1/ACOSTP */
  (void)ai_ts(s,(unsigned)01553);
  goto B41311c;
 B41311c:
- IRC_COVER(367u);
+ LM_AOSTASK_FP(17097u) IRC_COVER(367u);
  /* 20,3311 TS 1/ACOSTP   +1 */
  (void)ai_ts(s,(unsigned)01554);
  goto B41312c;
 B41312c:
- IRC_COVER(368u);
+ LM_AOSTASK_FP(17098u) IRC_COVER(368u);
  /* 20,3312 RELINT */
  io->interrupt_enabled=1;
  goto B41313c;
 B41313c:
- IRC_COVER(369u);
+ LM_AOSTASK_FP(17099u) IRC_COVER(369u);
  /* 20,3313 ZL */
  ai_lxch(s,07);
  goto B41314c;
 B41314c:
- IRC_COVER(370u);
+ LM_AOSTASK_FP(17100u) IRC_COVER(370u);
  /* 20,3314 CCS DRIFTER */
  switch(ai_ccs(s,0116)){
   case 0:goto B41315c;
@@ -2114,27 +2169,27 @@ B41314c:
  }
  return EXEC_INVALID_ACTION;
 B41315c:
- IRC_COVER(371u);
+ LM_AOSTASK_FP(17101u) IRC_COVER(371u);
  /* 20,3315 DXCH AOSU */
  ai_dxch(s,01543);
  goto B41316c;
 B41316c:
- IRC_COVER(372u);
+ LM_AOSTASK_FP(17102u) IRC_COVER(372u);
  /* 20,3316 UAXIS CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B41317c;
 B41317c:
- IRC_COVER(373u);
+ LM_AOSTASK_FP(17103u) IRC_COVER(373u);
  /* 20,3317 TS UV */
  (void)ai_ts(s,(unsigned)0154);
  goto B41320c;
 B41320c:
- IRC_COVER(374u);
+ LM_AOSTASK_FP(17104u) IRC_COVER(374u);
  /* 20,3320 BOTHAXES TS SIGNAOS */
  (void)ai_ts(s,(unsigned)0163);
  goto B41321c;
 B41321c:
- IRC_COVER(375u);
+ LM_AOSTASK_FP(17105u) IRC_COVER(375u);
  /* 20,3321 INDEX UV */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,3322 (indexed) CCS AOSU */
@@ -2148,91 +2203,91 @@ B41321c:
  }
  return EXEC_INVALID_ACTION;
 B41323c:
- IRC_COVER(376u);
+ LM_AOSTASK_FP(17107u) IRC_COVER(376u);
  /* 20,3323 AD ONE */
  ai_adf(s,000001u); /* BIT1 */
  goto B41324;
 B41324:
- IRC_COVER(377u);
+ LM_AOSTASK_FP(17108u) IRC_COVER(377u);
  /* 20,3324 TCF +3 */
  goto B41327;
 B41324c:
- IRC_COVER(378u);
+ LM_AOSTASK_FP(17108u) IRC_COVER(378u);
  /* 20,3324 TCF +3 */
  goto B41327c;
 B41325c:
- IRC_COVER(379u);
+ LM_AOSTASK_FP(17109u) IRC_COVER(379u);
  /* 20,3325 AD ONE */
  ai_adf(s,000001u); /* BIT1 */
  goto B41326;
 B41326:
- IRC_COVER(380u);
+ LM_AOSTASK_FP(17110u) IRC_COVER(380u);
  /* 20,3326 INCR SIGNAOS */
  ai_incr(s,0163);
  goto B41327;
 B41326c:
- IRC_COVER(381u);
+ LM_AOSTASK_FP(17110u) IRC_COVER(381u);
  /* 20,3326 INCR SIGNAOS */
  ai_incr(s,0163);
  goto B41327c;
 B41327:
- IRC_COVER(382u);
+ LM_AOSTASK_FP(17111u) IRC_COVER(382u);
  /* 20,3327 TS ABSAOS */
  if(ai_ts(s,(unsigned)0162))goto B41331c;
  goto B41330c;
 B41327c:
- IRC_COVER(383u);
+ LM_AOSTASK_FP(17111u) IRC_COVER(383u);
  /* 20,3327 TS ABSAOS */
  (void)ai_ts(s,(unsigned)0162);
  goto B41330c;
 B41330c:
- IRC_COVER(384u);
+ LM_AOSTASK_FP(17112u) IRC_COVER(384u);
  /* 20,3330 CS SIGNAOS */
  ai_cs(s,0163);
  goto B41331c;
 B41331c:
- IRC_COVER(385u);
+ LM_AOSTASK_FP(17113u) IRC_COVER(385u);
  /* 20,3331 TS -SIGNAOS */
  (void)ai_ts(s,(unsigned)0164);
  goto B41332c;
 B41332c:
- IRC_COVER(386u);
+ LM_AOSTASK_FP(17114u) IRC_COVER(386u);
  /* 20,3332 CA DBVAL1 */
  ai_ca(s,01346);
  goto B41333c;
 B41333c:
- IRC_COVER(387u);
+ LM_AOSTASK_FP(17115u) IRC_COVER(387u);
  /* 20,3333 TS DBB1 */
  (void)ai_ts(s,(unsigned)0143);
  goto B41334c;
 B41334c:
- IRC_COVER(388u);
+ LM_AOSTASK_FP(17116u) IRC_COVER(388u);
  /* 20,3334 TS DBB2 */
  (void)ai_ts(s,(unsigned)0144);
  goto B41335c;
 B41335c:
- IRC_COVER(389u);
+ LM_AOSTASK_FP(17117u) IRC_COVER(389u);
  /* 20,3335 CA ABSAOS */
  ai_ca(s,0162);
  goto B41336c;
 B41336c:
- IRC_COVER(390u);
+ LM_AOSTASK_FP(17118u) IRC_COVER(390u);
  /* 20,3336 AD -.03R/S2 */
  ai_adf(s,077377u); /* -.03R/S2 */
  goto B41337;
 B41337:
- IRC_COVER(391u);
+ LM_AOSTASK_FP(17119u) IRC_COVER(391u);
  /* 20,3337 EXTEND */
  goto X41340;
 X41340:
- IRC_COVER(392u);
+ LM_AOSTASK_FP(17120u) IRC_COVER(392u);
  /* 20,3340 EXTENDED BZMF NOTMUCH */
  if(ai_bzmf(s)){
    goto B41432;
  }
  goto B41341;
 B41341:
- IRC_COVER(393u);
+ LM_AOSTASK_FP(17121u) IRC_COVER(393u);
  /* 20,3341 BIGAOS CCS FLATEMP */
  switch(ai_ccs(s,0151)){
   case 0:goto B41342c;
@@ -2242,16 +2297,16 @@ B41341:
  }
  return EXEC_INVALID_ACTION;
 B41342c:
- IRC_COVER(394u);
+ LM_AOSTASK_FP(17122u) IRC_COVER(394u);
  /* 20,3342 TCF SKIPDB1 */
  goto B41372c;
 B41343c:
- IRC_COVER(395u);
+ LM_AOSTASK_FP(17123u) IRC_COVER(395u);
  /* 20,3343 CA DBVAL1 */
  ai_ca(s,01346);
  goto B41344c;
 B41344c:
- IRC_COVER(396u);
+ LM_AOSTASK_FP(17124u) IRC_COVER(396u);
  /* 20,3344 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3345 (indexed) ADS DBB2 */
@@ -2260,12 +2315,12 @@ B41344c:
  ai_ads(s,(unsigned)e);
  goto B41346;
 B41345c:
- IRC_COVER(397u);
+ LM_AOSTASK_FP(17125u) IRC_COVER(397u);
  /* 20,3345 ADS DBB2 */
  ai_ads(s,0144);
  goto B41346;
 B41346:
- IRC_COVER(398u);
+ LM_AOSTASK_FP(17126u) IRC_COVER(398u);
  /* 20,3346 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3347 (indexed) TS DBB4 */
@@ -2274,71 +2329,71 @@ B41346:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41351c;
  goto B41350c;
 B41350c:
- IRC_COVER(399u);
+ LM_AOSTASK_FP(17128u) IRC_COVER(399u);
  /* 20,3350 CA -.1875 */
  ai_caf(s,071777u); /* -.1875 */
  goto B41351c;
 B41351c:
- IRC_COVER(400u);
+ LM_AOSTASK_FP(17129u) IRC_COVER(400u);
  /* 20,3351 AD ABSAOS */
  ai_ad(s,0162);
  goto B41352;
 B41352:
- IRC_COVER(401u);
+ LM_AOSTASK_FP(17130u) IRC_COVER(401u);
  /* 20,3352 EXTEND */
  goto X41353;
 X41353:
- IRC_COVER(402u);
+ LM_AOSTASK_FP(17131u) IRC_COVER(402u);
  /* 20,3353 EXTENDED BZMF +3 */
  if(ai_bzmf(s)){
    goto B41356;
  }
  goto B41354;
 B41354:
- IRC_COVER(403u);
+ LM_AOSTASK_FP(17132u) IRC_COVER(403u);
  /* 20,3354 CS DBVAL3 */
  ai_cs(s,0115);
  goto B41355c;
 B41355c:
- IRC_COVER(404u);
+ LM_AOSTASK_FP(17133u) IRC_COVER(404u);
  /* 20,3355 TCF DBONE */
  goto B41365c;
 B41356:
- IRC_COVER(405u);
+ LM_AOSTASK_FP(17134u) IRC_COVER(405u);
  /* 20,3356 CS ABSAOS */
  ai_cs(s,0162);
  goto B41357c;
 B41357c:
- IRC_COVER(406u);
+ LM_AOSTASK_FP(17135u) IRC_COVER(406u);
  /* 20,3357 DOUBLE */
  ai_ad(s,00);
  goto B41360;
 B41360:
- IRC_COVER(407u);
+ LM_AOSTASK_FP(17136u) IRC_COVER(407u);
  /* 20,3360 DOUBLE */
  ai_ad(s,00);
  goto B41361;
 B41361:
- IRC_COVER(408u);
+ LM_AOSTASK_FP(17137u) IRC_COVER(408u);
  /* 20,3361 AD BIT14 */
  ai_adf(s,020000u); /* BIT14 */
  goto B41362;
 B41362:
- IRC_COVER(409u);
+ LM_AOSTASK_FP(17138u) IRC_COVER(409u);
  /* 20,3362 DOUBLE */
  ai_ad(s,00);
  goto B41363;
 B41363:
- IRC_COVER(410u);
+ LM_AOSTASK_FP(17139u) IRC_COVER(410u);
  /* 20,3363 EXTEND */
  goto X41364;
 X41364:
- IRC_COVER(411u);
+ LM_AOSTASK_FP(17140u) IRC_COVER(411u);
  /* 20,3364 EXTENDED MP DB */
  ai_mp(s,01346);
  goto B41365c;
 B41365c:
- IRC_COVER(412u);
+ LM_AOSTASK_FP(17141u) IRC_COVER(412u);
  /* 20,3365 DBONE INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3366 (indexed) TS DBB1 */
@@ -2347,12 +2402,12 @@ B41365c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41367c;
 B41367c:
- IRC_COVER(413u);
+ LM_AOSTASK_FP(17143u) IRC_COVER(413u);
  /* 20,3367 CA DBVAL2 */
  ai_ca(s,0114);
  goto B41370c;
 B41370c:
- IRC_COVER(414u);
+ LM_AOSTASK_FP(17144u) IRC_COVER(414u);
  /* 20,3370 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3371 (indexed) TS DBB3 */
@@ -2361,31 +2416,31 @@ B41370c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41372c;
 B41372c:
- IRC_COVER(415u);
+ LM_AOSTASK_FP(17146u) IRC_COVER(415u);
  /* 20,3372 SKIPDB1 CA ABSAOS */
  ai_ca(s,0162);
  goto B41373c;
 B41373c:
- IRC_COVER(416u);
+ LM_AOSTASK_FP(17147u) IRC_COVER(416u);
  /* 20,3373 EXTEND */
  goto X41374c;
 X41374c:
- IRC_COVER(417u);
+ LM_AOSTASK_FP(17148u) IRC_COVER(417u);
  /* 20,3374 EXTENDED MP BIT12 */
  ai_mpf(s,004000u); /* BIT12 */
  goto B41375c;
 B41375c:
- IRC_COVER(418u);
+ LM_AOSTASK_FP(17149u) IRC_COVER(418u);
  /* 20,3375 AD ABSAOS */
  ai_ad(s,0162);
  goto B41376;
 B41376:
- IRC_COVER(419u);
+ LM_AOSTASK_FP(17150u) IRC_COVER(419u);
  /* 20,3376 TC INVERT */
  ai_tc(s,003377u);
  goto B41700;
 B41377:
- IRC_COVER(420u);
+ LM_AOSTASK_FP(17151u) IRC_COVER(420u);
  /* 20,3377 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3400 (indexed) TS 1/ACOSTT   +1 */
@@ -2394,12 +2449,12 @@ B41377:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41402c;
  goto B41401c;
 B41401c:
- IRC_COVER(421u);
+ LM_AOSTASK_FP(17153u) IRC_COVER(421u);
  /* 20,3401 CA 1/.03 */
  ai_caf(s,037777u); /* POSMAX */
  goto B41402c;
 B41402c:
- IRC_COVER(422u);
+ LM_AOSTASK_FP(17154u) IRC_COVER(422u);
  /* 20,3402 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3403 (indexed) TS 1/ACOSTT */
@@ -2408,131 +2463,131 @@ B41402c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41404c;
 B41404c:
- IRC_COVER(423u);
+ LM_AOSTASK_FP(17156u) IRC_COVER(423u);
  /* 20,3404 CA ABSAOS */
  ai_ca(s,0162);
  goto B41405c;
 B41405c:
- IRC_COVER(424u);
+ LM_AOSTASK_FP(17157u) IRC_COVER(424u);
  /* 20,3405 AD 1JACCU */
  ai_ad(s,01533);
  goto B41406;
 B41406:
- IRC_COVER(425u);
+ LM_AOSTASK_FP(17158u) IRC_COVER(425u);
  /* 20,3406 AD 1JACCU */
  ai_ad(s,01533);
  goto B41407;
 B41407:
- IRC_COVER(426u);
+ LM_AOSTASK_FP(17159u) IRC_COVER(426u);
  /* 20,3407 AD BIT9 */
  ai_adf(s,000400u); /* BIT9 */
  goto B41410;
 B41410:
- IRC_COVER(427u);
+ LM_AOSTASK_FP(17160u) IRC_COVER(427u);
  /* 20,3410 TS A */
  if(ai_ts(s,(unsigned)00))goto B41412c;
  goto B41411c;
 B41411c:
- IRC_COVER(428u);
+ LM_AOSTASK_FP(17161u) IRC_COVER(428u);
  /* 20,3411 TCF SKIPDB2 */
  goto B41456c;
 B41412c:
- IRC_COVER(429u);
+ LM_AOSTASK_FP(17162u) IRC_COVER(429u);
  /* 20,3412 CA ABSAOS */
  ai_ca(s,0162);
  goto B41413c;
 B41413c:
- IRC_COVER(430u);
+ LM_AOSTASK_FP(17163u) IRC_COVER(430u);
  /* 20,3413 EXTEND */
  goto X41414c;
 X41414c:
- IRC_COVER(431u);
+ LM_AOSTASK_FP(17164u) IRC_COVER(431u);
  /* 20,3414 EXTENDED MP BIT14 */
  ai_mpf(s,020000u); /* BIT14 */
  goto B41415c;
 B41415c:
- IRC_COVER(432u);
+ LM_AOSTASK_FP(17165u) IRC_COVER(432u);
  /* 20,3415 AD 1JACCU */
  ai_ad(s,01533);
  goto B41416;
 B41416:
- IRC_COVER(433u);
+ LM_AOSTASK_FP(17166u) IRC_COVER(433u);
  /* 20,3416 TS ANET */
  if(ai_ts(s,(unsigned)0157))goto B41420c;
  goto B41417c;
 B41417c:
- IRC_COVER(434u);
+ LM_AOSTASK_FP(17167u) IRC_COVER(434u);
  /* 20,3417 AD BIT8 */
  ai_adf(s,000200u); /* BIT8 */
  goto B41420;
 B41420:
- IRC_COVER(435u);
+ LM_AOSTASK_FP(17168u) IRC_COVER(435u);
  /* 20,3420 XCH ANET */
  ai_xch(s,0157);
  goto B41421c;
 B41420c:
- IRC_COVER(436u);
+ LM_AOSTASK_FP(17168u) IRC_COVER(436u);
  goto B41420;
 B41421c:
- IRC_COVER(437u);
+ LM_AOSTASK_FP(17169u) IRC_COVER(437u);
  /* 20,3421 TC INVERT */
  ai_tc(s,003422u);
  goto B41700c;
 B41422:
- IRC_COVER(438u);
+ LM_AOSTASK_FP(17170u) IRC_COVER(438u);
  /* 20,3422 EXTEND */
  goto X41423;
 X41423:
- IRC_COVER(439u);
+ LM_AOSTASK_FP(17171u) IRC_COVER(439u);
  /* 20,3423 EXTENDED MP BIT14 */
  ai_mpf(s,020000u); /* BIT14 */
  goto B41424c;
 B41424c:
- IRC_COVER(440u);
+ LM_AOSTASK_FP(17172u) IRC_COVER(440u);
  /* 20,3424 TS 1/ANET */
  (void)ai_ts(s,(unsigned)0160);
  goto B41425c;
 B41425c:
- IRC_COVER(441u);
+ LM_AOSTASK_FP(17173u) IRC_COVER(441u);
  /* 20,3425 CA ACCHERE */
  ai_caf(s,013463u); /* ACCHERE */
  goto B41426c;
 B41426c:
- IRC_COVER(442u);
+ LM_AOSTASK_FP(17174u) IRC_COVER(442u);
  /* 20,3426 TS ARET */
  (void)ai_ts(s,(unsigned)0161);
  goto B41427c;
 B41427c:
- IRC_COVER(443u);
+ LM_AOSTASK_FP(17175u) IRC_COVER(443u);
  /* 20,3427 CS BIT8 */
  ai_csf(s,000200u); /* BIT8 */
  goto B41430c;
 B41430c:
- IRC_COVER(444u);
+ LM_AOSTASK_FP(17176u) IRC_COVER(444u);
  /* 20,3430 TCF DOACCFUN */
  goto B41733c;
 B41432:
- IRC_COVER(445u);
+ LM_AOSTASK_FP(17178u) IRC_COVER(445u);
  /* 20,3432 NOTMUCH TS L */
  if(ai_ts(s,(unsigned)01))goto B41434c;
  goto B41433c;
 B41433c:
- IRC_COVER(446u);
+ LM_AOSTASK_FP(17179u) IRC_COVER(446u);
  /* 20,3433 CA 1/.03 */
  ai_caf(s,037777u); /* POSMAX */
  goto B41434c;
 B41434c:
- IRC_COVER(447u);
+ LM_AOSTASK_FP(17180u) IRC_COVER(447u);
  /* 20,3434 TS 1/ACOSTT */
  (void)ai_ts(s,(unsigned)0127);
  goto B41435c;
 B41435c:
- IRC_COVER(448u);
+ LM_AOSTASK_FP(17181u) IRC_COVER(448u);
  /* 20,3435 TS 1/ACOSTT   +1 */
  (void)ai_ts(s,(unsigned)0130);
  goto B41436c;
 B41436c:
- IRC_COVER(449u);
+ LM_AOSTASK_FP(17182u) IRC_COVER(449u);
  /* 20,3436 CCS FLATEMP */
  switch(ai_ccs(s,0151)){
   case 0:goto B41437c;
@@ -2542,51 +2597,51 @@ B41436c:
  }
  return EXEC_INVALID_ACTION;
 B41437c:
- IRC_COVER(450u);
+ LM_AOSTASK_FP(17183u) IRC_COVER(450u);
  /* 20,3437 TCF SKIPDB2 */
  goto B41456c;
 B41440c:
- IRC_COVER(451u);
+ LM_AOSTASK_FP(17184u) IRC_COVER(451u);
  /* 20,3440 CA .0125RS */
  ai_caf(s,000200u); /* BIT8 */
  goto B41441c;
 B41441c:
- IRC_COVER(452u);
+ LM_AOSTASK_FP(17185u) IRC_COVER(452u);
  /* 20,3441 AD L */
  ai_ad(s,01);
  goto B41442;
 B41442:
- IRC_COVER(453u);
+ LM_AOSTASK_FP(17186u) IRC_COVER(453u);
  /* 20,3442 EXTEND */
  goto X41443;
 B41442c:
- IRC_COVER(454u);
+ LM_AOSTASK_FP(17186u) IRC_COVER(454u);
  /* 20,3442 EXTEND */
  goto X41443c;
 X41443:
- IRC_COVER(455u);
+ LM_AOSTASK_FP(17187u) IRC_COVER(455u);
  /* 20,3443 EXTENDED BZMF NOAOS */
  if(ai_bzmf(s)){
    goto B41453;
  }
  goto B41444;
 X41443c:
- IRC_COVER(456u);
+ LM_AOSTASK_FP(17187u) IRC_COVER(456u);
  /* 20,3443 EXTENDED BZMF NOAOS */
  if(ai_bzmf(s)){
    goto B41453c;
  }
  goto B41444c;
 B41444:
- IRC_COVER(457u);
+ LM_AOSTASK_FP(17188u) IRC_COVER(457u);
  /* 20,3444 SOMEAOS CA DBVAL3 */
  ai_ca(s,0115);
  goto B41445c;
 B41444c:
- IRC_COVER(458u);
+ LM_AOSTASK_FP(17188u) IRC_COVER(458u);
  goto B41444;
 B41445c:
- IRC_COVER(459u);
+ LM_AOSTASK_FP(17189u) IRC_COVER(459u);
  /* 20,3445 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3446 (indexed) TS DBB3 */
@@ -2595,12 +2650,12 @@ B41445c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41447c;
 B41447c:
- IRC_COVER(460u);
+ LM_AOSTASK_FP(17191u) IRC_COVER(460u);
  /* 20,3447 AD A */
  ai_ad(s,00);
  goto B41450;
 B41450:
- IRC_COVER(461u);
+ LM_AOSTASK_FP(17192u) IRC_COVER(461u);
  /* 20,3450 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3451 (indexed) TS DBB4 */
@@ -2609,54 +2664,54 @@ B41450:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41453c;
  goto B41452c;
 B41452c:
- IRC_COVER(462u);
+ LM_AOSTASK_FP(17194u) IRC_COVER(462u);
  /* 20,3452 TCF SKIPDB2 */
  goto B41456c;
 B41453:
- IRC_COVER(463u);
+ LM_AOSTASK_FP(17195u) IRC_COVER(463u);
  /* 20,3453 NOAOS CA DBVAL1 */
  ai_ca(s,01346);
  goto B41454c;
 B41453c:
- IRC_COVER(464u);
+ LM_AOSTASK_FP(17195u) IRC_COVER(464u);
  goto B41453;
 B41454c:
- IRC_COVER(465u);
+ LM_AOSTASK_FP(17196u) IRC_COVER(465u);
  /* 20,3454 TS DBB3 */
  (void)ai_ts(s,(unsigned)0146);
  goto B41455c;
 B41455c:
- IRC_COVER(466u);
+ LM_AOSTASK_FP(17197u) IRC_COVER(466u);
  /* 20,3455 TS DBB4 */
  (void)ai_ts(s,(unsigned)0145);
  goto B41456c;
 B41456c:
- IRC_COVER(467u);
+ LM_AOSTASK_FP(17198u) IRC_COVER(467u);
  /* 20,3456 SKIPDB2 CA ABSAOS */
  ai_ca(s,0162);
  goto B41457c;
 B41457c:
- IRC_COVER(468u);
+ LM_AOSTASK_FP(17199u) IRC_COVER(468u);
  /* 20,3457 AD 1JACCU */
  ai_ad(s,01533);
  goto B41460;
 B41460:
- IRC_COVER(469u);
+ LM_AOSTASK_FP(17200u) IRC_COVER(469u);
  /* 20,3460 AD 1JACCU */
  ai_ad(s,01533);
  goto B41461;
 B41461:
- IRC_COVER(470u);
+ LM_AOSTASK_FP(17201u) IRC_COVER(470u);
  /* 20,3461 TS ANET */
  if(ai_ts(s,(unsigned)0157))goto B41463c;
  goto B41462c;
 B41462c:
- IRC_COVER(471u);
+ LM_AOSTASK_FP(17202u) IRC_COVER(471u);
  /* 20,3462 CL1/NET+ TC DO1/NET+ */
  ai_tc(s,003463u);
  goto B41724c;
 B41463:
- IRC_COVER(472u);
+ LM_AOSTASK_FP(17203u) IRC_COVER(472u);
  /* 20,3463 ACCTHERE INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3464 (indexed) TS Z5TEM      +2 */
@@ -2665,7 +2720,7 @@ B41463:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41466c;
  goto B41465c;
 B41463c:
- IRC_COVER(473u);
+ LM_AOSTASK_FP(17203u) IRC_COVER(473u);
  /* 20,3463 ACCTHERE INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3464 (indexed) TS Z5TEM      +2 */
@@ -2674,12 +2729,12 @@ B41463c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41465c;
 B41465c:
- IRC_COVER(474u);
+ LM_AOSTASK_FP(17205u) IRC_COVER(474u);
  /* 20,3465 CA 1/ANET */
  ai_ca(s,0160);
  goto B41466c;
 B41466c:
- IRC_COVER(475u);
+ LM_AOSTASK_FP(17206u) IRC_COVER(475u);
  /* 20,3466 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3467 (indexed) TS 1/ATEM2    +2 */
@@ -2688,51 +2743,51 @@ B41466c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41470c;
 B41470c:
- IRC_COVER(476u);
+ LM_AOSTASK_FP(17208u) IRC_COVER(476u);
  /* 20,3470 CA ABSAOS */
  ai_ca(s,0162);
  goto B41471c;
 B41471c:
- IRC_COVER(477u);
+ LM_AOSTASK_FP(17209u) IRC_COVER(477u);
  /* 20,3471 AD 1JACCU */
  ai_ad(s,01533);
  goto B41472;
 B41472:
- IRC_COVER(478u);
+ LM_AOSTASK_FP(17210u) IRC_COVER(478u);
  /* 20,3472 AD BIT9 */
  ai_adf(s,000400u); /* BIT9 */
  goto B41473;
 B41473:
- IRC_COVER(479u);
+ LM_AOSTASK_FP(17211u) IRC_COVER(479u);
  /* 20,3473 TS A */
  if(ai_ts(s,(unsigned)00))goto B41475c;
  goto B41474c;
 B41474c:
- IRC_COVER(480u);
+ LM_AOSTASK_FP(17212u) IRC_COVER(480u);
  /* 20,3474 TCF +2 */
  goto B41476c;
 B41475c:
- IRC_COVER(481u);
+ LM_AOSTASK_FP(17213u) IRC_COVER(481u);
  /* 20,3475 CA POSMAX */
  ai_caf(s,037777u); /* POSMAX */
  goto B41476c;
 B41476c:
- IRC_COVER(482u);
+ LM_AOSTASK_FP(17214u) IRC_COVER(482u);
  /* 20,3476 AD -.03R/S2 */
  ai_adf(s,077377u); /* -.03R/S2 */
  goto B41477;
 B41477:
- IRC_COVER(483u);
+ LM_AOSTASK_FP(17215u) IRC_COVER(483u);
  /* 20,3477 TS ANET */
  if(ai_ts(s,(unsigned)0157))goto B41501c;
  goto B41500c;
 B41500c:
- IRC_COVER(484u);
+ LM_AOSTASK_FP(17216u) IRC_COVER(484u);
  /* 20,3500 TC DO1/NET+ */
  ai_tc(s,003501u);
  goto B41724c;
 B41501:
- IRC_COVER(485u);
+ LM_AOSTASK_FP(17217u) IRC_COVER(485u);
  /* 20,3501 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3502 (indexed) TS Z5TEM */
@@ -2741,7 +2796,7 @@ B41501:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41504c;
  goto B41503c;
 B41501c:
- IRC_COVER(486u);
+ LM_AOSTASK_FP(17217u) IRC_COVER(486u);
  /* 20,3501 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3502 (indexed) TS Z5TEM */
@@ -2750,12 +2805,12 @@ B41501c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41503c;
 B41503c:
- IRC_COVER(487u);
+ LM_AOSTASK_FP(17219u) IRC_COVER(487u);
  /* 20,3503 CA 1/ANET */
  ai_ca(s,0160);
  goto B41504c;
 B41504c:
- IRC_COVER(488u);
+ LM_AOSTASK_FP(17220u) IRC_COVER(488u);
  /* 20,3504 INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3505 (indexed) TS 1/ATEM2 */
@@ -2764,27 +2819,27 @@ B41504c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41506c;
 B41506c:
- IRC_COVER(489u);
+ LM_AOSTASK_FP(17222u) IRC_COVER(489u);
  /* 20,3506 CS ABSAOS */
  ai_cs(s,0162);
  goto B41507c;
 B41507c:
- IRC_COVER(490u);
+ LM_AOSTASK_FP(17223u) IRC_COVER(490u);
  /* 20,3507 AD 1JACCU */
  ai_ad(s,01533);
  goto B41510;
 B41510:
- IRC_COVER(491u);
+ LM_AOSTASK_FP(17224u) IRC_COVER(491u);
  /* 20,3510 AD 1JACCU */
  ai_ad(s,01533);
  goto B41511;
 B41511:
- IRC_COVER(492u);
+ LM_AOSTASK_FP(17225u) IRC_COVER(492u);
  /* 20,3511 TC 1/ANET- */
  ai_tc(s,003512u);
  goto B41712;
 B41512:
- IRC_COVER(493u);
+ LM_AOSTASK_FP(17226u) IRC_COVER(493u);
  /* 20,3512 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3513 (indexed) TS Z1TEM      +2 */
@@ -2793,17 +2848,17 @@ B41512:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41515c;
  goto B41514c;
 B41514c:
- IRC_COVER(494u);
+ LM_AOSTASK_FP(17228u) IRC_COVER(494u);
  /* 20,3514 TS L */
  (void)ai_ts(s,(unsigned)01);
  goto B41515c;
 B41515c:
- IRC_COVER(495u);
+ LM_AOSTASK_FP(17229u) IRC_COVER(495u);
  /* 20,3515 CA 1/ANET */
  ai_ca(s,0160);
  goto B41516c;
 B41516c:
- IRC_COVER(496u);
+ LM_AOSTASK_FP(17230u) IRC_COVER(496u);
  /* 20,3516 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3517 (indexed) TS 1/ATEM1    +2 */
@@ -2812,59 +2867,59 @@ B41516c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41520c;
 B41520c:
- IRC_COVER(497u);
+ LM_AOSTASK_FP(17232u) IRC_COVER(497u);
  /* 20,3520 CS ABSAOS */
  ai_cs(s,0162);
  goto B41521c;
 B41521c:
- IRC_COVER(498u);
+ LM_AOSTASK_FP(17233u) IRC_COVER(498u);
  /* 20,3521 AD 1JACCU */
  ai_ad(s,01533);
  goto B41522;
 B41522:
- IRC_COVER(499u);
+ LM_AOSTASK_FP(17234u) IRC_COVER(499u);
  /* 20,3522 TS ANET */
  if(ai_ts(s,(unsigned)0157))goto B41524c;
  goto B41523c;
 B41523c:
- IRC_COVER(500u);
+ LM_AOSTASK_FP(17235u) IRC_COVER(500u);
  /* 20,3523 AD -.03R/S2 */
  ai_adf(s,077377u); /* -.03R/S2 */
  goto B41524;
 B41524:
- IRC_COVER(501u);
+ LM_AOSTASK_FP(17236u) IRC_COVER(501u);
  /* 20,3524 EXTEND */
  goto X41525;
 B41524c:
- IRC_COVER(502u);
+ LM_AOSTASK_FP(17236u) IRC_COVER(502u);
  /* 20,3524 EXTEND */
  goto X41525c;
 X41525:
- IRC_COVER(503u);
+ LM_AOSTASK_FP(17237u) IRC_COVER(503u);
  /* 20,3525 EXTENDED BZMF FIXMIN */
  if(ai_bzmf(s)){
    goto B41743;
  }
  goto B41526;
 X41525c:
- IRC_COVER(504u);
+ LM_AOSTASK_FP(17237u) IRC_COVER(504u);
  /* 20,3525 EXTENDED BZMF FIXMIN */
  if(ai_bzmf(s)){
    goto B41743c;
  }
  goto B41526c;
 B41526:
- IRC_COVER(505u);
+ LM_AOSTASK_FP(17238u) IRC_COVER(505u);
  /* 20,3526 TC 1/NETMIN */
  ai_tc(s,003527u);
  goto B41720;
 B41526c:
- IRC_COVER(506u);
+ LM_AOSTASK_FP(17238u) IRC_COVER(506u);
  /* 20,3526 TC 1/NETMIN */
  ai_tc(s,003527u);
  goto B41720c;
 B41527:
- IRC_COVER(507u);
+ LM_AOSTASK_FP(17239u) IRC_COVER(507u);
  /* 20,3527 STMIN- INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3530 (indexed) TS Z1TEM */
@@ -2873,7 +2928,7 @@ B41527:
  if(ai_ts(s,(unsigned)(unsigned)e))goto B41532c;
  goto B41531c;
 B41527c:
- IRC_COVER(508u);
+ LM_AOSTASK_FP(17239u) IRC_COVER(508u);
  /* 20,3527 STMIN- INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3530 (indexed) TS Z1TEM */
@@ -2882,12 +2937,12 @@ B41527c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41531c;
 B41531c:
- IRC_COVER(509u);
+ LM_AOSTASK_FP(17241u) IRC_COVER(509u);
  /* 20,3531 CA 1/ANET */
  ai_ca(s,0160);
  goto B41532c;
 B41532c:
- IRC_COVER(510u);
+ LM_AOSTASK_FP(17242u) IRC_COVER(510u);
  /* 20,3532 INDEX SIGNAOS */
  ix=agc_to_int(ai_word(s,0163));
  /* 20,3533 (indexed) TS 1/ATEM1 */
@@ -2896,7 +2951,7 @@ B41532c:
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B41534c;
 B41534c:
- IRC_COVER(511u);
+ LM_AOSTASK_FP(17244u) IRC_COVER(511u);
  /* 20,3534 INDEX UV */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,3535 (indexed) CA +UMASK */
@@ -2906,43 +2961,43 @@ B41534c:
  else ai_ca(s,(unsigned)e);
  goto B41536c;
 B41536c:
- IRC_COVER(512u);
+ LM_AOSTASK_FP(17246u) IRC_COVER(512u);
  /* 20,3536 MASK CH5MASK */
  ai_mask(s,01262);
  goto B41537c;
 B41537c:
- IRC_COVER(513u);
+ LM_AOSTASK_FP(17247u) IRC_COVER(513u);
  /* 20,3537 EXTEND */
  goto X41540c;
 X41540c:
- IRC_COVER(514u);
+ LM_AOSTASK_FP(17248u) IRC_COVER(514u);
  /* 20,3540 EXTENDED BZF FAIL- */
  if(ai_bzf(s)){
    goto B41545c;
  }
  goto B41541c;
 B41541c:
- IRC_COVER(515u);
+ LM_AOSTASK_FP(17249u) IRC_COVER(515u);
  /* 20,3541 CA 1/ATEM2 */
  ai_ca(s,0124);
  goto B41542c;
 B41542c:
- IRC_COVER(516u);
+ LM_AOSTASK_FP(17250u) IRC_COVER(516u);
  /* 20,3542 TS 1/ATEM2    +2 */
  (void)ai_ts(s,(unsigned)0126);
  goto B41543c;
 B41543c:
- IRC_COVER(517u);
+ LM_AOSTASK_FP(17251u) IRC_COVER(517u);
  /* 20,3543 CA Z5TEM */
  ai_ca(s,0132);
  goto B41544c;
 B41544c:
- IRC_COVER(518u);
+ LM_AOSTASK_FP(17252u) IRC_COVER(518u);
  /* 20,3544 TS Z5TEM      +2 */
  (void)ai_ts(s,(unsigned)0134);
  goto B41545c;
 B41545c:
- IRC_COVER(519u);
+ LM_AOSTASK_FP(17253u) IRC_COVER(519u);
  /* 20,3545 FAIL- INDEX UV */
  ix=agc_to_int(ai_word(s,0154));
  /* 20,3546 (indexed) CA -UMASK */
@@ -2952,88 +3007,88 @@ B41545c:
  else ai_ca(s,(unsigned)e);
  goto B41547c;
 B41547c:
- IRC_COVER(520u);
+ LM_AOSTASK_FP(17255u) IRC_COVER(520u);
  /* 20,3547 MASK CH5MASK */
  ai_mask(s,01262);
  goto B41550c;
 B41550c:
- IRC_COVER(521u);
+ LM_AOSTASK_FP(17256u) IRC_COVER(521u);
  /* 20,3550 EXTEND */
  goto X41551c;
 X41551c:
- IRC_COVER(522u);
+ LM_AOSTASK_FP(17257u) IRC_COVER(522u);
  /* 20,3551 EXTENDED BZF DBFUN */
  if(ai_bzf(s)){
    goto B41556c;
  }
  goto B41552c;
 B41552c:
- IRC_COVER(523u);
+ LM_AOSTASK_FP(17258u) IRC_COVER(523u);
  /* 20,3552 CA 1/ATEM1 */
  ai_ca(s,0123);
  goto B41553c;
 B41553c:
- IRC_COVER(524u);
+ LM_AOSTASK_FP(17259u) IRC_COVER(524u);
  /* 20,3553 TS 1/ATEM1    +2 */
  (void)ai_ts(s,(unsigned)0125);
  goto B41554c;
 B41554c:
- IRC_COVER(525u);
+ LM_AOSTASK_FP(17260u) IRC_COVER(525u);
  /* 20,3554 CA Z1TEM */
  ai_ca(s,0131);
  goto B41555c;
 B41555c:
- IRC_COVER(526u);
+ LM_AOSTASK_FP(17261u) IRC_COVER(526u);
  /* 20,3555 TS Z1TEM      +2 */
  (void)ai_ts(s,(unsigned)0133);
  goto B41556c;
 B41556c:
- IRC_COVER(527u);
+ LM_AOSTASK_FP(17262u) IRC_COVER(527u);
  /* 20,3556 DBFUN CS DBB3 */
  ai_cs(s,0146);
  goto B41557c;
 B41557c:
- IRC_COVER(528u);
+ LM_AOSTASK_FP(17263u) IRC_COVER(528u);
  /* 20,3557 AD DBB1 */
  ai_ad(s,0143);
  goto B41560;
 B41560:
- IRC_COVER(529u);
+ LM_AOSTASK_FP(17264u) IRC_COVER(529u);
  /* 20,3560 AD FLATEMP */
  ai_ad(s,0151);
  goto B41561;
 B41561:
- IRC_COVER(530u);
+ LM_AOSTASK_FP(17265u) IRC_COVER(530u);
  /* 20,3561 TS AXDSTEM */
  if(ai_ts(s,(unsigned)0147))goto B41563c;
  goto B41562c;
 B41562c:
- IRC_COVER(531u);
+ LM_AOSTASK_FP(17266u) IRC_COVER(531u);
  /* 20,3562 CS DBB4 */
  ai_cs(s,0145);
  goto B41563c;
 B41563c:
- IRC_COVER(532u);
+ LM_AOSTASK_FP(17267u) IRC_COVER(532u);
  /* 20,3563 AD DBB2 */
  ai_ad(s,0144);
  goto B41564;
 B41564:
- IRC_COVER(533u);
+ LM_AOSTASK_FP(17268u) IRC_COVER(533u);
  /* 20,3564 AD FLATEMP */
  ai_ad(s,0151);
  goto B41565;
 B41565:
- IRC_COVER(534u);
+ LM_AOSTASK_FP(17269u) IRC_COVER(534u);
  /* 20,3565 TS AXDSTEM    +1 */
  if(ai_ts(s,(unsigned)0150))goto B41567c;
  goto B41566c;
 B41566c:
- IRC_COVER(535u);
+ LM_AOSTASK_FP(17270u) IRC_COVER(535u);
  /* 20,3566 INHINT */
  io->interrupt_enabled=0;
  goto B41567c;
 B41567c:
- IRC_COVER(536u);
+ LM_AOSTASK_FP(17271u) IRC_COVER(536u);
  /* 20,3567 CCS UV */
  switch(ai_ccs(s,0154)){
   case 0:goto B41570c;
@@ -3043,160 +3098,160 @@ B41567c:
  }
  return EXEC_INVALID_ACTION;
 B41570c:
- IRC_COVER(537u);
+ LM_AOSTASK_FP(17272u) IRC_COVER(537u);
  /* 20,3570 TCF STORV */
  goto B41612c;
 B41571c:
- IRC_COVER(538u);
+ LM_AOSTASK_FP(17273u) IRC_COVER(538u);
  /* 20,3571 CA ACCSW */
  ai_ca(s,0122);
  goto B41572c;
 B41572c:
- IRC_COVER(539u);
+ LM_AOSTASK_FP(17274u) IRC_COVER(539u);
  /* 20,3572 TS ACCSWU */
  (void)ai_ts(s,(unsigned)01547);
  goto B41573c;
 B41573c:
- IRC_COVER(540u);
+ LM_AOSTASK_FP(17275u) IRC_COVER(540u);
  /* 20,3573 CA NINE */
  ai_caf(s,000011u); /* R2D1 */
  goto B41574c;
 B41574c:
- IRC_COVER(541u);
+ LM_AOSTASK_FP(17276u) IRC_COVER(541u);
  /* 20,3574 TC GENTRAN    +1 */
  ai_tc(s,003575u);
  W[5]=05545u;return EXEC_OK; /* 5545 */
 B41577:
- IRC_COVER(542u);
+ LM_AOSTASK_FP(17279u) IRC_COVER(542u);
  /* 20,3577 RELINT */
  io->interrupt_enabled=1;
  goto B41600;
 B41600:
- IRC_COVER(543u);
+ LM_AOSTASK_FP(17280u) IRC_COVER(543u);
  /* 20,3600 DXCH DBB1 */
  ai_dxch(s,0143);
  goto B41601c;
 B41601c:
- IRC_COVER(544u);
+ LM_AOSTASK_FP(17281u) IRC_COVER(544u);
  /* 20,3601 DXCH UDB1 */
  ai_dxch(s,0135);
  goto B41602c;
 B41602c:
- IRC_COVER(545u);
+ LM_AOSTASK_FP(17282u) IRC_COVER(545u);
  /* 20,3602 DXCH DBB4 */
  ai_dxch(s,0145);
  goto B41603c;
 B41603c:
- IRC_COVER(546u);
+ LM_AOSTASK_FP(17283u) IRC_COVER(546u);
  /* 20,3603 DXCH UDB4 */
  ai_dxch(s,0137);
  goto B41604c;
 B41604c:
- IRC_COVER(547u);
+ LM_AOSTASK_FP(17284u) IRC_COVER(547u);
  /* 20,3604 DXCH AXDSTEM */
  ai_dxch(s,0147);
  goto B41605c;
 B41605c:
- IRC_COVER(548u);
+ LM_AOSTASK_FP(17285u) IRC_COVER(548u);
  /* 20,3605 DXCH UAXDIST */
  ai_dxch(s,0141);
  goto B41606c;
 B41606c:
- IRC_COVER(549u);
+ LM_AOSTASK_FP(17286u) IRC_COVER(549u);
  /* 20,3606 CA ONE */
  ai_caf(s,000001u); /* BIT1 */
  goto B41607c;
 B41607c:
- IRC_COVER(550u);
+ LM_AOSTASK_FP(17287u) IRC_COVER(550u);
  /* 20,3607 TS UV */
  (void)ai_ts(s,(unsigned)0154);
  goto B41610c;
 B41610c:
- IRC_COVER(551u);
+ LM_AOSTASK_FP(17288u) IRC_COVER(551u);
  /* 20,3610 CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B41611c;
 B41611c:
- IRC_COVER(552u);
+ LM_AOSTASK_FP(17289u) IRC_COVER(552u);
  /* 20,3611 TCF BOTHAXES */
  goto B41320c;
 B41612c:
- IRC_COVER(553u);
+ LM_AOSTASK_FP(17290u) IRC_COVER(553u);
  /* 20,3612 STORV CA ACCSW */
  ai_ca(s,0122);
  goto B41613c;
 B41613c:
- IRC_COVER(554u);
+ LM_AOSTASK_FP(17291u) IRC_COVER(554u);
  /* 20,3613 TS ACCSWV */
  (void)ai_ts(s,(unsigned)01550);
  goto B41614c;
 B41614c:
- IRC_COVER(555u);
+ LM_AOSTASK_FP(17292u) IRC_COVER(555u);
  /* 20,3614 CA NINE */
  ai_caf(s,000011u); /* R2D1 */
  goto B41615c;
 B41615c:
- IRC_COVER(556u);
+ LM_AOSTASK_FP(17293u) IRC_COVER(556u);
  /* 20,3615 TC GENTRAN    +1 */
  ai_tc(s,003616u);
  W[5]=05545u;return EXEC_OK; /* 5545 */
 B41620:
- IRC_COVER(557u);
+ LM_AOSTASK_FP(17296u) IRC_COVER(557u);
  /* 20,3620 DXCH FLATEMP */
  ai_dxch(s,0151);
  goto B41621c;
 B41621c:
- IRC_COVER(558u);
+ LM_AOSTASK_FP(17297u) IRC_COVER(558u);
  /* 20,3621 DXCH FLAT */
  ai_dxch(s,01555);
  goto B41622c;
 B41622c:
- IRC_COVER(559u);
+ LM_AOSTASK_FP(17298u) IRC_COVER(559u);
  /* 20,3622 CA DBVAL1 */
  ai_ca(s,01346);
  goto B41623c;
 B41623c:
- IRC_COVER(560u);
+ LM_AOSTASK_FP(17299u) IRC_COVER(560u);
  /* 20,3623 TS PDB1 */
  (void)ai_ts(s,(unsigned)01561);
  goto B41624c;
 B41624c:
- IRC_COVER(561u);
+ LM_AOSTASK_FP(17300u) IRC_COVER(561u);
  /* 20,3624 TS PDB2 */
  (void)ai_ts(s,(unsigned)01562);
  goto B41625c;
 B41625c:
- IRC_COVER(562u);
+ LM_AOSTASK_FP(17301u) IRC_COVER(562u);
  /* 20,3625 AD FLAT */
  ai_ad(s,01555);
  goto B41626;
 B41626:
- IRC_COVER(563u);
+ LM_AOSTASK_FP(17302u) IRC_COVER(563u);
  /* 20,3626 TS PDB3 */
  if(ai_ts(s,(unsigned)01564))goto B41630c;
  goto B41627c;
 B41627c:
- IRC_COVER(564u);
+ LM_AOSTASK_FP(17303u) IRC_COVER(564u);
  /* 20,3627 TS PDB4 */
  (void)ai_ts(s,(unsigned)01563);
  goto B41630c;
 B41630c:
- IRC_COVER(565u);
+ LM_AOSTASK_FP(17304u) IRC_COVER(565u);
  /* 20,3630 CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B41631c;
 B41631c:
- IRC_COVER(566u);
+ LM_AOSTASK_FP(17305u) IRC_COVER(566u);
  /* 20,3631 TS PAXDIST */
  (void)ai_ts(s,(unsigned)01565);
  goto B41632c;
 B41632c:
- IRC_COVER(567u);
+ LM_AOSTASK_FP(17306u) IRC_COVER(567u);
  /* 20,3632 TS PAXDIST    +1 */
  (void)ai_ts(s,(unsigned)01566);
  goto B41633c;
 B41633c:
- IRC_COVER(568u);
+ LM_AOSTASK_FP(17307u) IRC_COVER(568u);
  /* 20,3633 CCS FLAT */
  switch(ai_ccs(s,01555)){
   case 0:goto B41634c;
@@ -3206,297 +3261,297 @@ B41633c:
  }
  return EXEC_INVALID_ACTION;
 B41634c:
- IRC_COVER(569u);
+ LM_AOSTASK_FP(17308u) IRC_COVER(569u);
  /* 20,3634 TCF DRFDB */
  goto B41652c;
 B41635c:
- IRC_COVER(570u);
+ LM_AOSTASK_FP(17309u) IRC_COVER(570u);
  /* 20,3635 DXCH UDB1 */
  ai_dxch(s,0135);
  goto B41636c;
 B41636c:
- IRC_COVER(571u);
+ LM_AOSTASK_FP(17310u) IRC_COVER(571u);
  /* 20,3636 DXCH FIREDB */
  ai_dxch(s,01601);
  goto B41637c;
 B41637c:
- IRC_COVER(572u);
+ LM_AOSTASK_FP(17311u) IRC_COVER(572u);
  /* 20,3637 DXCH UDB4 */
  ai_dxch(s,0137);
  goto B41640c;
 B41640c:
- IRC_COVER(573u);
+ LM_AOSTASK_FP(17312u) IRC_COVER(573u);
  /* 20,3640 DXCH COASTDB */
  ai_dxch(s,01603);
  goto B41641c;
 B41641c:
- IRC_COVER(574u);
+ LM_AOSTASK_FP(17313u) IRC_COVER(574u);
  /* 20,3641 DXCH UAXDIST */
  ai_dxch(s,0141);
  goto B41642c;
 B41642c:
- IRC_COVER(575u);
+ LM_AOSTASK_FP(17314u) IRC_COVER(575u);
  /* 20,3642 DXCH AXISDIST */
  ai_dxch(s,01605);
  goto B41643c;
 B41643c:
- IRC_COVER(576u);
+ LM_AOSTASK_FP(17315u) IRC_COVER(576u);
  /* 20,3643 DXCH DBB1 */
  ai_dxch(s,0143);
  goto B41644c;
 B41644c:
- IRC_COVER(577u);
+ LM_AOSTASK_FP(17316u) IRC_COVER(577u);
  /* 20,3644 DXCH FIREDB     +16D */
  ai_dxch(s,01621);
  goto B41645c;
 B41645c:
- IRC_COVER(578u);
+ LM_AOSTASK_FP(17317u) IRC_COVER(578u);
  /* 20,3645 DXCH DBB4 */
  ai_dxch(s,0145);
  goto B41646c;
 B41646c:
- IRC_COVER(579u);
+ LM_AOSTASK_FP(17318u) IRC_COVER(579u);
  /* 20,3646 DXCH COASTDB    +16D */
  ai_dxch(s,01623);
  goto B41647c;
 B41647c:
- IRC_COVER(580u);
+ LM_AOSTASK_FP(17319u) IRC_COVER(580u);
  /* 20,3647 DXCH AXDSTEM */
  ai_dxch(s,0147);
  goto B41650c;
 B41650c:
- IRC_COVER(581u);
+ LM_AOSTASK_FP(17320u) IRC_COVER(581u);
  /* 20,3650 DXCH AXISDIST   +16D */
  ai_dxch(s,01625);
  goto B41651c;
 B41651c:
- IRC_COVER(582u);
+ LM_AOSTASK_FP(17321u) IRC_COVER(582u);
  /* 20,3651 TCF 1/ACCRET   +1 */
  goto B41672c;
 B41652c:
- IRC_COVER(583u);
+ LM_AOSTASK_FP(17322u) IRC_COVER(583u);
  /* 20,3652 DRFDB CA DBVAL1 */
  ai_ca(s,01346);
  goto B41653c;
 B41653c:
- IRC_COVER(584u);
+ LM_AOSTASK_FP(17323u) IRC_COVER(584u);
  /* 20,3653 TS FIREDB */
  (void)ai_ts(s,(unsigned)01601);
  goto B41654c;
 B41654c:
- IRC_COVER(585u);
+ LM_AOSTASK_FP(17324u) IRC_COVER(585u);
  /* 20,3654 TS FIREDB     +1 */
  (void)ai_ts(s,(unsigned)01602);
  goto B41655c;
 B41655c:
- IRC_COVER(586u);
+ LM_AOSTASK_FP(17325u) IRC_COVER(586u);
  /* 20,3655 TS FIREDB     +16D */
  (void)ai_ts(s,(unsigned)01621);
  goto B41656c;
 B41656c:
- IRC_COVER(587u);
+ LM_AOSTASK_FP(17326u) IRC_COVER(587u);
  /* 20,3656 TS FIREDB     +17D */
  (void)ai_ts(s,(unsigned)01622);
  goto B41657c;
 B41657c:
- IRC_COVER(588u);
+ LM_AOSTASK_FP(17327u) IRC_COVER(588u);
  /* 20,3657 AD FLAT */
  ai_ad(s,01555);
  goto B41660;
 B41660:
- IRC_COVER(589u);
+ LM_AOSTASK_FP(17328u) IRC_COVER(589u);
  /* 20,3660 TS COASTDB */
  if(ai_ts(s,(unsigned)01603))goto B41662c;
  goto B41661c;
 B41661c:
- IRC_COVER(590u);
+ LM_AOSTASK_FP(17329u) IRC_COVER(590u);
  /* 20,3661 TS COASTDB    +1 */
  (void)ai_ts(s,(unsigned)01604);
  goto B41662c;
 B41662c:
- IRC_COVER(591u);
+ LM_AOSTASK_FP(17330u) IRC_COVER(591u);
  /* 20,3662 TS COASTDB    +16D */
  (void)ai_ts(s,(unsigned)01623);
  goto B41663c;
 B41663c:
- IRC_COVER(592u);
+ LM_AOSTASK_FP(17331u) IRC_COVER(592u);
  /* 20,3663 TS COASTDB    +17D */
  (void)ai_ts(s,(unsigned)01624);
  goto B41664c;
 B41664c:
- IRC_COVER(593u);
+ LM_AOSTASK_FP(17332u) IRC_COVER(593u);
  /* 20,3664 CA ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B41665c;
 B41665c:
- IRC_COVER(594u);
+ LM_AOSTASK_FP(17333u) IRC_COVER(594u);
  /* 20,3665 TS AXISDIST */
  (void)ai_ts(s,(unsigned)01605);
  goto B41666c;
 B41666c:
- IRC_COVER(595u);
+ LM_AOSTASK_FP(17334u) IRC_COVER(595u);
  /* 20,3666 TS AXISDIST   +1 */
  (void)ai_ts(s,(unsigned)01606);
  goto B41667c;
 B41667c:
- IRC_COVER(596u);
+ LM_AOSTASK_FP(17335u) IRC_COVER(596u);
  /* 20,3667 TS AXISDIST   +16D */
  (void)ai_ts(s,(unsigned)01625);
  goto B41670c;
 B41670c:
- IRC_COVER(597u);
+ LM_AOSTASK_FP(17336u) IRC_COVER(597u);
  /* 20,3670 TS AXISDIST   +17D */
  (void)ai_ts(s,(unsigned)01626);
  goto B41671c;
 B41671c:
- IRC_COVER(598u);
+ LM_AOSTASK_FP(17337u) IRC_COVER(598u);
  /* 20,3671 1/ACCRET INHINT */
  io->interrupt_enabled=0;
  goto B41672c;
 B41672c:
- IRC_COVER(599u);
+ LM_AOSTASK_FP(17338u) IRC_COVER(599u);
  /* 20,3672 CS DAPBOOLS */
  ai_cs(s,0111);
  goto B41673c;
 B41673c:
- IRC_COVER(600u);
+ LM_AOSTASK_FP(17339u) IRC_COVER(600u);
  /* 20,3673 MASK ACCSOKAY */
  ai_maskf(s,000004u); /* BIT3 */
  goto B41674c;
 B41674c:
- IRC_COVER(601u);
+ LM_AOSTASK_FP(17340u) IRC_COVER(601u);
  /* 20,3674 ADS DAPBOOLS */
  ai_ads(s,0111);
  goto B41675;
 B41675:
- IRC_COVER(602u);
+ LM_AOSTASK_FP(17341u) IRC_COVER(602u);
  /* 20,3675 RELINT */
  io->interrupt_enabled=1;
  goto B41676;
 B41676:
- IRC_COVER(603u);
+ LM_AOSTASK_FP(17342u) IRC_COVER(603u);
  /* 20,3676 CA ACCRETRN */
  ai_ca(s,0117);
  goto B41677c;
 B41677c:
- IRC_COVER(604u);
+ LM_AOSTASK_FP(17343u) IRC_COVER(604u);
  /* 20,3677 TC BANKJUMP */
  ai_tc(s,003700u);
  W[5]=04640u;return EXEC_OK; /* BANKJUMP */
 B41700:
- IRC_COVER(605u);
+ LM_AOSTASK_FP(17344u) IRC_COVER(605u);
  /* 20,3700 INVERT TS HOLD */
  if(ai_ts(s,(unsigned)0165))goto B41702c;
  goto B41701c;
 B41700c:
- IRC_COVER(606u);
+ LM_AOSTASK_FP(17344u) IRC_COVER(606u);
  /* 20,3700 INVERT TS HOLD */
  (void)ai_ts(s,(unsigned)0165);
  goto B41701c;
 B41701c:
- IRC_COVER(607u);
+ LM_AOSTASK_FP(17345u) IRC_COVER(607u);
  /* 20,3701 CA BIT9 */
  ai_caf(s,000400u); /* BIT9 */
  goto B41702c;
 B41702c:
- IRC_COVER(608u);
+ LM_AOSTASK_FP(17346u) IRC_COVER(608u);
  /* 20,3702 ZL */
  ai_lxch(s,07);
  goto B41703c;
 B41703c:
- IRC_COVER(609u);
+ LM_AOSTASK_FP(17347u) IRC_COVER(609u);
  /* 20,3703 EXTEND */
  goto X41704c;
 X41704c:
- IRC_COVER(610u);
+ LM_AOSTASK_FP(17348u) IRC_COVER(610u);
  /* 20,3704 EXTENDED DV HOLD */
  ai_dv(s,0165);
  goto B41705c;
 B41705c:
- IRC_COVER(611u);
+ LM_AOSTASK_FP(17349u) IRC_COVER(611u);
  /* 20,3705 TC Q */
  e=(long)(agc_correct(W[2])&077777u);
  if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B41706:
- IRC_COVER(612u);
+ LM_AOSTASK_FP(17350u) IRC_COVER(612u);
  /* 20,3706 DOWNGTS CAF ZERO */
  ai_caf(s,000000u); /* ZERO */
  goto B41707c;
 B41706c:
- IRC_COVER(613u);
+ LM_AOSTASK_FP(17350u) IRC_COVER(613u);
  goto B41706;
 B41707c:
- IRC_COVER(614u);
+ LM_AOSTASK_FP(17351u) IRC_COVER(614u);
  /* 20,3707 TS ALLOWGTS */
  (void)ai_ts(s,(unsigned)01502);
  goto B41710c;
 B41710c:
- IRC_COVER(615u);
+ LM_AOSTASK_FP(17352u) IRC_COVER(615u);
  /* 20,3710 TS INGTS */
  (void)ai_ts(s,(unsigned)01633);
  goto B41711c;
 B41711c:
- IRC_COVER(616u);
+ LM_AOSTASK_FP(17353u) IRC_COVER(616u);
  /* 20,3711 TCF DOCKTEST */
  goto B40773c;
 B41712:
- IRC_COVER(617u);
+ LM_AOSTASK_FP(17354u) IRC_COVER(617u);
  /* 20,3712 1/ANET- ZL */
  ai_lxch(s,07);
  goto B41713;
 B41713:
- IRC_COVER(618u);
+ LM_AOSTASK_FP(17355u) IRC_COVER(618u);
  /* 20,3713 LXCH ACCSW */
  ai_lxch(s,0122);
  goto B41714;
 B41714:
- IRC_COVER(619u);
+ LM_AOSTASK_FP(17356u) IRC_COVER(619u);
  /* 20,3714 TS ANET */
  if(ai_ts(s,(unsigned)0157))goto B41716c;
  goto B41715c;
 B41715c:
- IRC_COVER(620u);
+ LM_AOSTASK_FP(17357u) IRC_COVER(620u);
  /* 20,3715 AD -.03R/S2 */
  ai_adf(s,077377u); /* -.03R/S2 */
  goto B41716;
 B41716:
- IRC_COVER(621u);
+ LM_AOSTASK_FP(17358u) IRC_COVER(621u);
  /* 20,3716 EXTEND */
  goto X41717;
 B41716c:
- IRC_COVER(622u);
+ LM_AOSTASK_FP(17358u) IRC_COVER(622u);
  /* 20,3716 EXTEND */
  goto X41717c;
 X41717:
- IRC_COVER(623u);
+ LM_AOSTASK_FP(17359u) IRC_COVER(623u);
  /* 20,3717 EXTENDED BZMF NETNEG */
  if(ai_bzmf(s)){
    goto B41740;
  }
  goto B41720;
 X41717c:
- IRC_COVER(624u);
+ LM_AOSTASK_FP(17359u) IRC_COVER(624u);
  /* 20,3717 EXTENDED BZMF NETNEG */
  if(ai_bzmf(s)){
    goto B41740c;
  }
  goto B41720c;
 B41720:
- IRC_COVER(625u);
+ LM_AOSTASK_FP(17360u) IRC_COVER(625u);
  /* 20,3720 1/NETMIN CA ANET */
  ai_ca(s,0157);
  goto B41721c;
 B41720c:
- IRC_COVER(626u);
+ LM_AOSTASK_FP(17360u) IRC_COVER(626u);
  goto B41720;
 B41721c:
- IRC_COVER(627u);
+ LM_AOSTASK_FP(17361u) IRC_COVER(627u);
  /* 20,3721 EXTEND */
  goto X41722c;
 X41722c:
- IRC_COVER(628u);
+ LM_AOSTASK_FP(17362u) IRC_COVER(628u);
  /* 20,3722 EXTENDED INDEX -SIGNAOS */
  ix=agc_to_int(ai_word(s,0164));
  /* 20,3723 EXTENDED (indexed) MP 1/ACOSTT   +1 */
@@ -3506,83 +3561,83 @@ X41722c:
  else ai_mp(s,(unsigned)e);
  goto B41724c;
 B41724c:
- IRC_COVER(629u);
+ LM_AOSTASK_FP(17364u) IRC_COVER(629u);
  /* 20,3724 DO1/NET+ AD BIT9 */
  ai_adf(s,000400u); /* BIT9 */
  goto B41725;
 B41725:
- IRC_COVER(630u);
+ LM_AOSTASK_FP(17365u) IRC_COVER(630u);
  /* 20,3725 XCH ANET */
  ai_xch(s,0157);
  goto B41726c;
 B41726c:
- IRC_COVER(631u);
+ LM_AOSTASK_FP(17366u) IRC_COVER(631u);
  /* 20,3726 EXTEND */
  goto X41727c;
 X41727c:
- IRC_COVER(632u);
+ LM_AOSTASK_FP(17367u) IRC_COVER(632u);
  /* 20,3727 EXTENDED QXCH ARET */
  ai_qxch(s,0161);
  goto B41730c;
 B41730c:
- IRC_COVER(633u);
+ LM_AOSTASK_FP(17368u) IRC_COVER(633u);
  /* 20,3730 TC INVERT */
  ai_tc(s,003731u);
  goto B41700c;
 B41731:
- IRC_COVER(634u);
+ LM_AOSTASK_FP(17369u) IRC_COVER(634u);
  /* 20,3731 TS 1/ANET */
  if(ai_ts(s,(unsigned)0160))goto B41733c;
  goto B41732c;
 B41732c:
- IRC_COVER(635u);
+ LM_AOSTASK_FP(17370u) IRC_COVER(635u);
  /* 20,3732 CS BIT9 */
  ai_csf(s,000400u); /* BIT9 */
  goto B41733c;
 B41733c:
- IRC_COVER(636u);
+ LM_AOSTASK_FP(17371u) IRC_COVER(636u);
  /* 20,3733 DOACCFUN EXTEND */
  goto X41734c;
 X41734c:
- IRC_COVER(637u);
+ LM_AOSTASK_FP(17372u) IRC_COVER(637u);
  /* 20,3734 EXTENDED MP 1/ANET */
  ai_mp(s,0160);
  goto B41735c;
 B41735c:
- IRC_COVER(638u);
+ LM_AOSTASK_FP(17373u) IRC_COVER(638u);
  /* 20,3735 EXTEND */
  goto X41736c;
 X41736c:
- IRC_COVER(639u);
+ LM_AOSTASK_FP(17374u) IRC_COVER(639u);
  /* 20,3736 EXTENDED DV ANET */
  ai_dv(s,0157);
  goto B41737c;
 B41737c:
- IRC_COVER(640u);
+ LM_AOSTASK_FP(17375u) IRC_COVER(640u);
  /* 20,3737 TC ARET */
  e=(long)(W[0161]&077777u);
  if(e>=012000&&e<=017777)e&=07777;
  if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
  ai_tc(s,0162u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
 B41740:
- IRC_COVER(641u);
+ LM_AOSTASK_FP(17376u) IRC_COVER(641u);
  /* 20,3740 NETNEG CS -.03R/S2 */
  ai_csf(s,077377u); /* -.03R/S2 */
  goto B41741c;
 B41740c:
- IRC_COVER(642u);
+ LM_AOSTASK_FP(17376u) IRC_COVER(642u);
  goto B41740;
 B41741c:
- IRC_COVER(643u);
+ LM_AOSTASK_FP(17377u) IRC_COVER(643u);
  /* 20,3741 TS ANET */
  (void)ai_ts(s,(unsigned)0157);
  goto B41742c;
 B41742c:
- IRC_COVER(644u);
+ LM_AOSTASK_FP(17378u) IRC_COVER(644u);
  /* 20,3742 TCF 1/NETMIN   +1 */
  goto B41721c;
 B41743:
- IRC_COVER(645u);
+ LM_AOSTASK_FP(17379u) IRC_COVER(645u);
  /* 20,3743 FIXMIN CCS SIGNAOS */
  switch(ai_ccs(s,0163)){
   case 0:goto B41744c;
@@ -3592,35 +3647,35 @@ B41743:
  }
  return EXEC_INVALID_ACTION;
 B41743c:
- IRC_COVER(646u);
+ LM_AOSTASK_FP(17379u) IRC_COVER(646u);
  goto B41743;
 B41744c:
- IRC_COVER(647u);
+ LM_AOSTASK_FP(17380u) IRC_COVER(647u);
  /* 20,3744 CA TWO */
  ai_caf(s,000002u); /* BIT2 */
  goto B41745c;
 B41745c:
- IRC_COVER(648u);
+ LM_AOSTASK_FP(17381u) IRC_COVER(648u);
  /* 20,3745 AD NEGONE */
  ai_adf(s,077776u); /* NEGONE */
  goto B41746;
 B41746:
- IRC_COVER(649u);
+ LM_AOSTASK_FP(17382u) IRC_COVER(649u);
  /* 20,3746 TS ACCSW */
  if(ai_ts(s,(unsigned)0122))goto B41750c;
  goto B41747c;
 B41746c:
- IRC_COVER(650u);
+ LM_AOSTASK_FP(17382u) IRC_COVER(650u);
  /* 20,3746 TS ACCSW */
  (void)ai_ts(s,(unsigned)0122);
  goto B41747c;
 B41747c:
- IRC_COVER(651u);
+ LM_AOSTASK_FP(17383u) IRC_COVER(651u);
  /* 20,3747 AD UV */
  ai_ad(s,0154);
  goto B41750;
 B41750:
- IRC_COVER(652u);
+ LM_AOSTASK_FP(17384u) IRC_COVER(652u);
  /* 20,3750 INDEX A */
  ix=areg(s);
  /* 20,3751 (indexed) CA -UMASK     +1 */
@@ -3630,45 +3685,45 @@ B41750:
  else ai_ca(s,(unsigned)e);
  goto B41752c;
 B41750c:
- IRC_COVER(653u);
+ LM_AOSTASK_FP(17384u) IRC_COVER(653u);
  goto B41750;
 B41752c:
- IRC_COVER(654u);
+ LM_AOSTASK_FP(17386u) IRC_COVER(654u);
  /* 20,3752 MASK CH5MASK */
  ai_mask(s,01262);
  goto B41753c;
 B41753c:
- IRC_COVER(655u);
+ LM_AOSTASK_FP(17387u) IRC_COVER(655u);
  /* 20,3753 EXTEND */
  goto X41754c;
 X41754c:
- IRC_COVER(656u);
+ LM_AOSTASK_FP(17388u) IRC_COVER(656u);
  /* 20,3754 EXTENDED BZF +4 */
  if(ai_bzf(s)){
    goto B41760c;
  }
  goto B41755c;
 B41755c:
- IRC_COVER(657u);
+ LM_AOSTASK_FP(17389u) IRC_COVER(657u);
  /* 20,3755 CS -.03R/S2 */
  ai_csf(s,077377u); /* -.03R/S2 */
  goto B41756c;
 B41756c:
- IRC_COVER(658u);
+ LM_AOSTASK_FP(17390u) IRC_COVER(658u);
  /* 20,3756 TS ANET */
  (void)ai_ts(s,(unsigned)0157);
  goto B41757c;
 B41757c:
- IRC_COVER(659u);
+ LM_AOSTASK_FP(17391u) IRC_COVER(659u);
  /* 20,3757 TCF STMIN-     -1 */
  goto B41526c;
 B41760c:
- IRC_COVER(660u);
+ LM_AOSTASK_FP(17392u) IRC_COVER(660u);
  /* 20,3760 CA L */
  ai_ca(s,01);
  goto B41761c;
 B41761c:
- IRC_COVER(661u);
+ LM_AOSTASK_FP(17393u) IRC_COVER(661u);
  /* 20,3761 TCF STMIN- */
  goto B41527c;
 dispatch:
@@ -3722,7 +3777,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
 #ifndef LM_AOSTASK_KEEP0
 #define LM_AOSTASK_KEEP0 0xfffffffffffffff
 #endif
-#if (LM_AOSTASK_KEEP0 >> 0) & 1
+#if (LM_AOSTASK_KEEP0 >> 0) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2447 1/ACCSET (entry 1/ACCSET (DAPIDLER_PROGRAM.agc 2CADR 1/ACCSET)) */
 static enum exec_status r40447_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3731,7 +3786,7 @@ static enum exec_status r40447_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16679u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 1) & 1
+#if (LM_AOSTASK_KEEP0 >> 1) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2454 1/ACCJOB (entry 1/ACCJOB (RCS_FAILURE_MONITOR.agc 2CADR 1/ACCJOB)) */
 static enum exec_status r40454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3740,7 +3795,7 @@ static enum exec_status r40454_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16684u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 2) & 1
+#if (LM_AOSTASK_KEEP0 >> 2) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2456  (return from BANKCALL) */
 static enum exec_status r40456_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3749,7 +3804,7 @@ static enum exec_status r40456_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16686u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 3) & 1
+#if (LM_AOSTASK_KEEP0 >> 3) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2457 1/ACCS (entry 1/ACCS (SERVICER.agc CADR 1/ACCS)) */
 static enum exec_status r40457_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3758,7 +3813,7 @@ static enum exec_status r40457_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16687u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 4) & 1
+#if (LM_AOSTASK_KEEP0 >> 4) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2461  (entry 1/ACCS+2) */
 static enum exec_status r40461_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3767,7 +3822,7 @@ static enum exec_status r40461_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16689u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 5) & 1
+#if (LM_AOSTASK_KEEP0 >> 5) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2462  (return from MAKECADR) */
 static enum exec_status r40462_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3776,7 +3831,7 @@ static enum exec_status r40462_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16690u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 6) & 1
+#if (LM_AOSTASK_KEEP0 >> 6) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,2773 DOCKTEST (return from IBNKCALL) */
 static enum exec_status r40773_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3785,7 +3840,7 @@ static enum exec_status r40773_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,16891u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 7) & 1
+#if (LM_AOSTASK_KEEP0 >> 7) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,3250  (return from IBNKCALL) */
 static enum exec_status r41250_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3794,7 +3849,7 @@ static enum exec_status r41250_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,17064u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 8) & 1
+#if (LM_AOSTASK_KEEP0 >> 8) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,3577  (return from 5545) */
 static enum exec_status r41577_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3803,7 +3858,7 @@ static enum exec_status r41577_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,17279u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 9) & 1
+#if (LM_AOSTASK_KEEP0 >> 9) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,3620  (return from 5545) */
 static enum exec_status r41620_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3812,7 +3867,7 @@ static enum exec_status r41620_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,17296u);
 }
 #endif
-#if (LM_AOSTASK_KEEP0 >> 10) & 1
+#if (LM_AOSTASK_KEEP0 >> 10) & 1 && !defined(LM_AOSTASK_FLIGHT_PART)
 /* 20,3700 INVERT (entry INVERT (P51-P53.agc BOFF INVERT)) */
 static enum exec_status r41700_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
@@ -3826,6 +3881,7 @@ static enum exec_status r41700_abi(const agc_native_program *p,apollo_overlay_st
 #define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)AGC_CH_HW_SET(p);if(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}
 /* Each table ends with a sentinel the count leaves out. */
 const agc_routine_table lm_aostask_interpretive={0,0};
+#ifndef LM_AOSTASK_FLIGHT_PART
 static const agc_routine_entry basic_entries[]={
 #if (LM_AOSTASK_KEEP0 >> 0) & 1
  {16679,r40447_abi},
@@ -3862,6 +3918,47 @@ static const agc_routine_entry basic_entries[]={
 #endif
  {0xffffu,0}
 };
+#else
+/* Flight: the keys of every part (routines and part keys). */
+static const uint16_t lm_aostask_flight_keys[42]={16679u,16684u,16686u,16687u,16689u,16690u,16827u,16828u,16835u,16836u,16841u,16842u,16891u,16894u,16896u,16904u,16925u,16965u,17006u,17007u,17031u,17032u,17048u,17049u,17064u,17085u,17104u,17151u,17170u,17180u,17198u,17203u,17217u,17226u,17239u,17279u,17296u,17337u,17344u,17350u,17369u,17371u};
+static enum exec_status lm_aostask_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
+ for(i=0;i<42u;++i)if(lm_aostask_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%1024u);return EXEC_OK;}
+ return EXEC_OUT_OF_SCOPE;
+}
+/* Every key of the part: Z (under FB and SUPERBNK) names it. */
+static enum exec_status lm_aostask_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ p66_bias_io *io=v;uint16_t at;
+ (void)AGC_CH_HW_SET(p);
+ if(!s||!io)return EXEC_OUT_OF_SCOPE;
+ at=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(at/1024u){
+ case 020u:if(!basic_sane(s,io,040000u))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return basic_run(s,io,at);
+ }
+ return EXEC_OUT_OF_SCOPE;
+}
+#if LM_AOSTASK_FLIGHT_PART==1
+static const agc_routine_entry basic_entries[]={
+ {16679,lm_aostask_flight_entry}, {16684,lm_aostask_flight_entry}, {16686,lm_aostask_flight_entry}, {16687,lm_aostask_flight_entry}, {16689,lm_aostask_flight_entry}, {16690,lm_aostask_flight_entry},
+ {16827,lm_aostask_flight_entry}, {16828,lm_aostask_flight_entry}, {16835,lm_aostask_flight_entry}, {16836,lm_aostask_flight_entry}, {16841,lm_aostask_flight_entry}, {16842,lm_aostask_flight_entry},
+ {16891,lm_aostask_flight_entry}, {16894,lm_aostask_flight_entry}, {16896,lm_aostask_flight_entry},
+ {0xffffu,0}
+};
+#elif LM_AOSTASK_FLIGHT_PART==2
+static const agc_routine_entry basic_entries[]={
+ {16904,lm_aostask_flight_entry}, {16925,lm_aostask_flight_entry}, {16965,lm_aostask_flight_entry}, {17006,lm_aostask_flight_entry}, {17007,lm_aostask_flight_entry}, {17031,lm_aostask_flight_entry},
+ {17032,lm_aostask_flight_entry}, {17048,lm_aostask_flight_entry}, {17049,lm_aostask_flight_entry}, {17064,lm_aostask_flight_entry}, {17085,lm_aostask_flight_entry}, {17104,lm_aostask_flight_entry},
+ {17151,lm_aostask_flight_entry}, {17170,lm_aostask_flight_entry},
+ {0xffffu,0}
+};
+#elif LM_AOSTASK_FLIGHT_PART==3
+static const agc_routine_entry basic_entries[]={
+ {17180,lm_aostask_flight_entry}, {17198,lm_aostask_flight_entry}, {17203,lm_aostask_flight_entry}, {17217,lm_aostask_flight_entry}, {17226,lm_aostask_flight_entry}, {17239,lm_aostask_flight_entry},
+ {17279,lm_aostask_flight_entry}, {17296,lm_aostask_flight_entry}, {17337,lm_aostask_flight_entry}, {17344,lm_aostask_flight_entry}, {17350,lm_aostask_flight_entry}, {17369,lm_aostask_flight_entry},
+ {17371,lm_aostask_flight_entry},
+ {0xffffu,0}
+};
+#endif
+#endif
 const agc_routine_table lm_aostask_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
 const lm_aostask_point lm_aostask_points[LM_AOSTASK_POINTS]={
  {16679,0},
