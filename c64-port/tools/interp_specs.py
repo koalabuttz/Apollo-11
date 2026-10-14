@@ -2406,6 +2406,11 @@ SPECS = {
         # (Comanche's basic routines here all run in P51-P53's own jobs.)
         'any_fixloc': {'lm': True},
         'any_newjob': {'lm': True},
+        # C64 rows chosen by gcov branch arc over every linked source (gcov
+        # also counts the ?: outcomes clang folds to selects, as in
+        # rtb_angles.c); every 16th case traced (a divisor of freeze_stride).
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'max_steps': 10000,
         'freeze_stride': 192,
     },

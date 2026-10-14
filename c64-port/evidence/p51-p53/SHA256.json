@@ -3,24 +3,29 @@
   "milestone": "p51-p53",
   "release": "evidence-p51-p53",
   "files": {
+    "p51-p53-c64-cover.json": {
+      "sha256": "05f51ea652132cb7eaee4786b01a3594a23b92fe4d2469ee7291c85ed6a8655f",
+      "bytes": 18565,
+      "store": "tree"
+    },
     "p51-p53-c64-outcomes.json": {
-      "sha256": "1c3e7d60b08bdb66be2d151f81e4bac6da34f83b3be5597156af000e4e136dbb",
+      "sha256": "2099a5ee24667b6caa12f4f1f1cd2eefbd7fa8199aa7909590c57b9817b060e7",
       "bytes": 711,
       "store": "tree"
     },
     "p51-p53-differential.log": {
-      "sha256": "cf2ad72f5a45a436e1bb275b1bdeb418f7a65dcb144079f7f1eb7cd2fbd71b8e",
-      "bytes": 44545,
+      "sha256": "3540ba17296f6c792bb12fee3d0b2b025a5cd279bda6e66665a1d9e35caffcd4",
+      "bytes": 45373,
       "store": "release"
     },
     "p51-p53-host.log": {
-      "sha256": "1cfca8d1c6561943734dbbc3bc0f53ded1c9130756e7dd7ef08a2ca778267f7f",
+      "sha256": "d38045f62d4b18ae95dc5a839ef0180308443cfd5bb812f4c2dbd8ceb98df65c",
       "bytes": 159,
       "store": "release"
     },
     "p51-p53-proof.json": {
-      "sha256": "6a8ae3770751a125efde3e3d925b430a0414d7dfa1cf94d94523dbed90124bec",
-      "bytes": 97438,
+      "sha256": "8cebce3fc463bd9ae6cf9a857009b2f2aa2aa9c619de2fdefe4f7c203e701cb3",
+      "bytes": 100473,
       "store": "tree"
     },
     "p51-p53-source-map.json": {
@@ -29,8 +34,8 @@
       "store": "release"
     },
     "p51-p53-vice.log": {
-      "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
-      "bytes": 8607,
+      "sha256": "b39c85bc464ba213421dd45a82251653bf728a883ea8fbe1f6a491692e6fe94a",
+      "bytes": 9468,
       "store": "release"
     }
   }
