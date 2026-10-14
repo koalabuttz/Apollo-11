@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p70-p71-file",
+  "release": "evidence-lm-p70-p71-file",
+  "files": {
+    "lm-p70-p71-file-closure.json": {
+      "sha256": "b4b1c45f0de47a0328980fb252abb4c546b67a610fc6f8ffe745b04a20ded456",
+      "bytes": 44782,
+      "store": "tree"
+    },
+    "lm-p70-p71-file-differential.log": {
+      "sha256": "91cf54e749bf8abae2ec8f5ab697eb0055ef7ff0fe8fcae5038b7a5ca243f0e8",
+      "bytes": 8903,
+      "store": "tree"
+    },
+    "lm-p70-p71-file-host.log": {
+      "sha256": "8c86c431db6b5110c1780aedb10e3d2b6d2d48fd01633da2f4006fec354f8ca7",
+      "bytes": 1138,
+      "store": "release"
+    },
+    "lm-p70-p71-file-proof.json": {
+      "sha256": "6988fd25f3951258b677a354fa14b836ac049588e4765c52539e755f6cbf0c23",
+      "bytes": 16631,
+      "store": "tree"
+    },
+    "lm-p70-p71-file-source-map.json": {
+      "sha256": "254132b903403c7faad05aecf5f2307d61ee684ea2bfaa5bc2a5f4f5cceb55eb",
+      "bytes": 42450,
+      "store": "tree"
+    },
+    "lm-p70-p71-file-vice.log": {
+      "sha256": "0e5bddac99302af3d461382057048c2e879bb07e1b5d4171e079593061d85826",
+      "bytes": 2758,
+      "store": "release"
+    }
+  }
+}

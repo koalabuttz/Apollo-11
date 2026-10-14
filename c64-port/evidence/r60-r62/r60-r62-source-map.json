@@ -2,8 +2,8 @@
  "Luminary099/R60_62.agc": {
   "native_file": "src/lm_r60_r62.c",
   "words": 296,
-  "untranslated_words": 3,
-  "routines": 114,
+  "untranslated_words": 0,
+  "routines": 113,
   "map": [
    {
     "address": "26,2123",
@@ -636,61 +636,64 @@
     "address": "26,2255",
     "word": "00006",
     "source": "G+N,AUTO EXTEND ",
-    "untranslated": "G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2256",
     "word": "00030",
     "source": " READ CHAN30",
-    "untranslated": "G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2257",
     "word": "74742",
     "source": " MASK BIT10",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2260",
     "word": "10000",
     "source": " CCS A",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2261",
     "word": "00002",
     "source": " TC Q",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2262",
     "word": "00006",
     "source": "ISITAUTO EXTEND ",
-    "untranslated": "G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2263",
     "word": "00031",
     "source": " READ CHAN31",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2264",
     "word": "74736",
     "source": " MASK BIT14",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2265",
     "word": "00002",
     "source": " TC Q",
-    "routine": "26,2257",
-    "function": "r54257"
+    "routine": "26,2255",
+    "function": "r54255"
    },
    {
     "address": "26,2266",
@@ -2063,8 +2066,8 @@
  "Comanche055/R60_62.agc": {
   "native_file": "src/cm_r60_r62.c",
   "words": 227,
-  "untranslated_words": 2,
-  "routines": 85,
+  "untranslated_words": 0,
+  "routines": 83,
   "map": [
    {
     "address": "27,2000",
@@ -2273,62 +2276,64 @@
     "address": "27,2035",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2036",
     "word": "06031",
     "source": " RXOR CHAN31",
-    "untranslated": "TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2037",
     "word": "77707",
     "source": " MASK 13,14,15",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2040",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2041",
     "word": "12043",
     "source": " BZF +2",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2042",
     "word": "12013",
     "source": " TCF TOBALL",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2043",
     "word": "32125",
     "source": " CAF V06N18",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2044",
     "word": "04662",
     "source": " TC BANKCALL",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2045",
     "word": "20676",
     "source": " CADR GODSPR",
-    "routine": "27,2037",
-    "function": "r56037"
+    "routine": "27,2016",
+    "function": "r56016"
    },
    {
     "address": "27,2046",
@@ -2390,78 +2395,78 @@
     "address": "27,2056",
     "word": "40100",
     "source": "CHKLINUS CS FLAGWRD4",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2057",
     "word": "75004",
     "source": " MASK BIT12",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2060",
     "word": "10000",
     "source": " CCS A",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2061",
     "word": "00002",
     "source": " TC Q",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2062",
     "word": "30002",
     "source": " CA Q",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2063",
     "word": "54156",
     "source": " TS MPAC       +2",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2064",
     "word": "46214",
     "source": " CS THREE",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2065",
     "word": "60133",
     "source": " AD BUF2",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2066",
     "word": "55053",
     "source": " TS TBASE1",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2067",
     "word": "05412",
     "source": " TC PHASCHNG",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2070",
     "word": "00071",
     "source": " OCT 71",
-    "routine": "27,2021",
-    "function": "r56021"
+    "routine": "27,2046",
+    "function": "r56046"
    },
    {
     "address": "27,2071",

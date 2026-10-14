@@ -14,7 +14,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc,fb,kind;if(argc!=2)return 
  for(n=0;n<LM_PA_CASES;++n){apollo_overlay_state s;lm_flight_io io;
   machine=baseline;lm_pa_input(&s,&io,(uint16_t)n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=0;machine.AllowInterrupt=(int)io.bias.interrupt_enabled;kind=LM_PA_NONE;
-  machine.InputChannel[012]=(int16_t)io.chan12;machine.InputChannel[013]=(int16_t)io.chan13;machine.InputChannel[031]=(int16_t)io.chan31;
+  machine.InputChannel[012]=(int16_t)io.hw.channel12;machine.InputChannel[013]=(int16_t)io.hw.channel13;machine.InputChannel[031]=(int16_t)io.hw.channel31;
   for(cycles=0;cycles<40000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);fb=(unsigned)get(4)&076000u;
     if(pc>=010u&&(pc<LM_PA_FIRST||pc>LM_PA_LAST||fb!=LM_PA_FB16)){kind=LM_PA_LEFT;break;}

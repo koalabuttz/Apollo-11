@@ -5,7 +5,7 @@
 CM_TIME_FREE_FALL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TIME_FREE_FALL_SRC = src/cm_time_free_fall.c tests/cm_time_free_fall_target.c $(CM_TIME_FREE_FALL_COMMON)
 CM_TIME_FREE_FALL_HDR = include/cm_time_free_fall.h tests/interp_case.h tests/cm_time_free_fall_vectors.h tests/cm_time_free_fall_c64_vectors.h
-CM_TIME_FREE_FALL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_TIME_FREE_FALL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-time-free-fall sanitize-cm-time-free-fall c64-cm-time-free-fall vice-cm-time-free-fall cm-time-free-fall-differential
 all: build/test-cm-time-free-fall
 test: test-cm-time-free-fall

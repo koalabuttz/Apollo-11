@@ -34,8 +34,8 @@ void lm_di_input(apollo_overlay_state *m,lm_flight_io *io,lm_di_case *c,uint16_t
  c->superbank=0;io->bias.superbank=0;io->bias.interrupt_enabled=0;
  /* Channel 14 bits 1-5 only: the CDU, gyro and optics drive bits would
   * start yaAGC pulse output. */
- io->chan14=(agc_word)(r15(&seed)&037u);io->chan5=r15(&seed);io->chan6=r15(&seed);io->chan12=r15(&seed);
- io->chan30=r15(&seed);io->chan31=r15(&seed);
+ io->hw.channel14=(agc_word)(r15(&seed)&037u);io->hw.channel5=r15(&seed);io->hw.channel6=r15(&seed);io->hw.channel12=r15(&seed);
+ io->hw.channel30=r15(&seed);io->hw.channel31=r15(&seed);
  /* Return: SWRETURN, fixed-fixed 06000-07777 away from NOVAC's Q+1/Q+2
   * exit (06730-06745), or bank 16 outside this file and CALCPERR. */
  if(v%3u==0u){q=SWRETURN;c->stop_fb=ANY_FB;}
@@ -61,6 +61,7 @@ const agc_site_operand lm_di_sites[LM_DI_SITES]={
  {14367u,002447},{14368u,040106},{14375u,040153},{14448u,036626},{14450u,035446}};
 unsigned lm_di_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_routine_table tables[3];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};lm_di_case c;enum exec_status st;uint16_t stop;agc_word z,fb;
+ program.hardware=&io->hw;
  tables[0]=lm_dapidler_routines;tables[1]=lm_interbank_routines;tables[2]=lm_exec_routines;
  program.basic=tables;program.basic_count=3;program.operands=lm_di_sites;program.operand_count=LM_DI_SITES;
  lm_di_input(s,io,&c,n);
@@ -80,7 +81,7 @@ static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_di_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_di_run(s,&io,n,&steps);
  sum_a=sum_b=0;mix((uint16_t)kind);
- mix(io.chan5);mix(io.chan6);mix(io.chan12);mix(io.chan14);
+ mix(io.hw.channel5);mix(io.hw.channel6);mix(io.hw.channel12);mix(io.hw.channel14);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }

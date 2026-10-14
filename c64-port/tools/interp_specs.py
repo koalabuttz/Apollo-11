@@ -835,6 +835,9 @@ SPECS = {
         'ebank': 'listing',
         'index_carry16': True,
         'image_w': True,
+        # DMP, TPAGREE and SHORTMP run on every pass of flight's periodic jobs:
+        # no image scan at their entries in flight (steward).
+        'trusted_image': True,
         'target': 'tests/%s_interpreter_target.c' % m,
     } for m in ('lm', 'cm')},
     # Lane A: Luminary099 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
@@ -1002,6 +1005,91 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'target': 'tests/lm_p76_file_target.c',
+    },
+    'lm-r31-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'R31.agc'},
+        'base': {'lm': 'lm_r31_file'},
+        'symbol': {'lm': 'lm_r31_file'},
+        'basic': 'full',
+        # GOMARKF's three returns: terminate and proceed (TC B5OFF) and a
+        # value loaded through the DSKY (TCF DISPN5X).
+        'entries': ['@external', 'DISPN5X+4', 'DISPN5X+5'],
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'NORMUNX1': {'lm': ('lm_normunx1(s,io)', 'stops')}},
+        'includes': ['rtb_angles.h', 'lm_normunit.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_normunit.c', 'src/rtb_vector.c', 'src/rtb_unit.c',
+                           'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c',
+                           'src/guidance_product.c'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        # (As the .mk builds the diagnostics: without inlining, a static
+        # stack and zero-page globals, so NORMUNX1's runs through COMPDISP
+        # fit one diagnostic.)
+        'c64_cuts': True,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # RTB NORMUNX1's UNIT runs on a vector MPAC (MODE -1), as the VSU
+        # before it leaves it; other modes are outside rtb_unit's domain.
+        'states': {'37,3243': {'0163': [0o77776]}},
+        'target': 'tests/lm_r31_file_target.c',
+    },
+    'lm-p70-p71-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'P70-P71.agc'},
+        'base': {'lm': 'lm_p70_p71_file'},
+        'symbol': {'lm': 'lm_p70_p71_file'},
+        'basic': 'full',
+        # R10,R11 (the Waitlist task), P70 and P71 (the major modes),
+        # GOABORT (4.3SPOT's restart point), P70INIT, P71RET, and TGOCOMP,
+        # THROTUP and LEGAL? (subroutines other files call).
+        'entries': ['@external', 'R10,R11', 'P70', 'P71', 'P70A', 'P71A', 'CONTABRT', 'ABRTJASK', 'GOABORT',
+                    'P70INIT', 'P71RET', 'INJTARG', 'TGOCOMP', 'THROTUP', 'LEGAL?'],
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
+        'superbank_bit': True,
+        # READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 through the
+        # program's agc_hardware, the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # (Channel 30 named too: 'auto' leaves out the channel READ CHAN30
+        # takes as an input, and the case's channel edits zero it.)
+        'io_channels': {0o11: 0o77777, 0o14: 0o6777, 0o30: 0o77777},
+        'engine': 'flight-device',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # ABRTJASK's INDEX Q; CAF MODE70 reads MODE70 to MODE70 +2.
+        'fixed_tables': {'MODE70': (0, 2)},
+        # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
+        # 8D): the DPS or the APS coefficients, eight words on.
+        # CONTABRT's RESUME runs BRUPT's TCF ABRTJASK at Z = ZRUPT, which
+        # the TCF then replaces. ZRUPT holds ABRTJASK in every case (P70A and
+        # P71A reach CONTABRT through DTCB), so the oracle, which stops when
+        # Z leaves the file, runs the TCF as the native code does.
+        'all_states': {'015': [0o3406]},
+        'states': {**{lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+                   # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
+                   'CONTABRT': {'2': [0o177777, 2]},
+                   'ABRTJASK': {'2': [0o177777, 2]},
+                   # R10,R11's abort checks (10,11): LETABORT (FLAGWRD9 bit 9)
+                   # set in most cases, and MODREG P70, P71 or another
+                   # program, so P71NOW? and P70NOW? both run.
+                   '21,2042': {'FLAGWRD9': [0o400, 0o400, 0o77777, 0],
+                               'MODREG': [0o106, 0o107, 0o100, 0o41, 0o77777]}},
+        'target': 'tests/lm_p70_p71_file_target.c',
     },
     'cm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
@@ -1305,9 +1393,11 @@ SPECS = {
                    '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
-        # BDDV's divisor (MPAC, from the NORM ROUND at 11,2734) zero in half
-        # the 11,2736 resumes (their flowed state otherwise): the divide
-        # overflow paths of either sign, which only long DIFEQ runs reach.
+        # Widened-domain overflow states: half the 11,2736 resumes take
+        # BDDV's divisor (MPAC, after the NORM ROUND at 11,2734) with its
+        # high word +0 (a tiny divisor, rarely exactly zero), so the divide
+        # overflows, with either sign; flight never gets there after NORM
+        # ROUND, and otherwise only long DIFEQ runs take these paths.
         'resume_states': {'11,2736': {'0154': [0, 'flow']}},
         'max_steps': 1000,
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
@@ -1451,6 +1541,10 @@ SPECS = {
             # APSIDES, TIMETHET and TIMERAD after their SETPD 0: PDVL's
             # push stays below X1.
             '12,3706': {'0166': ['vac+0']}, '12,3710': {'0166': ['vac+0']}, '12,3713': {'0166': ['vac+6']},
+            # COMMNOUT's CALL NEWSTATE (12,2773) pushes a vector: PUSHLOC low
+            # on the pushdown list as DELTIME leaves it, or the push
+            # overruns S1, S2 and QPRET (#325).
+            '12,2770': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
             '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
             '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
         },
@@ -1468,6 +1562,12 @@ SPECS = {
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
     },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a
@@ -1987,11 +2087,18 @@ SPECS = {
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
-        'partial': {'lm': 'G+N,AUTO and ISITAUTO read channels 30 and 31, which wait for an I/O channel model',
-                    'cm': 'TOBALLC reads channel 31 (RXOR CHAN31), which waits for an I/O channel model'},
+        # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
+        # read latched input channels.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
         # KALCMANU's matrix loops run past 200 routines from some resume points.
         'max_steps': 1000,
         'freeze_stride': 128,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
     },
     'p51-p53': {
         'missions': ('lm', 'cm'),
@@ -2492,7 +2599,10 @@ SPECS = {
                     'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
                     'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
                     # dead code after a GOTO, kept as its own routine
-                    'S40.133'],
+                    'S40.133',
+                    # P47LM's FINDVAC job (2CADR P47BODY): the Executive
+                    # enters it.
+                    'P47BODY'],
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
                       '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
                       'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
@@ -2508,6 +2618,26 @@ SPECS = {
         'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
+        # C64 rows chosen by branch outcome over every linked source.
+        'c64_rows': 'cover',
+        # Trace every 5th case for the gcov arcs (a divisor of
+        # freeze_stride, so every frozen host vector is traced). (At 64,
+        # the only traced cases taking OVERFLOW's carry into OVFIND ran
+        # too long for one C64 program.)
+        'cover_stride': 5,
+        # Arcs only runs too long for one C64 program take (LM 27,3123)
+        # get truncated rows, run to a cut (tests/interp_cut.h).
+        'c64_cuts': True,
+        # A quarter of the cases put edge values (+-0, one LSB, 1/2, just
+        # below 1, axis and plane vectors) in MPAC and the operands, so
+        # short runs take the VROUND and DDV overflow paths too.
+        'edge_values': True,
+        # INDEX by a negative value: the end-around carry the C64 build
+        # needs (unsigned is 16 bits there).
+        'index_carry16': True,
+        # W from include/agc_image_w.h: flight builds address the fixed
+        # $7000 image.
+        'image_w': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
@@ -2714,6 +2844,63 @@ SPECS = {
         'target': 'tests/lm_rcsmon_target.c',
         'c64_rows': 'cover',
         'cover': True,
+        'freeze_stride': 16,
+    },
+    # Luminary099 SPS_BACK-UP_RCS_CONTROL (SPSRCS, the docked RCS jet
+    # law the P and Q,R axis autopilots call through IBNKCALL), the whole
+    # file (basic code). (src/lm_sps_rcs.c is the earlier hand-written
+    # translation, kept for its legacy targets.)
+    'lm-sps-backup': {
+        'missions': ('lm',),
+        'file': {'lm': 'SPS_BACK-UP_RCS_CONTROL.agc'},
+        'base': {'lm': 'lm_sps_backup'},
+        'symbol': {'lm': 'lm_sps_backup'},
+        'entries': ['SPSRCS'],
+        'externals': {},
+        # The file's EBANK= TJU: E6 (AXISCTR, TJU, UJETCTR, EDOT, DKDB).
+        'ebank': 6,
+        # AXISCTR: -1 (P), 0 (U) or +1 (V), as the autopilots set it; -0
+        # also selects U.
+        'all_states': {'AXISCTR': [0o77776, 0, 1, 0o77777]},
+        # In half of the cases, one joint set: the jet times (TJP, TJU,
+        # TJV: off at +-0, firing either way, HALF), the inhibition
+        # counters (+-0, +-1, the 4 the P axis sets), and EDOT, E and DKDB
+        # near the rate limits (RATELIM1 032, RATELIM2 0632) and in the
+        # coast zone, so every jet-sense, CTRCHECK and coast path runs.
+        # EDOT also takes 0634-01166 (and their negatives), above RATELIM2
+        # but inside the outer limit (EDOT x 032 < 040000), and E up to
+        # +-037777: then (EDOT + E) x DKDB goes negative with EDOT above
+        # RATELIM2, and +7's BZMF POSTHRST falls through to TJZERO (review
+        # #386).
+        'joint_states': {'*': [
+            {'TJP': tj, 'TJU': tj, 'TJV': tj, 'PJETCTR': ct, 'UJETCTR': ct, 'VJETCTR': ct, 'EDOT': ed,
+             'E': (0, 1, 0o77776, 0o200, 0o77577, 0o1000, 0o76777, 0o4000, 0o73777,
+                   0o37777, 0o40000)[n % 11],
+             'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 11) % 5]}
+            for n, (tj, ct, ed) in enumerate(
+                (tj, ct, ed) for tj in (0, 0o77777, 1, 0o77776, 0o20000, 0o57777)
+                for ct in (0, 0o77777, 1, 0o77776, 4)
+                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777,
+                           0o634, 0o77143, 0o1000, 0o76777, 0o1166, 0o76611, 0o1167, 0o76610))]},
+        # IBNKCALL is the only caller (the P and Q,R axis autopilots'
+        # TC IBNKCALL; CADR SPSRCS): Q = ISWRETRN (04707) in half of the
+        # cases, a caller return in bank 21 outside the file otherwise.
+        'states': {'SPSRCS': {'2': [0o4707, 0o4707, 0o4707, 0o2017, 0o2400, 0o3000]}},
+        # INDEX AXISCTR; CA UTIME: the P counter (4) or the U, V one (012).
+        'basic_fixed_index': {'UTIME': [-1, 0, 1]},
+        'resume_keys': True,
+        'edge_cases': True,
+        # SPSRCS runs in T5RUPT over whatever job is current: any FIXLOC
+        # (a NOVAC job's, FAKEPRET 0110) and NEWJOB -0 while DUMMYJOB idles
+        # (review #386). It never names either.
+        'any_fixloc': True,
+        'any_newjob': True,
+        'target': 'tests/lm_sps_backup_target.c',
+        'c64_rows': 'cover',
+        'cover': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'freeze_stride': 16,
     },
     'cm-r31': {
@@ -3138,6 +3325,9 @@ SPECS = {
         'freeze_stride': 512,
     },
     'cm-p37-p70': {
+        'index_carry16': True,
+        'image_w': True,
+        'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P37,P70.agc'},
         'source_path': {'cm': 'P37_P70.agc'},
@@ -3157,7 +3347,8 @@ SPECS = {
         # GAMDV's iteration (GAMDV25 through GAMDV65, with DVCALC) runs up to
         # 144 passes of about eight routines each, and V2T's own iteration
         # calls it again on each of its passes.
-        'max_steps': 10000,
+        # (An edge-case state runs V2T past 10,000 routines.)
+        'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
@@ -3178,8 +3369,20 @@ SPECS = {
                    'GAMDV30': {'0154': [0o77777, 0], '0155': [0o77776, 0o77700, 0o77557]},
                    # (CALL XT1LIM's return) pushes four scalars: in vector mode
                    # they would run over XT1LIM's 20D.
-                   'V2T101+51': {'0163': [0, 1]}},
+                   'V2T101+51': {'0163': [0, 1]},
+                   # Zero arms no fitting C64 row reached: V2T150's DLOAD BZE,
+                   # GAMDV40's ABS DSU BMN (32,3560 is a CHANG2 resume, so
+                   # its cases flow from GAMDV35's: 25D small there) and
+                   # RTE360's BZE after its CALL.
+                   'V2T150+2': {'03632': [0], '03633': [0]},
+                   'GAMDV35': {'vac+025': [0], 'vac+026': [0, 1]},
+                   'RTE360+2': {'0154': [0], '0155': [0]}},
         'target': 'tests/cm_p37_p70_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 256,
     },
     'lm-p34-p35': {
@@ -3293,6 +3496,24 @@ SPECS = {
         # rarely reached from random corrections: where no flow gets there,
         # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
         'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        # The W-matrix loop's indices as INCORP2 keeps them (54DD, 6DD = -6,
+        # MINUS2): WIXA/WIXB step 54 down to 6 and ZIXA/ZIXB 0 down to -16,
+        # and FAZB1's X1 is WIXA. A random WIXA sends FAZB1's indexed
+        # STOREs out of the W matrix's window.
+        'range_states': [('FAZA', 'FAZC', {n: list(range(54, 0, -6)) for n in ('WIXA', 'WIXB')}
+                          | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] for n in ('ZIXA', 'ZIXB')}),
+                         ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6))})],
+        # The flowed cases stop at FAZA's PHASCHNG, so every flowed loop
+        # state is the first pass (WIXA 54): the same indices on later
+        # passes, so FAZB2's TIX,1 (X1 6) and FAZB5's BHIZ (ZIXB -12) exit;
+        # and INCORP1's DDV (DELTAQ/A) with a zero dividend in MPAC.
+        'flow_range_states': {m: [
+            ('FAZA', 'FAZC', {n: list(range(54, 0, -6)) + ['flow'] for n in ('WIXA', 'WIXB')}
+             | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] + ['flow'] for n in ('ZIXA', 'ZIXB')}),
+            ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6)) + ['flow']}),
+            (ddv, end,
+             {'*': ['flow'] * 6 + [{'0154': 0, '0155': 0}, {'0154': 0o77777, '0155': 0o77777}]})]
+            for m, ddv, end in (('lm', '23,2664', '23,2665'), ('cm', '36,3407', '36,3410'))},
         'edge_cases': True,
         'c64_rows': 'cover',
         'freeze_stride': 64,

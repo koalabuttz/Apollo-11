@@ -5,7 +5,7 @@
 CM_P76_FILE_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_P76_FILE_SRC = src/cm_p76_file.c tests/cm_p76_file_target.c $(CM_P76_FILE_COMMON)
 CM_P76_FILE_HDR = include/cm_p76_file.h tests/interp_case.h tests/cm_p76_file_vectors.h tests/cm_p76_file_c64_vectors.h
-CM_P76_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_P76_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-p76-file sanitize-cm-p76-file c64-cm-p76-file vice-cm-p76-file cm-p76-file-differential
 all: build/test-cm-p76-file
 test: test-cm-p76-file

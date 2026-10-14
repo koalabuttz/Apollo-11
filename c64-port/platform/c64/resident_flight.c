@@ -20,13 +20,18 @@ uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
-__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
-__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
 #if RK_CM
-/* Inputs at the values yaAGC starts with (tools/flight_host_run.c). */
-__attribute__((used,section(".rk_channels"))) cm_native_channels cm_channels={0,0,037777u,077777u,077777u,077777u};
+/* The CM input channels 30-33 at the values yaAGC starts with
+ * (tools/flight_host_run.c). */
+__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel30=037777u,.channel31=077777u,.channel32=077777u,.channel33=077777u};
+#else
+__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
 #endif
+__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
 uint16_t rk_pending,rk_ticks;
+#ifdef RK_RUPT_TRACE
+uint8_t rk_rupt_last;
+#endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
@@ -210,6 +215,11 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
         else ++rk_dilation;
     }
+#ifdef RK_RUPT_TRACE
+    /* The DAP pass check (platform/c64/dap_pass_check.c): which request
+     * this step took, if any. */
+    rk_rupt_last=
+#endif
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
 }
 

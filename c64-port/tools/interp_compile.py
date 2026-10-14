@@ -190,6 +190,7 @@ class Compiler:
             raise CompileError("Luminary 'channels': 'all' needs 'channel_inputs'")
         self.uses_hw = False         # a channel order reaches agc_ch_op
         self.channels_used = set()   # the channels those orders name
+        self.inputs_used = set()     # latched input channels they read (AGC_CHANNEL)
         self.kx = {}           # index_guard fixed tables: window start -> (words, base)
         self.kx_used = False
         # erasable_calls: erasable addresses (logical) called as programs.
@@ -1393,6 +1394,7 @@ class Compiler:
                 # (include/agc_input_channels.h): A overflow-corrected, then
                 # sign-extended, as yaAGC does.
                 v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[chan]
+                self.inputs_used.add(chan)
                 if io_op:
                     v = '((((W[0]>>1)&040000u)|(W[0]&037777u))%s%s)' % ({2: '&', 4: '|', 6: '^'}[io_op], v)
                 self.uses_channels = True
@@ -1750,7 +1752,17 @@ class Compiler:
             c.append('static MAYBE_UNUSED %sagc_input_channels *agc_channels_in;' % ('' if self.lm_channels else 'const '))
         if self.uses_hw:
             c.append('/* The program\'s output channels (agc_ch_op), set by the wrappers. */')
+            # (A flight module build names the resident's record with
+            # -DAGC_CHANNELS_HW=rk_hardware: absolute addressing, no
+            # pointer for the wrappers to set.)
+            c.append('#ifdef AGC_CHANNELS_HW')
+            c.append('extern agc_hardware AGC_CHANNELS_HW;')
+            c.append('#define agc_channels_hw (&AGC_CHANNELS_HW)')
+            c.append('#define AGC_CH_HW_SET(p) ((void)(p),1)')
+            c.append('#else')
             c.append('static MAYBE_UNUSED agc_hardware *agc_channels_hw;')
+            c.append('#define AGC_CH_HW_SET(p) ((agc_channels_hw=(p)->hardware)!=0)')
+            c.append('#endif')
         if self.sload_k:
             c.append('/* SLOAD of a fixed word: ZL; INDEX ADDRWD, CA 0; SLOAD2 DXCH MPAC;')
             c.append(' * CAF ZERO; TS MPAC +2; NEWMODE TS MODE; DANZIG. */')
@@ -1923,10 +1935,13 @@ class Compiler:
                     c.append(' if(!s||!v||!basic_sane(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((lm_channel_io *)v)->in;')
-                    c.append(' %s' % ('agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
+                    c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
                     c.append(' return %s(s,(p66_bias_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
                 else:
-                    c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
+                    if self.uses_hw:
+                        c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;')
+                    c.append(' %sif(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (
+                        '' if self.uses_hw else '(void)p;', sfb))
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
                     c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
@@ -1959,7 +1974,7 @@ class Compiler:
         if self.m == 'lm' and self.uses_channels:
             c.append('/* The routines take lm_channel_io: the mission record, then the inputs. */')
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
-                'agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
+                '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}')
         else:

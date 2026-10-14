@@ -5,7 +5,8 @@
 #include "lm_flight_io.h"
 /* Luminary099 TRIM_GIMBAL_CONTROL_SYSTEM.agc, all of it (bank 21,
  * 03077-03645, and bank 16, 03735-03771), as native routines of the
- * control-transfer ABI; io is lm_flight_io (channel 12).
+ * control-transfer ABI; io is p66_bias_io; channel 12 is the program's
+ * agc_hardware (include/lm_flight_io.h).
  *
  *   GTS       21,3077  the trim gimbal attitude control law for the R and Q
  *                      axes (DEL, NEGUSUM with GTSQRT and ROOTCYCL, the new

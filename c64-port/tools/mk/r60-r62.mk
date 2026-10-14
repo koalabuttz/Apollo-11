@@ -5,7 +5,7 @@
 R60_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 R60_SRC = src/lm_r60_r62.c src/cm_r60_r62.c tests/r60_r62_target.c $(R60_COMMON)
 R60_HDR = include/lm_r60_r62.h include/cm_r60_r62.h tests/interp_case.h tests/r60_r62_vectors.h tests/r60_r62_c64_vectors.h
-R60_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+R60_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS
 .PHONY: test-r60-r62 sanitize-r60-r62 c64-r60-r62 vice-r60-r62 r60-r62-differential
 all: build/test-r60-r62
 test: test-r60-r62
