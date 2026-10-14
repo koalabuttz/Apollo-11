@@ -147,6 +147,7 @@ class Basic:
         self.data_landings = set()
         self.erasable_refs = set()   # erasable addresses the basic code names
         self.channels_used = set()   # I/O channels its channel orders name
+        self.inputs_used = set()     # latched input channels it reads (AGC_CHANNEL)
 
     # ---- addresses -------------------------------------------------------
     def bank(self, phys):
@@ -630,6 +631,7 @@ class Basic:
             # An input channel the caller latches (spec 'channel_inputs',
             # include/agc_input_channels.h), as tools/interp_compile.py reads it.
             v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            self.inputs_used.add(a)
             st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)

@@ -193,7 +193,11 @@ class Mission:
             # (tests/interp_case.c irc_ch_num) the file's orders name, any
             # value, but channel 13 as it reads back (no trap bits) and
             # channel 14's drive bits as below.
-            used = self.cp.channels_used | (self.cp.basic.channels_used if self.cp.basic else set())
+            # (Latched input channels the file READs count too: an edit of
+            # another channel would otherwise zero them in every case.)
+            used = self.cp.channels_used | self.cp.inputs_used
+            if self.cp.basic:
+                used |= self.cp.basic.channels_used | self.cp.basic.inputs_used
             self.io_channels = {k: {0o13: 0o43777, 0o14: 0o6777}.get(k, 0o77777)
                                 for k in sorted(used & {0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33})}
         elif self.io_channels == 'auto':
