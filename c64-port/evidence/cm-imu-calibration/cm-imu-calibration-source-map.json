@@ -3,7 +3,7 @@
   "native_file": "src/cm_imu_calibration.c",
   "words": 1077,
   "untranslated_words": 0,
-  "routines": 334,
+  "routines": 335,
   "map": [
    {
     "address": "33,2004",
