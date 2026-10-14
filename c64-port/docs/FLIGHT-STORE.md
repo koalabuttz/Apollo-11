@@ -217,8 +217,7 @@ task slot's $E000-$FFF9 (8,186 bytes), and is packed only beside a packed
 class-3 set, whose table list names its tables (the class-4 module runs no
 main). With a class-4 module in the store every task-slot module, the
 resident's interrupt wrappers included, links for the job slot
-(`task_pinned_out` in the module list). The boundary-word module stays in
-the task slot: boot runs it there once, before it loads class 4 over it. This is the steward's DAP rule
+(`task_pinned_out` in the module list), and so does the null module 0x01E0. This is the steward's DAP rule
 in two regions, with the LM RCS DAP hold cycle split by what one pass
 reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
 #356):
@@ -288,9 +287,10 @@ resolves pending RTB right-hand orders through it.
 
 `make flight-store-vice` (`tools/flight_vice_load.py`) boots the flight
 resident on the whole-program store in VICE. The store builder also packs
-the resident's own modules into the store (the boundary-word module, built
-for the store's resolver records, and the interrupt-body wrappers with their
-records), so `build/flight-store/<m>.reu` is a bootable flight image. It
+the resident's own modules into the store (the interrupt-body wrappers with
+their records, and the null module), ends it with the boundary-word table
+built for the store's resolver records (`build/flight-store/<m>-boundary.bin`,
+docs/RESIDENT-FLIGHT.md), so `build/flight-store/<m>.reu` is a bootable flight image. It
 also links `build/flight-store/<m>-load-check.prg`: the resident with
 `platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
 resolves every resolver record through the resident's resolver (LM 245, CM
