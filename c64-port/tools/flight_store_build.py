@@ -41,6 +41,7 @@ Steps, per mission:
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import collections
+import fcntl
 import functools
 import hashlib
 import json
@@ -1323,4 +1324,10 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    # Several CI targets build the store at once (c64-lanec-pin-flight, and
+    # the flight-store prerequisite of interp-flight-*-vice) and all write
+    # build/flight-store; one runs at a time.
+    (ROOT / OUT).mkdir(parents=True, exist_ok=True)
+    with open(ROOT / OUT / '.lock', 'w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        sys.exit(main())
