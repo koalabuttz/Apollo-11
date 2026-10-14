@@ -24,7 +24,7 @@
  * being run; -DFL_PROFILE_MARKS stores to $c007 and $c008 around each cached
  * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
  * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
- * (4 bytes), $c3f0-5 the call profile (profile()), $c3fe the module count, $c400 one fl_timing per module (up to
+ * (4 bytes), $c3f0-5 the call profile (profile()), $c3f6 the soft-stack peak, $c3fe the module count, $c400 one fl_timing per module (up to
  * $cbff, FL_MODULES at most 204), $c3e0 the indices of up to 8 modules whose
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
@@ -176,6 +176,15 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
  return t;}
 
+/* Soft-stack watermark: free stack below the timings is filled before the
+ * module runs and scanned after; $c3f6 gets the peak depth below $D000. */
+#define FL_STACK_FLOOR ((volatile uint8_t *)(0xc400u+FL_MODULES*sizeof(fl_timing)))
+static void stack_fill(void){volatile uint8_t here,*p=FL_STACK_FLOOR;
+ while(p<&here-16)*p++=0x5a;}
+static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
+ while(*p==0x5a)++p;
+ *(volatile uint16_t *)0xc3f6=(uint16_t)(0xd000u-(uintptr_t)p);}
+
 int main(void){uint16_t i;
  for(i=1;i<5;++i)mail[i]=0;
  mail[0x3df]=0;
@@ -188,6 +197,7 @@ int main(void){uint16_t i;
   __asm__ volatile("sei");
   apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;CHANNELS_SAVE();
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
+  stack_fill();
 #ifndef FL_NO_PROFILE
   profile();
 #endif
@@ -205,6 +215,7 @@ int main(void){uint16_t i;
    timing[i].direct=module.loc?direct(i,&module,&timing[i].main):0u;
   }
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
+  stack_peak();
   __asm__ volatile("cli");}
  mail[1]=(uint8_t)failures;mail[2]=(uint8_t)(failures>>8);
  mail[3]=(uint8_t)checks;mail[4]=(uint8_t)(checks>>8);

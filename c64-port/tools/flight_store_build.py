@@ -310,13 +310,16 @@ CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc'],
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None):
+                io=None, direct_only=False):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
-    module's io kind (module_io)."""
+    module's io kind (module_io). direct_only: no transfer engine, the
+    resident runs the routines (FS_DIRECT_ONLY; pinned modules)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    if direct_only:
+        head += '#define FS_DIRECT_ONLY 1\n'
     if io:
         head += (f'#define FS_IO_KIND FLIGHT_IO_{io}\n'
                  f'#define FS_IO_CM {int(io.startswith("CM_"))}\n')
@@ -597,11 +600,13 @@ def main():
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
-                              library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'))
+                              library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
+                              mod.get('direct_only', False))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
-                                   mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'))
+                                   mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
+                                   mod.get('direct_only', False))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -701,17 +706,28 @@ def main():
             sites = {}
             for st in stems:
                 sites.update(file_sites(a.host_cc, m, st))
-            _, _, res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                                  basic=[t for t in ts if 'interpret' not in t],
-                                  interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
-                                  sources=c64_sources(index, *stems, 'agc_transfer'), io=module_io(m, stems),
-                                  prg_name=f'pin-{"task" if slot else "job"}'))
+            # A pinned module runs only through rk_direct (no transfer
+            # engine), which hands it the base record; one whose tables take
+            # another io kind links its conversion and engine until that kind
+            # folds into agc_hardware, and direct_bytes projects the set
+            # without them.
+            io = module_io(m, stems)
             size = 8186 if slot else 16384
-            if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
-                res = dict(ok=False, overflow=res['task_overflow'])
-            pinned.append(dict(slot='task' if slot else 'job', tables=ts, ok=res['ok'],
-                               bytes=res.get('bytes') or (size + res['overflow'] if res.get('overflow') else None),
-                               slot_bytes=size, error=res.get('error')))
+
+            def measure(io, direct_only, name):
+                res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
+                                basic=[t for t in ts if 'interpret' not in t],
+                                interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
+                                sources=c64_sources(index, *stems, 'agc_transfer'), io=io, direct_only=direct_only,
+                                prg_name=name))[2]
+                if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
+                    res = dict(ok=False, overflow=res['task_overflow'])
+                return res, res.get('bytes') or (size + res['overflow'] if res.get('overflow') else None)
+            res, nbytes = measure(io, not io, f'pin-{"task" if slot else "job"}')
+            direct = measure(None, True, f'pin-{"task" if slot else "job"}-direct')[1] if io else nbytes
+            pinned.append(dict(slot='task' if slot else 'job', tables=ts, ok=res['ok'], bytes=nbytes,
+                               direct_only=not io, io=io, direct_bytes=direct, slot_bytes=size,
+                               error=res.get('error')))
         records, erasable, unplaced = [], 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
@@ -776,7 +792,8 @@ def main():
               f"{pack.stdout.strip()}")
         for p in pinned:
             print(f"{m}: pinned {p['slot']} slot set {' '.join(p['tables'])}: {p['bytes']} of {p['slot_bytes']} bytes"
-                  f"{'' if p['ok'] else ' (does not fit)'}")
+                  f"{'' if p['ok'] else ' (does not fit)'}"
+                  + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
     return 0
