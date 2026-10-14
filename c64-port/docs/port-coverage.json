@@ -1443,7 +1443,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit, SUPERBNK and the I/O channels in the native I/O record (flight-device engine).",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 177 in all, listed with the reason each is one in include/cm_extended_verbs_file.h and the source map. Basic (cm_extended_verbs_file_basic, 160): the entries other files name (GOEXTVB, TESTXACT, CHKPOOH, GOPIN, TRACKTRM, SDISPLAY, ENDSUMS, the 2CADR/CADR targets ATTACHIT, ATTCK1, LMTOCM and DAPDISP1), the labels nobody calls (XACTALM, XACT0), the fan targets VBZERO, VBCOARK, STABLISH and DAPDISP, the idle point VERB69 (43,2037), the return after every call to another file (BANKCALL, IBNKCALL, UPFLAG, DOWNFLAG, PHASCHNG, 2PHSCHNG, PRIOCHNG, FINDVAC, NOVAC, WAITLIST, CHECKMM, NVSUB, NXTBNK, ALARM, POODOO, FALTON, FLASHOFF, ENDMARK, STOPRATE, STSHOSUM, TPAGREE, TRFAILOF, GENTRAN, V70UPDAT-V73UPDAT), the words after the in-file checks that pass by TC Q or TCF Q+1 elsewhere (IMUZEROK+1, IMUCOARK+1, OPTCOARK+2, IMUFINEK+1, SYSTEST+1, IMUATTCK+1, VB64+1, CREWMANU+1, V89PERF+1, SHOWSUM+1, TRMATTCK+2), CHECKMM's second return (CKOPTVB+3, CHAZFOGC+3, VERB94+9, V52+3), GOXDSPF's proceed and recycle returns (IMUATTCK+15/+16, DONOUN46+5, DONOUN47+5, NOKILL+6), the BANKCALL NEEDLE11/NEEDLER2 returns (IMUATTCK+20/+22) and the basic words after each EXIT. Interpretive (cm_extended_verbs_file_interpretive, 17, at NEWOPS with LOC there): the words after TC INTPRET (43,2702, 3024, 3030, 3042, 3061, 3110), the CALL returns (2704, 3044, 3063, 3066, 3070, 3112), the CHANG2 resume keys (3050, 3116), the switch-branch targets (3052, 3120) and TCPIN (3076). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 43 with BANKSET, FB and INTBIT15 agreeing and SUPERBNK 0100): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not FB 32/33 with SUPERBNK 0100 (banks 42/43), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restrictions (spec states): at GOEXTVB MPAC is 0-59 (the verb less 40); at NVSUB's return (43,2112) MPAC +1 is one of the 17 return words SETXTACT saves (after the file's TC TESTXACT calls, or ALM/END). Other values index past the fan or return into the middle of a routine. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases; the basic words' erasables take zeros and saturating values.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 182 in all, listed with the reason each is one in include/cm_extended_verbs_file.h and the source map. Basic (cm_extended_verbs_file_basic, 165): the entries other files name (GOEXTVB, TESTXACT, CHKPOOH, GOPIN, TRACKTRM, SDISPLAY, ENDSUMS, the 2CADR/CADR targets ATTACHIT, ATTCK1, LMTOCM and DAPDISP1), the labels nobody calls (XACTALM, XACT0), the fan targets VBZERO, VBCOARK, STABLISH and DAPDISP, the idle point VERB69 (43,2037), the return after every call to another file (BANKCALL, IBNKCALL, UPFLAG, DOWNFLAG, PHASCHNG, 2PHSCHNG, PRIOCHNG, FINDVAC, NOVAC, WAITLIST, CHECKMM, NVSUB, NXTBNK, ALARM, POODOO, FALTON, FLASHOFF, ENDMARK, STOPRATE, STSHOSUM, TPAGREE, TRFAILOF, GENTRAN, V70UPDAT-V73UPDAT), the words after the in-file checks that pass by TC Q or TCF Q+1 elsewhere (IMUZEROK+1, IMUCOARK+1, OPTCOARK+2, IMUFINEK+1, SYSTEST+1, IMUATTCK+1, VB64+1, CREWMANU+1, V89PERF+1, SHOWSUM+1, TRMATTCK+2), CHECKMM's second return (CKOPTVB+3, CHAZFOGC+3, VERB94+9, V52+3), GOXDSPF's proceed and recycle returns (IMUATTCK+15/+16, DONOUN46+5, DONOUN47+5, NOKILL+6), the BANKCALL NEEDLE11/NEEDLER2 returns (IMUATTCK+20/+22), the returns past an in-file TC +1 or TCF +1 (NVSUB's normal return SETXTACT+6, IMUSTALL's success return IMUZEROK+6, and GOXDSPF's data-loaded returns ICORK2, OPTC1+5 and IMUFINEK+7) and the basic words after each EXIT. Interpretive (cm_extended_verbs_file_interpretive, 17, at NEWOPS with LOC there): the words after TC INTPRET (43,2702, 3024, 3030, 3042, 3061, 3110), the CALL returns (2704, 3044, 3063, 3066, 3070, 3112), the CHANG2 resume keys (3050, 3116), the switch-branch targets (3052, 3120) and TCPIN (3076). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 43 with BANKSET, FB and INTBIT15 agreeing and SUPERBNK 0100): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not FB 32/33 with SUPERBNK 0100 (banks 42/43), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restrictions (spec states): at GOEXTVB MPAC is 0-59 (the verb less 40); at NVSUB's returns (43,2112 and SETXTACT+6, 43,2113) MPAC +1 is one of the 18 return words SETXTACT saves (after the file's TC TESTXACT calls, ALM/END, or 43,3737 after UPDATE_PROGRAM's TC TESTXACT, which the V70-V73 uplinks reach); at SETXTACT+6 an eighth of the cases set MPAC +1 to 02615 with RNDVZBIT, TRACKBIT and R23BIT choosing REGR21, R23CSM or R22ALARM; at 43,2334 (V55) MPAC is 23 in half the cases so UPDATIME runs. Other values index past the fan or return into the middle of a routine. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases; the basic words' erasables take zeros and saturating values.",
           "unreached": "None. The oracle executed 540 of the 575 instructions and the interpreter read the other 35 (evidence/cm-extended-verbs-file/cm-extended-verbs-file-closure.json).",
           "data_validity": "The CADR and 2CADR words after BANKCALL, IBNKCALL, POSTJUMP, FINDVAC, NOVAC and WAITLIST, the ADRES words after UPFLAG and DOWNFLAG, the ECADR/REMADR words (LGYROBIN, LANDBANK, LDNDUMPI), the VN words (read by CAF), the MM words after CHECKMM, and the OCT/DEC constants (OC24100, OPIMDIFF, DEC23, OCTAL30, OCT51, TCPINAD) are read as the original constants."
         },
@@ -1459,30 +1459,30 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-source-map.json",
-            "sha256": "bc713f210cb21f45bd49cd77bb3914716465f641a93c490c150686e965d3c052"
+            "sha256": "197d629f89bea062a6c713968a0f057a64e7455186df5489f2962b3adcffe8dd"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
-            "sha256": "59b0236ede0c10f6b81aaa7472e489d6fc7e0e0a27bcd8e3b9d5e772be535b78"
+            "sha256": "c2fbbf6350bca3d6517c5c74ca421a02b08921945252efae719f1b29c0ab0cd7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-host.log",
-            "sha256": "104ed47ef4026a67e743e11356de4bd9b4c0e21c94e31632365fd2eb880303d4"
+            "sha256": "59bb49953ec54b228ea50f85f5d0f18c17f936cfd48d18f959dd2927c3e65300"
           },
           "c64_execution_results": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-vice.log",
-            "sha256": "547c146c42e9e48a2bfd0b7c10e8d5ca34a0e5cadd80b4cb9b438769b4631202",
+            "sha256": "2b4d62899b1887a7396032a17ac0e6308bf797146cd6ed569953f72eadb1e55e",
             "vice_targets": {
-              "vice-cm-extended-verbs-file": 288
+              "vice-cm-extended-verbs-file": 294
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
-            "sha256": "59b0236ede0c10f6b81aaa7472e489d6fc7e0e0a27bcd8e3b9d5e772be535b78"
+            "sha256": "c2fbbf6350bca3d6517c5c74ca421a02b08921945252efae719f1b29c0ab0cd7"
           },
           "executed_instruction_closure": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-closure.json",
-            "sha256": "01b3714125cd9d2d207593b7daf54615b75dda6dd3b6dbcc8e62b4d1d0af693d"
+            "sha256": "6764e38143661dc4693baf4782e97ac983f840a5e460c81b3953f7b1795c924a"
           }
         }
       }
