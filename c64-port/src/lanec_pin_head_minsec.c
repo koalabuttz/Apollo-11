@@ -2,7 +2,7 @@
 /* Pinball heads in M/SOUT (bank 42), Luminary099 and Comanche055: the words
  * where SEPSEC, DSPDC2NR, DSPIN and SEPMIN return, each run to the next
  * registered point as the minutes-seconds display module does it. See
- * docs/LANEC-PIN-HEADS.md. */
+ * docs/LANEC-PIN-HEADS-DISPLAY.md. */
 #include "lanec_pw_runs.h"
 #include "lanec_symbols.h"
 #include "dsky_minutes_output.h"

@@ -2,7 +2,7 @@
 /* Pinball heads at DP1OUTSF, DP2OUTSF and DP3OUTSF (bank 40), Luminary099
  * and Comanche055: the double-precision scale-factor routines, from their
  * entry through DPOUT, READLO, TPAGREE and DMP to SCOUTEND's POSTJUMP to
- * DSPDCEND. See docs/LANEC-PIN-HEADS.md. */
+ * DSPDCEND. See docs/LANEC-PIN-HEADS-DISPLAY.md. */
 #include "lanec_pw_runs.h"
 #include "lanec_symbols.h"
 #include "dsky_scale.h"

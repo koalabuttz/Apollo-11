@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Pinball head at DSPDCEND +2 (41,2570), Luminary099 and Comanche055: the
  * decimal display's component loop, from where DSPDECWD returns to the next
- * registered point. See docs/LANEC-PIN-HEADS.md. */
+ * registered point. See docs/LANEC-PIN-HEADS-DISPLAY.md. */
 #include "lanec_pw_runs.h"
 #include "lanec_symbols.h"
 

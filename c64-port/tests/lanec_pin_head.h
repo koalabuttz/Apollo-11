@@ -3,7 +3,7 @@
 #define LANEC_PIN_HEAD_H
 /* Shared case maker of the pin-head-* suites (tests/lanec_pin_head_*_cases.c).
  * A head runs the original program from one of its points to the next
- * registered point (docs/LANEC-PIN-HEADS.md). Its cases are the accepted
+ * registered point (docs/LANEC-PIN-HEADS-DISPLAY.md). Its cases are the accepted
  * cases of the display consumers' own suites (and the suites of the module
  * the head stands in for) that enter at one of the head's points: the states
  * the earlier composite modules took there. The oracle stops where the head

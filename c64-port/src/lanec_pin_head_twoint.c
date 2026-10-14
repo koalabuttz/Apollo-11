@@ -2,7 +2,7 @@
 /* Pinball heads in 2INTOUT (bank 40), Luminary099 and Comanche055: the
  * words where 5BLANK, +ON, DSPDECVN and READLO return, each run to the next
  * registered point as the two-integer display module does it. See
- * docs/LANEC-PIN-HEADS.md. */
+ * docs/LANEC-PIN-HEADS-DISPLAY.md. */
 #include "lanec_pw_runs.h"
 #include "lanec_symbols.h"
 #include "dsky_two_integer.h"

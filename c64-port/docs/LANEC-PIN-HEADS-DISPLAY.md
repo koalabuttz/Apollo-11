@@ -1,6 +1,6 @@
-# Pinball heads: splitting the display consumers
+# Pinball heads for the display consumers
 
-Pinball module split lane. Milestone `lanec-pin-heads`.
+Pinball module split lane. Milestone `lanec-pin-heads-display`; the head mechanism in general is docs/LANEC-PIN-HEADS.md (Lane C).
 
 ## Why
 

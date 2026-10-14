@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-# Milestone lanec-pin-heads (Pinball module split lane): the Pinball heads
+# Milestone lanec-pin-heads-display (Pinball module split lane): the Pinball heads
 # that stand in for the display consumers' composite modules
-# (docs/LANEC-PIN-HEADS.md), one suite per head family, LM and CM.
+# (docs/LANEC-PIN-HEADS-DISPLAY.md), one suite per head family, LM and CM.
 LANEC_PIN_HEAD_FAMILIES = decount dpout twoint minsec
 LANEC_PIN_HEAD_SRC = tests/lanec_pin_head.c $(foreach f,$(LANEC_PIN_HEAD_FAMILIES),src/lanec_pin_head_$(f).c tests/lanec_pin_head_$(f)_cases.c)
 LANEC_SUITE_SRC += $(LANEC_PIN_HEAD_SRC)
