@@ -631,6 +631,15 @@ def case(mi, point, n, rng):
         E[0o165] = fb | eb
         E[0o115] = fb & 0o40000
         stop = 0xffff
+        if point in mi.cp.pending:
+            # ('pending_danzig') The RTB's basic code has returned through
+            # TC DANZIG: Z there, EDOP the pair's right order, FB and BBANK
+            # still the basic code's (any bank).
+            E[5] = mi.cp.L.labels['DANZIG'] - 2048 + 0o4000
+            E[0o23] = mi.cp.pending[point][2]
+            ob = rng.randrange(4, 0o30) << 10
+            E[4] = ob
+            E[6] = ob | eb
     else:
         E[5] = logical(point)
         # Q: a return in the caller's bank outside the file, the case's stop
