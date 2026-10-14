@@ -138,6 +138,9 @@ class Basic:
             # (5, 6 and 30-33 in cm_channels, beside it.)
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
             self.channels.update({k: 'cm_channels.channel%02o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+            # SUPERBNK (7) too, only in files that name it (EXTENDED_VERBS'
+            # GOLOADLV), so no other file's helpers change.
+            self.cm_superbank = True
         self.work = []
         self.words = set()       # every word compiled as basic code
         self.operands = set()    # inline operand words of outside TCs
@@ -635,6 +638,8 @@ class Basic:
             st.append(cont())
             return st
         if op in CHANNEL_OPS:
+            if a == 0o7 and getattr(self, 'cm_superbank', False):
+                self.channels[0o7] = 'superbank'
             if a not in self.channels:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
             if op == 'EDRUPT':
@@ -857,10 +862,17 @@ class Basic:
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
+        # The spec's idle points (a word that spins until hardware moves,
+        # such as VERB69's TC VERB69): reached again, the run idles there,
+        # as the oracle stops there; an entry there runs its word once.
+        idle = getattr(self.cp, 'idle', set())
+        spin = {self.label(*k): '{W[5]=0%04o;return EXEC_IDLE;}' % self.logical(k[0]) for k in self.nodes if k[0] in idle}
         for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
             c.append(' IRC_COVER(%du);' % n)
             body = self.nodes[k]
+            if spin:
+                body = [re.sub(r'goto ([A-Za-z][A-Za-z0-9]*);', lambda m: spin.get(m.group(1), m.group(0)), x) for x in body]
             twin = (k[0], k[1], False)
             if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in body]:
                 # The same code as the copy reached with A unknown.
@@ -885,7 +897,9 @@ class Basic:
         c.append(' p=agc_fixed_physical(W[5],W[4],io->superbank);')
         c.append(' switch(p){')
         for p in sorted(self.dispatch):
-            if (p, False, False) in self.nodes:
+            if p in idle:
+                c.append(' case %uu:W[5]=0%04o;return EXEC_IDLE;' % (p, self.logical(p)))
+            elif (p, False, False) in self.nodes:
                 c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OK;')
         c.append(' }')
@@ -1091,6 +1105,9 @@ class Basic:
         c.append('static MAYBE_UNUSED void ch_out(cm_native_io *io,unsigned k,agc_word v){')
         c.append(' if(k==013u){if(v&04000u)io->trap31a=1;if(v&010000u)io->trap31b=1;if(v&020000u)io->trap32=1;v&=043777u;}')
         c.append(' if(k==033u)v=(agc_word)(*chan(io,k)|076000u);')
+        if 0o7 in self.channels:
+            # Channel 7 keeps only bits 5-7 (superbank select).
+            c.append(' if(k==07u)v&=0160u;')
         c.append(' *chan(io,k)=(agc_word)(v&077777u);')
         c.append('}')
         c.append('static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,cm_native_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}')
