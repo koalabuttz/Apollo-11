@@ -86,18 +86,11 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
-/* CM: the one cm_channels record (include/cm_native_image.h: RCS jet
- * channels 5 and 6, input channels 30-33), at the top of the service-table
- * page. The resident defines it there and every CM flight module links
- * --defsym=cm_channels=RK_CM_CHANNELS (tools/flight_store_build.py), so no
- * module keeps a private copy in its slot. Interim until agc_hardware
- * carries these channels. */
-#define RK_CM_CHANNELS 0x6ff4u
 /* The flight program's device fields neither rk_io nor agc_hardware holds
  * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
  * latches, ...), for the modules whose tables take another io record. Its
  * superbank and interrupt_enabled are copies, refreshed from rk_device
- * around each such run. At RK_FLIGHT_IO, below cm_channels. */
+ * around each such run. At RK_FLIGHT_IO. */
 #define RK_FLIGHT_IO 0x6fdcu
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */

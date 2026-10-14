@@ -41,17 +41,14 @@ SECTIONS {
     __rk_resident_end = .;
     .apollo_services : { KEEP(*(.apollo_services)) } >services
     __rk_services_end = .;
-    /* rk_hardware at RK_HARDWARE, rk_flight at RK_FLIGHT_IO and, CM,
-     * cm_channels at RK_CM_CHANNELS (resident_flight.h): flight modules
-     * link these addresses. */
+    /* rk_hardware at RK_HARDWARE and rk_flight at RK_FLIGHT_IO
+     * (resident_flight.h): flight modules link these addresses. */
     .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
     .rk_flight 0x6fdc : { KEEP(*(.rk_flight)) } >services
-    .rk_channels 0x6ff4 : { KEEP(*(.rk_channels)) } >services
 }
 ASSERT(__rk_services_end<=0x6fbe,"the service table overlaps rk_hardware")
 ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1e,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
-ASSERT(rk_flight==0x6fdc && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO or overlaps cm_channels")
-ASSERT(!DEFINED(cm_channels) || cm_channels==0x6ff4,"cm_channels is not at RK_CM_CHANNELS")
+ASSERT(rk_flight==0x6fdc && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
 OUTPUT_FORMAT { SHORT(0x0801) FULL(ram) FULL(services) FULL(image) TRIM(boot) }

@@ -16,8 +16,8 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,fb,kind;if(argc!=2)retur
  for(n=0;n<LM_DI_CASES;++n){apollo_overlay_state s;lm_flight_io io;lm_di_case c;int drive=0;unsigned cmd[3]={0,0,0};
   machine=baseline;lm_di_input(&s,&io,&c,(uint16_t)n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=(int16_t)c.superbank;machine.AllowInterrupt=0;kind=LM_DI_NONE;
-  machine.InputChannel[05]=(int16_t)io.chan5;machine.InputChannel[06]=(int16_t)io.chan6;machine.InputChannel[012]=(int16_t)io.chan12;
-  machine.InputChannel[014]=(int16_t)io.chan14;machine.InputChannel[030]=(int16_t)io.chan30;machine.InputChannel[031]=(int16_t)io.chan31;
+  machine.InputChannel[05]=(int16_t)io.hw.channel5;machine.InputChannel[06]=(int16_t)io.hw.channel6;machine.InputChannel[012]=(int16_t)io.hw.channel12;
+  machine.InputChannel[014]=(int16_t)io.hw.channel14;machine.InputChannel[030]=(int16_t)io.hw.channel30;machine.InputChannel[031]=(int16_t)io.hw.channel31;
   for(cycles=0;cycles<40000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);fb=(unsigned)get(4)&076000u;
     if(pc==c.stop_z&&(c.stop_fb==0177777u||fb==c.stop_fb)){kind=LM_DI_RETURNED;break;}

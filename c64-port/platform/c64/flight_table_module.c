@@ -18,7 +18,7 @@
  * record the group's tables take (include/flight_io.h) where it is not the
  * mission's base record (rk_io), and FS_IO_CM is 1 when that record starts
  * with cm_native_io: the module then runs them on that record, written from
- * the resident's (rk_device, rk_hardware, rk_flight and, CM, cm_channels)
+ * the resident's (rk_device, rk_hardware and rk_flight)
  * and written back after, and is never called directly. Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
@@ -115,10 +115,6 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   static flight_io_buffer b;   /* static: absolute addressing is smaller than the soft stack */
   agc_hardware *const hw=&rk_hardware;
   void *x;
-#if RK_CM
-  hw->channel5=cm_channels.channel05;hw->channel6=cm_channels.channel06;hw->channel30=cm_channels.channel30;
-  hw->channel31=cm_channels.channel31;hw->channel32=cm_channels.channel32;hw->channel33=cm_channels.channel33;
-#endif
   /* An LM_* or CM_* record opens with rk_io, which is copied in whole, so
    * its base fields stay rk_device's; CM tables on p66_bias_io take the
    * superbank and interrupt latch. One call each, so LTO folds the kind's
@@ -139,10 +135,6 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   memcpy(io,&b,sizeof *io);
 #else
   io->superbank=b.p66.superbank;io->interrupt_enabled=b.p66.interrupt_enabled;
-#endif
-#if RK_CM
-  cm_channels.channel05=hw->channel5;cm_channels.channel06=hw->channel6;cm_channels.channel30=hw->channel30;
-  cm_channels.channel31=hw->channel31;cm_channels.channel32=hw->channel32;cm_channels.channel33=hw->channel33;
 #endif
  }
 #else

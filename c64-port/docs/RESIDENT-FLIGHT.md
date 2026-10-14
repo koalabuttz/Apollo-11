@@ -22,11 +22,12 @@ acknowledge CIA1 and restores it.
 
 The top of the service-table page holds the device records flight modules
 reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
-`RK_FLIGHT_IO`, `RK_CM_CHANNELS` in `resident_flight.h`): `rk_hardware`
-(`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
-`rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
-`cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
-values yaAGC starts with. The service table must end at or below $6FBE (63
+`RK_FLIGHT_IO` in `resident_flight.h`): `rk_hardware` (`agc_hardware`) at
+$6FBE, which also holds the channels compiled routines use (5, 6, 30-33 on
+the CM, the LM DAP's channels, built with `-DAGC_CHANNELS_HW=rk_hardware`;
+on the CM inputs 30-33 start at the values yaAGC starts with), and
+`rk_flight` (the `flight_io` fields neither `rk_io` nor `agc_hardware`
+holds) at $6FDC. The service table must end at or below $6FBE (63
 entries); the linker script asserts it. One mission's resident is:
 
 | Component | Sources |

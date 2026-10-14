@@ -4,8 +4,9 @@
 #include "agc_transfer.h"
 #include "lm_flight_io.h"
 /* Luminary099 P-AXIS_RCS_AUTOPILOT.agc, all of it (bank 16, 02213-03640),
- * as native routines of the control-transfer ABI; io is lm_flight_io
- * (channels 12, 13 and 31, and the interrupt-enable bit).
+ * as native routines of the control-transfer ABI; io is p66_bias_io (the
+ * interrupt-enable bit); channels 12, 13 and 31 are the program's
+ * agc_hardware (include/lm_flight_io.h).
  *
  *   PAXIS     16,2213  T5 lead-in: TIME5, BANKRUPT/QRUPT, BAILOUT on a busy
  *                      DAPZRUPT, else TC CHEKBITS (twice for DAPZRUPT +0)

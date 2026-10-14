@@ -26,11 +26,11 @@ static void cover(uint16_t n){apollo_overlay_state s;lm_flight_io io;lm_di_case 
  for(k=0;k<32u;++k){point=agc_transfer_point(&program,&s,0);
   call=agc_transfer_resolve(&program,&s,0);if(!call)return;
   for(i=0;i<POINTS;++i)if(points[i]==point)++reached[i];
-  if(call(&program,&s,&io)!=EXEC_OK)return;}
+  if((program.hardware=&io.hw,call(&program,&s,&io))!=EXEC_OK)return;}
 }
 static void refused(apollo_overlay_state *s,lm_flight_io *io,const char *what){apollo_overlay_state before=*s,at=*s;lm_flight_io bio=*io;agc_routine call;
  at.words[3]=LM_DI_EB;at.words[4]=s->words[5]>=02226u?LM_DI_FB20:LM_DI_FB16;call=agc_transfer_resolve(&program,&at,0);
- check(call&&call(&program,s,io)==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
+ check(call&&(program.hardware=&io->hw,call(&program,s,io))==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
 }
 int main(void){apollo_overlay_state s;lm_flight_io io;lm_di_case c;unsigned n,i,stopped=0;uint16_t steps;agc_routine call;
  /* Branches no admitted input reaches: the negative and -0 exits of every

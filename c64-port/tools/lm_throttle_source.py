@@ -22,7 +22,7 @@ INLINE = {'desired': {0o2244, 0o2272, 0o2267, 0o2277, 0o2301, 0o2302},
           'doit': {0o2335, 0o2336, 0o2361},
           'whatout_body': {0o2312},
           'massmult': {0o7103, 0o7257, 0o2415}}
-CHANNELS = {0o14: 'chan14'}
+CHANNELS = {0o14: 'channel14'}
 
 
 def main():

@@ -52,7 +52,7 @@ INLINE = {'afterchek_body': {0o2256, 0o2647},
           'subdivde': {0o2274, 0o2304},
           'selectp': {0o2773, 0o3532, 0o3544, 0o3551},
           **{f: FLOW_INLINE for f in PARTS}}
-CHANNELS = {0o1: 'rxor_l', 0o12: 'chan12', 0o13: 'chan13', 0o31: 'chan31'}
+CHANNELS = {0o1: 'rxor_l', 0o12: 'channel12', 0o13: 'channel13', 0o31: 'channel31'}
 SITES = {'lm_interbank_sites': 'src/lm_interbank_sites.inc', 'lm_p_axis_sites': 'src/lm_p_axis_sites.inc'}
 
 

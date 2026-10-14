@@ -122,28 +122,18 @@ static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint1
  timer_start();(void)agc_transfer_point(&rk_program,IMAGE,rk_device.superbank);out[1]=(uint16_t)timer_stop();
  timer_start();(void)agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);out[2]=(uint16_t)timer_stop();}
 
-/* A 16-bit sum of the image and the channels, rotated per byte so moved
+/* A 16-bit sum of the image and the channels (rk_hardware), rotated per byte so moved
  * words differ. */
 static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
  while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
  return h;}
-#if RK_CM
-#define CHANNELS_SUM(h) sum_bytes(h,&cm_channels,sizeof cm_channels)
-static cm_native_channels channels;
-#define CHANNELS_SAVE() (channels=cm_channels)
-#define CHANNELS_LOAD() (cm_channels=channels)
-#else
-#define CHANNELS_SUM(h) (h)
-#define CHANNELS_SAVE() ((void)0)
-#define CHANNELS_LOAD() ((void)0)
-#endif
 static uint16_t image_sum(void){
- return CHANNELS_SUM(sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware));}
+ return sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware);}
 static rk_io device;
 static agc_hardware hardware;
 static void direct_state(const fl_module *m){
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
- rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+ rk_device=device;rk_hardware=hardware;
  IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
  rk_device.superbank=(agc_word)(m->bank&0100u);}
 static uint8_t differ;
@@ -165,7 +155,7 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
   * to compare). */
  {const rk_module_tables *tb=(const rk_module_tables *)(uintptr_t)(slot[APOLLO_OV2_H_TABLES]|(uint16_t)slot[APOLLO_OV2_H_TABLES+1]<<8);
   if(tb&&tb->ready==RK_TABLES_NOT_DIRECT){
-   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
    return 0;}}
  for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
  direct_state(m);
@@ -173,7 +163,7 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  timer_start();b=rk_direct(AGC_TRANSFER_NONE);t=(uint16_t)timer_stop();
  ok=a==b&&image_sum()==sum;expect(ok,6);
  if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
- apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
  return t;}
 
 int main(void){uint16_t i;
@@ -186,7 +176,7 @@ int main(void){uint16_t i;
   resolve_records();
   fixed_extension();
   __asm__ volatile("sei");
-  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;CHANNELS_SAVE();
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
 #ifndef FL_NO_PROFILE
   profile();
