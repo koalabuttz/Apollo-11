@@ -29,6 +29,36 @@ ROPE = {'lm': 'evidence/fixed-data-lm-original.rope.bin', 'cm': 'evidence/fixed-
 SCENARIOS = [('lm', 4000, ''), ('cm', 4000, ''),
              ('lm', 3000, 'V37E00E'), ('cm', 3000, 'V37E00E'),
              ('lm', 3000, 'V37E12E'), ('cm', 3000, 'V37E06E'), ('lm', 3000, 'V37E63E')]
+# Flight scenarios (tools/flight_scenarios/): (name, mission, centiseconds,
+# keys, inputs), each run under scaled time x1 with no swap cost
+# (FLIGHT_SWAP_MCT=0, the DAP pinned): unscaled, with the IMU operating,
+# yaAGC's TIME3 ticks between WAITLIST's two reads of it, which no native
+# routine can match; with 20 ms swaps the DAP starves the CPU and no key is
+# taken. lm-p63-descent: the IMU operating, PGNCS, AUTO and auto throttle,
+# the LR antenna in position 1, the P63 load at 20 s; V37E63E, proceed on
+# the TIG display (V06N61), ENTER on fine align (R51), proceed and then
+# ENTER on the attitude maneuver (R60), proceed on V99N62; ignition at
+# 146 s, the LLGE every 2 s from 172 s. No engine model: the PIPAs stay
+# still, so DVMON flashes V97 (thrust fail) while guidance runs.
+# lm-p63-descent-thrust: the same with FLIGHT_ENGINE (a 15,100 kg LM, the
+# descent engine thrusting along the DAP's desired attitude), so DVMON
+# passes and the LLGE throttles and steers the braking phase (on yaAGC it
+# reaches P64 at 787 s and 4,000 ft at 900 s).
+P63 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-p63.load', 'FLIGHT_SWAP_MCT': '0'}
+P63_KEYS = '@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E'
+# cm-entry: the IMU operating, the entry load at 20 s (EI at 170 s);
+# V37E61E, proceed on P61's N61, N60 and N63, on P62's separation request
+# (V50N25 00041) and its N61; FLIGHT_AERO (a 355 kg/m^2 capsule) gives the
+# drag, so P63 senses 0.05 g and P64 and P67 guide the roll to the splash
+# point (on yaAGC: P64 at 204 s, P67 at 306 s, peak 6.7 g, drogue
+# conditions at 470 s about 1 nm from the target).
+ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
+         'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
+ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
+FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
+          ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
+          ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY)]
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured
@@ -94,7 +124,7 @@ def main():
     lanes = flight_holes.lanes()
     summary, failed = [], 0
     for m, cs, keys in SCENARIOS:
-        name = f'{m}-{keys or "p00-idle"}'
+        name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
                            capture_output=True, text=True)
         (EVIDENCE / f'{name}.log').write_text(r.stdout)
@@ -110,7 +140,7 @@ def main():
                              label=flight_holes.label(words[m], x[3]), count=int(x[4]))
                         for x in re.findall(r'^  load (\S+) slot (\d) (basic |interp) (\d\d,\d{4}): (\d+)$', text, re.M)),
                        key=lambda d: -d['count'])
-        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, exit=r.returncode,
+        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode,
                    samples=int(s[1]) if s else 0, equal=int(s[2]) if s else 0, differ=int(s[3]) if s else None,
                    major_mode=dict(native=mode[1], yaagc=mode[2]) if mode else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
@@ -123,8 +153,9 @@ def main():
               f"yaAGC did not match, {len(holes)} unregistered or refused points, "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
-    for m, cs, keys, env, sched, tag in SCALED:
-        name = f'{m}-{keys or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}'
+    for name, m, cs, keys, env, sched in ([(f'{m}-{keys or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
+                                           for m, cs, keys, env, sched, tag in SCALED]
+                                          + [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2') for name, m, cs, keys, env in FLIGHT]):
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
                            capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched})
         (EVIDENCE / f'{name}.log').write_text(r.stdout)

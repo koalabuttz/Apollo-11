@@ -1,0 +1,9 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+405269a54925e23e8051bdd4b1c34dc73b202e14e111c43a4d8cb5d882665b95  build/cm-sxtmark-1.prg
+
+$ make vice-cm-sxtmark
+for p in build/cm-sxtmark-1.prg; do echo "PRG $(basename $p) sha256 $(sha256sum $p | cut -c1-64)"; python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PRG cm-sxtmark-1.prg sha256 405269a54925e23e8051bdd4b1c34dc73b202e14e111c43a4d8cb5d882665b95
+PASS: VICE PAL cm-sxtmark-1.prg: 74 checks, 0 failures
+PRG sha256: 405269a54925e23e8051bdd4b1c34dc73b202e14e111c43a4d8cb5d882665b95 cm-sxtmark-1.prg
+exit 0

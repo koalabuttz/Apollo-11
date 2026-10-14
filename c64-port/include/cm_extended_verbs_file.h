@@ -12,7 +12,7 @@ extern const agc_routine_table cm_extended_verbs_file_interpretive,cm_extended_v
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_extended_verbs_file_point;
-#define CM_EXTENDED_VERBS_FILE_POINTS 177u
+#define CM_EXTENDED_VERBS_FILE_POINTS 182u
 #define CM_EXTENDED_VERBS_FILE_CADR_WORDS 1u
 #define CM_EXTENDED_VERBS_FILE_EXTERNALS 36u
 #define CM_EXTENDED_VERBS_FILE_FIRST 34816u
