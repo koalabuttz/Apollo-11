@@ -222,20 +222,46 @@ in two regions, with the LM RCS DAP hold cycle split by what one pass
 reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
 #356):
 
-- Class 4 holds TJETLAW (`lm_tjet_law_routines`) and RATELOOP
-  (`lm_kalman_basic`), and is the *runtime home*: every global function the
-  class-3 module links (the fast ops, the image-op wrappers, the DAP files'
-  shared helpers in `include/lm_dap_shared.h`) is linked once, here.
+- Class 4 holds TJETLAW (`lm_tjet_law_routines`) and the RESUME family
+  (`lm_t6rupt_hot_routines`: RESUME, NOQRSM, NOQBRSM, NOQBRSM +1), and is
+  the *runtime home*: every global function the class-3 module links (the
+  fast ops, the image-op wrappers, the DAP files' shared helpers in
+  `include/lm_dap_shared.h`) is linked once, here. Every interrupt ends at
+  RESUME, which otherwise loads the T6RUPT wrapper ($01E4, 7,991 bytes);
+  `rk_direct` finds the pinned entries first, and the wrapper's resolver
+  records stay as the fallback.
 - Class 3 holds DAPIDLER's per-pass entries (`lm_dapidler_hot_routines`, a
   file's `*_hot_routines` subset: PIN only, its file's modules still pack
   the full table) and the table list naming both sets.
 - The *excursion* (`EXCURSION`, module $07F5) packs P-axis's and Q,R-axis's
   per-pass entries (`lm_p_axis_hot_routines`, `lm_q_r_axis_hot_routines`)
-  in one job-slot module, so a pass that leaves the pinned sets loads one
-  module, not two (P-axis 11,603 bytes and Q,R-axis 11,971). It is linked
-  only beside a packed class-4 home, takes every function the home holds
-  as a global (`--defsym`), and the resolver sends its 26 keys to it before
-  their files' modules. On LM with #308 it is 13,787 bytes.
+  and RATELOOP (`lm_kalman_basic`, which runs in the same pass) in one
+  job-slot module, so a pass that leaves the pinned sets loads one module,
+  not two (P-axis 11,603 bytes and Q,R-axis 11,971). RATELOOP moved here
+  from class 4 to make room for RESUME. It also carries the jet writes
+  (`lm_t6rupt_jets_hot_routines`: WRITEP, WRITEU, WRITEV and their -1
+  entries), which a firing pass makes three times; before, each loaded the
+  T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
+  `RIDE`: run through `rk_direct` while the excursion is loaded, while
+  their resolver records keep the wrapper for every other caller. On LM it
+  is 15,438 bytes.
+- The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
+  (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
+  $01E2's `lm_t4rupt_core_routines`) and the radar step
+  (`lm_t4rupt_rr_routines`), 6,773 bytes, so a radar T4RUPT loads one
+  module instead of two. The core's wrapper resolver records point at the
+  pack. RCSMON (`lm_rcsmon_basic`) stays in its own module: it takes
+  `lm_channel_io`, and a pack holding it would run every step through the
+  transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
+  31 K cycles instead of 16 K).
+
+The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
+class-4 home. Each links once on its own before `pin_pair`; the home then
+keeps global (`--undefined`) those of a pack's functions it links anyway,
+and the pack takes every function the home holds as a global
+(`--defsym`). A function only a pack uses stays in the pack. The resolver
+sends a pack's keys to it before their files' modules.
+Measurements: `/mnt/project-files/steward/cpu-budget.md` (D2, 10-14).
 
 The two link separately (`pin_pair`). Class 4 links first with class 3's
 files as well, keeping only what class 3 asks for (`-Wl,--undefined=` for
@@ -245,7 +271,7 @@ then links only its own files, taking those addresses from class 4's ELF
 name. The class-4 module is compiled with `FS_PIN_HOME`: its main is a stub,
 as the resident never runs it, and it only keeps its tables linked. Both
 link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
-also stops inlining. On LM with #308's direct DAP tables, class 4 is 7,359
+also stops inlining. On LM, class 4 is 8,121
 of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
 class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
 without loading a module; on LM that loop is an ordinary job-slot module, as

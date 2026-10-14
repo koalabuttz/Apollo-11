@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Milestone lm-p40-p47 (lane F): Luminary099 P40-P47 compiled by
-# tools/interp_compile.py into native routines of the control-transfer ABI,
-# except the channel words, which wait for the output-channel model.
+# tools/interp_compile.py into native routines of the control-transfer ABI
+# (channel orders through the program's agc_hardware).
 P40_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 P40_SRC = src/lm_p40_p47.c tests/lm_p40_p47_target.c $(P40_COMMON)
 P40_HDR = include/lm_p40_p47.h tests/interp_case.h tests/interp_cut.h tests/lm_p40_p47_vectors.h tests/lm_p40_p47_c64_vectors.h
-P40_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+P40_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_CHANNELS -DIRC_INPUTS
 .PHONY: test-lm-p40-p47 sanitize-lm-p40-p47 c64-lm-p40-p47 vice-lm-p40-p47 lm-p40-p47-differential
 all: build/test-lm-p40-p47
 test: test-lm-p40-p47

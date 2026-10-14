@@ -1317,11 +1317,9 @@ SPECS = {
         'fixed_tables': {'VREFER': (0, 91)},
         # KEP's RTB P66 is the first order of its pair: P66 returns through
         # TC DANZIG with SSP still in EDOP, so the interpreter runs SSP
-        # GOTOADDR KEP2 from OPJUMP, not at NEWOPS where the transfer ABI
-        # keys interpretive routines.
-        'partial': {'cm': 'SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it '
-                          'runs from the interpreter\'s DANZIG/OPJUMP when P66 returns, a point the transfer ABI '
-                          'does not key yet (interpretive routines are keyed by LOC at NEWOPS)'},
+        # GOTOADDR KEP2 from OPJUMP. That point is a routine of its own,
+        # keyed at the RTB's operand word (25,3314).
+        'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
         # positive in both words, as STARTENT and LEWDOVFL leave it.
         # Negative (a negative low word under a +0 high word too),
@@ -1330,7 +1328,12 @@ SPECS = {
                   'E7,1725': list(range(0, 0o40000, 0o1001))},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline'],
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        # (No 'fast_window': it needs one EBANK, and this file runs under the
+        # listing's per-routine EBANK=.)
+        'trusted_image': True,
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
@@ -2761,11 +2764,22 @@ SPECS = {
                       'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
         # P40-P47 run as jobs: any DANZIG can find a job waiting.
         'resume_keys': True,
+        # The Waitlist tasks (TRIMGIMB from R03, PITCHOFF, ENGOFTSK,
+        # STARTP47, the FIXDELAY and VARDELAY returns) run in T3RUPT
+        # whatever job is waiting: the basic routines that never name FIXLOC
+        # or NEWJOB take any FIXLOC and NEWJOB -0 (DUMMYJOB idling) too.
+        'any_fixloc': True,
+        'any_newjob': True,
         'noreturn': ['POSTJUMP'],
         'resume_orphans': True,
-        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
-        # output-channel model.
-        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # WAND/WOR CHAN12 (TRIMGIMB, PITCHOFF), RAND/WRITE DSALMOUT and WOR
+        # CHAN14 (ENGINOF3) through the program's agc_hardware
+        # (include/agc_channel_ops.h), the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # The channels the file's orders name, compared after every case
+        # (channel 14 without the IMU CDU and gyro drive bits).
+        'io_channels': {0o11: 0o77777, 0o12: 0o77777, 0o14: 0o6777},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
         # C64 rows chosen by branch outcome over every linked source.
@@ -2788,6 +2802,7 @@ SPECS = {
         # W from include/agc_image_w.h: flight builds address the fixed
         # $7000 image.
         'image_w': True,
+        'trusted_image': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
