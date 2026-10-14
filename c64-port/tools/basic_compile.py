@@ -363,6 +363,11 @@ class Basic:
             st.append(self.index_value(a, phys))
             st.extend(self.indexed(nxt, ext, clean))
             return st
+        if op in ('CA', 'CS', 'AD', 'SU', 'MASK', 'MP', 'DV', 'DCA', 'DCS') and a is not None and \
+                (a == 5 or (op in DOUBLE and a == 6)):
+            # A read of Z (FLESHPOT's DCA Z, AD FOUR, DXCH LOC): Z holds the
+            # address of the next word, as the hardware has it then.
+            st.append('W[5]=0%o;' % ((self.logical(phys) + 1) & 0o7777))
         st.extend(self.order(op, a, lim, phys, False, ext, clean))
         return st
 
@@ -749,7 +754,14 @@ class Basic:
         c.append(' * tables above: 0 outside them. */')
         c.append('static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){')
         c.append(' unsigned p;(void)s;')
-        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo)))
+        fb = self.bank(getattr(self, 'fx_entry', None) or (min(self.entries) if self.entries else self.cp.lo))
+        # Switched tables all in one bank: e 02000-03777 is that bank (a file
+        # in two banks, such as Luminary's POWERED_FLIGHT_SUBROUTINES, reads
+        # INDEXI from bank 23 while its lowest entry is in bank 10).
+        tb = {self.bank(lo) for lo, hi, lab, off in self.fixed_tables if self.bank(lo) not in (2, 3)}
+        if len(tb) == 1:
+            fb = tb.pop()
+        c.append(' if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=0%ou*1024u+e-02000u;' % fb)
         for lo, hi, lab, off in self.fixed_tables:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')

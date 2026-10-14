@@ -635,6 +635,53 @@ SPECS = {
         'image_w': True,
         'target': 'tests/cm_powered_subs_target.c',
     },
+    # Lane A: Luminary099 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
+    # SMNB/NBSM, AX*SR*T, CALCSMSC), basic and interpretive.
+    'lm-powered-subs': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
+        'base': {'lm': 'lm_powered_subs'},
+        'symbol': {'lm': 'lm_powered_subs'},
+        'basic': 'full',
+        # Every caller's entry, the interface routines no other file calls
+        # (CD*TR*G, TRG*SMNB, CDU*NBSM), CALCSMSC's BANKCALL to FLESHPOT -1,
+        # and FLESHPOT's return from VXV (LOC set to it, EDOP BIT8: the
+        # interpreter resumes the basic code there).
+        'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM', 'FLESHPOT-1', 'FLESHPOT+93'],
+        # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
+        'fixed_tables': {'INDEXI': (0, 3)},
+        # The words each resume point finds, as the file's own runs leave them
+        # (as cm-powered-subs). CD*TR*GS's loop: TEM3 the angle offset, TEM2
+        # its caller's return (CDUTRIG, CD*TR*G and the four interface
+        # routines' TCs, or outside the file).
+        'states': dict(
+            {p: {'143': [0, 2, 4], '142': [0o3541, 0o3545, 0o3650, 0o3653, 0o3663, 0o3666, 0o5000]}
+             for p in ('23,3570', '23,3576', '23,3606')},
+            # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356]} for p in ('23,3626', '23,3635')},
+            # AX*SR*T's loop: DEXDEX +-3 to +-1, DEX1 and DEX2 offsets, BUF
+            # the component index, RTNSAVER C*MM*N2's return or outside.
+            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
+                   '130': [0, 1], '145': [0o3656, 0o5000]} for p in ('23,3723', '23,3741')},
+            # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
+            # (16 bits, 177774), Q a return.
+            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
+            # FLESHPOT after DMP, DMPSUB and VXV: TEM1 the matrix's switched
+            # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
+            # caller's EBANK.
+            **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
+               for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
+                         '10,2174')}),
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_powered_subs_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
