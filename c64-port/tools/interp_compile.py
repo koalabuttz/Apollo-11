@@ -142,8 +142,10 @@ class Compiler:
             raise CompileError('no lines for %s' % spec['file'][mission])
         self.code = {l.phys: l for l in self.lines}
         self.words = set(l.phys + i for l in self.lines for i in range(len(l.words)))
+        self.inline_sites = {}   # routine -> {(Q, FB or None)} its inline reads take
+        self.inline_reads = set()   # INDEX Q reads of a caller's inline word
         # 'outside': {'LABEL': words} leaves code the compiler can't model
-        # yet (VNPOOH's XCH FBANK) to the original: a transfer there leaves
+        # yet to the original: a transfer there leaves
         # the file, and its words are untranslated (the spec's 'partial').
         for lab_, n_ in spec.get('outside', {}).items():
             p_ = self.L.labels[lab_]
@@ -644,6 +646,28 @@ class Compiler:
         self.ktabs[lo] = (hi - lo, lab)
         return 'KX%o,0%ou,%du' % (lo, lo, hi - lo)
 
+    def tc_intpret_store(self, t):
+        """Statements running the TC INTPRET word at t as a store code."""
+        P = self.p
+        code = self.L.word(t)
+        kind, a = (code >> 11) & 7, code & 0o3777
+        st = []
+        if kind in (1, 2):
+            # (the address less C(X1) or C(X2) must stay an erasable address;
+            # past it the original's INDEX ADDRWD changes the instruction)
+            st.append('{unsigned a=0%04ou+(~W[(W[0120]+0%ou)&03777u]&077777u);if(a>077777u)a=(a&077777u)+1u;'
+                      'if(a>03777u)return EXEC_OUT_OF_SCOPE;}' % (a, 0o46 if kind == 1 else 0o47))
+        return st + ['%sstore_code(s,0%05o);' % (P, code),
+                     '(void)next(s);return EXEC_OK; /* TC INTPRET at %s, a store code */' % self.where(t)]
+
+    def tc_intpret(self, p):
+        """A basic TC INTPRET word that an interpretive GOTO lands on (P20-P25's
+        CLRGO FSPASFLG R21LEM7 +1). The interpreter reads the positive word
+        as a store code: the GOTO's routine runs that slot itself (DOSTORE,
+        then DANZIG on to the word after), so the word stays basic code."""
+        ln = self.code.get(p)
+        return ln is not None and ln.op == 'TC' and (ln.operand or '').strip() == 'INTPRET'
+
     def slot(self, p, bank):
         """Statements for the NEWOPS slot at p: (stmts, next slot, ends)."""
         ln = self.code[p]
@@ -662,6 +686,7 @@ class Compiler:
             if i == 1:
                 st.append('%snoibnksw_right(s);' % P if prev_setpd else 'right(s);')
             self.last_order = i == len(ops) - 1
+            self.right_op = ops[1] if i == 0 and len(ops) > 1 else None
             body, cur, done, prev_setpd = self.order(op, cur, bank)
             st.extend(body)
             if done == 'pair':
@@ -682,6 +707,9 @@ class Compiler:
     def goto(self, w, why, call=False):
         """GOTO 06646 (after a taken branch or CALL) to the target."""
         P = self.p
+        if w & 0o74000 and self.tc_intpret(self.cadr_phys(w)):
+            t = self.cadr_phys(w)
+            return ['%sgoto(s);' % P] + self.tc_intpret_store(t)
         if w & 0o74000:
             t = self.target(w, why)
             if self.spec.get('self_loops') and t == self.cur_start:
@@ -961,8 +989,30 @@ class Compiler:
                 # routine ends at its basic code.
                 if not self.in_file(target):
                     self.externals_any[target] = 'RTB ' + lab
+                elif self.is_basic(target):
+                    self.add_start(target, 'b', 'RTB target')
                 if not self.last_order:
-                    raise CompileError('RTB %s with an order after it at %s' % (lab, self.where(cur)))
+                    # A left-hand RTB (RTB CALL READCDUD VECPNT1): its DANZIG
+                    # takes the right order from EDOP outside the file; the
+                    # file resumes at that order's return or target.
+                    right = split_op(self.right_op)[0]
+                    rw = self.L.word(cur)
+                    if right == 'CALL':
+                        self.call_return(cur + 1, 'RTB %s CALL return' % lab)
+                        if rw & 0o74000:
+                            self.target(rw, 'RTB %s CALL target' % lab)
+                    elif right == 'GOTO':
+                        if rw & 0o74000:
+                            self.target(rw, 'RTB %s GOTO target' % lab)
+                    elif classify(self.right_op)[0] in ('unary', 'short'):
+                        # (RTB PUSH NORMUNX1: the file resumes at the next pair)
+                        self.add_start(cur, 'i', 'RTB %s %s return' % (lab, right))
+                        st.append('return EXEC_OK; /* RTB %s, then %s from EDOP */' % (lab, right))
+                        return st, cur, True, False
+                    else:
+                        raise CompileError('RTB %s with %s after it at %s' % (lab, self.right_op, self.where(cur)))
+                    st.append('return EXEC_OK; /* RTB %s, then %s from EDOP */' % (lab, right))
+                    return st, cur + 1, True, False
                 # Its DANZIG resumes the file at the next pair.
                 self.add_start(cur, 'i', 'RTB %s return' % lab)
                 st.append('return EXEC_OK; /* RTB %s */' % lab)
@@ -1011,6 +1061,9 @@ class Compiler:
 
     def swbranch(self, w):
         P = self.p
+        if w & 0o74000 and self.tc_intpret(self.cadr_phys(w)):
+            t = self.cadr_phys(w)
+            return ['%sswbranch(s,0%05o);' % (P, w)] + self.tc_intpret_store(t)
         if w & 0o74000:
             self.target(w, 'switch branch target')
             return ['%sswbranch(s,0%05o);return EXEC_OK;' % (P, w)]
@@ -1136,7 +1189,7 @@ class Compiler:
         ext = self.spec.get('externals', {})
         w = self.L.word(p)
         start = p
-        extended = False
+        extended = getattr(self, '_inline_index', False) and self._inline_ext
         index = None
         self._ix2 = None
         while True:
@@ -1191,6 +1244,31 @@ class Compiler:
         self._ix_read = None
         if self._ix2:
             self._ix = (w, index, 0o7777)
+        if index == 2 and k12 == 0 and ((op in (3, 6) and qc == 0 and not extended) or op == 5) \
+                and self.spec.get('inline_reads'):
+            # INDEX Q; CA 0, AD 0 or INDEX 0: a read of the caller's inline
+            # word at C(Q) (MAGSUB's limit, RRLIMCHK's ADRES), a word of
+            # fixed memory. It is known at each of the routine's callers in
+            # the file, so the word is chosen by the return in Q.
+            v = self.inline_word(p)
+            if op == 3:
+                return [here, v + 'ai_caf(s,iv);}'], [nxt]
+            if op == 6:
+                return [here, v + 'ai_adf(s,iv);}'], [nxt]
+            # INDEX 0: the next instruction's address + the inline word.
+            self._inline_index = True
+            self._inline_ext = extended
+            # (0157, a scratch word for the index, keeps its value)
+            outer = self.unit_words
+            st, succ = self.basic_unit(nxt, bank)
+            self.unit_words = range(outer.start, self.unit_words.stop)
+            if not self._ix:
+                raise CompileError('INDEX Q; INDEX 0 at %s: no indexed instruction' % self.where(p))
+            self._ix = self._ix_write = None
+            return [here, v + 'agc_word sv=W[0157];W[0157]=iv;', st[0], st[1] + 'W[0157]=sv;'] + st[2:] + ['}'], succ
+        if getattr(self, '_inline_index', False):
+            self._inline_index = False
+            index = 0o157
         if (index is not None and not extended and op == 1 and qc == 0 and k10 < 0o10
                 and self.spec.get('index_returns')):
             # INDEX K; TCF 0 +n with K a saved Q (P37's INDEX SPRTEX, TCF 0
@@ -1224,6 +1302,11 @@ class Compiler:
                     n = 2 if what in ('dxch', 'das') else 1
                     self._ix_write = (e, n)
                 return e
+            if k == 4 and what in ('ts', 'xch') and p // 1024 in (2, 3):
+                # A new FB in fixed-fixed code (Comanche's VNPOOH: XCH FBANK,
+                # then TS FBANK) leaves the code where it is; ai_put keeps
+                # BBANK with it.
+                return ea(k)
             if k in (4, 5, 6) and writes:
                 raise CompileError('%s writes a bank or Z register at %s' % (what, self.where(p)))
             return ea(k)
@@ -1261,6 +1344,13 @@ class Compiler:
         st = [here]
         if not extended:
             if op == 0:
+                if index in (1, 2) and k12 < 3 and self.spec.get('inline_reads'):
+                    # INDEX L; TC L (RRLIMOK) or INDEX Q; TC 1: a return a
+                    # word or two past the one in L or Q. The run loop takes
+                    # Z from there.
+                    return st + ['{agc_word iw=ixw(s,0%05o,0%ou);' % (w, index) +
+                                 'if((iw&070000u)||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;' +
+                                 'ai_tc(s,0%04o);W[5]=(agc_word)(iw&07777u);return EXEC_OK;}' % (ln.loc + 1)], []
                 if index is not None:
                     return self.indexed_tc(p, w, index, ln, nxt, bank)
                 if k12 == 3:
@@ -1277,7 +1367,7 @@ class Compiler:
                     # the run ends there, with Z the erasable address.
                     st.append('ai_tc(s,0%04o);' % (ln.loc + 1))
                     return st + ['W[5]=0%04o;return EXEC_OK; /* erasable program %s */' % (k12, ln.operand.split()[0])], []
-                if (k12 == 0 or 0o10 <= k12 < 0o2000) and index is None:
+                if (k12 in (0, 1) or 0o10 <= k12 < 0o2000) and index is None:
                     # (TC A, FASTCHNG's return, runs the TC in A: Q = 1.)
                     # TC to an erasable word runs it as an instruction (a
                     # saved return): Z = its address, Q = the word's own + 1.
@@ -1307,7 +1397,9 @@ class Compiler:
                     for k in self.spec.get('in_file_returns', {}).get(lab, ()):
                         self.add_start(nxt + k, 'b', 'return from %s +%d' % (lab, k))
                         rets.append(nxt + k)
-                    rets = [q for q in rets if self.is_basic(q)]
+                    rets = [q for q in rets if self.is_basic(q)
+                            and not (self.spec.get('refuse_skip_unextended') and q > nxt
+                                     and getattr(self.code.get(q - 1), 'op', None) == 'EXTEND')]
                     self.returns_seen.update(rets)
                     return st + ['goto L%o;' % tz], [tz] + rets
                 if not lab and ln.op in ('READ', 'WRITE', 'RAND', 'WAND', 'ROR', 'WOR', 'RXOR'):
@@ -1435,12 +1527,20 @@ class Compiler:
                                  'W[5]=z;return EXEC_OK;}' % (ln.loc + 1)], []
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
+                if qc == 2 and index is None and k10 in (4, 6) and self.spec.get('ts_bank_guard'):
+                    # TS FBANK/BBANK (WLINIT's CAF WBANK, TS BBANK): the
+                    # routine runs on only while FB stays its own bank.
+                    guard = '' if bank in (2, 3) else 'if(W[4]!=0%05ou)return EXEC_OUT_OF_SCOPE;' % (bank << 10)
+                    return st + ['if(ai_ts(s,%o))return EXEC_OUT_OF_SCOPE;' % k10] + ([guard] if guard else []), [nxt]
                 if qc == 2 and k10 == 6 and index is None:
                     # TS BBANK (P20-P25's CAF BUFBANK; TS BBANK): only the EB
                     # half may change; a new FB would leave the routine.
                     return st + ['if((agc_correct(W[0])&076000u)!=(W[4]&076000u)||ai_ts(s,06u))return EXEC_OUT_OF_SCOPE;'], [nxt]
                 if qc == 2:
-                    if not self.is_basic(nxt + 1):
+                    if not self.is_basic(nxt + 1) or (self.spec.get('refuse_skip_unextended')
+                                                      and getattr(self.code.get(nxt), 'op', None) == 'EXTEND'):
+                        # (DGCHECK's TS ITEMP1 skipping its EXTEND would run
+                        # RAND CHAN33 as a TC: refused too.)
                         # An overflow skip out of the code has no producer.
                         return st + ['if(ai_ts(s,%s))return EXEC_OUT_OF_SCOPE;' % eras(k10, 'ts')], [nxt]
                     return st + ['if(ai_ts(s,%s))goto L%o;' % (eras(k10, 'ts'), nxt + 1)], [nxt, nxt + 1]
@@ -1544,6 +1644,8 @@ class Compiler:
         for i in range(tables[p]):
             t = tz + i
             if not self.is_basic(t):
+                if tcf:
+                    continue    # (a TCF table's data words: refused below)
                 raise CompileError('jump table entry %s is not basic code' % self.where(t))
             st.append('  case 0%05ou:goto L%o;' % (w + i, t))
             succ.append(t)
@@ -1553,6 +1655,59 @@ class Compiler:
             self.returns_seen.add(nxt)
             succ.append(nxt)
         return st, succ
+
+    def inline_word(self, p):
+        """C code opening a block that sets iv to the inline word at C(Q),
+        Q a return to one of the in-file TCs of the routine running p (the
+        word after the TC, with that TC's FB); any other Q is refused."""
+        # The subroutine running p: the nearest in-file TC target at or
+        # before it (MAGSUB, RRLIMCHK), however the routine got there.
+        tcs = [q for q in sorted(self.words) if self.code.get(q) is not None and self.code[q].op == 'TC'
+               and not (self.L.word(q) & 0o70000) and self.L.word(q) & 0o7777 >= 0o2000]
+        heads = set()
+        for q in tcs:
+            k = self.L.word(q) & 0o7777
+            t = 2048 + k - 0o4000 if k >= 0o4000 else (None if q // 1024 in (2, 3) else q // 1024 * 1024 + k - 0o2000)
+            if t is not None and self.in_file(t) and t <= p and t // 1024 == p // 1024:
+                heads.add(t)
+        if not heads:
+            raise CompileError('INDEX Q inline read at %s: no caller in the file' % self.where(p))
+        start = max(heads)
+        # (and the entries that fall into it: INITREAD -1's CAF ONE)
+        jumps = ('TC', 'TCF', 'RETURN', 'CCS', 'BZF', 'BZMF', 'INDEX', 'TCR', 'NOOP')
+        entries = {self.logical_of(h) for h in heads
+                   if all(self.code.get(q) is not None and self.code[q].op not in jumps
+                          for q in self.words if h <= q < start)
+                   and all(q in self.words for q in range(h, start))}
+        cases = {}
+        # (every caller in the rope: T4RUPT's TC RRLIMCHK too)
+        for ln in self.L.lines:
+            q = ln.phys
+            if ln.op != 'TC' or not ln.words or q is None or q // 1024 >= 0o40:
+                continue
+            w = ln.words[0]
+            if (w & 0o70000) or (w & 0o7777) not in entries:
+                continue
+            lg = w & 0o7777
+            if lg >= 0o4000 or q // 1024 == start // 1024 or start // 1024 in (2, 3):
+                ret = self.logical_of(q + 1)
+                fb = (q // 1024 << 10) if q // 1024 not in (2, 3) else None
+                cases.setdefault(ret, []).append((fb, self.L.word(q + 1)))
+        if not cases:
+            raise CompileError('INDEX Q inline read at %s: no caller' % self.where(p))
+        self.inline_reads.add(p)
+        # (the returns a case of the routine starts with: Q and its FB)
+        if self.cur_start == start:
+            self.inline_sites.setdefault(start, set()).update((ret, fb) for ret, alts in cases.items() for fb, _ in alts)
+        c = ['{agc_word iv;switch(W[2]){']
+        for ret, alts in sorted(cases.items()):
+            if len(alts) == 1 and alts[0][0] is None:
+                c.append('case 0%04ou:iv=0%05o;break;' % (ret, alts[0][1]))
+            else:
+                c.append('case 0%04ou:' % ret + ''.join('if(W[4]==0%05ou){iv=0%05o;break;}' % (fb, v) for fb, v in alts if fb is not None)
+                         + 'return EXEC_OUT_OF_SCOPE;')
+        c.append('default:return EXEC_OUT_OF_SCOPE;}')
+        return ''.join(c)
 
     def is_basic(self, q):
         ln = self.code.get(q)
@@ -1988,6 +2143,9 @@ class Compiler:
         c.append('static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){')
         # Switched erasable (01400-01777) is read through EB.
         c.append(' agc_word w=%s;' % ('ai_word(s,k)' if any(k >= 0o1400 for k in self.tc_erasable) else 'W[k]'))
+        if 1 in self.tc_erasable:
+            # (TC L, the RRLIMCHK return: L overflow-corrected to 15 bits)
+            c.append(' if(k==1u)w=(agc_word)((W[1]&037777u)|((W[1]>>1)&040000u));')
         c.append(' if((w&070000u)||w<010u)return EXEC_OUT_OF_SCOPE;')
         c.append(' W[2]=(agc_word)(k+1u);W[5]=(agc_word)(w&07777u);return EXEC_OK;')
         c.append('}')

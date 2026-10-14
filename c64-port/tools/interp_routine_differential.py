@@ -675,6 +675,17 @@ def case(mi, point, n, rng):
                     break
             E[2] = logical(q)
             stop = q
+        sites = sorted(getattr(mi.cp, 'inline_sites', {}).get(point, ()), key=lambda x: (x[0], x[1] or 0))
+        if sites:
+            # A routine that reads its inline arguments at C(Q) (MAGSUB,
+            # RRLIMCHK): Q a return to one of the file's calls, under that
+            # call's FB.
+            ret, cfb = rng.choice(sites)
+            E[2] = ret
+            if cfb is not None:
+                E[4] = cfb
+                E[6] = cfb | eb
+            stop = mi.cp.phys_of(ret, (cfb or 0) >> 10)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
         # A state the spec pins there (a caller's return in the file) stays.
         for k in mi.cp.tc_erasable:
