@@ -16,7 +16,9 @@ The channel orders run through the program's `agc_hardware` (`include/agc_channe
 
 ## Compiler change
 
-`tools/basic_compile.py` now compiles `RESUME` outside an interrupt, as `tools/interp_compile.py` already did for Lane F's milestone. The next instruction is BRUPT's, run in place (yaAGC's substitute instruction): a TCF to fixed memory, which CONTABRT stores. Any other BRUPT word is refused. Every other spec regenerates byte-identical (`tools/interp_compile.py --check`).
+`tools/basic_compile.py` now compiles `RESUME` outside an interrupt, as `tools/interp_compile.py` already did for Lane F's milestone. The next instruction is BRUPT's, run in place (yaAGC's substitute instruction): a TCF to fixed memory, which CONTABRT stores. Any other BRUPT word is refused. RESUME also ends the interrupt, as yaAGC clears InIsr: with Luminary channels the compiled RESUME clears the program's `agc_hardware` `in_interrupt` (#385). Every other spec regenerates byte-identical (`tools/interp_compile.py --check`).
+
+The new spec key `in_isr` puts that flag in the comparison. Each case starts with `in_interrupt` 0 or 1 (yaAGC's InIsr the same), and the digest covers it after the run (the IRC_ISR edit in `tests/interp_case.h`). Only specs that set the key change their cases. This one and Lane F's lm-p70-p71 set it; `tools/interp_compile.py` clears the flag in that milestone's RESUME too.
 
 ## Spec states
 
@@ -24,6 +26,7 @@ The channel orders run through the program's `agc_hardware` (`include/agc_channe
 - **Q at CONTABRT and ABRTJASK is -0 (P70) or 2 (P71),** the two values P70A and P71A set. INDEX Q; CAF MODE70 reads MODE70 or MODE71 (`fixed_tables` MODE70 to MODE70 +2), and any other fixed word is refused.
 - **BOTHPOLY's X1 is -0 or -8 (`vac+046`),** for the DPS or APS coefficients, as in Lane F's spec.
 - **At 10,11 (21,2042, the return from FLIP),** FLAGWRD9 has LETABORT set in most cases, and MODREG is 70, 71 or another program, so both P71NOW? and P70NOW? run.
+- **`in_isr`.** CONTABRT runs as R10,R11's T3RUPT task or from P70A/P71A's INHINT, inside or outside an interrupt; either way RESUME leaves `in_interrupt` 0.
 - **`io_channels` names channels 11, 14 and 30.** `'auto'` leaves out channel 30, which READ CHAN30 takes as an input, and then the case's channel edits zero it, so P70NOW? never ran.
 
 ## Evidence
@@ -31,9 +34,9 @@ The channel orders run through the program's `agc_hardware` (`include/agc_channe
 Hashes: `evidence/lm-p70-p71-file/SHA256.json`.
 - **Source map.** `evidence/lm-p70-p71-file/lm-p70-p71-file-source-map.json` lists the file's 298 words with their native routines, none untranslated.
 - **Executed-instruction closure.** `make lm-p70-p71-file-closure`: the oracle executed all 169 basic instructions and the interpreter read all 91 interpretive words, none named unreached (`evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json`). The 38 data words are the ADRES, CADR, 2CADR, REMADR, DEC, 2DEC and OCT constants, plus ABRTJADR (TCF ABRTJASK), which CONTABRT reads with CAF and executes only as BRUPT's substitute instruction.
-- **Independent assembly comparison.** `make lm-p70-p71-file-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 78 routines, 39,936 in all. Every case equals the native run (`evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json`) in Z, all 2,048 erasable words, the interrupt-enable state, and channels 11, 14 and 30. No case waits for a channel.
+- **Independent assembly comparison.** `make lm-p70-p71-file-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 78 routines, 39,936 in all. Every case equals the native run (`evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json`) in Z, all 2,048 erasable words, the interrupt-enable state, `in_interrupt`, and channels 11, 14 and 30. No case waits for a channel.
 - **Host and sanitizer results.** `make test-lm-p70-p71-file sanitize-lm-p70-p71-file`: 2,506 frozen cases, 0 failures.
-- **C64 execution results.** `make vice-lm-p70-p71-file`: 127 cases in 3 programs, picked by edge coverage. 127 checks, 0 failures.
-- **C64 branch outcomes.** The proof's `c64_gcov_branches`: the C64 cases take all 1,004 gcov branch outcomes the host cases take, and all 896 trace edges.
+- **C64 execution results.** `make vice-lm-p70-p71-file`: 125 cases in 3 programs, picked by edge coverage. 125 checks, 0 failures.
+- **C64 branch outcomes.** The proof's `c64_gcov_branches`: the C64 cases take all 1,013 gcov branch outcomes the host cases take, and all 895 trace edges.
 
 Lane F's partial milestone (`src/lm_p70_p71.c`, `docs/LM-P70-P71.md`) stays for its existing callers. This milestone does not change it.
