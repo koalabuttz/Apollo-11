@@ -45,6 +45,8 @@
  * match yaAGC run from the same state with the clock frozen, the clock
  * counters included, so the run is one yaAGC run under the same tick
  * schedule. No free-running reference is run.
+ * FLIGHT_GOJAM=CS[,CS...]: a hardware restart at the first sample point at
+ * or after each CS, on both sides (tools/flight_gojam.h).
  * FLIGHT_SNAPSHOT=CS,PATH: at the first native sample point at or after
  * centisecond CS (after that point's pokes), write the native state (the
  * erasable image, the superbank, the interrupt enable, agc_hardware and the
@@ -62,6 +64,7 @@
 #include "rope_image.h"
 #include "self_check.h"
 #include "standard_lead_routines.h"
+#include "flight_gojam.h"
 #if RK_LM
 #define MISSION 0u
 #define FETCH LM_INTERPRETER_FETCH
@@ -547,7 +550,7 @@ static const char *snap_path;
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
- unsigned i,j,kref=0,knat=0,pref=0,pnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
+ unsigned i,j,kref=0,knat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
@@ -561,6 +564,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(sscanf(getenv("FLIGHT_SNAPSHOT"),"%lu,%511s",&snap_cs,path_buf)!=2){fprintf(stderr,"FLIGHT_SNAPSHOT=CS,PATH\n");return 2;}
   snap_path=path_buf;}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
+ if(!gojam_parse(getenv("FLIGHT_GOJAM"))){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 2;}
  pokes_sort();
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
@@ -591,7 +595,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
     aero_due(now(w),&aero_ref,0);
-    if((k=key_due(now(w),&kref))>=0){m.InputChannel[015]=(int16_t)k;
+    if(gojam_due(now(w),&gref))gojam_yaagc(&m);
+    else if((k=key_due(now(w),&kref))>=0){m.InputChannel[015]=(int16_t)k;
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_KEY1);m.InIsr=1;}
      else m.InterruptRequests[RK_RUPT_KEY1]=1;}}}
   /* FLIGHT_NATIVE_LATENCY: the reference takes interrupts only where some
@@ -640,7 +645,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
    aero_due(now(s.words),&aero_nat,s.words);
-   if((k=key_due(now(s.words),&knat))>=0){hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
+   if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
+   else if((k=key_due(now(s.words),&knat))>=0){hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
    if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
   {agc_word brupt=s.words[017];
