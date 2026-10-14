@@ -49,7 +49,7 @@
   "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
   "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
   "src/p66_native.c": "bbcb6cc6e4cb1c6bd5e10efa888eb38b762255975bd522bb4146bdf968c0447a",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/lm_admission_image_cases.c": "862178bd4da47252c9a0f885961f9deb4a440b68128eb2316801b861d8f72756",
@@ -89,5 +89,13 @@
   "include/service_transfer.h": "1b5f86b679c41780cffb3b99380d1c5946c787693fa91ddd91b2ac2eb524d90e",
   "tests/waitlist_entries_cases.h": "411f131b8530992bdec2d3275ff676ac836320568c162b725fe69a82206b4a0e"
  },
- "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears"
+ "boundary": "T3RUPT: from the T3RUPT word after the vector's DXCH ARUPT; CAF T3RPTBB; XCH BBANK to the dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when banked) or when InIsr clears",
+ "taskover_superbank": {
+  "oracle": "tools/taskover_superbank_reference.c",
+  "result": [
+   "Luminary099: 488 TASKOVER RESUME cases from yaAGC's own T3RUPT, 364 where the word under the task's superbank differs",
+   "Comanche055: 493 TASKOVER RESUME cases from yaAGC's own T3RUPT, 366 where the word under the task's superbank differs"
+  ],
+  "check": "yaAGC takes T3RUPT in banks 030-033 under one superbank and fills ZRUPT and BRUPT from the rope; BANKRUPT keeps that superbank, channel 7 holds another; native TASKOVER with the rope as fixed_data resumes and equals yaAGC (SUPERBNK, interrupt enable, 2048 erasable words)"
+ }
 }

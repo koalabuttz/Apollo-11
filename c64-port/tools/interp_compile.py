@@ -160,6 +160,10 @@ class Compiler:
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
         # (tasks and NOVAC jobs call them too), not only a VAC area.
         self.any_fixloc = bool(spec.get('any_fixloc'))
+        # 'any_newjob' (with any_fixloc): those routines, when they also never
+        # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
+        # T4RUPT still runs them).
+        self.any_newjob = bool(spec.get('any_newjob'))
         self.sload_k = False
         self.uses_channels = False
         # 'channels': 'all' on a Luminary file: its channel orders run on the
@@ -502,11 +506,22 @@ class Compiler:
             out.append(fp)
         return out
 
-    @staticmethod
-    def superbank_guard(fx):
-        """FB 30-37 is bank 30-37 only with the superbank bits clear; the
-        effective address the switch computes assumes that."""
-        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;' if any(fp // 1024 >= 0o30 for fp in fx) else ''
+    # Placeholder an indexed FB 30-37 read leaves in its block under spec
+    # 'superbank_bit'; emit() replaces it with one guard at the routine's entry.
+    SB_MARK = '/*superbank*/'
+
+    def superbank_guard(self, fx):
+        """FB 30-37 is bank 30-37 only while the superbank bit (channel 7
+        bit 0100) is clear; the effective address the switch computes
+        assumes that. Spec 'superbank_bit' tests only that bit (020, 040
+        and 060 are legal and select nothing) and refuses at the routine's
+        entry, before any order has written state. Opt-in so existing files
+        and their pinned evidence stay byte-identical until a refreeze."""
+        if not any(fp // 1024 >= 0o30 for fp in fx):
+            return ''
+        if self.spec.get('superbank_bit'):
+            return self.SB_MARK
+        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;'
 
     def operand_k(self, w, bank, takes_k, starred, what, n=6):
         if starred or what == 'GSHIFT':
@@ -1456,7 +1471,8 @@ class Compiler:
         """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
         and does not enter the interpreter (TC INTPRET)."""
         return (self.any_fixloc and self.starts[phys][0] == 'b'
-                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys]))
+                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -1731,8 +1747,10 @@ class Compiler:
             c.append('/* The same for a basic routine that never names FIXLOC: any FIXLOC. */')
             c.append('static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){')
             c.append(' unsigned i;')
-            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
-                     % ('W[067]>037777u' if self.rk else 'W[067]'))
+            nj = 'W[067]>037777u' if self.rk else 'W[067]'
+            if self.any_newjob:
+                nj = '(%s&&W[067]!=077777u)' % nj
+            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
             c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
             c.append(' return 1;')
@@ -1878,7 +1896,12 @@ class Compiler:
                     c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
                 else:
                     c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
-            for st in self.blocks[phys]:
+            body = self.blocks[phys]
+            if any(self.SB_MARK in st for st in body):
+                c.insert(len(c) - (2 if any('goto top;' in st for st in body) else 0),
+                         ' if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;')
+                body = [st.replace(self.SB_MARK, '') for st in body]
+            for st in body:
                 c.append(' ' + st)
             c.append('}')
             c.append('#endif')

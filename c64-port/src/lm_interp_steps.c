@@ -9,8 +9,11 @@
 #include "interp_mission.h"
 #define W s->words
 
-/* Erasable address in the canonical image: 01400-01777 through EBANK. */
-static unsigned ea(const apollo_overlay_state *s,unsigned a){return (a>=01400u&&a<02000u)?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;}
+/* Erasable address in the canonical image: 01400-01777 through EBANK. An
+ * index run wild (a negative switch word, a push-down pointer popped below
+ * zero) keeps the erasable address field, as agc_image_ops' ai_ea does,
+ * never a word outside the image. */
+static unsigned ea(const apollo_overlay_state *s,unsigned a){a&=01777u;return a>=01400u?(unsigned)(((W[3]>>8)&7u)*0400u+(a-01400u)):a;}
 /* Erasable stores with the original editing and bank-register coupling. */
 static void put(apollo_overlay_state *s,unsigned a,agc_word v){
  v&=AGC_MASK;

@@ -1,0 +1,521 @@
+{
+ "milestone": "lm-ground-track",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 27136,
+ "cases_sha256": "2ff3d5f33685f27dcc1961a90da9af236d16a993ac8ef9908dcbd278befc1118",
+ "oracle_sha256": "dee694bc9a2834e8ac0858a5928eb058fcb896a1ca813f3b65e0c1757dd5b779",
+ "frozen_vectors": 1708,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0xff7fff",
+   "cases": 27,
+   "case_ids": [
+    288,
+    13,
+    888,
+    1216,
+    1572,
+    2140,
+    2596,
+    3372,
+    3336,
+    3224,
+    3616,
+    4196,
+    4648,
+    4800,
+    5260,
+    5324,
+    5155,
+    5167,
+    5160,
+    5328,
+    5152,
+    5124,
+    5736,
+    6251,
+    6360,
+    7044,
+    7220
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7efff008000",
+   "cases": 1,
+   "case_ids": [
+    7716
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xff008000",
+   "cases": 1,
+   "case_ids": [
+    8175
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7d7ff008000",
+   "cases": 1,
+   "case_ids": [
+    7763
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xff008000",
+   "cases": 1,
+   "case_ids": [
+    7828
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f7ff008000",
+   "cases": 1,
+   "case_ids": [
+    7683
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xff008000",
+   "cases": 3,
+   "case_ids": [
+    8058,
+    7952,
+    7843
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f7ff008000",
+   "cases": 1,
+   "case_ids": [
+    8083
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xff008000",
+   "cases": 5,
+   "case_ids": [
+    7758,
+    8188,
+    8039,
+    7752,
+    7775
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7d7ff008000",
+   "cases": 1,
+   "case_ids": [
+    7783
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7d7ff008000",
+   "cases": 1,
+   "case_ids": [
+    8047
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f7ff008000",
+   "cases": 1,
+   "case_ids": [
+    7691
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xff008000",
+   "cases": 1,
+   "case_ids": [
+    7780
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7d7ff008000",
+   "cases": 1,
+   "case_ids": [
+    7707
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xffff0000",
+   "cases": 10,
+   "case_ids": [
+    8224,
+    8928,
+    9480,
+    9916,
+    10240,
+    10984,
+    11344,
+    11864,
+    12471,
+    12518
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xfe000000",
+   "cases": 5,
+   "case_ids": [
+    12916,
+    12803,
+    13559,
+    13348,
+    13323
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f7fc000000",
+   "cases": 1,
+   "case_ids": [
+    13471
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7f7fc000000",
+   "cases": 1,
+   "case_ids": [
+    13363
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0xf8000000",
+   "cases": 3,
+   "case_ids": [
+    13870,
+    13827,
+    13840
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7eff0000000",
+   "cases": 3,
+   "case_ids": [
+    14492,
+    14536,
+    14703
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x7ffe0000000",
+   "cases": 21,
+   "case_ids": [
+    14932,
+    14940,
+    15219,
+    15591,
+    15976,
+    15949,
+    16208,
+    16536,
+    16984,
+    17680,
+    17491,
+    17667,
+    17928,
+    18824,
+    19036,
+    19464,
+    19988,
+    20151,
+    20584,
+    21168,
+    21504
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x1ff80000000010",
+   "cases": 12,
+   "case_ids": [
+    22020,
+    22152,
+    22924,
+    23088,
+    23604,
+    24064,
+    24660,
+    25088,
+    25211,
+    25760,
+    26196,
+    26784
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 19,
+  "c64_labels": 19,
+  "host_edges": 1597,
+  "c64_edges": 1597,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 853,
+  "c64_taken": 853,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_ground_track.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_ground_track_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 817,
+  "edges_host_vectors": 817,
+  "edges_c64": 817,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "LM 24,3505 PROG21": {
+   "04616": 512
+  },
+  "LM 24,3512 ": {
+   "06001": 512
+  },
+  "LM 24,3513 ": {
+   "04616": 512
+  },
+  "LM 24,3514 ": {
+   "04616": 512
+  },
+  "LM 24,3515 P21PROG1": {
+   "04616": 512
+  },
+  "LM 24,3520 ": {
+   "06001": 512
+  },
+  "LM 24,3521 ": {
+   "06070": 375,
+   "05126": 137
+  },
+  "LM 24,3522 ": {
+   "04616": 512
+  },
+  "LM 24,3524 ": {
+   "06070": 398,
+   "05126": 114
+  },
+  "LM 24,3526 ": {
+   "06070": 512
+  },
+  "LM 24,3530 ": {
+   "05126": 140,
+   "06070": 372
+  },
+  "LM 24,3534 ": {
+   "06070": 375,
+   "05126": 137
+  },
+  "LM 24,3536 ": {
+   "06070": 386,
+   "05126": 126
+  },
+  "LM 24,3541 ": {
+   "06070": 376,
+   "05126": 136
+  },
+  "LM 24,3544 ": {
+   "06070": 512
+  },
+  "LM 24,3546 ": {
+   "05732": 310,
+   "05126": 127,
+   "06070": 75
+  },
+  "LM 24,3550 P21CONT": {
+   "06070": 379,
+   "05126": 133
+  },
+  "LM 24,3552 ": {
+   "06070": 384,
+   "05126": 128
+  },
+  "LM 24,3554 ": {
+   "06070": 385,
+   "05126": 127
+  },
+  "LM 24,3556 ": {
+   "05126": 130,
+   "06070": 382
+  },
+  "LM 24,3557 ": {
+   "05126": 134,
+   "06070": 378
+  },
+  "LM 24,3562 ": {
+   "06070": 400,
+   "05126": 112
+  },
+  "LM 24,3565 ": {
+   "05126": 122,
+   "06070": 390
+  },
+  "LM 24,3567 ": {
+   "06070": 512
+  },
+  "LM 24,3571 P21VSAVE": {
+   "05732": 329,
+   "05126": 122,
+   "06070": 61
+  },
+  "LM 24,3573 ": {
+   "05732": 297,
+   "05126": 150,
+   "06070": 65
+  },
+  "LM 24,3575 ": {
+   "05732": 299,
+   "05126": 127,
+   "06070": 86
+  },
+  "LM 24,3577 ": {
+   "06070": 67,
+   "05126": 145,
+   "05732": 300
+  },
+  "LM 24,3600 ": {
+   "05732": 293,
+   "06070": 84,
+   "05126": 135
+  },
+  "LM 24,3602 ": {
+   "05126": 114,
+   "06070": 246,
+   "05732": 152
+  },
+  "LM 24,3604 ": {
+   "06070": 138,
+   "05126": 126,
+   "05732": 248
+  },
+  "LM 24,3606 ": {
+   "05732": 341,
+   "06070": 133,
+   "05126": 38
+  },
+  "LM 24,3610 ": {
+   "06070": 386,
+   "05126": 126
+  },
+  "LM 24,3611 ": {
+   "06070": 393,
+   "05126": 119
+  },
+  "LM 24,3614 ": {
+   "06070": 390,
+   "05126": 122
+  },
+  "LM 24,3616 ": {
+   "06070": 388,
+   "05126": 124
+  },
+  "LM 24,3620 ": {
+   "05126": 133,
+   "06070": 379
+  },
+  "LM 24,3623 ": {
+   "06070": 369,
+   "05126": 143
+  },
+  "LM 24,3625 P21DSP": {
+   "06070": 392,
+   "05126": 120
+  },
+  "LM 24,3630 ": {
+   "06070": 394,
+   "05126": 118
+  },
+  "LM 24,3633 ": {
+   "06070": 393,
+   "05126": 119
+  },
+  "LM 24,3635 ": {
+   "05126": 138,
+   "06070": 374
+  },
+  "LM 24,3637 ": {
+   "06070": 512
+  },
+  "LM 24,3642 ": {
+   "04616": 385,
+   "05126": 127
+  },
+  "LM 24,3644 ": {
+   "04616": 377,
+   "05126": 135
+  },
+  "LM 24,3645 ": {
+   "04616": 512
+  },
+  "LM 24,3646 ": {
+   "04616": 512
+  },
+  "LM 24,3651 ": {
+   "06001": 512
+  },
+  "LM 24,3652 ": {
+   "06001": 512
+  },
+  "LM 24,3653 ": {
+   "04616": 376,
+   "05126": 136
+  },
+  "LM 24,3654 ": {
+   "04616": 371,
+   "05126": 141
+  },
+  "LM 24,3657 ": {
+   "04616": 382,
+   "05126": 130
+  },
+  "LM 24,3660 ": {
+   "04616": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, CHANG2, GOTOPOOH); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

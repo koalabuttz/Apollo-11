@@ -23,7 +23,7 @@ t4rupt-core-differential: build/t4rupt-core-native
 	python3 tools/t4rupt_core_source_map.py
 	git diff --exit-code -- tests/t4rupt_core_vectors.h tests/t4rupt_core_c64_vectors.h
 c64-t4rupt-core: build/t4rupt-core.prg
-build/t4rupt-core.prg: $(T4C_SRC) platform/c64/t4rupt_core_diagnostic.c tests/t4rupt_core_c64_vectors.h $(T4C_HDR) | build
+build/t4rupt-core.prg: $(T4C_SRC) platform/c64/t4rupt_core_diagnostic.c tests/t4rupt_core_c64_vectors.h tests/t4rupt_core_c64_rows.h $(T4C_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror $(T4C_FLAGS) -Wl,-Map,build/t4rupt-core.map $(T4C_SRC) platform/c64/t4rupt_core_diagnostic.c -o $@
 vice-t4rupt-core: build/t4rupt-core.prg
 	python3 tools/vice_run.py build/t4rupt-core.prg --cycles 3000000000 --timeout 1200

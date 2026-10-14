@@ -87,6 +87,16 @@ static uint16_t invoke(void *user,uint8_t *slot,apollo_ov2_frame *frame,uint16_t
     apollo_reu_store *s=(apollo_reu_store *)user;
     return s->invoke(s->invoke_user,slot,frame,selector);
 }
+uint8_t apollo_reu_store_fixed(apollo_reu_store *s,
+    uint8_t (*load)(void *,uint32_t,const apollo_ov2_dirent *),void *user) {
+    uint16_t id;
+    for(id=1;id<APOLLO_REU_INDEX_ENTRIES;++id) {
+        apollo_ov2_dirent d;
+        if(lookup(s,id,&d) && d.slot>=APOLLO_OV2_SLOT_FIXED &&
+           !load(user,page_address(s,d.page),&d)) return 0;
+    }
+    return 1;
+}
 apollo_ov2_store apollo_reu_store_backend(apollo_reu_store *s,
     uint16_t (*call)(void *,uint8_t *,apollo_ov2_frame *,uint16_t),void *invoke_user) {
     apollo_ov2_store store;
@@ -106,7 +116,7 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             for(i=0;i<APOLLO_REU_INDEX_RECORD;++i) if(s->record[i]) return APOLLO_OV2_BAD_DIRECTORY;
             continue;
         }
-        if(!lookup(s,id,&d) || d.slot>=APOLLO_OV2_SLOTS || d.selectors==0 ||
+        if(!lookup(s,id,&d) || d.slot>APOLLO_OV2_SLOT_PINNED || d.selectors==0 ||
            APOLLO_OV2_LANE(id)==0 || d.bytes<=APOLLO_OV2_HEADER_BYTES ||
            d.bytes>apollo_ov2_slot_bytes(d.slot) || d.flags!=APOLLO_OV2_DIRENT_PRESENT ||
            s->record[12] || s->record[13] || s->record[14] || s->record[15])
@@ -145,7 +155,8 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
         module=le16(s->record+4); selector=le16(s->record+6);
         if(i && key<=previous) return APOLLO_OV2_BAD_DIRECTORY;
         previous=key;
-        if(!lookup(s,module,&d) || selector>=d.selectors) return APOLLO_OV2_UNRESOLVED;
+        if(!lookup(s,module,&d) || selector>=d.selectors || d.slot>=APOLLO_OV2_SLOTS)
+            return APOLLO_OV2_UNRESOLVED;
     }
     return APOLLO_OV2_OK;
 }

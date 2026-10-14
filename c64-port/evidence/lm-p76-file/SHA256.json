@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p76-file",
+  "release": "evidence-lm-p76-file",
+  "files": {
+    "lm-p76-file-closure.json": {
+      "sha256": "3e2f759fb9daefa52b078c57291b27a81ae9ec08d673ad74c2fc2e32378034ac",
+      "bytes": 16099,
+      "store": "tree"
+    },
+    "lm-p76-file-differential.log": {
+      "sha256": "4dfbd7b41c4ffc8fc790fa7a07dfc211ad74463a47b20b062a1643f751cfd44a",
+      "bytes": 2722,
+      "store": "release"
+    },
+    "lm-p76-file-host.log": {
+      "sha256": "355131a0adaebf3ba80ea94759069a3079aa1709c1a063399a087322c51b9ed6",
+      "bytes": 1048,
+      "store": "release"
+    },
+    "lm-p76-file-proof.json": {
+      "sha256": "d8135e34802ac0bc05968183d96a01315341cc2786700477a327f55b03cba5ba",
+      "bytes": 6526,
+      "store": "tree"
+    },
+    "lm-p76-file-source-map.json": {
+      "sha256": "d4ffb732a3c6c8f6a9a36dd74fb07635470c3e977718eff3fd46ad7bf553f26c",
+      "bytes": 13632,
+      "store": "tree"
+    },
+    "lm-p76-file-vice.log": {
+      "sha256": "7f745a153e74a9ed757394721ac38ba0aa6bdd4f1ac0008934a024f1b463ed14",
+      "bytes": 1602,
+      "store": "release"
+    }
+  }
+}

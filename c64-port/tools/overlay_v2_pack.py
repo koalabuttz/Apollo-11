@@ -20,7 +20,14 @@ import sys
 
 ABI = 2
 HEADER = 24
-SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA)}
+# Slot class 2: the fixed extension in RAM under I/O, loaded once at boot
+# (include/overlay_v2.h APOLLO_OV2_SLOT_FIXED); no resolver record names one.
+# Slot class 3: pinned modules at $C000, loaded once at boot by plain DMA
+# (APOLLO_OV2_SLOT_PINNED, BSS zeroed) and only called directly; no resolver
+# record names one either.
+SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA), 2: (0xD000, 0x1000), 3: (0xC000, 0x0C00)}
+FIXED = 2
+PINNED = 3
 INDEX_ENTRIES = 4096
 INDEX_RECORD = 16
 RESOLVER_RECORD = 8
@@ -62,6 +69,8 @@ def parse_module(path, mission, services):
     if load_bytes > capacity: problems.append(f'{load_bytes} bytes exceed slot capacity {capacity}')
     if not base + load_bytes <= bss <= base + capacity or bss_bytes > base + capacity - bss:
         problems.append('BSS outside the slot')
+    if slot == FIXED and bss_bytes:
+        problems.append('a fixed-extension module has BSS (boot loads it once and clears nothing)')
     if svc >> 8 != services >> 8 or svc & 0xFF > services & 0xFF:
         problems.append(f'service table ${svc:04x} not compatible with resident ${services:04x}')
     if not selectors: problems.append('no selectors')
@@ -85,7 +94,7 @@ def build_image(modules, resolver, mission, services):
             raise ValueError(f'duplicate resolver key {key}')
         keys.add(key)
         target = by_id.get(r['module'])
-        if target is None or not 0 <= r['selector'] < target['selectors']:
+        if target is None or not 0 <= r['selector'] < target['selectors'] or target['slot'] in (FIXED, PINNED):
             raise ValueError(f'resolver record {r} names no valid continuation')
     resolver = sorted(resolver, key=lambda r: (r['bank'], r['loc']))
     index_page = 1
@@ -161,7 +170,8 @@ def selftest(out_dir, mission=1, services=0x0201):
     """Synthetic modules for the host runtime test (tests/test_overlay_v2.c)."""
     out_dir.mkdir(parents=True, exist_ok=True)
     specs = [(0x0101, 0, 4, 300, 16), (0x0102, 0, 2, 0x4000 - HEADER, 0),
-             (0x0301, 1, 3, 200, 8), (0x0F01, 0, 1, 40, 0)]
+             (0x0301, 1, 3, 200, 8), (0x0F01, 0, 1, 40, 0), (0x0A02, FIXED, 1, 100, 0),
+             (0x0A03, PINNED, 1, 120, 8)]
     paths = []
     for ident, slot, selectors, body, bss in specs:
         p = out_dir / f'm{ident:04x}.prg'

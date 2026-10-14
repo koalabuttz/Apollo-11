@@ -12,6 +12,10 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Entries each minor version has: later versions only append, so a build whose
+# resident does not carry the flight runtime (the legacy ABI 2 proofs, the
+# resident flight checks) links an earlier version's prefix.
+FIRST_ENTRIES = {2: 3, 3: 24}
 
 
 def generate(spec):
@@ -36,12 +40,19 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--spec', type=Path, default=ROOT / 'docs/overlay-v2-services.json')
     p.add_argument('--out-dir', type=Path, default=ROOT / 'build')
+    p.add_argument('--version', type=lambda v: int(v, 0),
+                   help='emit an earlier table version: the first entries that version had (FIRST_ENTRIES)')
     args = p.parse_args()
-    version, asm, ld = generate(json.loads(args.spec.read_text()))
+    spec = json.loads(args.spec.read_text())
+    if args.version is not None:
+        if args.version >> 8 != spec['major'] or args.version & 0xFF not in FIRST_ENTRIES:
+            raise SystemExit(f'unknown service table version ${args.version:04x}')
+        spec.update(minor=args.version & 0xFF, services=spec['services'][:FIRST_ENTRIES[args.version & 0xFF]])
+    version, asm, ld = generate(spec)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / 'overlay_v2_services.S').write_text(asm)
     (args.out_dir / 'overlay_v2_services.ld').write_text(ld)
-    print(f'service table ${version:04x}: {len(json.loads(args.spec.read_text())["services"])} entries')
+    print(f'service table ${version:04x}: {len(spec["services"])} entries')
 
 
 if __name__ == '__main__':

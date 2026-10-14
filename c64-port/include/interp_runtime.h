@@ -20,4 +20,9 @@
 #include "p66_bias.h"
 extern const agc_routine lm_interp_runtime, cm_interp_runtime;
 extern const agc_routine_table lm_interp_runtime_basic, cm_interp_runtime_basic;
+/* The compact interpreter (src/lm_interp_core.c, src/cm_interp_core.c): the
+ * flight build's, same contract and results; on the C64 it runs only on the
+ * canonical image at APOLLO_SHARED_ADDRESS. */
+extern const agc_routine lm_interp_core, cm_interp_core;
+extern const agc_routine_table lm_interp_core_basic, cm_interp_core_basic;
 #endif

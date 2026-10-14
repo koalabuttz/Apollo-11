@@ -1,0 +1,796 @@
+{
+  "milestone": "lm-ground-track",
+  "tool": "tools/interp_executed_closure.py",
+  "source_map_sha256": "648cfe6de12c8c39ca80c7ea55fc131549d7eebbb0e4e5d8edd76d035e63a6a9",
+  "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
+  "files": {
+    "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc": {
+      "words": 115,
+      "data": 9,
+      "instructions": 106,
+      "executed": 18,
+      "interpreted": 88,
+      "unreached": 0,
+      "map": [
+        {
+          "address": "24,3505",
+          "source": "PROG21 CAF ONE",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3506",
+          "source": "TS OPTION2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3507",
+          "source": "CAF BIT2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3510",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3511",
+          "source": "CADR GOPERF4",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3512",
+          "source": "TC GOTOPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3513",
+          "source": "TC +2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3514",
+          "source": "TC -5",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3515",
+          "source": "P21PROG1 CAF V6N34",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3516",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3517",
+          "source": "CADR GOFLASH",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3520",
+          "source": "TC GOTOPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3521",
+          "source": "TC +2",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3522",
+          "source": "TC -5",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3523",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3524",
+          "source": "DLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3525",
+          "source": "DSPTEM1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3526",
+          "source": "STCALL TDEC1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3527",
+          "source": "INTSTALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3530",
+          "source": "BON CLEAR",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3531",
+          "source": "P21FLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3532",
+          "source": "P21CONT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3533",
+          "source": "VINTFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3534",
+          "source": "SLOAD SR1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3535",
+          "source": "OPTION2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3536",
+          "source": "BHIZ SET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3537",
+          "source": "+2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3540",
+          "source": "VINTFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3541",
+          "source": "CLEAR CLEAR",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3542",
+          "source": "DIM0FLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3543",
+          "source": "INTYPFLG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3544",
+          "source": "CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3545",
+          "source": "INTEGRV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3546",
+          "source": "GOTO",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3547",
+          "source": "P21VSAVE",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3550",
+          "source": "P21CONT VLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3551",
+          "source": "P21BASER",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3552",
+          "source": "STOVL RCV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3553",
+          "source": "P21BASEV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3554",
+          "source": "STODL VCV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3555",
+          "source": "P21TIME",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3556",
+          "source": "STORE TET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3557",
+          "source": "CLEAR CLEAR",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3560",
+          "source": "DIM0FLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3561",
+          "source": "MOONFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3562",
+          "source": "SLOAD BZE",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3563",
+          "source": "P21ORIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3564",
+          "source": "+3",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3565",
+          "source": "SET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3566",
+          "source": "MOONFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3567",
+          "source": "+3 CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3570",
+          "source": "INTEGRVS",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3571",
+          "source": "P21VSAVE DLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3572",
+          "source": "TAT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3573",
+          "source": "STOVL P21TIME",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3574",
+          "source": "RATT1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3575",
+          "source": "STOVL P21BASER",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3576",
+          "source": "VATT1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3577",
+          "source": "STORE P21BASEV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3600",
+          "source": "ABVAL SL*",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3601",
+          "source": "0,2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3602",
+          "source": "STOVL P21VEL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3603",
+          "source": "RATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3604",
+          "source": "UNIT DOT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3605",
+          "source": "VATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3606",
+          "source": "DDV ASIN",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3607",
+          "source": "P21VEL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3610",
+          "source": "STORE P21GAM",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3611",
+          "source": "SXA,2 SLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3612",
+          "source": "P21ORIG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3613",
+          "source": "OPTION2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3614",
+          "source": "SR1 BHIZ",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3615",
+          "source": "+3",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3616",
+          "source": "GOTO",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3617",
+          "source": "+4",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3620",
+          "source": "+3 BON",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3621",
+          "source": "SURFFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3622",
+          "source": "P21DSP",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3623",
+          "source": "+4 SET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3624",
+          "source": "P21FLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3625",
+          "source": "P21DSP CLEAR SLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3626",
+          "source": "LUNAFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3627",
+          "source": "X2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3630",
+          "source": "BZE SET",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3631",
+          "source": "+2",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3632",
+          "source": "LUNAFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3633",
+          "source": "VLOAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3634",
+          "source": "RATT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3635",
+          "source": "STODL ALPHAV",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3636",
+          "source": "TAT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3637",
+          "source": "CLEAR CALL",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3640",
+          "source": "ERADFLAG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3641",
+          "source": "LAT-LONG",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3642",
+          "source": "DMP",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3643",
+          "source": "K.01",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3644",
+          "source": "STORE P21ALT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3645",
+          "source": "EXIT",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3646",
+          "source": "CAF V06N43",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3647",
+          "source": "TC BANKCALL",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3650",
+          "source": "CADR GOFLASH",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3651",
+          "source": "TC GOTOPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3652",
+          "source": "TC GOTOPOOH",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3653",
+          "source": "TC INTPRET",
+          "data": false,
+          "executed": true
+        },
+        {
+          "address": "24,3654",
+          "source": "DLOAD DAD",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3655",
+          "source": "P21TIME",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3656",
+          "source": "600SEC",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3657",
+          "source": "STORE DSPTEM1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3660",
+          "source": "RTB",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3661",
+          "source": "P21PROG1",
+          "data": false,
+          "executed": false,
+          "interpreted": true
+        },
+        {
+          "address": "24,3662",
+          "source": "600SEC 2DEC 60000      B-28",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3663",
+          "source": "(+1)",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3664",
+          "source": "V06N43 VN 00643",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3665",
+          "source": "V6N34 VN 00634",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3666",
+          "source": "K.01 2DEC .01",
+          "data": true,
+          "executed": false
+        },
+        {
+          "address": "24,3667",
+          "source": "(+1)",
+          "data": true,
+          "executed": false
+        }
+      ]
+    }
+  }
+}
