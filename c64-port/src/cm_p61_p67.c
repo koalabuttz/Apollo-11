@@ -9,7 +9,8 @@
 #include "agc_image_ops.h"
 #include "agc_channel_ops.h"
 #include "rtb_angles.h"
-#define W s->words
+#include "cm_integration_moves.h"
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -78,7 +79,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -90,8 +95,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -1020,7 +1025,11 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
  unsigned i;
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 
@@ -2046,7 +2055,7 @@ static enum exec_status r54604(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  right(s);
  cmi_direct(s,001177,006454);cmi_vload(s,0);
@@ -4320,4 +4329,4 @@ const cm_p61_p67_point cm_p61_p67_points[CM_P61_P67_POINTS]={
  {23992,1}
 };
 const agc_word cm_p61_p67_cadr_words[CM_P61_P67_CADR_WORDS]={03373};
-const agc_word cm_p61_p67_externals[CM_P61_P67_EXTERNALS]={04106,04662,04701,05134,05147,05170,05217,05245,05324,05354,05372,05412,05536,05546,05560,05650,06030,041672,052120,053611,057352};
+const agc_word cm_p61_p67_externals[CM_P61_P67_EXTERNALS]={04106,04662,04701,05134,05147,05170,05217,05245,05324,05354,05372,05412,05536,05546,05560,05650,06030,041672,052120,053611};

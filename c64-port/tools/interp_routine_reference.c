@@ -88,10 +88,12 @@ static void qw_hook(unsigned pc){unsigned zp=z_physical(pc),endz,q,insw;const ch
  snprintf(k,sizeof k,"%s %s %+d%s: %s (Q bit 16 %s bit 15; Q %s)",insw?"inside SWITCH":"after SWITCH",t==2?"write":"read",insw?(int)zp-(int)qw_tsq:0,qw_frontier?" past the case's stop":"",nm,((q>>15)&1u)==((q>>14)&1u)?"=":"!=",(q>>14)&1u?"negative":"positive");
  if(!insw&&t!=2&&((q>>14)&1u)&&strcmp(nm,"TC Q")&&strcmp(nm,"QXCH")){char k2[160];snprintf(k2,sizeof k2,"   at %02o,%04o (SWITCH TS Q at %02o,%04o) %s",zp/1024u,(zp%1024u)+((zp/1024u==2u||zp/1024u==3u)?(zp/1024u)*02000u:02000u),qw_tsq/1024u,(qw_tsq%1024u)+02000u,nm);qw_count(k2);}
  qw_count(k);if(!insw)qw_watch=0;}
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
   if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
+ if(getenv("IRC_RTB_IN_FILE")){const char *e=getenv("IRC_RTB_IN_FILE");int k=0;unsigned a;
+  if(!pendz&&sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;rtbn<8u&&sscanf(e," %u%n",&a,&k)==1;e+=k)rtbk[rtbn++]=a;}
  dump=argc>4&&!strcmp(argv[4],"dump");qw_on=getenv("IRC_QWATCH")!=0;InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
@@ -147,6 +149,11 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
      * order, as the native program does through the mission's DANZIG
      * marker. "danzig key:edop ..." in physical addresses.) */
     pend=0;if(pendz&&zp==pendz){unsigned l=loc_physical(),e=get(023);for(i=0;i<pendn;++i)if(l==pendk[i]&&e==pende[i])pend=1;}
+    /* (IRC_RTB_IN_FILE, an 'rtb' label of the file's own basic code that
+     * the spec runs natively: TIME_OF_FREE_FALL's ENDT(X). Entered from the
+     * interpreter (BOVB TCDANZIG), its TC DANZIG is no stop, as the native
+     * routine goes on with the pair's right-hand order. "danzig label ...") */
+    if(rtbn){if(pend==0&&rtbin&&zp==pendz)pend=1;rtbin=0;if(!was_in)for(i=0;i<rtbn;++i)if(zp==rtbk[i])rtbin=1;}
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
     if(prev_in&&!pend){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp))){stopped=1;break;}for(i=0;i<t->nf&&t->from_file[i]!=0xffffu;++i)if(zp==t->from_file[i]){stopped=1;break;}

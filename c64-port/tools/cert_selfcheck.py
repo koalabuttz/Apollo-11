@@ -21,8 +21,9 @@ For an interp spec (tools/interp_specs.py):
                    evidence/<id>/<id>-c64-cover.json. Each row, with its cut
                    (irc_c64_cut) and, for c64_segments rows, stopped at the
                    resume LOC (IRC_SNAPROW), is re-run on yaAGC and must give
-                   the header's frozen digest. pending_danzig and
-                   channel_inputs specs get IRC_PENDING_DANZIG/IRC_INPUTS.
+                   the header's frozen digest. The oracle runs with the
+                   differential's oracle_env (IRC_PENDING_DANZIG,
+                   IRC_RTB_IN_FILE, IRC_INPUTS).
   3. branches      the native runner built -O0 --coverage over the cover
                    sources runs every frozen case (host), and each C64 group,
                    built with its KEEP mask from tools/mk/<id>.groups (and
@@ -212,18 +213,32 @@ def interp(sid, a, out):
     proof = json.load(open(proof_p))
     cover_p = os.path.join(ev, '%s-c64-cover.json' % sid)
     cover = json.load(open(cover_p)) if os.path.exists(cover_p) else {}
+    pins = cover.get('linked_sources')
+    if isinstance(pins, dict):
+        # A source other cover records also pin (interp orders/steps, interp_case/cut,
+        # agc_transfer, ...) goes stale whenever another lane changes it: report it,
+        # and let the branch re-derivation below decide (steward, #450). A stale pin
+        # on the spec's own sources means this record was not refrozen.
+        shared = collections.Counter()
+        for other in glob.glob(os.path.join(R, 'evidence', '*', '*-c64-cover.json')):
+            op = json.load(open(other)).get('linked_sources')
+            if isinstance(op, dict):
+                shared.update(op.keys())
+        for src, h in sorted(pins.items()):
+            f = os.path.join(R, src)
+            now = hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else 'missing'
+            if now == h:
+                continue
+            msg = '%s pins %s at %s, the tree has %s' % (os.path.relpath(cover_p, R), src, h[:8], now[:8])
+            if shared[src] > 1:
+                say('NOTE %s (a shared source; the branch check below re-derives it)' % msg)
+            else:
+                gap(msg + ': refreeze so the cover record matches this tree')
     if not all(os.path.exists(p) for p in D.ROPES):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):
             assemble(m, pathlib.Path(B) / 'fixed-data')
-    env = dict(os.environ)
-    if spec.get('channel_inputs'):
-        env['IRC_INPUTS'] = '1'
-    if spec.get('pending_danzig'):
-        cp0 = IC.Compiler(spec, spec['missions'][0])
-        cp0.decode()
-        env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
-            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    env = dict(os.environ, **D.oracle_env(spec))
     missions = [D.Mission(spec, m) if m in spec['missions'] else D.Absent(m) for m in ('lm', 'cm')]
     npts = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
     per = -(-proof['cases'] // npts)
@@ -290,14 +305,30 @@ def interp(sid, a, out):
     if want and want != nc64:
         gap('tests/%s_c64_vectors.h has %d rows, the proof\'s c64_vectors %d' % (sym, nc64, want))
     resumed = [t for t in cover.get('truncated_rows', []) if 'resumed_at' in t]
-    segs = {}
-    for s in (proof.get('c64_segments') or {}).get('rows', []):
+    # A segment row is the C64 row of its own group (c64_vectors entry, in
+    # header group order, holding just that case): only there does it stop
+    # at the resume LOC. The same case as a host vector or in another group
+    # is a full run.
+    cv = proof.get('c64_vectors', [])
+    if len(cv) != len(groups) or any(len(groups[g + 1][0]) != v.get('cases') for g, v in enumerate(cv)
+                                     if g + 1 in groups):
+        cv = []
+    segs = {}   # (group, case) -> resume LOC
+    seg_rows = (proof.get('c64_segments') or {}).get('rows', [])
+    for s in seg_rows:
         mi = next(mi for mi in missions if mi.m == s['mission'])
-        segs[s['case']] = D.loc_of(mi, s['to'])
+        hit = [g + 1 for g, v in enumerate(cv) if v.get('mission') == s['mission'] and v.get('case_ids') == [s['case']]]
+        loc = D.loc_of(mi, s['to'])
+        if len(hit) != 1 or loc is None:
+            gap('c64_segments row %s %s to %s (case %d): %s' % (
+                s['mission'], s['from'], s['to'], s['case'],
+                'no resume LOC %s' % s['to'] if loc is None else '%d C64 groups hold only that case' % len(hit)))
+            continue
+        segs[hit[0], s['case']] = loc
     stats = collections.Counter()
 
-    def rebuild(row, cut, what):
-        """(record, snaprow) of a header row, or None."""
+    def rebuild(row, cut, what, g=None):
+        """(record, snaprow) of a header row (g: its C64 group), or None."""
         seed, cm, ie, sb, edits, _ = row
         i = cf.match(seed, edits)
         if i is not None:
@@ -305,9 +336,9 @@ def interp(sid, a, out):
             stats['matched'] += 1
             if len(edits) != len(cf.fields(i)[5]):
                 stats['prefix'] += 1
-            if i in segs:
+            if (g, i) in segs:
                 stats['segment'] += 1
-                return record(seed, cm, ie, sb, segs[i], edits, cut), True
+                return record(seed, cm, ie, sb, segs[g, i], edits, cut), True
             return record(seed, cm, ie, sb, stop, edits, cut), False
         for t in resumed:   # a resumed row: the parent case run on to its snapshot
             if t['case'] >= len(cf):
@@ -334,7 +365,7 @@ def interp(sid, a, out):
         grecs[g] = []
         for k, (row, cut) in enumerate(zip(rows, cuts)):
             stats['cut'] += bool(cut)
-            r = rebuild(row, cut, 'group %d row %d' % (g, k))
+            r = rebuild(row, cut, 'group %d row %d' % (g, k), g)
             if r:
                 checks.append(('group %d row %d' % (g, k), r[0], row[5], r[1]))
                 grecs[g].append((k, r[0], row[5]))
@@ -357,6 +388,8 @@ def interp(sid, a, out):
                     gap('%s: yaAGC gives kind %s digest %s, the header %d' % (what, o[1], o[-1], exp))
     if bad > 20:
         gap('... %d rows in all differ from yaAGC' % bad)
+    if stats['segment'] != len(seg_rows):
+        gap('%d C64 rows run as segment rows, the proof\'s c64_segments %d' % (stats['segment'], len(seg_rows)))
     say('[2] rows: %d host vectors, %d C64 rows in %d groups; %d matched to frozen cases (%d by an edit prefix), '
         '%d resumed, %d truncated, %d segment rows; %d of %d re-run on yaAGC equal their frozen digests' % (
             len(host_rows), nc64, len(groups), stats['matched'], stats['prefix'], stats['resumed'], stats['cut'],
