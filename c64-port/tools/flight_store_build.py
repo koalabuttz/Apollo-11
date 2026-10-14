@@ -339,9 +339,10 @@ def map_symbols(path):
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=(), link_flags=()):
+                io=None, direct_only=False, defines=(), link_flags=(), pick=None):
     """chunk: (table, first, last) links only entries first..last-1 of one
-    basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
+    basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
+    [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
     module's io kind (module_io). direct_only: no transfer engine, the
     resident runs the routines (FS_DIRECT_ONLY; pinned modules). defines:
     the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
@@ -349,6 +350,8 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    if pick is not None:
+        head, basic = '#define FS_PICK(X) ' + ' '.join(f'X({t},{i})' for t, i in pick) + '\n', []
     if direct_only:
         head += '#define FS_DIRECT_ONLY 1\n'
     if io:
@@ -567,7 +570,8 @@ def interpretive_table(t):
 # does not key.
 FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
                        'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
-                'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)]}}
+                'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
+                       'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
 
 
 def part_keys(cc, m, stem, tables):
@@ -723,6 +727,20 @@ def main():
         to_interp = {t for t, o in packed.items()
                      if t in INTERP_ONLY[m] or (interpretive_table(t) and not t.endswith('_marker'))
                      or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
+        # Shadowed entries: a basic table's keys that the resident or an
+        # earlier linked table in resolution order (holders, less the
+        # interpreter's) holds never resolve to it, so its module links only
+        # its live entries (FS_PICK, live). Flight parts keep their key
+        # slices.
+        resolves_to = {k: next((t for t in ts if t not in to_interp), None) for k, ts in holders.items()}
+        live = {}
+        for t in sorted({t for (kind, _), ts in holders.items() if kind == 'b' for t in ts} - to_interp):
+            if packed[t] in FLIGHT_PARTS[m]:
+                continue
+            keep = {i for i, k in enumerate(keys[t])
+                    if k >= ERASABLE_BASE or ('b', k) not in resident_keys and resolves_to[('b', k)] == t}
+            if len(keep) < len(keys[t]):
+                live[t] = keep
         by_stem = collections.defaultdict(list)
         for t, o in packed.items():
             if t not in to_interp and not hot_full(t):
@@ -758,19 +776,37 @@ def main():
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
+        def pick_of(mod):
+            """The module's live entries in key order, or None when it links
+            every entry of its tables (FS_BASIC or FS_CHUNK as before)."""
+            if mod.get('defines') or mod.get('excursion') or mod['interp']:
+                return None
+            if mod.get('chunk'):
+                t, lo, hi = mod['chunk']
+                spans = [(t, range(lo, hi))]
+            else:
+                spans = [(t, range(len(keys[t]))) for t in mod['basic']]
+            if not any(t in live and t not in mod['also'] for t, _ in spans):
+                return None
+            return sorted(((t, i) for t, r in spans for i in r
+                           if t in mod['also'] or t not in live or i in live[t]), key=lambda e: keys[e[0]][e[1]])
+
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
+            pick = pick_of(mod)
+            if pick == []:
+                return mod, prg, dict(ok=False, overflow=None, error=None, empty=True)
             # A module on the base record links no transfer engine: the
             # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
             direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()))
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick)
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()))
+                                   direct_only, mod.get('defines', ()), (), pick)
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -945,7 +981,7 @@ def main():
                     results = list(pool.map(lambda c: trial(c, mod), todo))
                 nxt = []
                 for c, r in zip(todo, results):
-                    if r['ok']:
+                    if r['ok'] or r.get('empty'):
                         kept.append(c)
                     elif not r.get('overflow'):
                         return None
@@ -982,6 +1018,9 @@ def main():
                                None, dict(ok=False, overflow=overflow)))
             mod['chunked'] = True
         linked = [x for x in linked if not x[0].get('chunked')] + sorted(chunks, key=lambda x: x[0]['id'])
+        # Modules (or chunks) whose every entry is shadowed are left out.
+        pruned = [x[0]['id'] for x in linked if x[2].get('empty')]
+        linked = [x for x in linked if not x[2].get('empty')]
         modules = [mod for mod, _, _ in linked]
         module_of = {}
         for mod, prg, res in linked:
@@ -990,14 +1029,20 @@ def main():
             if res['ok']:
                 if mod.get('chunk'):
                     t, first, last = mod['chunk']
-                    for k in keys[t][first:last]:
-                        module_of[(t, k)] = mod['id']
+                    for i in range(first, last):
+                        if t not in live or i in live[t]:
+                            module_of[(t, keys[t][i])] = mod['id']
                     continue
                 for t in mod['basic'] + mod['interp']:
                     if t in mod.get('also', []):
                         continue  # resolved to the table's own module
-                    for k in mod.get('key_slice', keys)[t]:
-                        module_of[(t, k)] = mod['id']
+                    if mod.get('key_slice'):
+                        for k in mod['key_slice'][t]:
+                            module_of[(t, k)] = mod['id']
+                        continue
+                    for i, k in enumerate(keys[t]):
+                        if t not in live or i in live[t] or mod.get('excursion'):
+                            module_of[(t, k)] = mod['id']
         # The excursion's keys resolve to it first: its hot entries are its
         # files' tables' (hot_full), so the same routines run.
         if excursion and excursion.get('ok'):
@@ -1104,6 +1149,8 @@ def main():
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
             unplaced_keys=unplaced, interpreter_keys=interpreted,
+            shadowed_entries={t: len(keys[t]) - len(v) for t, v in sorted(live.items())},
+            modules_left_out_shadowed=[f'0x{i:04x}' for i in pruned],
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],

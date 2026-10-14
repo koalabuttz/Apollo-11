@@ -933,6 +933,10 @@ SPECS = {
         'base': {'cm': 'cm_extended_verbs_file'},
         'symbol': {'cm': 'cm_extended_verbs_file'},
         'basic': 'full',
+        # The C64 flight store links the basic words as two parts
+        # (docs/FLIGHT-PARTS.md): chunked, every module held the whole
+        # basic_run.
+        'flight_parts': [0o43 * 1024 + 0o2600 - 0o2000],
         # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
         # and DAPDISP (fan targets, so their states below apply), and the returns the
         # compiler cannot find on its own: after the in-file checks that pass

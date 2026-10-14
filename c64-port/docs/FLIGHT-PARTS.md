@@ -70,6 +70,12 @@ that part's keys, which don't overlap with any other part's.
 
 As one module it did not fit a 16 KB job slot.
 
+## Comanche055 EXTENDED_VERBS
+
+`'basic': 'full'`, cut at bank 43 `02600`. Chunked by routine, the file
+took 32 modules of about 15.8 KB, because each one linked the whole
+`basic_run`. With the flight entry, its two parts replace them.
+
 ## Store classification
 
 `tools/flight_store_build.py` uses `interpretive_table()` everywhere it
@@ -94,4 +100,5 @@ the whole build: Z, the 2048 erasable words and the interrupt state.
 
 For P40-P47, all 31,744 cases (64 per routine) end the same. 1,597 of
 them cross from one part to another at least once. For AOSTASK, all 704
-cases end the same over its 3 parts.
+cases end the same over its 3 parts. For CM EXTENDED_VERBS, all 11,648
+cases end the same over its 2 parts.
