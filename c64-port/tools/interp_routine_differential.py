@@ -719,7 +719,7 @@ def write_cases(path, missions, cases):
                 f.write(struct.pack('<HH', a, w))
 
 
-def flow_seed(missions, cases, rng, ref, path):
+def flow_seed(missions, cases, rng, ref, path, spec=None):
     """'resume_flow': a CHANG2 resume LOC's cases start from the state the
     original program is in when it gets there. Each case of the routine
     before it runs on the oracle to NEWOPS with LOC at the resume LOC (and
@@ -731,8 +731,21 @@ def flow_seed(missions, cases, rng, ref, path):
     for i, c in enumerate(cases):
         at[c['cm'], c['point']].append(i)
     pred, level = {}, {}
+    # 'flow_from' (entry labels): every other point of the file starts from
+    # the state the original reaches there from one of those entries, run
+    # on through the outside code it calls (IRC_SNAP_THROUGH), not only the
+    # CHANG2 resumes that follow another point.
+    flow_from = (spec or {}).get('flow_from')
     for cm, mi in enumerate(missions):
         if mi.m == 'absent' or not mi.points or not getattr(mi, 'rk', False):
+            continue
+        if flow_from:
+            labs = flow_from[mi.m] if isinstance(flow_from, dict) else flow_from
+            src = [mi.cp.label_phys(l) for l in labs]
+            for p in mi.points:
+                if p not in src and not mi.cp.starts[p][1].startswith('entry'):
+                    pred[cm, p] = [(cm, q) for q in src]
+                    level[cm, p] = 1
             continue
         for k, p in enumerate(mi.points):
             if k and mi.cp.starts[p] == ('i', 'CHANG2 resume'):
@@ -743,31 +756,70 @@ def flow_seed(missions, cases, rng, ref, path):
     flowed = set()
     for lv in range(1, max(level.values(), default=0) + 1):
         batch = [(r, j) for r in sorted(level) if level[r] == lv for j in at[r]]
-        runs = []
+        runs, tries = [], []
         for r, j in batch:
             k = at[r].index(j)
-            c = dict(cases[at[pred[r]][k]])
-            c['stop'] = r[1]
-            runs.append(c)
+            # (With flow_from, case k runs from case k of every entry; its
+            # state comes from the entry a hash of k picks when that run
+            # gets there, else from another entry's, so no entry's parity
+            # decides.)
+            qs = pred[r] if isinstance(pred[r], list) else [pred[r]]
+            first = ((k * 2654435761) >> 16) % len(qs)
+            for n, q in enumerate(qs[first:] + qs[:first]):
+                tries.append((r, j, n))
+                c = dict(cases[at[q][k]])
+                ret = c.get('stop', 0xffff)
+                c['stop'] = r[1]
+                if flow_from:
+                    # (no job waiting on the way: CHANG2 would leave the file)
+                    E = collections.OrderedDict(c['edits'])
+                    E[0o67] = 0
+                    # (an interpretive entry returns through QPRET, FIXLOC
+                    # +42D, which its STQ saves: a word of its bank outside
+                    # the file, where the run ends, not wherever a random
+                    # QPRET leads)
+                    ra = 0xffff
+                    if ret == 0xffff and missions[q[0]].kinds[q[1]] == 'i':
+                        ra = 0xfffe
+                        mq, bank = missions[q[0]], q[1] // 1024
+                        while True:
+                            ret = bank * 1024 + rng.randrange(0o1776)
+                            if not mq.cp.in_file(ret):
+                                break
+                        # (QPRET is the fixed CADR GOTO takes: FBANK bits,
+                        # then the word in the bank)
+                        E[E[0o120] + 0o52] = (bank << 10) | (ret % 1024)
+                    # (the entry's caller return, which ends the run there: a
+                    # pseudo-edit at 0xffff (Z) or 0xfffe (LOC) the
+                    # reference takes out)
+                    c['edits'] = Edits(list(E.items()) + ([(ra, ret)] if ret != 0xffff else []))
+                runs.append(c)
         write_cases(sub, missions, runs)
         out = subprocess.run([ref, *ROPES, sub], cwd=R, check=True, capture_output=True, text=True,
-                             env=dict(os.environ, IRC_SNAP='1')).stdout.splitlines()
+                             env=dict(os.environ, IRC_SNAP='1', **({'IRC_SNAP_THROUGH': '1', 'IRC_SNAP_CYCLES': str(spec.get('flow_cycles', 400000))}
+                                                                    if flow_from else {}))).stdout.splitlines()
         snaps = collections.defaultdict(list)
         got = {}
-        for (r, j), c, line in zip(batch, runs, out):
+        for (r, j, n), c, line in zip(tries, runs, out):
             f = line.split()
             if f[1] == 'S':
-                E = collections.OrderedDict(c['edits'])
+                E = collections.OrderedDict((x, w) for x, w in c['edits'] if x < 0xfffe)
                 E.update((int(f[k]), int(f[k + 1])) for k in range(2, len(f), 2))
-                got[j] = (c, E)
-                snaps[r].append(j)
+                # (through outside code, Z can reach an interpretive point's
+                # word as an instruction: only NEWOPS takes an interpretive one)
+                if flow_from and (E.get(5) in (0o6070, 0o6037)) != (missions[r[0]].cp.starts[r[1]][0] == 'i'):
+                    continue
+                if j not in got or n < got[j][2]:
+                    if j not in got:
+                        snaps[r].append(j)
+                    got[j] = (c, E, n)
         for r, j in batch:
             if not snaps[r]:
                 continue
-            c, E = got[j] if j in got else got[snaps[r][at[r].index(j) % len(snaps[r])]]
+            c, E, _ = got[j] if j in got else got[snaps[r][at[r].index(j) % len(snaps[r])]]
             E = collections.OrderedDict(E)
             E[0o67] = rng.randrange(1, 0o40000) if rng.random() < 0.25 else 0
-            cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=list(E.items()))
+            cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=Edits(E.items()))
             flowed.add(r)
     if os.path.exists(sub):
         os.remove(sub)
@@ -1122,7 +1174,7 @@ def main():
     ref, nat = build(a.spec, spec)
     BUILT[:] = [ref, nat]
     if spec.get('resume_flow'):
-        flow_seed(missions, cases, rng, ref, path)
+        flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
