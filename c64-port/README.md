@@ -2264,10 +2264,6 @@ Luminary099 LUNAR_LANDING_GUIDANCE_EQUATIONS.agc (the P63 to P67 landing guidanc
 
 All of Comanche055 STABLE_ORBIT (225 words) is native C on the control-transfer ABI, as 104 routines compiled whole-file by `tools/basic_compile.py`. All 26,368 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 206 frozen cases, and 3 C64 diagnostics pass 139 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-STABLE-ORBIT.md`.
 
-## Translate Comanche CONIC_SUBROUTINES
-
-All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-transfer ABI, as 445 routines compiled whole-file by `tools/basic_compile.py`. All 113,920 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 3560 frozen cases, and 32 C64 diagnostics pass 616 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-CONICS.md`.
-
 ## Translate Luminary RCS_FAILURE_MONITOR on the transfer ABI
 
 Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 72 frozen cases, and 1 C64 diagnostic passes 17 cases in VICE that take all 220 branch arcs the host cases take. The domain includes NEWJOB -0 and any FIXLOC (#285). The certificate is drafted for review. See `docs/LM-RCSMON.md`.
@@ -2303,3 +2299,7 @@ Luminary099 KALMAN_FILTER's RATELOOP is compiled as one basic routine of the con
 ## Translate RADAR_LEADIN_ROUTINES (compiled)
 
 All of Luminary099 RADAR_LEADIN_ROUTINES (47 words: RADSAMP, DORSAMP, DORSAMP2 and VARADAR) is native C on the control-transfer ABI, as 8 basic routines at their original addresses compiled by tools/interp_compile.py. All 2,048 cases equal yaAGC over the sampling words' flight domain; 64 frozen cases pass the strict and sanitizer host tests, and 17 C64 cases pass in VICE, taking all 186 host branch outcomes. Pending complete certificate for the certificate reviewer. See `docs/LM-RADAR-LEADIN-ROUTINES.md`.
+
+## Translate Comanche CONIC_SUBROUTINES
+
+All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-transfer ABI, as 445 routines compiled whole-file by `tools/basic_compile.py`. All 113,920 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 3560 frozen cases, and 33 C64 diagnostics pass 616 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-CONICS.md`.
