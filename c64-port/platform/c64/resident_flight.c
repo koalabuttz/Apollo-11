@@ -20,7 +20,12 @@ uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
-agc_hardware rk_hardware;
+__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
+__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
+#if RK_CM
+/* Inputs at the values yaAGC starts with (tools/flight_host_run.c). */
+__attribute__((used,section(".rk_channels"))) cm_native_channels cm_channels={0,0,037777u,077777u,077777u,077777u};
+#endif
 uint16_t rk_pending,rk_ticks;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
@@ -197,7 +202,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         /* The loader does not read TABLES; the packer checked it lies in the
          * slot, and it is checked again here before it is followed. */
         if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
-           (uint16_t)(apollo_ov2_slot_bytes(i)-APOLLO_OV2_HEADER_BYTES) || !t->ready) continue;
+           (uint16_t)(apollo_ov2_slot_bytes(i)-APOLLO_OV2_HEADER_BYTES) || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
         memcpy(&module_program,&rk_program,sizeof module_program);
         rk_module_program(&module_program,t);

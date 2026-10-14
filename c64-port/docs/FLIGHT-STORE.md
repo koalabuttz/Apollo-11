@@ -55,6 +55,21 @@ mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
 the builder picks them for any file that uses `<m>_channel_io` (CM
 `FINETIME` in IMU_CALIBRATION needs it).
 
+On the C64 the resident hands every module its base record (`rk_io`:
+`p66_bias_io` or `cm_native_io`). A module whose tables take another kind
+(`module_io`; `FS_IO_KIND` in `platform/c64/flight_table_module.c`) builds
+that record with `flight_io_enter` from `rk_hardware`, `rk_flight` and
+`rk_device` before its run and writes it back with `flight_io_leave` after;
+on the CM it also copies `cm_channels` to and from `rk_hardware`'s channels
+5, 6 and 30-33. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
+leaves them to the module main. A module may mix the base kind only with a
+kind whose record starts with the base record (LM_*, CM_*), and the builder
+refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
+conversion adds about 330 bytes to the module main (1,076 bytes in the
+pinned LM DAP set, against about 750 for a base-kind module); the set
+measures 39,341 bytes. Every CM module links the resident's
+`cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
+
 ### Fit on 6b6ed2dc
 
 | | Tables | Modules | Linked | Failed | Resolver records | Colliding keys | Store |
