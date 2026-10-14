@@ -166,6 +166,9 @@ int main(void)
     __asm__ volatile("sei");
 #else
     for (;;) {
+#ifdef RK_WORK_CLOCK
+        rk_work = 0; /* the work clock held too: no tick from the burst's own work */
+#endif
         st = rk_resident_step(RS_IDLE);
         ++sum.steps;
         if (st != EXEC_OK) break;

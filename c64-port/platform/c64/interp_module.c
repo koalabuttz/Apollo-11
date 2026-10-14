@@ -24,7 +24,17 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  enum exec_status status;
  uint8_t n=0;
  (void)selector;
-#ifdef RK_IRQ_COUNT
+#ifdef RK_WORK_CLOCK
+ /* Work clock: back to the step once the slots run reach the next AGC
+  * tick, so the step takes it at the next boundary (RK_INTERP_MCT per
+  * slot). */
+ uint16_t w=0;
+ do{
+  status=IM_CORE(e->program,f->state,e->io);
+  w+=RK_INTERP_MCT;
+ }while(status==EXEC_OK&&++n<IM_SLOTS&&w<e->budget);
+ e->work=w;
+#elif defined(RK_IRQ_COUNT)
  /* Back to the step once an IRQ tick lands, so the resident takes the
   * AGC interrupt at the next boundary (read twice: no torn count). */
  uint16_t t0,t;
