@@ -10731,7 +10731,7 @@
       "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
       "bytes": 30910,
       "lines": 1471,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10750,7 +10750,7 @@
           "verification": "docs/LM-P40-P47.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10769,7 +10769,6 @@
           "The Executive's CHANG2 (05126) with a job waiting",
           "Integrated C64 application acceptance"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-source-map.json",
@@ -10793,6 +10792,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
             "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a2-410.md",
+            "sha256": "f4c5b829243d8885bb2c080f2bf0062431871bf5c122673abd48052c5334fe54"
           }
         }
       }
