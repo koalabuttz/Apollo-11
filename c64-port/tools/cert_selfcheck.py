@@ -290,14 +290,30 @@ def interp(sid, a, out):
     if want and want != nc64:
         gap('tests/%s_c64_vectors.h has %d rows, the proof\'s c64_vectors %d' % (sym, nc64, want))
     resumed = [t for t in cover.get('truncated_rows', []) if 'resumed_at' in t]
-    segs = {}
-    for s in (proof.get('c64_segments') or {}).get('rows', []):
+    # A segment row is the C64 row of its own group (c64_vectors entry, in
+    # header group order, holding just that case): only there does it stop
+    # at the resume LOC. The same case as a host vector or in another group
+    # is a full run.
+    cv = proof.get('c64_vectors', [])
+    if len(cv) != len(groups) or any(len(groups[g + 1][0]) != v.get('cases') for g, v in enumerate(cv)
+                                     if g + 1 in groups):
+        cv = []
+    segs = {}   # (group, case) -> resume LOC
+    seg_rows = (proof.get('c64_segments') or {}).get('rows', [])
+    for s in seg_rows:
         mi = next(mi for mi in missions if mi.m == s['mission'])
-        segs[s['case']] = D.loc_of(mi, s['to'])
+        hit = [g + 1 for g, v in enumerate(cv) if v.get('mission') == s['mission'] and v.get('case_ids') == [s['case']]]
+        loc = D.loc_of(mi, s['to'])
+        if len(hit) != 1 or loc is None:
+            gap('c64_segments row %s %s to %s (case %d): %s' % (
+                s['mission'], s['from'], s['to'], s['case'],
+                'no resume LOC %s' % s['to'] if loc is None else '%d C64 groups hold only that case' % len(hit)))
+            continue
+        segs[hit[0], s['case']] = loc
     stats = collections.Counter()
 
-    def rebuild(row, cut, what):
-        """(record, snaprow) of a header row, or None."""
+    def rebuild(row, cut, what, g=None):
+        """(record, snaprow) of a header row (g: its C64 group), or None."""
         seed, cm, ie, sb, edits, _ = row
         i = cf.match(seed, edits)
         if i is not None:
@@ -305,9 +321,9 @@ def interp(sid, a, out):
             stats['matched'] += 1
             if len(edits) != len(cf.fields(i)[5]):
                 stats['prefix'] += 1
-            if i in segs:
+            if (g, i) in segs:
                 stats['segment'] += 1
-                return record(seed, cm, ie, sb, segs[i], edits, cut), True
+                return record(seed, cm, ie, sb, segs[g, i], edits, cut), True
             return record(seed, cm, ie, sb, stop, edits, cut), False
         for t in resumed:   # a resumed row: the parent case run on to its snapshot
             if t['case'] >= len(cf):
@@ -334,7 +350,7 @@ def interp(sid, a, out):
         grecs[g] = []
         for k, (row, cut) in enumerate(zip(rows, cuts)):
             stats['cut'] += bool(cut)
-            r = rebuild(row, cut, 'group %d row %d' % (g, k))
+            r = rebuild(row, cut, 'group %d row %d' % (g, k), g)
             if r:
                 checks.append(('group %d row %d' % (g, k), r[0], row[5], r[1]))
                 grecs[g].append((k, r[0], row[5]))
@@ -357,6 +373,8 @@ def interp(sid, a, out):
                     gap('%s: yaAGC gives kind %s digest %s, the header %d' % (what, o[1], o[-1], exp))
     if bad > 20:
         gap('... %d rows in all differ from yaAGC' % bad)
+    if stats['segment'] != len(seg_rows):
+        gap('%d C64 rows run as segment rows, the proof\'s c64_segments %d' % (stats['segment'], len(seg_rows)))
     say('[2] rows: %d host vectors, %d C64 rows in %d groups; %d matched to frozen cases (%d by an edit prefix), '
         '%d resumed, %d truncated, %d segment rows; %d of %d re-run on yaAGC equal their frozen digests' % (
             len(host_rows), nc64, len(groups), stats['matched'], stats['prefix'], stats['resumed'], stats['cut'],
