@@ -2338,7 +2338,7 @@ Pending complete-coverage certificates for Luminary099 and Comanche055 DISPLAY_I
 
 ## Translate Luminary INTEGRATION_INITIALIZATION
 
-All of Luminary099 INTEGRATION_INITIALIZATION (623 words) is native C on the control-transfer ABI, as 217 routines compiled by `tools/interp_compile.py`. The state-vector moves behind RTB run as `lm_integration_move`. This covers every entry rendezvous navigation needs: INTSTALL, SETIFLGS, INTEGRV, INTWAKE/INTWAKE0, LEMCONIC/CSMCONIC and LEMPREC/CSMPREC. All 41,664 cases (a quarter with a job waiting at each DANZIG) equal the original program in yaAGC. The strict and sanitizer host tests pass 326 frozen cases, and 5 C64 diagnostics pass 434 cases in VICE. A complete certificate is drafted for the certificate reviewer. See `docs/INTEGRATION-INITIALIZATION.md`.
+All of Luminary099 INTEGRATION_INITIALIZATION (623 words) is native C on the control-transfer ABI, as 217 routines compiled by `tools/interp_compile.py`. The state-vector moves behind RTB run as `lm_integration_move`. This covers every entry rendezvous navigation needs: INTSTALL, SETIFLGS, INTEGRV, INTWAKE/INTWAKE0, LEMCONIC/CSMCONIC and LEMPREC/CSMPREC. All 41,664 cases (a quarter with a job waiting at each DANZIG) equal the original program in yaAGC. The strict and sanitizer host tests pass 326 frozen cases, and 12 C64 diagnostics pass 259 cases in VICE that take every branch arc the host cases take. A complete certificate is drafted for the certificate reviewer. See `docs/INTEGRATION-INITIALIZATION.md`.
 
 ## Translate Luminary ORBITAL_INTEGRATION
 
@@ -2557,6 +2557,10 @@ Luminary099 R63.agc (Verb 89, the rendezvous final attitude) is native C on the 
 ## Translate Luminary P12
 
 Luminary099 P12.agc (powered ascent, and the P12INIT, COMMINIT and GUIDINIT set-up that P70 and P71 share) is native C on the control-transfer ABI as 91 routines compiled by `tools/interp_compile.py`, every word of the file. Every word after a DANZIG is a routine of its own (`resume_keys`). All 46,592 cases equal the original program in yaAGC, none refused. The host and sanitizer tests pass 1,456 frozen cases, and 7 C64 diagnostics pass 112 cases in VICE that take all 1,015 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-P12.md`.
+
+## Compile Luminary STABLE_ORBIT into transfer routines
+
+All of Luminary099 STABLE_ORBIT (P38/P78 and P39/P79, 233 words) is native C on the control-transfer ABI, as 101 routines compiled by `tools/interp_compile.py`. Every entry, every display return and every resume point is a routine. All 25,856 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 202 frozen cases, and 3 C64 diagnostics pass 122 cases in VICE that take every branch arc the host cases take. A complete certificate is drafted for the certificate reviewer. See `docs/LM-STABLE-ORBIT.md`.
 
 ## Translate Luminary P70-P71
 
