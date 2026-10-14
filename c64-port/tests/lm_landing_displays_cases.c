@@ -24,9 +24,9 @@ void lm_lad_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t 
  m->words[0103]=bit(&seed,m->words[0103],02000u);  /* FLAGWRD7 SWANDBIT */
  m->words[01303]=bit(&seed,bit(&seed,m->words[01303],0100u),0200u); /* IMODES33 */
  io->bias.superbank=0;io->bias.interrupt_enabled=0;
- io->chan5=io->chan6=io->chan13=io->chan31=io->chan4=0;io->in_isr=0;
- io->chan12=raw(&seed);io->chan30=bit(&seed,raw(&seed),040u);
- io->chan14=(agc_word)(raw(&seed)&006037u); /* no CDU X/Y/Z or gyro drive bits */
+ io->hw.channel5=io->hw.channel6=io->hw.channel13=io->hw.channel31=io->hw.channel4=0;io->hw.in_interrupt=0;
+ io->hw.channel12=raw(&seed);io->hw.channel30=bit(&seed,raw(&seed),040u);
+ io->hw.channel14=(agc_word)(raw(&seed)&006037u); /* no CDU X/Y/Z or gyro drive bits */
  if((rnd(&seed)>>20)%4u){m->words[EB7(LM_LAD_LADQSAVE)]=(rnd(&seed)>>20)&1u?LM_LAD_ALTROUT+1u:LM_LAD_ALTOUT+1u;}
  m->words[3]=LM_LAD_EB;m->words[4]=LM_LAD_FB21;m->words[6]=(agc_word)(LM_LAD_FB21|(LM_LAD_EB>>8));
  m->words[0]=agc_extend(m->words[0]);m->words[1]=agc_extend(m->words[1]);
@@ -35,6 +35,7 @@ void lm_lad_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t 
 static int inside(agc_word z){return z>=LM_LAD_FIRST&&z<=LM_LAD_LAST;}
 unsigned lm_lad_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st;agc_word superbank=0;
+ program.hardware=&io->hw;
  program.basic=&lm_landing_displays_routines;program.basic_count=1;
  program.operands=lm_landing_displays_sites;program.operand_count=LM_LAD_SITES;
  lm_lad_input(s,io,n);
@@ -46,7 +47,7 @@ unsigned lm_lad_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t
 static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_lad_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_lad_run(s,&io,n,&steps);
- sum_a=sum_b=0;mix((uint16_t)kind);mix(io.chan12);mix(io.chan14);
+ sum_a=sum_b=0;mix((uint16_t)kind);mix(io.hw.channel12);mix(io.hw.channel14);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }

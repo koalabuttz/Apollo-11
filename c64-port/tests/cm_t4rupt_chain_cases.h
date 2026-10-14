@@ -14,9 +14,9 @@
  * program from T4RUPT until it first reaches that continuation.
  *
  * Channels: the core and IMU tables keep channels 10-14, 30 and 33 in
- * agc_hardware; the optics routines keep 11-14 in cm_native_io and 30-33 in
- * cm_channels (Lane G's record, until the shared channel model reaches
- * them). Each run starts both copies equal. T4JUMP runs at most one monitor
+ * agc_hardware; the optics routines keep 11-14 in cm_native_io and 5, 6 and
+ * 30-33 in the same agc_hardware. Each run starts both copies of 11-14
+ * equal. T4JUMP runs at most one monitor
  * per interrupt, so at most one copy changes, and cch_channel() reads the
  * one that did. */
 #define CCH_CASES 4096u

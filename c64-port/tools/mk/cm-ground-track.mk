@@ -5,7 +5,7 @@
 CM_GROUND_TRACK_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_GROUND_TRACK_SRC = src/cm_ground_track.c tests/cm_ground_track_target.c $(CM_GROUND_TRACK_COMMON)
 CM_GROUND_TRACK_HDR = include/cm_ground_track.h tests/interp_case.h tests/cm_ground_track_vectors.h tests/cm_ground_track_c64_vectors.h
-CM_GROUND_TRACK_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_GROUND_TRACK_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-ground-track sanitize-cm-ground-track c64-cm-ground-track vice-cm-ground-track cm-ground-track-differential
 all: build/test-cm-ground-track
 test: test-cm-ground-track

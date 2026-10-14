@@ -2,18 +2,31 @@
 #ifndef LM_FLIGHT_IO_H
 #define LM_FLIGHT_IO_H
 #include "p66_bias.h"
-/* Device record for Lane F (LM powered flight and DAP) routines of the
- * control-transfer ABI. bias comes first, so Executive and Waitlist routines
- * (lm_exec_routines) that take p66_bias_io read the same record. Output
- * channels hold the bits the original writes with WOR/WAND/WRITE. */
+#include "agc_transfer.h"
+/* Lane F (LM powered flight and DAP) routines take the mission's base
+ * record, p66_bias_io, and drive the output channels and read the inputs in
+ * the program's agc_hardware: channel 14 (CDU drive, thrust drive), 5 and 6
+ * (RCS jets), 12 (IMU error counter enable, trim gimbal drives), 13 (RHC
+ * counter enable and read), the inputs 30 and 31 (PGNCS control, mode
+ * select) and 4 (LOSCALAR), and in_interrupt (set by EDRUPT). A routine run
+ * on a program without agc_hardware refuses.
+ *
+ * Their tests and references keep the two together: the record the
+ * routines take, then the channels the case's program points at. */
 typedef struct {
  p66_bias_io bias;
- agc_word chan14;   /* channel 14: CDU drive, thrust drive (BIT4), ... */
- agc_word chan5,chan6;  /* RCS jet commands */
- agc_word chan12;   /* IMU error counter enable, trim gimbal drives, ... */
- agc_word chan30,chan31; /* inputs: PGNCS control (30 bit 10), mode select (31 bits 13-14) */
- agc_word chan13;   /* RHC counter enable and read (bits 8-9), ... */
- agc_word chan4;    /* input: LOSCALAR */
- agc_word in_isr;   /* interrupt in progress (set by EDRUPT) */
+ agc_hardware hw;
 } lm_flight_io;
+/* In the routines' files: lmf_hw, the run's agc_hardware, which each routine
+ * sets first with LMF_HW_SET(p) (false: refuse). A flight module build names
+ * the resident's record with -DAGC_CHANNELS_HW=rk_hardware instead
+ * (tools/flight_store_build.py): absolute addressing, nothing to set. */
+#ifdef AGC_CHANNELS_HW
+extern agc_hardware AGC_CHANNELS_HW;
+#define lmf_hw (&AGC_CHANNELS_HW)
+#define LMF_HW_SET(p) ((void)(p), 1)
+#else
+static __attribute__((unused)) agc_hardware *lmf_hw;
+#define LMF_HW_SET(p) ((lmf_hw = (p)->hardware) != 0)
+#endif
 #endif

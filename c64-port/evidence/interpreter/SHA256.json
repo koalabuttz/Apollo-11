@@ -4,13 +4,18 @@
   "release": "evidence-interpreter",
   "files": {
     "interp-core-differential.log": {
-      "sha256": "3baf5f1e5c0c6c941637cd854ccaf33bba50ddb6969292e54bd9ae014c79d062",
-      "bytes": 5926,
+      "sha256": "a23db9edfe65519877f6539fa485e33e1978ebafdf98bb2019c5c3ee9498576a",
+      "bytes": 6094,
       "store": "tree"
     },
     "interp-core-fuzz.log": {
       "sha256": "355d2e8a511f48af8247eea31de2bab1e65fa110d1727d970b32a7b4dfaba414",
       "bytes": 1517,
+      "store": "tree"
+    },
+    "interp-flight-flowed-vice.json": {
+      "sha256": "91f69c4187be80ab78994d5baa26e9a478fff6e047fce0a3d8dd16bb85e7e000",
+      "bytes": 32352,
       "store": "tree"
     },
     "interp-flight-vice.json": {

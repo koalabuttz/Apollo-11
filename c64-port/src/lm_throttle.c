@@ -123,21 +123,21 @@ static void tpagree(agc_image *s,agc_word ret){uint8_t c,k=1;unsigned i;static c
 
 /* THROTTLE: CA ABDELV; EXTEND; MP /AF/CNST; then THROTTLE +3. */
 static enum exec_status throttle3_body(agc_image *s){ai_qxch(s,RTNHOLD);return transfer(s,02224u,LM_THR_MASSMULT);}
-static enum exec_status throttle(const agc_native_program *p,agc_image *s,void *io){(void)p;(void)io;
+static enum exec_status throttle(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;(void)io;
  if(!entry(s))return EXEC_OUT_OF_SCOPE;
  ai_ca(s,ABDELV);ai_mpf(s,AFCNST);return throttle3_body(s);}
 /* THROTTLE +3: EXTEND; QXCH RTNHOLD; AFDUMP TC MASSMULT. */
-static enum exec_status throttle3(const agc_native_program *p,agc_image *s,void *io){(void)p;(void)io;
+static enum exec_status throttle3(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;(void)io;
  if(!entry(s))return EXEC_OUT_OF_SCOPE;
  return throttle3_body(s);}
 /* 31,2224: DXCH FP; EXTEND; DCA /AFC/; TC MASSMULT. */
-static enum exec_status present(const agc_native_program *p,agc_image *s,void *io){(void)p;(void)io;
+static enum exec_status present(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;(void)io;
  if(!entry(s))return EXEC_OUT_OF_SCOPE;
  ai_dxch(s,FP);ai_dca(s,AFC);return transfer(s,02230u,LM_THR_MASSMULT);}
 /* 31,2230: TS FC; DXCH FCODD; the 3-second FWEIGHT test; WHERETO's
  * critical-thrust bands; TC FASTCHNG at DOPIF (skipped when TS PIFPSET
  * overflows at FLATOUT2). */
-static enum exec_status desired(const agc_native_program *p,agc_image *s,void *io){(void)p;(void)io;
+static enum exec_status desired(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;(void)io;
  if(!entry(s))return EXEC_OUT_OF_SCOPE;
  if(!ai_ts(s,FC))ai_dxch(s,FCODD);else LM_THR_PATH(21);
  ai_cs(s,TTHROT);ai_ad(s,TIME1);ai_maskf(s,POSMAX);ai_com(s);ai_adf(s,SECS3);
@@ -167,13 +167,13 @@ flatout2:
 }
 /* DOIT .. THDUMP: THRUST and PSEUDO55, channel 14 bit 4, TTHROT, the
  * FWEIGHT compensation, TC RTNHOLD. */
-static enum exec_status doit(agc_image *s,lm_flight_io *io){agc_word v;uint8_t c;
+static enum exec_status doit(agc_image *s,p66_bias_io *io){(void)io;agc_word v;uint8_t c;
  ai_ca(s,PIF);ai_ad(s,PIFPSET);
  if(ai_ts(s,PSEUDO55)){LM_THR_PATH(8);ai_caf(s,BIT4);}
  else if(!ai_ts(s,THRUST))ai_caf(s,BIT4);
  else LM_THR_PATH(9);
  /* EXTEND; WOR CHAN14 */
- v=(agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))|io->chan14);io->chan14=v;W[0]=agc_extend(v);
+ v=(agc_word)(((W[0]&037777u)|((W[0]>>1)&040000u))|lmf_hw->channel14);lmf_hw->channel14=v;W[0]=agc_extend(v);
  ai_ca(s,TIME1);(void)ai_ts(s,TTHROT);ai_ca(s,THISTPIP1);(void)ai_ts(s,BUF);
  ai_cs(s,MODREG);ai_adf(s,DEC66);
  if(ai_bzf(s)){LM_THR_PATH(10);ai_caf(s,SECS2);} /* FWCOMP */
@@ -188,29 +188,29 @@ static enum exec_status doit(agc_image *s,lm_flight_io *io){agc_word v;uint8_t c
 }
 /* 31,2303 (FASTCHNG's return): EXTEND; DCA FCODD; TS FCOLD; DXCH PIF;
  * EXTEND; DCS FP; DAS PIF; DOIT. */
-static enum exec_status pif(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status pif(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s)||!io||!tc_word(ai_word(s,RTNHOLD)))return EXEC_OUT_OF_SCOPE;
  ai_dca(s,FCODD);if(!ai_ts(s,FCOLD))ai_dxch(s,PIF);else LM_THR_PATH(22);ai_dcs(s,FP);ai_das(s,PIF);
  return doit(s,io);}
 /* WHATOUT: TS PIFPSET; CS ZERO; TS FCOLD; TS PIF; EXTEND; QXCH RTNHOLD;
  * TCF DOIT. */
-static enum exec_status whatout_body(agc_image *s,lm_flight_io *io){
+static enum exec_status whatout_body(agc_image *s,p66_bias_io *io){
  if(!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  if(!ai_ts(s,PIFPSET))ai_csf(s,ZERO);else LM_THR_PATH(24);
  (void)ai_ts(s,FCOLD);(void)ai_ts(s,PIF);ai_qxch(s,RTNHOLD);
  return doit(s,io);
 }
-static enum exec_status whatout(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status whatout(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s)||!io)return EXEC_OUT_OF_SCOPE;
  return whatout_body(s,io);}
 /* FLATOUT: CAF BIT13 (4096 pulses); WHATOUT. */
-static enum exec_status flatout(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status flatout(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s)||!io||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  ai_caf(s,BIT13);return whatout_body(s,io);}
 /* MASSMULT: EXTEND; QXCH BUF; DXCH MPAC; TC DMP; ADRES MASS; TC DMP;
  * ADRES SCALEFAC; TC TPAGREE; CA MPAC; EXTEND; BZF +3; CAF POSMAX; TC BUF
  * (or +3: DXCH MPAC +1; TC BUF). */
-static enum exec_status massmult(const agc_native_program *p,agc_image *s,void *io){(void)p;(void)io;
+static enum exec_status massmult(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;(void)io;
  if(!entry(s)||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  ai_qxch(s,BUF);ai_dxch(s,MPAC);
  ai_tc(s,02404u);dmp(s,MASS,0,02405u);
@@ -222,7 +222,7 @@ static enum exec_status massmult(const agc_native_program *p,agc_image *s,void *
 }
 /* LUNAR_LANDING_GUIDANCE_EQUATIONS FASTCHNG: CA EBANK3; XCH EBANK; DXCH L;
  * TS PHSNAME3; LXCH EBANK; TC A. */
-static enum exec_status fastchng(const agc_native_program *p,agc_image *s,void *io){agc_word q;(void)p;(void)io;
+static enum exec_status fastchng(const agc_native_program *p,agc_image *s,void *io){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;agc_word q;(void)p;(void)io;
  if(!entry(s))return EXEC_OUT_OF_SCOPE;
  q=W[2];if(!tc_word(q&077777u)||(q&0100000u))return EXEC_OUT_OF_SCOPE;
  ai_caf(s,EBANK3);ai_xch(s,EBANK);ai_dxch(s,1u);

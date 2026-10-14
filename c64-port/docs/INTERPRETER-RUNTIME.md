@@ -166,6 +166,32 @@ the flight resident in VICE (`tools/interp_flight_test.py`,
   with the same core, each slot checked against yaAGC: it found the
   DIRADRES, 15BITADR and NOVAC entries above.
 
+`make interp-flight-flowed-vice` runs the same check on flowed states.
+These are not mission flight. They cover where the flight store stops a
+FLIGHT_INTERP_STOP module (`tools/flight_store_build.py`: AGS_INITIALIZATION,
+BURN_BABY_BURN, THE_LUNAR_LANDING, SERVICER, IMU_PERFORMANCE_TESTS) because
+its code reaches interpretive code and the interpreter takes the job.
+
+- `tools/interp_flight_flowed.c` (host, links yaAGC and the milestone's
+  native sources) runs yaAGC from the first 128 states of each routine of
+  the milestone's cases, as its `tools/<stem>_reference.c` does, until the
+  run leaves the file. Each first arrival at an entry point from code
+  outside the interpreter's banks (00, 01, 03), at an order inside the file
+  (at INTPRET, Q), is a case. A yaAGC look-ahead prefers a state whose run
+  keeps a real job's frame (FIXLOC, the push-down pointer, MODE, superbank
+  0 or 0100).
+- `tools/interp_flight_verify.c` runs the verification interpreter from
+  each case. A case it refuses, or whose result yaAGC does not reach, runs
+  outside the contract above and is left out (counted in the report).
+- The rest run in VICE, as many per boot as the REU stream holds (a case
+  that shares few words with the one before goes whole).
+- On base af80f782: 394 cases captured, 7 refused, 2 unreached, 385 run
+  in 7 boots (464 resident steps), every exit state reached by yaAGC.
+  SERVICER keeps 140 of its 171 points, IMU_PERFORMANCE_TESTS 132 of 133,
+  THE_LUNAR_LANDING 71 of 74, AGS_INITIALIZATION 26 of 26 and
+  BURN_BABY_BURN 16 of 16; the rest have no state inside the contract. The
+  rows are in `evidence/interpreter/interp-flight-flowed-vice.json`.
+
 `make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
 simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
 
@@ -200,7 +226,7 @@ Both interpreters keep every erasable operand inside the image:
 
 The core's contract is that indexed and push-down erasable addresses stay inside erasable. Every flight path keeps them there. INCOR1 and INCOR2 set X1 and X2 by AXT (at most 162D, stepping down to the S1 or S2 step), so every W+k,X operand stays inside W. FAZB1's WIXA is 6 to 54.
 
-`make interp-core-differential` (`evidence/interpreter/interp-core-differential.log`) runs 70,536 cases over every compiled milestone. 14 differ, and they are all outside the contract:
+`make interp-core-differential` (`evidence/interpreter/interp-core-differential.log`) runs 74,424 cases over every compiled milestone. 14 differ, and they are all outside the contract:
 - All 14 are in measurement-inc, at CM 36,3615-3643 (FAZB1's `STORE W +54D,1/+108D,1/+162D,1`).
 - In each of them, WIXA and X1 start far outside flight values (37777, 40000, 76553 and so on, from random entry states the spec flows from).
 - 12 of them pass an address of 02000 or more to the core's `ai_ea`. The other 2 wrap in the store itself.

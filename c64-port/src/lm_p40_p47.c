@@ -8,7 +8,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -93,8 +93,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -4605,17 +4605,6 @@ static enum exec_status r75502(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 #if (LM_P40_P47_KEEP5 >> 41) & 1
-/* 36,3504 P47BOD (resumed from outside) */
-static enum exec_status r75504(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
- /* 36,3504 CAF V1683 */
- ai_caf(s,004123);
- /* 36,3505 TC BANKCALL */
- ai_tc(s,03506);
- W[5]=04616;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (LM_P40_P47_KEEP5 >> 42) & 1
 /* 36,3507  (return from BANKCALL) */
 static enum exec_status r75507(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -4624,7 +4613,7 @@ static enum exec_status r75507(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06001;return EXEC_OK; /* GOTOPOOH */
 }
 #endif
-#if (LM_P40_P47_KEEP5 >> 43) & 1
+#if (LM_P40_P47_KEEP5 >> 42) & 1
 /* 36,3510  (resumed from outside) */
 static enum exec_status r75510(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -4633,7 +4622,7 @@ static enum exec_status r75510(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06001;return EXEC_OK; /* GOTOPOOH */
 }
 #endif
-#if (LM_P40_P47_KEEP5 >> 44) & 1
+#if (LM_P40_P47_KEEP5 >> 43) & 1
 /* 36,3511  (resumed from outside) */
 static enum exec_status r75511(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -4645,7 +4634,7 @@ static enum exec_status r75511(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06037;lmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (LM_P40_P47_KEEP5 >> 45) & 1
+#if (LM_P40_P47_KEEP5 >> 44) & 1
 /* 36,3512  (resumed from outside) */
 static enum exec_status r75512(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -4655,6 +4644,15 @@ static enum exec_status r75512(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3236 TC PHASCHNG */
  ai_tc(s,03237);
  W[5]=05353;return EXEC_OK; /* PHASCHNG */
+}
+#endif
+#if (LM_P40_P47_KEEP5 >> 45) & 1
+/* 36,3513 P47BODY (entry P47BODY) */
+static enum exec_status r75513(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
+ /* 36,3513 TC INTPRET */
+ ai_tc(s,03514);
+ W[5]=06037;lmi_intpret(s,io);return EXEC_OK;
 }
 #endif
 #if (LM_P40_P47_KEEP5 >> 46) & 1
@@ -6465,19 +6463,19 @@ WRAP(r75501)
 WRAP(r75502)
 #endif
 #if (LM_P40_P47_KEEP5 >> 41) & 1
-WRAP(r75504)
-#endif
-#if (LM_P40_P47_KEEP5 >> 42) & 1
 WRAP(r75507)
 #endif
-#if (LM_P40_P47_KEEP5 >> 43) & 1
+#if (LM_P40_P47_KEEP5 >> 42) & 1
 WRAP(r75510)
 #endif
-#if (LM_P40_P47_KEEP5 >> 44) & 1
+#if (LM_P40_P47_KEEP5 >> 43) & 1
 WRAP(r75511)
 #endif
-#if (LM_P40_P47_KEEP5 >> 45) & 1
+#if (LM_P40_P47_KEEP5 >> 44) & 1
 WRAP(r75512)
+#endif
+#if (LM_P40_P47_KEEP5 >> 45) & 1
+WRAP(r75513)
 #endif
 #if (LM_P40_P47_KEEP5 >> 46) & 1
 WRAP(r75514)
@@ -7740,19 +7738,19 @@ static const agc_routine_entry basic_entries[]={
  {31554,r75502_abi},
 #endif
 #if (LM_P40_P47_KEEP5 >> 41) & 1
- {31556,r75504_abi},
-#endif
-#if (LM_P40_P47_KEEP5 >> 42) & 1
  {31559,r75507_abi},
 #endif
-#if (LM_P40_P47_KEEP5 >> 43) & 1
+#if (LM_P40_P47_KEEP5 >> 42) & 1
  {31560,r75510_abi},
 #endif
-#if (LM_P40_P47_KEEP5 >> 44) & 1
+#if (LM_P40_P47_KEEP5 >> 43) & 1
  {31561,r75511_abi},
 #endif
-#if (LM_P40_P47_KEEP5 >> 45) & 1
+#if (LM_P40_P47_KEEP5 >> 44) & 1
  {31562,r75512_abi},
+#endif
+#if (LM_P40_P47_KEEP5 >> 45) & 1
+ {31563,r75513_abi},
 #endif
 #if (LM_P40_P47_KEEP5 >> 50) & 1
  {31569,r75521_abi},
@@ -8210,11 +8208,11 @@ const lm_p40_p47_point lm_p40_p47_points[LM_P40_P47_POINTS]={
  {31552,1},
  {31553,1},
  {31554,0},
- {31556,0},
  {31559,0},
  {31560,0},
  {31561,0},
  {31562,0},
+ {31563,0},
  {31564,1},
  {31566,1},
  {31567,1},

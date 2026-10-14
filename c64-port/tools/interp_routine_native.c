@@ -45,13 +45,12 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
 static uint16_t visit[IRC_MAX_STEPS];static unsigned nvisit;
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
  /* (the io records and input latches irc_run gives the routines) */
- lm_channel_io lio;cm_channel_io cio;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
+ lm_channel_io lio;cm_channel_io cio;agc_native_program q;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
  lio.io.superbank=c->superbank;lio.io.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio.io;for(i=0;i<sizeof cio.io/sizeof *w;++i)w[i]=0;}
  cio.io.superbank=c->superbank;cio.io.interrupt_enabled=c->interrupt_enabled;
  irc_inputs(c,&lio.in);cio.in=lio.in;
- {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
- if(irc_ch_on)irc_cm_io(&cio.io,0);
+ if(c->cm)p=irc_cm_begin(p,&q,&cio.io);
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);
