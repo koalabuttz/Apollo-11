@@ -4637,7 +4637,7 @@
       "sha256": "d3357adf3da2436167e2db289813ad0411b206623c0117ba8679b998b7c81c6f",
       "bytes": 10521,
       "lines": 385,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4652,7 +4652,7 @@
           "verification": "docs/R60-R62.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4664,7 +4664,6 @@
           "Display interface, Executive, KALCMANU (through BANKCALL) and other destinations outside the file stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r60-r62/r60-r62-source-map.json",
@@ -4688,6 +4687,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
             "sha256": "42ee0206370c71be72344fc179ee2b5f792ddf2f49a85caccc492a61e3164e86"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-374.md",
+            "sha256": "2344bf26ef8955d1e3f81e4c1f5d5b61b181c90c5cef1fb8f9aafa0736c2608f"
           }
         }
       }
@@ -11726,7 +11729,7 @@
       "sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6",
       "bytes": 15295,
       "lines": 577,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -11741,7 +11744,7 @@
           "verification": "docs/R60-R62.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -11753,7 +11756,6 @@
           "Display interface, Executive, KALCMANU (through BANKCALL) and other destinations outside the file stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/r60-r62/r60-r62-source-map.json",
@@ -11777,6 +11779,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
             "sha256": "42ee0206370c71be72344fc179ee2b5f792ddf2f49a85caccc492a61e3164e86"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-374.md",
+            "sha256": "2344bf26ef8955d1e3f81e4c1f5d5b61b181c90c5cef1fb8f9aafa0736c2608f"
           }
         }
       }
