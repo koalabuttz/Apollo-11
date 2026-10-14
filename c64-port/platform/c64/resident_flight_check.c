@@ -209,6 +209,13 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
   * taken: the probe is a boundary in the table). */
  rk_device.interrupt_enabled=0;rk_pending=0;
  image->words[4]=RK_PROBE_FB;image->words[5]=RK_PROBE_LOC;rk_device.superbank=0;rk_hardware.in_interrupt=0;
+ /* The stack canary: a step refuses to run while it is changed. The case
+  * modules' input generators run below it (the CM job cases reach $C800,
+  * a test-only depth; this store has no pinned module), so the check sets
+  * it again before the steps. */
+ *(volatile uint8_t *)RK_STACK_CANARY=(uint8_t)~RK_STACK_CANARY_VALUE;
+ expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_INVALID_ACTION&&image->words[5]==RK_PROBE_LOC,17);
+ *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
  expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_OK&&image->words[5]==RK_PROBE_Z,6);
  /* At fixed-fixed the resolver key is the canonical bank, whatever FB and
   * the superbank hold. */

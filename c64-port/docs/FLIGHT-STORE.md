@@ -43,6 +43,16 @@ reads every rope word from the mission rope image the store carries
 image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
 LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
 
+The 2 MB REU, by address:
+
+| REU range | Use |
+| --- | --- |
+| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1c0000 |
+| 0x1c0000-0x1d1fff | LM rope image (LM store only) |
+| 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
+| 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
+
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
@@ -154,7 +164,16 @@ resolver records (keys the store can run) go up on both missions.
 DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
 (DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
 8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
-packed yet.
+packed yet. A slot-3 set goes to slot class 3 ($C000-$CBFF, 3,072 bytes;
+docs/RESIDENT-FLIGHT.md): when it fits direct-only the builder packs it into
+the store, the resident loads it at boot, and its routines run from there
+through `rk_direct` while the resolver still names their packed modules. Both
+missions pin the background self-check idle loop there (LM
+`lm_self_check_idle_routines` 1,897 bytes, CM `cm_self_check_idle_routines`
+1,920), so those routines run without loading a module. The load check runs one
+of the pinned set's points through the module that packs the same table and through
+`rk_direct` with only the pinned module present, compares them, and then
+drops the pinned module (its mailbox and timings use $C000-$CBFF).
 
 ### Direct calls into a loaded module
 

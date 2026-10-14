@@ -120,9 +120,10 @@ static enum apollo_ov2_status run(uint8_t context,uint16_t module,uint16_t selec
     apollo_ov2_cont c; c.module=module; c.selector=selector;
     return apollo_ov2_run(&rt,context,c,value,action,resume);
 }
+static uint8_t pinned_loaded;   /* $c000..$cbff holds the class-3 module */
 static void guards(void) {
     unsigned i;
-    for(i=0xc000u;i<0xd000u;++i) assert(ram[i]==GUARD);
+    for(i=pinned_loaded?0xcc00u:0xc000u;i<0xd000u;++i) assert(ram[i]==GUARD);
     for(i=0xfffau;i<0x10000u;++i) assert(ram[i]==GUARD);
     for(i=0x0000u;i<APOLLO_SHARED_ADDRESS;++i) assert(ram[i]==GUARD || (i>=0x0340u && i<0x0368u));
 }
@@ -137,10 +138,14 @@ static unsigned long reu_page(uint16_t id) {
     return ((unsigned long)r[2] | ((unsigned long)r[3]<<8))*256ul;
 }
 static unsigned fixed_seen;
+/* As the resident boots them: class 2 at $d000, class 3 at $c000 with its
+ * BSS (8 bytes after the 120-byte body) zeroed. */
 static uint8_t fixed_load(void *user,uint32_t reu_address,const apollo_ov2_dirent *d) {
+    uint16_t base=apollo_ov2_slot_address(d->slot);
     (void)user; ++fixed_seen;
-    assert(d->id==0x0a02 && d->slot==APOLLO_OV2_SLOT_FIXED);
-    return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,ram+APOLLO_OV2_FIXED_ADDRESS,reu_address,d->bytes)&0x60u)==0x40u);
+    assert((d->id==0x0a02 && d->slot==APOLLO_OV2_SLOT_FIXED) || (d->id==0x0a03 && d->slot==APOLLO_OV2_SLOT_PINNED));
+    if(d->slot==APOLLO_OV2_SLOT_PINNED) { memset(ram+base+d->bytes,0,8); pinned_loaded=1; }
+    return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,ram+base,reu_address,d->bytes)&0x60u)==0x40u);
 }
 static void expect_fault(enum apollo_ov2_status expected,uint8_t context,uint16_t module,uint16_t selector) {
     uint16_t value=77; uint8_t action=99; apollo_ov2_cont resume={1,1};
@@ -178,7 +183,7 @@ int main(int argc,char **argv) {
     /* Store open: magic, mission and service-table version gate the image. */
     reset_ram();
     assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
-    assert(store.module_count==5 && store.resolver_count==3 && store.index_page==1);
+    assert(store.module_count==6 && store.resolver_count==3 && store.index_page==1);
     assert(!apollo_reu_store_open(&store,0,2,SERVICES,RECORD));
     assert(!apollo_reu_store_open(&store,0,LM,SERVICES+1u,RECORD));
     reu[0]='X'; assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
@@ -210,14 +215,22 @@ int main(int argc,char **argv) {
         reu[r+4u]=0x02; reu[r+5u]=0x0a; reu[r+6u]=0; reu[r+7u]=0;
         assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_UNRESOLVED);
     }
+    boot(0); {                                            /* record naming the pinned module */
+        unsigned long r=(unsigned long)store.resolver_page*256ul;
+        reu[r+4u]=0x03; reu[r+5u]=0x0a; reu[r+6u]=0; reu[r+7u]=0;
+        assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_UNRESOLVED);
+    }
 
-    /* Slot class 2: boot lists the fixed extension for loading at $d000;
-     * a run never loads it. */
+    /* Slot classes 2 and 3: boot lists the fixed extension for loading at
+     * $d000 and the pinned module at $c000; a run never loads either. */
     boot(0); fixed_seen=0;
-    assert(apollo_reu_store_fixed(&store,fixed_load,0) && fixed_seen==1);
-    check_loaded(0x0a02,APOLLO_OV2_FIXED_ADDRESS,100,0); guards();
+    assert(apollo_reu_store_fixed(&store,fixed_load,0) && fixed_seen==2);
+    check_loaded(0x0a02,APOLLO_OV2_FIXED_ADDRESS,100,0);
+    check_loaded(0x0a03,APOLLO_OV2_PINNED_ADDRESS,120,8); guards(); pinned_loaded=0;
     assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_FIXED)==0xd000u && apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_FIXED)==0x1000u);
+    assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_PINNED)==0xc000u && apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_PINNED)==0x0c00u);
     boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a02,0);
+    boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a03,0);
 
     /* Load, cache and swap the job slot; BSS is zeroed, payload exact. */
     boot(1); value=41;
