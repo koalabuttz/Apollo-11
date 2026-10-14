@@ -92,7 +92,9 @@ resident's boot loads once and verifies (`rk_load_fixed`):
 - It holds the cold math bodies (`XT`: SQRT, UNIT, VSQ, SIN, COS,
   ASIN, ACOS with POLY, DDV, BDDV, DOT, VPROJ, VXSC, MXV, VXM, V/SC), linked
   by `platform/c64/interp_ext.ld`.
-- None of these bodies reads the rope, since the REU registers are I/O.
+- None of these bodies reads the rope itself, since the REU registers are
+  I/O. Their one rope read, an indexed fixed constant (`fixed_indexed`, in
+  `$0A01`), banks I/O in around the read.
 - They are reached only from the address and unary order tables. Every call
   through a table banks I/O out ($01 = $34) and back in. The resident's IRQ
   entry saves $01 and banks I/O in.
@@ -100,7 +102,7 @@ resident's boot loads once and verifies (`rk_load_fixed`):
   extension's section from the ELF as `interp-ext.prg` (24-byte header, an
   RTS entry nothing calls, no BSS) and checks both PRGs with the store
   packer's `parse_module`.
-- With it, the module fits: LM 15,989 and CM 16,023 of 16,384 bytes, and
+- With it, the module fits: LM 16,029 and CM 16,063 of 16,384 bytes, and
   `$0A02` takes 4,038 and 4,029 of 4,096 bytes with its header.
 - Without it, the module is 3.7 KB over.
 - The flight store packs both (`tools/flight_store_build.py`
@@ -119,6 +121,12 @@ module, so each one enters from the AGC's own state there, as yaAGC has it:
   STOTC's CALLCODE cycled once). Any other CYR is refused.
 - A NOVAC job's FIXLOC is FAKEPRET (MPAC -36D, so QPRET is MPAC +6); it is
   accepted beside the five VAC areas.
+- GOTO through a cycle of erasable CADRs (GOTOERS, "arbitrary indirectness")
+  never reaches fixed memory; the AGC loops there until the night watchman
+  restarts it. After 64 hops the module hands the job back at GOTO with the
+  current POLISH, so the next step goes on looping and interrupts still run.
+- An INDEX'd fixed constant (the shift orders' BIT15/BIT14 tables) is the
+  rope word at the indexed address, wherever the index lands (#224).
 
 `make vice-interp-core` runs the flight build on a PAL C64 in VICE
 (`tools/interp_core_vice_test.py`, `tools/interp_core_vice.c`):
