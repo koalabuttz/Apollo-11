@@ -431,6 +431,14 @@ class Basic:
         if a is not None and 0o10 <= a < 0o2000 and op not in CHANNEL_OPS:
             self.erasable_refs.update(range(a, a + 3))
         st = ['/* %s %s(indexed) %s */' % (self.where(phys), 'EXTENDED ' if ext else '', self.text(phys))]
+        if op == 'INDEX' and a is not None and 0o10 <= a < 0o2000:
+            # INDEX of INDEX (AX*SR*T's INDEX BUF, INDEX DEX1, DCA VBUF): the
+            # second INDEX reads the erasable word at its address plus ix,
+            # and that word indexes the order after it.
+            st.append('e=(long)0%o+ix;if(e<010||e>01777||(e>=020&&e<=023))return EXEC_INVALID_ACTION;' % a)
+            st.append('ix=agc_to_int(ai_word(s,(unsigned)e));')
+            st.extend(self.indexed(phys + 1, ext, clean))
+            return st
         if a is None or op in ('EXTEND', 'INDEX', 'RESUME') or op in CHANNEL_OPS:
             raise BasicError('INDEX of %s at %s' % (op, self.where(phys)))
         if op in ('TC', 'TCF') and phys in self.index_targets:

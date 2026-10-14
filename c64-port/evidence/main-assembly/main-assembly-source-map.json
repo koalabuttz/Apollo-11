@@ -64,7 +64,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -77,7 +76,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -110,7 +108,6 @@
           "first": "74000",
           "last": "54021",
           "sum32": 5700998,
-          "coverage_status": "complete",
           "runs": [
             [
               30720,
@@ -240,7 +237,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -253,7 +249,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -266,7 +261,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -281,7 +275,6 @@
           "first": "04000",
           "last": "04065",
           "sum32": 754031,
-          "coverage_status": "complete",
           "runs": [
             [
               2048,
@@ -302,7 +295,6 @@
           "first": "14000",
           "last": "15155",
           "sum32": 7102055,
-          "coverage_status": "complete",
           "runs": [
             [
               6144,
@@ -330,7 +322,6 @@
           "first": "15156",
           "last": "15262",
           "sum32": 907803,
-          "coverage_status": "complete",
           "runs": [
             [
               6766,
@@ -350,7 +341,6 @@
           "first": "12065",
           "last": "12446",
           "sum32": 1776140,
-          "coverage_status": "complete",
           "runs": [
             [
               5173,
@@ -370,7 +360,6 @@
           "first": "64005",
           "last": "64216",
           "sum32": 1417684,
-          "coverage_status": "complete",
           "runs": [
             [
               26629,
@@ -393,7 +382,6 @@
           "first": "12447",
           "last": "26067",
           "sum32": 11752282,
-          "coverage_status": "complete",
           "runs": [
             [
               5415,
@@ -425,7 +413,6 @@
           "first": "02002",
           "last": "02205",
           "sum32": 1636322,
-          "coverage_status": "complete",
           "runs": [
             [
               1026,
@@ -447,7 +434,6 @@
           "first": "16000",
           "last": "16666",
           "sum32": 6560752,
-          "coverage_status": "partial",
           "runs": [
             [
               7168,
@@ -484,7 +470,6 @@
           "first": "106000",
           "last": "100076",
           "sum32": 9222415,
-          "coverage_status": "complete",
           "runs": [
             [
               35840,
@@ -552,7 +537,6 @@
           "first": "104103",
           "last": "105227",
           "sum32": 3095235,
-          "coverage_status": "complete",
           "runs": [
             [
               34883,
@@ -573,7 +557,6 @@
           "first": "26070",
           "last": "46102",
           "sum32": 1587356,
-          "coverage_status": "complete",
           "runs": [
             [
               11320,
@@ -597,7 +580,6 @@
           "first": "15263",
           "last": "15714",
           "sum32": 3686881,
-          "coverage_status": "complete",
           "runs": [
             [
               6835,
@@ -617,7 +599,6 @@
           "first": "54022",
           "last": "54122",
           "sum32": 641306,
-          "coverage_status": "complete",
           "runs": [
             [
               22546,
@@ -637,7 +618,6 @@
           "first": "44004",
           "last": "44743",
           "sum32": 6695612,
-          "coverage_status": "complete",
           "runs": [
             [
               18436,
@@ -657,7 +637,6 @@
           "first": "44744",
           "last": "45002",
           "sum32": 313701,
-          "coverage_status": "complete",
           "runs": [
             [
               18916,
@@ -677,7 +656,6 @@
           "first": "45003",
           "last": "45241",
           "sum32": 2212498,
-          "coverage_status": "complete",
           "runs": [
             [
               18947,
@@ -697,7 +675,6 @@
           "first": "10576",
           "last": "10635",
           "sum32": 438575,
-          "coverage_status": "complete",
           "runs": [
             [
               4478,
@@ -718,7 +695,6 @@
           "first": "76002",
           "last": "04123",
           "sum32": 3822551,
-          "coverage_status": "complete",
           "runs": [
             [
               31746,
@@ -742,7 +718,6 @@
           "first": "76500",
           "last": "77112",
           "sum32": 3658836,
-          "coverage_status": "complete",
           "runs": [
             [
               32064,
@@ -766,7 +741,6 @@
           "first": "100077",
           "last": "101673",
           "sum32": 28327590,
-          "coverage_status": "partial",
           "runs": [
             [
               32831,
@@ -896,7 +870,6 @@
           "first": "54123",
           "last": "46115",
           "sum32": 3724388,
-          "coverage_status": "partial",
           "runs": [
             [
               22611,
@@ -928,7 +901,6 @@
           "first": "105606",
           "last": "105771",
           "sum32": 1490151,
-          "coverage_status": "complete",
           "runs": [
             [
               35718,
@@ -948,7 +920,6 @@
           "first": "52003",
           "last": "52061",
           "sum32": 656127,
-          "coverage_status": "partial",
           "runs": [
             [
               21507,
@@ -977,7 +948,6 @@
           "first": "50000",
           "last": "53670",
           "sum32": 37442266,
-          "coverage_status": "untranslated",
           "runs": [
             [
               20480,
@@ -1086,7 +1056,6 @@
           "first": "72000",
           "last": "70056",
           "sum32": 875543,
-          "coverage_status": "partial",
           "runs": [
             [
               29696,
@@ -1111,7 +1080,6 @@
           "first": "72027",
           "last": "72447",
           "sum32": 12563599,
-          "coverage_status": "complete",
           "runs": [
             [
               29719,
@@ -1139,7 +1107,6 @@
           "first": "72450",
           "last": "72544",
           "sum32": 764605,
-          "coverage_status": "partial",
           "runs": [
             [
               29992,
@@ -1159,7 +1126,6 @@
           "first": "51505",
           "last": "51667",
           "sum32": 1330785,
-          "coverage_status": "partial",
           "runs": [
             [
               21317,
@@ -1184,7 +1150,6 @@
           "first": "72545",
           "last": "11012",
           "sum32": 13906186,
-          "coverage_status": "partial",
           "runs": [
             [
               30053,
@@ -1225,7 +1190,6 @@
           "first": "101674",
           "last": "77407",
           "sum32": 2533970,
-          "coverage_status": "partial",
           "runs": [
             [
               33724,
@@ -1249,7 +1213,6 @@
           "first": "26207",
           "last": "26350",
           "sum32": 1086063,
-          "coverage_status": "partial",
           "runs": [
             [
               11399,
@@ -1269,7 +1232,6 @@
           "first": "45242",
           "last": "45646",
           "sum32": 3150313,
-          "coverage_status": "complete",
           "runs": [
             [
               19106,
@@ -1289,7 +1251,6 @@
           "first": "71271",
           "last": "71641",
           "sum32": 3018164,
-          "coverage_status": "untranslated",
           "runs": [
             [
               29369,
@@ -1313,7 +1274,6 @@
           "first": "74022",
           "last": "56245",
           "sum32": 7247997,
-          "coverage_status": "complete",
           "runs": [
             [
               30738,
@@ -1358,7 +1318,6 @@
           "first": "75147",
           "last": "57272",
           "sum32": 11086205,
-          "coverage_status": "partial",
           "runs": [
             [
               31335,
@@ -1383,7 +1342,6 @@
           "first": "64776",
           "last": "62215",
           "sum32": 2435935,
-          "coverage_status": "complete",
           "runs": [
             [
               27134,
@@ -1407,7 +1365,6 @@
           "first": "62216",
           "last": "62417",
           "sum32": 1764512,
-          "coverage_status": "complete",
           "runs": [
             [
               25742,
@@ -1431,7 +1388,6 @@
           "first": "62420",
           "last": "45660",
           "sum32": 12104420,
-          "coverage_status": "partial",
           "runs": [
             [
               25872,
@@ -1473,7 +1429,6 @@
           "first": "42006",
           "last": "65767",
           "sum32": 3581865,
-          "coverage_status": "partial",
           "runs": [
             [
               17414,
@@ -1510,7 +1465,6 @@
           "first": "60061",
           "last": "46460",
           "sum32": 2015828,
-          "coverage_status": "complete",
           "runs": [
             [
               24625,
@@ -1540,7 +1494,6 @@
           "first": "71642",
           "last": "61103",
           "sum32": 6622590,
-          "coverage_status": "untranslated",
           "runs": [
             [
               29602,
@@ -1607,7 +1560,6 @@
           "first": "77410",
           "last": "67776",
           "sum32": 15289890,
-          "coverage_status": "complete",
           "runs": [
             [
               32520,
@@ -1675,7 +1627,6 @@
           "first": "42154",
           "last": "43076",
           "sum32": 6680579,
-          "coverage_status": "complete",
           "runs": [
             [
               17516,
@@ -1695,7 +1646,6 @@
           "first": "61104",
           "last": "61774",
           "sum32": 5695721,
-          "coverage_status": "complete",
           "runs": [
             [
               25156,
@@ -1717,7 +1667,6 @@
           "first": "32050",
           "last": "11026",
           "sum32": 20405660,
-          "coverage_status": "complete",
           "runs": [
             [
               13352,
@@ -1749,7 +1698,6 @@
           "first": "33664",
           "last": "33775",
           "sum32": 1016430,
-          "coverage_status": "complete",
           "runs": [
             [
               14260,
@@ -1769,7 +1717,6 @@
           "first": "13506",
           "last": "13771",
           "sum32": 2441529,
-          "coverage_status": "complete",
           "runs": [
             [
               5958,
@@ -1789,7 +1736,6 @@
           "first": "04616",
           "last": "04731",
           "sum32": 1213652,
-          "coverage_status": "complete",
           "runs": [
             [
               2446,
@@ -1811,7 +1757,6 @@
           "first": "06037",
           "last": "02600",
           "sum32": 27017371,
-          "coverage_status": "partial",
           "runs": [
             [
               3103,
@@ -1848,7 +1793,6 @@
           "first": "04732",
           "last": "07747",
           "sum32": 810963,
-          "coverage_status": "complete",
           "runs": [
             [
               2522,
@@ -1873,7 +1817,6 @@
           "first": "46511",
           "last": "24022",
           "sum32": 217061,
-          "coverage_status": "complete",
           "runs": [
             [
               19785,
@@ -1897,7 +1840,6 @@
           "first": "05032",
           "last": "05071",
           "sum32": 548599,
-          "coverage_status": "complete",
           "runs": [
             [
               2586,
@@ -1918,7 +1860,6 @@
           "first": "05072",
           "last": "05172",
           "sum32": 4573088,
-          "coverage_status": "complete",
           "runs": [
             [
               2618,
@@ -1947,7 +1888,6 @@
           "first": "05173",
           "last": "03525",
           "sum32": 3555042,
-          "coverage_status": "complete",
           "runs": [
             [
               2683,
@@ -1979,7 +1919,6 @@
           "first": "26351",
           "last": "26603",
           "sum32": 2117906,
-          "coverage_status": "complete",
           "runs": [
             [
               11497,
@@ -2002,7 +1941,6 @@
           "first": "55716",
           "last": "15763",
           "sum32": 2692768,
-          "coverage_status": "complete",
           "runs": [
             [
               23502,
@@ -2039,7 +1977,6 @@
           "first": "46531",
           "last": "45772",
           "sum32": 5381380,
-          "coverage_status": "untranslated",
           "runs": [
             [
               19801,
@@ -2064,7 +2001,6 @@
           "first": "24023",
           "last": "25744",
           "sum32": 13161082,
-          "coverage_status": "partial",
           "runs": [
             [
               10259,
@@ -2101,7 +2037,6 @@
           "first": "26604",
           "last": "11252",
           "sum32": 7036117,
-          "coverage_status": "partial",
           "runs": [
             [
               11652,
@@ -2127,7 +2062,6 @@
           "first": "22376",
           "last": "27754",
           "sum32": 10665564,
-          "coverage_status": "partial",
           "runs": [
             [
               9470,
@@ -2155,7 +2089,6 @@
           "first": "47247",
           "last": "47536",
           "sum32": 2432239,
-          "coverage_status": "complete",
           "runs": [
             [
               20135,
@@ -2176,7 +2109,6 @@
           "first": "47537",
           "last": "20212",
           "sum32": 3579890,
-          "coverage_status": "partial",
           "runs": [
             [
               20319,
@@ -2200,7 +2132,6 @@
           "first": "57360",
           "last": "57771",
           "sum32": 3858686,
-          "coverage_status": "complete",
           "runs": [
             [
               24304,
@@ -2220,7 +2151,6 @@
           "first": "107232",
           "last": "107723",
           "sum32": 3932851,
-          "coverage_status": "complete",
           "runs": [
             [
               36506,
@@ -2242,7 +2172,6 @@
           "first": "05311",
           "last": "07753",
           "sum32": 2325206,
-          "coverage_status": "complete",
           "runs": [
             [
               2761,
@@ -2279,7 +2208,6 @@
           "first": "03526",
           "last": "03775",
           "sum32": 2423532,
-          "coverage_status": "complete",
           "runs": [
             [
               1878,
@@ -2318,7 +2246,6 @@
           "first": "05457",
           "last": "77773",
           "sum32": 7778907,
-          "coverage_status": "complete",
           "runs": [
             [
               2863,
@@ -2350,7 +2277,6 @@
           "first": "11274",
           "last": "11400",
           "sum32": 1010462,
-          "coverage_status": "complete",
           "runs": [
             [
               4796,
@@ -2371,7 +2297,6 @@
           "first": "05464",
           "last": "21543",
           "sum32": 8517156,
-          "coverage_status": "partial",
           "runs": [
             [
               2868,
@@ -2397,7 +2322,6 @@
           "first": "21544",
           "last": "05566",
           "sum32": 1311562,
-          "coverage_status": "complete",
           "runs": [
             [
               9060,
@@ -2431,7 +2355,6 @@
           "first": "05567",
           "last": "27766",
           "sum32": 1680264,
-          "coverage_status": "complete",
           "runs": [
             [
               2935,
@@ -2464,7 +2387,6 @@
           "first": "107724",
           "last": "11770",
           "sum32": 3112063,
-          "coverage_status": "complete",
           "runs": [
             [
               36820,
@@ -2488,7 +2410,6 @@
           "first": "21573",
           "last": "21774",
           "sum32": 1575691,
-          "coverage_status": "complete",
           "runs": [
             [
               9083,
@@ -2509,7 +2430,6 @@
           "first": "36027",
           "last": "36071",
           "sum32": 556882,
-          "coverage_status": "complete",
           "runs": [
             [
               15383,
@@ -2537,7 +2457,6 @@
           "first": "40123",
           "last": "40225",
           "sum32": 949719,
-          "coverage_status": "complete",
           "runs": [
             [
               16467,
@@ -2558,7 +2477,6 @@
           "first": "34000",
           "last": "40446",
           "sum32": 4181911,
-          "coverage_status": "complete",
           "runs": [
             [
               14336,
@@ -2582,7 +2500,6 @@
           "first": "34213",
           "last": "35640",
           "sum32": 9845782,
-          "coverage_status": "complete",
           "runs": [
             [
               14475,
@@ -2603,7 +2520,6 @@
           "first": "36072",
           "last": "07755",
           "sum32": 8304799,
-          "coverage_status": "complete",
           "runs": [
             [
               15418,
@@ -2627,7 +2543,6 @@
           "first": "37252",
           "last": "37743",
           "sum32": 4577393,
-          "coverage_status": "complete",
           "runs": [
             [
               16042,
@@ -2647,7 +2562,6 @@
           "first": "35641",
           "last": "35734",
           "sum32": 925735,
-          "coverage_status": "complete",
           "runs": [
             [
               15265,
@@ -2668,7 +2582,6 @@
           "first": "43077",
           "last": "43645",
           "sum32": 5165271,
-          "coverage_status": "complete",
           "runs": [
             [
               17983,
@@ -2696,7 +2609,6 @@
           "first": "40447",
           "last": "41771",
           "sum32": 10792578,
-          "coverage_status": "untranslated",
           "runs": [
             [
               16679,
@@ -2716,7 +2628,6 @@
           "first": "43646",
           "last": "43767",
           "sum32": 1019240,
-          "coverage_status": "partial",
           "runs": [
             [
               18342,
@@ -2784,7 +2695,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -2797,7 +2707,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -2815,7 +2724,6 @@
           "first": "16000",
           "last": "76000",
           "sum32": 11564,
-          "coverage_status": "complete",
           "runs": [
             [
               7168,
@@ -2845,7 +2753,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -2860,7 +2767,6 @@
           "first": "04000",
           "last": "04071",
           "sum32": 814756,
-          "coverage_status": "complete",
           "runs": [
             [
               2048,
@@ -2882,7 +2788,6 @@
           "first": "14000",
           "last": "20202",
           "sum32": 9156291,
-          "coverage_status": "complete",
           "runs": [
             [
               6144,
@@ -2914,7 +2819,6 @@
           "first": "12000",
           "last": "12341",
           "sum32": 1776298,
-          "coverage_status": "complete",
           "runs": [
             [
               5120,
@@ -2938,7 +2842,6 @@
           "first": "12342",
           "last": "26035",
           "sum32": 11362068,
-          "coverage_status": "complete",
           "runs": [
             [
               5346,
@@ -2987,7 +2890,6 @@
           "first": "02000",
           "last": "04137",
           "sum32": 3760779,
-          "coverage_status": "complete",
           "runs": [
             [
               1024,
@@ -3012,7 +2914,6 @@
           "first": "16002",
           "last": "20236",
           "sum32": 3460297,
-          "coverage_status": "complete",
           "runs": [
             [
               7170,
@@ -3037,7 +2938,6 @@
           "first": "106000",
           "last": "107214",
           "sum32": 5539158,
-          "coverage_status": "partial",
           "runs": [
             [
               35840,
@@ -3065,7 +2965,6 @@
           "first": "104062",
           "last": "105142",
           "sum32": 2774246,
-          "coverage_status": "complete",
           "runs": [
             [
               34866,
@@ -3086,7 +2985,6 @@
           "first": "46000",
           "last": "46331",
           "sum32": 3226339,
-          "coverage_status": "complete",
           "runs": [
             [
               19456,
@@ -3114,7 +3012,6 @@
           "first": "15262",
           "last": "15650",
           "sum32": 3184400,
-          "coverage_status": "complete",
           "runs": [
             [
               6834,
@@ -3138,7 +3035,6 @@
           "first": "100000",
           "last": "101577",
           "sum32": 28310217,
-          "coverage_status": "partial",
           "runs": [
             [
               32768,
@@ -3266,7 +3162,6 @@
           "first": "56000",
           "last": "56342",
           "sum32": 2882434,
-          "coverage_status": "partial",
           "runs": [
             [
               23552,
@@ -3286,7 +3181,6 @@
           "first": "44000",
           "last": "44736",
           "sum32": 7071009,
-          "coverage_status": "complete",
           "runs": [
             [
               18432,
@@ -3306,7 +3200,6 @@
           "first": "44737",
           "last": "45025",
           "sum32": 440742,
-          "coverage_status": "complete",
           "runs": [
             [
               18911,
@@ -3329,7 +3222,6 @@
           "first": "45026",
           "last": "45150",
           "sum32": 2707127,
-          "coverage_status": "complete",
           "runs": [
             [
               18966,
@@ -3371,7 +3263,6 @@
           "first": "26036",
           "last": "66003",
           "sum32": 440341,
-          "coverage_status": "complete",
           "runs": [
             [
               11294,
@@ -3402,7 +3293,6 @@
           "first": "66004",
           "last": "67775",
           "sum32": 12938927,
-          "coverage_status": "complete",
           "runs": [
             [
               27652,
@@ -3446,7 +3336,6 @@
           "first": "76001",
           "last": "76154",
           "sum32": 1211836,
-          "coverage_status": "partial",
           "runs": [
             [
               31745,
@@ -3475,7 +3364,6 @@
           "first": "72000",
           "last": "103776",
           "sum32": 14247450,
-          "coverage_status": "partial",
           "runs": [
             [
               29696,
@@ -3543,7 +3431,6 @@
           "first": "62000",
           "last": "62331",
           "sum32": 3026186,
-          "coverage_status": "complete",
           "runs": [
             [
               25600,
@@ -3563,7 +3450,6 @@
           "first": "26071",
           "last": "26230",
           "sum32": 1140353,
-          "coverage_status": "partial",
           "runs": [
             [
               11321,
@@ -3583,7 +3469,6 @@
           "first": "46332",
           "last": "46764",
           "sum32": 3423641,
-          "coverage_status": "complete",
           "runs": [
             [
               19674,
@@ -3603,7 +3488,6 @@
           "first": "10742",
           "last": "11302",
           "sum32": 2396817,
-          "coverage_status": "complete",
           "runs": [
             [
               4578,
@@ -3626,7 +3510,6 @@
           "first": "70002",
           "last": "47042",
           "sum32": 6779897,
-          "coverage_status": "complete",
           "runs": [
             [
               28674,
@@ -3664,7 +3547,6 @@
           "first": "73123",
           "last": "73263",
           "sum32": 6149999,
-          "coverage_status": "complete",
           "runs": [
             [
               30291,
@@ -3705,7 +3587,6 @@
           "first": "76261",
           "last": "101767",
           "sum32": 36147192,
-          "coverage_status": "untranslated",
           "runs": [
             [
               31921,
@@ -3792,7 +3673,6 @@
           "first": "73264",
           "last": "04655",
           "sum32": 4421104,
-          "coverage_status": "complete",
           "runs": [
             [
               30388,
@@ -3839,7 +3719,6 @@
           "first": "11303",
           "last": "13365",
           "sum32": 11263113,
-          "coverage_status": "complete",
           "runs": [
             [
               4803,
@@ -3959,7 +3838,6 @@
           "first": "50073",
           "last": "42041",
           "sum32": 19343776,
-          "coverage_status": "complete",
           "runs": [
             [
               20539,
@@ -4049,7 +3927,6 @@
           "first": "32000",
           "last": "32433",
           "sum32": 16449369,
-          "coverage_status": "complete",
           "runs": [
             [
               13312,
@@ -4137,7 +4014,6 @@
           "first": "54110",
           "last": "54216",
           "sum32": 1075723,
-          "coverage_status": "complete",
           "runs": [
             [
               22600,
@@ -4159,7 +4035,6 @@
           "first": "54217",
           "last": "20437",
           "sum32": 5924892,
-          "coverage_status": "complete",
           "runs": [
             [
               22671,
@@ -4187,7 +4062,6 @@
           "first": "76701",
           "last": "77467",
           "sum32": 4631508,
-          "coverage_status": "complete",
           "runs": [
             [
               32193,
@@ -4205,7 +4079,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -4221,7 +4094,6 @@
           "first": "52000",
           "last": "55323",
           "sum32": 15116152,
-          "coverage_status": "partial",
           "runs": [
             [
               21504,
@@ -4253,7 +4125,6 @@
           "first": "77470",
           "last": "77772",
           "sum32": 2740931,
-          "coverage_status": "complete",
           "runs": [
             [
               32568,
@@ -4277,7 +4148,6 @@
           "first": "74466",
           "last": "73634",
           "sum32": 20221294,
-          "coverage_status": "partial",
           "runs": [
             [
               31030,
@@ -4321,7 +4191,6 @@
           "first": "105652",
           "last": "105771",
           "sum32": 1059731,
-          "coverage_status": "complete",
           "runs": [
             [
               35754,
@@ -4339,7 +4208,6 @@
           "first": null,
           "last": null,
           "sum32": 0,
-          "coverage_status": "complete",
           "runs": []
         },
         {
@@ -4354,7 +4222,6 @@
           "first": "36147",
           "last": "36551",
           "sum32": 3577232,
-          "coverage_status": "complete",
           "runs": [
             [
               15463,
@@ -4374,7 +4241,6 @@
           "first": "34720",
           "last": "35137",
           "sum32": 1772903,
-          "coverage_status": "complete",
           "runs": [
             [
               14800,
@@ -4394,7 +4260,6 @@
           "first": "13366",
           "last": "13520",
           "sum32": 1202359,
-          "coverage_status": "complete",
           "runs": [
             [
               5878,
@@ -4414,7 +4279,6 @@
           "first": "35140",
           "last": "35271",
           "sum32": 944126,
-          "coverage_status": "complete",
           "runs": [
             [
               14944,
@@ -4434,7 +4298,6 @@
           "first": "40530",
           "last": "41500",
           "sum32": 6526591,
-          "coverage_status": "complete",
           "runs": [
             [
               16728,
@@ -4454,7 +4317,6 @@
           "first": "41501",
           "last": "41611",
           "sum32": 838745,
-          "coverage_status": "complete",
           "runs": [
             [
               17217,
@@ -4474,7 +4336,6 @@
           "first": "35272",
           "last": "35717",
           "sum32": 3533673,
-          "coverage_status": "complete",
           "runs": [
             [
               15034,
@@ -4494,7 +4355,6 @@
           "first": "42042",
           "last": "42104",
           "sum32": 460704,
-          "coverage_status": "complete",
           "runs": [
             [
               17442,
@@ -4514,7 +4374,6 @@
           "first": "42105",
           "last": "43247",
           "sum32": 8464455,
-          "coverage_status": "complete",
           "runs": [
             [
               17477,
@@ -4534,7 +4393,6 @@
           "first": "43250",
           "last": "43764",
           "sum32": 4060592,
-          "coverage_status": "complete",
           "runs": [
             [
               18088,
@@ -4554,7 +4412,6 @@
           "first": "45447",
           "last": "45507",
           "sum32": 414126,
-          "coverage_status": "partial",
           "runs": [
             [
               19239,
@@ -4574,7 +4431,6 @@
           "first": "36552",
           "last": "37736",
           "sum32": 8224314,
-          "coverage_status": "complete",
           "runs": [
             [
               15722,
@@ -4596,7 +4452,6 @@
           "first": "32434",
           "last": "33754",
           "sum32": 11604776,
-          "coverage_status": "complete",
           "runs": [
             [
               13596,
@@ -4632,7 +4487,6 @@
           "first": "13521",
           "last": "13775",
           "sum32": 2409739,
-          "coverage_status": "complete",
           "runs": [
             [
               5969,
@@ -4652,7 +4506,6 @@
           "first": "04662",
           "last": "04775",
           "sum32": 1213928,
-          "coverage_status": "complete",
           "runs": [
             [
               2482,
@@ -4674,7 +4527,6 @@
           "first": "06006",
           "last": "02625",
           "sum32": 26981027,
-          "coverage_status": "partial",
           "runs": [
             [
               3078,
@@ -4711,7 +4563,6 @@
           "first": "04776",
           "last": "07716",
           "sum32": 810907,
-          "coverage_status": "complete",
           "runs": [
             [
               2558,
@@ -4736,7 +4587,6 @@
           "first": "55324",
           "last": "11601",
           "sum32": 217061,
-          "coverage_status": "complete",
           "runs": [
             [
               23252,
@@ -4760,7 +4610,6 @@
           "first": "05074",
           "last": "05133",
           "sum32": 548815,
-          "coverage_status": "complete",
           "runs": [
             [
               2620,
@@ -4781,7 +4630,6 @@
           "first": "05134",
           "last": "05234",
           "sum32": 4519970,
-          "coverage_status": "complete",
           "runs": [
             [
               2652,
@@ -4811,7 +4659,6 @@
           "first": "05235",
           "last": "03517",
           "sum32": 3396863,
-          "coverage_status": "complete",
           "runs": [
             [
               2717,
@@ -4847,7 +4694,6 @@
           "first": "26370",
           "last": "26626",
           "sum32": 2102393,
-          "coverage_status": "complete",
           "runs": [
             [
               11512,
@@ -4867,7 +4713,6 @@
           "first": "55344",
           "last": "55657",
           "sum32": 2933294,
-          "coverage_status": "complete",
           "runs": [
             [
               23268,
@@ -4889,7 +4734,6 @@
           "first": "75254",
           "last": "73674",
           "sum32": 5821710,
-          "coverage_status": "untranslated",
           "runs": [
             [
               31404,
@@ -4918,7 +4762,6 @@
           "first": "24042",
           "last": "11756",
           "sum32": 13089486,
-          "coverage_status": "complete",
           "runs": [
             [
               10274,
@@ -4961,7 +4804,6 @@
           "first": "26627",
           "last": "56756",
           "sum32": 8048762,
-          "coverage_status": "complete",
           "runs": [
             [
               11671,
@@ -5002,7 +4844,6 @@
           "first": "22372",
           "last": "27767",
           "sum32": 10417120,
-          "coverage_status": "partial",
           "runs": [
             [
               9466,
@@ -5026,7 +4867,6 @@
           "first": "47205",
           "last": "47476",
           "sum32": 2435575,
-          "coverage_status": "complete",
           "runs": [
             [
               20101,
@@ -5046,7 +4886,6 @@
           "first": "47477",
           "last": "47771",
           "sum32": 2422798,
-          "coverage_status": "partial",
           "runs": [
             [
               20287,
@@ -5066,7 +4905,6 @@
           "first": "56757",
           "last": "57372",
           "sum32": 3905927,
-          "coverage_status": "complete",
           "runs": [
             [
               24047,
@@ -5086,7 +4924,6 @@
           "first": "31422",
           "last": "31760",
           "sum32": 3514269,
-          "coverage_status": "complete",
           "runs": [
             [
               13074,
@@ -5106,7 +4943,6 @@
           "first": "107234",
           "last": "107725",
           "sum32": 3934290,
-          "coverage_status": "complete",
           "runs": [
             [
               36508,
@@ -5127,7 +4963,6 @@
           "first": "05354",
           "last": "05477",
           "sum32": 2261126,
-          "coverage_status": "complete",
           "runs": [
             [
               2796,
@@ -5164,7 +4999,6 @@
           "first": "03520",
           "last": "03767",
           "sum32": 2423807,
-          "coverage_status": "complete",
           "runs": [
             [
               1872,
@@ -5202,7 +5036,6 @@
           "first": "05521",
           "last": "55776",
           "sum32": 7740351,
-          "coverage_status": "complete",
           "runs": [
             [
               2897,
@@ -5230,7 +5063,6 @@
           "first": "17673",
           "last": "17776",
           "sum32": 994282,
-          "coverage_status": "complete",
           "runs": [
             [
               8123,
@@ -5251,7 +5083,6 @@
           "first": "05526",
           "last": "21765",
           "sum32": 8521834,
-          "coverage_status": "partial",
           "runs": [
             [
               2902,
@@ -5277,7 +5108,6 @@
           "first": "07722",
           "last": "05647",
           "sum32": 1764173,
-          "coverage_status": "complete",
           "runs": [
             [
               4050,
@@ -5311,7 +5141,6 @@
           "first": "05650",
           "last": "05772",
           "sum32": 1208589,
-          "coverage_status": "complete",
           "runs": [
             [
               2984,
@@ -5344,7 +5173,6 @@
           "first": "107726",
           "last": "57762",
           "sum32": 3286561,
-          "coverage_status": "complete",
           "runs": [
             [
               36822,
@@ -5370,7 +5198,6 @@
           "first": "45510",
           "last": "25776",
           "sum32": 2667940,
-          "coverage_status": "complete",
           "runs": [
             [
               19272,
