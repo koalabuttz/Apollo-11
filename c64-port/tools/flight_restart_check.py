@@ -24,9 +24,18 @@ erasable image must equal yaAGC's from the same state with its clock frozen
 for --resume-cs centiseconds of AGC time, reported (the store does not yet
 hold all of P63).
 
-Writes build/flight-restart/ (logs, snapshots, summary.json).
+--vice --gojam-module (make flight-gojam-vice) instead starts from the state
+just before the GOJAM and applies it on the C64, as the resident's trigger
+will: the GOJAM module (0x01E5, platform/c64/resident_gojam_module.c)
+through rk_run_module, whose image and device records must equal the
+post-GOJAM snapshot's; then apollo_ov2_restart_keep_pinned and the burst,
+whose image must equal yaAGC's as above.
 
-  flight_restart_check.py [--host-cc CC] [--skip-index] [--only NAME,...] [--vice [--resume-cs CS]]
+Writes build/flight-restart/ (logs, snapshots, summary.json, or
+summary-gojam-module.json).
+
+  flight_restart_check.py [--host-cc CC] [--skip-index] [--only NAME,...]
+                          [--vice [--resume-cs CS | --gojam-module]]
 """
 import argparse, json, os, re, struct, subprocess, sys
 from pathlib import Path
@@ -38,6 +47,8 @@ import flight_host_differential as fhd  # noqa: E402
 
 OUT = ROOT / 'build/flight-restart'
 STORE = ROOT / 'build/flight-store'
+# The hardware restart module (platform/c64/resident_flight.h RK_MODULE_GOJAM).
+GOJAM_MODULE = 0x01E5
 PAL_HZ = 985248
 # (name, mission, centiseconds, keys, inputs, GOJAM centisecond, FLIGHT_SCALED
 # schedule or None for unscaled with samples, run on the C64 with --vice).
@@ -126,7 +137,8 @@ def host(exe, scenario, words, lanes):
     r = run(exe[m], m, cs, keys, jam, name)
     got = parse(r.stdout, m, words[m], lanes)
     sym = symbols(m)
-    pre = snap_words(snapshot(exe[m], m, at, keys, env, f'{name}-pre'))
+    pre_path = snapshot(exe[m], m, at, keys, env, f'{name}-pre')
+    pre = snap_words(pre_path)
     post = snapshot(exe[m], m, at, keys, jam, f'{name}-gojam')
     end = snap_words(snapshot(exe[m], m, cs, keys, jam, f'{name}-end'))
     end_base = snap_words(snapshot(exe[m], m, cs, keys, env, f'{name}-base-end'))
@@ -146,7 +158,7 @@ def host(exe, scenario, words, lanes):
                active_phases_before={k: f'{pre[a]:05o}' for k, a in phases.items() if pre[a] not in (0, 0o77777)},
                active_phases_end={k: f'{end[a]:05o}' for k, a in phases.items() if end[a] not in (0, 0o77777)},
                end_words_differing_from_base=sum(1 for i in range(0o20, 2048) if not 0o24 <= i <= 0o31 and end[i] != end_base[i]),
-               gojam_snapshot=str(post.relative_to(ROOT)))
+               gojam_snapshot=str(post.relative_to(ROOT)), pre_snapshot=str(pre_path.relative_to(ROOT)))
     bad = []
     if r.returncode or len(got['gojams']) != 1:
         bad.append(f"exit {r.returncode}, {len(got['gojams'])} GOJAMs")
@@ -169,13 +181,17 @@ def host(exe, scenario, words, lanes):
     return row
 
 
-def c64_link(cc, m, header, tag, cs=None):
+def c64_link(cc, m, header, tag, cs=None, defines=()):
     from resident_flight_build import COMMON, MISSION, resident_sources
     out = OUT / f'{tag}.prg'
+    sources = resident_sources(m)
+    if '-DRS_GOJAM_MODULE' in defines:
+        # restart_check.c includes resident_flight.c, for rk_run_module.
+        sources = [s for s in sources if s != 'platform/c64/resident_flight.c']
     subprocess.run([str(c) for c in [
-        cc, *COMMON, *MISSION[m], f'-DRS_SNAP="{header}"', *([f'-DRS_CS={cs}u'] if cs else []),
+        cc, *COMMON, *MISSION[m], f'-DRS_SNAP="{header}"', *([f'-DRS_CS={cs}u'] if cs else []), *defines,
         '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-        'platform/c64/restart_check.c', *resident_sources(m), STORE / 'overlay_v2_services.S', '-o', out]],
+        'platform/c64/restart_check.c', *sources, STORE / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
 
@@ -209,9 +225,90 @@ def c64_run(a, m, prg, tag, pinned):
     d = mail.read_bytes()
     steps, start, end, z, fb, q, newjob, status, sb, isr, ie, idle = struct.unpack_from('<I6H5B', d, 0x10)
     words = list(struct.unpack('<2048H', image.read_bytes())) if image.exists() else None
-    return dict(ok=True, boot_failed=d[5] == 1, steps=steps, start_cs=start, end_cs=end, z=f'{z:05o}', fb=f'{fb:05o}',
+    devices = list(struct.unpack_from(f'<{len(DEVICE_FIELDS)}H', d, 0x40))
+    return dict(ok=True, boot_failed=d[5] == 1, failed=d[1], fail_class=d[5], devices=dict(zip(DEVICE_FIELDS, devices)),
+                steps=steps, start_cs=start, end_cs=end, z=f'{z:05o}', fb=f'{fb:05o}',
                 q=f'{q:05o}', newjob=f'{newjob:05o}', status=status, superbank=f'{sb:03o}', in_interrupt=isr,
                 interrupt_enabled=ie, idle=bool(idle), words=words)
+
+
+# platform/c64/restart_check.c rs_devices (RS_GOJAM_MODULE): rk_hardware in
+# SNAP_HW's order, rk_flight in SNAP_FLIGHT's, then rk_device and the run.
+HW_FIELDS = ('channel11 in_interrupt channel5 channel6 channel13 channel15 channel10 channel32 channel12 channel14 '
+             'channel30 channel33 channel31 channel3 channel4').split()
+FLIGHT_FIELDS = ('superbank interrupt_enabled channel16 channel34 channel35 trap31a trap31b trap32 executive_alarm '
+                 'waitlist_alarm warning').split()
+DEVICE_FIELDS = ([f'hw.{f}' for f in HW_FIELDS] + [f'flight.{f}' for f in FLIGHT_FIELDS]
+                 + ['io.superbank', 'io.interrupt_enabled', 'run_status', 'env_status', 'rk_pending',
+                    'loaded_job', 'loaded_task', 'fault'])
+
+
+def snap_records(path):
+    """A snapshot header's SNAP_IO, SNAP_HW and SNAP_FLIGHT fields, as rs_devices names them."""
+    t = path.read_text()
+    out = {}
+    for macro, prefix in (('SNAP_IO', 'io'), ('SNAP_HW', 'hw'), ('SNAP_FLIGHT', 'flight')):
+        body = re.search(rf'#define {macro}\((\w+)\) ([^\n]*)', t)
+        for field, value in re.findall(r'\(\w+\)\.(\w+)=(\d+)u;', body[2]):
+            out[f'{prefix}.{field}'] = int(value)
+    return out
+
+
+def c64_gojam(a, row, m):
+    """The GOJAM on the C64 (flight-gojam-vice): from the -pre snapshot, the
+    GOJAM module through rk_run_module; its image and device records must be
+    the post-GOJAM snapshot's. Then, with apollo_ov2_restart_keep_pinned, the
+    burst, against yaAGC from the post-GOJAM state."""
+    pre, post = ROOT / row['pre_snapshot'], ROOT / row['gojam_snapshot']
+    manifest = json.loads((STORE / f'{m}-manifest.json').read_text())
+    pinned = any(x['slot'] == 3 for x in manifest['modules'])
+    module = next((x for x in manifest['modules'] if x['id'] == GOJAM_MODULE), None)
+    name = row['scenario']
+    res = dict(module=None if module is None else dict(id=f'{GOJAM_MODULE:#06x}', slot=module['slot'], bytes=module['bytes']))
+    if module is None:
+        res['ok'] = False
+        return res
+    tag = f'{name}-gojam-module'
+    g = c64_run(a, m, c64_link(a.cc, m, pre, tag, defines=('-DRS_GOJAM_MODULE', '-DRS_GOJAM_ONLY')), tag, pinned)
+    if not g['ok'] or g['boot_failed'] or g['failed']:
+        res.update(gojam={k: v for k, v in g.items() if k != 'words'}, ok=False)
+        return res
+    want_words, want = snap_words(post), snap_records(post)
+    dev = g['devices']
+    word_diff = [i for i in range(2048) if g['words'][i] != want_words[i]]
+    field_diff = {k: [dev[k], v] for k, v in want.items() if k in dev and dev[k] != v}
+    res['gojam'] = dict(run_status=dev['run_status'], env_status=dev['env_status'], q=f'{g["words"][2]:05o}',
+                        z=f'{g["words"][5]:05o}', words_equal=2048 - len(word_diff),
+                        words_differing=[f'{i:04o} {g["words"][i]:05o}/{want_words[i]:05o}' for i in word_diff[:16]],
+                        fields_compared=sum(1 for k in want if k in dev), fields_differing=field_diff)
+    tag = f'{name}-gojam-burst'
+    b = c64_run(a, m, c64_link(a.cc, m, pre, tag, defines=('-DRS_GOJAM_MODULE',)), tag, pinned)
+    res['burst'] = {k: v for k, v in b.items() if k != 'words'}
+    if not b['ok'] or b['boot_failed'] or b['fail_class'] == 3:
+        res['ok'] = False
+        return res
+    yw, r = reference(a, m, name, post, b)
+    diff = [i for i in range(2048) if b['words'][i] != yw[i]]
+    res['burst'].update(reference=r.stdout.strip(), reference_arrived=r.returncode == 0,
+                        words_differing=[f'{i:04o} {b["words"][i]:05o}/{yw[i]:05o}' for i in diff[:16]],
+                        words_equal=2048 - len(diff))
+    bd = b['devices']
+    res['ok'] = (not word_diff and not field_diff and r.returncode == 0 and not diff
+                 and bd['loaded_job'] == 0 and bd['loaded_task'] == 0 and bd['fault'] == 0)
+    return res
+
+
+def reference(a, m, name, header, burst):
+    """yaAGC from header, its clock frozen, to where the C64 burst stopped."""
+    ref = OUT / f'flight-restart-reference-{name}'
+    y = fhd.YAAGC
+    subprocess.run([a.host_cc, '-std=c99', '-O1', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{y}',
+                    f'-DRK_{m.upper()}=1', f'-DRS_SNAP="{header}"', 'tools/flight_restart_reference.c',
+                    str(fhd.OUT / 'agc_engine_scaled.o'), str(y / 'agc_engine_init.o'), str(y / 'rfopen.o'), '-lm',
+                    '-o', str(ref)], cwd=ROOT, check=True)
+    stop = [] if burst['idle'] else [burst['z'], burst['fb'], burst['superbank']]
+    r = subprocess.run([str(ref), fhd.ROPE[m], str(OUT / f'{name}-reference.bin'), *stop], cwd=ROOT, capture_output=True, text=True)
+    return list(struct.unpack('<2048H', (OUT / f'{name}-reference.bin').read_bytes())), r
 
 
 def c64(a, row, m):
@@ -225,15 +322,7 @@ def c64(a, row, m):
     if not burst['ok'] or burst['boot_failed']:
         res['ok'] = False
         return res
-    ref = OUT / f'flight-restart-reference-{name}'
-    y = fhd.YAAGC
-    subprocess.run([a.host_cc, '-std=c99', '-O1', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{y}',
-                    f'-DRK_{m.upper()}=1', f'-DRS_SNAP="{header}"', 'tools/flight_restart_reference.c',
-                    str(fhd.OUT / 'agc_engine_scaled.o'), str(y / 'agc_engine_init.o'), str(y / 'rfopen.o'), '-lm',
-                    '-o', str(ref)], cwd=ROOT, check=True)
-    stop = [] if burst['idle'] else [burst['z'], burst['fb'], burst['superbank']]
-    r = subprocess.run([str(ref), fhd.ROPE[m], str(OUT / f'{name}-reference.bin'), *stop], cwd=ROOT, capture_output=True, text=True)
-    yw = list(struct.unpack('<2048H', (OUT / f'{name}-reference.bin').read_bytes()))
+    yw, r = reference(a, m, name, header, burst)
     # A, L and Q at 16 bits on both sides.
     diff = [i for i in range(2048) if burst['words'][i] != yw[i]]
     res['burst'].update(reference=r.stdout.strip(), reference_arrived=r.returncode == 0,
@@ -253,6 +342,8 @@ def main():
     p.add_argument('--only', help='comma-separated scenario names')
     p.add_argument('--vice', dest='run_vice', action='store_true', help='also run the restart on the C64 store in VICE')
     p.add_argument('--resume-cs', type=int, default=200, help='AGC centiseconds the C64 resume runs')
+    p.add_argument('--gojam-module', action='store_true',
+                   help='with --vice: apply the GOJAM on the C64 (the GOJAM module) from the pre-GOJAM state')
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     p.add_argument('--vice-bin', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=Path, default=Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
@@ -281,7 +372,20 @@ def main():
               + (f", {row['samples_equal']}/{row['samples']} samples equal ({row['base_samples_equal']} without the restart)"
                  if not row['schedule'] else '')
               + ('' if row['ok'] else ' FAILED: ' + '; '.join(row['failures'])))
-        if a.run_vice and scenario[7]:
+        if a.run_vice and scenario[7] and a.gojam_module:
+            row['c64_gojam'] = c64_gojam(a, row, scenario[1])
+            g, b = row['c64_gojam'].get('gojam', {}), row['c64_gojam'].get('burst', {})
+            print(f"  C64 GOJAM module {row['c64_gojam'].get('module')}: run status {g.get('run_status')}, Q {g.get('q')} "
+                  f"Z {g.get('z')}; {g.get('words_equal')}/2048 words and "
+                  f"{g.get('fields_compared', 0) - len(g.get('fields_differing') or {})}/{g.get('fields_compared')} "
+                  f"device fields equal the post-GOJAM snapshot" + (f" {g['words_differing']}" if g.get('words_differing') else '')
+                  + (f" {g['fields_differing']}" if g.get('fields_differing') else ''))
+            print(f"  C64 burst after apollo_ov2_restart_keep_pinned: {b.get('steps')} steps, "
+                  f"{'idle at ADVAN' if b.get('idle') else 'stopped'} Z {b.get('z')} FB {b.get('fb')} status {b.get('status')}; "
+                  f"yaAGC {b.get('reference')}; {b.get('words_equal')}/2048 words equal"
+                  + (f" {b['words_differing']}" if b.get('words_differing') else ''))
+            row['ok'] = row['ok'] and row['c64_gojam']['ok']
+        elif a.run_vice and scenario[7]:
             row['c64'] = c64(a, row, scenario[1])
             b = row['c64'].get('burst', {})
             rs = row['c64'].get('resume', {})
@@ -293,7 +397,7 @@ def main():
             row['ok'] = row['ok'] and row['c64']['ok']
         failed += not row['ok']
         summary.append(row)
-    (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
+    (OUT / ('summary-gojam-module.json' if a.gojam_module else 'summary.json')).write_text(json.dumps(summary, indent=1) + '\n')
     return 1 if failed else 0
 
 
