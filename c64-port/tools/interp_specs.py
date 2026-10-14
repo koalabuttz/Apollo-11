@@ -576,6 +576,9 @@ SPECS = {
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
     },
@@ -2337,6 +2340,9 @@ SPECS = {
         'joint_states': p51_p53_states()[1],
         # The star-pair search (up to 666 pairs of the 37 catalog stars) runs
         # past 4,000 routines.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 10000,
         'freeze_stride': 192,
     },

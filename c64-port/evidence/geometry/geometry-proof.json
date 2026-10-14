@@ -227,7 +227,7 @@
   {
    "mission": "cm",
    "keep": "0x7fffc000000000000000000",
-   "cases": 16,
+   "cases": 17,
    "case_ids": [
     67604,
     68136,
@@ -244,15 +244,15 @@
     71180,
     71836,
     72115,
-    72264
+    72264,
+    72575
    ]
   },
   {
    "mission": "cm",
    "keep": "0x7ffc0000000000000000000",
-   "cases": 12,
+   "cases": 11,
    "case_ids": [
-    72575,
     72563,
     72716,
     73232,
@@ -269,9 +269,9 @@
  ],
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 1671,
-  "edges_host_vectors": 1671,
-  "edges_c64": 1671,
+  "edges_all_cases": 1675,
+  "edges_host_vectors": 1675,
+  "edges_c64": 1675,
   "edges_not_on_c64": []
  },
  "stops": {

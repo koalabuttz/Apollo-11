@@ -789,7 +789,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "c811fe8f6afca233ac425f9a7becf2f48ab1cc47883d69e32a717424dbcb3f75"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
@@ -797,14 +797,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "eb1a45557e44359f220fb7c405230f0967219aaba917ba68618bea95ed11f142",
             "vice_targets": {
               "vice-geometry": 197
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "38fffd4c3103c4637d528d46dbd20bd153d474ea0f6a8cb46f98371b9e3a6c58"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -3655,7 +3655,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -3663,14 +3663,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -9946,7 +9946,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "c811fe8f6afca233ac425f9a7becf2f48ab1cc47883d69e32a717424dbcb3f75"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
@@ -9954,14 +9954,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "eb1a45557e44359f220fb7c405230f0967219aaba917ba68618bea95ed11f142",
             "vice_targets": {
               "vice-geometry": 197
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "38fffd4c3103c4637d528d46dbd20bd153d474ea0f6a8cb46f98371b9e3a6c58"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -10882,7 +10882,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -10890,14 +10890,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
