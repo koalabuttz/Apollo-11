@@ -86,7 +86,11 @@ int main(void){
   at=IF_STREAM;
   while(cases<IF_MAX&&next_case()){if_result *r=&RESULTS[cases];enum exec_status s;uint16_t n=0;
    rk_pending=0;rk_hardware.in_interrupt=0;rk_ticks=ov2_irq_count;
-   do{s=rk_resident_step(AGC_TRANSFER_NONE);++n;}while(s==EXEC_OK&&at_point()&&n<IF_STEPS);
+   do{
+#ifdef RK_WORK_CLOCK
+    rk_work=0;   /* the work clock held too: no tick from the case's own work */
+#endif
+    s=rk_resident_step(AGC_TRANSFER_NONE);++n;}while(s==EXEC_OK&&at_point()&&n<IF_STEPS);
    r->digest=digest();r->z=IMAGE->words[5];r->fb=IMAGE->words[4];r->steps=n;r->status=(uint8_t)s;
    r->flags=(uint8_t)(at_point()?1u:0u);
    if(s!=EXEC_OK||r->flags){++failures;if(!first_failure)first_failure=2;}

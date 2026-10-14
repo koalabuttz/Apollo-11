@@ -2,8 +2,8 @@
  "Comanche055/P34-35_P74-75.agc": {
   "native_file": "src/cm_p34_p35.c",
   "words": 1065,
-  "untranslated_words": 14,
-  "routines": 508,
+  "untranslated_words": 0,
+  "routines": 513,
   "map": [
    {
     "address": "35,2000",
@@ -51,8 +51,8 @@
     "address": "35,2006",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "35,2006",
-    "function": "r72006"
+    "routine": "35,2004",
+    "function": "r72004"
    },
    {
     "address": "35,2007",
@@ -737,8 +737,8 @@
     "address": "35,2150",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "35,2150",
-    "function": "r72150"
+    "routine": "35,2146",
+    "function": "r72146"
    },
    {
     "address": "35,2151",
@@ -3537,8 +3537,8 @@
     "address": "35,2756",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "35,2756",
-    "function": "r72756"
+    "routine": "35,2754",
+    "function": "r72754"
    },
    {
     "address": "35,2757",
@@ -3656,8 +3656,8 @@
     "address": "35,2777",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "35,2777",
-    "function": "r72777"
+    "routine": "35,2775",
+    "function": "r72775"
    },
    {
     "address": "35,3000",
@@ -4153,91 +4153,106 @@
     "address": "02,2575",
     "word": "00006",
     "source": "VNPOOH EXTEND ",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2576",
     "word": "23767",
     "source": " QXCH RTRN",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2577",
     "word": "55765",
     "source": " TS VERBNOUN",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2600",
     "word": "34610",
     "source": " CAF VNBANK",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2601",
     "word": "56004",
     "source": " XCH FBANK",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2602",
     "word": "55063",
     "source": " TS TBASE5",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2603",
     "word": "31765",
     "source": " CA VERBNOUN",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2604",
     "word": "04662",
     "source": " TCR BANKCALL",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2605",
     "word": "20720",
     "source": " CADR GOFLASH",
-    "constant": "data word (no instruction in the file reads it)"
+    "routine": "02,2575",
+    "function": "r4575"
    },
    {
     "address": "02,2606",
     "word": "14106",
     "source": " TCF GOTOPOOH",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2606",
+    "function": "r4606"
    },
    {
     "address": "02,2607",
     "word": "14611",
     "source": " TCF +2",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2607",
+    "function": "r4607"
    },
    {
     "address": "02,2610",
     "word": "04603",
     "source": "VNBANK TC -5",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2610",
+    "function": "r4610"
    },
    {
     "address": "02,2611",
     "word": "31063",
     "source": " CA TBASE5",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2610",
+    "function": "r4610"
    },
    {
     "address": "02,2612",
     "word": "54004",
     "source": " TS FBANK",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2610",
+    "function": "r4610"
    },
    {
     "address": "02,2613",
     "word": "01767",
     "source": " TC RTRN",
-    "untranslated": "VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet"
+    "routine": "02,2610",
+    "function": "r4610"
    },
    {
     "address": "02,2614",
