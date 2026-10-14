@@ -1492,7 +1492,7 @@ def cover_check(spec_id, spec, missions, cases, path, record):
         for t in rec['truncated_rows']:
             par = cases[t['case']]
             mi = missions[par['cm']]
-            cut = t.get('cut_loc') or loc_of(mi, t['cut'])
+            cut = 0 if t['cut'] == 'end' else (t.get('cut_loc') or loc_of(mi, t['cut']))
             snap = None
             if 'resumed_at' in t:
                 ok = hashlib.sha256(json.dumps(t['snapshot']).encode()).hexdigest() == t['snapshot_sha256']
@@ -2088,7 +2088,7 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             continue
         # (The fewest-edit 256: an arc only rare long runs take can need more
         # than a few tries for a prefix that fits.)
-        cands = sorted((i for i in arcs if arc in arcs[i] and not cases[i].get('cut')),
+        cands = sorted((i for i in arcs if arc in arcs[i] and not cases[i].get('cut') and not cases[i].get('snap')),
                        key=lambda i: (len(cases[i]['edits']), i))[:256]
         sub = os.path.join(B, '%s-cuts.bin' % spec_id)
         write_cases(sub, missions, [cases[i] for i in cands])
@@ -2105,21 +2105,30 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
                 trial[key] = dict(cases[i], cut=seq[at[j]])
                 took[j] = c64_row_cover.trace(d, [key], argv)[key]
                 return arc in took[j]
-            if not at or not takes(len(at) - 1):
-                continue
-            lo, hi = -1, len(at) - 1        # takes(hi); not takes(lo)
-            while hi - lo > 1:
-                mid = (lo + hi) // 2
-                lo, hi = (lo, mid) if takes(mid) else (mid, hi)
-            k = at[hi]
-            c = cut_row(cases[i], i, seq[k], k)
-            idx = {p: b for b, p in enumerate(mi.points)}
-            mask = 0
-            for p in seq[:k]:
-                mask |= 1 << idx[p]
             n = len(cases)
-            if c64_size(spec, sym, mi.m, mask, group_text(sym, [(mi.m, mask, [n])], cases + [c],
-                                                         rows + [['0', '0', '0', '0']])) is None:
+            if not at or not takes(len(at) - 1):
+                # No cut after the arc (the run ends there, as at an abort):
+                # the same run resumed from the oracle's snapshot at the last
+                # routine it enters, to its end (cut 0).
+                hi = len(at)
+                c = snap_cut(spec, sym, missions, mi, cut_row(cases[i], i, 0, len(seq)), seq, at, hi, arc,
+                             argv, trial, took, sub, ref, nat, d) if at else None
+                if c is None:
+                    continue
+                mask = c.pop('mask')
+            else:
+                lo, hi = -1, len(at) - 1        # takes(hi); not takes(lo)
+                while hi - lo > 1:
+                    mid = (lo + hi) // 2
+                    lo, hi = (lo, mid) if takes(mid) else (mid, hi)
+                k = at[hi]
+                c = cut_row(cases[i], i, seq[k], k)
+                idx = {p: b for b, p in enumerate(mi.points)}
+                mask = 0
+                for p in seq[:k]:
+                    mask |= 1 << idx[p]
+            if 'snap' not in c and c64_size(spec, sym, mi.m, mask, group_text(sym, [(mi.m, mask, [n])], cases + [c],
+                                                                             rows + [['0', '0', '0', '0']])) is None:
                 # The run up to the arc does not fit: the same run resumed
                 # from the original program's state at the last routine it
                 # enters before the arc (the oracle's snapshot there), to the
@@ -2135,7 +2144,8 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
                 continue
             if rr[0][1:] != rn[0][1:]:
                 differ += 1
-                print('  C64 cut: case %d at %s: oracle %s, native %s' % (i, mi.cp.where(seq[k]), rr[0][1:], rn[0][1:]))
+                print('  C64 cut: case %d at %s: oracle %s, native %s' % (i, mi.cp.where(c['cut']) if c['cut'] else 'end',
+                                                                       rr[0][1:], rn[0][1:]))
                 continue
             cases.append(c)
             rows.append([str(n)] + rr[0][1:])
@@ -2160,7 +2170,8 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
 def snap_cut(spec, sym, missions, mi, c, seq, at, hi, arc, argv, trial, took, sub, ref, nat, d):
     """A truncated case started mid-run: the oracle runs c to NEWOPS with
     LOC at seq[at[hi-1]] (IRC_SNAP, as resume_flow does), and its state there
-    starts a case at that routine, run to c's cut. Returns it (with 'mask',
+    starts a case at that routine, run to c's cut (cut 0: to the run's
+    end, a resumed row with no cut). Returns it (with 'mask',
     the routines it visits) when it takes arc and fits one diagnostic, and
     sets took[hi] to its arcs; else None."""
     if hi < 1:
@@ -2175,7 +2186,7 @@ def snap_cut(spec, sym, missions, mi, c, seq, at, hi, arc, argv, trial, took, su
         return None
     pairs = [(int(out[k]), int(out[k + 1])) for k in range(2, len(out), 2)]
     s = cut_row(dict(c, cut=None), c['of'], c['cut'], c['ran'], (p, pairs))
-    key = 'snap-%d-%d' % (c['of'], at[hi])
+    key = 'snap-%d-%s' % (c['of'], at[hi] if hi < len(at) else 'end')
     trial[key] = s
     t = c64_row_cover.trace(d, [key], argv)[key]
     if arc not in t:
@@ -2351,7 +2362,7 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
         fewest = lambda i: (bin(visits[i]).count('1'), len(cases[i]['edits']), i)
         for p in mi.case_points:
             mine = sorted((i for i, c in enumerate(cases) if c['cm'] == cm and c['point'] == p and i not in chan
-                           and (not c.get('cut') or i in chosen)), key=fewest)
+                           and (not (c.get('cut') or c.get('snap')) or i in chosen)), key=fewest)
             if cover:
                 # (With cover_stride, from the traced cases.)
                 mine = [i for i in mine if i in arcs] or mine
@@ -2471,13 +2482,13 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             c64_row_cover.check(arcs, picked, '%s C64 rows' % spec_id)
             extra = c64_row_cover.summary(arcs, picked)
         write_cover_record(spec_id, spec, arcs, picked, full, [
-            {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
+            {'row': i, 'case': cases[i]['of'], 'cut': (missions[cases[i]['cm']].cp.where(cases[i]['cut']) if cases[i]['cut'] else 'end'),
              'cut_loc': cases[i]['cut'], 'routines_run': cases[i]['ran'], 'digest': rows[i][1:],
              **({'resumed_at': missions[cases[i]['cm']].cp.where(cases[i]['snap']), 'resumed_loc': cases[i]['snap'],
                  'snapshot': cases[i]['snap_pairs'],
                  'snapshot_sha256': hashlib.sha256(json.dumps(cases[i]['snap_pairs']).encode()).hexdigest()}
                 if cases[i].get('snap') else {})}
-            for i in sorted(picked) if cases[i].get('cut')])
+            for i in sorted(picked) if cases[i].get('cut') or cases[i].get('snap')])
     open(os.path.join(R, 'tests/%s_c64_vectors.h' % sym), 'w').write(group_text(sym, groups, cases, rows))
     mk = ['# Generated by tools/interp_routine_differential.py --freeze: the C64',
           '# diagnostic groups (mission, KEEP mask) for tools/mk/%s.mk.' % sym.replace('_', '-')]
@@ -2687,13 +2698,13 @@ def cover_cuts(spec_id, spec, sym, missions, cases, rows, visits, groups):
         groups.append((m, mask, pick))
     picked = [i for m, mask, pick in groups for i in pick]
     write_cover_record(spec_id, spec, {i: arcs[i] for i in arcs if i < n0 or i in picked}, picked, full, [
-        {'row': i, 'case': cases[i]['of'], 'cut': missions[cases[i]['cm']].cp.where(cases[i]['cut']),
+        {'row': i, 'case': cases[i]['of'], 'cut': (missions[cases[i]['cm']].cp.where(cases[i]['cut']) if cases[i]['cut'] else 'end'),
          'cut_loc': cases[i]['cut'], 'routines_run': cases[i]['ran'], 'digest': rows[i][1:],
          **({'resumed_at': missions[cases[i]['cm']].cp.where(cases[i]['snap']), 'resumed_loc': cases[i]['snap'],
              'snapshot': cases[i]['snap_pairs'],
              'snapshot_sha256': hashlib.sha256(json.dumps(cases[i]['snap_pairs']).encode()).hexdigest()}
             if cases[i].get('snap') else {})}
-        for i in picked if cases[i].get('cut')])
+        for i in picked if cases[i].get('cut') or cases[i].get('snap')])
     return groups
 
 

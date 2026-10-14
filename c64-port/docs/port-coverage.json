@@ -10723,7 +10723,49 @@
           "scope": "S34/35.3 with its LOMAT and INTINT returns (35,3377-35,3423), GOINT and INTINT with INTINT's INTSTALL and INTEGRVS returns (35,3462-35,3521), 53 words, as seven interpretive routines of the control-transfer ABI keyed at their NEWOPS: NORMEX saved and LOMAT called, DELVLVC rotated through the local-vertical matrix (VXM of the work-area matrix) into DELVEET3, the integration arguments pushed (VACT3, RACT3, TIG, TPASS4, DPPOSMAX or ZEROVECS and NOMTPI) and INTINT called, RTARG stored on into NOVRWRT, and INTINT's RTRN save, INTSTALL call and integration setup (INTYPFLG, TDEC1, MOONFLAG, TET, RCV, VCV scaled by RTX2) to INTEGRVS and the GOTO RTRN after it: from each NEWOPS entry through the trampoline (with lm-s3435's LOMAT and NOVRWRT) to the first NEWOPS outside them (INTSTALL, INTEGRVS, or a caller's return).",
           "verification": "docs/LM-S3435B.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Twenty-five C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; six of them (resumed_at 35,3077, 35,3127, 35,3145 or 35,3156) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,3145, the ACOS abort) runs from there to the end of the case.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (DELAYJOB, GOFLASH, GOMARKF)",
+          "PHASCHNG with its inline phase words (restart groups)",
+          "UPFLAG with its inline flag words (FINALFLG, NTARGFLG)",
+          "ALARM with its alarm codes",
+          "AVFLAGA, AVFLAGP, P20FLGON, COMPTGO, ENDEXT, NORMEX, RTRN and TC GOTOPOOH",
+          "APSIDES, CSMPREC, INTEGRVS, LEMPREC, NORMEX, OTHPREC, THISPREC and TIMETHET through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
+          "The interpreter exits POODOO and ALARM (ACOSABRT among them)",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p34-p35/lm-p34-p35-source-map.json",
+            "sha256": "1c6a19b23876abed54a09ba6c3118bd6ae7872a2dcbf97cef383a4ed2d1f9828"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p34-p35/lm-p34-p35-proof.json",
+            "sha256": "c6ba270d62116c02b095e5736b41262df0ed87f33808e3bc6baa2a76874e0d80"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p34-p35/lm-p34-p35-host.log",
+            "sha256": "2d0549ed7f3b11f4a028365e3b6f84ed6292e40bfd6bcfb0c247d52bace93455"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p34-p35/lm-p34-p35-vice.log",
+            "sha256": "1e87b8825c7e2aad4a3e2363f679110200a6c0fc21f3dc9444021ac714d8be0b",
+            "vice_targets": {
+              "vice-lm-p34-p35": 597
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
+            "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P40-P47.agc",
