@@ -2213,7 +2213,7 @@
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
             "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
-              "vice-cm-integration-init": 322
+              "vice-cm-integration-init": 331
             }
           },
           "c64_branch_outcomes": {
@@ -2221,8 +2221,8 @@
             "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/lane-g-417.md",
+            "sha256": "e42ee2722fb2a4ba88372518fb41c7bca3b2099b775710d08dd6117c1c2015c6"
           }
         }
       }
@@ -9132,7 +9132,7 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9149,7 +9149,7 @@
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9164,7 +9164,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET or Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
@@ -9184,6 +9183,10 @@
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-integration-init.md",
+            "sha256": "2ce18acd5cb83d8e762415fc83f12e114ebd6b4aee39b7bd3974ff0e75494d7c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
@@ -10773,7 +10776,7 @@
       "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
       "bytes": 30910,
       "lines": 1471,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10792,7 +10795,7 @@
           "verification": "docs/LM-P40-P47.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10811,7 +10814,6 @@
           "The Executive's CHANG2 (05126) with a job waiting",
           "Integrated C64 application acceptance"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-source-map.json",
@@ -10835,6 +10837,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
             "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a2-410.md",
+            "sha256": "f4c5b829243d8885bb2c080f2bf0062431871bf5c122673abd48052c5334fe54"
           }
         }
       }
@@ -10943,8 +10949,8 @@
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": {
-          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record; input channels 30-33 latched in lm_channel_io and output channels 11 and 14 in the program's agc_hardware.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 78 in all. Basic (lm_p70_p71_file_basic, 32): 05,3402 CONTABRT, 3406 ABRTJASK, 3445 (after CLRADMOD); 21,2006 R10,R11, 2021 R10,R11A (after TWIDDLE), 2033 FLASHV? and 2042 10,11 (after FLIP), 2072 P70, 2073 P70A, 2075 P71, 2076 P71A, 2110 LEGAL?, 2125 (after FALTON), 2126 (after RELDSP); 32,3540 GOABORT, 3544, 3671 and 3731 (after EXIT), 3552, 3554, 3556 and 3711 (after DOWNFLAG), 3560 and 3673 (after UPFLAG), 3562 (after CHECKMM), 3563 P70INIT, 3676, 3706 and 3733 (after PHASCHNG), 3700 (after BANKCALL), 3707 P71RET, 3746 THROTUP. Interpretive (lm_p70_p71_file_interpretive, 46, at NEWOPS with LOC there): after TC INTPRET 32,3541, 3564, 3714; the CALL and STCALL returns 3543, 3566, 3620, 3653, 3720, 3730; the entries 3623 INJTARG and 3737 TGOCOMP; the BPL, BMN and switch targets 3647 UPRATE, 3661 YOK, 3724 OLDTIME; and the CHANG2 resume keys (3571-3615, 3625 BOTHPOLY, 3630-3646, 3651, 3655, 3660, 3664, 3666, 3667 UPTHROT, 3726, 3742, 3744, 3745; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard (the generated sane() and basic_sane(): an incoherent bank set, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; at NEWOPS also NEWJOB -0 or negative and FIXLOC not a VAC area). Domain restrictions (spec states): CONTABRT's RESUME accepts only a TCF to fixed memory in BRUPT (the word CONTABRT stores); ABRTJASK's INDEX Q; CAF MODE70 reads only MODE70 to MODE71 (Q -0 or 2, as P70A and P71A set it); BOTHPOLY's X1 is -0 or -8. ZRUPT holds ABRTJASK in every case so the oracle, which stops when Z leaves the file, runs RESUME's substitute TCF as the flight program does; the TCF replaces Z, so ZRUPT has no other effect. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record; input channels 30-33 latched in lm_channel_io and output channels 11 and 14 and in_interrupt (yaAGC's InIsr) in the program's agc_hardware.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 78 in all. Basic (lm_p70_p71_file_basic, 32): 05,3402 CONTABRT, 3406 ABRTJASK, 3445 (after CLRADMOD); 21,2006 R10,R11, 2021 R10,R11A (after TWIDDLE), 2033 FLASHV? and 2042 10,11 (after FLIP), 2072 P70, 2073 P70A, 2075 P71, 2076 P71A, 2110 LEGAL?, 2125 (after FALTON), 2126 (after RELDSP); 32,3540 GOABORT, 3544, 3671 and 3731 (after EXIT), 3552, 3554, 3556 and 3711 (after DOWNFLAG), 3560 and 3673 (after UPFLAG), 3562 (after CHECKMM), 3563 P70INIT, 3676, 3706 and 3733 (after PHASCHNG), 3700 (after BANKCALL), 3707 P71RET, 3746 THROTUP. Interpretive (lm_p70_p71_file_interpretive, 46, at NEWOPS with LOC there): after TC INTPRET 32,3541, 3564, 3714; the CALL and STCALL returns 3543, 3566, 3620, 3653, 3720, 3730; the entries 3623 INJTARG and 3737 TGOCOMP; the BPL, BMN and switch targets 3647 UPRATE, 3661 YOK, 3724 OLDTIME; and the CHANG2 resume keys (3571-3615, 3625 BOTHPOLY, 3630-3646, 3651, 3655, 3660, 3664, 3666, 3667 UPTHROT, 3726, 3742, 3744, 3745; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard (the generated sane() and basic_sane(): an incoherent bank set, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; at NEWOPS also NEWJOB -0 or negative and FIXLOC not a VAC area). Domain restrictions (spec states): CONTABRT's RESUME accepts only a TCF to fixed memory in BRUPT (the word CONTABRT stores) and clears in_interrupt, which each case starts at 0 or 1 and every digest covers (in_isr); ABRTJASK's INDEX Q; CAF MODE70 reads only MODE70 to MODE71 (Q -0 or 2, as P70A and P71A set it); BOTHPOLY's X1 is -0 or -8. ZRUPT holds ABRTJASK in every case so the oracle, which stops when Z leaves the file, runs RESUME's substitute TCF as the flight program does; the TCF replaces Z, so ZRUPT has no other effect. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
           "unreached": "None. The oracle executed all 169 basic instructions and the interpreter read all 91 interpretive words (evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json).",
           "data_validity": "The 38 data words (ADRES, CADR, 2CADR, REMADR, DEC, 2DEC and OCT constants) are read as the original constants. ABRTJADR (TCF ABRTJASK) is read by CONTABRT's CAF and runs only as RESUME's substitute instruction, which the native RESUME does."
         },
@@ -10962,22 +10968,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json",
-            "sha256": "6988fd25f3951258b677a354fa14b836ac049588e4765c52539e755f6cbf0c23"
+            "sha256": "88578861f449cba2d1d5e5e76a70570b644ab98f632c4c65164e6311fa32b1f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-host.log",
-            "sha256": "8c86c431db6b5110c1780aedb10e3d2b6d2d48fd01633da2f4006fec354f8ca7"
+            "sha256": "9130144eabd1188229302da3dd60c897e6c2ca753a1d9a5a49844a7a030a3281"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-vice.log",
-            "sha256": "0e5bddac99302af3d461382057048c2e879bb07e1b5d4171e079593061d85826",
+            "sha256": "c545cd1eba964cd9b8b52874da3b0c8656b7532ac5743418a220cd4122d7c907",
             "vice_targets": {
-              "vice-lm-p70-p71-file": 127
+              "vice-lm-p70-p71-file": 125
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json",
-            "sha256": "6988fd25f3951258b677a354fa14b836ac049588e4765c52539e755f6cbf0c23"
+            "sha256": "88578861f449cba2d1d5e5e76a70570b644ab98f632c4c65164e6311fa32b1f0"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json",
@@ -12933,7 +12939,7 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12948,7 +12954,7 @@
           "verification": "docs/LM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12962,7 +12968,6 @@
           "TC RTRN to the saved return outside the file",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
@@ -12982,6 +12987,10 @@
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-stable-orbit.md",
+            "sha256": "af050e887817539c78001bee15c51adc301b0c552ea65fc80cd454f80e393009"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
