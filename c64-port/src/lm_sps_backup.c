@@ -46,7 +46,23 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
+ return 1;
+}
+/* The same for a basic routine that never names FIXLOC: any FIXLOC. */
+static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){
+ unsigned i;
+ if(W[7]||(W[067]>037777u&&W[067]!=077777u)||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+#if !RK_FIXED_IMAGE
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -88,6 +104,9 @@ static MAYBE_UNUSED enum exec_status tc_e(apollo_overlay_state *s,uint16_t k){
 static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[4]==fb&&sane(s,io);
 }
+static MAYBE_UNUSED uint8_t at_basic_nv(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[4]==fb&&sane_nv(s,io);
+}
 
 /* LM_SPS_BACKUP_KEEP<n> bit i (i = 60n+bit, the order of lm_sps_backup_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
@@ -97,7 +116,7 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
 #if (LM_SPS_BACKUP_KEEP0 >> 0) & 1
 /* 21,3727 SPSRCS (entry SPSRCS) */
 static enum exec_status r43727(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,042000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_basic_nv(s,io,042000u))return EXEC_OUT_OF_SCOPE;
  /* 21,3730 CCS TJU */
  {agc_word iw=ixw(s,011525,01505u);if((iw^011525u)&070000u)return EXEC_OUT_OF_SCOPE;
    switch(ai_ccs(s,(unsigned)((iw&07777u)-0u))){case 0:goto L43731;case 1:goto L43732;case 2:goto L43733;default:goto L43734;}
