@@ -5310,15 +5310,15 @@
     "address": "25,3315",
     "word": "03646",
     "source": "  GOTOADDR",
-    "routine": "25,3313",
-    "function": "r53313"
+    "routine": "25,3314",
+    "function": "r53314"
    },
    {
     "address": "25,3316",
     "word": "53317",
     "source": "  KEP2",
-    "routine": "25,3313",
-    "function": "r53313"
+    "routine": "25,3314",
+    "function": "r53314"
    },
    {
     "address": "25,3317",
@@ -6087,8 +6087,8 @@
     "address": "25,3474",
     "word": "03624",
     "source": "  LAD",
-    "routine": "25,3472",
-    "function": "r53472"
+    "routine": "25,3473",
+    "function": "r53473"
    },
    {
     "address": "25,3475",

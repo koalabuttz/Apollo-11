@@ -1336,6 +1336,12 @@ SPECS = {
         'base': {'cm': 'cm_reentry'},
         'symbol': {'cm': 'cm_reentry'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
         'entries': ['@external'],
         'channels': 'all',
         'io_channels': 'auto',
@@ -1380,6 +1386,12 @@ SPECS = {
         'base': {'cm': 'cm_time_free_fall'},
         'symbol': {'cm': 'cm_time_free_fall'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively, and
+        # the routine goes on with the pair's right-hand order (#414, as
+        # measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
         'entries': ['@external'],
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
@@ -1388,6 +1400,9 @@ SPECS = {
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
         'image_w': True,
+        'trusted_image': True,
+        # (No 'fast_window': the file sets no EBANK= of its own, so there is
+        # no one window to bind; its erasables run under the caller's.)
     },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
@@ -1438,6 +1453,13 @@ SPECS = {
         'base': {'cm': 'cm_orbital_integration'},
         'symbol': {'cm': 'cm_orbital_integration'},
         'basic': 'full',
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/cm_integration_moves.c'],
+        'trusted_image': True,
         'entries': ['@external'],
         'noreturn': ['POODOO'],
         'cgoto': {'DIFEQTAB': 3},
@@ -1544,8 +1566,8 @@ SPECS = {
         # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
         # start): FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET).
         'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
-        # RTB-left pairs (PTOACSM's, DT/2COMP's) resume their right order
-        # from DANZIG.
+        # The six RTB-left pairs (RTB MOVEPCSM, SGNAGREE, LOADTIME x3,
+        # MOVEACSM) resume their right order from DANZIG.
         'pending_danzig': True,
         'interp_not_basic': True,
         'index_carry16': True,
@@ -1729,9 +1751,16 @@ SPECS = {
         'entries': ['@external'],
         # P61.2's RTB LOADTIME is the first order of its pair (RTB DSU):
         # the native LOADTIME, so the DSU runs on in the same routine.
-        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
-        'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
+        # natively, and the routine goes on with the pair's right-hand order
+        # (#414, as measurement-incorporation does).
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'}, 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/cm_integration_moves.c'],
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'channels': 'all',
         'io_channels': 'auto',
         'engine': 'flight-device',

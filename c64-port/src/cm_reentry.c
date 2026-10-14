@@ -8,6 +8,8 @@
 #include "cm_interp.h"
 #include "agc_image_ops.h"
 #include "agc_channel_ops.h"
+#include "rtb_angles.h"
+#include "cm_integration_moves.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -3361,7 +3363,7 @@ static enum exec_status r52662(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 25,2665 */
@@ -4345,7 +4347,7 @@ static enum exec_status r53137(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  right(s);
  cmi_misc(s,053152,002521);
@@ -4707,7 +4709,7 @@ static enum exec_status r53232(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 25,3234 */
@@ -4830,7 +4832,7 @@ static enum exec_status r53260(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 25,3262 */
@@ -5211,7 +5213,7 @@ static enum exec_status r53455(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  right(s);
  cmi_direct(s,003653,007546);cmi_ddv(s,0);
@@ -8747,4 +8749,4 @@ const cm_reentry_point cm_reentry_points[CM_REENTRY_POINTS]={
  {23138,1}
 };
 const agc_word cm_reentry_cadr_words[CM_REENTRY_CADR_WORDS]={03373,03645};
-const agc_word cm_reentry_externals[CM_REENTRY_EXTERNALS]={04662,04701,05134,05164,05170,05210,05372,05412,045712,054433,054441,054474,054500,054506,057352};
+const agc_word cm_reentry_externals[CM_REENTRY_EXTERNALS]={04662,04701,05134,05164,05170,05210,05372,05412,045712,054433,054441,054474,054500,054506};
