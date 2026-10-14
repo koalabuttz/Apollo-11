@@ -1361,7 +1361,7 @@
       "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
       "bytes": 31075,
       "lines": 1315,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1437,7 +1437,7 @@
           "verification": "docs/CM-EXTENDED-VERBS-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1475,6 +1475,10 @@
             "vice_targets": {
               "vice-cm-extended-verbs-file": 294
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-extended-verbs.md",
+            "sha256": "ea3d885d22513068f2e39563ae52966c40f132c78e020ac7c5f7b89d23e9f858"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
@@ -3040,7 +3044,7 @@
       "sha256": "07939648f0f52a6b3dae03f6246acbbf28d66d36cf51c98936cc00b0d1e070a9",
       "bytes": 8790,
       "lines": 496,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3057,7 +3061,7 @@
           "verification": "docs/MEASUREMENT-INCORPORATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3069,7 +3073,6 @@
           "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/measurement-inc/measurement-inc-source-map.json",
@@ -3089,6 +3092,10 @@
             "vice_targets": {
               "vice-measurement-inc": 354
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/measurement-inc.md",
+            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
@@ -3278,8 +3285,22 @@
       "sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
       "bytes": 71348,
       "lines": 3529,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p20_p25.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/rtb_modes.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "2,714 of 2,724 words (2,605 compiled, 109 constants): P20 rendezvous navigation, P22 orbital navigation, P23 cislunar navigation, R21-R23 marking, R61 tracking, the V67/V89/V94 extended verbs, the VHF range read and the W-matrix initialization 9DWTO6DW, as 1,139 routines of the control-transfer ABI compiled by tools/interp_compile.py. INCORP1/INCORP2 are called as transfer routines (milestone measurement-inc). The 10 words of RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33 and AUTOCK's RXOR CHAN31 and WOR DSALMOUT, with their EXTENDs, wait for the Comanche I/O channel model.",
+          "verification": "docs/CM-P20-P25.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P30-P37.agc",
@@ -5636,8 +5657,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-282-sxtmark.md",
-            "sha256": "2d99c7052b1b4925f1bde743d64190672f520237667946e89bcde2816257af5c"
+            "path": "docs/audits/lane-g-383.md",
+            "sha256": "2de5778947adfe60ce34f9a8808a50cea4be82b3d79552e6b30fb692c3ff4068"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
@@ -6990,8 +7011,57 @@
       "sha256": "bfcd1300884bc8ab69748562fe287178f56bdfe9b7f13460b6ae73a1db3406a2",
       "bytes": 11209,
       "lines": 647,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_ascent.c",
+            "src/rtb_angles.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which TWIDDLE and POSTJUMP reach from other files), every return from an outside call, and every interpretive word after a DANZIG.",
+          "verification": "docs/LM-ASCENT.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
+        "external_continuations": [
+          "Basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words; TCF ENDOFJOB, GOTOPOOH and TASKOVER",
+          "Interpretive: NEWOPS with LOC outside the file, and the interpreter exits POODOO1 and ALARM1"
+        ],
+        "hardware_side_effects": "None in the file itself: the engine-off command (ENGOFF1) and the displays go through IBNKCALL and BANKCALL to routines outside it.",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-ascent/lm-ascent-source-map.json",
+            "sha256": "73a40521c740e463a7906d1fe2a8c2c47a69ebfee82daa50a032d00e67e77471"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-ascent/lm-ascent-proof.json",
+            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-ascent/lm-ascent-host.log",
+            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-ascent/lm-ascent-vice.log",
+            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
+            "vice_targets": {
+              "vice-lm-ascent": 255
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
+            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
@@ -10115,7 +10185,7 @@
       "sha256": "735aebaba4df4159e83d48b4cbe509479a9d29fb66ce05adf4bcb79076302fdc",
       "bytes": 8613,
       "lines": 495,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10132,7 +10202,7 @@
           "verification": "docs/MEASUREMENT-INCORPORATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10144,7 +10214,6 @@
           "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/measurement-inc/measurement-inc-source-map.json",
@@ -10164,6 +10233,10 @@
             "vice_targets": {
               "vice-measurement-inc": 354
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/measurement-inc.md",
+            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
