@@ -181,16 +181,16 @@ static enum exec_status moreidle(agc_image *s){return transfer(s,02160u,IBNKCALL
 /* SHUTDOWN: EXTEND; DCA IDLERADR; DXCH T5ADR; CAF ZERO; TS NEXTP; TS NEXTU;
  * TS NEXTV; EXTEND; WRITE CHAN5; EXTEND; WRITE CHAN6; CS BGIM23; EXTEND;
  * WAND CHAN12; TCF SETTIME5. */
-static enum exec_status shutdown(agc_image *s,lm_flight_io *io){static const agc_word idleradr[2]={02024u,034106u};
+static enum exec_status shutdown(agc_image *s,p66_bias_io *io){(void)io;static const agc_word idleradr[2]={02024u,034106u};
  ai_dcaf(s,idleradr);ai_dxch(s,T5ADR);ai_caf(s,ZERO);(void)ai_ts(s,NEXTP);(void)ai_ts(s,NEXTU);(void)ai_ts(s,NEXTV);
- wr(s,&io->chan5);wr(s,&io->chan6);ai_csf(s,BGIM23);wand(s,&io->chan12);
+ wr(s,&lmf_hw->channel5);wr(s,&lmf_hw->channel6);ai_csf(s,BGIM23);wand(s,&lmf_hw->channel12);
  return settime5(s);
 }
 /* CHEKBITS: READ CHAN31; COM; MASK BIT13-14; BZF MOREIDLE; CS IMODES33;
  * MASK BIT6; CCS A; TCF JUMPDSP; CS RCSFLAGS; MASK BIT3; ADS RCSFLAGS;
  * TCF SHUTDOWN. JUMPDSP: EXTEND; DCA DSPCADR; DTCB. */
-static enum exec_status chekbits_body(agc_image *s,lm_flight_io *io){static const agc_word dspcadr[2]={02226u,040106u};uint8_t c;
- rd(s,io->chan31);ai_com(s);ai_maskf(s,BIT13_14);
+static enum exec_status chekbits_body(agc_image *s,p66_bias_io *io){static const agc_word dspcadr[2]={02226u,040106u};uint8_t c;
+ rd(s,lmf_hw->channel31);ai_com(s);ai_maskf(s,BIT13_14);
  if(ai_bzf(s)){LM_DI_PATH(0);return moreidle(s);}
  ai_cs(s,IMODES33);ai_maskf(s,BIT6);
  c=ai_ccs(s,0u);LM_DI_PATH(1u+c);
@@ -199,18 +199,18 @@ static enum exec_status chekbits_body(agc_image *s,lm_flight_io *io){static cons
  if(c<=2u)ai_maskf(s,BIT3);
  ai_ads(s,RCSFLAGS);return shutdown(s,io);
 }
-static enum exec_status chekbits(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status chekbits(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16)||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  return chekbits_body(s,io);}
 /* CHECKUP: TC CHEKBITS. */
-static enum exec_status checkup_body(agc_image *s,lm_flight_io *io){ai_tc(s,02042u);return chekbits_body(s,io);}
-static enum exec_status checkup(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status checkup_body(agc_image *s,p66_bias_io *io){ai_tc(s,02042u);return chekbits_body(s,io);}
+static enum exec_status checkup(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return checkup_body(s,io);}
 /* DAPIDLER: LXCH BANKRUPT; EXTEND; QXCH QRUPT; CA RCSFLAGS; MASK BIT13;
  * CCS A; TCF CHECKUP; CA BIT13; ADS RCSFLAGS; CAF PRIO27; TC NOVAC;
  * 2CADR 1/ACCSET. from = 0 enters at DAPIDLER, 1 at its EXTEND. */
-static enum exec_status dapidler_body(agc_image *s,lm_flight_io *io,uint8_t from){uint8_t c;
+static enum exec_status dapidler_body(agc_image *s,p66_bias_io *io,uint8_t from){uint8_t c;
  if(from==0u)ai_lxch(s,BANKRUPT);
  ai_qxch(s,QRUPT);ai_ca(s,RCSFLAGS);ai_maskf(s,BIT13);
  c=ai_ccs(s,0u);LM_DI_PATH(5u+c);
@@ -219,14 +219,14 @@ static enum exec_status dapidler_body(agc_image *s,lm_flight_io *io,uint8_t from
  if(c<=2u)ai_ads(s,RCSFLAGS);
  ai_caf(s,PRIO27);return transfer(s,02037u,NOVAC);
 }
-static enum exec_status dapidler(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status dapidler(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return dapidler_body(s,io,0u);}
 /* CHEKMORE: CAF BIT10; EXTEND; RAND CHAN30; CCS A; TCF MOREIDLE; RETURN
  * (then DAPIDLER and its EXTEND for the negative exits). */
-static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);lm_flight_io *io=v;uint8_t c;(void)p;
+static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;p66_bias_io *io=v;uint8_t c;(void)p;
  if(!entry(s,io,LM_DI_FB16)||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
- ai_caf(s,BIT10);rand(s,io->chan30);
+ ai_caf(s,BIT10);rand(s,lmf_hw->channel30);
  c=ai_ccs(s,0u);LM_DI_PATH(9u+c);
  if(c==0u)return moreidle(s);
  if(c==1u){W[5]=W[QREG];ai_tc(s,QREG+1u);return EXEC_OK;} /* RETURN: Z = Q, Q = 3 */
@@ -234,7 +234,7 @@ static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *
 }
 /* 16,2042: CAE DAPBOOLS; MASK ACCSOKAY; EXTEND; BZF MOREIDLE; STARTDAP
  * TC IBNKCALL; FCADR ZATTEROR. */
-static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  ai_ca(s,DAPBOOLS);ai_maskf(s,ACCSOKAY);
  if(ai_bzf(s)){LM_DI_PATH(13);return moreidle(s);}
@@ -244,7 +244,7 @@ static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *
  * by MANFLAG and BIT12; OLDXFORP, OLDZFORQ; SKIPU/V; TIME6, T6NEXT,
  * T6FURTHA, NXT6ADR; NEXTP/U/V; DAPZRUPT; NPTRAPS..; T5ADR = PAXIS), then
  * SETTIME5. */
-static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  static const agc_word paxadidl[2]={02213u,034106u};
  static const agc_word zeroed[31]={TJP,TJU,TJV,OMEGAP,OMEGAQ,OMEGAR,TRAPEDP,TRAPEDQ,TRAPEDR,AOSQ,AOSQ1,AOSR,AOSR1,
   ALPHAQ,ALPHAR,NEGUQ,NEGUR,AOSQTERM,AOSRTERM,QACCDOT,RACCDOT,ALLOWGTS,COTROLER,INGTS,QGIMTIMR,RGIMTIMR,
@@ -264,11 +264,11 @@ static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *
  return settime5(s);
 }
 /* 16,2161: TC IBNKCALL; CADR CALCPERR. */
-static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return transfer(s,02162u,IBNKCALL);}
 /* 16,2163 SHUTDOWN. */
-static enum exec_status shutdown_entry(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
+static enum exec_status shutdown_entry(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return shutdown(s,io);}
 
@@ -283,7 +283,7 @@ static void oversub2(agc_image *s,agc_word ret){static const agc_word limits[3]=
 static enum exec_status retnmore(agc_image *s){static const agc_word morecadr[2]={02016u,034106u};
  ai_dcaf(s,morecadr);dtcb(s,02444u);return EXEC_OK;}
 /* ALTDSPLY .. RETNMORE. */
-static enum exec_status altdsply(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);lm_flight_io *io=v;uint8_t c;
+static enum exec_status altdsply(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;p66_bias_io *io=v;uint8_t c;
  static const agc_word daclimit[3]={077177u,037200u,0600u}; /* DEC -384, DACLIMIT 16000, 384 B-14 */
  (void)p;
  if(!entry(s,io,LM_DI_FB20))return EXEC_OUT_OF_SCOPE;
@@ -323,10 +323,10 @@ needler: /* CA RCSFLAGS; MASK SIX; EXTEND; BZF NEEDLES3; MASK BIT3; EXTEND;
  if(ai_bzf(s)){
   /* NEEDLER2: CAF BIT6; EXTEND; WOR CHAN12; CS SIX; MASK RCSFLAGS;
    * TS RCSFLAGS; TCF RETNMORE. */
-  LM_DI_PATH(24);ai_caf(s,BIT6);wor(s,&io->chan12);ai_csf(s,SIX);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);
+  LM_DI_PATH(24);ai_caf(s,BIT6);wor(s,&lmf_hw->channel12);ai_csf(s,SIX);ai_mask(s,RCSFLAGS);(void)ai_ts(s,RCSFLAGS);
   return retnmore(s);
  }
- LM_DI_PATH(25);ai_csf(s,BIT6);wand(s,&io->chan12);
+ LM_DI_PATH(25);ai_csf(s,BIT6);wand(s,&lmf_hw->channel12);
  /* NEEDLE11: CS ZERO; TS AK; TS AK1; TS AK2; TS EDRIVEX; TS EDRIVEY;
   * TS EDRIVEZ; TS CDUXCMD; TS CDUYCMD; TS CDUZCMD; CS SIX; MASK RCSFLAGS;
   * AD BIT2; TS RCSFLAGS; TCF RETNMORE. */
@@ -337,7 +337,7 @@ needler: /* CA RCSFLAGS; MASK SIX; EXTEND; BZF NEEDLES3; MASK BIT3; EXTEND;
  return retnmore(s);
 needles3: /* CAF BIT6; EXTEND; RAND CHAN12; CCS A; TCF NEEDLES; CS RCSFLAGS;
   * MASK BIT3; ADS RCSFLAGS; TCF RETNMORE. */
- ai_caf(s,BIT6);rand(s,io->chan12);
+ ai_caf(s,BIT6);rand(s,lmf_hw->channel12);
  c=ai_ccs(s,0u);LM_DI_PATH(26u+c);
  if(c!=0u){
   if(c==1u)ai_cs(s,RCSFLAGS);
@@ -367,7 +367,7 @@ needles3: /* CAF BIT6; EXTEND; RAND CHAN12; CCS A; TCF NEEDLES; CS RCSFLAGS;
  LM_DI_PATH(34u+c);
  if(c==3u)return transfer(s,02430u,05014u); /* past the EXTEND: WOR's word runs as TC 05014 */
  if(c==1u)ai_caf(s,BITS131415);
- wor(s,&io->chan14);
+ wor(s,&lmf_hw->channel14);
  return retnmore(s);
 }
 static const agc_routine_entry entries[9]={

@@ -1797,6 +1797,9 @@ def c64_probe(spec, sym, m, mask, text, pick=()):
     # (Channel and counter edits need their case code on the C64 too.)
     io = ['-DIRC_CHANNELS'] if spec.get('seed_counters') or spec.get('channels') else []
     io += ['-DIRC_INPUTS'] if spec.get('channel_inputs') else []
+    # (The CM programs reach the diagnostic's agc_hardware absolutely, as
+    # tools/mk/cm-*.mk build them.)
+    io += ['-DAGC_CHANNELS_HW=irc_cm_hw'] if io and m == 'cm' else []
     r = subprocess.run([MOS_CC, '-I' + d, '-Iinclude', '-Itests', *C64_FLAGS, *io, *spec.get('c64_flags', []), '-DIRC_GROUP=1',
                         '-DIRC_%s_ONLY' % m.upper(), *keep_flags(spec['symbol'][m], mask),
                         *GROUP_EXTRA.get(sym, lambda mask, pick: [])(mask, pick),

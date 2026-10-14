@@ -7,6 +7,7 @@
 #include "cm_extended_verbs_file.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
+#include "agc_channel_ops.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -29,6 +30,15 @@ static MAYBE_UNUSED uint8_t next(apollo_overlay_state *s){
  ai_ca(s,0165);(void)ai_ts(s,6);(void)ai_ccs(s,023);(void)ai_ccs(s,067);W[5]=05170u;return 1;
 }
 static MAYBE_UNUSED void right(apollo_overlay_state *s){cmi_danzig_right(s);}
+/* The program's output channels (agc_ch_op), set by the wrappers. */
+#ifdef AGC_CHANNELS_HW
+extern agc_hardware AGC_CHANNELS_HW;
+#define agc_channels_hw (&AGC_CHANNELS_HW)
+#define AGC_CH_HW_SET(p) ((void)(p),1)
+#else
+static MAYBE_UNUSED agc_hardware *agc_channels_hw;
+#define AGC_CH_HW_SET(p) ((agc_channels_hw=(p)->hardware)!=0)
+#endif
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
 static MAYBE_UNUSED uint8_t setpd_next(apollo_overlay_state *s){
@@ -110,7 +120,7 @@ static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_b
  io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}
 /* Channel orders on the mission's output channels, as yaAGC's. */
 static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){
- switch(k){case 05:return &cm_channels.channel05;case 06:return &cm_channels.channel06;case 07:return &io->superbank;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &cm_channels.channel30;case 031:return &cm_channels.channel31;case 032:return &cm_channels.channel32;case 033:return &cm_channels.channel33; default:return 0;}
+ switch(k){case 05:return &agc_channels_hw->channel5;case 06:return &agc_channels_hw->channel6;case 07:return &io->superbank;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &agc_channels_hw->channel30;case 031:return &agc_channels_hw->channel31;case 032:return &agc_channels_hw->channel32;case 033:return &agc_channels_hw->channel33; default:return 0;}
 }
 static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}
@@ -3492,819 +3502,936 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 0) & 1
 /* 42,2000 DAPDISP1 (CADR DAPDISP1) */
 static enum exec_status r104000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34816u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 1) & 1
 /* 42,2004 DONOUN46 (return from PRIOCHNG) */
 static enum exec_status r104004_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34820u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 2) & 1
 /* 42,2007  (return from BANKCALL) */
 static enum exec_status r104007_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34823u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 3) & 1
 /* 42,2010  (return from ENDMARK) */
 static enum exec_status r104010_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34824u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 4) & 1
 /* 42,2011  (entry DONOUN46+5) */
 static enum exec_status r104011_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34825u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 5) & 1
 /* 42,2020 MAXOUT (return from DOWNFLAG) */
 static enum exec_status r104020_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34832u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 6) & 1
 /* 42,2022 DONOUN47 (return from BANKCALL) */
 static enum exec_status r104022_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34834u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 7) & 1
 /* 42,2025  (return from BANKCALL) */
 static enum exec_status r104025_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34837u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 8) & 1
 /* 42,2026  (return from ENDMARK) */
 static enum exec_status r104026_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34838u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 9) & 1
 /* 42,2027  (entry DONOUN47+5) */
 static enum exec_status r104027_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34839u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 10) & 1
 /* 42,2043  (return from IBNKCALL) */
 static enum exec_status r104043_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34851u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 11) & 1
 /* 42,2046 DONOUN48 (return from BANKCALL) */
 static enum exec_status r104046_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34854u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 12) & 1
 /* 42,2051  (return from BANKCALL) */
 static enum exec_status r104051_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34857u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 13) & 1
 /* 42,2052  (return from ENDMARK) */
 static enum exec_status r104052_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34858u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 14) & 1
 /* 42,2053  (return from ENDMARK) */
 static enum exec_status r104053_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34859u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 15) & 1
 /* 42,2056  (return from UPFLAG) */
 static enum exec_status r104056_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0164000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,34862u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 16) & 1
 /* 43,2000 GOEXTVB (entry GOEXTVB (PINBALL_GAME__BUTTONS_AND_LIGHTS.agc CADR GOEXTVB)) */
 static enum exec_status r106000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35840u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 17) & 1
 /* 43,2037 VERB69 (idle point) */
 static enum exec_status r106037_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35871u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 18) & 1
 /* 43,2041  (return from V70UPDAT) */
 static enum exec_status r106041_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35873u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 19) & 1
 /* 43,2042  (return from V71UPDAT) */
 static enum exec_status r106042_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35874u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 20) & 1
 /* 43,2043  (return from V72UPDAT) */
 static enum exec_status r106043_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35875u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 21) & 1
 /* 43,2044  (return from V73UPDAT) */
 static enum exec_status r106044_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35876u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 22) & 1
 /* 43,2076 TESTXACT (entry TESTXACT (UPDATE_PROGRAM.agc TC TESTXACT)) */
 static enum exec_status r106076_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35902u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 23) & 1
 /* 43,2112  (return from NVSUB) */
 static enum exec_status r106112_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35914u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 24) & 1
 /* 43,2114 XACTALM (entry XACTALM) */
 static enum exec_status r106114_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35916u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 25) & 1
 /* 43,2115  (return from FALTON) */
 static enum exec_status r106115_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35917u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 26) & 1
 /* 43,2116 XACT0 (entry XACT0) */
 static enum exec_status r106116_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35918u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 27) & 1
 /* 43,2121 GOPIN (entry GOPIN (P11.agc TC GOPIN)) */
 static enum exec_status r106121_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35921u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 28) & 1
 /* 43,2124 VBZERO (entry VBZERO) */
 static enum exec_status r106124_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35924u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 29) & 1
 /* 43,2130  (entry IMUZEROK+1) */
 static enum exec_status r106130_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35928u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 30) & 1
 /* 43,2132  (return from BANKCALL) */
 static enum exec_status r106132_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35930u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 31) & 1
 /* 43,2134  (return from BANKCALL) */
 static enum exec_status r106134_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35932u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 32) & 1
 /* 43,2150 VBCOARK (entry VBCOARK) */
 static enum exec_status r106150_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35944u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 33) & 1
 /* 43,2154  (entry IMUCOARK+1) */
 static enum exec_status r106154_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35948u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 34) & 1
 /* 43,2160  (return from BANKCALL) */
 static enum exec_status r106160_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35952u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 35) & 1
 /* 43,2161  (return from ENDMARK) */
 static enum exec_status r106161_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35953u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 36) & 1
 /* 43,2165  (return from BANKCALL) */
 static enum exec_status r106165_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35957u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 37) & 1
 /* 43,2167  (return from BANKCALL) */
 static enum exec_status r106167_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35959u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 38) & 1
 /* 43,2171  (return from BANKCALL) */
 static enum exec_status r106171_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35961u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 39) & 1
 /* 43,2172  (return from ENDMARK) */
 static enum exec_status r106172_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35962u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 40) & 1
 /* 43,2175 OPTCOARK (return from ENDMARK) */
 static enum exec_status r106175_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35965u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 41) & 1
 /* 43,2177  (entry OPTCOARK+2) */
 static enum exec_status r106177_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35967u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 42) & 1
 /* 43,2206  (return from FALTON) */
 static enum exec_status r106206_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35974u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 43) & 1
 /* 43,2210  (return from ALARM) */
 static enum exec_status r106210_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35976u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 44) & 1
 /* 43,2216  (return from ALARM) */
 static enum exec_status r106216_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35982u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 45) & 1
 /* 43,2217 OPTC1 (return from ENDMARK) */
 static enum exec_status r106217_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35983u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 46) & 1
 /* 43,2222  (return from BANKCALL) */
 static enum exec_status r106222_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35986u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 47) & 1
 /* 43,2223  (return from ENDMARK) */
 static enum exec_status r106223_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35987u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 48) & 1
 /* 43,2233  (return from BANKCALL) */
 static enum exec_status r106233_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35995u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 49) & 1
 /* 43,2236  (return from ENDMARK) */
 static enum exec_status r106236_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,35998u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 50) & 1
 /* 43,2240 IMUFINEK (return from ENDMARK) */
 static enum exec_status r106240_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36000u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 51) & 1
 /* 43,2241  (entry IMUFINEK+1) */
 static enum exec_status r106241_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36001u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 52) & 1
 /* 43,2245  (return from BANKCALL) */
 static enum exec_status r106245_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36005u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 53) & 1
 /* 43,2246  (return from ENDMARK) */
 static enum exec_status r106246_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36006u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 54) & 1
 /* 43,2252  (return from BANKCALL) */
 static enum exec_status r106252_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36010u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 55) & 1
 /* 43,2254  (return from BANKCALL) */
 static enum exec_status r106254_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36012u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 56) & 1
 /* 43,2256  (return from BANKCALL) */
 static enum exec_status r106256_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36014u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 57) & 1
 /* 43,2257 FINEK2 (return from ENDMARK) */
 static enum exec_status r106257_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36015u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 58) & 1
 /* 43,2262  (return from BANKCALL) */
 static enum exec_status r106262_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36018u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP0 >> 59) & 1
 /* 43,2264  (return from BANKCALL) */
 static enum exec_status r106264_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36020u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 0) & 1
 /* 43,2265  (return from ENDMARK) */
 static enum exec_status r106265_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36021u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 1) & 1
 /* 43,2271 CKMODCAD (return from ENDMARK) */
 static enum exec_status r106271_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36025u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 2) & 1
 /* 43,2276  (return from FLASHOFF) */
 static enum exec_status r106276_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36030u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 3) & 1
 /* 43,2313  (return from DOWNFLAG) */
 static enum exec_status r106313_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36043u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 4) & 1
 /* 43,2316  (return from UPFLAG) */
 static enum exec_status r106316_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36046u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 5) & 1
 /* 43,2320  (return from UPFLAG) */
 static enum exec_status r106320_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36048u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 6) & 1
 /* 43,2323  (return from UPFLAG) */
 static enum exec_status r106323_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36051u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 7) & 1
 /* 43,2325  (return from DOWNFLAG) */
 static enum exec_status r106325_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36053u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 8) & 1
 /* 43,2332  (return from BANKCALL) */
 static enum exec_status r106332_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36058u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 9) & 1
 /* 43,2333  (return from ENDMARK) */
 static enum exec_status r106333_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36059u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 10) & 1
 /* 43,2334  (return from ENDMARK) */
 static enum exec_status r106334_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36060u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 11) & 1
 /* 43,2341 UPDATIME (return from ENDMARK) */
 static enum exec_status r106341_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36065u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 12) & 1
 /* 43,2352  (return from TPAGREE) */
 static enum exec_status r106352_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36074u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 13) & 1
 /* 43,2360 SYSTEST (return from ENDMARK) */
 static enum exec_status r106360_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36080u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 14) & 1
 /* 43,2361  (entry SYSTEST+1) */
 static enum exec_status r106361_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36081u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 15) & 1
 /* 43,2367 V92CONT (return from POODOO) */
 static enum exec_status r106367_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36087u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 16) & 1
 /* 43,2374  (return from FINDVAC) */
 static enum exec_status r106374_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36092u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 17) & 1
 /* 43,2377  (return from CHECKMM) */
 static enum exec_status r106377_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36095u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 18) & 1
 /* 43,2400  (entry CKOPTVB+3) */
 static enum exec_status r106400_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36096u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 19) & 1
 /* 43,2405  (return from FINDVAC) */
 static enum exec_status r106405_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36101u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 20) & 1
 /* 43,2410  (return from CHECKMM) */
 static enum exec_status r106410_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36104u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 21) & 1
 /* 43,2411  (entry CHAZFOGC+3) */
 static enum exec_status r106411_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36105u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 22) & 1
 /* 43,2415  (return from FINDVAC) */
 static enum exec_status r106415_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36109u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 23) & 1
 /* 43,2417  (return from PHASCHNG) */
 static enum exec_status r106417_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36111u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 24) & 1
 /* 43,2421  (entry IMUATTCK+1) */
 static enum exec_status r106421_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36113u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 25) & 1
 /* 43,2436  (return from BANKCALL) */
 static enum exec_status r106436_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36126u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 26) & 1
 /* 43,2437  (entry IMUATTCK+15) */
 static enum exec_status r106437_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36127u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 27) & 1
 /* 43,2440  (entry IMUATTCK+16) */
 static enum exec_status r106440_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36128u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 28) & 1
 /* 43,2444  (entry IMUATTCK+20) */
 static enum exec_status r106444_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36132u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 29) & 1
 /* 43,2446  (entry IMUATTCK+22) */
 static enum exec_status r106446_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36134u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 30) & 1
 /* 43,2452 TRMATTCK (return from WAITLIST) */
 static enum exec_status r106452_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36138u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 31) & 1
 /* 43,2454  (entry TRMATTCK+2) */
 static enum exec_status r106454_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36140u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 32) & 1
 /* 43,2455 ATTCK1 (2CADR ATTCK1) */
 static enum exec_status r106455_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36141u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 33) & 1
 /* 43,2464  (return from IBNKCALL) */
 static enum exec_status r106464_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36148u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 34) & 1
 /* 43,2501  (entry VB64+1) */
 static enum exec_status r106501_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36161u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 35) & 1
 /* 43,2507  (return from FINDVAC) */
 static enum exec_status r106507_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36167u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 36) & 1
 /* 43,2512  (return from DOWNFLAG) */
 static enum exec_status r106512_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36170u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 37) & 1
 /* 43,2523  (return from NOVAC) */
 static enum exec_status r106523_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36179u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 38) & 1
 /* 43,2524 STABLISH (entry STABLISH) */
 static enum exec_status r106524_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36180u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 39) & 1
 /* 43,2544  (entry CREWMANU+1) */
 static enum exec_status r106544_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36196u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 40) & 1
 /* 43,2551  (return from FINDVAC) */
 static enum exec_status r106551_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36201u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 41) & 1
 /* 43,2552 DAPDISP (entry DAPDISP) */
 static enum exec_status r106552_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36202u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 42) & 1
 /* 43,2562 V82PERF (return from BANKCALL) */
 static enum exec_status r106562_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36210u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 43) & 1
 /* 43,2565  (return from PRIOCHNG) */
 static enum exec_status r106565_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36213u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 44) & 1
 /* 43,2600  (return from NOVAC) */
 static enum exec_status r106600_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36224u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 45) & 1
 /* 43,2611  (return from DOWNFLAG) */
 static enum exec_status r106611_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36233u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 46) & 1
 /* 43,2614  (return from UPFLAG) */
 static enum exec_status r106614_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36236u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 47) & 1
 /* 43,2635  (return from NOVAC) */
 static enum exec_status r106635_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36253u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 48) & 1
 /* 43,2642  (return from NOVAC) */
 static enum exec_status r106642_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36258u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 49) & 1
 /* 43,2645  (return from ALARM) */
 static enum exec_status r106645_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36261u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 50) & 1
 /* 43,2646 V86PERF (return from ENDMARK) */
 static enum exec_status r106646_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36262u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 51) & 1
 /* 43,2653 TRACKTRM (entry TRACKTRM (P20-P25.agc 2CADR TRACKTRM)) */
 static enum exec_status r106653_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36267u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 52) & 1
 /* 43,2661  (return from DOWNFLAG) */
 static enum exec_status r106661_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36273u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 53) & 1
 /* 43,2667  (return from DOWNFLAG) */
 static enum exec_status r106667_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36279u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 54) & 1
 /* 43,2671  (return from DOWNFLAG) */
 static enum exec_status r106671_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36281u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 55) & 1
 /* 43,2673  (return from DOWNFLAG) */
 static enum exec_status r106673_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36283u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 56) & 1
 /* 43,2677  (return from STOPRATE) */
 static enum exec_status r106677_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36287u);
 }
 #endif
@@ -4333,133 +4460,152 @@ static enum exec_status r106704(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP1 >> 59) & 1
 /* 43,2705  (after EXIT) */
 static enum exec_status r106705_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36293u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 0) & 1
 /* 43,2710 CLEANOUT (return from 2PHSCHNG) */
 static enum exec_status r106710_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36296u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 1) & 1
 /* 43,2715  (return from DOWNFLAG) */
 static enum exec_status r106715_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36301u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 2) & 1
 /* 43,2720  (return from UPFLAG) */
 static enum exec_status r106720_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36304u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 3) & 1
 /* 43,2727  (return from UPFLAG) */
 static enum exec_status r106727_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36311u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 4) & 1
 /* 43,2730 CHKPOOH (entry CHKPOOH (PINBALL_GAME__BUTTONS_AND_LIGHTS.agc CADR CHKPOOH)) */
 static enum exec_status r106730_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36312u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 5) & 1
 /* 43,2746  (entry V89PERF+1) */
 static enum exec_status r106746_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36326u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 6) & 1
 /* 43,2754  (return from FINDVAC) */
 static enum exec_status r106754_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36332u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 7) & 1
 /* 43,2757  (return from DOWNFLAG) */
 static enum exec_status r106757_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36335u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 8) & 1
 /* 43,2761  (return from DOWNFLAG) */
 static enum exec_status r106761_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36337u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 9) & 1
 /* 43,2763  (entry SHOWSUM+1) */
 static enum exec_status r106763_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36339u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 10) & 1
 /* 43,2773 SDISPLAY (entry SDISPLAY (AGC_BLOCK_TWO_SELF-CHECK.agc TC SDISPLAY)) */
 static enum exec_status r106773_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36347u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 11) & 1
 /* 43,3002  (return from BANKCALL) */
 static enum exec_status r107002_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36354u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 12) & 1
 /* 43,3003  (entry NOKILL+6) */
 static enum exec_status r107003_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36355u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 13) & 1
 /* 43,3004  (return from NXTBNK) */
 static enum exec_status r107004_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36356u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 14) & 1
 /* 43,3011 ENDSUMS (entry ENDSUMS (AGC_BLOCK_TWO_SELF-CHECK.agc BZF ENDSUMS)) */
 static enum exec_status r107011_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36361u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 15) & 1
 /* 43,3015 SETPRFLG (return from STSHOSUM) */
 static enum exec_status r107015_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36365u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 16) & 1
 /* 43,3017  (return from UPFLAG) */
 static enum exec_status r107017_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36367u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 17) & 1
 /* 43,3022  (return from DOWNFLAG) */
 static enum exec_status r107022_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36370u);
 }
 #endif
@@ -4478,7 +4624,8 @@ static enum exec_status r107024(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 19) & 1
 /* 43,3026  (after EXIT) */
 static enum exec_status r107026_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36374u);
 }
 #endif
@@ -4497,28 +4644,32 @@ static enum exec_status r107030(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 21) & 1
 /* 43,3032  (after EXIT) */
 static enum exec_status r107032_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36378u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 22) & 1
 /* 43,3033  (return from TRFAILOF) */
 static enum exec_status r107033_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36379u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 23) & 1
 /* 43,3040  (return from FINDVAC) */
 static enum exec_status r107040_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36384u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 24) & 1
 /* 43,3041 ATTACHIT (2CADR ATTACHIT) */
 static enum exec_status r107041_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36385u);
 }
 #endif
@@ -4575,14 +4726,16 @@ static enum exec_status r107052(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 29) & 1
 /* 43,3053  (after EXIT) */
 static enum exec_status r107053_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36395u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 30) & 1
 /* 43,3057 TACHEXIT (return from GENTRAN) */
 static enum exec_status r107057_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36399u);
 }
 #endif
@@ -4637,7 +4790,8 @@ static enum exec_status r107070(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 35) & 1
 /* 43,3071  (after EXIT) */
 static enum exec_status r107071_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36409u);
 }
 #endif
@@ -4654,14 +4808,16 @@ static enum exec_status r107076(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 37) & 1
 /* 43,3106  (return from FINDVAC) */
 static enum exec_status r107106_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36422u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 38) & 1
 /* 43,3107 LMTOCM (2CADR LMTOCM) */
 static enum exec_status r107107_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36423u);
 }
 #endif
@@ -4718,98 +4874,112 @@ static enum exec_status r107120(apollo_overlay_state *s,p66_bias_io *io){
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 43) & 1
 /* 43,3121  (after EXIT) */
 static enum exec_status r107121_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36433u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 44) & 1
 /* 43,3125  (return from GENTRAN) */
 static enum exec_status r107125_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36437u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 45) & 1
 /* 43,3134  (return from DOWNFLAG) */
 static enum exec_status r107134_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36444u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 46) & 1
 /* 43,3136  (return from CHECKMM) */
 static enum exec_status r107136_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36446u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 47) & 1
 /* 43,3137  (entry VERB94+9) */
 static enum exec_status r107137_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36447u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 48) & 1
 /* 43,3141  (return from PHASCHNG) */
 static enum exec_status r107141_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36449u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 49) & 1
 /* 43,3147  (return from FINDVAC) */
 static enum exec_status r107147_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36455u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 50) & 1
 /* 43,3152  (return from UPFLAG) */
 static enum exec_status r107152_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36458u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 51) & 1
 /* 43,3154  (return from UPFLAG) */
 static enum exec_status r107154_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36460u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 52) & 1
 /* 43,3161  (return from CHECKMM) */
 static enum exec_status r107161_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36465u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 53) & 1
 /* 43,3162  (entry V52+3) */
 static enum exec_status r107162_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36466u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 54) & 1
 /* 43,3206  (return from FINDVAC) */
 static enum exec_status r107206_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36486u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 55) & 1
 /* 43,3211  (return from UPFLAG) */
 static enum exec_status r107211_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36489u);
 }
 #endif
 #if (CM_EXTENDED_VERBS_FILE_KEEP2 >> 56) & 1
 /* 43,3214  (return from DOWNFLAG) */
 static enum exec_status r107214_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,0166000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,36492u);
 }
 #endif

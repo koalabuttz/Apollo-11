@@ -61,7 +61,8 @@ unsigned irc_run(const agc_native_program *, apollo_overlay_state *, const irc_c
                  uint16_t max_steps, uint16_t *ie);
 /* The CM io record's channels and traps from irc_ch/irc_trap (save 0), or
  * back into them (save 1). */
-void irc_cm_io(void *cm_io, unsigned save);
+void irc_cm_io(void *cm_io, agc_hardware *h, unsigned save);
+const agc_native_program *irc_cm_begin(const agc_native_program *p, agc_native_program *q, void *cm_io);
 /* Running sums over the kind, the 2048 words (A, L 16-bit) and ie, then the
  * channels and traps when the case set channels. */
 uint32_t irc_digest(unsigned kind, const apollo_overlay_state *, uint16_t ie);

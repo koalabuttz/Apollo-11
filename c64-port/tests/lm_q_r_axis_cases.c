@@ -29,9 +29,9 @@ void lm_qr_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
  m->words[031]=v%4u?width(&seed):raw(&seed);
  for(i=032;i<=034u;++i)m->words[i]=v%4u?width(&seed):raw(&seed);
  io->bias.superbank=0;io->bias.interrupt_enabled=(uint16_t)((rnd(&seed)>>20)&1u);
- io->chan14=0;io->chan6=io->chan12=io->chan30=0;io->in_isr=0;
- io->chan5=(agc_word)((rnd(&seed)>>20)&0377u);io->chan4=raw(&seed);
- io->chan13=(agc_word)(raw(&seed)&043777u); /* the bits channel 13 reads back */io->chan31=raw(&seed);
+ io->hw.channel14=0;io->hw.channel6=io->hw.channel12=io->hw.channel30=0;io->hw.in_interrupt=0;
+ io->hw.channel5=(agc_word)((rnd(&seed)>>20)&0377u);io->hw.channel4=raw(&seed);
+ io->hw.channel13=(agc_word)(raw(&seed)&043777u); /* the bits channel 13 reads back */io->hw.channel31=raw(&seed);
  /* The file's state words, in the values its producers store, except in
   * one cohort in 32 (refused where the original would leave the domain). */
  if(v%32u!=31u){
@@ -50,7 +50,7 @@ void lm_qr_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
    m->words[EB6(01743u)]=(agc_word)((rnd(&seed)>>20)%5u);
   }
   if((v/2u)%4u!=3u)m->words[EB6(01500u)]=(agc_word)((rnd(&seed)>>20)%3u);
- }else if(v%64u==31u)io->chan5=raw(&seed);
+ }else if(v%64u==31u)io->hw.channel5=raw(&seed);
  /* Return in Q: SWRETURN, fixed-fixed 06000-07777, or bank 17 outside
   * this file. */
  if(v%3u==0u)q=SWRETURN;
@@ -72,6 +72,7 @@ static int part(const apollo_overlay_state *s){static const agc_word keys[13]={L
 }
 unsigned lm_qr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st=EXEC_OK;agc_word superbank=0;
+ program.hardware=&io->hw;
  agc_routine call;int more;
  program.basic=&lm_q_r_axis_routines;program.basic_count=1;program.operands=lm_q_r_axis_sites;program.operand_count=LM_QR_SITES;
  lm_qr_input(s,io,n);
@@ -93,7 +94,7 @@ unsigned lm_qr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t 
 static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_qr_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_qr_run(s,&io,n,&steps);
- sum_a=sum_b=0;mix((uint16_t)kind);mix(io.chan13);mix(io.bias.interrupt_enabled);mix(io.in_isr);
+ sum_a=sum_b=0;mix((uint16_t)kind);mix(io.hw.channel13);mix(io.bias.interrupt_enabled);mix(io.hw.in_interrupt);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }
