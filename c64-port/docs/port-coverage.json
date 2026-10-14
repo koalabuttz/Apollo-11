@@ -5099,7 +5099,7 @@
       "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
       "bytes": 38224,
       "lines": 1467,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5126,7 +5126,7 @@
           "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5164,6 +5164,10 @@
               "vice-cm-t4rupt-optics": 46,
               "vice-cm-t4rupt-chain": 269
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-t4rupt.md",
+            "sha256": "1a1fca6a3ccd1eb5f83c44f35ff0b176c4c722a748591d93d1c41de787d0e0b4"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-t4rupt-chain/cm-t4rupt-chain-c64-cover.json",
