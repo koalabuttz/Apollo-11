@@ -334,6 +334,28 @@ SPECS = {
         'edge_values': True,
         'freeze_stride': 32,
     },
+    # Lane D1: Luminary099 ASCENT_GUIDANCE, the whole file (basic and
+    # interpretive) as routines at its original addresses.
+    'lm-ascent': {
+        'missions': ('lm',),
+        'file': {'lm': 'ASCENT_GUIDANCE.agc'},
+        'base': {'lm': 'lm_ascent'},
+        'symbol': {'lm': 'lm_ascent'},
+        'entries': ['@external'],
+        'externals': {'DOWNFLAG': 'auto', 'POSTJUMP': 1, 'UPFLAG': 'auto', 'SHORTMP': 'auto', 'POLY': 'auto', 'FINDVAC': 'auto', 'TWIDDLE': 'auto', 'TPAGREE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', },
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'noreturn': ['POSTJUMP'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'target': 'tests/lm_ascent_target.c',
+        'freeze_stride': 32,
+        'index_carry16': True,
+        'image_w': True, 'c64_cuts': True,
+    },
     'inflight-align': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc', 'cm': 'INFLIGHT_ALIGNMENT_ROUTINES.agc'},
