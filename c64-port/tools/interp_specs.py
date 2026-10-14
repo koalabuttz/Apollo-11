@@ -201,6 +201,30 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
+# DDV with edge operands (reviewer 1, #314): a zero, -0 or tiny dividend, a
+# divisor of +-0, a tiny one, major part +-1 (minor of either sign) or 1/2, and equal major parts
+# (the shared DDV body's zero, x/0, 0/0, equal-major and major-1 arcs).
+# dvd and dvs name each operand's two words. Half the cases keep the random
+# states.
+DDV_DIVIDENDS = [(0, 0), (0o77777, 0o77777), (0, 1), (0o77777, 0o77776), (0, 0o37), (1, 0o12345),
+                 (0o77776, 0o65432)]
+DDV_DIVISORS = [(0, 0), (0o77777, 0o77777), (0, 3), (1, 0o12345), (0o77776, 0o65432), (1, 0o65432),
+                (0o77776, 0o12345), (0o20000, 0), (0o57777, 0o77777), (0o14000, 5)]
+
+
+def ddv_joint(dvd, dvs, extra=None):
+    sets = [{dvd[0]: a[0], dvd[1]: a[1], dvs[0]: b[0], dvs[1]: b[1]}
+            for a in DDV_DIVIDENDS for b in DDV_DIVISORS]
+    for h in (1, 0o14000, 0o20000, 0o37777):
+        for l1, l2 in ((5, 7), (7, 5), (0, 0), (0o37777, 1)):
+            for neg in (False, True):
+                b = (h, l2) if not neg else (~h & 0o77777, ~l2 & 0o77777)
+                sets.append({dvd[0]: h, dvd[1]: l1, dvs[0]: b[0], dvs[1]: b[1]})
+    if extra:
+        sets = [dict(v, **x) for v in sets for x in extra]
+    return sets + [{}] * len(sets)
+
+
 # AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
 # and the surface mark slots (that area plus 6 words a mark).
 AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
@@ -254,6 +278,10 @@ AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in ran
 ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 1],
                  '0117': [0o1565, 0o1563, 0o1561], '0141': [0o147, 0o145, 0o143], '0132': [0o3113],
                  'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']}
+
+# A as a sine or cosine across its range, +-0 in about a fifth of the
+# cases (16-bit -0).
+A_PM0 = [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777) for v in (k, 0o177777 - k)]
 
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
@@ -622,7 +650,9 @@ SPECS = {
              for p in ('23,3530', '23,3536', '23,3546')},
             # QUICTRIG's loop (after SPSIN, SPCOS): ITEMP2 the offset, ITEMP1
             # the caller's return (BANKCALL or an RTB, outside the file).
-            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356]} for p in ('23,3566', '23,3575')},
+            # A, the sine or cosine, across its range and +-0 in about a fifth
+            # of the cases (SPSIN(0) is +0), for MP BIT14 (reviewer 1, #314).
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3566', '23,3575')},
             # NBSM: S1 (the job's VAC +40D) holds the address of the CDU angles (MARKDATA +2 in
             # P20-P25, a mark VAC's ICDU in P51-P53), at NBSM and its LXC,1 resume key.
             **{p: {'vac+050': [0o1244, 0o1250, 0o766, 0o122]} for p in ('NBSM', '23,3610')},
@@ -631,6 +661,14 @@ SPECS = {
             # TC, or outside the file).
             **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
                    '130': [0, 1], '145': [0o3631, 0o5000]} for p in ('23,3676', '23,3714')}),
+        # SMCDURES's DDV COSCDUZ (reviewer 1, #314): at SMCDURES, DTHETASM
+        # (the LOS rate times 0.1) zero or small, so the dividend is; at the
+        # DDV (23,3751), MPAC and COSCDUZ edge values.
+        'joint_states': {
+            'SMCDURES': ddv_joint(('DTHETASM', 'DTHETASM+1'), ('COSCDUZ', 'COSCDUZ+1'),
+                                  [{'DTHETASM+4': 0, 'DTHETASM+5': 0}, {'DTHETASM+4': 0, 'DTHETASM+5': 3}]),
+            'SMCDURES+7': ddv_joint(('MPAC', 'MPAC+1'), ('COSCDUZ', 'COSCDUZ+1'))},
+        'edge_values': True,
         'seed_counters': True,
         'cover': True,
         'channels': 'all',
@@ -668,7 +706,8 @@ SPECS = {
             {p: {'143': [0, 2, 4], '142': [0o3541, 0o3545, 0o3650, 0o3653, 0o3663, 0o3666, 0o5000]}
              for p in ('23,3570', '23,3576', '23,3606')},
             # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
-            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356]} for p in ('23,3626', '23,3635')},
+            # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
             # AX*SR*T's loop: DEXDEX +-3 to +-1, DEX1 and DEX2 offsets, BUF
             # the component index, RTNSAVER C*MM*N2's return or outside.
             **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
@@ -682,6 +721,7 @@ SPECS = {
             **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
                for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
                          '10,2174')}),
+        'edge_values': True,
         'seed_counters': True,
         'cover': True,
         'ebank': 'listing',

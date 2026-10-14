@@ -4066,8 +4066,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (cm_powered_subs_interpretive, at NEWOPS with LOC there): 23,3477 CDUTRIG, 3502, 3503 CD*TR*G, 3506, 3606 NBSM, 3617, 3621 CDU*SMNB, 3624 TRG*SMNB, 3632, 3634 CDU*NBSM, 3637 TRG*NBSM, 3644 *SMNB*, 3646 *NBSM*, 3742 SMCDURES, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3610, 3613, 3615, 3745, 3750, 3751, 3753, 3754, 3756, 3760, 3762, 3765, 3767, 3770, 3771; a quarter of the cases have NEWJOB positive). Basic (cm_powered_subs_basic): 3500, 3504 (after EXIT), 3530, 3536, 3546 (CD*TR*GS after CDULOGIC, COSINE and SINE), 3555 QUICTRIG, 3566, 3575 (after SPSIN, SPCOS), 3622, 3625, 3635, 3640, 3645, 3647 (after EXIT), 3627, 3642 (after MPACVBUF), 3676, 3714 (AX*SR*T after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); NBSM's S1 an erasable address of three angles. Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
-          "unreached": "23,3732 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; 36 cases with DEXDEX +1 and BUF 0 take the -0 exit in yaAGC and natively. The oracle executed the other 131 basic instructions and read all 47 interpretive words (evidence/cm-powered-subs/cm-powered-subs-closure.json).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (cm_powered_subs_interpretive, at NEWOPS with LOC there): 23,3477 CDUTRIG, 3502, 3503 CD*TR*G, 3506, 3606 NBSM, 3617, 3621 CDU*SMNB, 3624 TRG*SMNB, 3632, 3634 CDU*NBSM, 3637 TRG*NBSM, 3644 *SMNB*, 3646 *NBSM*, 3742 SMCDURES, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3610, 3613, 3615, 3745, 3750, 3751, 3753, 3754, 3756, 3760, 3762, 3765, 3767, 3770, 3771; a quarter of the cases have NEWJOB positive). Basic (cm_powered_subs_basic): 3500, 3504 (after EXIT), 3530, 3536, 3546 (CD*TR*GS after CDULOGIC, COSINE and SINE), 3555 QUICTRIG, 3566, 3575 (after SPSIN, SPCOS), 3622, 3625, 3635, 3640, 3645, 3647 (after EXIT), 3627, 3642 (after MPACVBUF), 3676, 3714 (AX*SR*T after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); NBSM's S1 an erasable address of three angles. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (3566, 3575) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand. SMCDURES (3742) and its DDV COSCDUZ (3751) also start from edge operands: DTHETASM zero or small (so the dividend is), MPAC 0, -0 or small, and COSCDUZ 0, -0, small, major part +-1 with a minor of either sign, 1/2, or a major part equal to the dividend's; with edge_values on the other operands, the shared DDV's zero-dividend, x/0, 0/0, equal-major and major-1 arcs all run (reviewer 1, #314).",
+          "unreached": "23,3732 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; the cases with DEXDEX +1 that reach TSTPOINT take the -0 exit in yaAGC and natively. The oracle executed the other 131 basic instructions and read all 47 interpretive words (evidence/cm-powered-subs/cm-powered-subs-closure.json).",
           "data_validity": "SINESLOC (ADRES SINCDU) and INDEXI (4, 2, 0, 4) are read as the original constants: SINESLOC by CA, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
         },
         "external_continuations": [
@@ -4084,22 +4084,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
-            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+            "sha256": "ee354fd58034301e3c848f6f8fa8fa5d6f0b4fdea9e3b48bf8322f13bad82590"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-host.log",
-            "sha256": "2812bfc1dad19cc97404e68b22c2295772203a9dbc98d0a4eb487b69db0e4df8"
+            "sha256": "657f025a2208314fab72aa1d453ff1af843c8db5f9ccc091d87d5d154bdcc565"
           },
           "c64_execution_results": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-vice.log",
-            "sha256": "a5b7f4fab0046f10225c3238c4c46fd510b32d631beba50efba2699ef4cc9248",
+            "sha256": "7040611f20b87df84a313a1ab08e62f6e95a7ad55464fd4039c47d8ac2ebd69f",
             "vice_targets": {
-              "vice-cm-powered-subs": 74
+              "vice-cm-powered-subs": 84
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
-            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+            "sha256": "ee354fd58034301e3c848f6f8fa8fa5d6f0b4fdea9e3b48bf8322f13bad82590"
           },
           "executed_instruction_closure": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-closure.json",
@@ -10538,7 +10538,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT, its returns after DMP and DMPSUB (10,2052, 2066, 2076, 2106, 2113, 2122, 2133, 2142) and after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T; 3723, 3741 (after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT, its returns after DMP and DMPSUB (10,2052, 2066, 2076, 2106, 2113, 2122, 2133, 2142) and after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T; 3723, 3741 (after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
           "unreached": "23,3757 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; the cases that reach TSTPOINT all take the -0 exit, in yaAGC and natively. The oracle executed the other 237 basic instructions and read all 14 interpretive words (evidence/lm-powered-subs/lm-powered-subs-closure.json).",
           "data_validity": "SINSLOC (ADRES SINCDU), XNBECADR (ECADR XNB) and INDEXI (4, 2, 0, 4) are read as the original constants: SINSLOC and XNBECADR by CA/CAF, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
         },
@@ -10557,22 +10557,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "1b6222677771a3ff117a22017943d907d645b480b6daa775508516ce16a26d91"
+            "sha256": "d3432cc0cd56d3c2b91e5bd366a34a72b86f3902298565a5d0b30ba4f5f59e70"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-host.log",
-            "sha256": "98b9c7ece4c9de5cb7e40ef964f6c3f9485735e1e54c1f46646e3717f505f012"
+            "sha256": "470f260cdbdd1c96ec940e2b3b1836e3a400827618d05ab4817a83570703cd7c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-vice.log",
-            "sha256": "8793aaebf0787d4e41cd5fade52cfefab68a29f72c05bf9dc93dfd840d5aaf53",
+            "sha256": "8421eb0fb8ff373fb34d7e126c4c0e22d6a5814e47d3a1b18f01b3722d50aad5",
             "vice_targets": {
-              "vice-lm-powered-subs": 66
+              "vice-lm-powered-subs": 67
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "1b6222677771a3ff117a22017943d907d645b480b6daa775508516ce16a26d91"
+            "sha256": "d3432cc0cd56d3c2b91e5bd366a34a72b86f3902298565a5d0b30ba4f5f59e70"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-closure.json",

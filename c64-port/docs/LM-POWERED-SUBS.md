@@ -16,13 +16,13 @@ Two additions to `tools/basic_compile.py`, as this file needs them. Neither chan
 - **A read of Z.** FLESHPOT's `DCA Z` now sees Z as the hardware has it: the address of the next word (10,2167).
 - **`fx()`'s bank.** The fixed-table lookup reads INDEXI in bank 23, the tables' own bank, not the bank of the file's lowest entry (10).
 
-The spec carries `index_carry16` and `image_w` (#260).
+The spec carries `index_carry16` and `image_w` (#260), and `edge_values` (MPAC, the push-down list and the operands as edge vectors in a quarter of the cases).
 
 ## The states each resume point starts from
 
 As in the CM form, each mid-loop point starts from the words the file's own runs leave there:
 - CD\*TR\*GS (23,3570, 3576, 3606): TEM3 an offset 4, 2 or 0, and TEM2 a caller's return.
-- QUICTRIG (23,3626, 3635): ITEMP2 the offset, and ITEMP1 a return outside.
+- QUICTRIG (23,3626, 3635): ITEMP2 the offset, ITEMP1 a return outside, and A across its range and +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).
 - AX\*SR\*T (23,3723, 3741): DEXDEX ±1 to ±3, DEX1 and DEX2 offsets, BUF 0 or 1, and RTNSAVER a return.
 - AX\*SR\*T itself, which other files call: A +3 or -3, and Q a return.
 - FLESHPOT after DMP, DMPSUB and VXV: TEM1 the switched address of XNB (1664) or XNBPIP (1545), and TEM2 the caller's EBANK.
@@ -36,6 +36,6 @@ Hashes: `evidence/lm-powered-subs/SHA256.json`.
   - the one left, 23,3757 (TSTPOINT's TC RTNSAVER for +0), cannot be reached. AX\*SR\*T enters with ±3, and DIM of +1 gives -0, so `CCS DEXDEX` never sees +0.
 - **Independent assembly comparison.** `make lm-powered-subs-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 45 routines, 23,040 in all, and every one equals the native run (`evidence/lm-powered-subs/lm-powered-subs-proof.json`). It compares Z, all 2,048 erasable words and the interrupt-enable state.
 - **Host and sanitizer results.** `make test-lm-powered-subs sanitize-lm-powered-subs`: the 1,440 frozen cases, 0 failures.
-- **C64 execution results.** `make vice-lm-powered-subs`: 66 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (521 gcov branches, and 410 of 410 trace edges). 66 checks, 0 failures.
+- **C64 execution results.** `make vice-lm-powered-subs`: 67 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (521 gcov branches, and 410 of 410 trace edges). 67 checks, 0 failures.
 
 The older hand translations (`src/lm_powered_*.c`, `src/lm_fleshpot*.c`, `src/guidance_rotation.c`, `src/guidance_throttle_service.c`) stay for their existing callers. This milestone does not change them.
