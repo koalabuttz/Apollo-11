@@ -2869,6 +2869,10 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
+        # V89 runs in flight: skip the entry checks' whole-image scan there.
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
     },
     'lm-p12': {
         'missions': ('lm',),
