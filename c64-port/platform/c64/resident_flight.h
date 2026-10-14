@@ -13,6 +13,7 @@
 #include <string.h>
 #include "overlay_reu.h"
 #include "resident_kernel.h"
+#include "flight_io.h"
 #if RK_LM
 #include "p66_bias.h"
 typedef p66_bias_io rk_io;
@@ -54,8 +55,14 @@ typedef struct {
     agc_routine_table *interpretive; uint8_t interpretive_count;
     const agc_site_operand *operands; uint16_t operand_count;
     bool (*fixed_data)(const agc_native_program *,uint16_t physical,agc_word *word);
-    uint8_t ready;
+    uint8_t ready;   /* 0 not built, RK_TABLES_DIRECT or RK_TABLES_NOT_DIRECT */
 } rk_module_tables;
+/* Built, and the resident may call the routines straight from the slot
+ * (rk_direct); or built, but the tables take an io record other than rk_io
+ * (flight_table_module.c FS_IO_KIND), so they run only through the module
+ * main, which converts it. */
+#define RK_TABLES_DIRECT 1u
+#define RK_TABLES_NOT_DIRECT 2u
 _Static_assert(offsetof(rk_module_tables,operand_count)==offsetof(agc_native_program,operand_count),
                "rk_module_tables must start like agc_native_program");
 /* The resident's program with a module's tables, operands and fixed_data. */
@@ -79,6 +86,28 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
+/* CM: the one cm_channels record (include/cm_native_image.h: RCS jet
+ * channels 5 and 6, input channels 30-33), at the top of the service-table
+ * page. The resident defines it there and every CM flight module links
+ * --defsym=cm_channels=RK_CM_CHANNELS (tools/flight_store_build.py), so no
+ * module keeps a private copy in its slot. Interim until agc_hardware
+ * carries these channels. */
+#define RK_CM_CHANNELS 0x6ff4u
+/* The flight program's device fields neither rk_io nor agc_hardware holds
+ * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
+ * latches, ...), for the modules whose tables take another io record. Its
+ * superbank and interrupt_enabled are copies, refreshed from rk_device
+ * around each such run. At RK_FLIGHT_IO, below cm_channels. */
+#define RK_FLIGHT_IO 0x6fdcu
+/* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
+ * convert with absolute addressing. */
+#define RK_HARDWARE 0x6fbeu
+extern flight_io rk_flight;
+#if RK_LM
+#define RK_IO_BASE FLIGHT_IO_P66
+#else
+#define RK_IO_BASE FLIGHT_IO_CM_NATIVE
+#endif
 /* 256 bytes of boot scratch for apollo_reu_store_verify. */
 #define RK_BOOT_SCRATCH 0xc100u
 

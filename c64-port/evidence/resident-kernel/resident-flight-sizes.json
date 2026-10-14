@@ -1,15 +1,15 @@
 {
  "lm": {
-  "resident_bytes": 24301,
+  "resident_bytes": 24273,
   "resident_capacity": 26367,
-  "free_bytes": 2066,
+  "free_bytes": 2094,
   "service_table_bytes": 72,
   "boot_only_bytes": 3794,
   "components": {
    "kernel": 10524,
    "ABI 2 runtime and REU store": 5235,
    "transfer ABI trampoline and Executive call sites": 3501,
-   "resident state and step": 1499,
+   "resident state and step": 1471,
    "single-precision subroutines": 1307,
    "AGC timers and interrupt entry": 1092,
    "service table exports": 637,
@@ -37,16 +37,16 @@
   }
  },
  "cm": {
-  "resident_bytes": 24007,
+  "resident_bytes": 23980,
   "resident_capacity": 26367,
-  "free_bytes": 2360,
+  "free_bytes": 2387,
   "service_table_bytes": 72,
   "boot_only_bytes": 3763,
   "components": {
    "kernel": 10281,
    "ABI 2 runtime and REU store": 5235,
    "transfer ABI trampoline and Executive call sites": 3433,
-   "resident state and step": 1516,
+   "resident state and step": 1489,
    "single-precision subroutines": 1307,
    "AGC timers and interrupt entry": 1092,
    "service table exports": 637,
