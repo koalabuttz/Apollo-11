@@ -196,9 +196,10 @@ def c64_link(cc, m, header, tag, cs=None, defines=()):
     return out
 
 
-def c64_run(a, m, prg, tag, pinned):
+def vice_boot(a, m, prg, work, pinned, mail_end='c0ff'):
+    """Run prg in VICE on the store until it writes the mailbox; the mailbox
+    ($c000 to mail_end) and image ($7000-$7fff) files, or None."""
     rom = a.rom_dir.resolve()
-    work = OUT / f'vice-{tag}'
     work.mkdir(parents=True, exist_ok=True)
     sys_at = re.search(rb'\x9e\s*(\d+)\x00', prg.read_bytes()[:32])
     mail, image = work / 'mailbox.bin', work / 'image.bin'
@@ -206,7 +207,7 @@ def c64_run(a, m, prg, tag, pinned):
     image.unlink(missing_ok=True)
     # Boot's DMA of the class-3 module to $C000 is the first store there.
     (work / 'vice.mon').write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
-                                   + f'g {int(sys_at[1]):04x}\nbsave "{mail}" 0 c000 c0ff\n'
+                                   + f'g {int(sys_at[1]):04x}\nbsave "{mail}" 0 c000 {mail_end}\n'
                                    f'bsave "{image}" 0 7000 7fff\nquit\n')
     reu = work / 'image.reu'
     reu.write_bytes((STORE / f'{m}.reu').read_bytes())
@@ -221,8 +222,15 @@ def c64_run(a, m, prg, tag, pinned):
     with (work / 'vice.log').open('w') as log:
         subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, timeout=a.timeout, env=env)
     if not mail.exists() or mail.read_bytes()[0] != 0xa5:
+        return None, image
+    return mail.read_bytes(), image
+
+
+def c64_run(a, m, prg, tag, pinned):
+    work = OUT / f'vice-{tag}'
+    d, image = vice_boot(a, m, prg, work, pinned)
+    if d is None:
         return dict(ok=False, error=f'no mailbox (cycle limit or crash; see {work}/vice.log)')
-    d = mail.read_bytes()
     steps, start, end, z, fb, q, newjob, status, sb, isr, ie, idle = struct.unpack_from('<I6H5B', d, 0x10)
     words = list(struct.unpack('<2048H', image.read_bytes())) if image.exists() else None
     devices = list(struct.unpack_from(f'<{len(DEVICE_FIELDS)}H', d, 0x40))

@@ -552,23 +552,19 @@ SPECS = {
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
         'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
-                              # EARROT1-OVERADAY: DTEAROT (B28 cs) 0. OVERADAY
-                              # takes a day (1/WIE) off it and goes back to
-                              # EARROT2 until EARROT2's DDV stops overflowing;
-                              # from most other values the original swings
-                              # between x and x - 1/WIE for thousands of passes
-                              # or for good (yaAGC). EARROT1's RVQ returns
-                              # through QPRET (42D) to its caller, outside the
-                              # file.
-                              **{lab: {'DTEAROT': [0], 'DTEAROT+1': [0], 'vac+052': ['outside']}
+                              # EARROT1-OVERADAY: OVFIND as the interpreter
+                              # sets it (TS of an overflowed A: +-1), +0 in
+                              # three cases of five. EARROT2's BOVB counts
+                              # OVFIND down rather than clearing it, so from
+                              # any other word the original swings between
+                              # EARROT2 and OVERADAY for thousands of passes
+                              # (yaAGC); DTEAROT and MPAC range freely.
+                              # EARROT1's RVQ returns through QPRET (42D) to
+                              # its caller, outside the file.
+                              **{lab: {'OVFIND': [0, 0, 0, 1, 0o77776], 'vac+052': ['outside']}
                                  for lab in ('23,2215', '23,2220', '23,2221', '23,2223', '23,2225', '23,2230',
                                              '23,2245', '23,2250', '23,2252', '23,2253')})},
         'index_states': True,
-        # OVERADAY's BDSU and STORE run with MPAC the day it takes off
-        # (+-1/WIE) or the DTEAROT it leaves (0, +-1/WIE), as above.
-        'joint_states': {'cm': {lab: [{'0154': 0o1015, '0155': 0o34732}, {'0154': 0o76762, '0155': 0o43045},
-                                      {'0154': 0, '0155': 0}]
-                                for lab in ('OVERADAY+3', 'OVERADAY+5')}},
         'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
                 '2V1STO2S': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_TWO_VECTOR_ONE_TO_TWO)',
@@ -580,6 +576,7 @@ SPECS = {
                 'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'},
                 # EARROT2's BOVB TCDANZIG (CSM_GEOMETRY.agc 355), natively
                 # (27,3352, where the listing's first label is ENDT(X)).
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'},
                 'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
         'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h', 'cm_integration_moves.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c', 'src/cm_integration_moves.c'],
@@ -2869,6 +2866,10 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
+        # V89 runs in flight: skip the entry checks' whole-image scan there.
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
     },
     'lm-p12': {
         'missions': ('lm',),
@@ -2888,6 +2889,9 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'edge_cases': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p12_target.c',
         'freeze_stride': 32,
@@ -3056,6 +3060,7 @@ SPECS = {
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
+        'trusted_image': True,
         'c64_rows': 'cover',
         'cover': True,
         'freeze_stride': 16,

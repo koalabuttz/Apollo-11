@@ -9,18 +9,18 @@
       "store": "release"
     },
     "cm-downtelemetry-host.log": {
-      "sha256": "1dff9234a4aea42944992d8e60fead940966a2493c46b1d518cb48016ac4f1d8",
+      "sha256": "68ba761ae8a38c03b407b65d1dcc17e8f98809548ac25d0fe1db342bdaa33839",
       "bytes": 1650,
       "store": "release"
     },
     "cm-downtelemetry-proof.json": {
-      "sha256": "15825d4995fab3e70ccc19087106179f4cb5e9d923cf6f1ebc68e9e155911b9a",
+      "sha256": "f8ce066bc86f1fd2f65fc5e53376a2682c500131728335ee152fb50a2e6dd935",
       "bytes": 612,
       "store": "tree"
     },
     "cm-downtelemetry-vice.log": {
-      "sha256": "f236436f632ef939ef59a1c210bd38d0dd7b3ff28945ce9e8bbc3111f381089f",
-      "bytes": 631,
+      "sha256": "cd26563b7bbaeb85808d1e9f5f5f2d3a41be173fb539c116d21f21225154675d",
+      "bytes": 619,
       "store": "release"
     }
   }

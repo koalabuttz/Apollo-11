@@ -14,6 +14,8 @@ Lane F (LM powered flight and DAP). Milestone `lm-r63`. How the routines are mad
 
 `RTB LOADTIME` runs the native body in `src/rtb_angles.c`. `RTB NORMUNIT` has no native body yet; the run ends at it, as it does at the outside interpretive calls and basic routines.
 
+V89 runs in flight, so flight builds skip the entry checks' whole-image scan (`trusted_image`) and address the fixed image directly (`image_w`); host tests and the C64 diagnostic keep the scan. `index_carry16` keeps INDEX's end-around carry right on the 6502 (`docs/INTERP-COMPILE.md`).
+
 ## Evidence
 
 Hashes: `evidence/lm-r63/SHA256.json`.
@@ -21,7 +23,7 @@ Hashes: `evidence/lm-r63/SHA256.json`.
 - **Source map.** `lm-r63-source-map.json` lists all 65 words with the routine that compiles each; none is untranslated.
 - **Independent assembly comparison.** `make lm-r63-differential`: 512 states for each of the 30 routines (15,360 cases, with the flight edge values of `tools/edge_cases.py` in a quarter) run the unmodified Luminary099 rope in yaAGC (with the hardware divide) to the same stop. All 15,360 equal it in Z, all 2,048 erasable words and the interrupt-enable state; none is refused.
 - **Host and sanitizer results.** `make test-lm-r63 sanitize-lm-r63` run the 960 frozen cases (every 16th).
-- **C64 execution results.** `make vice-lm-r63` runs one diagnostic with 34 cases chosen by `tools/c64_row_cover.py`: together they take all 408 branch arcs (gcov, every linked source) that the 15,360 host cases take.
+- **C64 execution results.** `make vice-lm-r63` runs one diagnostic with 35 cases chosen by `tools/c64_row_cover.py`: together they take all 442 branch arcs (gcov, every linked source) that the 15,360 host cases take.
 
 ## Tool change
 
