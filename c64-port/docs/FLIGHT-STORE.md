@@ -243,8 +243,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   entries), which a firing pass makes three times; before, each loaded the
   T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
   `RIDE`: run through `rk_direct` while the excursion is loaded, while
-  their resolver records keep the wrapper for every other caller. On LM it
-  is 15,438 bytes.
+  their resolver records keep the wrapper for every other caller. IBNKCALL
+  and ISWRETRN ride the same way (`lm_interbank_dap_hot_routines`, a
+  compact copy of `lm_interbank_routines`' two entries, checked against
+  them by `make test-lm-interbank-dap`): the passes call across banks
+  through them, and each call loaded the interbank module and then
+  reloaded the excursion. Their CADR operands are the callers' words from
+  `lm_interbank_routines`' site list (`RIDE_SITES`), the ones in the banks
+  the excursion's own entries are in. On LM it is 16,295 bytes.
 - The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
   (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
   $01E2's `lm_t4rupt_core_routines`) and the radar step
