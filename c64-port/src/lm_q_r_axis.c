@@ -19,6 +19,7 @@
 #endif
 #define AFR_EBN (LM_QR_EB>>8)
 #include "agc_fast_redirect.h"
+#include "lm_dap_shared.h"
 #define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_QR_COUNT_PATHS
@@ -168,17 +169,17 @@ static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
 static int entry(const agc_image *s,const void *io){AFR_BIND(s);return s&&io&&(W[4]&076000u)==LM_QR_FB17&&W[3]==LM_QR_EB;}
 static agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 /* The signed value of an erasable word, and of the 16-bit A. */
-static int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
+LM_DAP_SHARED int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
 static int sa(const agc_image *s){agc_register a=W[0];return a&0100000u?-(int)(~a&077777u):(int)(a&077777u);}
 /* Channel orders on a 15-bit channel, as yaAGC's: READ, RAND, WOR. */
 static void rd(agc_image *s,agc_word chan){W[0]=agc_extend(chan);}
-static void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
+LM_DAP_SHARED void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
 /* WOR CHAN13: bits 12-14 written to channel 13 are the HANDRUPT trap
  * enables, which do not read back (yaAGC keeps 043777). */
 static void wor13(agc_image *s,agc_word *chan){agc_word v=(agc_word)((oc(W[0])|*chan)&077777u);*chan=(agc_word)(v&043777u);W[0]=agc_extend(v);}
 /* MSU K (K above the registers): two's-complement difference of the
  * overflow-corrected A and K, returned in ones' complement. */
-static void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
+LM_DAP_SHARED void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
  if(d&040000u){d|=0100000u;--d;}
  W[0]=agc_extend((agc_word)(d&077777u));
 }
@@ -190,7 +191,7 @@ static void dtcb(agc_image *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_c
 /* A TC at ret - 1 to z, which is outside this file. */
 static enum exec_status leave(agc_image *s,agc_word ret,agc_word z){ai_tc(s,ret);W[5]=z;return EXEC_OK;}
 /* TC Q at the end of a subroutine: Z = Q, Q = 3. */
-static void tcq(agc_image *s){ai_tc(s,QREG+1u);}
+LM_DAP_SHARED void tcq(agc_image *s){ai_tc(s,QREG+1u);}
 /* AXISCTR, which the file's loop holds at 0 (U) or 1 (V). */
 #define AX ((unsigned)ai_word(s,AXISCTR))
 

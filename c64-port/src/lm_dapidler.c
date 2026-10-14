@@ -18,6 +18,7 @@
 #endif
 #define AFR_EBN (LM_DI_EB>>8)
 #include "agc_fast_redirect.h"
+#include "lm_dap_shared.h"
 #define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_DI_COUNT_PATHS
@@ -155,14 +156,14 @@ static int sa(const agc_image *s){agc_register a=W[0];return a&0100000u?-(int)(~
 /* Channel orders on a 15-bit channel, as yaAGC's: READ, RAND, WAND, WOR,
  * WRITE; RXOR on channel 1 (L) works on the raw 16-bit registers. */
 static void rd(agc_image *s,agc_word chan){W[0]=agc_extend(chan);}
-static void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
-static void wand(agc_image *s,agc_word *chan){agc_word v=(agc_word)(oc(W[0])&*chan);*chan=v;W[0]=agc_extend(v);}
+LM_DAP_SHARED void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
+LM_DAP_SHARED void wand(agc_image *s,agc_word *chan){agc_word v=(agc_word)(oc(W[0])&*chan);*chan=v;W[0]=agc_extend(v);}
 static void wor(agc_image *s,agc_word *chan){agc_word v=(agc_word)((oc(W[0])|*chan)&077777u);*chan=v;W[0]=agc_extend(v);}
 static void wr(agc_image *s,agc_word *chan){*chan=(agc_word)(oc(W[0])&077777u);}
 static void rxor_l(agc_image *s){W[0]=(agc_register)((W[0]^W[LCHAN])&0177777u);}
 /* MSU K (K above the registers): two's-complement difference of the
  * overflow-corrected A and K, returned in ones' complement. */
-static void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
+LM_DAP_SHARED void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
  if(d&040000u){d|=0100000u;--d;}
  W[0]=agc_extend((agc_word)(d&077777u));
 }
