@@ -298,8 +298,9 @@ __attribute__((noinline)) static void rk_rupts(void) {
  * (tools/resident_flight_build.py) count them as their own components. */
 __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_physical) {
     agc_routine call;
-    if(agc_transfer_point(&rk_program,IMAGE,rk_device.superbank)==stop_physical) return EXEC_OK;
-    call=agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);
+    if (agc_transfer_next(&rk_program, IMAGE, rk_device.superbank, stop_physical, &call) ==
+        stop_physical)
+        return EXEC_OK;
     if(!call) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK
     rk_charge(RK_RESIDENT_MCT,1u);
