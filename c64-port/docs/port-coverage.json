@@ -5226,12 +5226,7 @@
       "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
       "bytes": 3827,
       "lines": 150,
-      "demoted": {
-        "from": "complete",
-        "date": "2026-10-14",
-        "reason": "CM E/JOBWAK refuses a sleeping core set 0, the normal idle state (#318; docs/audits/cm-standard-lead-withdrawn.md). Restore after the Kernel lane ports the LM wake fix and the reviewer re-reviews."
-      },
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5272,7 +5267,7 @@
           "verification": "docs/STANDARD-LEAD-ORACLE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5312,8 +5307,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/kernel-212.md",
-            "sha256": "8afdc695e36bb286a46f6d195b65f0d30097299cd04a21958d208367d5c11e55"
+            "path": "docs/audits/cm-standard-lead-restored.md",
+            "sha256": "34dfcf4ad406b33f1c094bcdb2d4a299d27f649a1da2a5d5759451d774bc0d6e"
           },
           "c64_branch_outcomes": {
             "path": "evidence/standard-lead-oracle/standard-lead-oracle-c64-cover.json",
