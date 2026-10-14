@@ -148,6 +148,22 @@ class Compiler:
         for lab_, n_ in spec.get('outside', {}).items():
             p_ = self.L.labels[lab_]
             self.words -= set(range(p_, p_ + n_))
+        # 'inside': [labels] keeps only those labels' segments (a label's
+        # words up to the file's next label) and leaves the rest of the file
+        # outside, as 'outside' would: INTERPRETER's basic subroutines and
+        # entry bodies, whose dispatch code the compact interpreter runs.
+        self.cut_words = set()
+        if spec.get('inside'):
+            keep_, seg_ = set(spec['inside']), None
+            for l_ in self.lines:
+                if l_.phys is None:
+                    continue
+                if l_.label and self.L.labels.get(l_.label) == l_.phys:
+                    seg_ = l_.label
+                if seg_ not in keep_:
+                    cut_ = set(range(l_.phys, l_.phys + len(l_.words)))
+                    self.words -= cut_
+                    self.cut_words |= cut_
         # (Only a file wholly in banks 040-043: a file with code in 030-033 as
         # well, as P40-P47 with DAPFIG in 042, keeps FB 030-033 as banks 030-033.)
         banked = [l.phys for l in self.lines if l.phys is not None and l.phys >= 4 * 1024]
@@ -1584,6 +1600,11 @@ class Compiler:
                                        'interrupt table may)'}
                 elif ln.op in DATA_OPS:
                     use = {'constant': 'data word (no instruction in the file reads it)'}
+                elif self.spec.get('inside_core'):
+                    # 'inside' leaves the other segments to the interpreter
+                    # core, which runs the whole file (and the words of the
+                    # kept segments no cross-file entry reaches).
+                    use = {'routine': 'interpreter core', 'function': self.spec['inside_core'][self.m]}
                 else:
                     use = {}
                 rows.append(dict(address=self.where(q), word='%05o' % self.L.word(q),
@@ -1841,6 +1862,11 @@ class Compiler:
                 c.append(' agc_word sb=(agc_word)(fb>>15);fb&=077777u;')
                 c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
                 c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(sb?(io->superbank&0160u)!=0100u:(fb>=060000u&&(io->superbank&0100u))))return 0;')
+            elif self.spec.get('fixed_fixed_any_fb'):
+                c.append(' /* fb 0177777: a fixed-fixed entry, under any FB and SUPERBNK */')
+                c.append(' uint8_t any=fb==0177777u;if(any)fb=W[4];')
+                c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
+                c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(!any&&fb>=060000u&&(io->superbank&0100u)))return 0;')
             else:
                 c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
                 c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
@@ -1880,8 +1906,12 @@ class Compiler:
                 if self.spec.get('fast_window'):
                     c.append(' AFR_BIND(s);AFO_FIX(s);')
                 # (A part key in fixed-fixed memory runs under the FB its
-                # caller left, as the step machine it was cut from did.)
+                # caller left, as the step machine it was cut from did; an
+                # entry of a spec with 'fixed_fixed_any_fb' also under any
+                # SUPERBNK.)
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb
+                if self.spec.get('fixed_fixed_any_fb') and bank in (2, 3):
+                    sfb = '0177777u'
                 if self.basic.io == 'p66_bias_io':
                     # Luminary: the record, then (lm_channel_io) the inputs;
                     # channel orders reach the program's agc_hardware.

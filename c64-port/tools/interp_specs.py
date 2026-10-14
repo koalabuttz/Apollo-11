@@ -729,6 +729,78 @@ SPECS = {
         'image_w': True,
         'target': 'tests/lm_powered_subs_target.c',
     },
+    # Interpreter lane: INTERPRETER.agc's words that other files enter
+    # directly (BANKCALL/USPRCADR/TC/TCF), compiled as basic routines; the
+    # interpreter's own dispatch (NEWOPS, DANZIG, the order tables) and
+    # the order bodies it reaches only through them are the compact
+    # interpreter's (src/lm_interp_core.c, docs/INTERPRETER-RUNTIME.md) and
+    # stay outside ('inside' keeps just these labels' segments).
+    **{m + '-interpreter': {
+        'resume_keys': True,
+        'missions': (m,),
+        'file': {m: 'INTERPRETER.agc'},
+        'base': {m: m + '_interpreter'},
+        'symbol': {m: m + '_interpreter'},
+        'basic': 'full',
+        # Q+2 (NEG) and TCQ (NEG +1): other files name them as Q+2 and TCQ,
+        # which '@external' reads as register Q.
+        # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
+        'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
+        'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
+                   'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
+                   'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
+                   'NEWMODE', 'TLOAD', 'TMODE', 'VMODE', 'DDV/BDDV', 'BUFZERO', 'SGNDVOVF', 'DVOVF', 'UNIT', 'SMALL2',
+                   'LARGE', 'LARGE3', 'LARGE2', 'SMALL', 'UNITDV', 'UMPAC-', 'UMPAC+', 'ABS', 'COSINE', 'PRESINE',
+                   'SINE', 'SN1', 'VXV'],
+        # The rest (dispatch, order bodies, DANZIG) is the compact core's.
+        'inside_core': {'lm': 'src/lm_interp_core.c', 'cm': 'src/cm_interp_core.c'},
+        # NEG's INDEX Q; TC 2 is its last word (TC Q's skip never runs on).
+        'fall_out': True,
+        # INTRSM: LXCH BBANK, then TCF INTPRET +3 (fixed-fixed).
+        'fixed_fixed_any_fb': True,
+        'fixed_rope': True,
+        # BRANCH returns to Q, Q+1 or Q+2 (INDEX Q; TC 1 / TC 2).
+        'call_skips': {'BRANCH': 2},
+        'native_sources': ['src/rope_image_host.c'],
+        'c64_native_sources': ['src/overlay_reu.c', 'platform/c64/overlay_reu_platform.c',
+                               'platform/c64/rope_image_reu.c'],
+        # DMP and POLY read the words after their TC (ADRES, coefficients):
+        # cases return to the mission's real call sites.
+        'q_callers': ['DMP', 'POLY'],
+        # ADRES words name erasable operands (ADDRWD, INDEX ADDRWD in DMPSUB,
+        # TLOAD, VXV, OVERFLOW): VAC-relative and unswitched erasable, with
+        # room for a vector past them (not MPAC, nor 01400 up, which EBANK 0
+        # puts over the central registers).
+        'all_states': {'116': ['vac+0', 'vac+2', 'vac+6', 'vac+14', 'vac+22', 0o200, 0o344, 0o600,
+                               0o1000, 0o1200, 0o1350]},
+        # After SQRTSUB, UNITDV returns to UNIT only on a zero component
+        # (+0 high word, +-0 low): zero vectors in three of five cases, so
+        # the UNITDV returns and the exit through VROTATEX run.
+        'joint_states': {'UNIT+16': [{}, {}, {'%o' % a: 0 for a in range(0o122, 0o130)},
+                                     {'%o' % a: (0 if a % 2 == 0 else 0o77777) for a in range(0o122, 0o130)},
+                                     {'%o' % a: (0o77777 if a == 0o123 else 0) for a in range(0o122, 0o130)}]},
+        'states': {
+            # POWRSERS: A the coefficient table (erasable, ROOTPSRS's; not
+            # 01400 up, which EBANK 0 puts over the central registers), L
+            # N-1 (the callers' DCA MPAC +3 / +5).
+            'POWRSERS': {'0': [0o1660, 0o1720, 'vac+6', 'vac+20'], '1': [0, 1, 2, 3, 4, 5]},
+            # SQRTSUB's right shift count in MPTEMP, 0-28 (14 and up: SMALL, the
+            # input's first two words 0).
+            # MPAC the normalized root (or 0, DVOVF), and VBUF the vector
+            # saved before VSQSUB: small enough for the three UNITDV divides
+            # to finish through VROTATEX, or at the root's size to overflow.
+            'UNIT+16': {'135': list(range(29)), '154': [0, 0o20000, 0o30000, 0o37777],
+                        **{'%o' % a: [0, 1, 0o100, 0o77776, 0o37777] for a in range(0o122, 0o130)}},
+        },
+        'bb_writes': ['03,2050', '03,2017'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/%s_interpreter_target.c' % m,
+    } for m in ('lm', 'cm')},
     # Lane A: Luminary099 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
     # basic and interpretive.
     'lm-ground-track': {
@@ -1056,6 +1128,10 @@ SPECS = {
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
     },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
@@ -1142,10 +1218,22 @@ SPECS = {
                    '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
+        # BDDV's divisor (MPAC, from the NORM ROUND at 11,2734) zero in half
+        # the 11,2736 resumes (their flowed state otherwise): the divide
+        # overflow paths of either sign, which only long DIFEQ runs reach.
+        'resume_states': {'11,2736': {'0154': [0, 'flow']}},
         'max_steps': 1000,
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,
+        # DIFEQ runs that reach the outcomes no shorter case takes are too
+        # long for one C64 diagnostic: they get truncated rows, each run to
+        # the first routine past the outcome it takes.
+        'c64_cuts': True,
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
         'target': 'tests/cm_orbital_integration_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
@@ -1560,6 +1648,10 @@ SPECS = {
         'target': 'tests/cm_tvc_init_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
     },
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
