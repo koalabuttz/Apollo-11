@@ -28,8 +28,8 @@ void lm_pa_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
  for(i=032;i<=034u;++i)m->words[i]=v%4u?width(&seed):raw(&seed);
  for(i=042;i<=044u;++i)m->words[i]=v%4u?width(&seed):raw(&seed);
  io->bias.superbank=0;io->bias.interrupt_enabled=(uint16_t)((rnd(&seed)>>20)&1u);
- io->chan14=0;io->chan5=io->chan6=io->chan30=0;
- io->chan12=raw(&seed);io->chan13=(agc_word)(raw(&seed)&043777u); /* the bits channel 13 reads back */io->chan31=raw(&seed);
+ io->hw.channel14=0;io->hw.channel5=io->hw.channel6=io->hw.channel30=0;
+ io->hw.channel12=raw(&seed);io->hw.channel13=(agc_word)(raw(&seed)&043777u); /* the bits channel 13 reads back */io->hw.channel31=raw(&seed);
  if(e==8u&&v%8u!=7u)m->words[EB6(01744u)]=(agc_word)(v%2u);
  /* One BACKP cohort in 32 (in the +-0 cohort) with the rate command inputs
   * that make PEGI's EDOTP +0: OMEGAP and DAPTEMP1 +0 (so JETRATE is +0),
@@ -43,7 +43,7 @@ void lm_pa_input(apollo_overlay_state *m,lm_flight_io *io,uint16_t n){uint32_t s
   m->words[EB6(01403u)]=m->words[EB6(01406u)]=040000u;m->words[043]=0u;
   m->words[EB6(01444u)]=(agc_word)(040000u|(rnd(&seed)>>20)%037777u);
   m->words[01273u]|=04000u;m->words[0111u]=(agc_word)((m->words[0111u]&~010400u)|04000u);
-  io->chan31=(agc_word)((io->chan31|010000u|07400u)&~040000u);}
+  io->hw.channel31=(agc_word)((io->hw.channel31|010000u|07400u)&~040000u);}
  /* OLDPMIN -0 (refused) only in one cohort in 32. */
  if(m->words[EB6(01460u)]==077777u&&v%32u!=31u)m->words[EB6(01460u)]=0u;
  /* Return in Q: SWRETURN, fixed-fixed 06000-07777, or bank 16 outside
@@ -64,6 +64,7 @@ static int part(const apollo_overlay_state *s){agc_word z=s->words[5];
   z==LM_PA_PURGENCY4);}
 unsigned lm_pa_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};enum exec_status st=EXEC_OK;agc_word superbank=0;
+ program.hardware=&io->hw;
  agc_routine call;int more;
  program.basic=&lm_p_axis_routines;program.basic_count=1;program.operands=lm_p_axis_sites;program.operand_count=LM_PA_SITES;
  lm_pa_input(s,io,n);
@@ -85,7 +86,7 @@ unsigned lm_pa_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t 
 static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_pa_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_pa_run(s,&io,n,&steps);
- sum_a=sum_b=0;mix((uint16_t)kind);mix(io.chan12);mix(io.chan13);mix(io.bias.interrupt_enabled);
+ sum_a=sum_b=0;mix((uint16_t)kind);mix(io.hw.channel12);mix(io.hw.channel13);mix(io.bias.interrupt_enabled);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }

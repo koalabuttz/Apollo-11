@@ -5,7 +5,8 @@
 #include "lm_flight_io.h"
 /* Luminary099 LANDING_ANALOG_DISPLAYS.agc, all of it (bank 21,
  * 02154-03076), as native routines of the control-transfer ABI; io is
- * lm_flight_io (channels 12, 14 and 30).
+ * p66_bias_io; channels 12, 14 and 30 are the program's agc_hardware
+ * (include/lm_flight_io.h).
  *
  *   LANDISP   21,2154  the R10 waitlist task: TBASE2 and PIPCTR1, the
  *                      display flag, DISINDAT (mode switch, DIDFLAG, the

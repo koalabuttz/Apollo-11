@@ -19,7 +19,9 @@
  * Cases arrive as a stream in the REU at IF_STREAM: per case a count, the
  * superbank and the entry's index, then count (address, value) pairs that
  * turn the previous case's image (kept at IF_REF, zero at first) into this
- * one's; a count of $FFFF ends it. Results (12 bytes each, IF_MAX at most)
+ * one's, or a count of $FFFE and the whole image (2048 words: the flowed
+ * states of tools/interp_flight_flowed.c share few words); a count of
+ * $FFFF ends it. Results (12 bytes each, IF_MAX at most)
  * go to $c010; mailbox (tools/vice_run.py): $c001-2 failures, $c003-4
  * checks (cases run), $c005 the first failing step, $a5 at $c000, then
  * at $c00f (done; written last). */
@@ -53,10 +55,18 @@ static uint16_t pairs[64];
 static uint8_t next_case(void){uint16_t head[3],n,k,i;
  apollo_reu_transfer(APOLLO_REU_FETCH,head,at,sizeof head);at+=sizeof head;
  if(head[0]==0xffffu)return 0;
- apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,IF_REF,sizeof *IMAGE);
- for(n=head[0];n;n-=k){k=n<32u?n:32u;
-  apollo_reu_transfer(APOLLO_REU_FETCH,pairs,at,(uint16_t)(k*4u));at+=k*4u;
-  for(i=0;i<k;++i)IMAGE->words[pairs[2*i]]=pairs[2*i+1];}
+ if (head[0] == 0xfffeu) {
+     apollo_reu_transfer(APOLLO_REU_FETCH, IMAGE, at, sizeof *IMAGE);
+     at += sizeof *IMAGE;
+ } else
+     apollo_reu_transfer(APOLLO_REU_FETCH, IMAGE, IF_REF, sizeof *IMAGE);
+ if (head[0] != 0xfffeu)
+     for (n = head[0]; n; n -= k) {
+         k = n < 32u ? n : 32u;
+         apollo_reu_transfer(APOLLO_REU_FETCH, pairs, at, (uint16_t)(k * 4u));
+         at += k * 4u;
+         for (i = 0; i < k; ++i) IMAGE->words[pairs[2 * i]] = pairs[2 * i + 1];
+     }
  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,IF_REF,sizeof *IMAGE);
  rk_device.superbank=head[1];
  return 1;}

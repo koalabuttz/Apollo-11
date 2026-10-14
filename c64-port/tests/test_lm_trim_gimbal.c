@@ -25,11 +25,11 @@ static void cover(uint16_t n){apollo_overlay_state s;lm_flight_io io;lm_tg_case 
  for(k=0;k<8u;++k){point=agc_transfer_point(&program,&s,0);
   call=agc_transfer_resolve(&program,&s,0);if(!call)return;
   for(i=0;i<POINTS;++i)if(points[i]==point)++reached[i];
-  if(call(&program,&s,&io)!=EXEC_OK)return;}
+  if((program.hardware=&io.hw,call(&program,&s,&io))!=EXEC_OK)return;}
 }
 static void refused(apollo_overlay_state *s,lm_flight_io *io,const char *what){apollo_overlay_state before=*s,at=*s;lm_flight_io bio=*io;agc_routine call;
  at.words[3]=LM_TG_EB;at.words[4]=s->words[5]==LM_TG_ACDTC12?LM_TG_FB16:LM_TG_FB21;call=agc_transfer_resolve(&program,&at,0);
- check(call&&call(&program,s,io)==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
+ check(call&&(program.hardware=&io->hw,call(&program,s,io))==EXEC_OUT_OF_SCOPE&&!memcmp(s,&before,sizeof before)&&!memcmp(io,&bio,sizeof bio),what,0);
 }
 int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;lm_tg_case c;unsigned n,i,stopped=0,refusals=0;uint16_t steps;agc_routine call;
  /* Branches no admitted input reaches:
@@ -52,7 +52,7 @@ int main(void){apollo_overlay_state s,in;lm_flight_io io,iin;lm_tg_case c;unsign
   kind=lm_tg_run(&s,&io,(uint16_t)n,&steps);
   if(kind<LM_TG_REFUSED)++stopped;
   if(kind==LM_TG_REFUSED){++refusals;lm_tg_input(&in,&iin,&c,(uint16_t)n);
-   check(!memcmp(&s,&in,sizeof s)&&io.chan12==iin.chan12,"refused GTS leaves the image unchanged",n);}
+   check(!memcmp(&s,&in,sizeof s)&&io.hw.channel12==iin.hw.channel12,"refused GTS leaves the image unchanged",n);}
   check(kind!=LM_TG_NONE,"every case stops or is refused",n);}
  check(stopped+refusals==LM_TG_CASES,"all cases reach their stop",stopped);
  memset(lm_tg_paths,0,sizeof lm_tg_paths);

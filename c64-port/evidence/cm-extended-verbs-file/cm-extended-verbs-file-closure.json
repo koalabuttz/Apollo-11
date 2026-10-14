@@ -1,7 +1,7 @@
 {
   "milestone": "cm-extended-verbs-file",
   "tool": "tools/interp_executed_closure.py",
-  "source_map_sha256": "bc713f210cb21f45bd49cd77bb3914716465f641a93c490c150686e965d3c052",
+  "source_map_sha256": "197d629f89bea062a6c713968a0f057a64e7455186df5489f2962b3adcffe8dd",
   "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
   "files": {
     "Comanche055/EXTENDED_VERBS.agc": {

@@ -12,7 +12,7 @@ void lm_thr_input(apollo_overlay_state *m,lm_flight_io *io,lm_thr_case *c,uint16
  if(v%4u==1u)m->words[01011]=0102u; /* MODREG = 66 */
  c->superbank=0;io->bias.superbank=0;io->bias.interrupt_enabled=0;/* Channel 14 bits 1-5 (bit 4 is the thrust drive); the CDU, gyro and
   * optics drive bits would start yaAGC pulse output. */
- io->chan14=(agc_word)((rnd(&seed)>>12)&037u);
+ io->hw.channel14=(agc_word)((rnd(&seed)>>12)&037u);
  if(v%3u==0u){q=SWRETURN;c->stop_fb=ANY_FB;}
  /* Fixed-fixed returns stay below BRANCH, DMP and TPAGREE (06723-07300),
   * which MASSMULT passes through. */
@@ -52,6 +52,7 @@ void lm_thr_input(apollo_overlay_state *m,lm_flight_io *io,lm_thr_case *c,uint16
 static uint16_t stop_point(const lm_thr_case *c){return agc_fixed_physical(c->stop_z,c->stop_fb==ANY_FB?0u:c->stop_fb,c->superbank);}
 unsigned lm_thr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};lm_thr_case c;
+ program.hardware=&io->hw;
  program.basic=&lm_throttle_routines;program.basic_count=1;
  lm_thr_input(s,io,&c,n);
  return agc_transfer_run(&program,s,io,&c.superbank,stop_point(&c),24,steps)==EXEC_OK?0u:1u;
@@ -59,7 +60,7 @@ unsigned lm_thr_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t
 static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_thr_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_thr_run(s,&io,n,&steps);
- sum_a=sum_b=0;mix((uint16_t)kind);mix(io.chan14);
+ sum_a=sum_b=0;mix((uint16_t)kind);mix(io.hw.channel14);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<3u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }

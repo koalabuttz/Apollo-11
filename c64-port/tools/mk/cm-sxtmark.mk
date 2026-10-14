@@ -4,7 +4,7 @@
 SXT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 SXT_SRC = src/cm_sxtmark.c tests/cm_sxtmark_target.c $(SXT_COMMON)
 SXT_HDR = include/cm_sxtmark.h tests/interp_case.h tests/cm_sxtmark_vectors.h tests/cm_sxtmark_c64_vectors.h
-SXT_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_CHANNELS
+SXT_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-sxtmark sanitize-cm-sxtmark c64-cm-sxtmark vice-cm-sxtmark cm-sxtmark-differential
 all: build/test-cm-sxtmark
 test: test-cm-sxtmark

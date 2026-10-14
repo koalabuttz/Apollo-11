@@ -134,7 +134,7 @@ static int tc_ladqsave(agc_image *s,agc_word ret){agc_word w=ai_word(s,LADQSAVE)
 }
 
 enum {AT_LANDISP,AT_INTLZE,AT_TWIDRET,AT_VARRET};
-static enum exec_status flow(agc_image *s,lm_flight_io *io,unsigned at){uint8_t c;unsigned i;
+static enum exec_status flow(agc_image *s,p66_bias_io *io,unsigned at){(void)io;uint8_t c;unsigned i;
  switch(at){
  case AT_INTLZE:goto intlze;
  case AT_TWIDRET:goto twidret;
@@ -163,7 +163,7 @@ w2165:
 altrout1: /* CS IMODES33; MASK BIT7; ADS IMODES33; CAF BIT2; EXTEND; WOR CHAN14. */
  ai_cs(s,IMODES33);
 altrout2:
- ai_maskf(s,BIT7);ai_ads(s,IMODES33);ai_caf(s,BIT2);wor(s,&io->chan14);
+ ai_maskf(s,BIT7);ai_ads(s,IMODES33);ai_caf(s,BIT2);wor(s,&lmf_hw->channel14);
  /* ARCOMP: ALTRATE = RUNIT.VVECT, in bit units, plus DALTRATE x DT. */
  ai_ca(s,RUNIT);ai_mp(s,VVECT);ai_xch(s,RUPTREG1);ai_ca(s,RUNIT1);ai_mp(s,VVECT1);ai_ads(s,RUPTREG1);
  ai_ca(s,RUNIT2);ai_mp(s,VVECT2);ai_ads(s,RUPTREG1);
@@ -177,7 +177,7 @@ altrout2:
 dataout: /* TS ALTM; CAF BIT3; EXTEND; WOR CHAN14; TCF TASKOVER. */
  if(ai_ts(s,ALTM))LM_LAD_PATH(12);                /* skips CAF BIT3 */
  else{LM_LAD_PATH(13);ai_caf(s,BIT3);}
- wor(s,&io->chan14);
+ wor(s,&lmf_hw->channel14);
  return jump(s,LM_LAD_TASKOVER);
 
 altout: /* TC DISINDAT. */
@@ -186,7 +186,7 @@ altout1: /* CS BIT7; MASK IMODES33; TS IMODES33; CS BIT2; EXTEND; WAND CHAN14. *
  ai_csf(s,BIT7);ai_mask(s,IMODES33);
  if(ai_ts(s,IMODES33))LM_LAD_PATH(14);            /* skips CS BIT2 */
  else{LM_LAD_PATH(15);ai_csf(s,BIT2);}
- wand(s,&io->chan14);
+ wand(s,&lmf_hw->channel14);
  /* CCS ALTBITS; TCF +4; TCF +3; TCF OLDDATA; TS ALTBITS. */
  c=ai_ccs(s,ALTBITS);
  if(c==2u){LM_LAD_PATH(16);goto olddata;}
@@ -232,7 +232,7 @@ newdata: /* CCS ALTSAVE +1; TCF +4; TCF +3; CAF ZERO; TS ALTSAVE +1;
 
 disindat: /* EXTEND; QXCH LADQSAVE; CAF BIT6; EXTEND; RAND CHAN30; CCS A;
   * TCF DISPRSET; CS FLAGWRD1; MASK DIDFLBIT; EXTEND; BZF SPEEDRUN. */
- ai_qxch(s,LADQSAVE);ai_caf(s,BIT6);rand(s,io->chan30);
+ ai_qxch(s,LADQSAVE);ai_caf(s,BIT6);rand(s,lmf_hw->channel30);
  c=ai_ccs(s,0u);
  if(c==0u){LM_LAD_PATH(36);goto disprset;}
  if(c==2u){LM_LAD_PATH(37);goto w2334;}          /* - : MASK DIDFLBIT */
@@ -255,7 +255,7 @@ w2335:
  /* CAF BIT8; EXTEND; WOR CHAN12; CAF ZERO; TS TRAKLATV; TS TRAKFWDV;
   * TS LATVMETR; TS FORVMETR; CAF BIT4; TC TWIDDLE; ADRES INTLZE. A is +0,
   * so no TS skips. */
- ai_caf(s,BIT8);wor(s,&io->chan12);ai_caf(s,ZERO);
+ ai_caf(s,BIT8);wor(s,&lmf_hw->channel12);ai_caf(s,ZERO);
  (void)ai_ts(s,TRAKLATV);(void)ai_ts(s,TRAKFWDV);(void)ai_ts(s,LATVMETR);(void)ai_ts(s,FORVMETR);
  ai_caf(s,BIT4);
  return leave(s,LM_LAD_TWIDRET-1u,LM_LAD_TWIDDLE);
@@ -263,7 +263,7 @@ twidret: /* TCF TASKOVER. */
  return jump(s,LM_LAD_TASKOVER);
 intlze: /* CAF BIT2; EXTEND; WOR CHAN12; CS IMODES33; MASK BIT8; ADS IMODES33;
   * TCF TASKOVER. */
- ai_caf(s,BIT2);wor(s,&io->chan12);ai_cs(s,IMODES33);ai_maskf(s,BIT8);ai_ads(s,IMODES33);
+ ai_caf(s,BIT2);wor(s,&lmf_hw->channel12);ai_cs(s,IMODES33);ai_maskf(s,BIT8);ai_ads(s,IMODES33);
  return jump(s,LM_LAD_TASKOVER);
 
 speedrun: /* DT = TIME1 - PIPTIME +1 (mod 2^14); ITEMP5 = 1SEC; for each axis
@@ -426,7 +426,7 @@ zerolsty3: /* INDEX ITEMP5; TS TRAKLATV; INDEX ITEMP5; CA RUPTREG3; AD NEG0;
  if(c==1u){LM_LAD_PATH(99);ai_caf(s,PRIO6);}
  else LM_LAD_PATH(114);                          /* - : EXTEND; WOR CHAN14 */
  /* CAF BITSET; EXTEND; WOR CHAN14; TC LADQSAVE. */
- wor(s,&io->chan14);
+ wor(s,&lmf_hw->channel14);
  switch(tc_ladqsave(s,LM_LAD_ZERODATA)){case 1:LM_LAD_PATH(100);goto altrout1;case 2:LM_LAD_PATH(101);goto altout1;
   default:LM_LAD_PATH(102);return EXEC_OK;}
 zerodata: /* CAF ZERO; TS L; TCF ZDATA2. */
@@ -447,7 +447,7 @@ disprset: /* CS FLAGWRD0; MASK R10FLBIT; EXTEND; BZF ABORTON; CAF BIT8; MASK
 w3064:
  ai_com(s);
 w3065:
- wand(s,&io->chan12);
+ wand(s,&lmf_hw->channel12);
 aborton: /* CS BITS8/7; MASK IMODES33; TS IMODES33; CS DIDFLBIT; MASK FLAGWRD1;
   * TS FLAGWRD1; TCF TASKOVER. */
  ai_csf(s,BITS87);ai_mask(s,IMODES33);
@@ -459,14 +459,14 @@ aborton: /* CS BITS8/7; MASK IMODES33; TS IMODES33; CS DIDFLBIT; MASK FLAGWRD1;
  return leave(s,LM_LAD_BITS87+1u,0300u);
 }
 
-static enum exec_status flow_entry(const agc_native_program *p,agc_image *s,void *v,unsigned at){(void)p;
+static enum exec_status flow_entry(const agc_native_program *p,agc_image *s,void *v,unsigned at){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return flow(s,v,at);
 }
-static enum exec_status landisp(const agc_native_program *p,agc_image *s,void *v){return flow_entry(p,s,v,AT_LANDISP);}
-static enum exec_status intlze(const agc_native_program *p,agc_image *s,void *v){return flow_entry(p,s,v,AT_INTLZE);}
-static enum exec_status twidret(const agc_native_program *p,agc_image *s,void *v){return flow_entry(p,s,v,AT_TWIDRET);}
-static enum exec_status varret(const agc_native_program *p,agc_image *s,void *v){return flow_entry(p,s,v,AT_VARRET);}
+static enum exec_status landisp(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;return flow_entry(p,s,v,AT_LANDISP);}
+static enum exec_status intlze(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;return flow_entry(p,s,v,AT_INTLZE);}
+static enum exec_status twidret(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;return flow_entry(p,s,v,AT_TWIDRET);}
+static enum exec_status varret(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;return flow_entry(p,s,v,AT_VARRET);}
 const agc_site_operand lm_landing_displays_sites[LM_LAD_SITES]={
 #include "lm_landing_displays_sites.inc"
 };

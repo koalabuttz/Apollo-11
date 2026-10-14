@@ -5,7 +5,7 @@
 CM_SERVICER_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_SERVICER_SRC = src/cm_servicer.c tests/cm_servicer_target.c $(CM_SERVICER_COMMON)
 CM_SERVICER_HDR = include/cm_servicer.h tests/interp_case.h tests/cm_servicer_vectors.h tests/cm_servicer_c64_vectors.h
-CM_SERVICER_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_SERVICER_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-servicer sanitize-cm-servicer c64-cm-servicer vice-cm-servicer cm-servicer-differential
 all: build/test-cm-servicer
 test: test-cm-servicer

@@ -5,7 +5,7 @@
 CM_EXTENDED_VERBS_FILE_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_EXTENDED_VERBS_FILE_SRC = src/cm_extended_verbs_file.c tests/cm_extended_verbs_file_target.c $(CM_EXTENDED_VERBS_FILE_COMMON)
 CM_EXTENDED_VERBS_FILE_HDR = include/cm_extended_verbs_file.h tests/interp_case.h tests/cm_extended_verbs_file_vectors.h tests/cm_extended_verbs_file_c64_vectors.h
-CM_EXTENDED_VERBS_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_EXTENDED_VERBS_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-extended-verbs-file sanitize-cm-extended-verbs-file c64-cm-extended-verbs-file vice-cm-extended-verbs-file cm-extended-verbs-file-differential
 all: build/test-cm-extended-verbs-file
 test: test-cm-extended-verbs-file

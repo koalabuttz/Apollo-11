@@ -283,6 +283,12 @@ ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 
 # cases (16-bit -0).
 A_PM0 = [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777) for v in (k, 0o177777 - k)]
 
+# NVSUB's return (TC MPAC +1) in Comanche055 EXTENDED_VERBS: the Q
+# SETXTACT saved, the word after one of the TC TESTXACT (the file's own,
+# XACT0's TC SETXTACT and UPDATE_PROGRAM's at 43,3736).
+NVSUB_RETURNS = [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570,
+                 0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202, 0o3737]
+
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
     'lm-aotmark': {
@@ -427,6 +433,8 @@ SPECS = {
         # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
         'index_carry16': True,
         'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 32,
     },
     'inflight-align': {
@@ -909,20 +917,26 @@ SPECS = {
         # by TC Q or TCF Q+1 elsewhere (CHKPOOH, CKMODCAD, CKLFTBTS's
         # before-liftoff return at TRMATTCK +2), after CHECKMM's skip return
         # (the word after its inline mode), GOXDSPF's proceed and recycle
-        # returns, and the BANKCALL NEEDLE11 and NEEDLER2 returns.
+        # returns, and the BANKCALL NEEDLE11 and NEEDLER2 returns. Also the
+        # returns past an in-file TC +1 or TCF +1: NVSUB's normal return
+        # (NVSUBEND's NVQTEM, Q+1, at SETXTACT +6), IMUSTALL's success return
+        # (IMUZEROK +6) and GOXDSPF's data-loaded returns after V41 N20, V41 N91
+        # and V42 (ICORK2, OPTC1 +5, IMUFINEK +7).
         'entries': ['@external', 'XACTALM', 'XACT0', 'VBZERO', 'VBCOARK', 'STABLISH', 'DAPDISP',
                     'IMUZEROK+1', 'IMUCOARK+1', 'OPTCOARK+2', 'IMUFINEK+1', 'SYSTEST+1',
                     'IMUATTCK+1', 'VB64+1',
                     'CREWMANU+1', 'V89PERF+1', 'SHOWSUM+1', 'TRMATTCK+2',
                     'CKOPTVB+3', 'CHAZFOGC+3', 'VERB94+9', 'V52+3',
                     'IMUATTCK+15', 'IMUATTCK+16', 'DONOUN46+5', 'DONOUN47+5', 'NOKILL+6',
-                    'IMUATTCK+20', 'IMUATTCK+22'],
+                    'IMUATTCK+20', 'IMUATTCK+22',
+                    'SETXTACT+6', 'IMUZEROK+6', 'ICORK2', 'OPTC1+5', 'IMUFINEK+7'],
         'edge_values': True,
         'seed_counters': True,
         'cover': True,
         'ebank': 'listing',
         'index_carry16': True,
         'image_w': True,
+        'trusted_image': True,
         'superbank_bit': True,
         'channels': 'all',
         'io_channels': 'auto',
@@ -941,9 +955,21 @@ SPECS = {
                    '43,2524': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0],
                                '3066': [0o20000, 0o60000, 0, 0o40000]},
                    '43,2552': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0]},
-                   # NVSUB's return (TC MPAC +1): the Q SETXTACT saved, the word
-                   # after one of the file's TC TESTXACT (or XACT0's TC SETXTACT).
-                   '43,2112': {'155': [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570, 0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202]}},
+                   # NVSUB's return (TC MPAC +1): NVSUB_RETURNS.
+                   '43,2112': {'155': NVSUB_RETURNS},
+                   '43,2113': {'155': NVSUB_RETURNS},
+                   # V55 (ALINTIME) after its load: MPAC 23 (V23, load the third
+                   # component) goes to UPDATIME, anything else ends the verb.
+                   '43,2334': {'0154': [23, 23, 23, 0, 22, 24]}},
+        # GOTOR21 and GOTOR23 go on after TESTXACT's NVSUB, at NVSUB's normal
+        # return (TC MPAC +1) to 43,2615. In an eighth of those cases MPAC +1
+        # is 02615 and RNDVZBIT (FLAGWRD0 bit 7), TRACKBIT (bit 5) and
+        # R23BIT (bit 9 of FLAGWRD1) choose REGR21, R23CSM or R22ALARM.
+        'joint_states': {'SETXTACT+6': [{}] * 7 + [
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o20},
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o420},
+            {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0},
+            {'155': 0o2615, 'FLAGWRD0': 0, 'FLAGWRD1': 0o20}]},
         'index_targets': {'43,2001': 59},
         'target': 'tests/cm_extended_verbs_file_target.c',
     },
@@ -3423,6 +3449,24 @@ SPECS = {
         # rarely reached from random corrections: where no flow gets there,
         # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
         'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        # The W-matrix loop's indices as INCORP2 keeps them (54DD, 6DD = -6,
+        # MINUS2): WIXA/WIXB step 54 down to 6 and ZIXA/ZIXB 0 down to -16,
+        # and FAZB1's X1 is WIXA. A random WIXA sends FAZB1's indexed
+        # STOREs out of the W matrix's window.
+        'range_states': [('FAZA', 'FAZC', {n: list(range(54, 0, -6)) for n in ('WIXA', 'WIXB')}
+                          | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] for n in ('ZIXA', 'ZIXB')}),
+                         ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6))})],
+        # The flowed cases stop at FAZA's PHASCHNG, so every flowed loop
+        # state is the first pass (WIXA 54): the same indices on later
+        # passes, so FAZB2's TIX,1 (X1 6) and FAZB5's BHIZ (ZIXB -12) exit;
+        # and INCORP1's DDV (DELTAQ/A) with a zero dividend in MPAC.
+        'flow_range_states': {m: [
+            ('FAZA', 'FAZC', {n: list(range(54, 0, -6)) + ['flow'] for n in ('WIXA', 'WIXB')}
+             | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] + ['flow'] for n in ('ZIXA', 'ZIXB')}),
+            ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6)) + ['flow']}),
+            (ddv, end,
+             {'*': ['flow'] * 6 + [{'0154': 0, '0155': 0}, {'0154': 0o77777, '0155': 0o77777}]})]
+            for m, ddv, end in (('lm', '23,2664', '23,2665'), ('cm', '36,3407', '36,3410'))},
         'edge_cases': True,
         'c64_rows': 'cover',
         'freeze_stride': 64,

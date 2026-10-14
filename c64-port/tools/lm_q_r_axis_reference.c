@@ -21,8 +21,8 @@ int main(int argc,char **argv){unsigned n,i,cycles,kind;if(argc!=2)return 2;mems
  for(n=0;n<LM_QR_CASES;++n){apollo_overlay_state s;lm_flight_io io;
   machine=baseline;lm_qr_input(&s,&io,(uint16_t)n);for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
   machine.InputChannel[7]=machine.OutputChannel7=0;machine.AllowInterrupt=(int)io.bias.interrupt_enabled;machine.InIsr=0;kind=LM_QR_NONE;
-  machine.InputChannel[4]=(int16_t)io.chan4;machine.InputChannel[5]=(int16_t)io.chan5;
-  machine.InputChannel[013]=(int16_t)io.chan13;machine.InputChannel[031]=(int16_t)io.chan31;
+  machine.InputChannel[4]=(int16_t)io.hw.channel4;machine.InputChannel[5]=(int16_t)io.hw.channel5;
+  machine.InputChannel[013]=(int16_t)io.hw.channel13;machine.InputChannel[031]=(int16_t)io.hw.channel31;
   for(cycles=0;cycles<40000u;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode
       &&!in_file((unsigned)get(RegZ),(unsigned)get(4)&076000u)){kind=LM_QR_LEFT;break;}

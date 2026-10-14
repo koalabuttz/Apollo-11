@@ -5,7 +5,7 @@
 CM_P11_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_P11_SRC = src/cm_p11.c src/rtb_angles.c tests/cm_p11_target.c $(CM_P11_COMMON)
 CM_P11_HDR = include/cm_p11.h tests/interp_case.h tests/cm_p11_vectors.h tests/cm_p11_c64_vectors.h
-CM_P11_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_P11_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-p11 sanitize-cm-p11 c64-cm-p11 vice-cm-p11 cm-p11-differential
 all: build/test-cm-p11
 test: test-cm-p11
