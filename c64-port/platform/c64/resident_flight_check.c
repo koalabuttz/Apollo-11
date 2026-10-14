@@ -82,16 +82,36 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
   expect(h==RUPT_ROWS[r],10);}
  __asm__ volatile("cli");
 }
-/* The AGC clock: TIME1 must count exactly the CIA interrupts the steps
- * consumed, and CIA1 timer A must be counting from the 10 ms latch. */
-static void clock_check(apollo_overlay_state *image){uint16_t t,irq;
+/* The AGC clock: after five or more CIA interrupts the step takes
+ * RK_TICK_LAG of them (TIME1) and drops the rest into rk_dilation, so the
+ * two together count exactly the interrupts consumed; CIA1 timer A must be
+ * counting from the latch. */
+static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
  image->words[025]=0;rk_device.interrupt_enabled=0;
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
- image->words[025]=0;t=rk_ticks;irq=ov2_irq_count;
+ image->words[025]=0;t=rk_ticks;irq=ov2_irq_count;d=rk_dilation;
  while((uint16_t)(ov2_irq_count-irq)<5u){}
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
- expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==(uint16_t)(rk_ticks-t),11);
+ expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==RK_TICK_LAG&&
+        rk_dilation-d==(uint16_t)(rk_ticks-t-RK_TICK_LAG),11);
  expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
+}
+/* A backlog past the cap with T5 and T6 both coming due in the first tick:
+ * one step takes RK_TICK_LAG ticks, drops the rest, and enters T6RUPT
+ * alone (AGC priority), with T5RUPT left pending for after its RESUME. */
+static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
+ __asm__ volatile("sei");
+ rk_ticks=(uint16_t)(ov2_irq_count-RK_TICK_LAG-7u);d=rk_dilation;
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
+ image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
+ image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
+ image->words[025]=0;image->words[026]=0;image->words[027]=0;
+ expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
+        rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
+        image->words[025]==RK_TICK_LAG&&image->words[026]==RK_TICK_LAG&&
+        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u),18);
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
+ __asm__ volatile("cli");
 }
 #endif
 #if PART(5)
@@ -199,6 +219,7 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
 #if PART(4)
  rupt_rows(image);
  clock_check(image);
+ lag_check(image);
 #endif
 #if PART(5)
  vector_rows(image);

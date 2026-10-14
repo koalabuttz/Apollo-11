@@ -39,6 +39,12 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
           # The resident and every flight module resolve a pending DANZIG
           # (RTB right-hand order) through the mission's marker table.
           '-DAGC_TRANSFER_DANZIG_MARKER']
+# Scaled time (docs/RESIDENT-FLIGHT.md): RK_TICK_LAG, the clock ticks one
+# step may catch up before the rest are dropped (default 2), and
+# RK_TIME_DIVISOR, AGC time at 1/n of wall time (default 1; the nightly
+# x0.5 run builds with 2). make passes its command-line variables in the
+# environment.
+COMMON += [f'-D{k}={os.environ[k]}u' for k in ('RK_TICK_LAG', 'RK_TIME_DIVISOR') if os.environ.get(k)]
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 
 # The resident's sources, by component (the size report's classes).
