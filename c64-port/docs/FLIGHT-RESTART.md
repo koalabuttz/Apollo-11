@@ -56,7 +56,7 @@ any of these cases:
   without the restart.
 - In an unscaled run, more samples differ than the slack allows.
 
-`lm-p63-descent-restart` is also registered with
+Results on base b3a56a5a with this change. `lm-p63-descent-restart` is also registered with
 `tools/flight_host_differential.py`.
 
 | Scenario | GOJAM | Groups restarted (phase, octal) | Native routines (yaAGC did not match: points, new) | After |
@@ -98,7 +98,7 @@ GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 
 | Scenario | Burst | Image against yaAGC | Resume |
 |---|---|---|---|
-| `lm-p63-descent-restart` | 23 resident steps: GOPROG through the group 2 and 5 restarts and ENDRSTRT, to DSPMMJB (40,3534), EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) | 23 steps in 42 cs, then stops at DSPMMJB |
+| `lm-p63-descent-restart` | 23 resident steps: GOPROG through the group 2 and 5 restarts and ENDRSTRT, to DSPMMJB (40,3534), EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) | 23 steps in about 40 cs, then stops at DSPMMJB |
 | `lm-dap-hold-restart` | 11 resident steps, to DSPMMJB, EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 859 instructions) | 11 steps in 19 cs, then stops at DSPMMJB |
 
 ## Gaps
