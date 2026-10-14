@@ -52,7 +52,7 @@ The costs come from `docs/flight-routine-mct.json`: for each routine point, the 
 
 `make x86-flight-check` (`tools/x86_flight_check.py`) builds both modes and the lockstep check `tools/x86_flight_lockstep.c`. That check is GPL, host only, and links yaAGC. It runs each scenario on the program's own step. Every routine and every core slot is checked: yaAGC, with its clock frozen (`AgcFrozenClock`, as under scaled time in docs/FLIGHT-STORE.md), runs from the state the routine started in until it reaches the routine's continuation with the same 2,048 erasable words (Z aside), I/O channels and interrupt state. The clock periods and interrupt entries are the program's own `rk_timer_tick` and `rk_rupt_take`, which `make test-resident-rupt` checks against yaAGC. So a run with no mismatch is one yaAGC run whose clock ran on the x86 program's schedule. The check fails on any mismatch, any basic point no routine holds, or a run that stops early.
 
-On base 42682de7 with this change:
+On base 7262c653 with this change:
 
 | Scenario | Routines and core slots checked (compiled / core) | yaAGC did not match | Points the core ran (compiled / core) |
 |---|---|---|---|

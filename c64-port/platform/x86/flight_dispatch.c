@@ -68,24 +68,6 @@ static agc_routine call_at[2][65536];
 
 static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(MISSION,physical,word);}
 
-/* Comanche's channels 5, 6 and 30-33 live in cm_channels (include/
- * cm_native_image.h) until agc_hardware carries them. */
-static void channels_in(const agc_hardware *hw){
-#if RK_LM
- (void)hw;
-#else
- cm_channels.channel05=hw->channel5;cm_channels.channel06=hw->channel6;cm_channels.channel30=hw->channel30;
- cm_channels.channel31=hw->channel31;cm_channels.channel32=hw->channel32;cm_channels.channel33=hw->channel33;
-#endif
-}
-static void channels_out(agc_hardware *hw){
-#if RK_LM
- (void)hw;
-#else
- hw->channel5=cm_channels.channel05;hw->channel6=cm_channels.channel06;
-#endif
-}
-
 void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_routine_table basic[256],interp[256];unsigned i,j;uint8_t nb=0,ni=1;
  memset(st,0,sizeof *st);st->mode=mode;
  memset(at,0,sizeof at);
@@ -126,7 +108,7 @@ static void gap(fd_state *st,uint16_t key,uint8_t interp,uint8_t refused,const c
  if(st->ngaps<FD_GAPS){fd_gap *g=&st->gaps[st->ngaps++];g->key=key;g->interp=interp;g->refused=refused;g->by=by;g->arrivals=1;g->slots=1;}}
 
 static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind kind){flight_io_buffer b;void *x;enum exec_status r;
- x=flight_io_enter(kind,&st->io,&st->hw,&b);channels_in(&st->hw);r=call(&st->p,&st->s,x);channels_out(&st->hw);flight_io_leave(kind,&st->io,&st->hw,&b);
+ x=flight_io_enter(kind,&st->io,&st->hw,&b);r=call(&st->p,&st->s,x);flight_io_leave(kind,&st->io,&st->hw,&b);
  return r;}
 
 enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(st,&in);uint16_t t=at[in][key];
