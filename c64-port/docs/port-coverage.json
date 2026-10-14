@@ -2213,7 +2213,7 @@
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
             "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
-              "vice-cm-integration-init": 322
+              "vice-cm-integration-init": 331
             }
           },
           "c64_branch_outcomes": {
@@ -2221,8 +2221,8 @@
             "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/lane-g-417.md",
+            "sha256": "e42ee2722fb2a4ba88372518fb41c7bca3b2099b775710d08dd6117c1c2015c6"
           }
         }
       }
