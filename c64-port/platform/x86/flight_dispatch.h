@@ -38,6 +38,9 @@ typedef struct {
     agc_native_program p;
     uint16_t pending;
     uint8_t mode;
+    /* FLIGHT_DOWNRUPT: a DOWNRUPT request each time channel 4 passes a
+     * multiple of 64 counts (20 ms), as tools/flight_downlink.h does. */
+    uint8_t downrupt;
     /* The virtual AGC clock, in machine cycles (85,333 1/3 a second): each
      * routine adds its cost (fd_cost); every 853 1/3 is one clock period,
      * run at the next boundary. */
