@@ -47,6 +47,10 @@
  * schedule. No free-running reference is run.
  * FLIGHT_MCT=PATH: the machine cycles yaAGC took for each matched routine,
  * by table and entry (mct_write), for the work clock's weights.
+ * FLIGHT_SCALED=W: the work clock instead (resident_flight.h): each native
+ * routine spends its table's calibrated weight (host.inc), bridged code its
+ * own machine cycles, and every 853 1/3 MCT of that is one tick, none
+ * dropped; every routine must still match yaAGC under that schedule.
  * FLIGHT_SNAPSHOT=CS,PATH: at the first native sample point at or after
  * centisecond CS (after that point's pokes), write the native state (the
  * erasable image, the superbank, the interrupt enable, agc_hardware and the
@@ -96,12 +100,12 @@ static int idle(const agc_word *w,agc_word sb,int isr){agc_word z=(agc_word)(w[5
  f=z>=02000u?agc_fixed_physical(z,w[4],sb):AGC_TRANSFER_NONE;
  return f!=AGC_TRANSFER_NONE&&f/1024u==043u;}
 #include FLIGHT_HOST_SITES
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) extern const agc_routine_table t;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
 #include FLIGHT_HOST_TABLES
 #undef FLIGHT_TABLE
 typedef struct { const agc_routine_table *t; const char *name; uint8_t interp; enum flight_io_kind io; const char *module; uint8_t slot;
-                 const agc_site_operand *sites; uint16_t nsites; const char *also; uint8_t fixed; } entry;
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) {&t,#t,i,k,mod,slot,sites,n,also,fixed},
+                 const agc_site_operand *sites; uint16_t nsites; const char *also; uint8_t fixed; uint16_t mct; } entry;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) {&t,#t,i,k,mod,slot,sites,n,also,fixed,mct},
 static const entry tables[]={
 #include FLIGHT_HOST_TABLES
 };
@@ -127,12 +131,19 @@ static int scaled;
 static double slow=1.0,wall;
 static unsigned divisor=1u,lag=2u;
 static unsigned long seed,consumed,taken,dropped,span_mct;
+/* FLIGHT_SCALED=W: the work clock (platform/c64/resident_flight.h). Each
+ * native routine spends its table's weight (host.inc), bridged code its
+ * own machine cycles, and every period of it is a tick; none dropped. */
+static int work;
 static double jitter(void){if(!seed)return 1.0;
  seed^=seed<<13;seed^=seed>>7;seed^=seed<<17;return 0.25*pow(16.0,(double)(seed%10000ul)/9999.0);}
 static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
+/* The work clock's idle loop (weight 0, RK_MCT_IDLE): the rest of the tick,
+ * so the next boundary takes it (tick k falls at ceil(k*2560/3)). */
+static void idle(void){unsigned long k=(unsigned long)wall*3ul/2560ul+1ul;wall=(double)((k*2560ul+2ul)/3ul);}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
-static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
+static unsigned due(void){unsigned long now=work?(unsigned long)wall*3ul/2560ul:(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
  for(;consumed<now;++consumed){if(n<lag){++n;++taken;}else ++dropped;}
  return n;}
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
@@ -432,7 +443,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   snap_path=path_buf;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  if(cs>=sizeof ref/sizeof ref[0])cs=sizeof ref/sizeof ref[0]-1u;
- if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;
+ if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
+ else if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;
   if(sscanf(getenv("FLIGHT_SCALED"),"%lf,%u,%u,%lu",&slow,&divisor,&lag,&seed)<3||slow<=0.0||!divisor||!lag){fprintf(stderr,"FLIGHT_SCALED=K,D,LAG[,SEED]\n");return 2;}}
  InhibitAlarms=1;
  /* Reference (none under FLIGHT_SCALED: the lockstep spans are it). */
@@ -523,7 +535,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
      x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
     if(st==EXEC_OK){
-     if(scaled)spend(span_mct);
+     if(scaled){if(work&&!e->mct)idle();else spend(work?e->mct:span_mct);}
      if(n>=0){locked+=(unsigned long)n;mct_note(e->name,before.words,io0.superbank,span_mct);}
      else miss(e->name,before.words,io0.superbank,s.words,first);
      continue;}}

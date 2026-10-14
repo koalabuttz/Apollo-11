@@ -45,6 +45,36 @@ _Static_assert(RK_TIME_DIVISOR>=1u && RK_TIME_DIVISOR<=6u,"RK_CIA_LATCH must fit
 #define RK_TICK_LAG 2u
 #endif
 _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks");
+/* The work clock (docs/RESIDENT-FLIGHT.md), the flight default; -DRK_WALL_CLOCK
+ * builds the CIA path above instead. AGC time advances by the work run,
+ * not by wall time: each routine adds its module's weight, the yaAGC
+ * machine cycles (MCT) one of its routines takes on average (tools/
+ * flight_mct.py calibrates them on the host lockstep, docs/flight-mct.json),
+ * and every 853 1/3 MCT is one rk_timer_tick (10 ms of AGC time). Module
+ * loads, the step's dispatch and the C64's interrupts cost nothing, so the
+ * same state and inputs give the same tick schedule at any C64 speed.
+ * rk_work counts the MCT since the last tick; the periods are 854, 853 and
+ * 853 MCT in turn (rk_tick_phase), so tick k falls at the first whole MCT
+ * at or past k * 853 1/3 (2,560 every three). */
+#ifndef RK_WALL_CLOCK
+#define RK_WORK_CLOCK 1
+#define RK_TICK_MCT(phase) (853u+((phase)==0u))
+/* Weights from the calibration (tools/resident_flight_build.py): the
+ * resident tables', each interrupt-body wrapper's (RK_MODULE_LEAD_INS..
+ * RK_MODULE_LM_T6; a wrapper reports the routines it ran, which the step
+ * weighs) and the interpreter's per slot. A table module's is FS_MCT. */
+#ifndef RK_RESIDENT_MCT
+#define RK_RESIDENT_MCT 24u
+#endif
+#ifndef RK_WRAP_MCT_LIST
+#define RK_WRAP_MCT_LIST RK_RESIDENT_MCT,RK_RESIDENT_MCT,RK_RESIDENT_MCT,RK_RESIDENT_MCT
+#endif
+#ifndef RK_INTERP_MCT
+#define RK_INTERP_MCT RK_RESIDENT_MCT
+#endif
+extern uint16_t rk_work;
+extern uint8_t rk_tick_phase;
+#endif
 /* The dropped ticks, 32 bits at a fixed address below ov2_irq_count (the
  * service table ends at or below it, 61 entries at most), so a VICE run or
  * a module can read how far AGC time fell behind wall time. */
@@ -59,7 +89,16 @@ typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_ta
  * runs AGC routines (the interrupt-body wrappers) reports a routine's
  * failure in status, which the step returns; the step resets it to
  * EXEC_OK before each run. */
-typedef struct { const agc_native_program *program; void *io; enum exec_status status; } rk_module_env;
+typedef struct {
+    const agc_native_program *program; void *io; enum exec_status status;
+    /* Work clock: the MCT left before the next AGC tick, which the step
+     * sets (a module stops chaining routines once its run has used it),
+     * and the work the run took, which the module reports, in units of
+     * scale MCT (the step sets 1; a wrapper reports the routines it ran
+     * and its tables' weight). */
+    uint16_t budget, work;
+    uint8_t scale;
+} rk_module_env;
 /* A flight module's routine-table list (platform/c64/flight_table_module.c),
  * named by its header's TABLES word (include/overlay_v2.h). The module
  * builds it on its first run after a load (ready then becomes 1; the load
@@ -74,6 +113,7 @@ typedef struct {
     const agc_site_operand *operands; uint16_t operand_count;
     bool (*fixed_data)(const agc_native_program *,uint16_t physical,agc_word *word);
     uint8_t ready;   /* 0 not built, RK_TABLES_DIRECT or RK_TABLES_NOT_DIRECT */
+    uint8_t mct;     /* work clock: MCT per routine (flight_table_module.c FS_MCT) */
 } rk_module_tables;
 /* Built, and the resident may call the routines straight from the slot
  * (rk_direct); or built, but the tables take an io record other than rk_io
@@ -92,7 +132,25 @@ static inline void rk_module_program(agc_native_program *p,const rk_module_table
  * tries them before the job and task slots'. */
 extern const rk_module_tables *rk_pinned;
 /* Routines one module run may chain before it returns to the step. */
+/* Work clock: the weight of the background self-check loop, which the AGC
+ * runs only when no job is ready. One of its routines takes the rest of the
+ * tick (rk_charge), so an idle AGC second costs one pass per tick, not the
+ * ~85,000 MCT of self-check the hardware fills it with; the step after it
+ * takes the tick, where any interrupt that readies a job comes. */
+#define RK_MCT_IDLE 0u
 #define RK_MODULE_STEPS 256u
+/* Work clock: the routines a run may chain within budget (MCT), at most
+ * the one that reaches the next tick, so the step takes the tick at the
+ * boundary after it, for a run of weight mct each (by subtraction: at
+ * most 214 passes, and no division on the 6502). */
+static inline uint16_t rk_module_limit(uint16_t budget,uint8_t mct) {
+    uint16_t n=1u;
+    if(mct==RK_MCT_IDLE) return 1u;
+    /* A tick's budget is at most 854 and a weight at least 4
+     * (tools/resident_flight_build.py mct_weight): under RK_MODULE_STEPS. */
+    while(budget>=mct) { budget-=mct; ++n; }
+    return n;
+}
 /* A module's run, as the step reports it: an unmapped point after at least
  * one routine is where the module hands back (the next step resolves it),
  * and so is the step limit. */
@@ -107,6 +165,8 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
+/* The interpreter's module (platform/c64/interp_module.c). */
+#define RK_MODULE_INTERP 0x0a01u
 /* The flight program's device fields neither rk_io nor agc_hardware holds
  * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
  * latches, ...), for the modules whose tables take another io record. Its

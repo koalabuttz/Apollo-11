@@ -33,13 +33,14 @@ SCENARIOS = [('lm', 4000, ''), ('cm', 4000, ''),
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured
 # LM DAP load); overrun: four times slower with each span's cost jittered
-# from 1/4 to 4 times, so most boundaries drop ticks.
+# from 1/4 to 4 times, so most boundaries drop ticks; work: the work clock
+# (FLIGHT_SCALED=W), each routine's calibrated weight, no tick dropped.
 # lm-dap: the DAP running (IMU operate, PGNCS control, AUTO; CDUY moved at
 # 15 s to drive its jets), T5RUPT and T6RUPT every period.
 DAP = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_POKE': '1500:035=02000'}
 SCALED = [(m, cs, keys, env, sched, tag)
           for m, cs, keys, env in (('lm', 3000, 'V37E12E', {}), ('lm', 3000, 'V37E12E', DAP), ('cm', 3000, 'V37E06E', {}))
-          for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'))]
+          for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'), ('W', 'work'))]
 
 
 def frozen_engine(cc):

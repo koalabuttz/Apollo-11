@@ -86,6 +86,40 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
  * RK_TICK_LAG of them (TIME1) and drops the rest into rk_dilation, so the
  * two together count exactly the interrupts consumed; CIA1 timer A must be
  * counting from the latch. */
+#ifdef RK_WORK_CLOCK
+/* The work clock: two whole periods of work (854 and 853 MCT, from phase 0)
+ * and five MCT more become two ticks (TIME1) at the next step, the five
+ * carried into the third period; a step that runs nothing adds no
+ * work. CIA1 timer A still counts from the latch. */
+static void clock_check(apollo_overlay_state *image){
+ image->words[025]=0;rk_device.interrupt_enabled=0;
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ image->words[025]=0;rk_tick_phase=0;rk_work=854u+853u+5u;
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ expect(image->words[025]==2u&&rk_work==5u&&rk_tick_phase==2u,11);
+ expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
+}
+/* Nine periods of work (three of each phase, 7,680 MCT) with T5 and T6
+ * both coming due in the first: one step takes all nine (none dropped) and enters T6RUPT alone (AGC
+ * priority), with T5RUPT left pending for after its RESUME. The scalers
+ * count the periods, SCALER2 on SCALER1's overflow. */
+static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
+ __asm__ volatile("sei");
+ d=rk_dilation;rk_tick_phase=0;rk_work=3u*2560u;
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
+ image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
+ image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
+ image->words[025]=0;image->words[026]=0;image->words[027]=0;
+ rk_hardware.channel4=037740u;rk_hardware.channel3=037777u;   /* SCALER1 overflows in the first period, and SCALER2 with it */
+ expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
+        rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
+        image->words[025]==9u&&image->words[026]==9u&&rk_work==0u&&rk_tick_phase==0u&&
+        rk_dilation==d&&!(rk_hardware.channel13&040000u)&&
+        rk_hardware.channel4==(uint16_t)(32u*9u-32u)&&rk_hardware.channel3==0u,18);
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
+ __asm__ volatile("cli");
+}
+#else
 static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
  image->words[025]=0;rk_device.interrupt_enabled=0;
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
@@ -119,6 +153,7 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
  __asm__ volatile("cli");
 }
+#endif
 #endif
 #if PART(5)
 /* Other-vector rows (tests/resident_rupt_c64_rows.h): with the CIA

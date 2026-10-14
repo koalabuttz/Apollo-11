@@ -41,7 +41,27 @@ void rk_prof(uint8_t segment);
 #define RK_PROF(n) ((void)0)
 #endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
-rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
+#ifdef RK_WORK_CLOCK
+uint16_t rk_work;
+uint8_t rk_tick_phase;
+/* The MCT left before the next tick (at least 1: rk_rupts drained the
+ * whole periods at the step's start). */
+__attribute__((noinline)) static uint16_t rk_budget(void) { return (uint16_t)(RK_TICK_MCT(rk_tick_phase)-rk_work); }
+/* n units of mct each: n added mct times (no multiply on the 6502; mct
+ * is a weight, at most 255, and 1 for a module that reports MCT), or for
+ * the idle loop (RK_MCT_IDLE), the rest of the tick. */
+__attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
+    uint16_t w=rk_work;
+    if(mct==RK_MCT_IDLE) { rk_work=RK_TICK_MCT(rk_tick_phase); return; }
+    do w+=n; while(--mct);
+    rk_work=w;
+}
+#ifndef RK_NO_DIRECT
+/* The routines a slot module's run may chain (rk_module_limit). */
+__attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_module_limit(rk_budget(),mct); }
+#endif
+#endif
+rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
 /* The boundary-word table: its REU bank and address (in its module's
  * image, within one 64 KB bank) and record count. */
@@ -214,6 +234,14 @@ void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
  * checks step with it set) so one between its two bytes cannot tear it.
  * Out of line, so the size report counts it with the timers. */
 __attribute__((noinline)) static void rk_rupts(void) {
+#ifdef RK_WORK_CLOCK
+    /* Work clock: one period per RK_TICK_WORK of work since the last. */
+    while(rk_work>=RK_TICK_MCT(rk_tick_phase)) {
+        rk_work-=RK_TICK_MCT(rk_tick_phase);
+        rk_tick_phase=rk_tick_phase==2u ? 0u : (uint8_t)(rk_tick_phase+1u);
+        rk_timer_tick(IMAGE,&rk_hardware,&rk_pending);
+    }
+#else
     uint16_t now;
     uint8_t take=RK_TICK_LAG;
     __asm__ volatile("php\n\tsei" ::: "memory");
@@ -223,6 +251,7 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
         else ++rk_dilation;
     }
+#endif
 #ifdef RK_RUPT_TRACE
     /* The DAP pass check (platform/c64/dap_pass_check.c): which request
      * this step took, if any. */
@@ -241,13 +270,19 @@ __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_ph
     agc_routine call;
     if(agc_transfer_point(&rk_program,IMAGE,rk_device.superbank)==stop_physical) return EXEC_OK;
     call=agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);
-    return call ? call(&rk_program,IMAGE,&rk_device) : EXEC_UNMAPPED;
+    if(!call) return EXEC_UNMAPPED;
+#ifdef RK_WORK_CLOCK
+    rk_charge(RK_RESIDENT_MCT,1u);
+#endif
+    return call(&rk_program,IMAGE,&rk_device);
 }
 __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at) {
     apollo_ov2_cont resume;
+    enum apollo_ov2_status st;
     run_value=(uint16_t)(uintptr_t)&rk_env;
     rk_env.status=EXEC_OK;
-    return apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
+    st=apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
+    return st;
 }
 /* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): the physical
  * bank in FB form. Fixed-fixed 04000-07777 is bank 2 or 3 whatever FB and
@@ -282,14 +317,22 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
+#ifdef RK_WORK_CLOCK
+        uint16_t limit=rk_limit(t->mct);
+#else
+        const uint16_t limit=RK_MODULE_STEPS;
+#endif
         rk_module_program(&module_program,t);
         RK_PROF(4);
-        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
+        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,limit,&steps);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. */
         if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) { RK_PROF(5); continue; }
         RK_PROF(6);
-        return rk_module_status(status,steps,RK_MODULE_STEPS);
+#ifdef RK_WORK_CLOCK
+        rk_charge(steps,t->mct);
+#endif
+        return rk_module_status(status,steps,limit);
     }
     return EXEC_UNMAPPED;
 }
@@ -316,7 +359,13 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
     RK_PROF(8);
+#ifdef RK_WORK_CLOCK
+    rk_env.budget=rk_budget(); rk_env.work=0; rk_env.scale=1u;
+#endif
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
+#ifdef RK_WORK_CLOCK
+    rk_charge(rk_env.work,rk_env.scale);
+#endif
     RK_PROF(9);
 #ifndef RK_NO_DIRECT
     /* A direct-only module's main only builds its tables: the point runs
