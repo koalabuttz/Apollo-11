@@ -118,6 +118,9 @@ jobs:
       - name: Milestone files render
         working-directory: c64-port
         run: python3 tools/ledgers.py --validate
+      - name: Each make variable is assigned in one tools/mk file
+        working-directory: c64-port
+        run: python3 tools/mk_vars_check.py
       - name: Coverage audit
         working-directory: c64-port
         run: |

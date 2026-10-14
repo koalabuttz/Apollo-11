@@ -11,7 +11,7 @@ extern const agc_routine_table lm_radar_leadin_routines_interpretive,lm_radar_le
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_radar_leadin_routines_point;
-#define LM_RADAR_LEADIN_ROUTINES_POINTS 7u
+#define LM_RADAR_LEADIN_ROUTINES_POINTS 8u
 #define LM_RADAR_LEADIN_ROUTINES_CADR_WORDS 1u
 #define LM_RADAR_LEADIN_ROUTINES_EXTERNALS 6u
 #define LM_RADAR_LEADIN_ROUTINES_FIRST 21507u

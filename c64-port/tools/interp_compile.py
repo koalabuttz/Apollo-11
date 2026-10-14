@@ -1591,6 +1591,17 @@ class Compiler:
         return rows
 
     # ---- output ----------------------------------------------------------
+    def image_scan(self):
+        """The entry checks' scan of the whole erasable image for words over
+        15 bits. Spec 'trusted_image': not in flight builds (RK_FIXED_IMAGE),
+        where the image holds only words the native code wrote and the scan
+        costs about 121,000 6502 cycles a call; host tests and C64
+        diagnostics keep it."""
+        loop = ' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;'
+        if not self.spec.get('trusted_image'):
+            return [loop]
+        return ['#if !RK_FIXED_IMAGE', loop, '#else', ' (void)i;', '#endif']
+
     def emit(self):
         s = self.spec
         base = s['base'][self.m]
@@ -1753,7 +1764,7 @@ class Compiler:
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
         c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
-        c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+        c.extend(self.image_scan())
         c.append(' return 1;')
         c.append('}')
         if self.any_fixloc:
@@ -1765,7 +1776,7 @@ class Compiler:
                 nj = '(%s&&W[067]!=077777u)' % nj
             c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
-            c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+            c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
         c.append('/* An interpretive routine at NEWOPS of its bank (LOC was matched by the')
@@ -1843,7 +1854,7 @@ class Compiler:
             else:
                 c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
                 c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
-            c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
+            c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
             c.append('')
