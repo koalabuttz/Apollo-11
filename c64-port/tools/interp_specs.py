@@ -2818,7 +2818,11 @@ SPECS = {
         # DESCOUNT, the designate time limit MOREDES counts down, is never
         # -0: STDESIG1's CCS would skip into the WAND after its EXTEND, run
         # unextended as TC 3012, and loop in erasable.
-        'cells': {0o1114: [0, 1, 2, 5, 0o24, 0o144, 0o37777, 0o77776, 0o40000]},
+        # PIPCTR (PHSPRDT2), SERVICER's 4-per-second pass count from 7 down,
+        # is never -0 either: R29's CCS PIPCTR would skip into WAITLIST's
+        # inline 2CADR.
+        'cells': {0o1114: [0, 1, 2, 5, 0o24, 0o144, 0o37777, 0o77776, 0o40000],
+                  0o1056: [0, 1, 2, 3, 4, 5, 6, 7]},
         'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM', 'CLRADMOD', 'DORREPOS', 'GOTOV56', 'LRALT', 'LRPOS2',
                     'LRVEL', 'LRVELX', 'LRVELY', 'LRVELZ', 'P20LEMC1', 'P25LEM1', 'R12LITES', 'R22RSTRT',
                     'R29', 'RADAREAD', 'RRDESNB', 'RRLIMCHK', 'RRRANGE', 'RRRDOT', 'RRTURNON', 'RRZERO', 'SETTRKF',
