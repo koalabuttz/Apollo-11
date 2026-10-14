@@ -75,13 +75,18 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured
 # LM DAP load); overrun: four times slower with each span's cost jittered
-# from 1/4 to 4 times, so most boundaries drop ticks.
+# from 1/4 to 4 times, so most boundaries drop ticks; work: the work clock
+# (FLIGHT_SCALED=W), each routine's calibrated weight, no tick dropped.
 # lm-dap: the DAP running (IMU operate, PGNCS control, AUTO; CDUY moved at
-# 15 s to drive its jets), T5RUPT and T6RUPT every period.
-DAP = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_POKE': '1500:035=02000'}
+# 15 s to drive its jets), T5RUPT and T6RUPT every period; no swap cost
+# (FLIGHT_SWAP_MCT=0: with 20 ms swaps P and QR swaps starve the DAP into
+# restarts and P12 is lost). V37 goes in at 16 s, after the IMU turn-on
+# (ISSUP): before it, V37 is rejected (CANTROD) and MODREG stays 77777.
+DAP = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_POKE': '1500:035=02000', 'FLIGHT_SWAP_MCT': '0'}
+DAP_KEYS = '@1600V37E12E'
 SCALED = [(m, cs, keys, env, sched, tag)
-          for m, cs, keys, env in (('lm', 3000, 'V37E12E', {}), ('lm', 3000, 'V37E12E', DAP), ('cm', 3000, 'V37E06E', {}))
-          for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'))]
+          for m, cs, keys, env in (('lm', 3000, 'V37E12E', {}), ('lm', 3000, DAP_KEYS, DAP), ('cm', 3000, 'V37E06E', {}))
+          for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'), ('W', 'work'))]
 
 
 def frozen_engine(cc):
@@ -165,7 +170,7 @@ def main():
               f"yaAGC did not match, {len(holes)} unregistered or refused points, "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
-    for name, m, cs, keys, env, sched in ([(f'{m}-{keys or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
+    for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
                                            for m, cs, keys, env, sched, tag in SCALED]
                                           + [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2') for name, m, cs, keys, env in FLIGHT]):
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,

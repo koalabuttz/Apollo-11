@@ -22,6 +22,9 @@
 #error RK_WRAP must be 1, 2, 3 or (LM) 4
 #endif
 #define RK_WRAP_STEPS 256u
+/* This wrapper's weight from the resident's list (RK_WRAP_MCT_LIST). */
+#define RK_WRAP_PICK_(a,b,c,d) (RK_WRAP==1?(a):RK_WRAP==2?(b):RK_WRAP==3?(c):(d))
+#define RK_WRAP_PICK(...) RK_WRAP_PICK_(__VA_ARGS__)
 #if RK_LM
 #define TABLE(name) lm_##name
 #else
@@ -64,5 +67,11 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   status=call(e->program,s,io);
   if(status!=EXEC_OK){e->status=status;break;}
  }
+#ifdef RK_WORK_CLOCK
+ /* Work clock: the routines run, at the tables' weight each (an interrupt
+  * body runs with interrupts off, so its run need not stop at the next
+  * tick). */
+ e->work=n;e->scale=RK_WRAP_PICK(RK_WRAP_MCT_LIST);
+#endif
  return APOLLO_OV2_DONE;
 }

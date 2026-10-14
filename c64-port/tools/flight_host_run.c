@@ -47,6 +47,10 @@
  * match yaAGC run from the same state with the clock frozen, the clock
  * counters included, so the run is one yaAGC run under the same tick
  * schedule. No free-running reference is run.
+ * FLIGHT_SCALED=W: the work clock instead (resident_flight.h): each native
+ * routine spends its table's weight (host.inc, from docs/flight-routine-mct.json), bridged code its
+ * own machine cycles, and every 853 1/3 MCT of that is one tick, none
+ * dropped; every routine must still match yaAGC under that schedule.
  * FLIGHT_GOJAM=CS[,CS...]: a hardware restart at the first sample point at
  * or after each CS, on both sides (tools/flight_gojam.h).
  * FLIGHT_SNAPSHOT=CS,PATH: at the first native sample point at or after
@@ -101,12 +105,12 @@ static int idle(const agc_word *w,agc_word sb,int isr){agc_word z=(agc_word)(w[5
  f=z>=02000u?agc_fixed_physical(z,w[4],sb):AGC_TRANSFER_NONE;
  return f!=AGC_TRANSFER_NONE&&f/1024u==043u;}
 #include FLIGHT_HOST_SITES
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) extern const agc_routine_table t;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
 #include FLIGHT_HOST_TABLES
 #undef FLIGHT_TABLE
 typedef struct { const agc_routine_table *t; const char *name; uint8_t interp; enum flight_io_kind io; const char *module; uint8_t slot;
-                 const agc_site_operand *sites; uint16_t nsites; const char *also; uint8_t fixed; } entry;
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) {&t,#t,i,k,mod,slot,sites,n,also,fixed},
+                 const agc_site_operand *sites; uint16_t nsites; const char *also; uint8_t fixed; uint16_t mct; } entry;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) {&t,#t,i,k,mod,slot,sites,n,also,fixed,mct},
 static const entry tables[]={
 #include FLIGHT_HOST_TABLES
 };
@@ -132,12 +136,19 @@ static int scaled;
 static double slow=1.0,wall,swap_mct=1707.0;
 static unsigned divisor=1u,lag=2u;
 static unsigned long seed,consumed,taken,dropped,span_mct;
+/* FLIGHT_SCALED=W: the work clock (platform/c64/resident_flight.h). Each
+ * native routine spends its table's weight (host.inc), bridged code its
+ * own machine cycles, and every period of it is a tick; none dropped. */
+static int work;
 static double jitter(void){if(!seed)return 1.0;
  seed^=seed<<13;seed^=seed>>7;seed^=seed<<17;return 0.25*pow(16.0,(double)(seed%10000ul)/9999.0);}
 static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
+/* The work clock's idle loop (weight 0, RK_MCT_IDLE): the rest of the tick,
+ * so the next boundary takes it (tick k falls at ceil(k*2560/3)). */
+static void idle_tick(void){unsigned long k=(unsigned long)wall*3ul/2560ul+1ul;wall=(double)((k*2560ul+2ul)/3ul);}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
-static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
+static unsigned due(void){unsigned long now=work?(unsigned long)wall*3ul/2560ul:(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
  for(;consumed<now;++consumed){if(n<lag){++n;++taken;}else ++dropped;}
  return n;}
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
@@ -547,8 +558,9 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
   if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
  in_slot[e->slot]=e->module;++nloads;key=point(w,sb,&in);
  /* Scaled time: a swap is about 20 ms of C64 time (docs/FLIGHT-STORE.md:
-  * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. */
- if(scaled)wall+=swap_mct*jitter();
+  * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. The
+  * work clock counts no load time (resident_flight.h). */
+ if(scaled&&!work)wall+=swap_mct*jitter();
  for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
@@ -585,7 +597,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   * reference stream, so the two are not combined (no scenario sets both). */
  if(core_path&&getenv("FLIGHT_DOWNRUPT")&&*getenv("FLIGHT_DOWNRUPT")&&strcmp(getenv("FLIGHT_DOWNRUPT"),"0")){fprintf(stderr,"FLIGHT_CORE does not take FLIGHT_DOWNRUPT\n");return 2;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
- if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;
+ if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
+ else if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;
   if(sscanf(getenv("FLIGHT_SCALED"),"%lf,%u,%u,%lu",&slow,&divisor,&lag,&seed)<3||slow<=0.0||!divisor||!lag){fprintf(stderr,"FLIGHT_SCALED=K,D,LAG[,SEED]\n");return 2;}
   if(getenv("FLIGHT_SWAP_MCT"))swap_mct=strtod(getenv("FLIGHT_SWAP_MCT"),0);}
  /* The reference keeps 32,767 centiseconds; scaled time keeps none. */
@@ -690,7 +703,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
      dl_clear();
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
-     if(scaled)spend(span_mct);
+     if(scaled){if(work&&!e->mct)idle_tick();else spend(work?e->mct:span_mct);}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by

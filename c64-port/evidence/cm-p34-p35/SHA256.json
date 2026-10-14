@@ -4,33 +4,33 @@
   "release": "evidence-cm-p34-p35",
   "files": {
     "cm-p34-p35-c64-cover.json": {
-      "sha256": "d8110f796b06485848a4e9413f51e62cde3a62fd11e59f9b939df7adb1497d37",
-      "bytes": 16874,
+      "sha256": "e929734c32932eb7b50b235c269cab1d696e7de40b2734a20e38d9addec1c643",
+      "bytes": 21450,
       "store": "tree"
     },
     "cm-p34-p35-differential.log": {
-      "sha256": "e9043f3bca731e4d072c8a87b93647117f89c251ec4387ed9706d250bb042ce9",
-      "bytes": 26446,
+      "sha256": "fc6f704d9a72bc2f8c0c9c1e1e929b04a87f6dc062ac51d17bfd12b2d8dd1489",
+      "bytes": 26518,
       "store": "release"
     },
     "cm-p34-p35-host.log": {
-      "sha256": "7aeb60958f36fbc8d7c3cdf63c8ac2fc8fe4fff33a9699756d275d6cc6bca53b",
-      "bytes": 542,
+      "sha256": "11e132f2ecb23776fae4a89a3100e58f2bdf3cfd9bacf2637d220c867d572a60",
+      "bytes": 914,
       "store": "release"
     },
     "cm-p34-p35-proof.json": {
-      "sha256": "894996fe57f08129b4820ef60eb80fee5031b531f71e9fa61bad5d55e205d961",
-      "bytes": 54718,
+      "sha256": "cc22b601e3de97ea122748b0ad327205af4fd9104df643661c71a6c0f46a2c6e",
+      "bytes": 55215,
       "store": "tree"
     },
     "cm-p34-p35-source-map.json": {
-      "sha256": "ba36ed954424d5fa5d2bf6994f7293dbb209ffbe8aa9be7e5a25eaa7a0dfd6ff",
-      "bytes": 146518,
+      "sha256": "e7f6e5f898f74b56c73a7bc759823d982ae9330d772c29033239886321ca205c",
+      "bytes": 145171,
       "store": "tree"
     },
     "cm-p34-p35-vice.log": {
-      "sha256": "3b5d412bd8f48376ad8989dd4a2dcbf67226ad223b86c2c0c3b90284ae9dde0c",
-      "bytes": 41993,
+      "sha256": "e7506df9b217c3a1bcdceaeac8ac1c9a88395b7a3ad7fe160413dd89751132f7",
+      "bytes": 43897,
       "store": "release"
     }
   }
