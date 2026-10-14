@@ -30,15 +30,16 @@ enum { DONE = 0, MORE = 1, REFUSE = 2 };
 static const agc_word indjump[32] = IRT_INDJUMP, miscjump[16] = IRT_MISCJUMP, unajump[15] = IRT_UNAJUMP;
 
 /* Physical rope address of fixed logical address a under bank register b
- * (FB or BANKSET's bits 14-11) and the channel-7 superbank bits; 0xffff for
- * erasable or outside the rope. */
+ * (FB or BANKSET's bits 14-11) and the channel-7 superbank bits (0, 1, 2
+ * and 3 the same banks, as in flight with SUPERBNK 3; 4 banks 040-043);
+ * 0xffff for erasable or outside the rope. */
 static uint16_t phys(unsigned a, agc_word b, unsigned superbank)
 {
     unsigned bank;
     if (a >= 04000u) return (uint16_t)(2048u + (a & 07777u) - 04000u);
     if (a < 02000u) return 0xffffu;
     bank = (b >> 10) & 037u;
-    if (bank >= 030u && (superbank & 0160u)) {
+    if (bank >= 030u && (superbank & 0100u)) {
         if ((superbank & 0160u) != 0100u) return 0xffffu;
         bank += 010u;
     }

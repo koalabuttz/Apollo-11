@@ -85,7 +85,7 @@ static unsigned word(unsigned a){return (unsigned)*memory(a)&077777u;}
 /* Whether the interpretive run from here stays in a real job's frame, as
  * tools/interp_core_fuzz.c's frame test judges it: at every arrival at an
  * entry point until yaAGC leaves the interpreter for basic code, FIXLOC
- * unchanged, the superbank 0 or 0100 (the rope's; the core reads no other),
+ * unchanged, the superbank 0 to 0100 (the rope's; the core reads no other),
  * the push-down pointer in its list (FIXLOC+0 to +45), MODE -1, +0 or +1,
  * LOC in fixed memory. yaAGC runs a copy as tools/interp_flight_capture.c
  * check does (interrupts held off). A first filter, so that a point keeps
@@ -97,7 +97,7 @@ static int in_frame(void){agc_t keep=machine;unsigned long k;int ok=0;unsigned v
    unsigned z=word(RegZ)&07777u,e,ph=physical(z,word(4),(unsigned)machine.InputChannel[7]);
    for(e=0;e<POINTS;++e)if(z==points[e])break;
    if(e<POINTS){unsigned mode=word(0163),pd=word(0166);
-    if(word(0120)!=v||((unsigned)machine.OutputChannel7&0160u)%0100u||pd<v||pd>v+045u||(mode>1u&&mode!=077776u)||
+    if(word(0120)!=v||((unsigned)machine.OutputChannel7&0160u)>0100u||pd<v||pd>v+045u||(mode>1u&&mode!=077776u)||
        (z!=points[INTPRET]&&(word(0164)&07777u)<02000u)){
      if(getenv("FLOW_WHY"))fprintf(stderr,"k %lu Z %05o EB %05o FIXLOC %05o/%05o PUSHLOC %05o MODE %05o X1 %05o X2 %05o LOC %05o\n",
       k,z,word(3),word(0120),v,pd,mode,word(v+046u),word(v+047u),word(0164));
