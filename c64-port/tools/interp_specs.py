@@ -2589,7 +2589,7 @@ SPECS = {
         # any_fixloc/any_newjob.)
         'basic': 'full',
         'fast_window': True,
-        'trusted_image': True,
+        'trusted_image': True, 'image_w': True, 'index_carry16': True,
         # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
         # the caller's A overflowed: refused, never run as basic code.
         'interp_not_basic': True,
