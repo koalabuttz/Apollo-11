@@ -3081,7 +3081,7 @@
       "sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
       "bytes": 14885,
       "lines": 944,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3096,7 +3096,7 @@
           "verification": "docs/CM-ORBITAL-INTEGRATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3111,7 +3111,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-orbital-integration/cm-orbital-integration-source-map.json",
@@ -3135,6 +3134,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-orbital-integration/cm-orbital-integration-proof.json",
             "sha256": "c1d6da2cfc38ab00a7303676e85aafb26e22a029e160709c843f0a83e3464534"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-359.md",
+            "sha256": "b09c89829508cef45f403d38b54dee4cc648d38aa703c5ac625dd93b9858eca1"
           }
         }
       }
@@ -5725,8 +5728,8 @@
             "sha256": "2ab0c9132ebf0c6b73de45abd02abdc27e2dca89fe0366d3841b6b32617f00bc"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-258.md",
-            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
+            "path": "docs/audits/lane-g-359.md",
+            "sha256": "b09c89829508cef45f403d38b54dee4cc648d38aa703c5ac625dd93b9858eca1"
           }
         }
       }
@@ -5977,8 +5980,8 @@
             "sha256": "327126fe6e26282fd9291a75aa96e356cc822b6bf231c6a4e79b01ae9227ca35"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-258.md",
-            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
+            "path": "docs/audits/lane-g-359.md",
+            "sha256": "b09c89829508cef45f403d38b54dee4cc648d38aa703c5ac625dd93b9858eca1"
           }
         }
       }
