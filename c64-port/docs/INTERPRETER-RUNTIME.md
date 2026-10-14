@@ -190,3 +190,20 @@ almost no interpretive code (0-8 orders a second).
   and the interrupt-enable state equal yaAGC's at the stop.
 - `make interp-runtime-size`: each mission's interpreter linked as one ABI 2
   job-slot module, id `$0A01` (lane I), with the flight store's flags.
+
+### Contract: erasable addresses stay inside erasable
+
+Both interpreters keep every erasable operand inside the image:
+- `ai_ea` masks an address to 01777. So an operand that an index or the push-down pointer runs past 01777 wraps into low erasable.
+- The original reads fixed memory there, under FB, and its writes there do nothing.
+- A wild indexed STORE address wraps the same way, through the 10-bit erasable field (`src/agc_image_ops.c` `ai_ea`, `src/lm_interp_steps.c` `ea`). The AGC writes elsewhere.
+
+The core's contract is that indexed and push-down erasable addresses stay inside erasable. Every flight path keeps them there. INCOR1 and INCOR2 set X1 and X2 by AXT (at most 162D, stepping down to the S1 or S2 step), so every W+k,X operand stays inside W. FAZB1's WIXA is 6 to 54.
+
+`make interp-core-differential` (`evidence/interpreter/interp-core-differential.log`) runs 70,536 cases over every compiled milestone. 14 differ, and they are all outside the contract:
+- All 14 are in measurement-inc, at CM 36,3615-3643 (FAZB1's `STORE W +54D,1/+108D,1/+162D,1`).
+- In each of them, WIXA and X1 start far outside flight values (37777, 40000, 76553 and so on, from random entry states the spec flows from).
+- 12 of them pass an address of 02000 or more to the core's `ai_ea`. The other 2 wrap in the store itself.
+- The spec follow-up (flight-range WIXA, ZIXA, X1 and X2 states) is with the measurement-inc milestone.
+
+The other 113 differences that measurement-inc showed before #366 came from the tool. It called `flow_seed` without the spec, so the spec's `flow_from` entries were ignored.
