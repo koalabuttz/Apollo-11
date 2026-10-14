@@ -163,5 +163,8 @@ static enum exec_status cm_t4(const agc_native_program *p,apollo_overlay_state *
 #define B6(z) (uint16_t)(06u*1024u+((z)-02000u))
 static const agc_routine_entry lm_entries[4]={{B6(02000u),lm_t4},{B6(02116u),lm_t4},{B6(02121u),lm_t4},{B6(02125u),lm_t4}};
 const agc_routine_table lm_t4rupt_core_routines={lm_entries,4};
+/* The same entries for the flight store's T4RUPT module (tools/flight_store_build.py
+ * T4PACK), which packs them beside the radar step and RCSMON. */
+const agc_routine_table lm_t4rupt_core_hot_routines={lm_entries,4};
 static const agc_routine_entry cm_entries[3]={{B6(02000u),cm_t4},{B6(02116u),cm_t4},{B6(02130u),cm_t4}};
 const agc_routine_table cm_t4rupt_core_routines={cm_entries,3};

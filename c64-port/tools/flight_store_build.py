@@ -501,16 +501,28 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
 # regions (D2 splits it into the hot subsets that fit); the self-check idle
 # loop is an ordinary job-slot module there. CM: the self-check idle loop.
 # The LM set is the hot subsets D2 measured (docs/FLIGHT-STORE.md): class 4
-# holds TJETLAW, RATELOOP and the runtime both regions share (the runtime
-# home, pin_pair); class 3 holds DAPIDLER's hot entries and the table list
-# naming both. P-AXIS and Q,R-AXIS run from their job-slot modules.
-PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_kalman_basic'], 3: ['lm_dapidler_hot_routines']},
+# holds TJETLAW, the RESUME family every interrupt ends in, and the runtime
+# both regions share (the runtime home, pin_pair); class 3 holds DAPIDLER's
+# hot entries and the table list naming both. P-AXIS, Q,R-AXIS and RATELOOP
+# run from the excursion.
+PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dapidler_hot_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
 # The excursion: hot subsets one job-slot module packs together, so a DAP
 # pass that leaves the pinned sets loads one module, not one per file. It
 # takes the runtime from the class-4 home (pin_pair) and is packed only
 # beside it; the resolver sends its keys to it before their files' modules.
-EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines'], 'cm': []}
+# RATELOOP (lm_kalman) runs in the same pass, so it rides here and leaves
+# the home room for RESUME.
+EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_kalman_basic'], 'cm': []}
+# T4RUPT the same way: its core (the resident's wrapper 0x01E2 holds the
+# whole table too) and the radar step in one job-slot module, so a radar
+# T4RUPT loads one module, not two (steward/cpu-budget.md). RCSMON stays
+# out: it takes lm_channel_io, which would put the pack's every step on the
+# transfer engine instead of rk_direct.
+T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines'], 'cm': []}
+# Job-slot modules beside the pinned home: (name, tables, module id). Lane
+# A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
+PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6)] for m in ('lm', 'cm')}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
@@ -759,6 +771,28 @@ def main():
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
+        # The packs (excursion, T4RUPT) link once on their own first, so
+        # pin_pair knows the names they link: those the class-4 home links
+        # anyway stay global there (--undefined), and the packs take them
+        # from the home as class 3 does.
+        packs, exc_ask = [], set()
+        for name, pts, ident in PACKS[m]:
+            pts = [t for t in pts if t in packed]
+            if not pts:
+                continue
+            stems = list(dict.fromkeys(packed[t] for t in pts))
+            lane = lane_slot(stems[0], m, owners, place)[0]
+            sites = {}
+            for st in stems:
+                sites.update(file_sites(a.host_cc, m, st))
+            pack = dict(stem=stems[0], lane=lane, slot=0, id=ident, basic=pts,
+                        interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
+                        sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name)
+            (ROOT / OUT / m / f'{name}.prg.map').unlink(missing_ok=True)
+            link(dict(pack))
+            exc_ask |= {n for n in map_symbols(ROOT / OUT / m / f'{name}.prg.map')
+                        if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in pts}
+            packs.append(pack)
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class
@@ -790,10 +824,10 @@ def main():
                 return {n for n in map_symbols(ROOT / OUT / m / f'pin-{SLOT_NAME[3]}.prg.map')
                         if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in ts}
             ask = asked()
-            want = set()
+            want, exc = set(), set()
             for _ in range(8):
                 hres = link(dict(hp, sources=list(dict.fromkeys(hp['sources'] + own)),
-                                 link_flags=PIN_LTO + [f'-Wl,--undefined={u}' for u in sorted(ask | want)]))[2]
+                                 link_flags=PIN_LTO + [f'-Wl,--undefined={u}' for u in sorted(ask | want | exc)]))[2]
                 home.update(ok=hres['ok'], bytes=hres.get('bytes') or (
                     SLOT_BYTES[4] + hres['overflow'] if hres.get('overflow') else None))
                 if not hres['ok']:
@@ -811,7 +845,11 @@ def main():
                 res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', flags, own, basic)
                 # A failed link may leave the last link's map: read only this one's.
                 more = (asked() if res['ok'] or res.get('overflow') else set()) - ask - set(share)
-                if not set(res.get('undefined') or ()) - want and not more:
+                # The packs' names the home links anyway stay global there;
+                # names only a pack uses stay in the pack.
+                held = exc_ask & map_symbols(ROOT / OUT / m / f'pin-{SLOT_NAME[4]}.prg.map') - exc
+                exc |= held
+                if not set(res.get('undefined') or ()) - want and not more and not held:
                     return res, nbytes, share
                 want |= set(res.get('undefined') or ())
                 ask |= more
@@ -875,31 +913,21 @@ def main():
             for mod in modules:
                 if mod['slot'] == 1:
                     mod.update(slot=0, task_pinned_out=True)
-        excursion = None
         home = next((p for p in pinned if p['packed'] and p['slot'] == 'pinned_task'), None)
-        ets = [t for t in EXCURSION[m] if t in packed]
-        if home and ets:
-            stems = list(dict.fromkeys(packed[t] for t in ets))
-            lane = lane_slot(stems[0], m, owners, place)[0]
-            sites = {}
-            for st in stems:
-                sites.update(file_sites(a.host_cc, m, st))
-            excursion = dict(stem=stems[0], lane=lane, slot=0, id=LANE_BYTE[lane] << 8 | 0xF5, basic=ets,
-                             interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
-                             sources=c64_sources(index, *stems, 'agc_transfer'), prg_name='excursion')
-            (ROOT / OUT / m / 'excursion.prg.map').unlink(missing_ok=True)
-            res = link(dict(excursion))[2]
+        if not home:
+            packs = []
+        for pack in packs:
             # Every function it links that the home holds as a global is the
             # home's (--defsym from the home's map), as for class 3.
             nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
                                 text=True, check=True).stdout
             addr = {p[2]: p[0] for p in (l.split() for l in nm.splitlines()) if len(p) == 3 and p[1] in 'TW'}
-            share = sorted(n for n in map_symbols(ROOT / OUT / m / 'excursion.prg.map') & set(addr)
+            share = sorted(n for n in map_symbols(ROOT / OUT / m / f"{pack['prg_name']}.prg.map") & set(addr)
                            if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')))
-            excursion['shared'] = len(share)
+            pack['shared'] = len(share)
             if share:
-                excursion['link_flags'] = ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)]
-            modules.append(excursion)
+                pack['link_flags'] = ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)]
+            modules.append(pack)
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
         # A basic-only module over its slot is split into chunks of
@@ -982,12 +1010,13 @@ def main():
                         continue  # resolved to the table's own module
                     for k in mod.get('key_slice', keys)[t]:
                         module_of[(t, k)] = mod['id']
-        # The excursion's keys resolve to it first: its hot entries are its
-        # files' tables' (hot_full), so the same routines run.
-        if excursion and excursion.get('ok'):
-            for t in excursion['basic']:
-                for k in keys[t]:
-                    module_of[(hot_full(t), k)] = excursion['id']
+        # A pack's keys resolve to it first: its hot entries are its files'
+        # tables' (hot_full), so the same routines run.
+        for pack in packs:
+            if pack.get('ok'):
+                for t in pack['basic']:
+                    for k in keys[t]:
+                        module_of[(hot_full(t) or t, k)] = pack['id']
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
@@ -1039,6 +1068,11 @@ def main():
         # the interrupt-body wrappers and their resolver records, and the
         # boundary words for every key the resident can stop at.
         wrappers = wrapper_records(a.host_cc, m)
+        # A pack holding a wrapped table's hot subset takes its keys from
+        # the wrapper (T4RUPT's core from 0x01E2).
+        moved = {canonical_record(k): pack['id'] for pack in packs if pack.get('ok')
+                 for t in pack['basic'] if (hot_full(t) or t) in RESIDENT[m] for k in keys[t]}
+        wrappers = [dict(r, module=moved.get((r['bank'], r['loc']), r['module'])) for r in wrappers]
         # The interpreter's modules and its points' records, where no
         # table record or resident table already holds the point.
         interp_prgs, interp = interp_modules(a.cc, m, library)
