@@ -1223,6 +1223,23 @@ def cover_check(spec_id, spec, missions, cases, path, record):
     out = {'milestone': spec_id, 'record': record, 'cases': len(cases), 'c64_rows': len(rows)}
     sha = rec.get('cases_sha256') or (json.load(open(proof)).get('cases_sha256') if os.path.exists(proof) else None)
     out['cases_match'] = hashlib.sha256(open(path, 'rb').read()).hexdigest() == sha if sha else None
+    # Truncated rows ('c64_cuts') follow the cases: rebuild each from its
+    # case and cut (the record's truncated_rows), as cut_cases made it.
+    cuts = {t['row']: t for t in rec.get('truncated_rows', [])}
+    host_n = len(cases)
+    if any(i >= host_n for i in rows) and out.get('cases_match'):
+        cases = list(cases)
+        renum = {}
+        for i in sorted(set(i for i in rows if i >= host_n and i in cuts)):
+            t = cuts[i]
+            c = cases[t['case']]
+            mi = missions[c['cm']]
+            at = [p for p in mi.points if mi.cp.where(p) == t['cut']]
+            if len(at) != 1:
+                continue
+            renum[i] = len(cases)
+            cases.append(dict(c, cut=at[0], of=t['case'], ran=t['routines_run']))
+        rows = [renum.get(i, i) for i in rows]
     beyond = [i for i in rows if i >= len(cases)]
     if not out.get('cases_match') or beyond or not rows:
         out.update(verified=False, reason='the record does not list its C64 rows (refreeze to record them)'
@@ -1233,7 +1250,7 @@ def cover_check(spec_id, spec, missions, cases, path, record):
         return 1
     if spec.get('cover'):
         build_edges(spec_id, spec)      # (a freeze links it: catch a broken link here)
-    g = gcov_branches(spec_id, spec, missions, cases, rows)
+    g = gcov_branches(spec_id, spec, missions, cases, rows, host_n)
     out.update(verified=True, host_taken=g['host_taken'], c64_taken=g['c64_taken'],
                missing=g['missing'], missing_count=g['host_taken_not_c64'])
     print(json.dumps(out))
@@ -1253,17 +1270,18 @@ def cover_counts(covers, c64_ids):
                     'differential\'s cases reach, and those the C64 cases reach'}
 
 
-def gcov_branches(spec_id, spec, missions, cases, c64_ids):
+def gcov_branches(spec_id, spec, missions, cases, c64_ids, host_n=None):
     """The certificate reviewer's check: gcc -O0 --coverage builds of the
     host runner over every linked source, one run on all the differential's
     cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
-    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + COMMON
+    srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
     srcs = list(dict.fromkeys(srcs + [spec['target']]))
     # The same step limit as the freeze (host_arcs), or a case that runs
-    # past 200 routines reports FAILED instead of STOPPED.
-    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200)]
+    # past 200 routines reports FAILED instead of STOPPED; truncated rows
+    # run to their cut.
+    defs = ['-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec)]
     res = {}
-    for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
+    for tag, sel in (('host', range(len(cases) if host_n is None else host_n)), ('c64', sorted(set(c64_ids)))):
         w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
         shutil.rmtree(w, ignore_errors=True)
         os.makedirs(w)
