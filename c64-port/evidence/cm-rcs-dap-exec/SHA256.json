@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-rcs-dap-exec",
+  "release": "evidence-cm-rcs-dap-exec",
+  "files": {
+    "cm-rcs-dap-exec-closure.json": {
+      "sha256": "7ff97e0f04ddc290b93c735106c15225321ff7759982feb7bde30b44e1eec76a",
+      "bytes": 5007,
+      "store": "tree"
+    },
+    "cm-rcs-dap-exec-differential.log": {
+      "sha256": "281006354ee21895cb16f609d69352264ceb1cd81fe83f1a869f69063a6e6d20",
+      "bytes": 1138,
+      "store": "release"
+    },
+    "cm-rcs-dap-exec-host.log": {
+      "sha256": "f71b62d4e17f7a3f01ba821c417201286f1121a14f7fc27a009a85a631dee95d",
+      "bytes": 1102,
+      "store": "release"
+    },
+    "cm-rcs-dap-exec-proof.json": {
+      "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a",
+      "bytes": 3500,
+      "store": "tree"
+    },
+    "cm-rcs-dap-exec-source-map.json": {
+      "sha256": "7b2642c1b7d52fb4bd090c990804b3a5a03dc4ba0dbdb9b8dd4408623ac67618",
+      "bytes": 4882,
+      "store": "tree"
+    },
+    "cm-rcs-dap-exec-vice.log": {
+      "sha256": "befa7dd4d357bdccbc75d0acded3479440ba76371225348c913184fb25bcafe1",
+      "bytes": 359,
+      "store": "release"
+    }
+  }
+}
