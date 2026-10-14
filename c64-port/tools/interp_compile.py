@@ -506,11 +506,22 @@ class Compiler:
             out.append(fp)
         return out
 
-    @staticmethod
-    def superbank_guard(fx):
-        """FB 30-37 is bank 30-37 only with the superbank bits clear; the
-        effective address the switch computes assumes that."""
-        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;' if any(fp // 1024 >= 0o30 for fp in fx) else ''
+    # Placeholder an indexed FB 30-37 read leaves in its block under spec
+    # 'superbank_bit'; emit() replaces it with one guard at the routine's entry.
+    SB_MARK = '/*superbank*/'
+
+    def superbank_guard(self, fx):
+        """FB 30-37 is bank 30-37 only while the superbank bit (channel 7
+        bit 0100) is clear; the effective address the switch computes
+        assumes that. Spec 'superbank_bit' tests only that bit (020, 040
+        and 060 are legal and select nothing) and refuses at the routine's
+        entry, before any order has written state. Opt-in so existing files
+        and their pinned evidence stay byte-identical until a refreeze."""
+        if not any(fp // 1024 >= 0o30 for fp in fx):
+            return ''
+        if self.spec.get('superbank_bit'):
+            return self.SB_MARK
+        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;'
 
     def operand_k(self, w, bank, takes_k, starred, what, n=6):
         if starred or what == 'GSHIFT':
@@ -1871,7 +1882,12 @@ class Compiler:
                     c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
                 else:
                     c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
-            for st in self.blocks[phys]:
+            body = self.blocks[phys]
+            if any(self.SB_MARK in st for st in body):
+                c.insert(len(c) - (2 if any('goto top;' in st for st in body) else 0),
+                         ' if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;')
+                body = [st.replace(self.SB_MARK, '') for st in body]
+            for st in body:
                 c.append(' ' + st)
             c.append('}')
             c.append('#endif')
