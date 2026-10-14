@@ -4,7 +4,7 @@
 P70P71_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 P70P71_SRC = src/lm_p70_p71.c tests/lm_p70_p71_target.c $(P70P71_COMMON)
 P70P71_HDR = include/lm_p70_p71.h tests/interp_case.h tests/lm_p70_p71_vectors.h tests/lm_p70_p71_c64_vectors.h
-P70P71_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
+P70P71_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_IN_ISR
 .PHONY: test-lm-p70-p71 sanitize-lm-p70-p71 c64-lm-p70-p71 vice-lm-p70-p71 lm-p70-p71-differential
 all: build/test-lm-p70-p71
 test: test-lm-p70-p71

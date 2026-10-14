@@ -620,6 +620,10 @@ def case(mi, point, n, rng):
     # the digest cover them (tests/interp_case.h).
     for k, mask in sorted(mi.io_channels.items()):
         E[0x8000 | k] = rng.getrandbits(15) & mask if rng.random() < 0.75 else rng.choice([0, mask])
+    if mi.cp.spec.get('in_isr'):
+        # 'in_isr': the program's in_interrupt (yaAGC's InIsr) 0 or 1 at the
+        # start, and in the digest after the run (IRC_ISR, tests/interp_case.h).
+        E[0x81ff] = rng.randrange(2)
     if mi.kinds[point] == 'i':
         # At NEWOPS the interpreter takes EDOP (023) as the second order of
         # a pair still to run: 0 there, as every interpretive entry leaves it

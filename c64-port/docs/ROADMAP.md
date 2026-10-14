@@ -1816,7 +1816,7 @@ Every instruction of Luminary099 ALARM_AND_ABORT runs as routines of the control
 
 ## Translate Comanche DOWN-TELEMETRY_PROGRAM as transfer-ABI routines
 
-Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The five downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Comanche055 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,815 strict and sanitizer checks, every control word of all five downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-DOWNTELEMETRY.md`.
+Comanche055 DODOWNTM, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The five downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Comanche055 program in channels 13, 34 and 35 and Q after every downrupt, the channel-13 traps and all 2,048 erasable words (18,815 strict and sanitizer checks, every control word of all five downlists sent), and every second sequence matches in VICE. Lane A2 (restart, telemetry and support). See `docs/CM-DOWNTELEMETRY.md`.
 
 ## Translate LEM_GEOMETRY and CSM_GEOMETRY
 
@@ -1852,7 +1852,7 @@ Every instruction of Luminary099 FRESH_START_AND_RESTART in bank 05 and fixed-fi
 
 ## Translate Luminary DOWN_TELEMETRY_PROGRAM as transfer-ABI routines
 
-Luminary099 DODOWNTM with WOTEST, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The six downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Luminary099 program in channels 13, 34 and 35 after every downrupt, the channel-13 traps and all 2,048 erasable words (18,830 strict and sanitizer checks, every control word of all six downlists sent), and all 48 sequences match in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-DOWNTELEMETRY.md`.
+Luminary099 DODOWNTM with WOTEST, the DNTMGOTO continuation it executes from erasable memory, and the downlist and erasable-dump phases (DNPHASE1/2, DNDUMPI, DNDUMP, DNDUMP1 and SENDID's return) run as routines of the control-transfer ABI, from the DOWNRUPT lead-in state to TCF RESUME. The six downlists, their sublists and snapshots and the program's constants are compiled from the source listing. 48 sequences of 18,500 downrupts in all (every downlist sent past its end and restarted; 1, 2 and 4 complete erasable dumps returning to the downlist) equal the original Luminary099 program in channels 13, 34 and 35 and Q after every downrupt, the channel-13 traps and all 2,048 erasable words (18,830 strict and sanitizer checks, every control word of all six downlists sent), and all 48 sequences match in VICE. Lane A2 (restart, telemetry and support). See `docs/LM-DOWNTELEMETRY.md`.
 
 ## Map every word of EXECUTIVE.agc and WAITLIST.agc to the native routines that run it
 
@@ -2196,10 +2196,6 @@ All of Luminary099 RTB_OP_CODES and Comanche055 RT8_OP_CODES (130 and 206 words:
 
 Luminary099 AOTMARK (AOTMARK, GETDAT, OPTAXIS, MARKRUPT, MARKCHEX, AVESTAR, SURFSTAR, OANB and the rest, 511 words in banks 07, 04 and 15) is compiled by `tools/interp_compile.py` into 122 routines of the control-transfer ABI: every entry, every return from a display or POSTJUMP, and every interpretive word after a DANZIG. All 62,464 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, MKDEX and mark-counter states. The host and sanitizer tests pass 2,030 frozen cases, and 21 C64 diagnostics pass 302 cases in VICE that take all 1,638 gcov arcs the host cases take and 18,691 of the 18,693 per-site branch outcomes (the two left are shared-code branches the C64 cases take from other call sites). Channel 016 (NAVKEYIN) is now a latched input. A complete certificate is drafted for the reviewer. See `docs/LM-AOTMARK.md`.
 
-## Translate Comanche INTEGRATION_INITIALIZATION
-
-All of Comanche055 INTEGRATION_INITIALIZATION (685 words) is native C on the control-transfer ABI, as 235 routines compiled whole-file by `tools/basic_compile.py`. All 60,160 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 470 frozen cases, and 9 C64 diagnostics pass 322 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-INTEGRATION-INIT.md`.
-
 ## Translate Comanche TVCDAPS
 
 All of Comanche055 TVCDAPS (489 words) is native C on the control-transfer ABI, as 9 routines compiled whole-file by `tools/basic_compile.py`. All 2,304 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 72 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-TVC-DAPS.md`.
@@ -2299,3 +2295,7 @@ Comanche055 SXTMARK (SXTMARK, MARKRUPT, MARKDIF/DIFCHK, MARKCONT, MKREJECT, MKVB
 ## Translate Comanche REENTRY_CONTROL
 
 All of Comanche055 REENTRY_CONTROL (1172 words) is native C on the control-transfer ABI, as 392 routines compiled whole-file by `tools/basic_compile.py`. All 100,352 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 784 frozen cases, and 49 C64 diagnostics pass 547 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-REENTRY.md`.
+
+## Translate Comanche INTEGRATION_INITIALIZATION
+
+All of Comanche055 INTEGRATION_INITIALIZATION (685 words) is native C on the control-transfer ABI, as 241 routines compiled whole-file by `tools/basic_compile.py`. All 61,696 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 482 frozen cases, and 12 C64 diagnostics pass 331 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-INTEGRATION-INIT.md`.

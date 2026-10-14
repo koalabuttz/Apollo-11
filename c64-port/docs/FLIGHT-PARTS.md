@@ -27,6 +27,11 @@ A spec's `'flight_parts'` lists cuts: physical addresses, ascending. With
   `<sym>_flight_entry`, which finds the key from Z, FB and SUPERBNK. It
   makes the same checks as the per-key routines, which are left out.
 
+Both missions and both basic layouts work: a `'basic_split'` file (one
+function per bank) and a `'basic': 'full'` file (one `basic_run`) get the
+same guards, part keys and entry. Luminary parts read channels through
+`AGC_CH_HW_SET`, Comanche parts through the native I/O hooks.
+
 Without `<SYM>_FLIGHT_PART` the file compiles to the same tokens as before.
 That holds for the host build, the coverage build and the C64 diagnostic
 groups (KEEP and BANKS masks), so the certified tests and evidence don't
@@ -53,6 +58,37 @@ The flight store has to link the file once per part with
 `-DCM_P40_P47_FLIGHT_PART=j`. Each link exports `cm_p40_p47_basic` with
 that part's keys, which don't overlap with any other part's.
 
+## Luminary099 AOSTASK_AND_AOSJOB
+
+`'basic': 'full'`, cut at bank 20 `03010` and `03434`:
+
+| Part | Basic words | Bytes |
+|---|---|---|
+| 1 | bank 20 to `03007` | 11,264 |
+| 2 | bank 20 `03010`-`03433` | 11,046 |
+| 3 | bank 20 from `03434` | 11,955 |
+
+As one module it did not fit a 16 KB job slot.
+
+## Comanche055 EXTENDED_VERBS
+
+`'basic': 'full'`, cut at bank 43 `02600`. Chunked by routine, the file
+took 32 modules of about 15.8 KB, because each one linked the whole
+`basic_run`. With the flight entry, its two parts replace them.
+
+## Store classification
+
+`tools/flight_store_build.py` uses `interpretive_table()` everywhere it
+used to test for `interpret` in a table's name. So `lm_interpreter_basic`
+and `cm_interpreter_basic` (INTERPRETER.agc basic code) are linked and
+chunked like other basic tables, rather than left whole in one module as
+interpretive. Every compiled interpretive table except the DANZIG markers
+goes to the interpreter (`to_interp`). Lane C's evidence `INTPRET` tables
+are in `INTERP_ONLY`.
+
+With those changes, both missions' stores fit every table except Lane C's
+Pinball routines (`lanec_pin_routines`), which Lane C's chunk packing fits.
+
 ## Evidence
 
 `tools/flight_parts_check.py <spec>` (`make flight-parts-check`) first runs
@@ -63,4 +99,6 @@ store's modules work together. Every case must end exactly as it does in
 the whole build: Z, the 2048 erasable words and the interrupt state.
 
 For P40-P47, all 31,744 cases (64 per routine) end the same. 1,597 of
-them cross from one part to another at least once.
+them cross from one part to another at least once. For AOSTASK, all 704
+cases end the same over its 3 parts. For CM EXTENDED_VERBS, all 11,648
+cases end the same over its 2 parts.
