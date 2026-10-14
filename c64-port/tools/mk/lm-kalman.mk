@@ -22,7 +22,7 @@ sanitize-lm-kalman: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-kalman-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and the listing build).
 lm-kalman-differential:
-	python3 tools/interp_routine_differential.py lm-kalman --cases 256 --freeze
+	python3 tools/interp_routine_differential.py lm-kalman --cases 2048 --freeze
 	git diff --exit-code -- tests/lm_kalman_vectors.h tests/lm_kalman_c64_vectors.h tools/mk/lm-kalman.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox, the image under KERNAL).
