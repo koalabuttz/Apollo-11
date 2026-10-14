@@ -7039,7 +7039,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which TWIDDLE and POSTJUMP reach from other files), every return from an outside call, and every interpretive word after a DANZIG.",
+          "scope": "Every word of the file (ATMAG bank 34, ASCENT to TERMASC bank 30, ANG1CHEK/OFFROT/YCOMP bank 27, CHECKYAW bank 07, KEEPVR to CUTOFF1 bank 14 and the constants in banks 05 and 33: 531 words) as 209 registered routines of the control-transfer ABI compiled by tools/interp_compile.py: every entry (ENGOFF1 and TERMASC too, which the file's own TC TWIDDLE at 14,2375 and POSTJUMP at 14,2434 reach, and ENGOFF1 again through the group 4 restart, PHASCHNG OCT 47014), every return from an outside call, and every interpretive word after a DANZIG.",
           "verification": "docs/LM-ASCENT.md"
         }
       ],
@@ -7047,7 +7047,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags, TIME1/TIME2); a quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 209 routines with the FB, EB and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it. ENGOFF1 and its returns run as a T3RUPT waitlist task over whatever job it interrupts, so they (and every other basic routine that never names FIXLOC or NEWJOB) take any FIXLOC in erasable and NEWJOB -0 as DUMMYJOB leaves it, as well as +0 or positive (spec any_fixloc and any_newjob). Any values of the erasables the file reads (the state vectors, targets, MPAC, the pushdown list, flags); TIME1/TIME2 vary only in the edge quarter of the ENGOFF cases. A quarter of the compared cases hold edge values in MPAC, the pushdown top and every operand the file names.",
         "external_continuations": [
           "Basic: BANKCALL, CHANG2, DOWNFLAG, FINDVAC, IBNKCALL, PHASCHNG, POLY, POSTJUMP, SHORTMP, TPAGREE, TWIDDLE and UPFLAG, with their inline words; TCF ENDOFJOB, GOTOPOOH and TASKOVER",
           "Interpretive: NEWOPS with LOC outside the file, and the interpreter exits POODOO1 and ALARM1"
@@ -7060,22 +7060,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
+            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
+            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
+            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
             "vice_targets": {
-              "vice-lm-ascent": 255
+              "vice-lm-ascent": 250
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
+            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
           }
         }
       }

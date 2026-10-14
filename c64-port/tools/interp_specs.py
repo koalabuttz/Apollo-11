@@ -495,6 +495,12 @@ SPECS = {
         'freeze_stride': 32,
         'index_carry16': True,
         'image_w': True, 'c64_cuts': True,
+        # ENGOFF1 and its returns run as a waitlist task (TWIDDLE, the group 4
+        # restart), over any job: any FIXLOC, and NEWJOB -0 while DUMMYJOB
+        # idles (#403). No image scan at the entries in flight.
+        'any_fixloc': True,
+        'any_newjob': True,
+        'trusted_image': True,
     },
     'inflight-align': {
         'missions': ('lm', 'cm'),
