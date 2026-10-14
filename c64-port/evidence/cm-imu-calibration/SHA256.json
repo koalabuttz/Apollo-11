@@ -4,33 +4,33 @@
   "release": "evidence-cm-imu-calibration",
   "files": {
     "cm-imu-calibration-c64-cover.json": {
-      "sha256": "0a3b6a7b76a2e70db635fee10a0befc821d034ccbc0bcff09b153fec1634f018",
-      "bytes": 7419,
+      "sha256": "1acf0366975c8055a8c13c09535b3544936288766116b97efe01fd0a4459d699",
+      "bytes": 7336,
       "store": "tree"
     },
     "cm-imu-calibration-differential.log": {
-      "sha256": "4cf46c65fcb2c444eb77058d67000c895ac9b6cd5cbcd5a818f4f9bcdf0c9a28",
-      "bytes": 236,
+      "sha256": "b7140b4e0dffdada0e76f47e967d2508ab386a577d90d4eea116c371d2932bfe",
+      "bytes": 144,
       "store": "release"
     },
     "cm-imu-calibration-host.log": {
-      "sha256": "4f0640455fddf8c30b1d4fac19da2afe7ab2d5c9d622154456885d292337f60d",
+      "sha256": "9249e801ee261c52c503af4efdc7be07bc0971b9ba0481a00e2ba03cc642c6b6",
       "bytes": 1165,
       "store": "release"
     },
     "cm-imu-calibration-proof.json": {
-      "sha256": "ccf8e25ef056601d8657019b2cb3459bd63a81a8921a0089e2f49b44f232f60b",
-      "bytes": 49683,
+      "sha256": "09f0588c77af8662da48028ba3c8c6590f8f3c67085f3007e0a14666a59eebd4",
+      "bytes": 45066,
       "store": "tree"
     },
     "cm-imu-calibration-source-map.json": {
-      "sha256": "ebdb741da4479189b5ccb05bf46f0ba2bc10baca467d4284915b614bfe5e9ae1",
+      "sha256": "3571d3a2870b93e2a7153fe2ac813a2de7b890e3c9d33f24422a293ef4cf110f",
       "bytes": 151980,
       "store": "tree"
     },
     "cm-imu-calibration-vice.log": {
-      "sha256": "c172c09d47adab8f40161bf28ba9b1c03e92cb9b365109801dd0c18097d1616c",
-      "bytes": 33169,
+      "sha256": "8d84cafb06bf069072042eda688bab4a0ed8d0a6d27745b481fd7868ec212297",
+      "bytes": 46345,
       "store": "release"
     }
   }
