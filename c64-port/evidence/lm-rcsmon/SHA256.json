@@ -4,22 +4,22 @@
   "release": "evidence-lm-rcsmon",
   "files": {
     "lm-rcsmon-c64-cover.json": {
-      "sha256": "c6f3d308e883fe639252015a7fe5326f99360ab26edec3b9c3098022551f26d9",
-      "bytes": 653,
+      "sha256": "966cfd9c19fffc1173addadbd62c114ce695f1c19167a9a0adf7482a8233dead",
+      "bytes": 2373,
       "store": "tree"
     },
     "lm-rcsmon-differential.log": {
-      "sha256": "3e4a661236b2362039e50261b824b4d66c945e123ba020d16247ee7da3540f15",
-      "bytes": 182,
+      "sha256": "3767049490e2c67d774499ebc667947e4373eb6f81487039c6d8becbaff0c8fc",
+      "bytes": 445,
       "store": "tree"
     },
     "lm-rcsmon-host.log": {
-      "sha256": "7ddeefdc3edffe0e7c6bbd8d779930172d4c7ab3e807d37cac96d205ceaea02c",
-      "bytes": 95,
-      "store": "tree"
+      "sha256": "3d36401d5669c82909154d9b3aa92ef843c118f15edcf68326200d66cdce550b",
+      "bytes": 926,
+      "store": "release"
     },
     "lm-rcsmon-proof.json": {
-      "sha256": "a0c900e9c464164e93218cf7538c3e3b84a83bf588032fbfcafe24644ad116bc",
+      "sha256": "e6b135788b31dbebf22845f84773e538412fdf535c0aebc29e21b4ee7eb67638",
       "bytes": 2332,
       "store": "tree"
     },
@@ -29,9 +29,9 @@
       "store": "tree"
     },
     "lm-rcsmon-vice.log": {
-      "sha256": "d430b681ac3b1d7a5efa36f1c8cb25d6978184fe46d2efe93a3b50bc1eaf6f59",
-      "bytes": 295,
-      "store": "tree"
+      "sha256": "67cae21f35c699ff26aca32326e6fd8a41cbc9366602d262d78549ec58164001",
+      "bytes": 997,
+      "store": "release"
     }
   }
 }
