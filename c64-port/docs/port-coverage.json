@@ -7060,22 +7060,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "3dc2b4f37b741a1fc09e390889bf25f7843f597c0ab827698491bcb2001935de"
+            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "0eac75e38eeca8806cdedce80adc8d43fed7cbd394c9e9aa466ddcddb3acef90"
+            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "573e28b13c4f37a4e6c41ff077e90a0035cc6d2eaf3fd91cbb5bb70c28184df7",
+            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
             "vice_targets": {
-              "vice-lm-ascent": 255
+              "vice-lm-ascent": 250
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "df7a7961f219800289c55bd1022af95e4418bf00f5aed78d90db7973e8d926f6"
+            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
           }
         }
       }
