@@ -6,7 +6,7 @@ On its IMU phase, T4JUMP sends T4RUPT to IMUMON. The IMU monitor compares the IM
 
 | AGC | Native |
 |---|---|
-| IMUMON 06,2172, NXTIFBIT, NXTIFAIL, TLIM, TEMPOK | `imu` entry IMUMON: the channel 30 change word, the bit scan through IFAILJMP |
+| IMUMON 06,2174, NXTIFBIT, NXTIFAIL, TLIM, TEMPOK | `imu` entry IMUMON: the channel 30 change word, the bit scan through IFAILJMP |
 | ITURNON, ITURNON2, ENDTNON, RETNON, IMUBAD, UNZ2, ISSUP, NOATTOFF | turn-on: CAGESUB, WAITLIST ENDTNON (90 s) or VARDELAY, ZEROICDU, the IBNKCALL NOATTOFF and IMU-fail paths |
 | SETISSW (IMUFAIL, ICDUFAIL), ISSWON, ISSWOFF | `setissw`: the ISS warning lamp via channel 11 bit 1, or VARALARM 1105/1106 through ITEMP6 |
 | IMUCAGE, ISSZERO, CAGESUB1, CAGESUB2 | cage: channel 14 drive bits and channel 12 cleared, ENGONFLG reset, engine off, IBNKCALL RNDREFDR, the CDU and gyro command counters set to -0 |
@@ -33,7 +33,7 @@ Hashes: `evidence/cm-t4rupt-imu/SHA256.json`.
 - **Source map.** `tools/cm_t4rupt_imu_source_map.py` (`evidence/cm-t4rupt-imu/cm-t4rupt-imu-source-map.json`) lists the 380 words of 06,2174-2764 and 06,3065-3067. The original executed every instruction in the oracle run below. The script also checks the 37 fixed constants and the 9 external entry addresses built into the native code against the assembled program.
 - **Independent assembly comparison.** `make cm-t4rupt-imu-differential` runs the unmodified Comanche055 rope in yaAGC (host-only, `tools/cm_t4rupt_imu_reference.c`). It uses 2,048 cases at IMUMON and 128 at each other entry, 4,736 in all.
   - The erasable image is random. In a quarter of the cases IMODES30 and IMODES33 are near their flight values, and channels 30 and 33 are near IMODES30 and IMODES33 in half, so a scan has few changes.
-  - Every sixteenth case gives CDUZ +0 or -0, and one IMUMON case in sixteen gives the TEMP change with IMODES30 left +0, to reach those branches of CCS.
+  - Every sixteenth case gives CDUZ +0 or -0, and one IMUMON case in sixteen gives the TEMP change with IMODES30 left +0, and another gives it with IMODES30 left -0 (every other bit already set, TEMP rising), to reach those branches of CCS.
   - Scan entries get a valid scan state. Channels 11, 12 and 14 are random.
   - The CDU and gyro command counters (047, 050-052) and the optics counters (035, 036) are +0 on entry. yaAGC's peripheral model empties them when the matching channel 14 drive bit is set, which is the outside world, not the program.
 
@@ -42,6 +42,6 @@ Hashes: `evidence/cm-t4rupt-imu/SHA256.json`.
   - the digests;
   - that every continuation is reached: RESUME, ALARM, VARALARM, WAITLIST, VARDELAY, TASKOVER, IBNKCALL, POSTJUMP, ZEROICDU and SETISSW's caller;
   - five refusals with the image unchanged, and that the entry addresses do not resolve in another bank.
-- **C64 execution results.** `make vice-cm-t4rupt-imu` (`evidence/cm-t4rupt-imu/cm-t4rupt-imu-vice.log`) runs 300 cases: every sixteenth, plus the four that `tools/c64_case_cover.py` adds so that the C64 rows run every branch outcome (control-flow edge) of the native routine that the full host case set runs. The proof records the edge counts.
+- **C64 execution results.** `make vice-cm-t4rupt-imu` (`evidence/cm-t4rupt-imu/cm-t4rupt-imu-vice.log`) runs 301 cases: every sixteenth, plus the five that `tools/c64_case_cover.py` adds so that the C64 rows run every branch outcome (control-flow edge) of the native routine that the full host case set runs. The proof records the edge counts.
 
 OPTMON, the CM optics monitor, remains; T4RUPT_PROGRAM.agc stays partial.

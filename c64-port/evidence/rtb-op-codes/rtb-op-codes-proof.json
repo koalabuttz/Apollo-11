@@ -79,14 +79,15 @@
   {
    "mission": "cm",
    "keep": "0x3fffffff",
-   "cases": 57,
+   "cases": 58,
    "case_ids": [
     12328,
     12468,
     12804,
     13192,
     13388,
-    13643,
+    13355,
+    13499,
     13956,
     14352,
     14948,
@@ -181,9 +182,9 @@
  ],
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 828,
-  "edges_host_vectors": 828,
-  "edges_c64": 828,
+  "edges_all_cases": 831,
+  "edges_host_vectors": 831,
+  "edges_c64": 831,
   "edges_not_on_c64": []
  },
  "stops": {

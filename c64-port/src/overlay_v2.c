@@ -4,11 +4,22 @@
 uint8_t apollo_ov2_services_compatible(uint16_t module,uint16_t resident) {
     return (uint8_t)((module>>8)==(resident>>8) && (module&0xffu)<=(resident&0xffu));
 }
-uint16_t apollo_ov2_slot_address(uint8_t slot) {
+/* A run's slots (job or task: run() refuses slot classes 2 and 3 first). */
+static uint16_t run_slot_address(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_ADDRESS : APOLLO_OV2_JOB_ADDRESS;
 }
-uint16_t apollo_ov2_slot_bytes(uint8_t slot) {
+static uint16_t run_slot_bytes(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES : APOLLO_OV2_JOB_BYTES;
+}
+uint16_t apollo_ov2_slot_address(uint8_t slot) {
+    return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_ADDRESS :
+           slot==APOLLO_OV2_SLOT_FIXED ? APOLLO_OV2_FIXED_ADDRESS :
+           slot==APOLLO_OV2_SLOT_PINNED ? APOLLO_OV2_PINNED_ADDRESS : APOLLO_OV2_JOB_ADDRESS;
+}
+uint16_t apollo_ov2_slot_bytes(uint8_t slot) {
+    return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES :
+           slot==APOLLO_OV2_SLOT_FIXED ? APOLLO_OV2_FIXED_BYTES :
+           slot==APOLLO_OV2_SLOT_PINNED ? APOLLO_OV2_PINNED_BYTES : APOLLO_OV2_JOB_BYTES;
 }
 void apollo_ov2_init(apollo_ov2_runtime *r,apollo_ov2_store store,uint8_t *job_slot,
     uint8_t *task_slot,uint8_t *header,apollo_overlay_state *state,uint8_t mission,
@@ -27,7 +38,7 @@ static uint16_t le16(const uint8_t *bytes) {
  * of the slot is written. */
 static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     const apollo_ov2_dirent *d,const uint8_t *h) {
-    uint16_t base=apollo_ov2_slot_address(d->slot),capacity=apollo_ov2_slot_bytes(d->slot);
+    uint16_t base=run_slot_address(d->slot),capacity=run_slot_bytes(d->slot);
     uint16_t bss=le16(h+APOLLO_OV2_H_BSS),bss_bytes=le16(h+APOLLO_OV2_H_BSS_BYTES);
     uint32_t end=(uint32_t)base+capacity;
     if(h[0]!='N' || h[1]!='A' || h[2]!='T' || h[3]!='V' ||
@@ -44,11 +55,11 @@ static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     return APOLLO_OV2_OK;
 }
 static enum apollo_ov2_status load(apollo_ov2_runtime *r,const apollo_ov2_dirent *d) {
-    uint8_t *slot=r->slot[d->slot],*header=r->header;
+    uint8_t *slot=r->slot[d->slot],*header=r->header;   /* the caller refused slot classes 2 and 3 */
     uint16_t i,bss_offset,bss_bytes,crc=0xffffu;
     enum apollo_ov2_status status;
     if(!(d->flags & APOLLO_OV2_DIRENT_PRESENT) || d->slot>=APOLLO_OV2_SLOTS || !slot ||
-       d->bytes<=APOLLO_OV2_HEADER_BYTES || d->bytes>apollo_ov2_slot_bytes(d->slot))
+       d->bytes<=APOLLO_OV2_HEADER_BYTES || d->bytes>run_slot_bytes(d->slot))
         return APOLLO_OV2_BAD_DIRECTORY;
     if(!r->store.fetch(r->store.user,d,0,header,APOLLO_OV2_HEADER_BYTES)) return APOLLO_OV2_IO_ERROR;
     status=check_header(r,d,header);
@@ -61,7 +72,7 @@ static enum apollo_ov2_status load(apollo_ov2_runtime *r,const apollo_ov2_dirent
         for(i=0;i<d->bytes;++i) crc=apollo_overlay_crc16(crc,slot[i]);
         if(crc!=d->crc16) return APOLLO_OV2_BAD_CHECKSUM;
     }
-    bss_offset=(uint16_t)(le16(header+APOLLO_OV2_H_BSS)-apollo_ov2_slot_address(d->slot));
+    bss_offset=(uint16_t)(le16(header+APOLLO_OV2_H_BSS)-run_slot_address(d->slot));
     bss_bytes=le16(header+APOLLO_OV2_H_BSS_BYTES);
     while(bss_bytes) { slot[bss_offset++]=0; --bss_bytes; }
     r->loaded[d->slot]=d->id; r->selectors[d->slot]=d->selectors;

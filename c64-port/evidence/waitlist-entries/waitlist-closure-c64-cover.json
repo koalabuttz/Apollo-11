@@ -225,12 +225,12 @@
       ]
     },
     "waitlist-entries": {
-      "host_cases": 1380,
-      "host_branch_arcs": 717,
-      "stride_rows": 351,
+      "host_cases": 1437,
+      "host_branch_arcs": 737,
+      "stride_rows": 366,
       "cover_rows": 10,
-      "c64_rows": 361,
-      "c64_branch_arcs": 717,
+      "c64_rows": 376,
+      "c64_branch_arcs": 737,
       "host_branches_missing_on_c64": [],
       "linked_sources": [
         "src/agc_hardware_divide.c",

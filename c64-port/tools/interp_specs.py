@@ -201,9 +201,76 @@ def lat_long_axis_joint():
             sets.append(v)
     return sets + [{}] * len(sets)
 
+# DDV with edge operands (reviewer 1, #314): a zero, -0 or tiny dividend, a
+# divisor of +-0, a tiny one, major part +-1 (minor of either sign) or 1/2, and equal major parts
+# (the shared DDV body's zero, x/0, 0/0, equal-major and major-1 arcs).
+# dvd and dvs name each operand's two words. Half the cases keep the random
+# states.
+DDV_DIVIDENDS = [(0, 0), (0o77777, 0o77777), (0, 1), (0o77777, 0o77776), (0, 0o37), (1, 0o12345),
+                 (0o77776, 0o65432)]
+DDV_DIVISORS = [(0, 0), (0o77777, 0o77777), (0, 3), (1, 0o12345), (0o77776, 0o65432), (1, 0o65432),
+                (0o77776, 0o12345), (0o20000, 0), (0o57777, 0o77777), (0o14000, 5)]
+
+
+def ddv_joint(dvd, dvs, extra=None):
+    sets = [{dvd[0]: a[0], dvd[1]: a[1], dvs[0]: b[0], dvs[1]: b[1]}
+            for a in DDV_DIVIDENDS for b in DDV_DIVISORS]
+    for h in (1, 0o14000, 0o20000, 0o37777):
+        for l1, l2 in ((5, 7), (7, 5), (0, 0), (0o37777, 1)):
+            for neg in (False, True):
+                b = (h, l2) if not neg else (~h & 0o77777, ~l2 & 0o77777)
+                sets.append({dvd[0]: h, dvd[1]: l1, dvs[0]: b[0], dvs[1]: b[1]})
+    if extra:
+        sets = [dict(v, **x) for v in sets for x in extra]
+    return sets + [{}] * len(sets)
+
+
 # AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
 # and the surface mark slots (that area plus 6 words a mark).
 AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
+
+
+# SXTMARK (#255): marks whose CDUs are within a few bits of the current
+# ones, so DIFCHK's accept path (|mark - current| <= 3) and its 121 alarm
+# at 4 both run. At MARKDIF all three axes (CDUCHKWD > 0); at DIFCHK one
+# axis (MKNDX -1, 0, 1 picks CDUX, CDUY, CDUZ; A the mark CDU). Half the
+# cases keep the random states.
+SXT_CDU_BASES = (0, 3, 0o17777, 0o37775, 0o40002, 0o77775)
+SXT_CDU_DIFFS = ((0, 0, 0), (1, -1, 2), (-2, 3, -3), (3, 0, -1), (-3, -2, 1), (2, 1, 0),
+                 (4, 0, 0), (0, -4, 0), (0, 0, 4), (-1, 1, -4))
+
+
+def sxt_markdif_joint():
+    sets = []
+    for i, x in enumerate(SXT_CDU_BASES):
+        for d in SXT_CDU_DIFFS:
+            v = {'CDUCHKWD': 1 + i}
+            for k, (axis, e) in enumerate(zip('XYZ', d)):
+                m = (x + 0o1111 * k) & 0o77777
+                v['MKCDU' + axis] = m
+                v['%04o' % (0o32 + k)] = (m - e) & 0o77777   # CDUX-CDUZ
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
+
+def sxt_difchk_joint():
+    sets = [{'MKNDX': k, '0': x, cdu: (x - e) & 0o77777}
+            for k, cdu in ((0o77776, '0032'), (0, '0033'), (1, '0034'))   # CDUX-CDUZ
+            for x in SXT_CDU_BASES if x < 0o40000
+            for e in range(-4, 5)]
+    return sets + [{}] * len(sets)
+
+
+# MARKCONT with no marks wanted (MARKSTAT +0) and STATE+2 bit 14 clear (or
+# set: R21's MARKIT1): the marking system (EXTVBACT bit 2) and V59FLAG
+# (STATE+5 bit 12) on or off, so MARKET3's alarm 122 and the P23 calibration
+# display both run. A third of the cases keep the random states.
+def sxt_markcont_joint():
+    sets = [{'MARKSTAT': 0, 'STATE+2': s2, 'EXTVBACT': ev, 'STATE+5': v59}
+            for s2 in (0, 0o17777, 0o20000)
+            for ev in (0, 2, 0o77775, 0o77777)
+            for v59 in (0, 0o4000, 0o73777, 0o77777)]
+    return sets + [{}] * (len(sets) // 2)
 AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
 
 # LLGE's ROOTPSRS work words (MPAC +3 to +6, PWRPTR, DERPTR, RETROOT)
@@ -211,6 +278,10 @@ AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in ran
 ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 1],
                  '0117': [0o1565, 0o1563, 0o1561], '0141': [0o147, 0o145, 0o143], '0132': [0o3113],
                  'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']}
+
+# A as a sine or cosine across its range, +-0 in about a fifth of the
+# cases (16-bit -0).
+A_PM0 = [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777) for v in (k, 0o177777 - k)]
 
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
@@ -244,7 +315,18 @@ SPECS = {
                           for a in range(lo, hi)},
                        # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
                        **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
+        # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
+        # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
+        'any_fixloc': True,
         'joint_states': {
+                         # AOTMARK's entry with no marks in progress (MARKSTAT
+                         # +0) in half the cases: the VAC area search and
+                         # BAILOUT1 when none is free. A quarter of the cases
+                         # have only VAC5 free, with no extended verb active
+                         # (EXTVBACT bits 1-2 clear): the search's last area.
+                         'AOTMARK': [{'MARKSTAT': 0}, {},
+                                     {'MARKSTAT': 0, 'EXTVBACT': 0, 'VAC1USE': 0, 'VAC2USE': 0,
+                                      'VAC3USE': 0, 'VAC4USE': 0, 'VAC5USE': 0o660}, {}],
                          # 15,2041 VSL1 VAD from the state the original reaches it
                          # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
                          # VAD's overflow there carries into a word that does not
@@ -283,11 +365,17 @@ SPECS = {
         # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
         # edge values in MPAC and the operands.
         'c64_rows': 'cover',
-        'cover_stride': 8,
+        # Two DDV arcs (V/SC with the high words equal) only runs too long
+        # for one diagnostic take: truncated rows (tests/interp_cut.h).
+        'c64_cuts': True,
+        'cover_stride': 4,
         'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     # Lane D1: Comanche055 SXTMARK, the whole file (basic code) as routines
@@ -324,6 +412,10 @@ SPECS = {
         # DIFCHK is entered with MKNDX -1, 0 or 1 (it indexes CDUX-CDUZ).
         'states': {'DIFCHK': {'MKNDX': [0o77776, 0, 1]},
                    'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]}},
+        # (#255) Marks close to the current CDUs at MARKDIF and DIFCHK, and
+        # MARKCONT with no marks wanted.
+        'joint_states': {'MARKDIF': sxt_markdif_joint(), 'DIFCHK': sxt_difchk_joint(),
+                         'MARKCONT': sxt_markcont_joint()},
         'channel_inputs': True,
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS', '-DIRC_CHANNELS'],
         'target': 'tests/cm_sxtmark_target.c',
@@ -332,6 +424,9 @@ SPECS = {
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     'inflight-align': {
@@ -464,6 +559,8 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # (#260) C64 INDEX end-around carry.
+        'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
         'base': {'cm': 'cm_t4rupt_optics'},
         'symbol': {'cm': 'cm_t4rupt_optics'},
@@ -493,6 +590,268 @@ SPECS = {
         'target': 'tests/cm_t4rupt_optics_target.c',
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
+    'cm-rcs-dap-exec': {
+        'missions': ('cm',),
+        'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
+        'base': {'cm': 'cm_rcs_dap_exec'},
+        'symbol': {'cm': 'cm_rcs_dap_exec'},
+        'basic': 'full',
+        # The RCS DAP's job (2CADR AMBGUPDT at 21,2356 and 21,2614).
+        'entries': ['AMBGUPDT'],
+        # FLAGWRD6: mostly the RCS autopilot (bit 14 only of the top two), so
+        # most runs reach the matrix; TVC, both, neither and +-0 for the gates.
+        'states': {'AMBGUPDT': {'FLAGWRD6': [0o20000, 0o20001, 0o21234, 0o37777, 0o20000, 0o30000,
+                                             0o40000, 0o60000, 0, 0o77777, 0o17777]},
+                   # After SPCOS1 and SPSIN1 (22,3470, 22,3501): A, the sine or
+                   # cosine, across its range and often +-0 (CDUZ 0 or CDUX
+                   # 660 give it), so MP CAPSI and MP AMGB1 take yaAGC's
+                   # +-0-multiplicand path (reviewer 1, #307).
+                   **{p: {'0': [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777)
+                                                             for v in (k, 0o177777 - k)]}
+                      for p in ('22,3470', '22,3501')}},
+        # CDUX and CDUZ (counters): around 0, the 7.25-degree jet quad
+        # offset QUADANGL (660), 90 and 180 degrees, and -0.
+        'cells': {a: [0, 1, 659, 660, 661, 0o17777, 0o20000, 0o37777, 0o40000, 0o57777, 0o60000,
+                      0o77116, 0o77117, 0o77776, 0o77777] for a in (0o32, 0o34)},
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_rcs_dap_exec_target.c',
+    },
+    # Lane A: Comanche055 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
+    # NBSM/SMNB, AX*SR*T, SMCDURES), basic and interpretive.
+    'cm-powered-subs': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_powered_subs'},
+        'symbol': {'cm': 'cm_powered_subs'},
+        'basic': 'full',
+        # Every caller's entry, and the interface routines no other file
+        # calls (CD*TR*G, TRG*SMNB, CDU*NBSM).
+        'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM'],
+        # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
+        'fixed_tables': {'INDEXI': (0, 3)},
+        # The words each resume point finds, as the file's own runs leave them.
+        # CD*TR*GS's loop (after CDULOGIC, COSINE, SINE): TEM3 the angle
+        # offset (4, 2, 0), TEM2 its caller's return (CDUTRIG, CD*TR*G,
+        # CDU*SMNB, TRG*SMNB, CDU*NBSM and TRG*NBSM, or a TC from outside the
+        # file).
+        'states': dict(
+            {p: {'143': [0, 2, 4], '142': [0o3501, 0o3505, 0o3623, 0o3626, 0o3636, 0o3641, 0o5000]}
+             for p in ('23,3530', '23,3536', '23,3546')},
+            # QUICTRIG's loop (after SPSIN, SPCOS): ITEMP2 the offset, ITEMP1
+            # the caller's return (BANKCALL or an RTB, outside the file).
+            # A, the sine or cosine, across its range and +-0 in about a fifth
+            # of the cases (SPSIN(0) is +0), for MP BIT14 (reviewer 1, #314).
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3566', '23,3575')},
+            # NBSM: S1 (the job's VAC +40D) holds the address of the CDU angles (MARKDATA +2 in
+            # P20-P25, a mark VAC's ICDU in P51-P53), at NBSM and its LXC,1 resume key.
+            **{p: {'vac+050': [0o1244, 0o1250, 0o766, 0o122]} for p in ('NBSM', '23,3610')},
+            # AX*SR*T's loop (after DMPSUB): DEXDEX +-3 to +-1, DEX1 and DEX2
+            # offsets, BUF the component index, RTNSAVER the return (C*MM*N2's
+            # TC, or outside the file).
+            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
+                   '130': [0, 1], '145': [0o3631, 0o5000]} for p in ('23,3676', '23,3714')}),
+        # SMCDURES's DDV COSCDUZ (reviewer 1, #314): at SMCDURES, DTHETASM
+        # (the LOS rate times 0.1) zero or small, so the dividend is; at the
+        # DDV (23,3751), MPAC and COSCDUZ edge values.
+        'joint_states': {
+            'SMCDURES': ddv_joint(('DTHETASM', 'DTHETASM+1'), ('COSCDUZ', 'COSCDUZ+1'),
+                                  [{'DTHETASM+4': 0, 'DTHETASM+5': 0}, {'DTHETASM+4': 0, 'DTHETASM+5': 3}]),
+            'SMCDURES+7': ddv_joint(('MPAC', 'MPAC+1'), ('COSCDUZ', 'COSCDUZ+1'))},
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_powered_subs_target.c',
+    },
+    # Lane A: Luminary099 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
+    # SMNB/NBSM, AX*SR*T, CALCSMSC), basic and interpretive.
+    'lm-powered-subs': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
+        'base': {'lm': 'lm_powered_subs'},
+        'symbol': {'lm': 'lm_powered_subs'},
+        'basic': 'full',
+        # Every caller's entry, the interface routines no other file calls
+        # (CD*TR*G, TRG*SMNB, CDU*NBSM), CALCSMSC's BANKCALL to FLESHPOT -1,
+        # and FLESHPOT's return from VXV (LOC set to it, EDOP BIT8: the
+        # interpreter resumes the basic code there).
+        'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM', 'FLESHPOT-1', 'FLESHPOT+93'],
+        # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
+        'fixed_tables': {'INDEXI': (0, 3)},
+        # The words each resume point finds, as the file's own runs leave them
+        # (as cm-powered-subs). CD*TR*GS's loop: TEM3 the angle offset, TEM2
+        # its caller's return (CDUTRIG, CD*TR*G and the four interface
+        # routines' TCs, or outside the file).
+        'states': dict(
+            {p: {'143': [0, 2, 4], '142': [0o3541, 0o3545, 0o3650, 0o3653, 0o3663, 0o3666, 0o5000]}
+             for p in ('23,3570', '23,3576', '23,3606')},
+            # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
+            # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
+            # AX*SR*T's loop: DEXDEX +-3 to +-1, DEX1 and DEX2 offsets, BUF
+            # the component index, RTNSAVER C*MM*N2's return or outside.
+            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
+                   '130': [0, 1], '145': [0o3656, 0o5000]} for p in ('23,3723', '23,3741')},
+            # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
+            # (16 bits, 177774), Q a return.
+            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
+            # FLESHPOT after DMP, DMPSUB and VXV: TEM1 the matrix's switched
+            # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
+            # caller's EBANK.
+            **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
+               for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
+                         '10,2174')}),
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_powered_subs_target.c',
+    },
+    # Lane A: Luminary099 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
+    # basic and interpretive.
+    'lm-ground-track': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
+        'base': {'lm': 'lm_ground_track'},
+        'symbol': {'lm': 'lm_ground_track'},
+        'basic': 'full',
+        # The GOPERF4 and GOFLASH returns for a value loaded through the
+        # DSKY (TC -5, back to the request).
+        'entries': ['@external', 'PROG21+7', 'P21PROG1+5'],
+        # P21VSAVE's DDV P21VEL (24,3606), U(R).V over |V|: MPAC and P21VEL
+        # edge values (as SMCDURES, reviewer 1 #314).
+        'joint_states': {'P21VSAVE+13': ddv_joint(('MPAC', 'MPAC+1'), ('P21VEL', 'P21VEL+1'))},
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_ground_track_target.c',
+    },
+    # Lane A: Comanche055 GROUND_TRACKING_DETERMINATION_PROGRAM (P21),
+    # basic and interpretive.
+    'cm-ground-track': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
+        'base': {'cm': 'cm_ground_track'},
+        'symbol': {'cm': 'cm_ground_track'},
+        'basic': 'full',
+        # The GOPERF4 and GOFLASH returns for a value loaded through the
+        # DSKY (TC -5, back to the request).
+        'entries': ['@external', 'PROG21+7', 'P21PROG1+5'],
+        # P21VSAVE's DDV P21VEL, U(R).V over |V|: MPAC and P21VEL edge
+        # values (as lm-ground-track).
+        'joint_states': {'P21VSAVE+13': ddv_joint(('MPAC', 'MPAC+1'), ('P21VEL', 'P21VEL+1'))},
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_ground_track_target.c',
+    },
+    # Lane A: Luminary099 GENERAL_LAMBERT_AIMPOINT_GUIDANCE (P31), basic
+    # and interpretive.
+    'lm-lambert-aim': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'LAMBERT_AIMPOINT_GUIDANCE.agc'},
+        'base': {'lm': 'lm_lambert_aim'},
+        'symbol': {'lm': 'lm_lambert_aim'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_lambert_aim_target.c',
+    },
+    # Lane A: Luminary099 P76 (target delta-V), basic and interpretive.
+    'lm-p76-file': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'P76.agc'},
+        'base': {'lm': 'lm_p76_file'},
+        'symbol': {'lm': 'lm_p76_file'},
+        'basic': 'full',
+        # The GOFLASH returns after TCF ENDP76: proceed (TC +2) and a value
+        # loaded through the DSKY (TC -5, back to the request).
+        'entries': ['@external', 'P76+11', 'P76+12', 'P76+17', 'P76+18'],
+        # BANKCALL INTWAKE1 wakes the integration's sleepers and returns
+        # interpretively to QPRET (OUT, an EXIT), never to the next word.
+        'noreturn': ['INTWAKE1'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/lm_p76_file_target.c',
+    },
+    'cm-p76-file': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'P76.agc'},
+        'base': {'cm': 'cm_p76_file'},
+        'symbol': {'cm': 'cm_p76_file'},
+        'basic': 'full',
+        # The GOFLASH returns after TCF ENDP76: proceed (TC +2) and a value
+        # loaded through the DSKY (TC -5, back to the request), as lm-p76-file.
+        'entries': ['@external', 'P76+6', 'P76+7', 'P76+12', 'P76+13'],
+        # BANKCALL INTWAKE1 wakes the integration's sleepers and returns
+        # interpretively to QPRET, never to the next word.
+        'noreturn': ['INTWAKE1'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_p76_file_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
@@ -702,11 +1061,14 @@ SPECS = {
         # a CHANG2 resume from the state the routine before it reaches.
         'flow_states': True,
         'resume_flow': True,
-        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
-        # the GOTO X1 into RES, REM or VEM (S1 = 0 would loop forever).
         # The pushdown list stays low in the VAC area (LSTIME's SETPD 0D;
         # RES pushes to 16D): a push near X1 would overwrite the index.
-        'all_states': {'vac+050': [6], '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        'all_states': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
+        # S1 (vac+050) is the TIX step: LSTIME's SSP S1 6D sets it before
+        # the GOTO X1 (26,2141) into RES, REM or VEM (S1 = 0 would loop
+        # forever). Up to the SSP, S1 is any value (P20-P25 leave 108, 18
+        # or 54), so the SSP's write is compared.
+        'range_states': [('LSTIME+11', 'NINEB4', {'vac+050': [6]})],
         # C64 rows: the cases that take every branch outcome the host cases take.
         'c64_rows': 'cover',
         # (INDEX's end-around carry kept within 16 bits for the C64)
@@ -1725,6 +2087,10 @@ SPECS = {
         'target': 'tests/rtb_op_codes_target.c',
         # RTB runs in NOVAC jobs too: the routines that never name FIXLOC
         # take any FIXLOC.
+        # (INDEX LIMITS -2/-1 sums carry end-around on the C64's 16-bit
+        # unsigned too)
+        'index_carry16': True,
+        'image_w': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
@@ -2094,7 +2460,16 @@ SPECS = {
         # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
         # build needs (unsigned is 16 bits there).
         'index_carry16': True,
-        'partial': {'lm': 'READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 wait for an I/O channel model'},
+        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 lands on
+        # WHATEXIT's TCF EXNORM, which loops back to DISPEXIT for ever.  The
+        # program only runs IGNALG (-1) with FLUNDISP set, so DISPEXIT never
+        # gets there; cases on the paths into it keep WCHPHOLD on 0..2.
+        'range_states': (('CGCALC', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
+                         ('1406P00', 'FASTCHNG', {'WCHPHOLD': [0, 1, 2]})),
+        # READ CHAN30 (STERN) and RAND/READ CHAN31: latched inputs.
+        'channel_inputs': True,
+        'c64_flags': ['-DIRC_INPUTS'],
+        'partial': {'lm': 'WOR CHAN13 (STARTP64) waits for an output-channel model'},
         'target': 'tests/lm_llge_target.c',
         'freeze_stride': 32,
         'cover_stride': 8,
@@ -2115,8 +2490,14 @@ SPECS = {
         # with a higher bit the DOUBLE loop never overflows (the original
         # runs forever too).
         'all_states': {'PVALVEST': list(range(0o400))},
-        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive.
+        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive, or
+        # -0 while DUMMYJOB idles (any_newjob), and from any FIXLOC
+        # (any_fixloc): it never names either.
         'resume_keys': True,
+        'any_fixloc': True,
+        'any_newjob': True,
+        'index_carry16': True,
+        'image_w': True,
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
@@ -2538,6 +2919,9 @@ SPECS = {
     },
     'cm-p34-p35': {
         'c64_cuts': True,
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
         'missions': ('cm',),
         'file': {'cm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'cm': 'P34-35_P74-75.agc'},
@@ -2698,6 +3082,56 @@ SPECS = {
         'cover_stride': 16,
         'freeze_stride': 256,
     },
+    'measurement-inc': {
+        'missions': ('lm', 'cm'),
+        'file': {'lm': 'MEASUREMENT_INCORPORATION.agc', 'cm': 'MEASUREMENT_INCORPORATION.agc'},
+        'base': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
+        'symbol': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
+        # INCORP1 and INCORP2 (called from P20-P25), and FAZA, which
+        # INCORP2's RTB FAZA runs as basic code.
+        'entries': ['INCORP1', 'INCORP2', 'FAZA'],
+        'externals': {'PHASCHNG': 1, 'UPFLAG': 1, 'POSTJUMP': 1},
+        'noreturn': ['POSTJUMP'],
+        # The MOVE* state-vector copies (INTEGRATION_INITIALIZATION) run
+        # natively; TCDANZIG is BOVB's TC DANZIG (ENDT(X)).
+        'rtb': {'TPMODE': {'lm': 'rtb_tpmode(s,io,RTB_LM)', 'cm': 'rtb_tpmode(s,io,RTB_CM)'},
+                'MOVEACSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ACSM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_ACSM)'},
+                'MOVEALEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_ALEM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_ALEM)'},
+                'MOVEPCSM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PCSM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_PCSM)'},
+                'MOVEPLEM': {'lm': 'lm_integration_move(s,io,LM_MOVE_PLEM)',
+                             'cm': 'cm_integration_move(s,io,CM_MOVE_PLEM)'},
+                'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)', 'cm': 'cm_integration_tcdanzig(s)'},
+                'FAZA': None},
+        'includes': ['rtb_modes.h', 'lm_integration_moves.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c', 'src/lm_integration_moves.c', 'src/cm_integration_moves.c'],
+        'target': 'tests/measurement_inc_target.c',
+        # The file's EBANK= W (E5): its names in E3, E4 and E7 are
+        # reached through the interpreter's E-bank bits from there.
+        'ebank': 5,
+        'self_loops': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        # Every point starts where INCORP1 or INCORP2 (from random
+        # measurements and W matrices) takes the original.
+        'flow_from': ['INCORP1', 'INCORP2'],
+        # FAZAB's no-overflow arm (TDELTAV and TNUV updated in place) is
+        # rarely reached from random corrections: where no flow gets there,
+        # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
+        'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'freeze_stride': 64,
+        'rope_bin': True,
+        # (With the image at $e000 under the KERNAL, platform/c64/
+        # measurement_inc_diagnostic.c; the same flags as tools/mk/
+        # measurement-inc.mk's MINC_MOS_FLAGS.)
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'index_carry16': True,
+        'image_w': True,
+    },
     'lm-conic-compiled': {
         'missions': ('lm',),
         'file': {'lm': 'CONIC_SUBROUTINES.agc'},
@@ -2735,6 +3169,120 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'rope_bin': True,
+    },
+    # Lane D2: Luminary099 AOSTASK_AND_AOSJOB (1/ACCS, the DAP's mass and
+    # jet-acceleration interface, and the AOSTASK/AOSJOB offset filter), the
+    # whole file as basic routines at its original addresses.
+    'lm-aostask': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
+        'base': {'lm': 'lm_aostask'},
+        'symbol': {'lm': 'lm_aostask'},
+        'basic': 'full',
+        'entries': ['@external', '1/ACCS+2'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= AOSQ (E6).
+        'ebank': 6,
+        # DVOVSUB (INCR Q) returns past its ADRES of the divisor.
+        'call_skips': {'DVOVSUB': 1},
+        # The constants the file reads under INDEX: the inertia and mass
+        # tables (INERCONA..GFACTM, 20,3037-3110), the jet torque and
+        # acceleration coefficients (TORQCONS..COEFF, 20,3145-3230), the
+        # U/V jet masks (20,3762-3771) and DVOVSUB's divisors (TORKJET1,
+        # 20,2000, through its ADRES).
+        # DVOVSUB's INDEX Q reads the ADRES after each TC DVOVSUB (LRESC +4
+        # .. +22, and TORQCONS +11 and +42 in its table).
+        'fixed_tables': {'TORKJET1': (0, 0), 'INERCONA': (-0o41, 0o47), 'TORQCONS': (0, 0o63), '-UMASK': (-4, 3),
+                         'LRESC': (4, 0o22)},
+        # TC ARET runs ARET's word: DO1/NET+'s saved return (QXCH ARET) or
+        # ACCHERE's TCF ACCTHERE (CA ACCHERE; TS ARET).
+        'tcf_words': True,
+        # DOCKTEST's CCS DOCKTEMP: DOCKTEMP (MPAC +3) is DAPBOOLS' CSMDOCKD
+        # bit, 0 or BIT13 (20,2463-2465); negative it would fall into
+        # DVOVSUB with no call.
+        'states': {'20,2773': {'157': [0, 0o10000]}},
+        'target': 'tests/lm_aostask_target.c',
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane D2: Luminary099 KALMAN_FILTER (RATELOOP: the jet torque and
+    # rate the DAP's 100 ms cycle feeds its filter), basic routines at
+    # its original addresses.
+    'lm-kalman': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'KALMAN_FILTER.agc'},
+        'base': {'lm': 'lm_kalman'},
+        'symbol': {'lm': 'lm_kalman'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= NO.UJETS (E6).
+        'ebank': 6,
+        'target': 'tests/lm_kalman_target.c',
+        # RATELOOP runs on every DAP pass (P-AXIS's SUPERJOB), in the pinned
+        # per-cycle set: the EB 6 window fast forms.
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane D2: Luminary099 RADAR_LEADIN_ROUTINES (RADSAMP, the radar
+    # sampling task, DORSAMP its job, and VARADAR's radar read dispatch),
+    # basic routines at their original addresses. (src/lm_radar_leadin.c is
+    # the earlier hand-written partial translation.)
+    'lm-radar-leadin-routines': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
+        'base': {'lm': 'lm_radar_leadin_routines'},
+        'symbol': {'lm': 'lm_radar_leadin_routines'},
+        'basic': 'full',
+        'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP2', 'VARADAR'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= RSTACK (E4).
+        'ebank': 4,
+        # VARADAR's INDEX RTSTDEX; CAF RDRLOCS: the six radar read CADRs.
+        'fixed_tables': {'RDRLOCS': (0, 5)},
+        # The sampling words as P20-P25 and R77 set them (E4): RSTACK holds
+        # four DP samples, so RTSTLOC and RTSTMAX step 0-6 by two, RTSTBASE
+        # is 0 (RR) or 2 (LR) and RTSTDEX names one of RDRLOCS' six radar
+        # reads. RSAMPDT is the sample period or +0 (stop); -0 would run
+        # RADSAMP's 2CADR as an instruction.
+        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': list(range(6)), '2352': [0, 2, 4, 6],
+                                                  '2353': [0, 2], '2354': [0, 2, 4, 6],
+                                                  '2355': [0, 1, 0o144, 0o37777, 0o40000, 0o77776]})],
+        'target': 'tests/lm_radar_leadin_routines_target.c',
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
     },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.

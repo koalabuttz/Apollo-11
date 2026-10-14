@@ -4,10 +4,13 @@
  * whole-image with the ai_* helper on a copy. MP and DV operands are drawn
  * mostly from edge values and the full 16-bit A/L range. Built for the host
  * (C cores) and for the 6502 (assembly cores, platform/c64/agc_fast_ops_diagnostic.c);
+ * the one-byte afw_* forms (agc_fast_window.h) the same way on EBANK 6
+ * window cells;
  * tools/agc_fast_ops_differential.py checks the same helpers against yaAGC. */
 #include <stdio.h>
 #include <string.h>
 #include "agc_fast_ops.h"
+#include "agc_fast_window.h"
 #ifndef CASES
 #define CASES 200000ul
 #endif
@@ -70,6 +73,31 @@ unsigned long afo_check(unsigned long cases,unsigned long muldiv){
   }
  }
  REPORT("agc_fast_ops: %lu cases, %lu failures\n",n,bad);
+ /* The afw_* forms: the cell at offset o of the EBANK 6 window. */
+ for(n=0;n<cases/4u;++n){
+  unsigned op=rnd()%(CCS+1u),o=rnd()%0377u,k=01400u+o;uint16_t l;uint8_t x=0,y=0;
+  for(i=0;i<16u;++i)F.words[i]=0;
+  F.words[0]=w16();l=w16();F.words[1]=(uint16_t)((l&0137777u)|((l>>1)&040000u));F.words[2]=w15();
+  F.words[3]=(uint16_t)(AFW_EBN<<8);
+  F.words[AFW_EBN*0400u+o]=w15();F.words[AFW_EBN*0400u+o+1u]=w15();
+  memcpy(&g,&F,sizeof g);
+  switch(op){
+  case CA:afw_ca((uint8_t)o);ai_ca(&g,k);break;case CS:afw_cs((uint8_t)o);ai_cs(&g,k);break;
+  case AD:afw_ad((uint8_t)o);ai_ad(&g,k);break;case SU:afw_su((uint8_t)o);ai_su(&g,k);break;
+  case MASK:afw_mask((uint8_t)o);ai_mask(&g,k);break;case TS:x=afw_ts((uint8_t)o);y=ai_ts(&g,k);break;
+  case XCH:afw_xch((uint8_t)o);ai_xch(&g,k);break;case LXCH:afw_lxch((uint8_t)o);ai_lxch(&g,k);break;
+  case QXCH:afw_qxch((uint8_t)o);ai_qxch(&g,k);break;case ADS:afw_ads((uint8_t)o);ai_ads(&g,k);break;
+  case INCR:afw_incr((uint8_t)o);ai_incr(&g,k);break;case AUG:afw_aug((uint8_t)o);ai_aug(&g,k);break;
+  case DIM:afw_dim((uint8_t)o);ai_dim(&g,k);break;case DAS:afw_das((uint8_t)o);ai_das(&g,k);break;
+  case DCA:afw_dca((uint8_t)o);ai_dca(&g,k);break;case DCS:afw_dcs((uint8_t)o);ai_dcs(&g,k);break;
+  case DXCH:afw_dxch((uint8_t)o);ai_dxch(&g,k);break;case MP:afw_mp((uint8_t)o);ai_mp(&g,k);break;
+  case DV:afw_dv((uint8_t)o);ai_dv(&g,k);break;default:x=afw_ccs((uint8_t)o);y=ai_ccs(&g,k);break;
+  }
+  if(x!=y||memcmp(&F,&g,sizeof g)){
+   if(++bad<=10)REPORT("FAIL afw op %u o %o\n",op,o);
+  }
+ }
+ REPORT("agc_fast_window: %lu cases, %lu failures in all\n",n,bad);
  /* MP and DV alone, registers only, against agc_multiply and
   * agc_hardware_divide (the cores the ai_* helpers use). */
  for(n=0;n<muldiv;++n){

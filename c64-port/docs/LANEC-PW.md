@@ -21,11 +21,13 @@ words it covers.
   (`lanec_pw_exit_stop`). The module claims nothing past it.
 - `src/lanec_pw*_runs.c`: one `lanec_run` per module, the bridge from the
   harness's state and channels to the module's own interface.
-- 92 suites in seven batches (`tools/mk/lanec-pw-a.mk` ... `-g.mk`,
+- 93 suites in seven batches (`tools/mk/lanec-pw-a.mk` ... `-g.mk`,
   `tools/mk/lanec-pw.mk`): the CHARIN family, the decimal and octal
   displays, the scale-factor and load routines, the monitor, NVSUB and the
   verb/noun machinery, the lamp test and the operator-request scheduler,
   for both missions where both have the code.
+  `pw-cm-scale` (batch f) runs Comanche DP1OUTSF, DP2OUTSF and DP3OUTSF
+  (`cm_scale_output`), which DECDSP3 enters across banks.
 
 The modules themselves are unchanged; a case outside a module's domain is
 refused with the state unchanged (`diff.py --refusals`).

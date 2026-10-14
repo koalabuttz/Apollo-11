@@ -1,0 +1,96 @@
+{
+ "milestone": "cm-rcs-dap-exec",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 2560,
+ "cases_sha256": "6e77476dde183bdf5fe1ee52f52426a76c5023df785027df40f3958981ef475c",
+ "oracle_sha256": "70e437ad7f5e8222b45a89a3c64c40ca8e6cb14a33eb37e720d69c6369503aee",
+ "frozen_vectors": 160,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x1f",
+   "cases": 13,
+   "case_ids": [
+    135,
+    222,
+    9,
+    207,
+    569,
+    1051,
+    1363,
+    1617,
+    1581,
+    1587,
+    1896,
+    1911,
+    2363
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 32,
+  "c64_labels": 32,
+  "host_edges": 269,
+  "c64_edges": 269,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 157,
+  "c64_taken": 157,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_rcs_dap_exec.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_rcs_dap_exec_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 102,
+  "edges_host_vectors": 102,
+  "edges_c64": 102,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 22,3447 AMBGUPDT": {
+   "05075": 284,
+   "05217": 228
+  },
+  "CM 22,3457 ": {
+   "05074": 512
+  },
+  "CM 22,3462 ": {
+   "05074": 512
+  },
+  "CM 22,3470 ": {
+   "05075": 512
+  },
+  "CM 22,3501 ": {
+   "05217": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: ENDOFJOB, SPCOS, SPSIN); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

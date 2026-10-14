@@ -4,7 +4,7 @@
   "release": "evidence-lm-sps-backup",
   "files": {
     "lm-sps-backup-c64-cover.json": {
-      "sha256": "66e2858ee97884573dd70b66f760ad9491dfffa245cd61259f96281798296053",
+      "sha256": "3037cce83fbc84ee1fdb67b28da5e14c1cd1d8e706dddcb8000191d18ebb452c",
       "bytes": 2352,
       "store": "tree"
     },
@@ -19,7 +19,7 @@
       "store": "release"
     },
     "lm-sps-backup-proof.json": {
-      "sha256": "7eca9c236a182b205acd9cae928ee554a93132bc282b65338ea8e0cc167ea6ac",
+      "sha256": "f4e27310058cd03d9b9ea57a28bdf1223efb4bdba4334ed595bd987d6dfd3781",
       "bytes": 8023,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "lm-sps-backup-vice.log": {
-      "sha256": "4fb79eec230d31854e9e7f19871bade6fe65483300771c6259a267e5ba86006c",
+      "sha256": "a88ec19d401609f6211a82b3f7f42150f64a5ca1879536bb23acea22d0452f8f",
       "bytes": 998,
       "store": "release"
     }

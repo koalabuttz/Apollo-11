@@ -55,6 +55,16 @@ check below runs this form; `-DLM_TJ_GENERIC` builds the same source on
 `agc_image_ops` alone. On the fixed flight image a DAP hold cycle of
 TJET_LAW takes about 41K 6502 cycles instead of 73K (mos-sim, `-Oz`).
 
+A cell in the EBANK6 window (01400-01776) goes to the one-byte `afw_*` form of
+the fast helper by its offset in the window (`include/agc_fast_window.h`,
+checked against `agc_image_ops` by `make test-agc-fast-ops`). With the cell's
+address at every call site, the compiler kept the twenty-odd addresses live
+across the calls and spilled them; the DAP's hold-cycle set (P-AXIS, Q_R-AXIS,
+TJET_LAW, DAPIDLER) links in about 31.0 KB instead of 36.2 KB. The indexed
+operands (`INDEX AXISCTR`, `ADRSDIF1`, `ADRSDIF2`) reach their cell directly,
+and `MP L` and `SQUARE` multiply the register's value on the fast multiplier,
+as `ai_mp` does. A hold cycle of TJET_LAW now takes about 37K cycles.
+
 ## Verification
 
 `tests/lm_tjet_law_cases.c` builds 16,384 cases, one axis per case

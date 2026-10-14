@@ -3,42 +3,41 @@
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
   "src/lm_p40_p47.c": "307bd7b2305078affe238a055d94fb45631d7df6bd4cb430469d29b2cf3d35ef",
-  "src/lm_interp_orders.c": "e2996e140562d04d289224de90ada55f9fc328bb11bf899394619b3c27f5a71a",
-  "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
+  "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
   "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "73c1349b72b60f5b5d5ecc56b1189fc7e4934fc67496ed627c4ac7fe9ac284d3",
+  "tests/interp_case.c": "a5bf4f4bdda9311dd537d88fbfb1c0d56521ee1ea516fc1f5430c7722ac62153",
   "tests/interp_cut.c": "4933a2e2faa736add3dcd7d79d0009e4e511e6d96eabde394ecf56f7dfa7f5c8",
   "tests/lm_p40_p47_target.c": "dee41836a182f53692372466b544a28520caff02e7b478d860efa037325434f4"
  },
- "host_cases": 39378,
+ "host_cases": 39596,
  "host_case_stride": 5,
  "c64_rows": [
   220,
   880,
   1040,
   1560,
-  2015,
+  1655,
   2120,
   2760,
   3080,
   3600,
   4220,
   4720,
-  4935,
   5240,
   6025,
   6480,
   6660,
   7240,
   8060,
-  8260,
-  8740,
+  8540,
+  9140,
   9280,
   9880,
   10280,
@@ -54,7 +53,7 @@
   15560,
   15880,
   16420,
-  16880,
+  16615,
   17220,
   17440,
   17980,
@@ -62,7 +61,7 @@
   19020,
   19480,
   20240,
-  20480,
+  20560,
   20980,
   21360,
   21580,
@@ -95,7 +94,6 @@
   34740,
   35240,
   35460,
-  35615,
   36020,
   36600,
   36940,
@@ -116,25 +114,25 @@
   44080,
   44660,
   45120,
-  45720,
+  45580,
   46240,
   46660,
   47160,
-  47695,
+  47620,
+  47735,
   47980,
-  48275,
   48320,
   48940,
-  49395,
   49400,
   49940,
   50340,
+  50785,
   50980,
+  51185,
   51360,
   51740,
   52240,
-  52720,
-  53005,
+  53135,
   53320,
   53760,
   54500,
@@ -180,7 +178,7 @@
   73300,
   74020,
   74320,
-  74765,
+  74955,
   74980,
   75380,
   76120,
@@ -188,11 +186,11 @@
   76820,
   77440,
   77740,
-  77880,
+  77910,
   77920,
+  78315,
   78460,
   79100,
-  79165,
   79360,
   80060,
   80480,
@@ -206,19 +204,20 @@
   84260,
   84540,
   85040,
+  85444,
   85640,
   85700,
-  85735,
   86060,
   86600,
+  86620,
   87080,
-  88040,
-  88160,
+  87740,
+  88215,
   88600,
   89195,
-  89620,
-  89775,
+  89820,
   90300,
+  90415,
   91040,
   91140,
   91760,
@@ -230,7 +229,7 @@
   94280,
   95220,
   95300,
-  95760,
+  95875,
   96460,
   96660,
   97060,
@@ -245,24 +244,23 @@
   100900,
   101380,
   102060,
-  102440,
   102920,
   103060,
   103620,
+  103820,
   104040,
   104480,
-  104540,
   105460,
   105660,
   106120,
   106540,
   107100,
-  107700,
-  108225,
+  107580,
+  108080,
+  108520,
   108680,
-  108940,
   109060,
-  110055,
+  109660,
   110160,
   110820,
   111120,
@@ -307,6 +305,7 @@
   134740,
   135200,
   135680,
+  135823,
   136280,
   136720,
   137260,
@@ -354,7 +353,7 @@
   156700,
   157260,
   157620,
-  157840,
+  158035,
   158310,
   158720,
   159260,
@@ -437,11 +436,11 @@
   197720,
   198160,
   198880,
-  199180,
+  199635,
   199700,
   200220,
   201080,
-  201720,
+  201660,
   201940,
   202440,
   202460,
@@ -457,11 +456,11 @@
   206040,
   206336,
   206337,
-  206342,
-  206344
+  206338,
+  206339
  ],
- "host_branch_arcs": 2481,
- "c64_branch_arcs": 2481,
+ "host_branch_arcs": 2492,
+ "c64_branch_arcs": 2492,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -476,8 +475,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   47,
-   47
+   50,
+   50
   ],
   "src/agc_word.c": [
    3,
@@ -496,24 +495,24 @@
    0
   ],
   "src/lm_interp_orders.c@runner-lm_interp_orders": [
-   392,
-   392
+   394,
+   394
   ],
   "src/lm_interp_steps.c": [
    0,
    0
   ],
   "src/lm_interp_steps.c@runner-lm_interp_steps": [
-   48,
-   48
+   47,
+   47
   ],
   "src/lm_p40_p47.c": [
    1766,
    1766
   ],
   "tests/interp_case.c": [
-   32,
-   32
+   36,
+   36
   ],
   "tests/interp_cut.c": [
    13,
@@ -524,14 +523,14 @@
    0
   ],
   "tools/interp_routine_native.c": [
-   28,
-   28
+   31,
+   31
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 2531,
+ "all_cases_branch_arcs": 2542,
  "all_cases_branches_missing_on_c64": [
-  "src/agc_transfer.c:84 branch 0",
+  "src/agc_transfer.c:95 branch 0",
   "src/lm_p40_p47.c:3159 branch 1",
   "src/lm_p40_p47.c:3169 branch 1",
   "src/lm_p40_p47.c:3177 branch 1",
@@ -592,35 +591,59 @@
   "src/lm_p40_p47.c:6553 branch 2",
   "src/lm_p40_p47.c:6556 branch 0",
   "src/lm_p40_p47.c:6556 branch 2",
-  "tests/interp_case.c:67 branch 0",
-  "tests/interp_case.c:67 branch 2",
-  "tests/interp_case.c:67 branch 4",
-  "tests/interp_case.c:67 branch 7"
+  "tests/interp_case.c:87 branch 0",
+  "tests/interp_case.c:87 branch 2",
+  "tests/interp_case.c:87 branch 4",
+  "tests/interp_case.c:87 branch 7"
  ],
  "truncated_rows": [
   {
    "row": 206336,
-   "case": 77155,
-   "cut": "27,3042",
-   "routines_run": 24
+   "case": 1024,
+   "cut": "27,2255",
+   "cut_loc": 23725,
+   "routines_run": 1,
+   "digest": [
+    "0",
+    "3128",
+    "3317627414"
+   ]
   },
   {
    "row": 206337,
-   "case": 129580,
-   "cut": "27,2255",
-   "routines_run": 9
+   "case": 95748,
+   "cut": "27,3071",
+   "cut_loc": 24121,
+   "routines_run": 1,
+   "digest": [
+    "0",
+    "3128",
+    "1841515037"
+   ]
   },
   {
-   "row": 206342,
-   "case": 89640,
-   "cut": "27,3134",
-   "routines_run": 22
+   "row": 206338,
+   "case": 102400,
+   "cut": "27,3126",
+   "cut_loc": 24150,
+   "routines_run": 1,
+   "digest": [
+    "0",
+    "3128",
+    "2297473569"
+   ]
   },
   {
-   "row": 206344,
-   "case": 86780,
-   "cut": "27,3152",
-   "routines_run": 28
+   "row": 206339,
+   "case": 102944,
+   "cut": "27,3131",
+   "cut_loc": 24153,
+   "routines_run": 1,
+   "digest": [
+    "0",
+    "3128",
+    "2494105981"
+   ]
   }
  ]
 }

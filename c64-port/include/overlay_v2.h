@@ -14,6 +14,21 @@
 #define APOLLO_OV2_JOB_BYTES 0x4000u   /* $8000..$bfff, under BASIC ROM */
 #define APOLLO_OV2_TASK_ADDRESS 0xe000u
 #define APOLLO_OV2_TASK_BYTES 0x1ffau  /* $e000..$fff9, under KERNAL ROM */
+/* Slot class 2: a fixed extension in the RAM under I/O, $d000..$dfff. The
+ * resident loads every class-2 module once at boot (apollo_reu_store_fixed)
+ * with I/O banked out during the DMA; a run never loads one, and it has no
+ * BSS. Its code runs with $01=$34 or $30 (the IRQ entry restores I/O). */
+#define APOLLO_OV2_SLOT_FIXED 2u
+#define APOLLO_OV2_FIXED_ADDRESS 0xd000u
+#define APOLLO_OV2_FIXED_BYTES 0x1000u
+/* Slot class 3: pinned modules at $c000..$cbff, below the soft stack's
+ * 1 KB ($cc00..$cfff). The resident loads every class-3 module once at boot
+ * (apollo_reu_store_fixed) by plain DMA, zeroes its BSS and runs its main
+ * once; from then on it only calls the module's routines directly. A run
+ * never loads one, and no resolver record names one. */
+#define APOLLO_OV2_SLOT_PINNED 3u
+#define APOLLO_OV2_PINNED_ADDRESS 0xc000u
+#define APOLLO_OV2_PINNED_BYTES 0x0c00u
 /* Native contexts owning a seam stack: eight Executive core-set positions,
  * then one task (interrupt-level) context. */
 #define APOLLO_OV2_JOB_CONTEXTS 8u

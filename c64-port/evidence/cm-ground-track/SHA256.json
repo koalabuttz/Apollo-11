@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-ground-track",
+  "release": "evidence-cm-ground-track",
+  "files": {
+    "cm-ground-track-closure.json": {
+      "sha256": "3bd538bd3154392492798b1b4a21e9bda49e1f851c9dce30b8f2ea4f3168e783",
+      "bytes": 17872,
+      "store": "tree"
+    },
+    "cm-ground-track-differential.log": {
+      "sha256": "f8d194f6182df28f846a54a36d58498b8fa098b0852c8da2164f1418adaa3456",
+      "bytes": 2927,
+      "store": "release"
+    },
+    "cm-ground-track-host.log": {
+      "sha256": "0a24cafbafed5bfa1f5fc20748216d8fc7abf074ef270e487445db152a937cf0",
+      "bytes": 1104,
+      "store": "release"
+    },
+    "cm-ground-track-proof.json": {
+      "sha256": "f5a968312ad17fd1924d4741315930388d98dcb020d4cc6a591a4aa14a33d6be",
+      "bytes": 7689,
+      "store": "tree"
+    },
+    "cm-ground-track-source-map.json": {
+      "sha256": "ea1d41fa605b521ee491c260f802f3aa9f3c643c287d3420662d7e6d5a07a7e8",
+      "bytes": 14889,
+      "store": "tree"
+    },
+    "cm-ground-track-vice.log": {
+      "sha256": "3f943c43d1970542a372182693682d5b8b53d5f4feb9d5145d34645165427658",
+      "bytes": 7695,
+      "store": "release"
+    }
+  }
+}

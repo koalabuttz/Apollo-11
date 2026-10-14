@@ -58,7 +58,7 @@ Hashes: `evidence/exec-closure/SHA256.json`.
 
 - **Source to native map.** `evidence/exec-closure/exec-closure-source-map-{lm,cm}-{executive,waitlist}.json`.
 - **Independent assembly comparison.**
-  - `evidence/exec-closure/exec-closure-proof.json` points at the comparisons and hashes their evidence manifests. Those comparisons are the milestones' differentials, rerun under the tracer.
+  - `evidence/exec-closure/exec-closure-proof.json` points at the comparisons and hashes their evidence manifests. Those comparisons are the milestones' differentials, rerun under the tracer. The proof also lists `waitlist-entries` (manifest hash and case count, `traced: false`). That milestone compares the WAITLIST entries other files reach with yaAGC, and it also checks TASKOVER's RESUME superbank check against yaAGC's own T3RUPT (`docs/WAITLIST-ENTRIES.md`). Its words are already among the traced runs.
   - `evidence/exec-closure/exec-closure-trace.log` is the run's output: every differential passes with its vectors unchanged.
 - **Host and sanitizer results.** `make test-exec-closure sanitize-exec-closure` runs all seven milestones' strict and sanitizer checks (`evidence/exec-closure/exec-closure-host.log`).
 - **C64 execution results.** `make vice-exec-closure` runs all seven milestones' VICE programs (`evidence/exec-closure/exec-closure-vice.log`).

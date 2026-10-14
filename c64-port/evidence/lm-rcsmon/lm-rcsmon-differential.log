@@ -1,4 +1,4 @@
 PASS: 1024 lm-rcsmon cases equal the original programs (2 routines)
-  LM 06,3156 RCSMON: 05072 x509, 05270 x3
+  LM 06,3156 RCSMON: 05072 x510, 05270 x2
   LM 06,3242 : 05270 x512
-froze 71 vectors to tests/lm_rcsmon_vectors.h
+froze 72 vectors to tests/lm_rcsmon_vectors.h

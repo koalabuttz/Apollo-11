@@ -958,6 +958,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             if certificate:
                 check_revision(report, label, certificate)
                 check_manifest(report, label, path, certificate, manifest)
+                check_review(report, label, key, certificate)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)
                 check_text(report, label, certificate)
@@ -972,6 +973,23 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
                 check_c64(report, label, certificate)
                 check_spec_keys(report, label, path, certificate, specs)
     return report
+
+
+def check_review(report, label, key, certificate):
+    """A complete certificate's independent review is a reviewer's record.
+
+    Reviewers write theirs under docs/audits/ (#249 for FINDCDUW). #248
+    merged FINDCDUW complete citing the lane's own pending-review notes;
+    a lane cannot review itself, so that FAILs."""
+    if key != 'complete_native_coverage':
+        return
+    review = (certificate.get('evidence') or {}).get('independent_review')
+    if not review:
+        return
+    where = review.get('path', '') if isinstance(review, dict) else str(review)
+    if not where.startswith('docs/audits/'):
+        report.add('FAIL', label, f'independent_review {where or "(no path)"} is not a reviewer record',
+                   'keep the certificate pending; the reviewer accepts it with a docs/audits/ record')
 
 
 def main():

@@ -28,6 +28,7 @@
 #include "lanec_symbols.h"
 #include "lanec_di_routines.h"
 #include "lanec_pin_routines.h"
+#include "lanec_pw_runs.h"
 #include "lm_interbank_routines.h"
 #include "lm_exec_routines.h"
 #include "cm_interbank_routines.h"
@@ -164,6 +165,9 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
     } else {
         lanec_enter(s, io, bank, c->callee);
         s->words[LANEC_Q] = (uint16_t)(02000u + offset);
+        /* a caller in bank 40-43 runs with FEB 4 alone (CM GOLOADLV writes
+         * PINSUPBT before its POSTJUMP to LOADLV1) */
+        if (bank >= 040u) io->superbank = 0100u;
     }
     range(m, LANEC_TC_CELL, 0u, 7u);                 /* TC Q, TC L: a return held in a register */
 #ifdef LANEC_PIN_HAS_LM
@@ -187,6 +191,10 @@ static void make_case(const transfer_case *c, apollo_overlay_state *s, lanec_io 
 #endif
 #ifdef LANEC_PIN_HAS_CM
     if (m->mission == LANEC_CM) {
+        /* the Executive as for LM: the caller alone in core set 0 of 7 */
+        s->words[0167] = 020000u;
+        for (i = 1u; i < 7u; ++i) s->words[0167u + i * 12u] = 077777u;
+        s->words[067] = 0;
         range(m, LANEC_ANY_BANK, 04662u, 04775u);
         range(m, LANEC_ANY_BANK, 05526u, 05545u);
         range(m, 010u, 02553u, 03765u);
@@ -213,7 +221,7 @@ static const agc_site_operand *lm_operands(void)
 
 static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[5];
+    static agc_routine_table tables[10];
     static agc_native_program program;
     static agc_hardware hardware;
     static lm_dntm_io lm;
@@ -231,7 +239,10 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
     hardware.channel11 = io->channel[011];
     if (mission == LANEC_LM) {
         tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines; tables[2] = lanec_pin_lm_routines;
-        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines; program.basic_count = 5u;
+        tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines;
+        tables[5] = lanec_pin_keys_num_lm_routines; tables[6] = lanec_pin_keys_cmd_lm_routines;
+        tables[7] = lanec_pin_keys_release_lm_routines; tables[8] = lanec_pin_keys_clear_lm_routines;
+        tables[9] = lanec_pin_keys_sign_lm_routines; program.basic_count = 10u;
         program.operands = lm_operands(); program.operand_count = lm_operand_count;
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
@@ -242,7 +253,9 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
     } else {
         tables[0] = cm_interbank_routines; tables[1] = lanec_di_cm_routines; tables[2] = lanec_pin_cm_routines;
-        program.basic_count = 3u;
+        tables[3] = lanec_pin_keys_num_cm_routines; tables[4] = lanec_pin_keys_cmd_cm_routines;
+        tables[5] = lanec_pin_keys_release_cm_routines; tables[6] = lanec_pin_keys_clear_cm_routines;
+        tables[7] = lanec_pin_keys_sign_cm_routines; program.basic_count = 8u;
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;
@@ -266,6 +279,38 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
 
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m) { make_case(&cases[n], s, io, m); cur_meta = m; }
 const lanec_suite lanec_suite_pin_transfer = { "pin-transfer", LANEC_PIN_TRANSFER_CASES, make, run };
+
+#ifdef LANEC_PIN_HAS_CM
+/* pin-decdsp3: Comanche DECDSP3 (41,2575) enters bank 40 through SFOUTABR
+ * and BANKJUMP: SF routine 4 goes to DP1OUTSF (40,2614), 5 and 10 to DP2OUTSF
+ * (40,2621). Each case is a pw-cm-scale case run natively to DSPDCEND
+ * (41,2566), the end of every SF routine, with one more component to display
+ * (DECOUNT 1 or 2) whose normal noun (MIXBR 1) names that SF routine in
+ * NNTYPTEM bits 10-6 and an SF constant in bits 5-1, and DSPCOUNT as
+ * DSPDCPUT sets it (R1D1 indexed by DECOUNT). The chain from DSPDCEND
+ * displays the component, runs DSPDCPUT and DECDSP3, crosses into bank 40 and comes back to DSPDCEND. */
+#define DECDSP3_CASES 768u
+static void make_decdsp3(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    static const uint16_t routine[3] = { 4u, 5u, 10u };
+    transfer_case c = { 0u, 0u, 0u, 0u, LANEC_CM };
+    uint16_t i, k;
+    for (i = 0; MODULE(i) != &lanec_suite_pw_cm_scale; ++i) {}
+    c.module = (uint8_t)(i | 0200u);
+    for (k = (uint16_t)(n * 5u); ; ++k) {   /* a case the module runs to DSPDCEND */
+        c.n = (uint16_t)(k % lanec_suite_pw_cm_scale.count);
+        make_case(&c, s, io, m);
+        if (lanec_pw_cm_scale_run(s, io, LANEC_CM) == LANEC_OK && s->words[LANEC_Z] == LANEC_CM_DSPDCEND) break;
+    }
+    s->words[LANEC_CM_DECOUNT] = (uint16_t)(1u + n / 3u % 2u);
+    s->words[LANEC_CM_DSPCOUNT] = (uint16_t)(n / 3u % 2u ? 04u : 011u);   /* DSPDCPUT: R1D1 indexed by DECOUNT */
+    s->words[LANEC_CM_MIXBR] = 1u;
+    /* MID5: the SF routine; LOW5: an SF constant within SFOUTAB's 21 */
+    s->words[LANEC_CM_NNTYPTEM] = (uint16_t)((s->words[LANEC_CM_NNTYPTEM] & ~01777u) | routine[n % 3u] << 5 | n / 6u % 21u);
+    cur_meta = m;
+}
+const lanec_suite lanec_suite_pin_decdsp3 = { "pin-decdsp3", DECDSP3_CASES, make_decdsp3, run };
+#endif
 
 /* pin-refuse: entry states outside the routines' domain. Each case takes a
  * routine's own-entry case of pin-transfer (every routine in turn, both

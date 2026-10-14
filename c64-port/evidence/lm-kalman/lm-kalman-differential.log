@@ -1,0 +1,3 @@
+PASS: 2048 lm-kalman cases equal the original programs (1 routines)
+  LM 16,3641 RATELOOP: 02316 x2048
+froze 64 vectors to tests/lm_kalman_vectors.h

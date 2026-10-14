@@ -33,8 +33,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 199,
-  "c64_taken": 199,
+  "host_taken": 201,
+  "c64_taken": 201,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -55,9 +55,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 148,
-  "edges_host_vectors": 148,
-  "edges_c64": 148,
+  "edges_all_cases": 146,
+  "edges_host_vectors": 146,
+  "edges_c64": 146,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -456,8 +456,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 512,
- "host_branch_arcs": 225,
+ "host_branch_arcs": 230,
  "c64_rows": 11,
- "c64_branch_arcs": 225,
+ "c64_branch_arcs": 230,
  "host_branches_missing_on_c64": []
 }

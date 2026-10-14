@@ -1,0 +1,25 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "cases": 4096,
+ "snapshot_sha256": "8d676f55a976a2c899be0d64204bcafb6d092d82bb6905c31479c53a4d87ca4c",
+ "outcomes": {
+  "returned": 4096
+ },
+ "continuations": {
+  "04740": 628,
+  "05134": 553,
+  "05245": 21,
+  "05333": 2594,
+  "05650": 147,
+  "05764": 153
+ },
+ "tables": [
+  "cm_t4rupt_core_routines",
+  "cm_t4rupt_imu_routines",
+  "cm_t4rupt_optics_basic"
+ ],
+ "boundary": "one T4RUPT interrupt from 06,2000 through agc_transfer_run over the three routine tables of the file until the first continuation outside them; the original runs from T4RUPT to the first time it reaches that Z (and FB in banked memory)",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channels 10, 11, 12, 13, 14, 30, 31, 32, 33",
+ "full_physical_words": 2048
+}

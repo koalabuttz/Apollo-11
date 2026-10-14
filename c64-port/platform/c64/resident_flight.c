@@ -20,8 +20,14 @@ uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
-agc_hardware rk_hardware;
+__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
+__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
+#if RK_CM
+/* Inputs at the values yaAGC starts with (tools/flight_host_run.c). */
+__attribute__((used,section(".rk_channels"))) cm_native_channels cm_channels={0,0,037777u,077777u,077777u,077777u};
+#endif
 uint16_t rk_pending,rk_ticks;
+__attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
 /* The boundary-word table: its REU bank and address (in its module's
@@ -38,11 +44,60 @@ static agc_routine_table basic[4];
 agc_native_program rk_program={basic,sizeof basic/sizeof basic[0],0,0,0,0,AGC_TRANSFER_NONE,0,0,rk_fixed_word,0,
                                &rk_hardware};
 
+#ifndef RK_NO_DIRECT
+/* rk_program with a loaded module's tables (rk_direct): boot copies
+ * rk_program once, and each direct run sets only the table fields
+ * (rk_module_program), as nothing else in either changes after boot.
+ * Static: absolute addressing is smaller than the soft stack. */
+static agc_native_program module_program;
+#endif
 static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at);
 /* The last module run's result value and action (boot reads them). */
 static uint16_t run_value;
 static uint8_t run_action;
 
+/* One DMA with I/O banked out ($01=$34), for the $D000 extension (slot
+ * class 2): the registers are set with I/O in and the command armed without
+ * execute-now, then a write to $FF00 starts it (task-slot RAM there; the
+ * byte is written back unchanged). Boot-only. */
+uint8_t BOOT rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes) {
+    volatile uint8_t *trigger=(volatile uint8_t *)0xff00u;
+    (void)apollo_reu_transfer((uint8_t)(command&~0x10u),c64,reu,bytes);
+    __asm__ volatile("sei");
+    *(volatile uint8_t *)1=0x34;
+    *trigger=*trigger;
+    *(volatile uint8_t *)1=0x35;
+    __asm__ volatile("cli");
+    return (uint8_t)((apollo_reu_peek(APOLLO_REU_STATUS)&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==
+        APOLLO_REU_STATUS_END);
+}
+const rk_module_tables *rk_pinned;
+static uint8_t BOOT rk_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes) {
+    return (uint8_t)((apollo_reu_transfer(command,c64,reu,bytes)&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==
+        APOLLO_REU_STATUS_END);
+}
+/* Slot class 2 at $D000 (I/O banked out), or the one class-3 module at
+ * $C000: plain DMA, BSS zeroed, then its main once to build its tables,
+ * which must be direct (rk_pinned). */
+static uint8_t BOOT rk_load_fixed(void *user,uint32_t reu,const apollo_ov2_dirent *d) {
+    uint8_t *at=(uint8_t *)APOLLO_OV2_PINNED_ADDRESS;
+    const rk_module_tables *t;
+    apollo_ov2_frame f;
+    (void)user;
+    if(d->slot==APOLLO_OV2_SLOT_FIXED)
+        return rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes) &&
+               rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes);
+    if(rk_pinned || !rk_dma(APOLLO_REU_FETCH,at,reu,d->bytes) || !rk_dma(APOLLO_REU_VERIFY,at,reu,d->bytes))
+        return 0;
+    memset((void *)(uintptr_t)(at[APOLLO_OV2_H_BSS]|(uint16_t)at[APOLLO_OV2_H_BSS+1]<<8),0,
+           at[APOLLO_OV2_H_BSS_BYTES]|(uint16_t)at[APOLLO_OV2_H_BSS_BYTES+1]<<8);
+    memset(&f,0,sizeof f);
+    f.value=(uint16_t)(uintptr_t)&rk_env; f.state=IMAGE;
+    t=(const rk_module_tables *)(uintptr_t)(at[APOLLO_OV2_H_TABLES]|(uint16_t)at[APOLLO_OV2_H_TABLES+1]<<8);
+    if(!t || c64_ov2_invoke(0,at,&f,0)!=APOLLO_OV2_DONE || t->ready!=RK_TABLES_DIRECT) return 0;
+    rk_pinned=t;
+    return 1;
+}
 uint8_t BOOT rk_boot(void) {
     __asm__ volatile("sei");
     *(volatile uint8_t *)1=0x35;
@@ -63,8 +118,12 @@ uint8_t BOOT rk_boot(void) {
     basic[3]=cm_sp_routines;
     rk_program.operands=cm_exec_site_table(&rk_program.operand_count);
 #endif
+#ifndef RK_NO_DIRECT
+    module_program=rk_program;
+#endif
     if(!apollo_reu_store_open(&rk_store,0,RK_MISSION,RK_SERVICES_VERSION,record)) return 1;
     if(apollo_reu_store_verify(&rk_store,(uint8_t *)RK_BOOT_SCRATCH)!=APOLLO_OV2_OK) return 2;
+    if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,0)) return 4;
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);
@@ -86,6 +145,7 @@ uint8_t BOOT rk_boot(void) {
         if(!t->count || (first>>16)!=(last>>16)) return 3;
         boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; boundary_count=t->count;
     }
+    *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
     return 0;
 }
 
@@ -115,19 +175,29 @@ bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *wor
 /* The kernel's seam reports (RK_SEAMS): a job's native seams move with its
  * core set and end with it. */
 void rk_seams_exchange(agc_word newjob) {
-    if(newjob<12u*APOLLO_OV2_JOB_CONTEXTS && newjob%12u==0u)
-        apollo_ov2_seam_exchange(&rk_runtime,0,(uint8_t)(newjob/12u));
+    uint8_t i;
+    /* No division: it would link the 125-byte __udivmodqi4. */
+    for(i=0;i<APOLLO_OV2_JOB_CONTEXTS;++i)
+        if(newjob==12u*i) { apollo_ov2_seam_exchange(&rk_runtime,0,i); break; }
 }
 void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
 
-/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step,
- * then the highest pending interrupt if it can be taken at this boundary.
- * The count is read twice so an interrupt between its two bytes cannot
- * tear it. Out of line, so the size report counts it with the timers. */
+/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step
+ * up to RK_TICK_LAG (the rest dropped into rk_dilation), then the highest
+ * pending interrupt if it can be taken at this boundary.
+ * The count is read with interrupts held off (and their flag restored: the
+ * checks step with it set) so one between its two bytes cannot tear it.
+ * Out of line, so the size report counts it with the timers. */
 __attribute__((noinline)) static void rk_rupts(void) {
     uint16_t now;
-    do now=ov2_irq_count; while(now!=ov2_irq_count);
-    while(rk_ticks!=now) { rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); ++rk_ticks; }
+    uint8_t take=RK_TICK_LAG;
+    __asm__ volatile("php\n\tsei" ::: "memory");
+    now=ov2_irq_count;
+    __asm__ volatile("plp" ::: "memory");
+    for(;rk_ticks!=now;++rk_ticks) {
+        if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
+        else ++rk_dilation;
+    }
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
 }
 
@@ -164,24 +234,29 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * built yet (its first run after a load builds it) is left to the resolver.
  * Where two packed tables hold a key, the loaded one runs it. */
 #ifndef RK_NO_DIRECT
-static agc_native_program module_program;   /* static: absolute addressing is smaller than the soft stack */
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
     uint8_t i;
-    for(i=0;i<APOLLO_OV2_SLOTS;++i) {
-        const uint8_t *h=rk_runtime.slot[i];
-        const rk_module_tables *t;
+    /* The pinned module (slot class 3) first, then the job and task slots. */
+    for(i=0;i<=APOLLO_OV2_SLOTS;++i) {
+        const rk_module_tables *t=rk_pinned;
         uint16_t steps;
-        if(!rk_runtime.loaded[i]) continue;
-        t=(const rk_module_tables *)(uintptr_t)(h[APOLLO_OV2_H_TABLES]|(uint16_t)h[APOLLO_OV2_H_TABLES+1]<<8);
-        /* The loader does not read TABLES; the packer checked it lies in the
-         * slot, and it is checked again here before it is followed. */
-        if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
-           (uint16_t)(apollo_ov2_slot_bytes(i)-APOLLO_OV2_HEADER_BYTES) || !t->ready) continue;
+        if(i) {
+            const uint8_t *h=rk_runtime.slot[i-1u];
+            if(!rk_runtime.loaded[i-1u]) continue;
+            t=(const rk_module_tables *)(uintptr_t)(h[APOLLO_OV2_H_TABLES]|(uint16_t)h[APOLLO_OV2_H_TABLES+1]<<8);
+            /* The loader does not read TABLES; the packer checked it lies in
+             * the slot, and it is checked again here before it is followed. */
+            if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
+               (uint16_t)((i-1u==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES : APOLLO_OV2_JOB_BYTES)-
+                         APOLLO_OV2_HEADER_BYTES)) continue;
+        }
+        if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
-        memcpy(&module_program,&rk_program,sizeof module_program);
         rk_module_program(&module_program,t);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
-        if(status==EXEC_UNMAPPED && !steps) continue;   /* not this module's point */
+        /* Not this module's point, or its table refuses the entry: the next
+         * slot, then the resolver, may hold the point another way. */
+        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) continue;
         return rk_module_status(status,steps,RK_MODULE_STEPS);
     }
     return EXEC_UNMAPPED;
@@ -192,6 +267,8 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
+    /* The soft stack ran into the pinned module below it. */
+    if(*(volatile uint8_t *)RK_STACK_CANARY!=RK_STACK_CANARY_VALUE) return EXEC_INVALID_ACTION;
     rk_rupts();
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;

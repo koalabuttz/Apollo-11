@@ -3,10 +3,11 @@
  * digests frozen from the original program; every registered entry is
  * reached; each run ends at a point outside the file (a caller's return,
  * PRIODSPR, ENEMA, MR.KLEAN, VAC5STOR or DOWNFLAG); a Q or ALMCADR at no
- * compiled site, an ALMCADR word that is no return address, a negative alarm
+ * compiled site or in erasable (before any write), an overflowed Q, an ALMCADR word that is no return address, a negative alarm
  * code that overflows MULTFAIL's TS, a missing io record and WHIMPER without
  * the hardware record are refused. */
 #include <stdio.h>
+#include <string.h>
 #include "cm_alarm_cases.h"
 #include "cm_alarm_vectors.h"
 #include "cm_interbank_routines.h"
@@ -24,6 +25,12 @@ static enum exec_status once(apollo_overlay_state *s,cm_native_io *io,agc_hardwa
  agc_native_program p={&cm_alarm_routines,1,0,0,cm_alarm_operands,CM_ALARM_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};agc_routine call;
  p.hardware=hw;call=agc_transfer_resolve(&p,s,io?io->superbank:0);
  return call?call(&p,s,io):EXEC_UNMAPPED;
+}
+/* A refusal that leaves the image and the io record as they were (#318). */
+static enum exec_status clean(apollo_overlay_state *s,cm_native_io *io,agc_hardware *hw){
+ apollo_overlay_state s0=*s;cm_native_io io0=*io;enum exec_status st=once(s,io,hw);
+ if(st==EXEC_OUT_OF_SCOPE&&(memcmp(&s0,s,sizeof s0)!=0||memcmp(&io0,io,sizeof io0)!=0))return EXEC_OK;
+ return st;
 }
 /* The input of the first case of kind k. */
 static void kind(apollo_overlay_state *s,cm_native_io *io,agc_hardware *hw,unsigned k){cm_al_input(s,io,hw,(uint16_t)k);}
@@ -61,9 +68,15 @@ int main(void){apollo_overlay_state s;cm_native_io io;agc_hardware hw;enum exec_
   for(i=0;i<6u;++i)check(ends[i]>0u,"end kind reached",i);}
  /* Refusals, each from the first case of a kind, entered once directly. */
  kind(&s,&io,&hw,first_alarm);s.words[2]=(agc_word)(s.words[2]+1u);     /* ALARM site: Q one past the code */
- check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q at no compiled site",0);
+ check(clean(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q at no compiled site",0);
  kind(&s,&io,&hw,other(CM_AL_BAILOUT_RET));s.words[CM_AL_ALMCADR]=(agc_word)(s.words[CM_AL_ALMCADR]+1u);
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR at no compiled site",0);
+ kind(&s,&io,&hw,other(CM_AL_BAILOUT_RET));s.words[CM_AL_ALMCADR]=01000u;
+ check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR in erasable",0);
+ kind(&s,&io,&hw,first_alarm);s.words[2]=01000u;
+ check(clean(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q in erasable",0);
+ kind(&s,&io,&hw,first_alarm);s.words[2]=(agc_word)(s.words[2]|0100000u);   /* Q overflows ALARM's TS */
+ check(clean(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"Q overflowed",0);
  kind(&s,&io,&hw,other(CM_AL_ALMCADR));s.words[CM_AL_ALMCADR]=040000u;
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ALMCADR word",0);
  kind(&s,&io,&hw,other(CM_AL_VARALARM));s.words[0]=0160000u;           /* VARALARM with a negative code */

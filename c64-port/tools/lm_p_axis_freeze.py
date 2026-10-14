@@ -25,7 +25,7 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
-NATIVE = ['src/lm_p_axis.c', 'src/agc_fast_ops.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c',
+NATIVE = ['src/lm_p_axis.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c', 'src/agc_image_ops.c', 'src/agc_hardware_divide.c', 'src/agc_transfer.c',
           'src/agc_multiword.c', 'tests/lm_p_axis_cases.c']
 CORE = NATIVE + ['src/agc_word.c', 'tests/cm_executive_cases.c',
                  str(B / 'agc_engine_hardware_dv.o'), str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]

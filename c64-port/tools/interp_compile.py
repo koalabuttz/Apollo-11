@@ -43,6 +43,8 @@ ADDR = {
 K_WORDS = {'MXV': 18, 'VXM': 18}
 # Input channels a 'channel_inputs' spec reads from the caller's latches.
 INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
+# The channels a Luminary 'channels': 'all' file's orders reach.
+LM_CHANNELS = basic_compile.LM_CHANNELS
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
 MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
@@ -158,8 +160,20 @@ class Compiler:
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
         # (tasks and NOVAC jobs call them too), not only a VAC area.
         self.any_fixloc = bool(spec.get('any_fixloc'))
+        # 'any_newjob' (with any_fixloc): those routines, when they also never
+        # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
+        # T4RUPT still runs them).
+        self.any_newjob = bool(spec.get('any_newjob'))
         self.sload_k = False
         self.uses_channels = False
+        # 'channels': 'all' on a Luminary file: its channel orders run on the
+        # program's agc_hardware, the run's latched inputs and its superbank
+        # (include/agc_channel_ops.h), so it needs 'channel_inputs' too.
+        self.lm_channels = mission == 'lm' and spec.get('channels') == 'all'
+        if self.lm_channels and not spec.get('channel_inputs'):
+            raise CompileError("Luminary 'channels': 'all' needs 'channel_inputs'")
+        self.uses_hw = False         # a channel order reaches agc_ch_op
+        self.channels_used = set()   # the channels those orders name
         self.kx = {}           # index_guard fixed tables: window start -> (words, base)
         self.kx_used = False
         # erasable_calls: erasable addresses (logical) called as programs.
@@ -202,7 +216,10 @@ class Compiler:
         self.ktables = {}      # phys -> (words, label, range) for indexed fixed operands
         self.externals = {}    # outside basic address (physical) -> name
         self.externals_any = {}  # the same, reached through interpreter code (BOVB)
-        self.rtb = spec.get('rtb', {})
+        # A per-mission entry whose value for this mission is None runs the
+        # basic code (as an unported routine) for that mission only.
+        self.rtb = {k: (None if isinstance(v, dict) and v.get(self.m) is None else v)
+                    for k, v in spec.get('rtb', {}).items()}
         # INCR Q anywhere in the file: in-file subroutine calls may return
         # one or two words past their return address.
         self.incr_q = any(l.op == 'INCR' and l.words == [0o24002] for l in self.lines)
@@ -492,11 +509,22 @@ class Compiler:
             out.append(fp)
         return out
 
-    @staticmethod
-    def superbank_guard(fx):
-        """FB 30-37 is bank 30-37 only with the superbank bits clear; the
-        effective address the switch computes assumes that."""
-        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;' if any(fp // 1024 >= 0o30 for fp in fx) else ''
+    # Placeholder an indexed FB 30-37 read leaves in its block under spec
+    # 'superbank_bit'; emit() replaces it with one guard at the routine's entry.
+    SB_MARK = '/*superbank*/'
+
+    def superbank_guard(self, fx):
+        """FB 30-37 is bank 30-37 only while the superbank bit (channel 7
+        bit 0100) is clear; the effective address the switch computes
+        assumes that. Spec 'superbank_bit' tests only that bit (020, 040
+        and 060 are legal and select nothing) and refuses at the routine's
+        entry, before any order has written state. Opt-in so existing files
+        and their pinned evidence stay byte-identical until a refreeze."""
+        if not any(fp // 1024 >= 0o30 for fp in fx):
+            return ''
+        if self.spec.get('superbank_bit'):
+            return self.SB_MARK
+        return 'if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;'
 
     def operand_k(self, w, bank, takes_k, starred, what, n=6):
         if starred or what == 'GSHIFT':
@@ -891,7 +919,7 @@ class Compiler:
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             else:
                 st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
-                if base == 'BOVB' and self.L.label_at(t) in self.rtb:
+                if base == 'BOVB' and self.rtb.get(self.L.label_at(t)) is not None:
                     # BOVB to a basic routine the spec runs natively (as RTB).
                     lab = self.L.label_at(t)
                     st.append('case %sBOV_RTB:%srtb(s);if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* %s */'
@@ -1351,6 +1379,13 @@ class Compiler:
                     v = '((((W[0]>>1)&040000u)|(W[0]&037777u))%s%s)' % ({2: '&', 4: '|', 6: '^'}[io_op], v)
                 self.uses_channels = True
                 return st + ['ai_caf(s,(agc_word)%s);' % v], [nxt]
+            if op == 0 and self.lm_channels and index is None and chan in LM_CHANNELS[io_op]:
+                # The channel model (include/agc_channel_ops.h): a refusal
+                # there (a trap bit, a superbank change) ends the routine.
+                self.uses_channels = self.uses_hw = True
+                self.channels_used.add(chan)
+                return st + ['if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,%d,0%o))'
+                             'return EXEC_OUT_OF_SCOPE;' % (io_op, chan)], [nxt]
             if op == 0:
                 # I/O channels are not in the image: the instruction (and the
                 # routine from it) waits for a channel model, uncompiled.
@@ -1439,7 +1474,8 @@ class Compiler:
         """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
         and does not enter the interpreter (TC INTPRET)."""
         return (self.any_fixloc and self.starts[phys][0] == 'b'
-                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys]))
+                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -1572,14 +1608,28 @@ class Compiler:
         c.append('#include "%s.h"' % base)
         c.append('#include "%s"' % ('lm_interp_steps.h"\n#include "lm_interp_orders.h' if self.m == 'lm' else 'cm_interp.h'))
         c.append('#include "agc_image_ops.h"')
-        if self.uses_channels:
+        if self.uses_hw:
+            c.append('#include "agc_channel_ops.h"')
+        elif self.uses_channels:
             c.append('#include "agc_input_channels.h"')
         for inc in s.get('includes', []):
             c.append('#include "%s"' % inc)
         # Spec 'image_w': W from include/agc_image_w.h, the fixed $7000 image in
         # flight builds (RK_FIXED_IMAGE), s->words elsewhere. Opt-in so existing
         # files and their pinned evidence stay byte-identical until a refreeze.
-        c.append('#include "agc_image_w.h"' if self.spec.get('image_w') else '#define W s->words')
+        if self.spec.get('fast_window'):
+            # Spec 'fast_window' (basic 'full', one EB): the file's orders go
+            # through include/agc_fast_redirect.h, so an operand in the EB 6
+            # window passes a one-byte offset to a noinline afw_* helper and a
+            # plain cell its address to afo_* (Lane F's DAP spill pattern);
+            # -DAFR_GENERIC builds it on agc_image_ops alone.
+            if self.spec.get('basic') != 'full' or self.spec.get('basic_split') or self.spec.get('basic_parts'):
+                raise CompileError("'fast_window' needs 'basic': 'full' in one function")
+            c.append('#define AFR_EBN %d' % self.spec['ebank'])
+            c.append('#include "agc_fast_redirect.h"')
+            c.append('#define W AFR_S(s)->words')
+        else:
+            c.append('#include "agc_image_w.h"' if self.spec.get('image_w') else '#define W s->words')
         c.append('/* A group build (KEEP masks below) leaves some helpers and operands unused. */')
         c.append('#ifdef __GNUC__')
         c.append('#define MAYBE_UNUSED __attribute__((unused))')
@@ -1663,7 +1713,10 @@ class Compiler:
         c.append('static MAYBE_UNUSED void right(apollo_overlay_state *s){%sdanzig_right(s);}' % P)
         if self.uses_channels:
             c.append('/* The input channels of the run (READ, RAND, ROR, RXOR), set by the wrappers. */')
-            c.append('static MAYBE_UNUSED const agc_input_channels *agc_channels_in;')
+            c.append('static MAYBE_UNUSED %sagc_input_channels *agc_channels_in;' % ('' if self.lm_channels else 'const '))
+        if self.uses_hw:
+            c.append('/* The program\'s output channels (agc_ch_op), set by the wrappers. */')
+            c.append('static MAYBE_UNUSED agc_hardware *agc_channels_hw;')
         if self.sload_k:
             c.append('/* SLOAD of a fixed word: ZL; INDEX ADDRWD, CA 0; SLOAD2 DXCH MPAC;')
             c.append(' * CAF ZERO; TS MPAC +2; NEWMODE TS MODE; DANZIG. */')
@@ -1697,8 +1750,10 @@ class Compiler:
             c.append('/* The same for a basic routine that never names FIXLOC: any FIXLOC. */')
             c.append('static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){')
             c.append(' unsigned i;')
-            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
-                     % ('W[067]>037777u' if self.rk else 'W[067]'))
+            nj = 'W[067]>037777u' if self.rk else 'W[067]'
+            if self.any_newjob:
+                nj = '(%s&&W[067]!=077777u)' % nj
+            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
             c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
             c.append(' return 1;')
@@ -1768,7 +1823,7 @@ class Compiler:
             c.extend(self.basic.emit(sym))
             c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
             c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
-            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){')
+            c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const %s *io,agc_word fb){' % self.basic.io)
             c.append(' unsigned i;')
             if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
                 c.append(' /* fb bit 15: a bank 40-43 routine, FB 30-33 with SUPERBNK 0100 */')
@@ -1811,13 +1866,24 @@ class Compiler:
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
+                if self.spec.get('fast_window'):
+                    c.append(' AFR_BIND(s);')
                 # (A part key in fixed-fixed memory runs under the FB its
                 # caller left, as the step machine it was cut from did.)
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb
-                c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
-                if self.uses_channels:
-                    c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
-                c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
+                if self.basic.io == 'p66_bias_io':
+                    # Luminary: the record, then (lm_channel_io) the inputs;
+                    # channel orders reach the program's agc_hardware.
+                    c.append(' if(!s||!v||!basic_sane(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
+                    if self.uses_channels:
+                        c.append(' agc_channels_in=&((lm_channel_io *)v)->in;')
+                    c.append(' %s' % ('agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
+                    c.append(' return %s(s,(p66_bias_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
+                else:
+                    c.append(' (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
+                    if self.uses_channels:
+                        c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
+                    c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
                 c.append('}')
                 c.append('#endif')
                 continue
@@ -1833,7 +1899,12 @@ class Compiler:
                     c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
                 else:
                     c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
-            for st in self.blocks[phys]:
+            body = self.blocks[phys]
+            if any(self.SB_MARK in st for st in body):
+                c.insert(len(c) - (2 if any('goto top;' in st for st in body) else 0),
+                         ' if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;')
+                body = [st.replace(self.SB_MARK, '') for st in body]
+            for st in body:
                 c.append(' ' + st)
             c.append('}')
             c.append('#endif')
@@ -1841,7 +1912,8 @@ class Compiler:
         # Wrappers: the mission's io record.
         if self.m == 'lm' and self.uses_channels:
             c.append('/* The routines take lm_channel_io: the mission record, then the inputs. */')
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;if(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}')
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
+                'agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}')
         else:
