@@ -367,7 +367,10 @@ class Basic:
             if words is not None:
                 st.extend(self.indexed_words(a, phys, nxt, ext, clean, words))
                 return st
-            st.append(self.index_value(a, phys))
+            if self.spec.get('short_index'):
+                self.index_word = self.index_expr(a, phys)
+            else:
+                st.append(self.index_value(a, phys))
             st.extend(self.indexed(nxt, ext, clean))
             return st
         if op in ('CA', 'CS', 'AD', 'SU', 'MASK', 'MP', 'DV', 'DCA', 'DCS') and a is not None and \
@@ -420,6 +423,20 @@ class Basic:
         st.append('return EXEC_INVALID_ACTION;')
         return st
 
+    def index_expr(self, a, here):
+        """Spec 'short_index': the word INDEX adds, for ixe()."""
+        if a < 3:
+            return 'agc_correct(W[%d])' % a
+        self.index_value(a, here)
+        return 'ai_word(s,0%o)' % a
+
+    def index_sum(self, a, lim):
+        """e = a + the INDEX value, refused outside 0..lim."""
+        if self.spec.get('short_index'):
+            w, self.index_word = self.index_word, None
+            return 'e=ixe(%s,0%o,0%o);if(e<0)return EXEC_INVALID_ACTION;' % (w, a, lim)
+        return 'e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim)
+
     def index_value(self, a, here):
         if a == 0:
             return 'ix=areg(s);'
@@ -447,8 +464,13 @@ class Basic:
             # INDEX of INDEX (AX*SR*T's INDEX BUF, INDEX DEX1, DCA VBUF): the
             # second INDEX reads the erasable word at its address plus ix,
             # and that word indexes the order after it.
-            st.append('e=(long)0%o+ix;if(e<010||e>01777||(e>=020&&e<=023))return EXEC_INVALID_ACTION;' % a)
-            st.append('ix=agc_to_int(ai_word(s,(unsigned)e));')
+            if self.spec.get('short_index'):
+                st.append(self.index_sum(a, 0o1777))
+                st.append('if(e<010||(e>=020&&e<=023))return EXEC_INVALID_ACTION;')
+                self.index_word = 'ai_word(s,(unsigned)e)'
+            else:
+                st.append('e=(long)0%o+ix;if(e<010||e>01777||(e>=020&&e<=023))return EXEC_INVALID_ACTION;' % a)
+                st.append('ix=agc_to_int(ai_word(s,(unsigned)e));')
             st.extend(self.indexed(phys + 1, ext, clean))
             return st
         if a is None or op in ('EXTEND', 'INDEX', 'RESUME') or op in CHANNEL_OPS:
@@ -463,10 +485,10 @@ class Basic:
         if op == 'CCS' and not ext:
             # Opcode 1: CCS on an erasable sum, TCF on a fixed one (INDEX A,
             # TCF 0 through a table of GENADRs).
-            st.append('e=(long)0%o+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;' % a)
+            st.append(self.index_sum(a, 0o7777))
             st.append('if(e>=02000){W[5]=(agc_word)e;goto dispatch;}')
         else:
-            st.append('e=(long)0%o+ix;if(e<0||e>0%o)return EXEC_INVALID_ACTION;' % (a, lim))
+            st.append(self.index_sum(a, lim))
         st.extend(self.order(op, a, lim, phys, True, False, clean))
         return st
 
@@ -731,8 +753,22 @@ class Basic:
             return [2048 + w - 0o4000]
         return [bk * 1024 + w - 0o2000 for bk in set(q // 1024 for q in self.cp.words)]
 
+    def index_locals(self):
+        """Spec 'short_index': 16-bit index locals (every e and ix the
+        orders form fits: a 12-bit address plus a 15-bit signed index, or a
+        15-bit register word), which the 6502 handles in a third of the code."""
+        return ' %s ix=0,e=0;uint16_t p;' % ('int' if self.spec.get('short_index') else 'long')
+
     def emit(self, sym):
         c = []
+        if self.spec.get('short_index'):
+            c.append('/* INDEX: address b plus the signed index word k, or -1 outside 0..lim')
+            c.append(' * (one out-of-line copy for the file\'s indexed orders). */')
+            c.append('#ifdef __GNUC__')
+            c.append('__attribute__((noinline))')
+            c.append('#endif')
+            c.append('static MAYBE_UNUSED int ixe(agc_word k,unsigned b,unsigned lim){')
+            c.append(' int e=(int)b+agc_to_int(k);return e<0||e>(int)lim?-1:e;}')
         c.append('/* Signed index values: A, L and Q are 16-bit registers. */')
         c.append('static MAYBE_UNUSED long areg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[0]));}')
         c.append('static MAYBE_UNUSED long lreg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[1]));}')
@@ -791,7 +827,7 @@ class Basic:
             return c + self.emit_parts(sym, order)
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
-        c.append(' long ix=0,e=0;uint16_t p;')
+        c.append(self.index_locals())
         c.append(' (void)ix;(void)e;')
         c.append(' switch(at){')
         for p in sorted(self.entries):
@@ -915,7 +951,7 @@ class Basic:
             into = sorted(p for p in self.entries if self.part_of(p) == j and (p, False, False) in self.nodes)
             fn = ['/* Basic words, part %d of %d. */' % (j + 1, nparts),
                   'static MAYBE_UNUSED enum exec_status basic_part_%d(apollo_overlay_state *s,%s *io,uint16_t at){' % (j, self.io),
-                  ' long ix=0,e=0;uint16_t p;', ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
+                  self.index_locals(), ' (void)ix;(void)e;(void)p;(void)io;', ' switch(at){']
             fn += [' case %uu:goto %s;' % (q, self.label(q)) for q in into]
             fn += [' default:return EXEC_OUT_OF_SCOPE;', ' }']
             fn += body
@@ -981,7 +1017,7 @@ class Basic:
             c.append('#if %s_HAS(0%o)' % (S, b))
             c.append('/* The basic words of bank %02o. */' % b)
             c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at){' % (b, self.io))
-            c.append(' long ix=0,e=0;uint16_t p;')
+            c.append(self.index_locals())
             c.append(' (void)ix;(void)e;(void)p;')
             c.append(' switch(at){')
             for q in sorted(into[b]):

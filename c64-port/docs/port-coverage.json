@@ -10007,7 +10007,7 @@
       "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
       "bytes": 4937,
       "lines": 185,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10020,8 +10020,68 @@
           ],
           "scope": "P30 (35,2000-35,2026) and S30.1 (34,2000-34,2056), 70 words, the whole file, as eight basic routines keyed by Z and ten interpretive routines keyed at their NEWOPS, of the control-transfer ABI: P30 with UPFLAG UPDATFLG and TRACKFLG, the V06N33 and V06N81 displays through VNPOOH, DOWNFLAG UPDATFLG and INTPRET; CALL S30.1 and SET UPDATFLG, EXIT; PARAM30's V06N42 display, INTPRET and SETGO XDELVFLG REVN1645; and S30.1 (STQ QTEMP, TIG and LEMPREC; RTIG and VTIG with SXA,2 and SXA,1; the local-vertical frame with UNIT, VCOMP, VXV; DELVSLV through it with VXM and VSL1 into DELVSIN; ABVAL into DELVSAB; VTIG + DELVSIN and PERIAPO1; SHIFTR1, MAXCHK, HPER, SHIFTR1, MAXCHK and STCALL HAPO to C(QTEMP)): from each entry through the trampoline to the first point outside them (UPFLAG, DOWNFLAG, VNPOOH, INTPRET, POODOO1, or a NEWOPS outside 34,2000-2056, 35,2013-2016 and 35,2022-2024).",
           "verification": "docs/LM-P30.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p30_file.c",
+            "include/lm_p30_file.h"
+          ],
+          "scope": "The whole file: P30 (35,2000-2026: UPDATFLG and TRACKFLG, the V06N33, V06N81 and V06N42 displays through VNPOOH, S30.1's call, XDELVFLG and REVN1645) and S30.1 (34,2000-2056: LEMPREC to TIG, RTIG, VTIG, the local-vertical frame, DELVSIN, DELVSAB, PERIAPO1, SHIFTR1 and MAXCHK for HPER and HAPO), basic and interpretive (lm_p30_file_basic, lm_p30_file_interpretive), and the V06N33 and V06N42 constants.",
+          "verification": "docs/LM-P30-FILE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (lm_p30_file_basic): 35,2000 P30, 2002 and 2004 P30N33 (after UPFLAG), 2012 (after DOWNFLAG), 2006, 2010 and 2021 (after VNPOOH: proceed), and 2017 PARAM30 (after EXIT). Interpretive (lm_p30_file_interpretive, at NEWOPS with LOC there): 35,2013 and 35,2022 (after TC INTPRET), 34,2000 S30.1, 35,2015 (S30.1's CALL return), 34,2005 (LEMPREC's STCALL return), the CALL returns 34,2043, 2045, 2047, 2053 and 2055, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (34,2003, 2010, 2011, 2012, 2014, 2015, 2017, 2022, 2024, 2025, 2030, 2032, 2033, 2034, 2036, 2041, 2051; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 34 or 35 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, as sb_ok reads FB 34 and 35 without the superbank bit): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 35 (with SUPERBNK bit 7 clear), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 11 basic instructions and read all 54 interpretive words (evidence/lm-p30-file/lm-p30-file-closure.json).",
+          "data_validity": "ADRES UPDATFLG (twice) and TRACKFLG (read by UPFLAG and DOWNFLAG) and V06N33 / V06N42 (VN 0633, 0642, read by CAF) are read as the original constants."
+        },
+        "external_continuations": [
+          "UPFLAG and DOWNFLAG, which return to this file's registered return points",
+          "VNPOOH (35,3712), which returns on proceed, redisplays on recycle and goes to POOH on terminate",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: LEMPREC, PERIAPO1, SHIFTR1, MAXCHK and REVN1645 (SETGO)",
+          "S30.1's return through QTEMP (STCALL HAPO QTEMP)",
+          "The Executive's CHANG2 (05126) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p30-file/lm-p30-file-source-map.json",
+            "sha256": "9f0e8972a0725091b4cf9534fcafb3f148583a56c13d348da7c83a73d0cdb0e1"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p30-file/lm-p30-file-proof.json",
+            "sha256": "4794ff3696cbef80390360d2ff516d7598a8aa82ec164f5ea7826d8e074fb879"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p30-file/lm-p30-file-host.log",
+            "sha256": "3e5d3f24ee7e715d9a8f1cae43726cdf7df1531573463d7bf8292305e910dbb4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p30-file/lm-p30-file-vice.log",
+            "sha256": "a81d83ae5d5f191bdf9fbccafe838c52f4db9c4195d4d47044f0c7002a230ed6",
+            "vice_targets": {
+              "vice-lm-p30-file": 57
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p30-file/lm-p30-file-proof.json",
+            "sha256": "4794ff3696cbef80390360d2ff516d7598a8aa82ec164f5ea7826d8e074fb879"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-p30-file/lm-p30-file-closure.json",
+            "sha256": "d4d8bc628cf45789baa56635dc7df3bc4f5ff92b3e7dce207c16d577e067fd18"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-354.md",
+            "sha256": "30ea0436609e9490b10de76344df4725b9790854a7a25f7ac9cbdeb53423ecb7"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P32-P35_P72-P75.agc",
@@ -11349,7 +11409,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
-            "sha256": "9a5d30bfde582453c970f29942c4417a1aee51cd0611af9d9066786a15ef7fc9"
+            "sha256": "768eb69c2497fa6ff451781db7ac265d458192609996952a40896f1770d8eee3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-host.log",
@@ -11357,14 +11417,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-vice.log",
-            "sha256": "92fdc07313e36e46aa11544bd6c536758655e697efbd234865160cca246c2d83",
+            "sha256": "b5d7d0edacaa1d89a99ff50d97b3a7d8dc503eb54d08d6a4c30b8e8e6e5786bb",
             "vice_targets": {
-              "vice-lm-radar-leadin-routines": 15
+              "vice-lm-radar-leadin-routines": 17
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
-            "sha256": "9a5d30bfde582453c970f29942c4417a1aee51cd0611af9d9066786a15ef7fc9"
+            "sha256": "768eb69c2497fa6ff451781db7ac265d458192609996952a40896f1770d8eee3"
           }
         }
       }

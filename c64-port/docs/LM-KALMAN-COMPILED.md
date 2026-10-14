@@ -8,7 +8,8 @@ Luminary099 KALMAN_FILTER is already complete as the hand-written `src/lm_torque
 
 - **`ebank: 6`**, **`channels: 'all'`, `channel_inputs`**, **`index_carry16`**, **`edge_cases`, `c64_rows: 'cover'`.**
 - **`fast_window` (new).** The orders go through `include/agc_fast_redirect.h`: operands in the EB6 window pass a one-byte offset to Lane F's noinline `afw_*` helpers (#278). The object is 2,208 bytes on the flight image (`RK_FIXED_IMAGE`), 2,807 bytes before.
+- **`short_index` (new).** The eight indexed orders form their address in one out-of-line `ixe()` with 16-bit locals: the RATELOOP flight module is 3,097 bytes, 500 fewer.
 
 ## Evidence
 
-Hashes: `evidence/lm-kalman/SHA256.json` (all files in the tree). 2,048 cases equal yaAGC; 64 are frozen in `tests/lm_kalman_vectors.h` and pass the strict and sanitizer host tests; `make vice-lm-kalman` passes 3 C64 cases that take all 193 gcov branch outcomes and 394 compare edges the host cases take.
+Hashes: `evidence/lm-kalman/SHA256.json` (all files in the tree). 2,048 cases equal yaAGC; 64 are frozen in `tests/lm_kalman_vectors.h` and pass the strict and sanitizer host tests; `make vice-lm-kalman` passes 3 C64 cases that take all 187 gcov branch outcomes and 389 compare edges the host cases take.

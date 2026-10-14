@@ -39,6 +39,8 @@
  * entry with AXISCTR other than 0 or 1, NUMBERT outside 0-4 or SENSETYP
  * above 5 (they index the jet tables; the file and TJETLAW store these). */
 extern const agc_routine_table lm_q_r_axis_routines;
+/* The entries an attitude-hold or jet-firing DAP pass reaches (the pinned DAP set). */
+extern const agc_routine_table lm_q_r_axis_hot_routines;
 /* The inline operands read through Q by the file's TC ALARM calls (OCT
  * 02002 in X-translation, OCT 02004 in SELCTSUB), as compiled site
  * operands. */

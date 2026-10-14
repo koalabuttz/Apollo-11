@@ -24,4 +24,4 @@ Hashes: `evidence/lm-radar-leadin-routines/SHA256.json` (all files in the tree).
 - **Independent assembly comparison.** `make lm-radar-leadin-routines-differential`: 2,048 cases equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Every 32nd case is frozen in `tests/lm_radar_leadin_routines_vectors.h`.
 - **Host and sanitizer results.** `make test-lm-radar-leadin-routines sanitize-lm-radar-leadin-routines` runs the 64 frozen cases.
 - **C64 execution results.** `make vice-lm-radar-leadin-routines` runs 1 diagnostic with 15 cases (PRG sha256 in the log).
-- **C64 branch outcomes.** In the proof: the 15 C64 cases take all 184 gcov branch outcomes and all 322 compare edges the host cases take.
+- **C64 branch outcomes.** In the proof: the 17 C64 cases take all 186 gcov branch outcomes and all 326 compare edges the host cases take.

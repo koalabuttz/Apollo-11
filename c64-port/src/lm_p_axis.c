@@ -19,6 +19,7 @@
 #include "agc_fast_ops.h"
 #include "agc_fast_window.h"
 #include "agc_image_thin.h"
+#include "lm_dap_shared.h"
 #define PA_EBN (LM_PA_EB>>8)
 #define PA_OP(n,s,a) ((void)(s),AFW_IN(PA_EBN,a)?afw_##n(AFW_OFF(a)):\
  AFO_PLAIN(PA_EBN,a)?afo_##n(AFO_CELL(PA_EBN,a)):AIT_ARG(n,a))
@@ -248,20 +249,20 @@ static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
 static int entry(const agc_image *s,const void *io){PA_BIND(s);return s&&io&&(W[4]&076000u)==LM_PA_FB16&&W[3]==LM_PA_EB;}
 static agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 /* The signed value of an erasable word, and of the 16-bit A. */
-static int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
+LM_DAP_SHARED int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}
 static int sa(const agc_image *s){agc_register a=W[0];return a&0100000u?-(int)(~a&077777u):(int)(a&077777u);}
 /* Channel orders on a 15-bit channel, as yaAGC's: READ, RAND, WAND, WOR;
  * RXOR on channel 1 (L) works on the raw 16-bit registers. */
 static void rd(agc_image *s,agc_word chan){W[0]=agc_extend(chan);}
-static void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
-static void wand(agc_image *s,agc_word *chan){agc_word v=(agc_word)(oc(W[0])&*chan);*chan=v;W[0]=agc_extend(v);}
+LM_DAP_SHARED void rand(agc_image *s,agc_word chan){W[0]=agc_extend((agc_word)(oc(W[0])&chan));}
+LM_DAP_SHARED void wand(agc_image *s,agc_word *chan){agc_word v=(agc_word)(oc(W[0])&*chan);*chan=v;W[0]=agc_extend(v);}
 /* WOR CHAN13: bits 12-14 written to channel 13 are the HANDRUPT trap
  * enables, which do not read back (yaAGC keeps 043777). */
 static void wor13(agc_image *s,agc_word *chan){agc_word v=(agc_word)((oc(W[0])|*chan)&077777u);*chan=(agc_word)(v&043777u);W[0]=agc_extend(v);}
 static void rxor_l(agc_image *s){W[0]=(agc_register)((W[0]^W[LREG])&0177777u);}
 /* MSU K (K above the registers): two's-complement difference of the
  * overflow-corrected A and K, returned in ones' complement. */
-static void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
+LM_DAP_SHARED void msu(agc_image *s,unsigned k){unsigned ui=oc(W[0])&077777u,uj=~(unsigned)ai_word(s,k)&077777u,d=ui+uj+1u;
  if(d&040000u){d|=0100000u;--d;}
  W[0]=agc_extend((agc_word)(d&077777u));
 }
@@ -273,7 +274,7 @@ static void dtcb(agc_image *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_c
 /* A TC at ret - 1 to z, which is outside this file. */
 static enum exec_status leave(agc_image *s,agc_word ret,agc_word z){ai_tc(s,ret);W[5]=z;return EXEC_OK;}
 /* TC Q at the end of a subroutine: Z = Q, Q = 3. */
-static void tcq(agc_image *s){ai_tc(s,QREG+1u);}
+LM_DAP_SHARED void tcq(agc_image *s){ai_tc(s,QREG+1u);}
 
 /* 1STOTWOS, entered by TC from ret - 1: CCS A; AD ONE; TC Q; CS A; TC Q. */
 static void onetotwos(agc_image *s,agc_word ret){uint8_t c;
@@ -815,7 +816,7 @@ static enum exec_status afterchek_body(agc_image *s){
 }
 /* PAXIS: CA MS100; ADS TIME5; LXCH BANKRUPT; EXTEND; QXCH QRUPT;
  * CCS DAPZRUPT; TC BAILOUT; OCT 02000 (TC CHEKBITS); TC CHEKBITS. */
-static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;uint8_t c;(void)p;
+static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;uint8_t c;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  ai_caf(s,MS100);ai_ads(s,TIME5);ai_lxch(s,BANKRUPT);ai_qxch(s,QRUPT);
  c=ai_ccs(s,DAPZRUPT);LM_PA_PATH(111u+c);
@@ -824,30 +825,30 @@ static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){
  if(c==2u)return leave(s,02224u,LM_PA_CHEKBITS);
  return afterchek_body(s);
 }
-static enum exec_status chekbits2(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status chekbits2(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return leave(s,02224u,LM_PA_CHEKBITS);
 }
-static enum exec_status afterchek(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status afterchek(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return afterchek_body(s);
 }
-static enum exec_status afteracdt(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status afteracdt(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return afteracdt_body(s);
 }
 /* SUPERJOB: TCF RATELOOP (RESUME of the job PAXFILT set up). */
-static enum exec_status superjob(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status superjob(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  W[5]=LM_PA_RATELOOP;return EXEC_OK;
 }
 /* CALCPERR, entered by TC or IBNKCALL with the return in Q. */
-static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];calcperr_body(s);return EXEC_OK;
 }
-static int flow_ok(agc_image *s,void *v){return entry(s,v)&&ai_word(s,OLDPMIN)!=077777u;}
-#define FLOW(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p; \
+static int flow_ok(agc_image *s,void *v){AFO_FIX(s);return entry(s,v)&&ai_word(s,OLDPMIN)!=077777u;}
+#define FLOW(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p; \
  if(!flow_ok(s,v))return EXEC_OUT_OF_SCOPE; \
  return body;}
 FLOW(backp,rateloop(s))
@@ -871,7 +872,7 @@ FLOW(purgency4,urgency(s,v,LM_PA_PURGENCY4))
 FLOW(spsret,jetselect(s,v,AT_SPSRET))
 FLOW(tjetret,jetselect(s,v,AT_TJETRET))
 FLOW(selalarm,jetsoff(s))
-static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
+static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);if(!LMF_HW_SET(p))return EXEC_OUT_OF_SCOPE;(void)p;
  if(!flow_ok(s,v)||W[ai_ea(s,ROTINDEX)]>1u)return EXEC_OUT_OF_SCOPE;
  return writepret_body(s,v);
 }
@@ -898,3 +899,13 @@ static const agc_routine_entry entries[28]={
  {P16(LM_PA_PURGENCY4),purgency4},{P16(LM_PA_SPSRET),spsret},{P16(LM_PA_TJETRET),tjetret},
  {P16(LM_PA_SELALARM),selalarm}};
 const agc_routine_table lm_p_axis_routines={entries,28};
+/* The entries one 100 ms DAP pass reaches in attitude hold or jet firing
+ * (Lane F's RCS DAP cycle trace, /mnt/project-files/lane-f/dap-cycle-trace.md):
+ * the pinned DAP set links this table, so the other entries stay in the
+ * file's packed module (docs/FLIGHT-STORE.md). */
+static const agc_routine_entry hot_entries[14]={
+ {P16(LM_PA_PAXIS),paxis},{P16(LM_PA_AFTERCHEK),afterchek},{P16(LM_PA_BACKP),backp},{P16(LM_PA_TRAPS),traps_e},
+ {P16(LM_PA_QRATE),qrate_e},{P16(LM_PA_RRATE),rrate_e},{P16(LM_PA_SUPERJOB),superjob},{P16(LM_PA_PRETIMCK),pretimck_e},
+ {P16(LM_PA_CHKVISFZ),chkvisfz_e},{P16(LM_PA_TSNEXTP),tsnextp},{P16(LM_PA_DETENTCK),detentck_e},
+ {P16(LM_PA_JETSOFFRET),jetsoffret},{P16(LM_PA_PURGENCY),purgency},{P16(LM_PA_TJETRET),tjetret}};
+const agc_routine_table lm_p_axis_hot_routines={hot_entries,14};
