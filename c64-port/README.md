@@ -2096,10 +2096,6 @@ All of Comanche055 P61-P67 (495 words) is native C on the control-transfer ABI, 
 
 All of Comanche055 RCS-CSM_DIGITAL_AUTOPILOT (611 words) is native C on the control-transfer ABI, as 71 routines compiled whole-file by `tools/basic_compile.py`. All 4,352 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 136 frozen cases, and 2 C64 diagnostics pass 43 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-RCS-DAP.md`.
 
-## Translate Comanche REENTRY_CONTROL
-
-All but 2 words of Comanche055 REENTRY_CONTROL (1172 words) is native C on the control-transfer ABI, as 390 routines compiled whole-file by `tools/basic_compile.py`. All 99,840 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 780 frozen cases, and 47 C64 diagnostics pass 544 cases in VICE that take every branch outcome the yaAGC-compared cases take. The file stays partial (see the doc). See `docs/CM-REENTRY.md`.
-
 ## Translate Comanche SERVICER207
 
 All of Comanche055 SERVICER207 (375 words) is native C on the control-transfer ABI, as 80 routines compiled whole-file by `tools/basic_compile.py`. All 20,480 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 160 frozen cases, and 9 C64 diagnostics pass 123 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-SERVICER.md`.
@@ -2321,3 +2317,7 @@ Comanche055 P20-P25 (CM rendezvous, orbital and cislunar navigation: P20, P22, P
 ## CM sextant mark system as registered native routines
 
 Comanche055 SXTMARK (SXTMARK, MARKRUPT, MARKDIF/DIFCHK, MARKCONT, MKREJECT, MKVB51, ENTANSWR and the rest, 315 words in banks 07 and 10) is compiled whole by `tools/basic_compile.py` into 42 routines of the control-transfer ABI. All 21,504 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, QPRET and MKNDX states, with channel 16 (the mark buttons) a latched input. The host and sanitizer tests pass 679 frozen cases, and one C64 diagnostic passes 74 cases in VICE that reach all 345 branch outcomes and all 491 gcov arcs the host cases reach. A complete certificate is drafted for the reviewer. See `docs/CM-SXTMARK.md`.
+
+## Translate Comanche REENTRY_CONTROL
+
+All of Comanche055 REENTRY_CONTROL (1172 words) is native C on the control-transfer ABI, as 392 routines compiled whole-file by `tools/basic_compile.py`. All 100,352 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 784 frozen cases, and 49 C64 diagnostics pass 547 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-REENTRY.md`.
