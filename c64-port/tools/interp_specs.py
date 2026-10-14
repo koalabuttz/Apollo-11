@@ -436,7 +436,7 @@ SPECS = {
         'file': {'lm': 'ASCENT_GUIDANCE.agc'},
         'base': {'lm': 'lm_ascent'},
         'symbol': {'lm': 'lm_ascent'},
-        'entries': ['@external'],
+        'entries': ['@external', 'ENGOFF1', 'TERMASC'],
         'externals': {'DOWNFLAG': 'auto', 'POSTJUMP': 1, 'UPFLAG': 'auto', 'SHORTMP': 'auto', 'POLY': 'auto', 'FINDVAC': 'auto', 'TWIDDLE': 'auto', 'TPAGREE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', },
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],

@@ -11,7 +11,7 @@ extern const agc_routine_table lm_ascent_interpretive,lm_ascent_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_ascent_point;
-#define LM_ASCENT_POINTS 207u
+#define LM_ASCENT_POINTS 209u
 #define LM_ASCENT_CADR_WORDS 1u
 #define LM_ASCENT_EXTERNALS 15u
 #define LM_ASCENT_FIRST 5954u
