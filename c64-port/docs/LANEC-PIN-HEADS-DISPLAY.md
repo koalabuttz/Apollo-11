@@ -28,7 +28,7 @@ oracles until the routine tables drop them (Lane C, `tools/lanec/routines.py`).
 | DSPDCEND +2 (41,2570) `CCS DECOUNT`, `TC +2`, `TC ENTEXIT`, `TS DECOUNT`, `TC DSPDCPUT` | `lanec_pin_head_decount_run` | DSPDCPUT (Q = DSPDCEND +7) for a positive or negative count, ENTEXIT (Q = DSPDCEND +5) for +0, DSPDCPUT for -0 |
 | DP1OUTSF, DP2OUTSF, DP3OUTSF (bank 40) through DPOUT, READLO, TPAGREE, DMP and SCOUTEND | `lanec_pin_head_dpout_run` | SCOUTEND's POSTJUMP to DSPDCEND |
 | 2INTOUT +1 `TC +ON`, +2 `CA MPAC`, +4 `CS THREE`, +013 `TC POSTJUMP` (bank 40) | `lanec_pin_head_twoint_run` | the next stage of the two-integer display, or its POSTJUMP |
-| M/SOUT: M/SNORM +1 `CAF HISECON`, the seconds display's BANKCALL, `CAF ZERO` after it, `TC SEPMIN`, the minutes display's BANKCALL (bank 42) | `lanec_pin_head_minsec_run` | the next stage of the minutes-seconds display |
+| M/SOUT (the fresh READLO), M/SNORM +1 `CAF HISECON`, the seconds display's BANKCALL, `CAF ZERO` after it, `TC SEPMIN`, the minutes display's BANKCALL (bank 42) | `lanec_pin_head_minsec_run` | the next stage of the minutes-seconds display |
 
 The points, as physical words:
 
@@ -37,7 +37,7 @@ The points, as physical words:
 | decount | 41,2570 | 41,2570 |
 | dpout | 40,2710 2715 2717 | 40,2614 2621 2623 |
 | twoint | 40,2733 2734 2736 2745 | 40,2637 2640 2642 2651 |
-| minsec | 42,3343 3347 3351 3361 3371 | 42,3256 3262 3264 3274 3304 |
+| minsec | 42,3303 3343 3347 3351 3361 3371 | 42,3216 3256 3262 3264 3274 3304 |
 
 `dpout`, `twoint` and `minsec` run the stage code the composites already
 use (`dsky_scale_output`, `cm_scale_output`, `dsky_two_integer`,
@@ -45,7 +45,9 @@ use (`dsky_scale_output`, `cm_scale_output`, `dsky_two_integer`,
 `dpout` refuses a superbank that does not select bank 40 with 0100 (bits 020
 and 040 may be in any state; the code reads no other bit, and the superbank
 is left as it was). `twoint` and `minsec` refuse unless every erasable word
-is in its 15-bit memory form. Every head refuses outside its bank.
+is in its 15-bit memory form (`minsec` through `dsky_minutes_output`'s own
+check). `minsec` also claims M/SOUT itself, so neither `dsky_minutes_output`
+nor `cm_minutes_seconds` need to link in flight. Every head refuses outside its bank.
 
 ## Sizes
 
@@ -57,6 +59,9 @@ C64, one mission, LTO (`big.ld`; an empty program is 56 bytes):
 | dpout | 5,721 | 6,007 |
 | twoint | 8,599 | 8,616 |
 | minsec | 14,900 | 14,911 |
+
+`minsec` at -Oz, the flight store's setting: 13,656 bytes (LM) with M/SOUT
+claimed, after dropping the head's duplicate 15-bit check (14,111 before).
 
 All fit in a 16 KB flight slot.
 
@@ -82,7 +87,8 @@ Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 
 - Independent assembly comparison: `make test-lanec-pin-head`, one suite per
   family (`pin-head-decount`, `pin-head-dpout`, `pin-head-twoint`,
-  `pin-head-minsec`, 8,192 cases each). Each family's cases are the accepted
+  `pin-head-minsec`, 8,192 cases each; `minsec` also takes the
+  `pw-cm-minutes-seconds` cases at M/SOUT). Each family's cases are the accepted
   cases of the display consumers' suites, and of the suites of the modules
   it stands in for, that enter at one of its points. `decount` also varies
   DECOUNT (+0, 1, 2, -1, -0) and `dpout` the unused superbank bits. The
