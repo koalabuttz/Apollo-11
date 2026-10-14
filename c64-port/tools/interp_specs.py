@@ -1003,6 +1003,58 @@ SPECS = {
         'states': {'37,3243': {'0163': [0o77776]}},
         'target': 'tests/lm_r31_file_target.c',
     },
+    'lm-p70-p71-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'P70-P71.agc'},
+        'base': {'lm': 'lm_p70_p71_file'},
+        'symbol': {'lm': 'lm_p70_p71_file'},
+        'basic': 'full',
+        # R10,R11 (the Waitlist task), P70 and P71 (the major modes),
+        # GOABORT (4.3SPOT's restart point), P70INIT, P71RET, and TGOCOMP,
+        # THROTUP and LEGAL? (subroutines other files call).
+        'entries': ['@external', 'R10,R11', 'P70', 'P71', 'P70A', 'P71A', 'CONTABRT', 'ABRTJASK', 'GOABORT',
+                    'P70INIT', 'P71RET', 'INJTARG', 'TGOCOMP', 'THROTUP', 'LEGAL?'],
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
+        'superbank_bit': True,
+        # READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 through the
+        # program's agc_hardware, the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # (Channel 30 named too: 'auto' leaves out the channel READ CHAN30
+        # takes as an input, and the case's channel edits zero it.)
+        'io_channels': {0o11: 0o77777, 0o14: 0o6777, 0o30: 0o77777},
+        'engine': 'flight-device',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # ABRTJASK's INDEX Q; CAF MODE70 reads MODE70 to MODE70 +2.
+        'fixed_tables': {'MODE70': (0, 2)},
+        # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
+        # 8D): the DPS or the APS coefficients, eight words on.
+        # CONTABRT's RESUME runs BRUPT's TCF ABRTJASK at Z = ZRUPT, which
+        # the TCF then replaces. ZRUPT holds ABRTJASK in every case (P70A and
+        # P71A reach CONTABRT through DTCB), so the oracle, which stops when
+        # Z leaves the file, runs the TCF as the native code does.
+        'all_states': {'015': [0o3406]},
+        'states': {**{lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+                   # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
+                   'CONTABRT': {'2': [0o177777, 2]},
+                   'ABRTJASK': {'2': [0o177777, 2]},
+                   # R10,R11's abort checks (10,11): LETABORT (FLAGWRD9 bit 9)
+                   # set in most cases, and MODREG P70, P71 or another
+                   # program, so P71NOW? and P70NOW? both run.
+                   '21,2042': {'FLAGWRD9': [0o400, 0o400, 0o77777, 0],
+                               'MODREG': [0o106, 0o107, 0o100, 0o41, 0o77777]}},
+        'target': 'tests/lm_p70_p71_file_target.c',
+    },
     'cm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.

@@ -10679,8 +10679,63 @@
           ],
           "scope": "290 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 88 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for the channel model.",
           "verification": "docs/LM-P70-P71.md"
+        },
+        {
+          "native_files": [
+            "src/lm_p70_p71_file.c",
+            "include/lm_p70_p71_file.h"
+          ],
+          "scope": "The whole file, basic and interpretive, all 298 words (lm_p70_p71_file_basic, lm_p70_p71_file_interpretive): bank 21 (R10,R11 with its abort checks and READ CHAN30, P70, P70A, P71, P71A, LEGAL?), bank 05 (CONTABRT with RESUME, ABRTJASK with RAND/WRITE DSALMOUT) and bank 32 (GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, YOK, UPTHROT, P71RET, OLDTIME, TGOCOMP, THROTUP with WOR CHAN14), the channel orders through the program's agc_hardware, and the constants.",
+          "verification": "docs/LM-P70-P71-FILE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record; input channels 30-33 latched in lm_channel_io and output channels 11 and 14 in the program's agc_hardware.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 78 in all. Basic (lm_p70_p71_file_basic, 32): 05,3402 CONTABRT, 3406 ABRTJASK, 3445 (after CLRADMOD); 21,2006 R10,R11, 2021 R10,R11A (after TWIDDLE), 2033 FLASHV? and 2042 10,11 (after FLIP), 2072 P70, 2073 P70A, 2075 P71, 2076 P71A, 2110 LEGAL?, 2125 (after FALTON), 2126 (after RELDSP); 32,3540 GOABORT, 3544, 3671 and 3731 (after EXIT), 3552, 3554, 3556 and 3711 (after DOWNFLAG), 3560 and 3673 (after UPFLAG), 3562 (after CHECKMM), 3563 P70INIT, 3676, 3706 and 3733 (after PHASCHNG), 3700 (after BANKCALL), 3707 P71RET, 3746 THROTUP. Interpretive (lm_p70_p71_file_interpretive, 46, at NEWOPS with LOC there): after TC INTPRET 32,3541, 3564, 3714; the CALL and STCALL returns 3543, 3566, 3620, 3653, 3720, 3730; the entries 3623 INJTARG and 3737 TGOCOMP; the BPL, BMN and switch targets 3647 UPRATE, 3661 YOK, 3724 OLDTIME; and the CHANG2 resume keys (3571-3615, 3625 BOTHPOLY, 3630-3646, 3651, 3655, 3660, 3664, 3666, 3667 UPTHROT, 3726, 3742, 3744, 3745; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard (the generated sane() and basic_sane(): an incoherent bank set, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; at NEWOPS also NEWJOB -0 or negative and FIXLOC not a VAC area). Domain restrictions (spec states): CONTABRT's RESUME accepts only a TCF to fixed memory in BRUPT (the word CONTABRT stores); ABRTJASK's INDEX Q; CAF MODE70 reads only MODE70 to MODE71 (Q -0 or 2, as P70A and P71A set it); BOTHPOLY's X1 is -0 or -8. ZRUPT holds ABRTJASK in every case so the oracle, which stops when Z leaves the file, runs RESUME's substitute TCF as the flight program does; the TCF replaces Z, so ZRUPT has no other effect. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 169 basic instructions and the interpreter read all 91 interpretive words (evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json).",
+          "data_validity": "The 38 data words (ADRES, CADR, 2CADR, REMADR, DEC, 2DEC and OCT constants) are read as the original constants. ABRTJADR (TCF ABRTJASK) is read by CONTABRT's CAF and runs only as RESUME's substitute instruction, which the native RESUME does."
+        },
+        "external_continuations": [
+          "TWIDDLE, FLIP, CLRADMOD, FALTON, RELDSP, CHECKMM, DOWNFLAG, UPFLAG, PHASCHNG and BANKCALL, which return to this file's registered return points",
+          "TASKOVER, LRHTASK, LANDISP (R10), ENDOFJOB, POSTJUMP (PINBRNCH, the ENEMA, SERVEXIT) and the P12 set-up",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls, with RTB LOADTIME (rtb_angles)",
+          "The Executive's CHANG2 (05126) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-source-map.json",
+            "sha256": "254132b903403c7faad05aecf5f2307d61ee684ea2bfaa5bc2a5f4f5cceb55eb"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json",
+            "sha256": "6988fd25f3951258b677a354fa14b836ac049588e4765c52539e755f6cbf0c23"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-host.log",
+            "sha256": "8c86c431db6b5110c1780aedb10e3d2b6d2d48fd01633da2f4006fec354f8ca7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-vice.log",
+            "sha256": "0e5bddac99302af3d461382057048c2e879bb07e1b5d4171e079593061d85826",
+            "vice_targets": {
+              "vice-lm-p70-p71-file": 127
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-proof.json",
+            "sha256": "6988fd25f3951258b677a354fa14b836ac049588e4765c52539e755f6cbf0c23"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json",
+            "sha256": "b4b1c45f0de47a0328980fb252abb4c546b67a610fc6f8ffe745b04a20ded456"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P76.agc",
