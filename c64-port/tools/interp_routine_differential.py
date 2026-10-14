@@ -1191,9 +1191,11 @@ def main():
     rng = random.Random('interp-routine:' + a.spec + os.environ.get('IRC_SALT', ''))
     proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
     if a.cover_check is not None and os.path.exists(proof):
-        # (The freeze's cases per routine, from the case count it froze.)
+        # (The freeze's cases per routine, from the case count it froze. That
+        # count is after the loop and refusal filters below, which drop fewer
+        # cases than there are routines: round up.)
         n = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
-        a.cases = max(1, json.load(open(proof)).get('cases', a.cases * n) // n)
+        a.cases = max(1, -(-json.load(open(proof)).get('cases', a.cases * n) // n))
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -1210,6 +1212,7 @@ def main():
         flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
+        cases = frozen_only(missions, cases, ref, nat, path)
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     if a.stops_only:
         inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
@@ -1326,6 +1329,28 @@ def place(z, fb, sb):
             b += 8
         return b * 1024 + z - 0o2000
     return None
+
+
+def frozen_only(missions, cases, ref, nat, path):
+    """The cases the freeze kept: the main run's loop and refusal filters,
+    with the oracle run only on the cases the native runner loops on. Writes
+    the kept cases to path and returns them."""
+    rows_n = run([nat, path])
+    nine = [i for i, y in enumerate(rows_n) if y[1] == '9']
+    loops = set()
+    if nine:
+        sub = path + '.loops'
+        write_cases(sub, missions, [cases[i] for i in nine])
+        loops = {i for i, x in zip(nine, run([ref, *ROPES, sub])) if x[1] == '9'}
+        os.remove(sub)
+    if loops:
+        cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]
+        write_cases(path, missions, cases)
+    refused = operand_stops(missions, cases, rows_n, run([nat, path, 'fb']))
+    if refused:
+        cases = [c for i, c in enumerate(cases) if i not in refused]
+        write_cases(path, missions, cases)
+    return cases
 
 
 def operand_stops(missions, cases, rows_n, fbrows, skip=()):
