@@ -97,4 +97,11 @@ enum lanec_status lanec_pw_test_noun_run(apollo_overlay_state *, lanec_io *, enu
 enum lanec_status lanec_pw_two_digit_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_two_integer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_verb_dispatch_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+/* The Pinball heads (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md): each
+ * runs the original program from one of its points to the next registered
+ * point, where the display consumers ran on in C. */
+enum lanec_status lanec_pin_head_decount_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_dpout_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_twoint_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_minsec_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #endif
