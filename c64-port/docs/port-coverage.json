@@ -3531,8 +3531,8 @@
             "sha256": "40e3748f3d395ba6dd9cd3d1a2959d91f3eb2e2fe04851897f25cbac82081c48"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-372.md",
-            "sha256": "64ee5b09d46bb8332d807644ceb47efdfe556fdbb47a793f7f7a8ee99f47c515"
+            "path": "docs/audits/rev2-recite-e465.md",
+            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
           }
         }
       }
