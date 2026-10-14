@@ -140,7 +140,7 @@ static double jitter(void){if(!seed)return 1.0;
 static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
 /* The work clock's idle loop (weight 0, RK_MCT_IDLE): the rest of the tick,
  * so the next boundary takes it (tick k falls at ceil(k*2560/3)). */
-static void idle(void){unsigned long k=(unsigned long)wall*3ul/2560ul+1ul;wall=(double)((k*2560ul+2ul)/3ul);}
+static void idle_tick(void){unsigned long k=(unsigned long)wall*3ul/2560ul+1ul;wall=(double)((k*2560ul+2ul)/3ul);}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
 static unsigned due(void){unsigned long now=work?(unsigned long)wall*3ul/2560ul:(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
@@ -404,8 +404,9 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
   if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
  in_slot[e->slot]=e->module;++nloads;key=point(w,sb,&in);
  /* Scaled time: a swap is about 20 ms of C64 time (docs/FLIGHT-STORE.md:
-  * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. */
- if(scaled)wall+=1707.0*jitter();
+  * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. The
+  * work clock counts no load time (resident_flight.h). */
+ if(scaled&&!work)wall+=1707.0*jitter();
  for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
@@ -535,7 +536,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
      x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
     if(st==EXEC_OK){
-     if(scaled){if(work&&!e->mct)idle();else spend(work?e->mct:span_mct);}
+     if(scaled){if(work&&!e->mct)idle_tick();else spend(work?e->mct:span_mct);}
      if(n>=0){locked+=(unsigned long)n;mct_note(e->name,before.words,io0.superbank,span_mct);}
      else miss(e->name,before.words,io0.superbank,s.words,first);
      continue;}}

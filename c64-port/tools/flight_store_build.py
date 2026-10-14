@@ -501,8 +501,11 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 
 # Tables also packed into another module, so the routines they hold run there
 # without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
-# leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it.
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
+# leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it,
+# and with the LM idle loop's own module (CM pins its idle loop), so an idle
+# pass loads nothing (that module's runs are the work clock's idle,
+# RK_MCT_IDLE: the interbank routines run there only from the idle loop).
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines']}}
 # Tables pinned in a slot (docs/FLIGHT-STORE.md): loaded once and kept, so
 # a cycle that runs them all costs no swaps. The builder links each slot's

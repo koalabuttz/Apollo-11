@@ -131,13 +131,13 @@ static inline void rk_module_program(agc_native_program *p,const rk_module_table
 /* The pinned module's tables (slot class 3, built at boot), or 0: rk_direct
  * tries them before the job and task slots'. */
 extern const rk_module_tables *rk_pinned;
-/* Routines one module run may chain before it returns to the step. */
 /* Work clock: the weight of the background self-check loop, which the AGC
- * runs only when no job is ready. One of its routines takes the rest of the
+ * runs only when no job is ready. One run of it (a pass) takes the rest of the
  * tick (rk_charge), so an idle AGC second costs one pass per tick, not the
  * ~85,000 MCT of self-check the hardware fills it with; the step after it
  * takes the tick, where any interrupt that readies a job comes. */
 #define RK_MCT_IDLE 0u
+/* Routines one module run may chain before it returns to the step. */
 #define RK_MODULE_STEPS 256u
 /* Work clock: the routines a run may chain within budget (MCT), at most
  * the one that reaches the next tick, so the step takes the tick at the
@@ -145,7 +145,7 @@ extern const rk_module_tables *rk_pinned;
  * most 214 passes, and no division on the 6502). */
 static inline uint16_t rk_module_limit(uint16_t budget,uint8_t mct) {
     uint16_t n=1u;
-    if(mct==RK_MCT_IDLE) return 1u;
+    if(mct==RK_MCT_IDLE) return 4u;   /* one pass: SELFCHK, POSTJUMP, back to ADVAN */
     /* A tick's budget is at most 854 and a weight at least 4
      * (tools/resident_flight_build.py mct_weight): under RK_MODULE_STEPS. */
     while(budget>=mct) { budget-=mct; ++n; }
