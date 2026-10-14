@@ -570,11 +570,19 @@ def case(mi, point, n, rng):
     joint = mi.joint.get(point)
     if joint is None and mi.joint_any and rng.random() < 0.5:
         joint = mi.joint_any
+    jstop = None
     if joint:
         if isinstance(joint, dict):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
-            E[state_address(mi, k, vac)] = v & 0o77777
+            if k == '@stop':
+                # The case's stop, a physical address: where the set's saved
+                # return (TC RTRN under the FB it restores) leaves the file.
+                jstop = v
+                continue
+            a = state_address(mi, k, vac)
+            pinned.add(a)
+            E[a] = v & 0o77777
     if mi.cp.novac(point) and rng.random() < 0.5:
         # 'any_fixloc': a basic routine that never names FIXLOC runs from
         # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
@@ -690,6 +698,8 @@ def case(mi, point, n, rng):
             stop = mi.danzig
     if vac == 0o110:
         E[0o120] = vac   # (the work area holds FIXLOC itself)
+    if jstop is not None:
+        stop = jstop
     return seed, list(E.items()), n & 1, stop, sb
 
 

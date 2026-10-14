@@ -3358,7 +3358,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "c17bbe0814a3f0a22de4d26798340f4dc29454f567c66b79da34298f74fd7b85"
+            "sha256": "49a5c728a7e7cee1d66f996ce0e9abf247ab713e650cf88dabf52491b8087a61"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
@@ -3366,14 +3366,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "8b50023829e981f0c7c131a4379c06108b0020f257d6bb44e328bc38d537a8c3",
+            "sha256": "c0e35390f13fbe8316c0beb01b8941e225a5dc52dcf3f088189eeac7c93565f8",
             "vice_targets": {
-              "vice-cm-p30-p37": 180
+              "vice-cm-p30-p37": 179
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "3ae0f95121ee7d6b70bbcdedbf65d084f40c12114d359f711e3f67573df71a6c"
+            "sha256": "fe8aa46d64631d0949a95d7aa5291b6ba1586cc381ebca18e9f1d8272cf18081"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-194.md",
@@ -3472,7 +3472,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). At VNPOOH's way back (VNBANK -1 and +1) TBASE5 holds FB 35 and RTRN (1767 under the case's EB) the return of one of the file's five TC VNPOOH calls, as a call from the file leaves them. Eleven C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; four of them (resumed_at 35,2331 or 35,2377) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,2377) runs from there to the end of the case.",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p34-p35 pins them to the values the program gives them (index registers for fixed tables and saved returns). VNPOOH is entered with Q the return of one of its outside calls under that call's FB (q_callers). At its way back (VNBANK -1 and +1) TBASE5 and RTRN (1767 under every EB) hold, together, the FB and return of one of Comanche's twelve TC VNPOOH calls (joint_states): this file's five in bank 35, TPI_SEARCH's at 35,3157, and P32-P33_P72-P73's five in bank 04 and one in bank 37; the flight program reaches VNPOOH only through those calls, and TBASE5 and RTRN hold nothing else there. For the seven outside calls the case stops at that call's return, where the yaAGC run of the same case also stops. Ten C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; six of them (resumed_at 35,2331 or 35,2377) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,2377) runs from there to the end of the case.",
         "external_continuations": [
           "BANKCALL with its inline CADR (DELAYJOB, GOFLASH, GOMARKF, GOXDSPF)",
           "POSTJUMP with its inline CADR (R36A)",
@@ -3480,7 +3480,7 @@
           "UPFLAG with its inline flag word (FINALFLG)",
           "ALARM with its alarm codes",
           "AVFLAGA, AVFLAGP, P20FLGON, COMPTGO, ENDEXT, NORMEX and TC GOTOPOOH",
-          "VNPOOH's TC RTRN with TBASE5 back in FB: the return of a call from another file (P30_P37, P32-P33_P72-P73, TPI_SEARCH)",
+          "VNPOOH's TC RTRN with TBASE5 back in FB: the return of a TC VNPOOH in TPI_SEARCH or P32-P33_P72-P73 (the case's stop there)",
           "APSIDES, CSMPREC, INTEGRVS, LEMPREC, NORMEX, OTHPREC, THISPREC and TIMETHET through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
@@ -3493,7 +3493,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-proof.json",
-            "sha256": "cc22b601e3de97ea122748b0ad327205af4fd9104df643661c71a6c0f46a2c6e"
+            "sha256": "8647b73447a0bf21d553899a28d563fab573081e1f61de96dcdecbbba99b8261"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-host.log",
@@ -3501,14 +3501,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-vice.log",
-            "sha256": "e7506df9b217c3a1bcdceaeac8ac1c9a88395b7a3ad7fe160413dd89751132f7",
+            "sha256": "3266c42a74a873ea994cecba8609aa6d235afdfd0b64b14e54e6d16d0346deb8",
             "vice_targets": {
               "vice-cm-p34-p35": 584
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-c64-cover.json",
-            "sha256": "e929734c32932eb7b50b235c269cab1d696e7de40b2734a20e38d9addec1c643"
+            "sha256": "5a0b54fbdffc77f409a870677962cfc91972b59441aab8a8e8a32ab969e6ead1"
           }
         }
       }
