@@ -1097,30 +1097,30 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 35510u, 0u, 263u, 165u, LANEC_LM },   /* 42,3266 hours_output */
     { 35510u, 0u, 519u, 165u, LANEC_LM },   /* 42,3266 hours_output */
     { 35510u, 0u, 775u, 165u, LANEC_LM },   /* 42,3266 hours_output */
-    { 35523u, 0u, 0u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 129u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 258u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 387u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35555u, 0u, 2u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 1969u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 3944u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 5920u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35559u, 0u, 3u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 1971u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 3945u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 5916u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35561u, 0u, 4u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 1976u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 3954u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 5918u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35569u, 0u, 0u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 1968u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 3947u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 5923u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35577u, 0u, 1u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 1974u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 3949u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 5922u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35523u, 0u, 0u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 847u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 4259u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 7670u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35555u, 0u, 3u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 48u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 3573u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 7099u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35559u, 0u, 4u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 43u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 3574u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 7101u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35561u, 0u, 5u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 45u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 3584u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 7107u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35569u, 0u, 1u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 52u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 3576u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 7098u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35577u, 0u, 2u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 50u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 3578u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 7105u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
     { 35626u, 0u, 0u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 120u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 240u, 173u, LANEC_LM },   /* 42,3452 input_time */
@@ -2233,30 +2233,30 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 35457u, 0u, 1287u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35457u, 0u, 1543u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35457u, 0u, 1799u, 165u, LANEC_CM },   /* 42,3201 hours_output */
-    { 35470u, 0u, 0u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 510u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 1026u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 1536u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35502u, 0u, 1u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 511u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 1027u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 1537u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35506u, 0u, 2u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 512u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 1022u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 1532u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35508u, 0u, 3u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 513u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 1023u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 1533u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35516u, 0u, 4u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 514u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 1024u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 1534u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35524u, 0u, 5u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 515u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 1025u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 1535u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
+    { 35470u, 0u, 63u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 1421u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 4553u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 5184u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35502u, 0u, 66u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 2421u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 3818u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 6163u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35506u, 0u, 67u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 2410u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 3823u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 6176u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35508u, 0u, 68u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 2423u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 3799u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 6159u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35516u, 0u, 64u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 2430u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 3827u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 6160u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35524u, 0u, 65u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 2413u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 3809u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 6179u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
     { 35573u, 0u, 517u, 173u, LANEC_CM },   /* 42,3365 input_time */
     { 35573u, 0u, 637u, 173u, LANEC_CM },   /* 42,3365 input_time */
     { 35573u, 0u, 758u, 173u, LANEC_CM },   /* 42,3365 input_time */
@@ -3372,30 +3372,30 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 35510u, 0u, 263u, 165u, LANEC_LM },   /* 42,3266 hours_output */
     { 35510u, 0u, 519u, 165u, LANEC_LM },   /* 42,3266 hours_output */
     { 35510u, 0u, 775u, 165u, LANEC_LM },   /* 42,3266 hours_output */
-    { 35523u, 0u, 0u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 129u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 258u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35523u, 0u, 387u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
-    { 35555u, 0u, 2u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 1969u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 3944u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35555u, 0u, 5920u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
-    { 35559u, 0u, 3u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 1971u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 3945u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35559u, 0u, 5916u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
-    { 35561u, 0u, 4u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 1976u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 3954u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35561u, 0u, 5918u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
-    { 35569u, 0u, 0u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 1968u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 3947u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35569u, 0u, 5923u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
-    { 35577u, 0u, 1u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 1974u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 3949u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
-    { 35577u, 0u, 5922u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35523u, 0u, 0u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 847u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 4259u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35523u, 0u, 7670u, 232u, LANEC_LM },   /* 42,3303 head_minsec */
+    { 35555u, 0u, 3u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 48u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 3573u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 7099u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35559u, 0u, 4u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 43u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 3574u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 7101u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35561u, 0u, 5u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 45u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 3584u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 7107u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35569u, 0u, 1u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 52u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 3576u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 7098u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35577u, 0u, 2u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 50u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 3578u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 7105u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
     { 35626u, 0u, 0u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 120u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 240u, 173u, LANEC_LM },   /* 42,3452 input_time */
@@ -4508,30 +4508,30 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 35457u, 0u, 1287u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35457u, 0u, 1543u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35457u, 0u, 1799u, 165u, LANEC_CM },   /* 42,3201 hours_output */
-    { 35470u, 0u, 0u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 510u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 1026u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35470u, 0u, 1536u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
-    { 35502u, 0u, 1u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 511u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 1027u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35502u, 0u, 1537u, 145u, LANEC_CM },   /* 42,3256 cm_minutes_seconds */
-    { 35506u, 0u, 2u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 512u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 1022u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35506u, 0u, 1532u, 145u, LANEC_CM },   /* 42,3262 cm_minutes_seconds */
-    { 35508u, 0u, 3u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 513u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 1023u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35508u, 0u, 1533u, 145u, LANEC_CM },   /* 42,3264 cm_minutes_seconds */
-    { 35516u, 0u, 4u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 514u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 1024u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35516u, 0u, 1534u, 145u, LANEC_CM },   /* 42,3274 cm_minutes_seconds */
-    { 35524u, 0u, 5u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 515u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 1025u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
-    { 35524u, 0u, 1535u, 145u, LANEC_CM },   /* 42,3304 cm_minutes_seconds */
+    { 35470u, 0u, 63u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 1421u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 4553u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35470u, 0u, 5184u, 232u, LANEC_CM },   /* 42,3216 head_minsec */
+    { 35502u, 0u, 66u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 2421u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 3818u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35502u, 0u, 6163u, 232u, LANEC_CM },   /* 42,3256 head_minsec */
+    { 35506u, 0u, 67u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 2410u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 3823u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35506u, 0u, 6176u, 232u, LANEC_CM },   /* 42,3262 head_minsec */
+    { 35508u, 0u, 68u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 2423u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 3799u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35508u, 0u, 6159u, 232u, LANEC_CM },   /* 42,3264 head_minsec */
+    { 35516u, 0u, 64u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 2430u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 3827u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35516u, 0u, 6160u, 232u, LANEC_CM },   /* 42,3274 head_minsec */
+    { 35524u, 0u, 65u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 2413u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 3809u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
+    { 35524u, 0u, 6179u, 232u, LANEC_CM },   /* 42,3304 head_minsec */
     { 35573u, 0u, 517u, 173u, LANEC_CM },   /* 42,3365 input_time */
     { 35573u, 0u, 637u, 173u, LANEC_CM },   /* 42,3365 input_time */
     { 35573u, 0u, 758u, 173u, LANEC_CM },   /* 42,3365 input_time */
@@ -4658,10 +4658,11 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[19] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_minsec_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 1089u, { 35555u, 0u, 1969u, 232u, LANEC_LM } },
-    { 1100u, { 35569u, 0u, 0u, 232u, LANEC_LM } },
-    { 1107u, { 35577u, 0u, 5922u, 232u, LANEC_LM } },
+static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
+    { 1084u, { 35523u, 0u, 0u, 232u, LANEC_LM } },
+    { 1089u, { 35555u, 0u, 48u, 232u, LANEC_LM } },
+    { 1100u, { 35569u, 0u, 1u, 232u, LANEC_LM } },
+    { 1107u, { 35577u, 0u, 7105u, 232u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_cm
@@ -5126,11 +5127,6 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[4] = {
 #ifdef LANEC_PIN_C64_MOD_pw_major_request_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 952u, { 34602u, 0u, 1u, 184u, LANEC_LM } },
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_minutes_output_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1084u, { 35523u, 0u, 0u, 185u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_cm

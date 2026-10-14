@@ -60,7 +60,8 @@ decimal_general (cm_formatter and decimal_raw accept its states at
 DSPDECWD; Luminary keeps it) and the six display composites the display
 heads replace (docs/LANEC-PIN-HEADS-DISPLAY.md: decimal_consumer,
 decimal_time_consumer, monitor_consumer, cm_dynamic_display,
-cm_normal_display, cm_nv85). pin-transfer and pin-decdsp3 complete as many
+cm_normal_display, cm_nv85, and minutes_output and Comanche's
+cm_minutes_seconds, whose M/SOUT entry the minsec head also takes). pin-transfer and pin-decdsp3 complete as many
 round trips without them, give or take a few cases.
 
 A head's test cases must not leave for an address no caller returns to

@@ -77,12 +77,13 @@ FAMILIES = {
                        'dpout': ('decimal_consumer', 'decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display',
                                  'cm_nv85'),
                        'twoint': ('decimal_time_consumer', 'cm_normal_display'),
-                       'minsec': ('decimal_time_consumer', 'cm_normal_display')},
+                       'minsec': ('decimal_time_consumer', 'cm_normal_display', 'minutes_output', 'cm_minutes_seconds')},
                 # modules no routine tries (the rest of the try-list and the heads accept
                 # their states; their suites stay as host tests of the composite);
                 # MISSION:module drops it from that mission's lists only
                 dropped=('nv_update', 'decimal', 'CM:decimal_general', 'decimal_consumer', 'decimal_time_consumer',
-                         'monitor_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85')),
+                         'monitor_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85', 'minutes_output',
+                         'cm_minutes_seconds')),
 }
 
 
