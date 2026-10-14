@@ -14,7 +14,7 @@ extern const agc_routine_table cm_geometry_interpretive,cm_geometry_basic;
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_geometry_point;
 #define CM_GEOMETRY_POINTS 91u
 #define CM_GEOMETRY_CADR_WORDS 1u
-#define CM_GEOMETRY_EXTERNALS 3u
+#define CM_GEOMETRY_EXTERNALS 2u
 #define CM_GEOMETRY_FIRST 8351u
 #define CM_GEOMETRY_LAST 19673u
 extern const cm_geometry_point cm_geometry_points[CM_GEOMETRY_POINTS];

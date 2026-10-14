@@ -1407,13 +1407,14 @@ class Compiler:
                     # RESUME (INDEX 17): the next instruction is BRUPT's,
                     # run in place (yaAGC's substitute instruction); here a
                     # TCF, as CONTABRT stores (any other word is refused).
-                    # With 'in_isr' RESUME also ends the interrupt, as
-                    # yaAGC clears InIsr: the program's agc_hardware
-                    # in_interrupt.
-                    clr = ''
-                    if self.spec.get('in_isr'):
-                        self.uses_hw = True
-                        clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
+                    # RESUME also ends the interrupt, as yaAGC clears
+                    # InIsr: the program's agc_hardware in_interrupt, so
+                    # the spec must set 'in_isr' (refused otherwise, not
+                    # skipped silently).
+                    if not self.spec.get('in_isr'):
+                        raise CompileError("RESUME at %04o ends an interrupt: the spec needs 'in_isr'" % ln.loc)
+                    self.uses_hw = True
+                    clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
                     return st + ['{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
                                  '%sW[5]=(agc_word)(b&07777u);return EXEC_OK;}' % clr], []
                 if qc == 1 and k10 - 1 == 5 and index is None:
@@ -2092,7 +2093,7 @@ class Compiler:
                 '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sreturn s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}' % (
-                'agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
+                '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         else:
             c.append('/* Comanche routines take the two latches the bodies use from the')
             c.append(' * mission\'s cm_native_io and copy them back. */')

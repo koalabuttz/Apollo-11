@@ -532,7 +532,7 @@ port) runs one mission:
    no landing radar model, alarms 511 and 522 recur every 2 s.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
-   the LM flight resident on the whole-program store in VICE
+   the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
    interrupt; a refused or untranslated point stops it.
@@ -550,8 +550,14 @@ port) runs one mission:
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
-   (NB2CDUSP+1; 46 of the 124 LM table modules do not link into the
-   flight store yet).
+   (40,3534; 46 of the 124 LM table modules do not link into the
+   flight store yet). With every table but Pinball's linked (6f894e00) it
+   stops at 40,3534 after 65 centiseconds, and `cm-entry` from 175 s at
+   40,3441 after 1,596 (9.0 times real time, 857 steps): DSPMMJB, the
+   Pinball job SETUPDSP starts through NOVAC (FB 30 with superbank bit
+   0100, so not NB2CDUSP+1 in bank 30). Pinball is not in the store yet.
+   `FSV_STEPS=1` links DP_STEPS and prints the last step records as
+   physical bank,Z (superbank applied).
 
 10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:

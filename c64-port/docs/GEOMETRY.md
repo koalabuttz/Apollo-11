@@ -19,7 +19,7 @@ Lane D1b (alignment and maneuvers). Milestone `geometry`. How the routines are m
 |---|---|---|
 | 10,2237 SVDWN1, 10,2242, 10,2263 SVDWN2 | state vectors to downlink | the caller |
 | 23,2155 LOG, 23,2161, 23,2173, 23,2203, 23,2210 | logarithm: NORM, EXIT, TC POLY with its table, then SHORTMP, DAS and TC INTPRET | POLY, SHORTMP, the caller |
-| 23,2215 EARROT1, 23,2225 EARROT2, 23,2245 OVERADAY | earth rotation of the landmark vector | TCDANZIG (BOVB), the caller |
+| 23,2215 EARROT1, 23,2225 EARROT2, 23,2245 OVERADAY | earth rotation of the landmark vector | the caller (EARROT2's BOVB TCDANZIG runs natively, src/cm_integration_moves.c; cases start from DTEAROT 0, see tools/interp_specs.py) |
 | 23,2000 SXTNB | sextant line of sight in navigation-base axes: SLOAD* the CDUs, RTB CDULOGIC, RTB PUSH SXTLOGIC, SIN, COS, MXV NB1NB2 | the caller |
 | 23,2027 SXTLOGIC (basic) | adds the 19.775° offset (CAF 10DEGS-, ADS MPAC), then CAF QUARTER and TC SHORTMP: native in `geometry_rtb`, with SHORTMP as `geometry_shortmp` | DANZIG |
 | 23,2034 CALCSXA, 23,2053 SXTANG, 23,2076 SXTANG1 | sextant shaft and trunnion angles for a star: CALL *SMNB*, MXV NB2NB1, RTB TRANSP1/TRANSP2, VXV, UNIT, CALL ARCTRIG, ACOS, RTB 1STO2S | GOTO 28D (the caller), *SMNB*, ARCTRIG |

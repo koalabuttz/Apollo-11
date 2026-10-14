@@ -27,6 +27,22 @@
 #define MISSION IF_(0u,1u)
 enum { rEDOP = 023, rCYR = 020, rNEWJOB = 067, rADDRWD = 0116, rPOLISH = 0117, rFIXLOC = 0120, rLOC = 0164, rBANKSET = 0165 };
 enum { DONE = 0, MORE = 1, REFUSE = 2 };
+/* Whether STORE,1 or STORE,2 would store outside erasable (#422): a
+ * negative indexed address takes STORE's work-area branch, and FIXLOC plus
+ * that address lies above 01777, where INDEX ADDRWD turns the DXCH into
+ * another instruction. Refused: indexed erasable stays inside erasable. */
+static uint8_t store_outside(const apollo_overlay_state *s, agc_word code)
+{
+    unsigned kind = (code >> 11) & 7u, nx, a;
+    if (kind - 1u > 1u) return 0;
+    nx = ~(unsigned)W[(W[rFIXLOC] + (kind == 1u ? 046u : 047u)) & 01777u] & 077777u;   /* X1, X2 */
+    if (nx < 040000u) return 0;
+    a = (code & 03777u) + nx; if (a > 077777u) a -= 077777u;
+    if (!(a & 040000u)) return 0;
+    a += W[rFIXLOC]; if (a > 077777u) a -= 077777u;
+    return a > 01777u;
+}
+
 static const agc_word indjump[32] = IRT_INDJUMP, miscjump[16] = IRT_MISCJUMP, unajump[15] = IRT_UNAJUMP;
 
 /* Physical rope address of fixed logical address a under bank register b
@@ -214,6 +230,8 @@ static uint8_t order(apollo_overlay_state *s, p66_bias_io *io, unsigned c)
     case 014: lmi_vsq(s); break;
     case 015:
         if (!code_word(s, sb, 1u, &w)) return REFUSE;
+        /* (STADR's store code: CS 0; AD NEGONE.) */
+        if (store_outside(s, (agc_word)(w & 077777u ? (~(unsigned)w & 077777u) - 1u : 077776u))) return REFUSE;
         lmi_stadr(s, w); break;
     case 016: lmi_rvq(s); return DONE;
     default: lmi_push(s); break;
@@ -232,7 +250,7 @@ static enum exec_status run(apollo_overlay_state *s, p66_bias_io *io)
         switch (W[5]) {
         case IRT_NEWOPS:
             if (!code_word(s, io->superbank, 0u, &w)) return EXEC_OUT_OF_SCOPE;
-            if (!(w & 040000u)) { lmi_store_code(s, w); break; }
+            if (!(w & 040000u)) { if (store_outside(s, w)) return EXEC_OUT_OF_SCOPE; lmi_store_code(s, w); break; }
             lmi_newops(s, w);
             r = order(s, io, ((~(unsigned)w & 077777u) - 1u) & 0177u); break;
         case IRT_DANZIG:

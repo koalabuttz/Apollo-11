@@ -4,8 +4,8 @@
   "release": "evidence-interpreter",
   "files": {
     "interp-core-differential.log": {
-      "sha256": "641a30c8bf6f6a9f25beb53cc9782efe192eae89bc2dc8708e4420955872f715",
-      "bytes": 3028,
+      "sha256": "ed8224cdb51203d688c981e3039499cae69d1067099e5df3c9a9f374f012e83b",
+      "bytes": 3160,
       "store": "tree"
     },
     "interp-core-fuzz.log": {
