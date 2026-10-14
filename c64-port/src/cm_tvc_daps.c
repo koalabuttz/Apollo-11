@@ -7,6 +7,7 @@
 #include "cm_tvc_daps.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
+#include "agc_channel_ops.h"
 #define W s->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -23,6 +24,15 @@ void interp_routine_trace(const apollo_overlay_state *);
 
 static MAYBE_UNUSED void next(apollo_overlay_state *s){cmi_danzig_next(s);}
 static MAYBE_UNUSED void right(apollo_overlay_state *s){cmi_danzig_right(s);}
+/* The program's output channels (agc_ch_op), set by the wrappers. */
+#ifdef AGC_CHANNELS_HW
+extern agc_hardware AGC_CHANNELS_HW;
+#define agc_channels_hw (&AGC_CHANNELS_HW)
+#define AGC_CH_HW_SET(p) ((void)(p),1)
+#else
+static MAYBE_UNUSED agc_hardware *agc_channels_hw;
+#define AGC_CH_HW_SET(p) ((agc_channels_hw=(p)->hardware)!=0)
+#endif
 /* SETPD as the last order of a pair: NOIBNKSW CCS EDOP (+0); CCS NEWJOB
  * (+0); INCR LOC; NEWOPS. */
 static MAYBE_UNUSED void setpd_next(apollo_overlay_state *s){(void)ai_ccs(s,023);(void)ai_ccs(s,067);ai_incr(s,0164);W[5]=06037;}
@@ -94,7 +104,7 @@ static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_b
  io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}
 /* Channel orders on the mission's output channels, as yaAGC's. */
 static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){
- switch(k){case 05:return &cm_channels.channel05;case 06:return &cm_channels.channel06;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &cm_channels.channel30;case 031:return &cm_channels.channel31;case 032:return &cm_channels.channel32;case 033:return &cm_channels.channel33; default:return 0;}
+ switch(k){case 05:return &agc_channels_hw->channel5;case 06:return &agc_channels_hw->channel6;case 011:return &io->channel11;case 012:return &io->channel12;case 013:return &io->channel13;case 014:return &io->channel14;case 030:return &agc_channels_hw->channel30;case 031:return &agc_channels_hw->channel31;case 032:return &agc_channels_hw->channel32;case 033:return &agc_channels_hw->channel33; default:return 0;}
 }
 static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}
@@ -2558,63 +2568,72 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #if (CM_TVC_DAPS_KEEP0 >> 0) & 1
 /* 20,2530 PITCHDAP (GENADR PITCHDAP) */
 static enum exec_status r40530_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16728u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 1) & 1
 /* 20,2541  (return from HACK) */
 static enum exec_status r40541_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16737u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 2) & 1
 /* 20,2543 PCDUDOTS (return from HACK) */
 static enum exec_status r40543_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16739u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 3) & 1
 /* 20,2675  (entry 20,2675 (TVCRESTARTS.agc CADR PCOPY      +1)) */
 static enum exec_status r40675_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16829u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 4) & 1
 /* 20,2732 YAWDAP (GENADR YAWDAP) */
 static enum exec_status r40732_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16858u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 5) & 1
 /* 20,2743  (return from HACK) */
 static enum exec_status r40743_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16867u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 6) & 1
 /* 20,2745 YINTEGRL (return from HACK) */
 static enum exec_status r40745_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16869u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 7) & 1
 /* 20,3051  (entry 20,3051 (TVCRESTARTS.agc CADR YCOPY      +1)) */
 static enum exec_status r41051_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16937u);
 }
 #endif
 #if (CM_TVC_DAPS_KEEP0 >> 8) & 1
 /* 20,3107 DAPINIT (entry DAPINIT (TVCINITIALIZE.agc 2CADR DAPINIT)) */
 static enum exec_status r41107_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,16967u);
 }
 #endif

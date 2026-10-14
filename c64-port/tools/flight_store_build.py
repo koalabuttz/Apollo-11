@@ -83,9 +83,7 @@ SPLIT_LIMIT = 65536
 # The io record each source's tables take (include/flight_io.h), where it is
 # not the mission's base record (LM p66_bias_io, CM cm_native_io).
 IO_KIND = {
-    'lm': {'lm_fresh_start': 'LM_FRESH', 'lm_dapidler': 'LM_FLIGHT', 'lm_q_r_axis': 'LM_FLIGHT',
-           'lm_trim_gimbal': 'LM_FLIGHT', 'lm_landing_displays': 'LM_FLIGHT', 'lm_p_axis': 'LM_FLIGHT',
-           'lm_throttle': 'LM_FLIGHT', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
+    'lm': {'lm_fresh_start': 'LM_FRESH', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
            'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
            'lanec_pin_routines': 'LM_DNTM',
@@ -104,7 +102,7 @@ TABLE_DEF = re.compile(r'^const agc_routine_table\s+([A-Za-z0-9_]+)\s*=', re.M)
 
 # The record type of each kind (include/flight_io.h flight_io_buffer).
 IO_TYPE = {'P66': 'p66_bias_io', 'CM_NATIVE': 'cm_native_io', 'LM_FRESH': 'lm_fresh_io',
-           'LM_FLIGHT': 'lm_flight_io', 'LM_SV': 'lm_sv_io', 'LM_LLD': 'lm_lld_io', 'LM_IPT': 'lm_ipt_io',
+           'LM_SV': 'lm_sv_io', 'LM_LLD': 'lm_lld_io', 'LM_IPT': 'lm_ipt_io',
            'LM_BB': 'lm_bb_io', 'LM_AGS': 'lm_ags_io', 'LM_IMU': 'lm_imu_io', 'LM_DNTM': 'lm_dntm_io',
            'CM_FRESH': 'cm_fresh_io', 'CM_DNTM': 'cm_dntm_io', 'LM_CHANNEL': 'lm_channel_io',
            'CM_CHANNEL': 'cm_channel_io'}
@@ -314,13 +312,13 @@ def lane_slot(stem, mission, owners, place):
 # Image ops a flight module takes from the resident kernel's k_* services
 # (platform/c64/flight_image_op_services.c, docs/overlay-v2-services.json).
 SHARED_OPS = ('ca caf cs csf ad adf maskf ts xch lxch ads dxch ccs tc dcaf bzf bzmf').split()
-# Modules use the resident's rk_hardware, rk_flight and (CM) cm_channels
-# records and its interrupt count (platform/c64/resident_flight.h
-# RK_HARDWARE, RK_FLIGHT_IO, RK_CM_CHANNELS, RK_IRQ_COUNT), not copies of
-# their own.
-CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc'],
-            'cm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc,'
-                   '--defsym=cm_channels=0x6ff4']}
+# Modules use the resident's rk_hardware and rk_flight records and its
+# interrupt count (platform/c64/resident_flight.h RK_HARDWARE, RK_FLIGHT_IO,
+# RK_IRQ_COUNT), not copies of their own. Compiled routines reach the
+# channels in rk_hardware by name (tools/interp_compile.py AGC_CHANNELS_HW).
+CHANNELS = {m: ['-DAGC_CHANNELS_HW=rk_hardware',
+                '-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc']
+            for m in ('lm', 'cm')}
 
 
 # Slot classes a flight module links for (include/overlay_v2.h): job, task,
@@ -388,8 +386,6 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         undefined = sorted(set(re.findall(r'undefined symbol: (\S+)', r.stderr)))
         return dict(ok=False, overflow=max(over) if over else None, undefined=undefined,
                     error=None if over else [l for l in r.stderr.splitlines() if 'error' in l][:4])
-    if re.search(r'\((?:\.bss|\.data)\.cm_channels\)', (ROOT / f'{prg}.map').read_text()):
-        raise SystemExit(f'{prg}: links its own cm_channels (CHANNELS)')
     return dict(ok=True, bytes=(ROOT / prg).stat().st_size - 2)
 
 

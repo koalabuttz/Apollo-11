@@ -134,10 +134,12 @@ class Basic:
         if self.lm_channels:
             self.channels = {}
         elif self.channels == 'all':
-            # Every channel of the CM io record (include/cm_native_image.h).
-            # (5, 6 and 30-33 in cm_channels, beside it.)
+            # Every channel of the CM io record (include/cm_native_image.h),
+            # and 5, 6 and 30-33 in the program's agc_hardware (set by the
+            # wrappers, which refuse a program without one).
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
-            self.channels.update({k: 'cm_channels.channel%02o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+            self.channels.update({k: 'agc_channels_hw->channel%o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+            self.cp.uses_hw = True
             # SUPERBNK (7) too, only in files that name it (EXTENDED_VERBS'
             # GOLOADLV), so no other file's helpers change.
             self.cm_superbank = True
@@ -1105,7 +1107,7 @@ class Basic:
         c = ['/* Channel orders on the mission\'s output channels, as yaAGC\'s. */']
         c.append('static MAYBE_UNUSED agc_word *chan(cm_native_io *io,unsigned k){')
         c.append(' switch(k){%s default:return 0;}' % ''.join(
-            'case 0%o:return &%s;' % (k, v if '.' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
+            'case 0%o:return &%s;' % (k, v if '->' in v else 'io->' + v) for k, v in sorted(self.channels.items())))
         c.append('}')
         c.append('static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}')
         c.append('static MAYBE_UNUSED void ch_read(apollo_overlay_state *s,cm_native_io *io,unsigned k){W[0]=agc_extend(*chan(io,k));}')
