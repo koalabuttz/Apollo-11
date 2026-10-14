@@ -36,6 +36,7 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
  irc_inputs(c,&lio.in);cio.in=lio.in;
  {uint16_t *w=(uint16_t *)&cm_channels;for(i=0;i<sizeof cm_channels/sizeof *w;++i)w[i]=0;}
  if(irc_ch_on)irc_cm_io(&cio.io,0);
+ if(!c->cm){if(p->hardware){agc_hardware z={0};*p->hardware=z;}if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);

@@ -22,7 +22,7 @@ void irc_cm_io(void *cm_io,unsigned save){cm_native_io *io=(cm_native_io *)cm_io
 /* Luminary ('channels': 'all', include/agc_channel_ops.h): the outputs in
  * the program's agc_hardware (h may be NULL), 030-033 in the run's latched
  * inputs, the traps in channel 013's bits 12-14 there. */
-static void irc_lm_io(agc_hardware *h,agc_input_channels *in,unsigned save){
+void irc_lm_io(agc_hardware *h,agc_input_channels *in,unsigned save){
  static agc_word none[6];agc_word *f[IRC_NCH];unsigned i;
  for(i=0;i<6u;++i)f[i]=&none[i];
  if(h){f[0]=&h->channel5;f[1]=&h->channel6;f[2]=&h->channel11;f[3]=&h->channel12;f[4]=&h->channel13;f[5]=&h->channel14;}
