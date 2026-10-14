@@ -147,6 +147,7 @@ class Basic:
         self.data_landings = set()
         self.erasable_refs = set()   # erasable addresses the basic code names
         self.channels_used = set()   # I/O channels its channel orders name
+        self.inputs_used = set()     # latched input channels it reads (AGC_CHANNEL)
 
     # ---- addresses -------------------------------------------------------
     def bank(self, phys):
@@ -507,6 +508,14 @@ class Basic:
         here = phys
         out = self.clean_after(op, a, dyn, clean)
         cont = lambda: 'goto %s;' % self.add(nxt, False, out)
+        if op == 'RESUME' and not dyn:
+            # RESUME (INDEX 17) outside an interrupt: the next instruction is
+            # BRUPT's, run in place (yaAGC's substitute instruction); here a
+            # TCF to fixed memory, as CONTABRT stores (any other word is
+            # refused).
+            st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
+                      'W[5]=(agc_word)(b&07777u);}goto dispatch;')
+            return st
         if op in ('TC', 'TCF'):
             call = op == 'TC'
             if dyn:
@@ -622,6 +631,7 @@ class Basic:
             # An input channel the caller latches (spec 'channel_inputs',
             # include/agc_input_channels.h), as tools/interp_compile.py reads it.
             v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            self.inputs_used.add(a)
             st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)

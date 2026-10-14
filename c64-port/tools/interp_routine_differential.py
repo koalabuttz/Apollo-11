@@ -193,7 +193,11 @@ class Mission:
             # (tests/interp_case.c irc_ch_num) the file's orders name, any
             # value, but channel 13 as it reads back (no trap bits) and
             # channel 14's drive bits as below.
-            used = self.cp.channels_used | (self.cp.basic.channels_used if self.cp.basic else set())
+            # (Latched input channels the file READs count too: an edit of
+            # another channel would otherwise zero them in every case.)
+            used = self.cp.channels_used | self.cp.inputs_used
+            if self.cp.basic:
+                used |= self.cp.basic.channels_used | self.cp.basic.inputs_used
             self.io_channels = {k: {0o13: 0o43777, 0o14: 0o6777}.get(k, 0o77777)
                                 for k in sorted(used & {0o5, 0o6, 0o11, 0o12, 0o13, 0o14, 0o30, 0o31, 0o32, 0o33})}
         elif self.io_channels == 'auto':
@@ -1471,7 +1475,16 @@ def cover_check(spec_id, spec, missions, cases, path, record):
         return 1
     if spec.get('cover'):
         build_edges(spec_id, spec)      # (a freeze links it: catch a broken link here)
-    g = gcov_branches(spec_id, spec, missions, cases, rows)
+    chan = set()
+    if spec.get('partial'):
+        # (The cases the freeze left uncompared, waiting for a channel model:
+        # a native refusal in a routine with an I/O channel instruction.)
+        for i, r in enumerate(run([BUILT[1], path])):
+            mi = missions[cases[i]['cm']]
+            if r[1] != '0' and any(mi.cp.logical_of(p) == int(r[2]) for p in mi.cp.channel_blocks):
+                chan.add(i)
+        out['waiting_for_io_channels'] = len(chan)
+    g = gcov_branches(spec_id, spec, missions, cases, rows, chan=chan)
     out.update(verified=True, host_taken=g['host_taken'], c64_taken=g['c64_taken'],
                missing=g['missing'], missing_count=g['host_taken_not_c64'])
     print(json.dumps(out))
@@ -1491,10 +1504,12 @@ def cover_counts(covers, c64_ids):
                     'differential\'s cases reach, and those the C64 cases reach'}
 
 
-def gcov_branches(spec_id, spec, missions, cases, c64_ids):
+def gcov_branches(spec_id, spec, missions, cases, c64_ids, chan=()):
     """The certificate reviewer's check: gcc -O0 --coverage builds of the
     host runner over every linked source, one run on all the differential's
-    cases and one on the C64 cases; gcov -b's taken branch outcomes of each."""
+    cases and one on the C64 cases; gcov -b's taken branch outcomes of each.
+    chan: with 'partial', the cases waiting for an I/O channel model, which
+    no C64 row can take (they are not compared): left out of the host run."""
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
     srcs = list(dict.fromkeys(srcs + [spec['target']]))
     # The same step limit as the freeze (host_arcs), or a case that runs
@@ -1503,7 +1518,10 @@ def gcov_branches(spec_id, spec, missions, cases, c64_ids):
     # (C64 rows past the differential's cases are truncated ones, 'c64_cuts'.)
     every = CUT_ROWS_CASES if len(CUT_ROWS_CASES) > len(cases) else cases
     res = {}
-    for tag, sel in (('host', range(len(cases))), ('c64', sorted(set(c64_ids)))):
+    host = range(len(cases))
+    if spec.get('partial') and chan:
+        host = [i for i in host if i not in chan]
+    for tag, sel in (('host', host), ('c64', sorted(set(c64_ids)))):
         w = os.path.join(B, '%s-gcov-%s' % (spec_id, tag))
         shutil.rmtree(w, ignore_errors=True)
         os.makedirs(w)
@@ -1644,7 +1662,9 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
     c64, rows_cover = freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers, chan, edges)
     if cover is not None:
         sets, where = edges
-        got = set().union(*(sets[i] for g in C64_PICKS for i in g))
+        # (Truncated 'c64_cuts' rows sit past the traced cases: they count in
+        # the gcov record, not here, so this stays a lower bound.)
+        got = set().union(*(sets[i] for g in C64_PICKS for i in g if i < len(sets)))
         live = [i for i in range(len(cases)) if i not in chan]
         target = set().union(*(sets[i] for i in live))
         cover['edges_c64'] = len(got)
@@ -1658,7 +1678,7 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
              **({'c64_coverage': cover_counts(covers, [i for g in c64 for i in g['case_ids']])} if covers else {}),
              **({'c64_gcov_branches': gcov_branches(spec_id, spec, missions, cases,
                                                     (C64_ROW_IDS or [i for g in c64 for i in g['case_ids']]) if covers else
-                                                    [i for g in C64_PICKS for i in g])}
+                                                    [i for g in C64_PICKS for i in g], chan=chan)}
                 if covers or spec.get('c64_rows') == 'cover' else {}),
              **({'c64_host_only': C64_HOST_ONLY} if C64_HOST_ONLY else {}),
              **({'c64_segments': {'method': 'from the case\'s routine to the CHANG2 resume LOC after it (that routine '

@@ -1,0 +1,41 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+96b1607af21fbb02a5eb629fbd7604fe97728fcdd22f0a16fe3baf749257c681  build/r60-r62-1.prg
+4375a2b588b41921b0423ee9ab0d65121a1d54a56461dca8ad8d83f3868b4818  build/r60-r62-2.prg
+3a0d9cdc7abb580b05efa12120701f66b153f3c3f1eaa311e4f9b3e83dc85f17  build/r60-r62-3.prg
+52f5060249165632a17cf63cd5349626dc8abbe14ed191eb7c8d905ab7f35643  build/r60-r62-4.prg
+1ec4430a4fb842b55c932a5e7ca5751d351270c32b5173db98bc1b746d7896ca  build/r60-r62-5.prg
+4189a28300078a8c07eab4bba435d4b5c2cffd65bd6eb12ecb014f095730a008  build/r60-r62-6.prg
+f7ce9b58f7a9976703c4c8699c25cb1acf8db40f80f8fbfe8d23bd6e5afffa1a  build/r60-r62-7.prg
+11c15faf6ea3a60a522e0ed4996594e48aa5bdbbb3bebbd41497ce14492152ea  build/r60-r62-8.prg
+b0c047ad024d5b4168d53af5e5c7c09c24ffd95817d327fe323c9cc3b368a814  build/r60-r62-9.prg
+
+$ make vice-r60-r62
+for p in build/r60-r62-1.prg build/r60-r62-2.prg build/r60-r62-3.prg build/r60-r62-4.prg build/r60-r62-5.prg build/r60-r62-6.prg build/r60-r62-7.prg build/r60-r62-8.prg build/r60-r62-9.prg; do echo "PRG $(basename $p) sha256 $(sha256sum $p | cut -c1-64)"; python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PRG r60-r62-1.prg sha256 96b1607af21fbb02a5eb629fbd7604fe97728fcdd22f0a16fe3baf749257c681
+PASS: VICE PAL r60-r62-1.prg: 54 checks, 0 failures
+PRG sha256: 96b1607af21fbb02a5eb629fbd7604fe97728fcdd22f0a16fe3baf749257c681 r60-r62-1.prg
+PRG r60-r62-2.prg sha256 4375a2b588b41921b0423ee9ab0d65121a1d54a56461dca8ad8d83f3868b4818
+PASS: VICE PAL r60-r62-2.prg: 24 checks, 0 failures
+PRG sha256: 4375a2b588b41921b0423ee9ab0d65121a1d54a56461dca8ad8d83f3868b4818 r60-r62-2.prg
+PRG r60-r62-3.prg sha256 3a0d9cdc7abb580b05efa12120701f66b153f3c3f1eaa311e4f9b3e83dc85f17
+PASS: VICE PAL r60-r62-3.prg: 21 checks, 0 failures
+PRG sha256: 3a0d9cdc7abb580b05efa12120701f66b153f3c3f1eaa311e4f9b3e83dc85f17 r60-r62-3.prg
+PRG r60-r62-4.prg sha256 52f5060249165632a17cf63cd5349626dc8abbe14ed191eb7c8d905ab7f35643
+PASS: VICE PAL r60-r62-4.prg: 17 checks, 0 failures
+PRG sha256: 52f5060249165632a17cf63cd5349626dc8abbe14ed191eb7c8d905ab7f35643 r60-r62-4.prg
+PRG r60-r62-5.prg sha256 1ec4430a4fb842b55c932a5e7ca5751d351270c32b5173db98bc1b746d7896ca
+PASS: VICE PAL r60-r62-5.prg: 32 checks, 0 failures
+PRG sha256: 1ec4430a4fb842b55c932a5e7ca5751d351270c32b5173db98bc1b746d7896ca r60-r62-5.prg
+PRG r60-r62-6.prg sha256 4189a28300078a8c07eab4bba435d4b5c2cffd65bd6eb12ecb014f095730a008
+PASS: VICE PAL r60-r62-6.prg: 39 checks, 0 failures
+PRG sha256: 4189a28300078a8c07eab4bba435d4b5c2cffd65bd6eb12ecb014f095730a008 r60-r62-6.prg
+PRG r60-r62-7.prg sha256 f7ce9b58f7a9976703c4c8699c25cb1acf8db40f80f8fbfe8d23bd6e5afffa1a
+PASS: VICE PAL r60-r62-7.prg: 21 checks, 0 failures
+PRG sha256: f7ce9b58f7a9976703c4c8699c25cb1acf8db40f80f8fbfe8d23bd6e5afffa1a r60-r62-7.prg
+PRG r60-r62-8.prg sha256 11c15faf6ea3a60a522e0ed4996594e48aa5bdbbb3bebbd41497ce14492152ea
+PASS: VICE PAL r60-r62-8.prg: 36 checks, 0 failures
+PRG sha256: 11c15faf6ea3a60a522e0ed4996594e48aa5bdbbb3bebbd41497ce14492152ea r60-r62-8.prg
+PRG r60-r62-9.prg sha256 b0c047ad024d5b4168d53af5e5c7c09c24ffd95817d327fe323c9cc3b368a814
+PASS: VICE PAL r60-r62-9.prg: 16 checks, 0 failures
+PRG sha256: b0c047ad024d5b4168d53af5e5c7c09c24ffd95817d327fe323c9cc3b368a814 r60-r62-9.prg
+exit 0
