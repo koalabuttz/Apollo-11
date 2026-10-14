@@ -191,15 +191,19 @@ almost no interpretive code (0-8 orders a second).
 - `make interp-runtime-size`: each mission's interpreter linked as one ABI 2
   job-slot module, id `$0A01` (lane I), with the flight store's flags.
 
-### Operands outside the E-bank window
+### Contract: erasable addresses stay inside erasable
 
 Both interpreters keep every erasable operand inside the image:
-- `ai_ea` masks an address to 01777, so an operand that an index runs past 01777 wraps into low erasable.
+- `ai_ea` masks an address to 01777. So an operand that an index or the push-down pointer runs past 01777 wraps into low erasable.
 - The original reads fixed memory there, under FB, and its writes there do nothing.
-- An indexed STORE address that overflows 11 bits is not modelled either.
+- A wild indexed STORE address wraps the same way, through the 10-bit erasable field (`src/agc_image_ops.c` `ai_ea`, `src/lm_interp_steps.c` `ea`). The AGC writes elsewhere.
 
-Flight never forms these addresses. On base 1004a6dc, `make interp-core-differential`'s 127 measurement-inc differences all come from case states with index registers far outside flight values:
-- X2 at INCOR2 is 0637 in the case state, where flight sets 162 (AXT,2 162D).
-- WIXA at FAZB1 is random.
+The core's contract is that indexed and push-down erasable addresses stay inside erasable. Every flight path keeps them there. INCOR1 and INCOR2 set X1 and X2 by AXT (at most 162D, stepping down to the S1 or S2 step), so every W+k,X operand stays inside W. FAZB1's WIXA is 6 to 54.
 
-With those values, VXM* W+198D,2 walks ADDRWD to 01777, 02001, 02003 and so on. The compiled routines reproduce the fixed reads word for word. The interpreters do not, so they differ there.
+`make interp-core-differential` (`evidence/interpreter/interp-core-differential.log`) runs 70,536 cases over every compiled milestone. 14 differ, and they are all outside the contract:
+- All 14 are in measurement-inc, at CM 36,3615-3643 (FAZB1's `STORE W +54D,1/+108D,1/+162D,1`).
+- In each of them, WIXA and X1 start far outside flight values (37777, 40000, 76553 and so on, from random entry states the spec flows from).
+- 12 of them pass an address of 02000 or more to the core's `ai_ea`. The other 2 wrap in the store itself.
+- The spec follow-up (flight-range WIXA, ZIXA, X1 and X2 states) is with the measurement-inc milestone.
+
+The other 113 differences that measurement-inc showed before #366 came from the tool. It called `flow_seed` without the spec, so the spec's `flow_from` entries were ignored.

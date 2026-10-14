@@ -3,6 +3,11 @@
   "milestone": "interpreter",
   "release": "evidence-interpreter",
   "files": {
+    "interp-core-differential.log": {
+      "sha256": "88b8db7ab62279187b489527ab1729554a2685a5edfa9f392bfa527579578db6",
+      "bytes": 5931,
+      "store": "tree"
+    },
     "interp-core-fuzz.log": {
       "sha256": "355d2e8a511f48af8247eea31de2bab1e65fa110d1727d970b32a7b4dfaba414",
       "bytes": 1517,
