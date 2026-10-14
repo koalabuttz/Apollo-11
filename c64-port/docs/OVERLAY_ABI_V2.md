@@ -88,7 +88,7 @@ module's 7.8 KB.
 | `$C000..$CBFF` | Slot class 3: pinned modules. Boot loads the store's class-3 module once by plain DMA, verifies it, zeroes its BSS and runs its main once to build its tables; from then on the resident only calls its routines directly (`rk_direct`, before the job and task slots). No resolver record names it, and a run never loads it. Before boot finishes, `$C100..$C1FF` is the store-verify scratch; test programs without a pinned module use the page for mailboxes | 3,072 |
 | `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_INVALID_ACTION`) | 1,024 |
 | `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
-| `$E000..$FFF9` | Task slot | 8,186 |
+| `$E000..$FFF9` | Task slot, or slot class 4: the pinned task region. A store with a class-4 module keeps this RAM for it: boot loads it once by plain DMA, verifies it and zeroes its BSS, and runs no main (the class-3 module's table list names its tables, so it is only called directly). Such a store has no task-slot module but one boot-only module no resolver record names (the flight resident's boundary-word module, which boot runs in the task slot before it loads class 4 over it, as boot itself runs in the job slot): every task module links for the job slot, and a task run evicts the job module between steps. No resolver record names it, and a run never loads it | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
 
 The canonical image rules from ABI 1 are unchanged. `$7000` is the only
@@ -133,7 +133,7 @@ starts with a 24-byte header, and the C entry `JMP` sits at slot base + 24.
 | 0 | 4 | `NATV` |
 | 4 | 1 | ABI version, 2 |
 | 5 | 1 | Header size, 24 |
-| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267), 3 pinned (`$C000..$CBFF`: at most one module; boot loads it once by plain DMA, zeroes its BSS and runs its main once; no resolver records, called only directly) |
+| 6 | 1 | Slot class: 0 job (`$8000`), 1 task (`$E000`), 2 fixed extension (`$D000..$DFFF`, RAM under I/O: boot loads it once with a `$FF00`-triggered DMA and verifies it; no resolver records, never loaded per job; #267), 3 pinned (`$C000..$CBFF`: at most one module; boot loads it once by plain DMA, zeroes its BSS and runs its main once, after every boot-loaded module is in; no resolver records, called only directly), 4 pinned task region (`$E000..$FFF9`: at most one module, and beside it no slot-class-1 module but one boot-only module no resolver record names; boot loads it by plain DMA and zeroes its BSS, no main; no resolver records, called only directly through the class-3 module's table list) |
 | 7 | 1 | Mission: 1 LM, 2 CM |
 | 8 | 2 | Module identity (lane << 8 \| number) |
 | 10 | 2 | Entry address, slot base + 24 |

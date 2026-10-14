@@ -1,0 +1,474 @@
+# make lm-r31-file-closure at c434601edc4dac85b2531b7c8f779f679111a6d5
+rm -f build/lm-r31-file-executed.txt build/lm-r31-file-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
+PATH=/tmp/x/wt/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/tmp/x/wt/c64-port/build/lm-r31-file-executed.txt AGC_READ_WORDS=/tmp/x/wt/c64-port/build/lm-r31-file-read.txt make --no-print-directory lm-r31-file-differential
+python3 tools/interp_routine_differential.py lm-r31-file --cases 512 --freeze
+PASS: 41984 lm-r31-file cases equal the original programs (82 routines)
+  LM 37,3113 DISPN5X: 04616 x512
+  LM 37,3116 : 05563 x512
+  LM 37,3117 : 05563 x512
+  LM 37,3120 : 04616 x512
+  LM 37,3121 V83CALL: 05126 x96, 05146 x144, 06070 x272
+  LM 37,3132 : 05126 x122, 06070 x390
+  LM 37,3134 : 06070 x512
+  LM 37,3136 : 05126 x114, 06070 x398
+  LM 37,3140 : 05126 x132, 06070 x380
+  LM 37,3142 : 05126 x141, 06070 x371
+  LM 37,3144 DOCMBASE: 05126 x129, 06070 x383
+  LM 37,3145 : 06070 x512
+  LM 37,3147 : 05126 x139, 05146 x187, 06070 x186
+  LM 37,3151 : 05126 x136, 05146 x189, 06070 x187
+  LM 37,3153 : 05126 x125, 05146 x188, 06070 x199
+  LM 37,3154 : 05126 x70, 05146 x264, 06070 x178
+  LM 37,3155 REV83: 05126 x73, 05146 x245, 06070 x194
+  LM 37,3166 : 05126 x137, 06070 x375
+  LM 37,3170 : 06070 x512
+  LM 37,3172 : 05126 x115, 06070 x397
+  LM 37,3175 : 05126 x124, 06070 x388
+  LM 37,3177 : 05126 x138, 06070 x374
+  LM 37,3201 : 05126 x127, 06070 x385
+  LM 37,3205 : 05126 x122, 06070 x390
+  LM 37,3207 : 06070 x512
+  LM 37,3211 OTHCONIC: 05126 x141, 06070 x371
+  LM 37,3213 : 05126 x118, 06070 x394
+  LM 37,3215 : 06070 x512
+  LM 37,3217 : 05126 x127, 06070 x385
+  LM 37,3222 OTHINT: 05126 x134, 06070 x378
+  LM 37,3223 : 05126 x118, 06070 x394
+  LM 37,3226 : 05126 x127, 06070 x385
+  LM 37,3230 : 05126 x117, 06070 x395
+  LM 37,3232 : 05126 x68, 06070 x444
+  LM 37,3236 : 06070 x512
+  LM 37,3240 COMPDISP: 05126 x143, 06070 x369
+  LM 37,3243 : 05126 x127, 06070 x385
+  LM 37,3246 : 05126 x137, 06070 x375
+  LM 37,3250 : 05126 x137, 06070 x375
+  LM 37,3252 : 05126 x125, 06070 x387
+  LM 37,3254 : 05126 x128, 06070 x384
+  LM 37,3255 : 05126 x130, 06070 x382
+  LM 37,3257 : 05126 x115, 06070 x397
+  LM 37,3261 : 06070 x512
+  LM 37,3263 : 05126 x124, 05146 x61, 05472 x119, 05732 x149, 06070 x59
+  LM 37,3265 : 05126 x108, 05146 x72, 05472 x135, 05732 x134, 06070 x63
+  LM 37,3267 : 05126 x135, 05146 x76, 05472 x139, 05732 x101, 06070 x61
+  LM 37,3271 : 05126 x138, 05146 x61, 05472 x140, 05732 x97, 06070 x76
+  LM 37,3274 : 05126 x123, 05146 x59, 05472 x157, 05732 x98, 06070 x75
+  LM 37,3277 : 05126 x136, 05146 x72, 05472 x145, 05732 x90, 06070 x69
+  LM 37,3300 : 05126 x125, 05146 x63, 05472 x146, 05732 x103, 06070 x75
+  LM 37,3303 : 05126 x76, 05146 x54, 05472 x116, 05732 x217, 06070 x49
+  LM 37,3304 : 05126 x142, 05146 x95, 05472 x190, 06070 x85
+  LM 37,3306 : 05126 x72, 05146 x132, 05472 x217, 06070 x91
+  LM 37,3311 : 05126 x132, 05146 x92, 05472 x192, 06070 x96
+  LM 37,3314 : 05126 x116, 05146 x100, 05472 x195, 06070 x101
+  LM 37,3315 : 05126 x34, 05146 x112, 05472 x252, 06070 x114
+  LM 37,3316 : 05126 x26, 05146 x136, 05472 x253, 06070 x97
+  LM 37,3330 : 05126 x124, 05146 x388
+  LM 37,3331 : 05126 x114, 05146 x398
+  LM 37,3334 : 05126 x125, 05146 x387
+  LM 37,3336 : 05126 x118, 05146 x394
+  LM 37,3340 : 05126 x139, 05146 x373
+  LM 37,3343 : 05146 x512
+  LM 37,3344 : 05146 x512
+  LM 37,3346 : 05126 x64, 06070 x448
+  LM 37,3347 : 05126 x66, 06070 x446
+  LM 37,3352 : 05126 x121, 06070 x391
+  LM 37,3354 : 05126 x132, 06070 x380
+  LM 37,3355 : 05126 x115, 06070 x397
+  LM 37,3357 : 05126 x122, 06070 x390
+  LM 37,3361 : 05126 x128, 06070 x384
+  LM 37,3363 GETRVN2: 06070 x512
+  LM 37,3365 : 05126 x126, 06070 x386
+  LM 37,3371 : 05126 x135, 06070 x377
+  LM 37,3373 : 06070 x512
+  LM 37,3375 : 05126 x108, 06070 x404
+  LM 37,3404 : 05126 x129, 06070 x383
+  LM 40,3674 R31CALL: 05105 x512
+  LM 40,3700 DSPDELAY: 05221 x512
+  LM 40,3702 : 05072 x265, 05221 x247
+  LM 40,3712 : 05261 x512
+case 33280 (32486) does not fit one C64 diagnostic: host only
+case 33282 (32486) does not fit one C64 diagnostic: host only
+case 33286 (32486) does not fit one C64 diagnostic: host only
+case 33288 (32486) does not fit one C64 diagnostic: host only
+case 33289 (32486) does not fit one C64 diagnostic: host only
+case 33294 (32486) does not fit one C64 diagnostic: host only
+case 33298 (32486) does not fit one C64 diagnostic: host only
+case 33303 (32486) does not fit one C64 diagnostic: host only
+case 33308 (32486) does not fit one C64 diagnostic: host only
+case 33309 (32486) does not fit one C64 diagnostic: host only
+case 33310 (32486) does not fit one C64 diagnostic: host only
+case 33312 (32486) does not fit one C64 diagnostic: host only
+case 33313 (32486) does not fit one C64 diagnostic: host only
+case 33314 (32486) does not fit one C64 diagnostic: host only
+case 33315 (32486) does not fit one C64 diagnostic: host only
+case 33318 (32486) does not fit one C64 diagnostic: host only
+case 33320 (32486) does not fit one C64 diagnostic: host only
+case 33323 (32486) does not fit one C64 diagnostic: host only
+case 33328 (32486) does not fit one C64 diagnostic: host only
+case 33330 (32486) does not fit one C64 diagnostic: host only
+case 33333 (32486) does not fit one C64 diagnostic: host only
+case 33340 (32486) does not fit one C64 diagnostic: host only
+case 33344 (32486) does not fit one C64 diagnostic: host only
+case 33348 (32486) does not fit one C64 diagnostic: host only
+case 33349 (32486) does not fit one C64 diagnostic: host only
+case 33350 (32486) does not fit one C64 diagnostic: host only
+case 33353 (32486) does not fit one C64 diagnostic: host only
+case 33361 (32486) does not fit one C64 diagnostic: host only
+case 33362 (32486) does not fit one C64 diagnostic: host only
+case 33365 (32486) does not fit one C64 diagnostic: host only
+case 33380 (32486) does not fit one C64 diagnostic: host only
+case 33382 (32486) does not fit one C64 diagnostic: host only
+case 33385 (32486) does not fit one C64 diagnostic: host only
+case 33390 (32486) does not fit one C64 diagnostic: host only
+case 33393 (32486) does not fit one C64 diagnostic: host only
+case 33394 (32486) does not fit one C64 diagnostic: host only
+case 33398 (32486) does not fit one C64 diagnostic: host only
+case 33406 (32486) does not fit one C64 diagnostic: host only
+case 33410 (32486) does not fit one C64 diagnostic: host only
+case 33415 (32486) does not fit one C64 diagnostic: host only
+case 33418 (32486) does not fit one C64 diagnostic: host only
+case 33419 (32486) does not fit one C64 diagnostic: host only
+case 33425 (32486) does not fit one C64 diagnostic: host only
+case 33429 (32486) does not fit one C64 diagnostic: host only
+case 33430 (32486) does not fit one C64 diagnostic: host only
+case 33431 (32486) does not fit one C64 diagnostic: host only
+case 33435 (32486) does not fit one C64 diagnostic: host only
+case 33437 (32486) does not fit one C64 diagnostic: host only
+case 33438 (32486) does not fit one C64 diagnostic: host only
+case 33439 (32486) does not fit one C64 diagnostic: host only
+case 33440 (32486) does not fit one C64 diagnostic: host only
+case 33441 (32486) does not fit one C64 diagnostic: host only
+case 33442 (32486) does not fit one C64 diagnostic: host only
+case 33443 (32486) does not fit one C64 diagnostic: host only
+case 33446 (32486) does not fit one C64 diagnostic: host only
+case 33448 (32486) does not fit one C64 diagnostic: host only
+case 33450 (32486) does not fit one C64 diagnostic: host only
+case 33451 (32486) does not fit one C64 diagnostic: host only
+case 33452 (32486) does not fit one C64 diagnostic: host only
+case 33456 (32486) does not fit one C64 diagnostic: host only
+case 33458 (32486) does not fit one C64 diagnostic: host only
+case 33460 (32486) does not fit one C64 diagnostic: host only
+case 33464 (32486) does not fit one C64 diagnostic: host only
+case 33466 (32486) does not fit one C64 diagnostic: host only
+case 33467 (32486) does not fit one C64 diagnostic: host only
+case 33468 (32486) does not fit one C64 diagnostic: host only
+case 33469 (32486) does not fit one C64 diagnostic: host only
+case 33471 (32486) does not fit one C64 diagnostic: host only
+case 33472 (32486) does not fit one C64 diagnostic: host only
+case 33474 (32486) does not fit one C64 diagnostic: host only
+case 33475 (32486) does not fit one C64 diagnostic: host only
+case 33477 (32486) does not fit one C64 diagnostic: host only
+case 33479 (32486) does not fit one C64 diagnostic: host only
+case 33482 (32486) does not fit one C64 diagnostic: host only
+case 33483 (32486) does not fit one C64 diagnostic: host only
+case 33484 (32486) does not fit one C64 diagnostic: host only
+case 33486 (32486) does not fit one C64 diagnostic: host only
+case 33487 (32486) does not fit one C64 diagnostic: host only
+case 33489 (32486) does not fit one C64 diagnostic: host only
+case 33495 (32486) does not fit one C64 diagnostic: host only
+case 33497 (32486) does not fit one C64 diagnostic: host only
+case 33498 (32486) does not fit one C64 diagnostic: host only
+case 33508 (32486) does not fit one C64 diagnostic: host only
+case 33511 (32486) does not fit one C64 diagnostic: host only
+case 33513 (32486) does not fit one C64 diagnostic: host only
+case 33517 (32486) does not fit one C64 diagnostic: host only
+case 33526 (32486) does not fit one C64 diagnostic: host only
+case 33529 (32486) does not fit one C64 diagnostic: host only
+case 33531 (32486) does not fit one C64 diagnostic: host only
+case 33534 (32486) does not fit one C64 diagnostic: host only
+case 33535 (32486) does not fit one C64 diagnostic: host only
+case 33540 (32486) does not fit one C64 diagnostic: host only
+case 33541 (32486) does not fit one C64 diagnostic: host only
+case 33543 (32486) does not fit one C64 diagnostic: host only
+case 33544 (32486) does not fit one C64 diagnostic: host only
+case 33547 (32486) does not fit one C64 diagnostic: host only
+case 33555 (32486) does not fit one C64 diagnostic: host only
+case 33558 (32486) does not fit one C64 diagnostic: host only
+case 33559 (32486) does not fit one C64 diagnostic: host only
+case 33562 (32486) does not fit one C64 diagnostic: host only
+case 33565 (32486) does not fit one C64 diagnostic: host only
+case 33566 (32486) does not fit one C64 diagnostic: host only
+case 33569 (32486) does not fit one C64 diagnostic: host only
+case 33580 (32486) does not fit one C64 diagnostic: host only
+case 33581 (32486) does not fit one C64 diagnostic: host only
+case 33582 (32486) does not fit one C64 diagnostic: host only
+case 33583 (32486) does not fit one C64 diagnostic: host only
+case 33586 (32486) does not fit one C64 diagnostic: host only
+case 33587 (32486) does not fit one C64 diagnostic: host only
+case 33588 (32486) does not fit one C64 diagnostic: host only
+case 33589 (32486) does not fit one C64 diagnostic: host only
+case 33594 (32486) does not fit one C64 diagnostic: host only
+case 33596 (32486) does not fit one C64 diagnostic: host only
+case 33598 (32486) does not fit one C64 diagnostic: host only
+case 33600 (32486) does not fit one C64 diagnostic: host only
+case 33601 (32486) does not fit one C64 diagnostic: host only
+case 33602 (32486) does not fit one C64 diagnostic: host only
+case 33603 (32486) does not fit one C64 diagnostic: host only
+case 33610 (32486) does not fit one C64 diagnostic: host only
+case 33612 (32486) does not fit one C64 diagnostic: host only
+case 33613 (32486) does not fit one C64 diagnostic: host only
+case 33615 (32486) does not fit one C64 diagnostic: host only
+case 33618 (32486) does not fit one C64 diagnostic: host only
+case 33620 (32486) does not fit one C64 diagnostic: host only
+case 33623 (32486) does not fit one C64 diagnostic: host only
+case 33624 (32486) does not fit one C64 diagnostic: host only
+case 33628 (32486) does not fit one C64 diagnostic: host only
+case 33631 (32486) does not fit one C64 diagnostic: host only
+case 33634 (32486) does not fit one C64 diagnostic: host only
+case 33635 (32486) does not fit one C64 diagnostic: host only
+case 33636 (32486) does not fit one C64 diagnostic: host only
+case 33638 (32486) does not fit one C64 diagnostic: host only
+case 33642 (32486) does not fit one C64 diagnostic: host only
+case 33645 (32486) does not fit one C64 diagnostic: host only
+case 33650 (32486) does not fit one C64 diagnostic: host only
+case 33656 (32486) does not fit one C64 diagnostic: host only
+case 33662 (32486) does not fit one C64 diagnostic: host only
+case 33663 (32486) does not fit one C64 diagnostic: host only
+case 33666 (32486) does not fit one C64 diagnostic: host only
+case 33668 (32486) does not fit one C64 diagnostic: host only
+case 33673 (32486) does not fit one C64 diagnostic: host only
+case 33674 (32486) does not fit one C64 diagnostic: host only
+case 33675 (32486) does not fit one C64 diagnostic: host only
+case 33677 (32486) does not fit one C64 diagnostic: host only
+case 33678 (32486) does not fit one C64 diagnostic: host only
+case 33681 (32486) does not fit one C64 diagnostic: host only
+case 33687 (32486) does not fit one C64 diagnostic: host only
+case 33692 (32486) does not fit one C64 diagnostic: host only
+case 33695 (32486) does not fit one C64 diagnostic: host only
+case 33696 (32486) does not fit one C64 diagnostic: host only
+case 33701 (32486) does not fit one C64 diagnostic: host only
+case 33702 (32486) does not fit one C64 diagnostic: host only
+case 33705 (32486) does not fit one C64 diagnostic: host only
+case 33707 (32486) does not fit one C64 diagnostic: host only
+case 33708 (32486) does not fit one C64 diagnostic: host only
+case 33709 (32486) does not fit one C64 diagnostic: host only
+case 33710 (32486) does not fit one C64 diagnostic: host only
+case 33716 (32486) does not fit one C64 diagnostic: host only
+case 33718 (32486) does not fit one C64 diagnostic: host only
+case 33723 (32486) does not fit one C64 diagnostic: host only
+case 33726 (32486) does not fit one C64 diagnostic: host only
+case 33728 (32486) does not fit one C64 diagnostic: host only
+case 33731 (32486) does not fit one C64 diagnostic: host only
+case 33734 (32486) does not fit one C64 diagnostic: host only
+case 33736 (32486) does not fit one C64 diagnostic: host only
+case 33737 (32486) does not fit one C64 diagnostic: host only
+case 33738 (32486) does not fit one C64 diagnostic: host only
+case 33746 (32486) does not fit one C64 diagnostic: host only
+case 33747 (32486) does not fit one C64 diagnostic: host only
+case 33750 (32486) does not fit one C64 diagnostic: host only
+case 33760 (32486) does not fit one C64 diagnostic: host only
+case 33761 (32486) does not fit one C64 diagnostic: host only
+case 33764 (32486) does not fit one C64 diagnostic: host only
+case 33765 (32486) does not fit one C64 diagnostic: host only
+case 33767 (32486) does not fit one C64 diagnostic: host only
+case 33769 (32486) does not fit one C64 diagnostic: host only
+case 33775 (32486) does not fit one C64 diagnostic: host only
+case 33778 (32486) does not fit one C64 diagnostic: host only
+case 33779 (32486) does not fit one C64 diagnostic: host only
+case 33781 (32486) does not fit one C64 diagnostic: host only
+case 33783 (32486) does not fit one C64 diagnostic: host only
+case 33784 (32486) does not fit one C64 diagnostic: host only
+case 33786 (32486) does not fit one C64 diagnostic: host only
+case 33791 (32486) does not fit one C64 diagnostic: host only
+case 33793 (32487) does not fit one C64 diagnostic: host only
+case 33795 (32487) does not fit one C64 diagnostic: host only
+case 33797 (32487) does not fit one C64 diagnostic: host only
+case 33798 (32487) does not fit one C64 diagnostic: host only
+case 33799 (32487) does not fit one C64 diagnostic: host only
+case 33806 (32487) does not fit one C64 diagnostic: host only
+case 33807 (32487) does not fit one C64 diagnostic: host only
+case 33813 (32487) does not fit one C64 diagnostic: host only
+case 33814 (32487) does not fit one C64 diagnostic: host only
+case 33816 (32487) does not fit one C64 diagnostic: host only
+case 33818 (32487) does not fit one C64 diagnostic: host only
+case 33819 (32487) does not fit one C64 diagnostic: host only
+case 33821 (32487) does not fit one C64 diagnostic: host only
+case 33822 (32487) does not fit one C64 diagnostic: host only
+case 33823 (32487) does not fit one C64 diagnostic: host only
+case 33825 (32487) does not fit one C64 diagnostic: host only
+case 33826 (32487) does not fit one C64 diagnostic: host only
+case 33827 (32487) does not fit one C64 diagnostic: host only
+case 33829 (32487) does not fit one C64 diagnostic: host only
+case 33831 (32487) does not fit one C64 diagnostic: host only
+case 33832 (32487) does not fit one C64 diagnostic: host only
+case 33833 (32487) does not fit one C64 diagnostic: host only
+case 33836 (32487) does not fit one C64 diagnostic: host only
+case 33837 (32487) does not fit one C64 diagnostic: host only
+case 33840 (32487) does not fit one C64 diagnostic: host only
+case 33842 (32487) does not fit one C64 diagnostic: host only
+case 33845 (32487) does not fit one C64 diagnostic: host only
+case 33846 (32487) does not fit one C64 diagnostic: host only
+case 33850 (32487) does not fit one C64 diagnostic: host only
+case 33851 (32487) does not fit one C64 diagnostic: host only
+case 33852 (32487) does not fit one C64 diagnostic: host only
+case 33854 (32487) does not fit one C64 diagnostic: host only
+case 33860 (32487) does not fit one C64 diagnostic: host only
+case 33862 (32487) does not fit one C64 diagnostic: host only
+case 33864 (32487) does not fit one C64 diagnostic: host only
+case 33866 (32487) does not fit one C64 diagnostic: host only
+case 33867 (32487) does not fit one C64 diagnostic: host only
+case 33868 (32487) does not fit one C64 diagnostic: host only
+case 33872 (32487) does not fit one C64 diagnostic: host only
+case 33873 (32487) does not fit one C64 diagnostic: host only
+case 33874 (32487) does not fit one C64 diagnostic: host only
+case 33881 (32487) does not fit one C64 diagnostic: host only
+case 33883 (32487) does not fit one C64 diagnostic: host only
+case 33886 (32487) does not fit one C64 diagnostic: host only
+case 33889 (32487) does not fit one C64 diagnostic: host only
+case 33891 (32487) does not fit one C64 diagnostic: host only
+case 33898 (32487) does not fit one C64 diagnostic: host only
+case 33901 (32487) does not fit one C64 diagnostic: host only
+case 33902 (32487) does not fit one C64 diagnostic: host only
+case 33903 (32487) does not fit one C64 diagnostic: host only
+case 33904 (32487) does not fit one C64 diagnostic: host only
+case 33906 (32487) does not fit one C64 diagnostic: host only
+case 33908 (32487) does not fit one C64 diagnostic: host only
+case 33910 (32487) does not fit one C64 diagnostic: host only
+case 33916 (32487) does not fit one C64 diagnostic: host only
+case 33918 (32487) does not fit one C64 diagnostic: host only
+case 33920 (32487) does not fit one C64 diagnostic: host only
+case 33921 (32487) does not fit one C64 diagnostic: host only
+case 33923 (32487) does not fit one C64 diagnostic: host only
+case 33924 (32487) does not fit one C64 diagnostic: host only
+case 33926 (32487) does not fit one C64 diagnostic: host only
+case 33929 (32487) does not fit one C64 diagnostic: host only
+case 33931 (32487) does not fit one C64 diagnostic: host only
+case 33935 (32487) does not fit one C64 diagnostic: host only
+case 33937 (32487) does not fit one C64 diagnostic: host only
+case 33938 (32487) does not fit one C64 diagnostic: host only
+case 33940 (32487) does not fit one C64 diagnostic: host only
+case 33942 (32487) does not fit one C64 diagnostic: host only
+case 33943 (32487) does not fit one C64 diagnostic: host only
+case 33945 (32487) does not fit one C64 diagnostic: host only
+case 33948 (32487) does not fit one C64 diagnostic: host only
+case 33950 (32487) does not fit one C64 diagnostic: host only
+case 33952 (32487) does not fit one C64 diagnostic: host only
+case 33953 (32487) does not fit one C64 diagnostic: host only
+case 33957 (32487) does not fit one C64 diagnostic: host only
+case 33959 (32487) does not fit one C64 diagnostic: host only
+case 33960 (32487) does not fit one C64 diagnostic: host only
+case 33961 (32487) does not fit one C64 diagnostic: host only
+case 33964 (32487) does not fit one C64 diagnostic: host only
+case 33965 (32487) does not fit one C64 diagnostic: host only
+case 33968 (32487) does not fit one C64 diagnostic: host only
+case 33971 (32487) does not fit one C64 diagnostic: host only
+case 33972 (32487) does not fit one C64 diagnostic: host only
+case 33973 (32487) does not fit one C64 diagnostic: host only
+case 33974 (32487) does not fit one C64 diagnostic: host only
+case 33975 (32487) does not fit one C64 diagnostic: host only
+case 33976 (32487) does not fit one C64 diagnostic: host only
+case 33977 (32487) does not fit one C64 diagnostic: host only
+case 33983 (32487) does not fit one C64 diagnostic: host only
+case 33984 (32487) does not fit one C64 diagnostic: host only
+case 33985 (32487) does not fit one C64 diagnostic: host only
+case 33992 (32487) does not fit one C64 diagnostic: host only
+case 33993 (32487) does not fit one C64 diagnostic: host only
+case 33997 (32487) does not fit one C64 diagnostic: host only
+case 33998 (32487) does not fit one C64 diagnostic: host only
+case 33999 (32487) does not fit one C64 diagnostic: host only
+case 34001 (32487) does not fit one C64 diagnostic: host only
+case 34002 (32487) does not fit one C64 diagnostic: host only
+case 34003 (32487) does not fit one C64 diagnostic: host only
+case 34004 (32487) does not fit one C64 diagnostic: host only
+case 34006 (32487) does not fit one C64 diagnostic: host only
+case 34007 (32487) does not fit one C64 diagnostic: host only
+case 34008 (32487) does not fit one C64 diagnostic: host only
+case 34013 (32487) does not fit one C64 diagnostic: host only
+case 34014 (32487) does not fit one C64 diagnostic: host only
+case 34019 (32487) does not fit one C64 diagnostic: host only
+case 34025 (32487) does not fit one C64 diagnostic: host only
+case 34028 (32487) does not fit one C64 diagnostic: host only
+case 34030 (32487) does not fit one C64 diagnostic: host only
+case 34032 (32487) does not fit one C64 diagnostic: host only
+case 34036 (32487) does not fit one C64 diagnostic: host only
+case 34037 (32487) does not fit one C64 diagnostic: host only
+case 34058 (32487) does not fit one C64 diagnostic: host only
+case 34061 (32487) does not fit one C64 diagnostic: host only
+case 34062 (32487) does not fit one C64 diagnostic: host only
+case 34064 (32487) does not fit one C64 diagnostic: host only
+case 34065 (32487) does not fit one C64 diagnostic: host only
+case 34066 (32487) does not fit one C64 diagnostic: host only
+case 34073 (32487) does not fit one C64 diagnostic: host only
+case 34078 (32487) does not fit one C64 diagnostic: host only
+case 34083 (32487) does not fit one C64 diagnostic: host only
+case 34085 (32487) does not fit one C64 diagnostic: host only
+case 34086 (32487) does not fit one C64 diagnostic: host only
+case 34091 (32487) does not fit one C64 diagnostic: host only
+case 34092 (32487) does not fit one C64 diagnostic: host only
+case 34093 (32487) does not fit one C64 diagnostic: host only
+case 34094 (32487) does not fit one C64 diagnostic: host only
+case 34095 (32487) does not fit one C64 diagnostic: host only
+case 34100 (32487) does not fit one C64 diagnostic: host only
+case 34101 (32487) does not fit one C64 diagnostic: host only
+case 34102 (32487) does not fit one C64 diagnostic: host only
+case 34105 (32487) does not fit one C64 diagnostic: host only
+case 34107 (32487) does not fit one C64 diagnostic: host only
+case 34108 (32487) does not fit one C64 diagnostic: host only
+case 34109 (32487) does not fit one C64 diagnostic: host only
+case 34110 (32487) does not fit one C64 diagnostic: host only
+case 34111 (32487) does not fit one C64 diagnostic: host only
+case 34113 (32487) does not fit one C64 diagnostic: host only
+case 34114 (32487) does not fit one C64 diagnostic: host only
+case 34115 (32487) does not fit one C64 diagnostic: host only
+case 34117 (32487) does not fit one C64 diagnostic: host only
+case 34118 (32487) does not fit one C64 diagnostic: host only
+case 34119 (32487) does not fit one C64 diagnostic: host only
+case 34123 (32487) does not fit one C64 diagnostic: host only
+case 34128 (32487) does not fit one C64 diagnostic: host only
+case 34129 (32487) does not fit one C64 diagnostic: host only
+case 34130 (32487) does not fit one C64 diagnostic: host only
+case 34136 (32487) does not fit one C64 diagnostic: host only
+case 34141 (32487) does not fit one C64 diagnostic: host only
+case 34148 (32487) does not fit one C64 diagnostic: host only
+case 34153 (32487) does not fit one C64 diagnostic: host only
+case 34155 (32487) does not fit one C64 diagnostic: host only
+case 34156 (32487) does not fit one C64 diagnostic: host only
+case 34160 (32487) does not fit one C64 diagnostic: host only
+case 34161 (32487) does not fit one C64 diagnostic: host only
+case 34165 (32487) does not fit one C64 diagnostic: host only
+case 34169 (32487) does not fit one C64 diagnostic: host only
+case 34174 (32487) does not fit one C64 diagnostic: host only
+case 34179 (32487) does not fit one C64 diagnostic: host only
+case 34183 (32487) does not fit one C64 diagnostic: host only
+case 34185 (32487) does not fit one C64 diagnostic: host only
+case 34189 (32487) does not fit one C64 diagnostic: host only
+case 34190 (32487) does not fit one C64 diagnostic: host only
+case 34193 (32487) does not fit one C64 diagnostic: host only
+case 34194 (32487) does not fit one C64 diagnostic: host only
+case 34196 (32487) does not fit one C64 diagnostic: host only
+case 34198 (32487) does not fit one C64 diagnostic: host only
+case 34200 (32487) does not fit one C64 diagnostic: host only
+case 34201 (32487) does not fit one C64 diagnostic: host only
+case 34203 (32487) does not fit one C64 diagnostic: host only
+case 34205 (32487) does not fit one C64 diagnostic: host only
+case 34210 (32487) does not fit one C64 diagnostic: host only
+case 34218 (32487) does not fit one C64 diagnostic: host only
+case 34219 (32487) does not fit one C64 diagnostic: host only
+case 34221 (32487) does not fit one C64 diagnostic: host only
+case 34225 (32487) does not fit one C64 diagnostic: host only
+case 34236 (32487) does not fit one C64 diagnostic: host only
+case 34239 (32487) does not fit one C64 diagnostic: host only
+case 34247 (32487) does not fit one C64 diagnostic: host only
+case 34248 (32487) does not fit one C64 diagnostic: host only
+case 34250 (32487) does not fit one C64 diagnostic: host only
+case 34251 (32487) does not fit one C64 diagnostic: host only
+case 34253 (32487) does not fit one C64 diagnostic: host only
+case 34254 (32487) does not fit one C64 diagnostic: host only
+case 34258 (32487) does not fit one C64 diagnostic: host only
+case 34260 (32487) does not fit one C64 diagnostic: host only
+case 34261 (32487) does not fit one C64 diagnostic: host only
+case 34268 (32487) does not fit one C64 diagnostic: host only
+case 34270 (32487) does not fit one C64 diagnostic: host only
+case 34278 (32487) does not fit one C64 diagnostic: host only
+case 34279 (32487) does not fit one C64 diagnostic: host only
+case 34280 (32487) does not fit one C64 diagnostic: host only
+case 34283 (32487) does not fit one C64 diagnostic: host only
+case 34284 (32487) does not fit one C64 diagnostic: host only
+case 34289 (32487) does not fit one C64 diagnostic: host only
+case 34300 (32487) does not fit one C64 diagnostic: host only
+  C64 cuts: 1 truncated rows (0 cuts the oracle does not stop at, 0 differing), 0 arcs left
+froze 2637 vectors to tests/lm_r31_file_vectors.h
+git diff --exit-code -- tests/lm_r31_file_vectors.h tests/lm_r31_file_c64_vectors.h tools/mk/lm-r31-file.groups
+rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
+python3 tools/interp_executed_closure.py lm-r31-file
+PASS: Luminary099/R31.agc: 204 words, 196 instructions, 53 executed by the oracle, 143 interpreted, 0 named unreached, 8 data
+exit 0

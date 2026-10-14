@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-interpreter",
+  "release": "evidence-cm-interpreter",
+  "files": {
+    "cm-interpreter-closure.json": {
+      "sha256": "5498b72a88b4c4ee837aec329d4759c174d05e6509a2d9f08dabd16d74a47e5f",
+      "bytes": 174470,
+      "store": "tree"
+    },
+    "cm-interpreter-differential.log": {
+      "sha256": "e58be3bff6d8b1fce9dac6f1192e6ae2d85a284641d58cdc34d313af7783933b",
+      "bytes": 1124,
+      "store": "tree"
+    },
+    "cm-interpreter-host.log": {
+      "sha256": "6ef5c61acad4447061efba225e9298db9da64fadef7d84223f7be0cbbb116ac6",
+      "bytes": 1039,
+      "store": "tree"
+    },
+    "cm-interpreter-proof.json": {
+      "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722",
+      "bytes": 71941,
+      "store": "tree"
+    },
+    "cm-interpreter-source-map.json": {
+      "sha256": "40818c5eccb11cb3c9a54fb98d9b19a1bb6011925a02fc4c728f4a1862e934ef",
+      "bytes": 251589,
+      "store": "tree"
+    },
+    "cm-interpreter-vice.log": {
+      "sha256": "f3fb5fd443db4e7614bde1590442bbc7a143c04796c03d91a73b8bab1b73b513",
+      "bytes": 955,
+      "store": "tree"
+    }
+  }
+}

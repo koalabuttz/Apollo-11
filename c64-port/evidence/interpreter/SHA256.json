@@ -3,9 +3,24 @@
   "milestone": "interpreter",
   "release": "evidence-interpreter",
   "files": {
+    "interp-core-differential.log": {
+      "sha256": "a23db9edfe65519877f6539fa485e33e1978ebafdf98bb2019c5c3ee9498576a",
+      "bytes": 6094,
+      "store": "tree"
+    },
+    "interp-core-fuzz.log": {
+      "sha256": "355d2e8a511f48af8247eea31de2bab1e65fa110d1727d970b32a7b4dfaba414",
+      "bytes": 1517,
+      "store": "tree"
+    },
     "interp-flight-vice.json": {
       "sha256": "95a1f586ba3d789480acaeb53ebc0d3a0c261c9f58f11064f1172ceca1a82ab0",
       "bytes": 28771,
+      "store": "tree"
+    },
+    "vice-interp-core.log": {
+      "sha256": "43a19d805c21e40de4ec1fb529b0b568adedbb943eedcf3d280698d74df6c6f8",
+      "bytes": 451,
       "store": "tree"
     }
   }

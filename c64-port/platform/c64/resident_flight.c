@@ -79,20 +79,25 @@ static uint8_t BOOT rk_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes
         APOLLO_REU_STATUS_END);
 }
 /* Slot class 2 at $D000 (I/O banked out), or the one class-3 module at
- * $C000: plain DMA, BSS zeroed, then its main once to build its tables,
- * which must be direct (rk_pinned). */
+ * $C000 or class-4 module at $E000: plain DMA, BSS zeroed. *user counts the
+ * class-3 modules, whose main runs once every module is in (rk_pin_main). */
 static uint8_t BOOT rk_load_fixed(void *user,uint32_t reu,const apollo_ov2_dirent *d) {
-    uint8_t *at=(uint8_t *)APOLLO_OV2_PINNED_ADDRESS;
-    const rk_module_tables *t;
-    apollo_ov2_frame f;
-    (void)user;
+    uint8_t *at=(uint8_t *)(d->slot==APOLLO_OV2_SLOT_PINNED ? APOLLO_OV2_PINNED_ADDRESS : APOLLO_OV2_TASK_ADDRESS);
     if(d->slot==APOLLO_OV2_SLOT_FIXED)
         return rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes) &&
                rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes);
-    if(rk_pinned || !rk_dma(APOLLO_REU_FETCH,at,reu,d->bytes) || !rk_dma(APOLLO_REU_VERIFY,at,reu,d->bytes))
-        return 0;
+    if(d->slot==APOLLO_OV2_SLOT_PINNED && (*(uint8_t *)user)++) return 0;
+    if(!rk_dma(APOLLO_REU_FETCH,at,reu,d->bytes) || !rk_dma(APOLLO_REU_VERIFY,at,reu,d->bytes)) return 0;
     memset((void *)(uintptr_t)(at[APOLLO_OV2_H_BSS]|(uint16_t)at[APOLLO_OV2_H_BSS+1]<<8),0,
            at[APOLLO_OV2_H_BSS_BYTES]|(uint16_t)at[APOLLO_OV2_H_BSS_BYTES+1]<<8);
+    return 1;
+}
+/* The class-3 module's main, once, to build its table list (which may name
+ * the class-4 module's tables too), which must be direct (rk_pinned). */
+static uint8_t BOOT rk_pin_main(void) {
+    uint8_t *at=(uint8_t *)APOLLO_OV2_PINNED_ADDRESS;
+    const rk_module_tables *t;
+    apollo_ov2_frame f;
     memset(&f,0,sizeof f);
     f.value=(uint16_t)(uintptr_t)&rk_env; f.state=IMAGE;
     t=(const rk_module_tables *)(uintptr_t)(at[APOLLO_OV2_H_TABLES]|(uint16_t)at[APOLLO_OV2_H_TABLES+1]<<8);
@@ -125,7 +130,6 @@ uint8_t BOOT rk_boot(void) {
 #endif
     if(!apollo_reu_store_open(&rk_store,0,RK_MISSION,RK_SERVICES_VERSION,record)) return 1;
     if(apollo_reu_store_verify(&rk_store,(uint8_t *)RK_BOOT_SCRATCH)!=APOLLO_OV2_OK) return 2;
-    if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,0)) return 4;
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);
@@ -146,6 +150,14 @@ uint8_t BOOT rk_boot(void) {
         last=first+(uint32_t)t->count*sizeof(agc_site_operand)-1u;
         if(!t->count || (first>>16)!=(last>>16)) return 3;
         boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; boundary_count=t->count;
+    }
+    /* Then the boot-loaded modules: the boundary-word module ran in the task
+     * slot first, as boot itself runs in the job slot, and a class-4 module
+     * now takes its place there, so the runtime forgets it. */
+    {
+        uint8_t pinned=0;
+        if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,&pinned) || (pinned && !rk_pin_main())) return 4;
+        rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]=0;
     }
     *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
     return 0;
