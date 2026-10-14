@@ -10639,7 +10639,7 @@
       "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
       "bytes": 34716,
       "lines": 1764,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10651,7 +10651,7 @@
             "src/rtb_angles.c",
             "src/rtb_modes.c"
           ],
-          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 178 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 509 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P34-P35.md"
         },
         {
@@ -10727,7 +10727,7 @@
           "verification": "docs/LM-S3435B.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10742,7 +10742,6 @@
           "The interpreter exits POODOO and ALARM (ACOSABRT among them)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-source-map.json",
@@ -10766,6 +10765,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
             "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-419.md",
+            "sha256": "ee81946d5922215c3b908d6d661b05f031179407a653cac32e9ba9ba7f7ec6a8"
           }
         }
       }
@@ -10918,7 +10921,7 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10944,7 +10947,7 @@
           "verification": "docs/LM-P70-P71-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10988,6 +10991,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json",
             "sha256": "b4b1c45f0de47a0328980fb252abb4c546b67a610fc6f8ffe745b04a20ded456"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-408.md",
+            "sha256": "6e179a61946e45df3fc00b14ae83cd2c053c6442c4216dc84214b3410d53acf9"
           }
         }
       }
