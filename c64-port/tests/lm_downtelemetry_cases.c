@@ -39,7 +39,7 @@ uint32_t lm_dntm_digest(apollo_overlay_state *s,uint16_t n,enum exec_status *sta
  sum_a=sum_b=0;*status=EXEC_OK;lm_dntm_begin(s,&io,n);
  for(k=0;k<steps;++k){lm_dntm_entry(s,&io,n,k);
   if((*status=lm_dntm_downrupt(s,&io))!=EXEC_OK)return 0;
-  mix(io.channel13);mix(io.channel34);mix(io.channel35);}
+  mix(io.channel13);mix(io.channel34);mix(io.channel35);mix((uint16_t)(s->words[2]&077777u));}
  mix(io.trap31a);mix(io.trap31b);mix(io.trap32);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;

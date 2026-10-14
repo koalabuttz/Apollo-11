@@ -183,7 +183,8 @@ L3577:
  goto L3714;
 L3620: /* WOZERO */
  ai_csf(s,k(K_BIT7));wand13(s,x);
- ret=ai_word(s,Q);ai_tc(s,03624u);           /* 3623 TC Q */
+ ret = ai_word(s, Q);
+ ai_tc(s, 3u); /* 3623 TC Q: the TC in Q runs, leaving Q = 3 */
  if(ret==03576u)goto L3576;
  if(ret==03773u)goto L3773;
  return EXEC_OUT_OF_SCOPE;
