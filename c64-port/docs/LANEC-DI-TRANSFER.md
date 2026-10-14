@@ -73,13 +73,13 @@ has no routine. A chain that ends where the original goes on (inside
 INTER-BANK or the file at a point no routine of this program claims, reached
 through a module case's random return address) is refused with the state
 restored: 1,136 cases are identical and 28 refused. `tools/lanec/cover.py`
-picks the 63 cases that together take every branch arc the 1,164 host cases
+picks the 64 cases that together take every branch arc the 1,164 host cases
 take into `tests/lanec_di_transfer_c64_c64.h`; they include BANKJUMP, the
 SAVELOCS return, fixed-fixed resolution and Comanche055 round trips. The C64
 build carries those rows only, one program per mission
 (`build/lanec-di-transfer.prg` for Luminary099, `-cm.prg` with
 `LANEC_DI_C64_CM`): `make vice-lanec-di-transfer` runs both on a VICE PAL C64
-(54 and 9 checks).
+(55 and 9 checks).
 
 ## The other four modules on the C64 (`di-transfer-c64m`)
 
@@ -99,18 +99,22 @@ A case registers INTER-BANK and its destination's module only. A module's
 routines run on through some of the other modules' points (a mark display
 runs the display-start code to its exits), so the oracle stops at the other
 modules' points that the module's own suite never runs through
-(`c64m_stops_<mission>_<module>`, from the oracle's `LANEC_TRACE` of
-`di-<module>`), which is where the native chain ends too. 1,116 cases are
-identical and 32 refused with the state restored: chains that end inside
+(from the oracle's `LANEC_TRACE` of `di-<module>`), which is where the
+native chain ends too. 1,110 cases are identical and 38 refused with the state restored: chains that end inside
 INTER-BANK or the file at a point only an unlinked module claims, reached
 through a module case's random return address.
 
-The C64 runs the rows `tools/lanec/cover.py pick di-transfer-c64m` chose
-(`tests/lanec_di_transfer_c64m_c64.h`), one program per module and mission
-(`build/lanec-di-transfer-<module>-<lm|cm>.prg`, macro
-`LANEC_DI_C64M_<MODULE>_<LM|CM>`; `routines.py di` writes each program's rows
-to `tests/lanec_di_transfer_c64m_rows.h`). `make vice-lanec-di-transfer-c64m`
-runs all eight.
+The C64 runs the 111 rows `tools/lanec/cover.py` chose to take every branch
+arc of the host cases (`tests/lanec_di_transfer_c64m_c64.h`). Some mark
+chains run on through nvdsp points (and sleep through idle), so the programs
+link the modules in two groups, mark with nvdsp and sleep with idle, one
+program per group and mission (`build/lanec-di-transfer-<m0>-<m1>-<lm|cm>.prg`,
+macro `LANEC_DI_C64M_<M0>_<M1>_<LM|CM>`, stops `c64m_stops_<mission>_<m0>_<m1>`:
+the other modules' points that neither group suite runs through).
+`routines.py di` writes each program's rows to
+`tests/lanec_di_transfer_c64m_rows.h`. `make vice-lanec-di-transfer-c64m`
+runs all four (41 and 10 checks for mark and nvdsp, 51 and 9 for sleep and
+idle).
 
 The host suite `di-transfer` has no C64 program of its own (with the
 Executive the round trip does not fit one). The certificate's
@@ -140,10 +144,13 @@ refused with the image and I/O unchanged (`diff.py --refusals-only`).
 Hashes: `evidence/lanec-di-transfer/SHA256.json`.
 
 - Independent assembly comparison: `lanec-di-transfer-diff.json`,
-  `lanec-di-transfer-c64-diff.json` and their oracle CRCs (996 and 1,164
-  cases, zero differing; 28 of the C64 cases refused unchanged) and `lanec-di-refuse-diff.json` (384 cases, all
-  refused unchanged).
+  `lanec-di-transfer-c64-diff.json`, `lanec-di-transfer-c64m-diff.json` and
+  their oracle CRCs (996, 1,164 and 1,148 cases, zero differing; 28 and 38
+  of the C64 cases refused unchanged) and `lanec-di-refuse-diff.json` (384
+  cases, all refused unchanged).
 - Host and sanitizer results: `make test-lanec-di-transfer
   sanitize-lanec-di-transfer` (`lanec-di-transfer-sanitize.txt`).
-- C64 execution results: `make vice-lanec-di-transfer`, 63 checks (54
-  Luminary099, 9 Comanche055), 0 failures (`lanec-di-transfer-vice.txt`).
+- C64 execution results: `make vice-lanec-di-transfer
+  vice-lanec-di-transfer-c64m`, 175 checks (64 in the display-start and
+  MAKEPLAY programs, 111 in the mark/nvdsp and sleep/idle programs), 0
+  failures (`lanec-di-transfer-vice.txt`).

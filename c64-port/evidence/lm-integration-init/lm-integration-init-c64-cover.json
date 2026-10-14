@@ -2,11 +2,11 @@
  "milestone": "lm-integration-init",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_integration_init.c": "820b8900833a9257c460b4ecae872ae5e4e072d4cde5b0b609f165932132b25c",
+  "src/lm_integration_init.c": "d42ce45fabaac068e7c8970439bd89a9da1150dfa71f9893438599cfcdfa5330",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
   "src/rtb_agreement.c": "1b5a434bdcb5ade9579495d1d24936b08681965b8d2ca195b8b288c71c556be8",
-  "src/lm_integration_moves.c": "f8e22a73acc39ef572ec7d798405a2b74fa23b53d295b1385153c966ef460de6",
-  "src/lm_interp_orders.c": "3e01539e4314e13e98f4407a24e23782f7b4acdaf484a48bf607375a6fa3fcdd",
+  "src/lm_integration_moves.c": "363cdb80fd3678c5e1dfdda9f0ba9b03d1ab97e4eff6ca23fd8bcab3996b8b3b",
+  "src/lm_interp_orders.c": "e2996e140562d04d289224de90ada55f9fc328bb11bf899394619b3c27f5a71a",
   "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
   "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
@@ -15,7 +15,7 @@
   "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "8929d9a08267aa85d2dff2635a3a78a54bb9fdc6544815fb301d66f8084ee613",
+  "tests/interp_case.c": "a5bf4f4bdda9311dd537d88fbfb1c0d56521ee1ea516fc1f5430c7722ac62153",
   "tests/lm_integration_init_target.c": "b7d13ff38b7476baf7c8ea81a4f23579f349ee8a4b38c2dda150daf295290152"
  },
  "host_cases": 41664,
@@ -281,8 +281,8 @@
   41304,
   41544
  ],
- "host_branch_arcs": 1685,
- "c64_branch_arcs": 1685,
+ "host_branch_arcs": 1690,
+ "c64_branch_arcs": 1690,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    17,
@@ -321,10 +321,18 @@
    14
   ],
   "src/lm_interp_orders.c": [
-   227,
-   227
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
+   228,
+   228
   ],
   "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
    48,
    48
   ],
@@ -337,8 +345,8 @@
    25
   ],
   "tests/interp_case.c": [
-   32,
-   32
+   36,
+   36
   ],
   "tests/lm_integration_init_target.c": [
    0,

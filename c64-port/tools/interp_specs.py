@@ -193,16 +193,18 @@ def integration_joint():
 def ddv_majors_joint():
     """COMTERM's DDV ALPHAM with the divisor's major part one above the
     dividend's (lm_interp_orders.c's equal-majors normalisation after
-    MPAC+ AD BUF), signs varied, MODE DP. Otherwise only long 11,2606-2620
+    MPAC+ AD BUF), signs varied (the divisor's minor part of either sign,
+    for the BUF+1 sign-agreement step), MODE DP. Otherwise only long 11,2606-2620
     runs reach it. Half the cases keep the random states."""
     sets = []
     for hi in (0o1, 0o1234, 0o17777, 0o30000):
         for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
             for sm in (1, -1):
                 for sa in (1, -1):
-                    sgn = lambda v, x: v if x > 0 else ones(-v)
-                    sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, sm), '0163': 0,
-                                 'ALPHAM': sgn(hi + 1, sa), 'ALPHAM+1': sgn(alo, sa)})
+                    for sl in (sa, -sa):    # the divisor's minor part of either sign (mixed DP)
+                        sgn = lambda v, x: v if x > 0 else ones(-v)
+                        sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, sm), '0163': 0,
+                                     'ALPHAM': sgn(hi + 1, sa), 'ALPHAM+1': sgn(alo, sl)})
     return sets + [{}] * len(sets)
 
 

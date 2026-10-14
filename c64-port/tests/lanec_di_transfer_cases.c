@@ -33,12 +33,13 @@ typedef struct { uint16_t site, callee; uint16_t n; uint8_t module; uint8_t miss
 /* the C64 program's cases all start from display-start or MAKEPLAY cases */
 static const lanec_suite *const modules[] = { &lanec_suite_di_dsp, 0, &lanec_suite_di_play };
 #elif defined(LANEC_DI_TRANSFER_C64M)
-/* a di-transfer-c64m program's cases all start from its one module's cases
- * (LANEC_DI_C64M_MODULE: its index in module order, LANEC_DI_C64M_SUITE) */
-static const lanec_suite *const modules[] = {
-    LANEC_DI_C64M_MODULE == 0 ? &LANEC_DI_C64M_SUITE : 0, LANEC_DI_C64M_MODULE == 1 ? &LANEC_DI_C64M_SUITE : 0,
-    LANEC_DI_C64M_MODULE == 2 ? &LANEC_DI_C64M_SUITE : 0, LANEC_DI_C64M_MODULE == 3 ? &LANEC_DI_C64M_SUITE : 0,
-    LANEC_DI_C64M_MODULE == 4 ? &LANEC_DI_C64M_SUITE : 0, LANEC_DI_C64M_MODULE == 5 ? &LANEC_DI_C64M_SUITE : 0 };
+/* a di-transfer-c64m program's cases all start from cases of its group's two
+ * modules (LANEC_DI_C64M_MODULE0/1: their indices in module order, with
+ * LANEC_DI_C64M_SUITE0/1) */
+#define C64M_SUITE(k) (LANEC_DI_C64M_MODULE0 == (k) ? &LANEC_DI_C64M_SUITE0 : \
+                       LANEC_DI_C64M_MODULE1 == (k) ? &LANEC_DI_C64M_SUITE1 : 0)
+static const lanec_suite *const modules[] = { C64M_SUITE(0), C64M_SUITE(1), C64M_SUITE(2), C64M_SUITE(3),
+                                              C64M_SUITE(4), C64M_SUITE(5) };
 #else
 static const lanec_suite *const modules[] = { &lanec_suite_di_dsp, &lanec_suite_di_mark, &lanec_suite_di_play,
                                               &lanec_suite_di_sleep, &lanec_suite_di_idle, &lanec_suite_di_nvdsp };
@@ -259,30 +260,31 @@ const lanec_suite lanec_suite_di_transfer_c64 = { "di-transfer-c64", LANEC_DI_TR
  * idle, nvdsp), which di-transfer-c64's program has no room for. Every
  * Luminary099 and Comanche055 caller of their entries (POSTJUMP PINBRNCH and
  * MARKEND, BANKCALL GOMARK*, ENDMARK, KLEENEX, INITDSP...) and every one of
- * their points from its own entry, with only INTER-BANK and the case's own
- * module registered: one C64 program per module and mission
- * (LANEC_DI_C64M_<MODULE>_<LM|CM>, with LANEC_DI_C64M_TABLE and
- * LANEC_DI_C64M_STOPS naming its table and stops). The oracle stops at every
- * point of the other five modules. The C64 rows are picked by branch arc
- * (tools/lanec/cover.py). */
+ * their points from its own entry, with only INTER-BANK and the modules of
+ * the case's group registered (mark with nvdsp, whose PINBRNCH chains run on
+ * into MARKPLAY; sleep with idle): one C64 program per group and mission
+ * (LANEC_DI_C64M_<GROUP>_<LM|CM>, with LANEC_DI_C64M_TABLE0/1 and
+ * LANEC_DI_C64M_STOPS naming its tables and stops). The oracle stops at the
+ * other modules' points that the group's own suites never run through. The
+ * C64 rows are picked by branch arc (tools/lanec/cover.py). */
 static const transfer_case *c64m_case;
 static uint8_t c64m_skip;              /* a row of another program (tools/lanec/c64_diag.c skips it) */
 int lanec_di_c64m_skip(void);
 int lanec_di_c64m_skip(void) { return c64m_skip; }
 
 #ifndef LANEC_DI_TRANSFER_C64M
-/* the host runs every program's cases: the case's module's table and stops */
-static const agc_routine_table *const c64m_lm_tables[6] = { 0, &lanec_di_lm_mark, 0, &lanec_di_lm_sleep,
-                                                            &lanec_di_lm_idle, &lanec_di_lm_nvdsp };
-static const agc_routine_table *const c64m_cm_tables[6] = { 0, &lanec_di_cm_mark, 0, &lanec_di_cm_sleep,
-                                                            &lanec_di_cm_idle, &lanec_di_cm_nvdsp };
+/* the host runs every program's cases: the tables and stops of the case's
+ * group (by module index: 0 mark and nvdsp, 1 sleep and idle) */
+static const uint8_t c64m_group[6] = { 0, 0, 0, 1, 1, 0 };
+static const agc_routine_table *const c64m_lm_tables[2][2] = { { &lanec_di_lm_mark, &lanec_di_lm_nvdsp },
+                                                               { &lanec_di_lm_sleep, &lanec_di_lm_idle } };
+static const agc_routine_table *const c64m_cm_tables[2][2] = { { &lanec_di_cm_mark, &lanec_di_cm_nvdsp },
+                                                               { &lanec_di_cm_sleep, &lanec_di_cm_idle } };
 #define C64M_STOPS(v) { v, (uint16_t)(sizeof v / sizeof v[0]) }
-static const struct { const lanec_point *list; uint16_t count; } c64m_lm_stops[6] = {
-    { 0, 0 }, C64M_STOPS(c64m_stops_lm_mark), { 0, 0 }, C64M_STOPS(c64m_stops_lm_sleep),
-    C64M_STOPS(c64m_stops_lm_idle), C64M_STOPS(c64m_stops_lm_nvdsp) };
-static const struct { const lanec_point *list; uint16_t count; } c64m_cm_stops[6] = {
-    { 0, 0 }, C64M_STOPS(c64m_stops_cm_mark), { 0, 0 }, C64M_STOPS(c64m_stops_cm_sleep),
-    C64M_STOPS(c64m_stops_cm_idle), C64M_STOPS(c64m_stops_cm_nvdsp) };
+static const struct { const lanec_point *list; uint16_t count; } c64m_lm_stops[2] = {
+    C64M_STOPS(c64m_stops_lm_mark_nvdsp), C64M_STOPS(c64m_stops_lm_sleep_idle) };
+static const struct { const lanec_point *list; uint16_t count; } c64m_cm_stops[2] = {
+    C64M_STOPS(c64m_stops_cm_mark_nvdsp), C64M_STOPS(c64m_stops_cm_sleep_idle) };
 #endif
 
 static void make_c64m(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
@@ -305,11 +307,11 @@ static void make_c64m(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_m
     m->stop_count = (uint16_t)(sizeof LANEC_DI_C64M_STOPS / sizeof LANEC_DI_C64M_STOPS[0]);
 #else
     if (m->mission == LANEC_CM) {
-        m->stop_list = c64m_cm_stops[c64m_case->module & 0177u].list;
-        m->stop_count = c64m_cm_stops[c64m_case->module & 0177u].count;
+        m->stop_list = c64m_cm_stops[c64m_group[c64m_case->module & 0177u]].list;
+        m->stop_count = c64m_cm_stops[c64m_group[c64m_case->module & 0177u]].count;
     } else {
-        m->stop_list = c64m_lm_stops[c64m_case->module & 0177u].list;
-        m->stop_count = c64m_lm_stops[c64m_case->module & 0177u].count;
+        m->stop_list = c64m_lm_stops[c64m_group[c64m_case->module & 0177u]].list;
+        m->stop_count = c64m_lm_stops[c64m_group[c64m_case->module & 0177u]].count;
     }
 #endif
 }
@@ -346,20 +348,20 @@ static enum exec_status run_c64m_cm(agc_native_program *program, apollo_overlay_
 
 static enum lanec_status run_c64m(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 {
-    static agc_routine_table tables[2];
+    static agc_routine_table tables[3];
     static agc_native_program program;
     static agc_hardware hardware;
     enum exec_status status;
     uint16_t steps = 0;
     memset(&program, 0, sizeof program);
     memset(&hardware, 0, sizeof hardware);
-    program.basic = tables; program.basic_count = 2u;
+    program.basic = tables; program.basic_count = 3u;
     program.interpreter_fetch = AGC_TRANSFER_NONE; program.loc = 0164u; program.bankset = 0165u;
     program.hardware = &hardware;
     hardware.channel11 = io->channel[011];
-#ifdef LANEC_DI_TRANSFER_C64M          /* one module and mission: the program's own */
+#ifdef LANEC_DI_TRANSFER_C64M          /* one group and mission: the program's own */
     (void)mission;
-    tables[1] = LANEC_DI_C64M_TABLE;
+    tables[1] = LANEC_DI_C64M_TABLE0; tables[2] = LANEC_DI_C64M_TABLE1;
 #ifdef LANEC_DI_C64M_CM
     tables[0] = cm_interbank_routines;
     status = run_c64m_cm(&program, s, io, &steps);
@@ -369,10 +371,14 @@ static enum lanec_status run_c64m(apollo_overlay_state *s, lanec_io *io, enum la
 #endif
 #else
     if (mission == LANEC_LM) {
-        tables[0] = lm_interbank_routines; tables[1] = *c64m_lm_tables[c64m_case->module & 0177u];
+        tables[0] = lm_interbank_routines;
+        tables[1] = *c64m_lm_tables[c64m_group[c64m_case->module & 0177u]][0];
+        tables[2] = *c64m_lm_tables[c64m_group[c64m_case->module & 0177u]][1];
         status = run_c64m_lm(&program, s, io, &steps);
     } else {
-        tables[0] = cm_interbank_routines; tables[1] = *c64m_cm_tables[c64m_case->module & 0177u];
+        tables[0] = cm_interbank_routines;
+        tables[1] = *c64m_cm_tables[c64m_group[c64m_case->module & 0177u]][0];
+        tables[2] = *c64m_cm_tables[c64m_group[c64m_case->module & 0177u]][1];
         status = run_c64m_cm(&program, s, io, &steps);
     }
 #endif
