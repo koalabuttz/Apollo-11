@@ -1010,7 +1010,7 @@
       "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
       "bytes": 17718,
       "lines": 441,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1023,7 +1023,7 @@
           "scope": "Every instruction (05,3521-3775): DODOWNTM, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1031,7 +1031,6 @@
         "external_continuations": [
           "RESUME (WAITLIST)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-DOWNTELEMETRY.md",
@@ -1051,6 +1050,10 @@
             "vice_targets": {
               "vice-cm-downtelemetry": 24
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry-436.md",
+            "sha256": "fde9ffa3a9cb78f0ffc27397eed2dbc38de5a95e7613ebb330dad5832fd4b6db"
           }
         }
       }
@@ -7692,7 +7695,7 @@
       "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
       "bytes": 17768,
       "lines": 455,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7705,7 +7708,7 @@
           "scope": "Every instruction (05,3506-3771): DODOWNTM/WO1/WOTEST, the TC DNTMGOTO erasable continuation, DNPHASE1/2, NEWLIST..DNTMEXIT, DNDUMPI/DNDUMP/DNDUMP1/DNDUMP2 and SENDID as control-transfer ABI routines; DOWNLINK_LISTS words and program constants compiled from the source listing."
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7713,7 +7716,6 @@
         "external_continuations": [
           "RESUME (WAITLIST)"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
@@ -7733,6 +7735,10 @@
             "vice_targets": {
               "vice-lm-downtelemetry": 48
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/downtelemetry-436.md",
+            "sha256": "fde9ffa3a9cb78f0ffc27397eed2dbc38de5a95e7613ebb330dad5832fd4b6db"
           }
         }
       }
