@@ -514,11 +514,15 @@ PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dap
 # RATELOOP (lm_kalman) runs in the same pass, so it rides here and leaves
 # the home room for RESUME.
 EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_kalman_basic',
-                    'lm_t6rupt_jets_hot_routines'], 'cm': []}
+                    'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines'], 'cm': []}
 # Tables a pack carries for rk_direct only: the DAP pass calls them while
 # the pack is loaded, but other callers keep loading their own (smaller)
 # modules, so the resolver does not send their keys to the pack.
-RIDE = {'lm_t6rupt_jets_hot_routines'}
+RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines'}
+# A ride table whose operands are another file's sites (IBNKCALL's CADR is
+# its caller's word, compiled into lm_interbank_routines' site list): the
+# pack takes that file's sites in the banks its own tables' keys are in.
+RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines'}
 # T4RUPT the same way: its core (the resident's wrapper 0x01E2 holds the
 # whole table too) and the radar step in one job-slot module, so a radar
 # T4RUPT loads one module, not two (steward/cpu-budget.md). RCSMON stays
@@ -803,6 +807,11 @@ def main():
             sites = {}
             for st in stems:
                 sites.update(file_sites(a.host_cc, m, st))
+            banks = {k >> 10 for t in pts if t not in RIDE for k in keys[t] if k < ERASABLE_BASE}
+            for t in pts:
+                if RIDE_SITES.get(t) in packed:
+                    sites.update({k: w for k, w in file_sites(a.host_cc, m, packed[RIDE_SITES[t]]).items()
+                                  if k >> 10 in banks})
             pack = dict(stem=stems[0], lane=lane, slot=0, id=ident, basic=pts,
                         interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
                         sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name)
