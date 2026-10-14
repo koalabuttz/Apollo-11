@@ -1,0 +1,333 @@
+{
+ "Luminary099/RADAR_LEADIN_ROUTINES.agc": {
+  "native_file": "src/lm_radar_leadin_routines.c",
+  "words": 47,
+  "untranslated_words": 0,
+  "routines": 7,
+  "map": [
+   {
+    "address": "25,2003",
+    "word": "11755",
+    "source": "RADSAMP CCS RSAMPDT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2004",
+    "word": "12006",
+    "source": " TCF +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2005",
+    "word": "15261",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2006",
+    "word": "05203",
+    "source": " TC WAITLIST",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2007",
+    "word": "02003",
+    "source": " 2CADR RADSAMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2010",
+    "word": "52064",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2011",
+    "word": "37713",
+    "source": " CAF PRIO25",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2012",
+    "word": "05072",
+    "source": " TC NOVAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2013",
+    "word": "02023",
+    "source": " 2CADR DORSAMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2014",
+    "word": "52064",
+    "source": "(+1)",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2015",
+    "word": "34736",
+    "source": " CAF BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2016",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2017",
+    "word": "71754",
+    "source": " MP RTSTLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2020",
+    "word": "61753",
+    "source": " AD RTSTBASE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2021",
+    "word": "55751",
+    "source": " TS RTSTDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2022",
+    "word": "15261",
+    "source": " TCF TASKOVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2023",
+    "word": "02047",
+    "source": "DORSAMP TC VARADAR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2024",
+    "word": "04616",
+    "source": " TC BANKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2025",
+    "word": "17714",
+    "source": " CADR RADSTALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2026",
+    "word": "25756",
+    "source": " INCR RFAILCNT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2027",
+    "word": "00004",
+    "source": "DORSAMP2 INHINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2030",
+    "word": "30101",
+    "source": " CA FLAGWRD5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2031",
+    "word": "74741",
+    "source": " MASK R77FLBIT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2032",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2033",
+    "word": "12037",
+    "source": " TCF +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2034",
+    "word": "53102",
+    "source": " DXCH SAMPLSUM",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2035",
+    "word": "51754",
+    "source": " INDEX RTSTLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2036",
+    "word": "53601",
+    "source": " DXCH RSTACK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2037",
+    "word": "41754",
+    "source": " CS RTSTLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2040",
+    "word": "61752",
+    "source": " AD RTSTMAX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2041",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2042",
+    "word": "12045",
+    "source": " BZF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2043",
+    "word": "31754",
+    "source": " CA RTSTLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2044",
+    "word": "64752",
+    "source": " AD TWO",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2045",
+    "word": "55754",
+    "source": " TS RTSTLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2046",
+    "word": "15155",
+    "source": " TCF ENDOFJOB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2047",
+    "word": "34753",
+    "source": "VARADAR CAF ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2050",
+    "word": "54133",
+    "source": " TS BUF2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2051",
+    "word": "51751",
+    "source": " INDEX RTSTDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2052",
+    "word": "32054",
+    "source": " CAF RDRLOCS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2053",
+    "word": "14622",
+    "source": " TCF SWCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "25,2054",
+    "word": "53105",
+    "source": "RDRLOCS CADR RRRANGE",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "25,2055",
+    "word": "53103",
+    "source": " CADR RRRDOT",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "25,2056",
+    "word": "53101",
+    "source": " CADR LRVELX",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "25,2057",
+    "word": "53077",
+    "source": " CADR LRVELY",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "25,2060",
+    "word": "53075",
+    "source": " CADR LRVELZ",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "25,2061",
+    "word": "53073",
+    "source": " CADR LRALT",
+    "constant": "basic operand (inline)"
+   }
+  ]
+ }
+}

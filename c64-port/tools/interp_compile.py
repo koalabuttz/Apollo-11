@@ -1617,7 +1617,19 @@ class Compiler:
         # Spec 'image_w': W from include/agc_image_w.h, the fixed $7000 image in
         # flight builds (RK_FIXED_IMAGE), s->words elsewhere. Opt-in so existing
         # files and their pinned evidence stay byte-identical until a refreeze.
-        c.append('#include "agc_image_w.h"' if self.spec.get('image_w') else '#define W s->words')
+        if self.spec.get('fast_window'):
+            # Spec 'fast_window' (basic 'full', one EB): the file's orders go
+            # through include/agc_fast_redirect.h, so an operand in the EB 6
+            # window passes a one-byte offset to a noinline afw_* helper and a
+            # plain cell its address to afo_* (Lane F's DAP spill pattern);
+            # -DAFR_GENERIC builds it on agc_image_ops alone.
+            if self.spec.get('basic') != 'full' or self.spec.get('basic_split') or self.spec.get('basic_parts'):
+                raise CompileError("'fast_window' needs 'basic': 'full' in one function")
+            c.append('#define AFR_EBN %d' % self.spec['ebank'])
+            c.append('#include "agc_fast_redirect.h"')
+            c.append('#define W AFR_S(s)->words')
+        else:
+            c.append('#include "agc_image_w.h"' if self.spec.get('image_w') else '#define W s->words')
         c.append('/* A group build (KEEP masks below) leaves some helpers and operands unused. */')
         c.append('#ifdef __GNUC__')
         c.append('#define MAYBE_UNUSED __attribute__((unused))')
@@ -1854,6 +1866,8 @@ class Compiler:
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
+                if self.spec.get('fast_window'):
+                    c.append(' AFR_BIND(s);')
                 # (A part key in fixed-fixed memory runs under the FB its
                 # caller left, as the step machine it was cut from did.)
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb

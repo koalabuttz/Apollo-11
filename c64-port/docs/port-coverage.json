@@ -6494,8 +6494,57 @@
       "sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
       "bytes": 28653,
       "lines": 1069,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_aostask.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (723 words, bank 20): 1/ACCSET, 1/ACCJOB and 1/ACCS (the DAP jet acceleration and inertia tables from the LM and CSM masses), DOCKTEST, DVOVSUB and the AOSTASK/AOSJOB offset-acceleration filter, as 11 basic routines (1/ACCS +2, the BANKCALL entry, among them) of the control-transfer ABI at their original addresses, compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-AOSTASK.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= AOSQ), entered with Z at any of the file's basic routines, the latched input channels and the program's output channels any values, DOCKTEMP (DAPBOOLS' CSMDOCKD bit) 0 or BIT13 at DOCKTEST, and any values of the other erasables the file reads, counters included. A TC to ARET runs the TCF stored there (QXCH ARET or CA ACCHERE; TS ARET). NEWJOB +0: the file does not switch jobs mid-sequence.",
+        "external_continuations": [
+          "TC DVOVSUB returns past its ADRES (call_skips)",
+          "BANKCALL, ENDOFJOB, TASKOVER and the other Executive and DAP destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-aostask/lm-aostask-source-map.json",
+            "sha256": "423022411762be64612aa7fee33b6ee89e76fc7f49d37ac7ffa5838d4e92803f"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-aostask/lm-aostask-proof.json",
+            "sha256": "93e2b3476fa7f1a03ce0ae9295e0c3eca56a1451796951d2f47a43ac74951490"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-aostask/lm-aostask-host.log",
+            "sha256": "7ae6be9181ba3720437aa62bf97fbcd0d16454dbfd7802ce953bbada7ecb1ea6"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-aostask/lm-aostask-vice.log",
+            "sha256": "7f80e16c13fe483a928ff8982d7dfddc47537b83f96e327076b527c8e3c8856a",
+            "vice_targets": {
+              "vice-lm-aostask": 33
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-aostask/lm-aostask-proof.json",
+            "sha256": "93e2b3476fa7f1a03ce0ae9295e0c3eca56a1451796951d2f47a43ac74951490"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/AOTMARK.agc",
@@ -11210,8 +11259,55 @@
           ],
           "scope": "Original radar sampling lead-in selection and source failure controls through true scheduling/device frontiers.",
           "verification": "docs/LM-RADAR-LEADIN.md"
+        },
+        {
+          "native_files": [
+            "src/lm_radar_leadin_routines.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "Every word of the file (47 words, bank 25): RADSAMP, DORSAMP, DORSAMP2 and VARADAR with the RDRLOCS table, as 7 basic routines of the control-transfer ABI at their original addresses, compiled by tools/interp_compile.py.",
+          "verification": "docs/LM-RADAR-LEADIN-ROUTINES.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 4 (the file's EBANK= RSTACK), entered with Z at any of the file's basic routines, RTSTLOC and RTSTMAX 0, 2, 4 or 6, RTSTBASE 0 or 2, RTSTDEX 0-5, RSAMPDT any value but -0, and any values of the other erasables the file reads. NEWJOB +0: the file does not switch jobs mid-sequence.",
+        "external_continuations": [
+          "WAITLIST and NOVAC with their 2CADRs, BANKCALL RADSTALL, SWCALL to RRRANGE, RRRDOT, LRVELX, LRVELY, LRVELZ and LRALT, TASKOVER and ENDOFJOB stop with EXEC_UNMAPPED, as the original leaves the file there",
+          "The caller's return through Q"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-source-map.json",
+            "sha256": "9af739a712e81a5fb170fef1256500234ea1d7791c4c077a1dbfd6371c9c489e"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
+            "sha256": "31f009f71e7ea1c6429e0cb0c92259ab6d6b1c660f8187ee81c796db030bb040"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-host.log",
+            "sha256": "c4905e9f53d04d6dbd6459a334f33b2fb5cd194b500fa1a25d0eecb4fe9e068c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-vice.log",
+            "sha256": "cb7a89649da1c0c4c118c93e3dfd644bb8b9f6a890ea5b06f886df031c023deb",
+            "vice_targets": {
+              "vice-lm-radar-leadin-routines": 14
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-radar-leadin-routines/lm-radar-leadin-routines-proof.json",
+            "sha256": "31f009f71e7ea1c6429e0cb0c92259ab6d6b1c660f8187ee81c796db030bb040"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/RCS_FAILURE_MONITOR.agc",
