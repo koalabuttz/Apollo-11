@@ -4,23 +4,23 @@
   "release": "evidence-geometry",
   "files": {
     "geometry-c64-outcomes.json": {
-      "sha256": "10c3bdc089bc50655112404ed70f1c670385fea9ef380b83c74b94597b9c1f32",
+      "sha256": "eb4aa4da6e838eaa8d1a3332aafce9d6b2bf7cb1d35e1eac45d2094fc0a473a9",
       "bytes": 746,
       "store": "tree"
     },
     "geometry-differential.log": {
-      "sha256": "e3e7a5297ea3ba04e149b9327b604cba621dcfd7721ce7902e0e1cba90562c96",
+      "sha256": "88d36f90002fb3a5e4c9e7b44cf6c3d43338866a524f5760f350b04f705bc53e",
       "bytes": 5817,
       "store": "release"
     },
     "geometry-host.log": {
-      "sha256": "db2839251bbd0c0d1f8b44a0a3842e2f58805a3921bcaccb58e616c6bab8039f",
+      "sha256": "16677ec63ad228546a4642f280ebaa44cc479b562dda053fc729605777e3dcd5",
       "bytes": 161,
       "store": "release"
     },
     "geometry-proof.json": {
-      "sha256": "968a70e10d9c947d1da5de9ed3fbf6dc108d052704b24236fbda8774f6939ee6",
-      "bytes": 12467,
+      "sha256": "e850d3e09808a89b20fe5533c1edd85e91712d5d8a6ffb8c86fc294a70f2fb66",
+      "bytes": 12501,
       "store": "tree"
     },
     "geometry-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "release"
     },
     "geometry-vice.log": {
-      "sha256": "2d4c825c488d29fd0ca500134a7022843b3ad51431d4cad356f7a20ae3893d8d",
-      "bytes": 1151,
+      "sha256": "cf50bacb21b5ac1eea6722a33878c7e9f583615618570721dc4dc07ce58623f1",
+      "bytes": 1152,
       "store": "release"
     }
   }
