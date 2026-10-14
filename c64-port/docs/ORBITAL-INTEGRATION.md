@@ -25,7 +25,7 @@ As in every compiled file, each case is a random 2,048-word image with the routi
 - PBODY (0 Earth or 2 Moon);
 - DIFEQCNT (0, 77763 or 77747 octal);
 - COLREG (0 or a column step, -6 to -48);
-- the X1/X2 index registers (0 or 2);
+- the X1/X2 index registers (0 or 2 at the entries; at mid-file resumes they hold what the program left there, so in DOW.. X1 is the DIFEQ stage 0, -12 or -24, and at ACCOMP's resumes X2 is);
 - S1/S2 (0, 2, 4 or 6);
 - PUSHLOC inside the VAC area.
 
@@ -35,7 +35,9 @@ The cases also draw flight edge values (review #165, `integration_joint` in `too
 
 A CHANG2 resume starts from the state the original program is in when it gets there (`resume_flow`: the oracle runs each case of the routine before it to that LOC). Before, the 11,2674 `STORE S1` resume drew a random MODE: entered in vector mode it stored 6 words into QPRET, which the program never does, since the `DLOAD* ASCALE,1` before it always leaves MODE in DP.
 
-The three `DDV ALPHAM` resumes (COMTERM +26, +38 and +42, 11,3104/3120/3124) also draw MPAC and ALPHAM jointly (`ddv_majors_joint`): MODE DP, ALPHAM's major part one more than MPAC's, and minor parts of either sign, so the divide takes its near-equal-majors paths (`src/lm_interp_orders.c` DDV), which independent random words almost never reach.
+The three `DDV ALPHAM` resumes (COMTERM +26, +38 and +42, 11,3104/3120/3124), KEPPREP's `DDV 2D` (11,2420) and GAMCOMP's `NORM BDDV` (11,2667, dividend at 0D, divisor MPAC already normalized) also draw dividend and divisor jointly (`ddv_majors_joint`): MODE DP, the divisor's major part equal to or one more than the dividend's, and minor parts of either sign, so the divide takes its near-equal-majors paths (`src/lm_interp_orders.c` DDV), which independent random words almost never reach. These sets go in as `flow_range_states`, after the flowed state (review #165: as `joint_states` the flow overwrote them, so those paths were never compared). Half of each resume's cases keep the flowed state.
+
+RECTEST's `BMN` resume (11,3327) also takes |TNUV| - 3/4 in [0, 1/4) (MPAC +0 to 07777 octal) with a job waiting in some cases: the branch is not taken and the following DANZIG goes to CHANG2.
 
 S1 and S2 are the VAC words 050 and 051 (review #224 item 1: the spec used to set 051/052, S2 and QPRET, so S1 was never drawn from the stored set and every QPRET was 0-6).
 
