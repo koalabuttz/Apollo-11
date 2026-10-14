@@ -2794,22 +2794,40 @@ SPECS = {
         # counters (+-0, +-1, the 4 the P axis sets), and EDOT, E and DKDB
         # near the rate limits (RATELIM1 032, RATELIM2 0632) and in the
         # coast zone, so every jet-sense, CTRCHECK and coast path runs.
+        # EDOT also takes 0634-01166 (and their negatives), above RATELIM2
+        # but inside the outer limit (EDOT x 032 < 040000), and E up to
+        # +-037777: then (EDOT + E) x DKDB goes negative with EDOT above
+        # RATELIM2, and +7's BZMF POSTHRST falls through to TJZERO (review
+        # #386).
         'joint_states': {'*': [
             {'TJP': tj, 'TJU': tj, 'TJV': tj, 'PJETCTR': ct, 'UJETCTR': ct, 'VJETCTR': ct, 'EDOT': ed,
-             'E': (0, 1, 0o77776, 0o200, 0o77577)[n % 5], 'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 5) % 5]}
+             'E': (0, 1, 0o77776, 0o200, 0o77577, 0o1000, 0o76777, 0o4000, 0o73777,
+                   0o37777, 0o40000)[n % 11],
+             'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 11) % 5]}
             for n, (tj, ct, ed) in enumerate(
                 (tj, ct, ed) for tj in (0, 0o77777, 1, 0o77776, 0o20000, 0o57777)
                 for ct in (0, 0o77777, 1, 0o77776, 4)
-                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777))]},
+                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777,
+                           0o634, 0o77143, 0o1000, 0o76777, 0o1166, 0o76611, 0o1167, 0o76610))]},
+        # IBNKCALL is the only caller (the P and Q,R axis autopilots'
+        # TC IBNKCALL; CADR SPSRCS): Q = ISWRETRN (04707) in half of the
+        # cases, a caller return in bank 21 outside the file otherwise.
+        'states': {'SPSRCS': {'2': [0o4707, 0o4707, 0o4707, 0o2017, 0o2400, 0o3000]}},
         # INDEX AXISCTR; CA UTIME: the P counter (4) or the U, V one (012).
         'basic_fixed_index': {'UTIME': [-1, 0, 1]},
         'resume_keys': True,
         'edge_cases': True,
+        # SPSRCS runs in T5RUPT over whatever job is current: any FIXLOC
+        # (a NOVAC job's, FAKEPRET 0110) and NEWJOB -0 while DUMMYJOB idles
+        # (review #386). It never names either.
+        'any_fixloc': True,
+        'any_newjob': True,
         'target': 'tests/lm_sps_backup_target.c',
         'c64_rows': 'cover',
         'cover': True,
         'index_carry16': True,
         'image_w': True,
+        'trusted_image': True,
         'freeze_stride': 16,
     },
     'cm-r31': {

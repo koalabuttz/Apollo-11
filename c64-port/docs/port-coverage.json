@@ -12652,7 +12652,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Entry at SPSRCS (21,3727) with FB of bank 21 under EB 6 (the file's EBANK= TJU), AXISCTR -1 (P), +0 or -0 (U) or +1 (V), any Q (the caller's return, TC Q), NEWJOB +0 or positive, and any values of the other erasables; in half of the cases TJP/TJU/TJV (+-0, +-1, HALF), PJETCTR/UJETCTR/VJETCTR (+-0, +-1, 4), EDOT around the rate limits and coast zone, E and DKDB from a joint set.",
+        "supported_domain": "Entry at SPSRCS (21,3727) with FB of bank 21 under EB 6 (the file's EBANK= TJU), AXISCTR -1 (P), +0 or -0 (U) or +1 (V), any Q (the caller's return, TC Q; ISWRETRN 04707, IBNKCALL's return, in half of the cases), any FIXLOC (a VAC area, a NOVAC job's or any erasable address: SPSRCS runs in T5RUPT over whatever job is current and never names FIXLOC), NEWJOB +0, positive or -0 (DUMMYJOB idling), and any values of the other erasables; in half of the cases TJP/TJU/TJV (+-0, +-1, HALF), PJETCTR/UJETCTR/VJETCTR (+-0, +-1, 4), EDOT around the rate limits and coast zone and at 0634, 01000, 01166 and 01167 either sign (above RATELIM2, up to the outer limit), E up to +-037777 and DKDB from a joint set, so both outcomes of every coast-zone BZMF, including +7's BZMF POSTHRST, run.",
         "external_continuations": [
           "The caller's return through Q (TC Q)"
         ],
@@ -12664,22 +12664,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-sps-backup/lm-sps-backup-proof.json",
-            "sha256": "f4e27310058cd03d9b9ea57a28bdf1223efb4bdba4334ed595bd987d6dfd3781"
+            "sha256": "790c02a5e399d35432f4eea48afd67a8b5efb7ff5c9c2190460942b47d134dcb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-sps-backup/lm-sps-backup-host.log",
-            "sha256": "ff30bf01ade6f55f8d3f307034f31405b929beabeb37f94bc2d1e5517ae93684"
+            "sha256": "a3af6ce65313ab62d0bb5d2a26477f4d50c0390c76df0327be42dfdcfd184a23"
           },
           "c64_execution_results": {
             "path": "evidence/lm-sps-backup/lm-sps-backup-vice.log",
-            "sha256": "a88ec19d401609f6211a82b3f7f42150f64a5ca1879536bb23acea22d0452f8f",
+            "sha256": "6acfc64572d1c5c6f4558b6b47aef7dc942f9df7263d82ab4ccaa59fdb99f810",
             "vice_targets": {
-              "vice-lm-sps-backup": 11
+              "vice-lm-sps-backup": 9
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-sps-backup/lm-sps-backup-c64-cover.json",
-            "sha256": "3037cce83fbc84ee1fdb67b28da5e14c1cd1d8e706dddcb8000191d18ebb452c"
+            "sha256": "9c1aac3f4b67a53fd488b9203aeafd7e39ff21a0af7d4957fca69b0a3fc85ad7"
           }
         }
       }
