@@ -86,6 +86,13 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
  return W[4]==fb&&sane(s,io);
 }
 
+/* INDEX: address b plus the signed index word k, or -1 outside 0..lim
+ * (one out-of-line copy for the file's indexed orders). */
+#ifdef __GNUC__
+__attribute__((noinline))
+#endif
+static MAYBE_UNUSED int ixe(agc_word k,unsigned b,unsigned lim){
+ int e=(int)b+agc_to_int(k);return e<0||e>(int)lim?-1:e;}
 /* Signed index values: A, L and Q are 16-bit registers. */
 static MAYBE_UNUSED long areg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[0]));}
 static MAYBE_UNUSED long lreg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[1]));}
@@ -115,7 +122,7 @@ void irc_cover(unsigned n);
 #endif
 /* Every basic word of the file. */
 static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,p66_bias_io *io,uint16_t at){
- long ix=0,e=0;uint16_t p;
+ int ix=0,e=0;uint16_t p;
  (void)ix;(void)e;
  switch(at){
  case 15265u:goto B35641;
@@ -144,9 +151,8 @@ B35644:
 B35645c:
  IRC_COVER(4u);
  /* 16,3645 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3646 (indexed) CCS TJP */
- e=(long)01524+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01524,07777);if(e<0)return EXEC_INVALID_ACTION;
  if(e>=02000){W[5]=(agc_word)e;goto dispatch;}
  switch(ai_ccs(s,(unsigned)e)){
   case 0:goto B35647c;
@@ -203,9 +209,8 @@ X35653c:
 B35654:
  IRC_COVER(13u);
  /* 16,3654 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3655 (indexed) CCS TJP */
- e=(long)01524+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01524,07777);if(e<0)return EXEC_INVALID_ACTION;
  if(e>=02000){W[5]=(agc_word)e;goto dispatch;}
  switch(ai_ccs(s,(unsigned)e)){
   case 0:goto B35656c;
@@ -234,18 +239,16 @@ B35660c:
 B35661c:
  IRC_COVER(18u);
  /* 16,3661 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3662 (indexed) ADS TJP */
- e=(long)01524+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01524,01777);if(e<0)return EXEC_INVALID_ACTION;
  if(e<010)return EXEC_INVALID_ACTION;
  ai_ads(s,(unsigned)e);
  goto B35663;
 B35663:
  IRC_COVER(19u);
  /* 16,3663 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3664 (indexed) CCS TJP */
- e=(long)01524+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01524,07777);if(e<0)return EXEC_INVALID_ACTION;
  if(e>=02000){W[5]=(agc_word)e;goto dispatch;}
  switch(ai_ccs(s,(unsigned)e)){
   case 0:goto B35665c;
@@ -275,9 +278,8 @@ B35670c:
 X35671c:
  IRC_COVER(24u);
  /* 16,3671 EXTENDED INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3672 EXTENDED (indexed) MP NO.PJETS */
- e=(long)01521+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01521,07777);if(e<0)return EXEC_INVALID_ACTION;
  if(e==5)return EXEC_INVALID_ACTION;
  if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_mpf(s,k);}
  else ai_mp(s,(unsigned)e);
@@ -290,9 +292,8 @@ B35673c:
 B35674c:
  IRC_COVER(26u);
  /* 16,3674 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3675 (indexed) TS DAPTEMP1 */
- e=(long)01737+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01737,01777);if(e<0)return EXEC_INVALID_ACTION;
  if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
  (void)ai_ts(s,(unsigned)(unsigned)e);
  goto B35676c;
@@ -319,9 +320,8 @@ X35701c:
 B35702:
  IRC_COVER(31u);
  /* 16,3702 STORTORK INDEX Q */
- ix=qreg(s);
  /* 16,3703 (indexed) ADS DOWNTORK */
- e=(long)01513+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ e=ixe(agc_correct(W[2]),01513,01777);if(e<0)return EXEC_INVALID_ACTION;
  if(e<010)return EXEC_INVALID_ACTION;
  ai_ads(s,(unsigned)e);
  goto B35704;
@@ -357,9 +357,8 @@ B35707c:
 B35710c:
  IRC_COVER(38u);
  /* 16,3710 INDEX DAPTEMP6 */
- ix=agc_to_int(ai_word(s,01744));
  /* 16,3711 (indexed) XCH TJP */
- e=(long)01524+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ e=ixe(ai_word(s,01744),01524,01777);if(e<0)return EXEC_INVALID_ACTION;
  if(e<010)return EXEC_INVALID_ACTION;
  ai_xch(s,(unsigned)e);
  goto B35712c;

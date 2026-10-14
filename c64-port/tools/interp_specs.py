@@ -3185,6 +3185,7 @@ SPECS = {
         # its entry in flight.
         'fast_window': True,
         'trusted_image': True,
+        'short_index': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'index_carry16': True,
         'image_w': True,
