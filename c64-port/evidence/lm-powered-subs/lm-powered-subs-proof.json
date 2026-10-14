@@ -1,0 +1,276 @@
+{
+ "milestone": "lm-powered-subs",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 23040,
+ "cases_sha256": "c33619290b4c939fb094a9e8abed2ce699927c6f5375cb6d99459bcbf9c4954c",
+ "oracle_sha256": "d77296e335cc18db1e7a5311e7fcb0a952e1c35dd7f0fe8540d5d74ec01f87f5",
+ "frozen_vectors": 1440,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0x1fffffffffff",
+   "cases": 66,
+   "case_ids": [
+    33,
+    474,
+    707,
+    1525,
+    1402,
+    1539,
+    2186,
+    2755,
+    3315,
+    3258,
+    3105,
+    3177,
+    3956,
+    4423,
+    4797,
+    5429,
+    5707,
+    6468,
+    6615,
+    6378,
+    6147,
+    7127,
+    7171,
+    7689,
+    8402,
+    8887,
+    9264,
+    10184,
+    10306,
+    10899,
+    11723,
+    12067,
+    12076,
+    11791,
+    11896,
+    12133,
+    12109,
+    12070,
+    12100,
+    12759,
+    13310,
+    13010,
+    13600,
+    13534,
+    13896,
+    14375,
+    14854,
+    15489,
+    15959,
+    16393,
+    16971,
+    17417,
+    17929,
+    18813,
+    19394,
+    19468,
+    20166,
+    20492,
+    21238,
+    22011,
+    22262,
+    22286,
+    22972,
+    22768,
+    22579,
+    22765
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 221,
+  "c64_labels": 221,
+  "host_edges": 828,
+  "c64_edges": 828,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 521,
+  "c64_taken": 521,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_powered_subs.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_powered_subs_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 410,
+  "edges_host_vectors": 410,
+  "edges_c64": 410,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "LM 10,2030 CALCSMSC": {
+   "04616": 512
+  },
+  "LM 10,2031 ": {
+   "04616": 512
+  },
+  "LM 10,2033 ": {
+   "06070": 512
+  },
+  "LM 10,2034 ": {
+   "06070": 512
+  },
+  "LM 10,2036 ": {
+   "07103": 512
+  },
+  "LM 10,2037 FLESHPOT": {
+   "07103": 512
+  },
+  "LM 10,2052 ": {
+   "07107": 512
+  },
+  "LM 10,2066 ": {
+   "07107": 512
+  },
+  "LM 10,2076 ": {
+   "07103": 512
+  },
+  "LM 10,2106 ": {
+   "07103": 512
+  },
+  "LM 10,2113 ": {
+   "07103": 512
+  },
+  "LM 10,2122 ": {
+   "07103": 512
+  },
+  "LM 10,2133 ": {
+   "07107": 512
+  },
+  "LM 10,2142 ": {
+   "07460": 512
+  },
+  "LM 10,2174 ": {
+   "04631": 512
+  },
+  "LM 23,3537 CDUTRIG": {
+   "04713": 512
+  },
+  "LM 23,3540 ": {
+   "04713": 512
+  },
+  "LM 23,3542 ": {
+   "06070": 512
+  },
+  "LM 23,3543 CD*TR*G": {
+   "04713": 512
+  },
+  "LM 23,3544 ": {
+   "04713": 512
+  },
+  "LM 23,3546 ": {
+   "06070": 512
+  },
+  "LM 23,3570 ": {
+   "04713": 512
+  },
+  "LM 23,3576 ": {
+   "04713": 512
+  },
+  "LM 23,3606 ": {
+   "07532": 98,
+   "04713": 337,
+   "06070": 59,
+   "05000": 18
+  },
+  "LM 23,3615 QUICTRIG": {
+   "05033": 512
+  },
+  "LM 23,3626 ": {
+   "05032": 512
+  },
+  "LM 23,3635 ": {
+   "05033": 352,
+   "06000": 55,
+   "02356": 47,
+   "05000": 58
+  },
+  "LM 23,3646 CDU*SMNB": {
+   "04713": 512
+  },
+  "LM 23,3647 ": {
+   "04713": 512
+  },
+  "LM 23,3651 TRG*SMNB": {
+   "04713": 512
+  },
+  "LM 23,3652 ": {
+   "04713": 512
+  },
+  "LM 23,3654 ": {
+   "07107": 512
+  },
+  "LM 23,3657 ": {
+   "06070": 512
+  },
+  "LM 23,3661 CDU*NBSM": {
+   "04713": 512
+  },
+  "LM 23,3662 ": {
+   "04713": 512
+  },
+  "LM 23,3664 TRG*NBSM": {
+   "04713": 512
+  },
+  "LM 23,3665 ": {
+   "04713": 512
+  },
+  "LM 23,3667 ": {
+   "07107": 512
+  },
+  "LM 23,3671 *SMNB*": {
+   "07532": 512
+  },
+  "LM 23,3672 ": {
+   "07532": 512
+  },
+  "LM 23,3673 *NBSM*": {
+   "07532": 512
+  },
+  "LM 23,3674 ": {
+   "07532": 512
+  },
+  "LM 23,3675 AX*SR*T": {
+   "07107": 512
+  },
+  "LM 23,3723 ": {
+   "07107": 512
+  },
+  "LM 23,3741 ": {
+   "07107": 405,
+   "05000": 60,
+   "06070": 47
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, DMP, DMPSUB, MPACVBUF, SPCOS, SPSIN, SWRETURN, USPRCADR, VXV); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}
