@@ -511,12 +511,15 @@ class Basic:
         out = self.clean_after(op, a, dyn, clean)
         cont = lambda: 'goto %s;' % self.add(nxt, False, out)
         if op == 'RESUME' and not dyn:
-            # RESUME (INDEX 17) outside an interrupt: the next instruction is
-            # BRUPT's, run in place (yaAGC's substitute instruction); here a
-            # TCF to fixed memory, as CONTABRT stores (any other word is
-            # refused).
+            # RESUME (INDEX 17): the next instruction is BRUPT's, run in place
+            # (yaAGC's substitute instruction); here a TCF to fixed memory, as
+            # CONTABRT stores (any other word is refused). RESUME also ends
+            # an interrupt (yaAGC clears InIsr): R10,R11 reaches CONTABRT as
+            # a T3RUPT task. With Luminary channels the flag is the program's
+            # agc_hardware in_interrupt.
+            clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;' if self.lm_channels else ''
             st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
-                      'W[5]=(agc_word)(b&07777u);}goto dispatch;')
+                      '%sW[5]=(agc_word)(b&07777u);}goto dispatch;' % clr)
             return st
         if op in ('TC', 'TCF'):
             call = op == 'TC'
