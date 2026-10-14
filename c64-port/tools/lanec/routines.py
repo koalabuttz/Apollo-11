@@ -68,7 +68,10 @@ FAMILIES = {
                 # head families (src/lanec_pin_head_<h>.c, suite pin-head-<h>): at every point
                 # a head claims, it takes the place of the modules named here, which ran on
                 # through other routines in one C call (docs/LANEC-PIN-HEADS.md)
-                heads={'load': ('load_request', 'load_complete')}),
+                heads={'load': ('load_request', 'load_complete')},
+                # modules no routine tries (the rest of the try-list and the heads accept
+                # their states; their suites stay as host tests of the composite)
+                dropped=()),
 }
 
 
@@ -159,6 +162,16 @@ def main():
                         at = [got.index(x) for x in replaced if x in got]
                         rest = [x for x in got if x not in replaced and x != f'head_{h}']
                         got[:] = rest[:min(at)] + [f'head_{h}'] + rest[min(at):] if at else rest + [f'head_{h}']
+        # dropped: composites no routine tries any more (their suites stay as host
+        # tests); every point they claimed needs another module or a head
+        drop = set(cfg.get('dropped', ()))
+        for mission in points:
+            for kind in points[mission]:
+                for key, (got, bank, z) in points[mission][kind].items():
+                    if drop & set(got):
+                        got[:] = [x for x in got if x not in drop]
+                        if not got:
+                            sys.exit(f'FAIL: {mission} {bank:02o},{z:04o}: only dropped modules claim it')
         for mission in points:
             for key, (got, bank, z) in points[mission][''].items():
                 if (mission, key, got[0]) in accepted_by:
