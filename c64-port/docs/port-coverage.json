@@ -6221,7 +6221,7 @@
       "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
       "bytes": 16963,
       "lines": 695,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6236,7 +6236,7 @@
           "verification": "docs/LM-AOTMARK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6247,7 +6247,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "hardware_side_effects": "Channel 016 (NAVKEYIN, the mark and reject buttons) is read as a latched input; channels 1 and 2 are the L and Q registers. Raising MARKRUPT from the mark buttons is a device-adapter obligation.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-aotmark/lm-aotmark-source-map.json",
@@ -6267,6 +6266,10 @@
             "vice_targets": {
               "vice-lm-aotmark": 302
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-294-aotmark.md",
+            "sha256": "3f60a61049e4f9be474c9c68e9cbd32cb243951d237e182699447254f390d572"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
