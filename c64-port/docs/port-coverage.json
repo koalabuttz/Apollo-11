@@ -759,6 +759,7 @@
             "src/geometry_rtb.c",
             "src/rtb_angles.c",
             "src/rtb_agreement.c",
+            "src/cm_integration_moves.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
             "src/agc_image_ops.c",
@@ -772,10 +773,10 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). Runs take up to 1,000 routines.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). From EARROT1 to OVERADAY, any DTEAROT and MPAC, OVFIND +0 or +-1 (as the interpreter's TS of an overflowed A leaves it) and QPRET (42D) a return outside the file: EARROT2's BOVB counts OVFIND down rather than clearing it, so from any other OVFIND word the original's OVERADAY/EARROT2 loop runs for thousands of passes (yaAGC). Runs take up to 1,000 routines.",
         "external_continuations": [
           "The caller's return through QPRET, the CADR in S2, or GOTO 28D (VAC+034)",
-          "TCDANZIG and ENDT(X) through BOVB",
+          "TCDANZIG (ENDT(X)) through EARROT2's BOVB, native (src/cm_integration_moves.c)",
           "POLY (TC from LOG, with its coefficient table)",
           "SHORTMP (TC from LOG; from SXTLOGIC it runs natively, src/geometry_rtb.c)",
           "*SMNB* and ARCTRIG (CALL; native in src/cm_inflight_align.c, milestone inflight-align)",
@@ -789,22 +790,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "e850d3e09808a89b20fe5533c1edd85e91712d5d8a6ffb8c86fc294a70f2fb66"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
+            "sha256": "16677ec63ad228546a4642f280ebaa44cc479b562dda053fc729605777e3dcd5"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "cf50bacb21b5ac1eea6722a33878c7e9f583615618570721dc4dc07ce58623f1",
             "vice_targets": {
-              "vice-geometry": 197
+              "vice-geometry": 194
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "eb4aa4da6e838eaa8d1a3332aafce9d6b2bf7cb1d35e1eac45d2094fc0a473a9"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -1033,23 +1034,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-DOWNTELEMETRY.md",
-            "sha256": "51420908c9a1598b8b266fc946ebddcd998c89a7e5131f73b6d8ea726340ce4f"
+            "sha256": "1433f530b1009b10443d6467b36308b7c1fcf645876a6f8a26be8216ab2c8798"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-proof.json",
-            "sha256": "15825d4995fab3e70ccc19087106179f4cb5e9d923cf6f1ebc68e9e155911b9a"
+            "sha256": "f8ce066bc86f1fd2f65fc5e53376a2682c500131728335ee152fb50a2e6dd935"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-host.log",
-            "sha256": "1dff9234a4aea42944992d8e60fead940966a2493c46b1d518cb48016ac4f1d8"
+            "sha256": "68ba761ae8a38c03b407b65d1dcc17e8f98809548ac25d0fe1db342bdaa33839"
           },
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
-            "sha256": "f236436f632ef939ef59a1c210bd38d0dd7b3ff28945ce9e8bbc3111f381089f"
+            "sha256": "cd26563b7bbaeb85808d1e9f5f5f2d3a41be173fb539c116d21f21225154675d",
+            "vice_targets": {
+              "vice-cm-downtelemetry": 24
+            }
           },
           "independent_review": {
-            "path": "docs/audits/downtelemetry.md",
-            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
+            "path": "docs/audits/downtelemetry-436.md",
+            "sha256": "fde9ffa3a9cb78f0ffc27397eed2dbc38de5a95e7613ebb330dad5832fd4b6db"
           }
         }
       }
@@ -2122,7 +2126,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -2130,14 +2134,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -2213,7 +2217,7 @@
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
             "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
-              "vice-cm-integration-init": 322
+              "vice-cm-integration-init": 331
             }
           },
           "c64_branch_outcomes": {
@@ -2221,8 +2225,8 @@
             "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/lane-g-417.md",
+            "sha256": "e42ee2722fb2a4ba88372518fb41c7bca3b2099b775710d08dd6117c1c2015c6"
           }
         }
       }
@@ -3655,7 +3659,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -3663,14 +3667,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -7715,23 +7719,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
-            "sha256": "e41b14ee11b46fbb4c29af438d37177d9f7d2ad1fe61ad4c0174234ef420d527"
+            "sha256": "9ebc04b4a8473c1ee714cd103244c6a0f879c7bd906c9d8d413c05ab30c8e87b"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
-            "sha256": "c769060975ab840f375adaa5f7da78c16ea60c4d893a802a09fb3fd84640904a"
+            "sha256": "15d4655f6cc642157430f760d5056426c882cca8598229a9b5350d75ed7e7573"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-host.log",
-            "sha256": "9593fc30d35821010ae83cfce2e884e156a4f6315d4421ea09a41dd2241a8b5c"
+            "sha256": "4c1de6c55bbb3a6c6ad2f138add16f1e77130c96e3932421b62b33a5fb045a4f"
           },
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
-            "sha256": "326174bb8597740ce03b5e2ee9f361311d3aa877128b6f8bb236c6b12ba3c599"
+            "sha256": "48e94fa2e7e75956654779357a2ae4e759c0f41c995f9e6402f0bba5455ad1f7",
+            "vice_targets": {
+              "vice-lm-downtelemetry": 48
+            }
           },
           "independent_review": {
-            "path": "docs/audits/downtelemetry.md",
-            "sha256": "4abbb5ac602fc27987a574dbdad6eb8f1533def92470835036eecfc0515c2fe2"
+            "path": "docs/audits/downtelemetry-436.md",
+            "sha256": "fde9ffa3a9cb78f0ffc27397eed2dbc38de5a95e7613ebb330dad5832fd4b6db"
           }
         }
       }
@@ -9067,7 +9074,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -9075,14 +9082,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -9132,7 +9139,7 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9149,7 +9156,7 @@
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9164,7 +9171,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET or Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
@@ -9184,6 +9190,10 @@
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-integration-init.md",
+            "sha256": "2ce18acd5cb83d8e762415fc83f12e114ebd6b4aee39b7bd3974ff0e75494d7c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
@@ -9946,22 +9956,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/geometry/geometry-proof.json",
-            "sha256": "dd7bde2042d5578b99f99e4a8f7c7632d79f9116ef2e3771d2f4f92deb0a9653"
+            "sha256": "e850d3e09808a89b20fe5533c1edd85e91712d5d8a6ffb8c86fc294a70f2fb66"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/geometry/geometry-host.log",
-            "sha256": "d739c6665949beff1e8df5fb86a0cf84b9be0dc9a9b0fc2c9241128665486ad9"
+            "sha256": "16677ec63ad228546a4642f280ebaa44cc479b562dda053fc729605777e3dcd5"
           },
           "c64_execution_results": {
             "path": "evidence/geometry/geometry-vice.log",
-            "sha256": "039f018c9eac93a9e021358714fe7bd3111e06dc77296f61325715c8aed7f549",
+            "sha256": "cf50bacb21b5ac1eea6722a33878c7e9f583615618570721dc4dc07ce58623f1",
             "vice_targets": {
-              "vice-geometry": 197
+              "vice-geometry": 194
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
-            "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+            "sha256": "eb4aa4da6e838eaa8d1a3332aafce9d6b2bf7cb1d35e1eac45d2094fc0a473a9"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -10449,22 +10459,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p12/lm-p12-proof.json",
-            "sha256": "7a5b7f445ccd12e9724383c9895091738919332d80ca9faff95d16c9c260fb34"
+            "sha256": "143e77db9905666fb2f7fd18551bc840734b2446433e7369622c03a48ee0ccb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p12/lm-p12-host.log",
-            "sha256": "1124d6b9be0bdb47cad8b859f089e81a2a1e8e9a4bfb146830cd7e27c5bab405"
+            "sha256": "9e5b42a7b8f1489970e2ea31603883c6a2d70bfa87c1196039be3b44fc125c15"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p12/lm-p12-vice.log",
-            "sha256": "c1b81b2ffff3f54d4b2b9aceb2fb9d2d131f1167d3a736b1ab6e0e3ef8cb454a",
+            "sha256": "1664aee6fe1dda3ef8959fd9b0226480a87c2093e2713aaa1f1860153eec12ec",
             "vice_targets": {
-              "vice-lm-p12": 112
+              "vice-lm-p12": 110
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p12/lm-p12-c64-cover.json",
-            "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf"
+            "sha256": "1e7a597c84d2e9b793fbf57ed6454fd80d78c43b5f346417270081ec6420baca"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-171.md",
@@ -10636,7 +10646,7 @@
       "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
       "bytes": 34716,
       "lines": 1764,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10648,7 +10658,7 @@
             "src/rtb_angles.c",
             "src/rtb_modes.c"
           ],
-          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 178 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 509 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P34-P35.md"
         },
         {
@@ -10724,7 +10734,7 @@
           "verification": "docs/LM-S3435B.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10739,7 +10749,6 @@
           "The interpreter exits POODOO and ALARM (ACOSABRT among them)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-source-map.json",
@@ -10763,6 +10772,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
             "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-419.md",
+            "sha256": "ee81946d5922215c3b908d6d661b05f031179407a653cac32e9ba9ba7f7ec6a8"
           }
         }
       }
@@ -10885,7 +10898,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "ded4dd2099a88253b328c029cb90e07c3696a5e63a246055272194381f7a225c"
+            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -10893,14 +10906,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "bf8b25cd1bc776c98648ac0cd6b59cc088c7e4184f878fc41883a64e678b2014",
+            "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
               "vice-p51-p53": 1522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -10915,7 +10928,7 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10941,7 +10954,7 @@
           "verification": "docs/LM-P70-P71-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10985,6 +10998,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json",
             "sha256": "b4b1c45f0de47a0328980fb252abb4c546b67a610fc6f8ffe745b04a20ded456"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-408.md",
+            "sha256": "6e179a61946e45df3fc00b14ae83cd2c053c6442c4216dc84214b3410d53acf9"
           }
         }
       }
@@ -11918,7 +11935,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 82 in all. Basic (lm_r31_file_basic, 14): 40,3674 R31CALL, 3700 DSPDELAY (after FINDVAC), 3702 (after FIXDELAY), 3712 (after NOVAC); 37,3113 DISPN5X, 3116 (GOMARKF terminate), 3117 (proceed), 3120 (loaded), 3121 V83CALL, 3155 REV83, 3316 and 3344 (after EXIT), 3330 and 3346 (after PRIOCHNG). Interpretive (lm_r31_file_interpretive, 68, at NEWOPS with LOC there): after TC INTPRET 37,3132, 3166, 3331, 3347, 3371, 3404; the STCALL returns 3136, 3147, 3172, 3217, 3375; the CALL returns 3263, 3365; the GOTO and switch targets 3205, 3211 OTHCONIC, 3236, 3240 COMPDISP, 3363 GETRVN2; the BPL target 3315; and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3134, 3140, 3142, 3145, 3151, 3153, 3154, 3170, 3175, 3177, 3201, 3207, 3213, 3215, 3222 OTHINT, 3223, 3226, 3230, 3232, 3243, 3246, 3250, 3252, 3254, 3255, 3257, 3261, 3265, 3267, 3271, 3274, 3277, 3300, 3303, 3304, 3306, 3311, 3314, 3334, 3336, 3340, 3343, 3352, 3354, 3355, 3357, 3361, 3373; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 37 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, as sb_ok reads FB 37 without the superbank bit): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 37 (SUPERBNK bit 7 clear) or, for the bank 40 entries, FB 30 with SUPERBNK 0100; an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restriction (spec states): at 37,3243 (RTB NORMUNX1) MODE is the vector mode 77776 that the VSU before it leaves; rtb_unit refuses other modes. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 82 in all. Basic (lm_r31_file_basic, 14): 40,3674 R31CALL, 3700 DSPDELAY (after FINDVAC), 3702 (after FIXDELAY), 3712 (after NOVAC); 37,3113 DISPN5X, 3116 (GOMARKF terminate), 3117 (proceed), 3120 (loaded), 3121 V83CALL, 3155 REV83, 3316 and 3344 (after EXIT), 3330 and 3346 (after PRIOCHNG). Interpretive (lm_r31_file_interpretive, 68, at NEWOPS with LOC there): after TC INTPRET 37,3132, 3166, 3331, 3347, 3371, 3404; the STCALL returns 3136, 3147, 3172, 3217, 3375; the CALL returns 3263, 3365; the GOTO and switch targets 3144 DOCMBASE, 3205, 3211 OTHCONIC, 3236, 3240 COMPDISP, 3363 GETRVN2; the BPL target 3315; and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3134, 3140, 3142, 3145, 3151, 3153, 3154, 3170, 3175, 3177, 3201, 3207, 3213, 3215, 3222 OTHINT, 3223, 3226, 3230, 3232, 3243, 3246, 3250, 3252, 3254, 3255, 3257, 3261, 3265, 3267, 3271, 3274, 3277, 3300, 3303, 3304, 3306, 3311, 3314, 3334, 3336, 3340, 3343, 3352, 3354, 3355, 3357, 3361, 3373; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 37 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, as sb_ok reads FB 37 without the superbank bit): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 37 (SUPERBNK bit 7 clear) or, for the bank 40 entries, FB 30 with SUPERBNK 0100; an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restriction (spec states): at 37,3243 (RTB NORMUNX1) MODE is the vector mode 77776 that the VSU before it leaves; rtb_unit refuses other modes. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
           "unreached": "None. The oracle executed all 53 basic instructions and the interpreter read all 143 interpretive words (evidence/lm-r31-file/lm-r31-file-closure.json).",
           "data_validity": "2CADR V83CALL and 2CADR DISPN5X (read by FINDVAC and NOVAC), DEC 100 (read by FIXDELAY), CADR GOMARKF (read by BANKCALL) and V16N54 (VN 1654, read by CAF) are read as the original constants. 37,3335 (VN, STOVL RONE's operand) is an interpretive operand the closure tool lists as data; the interpreter reads it.",
           "c64_branch_outcomes_note": "The C64 rows take every gcov branch outcome the host cases take (evidence/lm-r31-file/lm-r31-file-c64-cover.json: 1,291 of 1,291, none missing). One of them, the fall-through of GETRVN's BOFF MUNFLAG pair at 37,3347 with MUNFLAG set and no job waiting (src/lm_r31_file.c:1246-1247), is only taken by runs that go on through COMPDISP to CALL CDU*NBSM, too big for one C64 program (proof c64_too_big_cases, host only); the C64 takes it with a truncated row (c64_cuts, group 22): that case run to NEWOPS with LOC at 37,3352, where the yaAGC oracle stops too, its digest the oracle's full state there. See docs/LM-R31-FILE.md."
@@ -12074,7 +12091,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r63/lm-r63-proof.json",
-            "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0"
+            "sha256": "6c0e45d323b3787c2d60df05db6e5aa962b8a8d61059dd729866b2c344eecfbe"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r63/lm-r63-host.log",
@@ -12082,14 +12099,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-r63/lm-r63-vice.log",
-            "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+            "sha256": "58eb7b5b66187efec36fe0f66db5c2c0e92485d197a7c546736efec69eac2457",
             "vice_targets": {
-              "vice-lm-r63": 34
+              "vice-lm-r63": 35
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r63/lm-r63-c64-cover.json",
-            "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+            "sha256": "03a2e4bcf69dc7fba2a396f495a011f5fc62205d0e9ffd3d71b586bf7c25791d"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-171.md",
@@ -12209,22 +12226,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
-            "sha256": "a0c900e9c464164e93218cf7538c3e3b84a83bf588032fbfcafe24644ad116bc"
+            "sha256": "e6b135788b31dbebf22845f84773e538412fdf535c0aebc29e21b4ee7eb67638"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
-            "sha256": "7ddeefdc3edffe0e7c6bbd8d779930172d4c7ab3e807d37cac96d205ceaea02c"
+            "sha256": "3d36401d5669c82909154d9b3aa92ef843c118f15edcf68326200d66cdce550b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
-            "sha256": "d430b681ac3b1d7a5efa36f1c8cb25d6978184fe46d2efe93a3b50bc1eaf6f59",
+            "sha256": "67cae21f35c699ff26aca32326e6fd8a41cbc9366602d262d78549ec58164001",
             "vice_targets": {
               "vice-lm-rcsmon": 17
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
-            "sha256": "c6f3d308e883fe639252015a7fe5326f99360ab26edec3b9c3098022551f26d9"
+            "sha256": "966cfd9c19fffc1173addadbd62c114ce695f1c19167a9a0adf7482a8233dead"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-287.md",
@@ -12936,7 +12953,7 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12951,7 +12968,7 @@
           "verification": "docs/LM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12965,7 +12982,6 @@
           "TC RTRN to the saved return outside the file",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
@@ -12985,6 +13001,10 @@
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-stable-orbit.md",
+            "sha256": "af050e887817539c78001bee15c51adc301b0c552ea65fc80cd454f80e393009"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",

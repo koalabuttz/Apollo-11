@@ -4,23 +4,23 @@
   "release": "evidence-lm-p12",
   "files": {
     "lm-p12-c64-cover.json": {
-      "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf",
-      "bytes": 670,
+      "sha256": "1e7a597c84d2e9b793fbf57ed6454fd80d78c43b5f346417270081ec6420baca",
+      "bytes": 3497,
       "store": "tree"
     },
     "lm-p12-differential.log": {
-      "sha256": "cefc131d3d6382697ba82db5481a7cc8c07140d136bb3a38c4d5efad0e7b6e12",
-      "bytes": 3411,
+      "sha256": "c73e356303780b931d707fbc9f1a1669594a654347b7e22d7bd51db5f6b21f94",
+      "bytes": 3659,
       "store": "tree"
     },
     "lm-p12-host.log": {
-      "sha256": "1124d6b9be0bdb47cad8b859f089e81a2a1e8e9a4bfb146830cd7e27c5bab405",
-      "bytes": 93,
-      "store": "tree"
+      "sha256": "9e5b42a7b8f1489970e2ea31603883c6a2d70bfa87c1196039be3b44fc125c15",
+      "bytes": 1012,
+      "store": "release"
     },
     "lm-p12-proof.json": {
-      "sha256": "7a5b7f445ccd12e9724383c9895091738919332d80ca9faff95d16c9c260fb34",
-      "bytes": 6585,
+      "sha256": "143e77db9905666fb2f7fd18551bc840734b2446433e7369622c03a48ee0ccb5",
+      "bytes": 8629,
       "store": "tree"
     },
     "lm-p12-source-map.json": {
@@ -29,9 +29,9 @@
       "store": "tree"
     },
     "lm-p12-vice.log": {
-      "sha256": "c1b81b2ffff3f54d4b2b9aceb2fb9d2d131f1167d3a736b1ab6e0e3ef8cb454a",
-      "bytes": 1101,
-      "store": "tree"
+      "sha256": "1664aee6fe1dda3ef8959fd9b0226480a87c2093e2713aaa1f1860153eec12ec",
+      "bytes": 5632,
+      "store": "release"
     }
   }
 }

@@ -1672,7 +1672,7 @@ static enum exec_status r65753(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 
-#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){agc_channels_hw=p->hardware;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}
+#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)AGC_CH_HW_SET(p);return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}
 #if (LM_P70_P71_KEEP0 >> 0) & 1
 WRAP(r13402)
 #endif

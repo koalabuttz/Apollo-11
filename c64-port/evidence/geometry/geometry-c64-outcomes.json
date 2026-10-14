@@ -8,6 +8,7 @@
   "src/agc_transfer.c",
   "src/agc_word.c",
   "src/cm_geometry.c",
+  "src/cm_integration_moves.c",
   "src/cm_interp_orders.c",
   "src/cm_interp_steps.c",
   "src/geometry_rtb.c",
@@ -17,10 +18,10 @@
   "src/rtb_agreement.c",
   "src/rtb_angles.c"
  ],
- "host_edges": 1671,
- "host_vector_edges": 1671,
- "c64_edges": 1671,
+ "host_edges": 1677,
+ "host_vector_edges": 1677,
+ "c64_edges": 1677,
  "host_branches_missing_on_c64": [],
- "c64_rows": 197,
+ "c64_rows": 194,
  "c64_segment_rows": 0
 }

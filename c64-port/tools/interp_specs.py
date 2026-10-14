@@ -520,6 +520,9 @@ SPECS = {
         'resume_keys': True,
         # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as
@@ -549,7 +552,19 @@ SPECS = {
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
-        'states': {'cm': {lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')}},
+        'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              # EARROT1-OVERADAY: OVFIND as the interpreter
+                              # sets it (TS of an overflowed A: +-1), +0 in
+                              # three cases of five. EARROT2's BOVB counts
+                              # OVFIND down rather than clearing it, so from
+                              # any other word the original swings between
+                              # EARROT2 and OVERADAY for thousands of passes
+                              # (yaAGC); DTEAROT and MPAC range freely.
+                              # EARROT1's RVQ returns through QPRET (42D) to
+                              # its caller, outside the file.
+                              **{lab: {'OVFIND': [0, 0, 0, 1, 0o77776], 'vac+052': ['outside']}
+                                 for lab in ('23,2215', '23,2220', '23,2221', '23,2223', '23,2225', '23,2230',
+                                             '23,2245', '23,2250', '23,2252', '23,2253')})},
         'index_states': True,
         'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
@@ -559,9 +574,13 @@ SPECS = {
                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'},
                 'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'},
                 'TRANSP1': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE1)'},
-                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'}},
-        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h'],
-        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c'],
+                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'},
+                # EARROT2's BOVB TCDANZIG (CSM_GEOMETRY.agc 355), natively
+                # (27,3352, where the listing's first label is ENDT(X)).
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'},
+                'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c', 'src/cm_integration_moves.c'],
         'target': 'tests/geometry_target.c',
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
@@ -574,6 +593,9 @@ SPECS = {
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
     },
@@ -970,6 +992,10 @@ SPECS = {
         'base': {'cm': 'cm_extended_verbs_file'},
         'symbol': {'cm': 'cm_extended_verbs_file'},
         'basic': 'full',
+        # The C64 flight store links the basic words as two parts
+        # (docs/FLIGHT-PARTS.md): chunked, every module held the whole
+        # basic_run.
+        'flight_parts': [0o43 * 1024 + 0o2600 - 0o2000],
         # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
         # and DAPDISP (fan targets, so their states below apply), and the returns the
         # compiler cannot find on its own: after the in-file checks that pass
@@ -2338,6 +2364,9 @@ SPECS = {
         'joint_states': p51_p53_states()[1],
         # The star-pair search (up to 666 pairs of the 37 catalog stars) runs
         # past 4,000 routines.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 10000,
         'freeze_stride': 192,
     },
@@ -2853,6 +2882,10 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
+        # V89 runs in flight: skip the entry checks' whole-image scan there.
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
     },
     'lm-p12': {
         'missions': ('lm',),
@@ -2872,6 +2905,9 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'edge_cases': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p12_target.c',
         'freeze_stride': 32,
@@ -3040,6 +3076,7 @@ SPECS = {
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
+        'trusted_image': True,
         'c64_rows': 'cover',
         'cover': True,
         'freeze_stride': 16,
@@ -3838,6 +3875,9 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
+        # The C64 flight store links the basic words as three parts
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
+        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,
