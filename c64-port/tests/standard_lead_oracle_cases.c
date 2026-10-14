@@ -38,7 +38,13 @@ void slo_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint
   for(i=0;i<8u;++i){s->words[0167u+12u*i]=(agc_word)((rnd(&x)&1u)?040000u|(1u+rnd(&x)%037777u):1u+rnd(&x)%037777u);s->words[0164u+12u*i]=(agc_word)(rnd(&x)%077777u);
    s->words[0165u+12u*i]=(agc_word)((rnd(&x)&7u)|*superbank);}
   s->words[067]=(agc_word)(rnd(&x)%4u?(rnd(&x)%(cm?7u:8u))*12u:AGC_NEG_ZERO);
-  s->words[0]=agc_extend((agc_word)(rnd(&x)%4u?s->words[0164u+12u*(rnd(&x)%8u)]:rnd(&x)%077777u));}
+  s->words[0]=agc_extend((agc_word)(rnd(&x)%4u?s->words[0164u+12u*(rnd(&x)%8u)]:rnd(&x)%077777u));
+  /* Free core sets (PRIORITY -0), which JOBWAKE's search skips: about a third of core sets 1-7. */
+  for(i=1;i<8u;++i)if((j+i)%3u==0u)s->words[0167u+12u*i]=AGC_NEG_ZERO;
+  /* SPECTEST: core set 0 is the sleeping job A names and NEWJOB is -0 (EXECUTIVE's SPECTEST), in an
+   * eighth of the cases. */
+  if(j%8u==7u){s->words[0167]=(agc_word)(040000u|(s->words[0167]&037777u)|(s->words[0167]&037777u?0u:1u));
+   s->words[0]=agc_extend(s->words[0164]);s->words[067]=AGC_NEG_ZERO;}}
  if(kind>=7u){
   s->words[0120]=(agc_word)(0401u+054u*(j%5u));s->words[ebuf]=callee;s->words[ebuf+1u]=(agc_word)(0300u+j);
   s->words[4]=fb;s->words[6]=(agc_word)(fb|eb);
