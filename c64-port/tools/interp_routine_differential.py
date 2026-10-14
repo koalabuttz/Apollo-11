@@ -1644,7 +1644,9 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
     c64, rows_cover = freeze_c64(spec_id, spec, sym, missions, cases, rows, visits, covers, chan, edges)
     if cover is not None:
         sets, where = edges
-        got = set().union(*(sets[i] for g in C64_PICKS for i in g))
+        # (Truncated 'c64_cuts' rows sit past the traced cases: they count in
+        # the gcov record, not here, so this stays a lower bound.)
+        got = set().union(*(sets[i] for g in C64_PICKS for i in g if i < len(sets)))
         live = [i for i in range(len(cases)) if i not in chan]
         target = set().union(*(sets[i] for i in live))
         cover['edges_c64'] = len(got)
