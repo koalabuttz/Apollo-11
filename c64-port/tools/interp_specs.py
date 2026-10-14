@@ -2012,6 +2012,104 @@ SPECS = {
         # Flight builds skip the entry checks' erasable scan (steward 10-14).
         'trusted_image': True,
     },
+    'cm-p20-p25': {
+        'missions': ('cm',),
+        'file': {'cm': 'P20-P25.agc'},
+        'base': {'cm': 'cm_p20_p25'},
+        'symbol': {'cm': 'cm_p20_p25'},
+        # Every word another file names: P20, P22 and P23 (rendezvous,
+        # orbital and cislunar navigation), R21-R23, R61 tracking, the
+        # V67/V89/V94 extended verbs, the VHF range read and the restart
+        # points the phase tables name.
+        # CNTCHK (27,2361) is a label nothing names: STQ POINTEX, then
+        # CONTCHK.
+        'entries': ['@external', 'CNTCHK'],
+        'partial': {'cm': 'the I/O channel orders and the EXTENDs before them wait for an I/O channel model: '
+                          'RANGERD\'s WAND CHAN13 and WOR CHAN13 (27,2420-2424) and VHFREAD\'s RAND CHAN33 (27,2532-2533), '
+                          'and AUTOCK\'s RXOR CHAN31 (34,3360-3361) and WOR DSALMOUT (34,3427-3430)'},
+        'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
+                      'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
+                      'MAKECADR': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto', 'LINUS': 'auto',
+                      'PRIOCHNG': 'auto', 'CHECKMM': 'auto', 'SWCALL': 'auto', 'SWRETURN': 'auto',
+                      'TWIDDLE': 'auto', 'CLEARMRK': 'auto', 'FALTON': 'auto', 'GENTRAN': 'auto',
+                      'NOVAC': 'auto', 'TRFAILOF': 'auto', 'TRFAILON': 'auto', 'POSTJUMP': 'auto',
+                      'ENDOFJOB': None, 'GOTOPOOH': None, 'GOTOV56': None, 'BANKJUMP': None,
+                      'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
+        'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
+        'resume_orphans': True,
+        # R61's INDEX MPAC; TC +1 picks R61END or R61C1.
+        'tc_tables': {'R61C1-2': 2},
+        # (CCS A after a MASK reaches only its first two arms; the others
+        # land on EXTEND and a channel order.)
+        'refuse_unextended': True,
+        'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
+                'TPMODE': {'cm': 'rtb_tpmode(s,io,RTB_CM)'}, 'DPMODE': {'cm': 'rtb_dpmode(s,io,RTB_CM)'}},
+        'includes': ['rtb_angles.h', 'rtb_modes.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
+        # EBANK= changes between routines (MRKBUF1, LANDMARK, QMIN...).
+        'ebank': 'listing',
+        # S22LOC points at one of the five 7-word mark sets in SVMRKDAT
+        # (ECADR 03537, stepped by SEVEN).
+        # MARKDATA holds VTEMP -2 (ECADR 01224) or an S22LOC; MARKSTAT a
+        # mark VAC area.
+        'all_states': {'cm': {'S22LOC': [0o3537 + 7 * k for k in range(5)],
+                              'MARKDATA': [0o1224] + [0o3537 + 7 * k for k in range(5)],
+                              'MARKSTAT': [0o401 + 0o54 * k for k in range(5)],
+                              # (star codes 1-37 and the planets 38-40 in bits 1-6)
+                              'STARCODE': [c + 0o100 * h for c in range(41) for h in (0, 1, 0o177)],
+                              'BESTI': list(range(6, 229, 6))}},
+        # LOWMEMRY's VLOAD* CATLOG,1: the star catalog, X1 -BESTI.
+        'indexed_fixed': {'CATLOG': (-228, 0)},
+        # 9DWTO6DW's counters live in the pushdown list: XTMP1 (6D, ROWDOT's
+        # shifting loop count), P (8D), I (10D), N (12D) and J (14D), each
+        # a DP-word index (even, J and I to 58, N in steps of 6), with the
+        # pushdown pointer past them.
+        'range_states': [('9DWTO6DW', 'ROWDOT3+2', {
+            'vac+006': [0o377 >> k for k in range(9)], 'vac+010': list(range(0, 42, 2)),
+            'vac+012': list(range(0, 60, 2)), 'vac+014': list(range(0, 60, 6)),
+            'vac+016': list(range(0, 60, 2)),
+            # (PUSHLOC: 18D after the three cleared vectors, 20D inside ROWDOT)
+            '0166': ['vac+022', 'vac+024']}),
+            # The W-matrix pass (9DWI=JA on) visits J 58..28, 2, 0 with N
+            # 3(58 - J) and I counting down from J: J, I near the loop's end
+            # (28 takes the I=26 and J=26 resets) keep each run short. J
+            # is 0 only on the way out (J=J-1 then 9DWI=JA's exit test);
+            # inside the loops J 0 would step past it forever.
+            ('9DWI=JA', '9DWEXITX', {'vac+012': [0, 2, 28], 'vac+014': [90, 96, 102],
+                                     'vac+016': [2, 28]}),
+            # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
+            # of 6 up to the 36 of S22NXTWI's AXT,1.
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]})],
+        # From P23.16's last check (TC INTPRET before P23.17) to its CALL
+        # LOWMEMRY the program runs with a catalog star code,
+        # as P23.16's checks leave it; LOWMEMRY with X1 6 times one.
+        'states': {'cm': dict({'LOWMEMRY': {'vac+046': list(range(6, 223, 6))},
+                               # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
+                               '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
+                               # RENDISP7 waits on TEMPOR1 (+0 loops until the
+                               # display job sets it -1 or +1).
+                               **{'RENDISP7+%d' % n: {'TEMPOR1': [0o77776, 1]} for n in range(4)}},
+                              **{'P23.17%+d' % n: {'STARCODE': list(range(1, 38))} for n in range(-1, 14)})},
+        # Loop and mid-sequence points start from the registers the file's
+        # own runs reach them with (the W-matrix and mark-data loops).
+        'flow_states': True,
+        'resume_flow': True,
+        # (an indexed erasable operand that leaves erasable is refused)
+        'index_guard': True,
+        'target': 'tests/cm_p20_p25_target.c',
+        'cover': True,
+        'counters': True,
+        'edge_values': True,
+        'resume_keys': True,
+        'index_states': True,
+        # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
+        # segment rows cut them at the next resume LOC.
+        'c64_segments': True,
+        'index_carry16': True,
+        'image_w': True,
+        'max_steps': 40000,
+        'freeze_stride': 192,
+    },
     'p51-p53': {
         'missions': ('lm', 'cm'),
         'file': {'lm': 'P51-P53.agc', 'cm': 'P51-P53.agc'},

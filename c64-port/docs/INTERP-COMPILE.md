@@ -183,3 +183,10 @@ The yaAGC reference now decides whether a case's first instruction is in the fil
 A spec's `max_steps` must match the `irc_run` limit in its `tests/test_<sym>.c` and `platform/c64/<sym>_diagnostic.c`; a lower limit fails long cases as kind 2.
 
 `basic_parts` (`{'budget': n}`) splits a whole-file basic step machine into part functions of about `n` bytes of C text each, so every routine's link closure fits its flight-store slot (CM RCS DAP, jet selection, entry DAP, TVC initialize, automatic maneuvers). A goto that crosses a part becomes a hand-off: Z is set to the target word and the routine returns, so the transfer runner calls the target's routine as the next step. Each target is a new routine key (a part key), and so is every computed-transfer target once there is more than one part. A cut never falls before a word reached under EXTEND. A part key in fixed-fixed memory runs under the FB its caller left. Part keys draw no differential cases of their own: their runs come from the routines that reach them, so a split leaves the case set and the host vectors byte-identical (`--cover-check` reports `cases_match`). Only the C64 groups change. A pass now takes more steps, so these specs raise `max_steps` to 2000.
+
+## Additions from CM P20-P25 (lane D1b)
+
+- `TS BBANK` (P20-P25's `CAF BUFBANK; TS BBANK`) stores the EB half. A store that would change FB too refuses, since a new FB leaves the routine.
+- `indexed_fixed` also sets the window `index_guard` allows a starred fixed operand. LOWMEMRY's `VLOAD* CATLOG,1` reaches the star catalog 228 words below CATLOG, past the default ±040.
+- The freeze's C64 size probes name their build folders by a hash of the KEEP mask when the mask is long (a file of 1,138 routines).
+- `range_states` ranges may overlap. A later range's states win over an earlier one's at the points both cover (9DWTO6DW's W-matrix pass pins I, N and J closer than the whole routine).

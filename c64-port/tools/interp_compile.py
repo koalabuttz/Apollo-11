@@ -576,7 +576,12 @@ class Compiler:
             raise CompileError('%s with an indexed fixed operand' % what)
         need = K_WORDS.get(what, 6)
         b0 = fp // 1024 * 1024
-        lo, hi = max(b0, fp - 0o40), min(b0 + 1024, fp + 0o40 + need)
+        rng = self.spec.get('indexed_fixed', {}).get(self.name(fp))
+        if rng is not None:
+            # (a table the spec bounds: its range, as indexed_k reads it)
+            lo, hi = max(b0, fp + rng[0]), min(b0 + 1024, fp + rng[1] + need)
+        else:
+            lo, hi = max(b0, fp - 0o40), min(b0 + 1024, fp + 0o40 + need)
         self.kx[lo] = (hi - lo, fp)
         self.kx_used = True
         st[-1] += '{uint8_t bad=0;const agc_word *k=kx(s,KX%o,%uu,%uu,%uu,&bad);if(bad)return EXEC_OUT_OF_SCOPE;' % (lo, lo, hi - lo, need)
@@ -1368,6 +1373,10 @@ class Compiler:
                                  'W[5]=z;return EXEC_OK;}' % (ln.loc + 1)], []
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
+                if qc == 2 and k10 == 6 and index is None:
+                    # TS BBANK (P20-P25's CAF BUFBANK; TS BBANK): only the EB
+                    # half may change; a new FB would leave the routine.
+                    return st + ['if((agc_correct(W[0])&076000u)!=(W[4]&076000u)||ai_ts(s,06u))return EXEC_OUT_OF_SCOPE;'], [nxt]
                 if qc == 2:
                     if not self.is_basic(nxt + 1):
                         # An overflow skip out of the code has no producer.

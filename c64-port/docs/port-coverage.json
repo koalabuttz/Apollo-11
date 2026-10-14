@@ -3275,8 +3275,22 @@
       "sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
       "bytes": 71348,
       "lines": 3529,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/cm_p20_p25.c",
+            "src/cm_interp_orders.c",
+            "src/cm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/rtb_modes.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c"
+          ],
+          "scope": "2,714 of 2,724 words (2,605 compiled, 109 constants): P20 rendezvous navigation, P22 orbital navigation, P23 cislunar navigation, R21-R23 marking, R61 tracking, the V67/V89/V94 extended verbs, the VHF range read and the W-matrix initialization 9DWTO6DW, as 1,139 routines of the control-transfer ABI compiled by tools/interp_compile.py. INCORP1/INCORP2 are called as transfer routines (milestone measurement-inc). The 10 words of RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33 and AUTOCK's RXOR CHAN31 and WOR DSALMOUT, with their EXTENDs, wait for the Comanche I/O channel model.",
+          "verification": "docs/CM-P20-P25.md"
+        }
+      ]
     },
     {
       "path": "Comanche055/P30-P37.agc",
