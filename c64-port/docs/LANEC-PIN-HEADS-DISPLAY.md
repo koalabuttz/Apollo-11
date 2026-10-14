@@ -60,9 +60,8 @@ C64, one mission, LTO (`big.ld`; an empty program is 56 bytes):
 | twoint | 8,599 | 8,616 |
 | minsec | 14,900 | 14,911 |
 
-`minsec` at -Oz, the flight store's setting: 13,585 bytes (LM) with M/SOUT
-claimed, after dropping the head's duplicate 15-bit check and passing
-`dsky_minutes_output`'s `accumulate` a pointer (14,111 before).
+`minsec` at -Oz, the flight store's setting: 13,656 bytes (LM) with M/SOUT
+claimed, after dropping the head's duplicate 15-bit check (14,111 before).
 
 All fit in a 16 KB flight slot.
 
