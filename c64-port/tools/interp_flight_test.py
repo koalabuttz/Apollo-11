@@ -51,7 +51,14 @@ ROPE = {'lm': ROOT / 'evidence/fixed-data-lm-original.rope.bin', 'cm': ROOT / 'e
 # P00 from Fresh Start: the NOVAC fresh-start jobs, then V37E00E's state
 # vector integration, all interpretive (V37E12E/V37E06E/V37E63E reach no
 # entry the first 30 s of P00 does not).
-SCENARIOS = {'lm': [(3000, 'V37E00E')], 'cm': [(3000, 'V37E00E')]}
+SCENARIOS = {'lm': [('V37E00E', 3000, 'V37E00E', None)], 'cm': [('V37E00E', 3000, 'V37E00E', None)]}
+# --p63: Apollo 11 about ten minutes before PDI (tools/scenarios/README.md),
+# then V37E63E and through ignition as the core dump's readme keys it:
+# P63's ignition-time iteration, PRO (V33E) past V06N61, ENTR past the three
+# V50N25 checklists and V50N18, then the countdown, SERVICER from TIG-35 s,
+# ignition and the engine-fail branch. A space waits half a second.
+P63_KEYS = 'V37E63E' + ' ' * 40 + 'V33E' + (' ' * 10 + 'E') * 4
+SCENARIOS_P63 = {'lm': [('P63', 70000, P63_KEYS, 'tools/scenarios/luminary099-p63-ignition.core')], 'cm': []}
 # The interpreter's fixed entry points that the store sends to $0A01
 # (tools/flight_store_build.py INTERP_POINTS but SWRETURN, which a basic
 # table holds; tools/interp_flight_capture.c points[]).
@@ -76,25 +83,30 @@ STATUS = {0: 'EXEC_OK'}
 
 
 def capture_tool(cc, m):
-    exe = OUT / f'capture-{m}'
+    # yaAGC with every DV through its hardware model (tools/prepare_hardware_dv.py):
+    # the stock engine's fast DV reads an L of -0 as -2^14 (docs/DIVIDE.md),
+    # which UNIT meets in flight (a vector component's DCS of +0).
+    exe, engine = OUT / f'capture-{m}', ROOT / 'build/agc_engine_hardware_dv.o'
+    if not engine.exists():
+        subprocess.run([sys.executable, 'tools/prepare_hardware_dv.py'], cwd=ROOT, check=True)
     subprocess.run([cc, '-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', f'-I{YAAGC}', f'-DIF_{m.upper()}=1',
-                    'tools/interp_flight_capture.c', str(YAAGC / 'agc_engine.o'), str(YAAGC / 'agc_engine_init.o'),
+                    'tools/interp_flight_capture.c', str(engine), str(YAAGC / 'agc_engine_init.o'),
                     str(YAAGC / 'rfopen.o'), '-lm', '-o', str(exe)], cwd=ROOT, check=True)
     return exe
 
 
-def capture(exe, m, want):
+def capture(exe, m, want, scenarios=SCENARIOS):
     """The scenarios' cases, evenly thinned to want; with their scenario."""
     cases = []
-    for cs, keys in SCENARIOS[m]:
-        path = OUT / f'{m}-{keys}-all.bin'
-        r = subprocess.run([str(exe), 'capture', str(ROPE[m]), str(cs), keys, '100000', str(path)], cwd=ROOT,
-                           capture_output=True, text=True)
+    for name, cs, keys, core in scenarios[m]:
+        path = OUT / f'{m}-{name}-all.bin'
+        r = subprocess.run([str(exe), 'capture', str(ROPE[m]), str(cs), keys, '100000', str(path),
+                            *([str(ROOT / core)] if core else [])], cwd=ROOT, capture_output=True, text=True)
         if r.returncode:
-            raise SystemExit(f'{m} {keys}: capture failed: {r.stdout[-500:]}{r.stderr}')
-        print(f'{m} {keys}: {r.stdout.strip().splitlines()[-1]}')
+            raise SystemExit(f'{m} {name}: capture failed: {r.stdout[-500:]}{r.stderr}')
+        print(f'{m} {name}: {r.stdout.strip().splitlines()[-1]}')
         data = path.read_bytes()
-        cases += [(keys, data[i:i + CASE_BYTES]) for i in range(0, len(data), CASE_BYTES)]
+        cases += [(name, data[i:i + CASE_BYTES]) for i in range(0, len(data), CASE_BYTES)]
     if len(cases) > want:
         cases = [cases[i * len(cases) // want] for i in range(want)]
     return cases
@@ -215,19 +227,28 @@ def vice(m, prg, reu_bytes, a):
 
 
 def run(m, a, exe):
-    if a.flowed:
-        every, left_out = flowed(m, a.flowed_states, exe)
+    left_out = None
+    if a.flowed or a.p63:
+        if a.flowed:
+            every, left_out = flowed(m, a.flowed_states, exe)
+        else:
+            every = capture(exe, m, a.total, SCENARIOS_P63)
         if not every:
-            print(f'{m}: no FLIGHT_INTERP_STOP module, no flowed states')
+            print(f'{m}: no {"FLIGHT_INTERP_STOP module" if a.flowed else "P63 scenario"}, nothing to run')
             return None
         if a.only:
             lo, hi = (int(x) for x in a.only.split(':'))
             every = every[lo:hi]
-        batches = [[]]
+        # As many cases per boot as the results area and the REU stream hold.
+        batches, size, prev = [[]], 0, None
         for c in every:
-            if len(batches[-1]) == a.cases or IF_STREAM + len(stream(batches[-1] + [c])) > IF_STREAM_END:
+            n = len(stream([prev, c] if prev else [c])) - (len(stream([prev])) if prev else 6)
+            if len(batches[-1]) == a.cases or IF_STREAM + size + n > IF_STREAM_END:
                 batches.append([])
+                size, n = 6, len(stream([c]))
             batches[-1].append(c)
+            size += n
+            prev = c
     else:
         batches = [capture(exe, m, a.cases)]
         if a.only:
@@ -239,11 +260,15 @@ def run(m, a, exe):
                   ran=sum(p['ran'] for p in parts), c64_failures=sum(p['c64_failures'] for p in parts),
                   first_failing_step=next((p['first_failing_step'] for p in parts if p['c64_failures']), 0),
                   boots=len(parts), yaagc_check='; '.join(p['yaagc_check'] for p in parts),
-                  scenarios=sorted({r['scenario'].split(' ', 1)[1] for r in rows}) if a.flowed else [k for _, k in SCENARIOS[m]],
+                  scenarios=sorted({r['scenario'].split(' ', 1)[1] for r in rows}) if a.flowed else [k[0] for k in (SCENARIOS_P63 if a.p63 else SCENARIOS)[m]],
                   steps=sum(r['steps'] for r in rows), stream_bytes=max(p['stream_bytes'] for p in parts),
                   **({'left_out': left_out} if a.flowed else {}), rows=rows)
-    (OUT / f'{m}{"-flowed" if a.flowed else ""}-report.json').write_text(json.dumps(report, indent=1) + '\n')
+    (OUT / f'{m}{suffix(a)}-report.json').write_text(json.dumps(report, indent=1) + '\n')
     return report
+
+
+def suffix(a):
+    return '-flowed' if a.flowed else '-p63' if a.p63 else ''
 
 
 def boot(m, a, exe, cases, k):
@@ -259,7 +284,7 @@ def boot(m, a, exe, cases, k):
     data = vice(m, prg, bytes(image), a)
     failures, ran = data[1] | data[2] << 8, data[3] | data[4] << 8
     results = data[0x10:0x10 + 12 * ran]
-    base = OUT / f'{m}{f"-flowed{k}" if a.flowed else ""}'
+    base = OUT / f'{m}{suffix(a)}{k if suffix(a) else ""}'
     (base.parent / f'{base.name}-cases.bin').write_bytes(b''.join(c for _, c in cases[:ran]))
     (base.parent / f'{base.name}-results.bin').write_bytes(results)
     chk = subprocess.run([str(exe), 'check', str(ROPE[m]), str(base.parent / f'{base.name}-cases.bin'),
@@ -294,6 +319,10 @@ def main():
     p.add_argument('--only', help='LO:HI, run only those of the thinned cases (bisecting)')
     p.add_argument('--flowed', action='store_true',
                    help="the FLIGHT_INTERP_STOP modules' flowed states instead of the flight scenarios")
+    p.add_argument('--p63', action='store_true',
+                   help='the LM P63 scenario from the Apollo 11 core dump instead of P00 (--total cases, several boots)')
+    p.add_argument('--total', type=int, default=1000,
+                   help='with --p63: the cases, evenly thinned from every first arrival (default 1000)')
     p.add_argument('--flowed-states', type=int, default=128,
                    help='with --flowed: the states of each routine yaAGC runs from (default 128)')
     p.add_argument('--cycles', type=int, default=3_000_000_000)
@@ -316,14 +345,16 @@ def main():
                            **({'left_out': r['left_out']} if a.flowed else {}),
                            yaagc_check=r['yaagc_check'], scenarios=r['scenarios'], stream_bytes=r['stream_bytes'],
                            **({'kind': 'flowed states (not mission flight): tools/interp_flight_flowed.c',
-                               'flowed_states': a.flowed_states} if a.flowed else {}),
+                               'flowed_states': a.flowed_states} if a.flowed else
+                              {'kind': 'Apollo 11 P63 from NASSP core dump (tools/scenarios/README.md)', 'keys': P63_KEYS,
+                               'total': a.total} if a.p63 else {}),
                            columns=(['source'] if a.flowed else []) + ['entry', 'LOC', 'BANKSET', 'exit_Z', 'exit_FB', 'resident_steps', 'status', 'digest'],
                            rows=[([x['scenario']] if a.flowed else []) + [x['entry'], x['loc'], x['bankset'], x['exit_z'], x['exit_fb'], x['steps'], x['status'],
                                   x['digest']] for x in r['rows']])
         bad = [x for x in r['rows'] if x['status'] or x['still_at_entry'] or not x['yaagc'].startswith(f'case ') or ' ok ' not in x['yaagc']]
         entries = sorted({x['entry'] for x in r['rows']})
         if r['ok']:
-            print(f"PASS: VICE PAL {m} interp-flight{' flowed states' if a.flowed else ''}: {r['ran']} cases "
+            print(f"PASS: VICE PAL {m} interp-flight{' flowed states' if a.flowed else ' P63' if a.p63 else ''}: {r['ran']} cases "
                   f"in {r['boots']} boot{'s' if r['boots'] > 1 else ''} from {', '.join(r['scenarios'])}, "
                   f"{r['steps']} resident steps, every exit state reached by yaAGC; entries {', '.join(entries)}")
         else:

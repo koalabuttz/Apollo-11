@@ -19,6 +19,7 @@ whole build runs is a hand-off at a word no part keys, and fails the check.
 """
 import argparse
 import os
+import re
 import subprocess
 import sys
 
@@ -60,10 +61,14 @@ def main():
         f.write(''.join('extern const agc_routine_table %s_basic_p%d,%s_interpretive_p%d;\n' % (sym, j, sym, j)
                         for j in range(1, n + 1)))
         f.write('const agc_native_program *irc_program(uint8_t cm);\n')
-        f.write('static agc_routine_table parts[%d];\n' % n)
-        # (The fields of the spec's own target, tests/<file>_target.c.)
-        f.write('static agc_native_program prog={parts,%d,&%s_interpretive_p1,1,0,0,'
-                '(uint16_t)(2048u+06037u-04000u),0164,0165,0,0,0};\n' % (n, sym))
+        # (The fields of the spec's own target, tests/<file>_target.c: its
+        # interpretive table count and NEWOPS, and the hardware record.)
+        own = open(os.path.join(R, 'tests', '%s_target.c' % base)).read()
+        f.write('static agc_routine_table parts[%d];\n%s' % (n, 'static agc_hardware hw;\n' if '&hw' in own else ''))
+        icount = re.search(r'&%s_interpretive,(\d)' % sym, own).group(1)
+        f.write('static agc_native_program prog={parts,%d,&%s_interpretive_p1,%s,0,0,'
+                '(uint16_t)(2048u+0%ou-04000u),0164,0165,0,0,%s};\n'
+                % (n, sym, icount, 0o6070 if m == 'lm' else 0o6037, '&hw' if '&hw' in own else '0'))
         f.write('const agc_native_program *irc_program(uint8_t m){(void)m;\n%s return &prog;}\n' % ''.join(
             ' parts[%d]=%s_basic_p%d;\n' % (j - 1, sym, j) for j in range(1, n + 1)))
     runner = os.path.join(out, 'native-parts')

@@ -339,9 +339,10 @@ def map_symbols(path):
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=(), link_flags=()):
+                io=None, direct_only=False, defines=(), link_flags=(), pick=None):
     """chunk: (table, first, last) links only entries first..last-1 of one
-    basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
+    basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
+    [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
     module's io kind (module_io). direct_only: no transfer engine, the
     resident runs the routines (FS_DIRECT_ONLY; pinned modules). defines:
     the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
@@ -349,6 +350,8 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    if pick is not None:
+        head, basic = '#define FS_PICK(X) ' + ' '.join(f'X({t},{i})' for t, i in pick) + '\n', []
     if direct_only:
         head += '#define FS_DIRECT_ONLY 1\n'
     if io:
@@ -518,11 +521,15 @@ PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dap
 # RATELOOP (lm_kalman) runs in the same pass, so it rides here and leaves
 # the home room for RESUME.
 EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_kalman_basic',
-                    'lm_t6rupt_jets_hot_routines'], 'cm': []}
+                    'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines'], 'cm': []}
 # Tables a pack carries for rk_direct only: the DAP pass calls them while
 # the pack is loaded, but other callers keep loading their own (smaller)
 # modules, so the resolver does not send their keys to the pack.
-RIDE = {'lm_t6rupt_jets_hot_routines'}
+RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines'}
+# A ride table whose operands are another file's sites (IBNKCALL's CADR is
+# its caller's word, compiled into lm_interbank_routines' site list): the
+# pack takes that file's sites in the banks its own tables' keys are in.
+RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines'}
 # T4RUPT the same way: its core (the resident's wrapper 0x01E2 holds the
 # whole table too) and the radar step in one job-slot module, so a radar
 # T4RUPT loads one module, not two (steward/cpu-budget.md). RCSMON stays
@@ -565,8 +572,9 @@ INTERP_POINTS = {
 FLIGHT_INTERP_STOP = {'lm': {'lm_ags_init', 'lm_burn_baby', 'lm_lunar_landing', 'lm_servicer', 'lm_imu_performance'},
                       'cm': set()}
 INTERP_ONLY = {'lm': {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_routines',
-                      'lm_interp_core_basic', 'lm_interp_runtime_basic'},
-               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic'}}
+                      'lm_interp_core_basic', 'lm_interp_runtime_basic',
+                      'lanec_ev_lm_intpret'},
+               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic', 'lanec_ev_cm_intpret'}}
 
 # The host index's interpretive flag: a table keyed by LOC under BANKSET.
 # Generated interpretive tables end in _interpretive(_routines); the DANZIG
@@ -585,8 +593,10 @@ def interpretive_table(t):
 # (docs/LM-SERVICER-FLIGHT-PARTS.md). A part's keys are what its own build's
 # tables hold (part_keys), which can include hand-off words the whole file
 # does not key.
-FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']]},
-                'cm': {}}
+FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
+                       'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
+                'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
+                       'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
 
 
 def part_keys(cc, m, stem, tables):
@@ -693,16 +703,16 @@ def main():
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
         packed = {t: o for t, o in mine.items() if t not in skipped and keys[t]}
         empty = sorted(t for t, o in mine.items() if t not in skipped and not keys[t])
-        resident_keys = {('i' if 'interpret' in t else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
+        resident_keys = {('i' if interpretive_table(t) else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
         parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
-                                                           if o == stem and 'interpret' not in t))
+                                                           if o == stem and not interpretive_table(t)))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
         for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
             if hot_full(t):
                 continue
-            kind = 'i' if 'interpret' in t else 'b'
+            kind = 'i' if interpretive_table(t) else 'b'
             more = [k for p in parts.get(packed[t], []) for k in p.get(t, [])]
             for k in sorted(set(keys[t]) | set(more)):
                 holders[(kind, k)].append(t)
@@ -740,7 +750,22 @@ def main():
         if a.host_only:
             continue
         to_interp = {t for t, o in packed.items()
-                     if t in INTERP_ONLY[m] or (o in FLIGHT_INTERP_STOP[m] and 'interpret' in t)}
+                     if t in INTERP_ONLY[m] or (interpretive_table(t) and not t.endswith('_marker'))
+                     or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
+        # Shadowed entries: a basic table's keys that the resident or an
+        # earlier linked table in resolution order (holders, less the
+        # interpreter's) holds never resolve to it, so its module links only
+        # its live entries (FS_PICK, live). Flight parts keep their key
+        # slices.
+        resolves_to = {k: next((t for t in ts if t not in to_interp), None) for k, ts in holders.items()}
+        live = {}
+        for t in sorted({t for (kind, _), ts in holders.items() if kind == 'b' for t in ts} - to_interp):
+            if packed[t] in FLIGHT_PARTS[m]:
+                continue
+            keep = {i for i, k in enumerate(keys[t])
+                    if k >= ERASABLE_BASE or ('b', k) not in resident_keys and resolves_to[('b', k)] == t}
+            if len(keep) < len(keys[t]):
+                live[t] = keep
         by_stem = collections.defaultdict(list)
         for t, o in packed.items():
             if t not in to_interp and not hot_full(t):
@@ -758,8 +783,8 @@ def main():
             for st in sources:
                 sites.update(file_sites(a.host_cc, m, st))
             mod = dict(stem=stem, agc=agc, lane=lane, slot=slot,
-                       basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
-                       interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
+                       basic=[t for t in ts if not interpretive_table(t)] + [t for t in extra if not interpretive_table(t)],
+                       interp=[t for t in ts if interpretive_table(t)] + [t for t in extra if interpretive_table(t)],
                        also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
                        sources=c64_sources(index, *sources, 'agc_transfer'))
             for i, defines in enumerate(FLIGHT_PARTS[m].get(stem, [()])):
@@ -776,19 +801,37 @@ def main():
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
+        def pick_of(mod):
+            """The module's live entries in key order, or None when it links
+            every entry of its tables (FS_BASIC or FS_CHUNK as before)."""
+            if mod.get('defines') or mod.get('excursion') or mod['interp']:
+                return None
+            if mod.get('chunk'):
+                t, lo, hi = mod['chunk']
+                spans = [(t, range(lo, hi))]
+            else:
+                spans = [(t, range(len(keys[t]))) for t in mod['basic']]
+            if not any(t in live and t not in mod['also'] for t, _ in spans):
+                return None
+            return sorted(((t, i) for t, r in spans for i in r
+                           if t in mod['also'] or t not in live or i in live[t]), key=lambda e: keys[e[0]][e[1]])
+
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
+            pick = pick_of(mod)
+            if pick == []:
+                return mod, prg, dict(ok=False, overflow=None, error=None, empty=True)
             # A module on the base record links no transfer engine: the
             # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
             direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()))
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick)
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()))
+                                   direct_only, mod.get('defines', ()), (), pick)
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -807,6 +850,11 @@ def main():
             sites = {}
             for st in stems:
                 sites.update(file_sites(a.host_cc, m, st))
+            banks = {k >> 10 for t in pts if t not in RIDE for k in keys[t] if k < ERASABLE_BASE}
+            for t in pts:
+                if RIDE_SITES.get(t) in packed:
+                    sites.update({k: w for k, w in file_sites(a.host_cc, m, packed[RIDE_SITES[t]]).items()
+                                  if k >> 10 in banks})
             pack = dict(stem=stems[0], lane=lane, slot=0, id=ident, basic=pts,
                         interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
                         sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name)
@@ -836,7 +884,7 @@ def main():
             result, its bytes and the shared symbols."""
             hp = params[f'pin-{SLOT_NAME[4]}']
             own = [f for f in sources if f not in set(hp['sources'])]
-            basic = [t for t in ts if 'interpret' not in t] + hp['basic']
+            basic = [t for t in ts if not interpretive_table(t)] + hp['basic']
             (ROOT / OUT / m / f'pin-{SLOT_NAME[3]}.prg.map').unlink(missing_ok=True)
             res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', (), own, basic)
 
@@ -900,8 +948,8 @@ def main():
 
             def measure(io, direct_only, name, flags=(), sources=None, basic=None):
                 mod = dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                           basic=basic or [t for t in ts if 'interpret' not in t],
-                           interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
+                           basic=basic or [t for t in ts if not interpretive_table(t)],
+                           interp=[t for t in ts if interpretive_table(t)], also=[], sites=sites,
                            sources=sources or c64_sources(index, *stems, 'agc_transfer'), io=io,
                            direct_only=direct_only, prg_name=name, link_flags=PIN_LTO + list(flags),
                            defines=['-DFS_PIN_HOME=1'] if slot == 4 and 3 in PIN[m] else [])
@@ -979,7 +1027,7 @@ def main():
                     results = list(pool.map(lambda c: trial(c, mod), todo))
                 nxt = []
                 for c, r in zip(todo, results):
-                    if r['ok']:
+                    if r['ok'] or r.get('empty'):
                         kept.append(c)
                     elif not r.get('overflow'):
                         return None
@@ -1016,6 +1064,9 @@ def main():
                                None, dict(ok=False, overflow=overflow)))
             mod['chunked'] = True
         linked = [x for x in linked if not x[0].get('chunked')] + sorted(chunks, key=lambda x: x[0]['id'])
+        # Modules (or chunks) whose every entry is shadowed are left out.
+        pruned = [x[0]['id'] for x in linked if x[2].get('empty')]
+        linked = [x for x in linked if not x[2].get('empty')]
         modules = [mod for mod, _, _ in linked]
         module_of = {}
         for mod, prg, res in linked:
@@ -1024,14 +1075,20 @@ def main():
             if res['ok']:
                 if mod.get('chunk'):
                     t, first, last = mod['chunk']
-                    for k in keys[t][first:last]:
-                        module_of[(t, k)] = mod['id']
+                    for i in range(first, last):
+                        if t not in live or i in live[t]:
+                            module_of[(t, keys[t][i])] = mod['id']
                     continue
                 for t in mod['basic'] + mod['interp']:
                     if t in mod.get('also', []):
                         continue  # resolved to the table's own module
-                    for k in mod.get('key_slice', keys)[t]:
-                        module_of[(t, k)] = mod['id']
+                    if mod.get('key_slice'):
+                        for k in mod['key_slice'][t]:
+                            module_of[(t, k)] = mod['id']
+                        continue
+                    for i, k in enumerate(keys[t]):
+                        if t not in live or i in live[t] or mod.get('excursion'):
+                            module_of[(t, k)] = mod['id']
         # A pack's keys resolve to it first: its hot entries are its files'
         # tables' (hot_full), so the same routines run.
         for pack in packs:
@@ -1147,6 +1204,8 @@ def main():
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
             unplaced_keys=unplaced, interpreter_keys=interpreted,
+            shadowed_entries={t: len(keys[t]) - len(v) for t, v in sorted(live.items())},
+            modules_left_out_shadowed=[f'0x{i:04x}' for i in pruned],
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],

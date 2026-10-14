@@ -202,7 +202,7 @@ B13403c:
 B13404c:
  IRC_COVER(2u);
  /* 05,3404 RESUME */
- {agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;W[5]=(agc_word)(b&07777u);}goto dispatch;
+ {agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;W[5]=(agc_word)(b&07777u);}goto dispatch;
 B13406:
  IRC_COVER(3u);
  /* 05,3406 ABRTJASK CAF OCTAL27 */

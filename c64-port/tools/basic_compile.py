@@ -511,12 +511,15 @@ class Basic:
         out = self.clean_after(op, a, dyn, clean)
         cont = lambda: 'goto %s;' % self.add(nxt, False, out)
         if op == 'RESUME' and not dyn:
-            # RESUME (INDEX 17) outside an interrupt: the next instruction is
-            # BRUPT's, run in place (yaAGC's substitute instruction); here a
-            # TCF to fixed memory, as CONTABRT stores (any other word is
-            # refused).
+            # RESUME (INDEX 17): the next instruction is BRUPT's, run in place
+            # (yaAGC's substitute instruction); here a TCF to fixed memory, as
+            # CONTABRT stores (any other word is refused). RESUME also ends
+            # an interrupt (yaAGC clears InIsr): R10,R11 reaches CONTABRT as
+            # a T3RUPT task. With Luminary channels the flag is the program's
+            # agc_hardware in_interrupt.
+            clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;' if self.lm_channels else ''
             st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
-                      'W[5]=(agc_word)(b&07777u);}goto dispatch;')
+                      '%sW[5]=(agc_word)(b&07777u);}goto dispatch;' % clr)
             return st
         if op in ('TC', 'TCF'):
             call = op == 'TC'
@@ -845,7 +848,7 @@ class Basic:
             c.append('static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const %s *io,unsigned e,agc_word *k){' % self.io)
             c.append(' unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;')
             c.append(' if(e>=04000u)p=(uint16_t)(2048u+e-04000u);')
-            c.append(' else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
+            c.append(' else{if(b>=030u&&(sb&0100u)){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
             c.append(' return apollo_rope_read(%du,p,k);' % (0 if self.io == 'p66_bias_io' else 1))
             c.append('}')
             c.append('#define fx(s,e,k) fxr(s,io,e,k)')
@@ -865,6 +868,11 @@ class Basic:
             return c + self.emit_split(sym, order)
         if self.spec.get('basic_parts'):
             return c + self.emit_parts(sym, order)
+        fp = self.spec.get('flight_parts')
+        if fp:
+            # (One function: every word leaves at another part's word.)
+            S = sym.upper()
+            c += self.flight_parts(S, {self.label(*k): k for k in order})
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
         c.append(self.index_locals())
@@ -872,6 +880,16 @@ class Basic:
         c.append(' switch(at){')
         for p in sorted(self.entries):
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
+        extra = [q for q in getattr(self, 'flight_extra', []) if q not in self.entries] if fp else []
+        if extra:
+            c.append('#ifdef %s_FLIGHT_PART' % S)
+            for q in extra:
+                if (q, False, False) in self.nodes:
+                    c.append(' case %uu:goto %s;' % (q, self.label(q)))
+                else:
+                    c.append(' case %uu:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto %s;' % (
+                        q, self.label(q, False, True)))
+            c.append('#endif')
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
         # The spec's idle points (a word that spins until hardware moves,
@@ -881,7 +899,7 @@ class Basic:
         spin = {self.label(*k): '{W[5]=0%04o;return EXEC_IDLE;}' % self.logical(k[0]) for k in self.nodes if k[0] in idle}
         for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
-            c.append(' IRC_COVER(%du);' % n)
+            c.append(' %s_FP(%uu) IRC_COVER(%du);' % (S, k[0], n) if fp else ' IRC_COVER(%du);' % n)
             body = self.nodes[k]
             if spin:
                 body = [re.sub(r'goto ([A-Za-z][A-Za-z0-9]*);', lambda m: spin.get(m.group(1), m.group(0)), x) for x in body]

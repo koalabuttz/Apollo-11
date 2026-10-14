@@ -969,6 +969,10 @@ SPECS = {
         'base': {'cm': 'cm_extended_verbs_file'},
         'symbol': {'cm': 'cm_extended_verbs_file'},
         'basic': 'full',
+        # The C64 flight store links the basic words as two parts
+        # (docs/FLIGHT-PARTS.md): chunked, every module held the whole
+        # basic_run.
+        'flight_parts': [0o43 * 1024 + 0o2600 - 0o2000],
         # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
         # and DAPDISP (fan targets, so their states below apply), and the returns the
         # compiler cannot find on its own: after the in-file checks that pass
@@ -1117,8 +1121,11 @@ SPECS = {
         # (Channel 30 named too: 'auto' leaves out the channel READ CHAN30
         # takes as an input, and the case's channel edits zero it.)
         'io_channels': {0o11: 0o77777, 0o14: 0o6777, 0o30: 0o77777},
+        # CONTABRT's RESUME ends an interrupt (R10,R11 runs as a T3RUPT task):
+        # in_interrupt (InIsr) 0 or 1 at the start and in the digest.
+        'in_isr': True,
         'engine': 'flight-device',
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DIRC_IN_ISR'],
         # ABRTJASK's INDEX Q; CAF MODE70 reads MODE70 to MODE70 +2.
         'fixed_tables': {'MODE70': (0, 2)},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
@@ -2874,6 +2881,9 @@ SPECS = {
         'noreturn': ['POSTJUMP'],
         'resume_keys': True,
         'resume_orphans': True,
+        # CONTABRT's RESUME ends an interrupt: in_interrupt (yaAGC's InIsr)
+        # in each case and digest.
+        'in_isr': True,
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
@@ -2883,6 +2893,8 @@ SPECS = {
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
+        'image_w': True,
+        'index_carry16': True,
         'edge_cases': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p70_p71_target.c',
@@ -3806,6 +3818,9 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
+        # The C64 flight store links the basic words as three parts
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
+        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,
