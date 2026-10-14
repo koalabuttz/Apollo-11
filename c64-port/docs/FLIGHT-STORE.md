@@ -230,7 +230,13 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
 - Class 3 holds DAPIDLER's per-pass entries (`lm_dapidler_hot_routines`, a
   file's `*_hot_routines` subset: PIN only, its file's modules still pack
   the full table) and the table list naming both sets.
-- P-axis and Q,R-axis run from their job-slot modules.
+- The *excursion* (`EXCURSION`, module $07F5) packs P-axis's and Q,R-axis's
+  per-pass entries (`lm_p_axis_hot_routines`, `lm_q_r_axis_hot_routines`)
+  in one job-slot module, so a pass that leaves the pinned sets loads one
+  module, not two (P-axis 11,603 bytes and Q,R-axis 11,971). It is linked
+  only beside a packed class-4 home, takes every function the home holds
+  as a global (`--defsym`), and the resolver sends its 26 keys to it before
+  their files' modules. On LM with #308 it is 13,787 bytes.
 
 The two link separately (`pin_pair`). Class 4 links first with class 3's
 files as well, keeping only what class 3 asks for (`-Wl,--undefined=` for
