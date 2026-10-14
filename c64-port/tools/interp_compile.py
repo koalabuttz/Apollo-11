@@ -1407,13 +1407,14 @@ class Compiler:
                     # RESUME (INDEX 17): the next instruction is BRUPT's,
                     # run in place (yaAGC's substitute instruction); here a
                     # TCF, as CONTABRT stores (any other word is refused).
-                    # With 'in_isr' RESUME also ends the interrupt, as
-                    # yaAGC clears InIsr: the program's agc_hardware
-                    # in_interrupt.
-                    clr = ''
-                    if self.spec.get('in_isr'):
-                        self.uses_hw = True
-                        clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
+                    # RESUME also ends the interrupt, as yaAGC clears
+                    # InIsr: the program's agc_hardware in_interrupt, so
+                    # the spec must set 'in_isr' (refused otherwise, not
+                    # skipped silently).
+                    if not self.spec.get('in_isr'):
+                        raise CompileError("RESUME at %04o ends an interrupt: the spec needs 'in_isr'" % ln.loc)
+                    self.uses_hw = True
+                    clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
                     return st + ['{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
                                  '%sW[5]=(agc_word)(b&07777u);return EXEC_OK;}' % clr], []
                 if qc == 1 and k10 - 1 == 5 and index is None:
@@ -1697,7 +1698,10 @@ class Compiler:
         c = ['/* Flight: the keys of every part (routines and part keys). */',
              'static const uint16_t %s_flight_keys[%d]={%s};' % (sym, len(every), ','.join('%uu' % k for k in every)),
              'static enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at){unsigned i;' % sym,
-             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%%1024u);return EXEC_OK;}' % (len(every), sym),
+             # A fixed-fixed key's Z is its physical address (banks 02, 03).
+             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(%s);return EXEC_OK;}' % (
+                 len(every), sym, 'at>=04000u&&at<010000u?at:02000u+at%1024u'
+                 if any(k // 1024 in (2, 3) for k in every) else '02000u+at%1024u'),
              ' return EXEC_OUT_OF_SCOPE;',
              '}',
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
@@ -1716,8 +1720,11 @@ class Compiler:
         for b in sorted({k // 1024 for k in every}):
             bfb = (b - 0o10) << 10 | 0o100000 if b >= 0o40 else b << 10
             run = self.basic.callee(S, b) if self.spec.get('basic_split') else 'basic_run'
-            c.append(' case 0%ou:if(!basic_sane(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, bfb, chan, run))
+            # Fixed-fixed: any FB and SUPERBNK (basic_compile.py flight_parts
+            # allows it only with 'fixed_fixed_any_fb'), as the per-key entries.
+            sane = '0177777u' if b in (2, 3) else '0%05ou' % bfb
+            c.append(' case 0%ou:if(!basic_sane(s,io,%s))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, sane, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         for j in range(len(cuts) + 1):
@@ -2092,7 +2099,7 @@ class Compiler:
                 '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sreturn s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}' % (
-                'agc_channels_hw=p->hardware;' if self.uses_hw else '(void)p;'))
+                '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         else:
             c.append('/* Comanche routines take the two latches the bodies use from the')
             c.append(' * mission\'s cm_native_io and copy them back. */')

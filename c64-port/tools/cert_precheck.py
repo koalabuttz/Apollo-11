@@ -51,6 +51,10 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               REFREEZE_SPEC_KEYS ('index_carry16': the generated INDEX keeps
               its end-around carry on the C64; 'image_w': flight builds address
               the fixed $7000 image); set them at the next refreeze.
+  bovb        a BOVB to TCDANZIG/ENDT(X) in the file needs a native 'rtb'
+              entry for that word in its interp spec, else the overflow
+              branch stops there and the right-hand order never runs natively
+              (#414); WARN on a certificate already accepted complete.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -834,6 +838,64 @@ def check_spec_keys(report, label, path, certificate, specs):
                    f'set {", ".join(repr(f) for f in flags)} in tools/interp_specs.py at the lane\'s next refreeze')
 
 
+# BOVB to ENDT(X)/TCDANZIG (TC DANZIG) with an order on its right: when
+# overflow is set the compiled pair transfers to that basic word, and unless
+# the spec runs it natively ('rtb' TCDANZIG -> <m>_integration_tcdanzig) the
+# routine stops there and the right-hand order never runs natively (#414).
+DANZIG_WORDS = ('TCDANZIG', 'ENDT(X)')
+
+
+def bovb_danzig_words(source):
+    """The DANZIG words BOVB pairs of an AGC source branch to, by line."""
+    out = []
+    pending = None
+    for number, raw in enumerate(source.splitlines(), 1):
+        line = raw.split('#', 1)[0].rstrip()
+        if not line.strip():
+            continue
+        tokens = line.split()
+        ops = tokens if line[0].isspace() else tokens[1:]
+        if not ops:
+            continue
+        if pending is not None:
+            if ops[0] in DANZIG_WORDS:
+                out.append((pending, ops[0]))
+            pending = None
+        if ops[0] == 'BOVB' or (len(ops) > 1 and ops[1] == 'BOVB'):
+            pending = number
+    return out
+
+
+def check_bovb_danzig(report, label, path, certificate, specs, accepted):
+    """FAIL (WARN on a certificate already accepted complete) when a BOVB to
+    TCDANZIG/ENDT(X) has no native 'rtb' entry in the file's interp spec."""
+    mission, name = path.split('/', 1)
+    short = MISSIONS.get(mission)
+    keys = specs_for(path, certificate, specs)
+    if not keys or not short:
+        return
+    try:
+        source = (REPOSITORY / mission / name).read_text(errors='replace')
+    except OSError:
+        return
+    sites = bovb_danzig_words(source)
+    if not sites:
+        return
+    mapped = {word for key in keys for word, call in (specs[key].get('rtb') or {}).items()
+              if word in DANZIG_WORDS and isinstance(call, dict) and call.get(short)}
+    # TCDANZIG and ENDT(X) label the same word; the compiler names it by
+    # either, so one mapping covers both.
+    unmapped = [] if mapped else sites
+    if unmapped:
+        where = ', '.join(f'{name}:{line} BOVB {word}' for line, word in unmapped[:4])
+        report.add('WARN' if accepted else 'FAIL', label,
+                   f'{where}: the overflow branch stops at {unmapped[0][1]}, so the pair\'s right-hand order '
+                   f'never runs natively (#414)',
+                   f"map 'rtb' {unmapped[0][1]!r}: {{'{short}': '{short}_integration_tcdanzig(s)'}} in "
+                   f"{', '.join(keys)} (with {short}_integration_moves.h and src/{short}_integration_moves.c), "
+                   'then regenerate and refreeze')
+
+
 MANIFEST_DAYS = 3
 
 
@@ -986,6 +1048,8 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             if certificate:
                 check_c64(report, label, certificate)
                 check_spec_keys(report, label, path, certificate, specs)
+                check_bovb_danzig(report, label, path, certificate, specs,
+                                  key == 'complete_native_coverage' and entry.get('status') == 'complete')
     return report
 
 

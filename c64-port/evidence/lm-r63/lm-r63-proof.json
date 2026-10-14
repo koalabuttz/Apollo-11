@@ -16,9 +16,68 @@
   {
    "mission": "lm",
    "keep": "0x3fffffff",
-   "cases": 34
+   "cases": 35,
+   "case_ids": [
+    0,
+    536,
+    1028,
+    1548,
+    2068,
+    2596,
+    3152,
+    3636,
+    4100,
+    4708,
+    4612,
+    5120,
+    5636,
+    6320,
+    6195,
+    6327,
+    6668,
+    7172,
+    7180,
+    7696,
+    8208,
+    8816,
+    9224,
+    9760,
+    9744,
+    10256,
+    10764,
+    11292,
+    11800,
+    12292,
+    12828,
+    13332,
+    13852,
+    14336,
+    14864
+   ]
   }
  ],
+ "c64_gcov_branches": {
+  "host_taken": 413,
+  "c64_taken": 413,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_r63.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_r63_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
  "stops": {
   "LM 26,2022 V89CALL": {
    "04616": 512
@@ -128,7 +187,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 15360,
- "host_branch_arcs": 408,
- "c64_rows": 34,
- "c64_branch_arcs": 408
+ "host_branch_arcs": 442,
+ "c64_rows": 35,
+ "c64_branch_arcs": 442,
+ "host_branches_missing_on_c64": []
 }

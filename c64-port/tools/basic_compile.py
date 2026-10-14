@@ -517,7 +517,10 @@ class Basic:
             # an interrupt (yaAGC clears InIsr): R10,R11 reaches CONTABRT as
             # a T3RUPT task. With Luminary channels the flag is the program's
             # agc_hardware in_interrupt.
-            clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;' if self.lm_channels else ''
+            # Without them the clear would be skipped silently.
+            if not self.lm_channels:
+                raise BasicError('RESUME at %s ends an interrupt: needs Luminary channels' % self.where(here))
+            clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
             st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
                       '%sW[5]=(agc_word)(b&07777u);}goto dispatch;' % clr)
             return st
@@ -1173,7 +1176,10 @@ class Basic:
                         extra.add(t[0])
         extra |= {p for p in self.dispatch if (p, False, False) in self.nodes}
         self.flight_extra = sorted(extra - self.entries)
-        if any(p // 1024 in (2, 3) for p in self.entries | extra):
+        # A fixed-fixed key runs under any FB and SUPERBNK only in a spec
+        # that says so ('fixed_fixed_any_fb'): the flight entry cannot tell
+        # which FB a key there needs (interp_compile.py flight_table).
+        if not self.spec.get('fixed_fixed_any_fb') and any(p // 1024 in (2, 3) for p in self.entries | extra):
             raise BasicError('flight parts need every key in a switched bank')
         words = sorted({k[0] for k in self.nodes})
         bounds = [0] + cuts + [0o200000]

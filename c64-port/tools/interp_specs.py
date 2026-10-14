@@ -190,24 +190,25 @@ def integration_joint():
     return out
 
 
-def ddv_majors_joint():
-    """COMTERM's DDV ALPHAM with the divisor's major part equal to or one
-    above the dividend's (lm_interp_orders.c's near-equal-majors steps after
-    MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below the
-    other's, DVOVF), signs varied (each minor part of either sign, for the
-    sign-agreement fold), MODE DP. Otherwise only long 11,2606-2620 runs
-    reach them. Half the cases keep the random states."""
+def ddv_majors_joint(num=('0154', '0155'), den=('ALPHAM', 'ALPHAM+1'), his=(0o1, 0o1234, 0o17777, 0o30000)):
+    """A DDV (or BDDV) with the divisor den's major part equal to or one
+    above the dividend num's (lm_interp_orders.c's near-equal-majors steps
+    after MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below
+    the other's, DVOVF), signs varied (each minor part of either sign, for
+    the sign-agreement fold), MODE DP. Defaults: COMTERM's DDV ALPHAM.
+    Otherwise only long 11,2606-2620 runs reach them. Half the cases keep
+    the flowed states."""
     sgn = lambda v, x: v if x > 0 else ones(-v)
     sets = []
-    for hi in (0o1, 0o1234, 0o17777, 0o30000):
+    for hi in his:
         for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
             for d in (0, 1):
                 for sm in (1, -1):
                     for sa in (1, -1):
                         for ml in (sm, -sm):
                             for sl in (sa, -sa):
-                                sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, ml), '0163': 0,
-                                             'ALPHAM': sgn(hi + d, sa), 'ALPHAM+1': sgn(alo, sl)})
+                                sets.append({num[0]: sgn(hi, sm), num[1]: sgn(lo, ml), '0163': 0,
+                                             den[0]: sgn(hi + d, sa), den[1]: sgn(alo, sl)})
     return sets + [{}] * len(sets)
 
 
@@ -519,6 +520,9 @@ SPECS = {
         'resume_keys': True,
         # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as
@@ -548,7 +552,19 @@ SPECS = {
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
-        'states': {'cm': {lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')}},
+        'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              # EARROT1-OVERADAY: OVFIND as the interpreter
+                              # sets it (TS of an overflowed A: +-1), +0 in
+                              # three cases of five. EARROT2's BOVB counts
+                              # OVFIND down rather than clearing it, so from
+                              # any other word the original swings between
+                              # EARROT2 and OVERADAY for thousands of passes
+                              # (yaAGC); DTEAROT and MPAC range freely.
+                              # EARROT1's RVQ returns through QPRET (42D) to
+                              # its caller, outside the file.
+                              **{lab: {'OVFIND': [0, 0, 0, 1, 0o77776], 'vac+052': ['outside']}
+                                 for lab in ('23,2215', '23,2220', '23,2221', '23,2223', '23,2225', '23,2230',
+                                             '23,2245', '23,2250', '23,2252', '23,2253')})},
         'index_states': True,
         'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
@@ -558,9 +574,13 @@ SPECS = {
                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'},
                 'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'},
                 'TRANSP1': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE1)'},
-                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'}},
-        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h'],
-        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c'],
+                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'},
+                # EARROT2's BOVB TCDANZIG (CSM_GEOMETRY.agc 355), natively
+                # (27,3352, where the listing's first label is ENDT(X)).
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'},
+                'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c', 'src/cm_integration_moves.c'],
         'target': 'tests/geometry_target.c',
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
@@ -573,6 +593,9 @@ SPECS = {
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
     },
@@ -812,6 +835,10 @@ SPECS = {
         # which '@external' reads as register Q.
         # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
         'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
+        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
+        # flight store chunked it into 13, each with the whole basic_run
+        # (docs/FLIGHT-PARTS.md).
+        'flight_parts': [0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
@@ -2341,6 +2368,9 @@ SPECS = {
         'joint_states': p51_p53_states()[1],
         # The star-pair search (up to 666 pairs of the 37 catalog stars) runs
         # past 4,000 routines.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 10000,
         'freeze_stride': 192,
     },
@@ -2484,11 +2514,26 @@ SPECS = {
         # TIME2/TIME1 and the CDUs, and integration_joint's sets.
         'edge_cases': True,
         'counters': True,
-        'joint_states': {'*': integration_joint(),
-                         **{'COMTERM+%d' % n: ddv_majors_joint() for n in (26, 38, 42)}},
+        'joint_states': {'*': integration_joint()},
         # A CHANG2 resume starts from the state the program reaches it in
         # (MODE DP after a DLOAD; review #165).
         'resume_flow': True,
+        # The flowed state replaces generated states at a resume LOC, so the
+        # near-equal-majors divides take their sets here, after the flow
+        # (review #165): COMTERM's DDV ALPHAM pairs, KEPPREP's DDV 2D and
+        # GAMCOMP's NORM BDDV (the dividend popped from 0D at PL 2, the
+        # divisor MPAC already normalized, so NORM leaves it). RECTEST's BMN
+        # gets |TNUV| - 3/4 in [0, 1/4) with a job waiting: not taken, then
+        # DANZIG to CHANG2.
+        'flow_range_states': [
+            *[(a, '11,%o' % (int(a[3:], 8) + 1), {'*': ['flow'] + ddv_majors_joint()})
+              for a in ('11,3104', '11,3120', '11,3124')],
+            ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
+            ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
+                num=('vac+0', 'vac+1'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+            ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
+                                                         for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
+                                                         for j in (1, 0o37777)]})],
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         # Arcs only runs too long for one diagnostic take come from
@@ -2841,6 +2886,10 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
+        # V89 runs in flight: skip the entry checks' whole-image scan there.
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
     },
     'lm-p12': {
         'missions': ('lm',),
@@ -2860,6 +2909,9 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'edge_cases': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p12_target.c',
         'freeze_stride': 32,
@@ -3028,6 +3080,7 @@ SPECS = {
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
+        'trusted_image': True,
         'c64_rows': 'cover',
         'cover': True,
         'freeze_stride': 16,
@@ -3731,18 +3784,24 @@ SPECS = {
                     'LAMENTER', 'PARAM', 'GEOM', 'GETX', 'INITV', 'TARGETV'],
         'externals': {'POLY': 'auto', 'POODOO': 'auto'},
         'noreturn': ['POODOO'],
-        # MUTABLE,1: X1 is 0 (Earth) or -8 (Moon).
-        'indexed_fixed': {'MUTABLE': (0, 8)},
-        # X1 the body (MUTABLE,1: 0 Earth, -8 Moon); X2 and S2 the GETX and
-        # INVRSEQN loop count (AXT,2 3, SSP S2 1).
-        'all_states': {'vac+046': [0, 0o77767], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
+        # MUTABLE,1: X1 is -2 (Earth) or -10D (Moon), as SELECTMU's AXC,1
+        # and INTEGRATION_INITIALIZATION's AXT,1 leave it, so the loads
+        # read MUTABLE +2 to +7 or +10 to +15.
+        'indexed_fixed': {'MUTABLE': (2, 10)},
+        # X1 the body (MUTABLE,1: -2 Earth, -10D Moon); X2 and S2 the GETX
+        # and INVRSEQN loop count (AXT,2 3, SSP S2 1).
+        'all_states': {'vac+046': [0o77775, 0o77765], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
         # PERIODCH subtracts the period (0D) from TAU. (2073) until less than
         # one is left. A random TAU. over a random period loops for millions
         # of passes, so resumes before it take TAU. +0 (its own entries keep
         # any TAU.) and resumes in the loop a period of at least 10000 octal
         # against a TAU. of a few. The period is in MPAC at PERIODCH and its
         # GOTO (PUSHLOC 0D), pushed at 0D in between (PUSHLOC 2D).
-        'states': {**{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
+        # GETX pushes from 0D (its callers CALL it at PL 0); a PUSHLOC near
+        # the top of the VAC pushes into the index registers and sends
+        # 1/WLOOP's TIX,2 round thousands of times.
+        'states': {'GETX': {'0166': ['vac+0']},
+                   **{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
                    **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
                                          **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
                                             if n in (0, 0o10) else {'0166': ['vac+2']})}
@@ -3755,6 +3814,8 @@ SPECS = {
         'flow_states': True,
         'resume_keys': True,
         # (a LAMBERT iteration runs about 100 pairs, up to 20 of them)
+        # (Entry checks skip the whole-image scan in flight builds.)
+        'trusted_image': True,
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],

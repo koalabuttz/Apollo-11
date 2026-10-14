@@ -40,7 +40,7 @@ Routines (`include/lm_inflight_align.h`, `include/cm_inflight_align.h`):
 
 ## Source map
 
-`tools/interp_routine_differential.py --freeze` writes `evidence/inflight-align/inflight-align-source-map.json`: each emitted word of both files with the routine that compiles it, or the fixed operand (`K` array) it is part of. It fails when a word has neither. Luminary has 184 words: 180 compiled and 4 operand words. Comanche has 186 words: 182 compiled and 4 operand words.
+`tools/interp_routine_differential.py --freeze` writes `build/inflight-align-source-map.json` (stored as `evidence/inflight-align/inflight-align-source-map.json`, a release asset): each emitted word of both files with the routine that compiles it, or the fixed operand (`K` array) it is part of. It fails when a word has neither. Luminary has 184 words: 180 compiled and 4 operand words. Comanche has 186 words: 182 compiled and 4 operand words.
 
 ## Evidence
 
@@ -52,4 +52,4 @@ Hashes: `evidence/inflight-align/SHA256.json`. Bulk files are assets of the `evi
   - Every 128th case is frozen in `tests/inflight_align_vectors.h`.
 - **Resume points.** Resume points: a DANZIG that finds NEWJOB positive goes to CHANG2 and the job resumes later at the next word, so with `resume_keys` every word after a DANZIG is a routine of its own (the routine counts include them). A quarter of the cases at those routines have NEWJOB positive, and the run stops at CHANG2 as the original does. Each resume point starts from the MODE, PUSHLOC and index registers the code before it leaves there (per-point `states`). Runs may take up to 1,000 routines (`max_steps`).
 - **Host and sanitizer results.** `make test-inflight-align sanitize-inflight-align` runs the 792 frozen cases (every 128th plus a greedy cover of every branch outcome any case reaches) to their digests (`inflight-align-host.log`).
-- **C64 execution results.** `make vice-inflight-align` (`inflight-align-vice.log`) runs 23 diagnostics, each holding a group of routines (`tools/mk/inflight-align.groups`) that fits below $c000 with the shared interpreter bodies. Their 224 cases are chosen by outcome cover: all 1,774 branch outcomes the host vectors reach, in the file and in the shared interpreter bodies, are reached on the C64 too (`outcome_cover` in the proof). The log records each PRG's sha256.
+- **C64 execution results.** `make vice-inflight-align` (`inflight-align-vice.log`) runs 14 diagnostics, each holding a group of routines (`tools/mk/inflight-align.groups`) that fits below $c000 with the shared interpreter bodies. Their 219 cases are chosen by outcome cover: all 1,780 branch outcomes the host vectors reach, in the file and in the shared interpreter bodies, are reached on the C64 too (`outcome_cover` in the proof). The log records each PRG's sha256.

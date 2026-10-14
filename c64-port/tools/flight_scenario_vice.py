@@ -34,10 +34,9 @@ import flight_host_differential as fhd  # noqa: E402
 def snapshot(exe, name, cs):
     scen = {s[0]: s for s in fhd.FLIGHT}[name]
     _, m, _, keys, env = scen
-    assert m == 'lm', 'the C64 check program is LM only'
     header = dp.WORK / f'{name}-snap.h'
     header.unlink(missing_ok=True)
-    r = subprocess.run([str(exe), fhd.ROPE['lm'], str(cs + 1), keys], cwd=ROOT,
+    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}'},
                        capture_output=True, text=True)
     (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)
@@ -62,26 +61,33 @@ def main():
     p.add_argument('--timeout', type=int, default=3600)
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
-    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', 'lm', '--host-cc', a.host_cc],
+    m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
+    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', a.host_cc],
                    cwd=ROOT, check=True)
-    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', 'lm',
+    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m,
                     '--host-cc', a.host_cc], cwd=ROOT, check=True)
-    exe = fhd.build(a.host_cc, 'lm', fhd.frozen_engine(a.host_cc))
-    manifest = json.loads((dp.OUT / 'lm-manifest.json').read_text())
-    pinned = any(m['slot'] == 3 for m in manifest['modules'])
-    reu = (dp.OUT / 'lm.reu').read_bytes()
+    exe = fhd.build(a.host_cc, m, fhd.frozen_engine(a.host_cc))
+    manifest = json.loads((dp.OUT / f'{m}-manifest.json').read_text())
+    pinned = any(mod['slot'] == 3 for mod in manifest['modules'])
+    reu = (dp.OUT / f'{m}.reu').read_bytes()
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
-        sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of lm.reu')
+        sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
     header = snapshot(exe, a.scenario, a.snap_cs)
-    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch)
-    r = dp.vice(a, a.scenario, prg, pinned)
+    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m)
+    r = dp.vice(a, a.scenario, prg, pinned, m)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs)
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
+    if os.environ.get('FSV_STEPS') == '1':
+        # One record per step: the physical bank (superbank applied) and Z
+        # (dap_pass_check.c DP_STEPS); the bank only where Z is switched fixed.
+        print('last steps (bank,Z/status):',
+              ' '.join((f"{x['job_loads']:02o},{x['steps']:04o}" if 0o2000 <= x['steps'] < 0o4000 else f"{x['steps']:05o}")
+                       + f"/{x['status']}" for x in r.get('records', [])[-12:]))
     if 'by_request' in r:
         print(f"{a.scenario} from {a.snap_cs} cs: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs "
               f"({r['wall_per_agc']} x real time), {r['dropped_ticks']} ticks dropped, {r['steps']} steps, "
-              f"status {r['status']} at Z {r['z']} FB {r['fb']}")
+              f"status {r['status']} at {r['bank']},{r['z'][1:]} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
         for k, b in sorted(r['by_request'].items()):
             print(f"  {k}: {b['count']} x, mean {b['cycles'] // b['count']} cycles (max {b['max_cycles']}), "
                   f"{b['steps']} steps, {b['job_loads']} job and {b['task_loads']} task loads")
