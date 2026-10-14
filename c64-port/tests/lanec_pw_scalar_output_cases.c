@@ -15,16 +15,11 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     enum dsky_nv_mission mission;
     enum dsky_scalar_output_entry entry;
     agc_word channel;
-    uint16_t k = (uint16_t)lanec_pw_spread(n < CASES ? n : 0u, CASES, DSKY_SCALAR_OUTPUT_CASES);
+    /* past the spread: generator number 8 * 2048 + 1, Comanche OPDEGOUT
+     * (40,2524) with MPAC -0, which subtracts 1 before the bias (AD NEG1) */
+    uint16_t k = n < CASES ? (uint16_t)lanec_pw_spread(n, CASES, DSKY_SCALAR_OUTPUT_CASES) : 8u * 2048u + 1u;
     lanec_fill(s, io, n);
     dsky_scalar_output_input(s, &p, k, &mission, &entry, &channel);
-    /* past the spread: Comanche OPDEGOUT (40,2524) with MPAC -0, which
-     * subtracts 1 before the bias (AD NEG1) */
-    for (k = 0; n >= CASES && (mission != DSKY_NV_CM || s->words[5] != 02524u); ++k) {
-        lanec_fill(s, io, n);
-        dsky_scalar_output_input(s, &p, k, &mission, &entry, &channel);
-    }
-    if (n >= CASES) s->words[0154] = 077777u;
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     io->channel[033] = channel;
     lanec_pw_settle(s);
