@@ -4,7 +4,8 @@
 static uint32_t rnd(uint32_t *s){*s=*s*1664525u+1013904223u;return *s;}
 const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
-uint8_t irc_ch_on;
+uint8_t irc_ch_on,irc_isr_on;
+uint16_t irc_isr;
 #if IRC_IO && !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
 /* C64 builds of the 'all' specs name the diagnostic's agc_hardware to the
  * programs with -DAGC_CHANNELS_HW=irc_cm_hw (absolute addressing, as the
@@ -65,10 +66,21 @@ void irc_build(apollo_overlay_state *m,const irc_case *c){uint32_t seed=c->seed;
 #if IRC_IO
  for(i=0;i<c->nedits;++i)if(c->edits[i].addr==IRC_COUNTERS)for(k=010;k<=061u;++k)m->words[k]=(agc_word)((rnd(&seed)>>12)&AGC_MASK);
  irc_ch_on=0;for(k=0;k<IRC_NCH;++k)irc_ch[k]=0;for(k=0;k<3u;++k)irc_trap[k]=0;
+ irc_isr_on=0;irc_isr=0;
  for(i=0;i<c->nedits;++i){
+#if IRC_ISR_ON
+  if(c->edits[i].addr==IRC_ISR){irc_isr_on=1;irc_isr=(uint16_t)c->edits[i].word;}
+  else
+#endif
   if(c->edits[i].addr&IRC_CHANNEL){
    for(k=0;k<IRC_NCH;++k)if(irc_ch_num[k]==(c->edits[i].addr&0777u)){irc_ch[k]=c->edits[i].word;irc_ch_on=1;}
   }else if(c->edits[i].addr!=IRC_COUNTERS)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
+ }
+#elif IRC_ISR_ON
+ (void)k;irc_isr_on=0;irc_isr=0;
+ for(i=0;i<c->nedits;++i){
+  if(c->edits[i].addr==IRC_ISR){irc_isr_on=1;irc_isr=(uint16_t)c->edits[i].word;}
+  else m->words[c->edits[i].addr&03777u]=c->edits[i].word;
  }
 #else
  (void)k;for(i=0;i<c->nedits;++i)m->words[c->edits[i].addr&03777u]=c->edits[i].word;
@@ -100,8 +112,14 @@ unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_c
 #if IRC_IO && !defined(IRC_CM_ONLY)
  if(!c->cm){if(p->hardware){agc_hardware z={0};*p->hardware=z;}if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
 #endif
+#if IRC_ISR_ON && !defined(IRC_CM_ONLY)
+ if(irc_isr_on&&!c->cm&&p->hardware)p->hardware->in_interrupt=irc_isr;
+#endif
  io=c->cm?(void *)&cio:(void *)&lio;
  st=agc_transfer_run(p,s,io,&superbank,0xfffeu,max_steps,&steps);
+#if IRC_ISR_ON && !defined(IRC_CM_ONLY)
+ if(irc_isr_on&&!c->cm&&p->hardware)irc_isr=p->hardware->in_interrupt;
+#endif
 #if IRC_IO && !defined(IRC_LM_ONLY)
  if(irc_ch_on&&c->cm)irc_cm_io(&cio.io,p->hardware,1);
 #endif
@@ -120,6 +138,9 @@ uint32_t irc_digest(unsigned kind,const apollo_overlay_state *s,uint16_t ie){uns
  mix(ie);
 #if IRC_IO
  if(irc_ch_on){for(i=0;i<IRC_NCH;++i)mix(irc_ch[i]);for(i=0;i<3u;++i)mix(irc_trap[i]);}
+#endif
+#if IRC_ISR_ON
+ if(irc_isr_on)mix(irc_isr);
 #endif
  return (uint32_t)sum_b<<16|sum_a;
 }

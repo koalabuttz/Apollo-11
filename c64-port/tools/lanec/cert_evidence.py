@@ -73,11 +73,12 @@ for item in a.c64:
     suite, target = item.split('=')
     run(['make', '-s', f'c64-{target}'])
     lines = run(['make', '-s', f'vice-{target}']).strip().splitlines()
-    line = ([x for x in lines if x.startswith(('PASS', 'FAIL'))] or lines)[-1]
-    if not line.startswith('PASS'):
-        sys.exit(f'FAIL: {line}')
-    results.append(line)
-    log.append(f'{suite} C64: {line}')
+    # a target that runs several programs prints a line for each
+    for line in [x for x in lines if x.startswith(('PASS', 'FAIL'))] or lines[-1:]:
+        if not line.startswith('PASS'):
+            sys.exit(f'FAIL: {line}')
+        results.append(line)
+        log.append(f'{suite} C64: {line}')
     # a target that runs several programs (tools/lanec/vice_many.py) prints each one's PASS line
     for name in [m.group(1) for m in map(re.compile(r'PASS: VICE PAL (\S+\.prg):').match, lines) if m] or [f'{target}.prg']:
         prgs[name] = hashlib.sha256((ROOT / f'build/{name}').read_bytes()).hexdigest()

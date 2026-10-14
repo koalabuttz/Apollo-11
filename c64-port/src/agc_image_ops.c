@@ -29,7 +29,11 @@ unsigned ai_ea(const agc_image *s,unsigned a){
 agc_word ai_word(const agc_image *s,unsigned a){return (agc_word)(W[ai_ea(s,a)]&077777u);}
 /* A, L and Q are 16-bit registers. Between original instructions Q keeps
  * its sixteenth bit too (TPAGREE parks NEGMAX there); a canonical image at
- * an interpretive frontier holds Q in 15 bits, as the reference rows do. */
+ * an interpretive frontier holds Q in 15 bits, as the reference rows do.
+ * The known case where yaAGC's Q differs there is SWITCH's TS Q, which
+ * leaves a negative STATE word sign-extended: bit 16 then copies bit 15,
+ * and no later read needs it (#409, IRC_QWATCH in
+ * tools/interp_routine_reference.c). */
 static agc_register reg(const agc_image *s,unsigned a){return W[a];}
 static void setreg(agc_image *s,unsigned a,agc_register v){W[a]=v;}
 void ai_put(agc_image *s,unsigned a,agc_word v){

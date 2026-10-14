@@ -304,7 +304,13 @@ lm-initvel`).
   `make test-lm-initvel sanitize-lm-initvel`. The strict build and the
   ASAN/UBSAN build each pass 22 frozen entries, 28 admission guards, 49
   frozen phase steps and the full 65536-entry stream
-  (`lm-initvel-checks.log`).
+  (`lm-initvel-checks.log`). CI runs them as `test-lm-initvel-1` to `-4`
+  and `sanitize-lm-initvel-1` to `-4`: each part runs 16384 consecutive
+  entries in the pinned yaAGC and in the native producer, compares every row
+  and checks the part's SHA256 in `lm-initvel-source-stream-parts.json`,
+  recorded by `tools/oracle_stream_part.py --record 4` from the whole
+  stream, which must equal the pinned identity. Part 1 also runs the frozen
+  entries and steps.
 - **Phase frontiers.** `tools/freeze_lm_initvel_phases.py` requires each of
   the 7301 native frontiers of the 22 frozen entries (LAMBERT's included) to
   equal, in order, an original NEWOPS image of the oracle. It then freezes

@@ -2,11 +2,13 @@
 /* flight-store-vice: the flight resident booted on the whole-program flight
  * store (tools/flight_store_build.py, docs/FLIGHT-STORE.md). The program
  * boots like the flight resident (KERNAL out, the store opened and
- * verified, the boundary-word module run), then
+ * verified, the boundary-word table found at its tail), then
  *
- *  1. resolves every resolver record of the store through the resident's
- *     resolver and checks the module it names (before any module load: the
- *     records live in the boot-only code the first load overwrites);
+ *  1. reads every resolver record from the store, resolves its key through
+ *     the resident's resolver and checks the module it names, and checks
+ *     the records' count and checksum against the build's resolver list
+ *     (FL_RECORDS, FL_RECORD_SUM; the list itself would overrun the
+ *     boot-only region);
  *  2. runs every flight module twice from a point no table holds (FL_IDLE_Z):
  *     the first run loads it from the REU into its slot, the second finds it
  *     loaded. Each run must return to the resident with EXEC_UNMAPPED. Both
@@ -35,9 +37,8 @@
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
 #include "resident_flight.h"
-#define BOOT_DATA __attribute__((section(".boot.text.fl_records")))
+#define BOOT_DATA __attribute__((section(".boot.text.fl_data")))
 #define BOOT __attribute__((noinline,section(".boot.text.fl_check")))
-typedef struct { uint16_t bank, loc, module; } fl_record;
 typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
 /* In fl_modules order (tools/flight_vice_load.py reads ids and sizes from
  * the FL_DATA header). */
@@ -67,10 +68,17 @@ static uint16_t failures,checks;
 static uint8_t first_failure;   /* to $c005 at the end: the mailbox page is the pinned module's until then */
 static void expect(uint8_t ok,uint8_t step){++checks;if(!ok){++failures;if(!first_failure)first_failure=step;}}
 
-static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
- for(i=0;i<FL_RECORDS;++i)
-  expect(rk_runtime.store.resolve(rk_runtime.store.user,fl_records[i].bank,fl_records[i].loc,&at)&&
-         at.module==fl_records[i].module&&at.selector==0u,2);}
+/* The checksum, as tools/flight_store_build.py computes it: Fletcher's sums
+ * over bank, loc and module of each record in key order, mod 65536. */
+static void BOOT resolve_records(void){apollo_reu_store *s=(apollo_reu_store *)rk_runtime.store.user;
+ uint16_t i,r[4],a=0,b=0;uint8_t j;apollo_ov2_cont at;
+ expect(s->resolver_count==FL_RECORDS,2);
+ for(i=0;i<s->resolver_count;++i){
+  if((apollo_reu_transfer(APOLLO_REU_FETCH,r,s->base+((uint32_t)s->resolver_page<<8)+(uint32_t)i*sizeof r,sizeof r)&
+      (APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))!=APOLLO_REU_STATUS_END){expect(0,2);return;}
+  for(j=0;j<3u;++j){a+=r[j];b+=a;}
+  expect(r[3]==0u&&rk_runtime.store.resolve(rk_runtime.store.user,r[0],r[1],&at)&&at.module==r[2]&&at.selector==0u,2);}
+ expect(a==(uint16_t)FL_RECORD_SUM&&b==(uint16_t)(FL_RECORD_SUM>>16),2);}
 
 /* The $D000 extension path (slot class 2): a pattern stashed in the REU
  * scratch, fetched to $D000 and verified with I/O banked out (rk_hidden_dma),
@@ -125,7 +133,7 @@ static uint32_t run(uint16_t id,uint8_t step){apollo_ov2_cont at={id,0},resume;u
  return t;}
 
 /* Where a cached call goes: the runtime alone (a cached run of the
- * boundary-word module, whose main only returns), and the resident's own
+ * null module 0x01E0, whose main only returns), and the resident's own
  * transfer point and resolve from FL_IDLE_Z, which every flight module
  * repeats with its own copy. Cycles, timer cost included, at $c3f0-$c3f5. */
 static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint16_t value;uint8_t action;

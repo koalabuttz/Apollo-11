@@ -2,7 +2,7 @@
 # Milestone cm-time-free-fall (lane G): Comanche055 CM_TIME_FREE_FALL compiled by
 # tools/interp_compile.py and tools/basic_compile.py into native routines of
 # the control-transfer ABI.
-CM_TIME_FREE_FALL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
+CM_TIME_FREE_FALL_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/cm_integration_moves.c tests/interp_case.c
 CM_TIME_FREE_FALL_SRC = src/cm_time_free_fall.c tests/cm_time_free_fall_target.c $(CM_TIME_FREE_FALL_COMMON)
 CM_TIME_FREE_FALL_HDR = include/cm_time_free_fall.h tests/interp_case.h tests/cm_time_free_fall_vectors.h tests/cm_time_free_fall_c64_vectors.h
 CM_TIME_FREE_FALL_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
@@ -26,7 +26,7 @@ cm-time-free-fall-differential:
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/cm-time-free-fall.groups
 CM_TIME_FREE_FALL_C64_PRGS = $(foreach g,$(CM_TIME_FREE_FALL_GROUPS),build/cm-time-free-fall-$(g).prg)
-CM_TIME_FREE_FALL_C64_SRC = src/cm_time_free_fall.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_time_free_fall_target.c
+CM_TIME_FREE_FALL_C64_SRC = src/cm_time_free_fall.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/cm_integration_moves.c tests/interp_case.c tests/cm_time_free_fall_target.c
 c64-cm-time-free-fall: $(CM_TIME_FREE_FALL_C64_PRGS)
 build/cm-time-free-fall-%.prg: $(CM_TIME_FREE_FALL_SRC) platform/c64/cm_time_free_fall_diagnostic.c tools/mk/cm-time-free-fall.groups $(CM_TIME_FREE_FALL_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(CM_TIME_FREE_FALL_MOS_FLAGS) $(CM_TIME_FREE_FALL_GROUP_FLAGS_$*) -Wl,-Map,build/cm-time-free-fall-$*.map $(CM_TIME_FREE_FALL_C64_SRC) platform/c64/cm_time_free_fall_diagnostic.c -o $@

@@ -12,7 +12,7 @@ extern const agc_routine_table cm_integration_init_interpretive,cm_integration_i
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_integration_init_point;
-#define CM_INTEGRATION_INIT_POINTS 235u
+#define CM_INTEGRATION_INIT_POINTS 241u
 #define CM_INTEGRATION_INIT_CADR_WORDS 3u
 #define CM_INTEGRATION_INIT_EXTERNALS 17u
 #define CM_INTEGRATION_INIT_FIRST 9459u

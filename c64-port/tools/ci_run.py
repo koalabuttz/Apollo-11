@@ -399,6 +399,51 @@ def run(target, log_dir, make_args, attempts, stack=()):
     return target, False, time.monotonic() - start, proc.stdout[-3000:]
 
 
+# Per-target seconds measured on CI runners (tools/ci_target_seconds.py
+# rebuilds it from a run's logs). --shard balances the shards by them.
+WEIGHTS = ROOT / 'tools/ci_target_seconds.json'
+
+
+def covered_by_vice(targets):
+    """c64-<x> targets whose vice-<x> is also listed and does all their work:
+    no recipe of their own, and every prerequisite (the PRGs) also one of
+    vice-<x>'s. Run as a separate make process beside vice-<x>, they only
+    build the same PRGs again, and the two can race writing them."""
+    listed, rules = set(targets), ci_rules()
+    covered = set()
+    for target in targets:
+        vice = 'vice-' + target[len('c64-'):]
+        if target.startswith('c64-') and vice in listed and target in rules and vice in rules:
+            prereqs, recipe = rules[target]
+            if not recipe.strip() and set(prereqs) <= set(rules[vice][0]):
+                covered.add(target)
+    return covered
+
+
+def shard_targets(targets, k, n, weights_path):
+    """Shard k of n: longest target first onto the least loaded shard, by
+    measured seconds (a target never measured counts as the median). Without
+    a weights file, every Nth target from the Kth, as before."""
+    try:
+        weights = {}
+        for table in json.loads(weights_path.read_text()).values():
+            if isinstance(table, dict):
+                weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
+    except (OSError, ValueError):
+        return targets[k::n]
+    known = sorted(weights[t] for t in targets if t in weights)
+    default = known[len(known) // 2] if known else 1.0
+    loads = [0.0] * n
+    mine = []
+    for target in sorted(targets, key=lambda t: (-weights.get(t, default), t)):
+        shard = min(range(n), key=lambda i: (loads[i], i))
+        loads[shard] += weights.get(target, default)
+        if shard == k:
+            mine.append(target)
+    order = {t: i for i, t in enumerate(targets)}
+    return sorted(mine, key=order.get)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -410,12 +455,19 @@ def main():
     parser.add_argument('--make-arg', action='append', default=[])
     parser.add_argument('--summary', type=pathlib.Path)
     parser.add_argument('--shard', metavar='K/N',
-                        help='run only every Nth target, starting at the Kth (0-based)')
+                        help='run only shard K (0-based) of N, balanced by --weights')
+    parser.add_argument('--weights', type=pathlib.Path, default=WEIGHTS,
+                        help='per-target seconds from earlier runs (default %(default)s)')
     args = parser.parse_args()
     targets = list(dict.fromkeys(args.targets + [t for g in args.group for t in group_targets(g)]))
+    covered = covered_by_vice(targets)
+    if covered:
+        print(f'{len(covered)} c64- targets run as part of their vice- target:', ' '.join(sorted(covered)),
+              flush=True)
+        targets = [t for t in targets if t not in covered]
     if args.shard:
         k, n = (int(x) for x in args.shard.split('/'))
-        targets = targets[k::n]
+        targets = shard_targets(targets, k, n, args.weights)
     if not targets:
         print('nothing to run')
         return 0

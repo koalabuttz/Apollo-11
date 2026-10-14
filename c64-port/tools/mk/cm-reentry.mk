@@ -2,10 +2,10 @@
 # Milestone cm-reentry (lane G): Comanche055 REENTRY_CONTROL compiled by
 # tools/interp_compile.py and tools/basic_compile.py into native routines of
 # the control-transfer ABI.
-CM_REENTRY_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
+CM_REENTRY_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/cm_integration_moves.c tests/interp_case.c
 CM_REENTRY_SRC = src/cm_reentry.c tests/cm_reentry_target.c $(CM_REENTRY_COMMON)
 CM_REENTRY_HDR = include/cm_reentry.h tests/interp_case.h tests/cm_reentry_vectors.h tests/cm_reentry_c64_vectors.h
-CM_REENTRY_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
+CM_REENTRY_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw -DAGC_TRANSFER_DANZIG_MARKER
 .PHONY: test-cm-reentry sanitize-cm-reentry c64-cm-reentry vice-cm-reentry cm-reentry-differential
 all: build/test-cm-reentry
 test: test-cm-reentry
@@ -26,7 +26,7 @@ cm-reentry-differential:
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/cm-reentry.groups
 CM_REENTRY_C64_PRGS = $(foreach g,$(CM_REENTRY_GROUPS),build/cm-reentry-$(g).prg)
-CM_REENTRY_C64_SRC = src/cm_reentry.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/cm_reentry_target.c
+CM_REENTRY_C64_SRC = src/cm_reentry.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/cm_integration_moves.c tests/interp_case.c tests/cm_reentry_target.c
 c64-cm-reentry: $(CM_REENTRY_C64_PRGS)
 build/cm-reentry-%.prg: $(CM_REENTRY_SRC) platform/c64/cm_reentry_diagnostic.c tools/mk/cm-reentry.groups $(CM_REENTRY_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(CM_REENTRY_MOS_FLAGS) $(CM_REENTRY_GROUP_FLAGS_$*) -Wl,-Map,build/cm-reentry-$*.map $(CM_REENTRY_C64_SRC) platform/c64/cm_reentry_diagnostic.c -o $@

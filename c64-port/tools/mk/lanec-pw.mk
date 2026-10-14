@@ -10,13 +10,16 @@ LANEC_SUITE_SRC += src/lanec_pw_runs.c src/lanec_pw_a_runs.c src/lanec_pw_b_runs
 LANEC_SUITE_HDR += tests/lanec_pw.h include/lanec_pw_runs.h include/lanec_pw_run.h include/lanec_pw_a_run.h \
   include/lanec_pw_b_run.h include/lanec_pw_c_run.h include/lanec_pw_e_run.h include/lanec_pw_f_run.h include/lanec_pw_g_run.h
 LANEC_PW_SUITES += pw-blanksub
-.PHONY: test-lanec-pw sanitize-lanec-pw
-test: test-lanec-pw
-sanitize: sanitize-lanec-pw
-test-lanec-pw: build/lanec-native build/lanec-oracle tools/lanec/diff.py
-	for s in $(LANEC_PW_SUITES); do python3 tools/lanec/diff.py $$s --refusals || exit 1; done
-sanitize-lanec-pw: build/lanec-native-sanitize build/lanec-oracle tools/lanec/diff.py
-	for s in $(LANEC_PW_SUITES); do ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py $$s --refusals --native build/lanec-native-sanitize || exit 1; done
+# Each suite's native and oracle runs, in parts of consecutive suites
+# (tools/mk/_ci-split.mk); test-lanec-pw and sanitize-lanec-pw run them all.
+LANEC_PW_TEST_PART = for s in $(call ci_split_part,$(LANEC_PW_SUITES),$(2),$(1)); do \
+  python3 tools/lanec/diff.py $$s --refusals || exit 1; done
+LANEC_PW_SANITIZE_PART = for s in $(call ci_split_part,$(LANEC_PW_SUITES),$(2),$(1)); do ASAN_OPTIONS=detect_leaks=0 \
+  python3 tools/lanec/diff.py $$s --refusals --native build/lanec-native-sanitize || exit 1; done
+$(eval $(call CI_HOST_SPLIT_RULE,test-lanec-pw,5,build/lanec-native build/lanec-oracle tools/lanec/diff.py \
+  tools/mk/lanec-pw.mk,LANEC_PW_TEST_PART))
+$(eval $(call CI_HOST_SPLIT_RULE,sanitize-lanec-pw,4,build/lanec-native-sanitize build/lanec-oracle tools/lanec/diff.py \
+  tools/mk/lanec-pw.mk,LANEC_PW_SANITIZE_PART))
 # Every pw-* suite on the C64. One program per
 # suite runs its frozen rows (tests/lanec_pw_<suite>_c64.h, picked by
 # tools/lanec/cover.py so that together they take every branch arc the host

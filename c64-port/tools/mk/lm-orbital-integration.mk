@@ -24,7 +24,7 @@ lm-orbital-integration-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/lm-orbital-integration.groups
 LOI_C64_PRGS = $(foreach g,$(LM_ORBITAL_INTEGRATION_GROUPS),build/lm-orbital-integration-$(g).prg)
-LOI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_integration_moves.c tests/interp_case.c tests/lm_orbital_integration_target.c
+LOI_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_integration_moves.c tests/interp_case.c tests/interp_cut.c tests/lm_orbital_integration_target.c
 LOI_C64_lm = src/lm_orbital_integration.c src/lm_interp_orders.c src/lm_interp_steps.c
 c64-lm-orbital-integration: $(LOI_C64_PRGS)
 build/lm-orbital-integration-%.prg: $(LOI_SRC) platform/c64/lm_orbital_integration_diagnostic.c tools/mk/lm-orbital-integration.groups $(LOI_HDR) | build

@@ -1,2 +1,6 @@
 PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures
-PASS: VICE PAL lanec-di-transfer.prg: 54 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer.prg: 55 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer-mark-nvdsp-lm.prg: 41 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer-mark-nvdsp-cm.prg: 10 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer-sleep-idle-lm.prg: 51 checks, 0 failures
+PASS: VICE PAL lanec-di-transfer-sleep-idle-cm.prg: 9 checks, 0 failures

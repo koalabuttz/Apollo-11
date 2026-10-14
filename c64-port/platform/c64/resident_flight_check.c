@@ -154,20 +154,21 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
  rk_pending=0;
  __asm__ volatile("cli");
 }
-/* The boundary-word table from the REU store (loaded once into the task
- * slot to list its records): every key gives its word through
- * rk_fixed_word and the next key that is not in the table gives none; at a fixed-fixed
- * boundary the entry stores that word in BRUPT, and at a fixed point
- * missing from the table it takes nothing and the request stays pending. */
+/* The boundary-word table at the REU store's tail (rk_boundary_entry):
+ * every key gives its word through rk_fixed_word and the next key that is
+ * not in the table gives none; at a fixed-fixed boundary the entry stores
+ * that word in BRUPT, and at a fixed point missing from the table it takes
+ * nothing and the request stays pending. */
 static void boundary_check(apollo_overlay_state *image){uint16_t i,k;agc_word w;uint8_t ok=1,taken=0;
- const rk_boundary_table *t=(const rk_boundary_table *)(uintptr_t)call(APOLLO_OV2_TASK_CONTEXT,RK_MODULE_BOUNDARY,0,0);
- const agc_site_operand *b=t->words;
- for(i=0;i<t->count;++i){k=b[i].physical;
-  if(!rk_fixed_word(&rk_program,k,&w)||w!=b[i].word)ok=0;
-  if((i+1u==t->count||b[i+1u].physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
- expect(ok&&t->count>0u,13);
+ agc_site_operand e,next;
+ for(i=0;i<rk_boundary_count;++i){
+  if(!rk_boundary_entry(i,&e)){ok=0;break;}
+  k=e.physical;
+  if(!rk_fixed_word(&rk_program,k,&w)||w!=e.word)ok=0;
+  if((!rk_boundary_entry((uint16_t)(i+1u),&next)||next.physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
+ expect(ok&&rk_boundary_count>0u,13);
  image->words[0]=0;image->words[4]=RK_PROBE_FB;rk_device.superbank=0;rk_hardware.in_interrupt=0;
- for(i=0;i<t->count;++i){k=b[i].physical;w=b[i].word;
+ for(i=0;rk_boundary_entry(i,&e);++i){k=e.physical;w=e.word;
   if(k<04000u||k>=010000u||w==3u||w==4u||w==6u)continue;   /* fixed-fixed: Z is the key */
   image->words[5]=(agc_word)k;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
   taken=(uint8_t)(rk_rupt_take(&rk_program,image,0,1,&rk_pending)==RK_RUPT_T3&&image->words[017]==w&&

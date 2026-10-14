@@ -239,8 +239,8 @@ jobs:
           else
             targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
           fi
-          targets=$(echo $targets | tr ' ' '\n' | awk -v k="$SHARD" -v n="$SHARDS" 'NF && (NR - 1) % n == k')
-          python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --summary build/ci-summary.json
+          # Shards balanced by measured seconds (tools/ci_target_seconds.json).
+          python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --shard "$SHARD/$SHARDS" --summary build/ci-summary.json
           if [ "$SHARD" = 0 ]; then
             make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
           fi

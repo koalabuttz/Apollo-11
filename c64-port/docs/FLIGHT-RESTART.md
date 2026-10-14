@@ -1,0 +1,266 @@
+# Hardware restarts in flight
+
+Lane A2 (restart and telemetry). A hardware restart (GOJAM) in the middle of
+a flight scenario, the AGC's own restart code running natively, and the
+resumed program checked against yaAGC. On the host this is the whole run; on
+the C64 flight store it is the restart burst so far (see Gaps).
+
+## How the restart is forced
+
+`FLIGHT_GOJAM=CS[,CS...]` (`tools/flight_gojam.h`, read by
+`tools/flight_host_run.c`) restarts the AGC at the first sample point at or
+after each CS, on both sides. A sample point is a clean point: idle at
+ADVAN, no interrupt in progress or pending, no instruction half done. With
+`FLIGHT_DOWNRUPT` (docs/FLIGHT-DOWNLINK.md) no DOWNRUPT is pending there either, so no restart
+lands inside one. The pokes for that
+point go in first, and the key for that point waits for the next sample
+point.
+
+The restart is the hardware one. It is what yaAGC does when a TC trap
+(V69), the night watchman, a rupt lock or a parity alarm fires
+(`agc_engine.c`, the GOJAM and TC 4000 sequences):
+
+- Q takes Z, and Z becomes 04000.
+- Interrupts are enabled and none is in progress. Every request and every
+  HANDRUPT trap is cleared.
+- Output channels 5, 6, 10-14, 34 and 35 are zeroed, and channel 33 bit 11
+  is set.
+- The superbank and every erasable word but Z and Q stay as they were.
+
+The native side and yaAGC take the same change. From 04000 the rope's own
+code runs. In Luminary that is GOJAM, GOPROG (REDOCTR, RSBBQ),
+DORSTART/STARTSUB, SETINFL, the phase-table check (GOPROG3, PCLOOP),
+MMDSPLAY, then NXTRST and RESTARTS for each active group (the restart
+tables, PHSPART2 and GETPART2, and the FINDVAC, NOVAC and WAITLIST calls
+they make), and finally ENDRSTRT. Every native routine on that path is
+checked against yaAGC in lockstep, as everywhere else in the run.
+
+yaAGC alone cannot be made to restart reproducibly from outside. Its alarms
+run on its own clock, and `InhibitAlarms` (which the harness needs) turns
+them off. A TC to 04000 (a poke of Z) would skip the hardware part. So both
+sides apply the GOJAM at the same clean point.
+
+## Scenarios (`make flight-restart-check`)
+
+`tools/flight_restart_check.py` runs each scenario twice, once without the
+GOJAM and once with it. It also takes native snapshots (`FLIGHT_SNAPSHOT`)
+just before the GOJAM, just after it and at the end. A scenario fails in
+any of these cases:
+
+- The restart run stops early.
+- The restart run adds a routine that yaAGC does not match.
+- A point in `FRESH_START_AND_RESTART`, `RESTARTS_ROUTINE` or
+  `PHASE_TABLE_MAINTENANCE` runs outside a routine table.
+- REDOCTR does not go up by one.
+- RSBBQ+1 does not hold the interrupted Z.
+- The major mode or the alarm registers at the end differ from the run
+  without the restart.
+- In an unscaled run, more samples differ than the slack allows.
+
+Results on base b3a56a5a with this change. `lm-p63-descent-restart` is also registered with
+`tools/flight_host_differential.py`.
+
+| Scenario | GOJAM | Groups restarted (phase, octal) | Native routines (yaAGC did not match: points, new) | After |
+|---|---|---|---|---|
+| `lm-p63-descent-restart` (lm-p63-descent-thrust, scaled x1) | 200 s, braking phase, 54 s after ignition | 2 (phase 21), 5 (phase 3) | 1,276,090 (8, 0 new) | Back in P63. The LLGE flies on. At 300 s TTF/8 equals the run without the restart, and the alarms are the same (01107, 01703). |
+| `lm-dap-hold-restart` (DAP holding attitude, overrun schedule) | 20.18 s | none | 4,767 (0) | P00. The DAP restarts through STARTSB1's IDLEADR. |
+| `cm-entry-restart` (cm-entry, scaled x1) | 250.69 s, P64 | 1 (phase 3), 5 (phase 3), 6 (phase 11) | 1,431,996 (1, 0 new) | P67 at the end (320 s), as without the restart. |
+| `lm-p00-restart` (unscaled) | 25 s | none | 256,955 (0) | 3,872 of 4,000 samples equal (4,000 without the restart). |
+| `cm-p00-restart` (unscaled) | 25 s | none | 259,971 (0) | 3,998 of 4,000 samples equal, the same as without the restart. |
+
+The 8 LM and 1 CM unmatched points are the same ones the scenarios have
+without the restart. They are the compiled interpretive Q sign extension
+(docs/FLIGHT-STORE.md). No restart point is bridged.
+
+In the LM P63 run, a later path reaches BUFNEG+27 (INTERPRETER, 00,2560)
+once. yaAGC bridges it.
+
+The 128 LM P00 samples are a matter of native interrupt latency, not of
+the restart path. STARTSB1 makes DAPIDLER call 1/ACCS. Natively, AOSTASK's
+routine from GETAOSUV+6 runs for about 1.2 cs as one call, while yaAGC takes
+the T4RUPT due in that time at INVERT. After that, T4RUPT runs a centisecond
+late natively, so one sample in each 120 ms differs in DSRUPTSW. Scaled time
+has no such difference, because there every routine runs under the same
+tick schedule.
+
+## On the C64 store (`make flight-restart-vice`)
+
+`platform/c64/restart_check.c` boots the flight resident on
+`build/flight-store/lm.reu`. It loads the native state from just after the
+GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
+
+1. **Burst.** With CIA1 interrupts off, the resident runs to the next idle
+   pass through ADVAN, or to the first point the store does not hold. Then
+   the erasable image at $7000 is compared with yaAGC run from the same
+   state, with its clock frozen and no interrupt taken
+   (`tools/flight_restart_reference.c`), up to the same point.
+2. **Resume.** With CIA1 interrupts on, the resident runs for 200 cs of AGC
+   time. This step is reported, not checked.
+
+| Scenario | Burst | Image against yaAGC | Resume |
+|---|---|---|---|
+| `lm-p63-descent-restart` | 23 resident steps: GOPROG through the group 2 and 5 restarts and ENDRSTRT, to DSPMMJB (40,3534), EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) | 23 steps in about 40 cs, then stops at DSPMMJB |
+| `lm-dap-hold-restart` | 11 resident steps, to DSPMMJB, EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 859 instructions) | 11 steps in 19 cs, then stops at DSPMMJB |
+
+## The GOJAM on the C64 (`make flight-gojam-vice`)
+
+The C64 side of a hardware restart is split with the Resident-kernel lane
+(RK). This lane provides the restart itself: a module and a runtime call.
+RK provides the resident hook that calls them and the triggers (V69, the
+night watchman, a rupt lock). Neither piece adds a resident byte. The
+resident needs only the module id.
+
+### The GOJAM module, 0x01E5 (`RK_MODULE_GOJAM`)
+
+`platform/c64/resident_gojam_module.c` is registered with the resident's
+own modules (`tools/resident_flight_build.py` `RESIDENT_MODULES`, LM and
+CM), so every flight store (`tools/flight_store_build.py`) and the resident
+flight check stores hold it. It is a task-slot module (class 1), linked for
+the job slot in a store with a class-4 module, as the other resident modules
+are. It has 1 selector, no resolver record and no services. Its main makes
+the same change as `gojam_native` (`tools/flight_gojam.h`), then returns
+`DONE`:
+
+- Q (word 2) takes Z (word 5), and Z becomes 04000.
+- `rk_device.interrupt_enabled` = 1 (and `rk_flight`'s copy), and
+  `rk_hardware.in_interrupt` = 0.
+- The HANDRUPT traps in `rk_flight` (`trap31a`, `trap31b`, `trap32`) are
+  cleared. On the CM, `rk_device` (`cm_native_io`) holds copies of the
+  traps and of channels 11-14, and those are cleared too.
+- Channels 5, 6 and 10-14 in `rk_hardware`, and 34 and 35 in `rk_flight`,
+  are zeroed.
+- Channel 33 bit 11 (`02000`) is set in `rk_hardware`.
+- The superbank, every other erasable word and every other field stay.
+
+It reaches `rk_hardware` through `rk_env.program->hardware`, `rk_device`
+through `rk_env.io`, and `rk_flight` at `RK_FLIGHT_IO`. It cannot reach
+`rk_pending`, which has no fixed address, so the caller clears it.
+
+### `apollo_ov2_restart_keep_pinned`
+
+```c
+void apollo_ov2_restart_keep_pinned(apollo_ov2_runtime *);   /* include/overlay_v2.h */
+```
+
+It does what `apollo_ov2_restart` does for the killed jobs:
+
+- Every seam of all nine contexts is dropped.
+- Both run-slot caches (job and task: `loaded`, `selectors`) are cleared.
+- `busy` and the fault latch are cleared.
+
+The boot-loaded slot classes stay loaded: the fixed extension at $D000
+(class 2), the pinned module at $C000 (class 3), whose table list
+`rk_pinned` keeps naming, and the pinned task region at $E000 (class 4). It
+writes no slot, header buffer or image byte. With a class-4 module, the
+task-slot cache stays empty, as boot left it.
+
+The runtime has no record of the class 2-4 modules, so on the runtime's own
+fields the variant has the same effect as `apollo_ov2_restart`. The two
+share one body. What the variant adds is the contract: the resident must not
+reload classes 2-4 after it, and cannot, because their loader ran in the
+job slot at boot. `apollo_ov2_restart` and its callers are unchanged.
+`tests/test_overlay_v2.c` (`make -f tools/overlay_v2.mk overlay-v2-test`)
+checks the variant on the class-4 store image. It sets seams in job and
+task contexts, a cached job module, a latched fault and `busy`, then
+checks the following:
+
+- After the variant, the runtime is byte-for-byte what `apollo_ov2_restart`
+  leaves.
+- The image, the header buffer, $C000-$CBFF and $E000-$FFF9 are unchanged.
+- A job run reloads its module and leaves the class-4 region in place.
+- A fault a run latched clears the same way.
+
+### Entry contract (RK's resident trigger)
+
+Before the call:
+
+1. Call at a resident step boundary, never from the IRQ handler or from
+   inside a module run. `rk_runtime.busy` must be 0. CIA1 interrupts may
+   stay on: the call loads a module by DMA, as any step does.
+2. If `rk_runtime.fault` is latched, call
+   `apollo_ov2_restart_keep_pinned(&rk_runtime)` first. Otherwise
+   `apollo_ov2_run` refuses the module with `APOLLO_OV2_FAULTED`. Calling
+   it on both sides of the module is harmless.
+
+The call:
+
+3. `rk_run_module((apollo_ov2_cont){RK_MODULE_GOJAM, 0})`. It must return
+   `APOLLO_OV2_OK` with `rk_env.status` still `EXEC_OK`. It runs in
+   context 0, or in context 8 inside an interrupt, and either is fine.
+
+After the call:
+
+4. Set `rk_pending = 0`: every interrupt request is dropped, as the
+   hardware does.
+5. Call `apollo_ov2_restart_keep_pinned(&rk_runtime)`. The killed jobs'
+   seams go, and so does the GOJAM module's cache entry.
+6. Do not reboot, reload classes 2-4, or touch `rk_pinned`, `rk_ticks`,
+   `rk_dilation` or the superbank. The AGC clock runs on.
+7. Return from the step (EXEC_OK). The next `rk_resident_step` runs the
+   rope's GOJAM code from 04000: GOPROG, the phase-table check,
+   STARTSUB/STARTSB2 and the group restarts.
+
+### The check
+
+`--vice --gojam-module` (`make flight-gojam-vice`, in `ci-extra-c64`)
+compiles `platform/c64/restart_check.c` with `RS_GOJAM_MODULE`. It loads the
+`-pre` snapshot: the native state at the restart point, before the GOJAM.
+The program links `resident_flight.c` into itself to call its static
+`rk_run_module`. Then it does what the contract above says (steps 3 to 5),
+with no resident trigger. Two VICE runs follow for each scenario:
+
+1. **The GOJAM** (`RS_GOJAM_ONLY`): the run stops after the module. The
+   image at $7000 must equal the post-GOJAM snapshot (the `-gojam` one,
+   from `gojam_native` on the host) in all 2,048 words. The `rk_hardware`,
+   `rk_flight` and `rk_device` fields must equal that snapshot's
+   `SNAP_HW`, `SNAP_FLIGHT` and `SNAP_IO`.
+2. **The burst**: the module, `apollo_ov2_restart_keep_pinned`, then the
+   restart burst as in `flight-restart-vice`. Its image must equal yaAGC's
+   from the post-GOJAM state, and the runtime must end with no cached run
+   slot and no fault.
+
+Results on base 1b20b3a8 with this change. The module is 486 bytes in
+the LM store (job slot, since the LM store has a class-4 module) and 730
+bytes in the CM store (task slot). Both stores keep their image size
+(1,499,392 and 1,434,880 bytes), with no new overflow or link failure in
+`report.json`. The resident sizes (`build/resident-flight/sizes.json`) are
+unchanged.
+
+| Scenario | GOJAM module on the C64 against the post-GOJAM snapshot | Burst after `apollo_ov2_restart_keep_pinned` | Image against yaAGC |
+|---|---|---|---|
+| `lm-p63-descent-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 23 resident steps, to DSPMMJB (40,3534), EXEC_UNMAPPED. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) |
+| `lm-dap-hold-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 11 resident steps, to DSPMMJB, EXEC_UNMAPPED. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 859 instructions) |
+
+These are the same bursts as in `flight-restart-vice`, which starts from
+the host's post-GOJAM state. So applying the GOJAM on the C64 gives the same
+restart.
+
+## Gaps
+
+- **DSPMMJB is not in the C64 store.** GOPROG3 always calls MMDSPLAY, so
+  after any restart the first job the Executive runs is Pinball's DSPMMJB.
+  The store has no record for it, because `lanec_pin_routines` is too big
+  to split (`report.json`: an overflow of 236,641 bytes). The C64 resume
+  stops there, as would any major-mode display. The LLGE (`lm_llge`) and
+  P12 (`lm_p12`) do not fit either. So P63 and P12 cannot resume on the C64
+  until those modules fit.
+- **No GOJAM source on the C64 yet.** The module (0x01E5) and
+  `apollo_ov2_restart_keep_pinned` are in place (see above). What is
+  missing is the resident hook that follows the entry contract, and a
+  trigger for each alarm, for example `TC VERB69` to itself (V69), ADVAN or
+  NEWJOB not reached for 0.64 s (night watchman), or an interrupt held for
+  too long (rupt lock). That is the Resident-kernel lane's code.
+  `flight-gojam-vice` calls the module and the restart from the check
+  program instead.
+- **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.
+  `platform/x86/flight_scenario.h` is Lane B's.
+
+## Telemetry
+
+With `FLIGHT_DOWNRUPT=1` the harness raises DOWNRUPT every 20 ms of AGC time
+on both sides. The downlink word stream is then checked against yaAGC
+through each of these restarts (docs/FLIGHT-DOWNLINK.md,
+`make flight-downlink-check`). After the GOJAM the stream starts the current
+list again from its ID word: STARTSUB points DNTMGOTO at LDNPHAS1, SETINFL
+copies AGSWORD into DNLSTCOD, and the hardware GOJAM zeroes channels 34 and
+35. Every check here still passes with the knob on.

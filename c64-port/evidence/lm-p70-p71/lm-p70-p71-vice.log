@@ -1,9 +1,0 @@
-lm-p70-p71-1.prg sha256 9b6dad6b0827a1f5d05b697f7daa4762a68dfb76d98b1ff55c12dbb8c55ff4a0
-lm-p70-p71-2.prg sha256 b4a584aeac373d8bf461bb07c80fa15e83b4c0f50ea9141a89c9addcb6b61f35
-lm-p70-p71-3.prg sha256 e5a2e7ba3d7a6d11a16fe4cb725cf4e92044b5b86c6c4de18f465ebc3f1bb9b4
-lm-p70-p71-4.prg sha256 2a485d6876f96bfea6b16d8a9afdb5de2dd36cfb3c78f69f58402286e13596f4
-lm-p70-p71: 4 C64 diagnostics, 101 frozen cases (tests/lm_p70_p71_c64_vectors.h) compared with yaAGC digests; they take all 854 of the 854 host branch arcs
-PASS: VICE PAL lm-p70-p71-1.prg: 31 checks, 0 failures
-PASS: VICE PAL lm-p70-p71-2.prg: 25 checks, 0 failures
-PASS: VICE PAL lm-p70-p71-3.prg: 33 checks, 0 failures
-PASS: VICE PAL lm-p70-p71-4.prg: 12 checks, 0 failures
