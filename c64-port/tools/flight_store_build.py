@@ -513,7 +513,12 @@ PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dap
 # beside it; the resolver sends its keys to it before their files' modules.
 # RATELOOP (lm_kalman) runs in the same pass, so it rides here and leaves
 # the home room for RESUME.
-EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_kalman_basic'], 'cm': []}
+EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_kalman_basic',
+                    'lm_t6rupt_jets_hot_routines'], 'cm': []}
+# Tables a pack carries for rk_direct only: the DAP pass calls them while
+# the pack is loaded, but other callers keep loading their own (smaller)
+# modules, so the resolver does not send their keys to the pack.
+RIDE = {'lm_t6rupt_jets_hot_routines'}
 # T4RUPT the same way: its core (the resident's wrapper 0x01E2 holds the
 # whole table too) and the radar step in one job-slot module, so a radar
 # T4RUPT loads one module, not two (steward/cpu-budget.md). RCSMON stays
@@ -1028,6 +1033,8 @@ def main():
         for pack in packs:
             if pack.get('ok'):
                 for t in pack['basic']:
+                    if t in RIDE:
+                        continue
                     for k in keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
         records, erasable, unplaced, interpreted = [], 0, 0, 0
@@ -1084,7 +1091,7 @@ def main():
         # A pack holding a wrapped table's hot subset takes its keys from
         # the wrapper (T4RUPT's core from 0x01E2).
         moved = {canonical_record(k): pack['id'] for pack in packs if pack.get('ok')
-                 for t in pack['basic'] if (hot_full(t) or t) in RESIDENT[m] for k in keys[t]}
+                 for t in pack['basic'] if t not in RIDE and (hot_full(t) or t) in RESIDENT[m] for k in keys[t]}
         wrappers = [dict(r, module=moved.get((r['bank'], r['loc']), r['module'])) for r in wrappers]
         # The interpreter's modules and its points' records, where no
         # table record or resident table already holds the point.
