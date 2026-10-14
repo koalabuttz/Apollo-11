@@ -407,7 +407,16 @@ port) runs one mission:
    TTHROT changes) up to FMAXPOS, burns KG kilograms down at DPSVEX, and
    adds its velocity to PIPAX-Z (1 cm/s a count) along body X from CDUY
    and CDUZ. No attitude dynamics: while it burns, CDUX-Z are set to the
-   DAP's desired angles CDUXD-ZD.
+   DAP's desired angles CDUXD-ZD. `FLIGHT_AERO=B` (CM) adds drag and lift
+   for a capsule of ballistic coefficient B kg/m^2 and L/D 0.3: while
+   SERVICER runs and the CM is below 140 km, each sample point takes the
+   trajectory from the AGC's own RN and VN (exact PIPAs make its
+   navigation the truth), puts drag (an exponential atmosphere, 6.7 km
+   scale height, against the earth-relative velocity) and lift turned by
+   the commanded roll ROLLC into PIPAX-Z (5.85 cm/s a count, through
+   REFSMMAT). No attitude dynamics: while P62 waits for the maneuver to
+   entry attitude (P63FLAG +1), CDUX-Z are set to the desired angles
+   THETAD.
 
 9. **Flight scenarios** (tools/flight_scenarios/, `FLIGHT` in
    tools/flight_host_differential.py). `lm-p63-descent`: lm_p63.py writes
@@ -434,6 +443,21 @@ port) runs one mission:
    (INTEGRATION_INITIALIZATION, GIMBAL_LOCK, KALCMANU_STEERING) leaving Q
    without the sign extension yaAGC gives it (040000 for 0140000), and 75
    unregistered or refused points, 47 of them in INTERPRETER.agc.
+   `cm-entry`: cm_entry.py writes cm-entry.load, a synthetic lunar-return
+   entry loaded at 20 s (CSM state vector 150 s before an entry interface
+   at 400,000 ft, 11.03 km/s and -6.5 degrees; REFSMMAT with Y along the
+   orbit normal, as S61.1 checks; splash point 2,400 km downrange; EMS
+   altitude, trim angle and L/D pads). With the IMU operating and
+   `FLIGHT_AERO=355`, the keys run V37E61E and proceed through P61 (N61,
+   N60, N63) and P62 (separation request V50N25 00041, then N61); P63
+   senses 0.05 g and P64 and P67 fly the roll. yaAGC alone: P63 at 99 s,
+   P64 at 204 s, P67 at 306 s, peak 6.7 g, and at drogue conditions
+   (470 s, 24 km, 650 m/s) N66 shows about 1 nm crossrange and 2 nm
+   downrange error. On base 4f0e3d4a the native run (32,000 cs, scaled x1)
+   takes 1,432,112 routines (11,557 bridged instructions) and is in P67
+   at the end; 1 routine yaAGC did not match (INTEGRATION_INITIALIZATION's
+   compiled interpretive Q, as above) and 16 unregistered or refused
+   points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
 
 10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:

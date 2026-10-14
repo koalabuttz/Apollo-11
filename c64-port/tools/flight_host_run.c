@@ -272,6 +272,50 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
   if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
 
+/* FLIGHT_AERO=B (CM): drag and lift on a capsule of ballistic coefficient
+ * B kg/m^2 and L/D 0.3, the same on both sides, so the entry programs see
+ * the atmosphere. While SERVICER runs (AVEGFLAG) and the CM is below
+ * 140 km, each sample point takes position and velocity from the AGC's own
+ * RN and VN (extrapolated from PIPTIME to TIME1/TIME2: with exact PIPAs the
+ * AGC's navigation is the trajectory), drag D = rho v^2 / 2B against the
+ * velocity relative to the turning earth (rho = 1.225 exp(-h / 6.7 km),
+ * h above ERAD), lift 0.3 D perpendicular to it, turned from straight up
+ * by the commanded roll ROLLC (perfect roll control), and adds the
+ * velocity since the last point to PIPAX-Z (5.85 cm/s a count, stable
+ * member axes through REFSMMAT), carrying the fraction. While P62 waits
+ * for the maneuver to entry attitude (P63FLAG +1) each sample point sets
+ * CDUX-Z to the desired angles THETAD (perfect attitude control), so the
+ * entry DAP sees ALFA within 45 degrees and wakes P62. */
+static double aero_b;
+static struct aero { unsigned long t; double carry[3]; } aero_ref,aero_nat;
+enum { AVEGWORD=075, AVEGBIT=1, RN=01170, VN=01176, PIPTIME=01204, REFSMMAT=01735, ROLLC=03315, P63FLAG=03327, THETAD=01155 };
+static double edp(const agc_word *w,unsigned a,int scale){
+ return ((double)ones(eword(w,a))*16384.0+(double)ones(eword(w,a+1u)))*ldexp(1.0,scale-28);}
+static void aero_due(unsigned long t,struct aero *e,agc_word *w){double r[3],v[3],vr[3],lt[3],sd[3],acc[3],rt,h,vm,d,ph,un,dt,tn;unsigned k,j;
+ if(!aero_b)return;
+ if(eword(w,P63FLAG)==1u)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,THETAD+k);else *cell(CDUX+k)=(int16_t)eword(w,THETAD+k);}
+ dt=(double)(t-e->t)*0.01;e->t=t;
+ if(!(eword(w,AVEGWORD)&AVEGBIT)||dt<=0.0)return;
+ tn=(double)(eword(w,024)&037777u)*16384.0+(double)(eword(w,025)&037777u)-edp(w,PIPTIME,28);
+ for(k=0;k<3u;++k){v[k]=edp(w,VN+2u*k,7)*100.0;r[k]=edp(w,RN+2u*k,29)+v[k]*tn*0.01;}
+ rt=sqrt(r[0]*r[0]+r[1]*r[1]+r[2]*r[2]);h=rt-6373338.0;
+ if(rt<6.0e6||h>140000.0)return;
+ vr[0]=v[0]+7.29211494e-5*r[1];vr[1]=v[1]-7.29211494e-5*r[0];vr[2]=v[2];
+ vm=sqrt(vr[0]*vr[0]+vr[1]*vr[1]+vr[2]*vr[2]);
+ d=1.225*exp(-h/6700.0)*vm*vm/(2.0*aero_b);
+ for(k=0;k<3u;++k)vr[k]/=vm;
+ un=(r[0]*vr[0]+r[1]*vr[1]+r[2]*vr[2])/rt;
+ for(k=0;k<3u;++k)lt[k]=r[k]/rt-un*vr[k];
+ un=sqrt(lt[0]*lt[0]+lt[1]*lt[1]+lt[2]*lt[2]);for(k=0;k<3u;++k)lt[k]/=un;
+ sd[0]=lt[1]*vr[2]-lt[2]*vr[1];sd[1]=lt[2]*vr[0]-lt[0]*vr[2];sd[2]=lt[0]*vr[1]-lt[1]*vr[0];
+ ph=edp(w,ROLLC,0)*6.283185307179586;
+ for(k=0;k<3u;++k)acc[k]=d*(-vr[k]+0.3*(cos(ph)*lt[k]+sin(ph)*sd[k]));
+ for(j=0;j<3u;++j){long n,c;double a=0.0;for(k=0;k<3u;++k)a+=edp(w,REFSMMAT+6u*j+2u*k,1)*acc[k];
+  e->carry[j]+=a*dt*100.0/5.85;n=(long)e->carry[j];e->carry[j]-=(double)n;
+  c=ones(eword(w,PIPAX+j))+n;if(c>037777l)c=037777l;if(c<-037777l)c=-037777l;
+  c=c<0?(long)((~(unsigned long)(-c))&077777ul):c;
+  if(w)w[PIPAX+j]=(agc_word)c;else *cell(PIPAX+j)=(int16_t)c;}}
+
 /* FLIGHT_PATH=FROM,TO: print every registered point each side passes
  * between those centiseconds (a diagnostic for aligning the two runs). */
 static unsigned long path_from=1,path_to=0;
@@ -485,6 +529,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  pokes_sort();
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
+#else
+ if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
 #endif
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  if(cs>=sizeof ref/sizeof ref[0])cs=sizeof ref/sizeof ref[0]-1u;
@@ -506,6 +552,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
+    aero_due(now(w),&aero_ref,0);
     if((k=key_due(now(w),&kref))>=0){m.InputChannel[015]=(int16_t)k;
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_KEY1);m.InIsr=1;}
      else m.InterruptRequests[RK_RUPT_KEY1]=1;}}}
@@ -551,6 +598,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
+   aero_due(now(s.words),&aero_nat,s.words);
    if((k=key_due(now(s.words),&knat))>=0){hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
    if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
