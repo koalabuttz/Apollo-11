@@ -826,6 +826,32 @@ SPECS = {
         'image_w': True,
         'target': 'tests/lm_p76_file_target.c',
     },
+    'cm-p76-file': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'P76.agc'},
+        'base': {'cm': 'cm_p76_file'},
+        'symbol': {'cm': 'cm_p76_file'},
+        'basic': 'full',
+        # The GOFLASH returns after TCF ENDP76: proceed (TC +2) and a value
+        # loaded through the DSKY (TC -5, back to the request), as lm-p76-file.
+        'entries': ['@external', 'P76+6', 'P76+7', 'P76+12', 'P76+13'],
+        # BANKCALL INTWAKE1 wakes the integration's sleepers and returns
+        # interpretively to QPRET, never to the next word.
+        'noreturn': ['INTWAKE1'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_p76_file_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
