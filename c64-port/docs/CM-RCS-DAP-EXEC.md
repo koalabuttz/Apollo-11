@@ -26,6 +26,7 @@ Hashes: `evidence/cm-rcs-dap-exec/SHA256.json`.
   - The comparison covers Z, all 2,048 erasable words and the interrupt-enable state.
   - FLAGWRD6 is mostly the RCS autopilot, with TVC, both, neither and ±0 for the two gates.
   - CDUX and CDUZ take 0, ±1 LSB, the 7.25-degree offset and its neighbors, and 90, 180 and 270 degrees.
+  - At the returns after SPCOS1 and SPSIN1 (22,3470, 22,3501), A (the sine or cosine) takes values across its range and is ±0 in about a fifth of the cases. CDUZ 0 or CDUX 660 make it ±0 in flight, and MP CAPSI and MP AMGB1 then take yaAGC's ±0-multiplicand path (reviewer 1, #307).
   - AMBGUPDT runs to SPSIN 284 times and to ENDOFJOB 228 times.
 - **Host and sanitizer results.** `make test-cm-rcs-dap-exec sanitize-cm-rcs-dap-exec`: the 160 frozen cases (every 16th), 0 failures.
 - **C64 execution results.** `make vice-cm-rcs-dap-exec`: 13 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (157 gcov branches, and 102 of 102 trace edges). 13 checks, 0 failures.

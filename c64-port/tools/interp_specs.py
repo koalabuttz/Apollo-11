@@ -573,7 +573,14 @@ SPECS = {
         # FLAGWRD6: mostly the RCS autopilot (bit 14 only of the top two), so
         # most runs reach the matrix; TVC, both, neither and +-0 for the gates.
         'states': {'AMBGUPDT': {'FLAGWRD6': [0o20000, 0o20001, 0o21234, 0o37777, 0o20000, 0o30000,
-                                             0o40000, 0o60000, 0, 0o77777, 0o17777]}},
+                                             0o40000, 0o60000, 0, 0o77777, 0o17777]},
+                   # After SPCOS1 and SPSIN1 (22,3470, 22,3501): A, the sine or
+                   # cosine, across its range and often +-0 (CDUZ 0 or CDUX
+                   # 660 give it), so MP CAPSI and MP AMGB1 take yaAGC's
+                   # +-0-multiplicand path (reviewer 1, #307).
+                   **{p: {'0': [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777)
+                                                             for v in (k, 0o177777 - k)]}
+                      for p in ('22,3470', '22,3501')}},
         # CDUX and CDUZ (counters): around 0, the 7.25-degree jet quad
         # offset QUADANGL (660), 90 and 180 degrees, and -0.
         'cells': {a: [0, 1, 659, 660, 661, 0o17777, 0o20000, 0o37777, 0o40000, 0o57777, 0o60000,
