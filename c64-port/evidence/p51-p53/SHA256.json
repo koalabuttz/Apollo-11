@@ -4,7 +4,7 @@
   "release": "evidence-p51-p53",
   "files": {
     "p51-p53-c64-outcomes.json": {
-      "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008",
+      "sha256": "1c3e7d60b08bdb66be2d151f81e4bac6da34f83b3be5597156af000e4e136dbb",
       "bytes": 711,
       "store": "tree"
     },
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "p51-p53-proof.json": {
-      "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5",
-      "bytes": 96891,
+      "sha256": "6a8ae3770751a125efde3e3d925b430a0414d7dfa1cf94d94523dbed90124bec",
+      "bytes": 97438,
       "store": "tree"
     },
     "p51-p53-source-map.json": {

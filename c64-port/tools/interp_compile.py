@@ -128,6 +128,11 @@ def is_interp_op(op):
         return False
 
 
+def per_mission(value, mission):
+    """A spec flag that is either one value or a {mission: value} dict."""
+    return value.get(mission) if isinstance(value, dict) else value
+
+
 class Compiler:
     def __init__(self, spec, mission):
         self.spec = spec
@@ -181,12 +186,13 @@ class Compiler:
         self.pending_danzig = bool(spec.get('pending_danzig'))
         self.pending = {}
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
-        # (tasks and NOVAC jobs call them too), not only a VAC area.
-        self.any_fixloc = bool(spec.get('any_fixloc'))
+        # (tasks and NOVAC jobs call them too), not only a VAC area. A
+        # {mission: bool} dict limits it (and 'any_newjob') to one mission.
+        self.any_fixloc = bool(per_mission(spec.get('any_fixloc'), mission))
         # 'any_newjob' (with any_fixloc): those routines, when they also never
         # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
         # T4RUPT still runs them).
-        self.any_newjob = bool(spec.get('any_newjob'))
+        self.any_newjob = bool(per_mission(spec.get('any_newjob'), mission))
         self.sload_k = False
         self.uses_channels = False
         # 'channels': 'all' on a Luminary file: its channel orders run on the

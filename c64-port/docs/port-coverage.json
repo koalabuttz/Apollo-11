@@ -773,7 +773,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). From EARROT1 to OVERADAY, any DTEAROT and MPAC, OVFIND +0 or +-1 (as the interpreter's TS of an overflowed A leaves it) and QPRET (42D) a return outside the file: EARROT2's BOVB counts OVFIND down rather than clearing it, so from any other OVFIND word the original's OVERADAY/EARROT2 loop runs for thousands of passes (yaAGC). Runs take up to 1,000 routines.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines (or Z at its basic ones), FB 10 or 23 as the caller's CALL leaves it, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states), VAC+034 (SXTANG's GOTO 28D return) a CADR outside the file, any operand values (STAR, XNB/YNB/ZNB, the CDUs, MPAC) and CULTFLAG either way. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys) with the MODE, PUSHLOC and index registers the code leaves there (scalar MODE pinned at the SXTNB and SXTANG resume points). From EARROT1 to OVERADAY, any DTEAROT and MPAC, OVFIND +0 or +-1 (as the interpreter's TS of an overflowed A leaves it) and QPRET (42D) a return outside the file: EARROT2's BOVB counts OVFIND down rather than clearing it, so from a large OVFIND word the original's OVERADAY/EARROT2 loop runs for thousands of passes (yaAGC). Runs take up to 1,000 routines.",
         "external_continuations": [
           "The caller's return through QPRET, the CADR in S2, or GOTO 28D (VAC+034)",
           "TCDANZIG (ENDT(X)) through EARROT2's BOVB, native (src/cm_integration_moves.c)",
@@ -3659,7 +3659,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
+            "sha256": "6a8ae3770751a125efde3e3d925b430a0414d7dfa1cf94d94523dbed90124bec"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -3669,12 +3669,12 @@
             "path": "evidence/p51-p53/p51-p53-vice.log",
             "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
-              "vice-p51-p53": 1522
+              "vice-p51-p53": 1525
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
+            "sha256": "1c3e7d60b08bdb66be2d151f81e4bac6da34f83b3be5597156af000e4e136dbb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -10882,7 +10882,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, STARCODE and POSCODE any of their codes, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (the file's EBANK= settings), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones, FIXLOC a VAC area (any word at the basic routines that neither name FIXLOC nor enter the interpreter, as GRABGRAV (15,2731), a TWIDDLE waitlist task, and its IBNKCALL and FINDVAC returns run; any_fixloc), PUSHLOC within it, MODE, OVFIND, X1 and X2 base minus a target in switched erasable where the next indexed operand names erasable (index_states) and pinned with S1 and S2 inside the PICAPAR pair loop and the mid-sequence resume points, STARCODE and POSCODE any of their codes, BESTI and BESTJ any of the 37 catalog stars or the planet codes, TIME1, TIME2 and the CDUs any values, and any values of the other erasables the file reads. NEWJOB +0 or positive (or -0, as DUMMYJOB leaves it while the computer idles, at those basic routines when they never name NEWJOB; any_newjob): a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS (resume_keys). Runs take up to 10,000 routines.",
         "external_continuations": [
           "ALARM, BANKCALL, IBNKCALL, BLANKET, PHASCHNG, PRIOCHNG, UPFLAG, DOWNFLAG, MAKECADR, FINDVAC, LINUS, CHECKMM, TWIDDLE, CLEARMRK, FALTON and CURTAINS with their inline words",
           "SWCALL and SWRETURN (no return)",
@@ -10898,7 +10898,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "b05086e838f8ed5f1196ca1d7a2d625ccdb41c0ce918a5a1ae4cdd7ac1fc68a5"
+            "sha256": "6a8ae3770751a125efde3e3d925b430a0414d7dfa1cf94d94523dbed90124bec"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
@@ -10908,12 +10908,12 @@
             "path": "evidence/p51-p53/p51-p53-vice.log",
             "sha256": "571cb77d4d66cb8c62638048267329aa20760c6c45e932c963583270d1477b2d",
             "vice_targets": {
-              "vice-p51-p53": 1522
+              "vice-p51-p53": 1525
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
-            "sha256": "b8062055d30bea54392289af38e2e5fc4dbbaecc00387d24a7a124bbd121b008"
+            "sha256": "1c3e7d60b08bdb66be2d151f81e4bac6da34f83b3be5597156af000e4e136dbb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",

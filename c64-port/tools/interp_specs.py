@@ -556,7 +556,7 @@ SPECS = {
                               # sets it (TS of an overflowed A: +-1), +0 in
                               # three cases of five. EARROT2's BOVB counts
                               # OVFIND down rather than clearing it, so from
-                              # any other word the original swings between
+                              # a large word the original swings between
                               # EARROT2 and OVERADAY for thousands of passes
                               # (yaAGC); DTEAROT and MPAC range freely.
                               # EARROT1's RVQ returns through QPRET (42D) to
@@ -2366,6 +2366,12 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'trusted_image': True,
+        # Luminary's GRABGRAV (15,2731), with its IBNKCALL and FINDVAC
+        # returns, is a TWIDDLE waitlist task: it runs from any FIXLOC and
+        # with NEWJOB -0 while DUMMYJOB idles, and never names either.
+        # (Comanche's basic routines here all run in P51-P53's own jobs.)
+        'any_fixloc': {'lm': True},
+        'any_newjob': {'lm': True},
         'max_steps': 10000,
         'freeze_stride': 192,
     },
