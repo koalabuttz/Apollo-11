@@ -21,8 +21,9 @@ For an interp spec (tools/interp_specs.py):
                    evidence/<id>/<id>-c64-cover.json. Each row, with its cut
                    (irc_c64_cut) and, for c64_segments rows, stopped at the
                    resume LOC (IRC_SNAPROW), is re-run on yaAGC and must give
-                   the header's frozen digest. pending_danzig and
-                   channel_inputs specs get IRC_PENDING_DANZIG/IRC_INPUTS.
+                   the header's frozen digest. The oracle runs with the
+                   differential's oracle_env (IRC_PENDING_DANZIG,
+                   IRC_RTB_IN_FILE, IRC_INPUTS).
   3. branches      the native runner built -O0 --coverage over the cover
                    sources runs every frozen case (host), and each C64 group,
                    built with its KEEP mask from tools/mk/<id>.groups (and
@@ -237,14 +238,7 @@ def interp(sid, a, out):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):
             assemble(m, pathlib.Path(B) / 'fixed-data')
-    env = dict(os.environ)
-    if spec.get('channel_inputs'):
-        env['IRC_INPUTS'] = '1'
-    if spec.get('pending_danzig'):
-        cp0 = IC.Compiler(spec, spec['missions'][0])
-        cp0.decode()
-        env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
-            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    env = dict(os.environ, **D.oracle_env(spec))
     missions = [D.Mission(spec, m) if m in spec['missions'] else D.Absent(m) for m in ('lm', 'cm')]
     npts = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
     per = -(-proof['cases'] // npts)

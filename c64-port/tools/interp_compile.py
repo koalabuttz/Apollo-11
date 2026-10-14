@@ -939,7 +939,9 @@ class Compiler:
                         q += 1
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
-                        end = q
+                        # (With 'pending_danzig' the right order's words
+                        # belong to the routine at the RTB's operand word.)
+                        end = cur if self.pending_danzig else q
                     if self.pending_danzig:
                         # The operand word: DANZIG's pending right order.
                         pw = self.pair[0]
@@ -983,7 +985,12 @@ class Compiler:
                 st.append('  return EXEC_OUT_OF_SCOPE;')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             else:
-                st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+                if t is not None and self.in_file(t) and t in self.code and not is_interp_op(self.code[t].op):
+                    # BOVB to the file's own basic code that the spec runs
+                    # natively (TIME_OF_FREE_FALL's BOVB TCDANZIG): no GOTO.
+                    st.append('  return EXEC_OUT_OF_SCOPE;')
+                else:
+                    st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
                 if base == 'BOVB' and self.rtb.get(self.L.label_at(t)) is not None:
                     # BOVB to a basic routine the spec runs natively (as RTB).
                     lab = self.L.label_at(t)
