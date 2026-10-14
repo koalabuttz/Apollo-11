@@ -299,22 +299,30 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
  * and the instructions are returned. When yaAGC never matches, -1; the
  * native side then takes the time from yaAGC's first arrival at the
  * continuation (first holds its memory; Z -0 when it never arrived). */
+/* The IMU CDU drive empties CDUXCMD-CDUZCMD (050-052) on yaAGC's cycle
+ * clock while channel 14 bit 15, 14 or 13 is set; the C64 resident's
+ * rk_cdu_drive (src/resident_cdu.c) does it on AGC time, so here,
+ * like the timers, a driven counter is yaAGC's. cdu_driven: the axes whose
+ * drive was on before or after the routine. */
+static agc_word cdu_driven;
+static int cdu_counter(unsigned i){return !scaled&&i>=050u&&i<=052u&&(cdu_driven&(040000u>>(i-050u)));}
 static void adopt(apollo_overlay_state *after,agc_hardware *hw){unsigned i;
  if(scaled)return;   /* the clock is frozen: the routine's own counters stand */
  for(i=024u;i<=031u;++i)after->words[i]=mword(i);
+ for(i=050u;i<=052u;++i)if(cdu_counter(i))after->words[i]=mword(i);
  hw->channel3=(agc_word)(m.InputChannel[3]&077777);hw->channel4=(agc_word)(m.InputChannel[4]&077777);
  if(!(m.InputChannel[013]&040000))hw->channel13&=037777u;}
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0;
- first[5]=077777u;load(before,io0,hw0);c0=m.CycleCounter;
+ first[5]=077777u;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
   if(n&&(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode))
      &&point(view(),(agc_word)m.OutputChannel7,&in)==target&&in==tin){
-   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&mword(i)!=after->words[i])break;
+   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)&&mword(i)!=after->words[i])break;
    if(i==2048u){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);return n;}
    if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}}
   if(step(&got))return -1;}
@@ -322,6 +330,7 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
   * (none when it never arrived). */
  span_mct=first[5]!=077777u?first_mct:0ul;
  if(first[5]!=077777u&&!scaled){for(i=024u;i<=031u;++i)after->words[i]=timed.words[i];
+  for(i=050u;i<=052u;++i)if(cdu_counter(i))after->words[i]=timed.words[i];
   hw->channel3=timed_hw.channel3;hw->channel4=timed_hw.channel4;hw->channel13=timed_hw.channel13;*pending|=got_first;}
  return -1;}
 
