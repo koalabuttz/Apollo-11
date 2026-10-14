@@ -3,7 +3,7 @@
   "native_file": "src/cm_extended_verbs_file.c",
   "words": 703,
   "untranslated_words": 0,
-  "routines": 177,
+  "routines": 182,
   "map": [
    {
     "address": "43,2000",
