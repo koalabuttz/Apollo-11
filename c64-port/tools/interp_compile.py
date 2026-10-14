@@ -190,6 +190,7 @@ class Compiler:
             raise CompileError("Luminary 'channels': 'all' needs 'channel_inputs'")
         self.uses_hw = False         # a channel order reaches agc_ch_op
         self.channels_used = set()   # the channels those orders name
+        self.inputs_used = set()     # latched input channels they read (AGC_CHANNEL)
         self.kx = {}           # index_guard fixed tables: window start -> (words, base)
         self.kx_used = False
         # erasable_calls: erasable addresses (logical) called as programs.
@@ -1391,6 +1392,7 @@ class Compiler:
                 # (include/agc_input_channels.h): A overflow-corrected, then
                 # sign-extended, as yaAGC does.
                 v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[chan]
+                self.inputs_used.add(chan)
                 if io_op:
                     v = '((((W[0]>>1)&040000u)|(W[0]&037777u))%s%s)' % ({2: '&', 4: '|', 6: '^'}[io_op], v)
                 self.uses_channels = True
