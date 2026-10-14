@@ -9,8 +9,14 @@
 # (platform/c64/restart_check.c, tools/flight_restart_reference.c). Like
 # flight-host-differential they need the listings and the yaAGC objects, and
 # flight-restart-vice the whole store; neither gates `test`.
-.PHONY: flight-restart-check flight-restart-vice
+# flight-gojam-vice: the same LM restarts, with the GOJAM applied on the C64
+# from the state just before it (the GOJAM module 0x01E5 through
+# rk_run_module, checked against the post-GOJAM snapshot), then
+# apollo_ov2_restart_keep_pinned and the burst against yaAGC.
+.PHONY: flight-restart-check flight-restart-vice flight-gojam-vice
 flight-restart-check: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_restart_check.py
 flight-restart-vice: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_restart_check.py --vice --only lm-p63-descent-restart,lm-dap-hold-restart
+flight-gojam-vice: flight-store build/agc_engine_hardware_dv.o
+	python3 tools/flight_restart_check.py --vice --gojam-module --only lm-p63-descent-restart,lm-dap-hold-restart

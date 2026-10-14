@@ -343,6 +343,9 @@ status clearing). It covers:
 - a DMA fault at each step of a cold load, and a directory record naming
   another module
 - restart dropping seams and caches but keeping the canonical image
+- the hardware restart's variant (`apollo_ov2_restart_keep_pinned`) leaving
+  the runtime as restart does while the class-3 and class-4 modules keep
+  every byte
 - store open and boot verification against each corruption class
 - service-table version compatibility
 
