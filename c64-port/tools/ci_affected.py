@@ -150,6 +150,11 @@ def mk_targets(path):
             match = re.match(r'^([A-Za-z0-9_./-]+)\s*:(?!=)', line)
             if match:
                 targets.add(match.group(1))
+            # (tools/mk/_ci-split.mk's parts are made by $(eval), not written out)
+            split = re.search(r'\$\(call CI_SPLIT_RULE,([A-Za-z0-9_.-]+),[^,]*,(\d+),', line)
+            if split:
+                targets |= {f'{kind}-{split.group(1)}-{n}' for kind in ('c64', 'vice')
+                            for n in range(1, int(split.group(2)) + 1)}
     except OSError:
         pass
     return targets
@@ -195,14 +200,14 @@ def main():
                 words = closure(watch if watch in rules else target, rules, set(), scripts)
                 if (target in defined or words & names) and target not in result[group]:
                     result[group].append(target)
-        for target in result['c64']:
-            vice = 'vice-' + target[len('c64-'):]
-            if vice in rules:
-                result['vice'].append(vice)
         for target in sorted(defined):
             for group in ('test', 'sanitize', 'c64'):
                 if target.startswith(group + '-') and target not in result[group]:
                     result[group].append(target)
+        for target in result['c64']:
+            vice = 'vice-' + target[len('c64-'):]
+            if vice in rules and vice not in result['vice']:
+                result['vice'].append(vice)
         for group in ('test', 'sanitize'):
             core = group + '-core'
             if core in rules and core not in result[group] and \

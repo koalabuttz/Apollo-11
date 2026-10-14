@@ -14,7 +14,7 @@ extern const agc_routine_table cm_orbital_integration_interpretive,cm_orbital_in
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_orbital_integration_point;
 #define CM_ORBITAL_INTEGRATION_POINTS 333u
 #define CM_ORBITAL_INTEGRATION_CADR_WORDS 1u
-#define CM_ORBITAL_INTEGRATION_EXTERNALS 6u
+#define CM_ORBITAL_INTEGRATION_EXTERNALS 5u
 #define CM_ORBITAL_INTEGRATION_FIRST 9466u
 #define CM_ORBITAL_INTEGRATION_LAST 12279u
 extern const cm_orbital_integration_point cm_orbital_integration_points[CM_ORBITAL_INTEGRATION_POINTS];

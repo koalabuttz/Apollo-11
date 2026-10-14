@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Milestone cm-p37-p70 (lane E): Comanche055 P37_P70 compiled by
 # tools/interp_compile.py into native routines of the control-transfer ABI.
-CP37_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c
+CP37_COMMON = src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c src/cm_integration_moves.c tests/interp_case.c
 CP37_SRC = src/cm_p37_p70.c tests/cm_p37_p70_target.c $(CP37_COMMON)
 CP37_HDR = include/cm_p37_p70.h tests/interp_case.h tests/cm_p37_p70_vectors.h tests/cm_p37_p70_c64_vectors.h
 CP37_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
@@ -24,7 +24,7 @@ cm-p37-p70-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-p37-p70.groups
 CP37_C64_PRGS = $(foreach g,$(CM_P37_P70_GROUPS),build/cm-p37-p70-$(g).prg)
-CP37_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c tests/interp_case.c tests/interp_cut.c tests/cm_p37_p70_target.c
+CP37_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/rtb_modes.c src/cm_integration_moves.c tests/interp_case.c tests/interp_cut.c tests/cm_p37_p70_target.c
 CP37_C64_cm = src/cm_p37_p70.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-p37-p70: $(CP37_C64_PRGS)
 build/cm-p37-p70-%.prg: $(CP37_SRC) platform/c64/cm_p37_p70_diagnostic.c tools/mk/cm-p37-p70.groups $(CP37_HDR) | build
