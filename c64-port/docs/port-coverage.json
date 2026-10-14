@@ -1860,11 +1860,13 @@
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
             "src/rtb_angles.c",
+            "src/agc_fast_window.c",
+            "src/agc_fast_ops.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "include/agc_input_channels.h"
           ],
-          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 398 routines of the control-transfer ABI compiled by tools/interp_compile.py, with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
+          "scope": "Every word of the file (1,077 words: 33,2000-3775, 32,2000-2016, 04,2613-2644, FINETIME 02,4553-4574): P07 drift and PIPA tests, the optimum prelaunch alignment and calibration filter, gyrocompassing and erection, earth-rate compensation, P03 optical verification, FINETIME and CHKCOMED, as 334 routines of the control-transfer ABI compiled by tools/interp_compile.py (its basic code whole-file), with every word after a DANZIG a resume key and the CHECKG1 and FINETIME +1 waits idle points.",
           "verification": "docs/IMU-CALIBRATION.md"
         }
       ],
@@ -1885,21 +1887,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
-            "sha256": "27daa450c160ef5e9a11753f9389ccfb9162800b8ac21180476189b3ebde08dc"
+            "sha256": "266f109e83d90faa7553827be4ee0878aa0dce64701f5cf616b49cf3d931b3ab"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "2e230a59b9a5dbf4338976e94fad9a08a514c4e783c298aac2f158d25c17b201"
+            "sha256": "8e24d475b4e1dcd2fb819c966efef69fe4fe8f88718151a06b4735f904a558f6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "bc8582873ed8b6f4add59dad07fc4770a103894cb90612f37c58aff0530937fd"
+            "sha256": "4cd8e3ac59e844efc23a1ef94813ee7d2ecd11e123e10c75164feceffe461334"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "160a7997a3d615e348d2fe0664e87771724e359d11e4ae67a13a398950699a24",
+            "sha256": "2cbf46d9a7c4c0988599a203055f15694fce961ecc66d49139524c72351a7082",
             "vice_targets": {
-              "vice-cm-imu-calibration": 507
+              "vice-cm-imu-calibration": 448
             }
           },
           "independent_review": {
@@ -1908,7 +1910,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "3ccf0a7803454d7c83ed7bf071730e49741cdf90d4d9ec5d0ba6c0ecddba49f5"
+            "sha256": "44cf84c6738966c89e21b528d4241f34ba98db85ad72eb4f2cac36b20485a78e"
           }
         }
       }

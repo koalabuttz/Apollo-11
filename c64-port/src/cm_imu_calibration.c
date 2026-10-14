@@ -9,7 +9,9 @@
 #include "agc_image_ops.h"
 #include "agc_input_channels.h"
 #include "rtb_angles.h"
-#define W s->words
+#define AFR_EBN 5
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -30,28 +32,19 @@ static const agc_word K66447[6] MAYBE_UNUSED={007623,026552,004662,070117,005372
 static const agc_word K67107[6] MAYBE_UNUSED={002222,000000,000000,000000,000000,000000}; /* 33,3107 DEC585 */
 static const agc_word K67110[6] MAYBE_UNUSED={000000,000000,000000,000000,000000,000000}; /* 33,3110 SCHZEROS */
 static const agc_word K67115[6] MAYBE_UNUSED={000000,000001,000004,000002,000220,077776}; /* 33,3115 ONEDPP */
-static const agc_word K67116[1] MAYBE_UNUSED={000001}; /* 33,3116  */
+static const agc_word K67116[6] MAYBE_UNUSED={000001,000004,000002,000220,077776,035730}; /* 33,3116  */
 static const agc_word K67117[6] MAYBE_UNUSED={000004,000002,000220,077776,035730,000035}; /* 33,3117 INTVAL */
 static const agc_word K67121[6] MAYBE_UNUSED={000220,077776,035730,000035,010317,017550}; /* 33,3121  */
 static const agc_word K67704[6] MAYBE_UNUSED={030341,022444,057223,066451,005427,012577}; /* 33,3704 PIPASC */
 static const agc_word K67706[6] MAYBE_UNUSED={057223,066451,005427,012577,077567,044202}; /* 33,3706 VELSC */
+static const agc_word K67710[6] MAYBE_UNUSED={005427,012577,077567,044202,024276,014066}; /* 33,3710 ALSK */
+static const agc_word K67712[6] MAYBE_UNUSED={077567,044202,024276,014066,003146,014632}; /* 33,3712  */
 static const agc_word K67714[6] MAYBE_UNUSED={024276,014066,003146,014632,000121,035341}; /* 33,3714 GEORGEJ */
 static const agc_word K67716[6] MAYBE_UNUSED={003146,014632,000121,035341,001767,031666}; /* 33,3716 GEOCONS1 */
 static const agc_word K67720[6] MAYBE_UNUSED={000121,035341,001767,031666,000004,035223}; /* 33,3720 GEOCONS2 */
 static const agc_word K67722[6] MAYBE_UNUSED={001767,031666,000004,035223,077620,002424}; /* 33,3722 GEOCONS3 */
 static const agc_word K67724[6] MAYBE_UNUSED={000004,035223,077620,002424,076740,001330}; /* 33,3724 GEOCONS4 */
 
-/* Fixed tables indexed orders read: rope windows around their bases. */
-static const agc_word KX67651[70] MAYBE_UNUSED={031773,055161,031775,055160,035021,055303,035017,004662,016002,004662,017573,003632,030075,075014,010000,003620,051330,030052,000006,013676,001424,035021,057330,010000,050000,054000,013655,030341,022444,057223,066451,005427,012577,077567,044202,024276,014066,003146,014632,000121,035341,001767,031666,000004,035223,077620,002424,076740,001330,000003,034767,046000,077624,047637,077650,002424,077776,006006,047145,002636,045546,077776,056154,055045,004662,020703,033775,004662,020720,013760}; /* 33,3651.. (33,3711 ) */
-/* The operand an indexed order reads: 0 for erasable (ADDRWD below
- * 02000), else its words in the window k (FB and ADDRWD as the
- * fetch left them); a word outside the window is refused. */
-static MAYBE_UNUSED const agc_word *kx(const apollo_overlay_state *s,const agc_word *k,uint16_t lo,uint16_t n,uint16_t need,uint8_t *bad){
- unsigned p;if(W[0116]<02000u)return 0;
- p=((W[4]>>10)&037u)*1024u+(W[0116]&01777u);
- if(p<lo||p+need>(unsigned)lo+n){*bad=1;return 0;}
- return k+(p-lo);
-}
 /* DANZIG at the end of a pair: NEWJOB +0 goes on to NEWOPS; positive
  * goes to CHANG2 (CA BANKSET; TS BBANK; CCS EDOP; CCS NEWJOB; TCF
  * CHANG2) and the routine stops there. */
@@ -78,7 +71,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -97,8 +94,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -128,6 +125,3438 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
  return W[4]==(fb&076000u)&&sb_ok(io,fb)&&sane(s,io);
 }
 
+/* Signed index values: A, L and Q are 16-bit registers. */
+static MAYBE_UNUSED long areg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[0]));}
+static MAYBE_UNUSED long lreg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[1]));}
+static MAYBE_UNUSED long qreg(const apollo_overlay_state *s){return agc_to_int(agc_correct(W[2]));}
+/* DTCB (DXCH Z) and DTCF (DXCH FB) executed at `at`. */
+static MAYBE_UNUSED void dtcb(apollo_overlay_state *s,agc_word at){agc_word z=agc_correct(W[0]),bb=agc_correct(W[1]);
+ W[0]=(agc_word)(at+1u);W[1]=agc_extend(W[6]);W[5]=(agc_word)(z&07777u);ai_put(s,6,bb);}
+static MAYBE_UNUSED void dtcf(apollo_overlay_state *s,agc_word at){agc_word fb=agc_correct(W[0]),z=agc_correct(W[1]);
+ W[0]=agc_extend(W[4]);W[1]=(agc_word)(at+1u);W[5]=(agc_word)(z&07777u);ai_put(s,4,fb);}
+/* TC INTPRET: the interpreter entry with the latches the bodies use. */
+static MAYBE_UNUSED void intpret(apollo_overlay_state *s,cm_native_io *io){p66_bias_io l;
+ l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;cmi_intpret(s,&l);
+ io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;}
+static MAYBE_UNUSED agc_word oc16(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
+/* A fixed word read under INDEX (logical e under this bank), from the
+ * tables above: 0 outside them. */
+static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word *k){
+ unsigned p;(void)s;
+ if(e>=06000u)p=3u*1024u+e-06000u;else if(e>=04000u)p=2u*1024u+e-04000u;else p=02u*1024u+e-02000u;
+ (void)p;(void)k;return 0;
+}
+/* Host coverage builds (tools/interp_routine_differential.py --freeze)
+ * count each label a case reaches, to pick C64 cases that take every
+ * branch outcome the host cases take. */
+#ifdef IRC_COVER_ON
+void irc_cover(unsigned n);
+#define IRC_COVER(n) irc_cover(n)
+#else
+#define IRC_COVER(n) ((void)0)
+#endif
+/* Every basic word of the file. */
+static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native_io *io,uint16_t at){
+ long ix=0,e=0;uint16_t p;
+ (void)ix;(void)e;
+ switch(at){
+ case 2411u:goto B4553;
+ case 2412u:goto B4554;
+ case 4497u:goto B10621;
+ case 4501u:goto B10625;
+ case 4504u:goto B10630;
+ case 27652u:goto B66004;
+ case 27672u:goto B66030;
+ case 27674u:goto B66032;
+ case 27696u:goto B66060;
+ case 27698u:goto B66062;
+ case 27699u:goto B66063;
+ case 27704u:goto B66070;
+ case 27706u:goto B66072;
+ case 27713u:goto B66101;
+ case 27718u:goto B66106;
+ case 27724u:goto B66114;
+ case 27726u:goto B66116;
+ case 27728u:goto B66120;
+ case 27754u:goto B66152;
+ case 27755u:goto B66153;
+ case 27763u:goto B66163;
+ case 27767u:goto B66167;
+ case 27768u:goto B66170;
+ case 27796u:goto B66224;
+ case 27833u:goto B66271;
+ case 27835u:goto B66273;
+ case 27837u:goto B66275;
+ case 27850u:goto B66312;
+ case 27852u:goto B66314;
+ case 27860u:goto B66324;
+ case 27865u:goto B66331;
+ case 27925u:goto B66425;
+ case 27934u:goto B66436;
+ case 27936u:goto B66440;
+ case 27945u:goto B66451;
+ case 27947u:goto B66453;
+ case 27950u:goto B66456;
+ case 27972u:goto B66504;
+ case 27979u:goto B66513;
+ case 27983u:goto B66517;
+ case 27985u:goto B66521;
+ case 27989u:goto B66525;
+ case 28007u:goto B66547;
+ case 28028u:goto B66574;
+ case 28034u:goto B66602;
+ case 28053u:goto B66625;
+ case 28057u:goto B66631;
+ case 28058u:goto B66632;
+ case 28061u:goto B66635;
+ case 28062u:goto B66636;
+ case 28069u:goto B66645;
+ case 28188u:goto B67034;
+ case 28191u:goto B67037;
+ case 28210u:goto B67062;
+ case 28212u:goto B67064;
+ case 28215u:goto B67067;
+ case 28222u:goto B67076;
+ case 28225u:goto B67101;
+ case 28228u:goto B67104;
+ case 28230u:goto B67106;
+ case 28249u:goto B67131;
+ case 28295u:goto B67207;
+ case 28343u:goto B67267;
+ case 28355u:goto B67303;
+ case 28357u:goto B67305;
+ case 28367u:goto B67317;
+ case 28372u:goto B67324;
+ case 28377u:goto B67331;
+ case 28381u:goto B67335;
+ case 28397u:goto B67355;
+ case 28400u:goto B67360;
+ case 28407u:goto B67367;
+ case 28410u:goto B67372;
+ case 28412u:goto B67374;
+ case 28415u:goto B67377;
+ case 28441u:goto B67431;
+ case 28446u:goto B67436;
+ case 28448u:goto B67440;
+ case 28450u:goto B67442;
+ case 28453u:goto B67445;
+ case 28464u:goto B67460;
+ case 28467u:goto B67463;
+ case 28481u:goto B67501;
+ case 28532u:goto B67564;
+ case 28534u:goto B67566;
+ case 28548u:goto B67604;
+ case 28551u:goto B67607;
+ case 28553u:goto B67611;
+ case 28560u:goto B67620;
+ case 28562u:goto B67622;
+ case 28564u:goto B67624;
+ case 28566u:goto B67626;
+ case 28568u:goto B67630;
+ case 28572u:goto B67634;
+ case 28585u:goto B67651;
+ case 28594u:goto B67662;
+ case 28596u:goto B67664;
+ case 28642u:goto B67742;
+ case 28647u:goto B67747;
+ case 28651u:goto B67753;
+ case 28654u:goto B67756;
+ case 28655u:goto B67757;
+ case 28663u:goto B67767;
+ case 28667u:goto B67773;
+ default:return EXEC_OUT_OF_SCOPE;
+ }
+B4553:
+ IRC_COVER(0u);
+ /* 02,2553 FINETIME INHINT */
+ io->interrupt_enabled=0;
+ {W[5]=04554;return EXEC_IDLE;}
+B4553c:
+ IRC_COVER(1u);
+ /* 02,2553 FINETIME INHINT */
+ io->interrupt_enabled=0;
+ {W[5]=04554;return EXEC_IDLE;}
+B4554:
+ IRC_COVER(2u);
+ /* 02,2554 EXTEND */
+ goto X4555;
+B4554c: __attribute__((unused));
+ IRC_COVER(3u);
+ /* 02,2554 EXTEND */
+ goto X4555c;
+X4555:
+ IRC_COVER(4u);
+ /* 02,2555 EXTENDED READ LOSCALAR */
+ W[0]=agc_extend(AGC_CHANNEL(4));
+ goto B4556c;
+X4555c:
+ IRC_COVER(5u);
+ goto X4555;
+B4556c:
+ IRC_COVER(6u);
+ /* 02,2556 TS L */
+ (void)ai_ts(s,(unsigned)01);
+ goto B4557c;
+B4557c:
+ IRC_COVER(7u);
+ /* 02,2557 EXTEND */
+ goto X4560c;
+X4560c:
+ IRC_COVER(8u);
+ /* 02,2560 EXTENDED RXOR LOSCALAR */
+ W[0]=agc_extend((agc_word)(oc16(W[0])^AGC_CHANNEL(4)));
+ goto B4561c;
+B4561c:
+ IRC_COVER(9u);
+ /* 02,2561 EXTEND */
+ goto X4562c;
+X4562c:
+ IRC_COVER(10u);
+ /* 02,2562 EXTENDED BZF +4 */
+ if(ai_bzf(s)){
+   goto B4566c;
+ }
+ goto B4563c;
+B4563c:
+ IRC_COVER(11u);
+ /* 02,2563 EXTEND */
+ goto X4564c;
+X4564c:
+ IRC_COVER(12u);
+ /* 02,2564 EXTENDED READ LOSCALAR */
+ W[0]=agc_extend(AGC_CHANNEL(4));
+ goto B4565c;
+B4565c:
+ IRC_COVER(13u);
+ /* 02,2565 TS L */
+ (void)ai_ts(s,(unsigned)01);
+ goto B4566c;
+B4566c:
+ IRC_COVER(14u);
+ /* 02,2566 +4 CS POSMAX */
+ ai_csf(s,037777u); /* POSMAX */
+ goto B4567c;
+B4567c:
+ IRC_COVER(15u);
+ /* 02,2567 AD L */
+ ai_ad(s,01);
+ goto B4570;
+B4570:
+ IRC_COVER(16u);
+ /* 02,2570 EXTEND */
+ goto X4571;
+X4571:
+ IRC_COVER(17u);
+ /* 02,2571 EXTENDED BZF FINETIME   +1 */
+ if(ai_bzf(s)){
+   {W[5]=04554;return EXEC_IDLE;}
+ }
+ goto B4572;
+B4572:
+ IRC_COVER(18u);
+ /* 02,2572 EXTEND */
+ goto X4573;
+X4573:
+ IRC_COVER(19u);
+ /* 02,2573 EXTENDED READ HISCALAR */
+ W[0]=agc_extend(AGC_CHANNEL(3));
+ goto B4574c;
+B4574c:
+ IRC_COVER(20u);
+ /* 02,2574 TC Q */
+ e=(long)(agc_correct(W[2])&077777u);
+ if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B10621:
+ IRC_COVER(21u);
+ /* 04,2621 XCH MPAC */
+ ai_xch(s,0154);
+ goto B10622c;
+B10622c:
+ IRC_COVER(22u);
+ /* 04,2622 TS DSPTEM1 */
+ (void)ai_ts(s,(unsigned)01045);
+ goto B10623c;
+B10623c:
+ IRC_COVER(23u);
+ /* 04,2623 TC BANKCALL */
+ ai_tc(s,002624u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B10625:
+ IRC_COVER(24u);
+ /* 04,2625 CAF VNG0641 */
+ ai_caf(s,001451u); /* VNG0641 */
+ goto B10626c;
+B10626c:
+ IRC_COVER(25u);
+ /* 04,2626 TC BANKCALL */
+ ai_tc(s,002627u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B10630:
+ IRC_COVER(26u);
+ /* 04,2630 TC +2 */
+ ai_tc(s,002631u);
+ goto B10632;
+B10631:
+ IRC_COVER(27u);
+ /* 04,2631 TC +2 */
+ ai_tc(s,002632u);
+ goto B10633;
+B10632:
+ IRC_COVER(28u);
+ /* 04,2632 TC -5 */
+ ai_tc(s,002633u);
+ goto B10625;
+B10633:
+ IRC_COVER(29u);
+ /* 04,2633 TC INTPRET */
+ ai_tc(s,002634u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66004:
+ IRC_COVER(30u);
+ /* 33,2004 IMUTEST CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66005c;
+B66005c:
+ IRC_COVER(31u);
+ /* 33,2005 TS DRIFTT */
+ (void)ai_ts(s,(unsigned)01452);
+ goto B66006c;
+B66006c:
+ IRC_COVER(32u);
+ /* 33,2006 TS GEOCOMP1 */
+ (void)ai_ts(s,(unsigned)01643);
+ goto B66007c;
+B66007c:
+ IRC_COVER(33u);
+ /* 33,2007 CAF TESTTIME */
+ ai_caf(s,001602u); /* TESTTIME */
+ goto B66010c;
+B66010c:
+ IRC_COVER(34u);
+ /* 33,2010 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B66011c;
+B66011c:
+ IRC_COVER(35u);
+ /* 33,2011 TC COAALIGN */
+ ai_tc(s,002012u);
+ goto B66302c;
+B66012:
+ IRC_COVER(36u);
+ /* 33,2012 CAF 1SECX */
+ ai_caf(s,000144u); /* 1SEC */
+ goto B66013c;
+B66013c:
+ IRC_COVER(37u);
+ /* 33,2013 TS 1SECXT1 */
+ (void)ai_ts(s,(unsigned)01644);
+ goto B66014c;
+B66014c:
+ IRC_COVER(38u);
+ /* 33,2014 CA OC14400 */
+ ai_caf(s,014400u); /* OC14400 */
+ goto B66015c;
+B66015c:
+ IRC_COVER(39u);
+ /* 33,2015 TS 1/PIPADT */
+ (void)ai_ts(s,(unsigned)01074);
+ goto B66016c;
+B66016c:
+ IRC_COVER(40u);
+ /* 33,2016 GUESS TC INTPRET */
+ ai_tc(s,002017u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66030:
+ IRC_COVER(41u);
+ /* 33,2030 GEOIMUTT TC BANKCALL */
+ ai_tc(s,002031u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66032:
+ IRC_COVER(42u);
+ /* 33,2032 TC IMUSTLLG */
+ ai_tc(s,002033u);
+ goto B66316;
+B66033:
+ IRC_COVER(43u);
+ /* 33,2033 IMUBACK CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66034c;
+B66034c:
+ IRC_COVER(44u);
+ /* 33,2034 TS NDXCTR */
+ (void)ai_ts(s,(unsigned)01421);
+ goto B66035c;
+B66035c:
+ IRC_COVER(45u);
+ /* 33,2035 TS TORQNDX */
+ (void)ai_ts(s,(unsigned)01450);
+ goto B66036c;
+B66036c:
+ IRC_COVER(46u);
+ /* 33,2036 TS TORQNDX    +1 */
+ (void)ai_ts(s,(unsigned)01451);
+ goto B66037c;
+B66037:
+ IRC_COVER(47u);
+ /* 33,2037 NBPOSPL CA DEC17 */
+ ai_caf(s,000021u); /* ND1 */
+ goto B66040c;
+B66037c:
+ IRC_COVER(48u);
+ goto B66037;
+B66040c:
+ IRC_COVER(49u);
+ /* 33,2040 TS ZERONDX1 */
+ (void)ai_ts(s,(unsigned)01655);
+ goto B66041c;
+B66041c:
+ IRC_COVER(50u);
+ /* 33,2041 CA XNBADR */
+ ai_caf(s,001713u); /* XNBADR */
+ goto B66042c;
+B66042c:
+ IRC_COVER(51u);
+ /* 33,2042 TC ZEROING */
+ ai_tc(s,002043u);
+ goto B66356c;
+B66043:
+ IRC_COVER(52u);
+ /* 33,2043 CA HALF */
+ ai_caf(s,020000u); /* BIT14 */
+ goto B66044c;
+B66044c:
+ IRC_COVER(53u);
+ /* 33,2044 TS XNB */
+ (void)ai_ts(s,(unsigned)01713);
+ goto B66045c;
+B66045c:
+ IRC_COVER(54u);
+ /* 33,2045 TC INTPRET */
+ ai_tc(s,002046u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66060:
+ IRC_COVER(55u);
+ /* 33,2060 TC CHECKMM */
+ ai_tc(s,002061u);
+ W[5]=05364u;return EXEC_OK; /* CHECKMM */
+B66062:
+ IRC_COVER(56u);
+ /* 33,2062 TCF +2 */
+ goto B66064;
+B66063:
+ IRC_COVER(57u);
+ /* 33,2063 TCF SETNBPOS   +1 */
+ goto B67443;
+B66064:
+ IRC_COVER(58u);
+ /* 33,2064 TC INTPRET */
+ ai_tc(s,002065u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66070:
+ IRC_COVER(59u);
+ /* 33,2070 TC BANKCALL */
+ ai_tc(s,002071u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66072:
+ IRC_COVER(60u);
+ /* 33,2072 CAF GLOKFBIT */
+ ai_caf(s,020000u); /* BIT14 */
+ goto B66073c;
+B66073c:
+ IRC_COVER(61u);
+ /* 33,2073 MASK FLAGWRD3 */
+ ai_mask(s,077);
+ goto B66074c;
+B66074c:
+ IRC_COVER(62u);
+ /* 33,2074 EXTEND */
+ goto X66075c;
+X66075c:
+ IRC_COVER(63u);
+ /* 33,2075 EXTENDED BZF +2 */
+ if(ai_bzf(s)){
+   goto B66077c;
+ }
+ goto B66076c;
+B66076c:
+ IRC_COVER(64u);
+ /* 33,2076 INCR NDXCTR */
+ ai_incr(s,01421);
+ goto B66077c;
+B66077c:
+ IRC_COVER(65u);
+ /* 33,2077 TC DOWNFLAG */
+ ai_tc(s,002100u);
+ W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
+B66101:
+ IRC_COVER(66u);
+ /* 33,2101 TC IMUSTLLG */
+ ai_tc(s,002102u);
+ goto B66316;
+B66102:
+ IRC_COVER(67u);
+ /* 33,2102 CCS NDXCTR */
+ switch(ai_ccs(s,01421)){
+  case 0:goto B66103c;
+  case 1:goto B66104c;
+  case 2:goto B66105c;
+  case 3:goto B66106c;
+ }
+ return EXEC_INVALID_ACTION;
+B66103c:
+ IRC_COVER(68u);
+ /* 33,2103 TC PIPACHK */
+ ai_tc(s,002104u);
+ goto B66131c;
+B66104:
+ IRC_COVER(69u);
+ /* 33,2104 TC BANKCALL */
+ ai_tc(s,002105u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66104c:
+ IRC_COVER(70u);
+ goto B66104;
+B66105c:
+ IRC_COVER(71u);
+ /* 33,2105 CADR IMUFINE: data, never executed */
+ return EXEC_INVALID_ACTION;
+B66106:
+ IRC_COVER(72u);
+ /* 33,2106 TC IMUSTLLG */
+ ai_tc(s,002107u);
+ goto B66316;
+B66106c:
+ IRC_COVER(73u);
+ /* 33,2106 TC IMUSTLLG */
+ ai_tc(s,002107u);
+ goto B66316c;
+B66107:
+ IRC_COVER(74u);
+ /* 33,2107 EXTEND */
+ goto X66110;
+X66110:
+ IRC_COVER(75u);
+ /* 33,2110 EXTENDED DCA PERFDLAY */
+ ai_dca(s,01656);
+ goto B66111c;
+B66111c:
+ IRC_COVER(76u);
+ /* 33,2111 TC LONGCALL */
+ ai_tc(s,002112u);
+ W[5]=05342u;return EXEC_OK; /* LONGCALL */
+B66114:
+ IRC_COVER(77u);
+ /* 33,2114 CA ESTICADR */
+ ai_caf(s,066453u); /* ESTICADR */
+ goto B66115c;
+B66115c:
+ IRC_COVER(78u);
+ /* 33,2115 TC JOBSLEEP */
+ ai_tc(s,002116u);
+ W[5]=05175u;return EXEC_OK; /* JOBSLEEP */
+B66116:
+ IRC_COVER(79u);
+ /* 33,2116 GOESTIMS CA ESTICADR */
+ ai_caf(s,066453u); /* ESTICADR */
+ goto B66117c;
+B66117c:
+ IRC_COVER(80u);
+ /* 33,2117 TC JOBWAKE */
+ ai_tc(s,002120u);
+ W[5]=05201u;return EXEC_OK; /* JOBWAKE */
+B66120:
+ IRC_COVER(81u);
+ /* 33,2120 TC TASKOVER */
+ ai_tc(s,002121u);
+ W[5]=05324u;return EXEC_OK; /* TASKOVER */
+B66122:
+ IRC_COVER(82u);
+ /* 33,2122 TORQUE CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66123c;
+B66123c:
+ IRC_COVER(83u);
+ /* 33,2123 TS DSPTEM2 */
+ (void)ai_ts(s,(unsigned)01050);
+ goto B66124c;
+B66124c:
+ IRC_COVER(84u);
+ /* 33,2124 CA DRIFTI */
+ ai_ca(s,01514);
+ goto B66125c;
+B66125c:
+ IRC_COVER(85u);
+ /* 33,2125 TS DSPTEM2    +1 */
+ (void)ai_ts(s,(unsigned)01051);
+ goto B66126c;
+B66126c:
+ IRC_COVER(86u);
+ /* 33,2126 INDEX POSITON */
+ ix=agc_to_int(ai_word(s,01423));
+ /* 33,2127 (indexed) TS SOUTHDR    -1 */
+ e=(long)01430+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66130c;
+B66130c:
+ IRC_COVER(87u);
+ /* 33,2130 TC SHOW */
+ ai_tc(s,002131u);
+ goto B66427c;
+B66131:
+ IRC_COVER(88u);
+ /* 33,2131 PIPACHK INDEX NDXCTR */
+ ix=agc_to_int(ai_word(s,01421));
+ /* 33,2132 (indexed) TC +1 */
+ e=(long)02133+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ ai_tc(s,002133u);
+ W[5]=(agc_word)e;goto dispatch;
+B66131c:
+ IRC_COVER(89u);
+ goto B66131;
+B66133:
+ IRC_COVER(90u);
+ /* 33,2133 TC EARTHR* */
+ ai_tc(s,002134u);
+ goto B66417;
+B66134:
+ IRC_COVER(91u);
+ /* 33,2134 CA DEC57 */
+ ai_caf(s,000023u); /* VD1 */
+ goto B66135c;
+B66135c:
+ IRC_COVER(92u);
+ /* 33,2135 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B66136c;
+B66136c:
+ IRC_COVER(93u);
+ /* 33,2136 CA ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B66137c;
+B66137c:
+ IRC_COVER(94u);
+ /* 33,2137 TS RESULTCT */
+ (void)ai_ts(s,(unsigned)01547);
+ goto B66140c;
+B66140c:
+ IRC_COVER(95u);
+ /* 33,2140 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66141c;
+B66141c:
+ IRC_COVER(96u);
+ /* 33,2141 INDEX PIPINDEX */
+ ix=agc_to_int(ai_word(s,01422));
+ /* 33,2142 (indexed) TS PIPAX */
+ e=(long)037+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66143c;
+B66143c:
+ IRC_COVER(97u);
+ /* 33,2143 TS DATAPL */
+ (void)ai_ts(s,(unsigned)01502);
+ goto B66144c;
+B66144c:
+ IRC_COVER(98u);
+ /* 33,2144 TS DATAPL     +4 */
+ (void)ai_ts(s,(unsigned)01506);
+ goto B66145c;
+B66145c:
+ IRC_COVER(99u);
+ /* 33,2145 TC CHECKG */
+ ai_tc(s,002146u);
+ goto B66321c;
+B66146:
+ IRC_COVER(100u);
+ /* 33,2146 INHINT */
+ io->interrupt_enabled=0;
+ goto B66147;
+B66147:
+ IRC_COVER(101u);
+ /* 33,2147 CAF TWO */
+ ai_caf(s,000002u); /* BIT2 */
+ goto B66150c;
+B66150c:
+ IRC_COVER(102u);
+ /* 33,2150 TC TWIDDLE */
+ ai_tc(s,002151u);
+ W[5]=05235u;return EXEC_OK; /* TWIDDLE */
+B66152:
+ IRC_COVER(103u);
+ /* 33,2152 TC ENDOFJOB */
+ ai_tc(s,002153u);
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
+B66153:
+ IRC_COVER(104u);
+ /* 33,2153 PIPATASK EXTEND */
+ goto X66154;
+X66154:
+ IRC_COVER(105u);
+ /* 33,2154 EXTENDED DIM LENGTHOT */
+ ai_dim(s,01412);
+ goto B66155;
+B66155:
+ IRC_COVER(106u);
+ /* 33,2155 CA LENGTHOT */
+ ai_ca(s,01412);
+ goto B66156c;
+B66156c:
+ IRC_COVER(107u);
+ /* 33,2156 EXTEND */
+ goto X66157c;
+X66157c:
+ IRC_COVER(108u);
+ /* 33,2157 EXTENDED BZMF STARTPIP */
+ if(ai_bzmf(s)){
+   goto B66163c;
+ }
+ goto B66160c;
+B66160c:
+ IRC_COVER(109u);
+ /* 33,2160 CAF BIT10 */
+ ai_caf(s,001000u); /* BIT10 */
+ goto B66161c;
+B66161c:
+ IRC_COVER(110u);
+ /* 33,2161 TC TWIDDLE */
+ ai_tc(s,002162u);
+ W[5]=05235u;return EXEC_OK; /* TWIDDLE */
+B66163:
+ IRC_COVER(111u);
+ /* 33,2163 STARTPIP CAF PRIO20 */
+ ai_caf(s,020000u); /* BIT14 */
+ goto B66164c;
+B66163c:
+ IRC_COVER(112u);
+ goto B66163;
+B66164c:
+ IRC_COVER(113u);
+ /* 33,2164 TC FINDVAC */
+ ai_tc(s,002165u);
+ W[5]=05147u;return EXEC_OK; /* FINDVAC */
+B66167:
+ IRC_COVER(114u);
+ /* 33,2167 TC TASKOVER */
+ ai_tc(s,002170u);
+ W[5]=05324u;return EXEC_OK; /* TASKOVER */
+B66170:
+ IRC_COVER(115u);
+ /* 33,2170 PIPJOBB INDEX NDXCTR */
+ ix=agc_to_int(ai_word(s,01421));
+ /* 33,2171 (indexed) TC +1 */
+ e=(long)02172+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ ai_tc(s,002172u);
+ W[5]=(agc_word)e;goto dispatch;
+B66172:
+ IRC_COVER(116u);
+ /* 33,2172 TC EARTHR* */
+ ai_tc(s,002173u);
+ goto B66417;
+B66173:
+ IRC_COVER(117u);
+ /* 33,2173 CA LENGTHOT */
+ ai_ca(s,01412);
+ goto B66174c;
+B66174c:
+ IRC_COVER(118u);
+ /* 33,2174 EXTEND */
+ goto X66175c;
+X66175c:
+ IRC_COVER(119u);
+ /* 33,2175 EXTENDED BZMF +2 */
+ if(ai_bzmf(s)){
+   goto B66177c;
+ }
+ goto B66176c;
+B66176c:
+ IRC_COVER(120u);
+ /* 33,2176 TC ENDOFJOB */
+ ai_tc(s,002177u);
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
+B66177c:
+ IRC_COVER(121u);
+ /* 33,2177 CA FIVE */
+ ai_caf(s,000005u); /* FIVE */
+ goto B66200c;
+B66200c:
+ IRC_COVER(122u);
+ /* 33,2200 TS RESULTCT */
+ (void)ai_ts(s,(unsigned)01547);
+ goto B66201c;
+B66201c:
+ IRC_COVER(123u);
+ /* 33,2201 TC CHECKG */
+ ai_tc(s,002202u);
+ goto B66321c;
+B66202:
+ IRC_COVER(124u);
+ /* 33,2202 EXTEND */
+ goto X66203;
+X66203:
+ IRC_COVER(125u);
+ /* 33,2203 EXTENDED DCS DATAPL */
+ ai_dcs(s,01502);
+ goto B66204c;
+B66204c:
+ IRC_COVER(126u);
+ /* 33,2204 DAS DATAPL     +4 */
+ ai_das(s,01506);
+ goto B66205;
+B66205:
+ IRC_COVER(127u);
+ /* 33,2205 TC INTPRET */
+ ai_tc(s,002206u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66224:
+ IRC_COVER(128u);
+ /* 33,2224 CCS NDXCTR */
+ switch(ai_ccs(s,01421)){
+  case 0:goto B66225c;
+  case 1:goto B66226c;
+  case 2:goto B66227c;
+  case 3:goto B66230c;
+ }
+ return EXEC_INVALID_ACTION;
+B66225c:
+ IRC_COVER(129u);
+ /* 33,2225 TC COAALIGN */
+ ai_tc(s,002226u);
+ goto B66302c;
+B66226:
+ IRC_COVER(130u);
+ /* 33,2226 TC SHOW */
+ ai_tc(s,002227u);
+ goto B66427;
+B66226c:
+ IRC_COVER(131u);
+ /* 33,2226 TC SHOW */
+ ai_tc(s,002227u);
+ goto B66427c;
+B66227:
+ IRC_COVER(132u);
+ /* 33,2227 VERTDRFT CA 3990DEC */
+ ai_caf(s,007623u); /* OMEG/MS */
+ goto B66230c;
+B66227c:
+ IRC_COVER(133u);
+ goto B66227;
+B66230c:
+ IRC_COVER(134u);
+ /* 33,2230 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B66231c;
+B66231c:
+ IRC_COVER(135u);
+ /* 33,2231 INDEX POSITON */
+ ix=agc_to_int(ai_word(s,01423));
+ /* 33,2232 (indexed) CS SOUTHDR    -2 */
+ e=(long)01427+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_csf(s,k);}
+ else ai_cs(s,(unsigned)e);
+ goto B66233c;
+B66233c:
+ IRC_COVER(136u);
+ /* 33,2233 TS DRIFTT */
+ (void)ai_ts(s,(unsigned)01452);
+ goto B66234c;
+B66234c:
+ IRC_COVER(137u);
+ /* 33,2234 CA XSM        +4 */
+ ai_ca(s,01675);
+ goto B66235c;
+B66235c:
+ IRC_COVER(138u);
+ /* 33,2235 EXTEND */
+ goto X66236c;
+X66236c:
+ IRC_COVER(139u);
+ /* 33,2236 EXTENDED BZF PON2 */
+ if(ai_bzf(s)){
+   goto B66244c;
+ }
+ goto B66237c;
+B66237c:
+ IRC_COVER(140u);
+ /* 33,2237 PON4 CS BIT5 */
+ ai_csf(s,000020u); /* BIT5 */
+ goto B66240c;
+B66240c:
+ IRC_COVER(141u);
+ /* 33,2240 ADS ERCOMP1    +2 */
+ ai_ads(s,01651);
+ goto B66241;
+B66241:
+ IRC_COVER(142u);
+ /* 33,2241 CA BIT5 */
+ ai_caf(s,000020u); /* BIT5 */
+ goto B66242c;
+B66242c:
+ IRC_COVER(143u);
+ /* 33,2242 ADS ERCOMP1 */
+ ai_ads(s,01647);
+ goto B66243;
+B66243:
+ IRC_COVER(144u);
+ /* 33,2243 TCF PONG */
+ goto B66250;
+B66244c:
+ IRC_COVER(145u);
+ /* 33,2244 PON2 CS BIT5 */
+ ai_csf(s,000020u); /* BIT5 */
+ goto B66245c;
+B66245c:
+ IRC_COVER(146u);
+ /* 33,2245 ADS ERCOMP1    +2 */
+ ai_ads(s,01651);
+ goto B66246;
+B66246:
+ IRC_COVER(147u);
+ /* 33,2246 CA BIT5 */
+ ai_caf(s,000020u); /* BIT5 */
+ goto B66247c;
+B66247c:
+ IRC_COVER(148u);
+ /* 33,2247 ADS ERCOMP1    +4 */
+ ai_ads(s,01653);
+ goto B66250;
+B66250:
+ IRC_COVER(149u);
+ /* 33,2250 PONG TC EARTHR* */
+ ai_tc(s,002251u);
+ goto B66417;
+B66251:
+ IRC_COVER(150u);
+ /* 33,2251 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66252c;
+B66252c:
+ IRC_COVER(151u);
+ /* 33,2252 TS ERVECTOR */
+ (void)ai_ts(s,(unsigned)01404);
+ goto B66253c;
+B66253c:
+ IRC_COVER(152u);
+ /* 33,2253 TS ERVECTOR   +1 */
+ (void)ai_ts(s,(unsigned)01405);
+ goto B66254c;
+B66254c:
+ IRC_COVER(153u);
+ /* 33,2254 GUESS1 CAF POSMAX */
+ ai_caf(s,037777u); /* POSMAX */
+ goto B66255c;
+B66255c:
+ IRC_COVER(154u);
+ /* 33,2255 TS TORQNDX */
+ (void)ai_ts(s,(unsigned)01450);
+ goto B66256c;
+B66256c:
+ IRC_COVER(155u);
+ /* 33,2256 TS TORQNDX    +1 */
+ (void)ai_ts(s,(unsigned)01451);
+ goto B66257c;
+B66257c:
+ IRC_COVER(156u);
+ /* 33,2257 CA CDUX */
+ ai_ca(s,032);
+ goto B66260c;
+B66260c:
+ IRC_COVER(157u);
+ /* 33,2260 TS LOSVEC */
+ (void)ai_ts(s,(unsigned)01413);
+ goto B66261c;
+B66261c:
+ IRC_COVER(158u);
+ /* 33,2261 TC ESTIMS */
+ ai_tc(s,002262u);
+ goto B66453c;
+B66262:
+ IRC_COVER(159u);
+ /* 33,2262 VALMIS CA DRIFTO */
+ ai_ca(s,01512);
+ goto B66263c;
+B66262c:
+ IRC_COVER(160u);
+ goto B66262;
+B66263c:
+ IRC_COVER(161u);
+ /* 33,2263 TS DSPTEM2    +1 */
+ (void)ai_ts(s,(unsigned)01051);
+ goto B66264c;
+B66264c:
+ IRC_COVER(162u);
+ /* 33,2264 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66265c;
+B66265c:
+ IRC_COVER(163u);
+ /* 33,2265 TS DSPTEM2 */
+ (void)ai_ts(s,(unsigned)01050);
+ goto B66266c;
+B66266c:
+ IRC_COVER(164u);
+ /* 33,2266 TC SHOW */
+ ai_tc(s,002267u);
+ goto B66427c;
+B66267:
+ IRC_COVER(165u);
+ /* 33,2267 ENDTEST1 TC DOWNFLAG */
+ ai_tc(s,002270u);
+ W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
+B66271:
+ IRC_COVER(166u);
+ /* 33,2271 CS ZERO */
+ ai_csf(s,000000u); /* ZERO */
+ goto B66272c;
+B66272c:
+ IRC_COVER(167u);
+ /* 33,2272 TC NEWMODEX   +3 */
+ ai_tc(s,002273u);
+ W[5]=05357u;return EXEC_OK; /* NEWMODEA */
+B66273:
+ IRC_COVER(168u);
+ /* 33,2273 TC BANKCALL */
+ ai_tc(s,002274u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66275:
+ IRC_COVER(169u);
+ /* 33,2275 TC ENDEXT */
+ ai_tc(s,002276u);
+ W[5]=05534u;return EXEC_OK; /* ENDMARK */
+B66302c:
+ IRC_COVER(170u);
+ /* 33,2302 COAALIGN EXTEND */
+ goto X66303c;
+X66303c:
+ IRC_COVER(171u);
+ /* 33,2303 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66304c;
+B66304c:
+ IRC_COVER(172u);
+ /* 33,2304 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66305c;
+B66305c:
+ IRC_COVER(173u);
+ /* 33,2305 TS THETAD */
+ (void)ai_ts(s,(unsigned)01155);
+ goto B66306c;
+B66306c:
+ IRC_COVER(174u);
+ /* 33,2306 TS THETAD     +1 */
+ (void)ai_ts(s,(unsigned)01156);
+ goto B66307c;
+B66307c:
+ IRC_COVER(175u);
+ /* 33,2307 TS THETAD     +2 */
+ (void)ai_ts(s,(unsigned)01157);
+ goto B66310c;
+B66310c:
+ IRC_COVER(176u);
+ /* 33,2310 TC BANKCALL */
+ ai_tc(s,002311u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66312:
+ IRC_COVER(177u);
+ /* 33,2312 TC BANKCALL */
+ ai_tc(s,002313u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66312c:
+ IRC_COVER(178u);
+ goto B66312;
+B66314:
+ IRC_COVER(179u);
+ /* 33,2314 TC SOMERR2 */
+ ai_tc(s,002315u);
+ goto B67102;
+B66315:
+ IRC_COVER(180u);
+ /* 33,2315 TC QPLACE */
+ e=(long)(ai_word(s,01425)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01426u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66316:
+ IRC_COVER(181u);
+ /* 33,2316 IMUSTLLG EXTEND */
+ goto X66317;
+B66316c:
+ IRC_COVER(182u);
+ /* 33,2316 IMUSTLLG EXTEND */
+ goto X66317c;
+X66317:
+ IRC_COVER(183u);
+ /* 33,2317 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66320;
+X66317c:
+ IRC_COVER(184u);
+ /* 33,2317 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66320c;
+B66320:
+ IRC_COVER(185u);
+ /* 33,2320 TC COAALIGN   +10 */
+ ai_tc(s,002321u);
+ goto B66312;
+B66320c:
+ IRC_COVER(186u);
+ /* 33,2320 TC COAALIGN   +10 */
+ ai_tc(s,002321u);
+ goto B66312c;
+B66321:
+ IRC_COVER(187u);
+ /* 33,2321 CHECKG EXTEND */
+ goto X66322;
+B66321c:
+ IRC_COVER(188u);
+ /* 33,2321 CHECKG EXTEND */
+ goto X66322c;
+X66322:
+ IRC_COVER(189u);
+ /* 33,2322 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66323;
+X66322c:
+ IRC_COVER(190u);
+ /* 33,2322 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66323c;
+B66323:
+ IRC_COVER(191u);
+ /* 33,2323 TC +6 */
+ ai_tc(s,002324u);
+ goto B66331;
+B66323c:
+ IRC_COVER(192u);
+ /* 33,2323 TC +6 */
+ ai_tc(s,002324u);
+ goto B66331c;
+B66324:
+ IRC_COVER(193u);
+ /* 33,2324 CHECKG1 RELINT */
+ io->interrupt_enabled=1;
+ goto B66325;
+B66325:
+ IRC_COVER(194u);
+ /* 33,2325 CA NEWJOB */
+ ai_ca(s,067);
+ goto B66326c;
+B66326c:
+ IRC_COVER(195u);
+ /* 33,2326 EXTEND */
+ goto X66327c;
+X66327c:
+ IRC_COVER(196u);
+ /* 33,2327 EXTENDED BZMF +6 */
+ if(ai_bzmf(s)){
+   goto B66335c;
+ }
+ goto B66330c;
+B66330c:
+ IRC_COVER(197u);
+ /* 33,2330 TC CHANG1 */
+ ai_tc(s,002331u);
+ W[5]=05164u;return EXEC_OK; /* CHANG1 */
+B66331:
+ IRC_COVER(198u);
+ /* 33,2331 INHINT */
+ io->interrupt_enabled=0;
+ goto B66332;
+B66331c:
+ IRC_COVER(199u);
+ /* 33,2331 INHINT */
+ io->interrupt_enabled=0;
+ goto B66332c;
+B66332:
+ IRC_COVER(200u);
+ /* 33,2332 INDEX PIPINDEX */
+ ix=agc_to_int(ai_word(s,01422));
+ /* 33,2333 (indexed) CS PIPAX */
+ e=(long)037+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_csf(s,k);}
+ else ai_cs(s,(unsigned)e);
+ goto B66334c;
+B66332c:
+ IRC_COVER(201u);
+ goto B66332;
+B66334c:
+ IRC_COVER(202u);
+ /* 33,2334 TS ZERONDX */
+ (void)ai_ts(s,(unsigned)01655);
+ goto B66335c;
+B66335c:
+ IRC_COVER(203u);
+ /* 33,2335 INHINT */
+ io->interrupt_enabled=0;
+ goto B66336c;
+B66336c:
+ IRC_COVER(204u);
+ /* 33,2336 INDEX PIPINDEX */
+ ix=agc_to_int(ai_word(s,01422));
+ /* 33,2337 (indexed) CA PIPAX */
+ e=(long)037+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
+ else ai_ca(s,(unsigned)e);
+ goto B66340c;
+B66340c:
+ IRC_COVER(205u);
+ /* 33,2340 AD ZERONDX */
+ ai_ad(s,01655);
+ goto B66341;
+B66341:
+ IRC_COVER(206u);
+ /* 33,2341 EXTEND */
+ goto X66342;
+X66342:
+ IRC_COVER(207u);
+ /* 33,2342 EXTENDED BZF CHECKG1 */
+ if(ai_bzf(s)){
+   {W[5]=02324;return EXEC_IDLE;}
+ }
+ goto B66343;
+B66343:
+ IRC_COVER(208u);
+ /* 33,2343 INDEX PIPINDEX */
+ ix=agc_to_int(ai_word(s,01422));
+ /* 33,2344 (indexed) CA PIPAX */
+ e=(long)037+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
+ else ai_ca(s,(unsigned)e);
+ goto B66345c;
+B66345c:
+ IRC_COVER(209u);
+ /* 33,2345 INDEX RESULTCT */
+ ix=agc_to_int(ai_word(s,01547));
+ /* 33,2346 (indexed) TS DATAPL */
+ e=(long)01502+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66347c;
+B66347c:
+ IRC_COVER(210u);
+ /* 33,2347 TC FINETIME */
+ ai_tc(s,002350u);
+ goto B4553c;
+B66350:
+ IRC_COVER(211u);
+ /* 33,2350 INDEX RESULTCT */
+ ix=agc_to_int(ai_word(s,01547));
+ /* 33,2351 (indexed) TS DATAPL     +1 */
+ e=(long)01503+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ if(ai_ts(s,(unsigned)(unsigned)e))goto B66353c;
+ goto B66352c;
+B66352c:
+ IRC_COVER(212u);
+ /* 33,2352 INDEX RESULTCT */
+ ix=agc_to_int(ai_word(s,01547));
+ /* 33,2353 (indexed) LXCH DATAPL     +2 */
+ e=(long)01504+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e<010)return EXEC_INVALID_ACTION;
+ ai_lxch(s,(unsigned)e);
+ goto B66354c;
+B66353c:
+ IRC_COVER(213u);
+ /* 33,2353 LXCH DATAPL     +2 */
+ ai_lxch(s,01504);
+ goto B66354c;
+B66354c:
+ IRC_COVER(214u);
+ /* 33,2354 RELINT */
+ io->interrupt_enabled=1;
+ goto B66355c;
+B66355c:
+ IRC_COVER(215u);
+ /* 33,2355 ENDCHKG TC QPLACE */
+ e=(long)(ai_word(s,01425)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01426u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66356c:
+ IRC_COVER(216u);
+ /* 33,2356 ZEROING TS L */
+ (void)ai_ts(s,(unsigned)01);
+ goto B66357c;
+B66357c:
+ IRC_COVER(217u);
+ /* 33,2357 TCF +2 */
+ goto B66361c;
+B66360c:
+ IRC_COVER(218u);
+ /* 33,2360 ZEROING1 TS ZERONDX1 */
+ (void)ai_ts(s,(unsigned)01655);
+ goto B66361c;
+B66361c:
+ IRC_COVER(219u);
+ /* 33,2361 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66362c;
+B66362c:
+ IRC_COVER(220u);
+ /* 33,2362 INDEX L */
+ ix=lreg(s);
+ /* 33,2363 (indexed) TS 0 */
+ e=(long)00+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66364c;
+B66364c:
+ IRC_COVER(221u);
+ /* 33,2364 INCR L */
+ ai_incr(s,01);
+ goto B66365c;
+B66365c:
+ IRC_COVER(222u);
+ /* 33,2365 CCS ZERONDX1 */
+ switch(ai_ccs(s,01655)){
+  case 0:goto B66366c;
+  case 1:goto B66367c;
+  case 2:goto B66370c;
+  case 3:goto B66371c;
+ }
+ return EXEC_INVALID_ACTION;
+B66366c:
+ IRC_COVER(223u);
+ /* 33,2366 TCF ZEROING1 */
+ goto B66360c;
+B66367c:
+ IRC_COVER(224u);
+ /* 33,2367 TC Q */
+ e=(long)(agc_correct(W[2])&077777u);
+ if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66370c:
+ IRC_COVER(225u);
+ /* 33,2370 EARTHR ITA RTB: data, never executed */
+ return EXEC_INVALID_ACTION;
+B66371c:
+ IRC_COVER(226u);
+ /* 33,2371 S2: data, never executed */
+ return EXEC_INVALID_ACTION;
+B66417:
+ IRC_COVER(227u);
+ /* 33,2417 EARTHR* EXTEND */
+ goto X66420;
+B66417c:
+ IRC_COVER(228u);
+ /* 33,2417 EARTHR* EXTEND */
+ goto X66420c;
+X66420:
+ IRC_COVER(229u);
+ /* 33,2420 EXTENDED QXCH QPLACES */
+ ai_qxch(s,01426);
+ goto B66421;
+X66420c:
+ IRC_COVER(230u);
+ /* 33,2420 EXTENDED QXCH QPLACES */
+ ai_qxch(s,01426);
+ goto B66421c;
+B66421:
+ IRC_COVER(231u);
+ /* 33,2421 TC INTPRET */
+ ai_tc(s,002422u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66421c:
+ IRC_COVER(232u);
+ goto B66421;
+B66425:
+ IRC_COVER(233u);
+ /* 33,2425 TC IMUSTLLG */
+ ai_tc(s,002426u);
+ goto B66316;
+B66426:
+ IRC_COVER(234u);
+ /* 33,2426 TC QPLACES */
+ e=(long)(ai_word(s,01426)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01427u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66427:
+ IRC_COVER(235u);
+ /* 33,2427 SHOW EXTEND */
+ goto X66430;
+B66427c:
+ IRC_COVER(236u);
+ /* 33,2427 SHOW EXTEND */
+ goto X66430c;
+X66430:
+ IRC_COVER(237u);
+ /* 33,2430 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66431;
+X66430c:
+ IRC_COVER(238u);
+ /* 33,2430 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B66431c;
+B66431:
+ IRC_COVER(239u);
+ /* 33,2431 SHOW1 CA POSITON */
+ ai_ca(s,01423);
+ goto B66432c;
+B66431c:
+ IRC_COVER(240u);
+ goto B66431;
+B66432c:
+ IRC_COVER(241u);
+ /* 33,2432 TS DSPTEM2    +2 */
+ (void)ai_ts(s,(unsigned)01052);
+ goto B66433c;
+B66433c:
+ IRC_COVER(242u);
+ /* 33,2433 CA VB06N98 */
+ ai_caf(s,001542u); /* VB06N98 */
+ goto B66434c;
+B66434c:
+ IRC_COVER(243u);
+ /* 33,2434 TC BANKCALL */
+ ai_tc(s,002435u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66436:
+ IRC_COVER(244u);
+ /* 33,2436 TC ENDTEST1 */
+ ai_tc(s,002437u);
+ goto B66267;
+B66437:
+ IRC_COVER(245u);
+ /* 33,2437 TC QPLACE */
+ e=(long)(ai_word(s,01425)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01426u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66440:
+ IRC_COVER(246u);
+ /* 33,2440 TCF SHOW1 */
+ goto B66431;
+B66451:
+ IRC_COVER(247u);
+ /* 33,2451 P11OUT TC BANKCALL */
+ ai_tc(s,002452u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66453:
+ IRC_COVER(248u);
+ /* 33,2453 ESTIMS TC 2PHSCHNG */
+ ai_tc(s,002454u);
+ W[5]=05372u;return EXEC_OK; /* 2PHSCHNG */
+B66453c:
+ IRC_COVER(249u);
+ goto B66453;
+B66456:
+ IRC_COVER(250u);
+ /* 33,2456 RSTGTS1 INHINT */
+ io->interrupt_enabled=0;
+ goto B66457;
+B66457:
+ IRC_COVER(251u);
+ /* 33,2457 CA TIME1 */
+ ai_ca(s,025);
+ goto B66460c;
+B66460c:
+ IRC_COVER(252u);
+ /* 33,2460 TS GTSWTLT1 */
+ (void)ai_ts(s,(unsigned)01645);
+ goto B66461c;
+B66461c:
+ IRC_COVER(253u);
+ /* 33,2461 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66462c;
+B66462c:
+ IRC_COVER(254u);
+ /* 33,2462 TS PIPAX */
+ (void)ai_ts(s,(unsigned)037);
+ goto B66463c;
+B66463c:
+ IRC_COVER(255u);
+ /* 33,2463 TS PIPAY */
+ (void)ai_ts(s,(unsigned)040);
+ goto B66464c;
+B66464c:
+ IRC_COVER(256u);
+ /* 33,2464 TS PIPAZ */
+ (void)ai_ts(s,(unsigned)041);
+ goto B66465c;
+B66465c:
+ IRC_COVER(257u);
+ /* 33,2465 RELINT */
+ io->interrupt_enabled=1;
+ goto B66466c;
+B66466c:
+ IRC_COVER(258u);
+ /* 33,2466 CA 77DECML */
+ ai_caf(s,000115u); /* 77DECML */
+ goto B66467c;
+B66467c:
+ IRC_COVER(259u);
+ /* 33,2467 TS ZERONDX1 */
+ (void)ai_ts(s,(unsigned)01655);
+ goto B66470c;
+B66470c:
+ IRC_COVER(260u);
+ /* 33,2470 CA ALXXXZ */
+ ai_caf(s,001453u); /* ALXXXZ */
+ goto B66471c;
+B66471c:
+ IRC_COVER(261u);
+ /* 33,2471 TC ZEROING */
+ ai_tc(s,002472u);
+ goto B66356c;
+B66472:
+ IRC_COVER(262u);
+ /* 33,2472 TC INTPRET */
+ ai_tc(s,002473u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66504:
+ IRC_COVER(263u);
+ /* 33,2504 CCS GEOCOMP1 */
+ switch(ai_ccs(s,01643)){
+  case 0:goto B66505c;
+  case 1:goto B66506c;
+  case 2:goto B66507c;
+  case 3:goto B66510c;
+ }
+ return EXEC_INVALID_ACTION;
+B66505c:
+ IRC_COVER(264u);
+ /* 33,2505 TC +2 */
+ ai_tc(s,002506u);
+ goto B66507c;
+B66506:
+ IRC_COVER(265u);
+ /* 33,2506 TC SLEEPIE    +1 */
+ ai_tc(s,002507u);
+ goto B66523;
+B66506c:
+ IRC_COVER(266u);
+ /* 33,2506 TC SLEEPIE    +1 */
+ ai_tc(s,002507u);
+ goto B66523c;
+B66507:
+ IRC_COVER(267u);
+ /* 33,2507 TC INTPRET */
+ ai_tc(s,002510u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66507c:
+ IRC_COVER(268u);
+ goto B66507;
+B66510c:
+ IRC_COVER(269u);
+ /* 33,2510 CALL: data, never executed */
+ return EXEC_INVALID_ACTION;
+B66513:
+ IRC_COVER(270u);
+ /* 33,2513 CA LENGTHOT */
+ ai_ca(s,01412);
+ goto B66514c;
+B66514c:
+ IRC_COVER(271u);
+ /* 33,2514 TS ERECTIME */
+ (void)ai_ts(s,(unsigned)01646);
+ goto B66515c;
+B66515c:
+ IRC_COVER(272u);
+ /* 33,2515 TC NEWMODEX */
+ ai_tc(s,002516u);
+ W[5]=05354u;return EXEC_OK; /* NEWMODEX */
+B66517:
+ IRC_COVER(273u);
+ /* 33,2517 TC BANKCALL */
+ ai_tc(s,002520u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66521:
+ IRC_COVER(274u);
+ /* 33,2521 TC ANNNNNN */
+ ai_tc(s,002522u);
+ goto B67403;
+B66522:
+ IRC_COVER(275u);
+ /* 33,2522 SLEEPIE TS LENGTHOT */
+ if(ai_ts(s,(unsigned)01412))goto B66524c;
+ goto B66523c;
+B66522c:
+ IRC_COVER(276u);
+ /* 33,2522 SLEEPIE TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B66523c;
+B66523:
+ IRC_COVER(277u);
+ /* 33,2523 TC PHASCHNG */
+ ai_tc(s,002524u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B66523c:
+ IRC_COVER(278u);
+ goto B66523;
+B66524c:
+ IRC_COVER(279u);
+ /* 33,2524 OCT 00135: data, never executed */
+ return EXEC_INVALID_ACTION;
+B66525:
+ IRC_COVER(280u);
+ /* 33,2525 CCS TORQNDX */
+ switch(ai_ccs(s,01450)){
+  case 0:goto B66526c;
+  case 1:goto B66527c;
+  case 2:goto B66530c;
+  case 3:goto B66531c;
+ }
+ return EXEC_INVALID_ACTION;
+B66526c:
+ IRC_COVER(281u);
+ /* 33,2526 TC EARTHR* */
+ ai_tc(s,002527u);
+ goto B66417c;
+B66527:
+ IRC_COVER(282u);
+ /* 33,2527 WTLISTNT TC CHKCOMED */
+ ai_tc(s,002530u);
+ goto B67406;
+B66527c:
+ IRC_COVER(283u);
+ /* 33,2527 WTLISTNT TC CHKCOMED */
+ ai_tc(s,002530u);
+ goto B67406c;
+B66530:
+ IRC_COVER(284u);
+ /* 33,2530 TC SETGWLST */
+ ai_tc(s,002531u);
+ goto B66532;
+B66530c:
+ IRC_COVER(285u);
+ /* 33,2530 TC SETGWLST */
+ ai_tc(s,002531u);
+ goto B66532c;
+B66531:
+ IRC_COVER(286u);
+ /* 33,2531 TC ENDOFJOB */
+ ai_tc(s,002532u);
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
+B66531c:
+ IRC_COVER(287u);
+ goto B66531;
+B66532:
+ IRC_COVER(288u);
+ /* 33,2532 SETGWLST EXTEND */
+ goto X66533;
+B66532c:
+ IRC_COVER(289u);
+ /* 33,2532 SETGWLST EXTEND */
+ goto X66533c;
+X66533:
+ IRC_COVER(290u);
+ /* 33,2533 EXTENDED QXCH MPAC */
+ ai_qxch(s,0154);
+ goto B66534;
+X66533c:
+ IRC_COVER(291u);
+ /* 33,2533 EXTENDED QXCH MPAC */
+ ai_qxch(s,0154);
+ goto B66534c;
+B66534:
+ IRC_COVER(292u);
+ /* 33,2534 INHINT */
+ io->interrupt_enabled=0;
+ goto B66535;
+B66534c:
+ IRC_COVER(293u);
+ /* 33,2534 INHINT */
+ io->interrupt_enabled=0;
+ goto B66535c;
+B66535:
+ IRC_COVER(294u);
+ /* 33,2535 CS TIME1 */
+ ai_cs(s,025);
+ goto B66536c;
+B66535c:
+ IRC_COVER(295u);
+ goto B66535;
+B66536c:
+ IRC_COVER(296u);
+ /* 33,2536 AD GTSWTLT1 */
+ ai_ad(s,01645);
+ goto B66537;
+B66537:
+ IRC_COVER(297u);
+ /* 33,2537 EXTEND */
+ goto X66540;
+X66540:
+ IRC_COVER(298u);
+ /* 33,2540 EXTENDED BZMF +2 */
+ if(ai_bzmf(s)){
+   goto B66542;
+ }
+ goto B66541;
+B66541:
+ IRC_COVER(299u);
+ /* 33,2541 AD NEGMAX */
+ ai_adf(s,040000u); /* BIT15 */
+ goto B66542;
+B66542:
+ IRC_COVER(300u);
+ /* 33,2542 AD 1SECXT1 */
+ ai_ad(s,01644);
+ goto B66543;
+B66543:
+ IRC_COVER(301u);
+ /* 33,2543 EXTEND */
+ goto X66544;
+X66544:
+ IRC_COVER(302u);
+ /* 33,2544 EXTENDED BZMF RIGHTGTS */
+ if(ai_bzmf(s)){
+   goto B66550;
+ }
+ goto B66545;
+B66545:
+ IRC_COVER(303u);
+ /* 33,2545 WTGTSMPL TC TWIDDLE */
+ ai_tc(s,002546u);
+ W[5]=05235u;return EXEC_OK; /* TWIDDLE */
+B66545c:
+ IRC_COVER(304u);
+ goto B66545;
+B66547:
+ IRC_COVER(305u);
+ /* 33,2547 TC MPAC */
+ e=(long)(W[0154]&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,0155u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66550:
+ IRC_COVER(306u);
+ /* 33,2550 RIGHTGTS CAF FOUR */
+ ai_caf(s,000004u); /* BIT3 */
+ goto B66551c;
+B66551c:
+ IRC_COVER(307u);
+ /* 33,2551 TC WTGTSMPL */
+ ai_tc(s,002552u);
+ goto B66545c;
+B66552:
+ IRC_COVER(308u);
+ /* 33,2552 STOREDTA CAF 25DECML */
+ ai_caf(s,000031u); /* OCT31 */
+ goto B66553c;
+B66553c:
+ IRC_COVER(309u);
+ /* 33,2553 TS MPAC */
+ (void)ai_ts(s,(unsigned)0154);
+ goto B66554c;
+B66554c:
+ IRC_COVER(310u);
+ /* 33,2554 INDEX MPAC */
+ ix=agc_to_int(ai_word(s,0154));
+ /* 33,2555 (indexed) CAE THETAX1 */
+ e=(long)01460+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
+ else ai_ca(s,(unsigned)e);
+ goto B66556c;
+B66556c:
+ IRC_COVER(311u);
+ /* 33,2556 INDEX MPAC */
+ ix=agc_to_int(ai_word(s,0154));
+ /* 33,2557 (indexed) TS RESTARPT */
+ e=(long)01577+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66560c;
+B66560c:
+ IRC_COVER(312u);
+ /* 33,2560 CCS MPAC */
+ switch(ai_ccs(s,0154)){
+  case 0:goto B66561c;
+  case 1:goto B66562c;
+  case 2:goto B66563c;
+  case 3:goto B66564c;
+ }
+ return EXEC_INVALID_ACTION;
+B66561c:
+ IRC_COVER(313u);
+ /* 33,2561 TCF STOREDTA   +1 */
+ goto B66553c;
+B66562c:
+ IRC_COVER(314u);
+ /* 33,2562 TC Q */
+ e=(long)(agc_correct(W[2])&077777u);
+ if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66563:
+ IRC_COVER(315u);
+ /* 33,2563 LOADSTDT CAF 25DECML */
+ ai_caf(s,000031u); /* OCT31 */
+ goto B66564c;
+B66563c:
+ IRC_COVER(316u);
+ goto B66563;
+B66564c:
+ IRC_COVER(317u);
+ /* 33,2564 TS MPAC */
+ (void)ai_ts(s,(unsigned)0154);
+ goto B66565c;
+B66565c:
+ IRC_COVER(318u);
+ /* 33,2565 INDEX MPAC */
+ ix=agc_to_int(ai_word(s,0154));
+ /* 33,2566 (indexed) CA RESTARPT */
+ e=(long)01577+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
+ else ai_ca(s,(unsigned)e);
+ goto B66567c;
+B66567c:
+ IRC_COVER(319u);
+ /* 33,2567 INDEX MPAC */
+ ix=agc_to_int(ai_word(s,0154));
+ /* 33,2570 (indexed) TS THETAX1 */
+ e=(long)01460+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B66571c;
+B66571c:
+ IRC_COVER(320u);
+ /* 33,2571 CCS MPAC */
+ switch(ai_ccs(s,0154)){
+  case 0:goto B66572c;
+  case 1:goto B66573c;
+  case 2:goto B66574c;
+  case 3:goto B66575c;
+ }
+ return EXEC_INVALID_ACTION;
+B66572c:
+ IRC_COVER(321u);
+ /* 33,2572 TCF LOADSTDT   +1 */
+ goto B66564c;
+B66573c:
+ IRC_COVER(322u);
+ /* 33,2573 TC Q */
+ e=(long)(agc_correct(W[2])&077777u);
+ if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B66574:
+ IRC_COVER(323u);
+ /* 33,2574 ALLOOP CA TIME1 */
+ ai_ca(s,025);
+ goto B66575c;
+B66574c:
+ IRC_COVER(324u);
+ goto B66574;
+B66575c:
+ IRC_COVER(325u);
+ /* 33,2575 TS GTSWTLT1 */
+ (void)ai_ts(s,(unsigned)01645);
+ goto B66576c;
+B66576c:
+ IRC_COVER(326u);
+ /* 33,2576 ALLOOP3 CA ALTIM */
+ ai_ca(s,01540);
+ goto B66577c;
+B66577c:
+ IRC_COVER(327u);
+ /* 33,2577 TS GEOSAVE1 */
+ (void)ai_ts(s,(unsigned)01631);
+ goto B66600c;
+B66600c:
+ IRC_COVER(328u);
+ /* 33,2600 TC PHASCHNG */
+ ai_tc(s,002601u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B66602:
+ IRC_COVER(329u);
+ /* 33,2602 ALLOOP1 CAE GEOSAVE1 */
+ ai_ca(s,01631);
+ goto B66603c;
+B66603c:
+ IRC_COVER(330u);
+ /* 33,2603 TS ALTIM */
+ (void)ai_ts(s,(unsigned)01540);
+ goto B66604c;
+B66604c:
+ IRC_COVER(331u);
+ /* 33,2604 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B66605c;
+  case 1:goto B66606c;
+  case 2:goto B66607c;
+  case 3:goto B66610c;
+ }
+ return EXEC_INVALID_ACTION;
+B66605c:
+ IRC_COVER(332u);
+ /* 33,2605 CA A */
+ ai_ca(s,00);
+ goto B66606;
+B66606:
+ IRC_COVER(333u);
+ /* 33,2606 TS ALTIMS */
+ if(ai_ts(s,(unsigned)01541))goto B66610c;
+ goto B66607c;
+B66606c:
+ IRC_COVER(334u);
+ /* 33,2606 TS ALTIMS */
+ (void)ai_ts(s,(unsigned)01541);
+ goto B66607c;
+B66607c:
+ IRC_COVER(335u);
+ /* 33,2607 CS A */
+ ai_cs(s,00);
+ goto B66610;
+B66610:
+ IRC_COVER(336u);
+ /* 33,2610 TS ALTIM */
+ if(ai_ts(s,(unsigned)01540))goto B66612c;
+ goto B66611c;
+B66610c:
+ IRC_COVER(337u);
+ /* 33,2610 TS ALTIM */
+ (void)ai_ts(s,(unsigned)01540);
+ goto B66611c;
+B66611c:
+ IRC_COVER(338u);
+ /* 33,2611 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66612c;
+B66612c:
+ IRC_COVER(339u);
+ /* 33,2612 XCH PIPAX */
+ ai_xch(s,037);
+ goto B66613c;
+B66613c:
+ IRC_COVER(340u);
+ /* 33,2613 TS DELVX */
+ (void)ai_ts(s,(unsigned)01162);
+ goto B66614c;
+B66614c:
+ IRC_COVER(341u);
+ /* 33,2614 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66615c;
+B66615c:
+ IRC_COVER(342u);
+ /* 33,2615 XCH PIPAY */
+ ai_xch(s,040);
+ goto B66616c;
+B66616c:
+ IRC_COVER(343u);
+ /* 33,2616 TS DELVY */
+ (void)ai_ts(s,(unsigned)01164);
+ goto B66617c;
+B66617c:
+ IRC_COVER(344u);
+ /* 33,2617 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B66620c;
+B66620c:
+ IRC_COVER(345u);
+ /* 33,2620 XCH PIPAZ */
+ ai_xch(s,041);
+ goto B66621c;
+B66621c:
+ IRC_COVER(346u);
+ /* 33,2621 TS DELVZ */
+ (void)ai_ts(s,(unsigned)01166);
+ goto B66622c;
+B66622c:
+ IRC_COVER(347u);
+ /* 33,2622 CAF 19DECML */
+ ai_caf(s,000023u); /* VD1 */
+ goto B66623c;
+B66623c:
+ IRC_COVER(348u);
+ /* 33,2623 TC NEWPHASE */
+ ai_tc(s,002624u);
+ W[5]=04114u;return EXEC_OK; /* NEWPHASE */
+B66625:
+ IRC_COVER(349u);
+ /* 33,2625 SPECSTS CAF PRIO22 */
+ ai_caf(s,022000u); /* PRIO22 */
+ goto B66626c;
+B66626c:
+ IRC_COVER(350u);
+ /* 33,2626 TC FINDVAC */
+ ai_tc(s,002627u);
+ W[5]=05147u;return EXEC_OK; /* FINDVAC */
+B66631:
+ IRC_COVER(351u);
+ /* 33,2631 TC TASKOVER */
+ ai_tc(s,002632u);
+ W[5]=05324u;return EXEC_OK; /* TASKOVER */
+B66632:
+ IRC_COVER(352u);
+ /* 33,2632 ALFLT TC STOREDTA */
+ ai_tc(s,002633u);
+ goto B66552;
+B66633:
+ IRC_COVER(353u);
+ /* 33,2633 TC PHASCHNG */
+ ai_tc(s,002634u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B66635:
+ IRC_COVER(354u);
+ /* 33,2635 TCF +2 */
+ goto B66637;
+B66636:
+ IRC_COVER(355u);
+ /* 33,2636 ALFLT1 TC LOADSTDT */
+ ai_tc(s,002637u);
+ goto B66563;
+B66637:
+ IRC_COVER(356u);
+ /* 33,2637 CCS GEOCOMP1 */
+ switch(ai_ccs(s,01643)){
+  case 0:goto B66640c;
+  case 1:goto B66641c;
+  case 2:goto B66642c;
+  case 3:goto B66643c;
+ }
+ return EXEC_INVALID_ACTION;
+B66640c:
+ IRC_COVER(357u);
+ /* 33,2640 TC +2 */
+ ai_tc(s,002641u);
+ goto B66642c;
+B66641:
+ IRC_COVER(358u);
+ /* 33,2641 TC NORMLOP */
+ ai_tc(s,002642u);
+ goto B66645;
+B66641c:
+ IRC_COVER(359u);
+ /* 33,2641 TC NORMLOP */
+ ai_tc(s,002642u);
+ goto B66645c;
+B66642:
+ IRC_COVER(360u);
+ /* 33,2642 TC CHKCOMED */
+ ai_tc(s,002643u);
+ goto B67406;
+B66642c:
+ IRC_COVER(361u);
+ /* 33,2642 TC CHKCOMED */
+ ai_tc(s,002643u);
+ goto B67406c;
+B66643:
+ IRC_COVER(362u);
+ /* 33,2643 TC BANKCALL */
+ ai_tc(s,002644u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B66643c:
+ IRC_COVER(363u);
+ goto B66643;
+B66645:
+ IRC_COVER(364u);
+ /* 33,2645 NORMLOP TC INTPRET */
+ ai_tc(s,002646u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B66645c:
+ IRC_COVER(365u);
+ goto B66645;
+B67034:
+ IRC_COVER(366u);
+ /* 33,3034 CA EBANK7 */
+ ai_caf(s,003400u); /* EBANK7 */
+ goto B67035c;
+B67035c:
+ IRC_COVER(367u);
+ /* 33,3035 TS EBANK */
+ (void)ai_ts(s,(unsigned)03);
+ goto B67036c;
+B67036c:
+ IRC_COVER(368u);
+ /* 33,3036 TC LAT(SPL) */
+ ai_tc(s,003037u);W[5]=01400;return EXEC_OK; /* TC 1400 */
+B67037:
+ IRC_COVER(369u);
+ /* 33,3037 ONCEMORE CCS LENGTHOT */
+ switch(ai_ccs(s,01412)){
+  case 0:goto B67040c;
+  case 1:goto B67041c;
+  case 2:goto B67042c;
+  case 3:goto B67043c;
+ }
+ return EXEC_INVALID_ACTION;
+B67040c:
+ IRC_COVER(370u);
+ /* 33,3040 TC SLEEPIE */
+ ai_tc(s,003041u);
+ goto B66522c;
+B67041:
+ IRC_COVER(371u);
+ /* 33,3041 CCS TORQNDX */
+ switch(ai_ccs(s,01450)){
+  case 0:goto B67042c;
+  case 1:goto B67043c;
+  case 2:goto B67044c;
+  case 3:goto B67045c;
+ }
+ return EXEC_INVALID_ACTION;
+B67041c:
+ IRC_COVER(372u);
+ goto B67041;
+B67042c:
+ IRC_COVER(373u);
+ /* 33,3042 TCF +2 */
+ goto B67044c;
+B67043c:
+ IRC_COVER(374u);
+ /* 33,3043 TC SETUPER1 */
+ ai_tc(s,003044u);
+ goto B67046c;
+B67044:
+ IRC_COVER(375u);
+ /* 33,3044 CA CDUX */
+ ai_ca(s,032);
+ goto B67045c;
+B67044c:
+ IRC_COVER(376u);
+ goto B67044;
+B67045c:
+ IRC_COVER(377u);
+ /* 33,3045 TS LOSVEC     +1 */
+ (void)ai_ts(s,(unsigned)01414);
+ goto B67046c;
+B67046c:
+ IRC_COVER(378u);
+ /* 33,3046 SETUPER1 TC INTPRET */
+ ai_tc(s,003047u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67062:
+ IRC_COVER(379u);
+ /* 33,3062 TORQINCH TC PHASCHNG */
+ ai_tc(s,003063u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67064:
+ IRC_COVER(380u);
+ /* 33,3064 CA OGCPL */
+ ai_caf(s,002757u); /* OGCPL */
+ goto B67065c;
+B67065c:
+ IRC_COVER(381u);
+ /* 33,3065 TC BANKCALL */
+ ai_tc(s,003066u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67067:
+ IRC_COVER(382u);
+ /* 33,3067 TC IMUSTLLG */
+ ai_tc(s,003070u);
+ goto B66316;
+B67070:
+ IRC_COVER(383u);
+ /* 33,3070 CCS TORQNDX */
+ switch(ai_ccs(s,01450)){
+  case 0:goto B67071c;
+  case 1:goto B67072c;
+  case 2:goto B67073c;
+  case 3:goto B67074c;
+ }
+ return EXEC_INVALID_ACTION;
+B67071c:
+ IRC_COVER(384u);
+ /* 33,3071 TC VALMIS */
+ ai_tc(s,003072u);
+ goto B66262c;
+B67072:
+ IRC_COVER(385u);
+ /* 33,3072 TC INTPRET */
+ ai_tc(s,003073u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67072c:
+ IRC_COVER(386u);
+ goto B67072;
+B67073c:
+ IRC_COVER(387u);
+ /* 33,3073 CALL: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67074c:
+ IRC_COVER(388u);
+ /* 33,3074 ERTHRVSE: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67076:
+ IRC_COVER(389u);
+ /* 33,3076 TC TORQUE */
+ ai_tc(s,003077u);
+ goto B66122;
+B67077:
+ IRC_COVER(390u);
+ /* 33,3077 SOMEERRR TC ALARM */
+ ai_tc(s,003100u);
+ W[5]=05650u;return EXEC_OK; /* ALARM */
+B67101:
+ IRC_COVER(391u);
+ /* 33,3101 TC +3 */
+ ai_tc(s,003102u);
+ goto B67104;
+B67102:
+ IRC_COVER(392u);
+ /* 33,3102 SOMERR2 TC ALARM */
+ ai_tc(s,003103u);
+ W[5]=05650u;return EXEC_OK; /* ALARM */
+B67104:
+ IRC_COVER(393u);
+ /* 33,3104 TC PHASCHNG */
+ ai_tc(s,003105u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67106:
+ IRC_COVER(394u);
+ /* 33,3106 TC ENDTEST1 */
+ ai_tc(s,003107u);
+ goto B66267;
+B67107:
+ IRC_COVER(395u);
+ /* 33,3107 DEC585 OCT 02222: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67131:
+ IRC_COVER(396u);
+ /* 33,3131 GTSCPSS CA FLAGWRD1 */
+ ai_ca(s,075);
+ goto B67132c;
+B67132c:
+ IRC_COVER(397u);
+ /* 33,3132 MASK NOP01BIT */
+ ai_maskf(s,004000u); /* BIT12 */
+ goto B67133c;
+B67133c:
+ IRC_COVER(398u);
+ /* 33,3133 EXTEND */
+ goto X67134c;
+X67134c:
+ IRC_COVER(399u);
+ /* 33,3134 EXTENDED BZF GTSCPSSA */
+ if(ai_bzf(s)){
+   goto B67137c;
+ }
+ goto B67135c;
+B67135c:
+ IRC_COVER(400u);
+ /* 33,3135 TC POODOO */
+ ai_tc(s,003136u);
+ W[5]=05721u;return EXEC_OK; /* POODOO */
+B67137c:
+ IRC_COVER(401u);
+ /* 33,3137 GTSCPSSA CAF ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67140c;
+B67140c:
+ IRC_COVER(402u);
+ /* 33,3140 TS GEOCOMP1 */
+ (void)ai_ts(s,(unsigned)01643);
+ goto B67141c;
+B67141c:
+ IRC_COVER(403u);
+ /* 33,3141 CA 1/PIPAGT */
+ ai_caf(s,006200u); /* 1/PIPAGT */
+ goto B67142c;
+B67142c:
+ IRC_COVER(404u);
+ /* 33,3142 TS 1/PIPADT */
+ (void)ai_ts(s,(unsigned)01074);
+ goto B67143c;
+B67143c:
+ IRC_COVER(405u);
+ /* 33,3143 NXXTENN CA BIT8 */
+ ai_caf(s,000200u); /* BIT8 */
+ goto B67144c;
+B67144c:
+ IRC_COVER(406u);
+ /* 33,3144 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B67145c;
+B67145c:
+ IRC_COVER(407u);
+ /* 33,3145 CAF 1/2SECX */
+ ai_caf(s,000062u); /* .5SEC */
+ goto B67146c;
+B67146c:
+ IRC_COVER(408u);
+ /* 33,3146 TS 1SECXT1 */
+ (void)ai_ts(s,(unsigned)01644);
+ goto B67147c;
+B67147c:
+ IRC_COVER(409u);
+ /* 33,3147 CAF ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67150c;
+B67150c:
+ IRC_COVER(410u);
+ /* 33,3150 TS PREMTRX1 */
+ (void)ai_ts(s,(unsigned)01632);
+ goto B67151c;
+B67151c:
+ IRC_COVER(411u);
+ /* 33,3151 TS PERFDLAY   +1 */
+ (void)ai_ts(s,(unsigned)01657);
+ goto B67152c;
+B67152c:
+ IRC_COVER(412u);
+ /* 33,3152 CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B67153c;
+B67153c:
+ IRC_COVER(413u);
+ /* 33,3153 TS PERFDLAY */
+ (void)ai_ts(s,(unsigned)01656);
+ goto B67154c;
+B67154c:
+ IRC_COVER(414u);
+ /* 33,3154 EXTEND */
+ goto X67155c;
+X67155c:
+ IRC_COVER(415u);
+ /* 33,3155 EXTENDED DCA LUNCHAZ1 */
+ ai_dca(s,01633);
+ goto B67156c;
+B67156c:
+ IRC_COVER(416u);
+ /* 33,3156 DXCH NEWAZ1 */
+ ai_dxch(s,01635);
+ goto B67157c;
+B67157c:
+ IRC_COVER(417u);
+ /* 33,3157 EXTEND */
+ goto X67160c;
+X67160c:
+ IRC_COVER(418u);
+ /* 33,3160 EXTENDED DCA LUNCHAZ1 */
+ ai_dca(s,01633);
+ goto B67161c;
+B67161c:
+ IRC_COVER(419u);
+ /* 33,3161 DXCH OLDAZMTH */
+ ai_dxch(s,01637);
+ goto B67162c;
+B67162c:
+ IRC_COVER(420u);
+ /* 33,3162 SETUPGC CA DEC17 */
+ ai_caf(s,000021u); /* ND1 */
+ goto B67163c;
+B67163c:
+ IRC_COVER(421u);
+ /* 33,3163 TS ZERONDX1 */
+ (void)ai_ts(s,(unsigned)01655);
+ goto B67164c;
+B67164c:
+ IRC_COVER(422u);
+ /* 33,3164 CA XSMADR */
+ ai_caf(s,001671u); /* XSMADR */
+ goto B67165c;
+B67165c:
+ IRC_COVER(423u);
+ /* 33,3165 TC ZEROING */
+ ai_tc(s,003166u);
+ goto B66356c;
+B67166:
+ IRC_COVER(424u);
+ /* 33,3166 TC POSN17C */
+ ai_tc(s,003167u);
+ goto B67170;
+B67167:
+ IRC_COVER(425u);
+ /* 33,3167 TC GEOIMUTT */
+ ai_tc(s,003170u);
+ goto B66030;
+B67170:
+ IRC_COVER(426u);
+ /* 33,3170 POSN17C EXTEND */
+ goto X67171;
+X67171:
+ IRC_COVER(427u);
+ /* 33,3171 EXTENDED QXCH QPLACE */
+ ai_qxch(s,01425);
+ goto B67172;
+B67172:
+ IRC_COVER(428u);
+ /* 33,3172 CS HALF */
+ ai_csf(s,020000u); /* BIT14 */
+ goto B67173c;
+B67173c:
+ IRC_COVER(429u);
+ /* 33,3173 TS ZSM */
+ (void)ai_ts(s,(unsigned)01705);
+ goto B67174c;
+B67174c:
+ IRC_COVER(430u);
+ /* 33,3174 TC INTPRET */
+ ai_tc(s,003175u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67207:
+ IRC_COVER(431u);
+ /* 33,3207 TC QPLACE */
+ e=(long)(ai_word(s,01425)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01426u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B67267:
+ IRC_COVER(432u);
+ /* 33,3267 ENDGTSAL CCS LENGTHOT */
+ switch(ai_ccs(s,01412)){
+  case 0:goto B67270c;
+  case 1:goto B67271c;
+  case 2:goto B67272c;
+  case 3:goto B67273c;
+ }
+ return EXEC_INVALID_ACTION;
+B67270c:
+ IRC_COVER(433u);
+ /* 33,3270 TC SLEEPIE */
+ ai_tc(s,003271u);
+ goto B66522c;
+B67271:
+ IRC_COVER(434u);
+ /* 33,3271 TC CHKCOMED */
+ ai_tc(s,003272u);
+ goto B67406;
+B67271c:
+ IRC_COVER(435u);
+ /* 33,3271 TC CHKCOMED */
+ ai_tc(s,003272u);
+ goto B67406c;
+B67272:
+ IRC_COVER(436u);
+ /* 33,3272 CCS LGYRO */
+ switch(ai_ccs(s,01304)){
+  case 0:goto B67273c;
+  case 1:goto B67274c;
+  case 2:goto B67275c;
+  case 3:goto B67276c;
+ }
+ return EXEC_INVALID_ACTION;
+B67272c:
+ IRC_COVER(437u);
+ goto B67272;
+B67273c:
+ IRC_COVER(438u);
+ /* 33,3273 TCF SLEEPIE    +1 */
+ goto B66523c;
+B67274c:
+ IRC_COVER(439u);
+ /* 33,3274 LASTGTS TC INTPRET */
+ ai_tc(s,003275u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67275c:
+ IRC_COVER(440u);
+ /* 33,3275 VLOAD: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67276c:
+ IRC_COVER(441u);
+ /* 33,3276 ERCOMP1: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67303:
+ IRC_COVER(442u);
+ /* 33,3303 RESTAIER TC PHASCHNG */
+ ai_tc(s,003304u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67305:
+ IRC_COVER(443u);
+ /* 33,3305 TC INTPRET */
+ ai_tc(s,003306u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67317:
+ IRC_COVER(444u);
+ /* 33,3317 TC EARTHR* */
+ ai_tc(s,003320u);
+ goto B66417;
+B67320:
+ IRC_COVER(445u);
+ /* 33,3320 CAE ERECTIM1 */
+ ai_ca(s,01646);
+ goto B67321c;
+B67321c:
+ IRC_COVER(446u);
+ /* 33,3321 TS GEOSAVE1 */
+ (void)ai_ts(s,(unsigned)01631);
+ goto B67322c;
+B67322c:
+ IRC_COVER(447u);
+ /* 33,3322 TC PHASCHNG */
+ ai_tc(s,003323u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67324:
+ IRC_COVER(448u);
+ /* 33,3324 RESTEST1 TC INTPRET */
+ ai_tc(s,003325u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67331:
+ IRC_COVER(449u);
+ /* 33,3331 CCS PREMTRXC */
+ switch(ai_ccs(s,01632)){
+  case 0:goto B67332c;
+  case 1:goto B67333c;
+  case 2:goto B67334c;
+  case 3:goto B67335c;
+ }
+ return EXEC_INVALID_ACTION;
+B67332c:
+ IRC_COVER(450u);
+ /* 33,3332 TC NOCHORLD */
+ ai_tc(s,003333u);
+ goto B67401c;
+B67333:
+ IRC_COVER(451u);
+ /* 33,3333 TC PHASCHNG */
+ ai_tc(s,003334u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67333c:
+ IRC_COVER(452u);
+ goto B67333;
+B67334c:
+ IRC_COVER(453u);
+ /* 33,3334 OCT 00255: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67335:
+ IRC_COVER(454u);
+ /* 33,3335 RESTEST3 TC INTPRET */
+ ai_tc(s,003336u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67335c:
+ IRC_COVER(455u);
+ goto B67335;
+B67355:
+ IRC_COVER(456u);
+ /* 33,3355 TC POSN17C */
+ ai_tc(s,003356u);
+ goto B67170;
+B67356:
+ IRC_COVER(457u);
+ /* 33,3356 TC PHASCHNG */
+ ai_tc(s,003357u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67360:
+ IRC_COVER(458u);
+ /* 33,3360 RESCHNG EXTEND */
+ goto X67361;
+X67361:
+ IRC_COVER(459u);
+ /* 33,3361 EXTENDED DCA NEWAZMTH */
+ ai_dca(s,01635);
+ goto B67362c;
+B67362c:
+ IRC_COVER(460u);
+ /* 33,3362 DXCH OLDAZMTH */
+ ai_dxch(s,01637);
+ goto B67363c;
+B67363c:
+ IRC_COVER(461u);
+ /* 33,3363 CA BIT7 */
+ ai_caf(s,000100u); /* BIT7 */
+ goto B67364c;
+B67364c:
+ IRC_COVER(462u);
+ /* 33,3364 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B67365c;
+B67365c:
+ IRC_COVER(463u);
+ /* 33,3365 TC PHASCHNG */
+ ai_tc(s,003366u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67367:
+ IRC_COVER(464u);
+ /* 33,3367 SPITGYRO CA ERCOMPPL */
+ ai_caf(s,002647u); /* ERCOMPPL */
+ goto B67370c;
+B67370c:
+ IRC_COVER(465u);
+ /* 33,3370 TC BANKCALL */
+ ai_tc(s,003371u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67372:
+ IRC_COVER(466u);
+ /* 33,3372 TC BANKCALL */
+ ai_tc(s,003373u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67374:
+ IRC_COVER(467u);
+ /* 33,3374 TC SOMERR2 */
+ ai_tc(s,003375u);
+ goto B67102;
+B67375:
+ IRC_COVER(468u);
+ /* 33,3375 TC ESTIMS */
+ ai_tc(s,003376u);
+ goto B66453;
+B67376:
+ IRC_COVER(469u);
+ /* 33,3376 NOAZCHGE EXIT: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67377:
+ IRC_COVER(470u);
+ /* 33,3377 CA ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67400c;
+B67400c:
+ IRC_COVER(471u);
+ /* 33,3400 TS PREMTRXC */
+ (void)ai_ts(s,(unsigned)01632);
+ goto B67401c;
+B67401c:
+ IRC_COVER(472u);
+ /* 33,3401 NOCHORLD CCS GEOSAVE1 */
+ switch(ai_ccs(s,01631)){
+  case 0:goto B67402c;
+  case 1:goto B67403c;
+  case 2:goto B67404c;
+  case 3:goto B67405c;
+ }
+ return EXEC_INVALID_ACTION;
+B67402c:
+ IRC_COVER(473u);
+ /* 33,3402 TS ERECTIM1 */
+ (void)ai_ts(s,(unsigned)01646);
+ goto B67403c;
+B67403:
+ IRC_COVER(474u);
+ /* 33,3403 ANNNNNN CAF NINE */
+ ai_caf(s,000011u); /* R2D1 */
+ goto B67404c;
+B67403c:
+ IRC_COVER(475u);
+ goto B67403;
+B67404c:
+ IRC_COVER(476u);
+ /* 33,3404 TS LENGTHOT */
+ (void)ai_ts(s,(unsigned)01412);
+ goto B67405c;
+B67405c:
+ IRC_COVER(477u);
+ /* 33,3405 TC SLEEPIE    +1 */
+ ai_tc(s,003406u);
+ goto B66523c;
+B67406:
+ IRC_COVER(478u);
+ /* 33,3406 CHKCOMED INHINT */
+ io->interrupt_enabled=0;
+ goto B67407;
+B67406c:
+ IRC_COVER(479u);
+ /* 33,3406 CHKCOMED INHINT */
+ io->interrupt_enabled=0;
+ goto B67407c;
+B67407:
+ IRC_COVER(480u);
+ /* 33,3407 CS MODREG */
+ ai_cs(s,01011);
+ goto B67410c;
+B67407c:
+ IRC_COVER(481u);
+ goto B67407;
+B67410c:
+ IRC_COVER(482u);
+ /* 33,3410 AD SEVEN */
+ ai_adf(s,000007u); /* SEVEN */
+ goto B67411;
+B67411:
+ IRC_COVER(483u);
+ /* 33,3411 EXTEND */
+ goto X67412;
+X67412:
+ IRC_COVER(484u);
+ /* 33,3412 EXTENDED BZF GOBKCALB */
+ if(ai_bzf(s)){
+   goto B67426;
+ }
+ goto B67413;
+B67413:
+ IRC_COVER(485u);
+ /* 33,3413 CS ZERO */
+ ai_csf(s,000000u); /* ZERO */
+ goto B67414c;
+B67414c:
+ IRC_COVER(486u);
+ /* 33,3414 EXTEND */
+ goto X67415c;
+X67415c:
+ IRC_COVER(487u);
+ /* 33,3415 EXTENDED RXOR CHAN30 */
+ W[0]=agc_extend((agc_word)(oc16(W[0])^AGC_CHANNEL(30)));
+ goto B67416c;
+B67416c:
+ IRC_COVER(488u);
+ /* 33,3416 MASK BIT5 */
+ ai_maskf(s,000020u); /* BIT5 */
+ goto B67417c;
+B67417c:
+ IRC_COVER(489u);
+ /* 33,3417 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B67420c;
+  case 1:goto B67421c;
+  case 2:goto B67422c;
+  case 3:goto B67423c;
+ }
+ return EXEC_INVALID_ACTION;
+B67420c:
+ IRC_COVER(490u);
+ /* 33,3420 TCF PRELTERM */
+ goto B67427c;
+B67421c:
+ IRC_COVER(491u);
+ /* 33,3421 CA GRRBKBIT */
+ ai_caf(s,000020u); /* BIT5 */
+ goto B67422c;
+B67422c:
+ IRC_COVER(492u);
+ /* 33,3422 MASK FLAGWRD5 */
+ ai_mask(s,0101);
+ goto B67423c;
+B67423c:
+ IRC_COVER(493u);
+ /* 33,3423 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B67424c;
+  case 1:goto B67425c;
+  case 2:goto B67426c;
+  case 3:goto B67427c;
+ }
+ return EXEC_INVALID_ACTION;
+B67424c:
+ IRC_COVER(494u);
+ /* 33,3424 TCF PRELTERM */
+ goto B67427c;
+B67425c:
+ IRC_COVER(495u);
+ /* 33,3425 RELINT */
+ io->interrupt_enabled=1;
+ goto B67426c;
+B67426:
+ IRC_COVER(496u);
+ /* 33,3426 GOBKCALB TC Q */
+ e=(long)(agc_correct(W[2])&077777u);
+ if(e==3&&W[3]>=02000u){io->interrupt_enabled=1;ai_tc(s,04u);W[5]=W[3];goto dispatch;}
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,03u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B67426c:
+ IRC_COVER(497u);
+ goto B67426;
+B67427c:
+ IRC_COVER(498u);
+ /* 33,3427 PRELTERM CA PRIO22 */
+ ai_caf(s,022000u); /* PRIO22 */
+ goto B67430c;
+B67430c:
+ IRC_COVER(499u);
+ /* 33,3430 TC PRIOCHNG */
+ ai_tc(s,003431u);
+ W[5]=05210u;return EXEC_OK; /* PRIOCHNG */
+B67431:
+ IRC_COVER(500u);
+ /* 33,3431 INHINT */
+ io->interrupt_enabled=0;
+ goto B67432;
+B67432:
+ IRC_COVER(501u);
+ /* 33,3432 TC POSTJUMP */
+ ai_tc(s,003433u);
+ W[5]=04701u;return EXEC_OK; /* POSTJUMP */
+B67436:
+ IRC_COVER(502u);
+ /* 33,3436 GCOMPVER TC PHASCHNG */
+ ai_tc(s,003437u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67440:
+ IRC_COVER(503u);
+ /* 33,3440 TC NEWMODEX */
+ ai_tc(s,003441u);
+ W[5]=05354u;return EXEC_OK; /* NEWMODEX */
+B67442:
+ IRC_COVER(504u);
+ /* 33,3442 SETNBPOS TC NBPOSPL */
+ ai_tc(s,003443u);
+ goto B66037;
+B67443:
+ IRC_COVER(505u);
+ /* 33,3443 TC BANKCALL */
+ ai_tc(s,003444u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67445:
+ IRC_COVER(506u);
+ /* 33,3445 OPTDATA CAF BIT1 */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67446c;
+B67446c:
+ IRC_COVER(507u);
+ /* 33,3446 ZL */
+ ai_lxch(s,07);
+ goto B67447c;
+B67447c:
+ IRC_COVER(508u);
+ /* 33,3447 LXCH RUN */
+ ai_lxch(s,01427);
+ goto B67450c;
+B67450c:
+ IRC_COVER(509u);
+ /* 33,3450 TS DSPTEM1    +2 */
+ (void)ai_ts(s,(unsigned)01047);
+ goto B67451c;
+B67451c:
+ IRC_COVER(510u);
+ /* 33,3451 EXTEND */
+ goto X67452c;
+X67452c:
+ IRC_COVER(511u);
+ /* 33,3452 EXTENDED INDEX RUN */
+ ix=agc_to_int(ai_word(s,01427));
+ /* 33,3453 EXTENDED (indexed) DCA TAZEL1 */
+ e=(long)01433+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k2[2];if(!fx(s,(unsigned)(e-1),k2)||!fx(s,(unsigned)e,k2+1))return EXEC_INVALID_ACTION;ai_dcaf(s,k2);}
+ else ai_dca(s,(unsigned)(e-1));
+ goto B67454c;
+B67454c:
+ IRC_COVER(512u);
+ /* 33,3454 DXCH DSPTEM1 */
+ ai_dxch(s,01045);
+ goto B67455c;
+B67455:
+ IRC_COVER(513u);
+ /* 33,3455 CAF V05N30E */
+ ai_caf(s,001236u); /* V05N30E */
+ goto B67456c;
+B67455c:
+ IRC_COVER(514u);
+ goto B67455;
+B67456c:
+ IRC_COVER(515u);
+ /* 33,3456 TC BANKCALL */
+ ai_tc(s,003457u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67460:
+ IRC_COVER(516u);
+ /* 33,3460 CAF VN0641 */
+ ai_caf(s,001451u); /* VN0641 */
+ goto B67461c;
+B67461c:
+ IRC_COVER(517u);
+ /* 33,3461 TC BANKCALL */
+ ai_tc(s,003462u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67463:
+ IRC_COVER(518u);
+ /* 33,3463 TC GCOMP5 */
+ ai_tc(s,003464u);
+ goto B67620;
+B67464:
+ IRC_COVER(519u);
+ /* 33,3464 TC +3 */
+ ai_tc(s,003465u);
+ goto B67467;
+B67465:
+ IRC_COVER(520u);
+ /* 33,3465 TC -8D */
+ ai_tc(s,003466u);
+ goto B67455;
+B67466:
+ IRC_COVER(521u);
+ /* 33,3466 VN0641 VN 0641: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67467:
+ IRC_COVER(522u);
+ /* 33,3467 DXCH DSPTEM1 */
+ ai_dxch(s,01045);
+ goto B67470c;
+B67470c:
+ IRC_COVER(523u);
+ /* 33,3470 INDEX RUN */
+ ix=agc_to_int(ai_word(s,01427));
+ /* 33,3471 (indexed) DXCH TAZEL1 */
+ e=(long)01433+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e<010)return EXEC_INVALID_ACTION;
+ ai_dxch(s,(unsigned)(e-1));
+ goto B67472c;
+B67472c:
+ IRC_COVER(524u);
+ /* 33,3472 CCS RUN */
+ switch(ai_ccs(s,01427)){
+  case 0:goto B67473c;
+  case 1:goto B67474c;
+  case 2:goto B67475c;
+  case 3:goto B67476c;
+ }
+ return EXEC_INVALID_ACTION;
+B67473c:
+ IRC_COVER(525u);
+ /* 33,3473 TCF +4 */
+ goto B67477c;
+B67474c:
+ IRC_COVER(526u);
+ /* 33,3474 CAF TWO */
+ ai_caf(s,000002u); /* BIT2 */
+ goto B67475c;
+B67475c:
+ IRC_COVER(527u);
+ /* 33,3475 TS L */
+ (void)ai_ts(s,(unsigned)01);
+ goto B67476c;
+B67476c:
+ IRC_COVER(528u);
+ /* 33,3476 TCF OPTDATA    +2 */
+ goto B67447c;
+B67477c:
+ IRC_COVER(529u);
+ /* 33,3477 TC CONTIN33 */
+ ai_tc(s,003500u);
+ goto B67541c;
+B67500:
+ IRC_COVER(530u);
+ /* 33,3500 V05N30E VN 0530: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67501:
+ IRC_COVER(531u);
+ /* 33,3501 TC INTPRET */
+ ai_tc(s,003502u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67541c:
+ IRC_COVER(532u);
+ /* 33,3541 CONTIN33 CA ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67542c;
+B67542c:
+ IRC_COVER(533u);
+ /* 33,3542 TS STARCODE */
+ (void)ai_ts(s,(unsigned)0735);
+ goto B67543c;
+B67543c:
+ IRC_COVER(534u);
+ /* 33,3543 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B67544c;
+B67544c:
+ IRC_COVER(535u);
+ /* 33,3544 TC TARGDRVE */
+ ai_tc(s,003545u);
+ goto B67635c;
+B67545:
+ IRC_COVER(536u);
+ /* 33,3545 TC INTPRET */
+ ai_tc(s,003546u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67564:
+ IRC_COVER(537u);
+ /* 33,3564 TC BANKCALL */
+ ai_tc(s,003565u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67566:
+ IRC_COVER(538u);
+ /* 33,3566 NEXBNKSS CAF TWO */
+ ai_caf(s,000002u); /* BIT2 */
+ goto B67567c;
+B67567c:
+ IRC_COVER(539u);
+ /* 33,3567 TS STARCODE */
+ (void)ai_ts(s,(unsigned)0735);
+ goto B67570c;
+B67570c:
+ IRC_COVER(540u);
+ /* 33,3570 CAF SIX */
+ ai_caf(s,000006u); /* REVCNT */
+ goto B67571c;
+B67571c:
+ IRC_COVER(541u);
+ /* 33,3571 TC TARGDRVE */
+ ai_tc(s,003572u);
+ goto B67635c;
+B67572:
+ IRC_COVER(542u);
+ /* 33,3572 TC INTPRET */
+ ai_tc(s,003573u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67604:
+ IRC_COVER(543u);
+ /* 33,3604 GCOMP4 CAF V06N93S */
+ ai_caf(s,001535u); /* V06N93S */
+ goto B67605c;
+B67605c:
+ IRC_COVER(544u);
+ /* 33,3605 TC BANKCALL */
+ ai_tc(s,003606u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67607:
+ IRC_COVER(545u);
+ /* 33,3607 TC GCOMP5 */
+ ai_tc(s,003610u);
+ goto B67620;
+B67610:
+ IRC_COVER(546u);
+ /* 33,3610 TCF +2 */
+ goto B67612;
+B67611:
+ IRC_COVER(547u);
+ /* 33,3611 TCF GCOMP4 */
+ goto B67604;
+B67612:
+ IRC_COVER(548u);
+ /* 33,3612 TC INTPRET */
+ ai_tc(s,003613u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67620:
+ IRC_COVER(549u);
+ /* 33,3620 GCOMP5 TC BANKCALL */
+ ai_tc(s,003621u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67620c:
+ IRC_COVER(550u);
+ goto B67620;
+B67622:
+ IRC_COVER(551u);
+ /* 33,3622 TC DOWNFLAG */
+ ai_tc(s,003623u);
+ W[5]=05560u;return EXEC_OK; /* DOWNFLAG */
+B67624:
+ IRC_COVER(552u);
+ /* 33,3624 TC NEWMODEX */
+ ai_tc(s,003625u);
+ W[5]=05354u;return EXEC_OK; /* NEWMODEX */
+B67626:
+ IRC_COVER(553u);
+ /* 33,3626 TC PHASCHNG */
+ ai_tc(s,003627u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67630:
+ IRC_COVER(554u);
+ /* 33,3630 TC ENDOFJOB */
+ ai_tc(s,003631u);
+ W[5]=05217u;return EXEC_OK; /* ENDOFJOB */
+B67632:
+ IRC_COVER(555u);
+ /* 33,3632 GTSOPTCS TC ALARM */
+ ai_tc(s,003633u);
+ W[5]=05650u;return EXEC_OK; /* ALARM */
+B67634:
+ IRC_COVER(556u);
+ /* 33,3634 TC GCOMP5 */
+ ai_tc(s,003635u);
+ goto B67620;
+B67635:
+ IRC_COVER(557u);
+ /* 33,3635 TARGDRVE EXTEND */
+ goto X67636;
+B67635c:
+ IRC_COVER(558u);
+ /* 33,3635 TARGDRVE EXTEND */
+ goto X67636c;
+X67636:
+ IRC_COVER(559u);
+ /* 33,3636 EXTENDED QXCH QPLAC */
+ ai_qxch(s,01424);
+ goto B67637;
+X67636c:
+ IRC_COVER(560u);
+ /* 33,3636 EXTENDED QXCH QPLAC */
+ ai_qxch(s,01424);
+ goto B67637c;
+B67637:
+ IRC_COVER(561u);
+ /* 33,3637 TS TARG1/2 */
+ if(ai_ts(s,(unsigned)01431))goto B67641c;
+ goto B67640c;
+B67637c:
+ IRC_COVER(562u);
+ /* 33,3637 TS TARG1/2 */
+ (void)ai_ts(s,(unsigned)01431);
+ goto B67640c;
+B67640c:
+ IRC_COVER(563u);
+ /* 33,3640 TC INTPRET */
+ ai_tc(s,003641u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67641c:
+ IRC_COVER(564u);
+ /* 33,3641 CALL: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67651:
+ IRC_COVER(565u);
+ /* 33,3651 CA SAC */
+ ai_ca(s,01773);
+ goto B67652c;
+B67652c:
+ IRC_COVER(566u);
+ /* 33,3652 TS DESOPTS */
+ (void)ai_ts(s,(unsigned)01161);
+ goto B67653c;
+B67653c:
+ IRC_COVER(567u);
+ /* 33,3653 CA PAC */
+ ai_ca(s,01775);
+ goto B67654c;
+B67654c:
+ IRC_COVER(568u);
+ /* 33,3654 TS DESOPTT */
+ (void)ai_ts(s,(unsigned)01160);
+ goto B67655c;
+B67655c:
+ IRC_COVER(569u);
+ /* 33,3655 RETARG CAF ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B67656c;
+B67656c:
+ IRC_COVER(570u);
+ /* 33,3656 TS OPTIND */
+ (void)ai_ts(s,(unsigned)01303);
+ goto B67657c;
+B67657c:
+ IRC_COVER(571u);
+ /* 33,3657 CAF ONE */
+ ai_caf(s,000001u); /* BIT1 */
+ goto B67660c;
+B67660c:
+ IRC_COVER(572u);
+ /* 33,3660 TC BANKCALL */
+ ai_tc(s,003661u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67662:
+ IRC_COVER(573u);
+ /* 33,3662 TC BANKCALL */
+ ai_tc(s,003663u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67664:
+ IRC_COVER(574u);
+ /* 33,3664 TC GTSOPTCS */
+ ai_tc(s,003665u);
+ goto B67632;
+B67665:
+ IRC_COVER(575u);
+ /* 33,3665 CAE FLAGWRD1 */
+ ai_ca(s,075);
+ goto B67666c;
+B67666c:
+ IRC_COVER(576u);
+ /* 33,3666 MASK TRM03BIT */
+ ai_maskf(s,000010u); /* BIT4 */
+ goto B67667c;
+B67667c:
+ IRC_COVER(577u);
+ /* 33,3667 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B67670c;
+  case 1:goto B67671c;
+  case 2:goto B67672c;
+  case 3:goto B67673c;
+ }
+ return EXEC_INVALID_ACTION;
+B67670c:
+ IRC_COVER(578u);
+ /* 33,3670 TC GCOMP5 */
+ ai_tc(s,003671u);
+ goto B67620c;
+B67671:
+ IRC_COVER(579u);
+ /* 33,3671 INDEX MARKSTAT */
+ ix=agc_to_int(ai_word(s,01330));
+ /* 33,3672 (indexed) CA QPRET */
+ e=(long)052+ix;if(e<0||e>07777)return EXEC_INVALID_ACTION;
+ if(e==5)return EXEC_INVALID_ACTION;
+ if(e>=02000){agc_word k;if(!fx(s,(unsigned)e,&k))return EXEC_INVALID_ACTION;ai_caf(s,k);}
+ else ai_ca(s,(unsigned)e);
+ goto B67673c;
+B67671c:
+ IRC_COVER(580u);
+ goto B67671;
+B67672c:
+ IRC_COVER(581u);
+ /* 33,3672 CA QPRET */
+ ai_ca(s,052);
+ goto B67673c;
+B67673c:
+ IRC_COVER(582u);
+ /* 33,3673 EXTEND */
+ goto X67674c;
+X67674c:
+ IRC_COVER(583u);
+ /* 33,3674 EXTENDED BZF RETARG1 */
+ if(ai_bzf(s)){
+   goto B67676c;
+ }
+ goto B67675c;
+B67675c:
+ IRC_COVER(584u);
+ /* 33,3675 TC QPLAC */
+ e=(long)(ai_word(s,01424)&077777u);
+ if(e<010||e>07777)return EXEC_OUT_OF_SCOPE;
+ ai_tc(s,01425u);W[5]=(agc_word)e;if(e<02000)return EXEC_OK;goto dispatch;
+B67676c:
+ IRC_COVER(585u);
+ /* 33,3676 RETARG1 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B67677c;
+B67677c:
+ IRC_COVER(586u);
+ /* 33,3677 XCH MARKSTAT */
+ ai_xch(s,01330);
+ goto B67700c;
+B67700c:
+ IRC_COVER(587u);
+ /* 33,3700 CCS A */
+ switch(ai_ccs(s,00)){
+  case 0:goto B67701c;
+  case 1:goto B67702c;
+  case 2:goto B67703c;
+  case 3:goto B67704c;
+ }
+ return EXEC_INVALID_ACTION;
+B67701c:
+ IRC_COVER(588u);
+ /* 33,3701 INDEX A */
+ ix=areg(s);
+ /* 33,3702 (indexed) TS A */
+ e=(long)00+ix;if(e<0||e>01777)return EXEC_INVALID_ACTION;
+ if(e==5||e==4||e==6)return EXEC_INVALID_ACTION;
+ (void)ai_ts(s,(unsigned)(unsigned)e);
+ goto B67703c;
+B67702c:
+ IRC_COVER(589u);
+ /* 33,3702 TS A */
+ (void)ai_ts(s,(unsigned)00);
+ goto B67703c;
+B67703c:
+ IRC_COVER(590u);
+ /* 33,3703 TCF RETARG */
+ goto B67655c;
+B67704c:
+ IRC_COVER(591u);
+ /* 33,3704 PIPASC 2DEC .76376833: data, never executed */
+ return EXEC_INVALID_ACTION;
+B67742:
+ IRC_COVER(592u);
+ /* 33,3742 AZMTHCG1 TC INTPRET */
+ ai_tc(s,003743u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67747:
+ IRC_COVER(593u);
+ /* 33,3747 XCH MPAC */
+ ai_xch(s,0154);
+ goto B67750c;
+B67750c:
+ IRC_COVER(594u);
+ /* 33,3750 TS DSPTEM1 */
+ (void)ai_ts(s,(unsigned)01045);
+ goto B67751c;
+B67751c:
+ IRC_COVER(595u);
+ /* 33,3751 TC BANKCALL */
+ ai_tc(s,003752u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67753:
+ IRC_COVER(596u);
+ /* 33,3753 CAF VN0629 */
+ ai_caf(s,001435u); /* VN0629 */
+ goto B67754c;
+B67754c:
+ IRC_COVER(597u);
+ /* 33,3754 TC BANKCALL */
+ ai_tc(s,003755u);
+ W[5]=04662u;return EXEC_OK; /* BANKCALL */
+B67756:
+ IRC_COVER(598u);
+ /* 33,3756 TCF +2 */
+ goto B67760;
+B67757:
+ IRC_COVER(599u);
+ /* 33,3757 TCF +2 */
+ goto B67761;
+B67760:
+ IRC_COVER(600u);
+ /* 33,3760 TCF -5 */
+ goto B67753;
+B67761:
+ IRC_COVER(601u);
+ /* 33,3761 TC INTPRET */
+ ai_tc(s,003762u);W[5]=06006;intpret(s,io);return EXEC_OK; /* INTPRET */
+B67767:
+ IRC_COVER(602u);
+ /* 33,3767 CA ZERO */
+ ai_caf(s,000000u); /* ZERO */
+ goto B67770c;
+B67770c:
+ IRC_COVER(603u);
+ /* 33,3770 TS PREMTRXC */
+ (void)ai_ts(s,(unsigned)01632);
+ goto B67771c;
+B67771c:
+ IRC_COVER(604u);
+ /* 33,3771 TC PHASCHNG */
+ ai_tc(s,003772u);
+ W[5]=05412u;return EXEC_OK; /* PHASCHNG */
+B67773:
+ IRC_COVER(605u);
+ /* 33,3773 TC POSTJUMP */
+ ai_tc(s,003774u);
+ W[5]=04701u;return EXEC_OK; /* POSTJUMP */
+dispatch:
+ p=agc_fixed_physical(W[5],W[4],io->superbank);
+ switch(p){
+ case 2411u:goto B4553;
+ case 2412u:W[5]=04554;return EXEC_IDLE;
+ case 4497u:goto B10621;
+ case 4501u:goto B10625;
+ case 4504u:goto B10630;
+ case 4505u:goto B10631;
+ case 4506u:goto B10632;
+ case 4507u:goto B10633;
+ case 27652u:goto B66004;
+ case 27658u:goto B66012;
+ case 27672u:goto B66030;
+ case 27674u:goto B66032;
+ case 27675u:goto B66033;
+ case 27683u:goto B66043;
+ case 27696u:goto B66060;
+ case 27698u:goto B66062;
+ case 27699u:goto B66063;
+ case 27704u:goto B66070;
+ case 27706u:goto B66072;
+ case 27713u:goto B66101;
+ case 27714u:goto B66102;
+ case 27716u:goto B66104;
+ case 27718u:goto B66106;
+ case 27719u:goto B66107;
+ case 27724u:goto B66114;
+ case 27726u:goto B66116;
+ case 27728u:goto B66120;
+ case 27737u:goto B66131;
+ case 27739u:goto B66133;
+ case 27740u:goto B66134;
+ case 27750u:goto B66146;
+ case 27754u:goto B66152;
+ case 27755u:goto B66153;
+ case 27763u:goto B66163;
+ case 27767u:goto B66167;
+ case 27768u:goto B66170;
+ case 27770u:goto B66172;
+ case 27771u:goto B66173;
+ case 27778u:goto B66202;
+ case 27796u:goto B66224;
+ case 27798u:goto B66226;
+ case 27799u:goto B66227;
+ case 27817u:goto B66251;
+ case 27826u:goto B66262;
+ case 27831u:goto B66267;
+ case 27833u:goto B66271;
+ case 27835u:goto B66273;
+ case 27837u:goto B66275;
+ case 27850u:goto B66312;
+ case 27852u:goto B66314;
+ case 27853u:goto B66315;
+ case 27857u:goto B66321;
+ case 27860u:W[5]=02324;return EXEC_IDLE;
+ case 27865u:goto B66331;
+ case 27880u:goto B66350;
+ case 27925u:goto B66425;
+ case 27926u:goto B66426;
+ case 27934u:goto B66436;
+ case 27935u:goto B66437;
+ case 27936u:goto B66440;
+ case 27945u:goto B66451;
+ case 27947u:goto B66453;
+ case 27950u:goto B66456;
+ case 27962u:goto B66472;
+ case 27972u:goto B66504;
+ case 27974u:goto B66506;
+ case 27975u:goto B66507;
+ case 27979u:goto B66513;
+ case 27983u:goto B66517;
+ case 27985u:goto B66521;
+ case 27986u:goto B66522;
+ case 27989u:goto B66525;
+ case 27991u:goto B66527;
+ case 27992u:goto B66530;
+ case 27993u:goto B66531;
+ case 28007u:goto B66547;
+ case 28010u:goto B66552;
+ case 28028u:goto B66574;
+ case 28034u:goto B66602;
+ case 28053u:goto B66625;
+ case 28057u:goto B66631;
+ case 28058u:goto B66632;
+ case 28059u:goto B66633;
+ case 28061u:goto B66635;
+ case 28062u:goto B66636;
+ case 28063u:goto B66637;
+ case 28065u:goto B66641;
+ case 28066u:goto B66642;
+ case 28067u:goto B66643;
+ case 28069u:goto B66645;
+ case 28188u:goto B67034;
+ case 28191u:goto B67037;
+ case 28193u:goto B67041;
+ case 28196u:goto B67044;
+ case 28210u:goto B67062;
+ case 28212u:goto B67064;
+ case 28215u:goto B67067;
+ case 28216u:goto B67070;
+ case 28218u:goto B67072;
+ case 28222u:goto B67076;
+ case 28223u:goto B67077;
+ case 28225u:goto B67101;
+ case 28226u:goto B67102;
+ case 28228u:goto B67104;
+ case 28230u:goto B67106;
+ case 28231u:goto B67107;
+ case 28249u:goto B67131;
+ case 28278u:goto B67166;
+ case 28279u:goto B67167;
+ case 28280u:goto B67170;
+ case 28295u:goto B67207;
+ case 28343u:goto B67267;
+ case 28345u:goto B67271;
+ case 28346u:goto B67272;
+ case 28355u:goto B67303;
+ case 28357u:goto B67305;
+ case 28367u:goto B67317;
+ case 28368u:goto B67320;
+ case 28372u:goto B67324;
+ case 28377u:goto B67331;
+ case 28379u:goto B67333;
+ case 28381u:goto B67335;
+ case 28397u:goto B67355;
+ case 28398u:goto B67356;
+ case 28400u:goto B67360;
+ case 28407u:goto B67367;
+ case 28410u:goto B67372;
+ case 28412u:goto B67374;
+ case 28413u:goto B67375;
+ case 28414u:goto B67376;
+ case 28415u:goto B67377;
+ case 28422u:goto B67406;
+ case 28441u:goto B67431;
+ case 28446u:goto B67436;
+ case 28448u:goto B67440;
+ case 28450u:goto B67442;
+ case 28451u:goto B67443;
+ case 28453u:goto B67445;
+ case 28464u:goto B67460;
+ case 28467u:goto B67463;
+ case 28468u:goto B67464;
+ case 28469u:goto B67465;
+ case 28470u:goto B67466;
+ case 28480u:goto B67500;
+ case 28481u:goto B67501;
+ case 28517u:goto B67545;
+ case 28532u:goto B67564;
+ case 28534u:goto B67566;
+ case 28538u:goto B67572;
+ case 28548u:goto B67604;
+ case 28551u:goto B67607;
+ case 28552u:goto B67610;
+ case 28553u:goto B67611;
+ case 28560u:goto B67620;
+ case 28562u:goto B67622;
+ case 28564u:goto B67624;
+ case 28566u:goto B67626;
+ case 28568u:goto B67630;
+ case 28572u:goto B67634;
+ case 28573u:goto B67635;
+ case 28585u:goto B67651;
+ case 28594u:goto B67662;
+ case 28596u:goto B67664;
+ case 28597u:goto B67665;
+ case 28601u:goto B67671;
+ case 28642u:goto B67742;
+ case 28647u:goto B67747;
+ case 28651u:goto B67753;
+ case 28654u:goto B67756;
+ case 28655u:goto B67757;
+ case 28663u:goto B67767;
+ case 28667u:goto B67773;
+ default:return EXEC_OK;
+ }
+}
+/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent
+ * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */
+static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){
+ unsigned i;
+ /* fb 0177777: a fixed-fixed entry, under any FB and SUPERBNK */
+ uint8_t any=fb==0177777u;if(any)fb=W[4];
+ if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(!any&&fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
+ return 1;
+}
+
 /* CM_IMU_CALIBRATION_KEEP<n> bit i (i = 60n+bit, the order of cm_imu_calibration_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
 #ifndef CM_IMU_CALIBRATION_KEEP0
@@ -148,56 +3577,22 @@ static MAYBE_UNUSED uint8_t at_basic(const apollo_overlay_state *s,const p66_bia
 #ifndef CM_IMU_CALIBRATION_KEEP5
 #define CM_IMU_CALIBRATION_KEEP5 0xfffffffffffffff
 #endif
-#ifndef CM_IMU_CALIBRATION_KEEP6
-#define CM_IMU_CALIBRATION_KEEP6 0xfffffffffffffff
-#endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 0) & 1
 /* 02,2553 FINETIME (entry FINETIME) */
-static enum exec_status r4553(apollo_overlay_state *s,p66_bias_io *io){
- if(!sane(s,io))return EXEC_OUT_OF_SCOPE;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
+static enum exec_status r4553_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,2411u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 1) & 1
 /* 02,2554  (idle point) */
-static enum exec_status r4554(apollo_overlay_state *s,p66_bias_io *io){
- if(!sane(s,io))return EXEC_OUT_OF_SCOPE;
- /* 02,2555 READ LOSCALAR */
- ai_caf(s,(agc_word)AGC_CHANNEL(4));
- /* 02,2556 TS L */
- if(ai_ts(s,00001u))goto L4560;
- /* 02,2560 RXOR LOSCALAR */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(4)));
- goto L4561;
- L4560:;
- /* 02,2560 RXOR LOSCALAR */
- ai_tc(s,04561);
- return EXEC_OUT_OF_SCOPE; /* RXOR without EXTEND */
- L4561:;
- /* 02,2562 BZF +4 */
- if(ai_bzf(s)){
-   goto L4566;
- }
- /* 02,2564 READ LOSCALAR */
- ai_caf(s,(agc_word)AGC_CHANNEL(4));
- /* 02,2565 TS L */
- if(ai_ts(s,00001u))goto L4567;
- L4566:;
- /* 02,2566 CS POSMAX */
- ai_csf(s,037777);
- L4567:;
- /* 02,2567 AD L */
- ai_ad(s,00001u);
- /* 02,2571 BZF FINETIME   +1 */
- if(ai_bzf(s)){
-   W[5]=04554;return EXEC_IDLE; /* idle point */
- }
- /* 02,2573 READ HISCALAR */
- ai_caf(s,(agc_word)AGC_CHANNEL(3));
- /* 02,2574 TC Q */
- return tc_q(s);
+static enum exec_status r4554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,2412u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 2) & 1
@@ -241,104 +3636,32 @@ static enum exec_status r10617(apollo_overlay_state *s,p66_bias_io *io){
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 5) & 1
 /* 04,2621  (after EXIT) */
-static enum exec_status r10621(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2621 XCH MPAC */
- ai_xch(s,00154u);
- /* 04,2622 TS DSPTEM1 */
- if(ai_ts(s,01045u))return EXEC_OUT_OF_SCOPE;
- /* 04,2623 TC BANKCALL */
- ai_tc(s,02624);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r10621_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,4497u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 6) & 1
 /* 04,2625  (return from BANKCALL) */
-static enum exec_status r10625(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2625 CAF VNG0641 */
- ai_caf(s,001451);
- /* 04,2626 TC BANKCALL */
- ai_tc(s,02627);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r10625_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,4501u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 7) & 1
 /* 04,2630  (return from BANKCALL) */
-static enum exec_status r10630(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2630 TC +2 */
- ai_tc(s,02631);
- goto L10632;
- L10625:;
- /* 04,2625 CAF VNG0641 */
- ai_caf(s,001451);
- /* 04,2626 TC BANKCALL */
- ai_tc(s,02627);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 04,2631 TC +2 */
- ai_tc(s,02632);
- goto L10633;
- L10632:;
- /* 04,2632 TC -5 */
- ai_tc(s,02633);
- goto L10625;
- L10633:;
- /* 04,2633 TC INTPRET */
- ai_tc(s,02634);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r10630_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,4504u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 8) & 1
-/* 04,2631  (return from 04,2632) */
-static enum exec_status r10631(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2631 TC +2 */
- ai_tc(s,02632);
- goto L10633;
- L10625:;
- /* 04,2625 CAF VNG0641 */
- ai_caf(s,001451);
- /* 04,2626 TC BANKCALL */
- ai_tc(s,02627);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 04,2632 TC -5 */
- ai_tc(s,02633);
- goto L10625;
- L10633:;
- /* 04,2633 TC INTPRET */
- ai_tc(s,02634);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
-/* 04,2632  (return from 04,2633) */
-static enum exec_status r10632(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2632 TC -5 */
- ai_tc(s,02633);
- goto L10625;
- L10625:;
- /* 04,2625 CAF VNG0641 */
- ai_caf(s,001451);
- /* 04,2626 TC BANKCALL */
- ai_tc(s,02627);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 04,2633 TC INTPRET */
- ai_tc(s,02634);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
-/* 04,2633  (return from 04,2625) */
-static enum exec_status r10633(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,010000u))return EXEC_OUT_OF_SCOPE;
- /* 04,2633 TC INTPRET */
- ai_tc(s,02634);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
 /* 04,2634  (after TC INTPRET) */
 static enum exec_status r10634(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -353,7 +3676,7 @@ static enum exec_status r10634(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,2637 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
 /* 04,2637  (CHANG2 resume) */
 static enum exec_status r10637(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -364,7 +3687,7 @@ static enum exec_status r10637(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,2640 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
 /* 04,2640  (CHANG2 resume) */
 static enum exec_status r10640(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -378,7 +3701,7 @@ static enum exec_status r10640(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,2642 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
 /* 04,2642  (CHANG2 resume) */
 static enum exec_status r10642(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -389,7 +3712,7 @@ static enum exec_status r10642(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,2643 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
 /* 04,2643  (CHANG2 resume) */
 static enum exec_status r10643(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -399,7 +3722,7 @@ static enum exec_status r10643(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
 /* 32,2000 ERTHRVSE (CALL target) */
 static enum exec_status r64000(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -413,7 +3736,7 @@ static enum exec_status r64000(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2003 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
 /* 32,2003  (CHANG2 resume) */
 static enum exec_status r64003(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -427,7 +3750,7 @@ static enum exec_status r64003(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2004 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
 /* 32,2004  (CHANG2 resume) */
 static enum exec_status r64004(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -441,7 +3764,7 @@ static enum exec_status r64004(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2006 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
 /* 32,2006  (CHANG2 resume) */
 static enum exec_status r64006(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -455,7 +3778,7 @@ static enum exec_status r64006(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2010 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
 /* 32,2010  (CHANG2 resume) */
 static enum exec_status r64010(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -466,7 +3789,7 @@ static enum exec_status r64010(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2011 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
 /* 32,2011  (CHANG2 resume) */
 static enum exec_status r64011(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -479,7 +3802,7 @@ static enum exec_status r64011(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2013 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
 /* 32,2013  (CHANG2 resume) */
 static enum exec_status r64013(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -491,7 +3814,7 @@ static enum exec_status r64013(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2015 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
 /* 32,2015  (CHANG2 resume) */
 static enum exec_status r64015(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -502,7 +3825,7 @@ static enum exec_status r64015(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 32,2016 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
 /* 32,2016  (CHANG2 resume) */
 static enum exec_status r64016(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,064000u))return EXEC_OUT_OF_SCOPE;
@@ -512,75 +3835,16 @@ static enum exec_status r64016(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 22) & 1
 /* 33,2004 IMUTEST (entry IMUTEST) */
-static enum exec_status r66004(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2004 CA ZERO */
- ai_caf(s,000000);
- /* 33,2005 TS DRIFTT */
- if(ai_ts(s,01452u))goto L66007;
- /* 33,2006 TS GEOCOMP1 */
- if(ai_ts(s,01643u))goto L66010;
- L66007:;
- /* 33,2007 CAF TESTTIME */
- ai_caf(s,001602);
- L66010:;
- /* 33,2010 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66012;
- /* 33,2011 TC COAALIGN */
- ai_tc(s,02012);
- goto L66302;
- L66012:;
- /* 33,2012 CAF 1SECX */
- ai_caf(s,000144);
- /* 33,2013 TS 1SECXT1 */
- if(ai_ts(s,01644u))goto L66015;
- /* 33,2014 CA OC14400 */
- ai_caf(s,014400);
- L66015:;
- /* 33,2015 TS 1/PIPADT */
- if(ai_ts(s,01074u))return EXEC_OUT_OF_SCOPE;
- /* 33,2016 TC INTPRET */
- ai_tc(s,02017);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66302:;
- /* 33,2303 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2304 CA ZERO */
- ai_caf(s,000000);
- /* 33,2305 TS THETAD */
- if(ai_ts(s,01155u))goto L66307;
- /* 33,2306 TS THETAD     +1 */
- if(ai_ts(s,01156u))goto L66310;
- L66307:;
- /* 33,2307 TS THETAD     +2 */
- if(ai_ts(s,01157u))return EXEC_OUT_OF_SCOPE;
- L66310:;
- /* 33,2310 TC BANKCALL */
- ai_tc(s,02311);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66004_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27652u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
-/* 33,2012  (return from COAALIGN) */
-static enum exec_status r66012(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2012 CAF 1SECX */
- ai_caf(s,000144);
- /* 33,2013 TS 1SECXT1 */
- if(ai_ts(s,01644u))goto L66015;
- /* 33,2014 CA OC14400 */
- ai_caf(s,014400);
- L66015:;
- /* 33,2015 TS 1/PIPADT */
- if(ai_ts(s,01074u))return EXEC_OUT_OF_SCOPE;
- /* 33,2016 TC INTPRET */
- ai_tc(s,02017);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
 /* 33,2017  (after TC INTPRET) */
 static enum exec_status r66017(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -592,7 +3856,7 @@ static enum exec_status r66017(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
 /* 33,2021  (CALL return) */
 static enum exec_status r66021(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -606,7 +3870,7 @@ static enum exec_status r66021(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2022 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
 /* 33,2022  (CHANG2 resume) */
 static enum exec_status r66022(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -618,7 +3882,7 @@ static enum exec_status r66022(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2023 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
 /* 33,2023  (CHANG2 resume) */
 static enum exec_status r66023(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -630,7 +3894,7 @@ static enum exec_status r66023(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2025 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
 /* 33,2025  (CHANG2 resume) */
 static enum exec_status r66025(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -644,7 +3908,7 @@ static enum exec_status r66025(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2026 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
 /* 33,2026  (CHANG2 resume) */
 static enum exec_status r66026(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -655,7 +3919,7 @@ static enum exec_status r66026(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2027 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
 /* 33,2027  (CHANG2 resume) */
 static enum exec_status r66027(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -665,239 +3929,25 @@ static enum exec_status r66027(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 30) & 1
 /* 33,2030 GEOIMUTT (after EXIT) */
-static enum exec_status r66030(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2030 TC BANKCALL */
- ai_tc(s,02031);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66030_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27672u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 31) & 1
 /* 33,2032  (return from BANKCALL) */
-static enum exec_status r66032(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2032 TC IMUSTLLG */
- ai_tc(s,02033);
- goto L66316;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66033:;
- /* 33,2033 CA ZERO */
- ai_caf(s,000000);
- /* 33,2034 TS NDXCTR */
- if(ai_ts(s,01421u))goto L66036;
- /* 33,2035 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66037;
- L66036:;
- /* 33,2036 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66040;
- L66037:;
- /* 33,2037 CA DEC17 */
- ai_caf(s,000021);
- L66040:;
- /* 33,2040 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66042;
- /* 33,2041 CA XNBADR */
- ai_caf(s,001713);
- L66042:;
- /* 33,2042 TC ZEROING */
- ai_tc(s,02043);
- goto L66356;
- L66043:;
- /* 33,2043 CA HALF */
- ai_caf(s,020000);
- /* 33,2044 TS XNB */
- if(ai_ts(s,01713u))return EXEC_OUT_OF_SCOPE;
- /* 33,2045 TC INTPRET */
- ai_tc(s,02046);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66356:;
- /* 33,2356 TS L */
- if(ai_ts(s,00001u))goto L66360;
- /* 33,2357 TCF +2 */
- goto L66361;
- L66360:;
- /* 33,2360 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66362;
- L66361:;
- /* 33,2361 CAF ZERO */
- ai_caf(s,000000);
- L66362:;
- /* 33,2363 TS 0 */
- {agc_word iw=ixw(s,054000,01u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66365;
- }
- /* 33,2364 INCR L */
- ai_incr(s,00001u);
- L66365:;
- /* 33,2365 CCS ZERONDX1 */
- switch(ai_ccs(s,01655u)){case 0:goto L66366;case 1:goto L66367;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66366:;
- /* 33,2366 TCF ZEROING1 */
- goto L66360;
- L66367:;
- /* 33,2367 TC Q */
- switch(W[2]){case 02033u:W[2]=3u;goto L66033;case 02043u:W[2]=3u;goto L66043;case 02321u:W[2]=3u;goto L66321;case 02324u:W[2]=3u;goto L66324;case 02350u:W[2]=3u;goto L66350;default:return tc_q(s);}
+static enum exec_status r66032_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27674u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
-/* 33,2033 IMUBACK (return from IMUSTLLG) */
-static enum exec_status r66033(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2033 CA ZERO */
- ai_caf(s,000000);
- /* 33,2034 TS NDXCTR */
- if(ai_ts(s,01421u))goto L66036;
- /* 33,2035 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66037;
- L66036:;
- /* 33,2036 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66040;
- L66037:;
- /* 33,2037 CA DEC17 */
- ai_caf(s,000021);
- L66040:;
- /* 33,2040 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66042;
- /* 33,2041 CA XNBADR */
- ai_caf(s,001713);
- L66042:;
- /* 33,2042 TC ZEROING */
- ai_tc(s,02043);
- goto L66356;
- L66043:;
- /* 33,2043 CA HALF */
- ai_caf(s,020000);
- /* 33,2044 TS XNB */
- if(ai_ts(s,01713u))return EXEC_OUT_OF_SCOPE;
- /* 33,2045 TC INTPRET */
- ai_tc(s,02046);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66356:;
- /* 33,2356 TS L */
- if(ai_ts(s,00001u))goto L66360;
- /* 33,2357 TCF +2 */
- goto L66361;
- L66360:;
- /* 33,2360 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66362;
- L66361:;
- /* 33,2361 CAF ZERO */
- ai_caf(s,000000);
- L66362:;
- /* 33,2363 TS 0 */
- {agc_word iw=ixw(s,054000,01u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66365;
- }
- /* 33,2364 INCR L */
- ai_incr(s,00001u);
- L66365:;
- /* 33,2365 CCS ZERONDX1 */
- switch(ai_ccs(s,01655u)){case 0:goto L66366;case 1:goto L66367;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66366:;
- /* 33,2366 TCF ZEROING1 */
- goto L66360;
- L66367:;
- /* 33,2367 TC Q */
- switch(W[2]){case 02043u:W[2]=3u;goto L66043;default:return tc_q(s);}
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
-/* 33,2043  (return from ZEROING) */
-static enum exec_status r66043(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2043 CA HALF */
- ai_caf(s,020000);
- /* 33,2044 TS XNB */
- if(ai_ts(s,01713u))return EXEC_OUT_OF_SCOPE;
- /* 33,2045 TC INTPRET */
- ai_tc(s,02046);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
 /* 33,2046  (after TC INTPRET) */
 static enum exec_status r66046(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -911,7 +3961,7 @@ static enum exec_status r66046(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2050 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
 /* 33,2050  (CHANG2 resume) */
 static enum exec_status r66050(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -922,7 +3972,7 @@ static enum exec_status r66050(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2051 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
 /* 33,2051  (CHANG2 resume) */
 static enum exec_status r66051(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -934,7 +3984,7 @@ static enum exec_status r66051(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2053 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
 /* 33,2053  (CHANG2 resume) */
 static enum exec_status r66053(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -946,7 +3996,7 @@ static enum exec_status r66053(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2054 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
 /* 33,2054  (CHANG2 resume) */
 static enum exec_status r66054(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -957,7 +4007,7 @@ static enum exec_status r66054(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2055 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
 /* 33,2055  (CHANG2 resume) */
 static enum exec_status r66055(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -969,7 +4019,7 @@ static enum exec_status r66055(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2056 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
 /* 33,2056  (CHANG2 resume) */
 static enum exec_status r66056(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -980,7 +4030,7 @@ static enum exec_status r66056(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2057 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
 /* 33,2057  (CHANG2 resume) */
 static enum exec_status r66057(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -990,40 +4040,34 @@ static enum exec_status r66057(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 40) & 1
 /* 33,2060  (after EXIT) */
-static enum exec_status r66060(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2060 TC CHECKMM */
- ai_tc(s,02061);
- W[5]=05364;return EXEC_OK; /* CHECKMM */
+static enum exec_status r66060_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27696u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 41) & 1
 /* 33,2062  (return from CHECKMM) */
-static enum exec_status r66062(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2062 TCF +2 */
- goto L66064;
- L66064:;
- /* 33,2064 TC INTPRET */
- ai_tc(s,02065);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r66062_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27698u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 42) & 1
 /* 33,2063  (resumed from outside) */
-static enum exec_status r66063(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2063 TCF SETNBPOS   +1 */
- goto L67443;
- L67443:;
- /* 33,3443 TC BANKCALL */
- ai_tc(s,03444);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66063_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27699u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
 /* 33,2065  (after TC INTPRET) */
 static enum exec_status r66065(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -1035,7 +4079,7 @@ static enum exec_status r66065(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
 /* 33,2067  (CALL return) */
 static enum exec_status r66067(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -1045,1426 +4089,115 @@ static enum exec_status r66067(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 45) & 1
 /* 33,2070  (after EXIT) */
-static enum exec_status r66070(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2070 TC BANKCALL */
- ai_tc(s,02071);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66070_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27704u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 46) & 1
+/* 33,2072  (return from BANKCALL) */
+static enum exec_status r66072_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27706u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 47) & 1
+/* 33,2101  (return from DOWNFLAG) */
+static enum exec_status r66101_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27713u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 48) & 1
+/* 33,2106  (return from BANKCALL) */
+static enum exec_status r66106_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27718u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 49) & 1
+/* 33,2114  (return from LONGCALL) */
+static enum exec_status r66114_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27724u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 50) & 1
+/* 33,2116 GOESTIMS (2CADR GOESTIMS) */
+static enum exec_status r66116_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27726u);
+}
+#endif
+#if (CM_IMU_CALIBRATION_KEEP0 >> 51) & 1
+/* 33,2120  (return from JOBWAKE) */
+static enum exec_status r66120_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27728u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 52) & 1
-/* 33,2072  (return from BANKCALL) */
-static enum exec_status r66072(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2072 CAF GLOKFBIT */
- ai_caf(s,020000);
- /* 33,2073 MASK FLAGWRD3 */
- ai_mask(s,00077u);
- /* 33,2075 BZF +2 */
- if(ai_bzf(s)){
-   goto L66077;
- }
- /* 33,2076 INCR NDXCTR */
- ai_incr(s,01421u);
- L66077:;
- /* 33,2077 TC DOWNFLAG */
- ai_tc(s,02100);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
+/* 33,2152  (return from TWIDDLE) */
+static enum exec_status r66152_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27754u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 53) & 1
-/* 33,2101  (return from DOWNFLAG) */
-static enum exec_status r66101(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2101 TC IMUSTLLG */
- ai_tc(s,02102);
- goto L66316;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- /* 33,2102 CCS NDXCTR */
- switch(ai_ccs(s,01421u)){case 0:goto L66103;case 1:goto L66104;case 2:return EXEC_OUT_OF_SCOPE;default:goto L66106;}
- L66103:;
- /* 33,2103 TC PIPACHK */
- ai_tc(s,02104);
- goto L66131;
- L66104:;
- /* 33,2104 TC BANKCALL */
- ai_tc(s,02105);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66106:;
- /* 33,2106 TC IMUSTLLG */
- ai_tc(s,02107);
- goto L66316;
- /* 33,2110 DCA PERFDLAY */
- ai_dca(s,01656u);
- /* 33,2111 TC LONGCALL */
- ai_tc(s,02112);
- W[5]=05342;return EXEC_OK; /* LONGCALL */
- L66131:;
- /* 33,2132 TC +1 */
- {agc_word iw=ixw(s,002133,01421u);ai_tc(s,02133);switch(iw){
-   case 002133u:goto L66133;
-   case 002134u:goto L66134;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L66133:;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L66134:;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+/* 33,2153 PIPATASK (resumed from outside) */
+static enum exec_status r66153_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27755u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 54) & 1
-/* 33,2102  (return from IMUSTLLG) */
-static enum exec_status r66102(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2102 CCS NDXCTR */
- switch(ai_ccs(s,01421u)){case 0:goto L66103;case 1:goto L66104;case 2:return EXEC_OUT_OF_SCOPE;default:goto L66106;}
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66103:;
- /* 33,2103 TC PIPACHK */
- ai_tc(s,02104);
- goto L66131;
- L66104:;
- /* 33,2104 TC BANKCALL */
- ai_tc(s,02105);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66106:;
- /* 33,2106 TC IMUSTLLG */
- ai_tc(s,02107);
- goto L66316;
- /* 33,2110 DCA PERFDLAY */
- ai_dca(s,01656u);
- /* 33,2111 TC LONGCALL */
- ai_tc(s,02112);
- W[5]=05342;return EXEC_OK; /* LONGCALL */
- L66131:;
- /* 33,2132 TC +1 */
- {agc_word iw=ixw(s,002133,01421u);ai_tc(s,02133);switch(iw){
-   case 002133u:goto L66133;
-   case 002134u:goto L66134;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L66133:;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L66134:;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+/* 33,2163 STARTPIP (return from TWIDDLE) */
+static enum exec_status r66163_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27763u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 55) & 1
-/* 33,2104  (return from PIPACHK) */
-static enum exec_status r66104(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2104 TC BANKCALL */
- ai_tc(s,02105);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+/* 33,2167  (return from FINDVAC) */
+static enum exec_status r66167_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27767u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 56) & 1
-/* 33,2106  (return from BANKCALL) */
-static enum exec_status r66106(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2106 TC IMUSTLLG */
- ai_tc(s,02107);
- goto L66316;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- /* 33,2110 DCA PERFDLAY */
- ai_dca(s,01656u);
- /* 33,2111 TC LONGCALL */
- ai_tc(s,02112);
- W[5]=05342;return EXEC_OK; /* LONGCALL */
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
+/* 33,2170 PIPJOBB (2CADR PIPJOBB) */
+static enum exec_status r66170_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27768u);
 }
 #endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 57) & 1
-/* 33,2107  (return from IMUSTLLG) */
-static enum exec_status r66107(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2110 DCA PERFDLAY */
- ai_dca(s,01656u);
- /* 33,2111 TC LONGCALL */
- ai_tc(s,02112);
- W[5]=05342;return EXEC_OK; /* LONGCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
-/* 33,2114  (return from LONGCALL) */
-static enum exec_status r66114(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2114 CA ESTICADR */
- ai_caf(s,066453);
- /* 33,2115 TC JOBSLEEP */
- ai_tc(s,02116);
- W[5]=05175;return EXEC_OK; /* JOBSLEEP */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
-/* 33,2116 GOESTIMS (resumed from outside) */
-static enum exec_status r66116(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2116 CA ESTICADR */
- ai_caf(s,066453);
- /* 33,2117 TC JOBWAKE */
- ai_tc(s,02120);
- W[5]=05201;return EXEC_OK; /* JOBWAKE */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
-/* 33,2120  (return from JOBWAKE) */
-static enum exec_status r66120(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2120 TC TASKOVER */
- ai_tc(s,02121);
- W[5]=05324;return EXEC_OK; /* TASKOVER */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
-/* 33,2122 TORQUE (resumed from outside) */
-static enum exec_status r66122(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2122 CA ZERO */
- ai_caf(s,000000);
- goto L66123;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66123:;
- /* 33,2123 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66125;
- /* 33,2124 CA DRIFTI */
- ai_ca(s,01514u);
- L66125:;
- /* 33,2125 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66127;
- /* 33,2127 TS SOUTHDR    -1 */
- {agc_word iw=ixw(s,055430,01423u);if((iw^055430u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66131;
- }
- goto L66130;
- L66127:;
- /* 33,2127 TS SOUTHDR    -1 */
- if(ai_ts(s,01430u))goto L66131;
- L66130:;
- /* 33,2130 TC SHOW */
- ai_tc(s,02131);
- goto L66427;
- L66131:;
- /* 33,2132 TC +1 */
- {agc_word iw=ixw(s,002133,01421u);ai_tc(s,02133);switch(iw){
-   case 002133u:goto L66133;
-   case 002134u:goto L66134;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L66133:;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L66134:;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
-/* 33,2131 PIPACHK (return from SHOW) */
-static enum exec_status r66131(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2132 TC +1 */
- {agc_word iw=ixw(s,002133,01421u);ai_tc(s,02133);switch(iw){
-   case 002133u:goto L66133;
-   case 002134u:goto L66134;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66133:;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L66134:;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
-/* 33,2133  (return from the 33,2132 table) */
-static enum exec_status r66133(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 4) & 1
-/* 33,2134  (return from EARTHR*) */
-static enum exec_status r66134(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- goto L66135;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66135:;
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 5) & 1
-/* 33,2146  (return from CHECKG) */
-static enum exec_status r66146(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 6) & 1
-/* 33,2152  (return from TWIDDLE) */
-static enum exec_status r66152(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2152 TC ENDOFJOB */
- ai_tc(s,02153);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 7) & 1
-/* 33,2153 PIPATASK (resumed from outside) */
-static enum exec_status r66153(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2154 DIM LENGTHOT */
- ai_dim(s,01412u);
- /* 33,2155 CA LENGTHOT */
- ai_ca(s,01412u);
- /* 33,2157 BZMF STARTPIP */
- if(ai_bzmf(s)){
-   goto L66163;
- }
- /* 33,2160 CAF BIT10 */
- ai_caf(s,001000);
- /* 33,2161 TC TWIDDLE */
- ai_tc(s,02162);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66163:;
- /* 33,2163 CAF PRIO20 */
- ai_caf(s,020000);
- /* 33,2164 TC FINDVAC */
- ai_tc(s,02165);
- W[5]=05147;return EXEC_OK; /* FINDVAC */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
-/* 33,2163 STARTPIP (return from TWIDDLE) */
-static enum exec_status r66163(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2163 CAF PRIO20 */
- ai_caf(s,020000);
- /* 33,2164 TC FINDVAC */
- ai_tc(s,02165);
- W[5]=05147;return EXEC_OK; /* FINDVAC */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
-/* 33,2167  (return from FINDVAC) */
-static enum exec_status r66167(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2167 TC TASKOVER */
- ai_tc(s,02170);
- W[5]=05324;return EXEC_OK; /* TASKOVER */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 10) & 1
-/* 33,2170 PIPJOBB (resumed from outside) */
-static enum exec_status r66170(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2171 TC +1 */
- {agc_word iw=ixw(s,002172,01421u);ai_tc(s,02172);switch(iw){
-   case 002172u:goto L66172;
-   case 002173u:goto L66173;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66172:;
- /* 33,2172 TC EARTHR* */
- ai_tc(s,02173);
- goto L66417;
- L66173:;
- /* 33,2173 CA LENGTHOT */
- ai_ca(s,01412u);
- /* 33,2175 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66177;
- }
- /* 33,2176 TC ENDOFJOB */
- ai_tc(s,02177);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66177:;
- /* 33,2177 CA FIVE */
- ai_caf(s,000005);
- /* 33,2200 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66202;
- /* 33,2201 TC CHECKG */
- ai_tc(s,02202);
- goto L66321;
- L66202:;
- /* 33,2203 DCS DATAPL */
- ai_dcs(s,01502u);
- /* 33,2204 DAS DATAPL     +4 */
- ai_das(s,01506u);
- /* 33,2205 TC INTPRET */
- ai_tc(s,02206);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 11) & 1
-/* 33,2172  (return from the 33,2171 table) */
-static enum exec_status r66172(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2172 TC EARTHR* */
- ai_tc(s,02173);
- goto L66417;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- /* 33,2173 CA LENGTHOT */
- ai_ca(s,01412u);
- /* 33,2175 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66177;
- }
- /* 33,2176 TC ENDOFJOB */
- ai_tc(s,02177);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66177:;
- /* 33,2177 CA FIVE */
- ai_caf(s,000005);
- /* 33,2200 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66202;
- /* 33,2201 TC CHECKG */
- ai_tc(s,02202);
- goto L66321;
- L66202:;
- /* 33,2203 DCS DATAPL */
- ai_dcs(s,01502u);
- /* 33,2204 DAS DATAPL     +4 */
- ai_das(s,01506u);
- /* 33,2205 TC INTPRET */
- ai_tc(s,02206);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 12) & 1
-/* 33,2173  (return from EARTHR*) */
-static enum exec_status r66173(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2173 CA LENGTHOT */
- ai_ca(s,01412u);
- goto L66174;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66174:;
- /* 33,2175 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66177;
- }
- /* 33,2176 TC ENDOFJOB */
- ai_tc(s,02177);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66177:;
- /* 33,2177 CA FIVE */
- ai_caf(s,000005);
- /* 33,2200 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66202;
- /* 33,2201 TC CHECKG */
- ai_tc(s,02202);
- goto L66321;
- L66202:;
- /* 33,2203 DCS DATAPL */
- ai_dcs(s,01502u);
- /* 33,2204 DAS DATAPL     +4 */
- ai_das(s,01506u);
- /* 33,2205 TC INTPRET */
- ai_tc(s,02206);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 13) & 1
-/* 33,2202  (return from CHECKG) */
-static enum exec_status r66202(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2203 DCS DATAPL */
- ai_dcs(s,01502u);
- /* 33,2204 DAS DATAPL     +4 */
- ai_das(s,01506u);
- /* 33,2205 TC INTPRET */
- ai_tc(s,02206);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
 /* 33,2206  (after TC INTPRET) */
 static enum exec_status r66206(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2478,7 +4211,7 @@ static enum exec_status r66206(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2211 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
 /* 33,2211  (CHANG2 resume) */
 static enum exec_status r66211(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2496,7 +4229,7 @@ static enum exec_status r66211(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
 /* 33,2214 AINGOTN (BPL target) */
 static enum exec_status r66214(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2510,7 +4243,7 @@ static enum exec_status r66214(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2216 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
 /* 33,2216  (CHANG2 resume) */
 static enum exec_status r66216(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2524,7 +4257,7 @@ static enum exec_status r66216(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2220 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
 /* 33,2220  (CHANG2 resume) */
 static enum exec_status r66220(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2535,7 +4268,7 @@ static enum exec_status r66220(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* RTB SGNAGREE */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
 /* 33,2222  (RTB SGNAGREE return) */
 static enum exec_status r66222(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2546,7 +4279,7 @@ static enum exec_status r66222(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2223 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
 /* 33,2223  (CHANG2 resume) */
 static enum exec_status r66223(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -2556,519 +4289,43 @@ static enum exec_status r66223(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 4) & 1
 /* 33,2224  (after EXIT) */
-static enum exec_status r66224(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2224 CCS NDXCTR */
- switch(ai_ccs(s,01421u)){case 0:goto L66225;case 1:goto L66226;case 2:goto L66227;default:goto L66230;}
- L66225:;
- /* 33,2225 TC COAALIGN */
- ai_tc(s,02226);
- goto L66302;
- L66226:;
- /* 33,2226 TC SHOW */
- ai_tc(s,02227);
- goto L66427;
- L66227:;
- /* 33,2227 CA 3990DEC */
- ai_caf(s,007623);
- L66230:;
- /* 33,2230 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66232;
- /* 33,2232 CS SOUTHDR    -2 */
- {agc_word iw=ixw(s,041427,01423u);if((iw^041427u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66233;
- L66232:;
- /* 33,2232 CS SOUTHDR    -2 */
- ai_cs(s,01427u);
- L66233:;
- /* 33,2233 TS DRIFTT */
- if(ai_ts(s,01452u))goto L66235;
- /* 33,2234 CA XSM        +4 */
- ai_ca(s,01675u);
- L66235:;
- /* 33,2236 BZF PON2 */
- if(ai_bzf(s)){
-   goto L66244;
- }
- /* 33,2237 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2240 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2241 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2242 ADS ERCOMP1 */
- ai_ads(s,01647u);
- /* 33,2243 TCF PONG */
- goto L66250;
- L66244:;
- /* 33,2244 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2245 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2246 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2247 ADS ERCOMP1    +4 */
- ai_ads(s,01653u);
- L66250:;
- /* 33,2250 TC EARTHR* */
- ai_tc(s,02251);
- goto L66417;
- /* 33,2251 CA ZERO */
- ai_caf(s,000000);
- /* 33,2252 TS ERVECTOR */
- if(ai_ts(s,01404u))goto L66254;
- /* 33,2253 TS ERVECTOR   +1 */
- if(ai_ts(s,01405u))goto L66255;
- L66254:;
- /* 33,2254 CAF POSMAX */
- ai_caf(s,037777);
- L66255:;
- /* 33,2255 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66257;
- /* 33,2256 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66260;
- L66257:;
- /* 33,2257 CA CDUX */
- ai_ca(s,00032u);
- L66260:;
- /* 33,2260 TS LOSVEC */
- if(ai_ts(s,01413u))goto L66262;
- /* 33,2261 TC ESTIMS */
- ai_tc(s,02262);
- goto L66453;
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66302:;
- /* 33,2303 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2304 CA ZERO */
- ai_caf(s,000000);
- /* 33,2305 TS THETAD */
- if(ai_ts(s,01155u))goto L66307;
- /* 33,2306 TS THETAD     +1 */
- if(ai_ts(s,01156u))goto L66310;
- L66307:;
- /* 33,2307 TS THETAD     +2 */
- if(ai_ts(s,01157u))return EXEC_OUT_OF_SCOPE;
- L66310:;
- /* 33,2310 TC BANKCALL */
- ai_tc(s,02311);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
+static enum exec_status r66224_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27796u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
-/* 33,2226  (return from COAALIGN) */
-static enum exec_status r66226(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2226 TC SHOW */
- ai_tc(s,02227);
- goto L66427;
- /* 33,2227 CA 3990DEC */
- ai_caf(s,007623);
- /* 33,2230 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66232;
- /* 33,2232 CS SOUTHDR    -2 */
- {agc_word iw=ixw(s,041427,01423u);if((iw^041427u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66233;
- L66232:;
- /* 33,2232 CS SOUTHDR    -2 */
- ai_cs(s,01427u);
- L66233:;
- /* 33,2233 TS DRIFTT */
- if(ai_ts(s,01452u))goto L66235;
- /* 33,2234 CA XSM        +4 */
- ai_ca(s,01675u);
- L66235:;
- /* 33,2236 BZF PON2 */
- if(ai_bzf(s)){
-   goto L66244;
- }
- /* 33,2237 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2240 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2241 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2242 ADS ERCOMP1 */
- ai_ads(s,01647u);
- /* 33,2243 TCF PONG */
- goto L66250;
- L66244:;
- /* 33,2244 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2245 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2246 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2247 ADS ERCOMP1    +4 */
- ai_ads(s,01653u);
- L66250:;
- /* 33,2250 TC EARTHR* */
- ai_tc(s,02251);
- goto L66417;
- /* 33,2251 CA ZERO */
- ai_caf(s,000000);
- /* 33,2252 TS ERVECTOR */
- if(ai_ts(s,01404u))goto L66254;
- /* 33,2253 TS ERVECTOR   +1 */
- if(ai_ts(s,01405u))goto L66255;
- L66254:;
- /* 33,2254 CAF POSMAX */
- ai_caf(s,037777);
- L66255:;
- /* 33,2255 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66257;
- /* 33,2256 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66260;
- L66257:;
- /* 33,2257 CA CDUX */
- ai_ca(s,00032u);
- L66260:;
- /* 33,2260 TS LOSVEC */
- if(ai_ts(s,01413u))goto L66262;
- /* 33,2261 TC ESTIMS */
- ai_tc(s,02262);
- goto L66453;
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
-/* 33,2227 VERTDRFT (return from SHOW) */
-static enum exec_status r66227(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2227 CA 3990DEC */
- ai_caf(s,007623);
- /* 33,2230 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66232;
- /* 33,2232 CS SOUTHDR    -2 */
- {agc_word iw=ixw(s,041427,01423u);if((iw^041427u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66233;
- L66232:;
- /* 33,2232 CS SOUTHDR    -2 */
- ai_cs(s,01427u);
- L66233:;
- /* 33,2233 TS DRIFTT */
- if(ai_ts(s,01452u))goto L66235;
- /* 33,2234 CA XSM        +4 */
- ai_ca(s,01675u);
- L66235:;
- /* 33,2236 BZF PON2 */
- if(ai_bzf(s)){
-   goto L66244;
- }
- /* 33,2237 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2240 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2241 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2242 ADS ERCOMP1 */
- ai_ads(s,01647u);
- /* 33,2243 TCF PONG */
- goto L66250;
- L66244:;
- /* 33,2244 CS BIT5 */
- ai_csf(s,000020);
- /* 33,2245 ADS ERCOMP1    +2 */
- ai_ads(s,01651u);
- /* 33,2246 CA BIT5 */
- ai_caf(s,000020);
- /* 33,2247 ADS ERCOMP1    +4 */
- ai_ads(s,01653u);
- L66250:;
- /* 33,2250 TC EARTHR* */
- ai_tc(s,02251);
- goto L66417;
- /* 33,2251 CA ZERO */
- ai_caf(s,000000);
- /* 33,2252 TS ERVECTOR */
- if(ai_ts(s,01404u))goto L66254;
- /* 33,2253 TS ERVECTOR   +1 */
- if(ai_ts(s,01405u))goto L66255;
- L66254:;
- /* 33,2254 CAF POSMAX */
- ai_caf(s,037777);
- L66255:;
- /* 33,2255 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66257;
- /* 33,2256 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66260;
- L66257:;
- /* 33,2257 CA CDUX */
- ai_ca(s,00032u);
- L66260:;
- /* 33,2260 TS LOSVEC */
- if(ai_ts(s,01413u))goto L66262;
- /* 33,2261 TC ESTIMS */
- ai_tc(s,02262);
- goto L66453;
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
-/* 33,2251  (return from EARTHR*) */
-static enum exec_status r66251(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2251 CA ZERO */
- ai_caf(s,000000);
- /* 33,2252 TS ERVECTOR */
- if(ai_ts(s,01404u))goto L66254;
- /* 33,2253 TS ERVECTOR   +1 */
- if(ai_ts(s,01405u))goto L66255;
- L66254:;
- /* 33,2254 CAF POSMAX */
- ai_caf(s,037777);
- L66255:;
- /* 33,2255 TS TORQNDX */
- if(ai_ts(s,01450u))goto L66257;
- /* 33,2256 TS TORQNDX    +1 */
- if(ai_ts(s,01451u))goto L66260;
- L66257:;
- /* 33,2257 CA CDUX */
- ai_ca(s,00032u);
- L66260:;
- /* 33,2260 TS LOSVEC */
- if(ai_ts(s,01413u))goto L66262;
- /* 33,2261 TC ESTIMS */
- ai_tc(s,02262);
- goto L66453;
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
-/* 33,2262 VALMIS (return from ESTIMS) */
-static enum exec_status r66262(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 26) & 1
-/* 33,2267 ENDTEST1 (return from SHOW) */
-static enum exec_status r66267(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 5) & 1
 /* 33,2271  (return from DOWNFLAG) */
-static enum exec_status r66271(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2271 CS ZERO */
- ai_csf(s,000000);
- /* 33,2272 TC NEWMODEX   +3 */
- ai_tc(s,02273);
- W[5]=05357;return EXEC_OK; /* NEWMODEA */
+static enum exec_status r66271_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27833u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 6) & 1
 /* 33,2273  (return from NEWMODEA) */
-static enum exec_status r66273(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2273 TC BANKCALL */
- ai_tc(s,02274);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66273_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27835u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 7) & 1
 /* 33,2275  (return from BANKCALL) */
-static enum exec_status r66275(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2275 TC ENDEXT */
- ai_tc(s,02276);
- W[5]=05534;return EXEC_OK; /* ENDMARK */
+static enum exec_status r66275_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27837u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
 /* 33,2276 OVERFFIX (CALL target) */
 static enum exec_status r66276(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3082,7 +4339,7 @@ static enum exec_status r66276(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2301 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
 /* 33,2301  (CHANG2 resume) */
 static enum exec_status r66301(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3092,286 +4349,43 @@ static enum exec_status r66301(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 10) & 1
 /* 33,2312  (return from BANKCALL) */
-static enum exec_status r66312(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66312_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27850u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 11) & 1
 /* 33,2314  (return from BANKCALL) */
-static enum exec_status r66314(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2314 TC SOMERR2 */
- ai_tc(s,02315);
- goto L67102;
- /* 33,2315 TC QPLACE */
- ai_tc(s,02316);
- return tc_e(s,01425u);
- L67102:;
- /* 33,3102 TC ALARM */
- ai_tc(s,03103);
- W[5]=05650;return EXEC_OK; /* ALARM */
+static enum exec_status r66314_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27852u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
-/* 33,2315  (return from SOMERR2) */
-static enum exec_status r66315(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2315 TC QPLACE */
- ai_tc(s,02316);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
-/* 33,2321 CHECKG (return from 33,2312) */
-static enum exec_status r66321(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- goto L66323;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66323:;
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 12) & 1
 /* 33,2324 CHECKG1 (idle point) */
-static enum exec_status r66324(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2324 RELINT  */
- io->interrupt_enabled=1u;
- goto L66325;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66325:;
- /* 33,2325 CA NEWJOB */
- ai_ca(s,00067u);
- /* 33,2327 BZMF +6 */
- if(ai_bzmf(s)){
-   goto L66335;
- }
- /* 33,2330 TC CHANG1 */
- ai_tc(s,02331);
- W[5]=05164;return EXEC_OK; /* CHANG1 */
- L66335:;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   W[5]=02324;return EXEC_IDLE; /* idle point */
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
+static enum exec_status r66324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27860u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 13) & 1
 /* 33,2331  (return from CHANG1) */
-static enum exec_status r66331(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- goto L66332;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66332:;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
+static enum exec_status r66331_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27865u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 38) & 1
-/* 33,2350  (return from FINETIME) */
-static enum exec_status r66350(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
 /* 33,2370 EARTHR (entry EARTHR) */
 static enum exec_status r66370(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3386,7 +4400,7 @@ static enum exec_status r66370(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2373 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
 /* 33,2373  (CHANG2 resume) */
 static enum exec_status r66373(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3397,7 +4411,7 @@ static enum exec_status r66373(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2374 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
 /* 33,2374  (CHANG2 resume) */
 static enum exec_status r66374(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3415,7 +4429,7 @@ static enum exec_status r66374(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2377 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
 /* 33,2377  (CHANG2 resume) */
 static enum exec_status r66377(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3427,7 +4441,7 @@ static enum exec_status r66377(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
 /* 33,2401 ERTHR (BPL target) */
 static enum exec_status r66401(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3441,7 +4455,7 @@ static enum exec_status r66401(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2404 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
 /* 33,2404  (CHANG2 resume) */
 static enum exec_status r66404(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3455,7 +4469,7 @@ static enum exec_status r66404(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2407 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
 /* 33,2407  (CHANG2 resume) */
 static enum exec_status r66407(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3467,7 +4481,7 @@ static enum exec_status r66407(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2411 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
 /* 33,2411  (CHANG2 resume) */
 static enum exec_status r66411(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3478,7 +4492,7 @@ static enum exec_status r66411(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2412 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
 /* 33,2412  (CHANG2 resume) */
 static enum exec_status r66412(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3491,7 +4505,7 @@ static enum exec_status r66412(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* RTB PULSEIMU */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
 /* 33,2415  (RTB PULSEIMU return) */
 static enum exec_status r66415(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3501,7 +4515,7 @@ static enum exec_status r66415(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,000051,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
 /* 33,2422  (after TC INTPRET) */
 static enum exec_status r66422(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3513,7 +4527,7 @@ static enum exec_status r66422(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
 /* 33,2424 PROUT (entry PROUT) */
 static enum exec_status r66424(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3523,260 +4537,73 @@ static enum exec_status r66424(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 26) & 1
 /* 33,2425  (after EXIT) */
-static enum exec_status r66425(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2425 TC IMUSTLLG */
- ai_tc(s,02426);
- goto L66316;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- /* 33,2426 TC QPLACES */
- ai_tc(s,02427);
- return tc_e(s,01426u);
+static enum exec_status r66425_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27925u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 52) & 1
-/* 33,2426  (return from IMUSTLLG) */
-static enum exec_status r66426(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2426 TC QPLACES */
- ai_tc(s,02427);
- return tc_e(s,01426u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 27) & 1
 /* 33,2436  (return from BANKCALL) */
-static enum exec_status r66436(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2436 TC ENDTEST1 */
- ai_tc(s,02437);
- goto L66267;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- /* 33,2437 TC QPLACE */
- ai_tc(s,02440);
- return tc_e(s,01425u);
+static enum exec_status r66436_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27934u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
-/* 33,2437  (return from ENDTEST1) */
-static enum exec_status r66437(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2437 TC QPLACE */
- ai_tc(s,02440);
- return tc_e(s,01425u);
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 28) & 1
 /* 33,2440  (resumed from outside) */
-static enum exec_status r66440(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2440 TCF SHOW1 */
- goto L66431;
- L66431:;
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66440_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27936u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 29) & 1
 /* 33,2451 P11OUT (entry P11OUT) */
-static enum exec_status r66451(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2451 TC BANKCALL */
- ai_tc(s,02452);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66451_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27945u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
-/* 33,2453 ESTIMS (return from BANKCALL) */
-static enum exec_status r66453(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
+#if (CM_IMU_CALIBRATION_KEEP1 >> 30) & 1
+/* 33,2453 ESTIMS (CADR ESTIMS) */
+static enum exec_status r66453_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27947u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 31) & 1
 /* 33,2456 RSTGTS1 (return from 2PHSCHNG) */
-static enum exec_status r66456(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2456 INHINT  */
- io->interrupt_enabled=0u;
- goto L66457;
- L66356:;
- /* 33,2356 TS L */
- if(ai_ts(s,00001u))goto L66360;
- /* 33,2357 TCF +2 */
- goto L66361;
- L66360:;
- /* 33,2360 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66362;
- L66361:;
- /* 33,2361 CAF ZERO */
- ai_caf(s,000000);
- L66362:;
- /* 33,2363 TS 0 */
- {agc_word iw=ixw(s,054000,01u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66365;
- }
- /* 33,2364 INCR L */
- ai_incr(s,00001u);
- L66365:;
- /* 33,2365 CCS ZERONDX1 */
- switch(ai_ccs(s,01655u)){case 0:goto L66366;case 1:goto L66367;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66366:;
- /* 33,2366 TCF ZEROING1 */
- goto L66360;
- L66367:;
- /* 33,2367 TC Q */
- switch(W[2]){case 02472u:W[2]=3u;goto L66472;default:return tc_q(s);}
- L66457:;
- /* 33,2457 CA TIME1 */
- ai_ca(s,00025u);
- /* 33,2460 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66462;
- /* 33,2461 CAF ZERO */
- ai_caf(s,000000);
- L66462:;
- /* 33,2462 TS PIPAX */
- if(ai_ts(s,00037u))goto L66464;
- /* 33,2463 TS PIPAY */
- if(ai_ts(s,00040u))goto L66465;
- L66464:;
- /* 33,2464 TS PIPAZ */
- if(ai_ts(s,00041u))goto L66466;
- L66465:;
- /* 33,2465 RELINT  */
- io->interrupt_enabled=1u;
- L66466:;
- /* 33,2466 CA 77DECML */
- ai_caf(s,000115);
- /* 33,2467 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66471;
- /* 33,2470 CA ALXXXZ */
- ai_caf(s,001453);
- L66471:;
- /* 33,2471 TC ZEROING */
- ai_tc(s,02472);
- goto L66356;
- L66472:;
- /* 33,2472 TC INTPRET */
- ai_tc(s,02473);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r66456_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27950u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
-/* 33,2472  (return from ZEROING) */
-static enum exec_status r66472(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2472 TC INTPRET */
- ai_tc(s,02473);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
 /* 33,2473  (after TC INTPRET) */
 static enum exec_status r66473(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2473 SLOAD  */
  TRACE(s);
  cmi_newops(s,077735);
- cmi_direct(s,027111,006450);W[1]=0;ai_caf(s,K67110[0]);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);(void)ai_ts(s,0163);W[5]=06030;
+ cmi_direct(s,027111,006450);cmi_sload_fixed(s,K67110);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2475 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
 /* 33,2475  (CHANG2 resume) */
 static enum exec_status r66475(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3788,7 +4615,7 @@ static enum exec_status r66475(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2477 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
 /* 33,2477  (CHANG2 resume) */
 static enum exec_status r66477(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3800,7 +4627,7 @@ static enum exec_status r66477(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2501 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
 /* 33,2501  (CHANG2 resume) */
 static enum exec_status r66501(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3811,7 +4638,7 @@ static enum exec_status r66501(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2502 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
 /* 33,2502  (CHANG2 resume) */
 static enum exec_status r66502(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3822,7 +4649,7 @@ static enum exec_status r66502(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2503 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
 /* 33,2503  (CHANG2 resume) */
 static enum exec_status r66503(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3832,56 +4659,16 @@ static enum exec_status r66503(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 38) & 1
 /* 33,2504  (after EXIT) */
-static enum exec_status r66504(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2504 CCS GEOCOMP1 */
- switch(ai_ccs(s,01643u)){case 0:goto L66505;case 1:goto L66506;case 2:goto L66507;default:return EXEC_OUT_OF_SCOPE;}
- L66505:;
- /* 33,2505 TC +2 */
- ai_tc(s,02506);
- goto L66507;
- L66506:;
- /* 33,2506 TC SLEEPIE    +1 */
- ai_tc(s,02507);
- goto L66523;
- L66507:;
- /* 33,2507 TC INTPRET */
- ai_tc(s,02510);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r66504_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27972u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
-/* 33,2506  (return from 33,2507) */
-static enum exec_status r66506(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2506 TC SLEEPIE    +1 */
- ai_tc(s,02507);
- goto L66523;
- /* 33,2507 TC INTPRET */
- ai_tc(s,02510);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
-/* 33,2507  (return from 33,2523) */
-static enum exec_status r66507(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2507 TC INTPRET */
- ai_tc(s,02510);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
 /* 33,2510  (after TC INTPRET) */
 static enum exec_status r66510(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3893,7 +4680,7 @@ static enum exec_status r66510(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
 /* 33,2512  (CALL return) */
 static enum exec_status r66512(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -3903,1268 +4690,124 @@ static enum exec_status r66512(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 41) & 1
 /* 33,2513  (after EXIT) */
-static enum exec_status r66513(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2513 CA LENGTHOT */
- ai_ca(s,01412u);
- /* 33,2514 TS ERECTIME */
- if(ai_ts(s,01646u))return EXEC_OUT_OF_SCOPE;
- /* 33,2515 TC NEWMODEX */
- ai_tc(s,02516);
- W[5]=05354;return EXEC_OK; /* NEWMODEX */
+static enum exec_status r66513_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27979u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 42) & 1
 /* 33,2517  (return from NEWMODEX) */
-static enum exec_status r66517(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2517 TC BANKCALL */
- ai_tc(s,02520);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r66517_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27983u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 43) & 1
 /* 33,2521  (return from BANKCALL) */
-static enum exec_status r66521(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2521 TC ANNNNNN */
- ai_tc(s,02522);
- goto L67403;
- L66522:;
- /* 33,2522 TS LENGTHOT */
- if(ai_ts(s,01412u))return EXEC_OUT_OF_SCOPE;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67403:;
- /* 33,3403 CAF NINE */
- ai_caf(s,000011);
- /* 33,3404 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L67406;
- /* 33,3405 TC SLEEPIE    +1 */
- ai_tc(s,03406);
- goto L66523;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02522u:W[2]=3u;goto L66522;case 03406u:W[2]=3u;goto L67406;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r66521_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27985u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
-/* 33,2522 SLEEPIE (return from ANNNNNN) */
-static enum exec_status r66522(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2522 TS LENGTHOT */
- if(ai_ts(s,01412u))return EXEC_OUT_OF_SCOPE;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 44) & 1
 /* 33,2525  (return from PHASCHNG) */
-static enum exec_status r66525(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2525 CCS TORQNDX */
- switch(ai_ccs(s,01450u)){case 0:goto L66526;case 1:goto L66527;case 2:goto L66530;default:goto L66531;}
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66526:;
- /* 33,2526 TC EARTHR* */
- ai_tc(s,02527);
- goto L66417;
- L66527:;
- /* 33,2527 TC CHKCOMED */
- ai_tc(s,02530);
- goto L67406;
- L66530:;
- /* 33,2530 TC SETGWLST */
- ai_tc(s,02531);
- goto L66532;
- L66531:;
- /* 33,2531 TC ENDOFJOB */
- ai_tc(s,02532);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66532:;
- /* 33,2533 QXCH MPAC */
- ai_qxch(s,00154u);
- /* 33,2534 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2535 CS TIME1 */
- ai_cs(s,00025u);
- /* 33,2536 AD GTSWTLT1 */
- ai_ad(s,01645u);
- /* 33,2540 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66542;
- }
- /* 33,2541 AD NEGMAX */
- ai_adf(s,040000);
- L66542:;
- /* 33,2542 AD 1SECXT1 */
- ai_ad(s,01644u);
- /* 33,2544 BZMF RIGHTGTS */
- if(ai_bzmf(s)){
-   goto L66550;
- }
- L66545:;
- /* 33,2545 TC TWIDDLE */
- ai_tc(s,02546);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66550:;
- /* 33,2550 CAF FOUR */
- ai_caf(s,000004);
- /* 33,2551 TC WTGTSMPL */
- ai_tc(s,02552);
- goto L66545;
- L66552:;
- /* 33,2552 CAF 25DECML */
- ai_caf(s,000031);
- L66553:;
- /* 33,2553 TS MPAC */
- if(ai_ts(s,00154u))goto L66555;
- /* 33,2555 CAE THETAX1 */
- {agc_word iw=ixw(s,031460,0154u);if((iw^031460u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66556;
- L66555:;
- /* 33,2555 CAE THETAX1 */
- ai_ca(s,01460u);
- L66556:;
- /* 33,2557 TS RESTARPT */
- {agc_word iw=ixw(s,055577,0154u);if((iw^055577u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66561;
- }
- /* 33,2560 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66561;case 1:goto L66562;case 2:goto L66563;default:goto L66564;}
- L66561:;
- /* 33,2561 TCF STOREDTA   +1 */
- goto L66553;
- L66562:;
- /* 33,2562 TC Q */
- switch(W[2]){case 02527u:W[2]=3u;goto L66527;case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- switch(W[2]){case 02527u:W[2]=3u;goto L66527;case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02527u:W[2]=3u;goto L66527;case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r66525_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,27989u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
-/* 33,2527 WTLISTNT (return from EARTHR*) */
-static enum exec_status r66527(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2527 TC CHKCOMED */
- ai_tc(s,02530);
- goto L67406;
- L66530:;
- /* 33,2530 TC SETGWLST */
- ai_tc(s,02531);
- goto L66532;
- L66531:;
- /* 33,2531 TC ENDOFJOB */
- ai_tc(s,02532);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66532:;
- /* 33,2533 QXCH MPAC */
- ai_qxch(s,00154u);
- /* 33,2534 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2535 CS TIME1 */
- ai_cs(s,00025u);
- /* 33,2536 AD GTSWTLT1 */
- ai_ad(s,01645u);
- /* 33,2540 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66542;
- }
- /* 33,2541 AD NEGMAX */
- ai_adf(s,040000);
- L66542:;
- /* 33,2542 AD 1SECXT1 */
- ai_ad(s,01644u);
- /* 33,2544 BZMF RIGHTGTS */
- if(ai_bzmf(s)){
-   goto L66550;
- }
- L66545:;
- /* 33,2545 TC TWIDDLE */
- ai_tc(s,02546);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66550:;
- /* 33,2550 CAF FOUR */
- ai_caf(s,000004);
- /* 33,2551 TC WTGTSMPL */
- ai_tc(s,02552);
- goto L66545;
- L66552:;
- /* 33,2552 CAF 25DECML */
- ai_caf(s,000031);
- L66553:;
- /* 33,2553 TS MPAC */
- if(ai_ts(s,00154u))goto L66555;
- /* 33,2555 CAE THETAX1 */
- {agc_word iw=ixw(s,031460,0154u);if((iw^031460u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66556;
- L66555:;
- /* 33,2555 CAE THETAX1 */
- ai_ca(s,01460u);
- L66556:;
- /* 33,2557 TS RESTARPT */
- {agc_word iw=ixw(s,055577,0154u);if((iw^055577u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66561;
- }
- /* 33,2560 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66561;case 1:goto L66562;case 2:goto L66563;default:goto L66564;}
- L66561:;
- /* 33,2561 TCF STOREDTA   +1 */
- goto L66553;
- L66562:;
- /* 33,2562 TC Q */
- switch(W[2]){case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- switch(W[2]){case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02530u:W[2]=3u;goto L66530;case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
-/* 33,2530  (return from CHKCOMED) */
-static enum exec_status r66530(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2530 TC SETGWLST */
- ai_tc(s,02531);
- goto L66532;
- L66531:;
- /* 33,2531 TC ENDOFJOB */
- ai_tc(s,02532);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
- L66532:;
- /* 33,2533 QXCH MPAC */
- ai_qxch(s,00154u);
- /* 33,2534 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2535 CS TIME1 */
- ai_cs(s,00025u);
- /* 33,2536 AD GTSWTLT1 */
- ai_ad(s,01645u);
- /* 33,2540 BZMF +2 */
- if(ai_bzmf(s)){
-   goto L66542;
- }
- /* 33,2541 AD NEGMAX */
- ai_adf(s,040000);
- L66542:;
- /* 33,2542 AD 1SECXT1 */
- ai_ad(s,01644u);
- /* 33,2544 BZMF RIGHTGTS */
- if(ai_bzmf(s)){
-   goto L66550;
- }
- L66545:;
- /* 33,2545 TC TWIDDLE */
- ai_tc(s,02546);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66550:;
- /* 33,2550 CAF FOUR */
- ai_caf(s,000004);
- /* 33,2551 TC WTGTSMPL */
- ai_tc(s,02552);
- goto L66545;
- L66552:;
- /* 33,2552 CAF 25DECML */
- ai_caf(s,000031);
- L66553:;
- /* 33,2553 TS MPAC */
- if(ai_ts(s,00154u))goto L66555;
- /* 33,2555 CAE THETAX1 */
- {agc_word iw=ixw(s,031460,0154u);if((iw^031460u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66556;
- L66555:;
- /* 33,2555 CAE THETAX1 */
- ai_ca(s,01460u);
- L66556:;
- /* 33,2557 TS RESTARPT */
- {agc_word iw=ixw(s,055577,0154u);if((iw^055577u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66561;
- }
- /* 33,2560 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66561;case 1:goto L66562;case 2:goto L66563;default:goto L66564;}
- L66561:;
- /* 33,2561 TCF STOREDTA   +1 */
- goto L66553;
- L66562:;
- /* 33,2562 TC Q */
- switch(W[2]){case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- switch(W[2]){case 02531u:W[2]=3u;goto L66531;case 02552u:W[2]=3u;goto L66552;default:return tc_q(s);}
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
-/* 33,2531  (return from SETGWLST) */
-static enum exec_status r66531(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2531 TC ENDOFJOB */
- ai_tc(s,02532);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 45) & 1
 /* 33,2547  (return from TWIDDLE) */
-static enum exec_status r66547(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2547 TC MPAC */
- ai_tc(s,02550);
- return tc_e(s,00154u);
+static enum exec_status r66547_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28007u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
-/* 33,2552 STOREDTA (return from WTGTSMPL) */
-static enum exec_status r66552(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2552 CAF 25DECML */
- ai_caf(s,000031);
- L66553:;
- /* 33,2553 TS MPAC */
- if(ai_ts(s,00154u))goto L66555;
- /* 33,2555 CAE THETAX1 */
- {agc_word iw=ixw(s,031460,0154u);if((iw^031460u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66556;
- L66555:;
- /* 33,2555 CAE THETAX1 */
- ai_ca(s,01460u);
- L66556:;
- /* 33,2557 TS RESTARPT */
- {agc_word iw=ixw(s,055577,0154u);if((iw^055577u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66561;
- }
- /* 33,2560 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66561;case 1:goto L66562;case 2:goto L66563;default:goto L66564;}
- L66561:;
- /* 33,2561 TCF STOREDTA   +1 */
- goto L66553;
- L66562:;
- /* 33,2562 TC Q */
- return tc_q(s);
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- return tc_q(s);
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 46) & 1
 /* 33,2574 ALLOOP (entry ALLOOP) */
-static enum exec_status r66574(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r66574_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28028u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 47) & 1
 /* 33,2602 ALLOOP1 (return from PHASCHNG) */
-static enum exec_status r66602(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2602 CAE GEOSAVE1 */
- ai_ca(s,01631u);
- /* 33,2603 TS ALTIM */
- if(ai_ts(s,01540u))goto L66605;
- /* 33,2604 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L66605;case 1:goto L66606;case 2:goto L66607;default:goto L66610;}
- L66605:;
- /* 33,2605 CA A */
- ai_ca(s,00000u);
- L66606:;
- /* 33,2606 TS ALTIMS */
- if(ai_ts(s,01541u))goto L66610;
- L66607:;
- /* 33,2607 CS A */
- ai_cs(s,00000u);
- L66610:;
- /* 33,2610 TS ALTIM */
- if(ai_ts(s,01540u))goto L66612;
- /* 33,2611 CAF ZERO */
- ai_caf(s,000000);
- L66612:;
- /* 33,2612 XCH PIPAX */
- ai_xch(s,00037u);
- /* 33,2613 TS DELVX */
- if(ai_ts(s,01162u))goto L66615;
- /* 33,2614 CAF ZERO */
- ai_caf(s,000000);
- L66615:;
- /* 33,2615 XCH PIPAY */
- ai_xch(s,00040u);
- /* 33,2616 TS DELVY */
- if(ai_ts(s,01164u))goto L66620;
- /* 33,2617 CAF ZERO */
- ai_caf(s,000000);
- L66620:;
- /* 33,2620 XCH PIPAZ */
- ai_xch(s,00041u);
- /* 33,2621 TS DELVZ */
- if(ai_ts(s,01166u))goto L66623;
- /* 33,2622 CAF 19DECML */
- ai_caf(s,000023);
- L66623:;
- /* 33,2623 TC NEWPHASE */
- ai_tc(s,02624);
- W[5]=04114;return EXEC_OK; /* NEWPHASE */
+static enum exec_status r66602_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28034u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 48) & 1
 /* 33,2625 SPECSTS (return from NEWPHASE) */
-static enum exec_status r66625(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2625 CAF PRIO22 */
- ai_caf(s,022000);
- /* 33,2626 TC FINDVAC */
- ai_tc(s,02627);
- W[5]=05147;return EXEC_OK; /* FINDVAC */
+static enum exec_status r66625_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28053u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 49) & 1
 /* 33,2631  (return from FINDVAC) */
-static enum exec_status r66631(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2631 TC TASKOVER */
- ai_tc(s,02632);
- W[5]=05324;return EXEC_OK; /* TASKOVER */
+static enum exec_status r66631_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28057u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
-/* 33,2632 ALFLT (resumed from outside) */
-static enum exec_status r66632(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2632 TC STOREDTA */
- ai_tc(s,02633);
- goto L66552;
- L66552:;
- /* 33,2552 CAF 25DECML */
- ai_caf(s,000031);
- L66553:;
- /* 33,2553 TS MPAC */
- if(ai_ts(s,00154u))goto L66555;
- /* 33,2555 CAE THETAX1 */
- {agc_word iw=ixw(s,031460,0154u);if((iw^031460u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66556;
- L66555:;
- /* 33,2555 CAE THETAX1 */
- ai_ca(s,01460u);
- L66556:;
- /* 33,2557 TS RESTARPT */
- {agc_word iw=ixw(s,055577,0154u);if((iw^055577u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66561;
- }
- /* 33,2560 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66561;case 1:goto L66562;case 2:goto L66563;default:goto L66564;}
- L66561:;
- /* 33,2561 TCF STOREDTA   +1 */
- goto L66553;
- L66562:;
- /* 33,2562 TC Q */
- switch(W[2]){case 02633u:W[2]=3u;goto L66633;default:return tc_q(s);}
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- switch(W[2]){case 02633u:W[2]=3u;goto L66633;default:return tc_q(s);}
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L66633:;
- /* 33,2633 TC PHASCHNG */
- ai_tc(s,02634);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+#if (CM_IMU_CALIBRATION_KEEP1 >> 50) & 1
+/* 33,2632 ALFLT (2CADR ALFLT) */
+static enum exec_status r66632_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28058u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
-/* 33,2633  (return from STOREDTA) */
-static enum exec_status r66633(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2633 TC PHASCHNG */
- ai_tc(s,02634);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 51) & 1
 /* 33,2635  (return from PHASCHNG) */
-static enum exec_status r66635(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2635 TCF +2 */
- goto L66637;
- L66637:;
- /* 33,2637 CCS GEOCOMP1 */
- switch(ai_ccs(s,01643u)){case 0:goto L66640;case 1:goto L66641;case 2:goto L66642;default:goto L66643;}
- L66640:;
- /* 33,2640 TC +2 */
- ai_tc(s,02641);
- goto L66642;
- L66641:;
- /* 33,2641 TC NORMLOP */
- ai_tc(s,02642);
- goto L66645;
- L66642:;
- /* 33,2642 TC CHKCOMED */
- ai_tc(s,02643);
- goto L67406;
- L66643:;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66645:;
- /* 33,2645 TC INTPRET */
- ai_tc(s,02646);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02641u:W[2]=3u;goto L66641;case 02642u:W[2]=3u;goto L66642;case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r66635_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28061u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 52) & 1
 /* 33,2636 ALFLT1 (resumed from outside) */
-static enum exec_status r66636(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2636 TC LOADSTDT */
- ai_tc(s,02637);
- goto L66563;
- L66563:;
- /* 33,2563 CAF 25DECML */
- ai_caf(s,000031);
- L66564:;
- /* 33,2564 TS MPAC */
- if(ai_ts(s,00154u))goto L66566;
- /* 33,2566 CA RESTARPT */
- {agc_word iw=ixw(s,031577,0154u);if((iw^031577u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L66567;
- L66566:;
- /* 33,2566 CA RESTARPT */
- ai_ca(s,01577u);
- L66567:;
- /* 33,2570 TS THETAX1 */
- {agc_word iw=ixw(s,055460,0154u);if((iw^055460u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66572;
- }
- /* 33,2571 CCS MPAC */
- switch(ai_ccs(s,00154u)){case 0:goto L66572;case 1:goto L66573;case 2:goto L66574;default:goto L66575;}
- L66572:;
- /* 33,2572 TCF LOADSTDT   +1 */
- goto L66564;
- L66573:;
- /* 33,2573 TC Q */
- switch(W[2]){case 02637u:W[2]=3u;goto L66637;case 02641u:W[2]=3u;goto L66641;case 02642u:W[2]=3u;goto L66642;case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L66574:;
- /* 33,2574 CA TIME1 */
- ai_ca(s,00025u);
- L66575:;
- /* 33,2575 TS GTSWTLT1 */
- if(ai_ts(s,01645u))goto L66577;
- /* 33,2576 CA ALTIM */
- ai_ca(s,01540u);
- L66577:;
- /* 33,2577 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,2600 TC PHASCHNG */
- ai_tc(s,02601);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L66637:;
- /* 33,2637 CCS GEOCOMP1 */
- switch(ai_ccs(s,01643u)){case 0:goto L66640;case 1:goto L66641;case 2:goto L66642;default:goto L66643;}
- L66640:;
- /* 33,2640 TC +2 */
- ai_tc(s,02641);
- goto L66642;
- L66641:;
- /* 33,2641 TC NORMLOP */
- ai_tc(s,02642);
- goto L66645;
- L66642:;
- /* 33,2642 TC CHKCOMED */
- ai_tc(s,02643);
- goto L67406;
- L66643:;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66645:;
- /* 33,2645 TC INTPRET */
- ai_tc(s,02646);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02637u:W[2]=3u;goto L66637;case 02641u:W[2]=3u;goto L66641;case 02642u:W[2]=3u;goto L66642;case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r66636_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28062u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
-/* 33,2637  (return from LOADSTDT) */
-static enum exec_status r66637(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2637 CCS GEOCOMP1 */
- switch(ai_ccs(s,01643u)){case 0:goto L66640;case 1:goto L66641;case 2:goto L66642;default:goto L66643;}
- L66640:;
- /* 33,2640 TC +2 */
- ai_tc(s,02641);
- goto L66642;
- L66641:;
- /* 33,2641 TC NORMLOP */
- ai_tc(s,02642);
- goto L66645;
- L66642:;
- /* 33,2642 TC CHKCOMED */
- ai_tc(s,02643);
- goto L67406;
- L66643:;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66645:;
- /* 33,2645 TC INTPRET */
- ai_tc(s,02646);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02641u:W[2]=3u;goto L66641;case 02642u:W[2]=3u;goto L66642;case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
-/* 33,2641  (return from 33,2642) */
-static enum exec_status r66641(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2641 TC NORMLOP */
- ai_tc(s,02642);
- goto L66645;
- L66642:;
- /* 33,2642 TC CHKCOMED */
- ai_tc(s,02643);
- goto L67406;
- L66643:;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66645:;
- /* 33,2645 TC INTPRET */
- ai_tc(s,02646);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02642u:W[2]=3u;goto L66642;case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
-/* 33,2642  (return from NORMLOP) */
-static enum exec_status r66642(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2642 TC CHKCOMED */
- ai_tc(s,02643);
- goto L67406;
- L66643:;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 02643u:W[2]=3u;goto L66643;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
-/* 33,2643  (return from CHKCOMED) */
-static enum exec_status r66643(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2643 TC BANKCALL */
- ai_tc(s,02644);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 53) & 1
 /* 33,2645 NORMLOP (return from BANKCALL) */
-static enum exec_status r66645(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,2645 TC INTPRET */
- ai_tc(s,02646);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r66645_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28069u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
 /* 33,2646  (after TC INTPRET) */
 static enum exec_status r66646(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5176,7 +4819,7 @@ static enum exec_status r66646(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2650 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
 /* 33,2650  (CHANG2 resume) */
 static enum exec_status r66650(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5188,7 +4831,7 @@ static enum exec_status r66650(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2652 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
 /* 33,2652  (CHANG2 resume) */
 static enum exec_status r66652(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5202,7 +4845,7 @@ static enum exec_status r66652(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2654 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
 /* 33,2654  (CHANG2 resume) */
 static enum exec_status r66654(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5216,7 +4859,7 @@ static enum exec_status r66654(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2656 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
 /* 33,2656  (CHANG2 resume) */
 static enum exec_status r66656(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5228,7 +4871,7 @@ static enum exec_status r66656(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2660 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
 /* 33,2660  (CHANG2 resume) */
 static enum exec_status r66660(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5239,7 +4882,7 @@ static enum exec_status r66660(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2661 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
 /* 33,2661  (CHANG2 resume) */
 static enum exec_status r66661(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5253,7 +4896,7 @@ static enum exec_status r66661(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2664 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
 /* 33,2664  (CHANG2 resume) */
 static enum exec_status r66664(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5267,7 +4910,7 @@ static enum exec_status r66664(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2666 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
 /* 33,2666  (CHANG2 resume) */
 static enum exec_status r66666(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5283,7 +4926,7 @@ static enum exec_status r66666(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2670 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
 /* 33,2670 ALCGKK (CHANG2 resume) */
 static enum exec_status r66670(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5301,7 +4944,7 @@ static enum exec_status r66670(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2673 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
 /* 33,2673 ALKCG (CHANG2 resume) */
 static enum exec_status r66673(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5315,21 +4958,21 @@ static enum exec_status r66673(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2676 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
 /* 33,2676 ALKCG2 (CHANG2 resume) */
 static enum exec_status r66676(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2676 DLOAD* INCR,1 */
  TRACE(s);
  cmi_newops(s,062143);
- cmi_indexed(s,002243,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002243,006021);cmi_dload_op(s,0);
  right(s);
  cmi_misc(s,077775,002433);cmi_incr(s);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2701 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
 /* 33,2701  (CHANG2 resume) */
 static enum exec_status r66701(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5340,7 +4983,7 @@ static enum exec_status r66701(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2702 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
 /* 33,2702  (CHANG2 resume) */
 static enum exec_status r66702(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5358,7 +5001,7 @@ static enum exec_status r66702(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2705 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
 /* 33,2705 ALFLT3 (BMN target) */
 static enum exec_status r66705(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5370,21 +5013,21 @@ static enum exec_status r66705(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2707 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
 /* 33,2707 DELMLP (CHANG2 resume) */
 static enum exec_status r66707(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2707 DLOAD* DMP */
  TRACE(s);
  cmi_newops(s,041343);
- cmi_indexed(s,002543,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002543,006021);cmi_dload_op(s,0);
  right(s);
  cmi_direct(s,027705,007541);cmi_dmp(s,K67704);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2712 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
 /* 33,2712  (CHANG2 resume) */
 static enum exec_status r66712(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5393,12 +5036,12 @@ static enum exec_status r66712(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,043661);
  cmi_direct(s,021212,007570);cmi_gshift(s);
  right(s);
- cmi_indexed(s,002511,007031);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_bdsu(s,0);
+ cmi_indexed(s,002511,007031);cmi_bdsu(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2715 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
 /* 33,2715  (CHANG2 resume) */
 static enum exec_status r66715(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5409,7 +5052,7 @@ static enum exec_status r66715(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2716 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
 /* 33,2716  (CHANG2 resume) */
 static enum exec_status r66716(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5418,12 +5061,12 @@ static enum exec_status r66716(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,040725);
  cmi_direct(s,027707,006472);cmi_pddl_op(s,K67706);
  right(s);
- cmi_indexed(s,002531,007541);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dmp(s,0);
+ cmi_indexed(s,002531,007541);cmi_dmp(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2721 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
 /* 33,2721  (CHANG2 resume) */
 static enum exec_status r66721(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5435,7 +5078,7 @@ static enum exec_status r66721(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2722 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
 /* 33,2722  (CHANG2 resume) */
 static enum exec_status r66722(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5449,7 +5092,7 @@ static enum exec_status r66722(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2724 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
 /* 33,2724  (CHANG2 resume) */
 static enum exec_status r66724(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5460,7 +5103,7 @@ static enum exec_status r66724(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2725 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
 /* 33,2725  (CHANG2 resume) */
 static enum exec_status r66725(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5478,21 +5121,21 @@ static enum exec_status r66725(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2730 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
 /* 33,2730 ALILP (CHANG2 resume) */
 static enum exec_status r66730(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2730 DLOAD* DMPR* */
  TRACE(s);
  cmi_newops(s,056743);
- cmi_indexed(s,075314,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,075314,006021);cmi_dload_op(s,0);
  right(s);
- cmi_indexed(s,075230,007543);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dmpr(s,0);
+ cmi_indexed(s,075230,007543);cmi_dmpr(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2733 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
 /* 33,2733  (CHANG2 resume) */
 static enum exec_status r66733(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5503,7 +5146,7 @@ static enum exec_status r66733(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2734 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
 /* 33,2734  (CHANG2 resume) */
 static enum exec_status r66734(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5521,7 +5164,7 @@ static enum exec_status r66734(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2737 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
 /* 33,2737 ALKLP (CHANG2 resume) */
 static enum exec_status r66737(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5535,33 +5178,33 @@ static enum exec_status r66737(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2742 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
 /* 33,2742  (CHANG2 resume) */
 static enum exec_status r66742(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2742 DLOAD* DMPR* */
  TRACE(s);
  cmi_newops(s,056743);
- cmi_indexed(s,002460,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002460,006021);cmi_dload_op(s,0);
  right(s);
- cmi_indexed(s,075206,007543);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dmpr(s,0);
+ cmi_indexed(s,075206,007543);cmi_dmpr(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2745 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
 /* 33,2745  (CHANG2 resume) */
 static enum exec_status r66745(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2745 DAD*  */
  TRACE(s);
  cmi_newops(s,077613);
- cmi_indexed(s,075266,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,075266,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2747 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
 /* 33,2747  (CHANG2 resume) */
 static enum exec_status r66747(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5572,21 +5215,21 @@ static enum exec_status r66747(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2750 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
 /* 33,2750  (CHANG2 resume) */
 static enum exec_status r66750(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2750 DLOAD* DAD* */
  TRACE(s);
  cmi_newops(s,042743);
- cmi_indexed(s,075304,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,075304,006021);cmi_dload_op(s,0);
  right(s);
- cmi_indexed(s,075220,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,075220,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2753 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
 /* 33,2753  (CHANG2 resume) */
 static enum exec_status r66753(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5597,21 +5240,21 @@ static enum exec_status r66753(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2754 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
 /* 33,2754  (CHANG2 resume) */
 static enum exec_status r66754(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2754 DMPR* DAD* */
  TRACE(s);
  cmi_newops(s,042673);
- cmi_indexed(s,075206,007543);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dmpr(s,0);
+ cmi_indexed(s,075206,007543);cmi_dmpr(s,0);
  right(s);
- cmi_indexed(s,075256,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,075256,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2757 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
 /* 33,2757  (CHANG2 resume) */
 static enum exec_status r66757(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5622,21 +5265,25 @@ static enum exec_status r66757(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2760 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
 /* 33,2760  (CHANG2 resume) */
 static enum exec_status r66760(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2760 DLOAD* DMP* */
  TRACE(s);
  cmi_newops(s,040743);
- cmi_indexed(s,027712,006021);{uint8_t bad=0;const agc_word *k=kx(s,KX67651,28585u,70u,6u,&bad);if(bad)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,k);}
+ cmi_indexed(s,027712,006021);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+   case 28616u:k=K67710;break;
+   case 28618u:k=K67712;break;
+   default:return EXEC_OUT_OF_SCOPE;}
+ cmi_dload_op(s,k);}
  right(s);
- cmi_indexed(s,075206,007541);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dmp(s,0);
+ cmi_indexed(s,075206,007541);cmi_dmp(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2763 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
 /* 33,2763  (CHANG2 resume) */
 static enum exec_status r66763(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5645,12 +5292,12 @@ static enum exec_status r66763(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,042772);
  shorts(s);
  right(s);
- cmi_indexed(s,075246,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,075246,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2765 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
 /* 33,2765  (CHANG2 resume) */
 static enum exec_status r66765(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5661,7 +5308,7 @@ static enum exec_status r66765(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2766 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
 /* 33,2766  (CHANG2 resume) */
 static enum exec_status r66766(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5679,35 +5326,35 @@ static enum exec_status r66766(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,2771 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
 /* 33,2771 LOOSE (CHANG2 resume) */
 static enum exec_status r66771(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2771 DLOAD* PDDL* */
  TRACE(s);
  cmi_newops(s,064743);
- cmi_indexed(s,002533,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002533,006021);cmi_dload_op(s,0);
  right(s);
- cmi_indexed(s,002531,006472);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_pddl_op(s,0);
+ cmi_indexed(s,002531,006472);cmi_pddl_op(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2774 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
 /* 33,2774  (CHANG2 resume) */
 static enum exec_status r66774(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,2774 PDDL* VDEF */
  TRACE(s);
  cmi_newops(s,055523);
- cmi_indexed(s,002541,006472);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_pddl_op(s,0);
+ cmi_indexed(s,002541,006472);cmi_pddl_op(s,0);
  right(s);
  cmi_unary(s,003232);cmi_vdef(s);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,2776 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
 /* 33,2776  (CHANG2 resume) */
 static enum exec_status r66776(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5721,7 +5368,7 @@ static enum exec_status r66776(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3000 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
 /* 33,3000  (CHANG2 resume) */
 static enum exec_status r67000(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5733,7 +5380,7 @@ static enum exec_status r67000(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3002 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
 /* 33,3002  (CHANG2 resume) */
 static enum exec_status r67002(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5744,7 +5391,7 @@ static enum exec_status r67002(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3003 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
 /* 33,3003  (CHANG2 resume) */
 static enum exec_status r67003(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5756,7 +5403,7 @@ static enum exec_status r67003(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3005 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
 /* 33,3005  (CHANG2 resume) */
 static enum exec_status r67005(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5767,7 +5414,7 @@ static enum exec_status r67005(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3006 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
 /* 33,3006  (CHANG2 resume) */
 static enum exec_status r67006(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5779,7 +5426,7 @@ static enum exec_status r67006(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3010 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
 /* 33,3010  (CHANG2 resume) */
 static enum exec_status r67010(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5790,7 +5437,7 @@ static enum exec_status r67010(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3011 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
 /* 33,3011  (CHANG2 resume) */
 static enum exec_status r67011(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5806,7 +5453,7 @@ static enum exec_status r67011(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3013 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
 /* 33,3013  (CHANG2 resume) */
 static enum exec_status r67013(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5820,21 +5467,21 @@ static enum exec_status r67013(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3016 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
 /* 33,3016 BOOP (CHANG2 resume) */
 static enum exec_status r67016(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3016 DLOAD* DMPR */
  TRACE(s);
  cmi_newops(s,057343);
- cmi_indexed(s,002513,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002513,006021);cmi_dload_op(s,0);
  right(s);
  cmi_direct(s,027715,007543);cmi_dmpr(s,K67714);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3021 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
 /* 33,3021  (CHANG2 resume) */
 static enum exec_status r67021(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5846,7 +5493,7 @@ static enum exec_status r67021(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3022 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
 /* 33,3022  (CHANG2 resume) */
 static enum exec_status r67022(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5860,7 +5507,7 @@ static enum exec_status r67022(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3023 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
 /* 33,3023  (CHANG2 resume) */
 static enum exec_status r67023(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5874,7 +5521,7 @@ static enum exec_status r67023(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3025 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
 /* 33,3025  (CHANG2 resume) */
 static enum exec_status r67025(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5885,7 +5532,7 @@ static enum exec_status r67025(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3026 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
 /* 33,3026  (CHANG2 resume) */
 static enum exec_status r67026(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5897,7 +5544,7 @@ static enum exec_status r67026(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3027 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
 /* 33,3027  (CHANG2 resume) */
 static enum exec_status r67027(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5909,7 +5556,7 @@ static enum exec_status r67027(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3030 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
 /* 33,3030  (CHANG2 resume) */
 static enum exec_status r67030(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5920,7 +5567,7 @@ static enum exec_status r67030(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3031 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
 /* 33,3031  (CHANG2 resume) */
 static enum exec_status r67031(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5936,7 +5583,7 @@ static enum exec_status r67031(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3033 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
 /* 33,3033 PERFERAS (CHANG2 resume) */
 static enum exec_status r67033(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -5946,93 +5593,25 @@ static enum exec_status r67033(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 53) & 1
 /* 33,3034  (after EXIT) */
-static enum exec_status r67034(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3034 CA EBANK7 */
- ai_caf(s,003400);
- goto L67035;
- L66522:;
- /* 33,2522 TS LENGTHOT */
- if(ai_ts(s,01412u))return EXEC_OUT_OF_SCOPE;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67035:;
- /* 33,3035 TS EBANK */
- if(ai_ts(s,00003u))goto L67037;
- /* 33,3036 TC LAT(SPL) */
- ai_tc(s,03037);
- W[5]=01400;return EXEC_OK; /* erasable program LAT(SPL) */
- L67037:;
- /* 33,3037 CCS LENGTHOT */
- switch(ai_ccs(s,01412u)){case 0:goto L67040;case 1:goto L67041;case 2:goto L67042;default:goto L67043;}
- L67040:;
- /* 33,3040 TC SLEEPIE */
- ai_tc(s,03041);
- goto L66522;
- L67041:;
- /* 33,3041 CCS TORQNDX */
- switch(ai_ccs(s,01450u)){case 0:goto L67042;case 1:goto L67043;case 2:goto L67044;default:goto L67045;}
- L67042:;
- /* 33,3042 TCF +2 */
- goto L67044;
- L67043:;
- /* 33,3043 TC SETUPER1 */
- ai_tc(s,03044);
- goto L67046;
- L67044:;
- /* 33,3044 CA CDUX */
- ai_ca(s,00032u);
- L67045:;
- /* 33,3045 TS LOSVEC     +1 */
- if(ai_ts(s,01414u))return EXEC_OUT_OF_SCOPE;
- L67046:;
- /* 33,3046 TC INTPRET */
- ai_tc(s,03047);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67034_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28188u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
-/* 33,3041  (return from SLEEPIE) */
-static enum exec_status r67041(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3041 CCS TORQNDX */
- switch(ai_ccs(s,01450u)){case 0:goto L67042;case 1:goto L67043;case 2:goto L67044;default:goto L67045;}
- L67042:;
- /* 33,3042 TCF +2 */
- goto L67044;
- L67043:;
- /* 33,3043 TC SETUPER1 */
- ai_tc(s,03044);
- goto L67046;
- L67044:;
- /* 33,3044 CA CDUX */
- ai_ca(s,00032u);
- L67045:;
- /* 33,3045 TS LOSVEC     +1 */
- if(ai_ts(s,01414u))return EXEC_OUT_OF_SCOPE;
- L67046:;
- /* 33,3046 TC INTPRET */
- ai_tc(s,03047);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+#if (CM_IMU_CALIBRATION_KEEP2 >> 54) & 1
+/* 33,3037 ONCEMORE (resumed from outside) */
+static enum exec_status r67037_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28191u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
-/* 33,3044  (return from SETUPER1) */
-static enum exec_status r67044(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3044 CA CDUX */
- ai_ca(s,00032u);
- /* 33,3045 TS LOSVEC     +1 */
- if(ai_ts(s,01414u))return EXEC_OUT_OF_SCOPE;
- /* 33,3046 TC INTPRET */
- ai_tc(s,03047);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
 /* 33,3047  (after TC INTPRET) */
 static enum exec_status r67047(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6046,7 +5625,7 @@ static enum exec_status r67047(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3052 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
 /* 33,3052  (CHANG2 resume) */
 static enum exec_status r67052(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6060,7 +5639,7 @@ static enum exec_status r67052(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3054 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
 /* 33,3054  (CHANG2 resume) */
 static enum exec_status r67054(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6074,7 +5653,7 @@ static enum exec_status r67054(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3056 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
 /* 33,3056  (CHANG2 resume) */
 static enum exec_status r67056(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6088,7 +5667,7 @@ static enum exec_status r67056(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3060 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
 /* 33,3060  (CHANG2 resume) */
 static enum exec_status r67060(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6099,7 +5678,7 @@ static enum exec_status r67060(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3061 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
 /* 33,3061  (CHANG2 resume) */
 static enum exec_status r67061(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6109,210 +5688,34 @@ static enum exec_status r67061(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 1) & 1
 /* 33,3062 TORQINCH (after EXIT) */
-static enum exec_status r67062(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3062 TC PHASCHNG */
- ai_tc(s,03063);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67062_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28210u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 2) & 1
 /* 33,3064  (return from PHASCHNG) */
-static enum exec_status r67064(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3064 CA OGCPL */
- ai_caf(s,002757);
- /* 33,3065 TC BANKCALL */
- ai_tc(s,03066);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67064_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28212u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 3) & 1
 /* 33,3067  (return from BANKCALL) */
-static enum exec_status r67067(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3067 TC IMUSTLLG */
- ai_tc(s,03070);
- goto L66316;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66312:;
- /* 33,2312 TC BANKCALL */
- ai_tc(s,02313);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66316:;
- /* 33,2317 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2320 TC COAALIGN   +10 */
- ai_tc(s,02321);
- goto L66312;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3070 CCS TORQNDX */
- switch(ai_ccs(s,01450u)){case 0:goto L67071;case 1:goto L67072;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L67071:;
- /* 33,3071 TC VALMIS */
- ai_tc(s,03072);
- goto L66262;
- L67072:;
- /* 33,3072 TC INTPRET */
- ai_tc(s,03073);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67067_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28215u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
-/* 33,3070  (return from IMUSTLLG) */
-static enum exec_status r67070(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3070 CCS TORQNDX */
- switch(ai_ccs(s,01450u)){case 0:goto L67071;case 1:goto L67072;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66262:;
- /* 33,2262 CA DRIFTO */
- ai_ca(s,01512u);
- /* 33,2263 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66265;
- /* 33,2264 CA ZERO */
- ai_caf(s,000000);
- L66265:;
- /* 33,2265 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66267;
- /* 33,2266 TC SHOW */
- ai_tc(s,02267);
- goto L66427;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67071:;
- /* 33,3071 TC VALMIS */
- ai_tc(s,03072);
- goto L66262;
- L67072:;
- /* 33,3072 TC INTPRET */
- ai_tc(s,03073);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
-/* 33,3072  (return from VALMIS) */
-static enum exec_status r67072(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3072 TC INTPRET */
- ai_tc(s,03073);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
 /* 33,3073  (after TC INTPRET) */
 static enum exec_status r67073(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6324,7 +5727,7 @@ static enum exec_status r67073(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
 /* 33,3075  (CALL return) */
 static enum exec_status r67075(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6334,420 +5737,52 @@ static enum exec_status r67075(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 6) & 1
 /* 33,3076  (after EXIT) */
-static enum exec_status r67076(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3076 TC TORQUE */
- ai_tc(s,03077);
- goto L66122;
- L4553:;
- /* 02,2553 INHINT  */
- io->interrupt_enabled=0u;
- W[5]=04554;return EXEC_IDLE; /* idle point */
- L66122:;
- /* 33,2122 CA ZERO */
- ai_caf(s,000000);
- /* 33,2123 TS DSPTEM2 */
- if(ai_ts(s,01050u))goto L66125;
- /* 33,2124 CA DRIFTI */
- ai_ca(s,01514u);
- L66125:;
- /* 33,2125 TS DSPTEM2    +1 */
- if(ai_ts(s,01051u))goto L66127;
- /* 33,2127 TS SOUTHDR    -1 */
- {agc_word iw=ixw(s,055430,01423u);if((iw^055430u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66131;
- }
- goto L66130;
- L66127:;
- /* 33,2127 TS SOUTHDR    -1 */
- if(ai_ts(s,01430u))goto L66131;
- L66130:;
- /* 33,2130 TC SHOW */
- ai_tc(s,02131);
- goto L66427;
- L66131:;
- /* 33,2132 TC +1 */
- {agc_word iw=ixw(s,002133,01421u);ai_tc(s,02133);switch(iw){
-   case 002133u:goto L66133;
-   case 002134u:goto L66134;
-   default:return EXEC_OUT_OF_SCOPE;}}
- L66133:;
- /* 33,2133 TC EARTHR* */
- ai_tc(s,02134);
- goto L66417;
- L66134:;
- /* 33,2134 CA DEC57 */
- ai_caf(s,000023);
- /* 33,2135 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L66137;
- /* 33,2136 CA ONE */
- ai_caf(s,000001);
- L66137:;
- /* 33,2137 TS RESULTCT */
- if(ai_ts(s,01547u))goto L66141;
- /* 33,2140 CA ZERO */
- ai_caf(s,000000);
- L66141:;
- /* 33,2142 TS PIPAX */
- {agc_word iw=ixw(s,054037,01422u);if((iw^054037u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66144;
- }
- /* 33,2143 TS DATAPL */
- if(ai_ts(s,01502u))goto L66145;
- L66144:;
- /* 33,2144 TS DATAPL     +4 */
- if(ai_ts(s,01506u))goto L66146;
- L66145:;
- /* 33,2145 TC CHECKG */
- ai_tc(s,02146);
- goto L66321;
- L66146:;
- /* 33,2146 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2147 CAF TWO */
- ai_caf(s,000002);
- /* 33,2150 TC TWIDDLE */
- ai_tc(s,02151);
- W[5]=05235;return EXEC_OK; /* TWIDDLE */
- L66321:;
- /* 33,2322 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2323 TC +6 */
- ai_tc(s,02324);
- goto L66331;
- L66324:;
- W[5]=02324;return EXEC_IDLE; /* idle point */
- L66331:;
- /* 33,2331 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,2333 CS PIPAX */
- {agc_word iw=ixw(s,040037,01422u);if((iw^040037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_cs(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2334 TS ZERONDX */
- if(ai_ts(s,01655u))goto L66336;
- /* 33,2335 INHINT  */
- io->interrupt_enabled=0u;
- L66336:;
- /* 33,2337 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2340 AD ZERONDX */
- ai_ad(s,01655u);
- /* 33,2342 BZF CHECKG1 */
- if(ai_bzf(s)){
-   goto L66324;
- }
- /* 33,2344 CA PIPAX */
- {agc_word iw=ixw(s,030037,01422u);if((iw^030037u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- /* 33,2346 TS DATAPL */
- {agc_word iw=ixw(s,055502,01547u);if((iw^055502u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66350;
- }
- /* 33,2347 TC FINETIME */
- ai_tc(s,02350);
- goto L4553;
- L66350:;
- /* 33,2351 TS DATAPL     +1 */
- {agc_word iw=ixw(s,055503,01547u);if((iw^055503u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66353;
- }
- /* 33,2353 LXCH DATAPL     +2 */
- {agc_word iw=ixw(s,023504,01547u);if((iw^023504u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_lxch(s,(unsigned)((iw&01777u)-0u));
- }
- goto L66354;
- L66353:;
- /* 33,2353 LXCH DATAPL     +2 */
- ai_lxch(s,01504u);
- L66354:;
- /* 33,2354 RELINT  */
- io->interrupt_enabled=1u;
- /* 33,2355 TC QPLACE */
- ai_tc(s,02356);
- return tc_e(s,01425u);
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66427:;
- /* 33,2430 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,2431 CA POSITON */
- ai_ca(s,01423u);
- /* 33,2432 TS DSPTEM2    +2 */
- if(ai_ts(s,01052u))goto L66434;
- /* 33,2433 CA VB06N98 */
- ai_caf(s,001542);
- L66434:;
- /* 33,2434 TC BANKCALL */
- ai_tc(s,02435);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3077 TC ALARM */
- ai_tc(s,03100);
- W[5]=05650;return EXEC_OK; /* ALARM */
+static enum exec_status r67076_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28222u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
-/* 33,3077 SOMEERRR (return from TORQUE) */
-static enum exec_status r67077(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3077 TC ALARM */
- ai_tc(s,03100);
- W[5]=05650;return EXEC_OK; /* ALARM */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 7) & 1
 /* 33,3101  (return from ALARM) */
-static enum exec_status r67101(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3101 TC +3 */
- ai_tc(s,03102);
- goto L67104;
- /* 33,3102 TC ALARM */
- ai_tc(s,03103);
- W[5]=05650;return EXEC_OK; /* ALARM */
- L67104:;
- /* 33,3104 TC PHASCHNG */
- ai_tc(s,03105);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67101_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28225u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
-/* 33,3102 SOMERR2 (return from 33,3104) */
-static enum exec_status r67102(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3102 TC ALARM */
- ai_tc(s,03103);
- W[5]=05650;return EXEC_OK; /* ALARM */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 8) & 1
 /* 33,3104  (return from ALARM) */
-static enum exec_status r67104(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3104 TC PHASCHNG */
- ai_tc(s,03105);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67104_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28228u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 9) & 1
 /* 33,3106  (return from PHASCHNG) */
-static enum exec_status r67106(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3106 TC ENDTEST1 */
- ai_tc(s,03107);
- goto L66267;
- L66267:;
- /* 33,2267 TC DOWNFLAG */
- ai_tc(s,02270);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
+static enum exec_status r67106_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28230u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 10) & 1
 /* 33,3131 GTSCPSS (resumed from outside) */
-static enum exec_status r67131(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3131 CA FLAGWRD1 */
- ai_ca(s,00075u);
- goto L67132;
- L66030:;
- /* 33,2030 TC BANKCALL */
- ai_tc(s,02031);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L66356:;
- /* 33,2356 TS L */
- if(ai_ts(s,00001u))goto L66360;
- /* 33,2357 TCF +2 */
- goto L66361;
- L66360:;
- /* 33,2360 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66362;
- L66361:;
- /* 33,2361 CAF ZERO */
- ai_caf(s,000000);
- L66362:;
- /* 33,2363 TS 0 */
- {agc_word iw=ixw(s,054000,01u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66365;
- }
- /* 33,2364 INCR L */
- ai_incr(s,00001u);
- L66365:;
- /* 33,2365 CCS ZERONDX1 */
- switch(ai_ccs(s,01655u)){case 0:goto L66366;case 1:goto L66367;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66366:;
- /* 33,2366 TCF ZEROING1 */
- goto L66360;
- L66367:;
- /* 33,2367 TC Q */
- switch(W[2]){case 03166u:W[2]=3u;goto L67166;case 03167u:W[2]=3u;goto L67167;case 03170u:W[2]=3u;goto L67170;default:return tc_q(s);}
- L67132:;
- /* 33,3132 MASK NOP01BIT */
- ai_maskf(s,004000);
- /* 33,3134 BZF GTSCPSSA */
- if(ai_bzf(s)){
-   goto L67137;
- }
- /* 33,3135 TC POODOO */
- ai_tc(s,03136);
- W[5]=05721;return EXEC_OK; /* POODOO */
- L67137:;
- /* 33,3137 CAF ONE */
- ai_caf(s,000001);
- /* 33,3140 TS GEOCOMP1 */
- if(ai_ts(s,01643u))goto L67142;
- /* 33,3141 CA 1/PIPAGT */
- ai_caf(s,006200);
- L67142:;
- /* 33,3142 TS 1/PIPADT */
- if(ai_ts(s,01074u))goto L67144;
- /* 33,3143 CA BIT8 */
- ai_caf(s,000200);
- L67144:;
- /* 33,3144 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L67146;
- /* 33,3145 CAF 1/2SECX */
- ai_caf(s,000062);
- L67146:;
- /* 33,3146 TS 1SECXT1 */
- if(ai_ts(s,01644u))goto L67150;
- /* 33,3147 CAF ONE */
- ai_caf(s,000001);
- L67150:;
- /* 33,3150 TS PREMTRX1 */
- if(ai_ts(s,01632u))goto L67152;
- /* 33,3151 TS PERFDLAY   +1 */
- if(ai_ts(s,01657u))goto L67153;
- L67152:;
- /* 33,3152 CAF ZERO */
- ai_caf(s,000000);
- L67153:;
- /* 33,3153 TS PERFDLAY */
- if(ai_ts(s,01656u))goto L67155;
- /* 33,3155 DCA LUNCHAZ1 */
- ai_dca(s,01633u);
- goto L67156;
- L67155:;
- /* 33,3155 DCA LUNCHAZ1 */
- ai_ca(s,01634u);
- L67156:;
- /* 33,3156 DXCH NEWAZ1 */
- ai_dxch(s,01635u);
- /* 33,3160 DCA LUNCHAZ1 */
- ai_dca(s,01633u);
- /* 33,3161 DXCH OLDAZMTH */
- ai_dxch(s,01637u);
- /* 33,3162 CA DEC17 */
- ai_caf(s,000021);
- /* 33,3163 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L67165;
- /* 33,3164 CA XSMADR */
- ai_caf(s,001671);
- L67165:;
- /* 33,3165 TC ZEROING */
- ai_tc(s,03166);
- goto L66356;
- L67166:;
- /* 33,3166 TC POSN17C */
- ai_tc(s,03167);
- goto L67170;
- L67167:;
- /* 33,3167 TC GEOIMUTT */
- ai_tc(s,03170);
- goto L66030;
- L67170:;
- /* 33,3171 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,3172 CS HALF */
- ai_csf(s,020000);
- /* 33,3173 TS ZSM */
- if(ai_ts(s,01705u))return EXEC_OUT_OF_SCOPE;
- /* 33,3174 TC INTPRET */
- ai_tc(s,03175);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67131_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28249u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
-/* 33,3166  (return from ZEROING) */
-static enum exec_status r67166(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3166 TC POSN17C */
- ai_tc(s,03167);
- goto L67170;
- L66030:;
- /* 33,2030 TC BANKCALL */
- ai_tc(s,02031);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3167 TC GEOIMUTT */
- ai_tc(s,03170);
- goto L66030;
- L67170:;
- /* 33,3171 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,3172 CS HALF */
- ai_csf(s,020000);
- /* 33,3173 TS ZSM */
- if(ai_ts(s,01705u))return EXEC_OUT_OF_SCOPE;
- /* 33,3174 TC INTPRET */
- ai_tc(s,03175);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
-/* 33,3167  (return from POSN17C) */
-static enum exec_status r67167(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3167 TC GEOIMUTT */
- ai_tc(s,03170);
- goto L66030;
- L66030:;
- /* 33,2030 TC BANKCALL */
- ai_tc(s,02031);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3171 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,3172 CS HALF */
- ai_csf(s,020000);
- /* 33,3173 TS ZSM */
- if(ai_ts(s,01705u))return EXEC_OUT_OF_SCOPE;
- /* 33,3174 TC INTPRET */
- ai_tc(s,03175);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
-/* 33,3170 POSN17C (return from GEOIMUTT) */
-static enum exec_status r67170(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3171 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,3172 CS HALF */
- ai_csf(s,020000);
- /* 33,3173 TS ZSM */
- if(ai_ts(s,01705u))return EXEC_OUT_OF_SCOPE;
- /* 33,3174 TC INTPRET */
- ai_tc(s,03175);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
 /* 33,3175  (after TC INTPRET) */
 static enum exec_status r67175(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6761,7 +5796,7 @@ static enum exec_status r67175(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3177 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
 /* 33,3177  (CHANG2 resume) */
 static enum exec_status r67177(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6773,7 +5808,7 @@ static enum exec_status r67177(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3200 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
 /* 33,3200  (CHANG2 resume) */
 static enum exec_status r67200(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6784,7 +5819,7 @@ static enum exec_status r67200(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3201 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
 /* 33,3201  (CHANG2 resume) */
 static enum exec_status r67201(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6796,7 +5831,7 @@ static enum exec_status r67201(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3202 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
 /* 33,3202  (CHANG2 resume) */
 static enum exec_status r67202(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6808,7 +5843,7 @@ static enum exec_status r67202(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3203 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
 /* 33,3203  (CHANG2 resume) */
 static enum exec_status r67203(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6819,7 +5854,7 @@ static enum exec_status r67203(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3204 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
 /* 33,3204  (CHANG2 resume) */
 static enum exec_status r67204(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6831,7 +5866,7 @@ static enum exec_status r67204(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3205 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
 /* 33,3205  (CHANG2 resume) */
 static enum exec_status r67205(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6842,7 +5877,7 @@ static enum exec_status r67205(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3206 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
 /* 33,3206  (CHANG2 resume) */
 static enum exec_status r67206(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6852,30 +5887,30 @@ static enum exec_status r67206(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 20) & 1
 /* 33,3207  (after EXIT) */
-static enum exec_status r67207(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3207 TC QPLACE */
- ai_tc(s,03210);
- return tc_e(s,01425u);
+static enum exec_status r67207_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28295u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
 /* 33,3210 ALWAYSG (BMN target) */
 static enum exec_status r67210(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3210 DLOAD* DSU* */
  TRACE(s);
  cmi_newops(s,044743);
- cmi_indexed(s,002543,006021);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dload_op(s,0);
+ cmi_indexed(s,002543,006021);cmi_dload_op(s,0);
  right(s);
- cmi_indexed(s,002505,006754);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dsu(s,0);
+ cmi_indexed(s,002505,006754);cmi_dsu(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3213 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
 /* 33,3213  (CHANG2 resume) */
 static enum exec_status r67213(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6884,12 +5919,12 @@ static enum exec_status r67213(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,042675);
  cmi_direct(s,027717,007543);cmi_dmpr(s,K67716);
  right(s);
- cmi_indexed(s,002505,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,002505,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3216 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
 /* 33,3216  (CHANG2 resume) */
 static enum exec_status r67216(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6900,19 +5935,19 @@ static enum exec_status r67216(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3217 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
 /* 33,3217  (CHANG2 resume) */
 static enum exec_status r67217(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3217 DAD*  */
  TRACE(s);
  cmi_newops(s,077613);
- cmi_indexed(s,002507,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,002507,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3221 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
 /* 33,3221  (CHANG2 resume) */
 static enum exec_status r67221(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6923,7 +5958,7 @@ static enum exec_status r67221(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3222 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
 /* 33,3222  (CHANG2 resume) */
 static enum exec_status r67222(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6932,12 +5967,12 @@ static enum exec_status r67222(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,042675);
  cmi_direct(s,027721,007543);cmi_dmpr(s,K67720);
  right(s);
- cmi_indexed(s,002505,006744);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_dad(s,0);
+ cmi_indexed(s,002505,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3225 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
 /* 33,3225  (CHANG2 resume) */
 static enum exec_status r67225(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6951,7 +5986,7 @@ static enum exec_status r67225(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3227 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
 /* 33,3227  (CHANG2 resume) */
 static enum exec_status r67227(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6969,7 +6004,7 @@ static enum exec_status r67227(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3232 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
 /* 33,3232  (CHANG2 resume) */
 static enum exec_status r67232(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -6987,7 +6022,7 @@ static enum exec_status r67232(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3235 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
 /* 33,3235  (CHANG2 resume) */
 static enum exec_status r67235(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7002,7 +6037,7 @@ static enum exec_status r67235(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3237 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
 /* 33,3237  (CHANG2 resume) */
 static enum exec_status r67237(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7014,7 +6049,7 @@ static enum exec_status r67237(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3241 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
 /* 33,3241  (CHANG2 resume) */
 static enum exec_status r67241(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7025,7 +6060,7 @@ static enum exec_status r67241(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3242 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
 /* 33,3242  (CHANG2 resume) */
 static enum exec_status r67242(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7035,7 +6070,7 @@ static enum exec_status r67242(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,067266,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
 /* 33,3244 COMPGS (BZE target) */
 static enum exec_status r67244(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7049,7 +6084,7 @@ static enum exec_status r67244(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3247 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
 /* 33,3247  (CHANG2 resume) */
 static enum exec_status r67247(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7061,7 +6096,7 @@ static enum exec_status r67247(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3251 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
 /* 33,3251  (CHANG2 resume) */
 static enum exec_status r67251(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7075,7 +6110,7 @@ static enum exec_status r67251(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3254 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
 /* 33,3254  (CHANG2 resume) */
 static enum exec_status r67254(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7087,7 +6122,7 @@ static enum exec_status r67254(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3256 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
 /* 33,3256  (CHANG2 resume) */
 static enum exec_status r67256(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7101,7 +6136,7 @@ static enum exec_status r67256(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3261 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
 /* 33,3261  (CHANG2 resume) */
 static enum exec_status r67261(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7115,7 +6150,7 @@ static enum exec_status r67261(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3264 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
 /* 33,3264  (CHANG2 resume) */
 static enum exec_status r67264(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7129,7 +6164,7 @@ static enum exec_status r67264(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3266 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
 /* 33,3266 ADDINDRF (GOTO target) */
 static enum exec_status r67266(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7139,174 +6174,16 @@ static enum exec_status r67266(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 42) & 1
 /* 33,3267 ENDGTSAL (after EXIT) */
-static enum exec_status r67267(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3267 CCS LENGTHOT */
- switch(ai_ccs(s,01412u)){case 0:goto L67270;case 1:goto L67271;case 2:goto L67272;default:goto L67273;}
- L66522:;
- /* 33,2522 TS LENGTHOT */
- if(ai_ts(s,01412u))return EXEC_OUT_OF_SCOPE;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67270:;
- /* 33,3270 TC SLEEPIE */
- ai_tc(s,03271);
- goto L66522;
- L67271:;
- /* 33,3271 TC CHKCOMED */
- ai_tc(s,03272);
- goto L67406;
- L67272:;
- /* 33,3272 CCS LGYRO */
- switch(ai_ccs(s,01304u)){case 0:goto L67273;case 1:goto L67274;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L67273:;
- /* 33,3273 TCF SLEEPIE    +1 */
- goto L66523;
- L67274:;
- /* 33,3274 TC INTPRET */
- ai_tc(s,03275);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 03271u:W[2]=3u;goto L67271;case 03272u:W[2]=3u;goto L67272;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r67267_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28343u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
-/* 33,3271  (return from SLEEPIE) */
-static enum exec_status r67271(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3271 TC CHKCOMED */
- ai_tc(s,03272);
- goto L67406;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67272:;
- /* 33,3272 CCS LGYRO */
- switch(ai_ccs(s,01304u)){case 0:goto L67273;case 1:goto L67274;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L67273:;
- /* 33,3273 TCF SLEEPIE    +1 */
- goto L66523;
- L67274:;
- /* 33,3274 TC INTPRET */
- ai_tc(s,03275);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 03272u:W[2]=3u;goto L67272;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
-/* 33,3272  (return from CHKCOMED) */
-static enum exec_status r67272(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3272 CCS LGYRO */
- switch(ai_ccs(s,01304u)){case 0:goto L67273;case 1:goto L67274;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67273:;
- /* 33,3273 TCF SLEEPIE    +1 */
- goto L66523;
- L67274:;
- /* 33,3274 TC INTPRET */
- ai_tc(s,03275);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
 /* 33,3275  (after TC INTPRET) */
 static enum exec_status r67275(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7318,7 +6195,7 @@ static enum exec_status r67275(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3277 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
 /* 33,3277  (CHANG2 resume) */
 static enum exec_status r67277(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7330,7 +6207,7 @@ static enum exec_status r67277(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3301 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
 /* 33,3301  (CHANG2 resume) */
 static enum exec_status r67301(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7341,7 +6218,7 @@ static enum exec_status r67301(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3302 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
 /* 33,3302  (CHANG2 resume) */
 static enum exec_status r67302(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7351,25 +6228,25 @@ static enum exec_status r67302(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 47) & 1
 /* 33,3303 RESTAIER (after EXIT) */
-static enum exec_status r67303(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3303 TC PHASCHNG */
- ai_tc(s,03304);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67303_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28355u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 48) & 1
 /* 33,3305  (return from PHASCHNG) */
-static enum exec_status r67305(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3305 TC INTPRET */
- ai_tc(s,03306);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67305_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28357u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
 /* 33,3306  (after TC INTPRET) */
 static enum exec_status r67306(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7383,7 +6260,7 @@ static enum exec_status r67306(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3311 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
 /* 33,3311  (CHANG2 resume) */
 static enum exec_status r67311(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7397,7 +6274,7 @@ static enum exec_status r67311(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3313 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
 /* 33,3313  (CHANG2 resume) */
 static enum exec_status r67313(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7409,7 +6286,7 @@ static enum exec_status r67313(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3315 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
 /* 33,3315  (CHANG2 resume) */
 static enum exec_status r67315(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7420,7 +6297,7 @@ static enum exec_status r67315(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3316 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
 /* 33,3316  (CHANG2 resume) */
 static enum exec_status r67316(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7430,51 +6307,25 @@ static enum exec_status r67316(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 54) & 1
 /* 33,3317  (after EXIT) */
-static enum exec_status r67317(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3317 TC EARTHR* */
- ai_tc(s,03320);
- goto L66417;
- L66417:;
- /* 33,2420 QXCH QPLACES */
- ai_qxch(s,01426u);
- /* 33,2421 TC INTPRET */
- ai_tc(s,02422);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- /* 33,3320 CAE ERECTIM1 */
- ai_ca(s,01646u);
- /* 33,3321 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,3322 TC PHASCHNG */
- ai_tc(s,03323);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67317_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28367u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
-/* 33,3320  (return from EARTHR*) */
-static enum exec_status r67320(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3320 CAE ERECTIM1 */
- ai_ca(s,01646u);
- /* 33,3321 TS GEOSAVE1 */
- if(ai_ts(s,01631u))return EXEC_OUT_OF_SCOPE;
- /* 33,3322 TC PHASCHNG */
- ai_tc(s,03323);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 55) & 1
 /* 33,3324 RESTEST1 (entry RESTEST1) */
-static enum exec_status r67324(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3324 TC INTPRET */
- ai_tc(s,03325);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28372u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
 /* 33,3325  (after TC INTPRET) */
 static enum exec_status r67325(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7486,7 +6337,7 @@ static enum exec_status r67325(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3327 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
 /* 33,3327  (CHANG2 resume) */
 static enum exec_status r67327(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7497,7 +6348,7 @@ static enum exec_status r67327(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3330 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
 /* 33,3330  (CHANG2 resume) */
 static enum exec_status r67330(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7507,111 +6358,25 @@ static enum exec_status r67330(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 59) & 1
 /* 33,3331  (after EXIT) */
-static enum exec_status r67331(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3331 CCS PREMTRXC */
- switch(ai_ccs(s,01632u)){case 0:goto L67332;case 1:goto L67333;case 2:return EXEC_OUT_OF_SCOPE;default:goto L67335;}
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67332:;
- /* 33,3332 TC NOCHORLD */
- ai_tc(s,03333);
- goto L67401;
- L67333:;
- /* 33,3333 TC PHASCHNG */
- ai_tc(s,03334);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67335:;
- /* 33,3335 TC INTPRET */
- ai_tc(s,03336);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67401:;
- /* 33,3401 CCS GEOSAVE1 */
- switch(ai_ccs(s,01631u)){case 0:goto L67402;case 1:goto L67403;case 2:goto L67404;default:goto L67405;}
- L67402:;
- /* 33,3402 TS ERECTIM1 */
- if(ai_ts(s,01646u))goto L67404;
- L67403:;
- /* 33,3403 CAF NINE */
- ai_caf(s,000011);
- L67404:;
- /* 33,3404 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L67406;
- L67405:;
- /* 33,3405 TC SLEEPIE    +1 */
- ai_tc(s,03406);
- goto L66523;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 03333u:W[2]=3u;goto L67333;case 03406u:W[2]=3u;goto L67406;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r67331_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28377u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 51) & 1
-/* 33,3333  (return from NOCHORLD) */
-static enum exec_status r67333(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3333 TC PHASCHNG */
- ai_tc(s,03334);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 0) & 1
 /* 33,3335 RESTEST3 (return from PHASCHNG) */
-static enum exec_status r67335(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3335 TC INTPRET */
- ai_tc(s,03336);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67335_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28381u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
 /* 33,3336  (after TC INTPRET) */
 static enum exec_status r67336(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7623,7 +6388,7 @@ static enum exec_status r67336(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3340 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
 /* 33,3340  (CHANG2 resume) */
 static enum exec_status r67340(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7641,7 +6406,7 @@ static enum exec_status r67340(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3343 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
 /* 33,3343  (CHANG2 resume) */
 static enum exec_status r67343(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7652,21 +6417,21 @@ static enum exec_status r67343(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3344 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
 /* 33,3344  (CHANG2 resume) */
 static enum exec_status r67344(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3344 SLOAD DAD */
  TRACE(s);
  cmi_newops(s,043335);
- cmi_direct(s,027117,006450);W[1]=0;ai_caf(s,K67116[0]);ai_dxch(s,0154);ai_caf(s,0);(void)ai_ts(s,0156);(void)ai_ts(s,0163);W[5]=06030;
+ cmi_direct(s,027117,006450);cmi_sload_fixed(s,K67116);
  right(s);
  cmi_direct(s,002633,006744);cmi_dad(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3347 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
 /* 33,3347  (CHANG2 resume) */
 static enum exec_status r67347(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7678,7 +6443,7 @@ static enum exec_status r67347(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3351 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
 /* 33,3351  (CHANG2 resume) */
 static enum exec_status r67351(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7690,7 +6455,7 @@ static enum exec_status r67351(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3353 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
 /* 33,3353 ADERCOMP (CHANG2 resume) */
 static enum exec_status r67353(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7701,7 +6466,7 @@ static enum exec_status r67353(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3354 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
 /* 33,3354  (CHANG2 resume) */
 static enum exec_status r67354(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7711,108 +6476,52 @@ static enum exec_status r67354(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 9) & 1
 /* 33,3355  (after EXIT) */
-static enum exec_status r67355(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3355 TC POSN17C */
- ai_tc(s,03356);
- goto L67170;
- L67170:;
- /* 33,3171 QXCH QPLACE */
- ai_qxch(s,01425u);
- /* 33,3172 CS HALF */
- ai_csf(s,020000);
- /* 33,3173 TS ZSM */
- if(ai_ts(s,01705u))return EXEC_OUT_OF_SCOPE;
- /* 33,3174 TC INTPRET */
- ai_tc(s,03175);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- /* 33,3356 TC PHASCHNG */
- ai_tc(s,03357);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67355_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28397u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
-/* 33,3356  (return from POSN17C) */
-static enum exec_status r67356(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3356 TC PHASCHNG */
- ai_tc(s,03357);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 10) & 1
 /* 33,3360 RESCHNG (return from PHASCHNG) */
-static enum exec_status r67360(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3361 DCA NEWAZMTH */
- ai_dca(s,01635u);
- /* 33,3362 DXCH OLDAZMTH */
- ai_dxch(s,01637u);
- /* 33,3363 CA BIT7 */
- ai_caf(s,000100);
- /* 33,3364 TS LENGTHOT */
- if(ai_ts(s,01412u))return EXEC_OUT_OF_SCOPE;
- /* 33,3365 TC PHASCHNG */
- ai_tc(s,03366);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67360_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28400u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 11) & 1
 /* 33,3367 SPITGYRO (return from PHASCHNG) */
-static enum exec_status r67367(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3367 CA ERCOMPPL */
- ai_caf(s,002647);
- /* 33,3370 TC BANKCALL */
- ai_tc(s,03371);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67367_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28407u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 12) & 1
 /* 33,3372  (return from BANKCALL) */
-static enum exec_status r67372(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3372 TC BANKCALL */
- ai_tc(s,03373);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67372_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28410u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 13) & 1
 /* 33,3374  (return from BANKCALL) */
-static enum exec_status r67374(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3374 TC SOMERR2 */
- ai_tc(s,03375);
- goto L67102;
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
- L67102:;
- /* 33,3102 TC ALARM */
- ai_tc(s,03103);
- W[5]=05650;return EXEC_OK; /* ALARM */
- /* 33,3375 TC ESTIMS */
- ai_tc(s,03376);
- goto L66453;
+static enum exec_status r67374_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28412u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 7) & 1
-/* 33,3375  (return from SOMERR2) */
-static enum exec_status r67375(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3375 TC ESTIMS */
- ai_tc(s,03376);
- goto L66453;
- L66453:;
- /* 33,2453 TC 2PHSCHNG */
- ai_tc(s,02454);
- W[5]=05372;return EXEC_OK; /* 2PHSCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
 /* 33,3376 NOAZCHGE (BZE target) */
 static enum exec_status r67376(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -7822,481 +6531,88 @@ static enum exec_status r67376(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 15) & 1
 /* 33,3377  (after EXIT) */
-static enum exec_status r67377(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3377 CA ONE */
- ai_caf(s,000001);
- goto L67400;
- L66523:;
- /* 33,2523 TC PHASCHNG */
- ai_tc(s,02524);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
- L67400:;
- /* 33,3400 TS PREMTRXC */
- if(ai_ts(s,01632u))goto L67402;
- /* 33,3401 CCS GEOSAVE1 */
- switch(ai_ccs(s,01631u)){case 0:goto L67402;case 1:goto L67403;case 2:goto L67404;default:goto L67405;}
- L67402:;
- /* 33,3402 TS ERECTIM1 */
- if(ai_ts(s,01646u))goto L67404;
- L67403:;
- /* 33,3403 CAF NINE */
- ai_caf(s,000011);
- L67404:;
- /* 33,3404 TS LENGTHOT */
- if(ai_ts(s,01412u))goto L67406;
- L67405:;
- /* 33,3405 TC SLEEPIE    +1 */
- ai_tc(s,03406);
- goto L66523;
- L67406:;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- switch(W[2]){case 03406u:W[2]=3u;goto L67406;default:return tc_q(s);}
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
+static enum exec_status r67377_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28415u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
-/* 33,3406 CHKCOMED (return from 33,2523) */
-static enum exec_status r67406(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3406 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3407 CS MODREG */
- ai_cs(s,01011u);
- /* 33,3410 AD SEVEN */
- ai_adf(s,000007);
- /* 33,3412 BZF GOBKCALB */
- if(ai_bzf(s)){
-   goto L67426;
- }
- /* 33,3413 CS ZERO */
- ai_csf(s,000000);
- /* 33,3415 RXOR CHAN30 */
- ai_caf(s,(agc_word)((((W[0]>>1)&040000u)|(W[0]&037777u))^AGC_CHANNEL(30)));
- /* 33,3416 MASK BIT5 */
- ai_maskf(s,000020);
- /* 33,3417 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67420;case 1:goto L67421;case 2:goto L67422;default:goto L67423;}
- L67420:;
- /* 33,3420 TCF PRELTERM */
- goto L67427;
- L67421:;
- /* 33,3421 CA GRRBKBIT */
- ai_caf(s,000020);
- L67422:;
- /* 33,3422 MASK FLAGWRD5 */
- ai_mask(s,00101u);
- L67423:;
- /* 33,3423 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67424;case 1:goto L67425;case 2:goto L67426;default:goto L67427;}
- L67424:;
- /* 33,3424 TCF PRELTERM */
- goto L67427;
- L67425:;
- /* 33,3425 RELINT  */
- io->interrupt_enabled=1u;
- L67426:;
- /* 33,3426 TC Q */
- return tc_q(s);
- L67427:;
- /* 33,3427 CA PRIO22 */
- ai_caf(s,022000);
- /* 33,3430 TC PRIOCHNG */
- ai_tc(s,03431);
- W[5]=05210;return EXEC_OK; /* PRIOCHNG */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 16) & 1
 /* 33,3431  (return from PRIOCHNG) */
-static enum exec_status r67431(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3431 INHINT  */
- io->interrupt_enabled=0u;
- /* 33,3432 TC POSTJUMP */
- ai_tc(s,03433);
- W[5]=04701;return EXEC_OK; /* POSTJUMP */
+static enum exec_status r67431_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28441u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 17) & 1
 /* 33,3436 GCOMPVER (entry GCOMPVER) */
-static enum exec_status r67436(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3436 TC PHASCHNG */
- ai_tc(s,03437);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67436_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28446u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 18) & 1
 /* 33,3440  (return from PHASCHNG) */
-static enum exec_status r67440(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3440 TC NEWMODEX */
- ai_tc(s,03441);
- W[5]=05354;return EXEC_OK; /* NEWMODEX */
+static enum exec_status r67440_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28448u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 19) & 1
 /* 33,3442 SETNBPOS (return from NEWMODEX) */
-static enum exec_status r67442(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3442 TC NBPOSPL */
- ai_tc(s,03443);
- goto L66037;
- L66037:;
- /* 33,2037 CA DEC17 */
- ai_caf(s,000021);
- /* 33,2040 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66042;
- /* 33,2041 CA XNBADR */
- ai_caf(s,001713);
- L66042:;
- /* 33,2042 TC ZEROING */
- ai_tc(s,02043);
- goto L66356;
- L66043:;
- /* 33,2043 CA HALF */
- ai_caf(s,020000);
- /* 33,2044 TS XNB */
- if(ai_ts(s,01713u))return EXEC_OUT_OF_SCOPE;
- /* 33,2045 TC INTPRET */
- ai_tc(s,02046);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L66356:;
- /* 33,2356 TS L */
- if(ai_ts(s,00001u))goto L66360;
- /* 33,2357 TCF +2 */
- goto L66361;
- L66360:;
- /* 33,2360 TS ZERONDX1 */
- if(ai_ts(s,01655u))goto L66362;
- L66361:;
- /* 33,2361 CAF ZERO */
- ai_caf(s,000000);
- L66362:;
- /* 33,2363 TS 0 */
- {agc_word iw=ixw(s,054000,01u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))goto L66365;
- }
- /* 33,2364 INCR L */
- ai_incr(s,00001u);
- L66365:;
- /* 33,2365 CCS ZERONDX1 */
- switch(ai_ccs(s,01655u)){case 0:goto L66366;case 1:goto L66367;case 2:return EXEC_OUT_OF_SCOPE;default:return EXEC_OUT_OF_SCOPE;}
- L66366:;
- /* 33,2366 TCF ZEROING1 */
- goto L66360;
- L66367:;
- /* 33,2367 TC Q */
- switch(W[2]){case 02043u:W[2]=3u;goto L66043;case 03443u:W[2]=3u;goto L67443;default:return tc_q(s);}
- L67443:;
- /* 33,3443 TC BANKCALL */
- ai_tc(s,03444);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67442_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28450u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 15) & 1
-/* 33,3443  (return from NBPOSPL) */
-static enum exec_status r67443(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3443 TC BANKCALL */
- ai_tc(s,03444);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 20) & 1
 /* 33,3445 OPTDATA (return from BANKCALL) */
-static enum exec_status r67445(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3445 CAF BIT1 */
- ai_caf(s,000001);
- /* 33,3446 ZL  */
- ai_lxch(s,00007u);
- /* 33,3447 LXCH RUN */
- ai_lxch(s,01427u);
- /* 33,3450 TS DSPTEM1    +2 */
- if(ai_ts(s,01047u))goto L67452;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_dca(s,(unsigned)((iw&07777u)-1u));
- }
- goto L67454;
- L67452:;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- L67454:;
- /* 33,3454 DXCH DSPTEM1 */
- ai_dxch(s,01045u);
- /* 33,3455 CAF V05N30E */
- ai_caf(s,001236);
- /* 33,3456 TC BANKCALL */
- ai_tc(s,03457);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67445_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28453u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 21) & 1
 /* 33,3460  (return from BANKCALL) */
-static enum exec_status r67460(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3460 CAF VN0641 */
- ai_caf(s,001451);
- /* 33,3461 TC BANKCALL */
- ai_tc(s,03462);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67460_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28464u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 22) & 1
 /* 33,3463  (return from BANKCALL) */
-static enum exec_status r67463(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3463 TC GCOMP5 */
- ai_tc(s,03464);
- goto L67620;
- L67447:;
- /* 33,3447 LXCH RUN */
- ai_lxch(s,01427u);
- /* 33,3450 TS DSPTEM1    +2 */
- if(ai_ts(s,01047u))goto L67452;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_dca(s,(unsigned)((iw&07777u)-1u));
- }
- goto L67454;
- L67452:;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- L67454:;
- /* 33,3454 DXCH DSPTEM1 */
- ai_dxch(s,01045u);
- L67455:;
- /* 33,3455 CAF V05N30E */
- ai_caf(s,001236);
- /* 33,3456 TC BANKCALL */
- ai_tc(s,03457);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3464 TC +3 */
- ai_tc(s,03465);
- goto L67467;
- /* 33,3465 TC -8D */
- ai_tc(s,03466);
- goto L67455;
- L67467:;
- /* 33,3467 DXCH DSPTEM1 */
- ai_dxch(s,01045u);
- /* 33,3471 DXCH TAZEL1 */
- {agc_word iw=ixw(s,053433,01427u);if((iw^053433u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-1u)<=6u&&(unsigned)((iw&01777u)-1u)+1u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_dxch(s,(unsigned)((iw&01777u)-1u));
- }
- /* 33,3472 CCS RUN */
- switch(ai_ccs(s,01427u)){case 0:goto L67473;case 1:goto L67474;case 2:goto L67475;default:goto L67476;}
- L67473:;
- /* 33,3473 TCF +4 */
- goto L67477;
- L67474:;
- /* 33,3474 CAF TWO */
- ai_caf(s,000002);
- L67475:;
- /* 33,3475 TS L */
- if(ai_ts(s,00001u))goto L67477;
- L67476:;
- /* 33,3476 TCF OPTDATA    +2 */
- goto L67447;
- L67477:;
- /* 33,3477 TC CONTIN33 */
- ai_tc(s,03500);
- goto L67541;
- L67541:;
- /* 33,3541 CA ONE */
- ai_caf(s,000001);
- /* 33,3542 TS STARCODE */
- if(ai_ts(s,00735u))goto L67544;
- /* 33,3543 CA ZERO */
- ai_caf(s,000000);
- L67544:;
- /* 33,3544 TC TARGDRVE */
- ai_tc(s,03545);
- goto L67635;
- /* 33,3545 TC INTPRET */
- ai_tc(s,03546);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67620:;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67635:;
- /* 33,3636 QXCH QPLAC */
- ai_qxch(s,01424u);
- /* 33,3637 TS TARG1/2 */
- if(ai_ts(s,01431u))return EXEC_OUT_OF_SCOPE;
- /* 33,3640 TC INTPRET */
- ai_tc(s,03641);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67463_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28467u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
-/* 33,3464  (return from GCOMP5) */
-static enum exec_status r67464(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3464 TC +3 */
- ai_tc(s,03465);
- goto L67467;
- L67447:;
- /* 33,3447 LXCH RUN */
- ai_lxch(s,01427u);
- /* 33,3450 TS DSPTEM1    +2 */
- if(ai_ts(s,01047u))goto L67452;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_dca(s,(unsigned)((iw&07777u)-1u));
- }
- goto L67454;
- L67452:;
- /* 33,3453 DCA TAZEL1 */
- {agc_word iw=ixw(s,031433,01427u);if((iw^031433u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- L67454:;
- /* 33,3454 DXCH DSPTEM1 */
- ai_dxch(s,01045u);
- L67455:;
- /* 33,3455 CAF V05N30E */
- ai_caf(s,001236);
- /* 33,3456 TC BANKCALL */
- ai_tc(s,03457);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3465 TC -8D */
- ai_tc(s,03466);
- goto L67455;
- L67467:;
- /* 33,3467 DXCH DSPTEM1 */
- ai_dxch(s,01045u);
- /* 33,3471 DXCH TAZEL1 */
- {agc_word iw=ixw(s,053433,01427u);if((iw^053433u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-1u)<=6u&&(unsigned)((iw&01777u)-1u)+1u>=3u)return EXEC_OUT_OF_SCOPE;
-   ai_dxch(s,(unsigned)((iw&01777u)-1u));
- }
- /* 33,3472 CCS RUN */
- switch(ai_ccs(s,01427u)){case 0:goto L67473;case 1:goto L67474;case 2:goto L67475;default:goto L67476;}
- L67473:;
- /* 33,3473 TCF +4 */
- goto L67477;
- L67474:;
- /* 33,3474 CAF TWO */
- ai_caf(s,000002);
- L67475:;
- /* 33,3475 TS L */
- if(ai_ts(s,00001u))goto L67477;
- L67476:;
- /* 33,3476 TCF OPTDATA    +2 */
- goto L67447;
- L67477:;
- /* 33,3477 TC CONTIN33 */
- ai_tc(s,03500);
- goto L67541;
- L67541:;
- /* 33,3541 CA ONE */
- ai_caf(s,000001);
- /* 33,3542 TS STARCODE */
- if(ai_ts(s,00735u))goto L67544;
- /* 33,3543 CA ZERO */
- ai_caf(s,000000);
- L67544:;
- /* 33,3544 TC TARGDRVE */
- ai_tc(s,03545);
- goto L67635;
- /* 33,3545 TC INTPRET */
- ai_tc(s,03546);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67635:;
- /* 33,3636 QXCH QPLAC */
- ai_qxch(s,01424u);
- /* 33,3637 TS TARG1/2 */
- if(ai_ts(s,01431u))return EXEC_OUT_OF_SCOPE;
- /* 33,3640 TC INTPRET */
- ai_tc(s,03641);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
-/* 33,3465  (return from 33,3467) */
-static enum exec_status r67465(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3465 TC -8D */
- ai_tc(s,03466);
- goto L67455;
- L67455:;
- /* 33,3455 CAF V05N30E */
- ai_caf(s,001236);
- /* 33,3456 TC BANKCALL */
- ai_tc(s,03457);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 23) & 1
 /* 33,3501  (resumed from outside) */
-static enum exec_status r67501(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3501 TC INTPRET */
- ai_tc(s,03502);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67501_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28481u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
 /* 33,3502 TAR/EREF (CALL target) */
 static enum exec_status r67502(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8310,7 +6626,7 @@ static enum exec_status r67502(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3505 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
 /* 33,3505  (CHANG2 resume) */
 static enum exec_status r67505(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8324,21 +6640,21 @@ static enum exec_status r67505(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3511 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
 /* 33,3511 TAR1 (CHANG2 resume) */
 static enum exec_status r67511(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3511 SLOAD* SR2 */
  TRACE(s);
  cmi_newops(s,060533);
- cmi_indexed(s,002436,006450);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_sload(s);
+ cmi_indexed(s,002436,006450);cmi_sload(s);
  right(s);
  shorts(s);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3513 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
 /* 33,3513  (CHANG2 resume) */
 static enum exec_status r67513(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8349,7 +6665,7 @@ static enum exec_status r67513(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3514 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
 /* 33,3514  (CHANG2 resume) */
 static enum exec_status r67514(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8361,7 +6677,7 @@ static enum exec_status r67514(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3515 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
 /* 33,3515  (CHANG2 resume) */
 static enum exec_status r67515(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8372,7 +6688,7 @@ static enum exec_status r67515(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3516 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
 /* 33,3516  (CHANG2 resume) */
 static enum exec_status r67516(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8384,7 +6700,7 @@ static enum exec_status r67516(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3520 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
 /* 33,3520  (CHANG2 resume) */
 static enum exec_status r67520(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8398,14 +6714,14 @@ static enum exec_status r67520(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3521 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
 /* 33,3521  (CHANG2 resume) */
 static enum exec_status r67521(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3521 SLOAD* RTB */
  TRACE(s);
  cmi_newops(s,047133);
- cmi_indexed(s,002435,006450);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_sload(s);
+ cmi_indexed(s,002435,006450);cmi_sload(s);
  right(s);
  cmi_misc(s,045513,002474);(void)ai_ccs(s,020);cmi_rtb(s);
  if(rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* CDULOGIC */
@@ -8413,7 +6729,7 @@ static enum exec_status r67521(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3524 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
 /* 33,3524  (CHANG2 resume) */
 static enum exec_status r67524(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8424,7 +6740,7 @@ static enum exec_status r67524(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3525 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
 /* 33,3525  (CHANG2 resume) */
 static enum exec_status r67525(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8438,7 +6754,7 @@ static enum exec_status r67525(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3527 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
 /* 33,3527  (CHANG2 resume) */
 static enum exec_status r67527(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8450,7 +6766,7 @@ static enum exec_status r67527(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3530 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
 /* 33,3530  (CHANG2 resume) */
 static enum exec_status r67530(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8461,7 +6777,7 @@ static enum exec_status r67530(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3531 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
 /* 33,3531  (CHANG2 resume) */
 static enum exec_status r67531(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8475,7 +6791,7 @@ static enum exec_status r67531(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3533 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
 /* 33,3533  (CHANG2 resume) */
 static enum exec_status r67533(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8489,7 +6805,7 @@ static enum exec_status r67533(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3534 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
 /* 33,3534  (CHANG2 resume) */
 static enum exec_status r67534(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8503,7 +6819,7 @@ static enum exec_status r67534(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3536 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
 /* 33,3536  (CHANG2 resume) */
 static enum exec_status r67536(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8514,7 +6830,7 @@ static enum exec_status r67536(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3537 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
 /* 33,3537  (CHANG2 resume) */
 static enum exec_status r67537(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8530,16 +6846,7 @@ static enum exec_status r67537(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 40) & 1
-/* 33,3545  (return from TARGDRVE) */
-static enum exec_status r67545(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3545 TC INTPRET */
- ai_tc(s,03546);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
 /* 33,3546  (after TC INTPRET) */
 static enum exec_status r67546(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8551,7 +6858,7 @@ static enum exec_status r67546(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
 /* 33,3550 NEXTBNKS (CALL return) */
 static enum exec_status r67550(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8565,7 +6872,7 @@ static enum exec_status r67550(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3553 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
 /* 33,3553  (CHANG2 resume) */
 static enum exec_status r67553(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8577,7 +6884,7 @@ static enum exec_status r67553(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3554 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
 /* 33,3554  (CHANG2 resume) */
 static enum exec_status r67554(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8589,7 +6896,7 @@ static enum exec_status r67554(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3556 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
 /* 33,3556  (CHANG2 resume) */
 static enum exec_status r67556(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8603,7 +6910,7 @@ static enum exec_status r67556(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3560 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
 /* 33,3560  (CHANG2 resume) */
 static enum exec_status r67560(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8615,7 +6922,7 @@ static enum exec_status r67560(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
 /* 33,3562  (STCALL return) */
 static enum exec_status r67562(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8626,7 +6933,7 @@ static enum exec_status r67562(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3563 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
 /* 33,3563  (CHANG2 resume) */
 static enum exec_status r67563(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8636,52 +6943,25 @@ static enum exec_status r67563(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 50) & 1
 /* 33,3564  (after EXIT) */
-static enum exec_status r67564(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3564 TC BANKCALL */
- ai_tc(s,03565);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67564_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28532u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 51) & 1
 /* 33,3566 NEXBNKSS (return from BANKCALL) */
-static enum exec_status r67566(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3566 CAF TWO */
- ai_caf(s,000002);
- /* 33,3567 TS STARCODE */
- if(ai_ts(s,00735u))goto L67571;
- /* 33,3570 CAF SIX */
- ai_caf(s,000006);
- L67571:;
- /* 33,3571 TC TARGDRVE */
- ai_tc(s,03572);
- goto L67635;
- /* 33,3572 TC INTPRET */
- ai_tc(s,03573);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67635:;
- /* 33,3636 QXCH QPLAC */
- ai_qxch(s,01424u);
- /* 33,3637 TS TARG1/2 */
- if(ai_ts(s,01431u))return EXEC_OUT_OF_SCOPE;
- /* 33,3640 TC INTPRET */
- ai_tc(s,03641);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67566_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28534u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 51) & 1
-/* 33,3572  (return from TARGDRVE) */
-static enum exec_status r67572(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3572 TC INTPRET */
- ai_tc(s,03573);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
 /* 33,3573  (after TC INTPRET) */
 static enum exec_status r67573(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8693,7 +6973,7 @@ static enum exec_status r67573(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
 /* 33,3575  (CALL return) */
 static enum exec_status r67575(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8705,7 +6985,7 @@ static enum exec_status r67575(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3577 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
 /* 33,3577  (CHANG2 resume) */
 static enum exec_status r67577(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8717,7 +6997,7 @@ static enum exec_status r67577(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
 /* 33,3601  (STCALL return) */
 static enum exec_status r67601(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8729,7 +7009,7 @@ static enum exec_status r67601(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
 /* 33,3603  (CALL return) */
 static enum exec_status r67603(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8739,63 +7019,34 @@ static enum exec_status r67603(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 57) & 1
 /* 33,3604 GCOMP4 (after EXIT) */
-static enum exec_status r67604(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3604 CAF V06N93S */
- ai_caf(s,001535);
- /* 33,3605 TC BANKCALL */
- ai_tc(s,03606);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67604_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28548u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 58) & 1
 /* 33,3607  (return from BANKCALL) */
-static enum exec_status r67607(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3607 TC GCOMP5 */
- ai_tc(s,03610);
- goto L67620;
- /* 33,3610 TCF +2 */
- goto L67612;
- L67612:;
- /* 33,3612 TC INTPRET */
- ai_tc(s,03613);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
- L67620:;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67607_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28551u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 59) & 1
-/* 33,3610  (return from GCOMP5) */
-static enum exec_status r67610(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3610 TCF +2 */
- goto L67612;
- L67612:;
- /* 33,3612 TC INTPRET */
- ai_tc(s,03613);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 59) & 1
 /* 33,3611  (resumed from outside) */
-static enum exec_status r67611(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3611 TCF GCOMP4 */
- goto L67604;
- L67604:;
- /* 33,3604 CAF V06N93S */
- ai_caf(s,001535);
- /* 33,3605 TC BANKCALL */
- ai_tc(s,03606);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67611_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28553u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
 /* 33,3613  (after TC INTPRET) */
 static enum exec_status r67613(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8809,7 +7060,7 @@ static enum exec_status r67613(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3616 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
 /* 33,3616  (CHANG2 resume) */
 static enum exec_status r67616(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8820,7 +7071,7 @@ static enum exec_status r67616(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3617 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
 /* 33,3617  (CHANG2 resume) */
 static enum exec_status r67617(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8830,85 +7081,61 @@ static enum exec_status r67617(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 3) & 1
 /* 33,3620 GCOMP5 (after EXIT) */
-static enum exec_status r67620(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67620_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28560u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 4) & 1
 /* 33,3622  (return from BANKCALL) */
-static enum exec_status r67622(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3622 TC DOWNFLAG */
- ai_tc(s,03623);
- W[5]=05560;return EXEC_OK; /* DOWNFLAG */
+static enum exec_status r67622_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28562u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 5) & 1
 /* 33,3624  (return from DOWNFLAG) */
-static enum exec_status r67624(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3624 TC NEWMODEX */
- ai_tc(s,03625);
- W[5]=05354;return EXEC_OK; /* NEWMODEX */
+static enum exec_status r67624_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28564u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 6) & 1
 /* 33,3626  (return from NEWMODEX) */
-static enum exec_status r67626(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3626 TC PHASCHNG */
- ai_tc(s,03627);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67626_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28566u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 7) & 1
 /* 33,3630  (return from PHASCHNG) */
-static enum exec_status r67630(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3630 TC ENDOFJOB */
- ai_tc(s,03631);
- W[5]=05217;return EXEC_OK; /* ENDOFJOB */
+static enum exec_status r67630_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28568u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 8) & 1
 /* 33,3634  (return from ALARM) */
-static enum exec_status r67634(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3634 TC GCOMP5 */
- ai_tc(s,03635);
- goto L67620;
- L67620:;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3636 QXCH QPLAC */
- ai_qxch(s,01424u);
- /* 33,3637 TS TARG1/2 */
- if(ai_ts(s,01431u))return EXEC_OUT_OF_SCOPE;
- /* 33,3640 TC INTPRET */
- ai_tc(s,03641);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67634_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28572u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 10) & 1
-/* 33,3635 TARGDRVE (return from GCOMP5) */
-static enum exec_status r67635(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3636 QXCH QPLAC */
- ai_qxch(s,01424u);
- /* 33,3637 TS TARG1/2 */
- if(ai_ts(s,01431u))return EXEC_OUT_OF_SCOPE;
- /* 33,3640 TC INTPRET */
- ai_tc(s,03641);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
 /* 33,3641  (after TC INTPRET) */
 static enum exec_status r67641(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8920,7 +7147,7 @@ static enum exec_status r67641(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
 /* 33,3643  (CALL return) */
 static enum exec_status r67643(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8929,12 +7156,12 @@ static enum exec_status r67643(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,076740);
  cmi_misc(s,002431,002405);cmi_lxc(s);
  right(s);
- cmi_indexed(s,000007,006454);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_vload(s,0);
+ cmi_indexed(s,000007,006454);cmi_vload(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3646 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
 /* 33,3646  (CHANG2 resume) */
 static enum exec_status r67646(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8946,7 +7173,7 @@ static enum exec_status r67646(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
 /* 33,3650  (STCALL return) */
 static enum exec_status r67650(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -8956,241 +7183,35 @@ static enum exec_status r67650(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 13) & 1
 /* 33,3651  (after EXIT) */
-static enum exec_status r67651(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3651 CA SAC */
- ai_ca(s,01773u);
- /* 33,3652 TS DESOPTS */
- if(ai_ts(s,01161u))goto L67654;
- /* 33,3653 CA PAC */
- ai_ca(s,01775u);
- L67654:;
- /* 33,3654 TS DESOPTT */
- if(ai_ts(s,01160u))goto L67656;
- /* 33,3655 CAF ZERO */
- ai_caf(s,000000);
- L67656:;
- /* 33,3656 TS OPTIND */
- if(ai_ts(s,01303u))goto L67660;
- /* 33,3657 CAF ONE */
- ai_caf(s,000001);
- L67660:;
- /* 33,3660 TC BANKCALL */
- ai_tc(s,03661);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67651_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28585u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 14) & 1
 /* 33,3662  (return from BANKCALL) */
-static enum exec_status r67662(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3662 TC BANKCALL */
- ai_tc(s,03663);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67662_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28594u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 15) & 1
 /* 33,3664  (return from BANKCALL) */
-static enum exec_status r67664(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3664 TC GTSOPTCS */
- ai_tc(s,03665);
- goto L67632;
- L67620:;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67632:;
- /* 33,3632 TC ALARM */
- ai_tc(s,03633);
- W[5]=05650;return EXEC_OK; /* ALARM */
- L67655:;
- /* 33,3655 CAF ZERO */
- ai_caf(s,000000);
- /* 33,3656 TS OPTIND */
- if(ai_ts(s,01303u))goto L67660;
- /* 33,3657 CAF ONE */
- ai_caf(s,000001);
- L67660:;
- /* 33,3660 TC BANKCALL */
- ai_tc(s,03661);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- /* 33,3665 CAE FLAGWRD1 */
- ai_ca(s,00075u);
- /* 33,3666 MASK TRM03BIT */
- ai_maskf(s,000010);
- /* 33,3667 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67670;case 1:goto L67671;case 2:goto L67672;default:goto L67673;}
- L67670:;
- /* 33,3670 TC GCOMP5 */
- ai_tc(s,03671);
- goto L67620;
- L67671:;
- /* 33,3672 CA QPRET */
- {agc_word iw=ixw(s,030052,01330u);if((iw^030052u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L67673;
- L67672:;
- /* 33,3672 CA QPRET */
- ai_ca(s,00052u);
- L67673:;
- /* 33,3674 BZF RETARG1 */
- if(ai_bzf(s)){
-   goto L67676;
- }
- /* 33,3675 TC QPLAC */
- ai_tc(s,03676);
- return tc_e(s,01424u);
- L67676:;
- /* 33,3676 CA ZERO */
- ai_caf(s,000000);
- /* 33,3677 XCH MARKSTAT */
- ai_xch(s,01330u);
- /* 33,3700 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67701;case 1:goto L67702;case 2:goto L67703;default:return EXEC_OUT_OF_SCOPE;}
- L67701:;
- /* 33,3702 TS A */
- {agc_word iw=ixw(s,054000,00u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))return EXEC_OUT_OF_SCOPE;
- }
- goto L67703;
- L67702:;
- /* 33,3702 TS A */
- if(ai_ts(s,00000u))return EXEC_OUT_OF_SCOPE;
- L67703:;
- /* 33,3703 TCF RETARG */
- goto L67655;
+static enum exec_status r67664_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28596u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 18) & 1
-/* 33,3665  (return from GTSOPTCS) */
-static enum exec_status r67665(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3665 CAE FLAGWRD1 */
- ai_ca(s,00075u);
- goto L67666;
- L67620:;
- /* 33,3620 TC BANKCALL */
- ai_tc(s,03621);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67655:;
- /* 33,3655 CAF ZERO */
- ai_caf(s,000000);
- /* 33,3656 TS OPTIND */
- if(ai_ts(s,01303u))goto L67660;
- /* 33,3657 CAF ONE */
- ai_caf(s,000001);
- L67660:;
- /* 33,3660 TC BANKCALL */
- ai_tc(s,03661);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67666:;
- /* 33,3666 MASK TRM03BIT */
- ai_maskf(s,000010);
- /* 33,3667 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67670;case 1:goto L67671;case 2:goto L67672;default:goto L67673;}
- L67670:;
- /* 33,3670 TC GCOMP5 */
- ai_tc(s,03671);
- goto L67620;
- L67671:;
- /* 33,3672 CA QPRET */
- {agc_word iw=ixw(s,030052,01330u);if((iw^030052u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L67673;
- L67672:;
- /* 33,3672 CA QPRET */
- ai_ca(s,00052u);
- L67673:;
- /* 33,3674 BZF RETARG1 */
- if(ai_bzf(s)){
-   goto L67676;
- }
- /* 33,3675 TC QPLAC */
- ai_tc(s,03676);
- return tc_e(s,01424u);
- L67676:;
- /* 33,3676 CA ZERO */
- ai_caf(s,000000);
- /* 33,3677 XCH MARKSTAT */
- ai_xch(s,01330u);
- /* 33,3700 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67701;case 1:goto L67702;case 2:goto L67703;default:return EXEC_OUT_OF_SCOPE;}
- L67701:;
- /* 33,3702 TS A */
- {agc_word iw=ixw(s,054000,00u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))return EXEC_OUT_OF_SCOPE;
- }
- goto L67703;
- L67702:;
- /* 33,3702 TS A */
- if(ai_ts(s,00000u))return EXEC_OUT_OF_SCOPE;
- L67703:;
- /* 33,3703 TCF RETARG */
- goto L67655;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 19) & 1
-/* 33,3671  (return from GCOMP5) */
-static enum exec_status r67671(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3672 CA QPRET */
- {agc_word iw=ixw(s,030052,01330u);if((iw^030052u)&070000u)return EXEC_OUT_OF_SCOPE;
-   if((iw&07777u)>=02000u)return EXEC_OUT_OF_SCOPE;
-   ai_ca(s,(unsigned)((iw&07777u)-0u));
- }
- goto L67673;
- L67655:;
- /* 33,3655 CAF ZERO */
- ai_caf(s,000000);
- /* 33,3656 TS OPTIND */
- if(ai_ts(s,01303u))goto L67660;
- /* 33,3657 CAF ONE */
- ai_caf(s,000001);
- L67660:;
- /* 33,3660 TC BANKCALL */
- ai_tc(s,03661);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67673:;
- /* 33,3674 BZF RETARG1 */
- if(ai_bzf(s)){
-   goto L67676;
- }
- /* 33,3675 TC QPLAC */
- ai_tc(s,03676);
- return tc_e(s,01424u);
- L67676:;
- /* 33,3676 CA ZERO */
- ai_caf(s,000000);
- /* 33,3677 XCH MARKSTAT */
- ai_xch(s,01330u);
- /* 33,3700 CCS A */
- switch(ai_ccs(s,00000u)){case 0:goto L67701;case 1:goto L67702;case 2:goto L67703;default:return EXEC_OUT_OF_SCOPE;}
- L67701:;
- /* 33,3702 TS A */
- {agc_word iw=ixw(s,054000,00u);if((iw^054000u)&076000u)return EXEC_OUT_OF_SCOPE;
-   if((unsigned)((iw&01777u)-0u)<=6u&&(unsigned)((iw&01777u)-0u)+0u>=3u)return EXEC_OUT_OF_SCOPE;
-   if(ai_ts(s,(unsigned)((iw&01777u)-0u)))return EXEC_OUT_OF_SCOPE;
- }
- goto L67703;
- L67702:;
- /* 33,3702 TS A */
- if(ai_ts(s,00000u))return EXEC_OUT_OF_SCOPE;
- L67703:;
- /* 33,3703 TCF RETARG */
- goto L67655;
-}
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 20) & 1
-/* 33,3726 LITTLSUB (STCALL target) */
+#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
+/* 33,3726 LITTLSUB (CALL target) */
 static enum exec_status r67726(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
  /* 33,3726 STQ  */
@@ -9201,7 +7222,7 @@ static enum exec_status r67726(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3730 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
 /* 33,3730  (CHANG2 resume) */
 static enum exec_status r67730(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9210,12 +7231,12 @@ static enum exec_status r67730(apollo_overlay_state *s,p66_bias_io *io){
  cmi_newops(s,076740);
  cmi_misc(s,001330,002405);cmi_lxc(s);
  right(s);
- cmi_indexed(s,000003,006454);if(W[0116]>=02000u)return EXEC_OUT_OF_SCOPE;cmi_vload(s,0);
+ cmi_indexed(s,000003,006454);cmi_vload(s,0);
  if(next(s))return EXEC_OK;
  return EXEC_OK; /* on to 33,3733 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
 /* 33,3733  (CHANG2 resume) */
 static enum exec_status r67733(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9227,7 +7248,7 @@ static enum exec_status r67733(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
 /* 33,3735  (STCALL return) */
 static enum exec_status r67735(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9239,7 +7260,7 @@ static enum exec_status r67735(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
 /* 33,3737  (CALL return) */
 static enum exec_status r67737(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9249,7 +7270,7 @@ static enum exec_status r67737(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,002424,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
 /* 33,3741  (resumed from outside) */
 static enum exec_status r67741(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9259,16 +7280,16 @@ static enum exec_status r67741(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 22) & 1
 /* 33,3742 AZMTHCG1 (after EXIT) */
-static enum exec_status r67742(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3742 TC INTPRET */
- ai_tc(s,03743);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67742_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28642u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
 /* 33,3743  (after TC INTPRET) */
 static enum exec_status r67743(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9283,7 +7304,7 @@ static enum exec_status r67743(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3746 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
 /* 33,3746  (CHANG2 resume) */
 static enum exec_status r67746(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9293,60 +7314,43 @@ static enum exec_status r67746(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 25) & 1
 /* 33,3747  (after EXIT) */
-static enum exec_status r67747(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3747 XCH MPAC */
- ai_xch(s,00154u);
- /* 33,3750 TS DSPTEM1 */
- if(ai_ts(s,01045u))return EXEC_OUT_OF_SCOPE;
- /* 33,3751 TC BANKCALL */
- ai_tc(s,03752);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67747_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28647u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 26) & 1
 /* 33,3753  (return from BANKCALL) */
-static enum exec_status r67753(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3753 CAF VN0629 */
- ai_caf(s,001435);
- /* 33,3754 TC BANKCALL */
- ai_tc(s,03755);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
+static enum exec_status r67753_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28651u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 27) & 1
 /* 33,3756  (return from BANKCALL) */
-static enum exec_status r67756(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3756 TCF +2 */
- goto L67760;
- L67753:;
- /* 33,3753 CAF VN0629 */
- ai_caf(s,001435);
- /* 33,3754 TC BANKCALL */
- ai_tc(s,03755);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
- L67760:;
- /* 33,3760 TCF -5 */
- goto L67753;
+static enum exec_status r67756_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28654u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 28) & 1
 /* 33,3757  (resumed from outside) */
-static enum exec_status r67757(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3757 TCF +2 */
- goto L67761;
- L67761:;
- /* 33,3761 TC INTPRET */
- ai_tc(s,03762);
- W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+static enum exec_status r67757_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28655u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
 /* 33,3762  (after TC INTPRET) */
 static enum exec_status r67762(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9361,7 +7365,7 @@ static enum exec_status r67762(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3765 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
 /* 33,3765  (CHANG2 resume) */
 static enum exec_status r67765(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9372,7 +7376,7 @@ static enum exec_status r67765(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 33,3766 */
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
 /* 33,3766  (CHANG2 resume) */
 static enum exec_status r67766(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,066000u))return EXEC_OUT_OF_SCOPE;
@@ -9382,45 +7386,35 @@ static enum exec_status r67766(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 32) & 1
 /* 33,3767  (after EXIT) */
-static enum exec_status r67767(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3767 CA ZERO */
- ai_caf(s,000000);
- /* 33,3770 TS PREMTRXC */
- if(ai_ts(s,01632u))return EXEC_OUT_OF_SCOPE;
- /* 33,3771 TC PHASCHNG */
- ai_tc(s,03772);
- W[5]=05412;return EXEC_OK; /* PHASCHNG */
+static enum exec_status r67767_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28663u);
 }
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 33) & 1
 /* 33,3773  (return from PHASCHNG) */
-static enum exec_status r67773(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,066000u))return EXEC_OUT_OF_SCOPE;
- /* 33,3773 TC POSTJUMP */
- ai_tc(s,03774);
- W[5]=04701;return EXEC_OK; /* POSTJUMP */
+static enum exec_status r67773_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
+ (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
+ return basic_run(s,(cm_native_io *)v,28667u);
 }
 #endif
 
 /* Comanche routines take the two latches the bodies use from the
  * mission's cm_native_io and copy them back. */
-static enum exec_status latched(enum exec_status (*f)(apollo_overlay_state *,p66_bias_io *),apollo_overlay_state *s,void *v){
+static MAYBE_UNUSED enum exec_status latched(enum exec_status (*f)(apollo_overlay_state *,p66_bias_io *),apollo_overlay_state *s,void *v){
  cm_native_io *io=v;p66_bias_io l;enum exec_status st;
  if(!s||!io)return EXEC_OUT_OF_SCOPE;
  agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
  l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);
  io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;return st;
 }
-#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return latched(f,s,v);}
-#if (CM_IMU_CALIBRATION_KEEP0 >> 0) & 1
-WRAP(r4553)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 1) & 1
-WRAP(r4554)
-#endif
+#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){AFR_BIND(s);AFO_FIX(s);(void)p;return latched(f,s,v);}
 #if (CM_IMU_CALIBRATION_KEEP0 >> 2) & 1
 WRAP(r10613)
 #endif
@@ -9430,1184 +7424,686 @@ WRAP(r10615)
 #if (CM_IMU_CALIBRATION_KEEP0 >> 4) & 1
 WRAP(r10617)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 5) & 1
-WRAP(r10621)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 6) & 1
-WRAP(r10625)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 7) & 1
-WRAP(r10630)
-#endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 8) & 1
-WRAP(r10631)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
-WRAP(r10632)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
-WRAP(r10633)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
 WRAP(r10634)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
 WRAP(r10637)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
 WRAP(r10640)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
 WRAP(r10642)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
 WRAP(r10643)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
 WRAP(r64000)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
 WRAP(r64003)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
 WRAP(r64004)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
 WRAP(r64006)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
 WRAP(r64010)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
 WRAP(r64011)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
 WRAP(r64013)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
 WRAP(r64015)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
 WRAP(r64016)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
-WRAP(r66004)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
-WRAP(r66012)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
 WRAP(r66017)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
 WRAP(r66021)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
 WRAP(r66022)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
 WRAP(r66023)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
 WRAP(r66025)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
 WRAP(r66026)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
 WRAP(r66027)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
-WRAP(r66030)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
-WRAP(r66032)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
-WRAP(r66033)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
-WRAP(r66043)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
 WRAP(r66046)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
 WRAP(r66050)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
 WRAP(r66051)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
 WRAP(r66053)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
 WRAP(r66054)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
 WRAP(r66055)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
 WRAP(r66056)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
 WRAP(r66057)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 46) & 1
-WRAP(r66060)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 47) & 1
-WRAP(r66062)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 48) & 1
-WRAP(r66063)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
 WRAP(r66065)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
 WRAP(r66067)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 51) & 1
-WRAP(r66070)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 52) & 1
-WRAP(r66072)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 53) & 1
-WRAP(r66101)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 54) & 1
-WRAP(r66102)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 55) & 1
-WRAP(r66104)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 56) & 1
-WRAP(r66106)
-#endif
 #if (CM_IMU_CALIBRATION_KEEP0 >> 57) & 1
-WRAP(r66107)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
-WRAP(r66114)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
-WRAP(r66116)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
-WRAP(r66120)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
-WRAP(r66122)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
-WRAP(r66131)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
-WRAP(r66133)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 4) & 1
-WRAP(r66134)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 5) & 1
-WRAP(r66146)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 6) & 1
-WRAP(r66152)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 7) & 1
-WRAP(r66153)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
-WRAP(r66163)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
-WRAP(r66167)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 10) & 1
-WRAP(r66170)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 11) & 1
-WRAP(r66172)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 12) & 1
-WRAP(r66173)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 13) & 1
-WRAP(r66202)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
 WRAP(r66206)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
 WRAP(r66211)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
 WRAP(r66214)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
 WRAP(r66216)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
 WRAP(r66220)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
 WRAP(r66222)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
 WRAP(r66223)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
-WRAP(r66224)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
-WRAP(r66226)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
-WRAP(r66227)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
-WRAP(r66251)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
-WRAP(r66262)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 26) & 1
-WRAP(r66267)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 27) & 1
-WRAP(r66271)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 28) & 1
-WRAP(r66273)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 29) & 1
-WRAP(r66275)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
 WRAP(r66276)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
 WRAP(r66301)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
-WRAP(r66312)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
-WRAP(r66314)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
-WRAP(r66315)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
-WRAP(r66321)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
-WRAP(r66324)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
-WRAP(r66331)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 38) & 1
-WRAP(r66350)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
 WRAP(r66370)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
 WRAP(r66373)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
 WRAP(r66374)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
 WRAP(r66377)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
 WRAP(r66401)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
 WRAP(r66404)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
 WRAP(r66407)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
 WRAP(r66411)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
 WRAP(r66412)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
 WRAP(r66415)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
 WRAP(r66422)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
 WRAP(r66424)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 51) & 1
-WRAP(r66425)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 52) & 1
-WRAP(r66426)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 53) & 1
-WRAP(r66436)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
-WRAP(r66437)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
-WRAP(r66440)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
-WRAP(r66451)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
-WRAP(r66453)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
-WRAP(r66456)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
-WRAP(r66472)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
 WRAP(r66473)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
 WRAP(r66475)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
 WRAP(r66477)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
 WRAP(r66501)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
 WRAP(r66502)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
 WRAP(r66503)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
-WRAP(r66504)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
-WRAP(r66506)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
-WRAP(r66507)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
 WRAP(r66510)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
 WRAP(r66512)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
-WRAP(r66513)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
-WRAP(r66517)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
-WRAP(r66521)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
-WRAP(r66522)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
-WRAP(r66525)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
-WRAP(r66527)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
-WRAP(r66530)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
-WRAP(r66531)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
-WRAP(r66547)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
-WRAP(r66552)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
-WRAP(r66574)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
-WRAP(r66602)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
-WRAP(r66625)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
-WRAP(r66631)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
-WRAP(r66632)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
-WRAP(r66633)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
-WRAP(r66635)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
-WRAP(r66636)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
-WRAP(r66637)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
-WRAP(r66641)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
-WRAP(r66642)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
-WRAP(r66643)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
-WRAP(r66645)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
 WRAP(r66646)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
 WRAP(r66650)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
 WRAP(r66652)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
 WRAP(r66654)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
 WRAP(r66656)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
 WRAP(r66660)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
 WRAP(r66661)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
 WRAP(r66664)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
 WRAP(r66666)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
 WRAP(r66670)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
 WRAP(r66673)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
 WRAP(r66676)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
 WRAP(r66701)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
 WRAP(r66702)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
 WRAP(r66705)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
 WRAP(r66707)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
 WRAP(r66712)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
 WRAP(r66715)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
 WRAP(r66716)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
 WRAP(r66721)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
 WRAP(r66722)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
 WRAP(r66724)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
 WRAP(r66725)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
 WRAP(r66730)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
 WRAP(r66733)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
 WRAP(r66734)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
 WRAP(r66737)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
 WRAP(r66742)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
 WRAP(r66745)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
 WRAP(r66747)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
 WRAP(r66750)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
 WRAP(r66753)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
 WRAP(r66754)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
 WRAP(r66757)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
 WRAP(r66760)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
 WRAP(r66763)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
 WRAP(r66765)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
 WRAP(r66766)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
 WRAP(r66771)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
 WRAP(r66774)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
 WRAP(r66776)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
 WRAP(r67000)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
 WRAP(r67002)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
 WRAP(r67003)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
 WRAP(r67005)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
 WRAP(r67006)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
 WRAP(r67010)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
 WRAP(r67011)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
 WRAP(r67013)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
 WRAP(r67016)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
 WRAP(r67021)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
 WRAP(r67022)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
 WRAP(r67023)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
 WRAP(r67025)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
 WRAP(r67026)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
 WRAP(r67027)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
 WRAP(r67030)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
 WRAP(r67031)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
 WRAP(r67033)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
-WRAP(r67034)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
-WRAP(r67041)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
-WRAP(r67044)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
 WRAP(r67047)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
 WRAP(r67052)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
 WRAP(r67054)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
 WRAP(r67056)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
 WRAP(r67060)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
 WRAP(r67061)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 42) & 1
-WRAP(r67062)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
-WRAP(r67064)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
-WRAP(r67067)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
-WRAP(r67070)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
-WRAP(r67072)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
 WRAP(r67073)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
 WRAP(r67075)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
-WRAP(r67076)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
-WRAP(r67077)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
-WRAP(r67101)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
-WRAP(r67102)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
-WRAP(r67104)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 54) & 1
-WRAP(r67106)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 55) & 1
-WRAP(r67131)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
-WRAP(r67166)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
-WRAP(r67167)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
-WRAP(r67170)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
 WRAP(r67175)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
 WRAP(r67177)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
 WRAP(r67200)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
 WRAP(r67201)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
 WRAP(r67202)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
 WRAP(r67203)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
 WRAP(r67204)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
 WRAP(r67205)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
 WRAP(r67206)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
-WRAP(r67207)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
 WRAP(r67210)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
 WRAP(r67213)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
 WRAP(r67216)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
 WRAP(r67217)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
 WRAP(r67221)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
 WRAP(r67222)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
 WRAP(r67225)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
 WRAP(r67227)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
 WRAP(r67232)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
 WRAP(r67235)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
 WRAP(r67237)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
 WRAP(r67241)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
 WRAP(r67242)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
 WRAP(r67244)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
 WRAP(r67247)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
 WRAP(r67251)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
 WRAP(r67254)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
 WRAP(r67256)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
 WRAP(r67261)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
 WRAP(r67264)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
 WRAP(r67266)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
-WRAP(r67267)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
-WRAP(r67271)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
-WRAP(r67272)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
 WRAP(r67275)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
 WRAP(r67277)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
 WRAP(r67301)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
 WRAP(r67302)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
-WRAP(r67303)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
-WRAP(r67305)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
 WRAP(r67306)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
 WRAP(r67311)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
 WRAP(r67313)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
 WRAP(r67315)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
 WRAP(r67316)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
-WRAP(r67317)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
-WRAP(r67320)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
-WRAP(r67324)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
 WRAP(r67325)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
 WRAP(r67327)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
 WRAP(r67330)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 50) & 1
-WRAP(r67331)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 51) & 1
-WRAP(r67333)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
-WRAP(r67335)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
 WRAP(r67336)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
 WRAP(r67340)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
 WRAP(r67343)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
 WRAP(r67344)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
 WRAP(r67347)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
 WRAP(r67351)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
 WRAP(r67353)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
 WRAP(r67354)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
-WRAP(r67355)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
-WRAP(r67356)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 3) & 1
-WRAP(r67360)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 4) & 1
-WRAP(r67367)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 5) & 1
-WRAP(r67372)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 6) & 1
-WRAP(r67374)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 7) & 1
-WRAP(r67375)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
 WRAP(r67376)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
-WRAP(r67377)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
-WRAP(r67406)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
-WRAP(r67431)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
-WRAP(r67436)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 13) & 1
-WRAP(r67440)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 14) & 1
-WRAP(r67442)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 15) & 1
-WRAP(r67443)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
-WRAP(r67445)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
-WRAP(r67460)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
-WRAP(r67463)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
-WRAP(r67464)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
-WRAP(r67465)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
-WRAP(r67501)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
 WRAP(r67502)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
 WRAP(r67505)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
 WRAP(r67511)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
 WRAP(r67513)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
 WRAP(r67514)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
 WRAP(r67515)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
 WRAP(r67516)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
 WRAP(r67520)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
 WRAP(r67521)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
 WRAP(r67524)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
 WRAP(r67525)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
 WRAP(r67527)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
 WRAP(r67530)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
 WRAP(r67531)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
 WRAP(r67533)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
 WRAP(r67534)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
 WRAP(r67536)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
 WRAP(r67537)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 40) & 1
-WRAP(r67545)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
 WRAP(r67546)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
 WRAP(r67550)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
 WRAP(r67553)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
 WRAP(r67554)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
 WRAP(r67556)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
 WRAP(r67560)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
 WRAP(r67562)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
 WRAP(r67563)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 49) & 1
-WRAP(r67564)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 50) & 1
-WRAP(r67566)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 51) & 1
-WRAP(r67572)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
 WRAP(r67573)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
 WRAP(r67575)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
 WRAP(r67577)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
 WRAP(r67601)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
 WRAP(r67603)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 57) & 1
-WRAP(r67604)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 58) & 1
-WRAP(r67607)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 59) & 1
-WRAP(r67610)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 0) & 1
-WRAP(r67611)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
 WRAP(r67613)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
 WRAP(r67616)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
 WRAP(r67617)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 4) & 1
-WRAP(r67620)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 5) & 1
-WRAP(r67622)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 6) & 1
-WRAP(r67624)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 7) & 1
-WRAP(r67626)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 8) & 1
-WRAP(r67630)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 9) & 1
-WRAP(r67634)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 10) & 1
-WRAP(r67635)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
 WRAP(r67641)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
 WRAP(r67643)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
 WRAP(r67646)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
 WRAP(r67650)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 15) & 1
-WRAP(r67651)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 16) & 1
-WRAP(r67662)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 17) & 1
-WRAP(r67664)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 18) & 1
-WRAP(r67665)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 19) & 1
-WRAP(r67671)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
 WRAP(r67726)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
 WRAP(r67730)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
 WRAP(r67733)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
 WRAP(r67735)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
 WRAP(r67737)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
 WRAP(r67741)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 26) & 1
-WRAP(r67742)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
 WRAP(r67743)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
 WRAP(r67746)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 29) & 1
-WRAP(r67747)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 30) & 1
-WRAP(r67753)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 31) & 1
-WRAP(r67756)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 32) & 1
-WRAP(r67757)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
 WRAP(r67762)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
 WRAP(r67765)
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
 WRAP(r67766)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 36) & 1
-WRAP(r67767)
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 37) & 1
-WRAP(r67773)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
 static const agc_routine_entry interpretive_entries[]={
@@ -10620,685 +8116,685 @@ static const agc_routine_entry interpretive_entries[]={
 #if (CM_IMU_CALIBRATION_KEEP0 >> 4) & 1
  {4495,r10617_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 8) & 1
  {4508,r10634_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
  {4511,r10637_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
  {4512,r10640_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 11) & 1
  {4514,r10642_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 12) & 1
  {4515,r10643_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 13) & 1
  {26624,r64000_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 14) & 1
  {26627,r64003_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 15) & 1
  {26628,r64004_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 16) & 1
  {26630,r64006_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 17) & 1
  {26632,r64010_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 18) & 1
  {26633,r64011_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 19) & 1
  {26635,r64013_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 20) & 1
  {26637,r64015_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 21) & 1
  {26638,r64016_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 23) & 1
  {27663,r66017_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 24) & 1
  {27665,r66021_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
  {27666,r66022_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
  {27667,r66023_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 27) & 1
  {27669,r66025_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 28) & 1
  {27670,r66026_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 29) & 1
  {27671,r66027_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 32) & 1
  {27686,r66046_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 33) & 1
  {27688,r66050_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
  {27689,r66051_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
  {27691,r66053_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
  {27692,r66054_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
  {27693,r66055_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 38) & 1
  {27694,r66056_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 39) & 1
  {27695,r66057_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 43) & 1
  {27701,r66065_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 44) & 1
  {27703,r66067_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 57) & 1
  {27782,r66206_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
  {27785,r66211_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
  {27788,r66214_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
  {27790,r66216_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
  {27792,r66220_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
  {27794,r66222_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
  {27795,r66223_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
  {27838,r66276_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
  {27841,r66301_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 14) & 1
  {27896,r66370_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 15) & 1
  {27899,r66373_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 16) & 1
  {27900,r66374_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 17) & 1
  {27903,r66377_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 18) & 1
  {27905,r66401_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 19) & 1
  {27908,r66404_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 20) & 1
  {27911,r66407_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
  {27913,r66411_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
  {27914,r66412_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
  {27917,r66415_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
  {27922,r66422_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
  {27924,r66424_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
  {27963,r66473_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
  {27965,r66475_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
  {27967,r66477_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
  {27969,r66501_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
  {27970,r66502_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
  {27971,r66503_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 39) & 1
  {27976,r66510_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 40) & 1
  {27978,r66512_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
  {28070,r66646_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
  {28072,r66650_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
  {28074,r66652_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
  {28076,r66654_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
  {28078,r66656_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
  {28080,r66660_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 0) & 1
  {28081,r66661_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 1) & 1
  {28084,r66664_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 2) & 1
  {28086,r66666_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 3) & 1
  {28088,r66670_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 4) & 1
  {28091,r66673_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 5) & 1
  {28094,r66676_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
  {28097,r66701_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
  {28098,r66702_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
  {28101,r66705_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 9) & 1
  {28103,r66707_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 10) & 1
  {28106,r66712_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
  {28109,r66715_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
  {28110,r66716_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
  {28113,r66721_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
  {28114,r66722_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
  {28116,r66724_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
  {28117,r66725_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
  {28120,r66730_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
  {28123,r66733_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
  {28124,r66734_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
  {28127,r66737_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
  {28130,r66742_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
  {28133,r66745_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
  {28135,r66747_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
  {28136,r66750_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
  {28139,r66753_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
  {28140,r66754_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
  {28143,r66757_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
  {28144,r66760_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
  {28147,r66763_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
  {28149,r66765_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
  {28150,r66766_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
  {28153,r66771_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
  {28156,r66774_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 34) & 1
  {28158,r66776_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 35) & 1
  {28160,r67000_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 36) & 1
  {28162,r67002_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 37) & 1
  {28163,r67003_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 38) & 1
  {28165,r67005_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 39) & 1
  {28166,r67006_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 40) & 1
  {28168,r67010_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 41) & 1
  {28169,r67011_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 42) & 1
  {28171,r67013_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 43) & 1
  {28174,r67016_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 44) & 1
  {28177,r67021_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 45) & 1
  {28178,r67022_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 46) & 1
  {28179,r67023_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 47) & 1
  {28181,r67025_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 48) & 1
  {28182,r67026_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 49) & 1
  {28183,r67027_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 50) & 1
  {28184,r67030_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 51) & 1
  {28185,r67031_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 52) & 1
  {28187,r67033_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 55) & 1
  {28199,r67047_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 56) & 1
  {28202,r67052_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 57) & 1
  {28204,r67054_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 58) & 1
  {28206,r67056_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 59) & 1
  {28208,r67060_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 0) & 1
  {28209,r67061_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 4) & 1
  {28219,r67073_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 5) & 1
  {28221,r67075_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 11) & 1
  {28285,r67175_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 12) & 1
  {28287,r67177_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 13) & 1
  {28288,r67200_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 14) & 1
  {28289,r67201_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 15) & 1
  {28290,r67202_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 16) & 1
  {28291,r67203_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 17) & 1
  {28292,r67204_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 18) & 1
  {28293,r67205_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 19) & 1
  {28294,r67206_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 21) & 1
  {28296,r67210_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 22) & 1
  {28299,r67213_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 23) & 1
  {28302,r67216_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 24) & 1
  {28303,r67217_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 25) & 1
  {28305,r67221_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 26) & 1
  {28306,r67222_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 27) & 1
  {28309,r67225_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 28) & 1
  {28311,r67227_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 29) & 1
  {28314,r67232_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 30) & 1
  {28317,r67235_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 31) & 1
  {28319,r67237_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 32) & 1
  {28321,r67241_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
  {28322,r67242_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
  {28324,r67244_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
  {28327,r67247_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 36) & 1
  {28329,r67251_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 37) & 1
  {28332,r67254_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 38) & 1
  {28334,r67256_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 39) & 1
  {28337,r67261_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 40) & 1
  {28340,r67264_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 41) & 1
  {28342,r67266_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
  {28349,r67275_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
  {28351,r67277_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
  {28353,r67301_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
  {28354,r67302_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
  {28358,r67306_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
  {28361,r67311_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
  {28363,r67313_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
  {28365,r67315_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
  {28366,r67316_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
  {28373,r67325_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
  {28375,r67327_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
  {28376,r67330_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 1) & 1
  {28382,r67336_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 2) & 1
  {28384,r67340_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 3) & 1
  {28387,r67343_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 4) & 1
  {28388,r67344_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 5) & 1
  {28391,r67347_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 6) & 1
  {28393,r67351_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 7) & 1
  {28395,r67353_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
  {28396,r67354_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 14) & 1
  {28414,r67376_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 24) & 1
  {28482,r67502_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 25) & 1
  {28485,r67505_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 26) & 1
  {28489,r67511_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 27) & 1
  {28491,r67513_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 28) & 1
  {28492,r67514_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 29) & 1
  {28493,r67515_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
  {28494,r67516_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
  {28496,r67520_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
  {28497,r67521_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 33) & 1
  {28500,r67524_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 34) & 1
  {28501,r67525_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 35) & 1
  {28503,r67527_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 36) & 1
  {28504,r67530_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
  {28505,r67531_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
  {28507,r67533_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 39) & 1
  {28508,r67534_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 40) & 1
  {28510,r67536_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 39) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 41) & 1
  {28511,r67537_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 41) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 42) & 1
  {28518,r67546_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 43) & 1
  {28520,r67550_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
  {28523,r67553_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
  {28524,r67554_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 45) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
  {28526,r67556_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 47) & 1
  {28528,r67560_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 48) & 1
  {28530,r67562_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 49) & 1
  {28531,r67563_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
  {28539,r67573_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 53) & 1
  {28541,r67575_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 54) & 1
  {28543,r67577_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 55) & 1
  {28545,r67601_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 56) & 1
  {28547,r67603_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 0) & 1
  {28555,r67613_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 2) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
  {28558,r67616_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
  {28559,r67617_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
  {28577,r67641_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
  {28579,r67643_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
  {28582,r67646_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
  {28584,r67650_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 20) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
  {28630,r67726_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
  {28632,r67730_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
  {28635,r67733_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
  {28637,r67735_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
  {28639,r67737_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
  {28641,r67741_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 23) & 1
  {28643,r67743_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 24) & 1
  {28646,r67746_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 29) & 1
  {28658,r67762_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 30) & 1
  {28661,r67765_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 31) & 1
  {28662,r67766_abi},
 #endif
  {0xffffu,0}
@@ -11320,493 +8816,301 @@ static const agc_routine_entry basic_entries[]={
 #if (CM_IMU_CALIBRATION_KEEP0 >> 7) & 1
  {4504,r10630_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 8) & 1
- {4505,r10631_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 9) & 1
- {4506,r10632_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 10) & 1
- {4507,r10633_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 22) & 1
  {27652,r66004_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 26) & 1
- {27658,r66012_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 34) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 30) & 1
  {27672,r66030_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 35) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 31) & 1
  {27674,r66032_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 36) & 1
- {27675,r66033_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 37) & 1
- {27683,r66043_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 40) & 1
  {27696,r66060_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 47) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 41) & 1
  {27698,r66062_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 48) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 42) & 1
  {27699,r66063_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 45) & 1
  {27704,r66070_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 46) & 1
  {27706,r66072_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 47) & 1
  {27713,r66101_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 54) & 1
- {27714,r66102_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 55) & 1
- {27716,r66104_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 48) & 1
  {27718,r66106_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 57) & 1
- {27719,r66107_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 49) & 1
  {27724,r66114_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP0 >> 59) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 50) & 1
  {27726,r66116_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 51) & 1
  {27728,r66120_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 1) & 1
- {27730,r66122_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 2) & 1
- {27737,r66131_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 3) & 1
- {27739,r66133_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 4) & 1
- {27740,r66134_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 5) & 1
- {27750,r66146_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 52) & 1
  {27754,r66152_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 53) & 1
  {27755,r66153_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 54) & 1
  {27763,r66163_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 55) & 1
  {27767,r66167_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 10) & 1
+#if (CM_IMU_CALIBRATION_KEEP0 >> 56) & 1
  {27768,r66170_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 11) & 1
- {27770,r66172_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 12) & 1
- {27771,r66173_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 13) & 1
- {27778,r66202_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 4) & 1
  {27796,r66224_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 22) & 1
- {27798,r66226_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 23) & 1
- {27799,r66227_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 24) & 1
- {27817,r66251_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 25) & 1
- {27826,r66262_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 26) & 1
- {27831,r66267_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 5) & 1
  {27833,r66271_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 6) & 1
  {27835,r66273_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 7) & 1
  {27837,r66275_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 10) & 1
  {27850,r66312_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 11) & 1
  {27852,r66314_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 34) & 1
- {27853,r66315_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 35) & 1
- {27857,r66321_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 12) & 1
  {27860,r66324_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 13) & 1
  {27865,r66331_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 38) & 1
- {27880,r66350_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 26) & 1
  {27925,r66425_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 52) & 1
- {27926,r66426_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 27) & 1
  {27934,r66436_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 54) & 1
- {27935,r66437_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 28) & 1
  {27936,r66440_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 56) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 29) & 1
  {27945,r66451_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 30) & 1
  {27947,r66453_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 31) & 1
  {27950,r66456_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP1 >> 59) & 1
- {27962,r66472_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 38) & 1
  {27972,r66504_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 7) & 1
- {27974,r66506_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 8) & 1
- {27975,r66507_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 41) & 1
  {27979,r66513_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 42) & 1
  {27983,r66517_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 43) & 1
  {27985,r66521_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 14) & 1
- {27986,r66522_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 44) & 1
  {27989,r66525_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 16) & 1
- {27991,r66527_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 17) & 1
- {27992,r66530_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 18) & 1
- {27993,r66531_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 19) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 45) & 1
  {28007,r66547_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 20) & 1
- {28010,r66552_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 46) & 1
  {28028,r66574_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 22) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 47) & 1
  {28034,r66602_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 23) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 48) & 1
  {28053,r66625_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 24) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 49) & 1
  {28057,r66631_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 25) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 50) & 1
  {28058,r66632_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 26) & 1
- {28059,r66633_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 27) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 51) & 1
  {28061,r66635_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 28) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 52) & 1
  {28062,r66636_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 29) & 1
- {28063,r66637_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 30) & 1
- {28065,r66641_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 31) & 1
- {28066,r66642_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 32) & 1
- {28067,r66643_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP2 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP1 >> 53) & 1
  {28069,r66645_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 33) & 1
+#if (CM_IMU_CALIBRATION_KEEP2 >> 53) & 1
  {28188,r67034_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 34) & 1
- {28193,r67041_abi},
+#if (CM_IMU_CALIBRATION_KEEP2 >> 54) & 1
+ {28191,r67037_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 35) & 1
- {28196,r67044_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 42) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 1) & 1
  {28210,r67062_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 43) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 2) & 1
  {28212,r67064_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 3) & 1
  {28215,r67067_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 45) & 1
- {28216,r67070_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 46) & 1
- {28218,r67072_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 6) & 1
  {28222,r67076_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 50) & 1
- {28223,r67077_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 51) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 7) & 1
  {28225,r67101_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 52) & 1
- {28226,r67102_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 53) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 8) & 1
  {28228,r67104_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 54) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 9) & 1
  {28230,r67106_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 55) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 10) & 1
  {28249,r67131_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 56) & 1
- {28278,r67166_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 57) & 1
- {28279,r67167_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP3 >> 58) & 1
- {28280,r67170_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 20) & 1
  {28295,r67207_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 42) & 1
  {28343,r67267_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 31) & 1
- {28345,r67271_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 32) & 1
- {28346,r67272_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 47) & 1
  {28355,r67303_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 38) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 48) & 1
  {28357,r67305_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 44) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 54) & 1
  {28367,r67317_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 45) & 1
- {28368,r67320_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 46) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 55) & 1
  {28372,r67324_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP3 >> 59) & 1
  {28377,r67331_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 51) & 1
- {28379,r67333_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP4 >> 52) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 0) & 1
  {28381,r67335_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 1) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 9) & 1
  {28397,r67355_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 2) & 1
- {28398,r67356_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 3) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 10) & 1
  {28400,r67360_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 11) & 1
  {28407,r67367_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 12) & 1
  {28410,r67372_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 13) & 1
  {28412,r67374_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 7) & 1
- {28413,r67375_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 15) & 1
  {28415,r67377_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 10) & 1
- {28422,r67406_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 11) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 16) & 1
  {28441,r67431_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 12) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 17) & 1
  {28446,r67436_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 13) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 18) & 1
  {28448,r67440_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 14) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 19) & 1
  {28450,r67442_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 15) & 1
- {28451,r67443_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 20) & 1
  {28453,r67445_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 21) & 1
  {28464,r67460_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 18) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 22) & 1
  {28467,r67463_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 19) & 1
- {28468,r67464_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 20) & 1
- {28469,r67465_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 21) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 23) & 1
  {28481,r67501_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 40) & 1
- {28517,r67545_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 49) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 50) & 1
  {28532,r67564_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 50) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 51) & 1
  {28534,r67566_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 51) & 1
- {28538,r67572_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 57) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 57) & 1
  {28548,r67604_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 58) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 58) & 1
  {28551,r67607_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP5 >> 59) & 1
- {28552,r67610_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 0) & 1
+#if (CM_IMU_CALIBRATION_KEEP4 >> 59) & 1
  {28553,r67611_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 4) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 3) & 1
  {28560,r67620_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 5) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 4) & 1
  {28562,r67622_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 6) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 5) & 1
  {28564,r67624_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 7) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 6) & 1
  {28566,r67626_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 8) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 7) & 1
  {28568,r67630_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 9) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 8) & 1
  {28572,r67634_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 10) & 1
- {28573,r67635_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 15) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 13) & 1
  {28585,r67651_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 16) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 14) & 1
  {28594,r67662_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 17) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 15) & 1
  {28596,r67664_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 18) & 1
- {28597,r67665_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 19) & 1
- {28601,r67671_abi},
-#endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 26) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 22) & 1
  {28642,r67742_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 29) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 25) & 1
  {28647,r67747_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 30) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 26) & 1
  {28651,r67753_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 31) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 27) & 1
  {28654,r67756_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 32) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 28) & 1
  {28655,r67757_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 36) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 32) & 1
  {28663,r67767_abi},
 #endif
-#if (CM_IMU_CALIBRATION_KEEP6 >> 37) & 1
+#if (CM_IMU_CALIBRATION_KEEP5 >> 33) & 1
  {28667,r67773_abi},
 #endif
  {0xffffu,0}
@@ -11821,9 +9125,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {4497,0},
  {4501,0},
  {4504,0},
- {4505,0},
- {4506,0},
- {4507,0},
  {4508,1},
  {4511,1},
  {4512,1},
@@ -11839,7 +9140,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {26637,1},
  {26638,1},
  {27652,0},
- {27658,0},
  {27663,1},
  {27665,1},
  {27666,1},
@@ -11849,8 +9149,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27671,1},
  {27672,0},
  {27674,0},
- {27675,0},
- {27683,0},
  {27686,1},
  {27688,1},
  {27689,1},
@@ -11867,26 +9165,15 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27704,0},
  {27706,0},
  {27713,0},
- {27714,0},
- {27716,0},
  {27718,0},
- {27719,0},
  {27724,0},
  {27726,0},
  {27728,0},
- {27730,0},
- {27737,0},
- {27739,0},
- {27740,0},
- {27750,0},
  {27754,0},
  {27755,0},
  {27763,0},
  {27767,0},
  {27768,0},
- {27770,0},
- {27771,0},
- {27778,0},
  {27782,1},
  {27785,1},
  {27788,1},
@@ -11895,11 +9182,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27794,1},
  {27795,1},
  {27796,0},
- {27798,0},
- {27799,0},
- {27817,0},
- {27826,0},
- {27831,0},
  {27833,0},
  {27835,0},
  {27837,0},
@@ -11907,11 +9189,8 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27841,1},
  {27850,0},
  {27852,0},
- {27853,0},
- {27857,0},
  {27860,0},
  {27865,0},
- {27880,0},
  {27896,1},
  {27899,1},
  {27900,1},
@@ -11925,14 +9204,11 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27922,1},
  {27924,1},
  {27925,0},
- {27926,0},
  {27934,0},
- {27935,0},
  {27936,0},
  {27945,0},
  {27947,0},
  {27950,0},
- {27962,0},
  {27963,1},
  {27965,1},
  {27967,1},
@@ -11940,32 +9216,20 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {27970,1},
  {27971,1},
  {27972,0},
- {27974,0},
- {27975,0},
  {27976,1},
  {27978,1},
  {27979,0},
  {27983,0},
  {27985,0},
- {27986,0},
  {27989,0},
- {27991,0},
- {27992,0},
- {27993,0},
  {28007,0},
- {28010,0},
  {28028,0},
  {28034,0},
  {28053,0},
  {28057,0},
  {28058,0},
- {28059,0},
  {28061,0},
  {28062,0},
- {28063,0},
- {28065,0},
- {28066,0},
- {28067,0},
  {28069,0},
  {28070,1},
  {28072,1},
@@ -12027,8 +9291,7 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28185,1},
  {28187,1},
  {28188,0},
- {28193,0},
- {28196,0},
+ {28191,0},
  {28199,1},
  {28202,1},
  {28204,1},
@@ -12038,20 +9301,13 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28210,0},
  {28212,0},
  {28215,0},
- {28216,0},
- {28218,0},
  {28219,1},
  {28221,1},
  {28222,0},
- {28223,0},
  {28225,0},
- {28226,0},
  {28228,0},
  {28230,0},
  {28249,0},
- {28278,0},
- {28279,0},
- {28280,0},
  {28285,1},
  {28287,1},
  {28288,1},
@@ -12084,8 +9340,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28340,1},
  {28342,1},
  {28343,0},
- {28345,0},
- {28346,0},
  {28349,1},
  {28351,1},
  {28353,1},
@@ -12098,13 +9352,11 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28365,1},
  {28366,1},
  {28367,0},
- {28368,0},
  {28372,0},
  {28373,1},
  {28375,1},
  {28376,1},
  {28377,0},
- {28379,0},
  {28381,0},
  {28382,1},
  {28384,1},
@@ -12115,25 +9367,19 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28395,1},
  {28396,1},
  {28397,0},
- {28398,0},
  {28400,0},
  {28407,0},
  {28410,0},
  {28412,0},
- {28413,0},
  {28414,1},
  {28415,0},
- {28422,0},
  {28441,0},
  {28446,0},
  {28448,0},
  {28450,0},
- {28451,0},
  {28453,0},
  {28464,0},
  {28467,0},
- {28468,0},
- {28469,0},
  {28481,0},
  {28482,1},
  {28485,1},
@@ -12153,7 +9399,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28508,1},
  {28510,1},
  {28511,1},
- {28517,0},
  {28518,1},
  {28520,1},
  {28523,1},
@@ -12164,7 +9409,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28531,1},
  {28532,0},
  {28534,0},
- {28538,0},
  {28539,1},
  {28541,1},
  {28543,1},
@@ -12172,7 +9416,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28547,1},
  {28548,0},
  {28551,0},
- {28552,0},
  {28553,0},
  {28555,1},
  {28558,1},
@@ -12183,7 +9426,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28566,0},
  {28568,0},
  {28572,0},
- {28573,0},
  {28577,1},
  {28579,1},
  {28582,1},
@@ -12191,8 +9433,6 @@ const cm_imu_calibration_point cm_imu_calibration_points[CM_IMU_CALIBRATION_POIN
  {28585,0},
  {28594,0},
  {28596,0},
- {28597,0},
- {28601,0},
  {28630,1},
  {28632,1},
  {28635,1},
