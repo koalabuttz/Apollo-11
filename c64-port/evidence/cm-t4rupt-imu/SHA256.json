@@ -4,12 +4,12 @@
   "release": "evidence-cm-t4rupt-imu",
   "files": {
     "cm-t4rupt-imu-host.log": {
-      "sha256": "1fa36799f7a4da6dd0f8b0b89d24be99b2ddf2c5ef4f1c6861ecab03141ef3da",
-      "bytes": 995,
+      "sha256": "cfb9eebf0bfe457197e6aa7a018a7f1a2f2dba91bfb5fd4f568d18170317b7f9",
+      "bytes": 1395,
       "store": "release"
     },
     "cm-t4rupt-imu-proof.json": {
-      "sha256": "d872d023d9effaf37ab33f277b8a48ebaa3be0c50ae7386943654552ab3c6289",
+      "sha256": "53d229020687f608af15bb0a70a836d69b592e4635667e115c5c724255334e54",
       "bytes": 4067,
       "store": "tree"
     },
@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "cm-t4rupt-imu-vice.log": {
-      "sha256": "bb9fecfcc75214156ac5ebf767b35532f76fd108b2c54664804ec791fddb76e5",
-      "bytes": 227,
+      "sha256": "76d8dce332900a479f2c602119da6f32612fa0731e7b4899d8c7f8c7492c3438",
+      "bytes": 307,
       "store": "release"
     }
   }

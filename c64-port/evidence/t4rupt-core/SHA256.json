@@ -4,8 +4,8 @@
   "release": "evidence-t4rupt-core",
   "files": {
     "t4rupt-core-c64-cover.json": {
-      "sha256": "b1269bf0641f469817941911d91ccfb4f454b7d06d08593eb3eb250bf1a5537f",
-      "bytes": 633,
+      "sha256": "5b2c766ff6ef5db8ead10604cae9fb5acfe2d93ec3c9b924c4ce517dfc63d593",
+      "bytes": 643,
       "store": "tree"
     },
     "t4rupt-core-differential.log": {
@@ -34,8 +34,8 @@
       "store": "tree"
     },
     "t4rupt-core-vice.log": {
-      "sha256": "737ecbb2f920ffdaffc2877d14b113dc9e11e824b0af9623d3a5e2124103400f",
-      "bytes": 206,
+      "sha256": "6adf0fc28353d59be5599cc2772b29d5800f5ea9cb08738d414a257570603f7c",
+      "bytes": 299,
       "store": "tree"
     }
   }

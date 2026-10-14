@@ -39,8 +39,8 @@
       "store": "tree"
     },
     "lm-t4rupt-closure-vice.log": {
-      "sha256": "40460a8426fdad9f985610375743c2631c730e662578cf23b4d40bd0567724ba",
-      "bytes": 1033,
+      "sha256": "9525ea00596baf5bdba24ea416a8a1619b36cb938c7361a81afb99578d965483",
+      "bytes": 1126,
       "store": "release"
     }
   }

@@ -33,7 +33,7 @@ The interrupt is entered as its vector leaves it:
 - inside the interrupt;
 - no IMU or optics drive in progress on channel 14, and no trap bits on channel 13.
 
-The domains of the three tables apply at their entries. A chain that met a refusal would report it, and none does.
+The domains of the three tables apply at their entries. A chain that met a refusal would report it, and none does. The channel 13 and 14 conditions are not refused: the native code runs with those bits set, but the comparisons keep them clear, since yaAGC's hardware model acts on them (channel 13's trap bits arm hardware interrupts, and a channel 14 drive empties the command counters), which is the outside world rather than the program.
 
 ## Evidence
 
