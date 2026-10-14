@@ -2213,7 +2213,7 @@
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
             "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
-              "vice-cm-integration-init": 322
+              "vice-cm-integration-init": 331
             }
           },
           "c64_branch_outcomes": {
@@ -2221,8 +2221,8 @@
             "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/lane-g-417.md",
+            "sha256": "e42ee2722fb2a4ba88372518fb41c7bca3b2099b775710d08dd6117c1c2015c6"
           }
         }
       }
@@ -9132,7 +9132,7 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9149,7 +9149,7 @@
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9164,7 +9164,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET or Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
@@ -9184,6 +9183,10 @@
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-integration-init.md",
+            "sha256": "2ce18acd5cb83d8e762415fc83f12e114ebd6b4aee39b7bd3974ff0e75494d7c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
@@ -12936,7 +12939,7 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12951,7 +12954,7 @@
           "verification": "docs/LM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12965,7 +12968,6 @@
           "TC RTRN to the saved return outside the file",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
@@ -12985,6 +12987,10 @@
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-stable-orbit.md",
+            "sha256": "af050e887817539c78001bee15c51adc301b0c552ea65fc80cd454f80e393009"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
