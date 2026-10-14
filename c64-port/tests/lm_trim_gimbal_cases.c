@@ -22,7 +22,7 @@ void lm_tg_input(apollo_overlay_state *m,lm_flight_io *io,lm_tg_case *c,uint16_t
  /* Counters and the interrupt registers are zero, except SR. */
  m->words[7]=0;for(i=010;i<=061u;++i)if(i!=021u)m->words[i]=0;
  c->superbank=0;io->bias.superbank=0;io->bias.interrupt_enabled=0;
- io->chan14=0;io->chan5=io->chan6=io->chan30=io->chan31=0;io->chan12=(agc_word)((rnd(&seed)>>12)&077777u);
+ io->hw.channel14=0;io->hw.channel5=io->hw.channel6=io->hw.channel30=io->hw.channel31=0;io->hw.channel12=(agc_word)((rnd(&seed)>>12)&077777u);
  if(v%16u!=0u){
   /* AOSQ/R (with their low words), EDOTQ/R, KQ/R and ACCDOTQ/R (positive
    * except in cohort 8), QDIFF/RDIFF, NEGUQ/R +1, +0, -1 or -0. */
@@ -74,6 +74,7 @@ static bool tg_fixed(const agc_native_program *p,uint16_t physical,agc_word *wor
 }
 unsigned lm_tg_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t *steps){
  agc_routine_table tables[2];agc_native_program program={0,0,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,0};lm_tg_case c;enum exec_status st;uint16_t stop;
+ program.hardware=&io->hw;
  tables[0]=lm_trim_gimbal_routines;tables[1]=lm_interbank_routines;
  program.basic=tables;program.basic_count=2;program.operands=lm_tg_sites;program.operand_count=LM_TG_SITES;
  program.fixed_data=tg_fixed;
@@ -88,7 +89,7 @@ unsigned lm_tg_run(apollo_overlay_state *s,lm_flight_io *io,uint16_t n,uint16_t 
 static uint16_t sum_a,sum_b;
 static void mix(uint16_t v){sum_a=(uint16_t)(sum_a+v);sum_b=(uint16_t)(sum_b+sum_a);}
 uint32_t lm_tg_digest(apollo_overlay_state *s,uint16_t n){lm_flight_io io;uint16_t steps;unsigned i,kind=lm_tg_run(s,&io,n,&steps);
- sum_a=sum_b=0;mix((uint16_t)kind);mix(io.chan12);
+ sum_a=sum_b=0;mix((uint16_t)kind);mix(io.hw.channel12);
  for(i=0;i<2048u;++i)mix((uint16_t)(s->words[i]&(i<2u?0177777u:077777u)));
  return (uint32_t)sum_b<<16|sum_a;
 }

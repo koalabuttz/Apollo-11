@@ -5,7 +5,7 @@
 CM_STABLE_ORBIT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_STABLE_ORBIT_SRC = src/cm_stable_orbit.c tests/cm_stable_orbit_target.c $(CM_STABLE_ORBIT_COMMON)
 CM_STABLE_ORBIT_HDR = include/cm_stable_orbit.h tests/interp_case.h tests/cm_stable_orbit_vectors.h tests/cm_stable_orbit_c64_vectors.h
-CM_STABLE_ORBIT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+CM_STABLE_ORBIT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-stable-orbit sanitize-cm-stable-orbit c64-cm-stable-orbit vice-cm-stable-orbit cm-stable-orbit-differential
 all: build/test-cm-stable-orbit
 test: test-cm-stable-orbit

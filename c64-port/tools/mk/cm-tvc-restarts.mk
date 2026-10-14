@@ -5,7 +5,7 @@
 CM_TVC_RESTARTS_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_TVC_RESTARTS_SRC = src/cm_tvc_restarts.c tests/cm_tvc_restarts_target.c $(CM_TVC_RESTARTS_COMMON)
 CM_TVC_RESTARTS_HDR = include/cm_tvc_restarts.h tests/interp_case.h tests/cm_tvc_restarts_vectors.h tests/cm_tvc_restarts_c64_vectors.h
-CM_TVC_RESTARTS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_TVC_RESTARTS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-tvc-restarts sanitize-cm-tvc-restarts c64-cm-tvc-restarts vice-cm-tvc-restarts cm-tvc-restarts-differential
 all: build/test-cm-tvc-restarts
 test: test-cm-tvc-restarts

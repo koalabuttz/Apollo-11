@@ -5,7 +5,8 @@
 #include "lm_flight_io.h"
 /* Luminary099 DAPIDLER_PROGRAM.agc, all of it (bank 16, 02000-02212, and
  * bank 20, 02226-02446), as native routines of the control-transfer ABI;
- * io is lm_flight_io (channels 5, 6, 12, 14, 30, 31).
+ * io is p66_bias_io; channels 5, 6, 12, 14, 30 and 31 are the program's
+ * agc_hardware (include/lm_flight_io.h).
  *
  *   CHEKBITS  16,2000  mode-select and IMU checks; JUMPDSP (DTCB to ALTDSPLY),
  *                      SHUTDOWN or MOREIDLE

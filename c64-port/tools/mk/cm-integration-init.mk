@@ -5,7 +5,7 @@
 CM_INTEGRATION_INIT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_INTEGRATION_INIT_SRC = src/cm_integration_init.c tests/cm_integration_init_target.c $(CM_INTEGRATION_INIT_COMMON)
 CM_INTEGRATION_INIT_HDR = include/cm_integration_init.h tests/interp_case.h tests/cm_integration_init_vectors.h tests/cm_integration_init_c64_vectors.h
-CM_INTEGRATION_INIT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+CM_INTEGRATION_INIT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-integration-init sanitize-cm-integration-init c64-cm-integration-init vice-cm-integration-init cm-integration-init-differential
 all: build/test-cm-integration-init
 test: test-cm-integration-init
