@@ -31,7 +31,7 @@ The native form is `src/main_manifest.c` (`include/main_manifest.h`), generated 
 ## Evidence
 
 Hashes: `evidence/main-assembly/SHA256.json`.
-- **Source map.** `evidence/main-assembly/main-assembly-source-map.json` (`tools/main_assembly.py`) lists, per mission and in order, each include, its checked-in file, the assembler's name for it, its runs, word count, banks and sum, and its coverage status.
+- **Source map.** `evidence/main-assembly/main-assembly-source-map.json` (`tools/main_assembly.py`) lists, per mission and in order, each include, its checked-in file, the assembler's name for it, its runs, word count, banks and sum.
 - **Independent assembly comparison.** `evidence/main-assembly/main-assembly-proof.json` (`make main-assembly-differential`, `tools/main_manifest_reference.c`, host-only) uses yaAGC's own rope loader (bank order and parity). It compares each file of the native manifest with the words yaAGC holds at its runs. It also runs yaAGC from each unused TC-to-itself word in banks 0-37, which must loop. Luminary099: 89 files, 57 fill loops. Comanche055: 84 files, 52 fill loops. 0 differing.
 - **Host and sanitizer results.** `make test-main-assembly sanitize-main-assembly`: both manifests against both ropes, 177 checks, 0 failures.
 - **C64 execution results.** `make vice-main-assembly` (`platform/c64/main_manifest_diagnostic.c`) runs the same check of both manifests on the C64, against the ropes the self-check program already keeps in the REU (`build/self-check.reu`, `include/rope_image.h`): 177 checks, 0 failures. The C64 runs the whole check, every file and every word, so there are no rows to pick.
