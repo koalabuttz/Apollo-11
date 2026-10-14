@@ -68,7 +68,7 @@ def common(spec):
 
 MOS_CC = os.environ.get('MOS_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-c64-clang'))
 C64_FLAGS = ['-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']
-FLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
+FLAGS = ['-std=c99', *os.environ.get('IRC_OPT','-O2').split(), '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
 # Host native runners end a case that calls exit(3) (lmi_goto_any on a cycle
 # of erasable CADRs) as a timeout row, kind 9, instead of ending the run
 # (tools/interp_routine_native.c, #224).
@@ -151,6 +151,23 @@ class Mission:
             self.joint_any = js.get('*', [])
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
+        # 'q_callers' [LABEL, ...]: the routine reads words after its call
+        # (DMP's ADRES, POLY's coefficients), so each case returns to one of
+        # the mission's real TC LABEL sites outside the file, under that
+        # site's bank: {point: [physical return word, ...]}.
+        self.q_callers = {}
+        for lab in spec.get('q_callers', ()):
+            pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
+            sites = []
+            for raw in open(os.path.join(R, IL.LISTINGS[m]), errors='replace'):
+                g = pat.match(raw)
+                if g:
+                    ph = int(g.group(1), 8) * 1024 + int(g.group(2), 8) - 0o2000 + 1
+                    if not self.cp.in_file(ph - 1):
+                        sites.append(ph)
+            if not sites:
+                raise SystemExit('q_callers: no TC %s outside the file' % lab)
+            self.q_callers[self.cp.label_phys(lab)] = sites
         # 'states' may name each mission's own ({'lm': {...}, 'cm': {...}}).
         st = spec.get('states', {})
         if st and set(st) <= {'lm', 'cm'}:
@@ -421,7 +438,10 @@ def case(mi, point, n, rng):
     E = collections.OrderedDict()
     seed = rng.getrandbits(32)
     bank = point // 1024
-    if bank in (2, 3):
+    qsite = rng.choice(mi.q_callers[point]) if point in mi.q_callers else None
+    if qsite is not None and qsite // 1024 not in (2, 3):
+        bank = qsite // 1024
+    elif bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
@@ -588,7 +608,10 @@ def case(mi, point, n, rng):
         # (or the returns the spec's states give the point: banked ones in
         # the case's bank).
         fixed_q = mi.states.get(point, {}).get('2')
-        if fixed_q:
+        if qsite is not None:
+            E[2] = logical(qsite)
+            stop = qsite
+        elif fixed_q:
             E[2] = rng.choice(fixed_q)
             stop = 2048 + E[2] - 0o4000 if E[2] >= 0o4000 else bank * 1024 + E[2] - 0o2000
         else:
@@ -1671,7 +1694,7 @@ C64_TOP = 0xbf00
 
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
-            + spec.get('native_sources', []) + [x for x in common(spec) if '_interp_' not in x] + [spec['target']])
+            + spec.get('c64_native_sources', spec.get('native_sources', [])) + [x for x in common(spec) if '_interp_' not in x] + [spec['target']])
 
 
 KEEP_WORDS = {}   # symbol -> the generated file's KEEP words

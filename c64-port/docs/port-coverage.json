@@ -2362,8 +2362,72 @@
           ],
           "scope": "The dispatcher entry for any caller (INTPRET 6006, INTPRET +2 6010, INTRSM 6017 to NEWOPS 6037) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
           "verification": "docs/INTERP-ENTRY.md"
+        },
+        {
+          "native_files": [
+            "src/cm_interp_core.c",
+            "src/lm_interp_core.c",
+            "src/cm_interpreter.c",
+            "include/cm_interpreter.h"
+          ],
+          "scope": "The whole file: the compact core runs the interpretive code (dispatch, every order body, NEWOPS, DANZIG and the CHANG2 switch) from the rope image; the file's basic subroutines that other files call (DMP, DMPSUB, SHORTMP, TPAGREE, DPAGREE, BRANCH, POLY, POWRSERS, MPACVBUF, ALSIGNAG, UNITDV, VECAGREE, ROUNDSUB and the rest of the cross-file entries) are generated control-transfer ABI routines (cm_interpreter_basic).",
+          "verification": "docs/INTERPRETER-FILE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c, included by src/cm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures). (2) The basic subroutines other files call are generated routines (spec cm-interpreter, 'inside' segments BRANCH through VXV), canonical 2048-word image, entered at their original addresses: fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28. A run stops at Z where flow leaves the generated segments for the core's words (DANZIG, NEWOPS, ENDVXV, the OVERFLOW entries, SQRTSUB, DSQSUB, VSQSUB, VROTATEX, MAXTEST). Hot subroutines (static TC sites across the rope; the steward's per-pass list): TPAGREE (15), DMP (15), POLY (10), SHORTMP (8), BRANCH (7), ALSIGNAG (4), DMPSUB (4), MPACVBUF (3).",
+        "external_continuations": [
+          "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
+          "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-interpreter/cm-interpreter-source-map.json",
+            "sha256": "40818c5eccb11cb3c9a54fb98d9b19a1bb6011925a02fc4c728f4a1862e934ef"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-interpreter/cm-interpreter-proof.json",
+            "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-interpreter/cm-interpreter-closure.json",
+            "sha256": "5498b72a88b4c4ee837aec329d4759c174d05e6509a2d9f08dabd16d74a47e5f"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-interpreter/cm-interpreter-host.log",
+            "sha256": "6ef5c61acad4447061efba225e9298db9da64fadef7d84223f7be0cbbb116ac6"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-interpreter/cm-interpreter-vice.log",
+            "sha256": "f3fb5fd443db4e7614bde1590442bbc7a143c04796c03d91a73b8bab1b73b513",
+            "vice_targets": {
+              "vice-cm-interpreter": 67
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-interpreter/cm-interpreter-proof.json",
+            "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722"
+          },
+          "interpreter_core": {
+            "flight": {
+              "path": "evidence/interpreter/interp-flight-vice.json",
+              "sha256": "95a1f586ba3d789480acaeb53ebc0d3a0c261c9f58f11064f1172ceca1a82ab0"
+            },
+            "fuzz": {
+              "path": "evidence/interpreter/interp-core-fuzz.log",
+              "sha256": "355d2e8a511f48af8247eea31de2bab1e65fa110d1727d970b32a7b4dfaba414"
+            },
+            "c64": {
+              "path": "evidence/interpreter/vice-interp-core.log",
+              "sha256": "43a19d805c21e40de4ec1fb529b0b568adedbb943eedcf3d280698d74df6c6f8"
+            }
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
@@ -8981,8 +9045,71 @@
           ],
           "scope": "The dispatcher entry for any caller (INTPRET 6037, INTPRET +2 6041, INTRSM 6050 to NEWOPS 6070) and INTPRET +3, as routines of the interpreter table, against the original program in all erasable words and the 16-bit registers. E/CALL's INTPRET keeps the standard lead-in composite; INTPRET +2 takes an in-bank LOC. NEWOPS and the rest of the dispatcher stay open.",
           "verification": "docs/INTERP-ENTRY.md"
+        },
+        {
+          "native_files": [
+            "src/lm_interp_core.c",
+            "src/lm_interpreter.c",
+            "include/lm_interpreter.h"
+          ],
+          "scope": "The whole file: the compact core runs the interpretive code (dispatch, every order body, NEWOPS, DANZIG and the CHANG2 switch) from the rope image; the file's basic subroutines that other files call (DMP, DMPSUB, SHORTMP, TPAGREE, DPAGREE, BRANCH, POLY, POWRSERS, MPACVBUF, ALSIGNAG, UNITDV, VECAGREE, ROUNDSUB and the rest of the cross-file entries) are generated control-transfer ABI routines (lm_interpreter_basic).",
+          "verification": "docs/INTERPRETER-FILE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures). (2) The basic subroutines other files call are generated routines (spec lm-interpreter, 'inside' segments BRANCH through VXV), canonical 2048-word image, entered at their original addresses: fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28. A run stops at Z where flow leaves the generated segments for the core's words (DANZIG, NEWOPS, ENDVXV, the OVERFLOW entries, SQRTSUB, DSQSUB, VSQSUB, VROTATEX, MAXTEST). Hot subroutines (static TC sites across the rope; the steward's per-pass list): DMP (21 TC sites), TPAGREE (19), SHORTMP (10), BRANCH (10), POLY (7), DMPSUB (7), ALSIGNAG (5), MPACVBUF (4).",
+        "external_continuations": [
+          "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
+          "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-interpreter/lm-interpreter-source-map.json",
+            "sha256": "0d67bd3a833164bb2b811ac1aa2cb6fd97214a182870e2fbe6db713b8a706861"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
+            "sha256": "d7b0c8a6894cbf626772b090fa1458fecaf1fa4abc9a428184551a2d077ff6f3"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/lm-interpreter/lm-interpreter-closure.json",
+            "sha256": "df48cdbb61d4ec5d557596bb6b00f9b6353e58bc7bb3f9b948cbf4db95cc7572"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-interpreter/lm-interpreter-host.log",
+            "sha256": "6becbbcc7c845242728b5523a2b53c34095b5ceffd1f24746330e50a56bd7a81"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-interpreter/lm-interpreter-vice.log",
+            "sha256": "6eeade396ca30937d55cfbb61bdfaf48950dcc4a07968a1b67eb886ab92c73df",
+            "vice_targets": {
+              "vice-lm-interpreter": 71
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
+            "sha256": "d7b0c8a6894cbf626772b090fa1458fecaf1fa4abc9a428184551a2d077ff6f3"
+          },
+          "interpreter_core": {
+            "flight": {
+              "path": "evidence/interpreter/interp-flight-vice.json",
+              "sha256": "95a1f586ba3d789480acaeb53ebc0d3a0c261c9f58f11064f1172ceca1a82ab0"
+            },
+            "fuzz": {
+              "path": "evidence/interpreter/interp-core-fuzz.log",
+              "sha256": "355d2e8a511f48af8247eea31de2bab1e65fa110d1727d970b32a7b4dfaba414"
+            },
+            "c64": {
+              "path": "evidence/interpreter/vice-interp-core.log",
+              "sha256": "43a19d805c21e40de4ec1fb529b0b568adedbb943eedcf3d280698d74df6c6f8"
+            }
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
