@@ -3,7 +3,7 @@
 # tools/interp_compile.py into native routines of the control-transfer ABI.
 ASC_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c
 ASC_SRC = src/lm_ascent.c tests/lm_ascent_target.c $(ASC_COMMON)
-ASC_HDR = include/lm_ascent.h tests/interp_case.h tests/lm_ascent_vectors.h tests/lm_ascent_c64_vectors.h
+ASC_HDR = include/lm_ascent.h tests/interp_case.h tests/interp_cut.h tests/lm_ascent_vectors.h tests/lm_ascent_c64_vectors.h
 ASC_MOS_FLAGS = -std=c99 -Oz -fno-inline -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror
 .PHONY: test-lm-ascent sanitize-lm-ascent c64-lm-ascent vice-lm-ascent lm-ascent-differential
 all: build/test-lm-ascent
@@ -24,7 +24,7 @@ lm-ascent-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/lm-ascent.groups
 ASC_C64_PRGS = $(foreach g,$(LM_ASCENT_GROUPS),build/lm-ascent-$(g).prg)
-ASC_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/lm_ascent_target.c
+ASC_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/interp_cut.c tests/lm_ascent_target.c
 ASC_C64_lm = src/lm_ascent.c src/lm_interp_orders.c src/lm_interp_steps.c
 c64-lm-ascent: $(ASC_C64_PRGS)
 build/lm-ascent-%.prg: $(ASC_SRC) platform/c64/lm_ascent_diagnostic.c tools/mk/lm-ascent.groups $(ASC_HDR) | build

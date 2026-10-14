@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-ascent",
+  "release": "evidence-lm-ascent",
+  "files": {
+    "lm-ascent-c64-cover.json": {
+      "sha256": "811dfe1134c0e0406bff42369989c294db572c0d096434b36cfb08b1280b52a7",
+      "bytes": 5318,
+      "store": "tree"
+    },
+    "lm-ascent-differential.log": {
+      "sha256": "e7010af5bbde03fc4d7288ffbb73fd2ac60218f11d678560be58ec5a83807dc4",
+      "bytes": 11207,
+      "store": "release"
+    },
+    "lm-ascent-host.log": {
+      "sha256": "12ad4fb204fb7316a06c1afebffe26bf23e5b39acdf6911b5bf3be86b9c5f5da",
+      "bytes": 153,
+      "store": "release"
+    },
+    "lm-ascent-proof.json": {
+      "sha256": "864d8a47108f7e05cbfa85e5258b6669b3d3d3902aec2c3a122dad442f7a59fa",
+      "bytes": 24151,
+      "store": "tree"
+    },
+    "lm-ascent-source-map.json": {
+      "sha256": "5f3035e951954ad071daba121b0769e039420e900aa1b348c0c91731b480bc4c",
+      "bytes": 72032,
+      "store": "tree"
+    },
+    "lm-ascent-vice.log": {
+      "sha256": "5c889b21647298a113326dfbed688bb18949be4aabd6a8785c6ddebcd90172c6",
+      "bytes": 7115,
+      "store": "release"
+    }
+  }
+}
