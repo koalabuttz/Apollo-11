@@ -10503,8 +10503,63 @@
       "sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f",
       "bytes": 121255,
       "lines": 5182,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/lm_p20_p25.c",
+            "src/lm_interp_orders.c",
+            "src/lm_interp_steps.c",
+            "src/rtb_angles.c",
+            "src/lm_integration_moves.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "include/agc_channel_ops.h"
+          ],
+          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 998 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
+          "verification": "docs/LM-P20-P25.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, Q and caller returns outside the file, the INDEX MPAC table returns with the MPAC their producers leave (0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, DESCOUNT and PIPCTR not -0, and any values of the other erasables.",
+        "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "BANKCALL, IBNKCALL and POSTJUMP with their inline CADRs, whose returns are routines of the file",
+          "PHASCHNG, 2PHSCHNG, WAITLIST, FIXDELAY, VARDELAY, LONGCALL, TASKOVER, FINDVAC, NOVAC, ENDOFJOB, JOBSLEEP, JOBWAKE, PRIOCHNG, KILLTASK, TWIDDLE and BLANKET (Executive and Waitlist)",
+          "UPFLAG, DOWNFLAG, FALTON, ALARM, MAKECADR, SPSIN, SPCOS, MPACVBUF, USPRCADR, RESUME, CHANG1, BANKJUMP and GOTOPOOH",
+          "The interpreter's LOADTIME and CDULOGIC through RTB (native, src/rtb_angles.c)",
+          "The interpreter exits POODOO1 and ALARM1"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-source-map.json",
+            "sha256": "c7d58e5c237bb45b2f67e9ea4a00c5c7cd318a8fa04307f6837c40fb4829963d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
+            "sha256": "a5b06640bd0d9f23cdbbce4987849317d5934edab9f04500b7b9fdc204ec7ff9"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
+            "sha256": "d1b15dff5be083ce3803344db377c507087c6db84564bdfaff0c997dfc543368"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
+            "sha256": "12c7ae5edc1f303e7d650781ad5d615433c57803deda70ed07fdcda1a080a85b",
+            "vice_targets": {
+              "vice-lm-p20-p25": 1349
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
+            "sha256": "881f68525df8895fd146d2c49fb4fafb39295f85e8a5d1a29fcd756c545dc745"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P30_P37.agc",
