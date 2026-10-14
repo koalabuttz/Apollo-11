@@ -4217,6 +4217,14 @@
           ],
           "scope": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
           "verification": "docs/COMANCHE-RCS-MATRIX.md"
+        },
+        {
+          "native_files": [
+            "src/cm_rcs_dap_exec.c",
+            "include/cm_rcs_dap_exec.h"
+          ],
+          "scope": "The whole file: AMBGUPDT and the returns after its four trig calls (cm_rcs_dap_exec_basic), and the QUADANGL constant.",
+          "verification": "docs/CM-RCS-DAP-EXEC.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4246,6 +4254,51 @@
               "path": "evidence/cm-rcs-matrix-proof.json",
               "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_rcs_dap_exec_basic at its original address: AMBGUPDT (22,3447, the job the RCS DAP starts with 2CADR AMBGUPDT) and the returns after TC SPSIN2, SPCOS2, SPCOS1 and SPSIN1 (22,3457, 22,3462, 22,3470, 22,3501). Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB not +0, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "None: the oracle executed all 32 instructions of the file (evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json).",
+          "data_validity": "QUADANGL (DEC 660, 7.25 degrees) is read as the original constant by CAF."
+        },
+        "external_continuations": [
+          "SPSIN and SPCOS (SPSIN1/2, SPCOS1/2), which return to this file's registered return points",
+          "ENDOFJOB (the Executive)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-source-map.json",
+            "sha256": "7b2642c1b7d52fb4bd090c990804b3a5a03dc4ba0dbdb9b8dd4408623ac67618"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-host.log",
+            "sha256": "f71b62d4e17f7a3f01ba821c417201286f1121a14f7fc27a009a85a631dee95d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-vice.log",
+            "sha256": "befa7dd4d357bdccbc75d0acded3479440ba76371225348c913184fb25bcafe1",
+            "vice_targets": {
+              "vice-cm-rcs-dap-exec": 13
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json",
+            "sha256": "7ff97e0f04ddc290b93c735106c15225321ff7759982feb7bde30b44e1eec76a"
           }
         }
       }
