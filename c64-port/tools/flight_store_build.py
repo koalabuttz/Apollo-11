@@ -493,16 +493,36 @@ INTERP_POINTS = {
 # Files whose step machines stop at NEWOPS under -DAGC_FLIGHT_INTERPRETER
 # (docs/FLIGHT-INTERP-STOP.md): the C64 store leaves their interpretive
 # tables to the interpreter module. INTERP_ONLY tables hold interpretive
-# frontiers only and are left out whole. The host index and host.inc keep
-# every compiled table (other targets choose compiled routines).
+# frontiers only and are left out whole, as are the compiled interpreter's
+# own entry tables (SWRETURN, INTPRET, DANZIG: the interbank tables, the
+# interpreter module's records and the DANZIG marker hold them). The host
+# index and host.inc keep every compiled table (other targets choose
+# compiled routines).
 FLIGHT_INTERP_STOP = {'lm': {'lm_ags_init', 'lm_burn_baby', 'lm_lunar_landing', 'lm_servicer', 'lm_imu_performance'},
                       'cm': set()}
-INTERP_ONLY = {'lm': {'lm_ephemeris_routines'}, 'cm': set()}
+INTERP_ONLY = {'lm': {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_routines',
+                      'lm_interp_core_basic', 'lm_interp_runtime_basic'},
+               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic'}}
 
-# Files linked as several modules, each with its own defines and the slice
-# of the file's sorted keys its build exports (docs/LM-SERVICER-FLIGHT-PARTS.md).
-FLIGHT_PARTS = {'lm': {'lm_servicer': [(['-DLMSV_FLIGHT_PART=1'], 0, 85), (['-DLMSV_FLIGHT_PART=2'], 85, None)]},
+# Files linked as several modules, one per define set
+# (docs/LM-SERVICER-FLIGHT-PARTS.md). A part's keys are what its own build's
+# tables hold (part_keys), which can include hand-off words the whole file
+# does not key.
+FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']]},
                 'cm': {}}
+
+
+def part_keys(cc, m, stem, tables):
+    """[{table: [keys]}] per FLIGHT_PARTS build of stem: its host object
+    with the part's defines and each table renamed, read by table_keys."""
+    parts = []
+    for j, defines in enumerate(FLIGHT_PARTS[m][stem], 1):
+        obj = ROOT / OUT / 'host' / f'{stem}.part{j}.o'
+        run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER', *defines,
+             *(f'-D{t}={t}_part{j}' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
+        got = table_keys(cc, [f'{t}_part{j}' for t in tables], [obj])
+        parts.append({t: got[f'{t}_part{j}'] for t in tables})
+    return parts
 
 
 def interp_modules(cc, m, library):
@@ -597,9 +617,13 @@ def main():
         resident_keys = {('i' if 'interpret' in t else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
+        parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
+                                                           if o == stem and 'interpret' not in t))
+                 for stem in FLIGHT_PARTS[m] if stem in packed.values()}
         for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
             kind = 'i' if 'interpret' in t else 'b'
-            for k in keys[t]:
+            more = [k for p in parts.get(packed[t], []) for k in p.get(t, [])]
+            for k in sorted(set(keys[t]) | set(more)):
                 holders[(kind, k)].append(t)
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
@@ -657,7 +681,7 @@ def main():
                        interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
                        also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
                        sources=c64_sources(index, *sources, 'agc_transfer'))
-            for i, (defines, first, last) in enumerate(FLIGHT_PARTS[m].get(stem, [((), None, None)])):
+            for i, defines in enumerate(FLIGHT_PARTS[m].get(stem, [()])):
                 if i:
                     seq[lane] += 1
                     if seq[lane] > LANE_LIMIT.get(lane, 0xFF):
@@ -667,7 +691,7 @@ def main():
                     if mod['interp'] or extra:
                         raise SystemExit(f'{m}: {stem} parts link basic tables only')
                     part.update(defines=list(defines), part=i + 1, prg_name=f'{stem}-part{i + 1}',
-                                key_slice={t: keys[t][first:last] for t in mod['basic']})
+                                key_slice=parts[stem][i])
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
@@ -879,7 +903,8 @@ def main():
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
-                        {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])},
+                        {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])}
+                        | {k for ps in parts.values() for p in ps for v in p.values() for k in v},
                         pin_check)
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
                        error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'),
