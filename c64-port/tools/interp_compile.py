@@ -1698,7 +1698,10 @@ class Compiler:
         c = ['/* Flight: the keys of every part (routines and part keys). */',
              'static const uint16_t %s_flight_keys[%d]={%s};' % (sym, len(every), ','.join('%uu' % k for k in every)),
              'static enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at){unsigned i;' % sym,
-             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%%1024u);return EXEC_OK;}' % (len(every), sym),
+             # A fixed-fixed key's Z is its physical address (banks 02, 03).
+             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(%s);return EXEC_OK;}' % (
+                 len(every), sym, 'at>=04000u&&at<010000u?at:02000u+at%1024u'
+                 if any(k // 1024 in (2, 3) for k in every) else '02000u+at%1024u'),
              ' return EXEC_OUT_OF_SCOPE;',
              '}',
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
@@ -1717,8 +1720,11 @@ class Compiler:
         for b in sorted({k // 1024 for k in every}):
             bfb = (b - 0o10) << 10 | 0o100000 if b >= 0o40 else b << 10
             run = self.basic.callee(S, b) if self.spec.get('basic_split') else 'basic_run'
-            c.append(' case 0%ou:if(!basic_sane(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, bfb, chan, run))
+            # Fixed-fixed: any FB and SUPERBNK (basic_compile.py flight_parts
+            # allows it only with 'fixed_fixed_any_fb'), as the per-key entries.
+            sane = '0177777u' if b in (2, 3) else '0%05ou' % bfb
+            c.append(' case 0%ou:if(!basic_sane(s,io,%s))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, sane, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         for j in range(len(cuts) + 1):
