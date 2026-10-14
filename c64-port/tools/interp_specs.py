@@ -2831,6 +2831,9 @@ SPECS = {
     },
     'cm-p34-p35': {
         'c64_cuts': True,
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
         'missions': ('cm',),
         'file': {'cm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'cm': 'P34-35_P74-75.agc'},
