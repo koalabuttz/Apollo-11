@@ -78,6 +78,9 @@ int main(void)
         uint8_t taken = 0;
         rk_pending |= RK_RUPT_BIT(RK_RUPT_DOWN);
         for (n = 0; n < DL_MAX; ++n) {
+#ifdef RK_WORK_CLOCK
+            rk_work = 0; /* the work clock held too: no tick from the burst's own work */
+#endif
             st = rk_resident_step(AGC_TRANSFER_NONE);
             ++sum.steps;
             if (rk_hardware.in_interrupt) taken = 1;
