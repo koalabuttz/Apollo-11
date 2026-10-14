@@ -265,7 +265,7 @@ every routine of the work rows matches yaAGC:
 | Scenario | Native routines | yaAGC did not match | Periods taken / dropped |
 |---|---|---|---|
 | LM V37E12E | 14,697 | 0 | 3,000 / 0 |
-| LM V37E12E, DAP running | 18,203 | 0 | 3,000 / 0 |
+| LM V37E12E, DAP running (V37 at 16 s; reaches P12) | 18,337 | 0 | 3,000 / 0 |
 | CM V37E06E | 10,380 | 0 | 3,000 / 0 |
 
 `make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead;
