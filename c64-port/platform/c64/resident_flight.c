@@ -175,8 +175,10 @@ bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *wor
 /* The kernel's seam reports (RK_SEAMS): a job's native seams move with its
  * core set and end with it. */
 void rk_seams_exchange(agc_word newjob) {
-    if(newjob<12u*APOLLO_OV2_JOB_CONTEXTS && newjob%12u==0u)
-        apollo_ov2_seam_exchange(&rk_runtime,0,(uint8_t)(newjob/12u));
+    uint8_t i;
+    /* No division: it would link the 125-byte __udivmodqi4. */
+    for(i=0;i<APOLLO_OV2_JOB_CONTEXTS;++i)
+        if(newjob==12u*i) { apollo_ov2_seam_exchange(&rk_runtime,0,i); break; }
 }
 void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
 
