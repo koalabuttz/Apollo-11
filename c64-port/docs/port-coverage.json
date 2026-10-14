@@ -12085,7 +12085,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r63/lm-r63-proof.json",
-            "sha256": "c198154d2bae8baf27113faae8b39a170fbf7eda4a1a719ca9f5e16c338a39c0"
+            "sha256": "6c0e45d323b3787c2d60df05db6e5aa962b8a8d61059dd729866b2c344eecfbe"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r63/lm-r63-host.log",
@@ -12093,14 +12093,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-r63/lm-r63-vice.log",
-            "sha256": "7fe591740204ca0fc6e21ce715f04fe7923108479307c5ec8219696e2f39583c",
+            "sha256": "58eb7b5b66187efec36fe0f66db5c2c0e92485d197a7c546736efec69eac2457",
             "vice_targets": {
-              "vice-lm-r63": 34
+              "vice-lm-r63": 35
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r63/lm-r63-c64-cover.json",
-            "sha256": "65ade528dfab0fd552614540b67855e743b278e25a5b9435746a0e330d6700c2"
+            "sha256": "03a2e4bcf69dc7fba2a396f495a011f5fc62205d0e9ffd3d71b586bf7c25791d"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-171.md",
