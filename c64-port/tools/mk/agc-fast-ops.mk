@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: MIT
 # agc_fast_ops (lane F): fast agc_image_ops helpers for plain erasable cells
-# with 6502 MP/DV cores. Checked against agc_image_ops on random images
+# with 6502 MP/DV cores, and their one-byte EBANK 6 window forms
+# (agc_fast_window). Checked against agc_image_ops on random images
 # (host and C64) and against the pinned yaAGC engine per instruction.
-AFO_SRC = src/agc_fast_ops.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_multiword.c src/agc_word.c
-AFO_HDR = include/agc_fast_ops.h include/agc_image_ops.h include/agc_hardware_divide.h
+AFO_SRC = src/agc_fast_ops.c src/agc_fast_window.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_multiword.c src/agc_word.c
+AFO_HDR = include/agc_fast_ops.h include/agc_fast_window.h include/agc_image_ops.h include/agc_hardware_divide.h
 .PHONY: test-agc-fast-ops sanitize-agc-fast-ops c64-agc-fast-ops vice-agc-fast-ops agc-fast-ops-differential
 all: build/test-agc-fast-ops
 test: test-agc-fast-ops

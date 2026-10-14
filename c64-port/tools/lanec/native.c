@@ -9,7 +9,10 @@
  * interpretive point keyed by LOC under BANKSET. --exits adds to each entry
  * line where the routine stopped, "fb z q", and the Q it started with (fb the
  * bank then selected). "native SUITE CASE" runs that one case (for
- * branch-coverage traces, tools/lanec/cover.sh).
+ * branch-coverage traces, tools/lanec/cover.sh). "native --states SUITE"
+ * prints each case's entry state instead, "n LM|CM" and the oracle row's
+ * fields, without running it (the C64 module-test harness's cases,
+ * tools/module_test.py).
  * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
  * they were; one that does not is printed with status 2, which no oracle row
  * matches. */
@@ -32,7 +35,8 @@ static bool fixed(enum lanec_mission mission, uint16_t physical, agc_word *word)
 int main(int argc, char **argv)
 {
     int exits = argc == 3 && !strcmp(argv[1], "--exits");
-    int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits;
+    int states = argc == 3 && !strcmp(argv[1], "--states");
+    int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits || states;
     const lanec_suite *suite = argc == 2 + entries || (!entries && argc == 3) ? lanec_find_suite(argv[1 + entries]) : 0;
     uint32_t only = !entries && argc == 3 ? (uint32_t)strtoul(argv[2], 0, 10) : UINT32_MAX;   /* SUITE CASE: that case alone */
     lanec_io io, io_before;
@@ -41,10 +45,17 @@ int main(int argc, char **argv)
     uint32_t n;
     unsigned i, bank, z, interp;
     lanec_fixed_read = fixed;
-    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits] SUITE | native SUITE CASE\n"); return 2; }
+    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits|--states] SUITE | native SUITE CASE\n"); return 2; }
     for (n = only == UINT32_MAX ? 0 : only; n < suite->count && n <= only; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
+        if (states) {
+            printf("%lu %s", (unsigned long)n, meta.mission == LANEC_CM ? "CM" : "LM");
+            for (i = 0; i < APOLLO_SHARED_WORDS; ++i) printf(" %u", (unsigned)s.words[i]);
+            for (i = 0; i < LANEC_CHANNELS; ++i) printf(" %u", (unsigned)io.channel[i]);
+            printf(" %u %u\n", (unsigned)io.superbank, (unsigned)io.interrupt_enabled);
+            continue;
+        }
         z = s.words[LANEC_Z] & 07777u;
         bank = z >= 02000u && z < 04000u ? lanec_current_bank(&s, &io) : 0u;
         /* NEWOPS and INTPRET: LM 06070/06037, CM 06037/06006 */

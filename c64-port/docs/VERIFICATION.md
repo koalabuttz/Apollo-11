@@ -2458,7 +2458,7 @@ All of Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT (813 words) is native C on the con
 
 ## Translate Comanche LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES
 
-All of Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (71 words) is native C on the control-transfer ABI, as 32 routines compiled whole-file by `tools/basic_compile.py`. All 8,192 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 256 frozen cases, and 2 C64 diagnostics pass 39 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-EPHEMERIS.md`.
+All of Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES (71 words) is native C on the control-transfer ABI, as 32 routines compiled whole-file by `tools/interp_compile.py`. All 8,192 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 256 frozen cases, and 2 C64 diagnostics pass 38 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-EPHEMERIS.md`.
 
 ## Translate Comanche JET_SELECTION_LOGIC
 
@@ -2498,7 +2498,7 @@ Luminary099 P40-P47.agc (P40, P41, P42 and P47, the S40.x burn set-up, the engin
 
 ## WAITLIST entries reached from other files in the transfer ABI
 
-The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,380 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together, half of them on a sane waitlist so the task is inserted and the job sleeps (45 LM, 52 CM). The 1,389 strict and sanitizer checks pass, and the C64 rows take every host branch arc. See `docs/WAITLIST-ENTRIES.md`.
+The WAITLIST points other files enter are now registered transfer routines at their original addresses: the T3RUPT body of both missions (01,3407 and 01,3416), DLY2 -1 of both (05211 and 05255, entered by DELAYJOB) and Luminary NOQBRSM +1 (05275, entered by the P-axis autopilot). 1,437 cases match yaAGC on all 2048 erasable words, the superbank and the interrupt state through `agc_transfer_run`; the DLY2 -1 cases run DELAYJOB and the Waitlist together, half of them on a sane waitlist so the task is inserted and the job sleeps (43 LM, 53 CM), and 57 more LM cases with the new task due 1 cs before a queued one, so WAIT2's list search ends on CCS -0. The 1,446 strict and sanitizer checks pass, and the C64 rows take every host branch arc. See `docs/WAITLIST-ENTRIES.md`.
 
 ## Translate Comanche055 R31
 
@@ -2598,11 +2598,11 @@ All of Luminary099 RTB_OP_CODES and Comanche055 RT8_OP_CODES (130 and 206 words:
 
 ## LM AOT mark system as registered native routines
 
-Luminary099 AOTMARK (AOTMARK, GETDAT, OPTAXIS, MARKRUPT, MARKCHEX, AVESTAR, SURFSTAR, OANB and the rest, 511 words in banks 07, 04 and 15) is compiled by `tools/interp_compile.py` into 122 routines of the control-transfer ABI: every entry, every return from a display or POSTJUMP, and every interpretive word after a DANZIG. All 62,464 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, MKDEX and mark-counter states. The host and sanitizer tests pass 2,036 frozen cases, and 22 C64 diagnostics pass 293 cases in VICE that reach all 18,596 per-site branch outcomes and all 1,637 gcov arcs the host cases reach. Channel 016 (NAVKEYIN) is now a latched input. A complete certificate is drafted for the reviewer. See `docs/LM-AOTMARK.md`.
+Luminary099 AOTMARK (AOTMARK, GETDAT, OPTAXIS, MARKRUPT, MARKCHEX, AVESTAR, SURFSTAR, OANB and the rest, 511 words in banks 07, 04 and 15) is compiled by `tools/interp_compile.py` into 122 routines of the control-transfer ABI: every entry, every return from a display or POSTJUMP, and every interpretive word after a DANZIG. All 62,464 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, MKDEX and mark-counter states. The host and sanitizer tests pass 2,030 frozen cases, and 21 C64 diagnostics pass 302 cases in VICE that take all 1,638 gcov arcs the host cases take and 18,691 of the 18,693 per-site branch outcomes (the two left are shared-code branches the C64 cases take from other call sites). Channel 016 (NAVKEYIN) is now a latched input. A complete certificate is drafted for the reviewer. See `docs/LM-AOTMARK.md`.
 
 ## CM sextant mark system as registered native routines
 
-Comanche055 SXTMARK (SXTMARK, MARKRUPT, MARKDIF/DIFCHK, MARKCONT, MKREJECT, MKVB51, ENTANSWR and the rest, 315 words in banks 07 and 10) is compiled whole by `tools/basic_compile.py` into 42 routines of the control-transfer ABI. All 21,504 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, QPRET and MKNDX states, with channel 16 (the mark buttons) a latched input. The host and sanitizer tests pass 682 frozen cases, and one C64 diagnostic passes 71 cases in VICE that reach all 333 branch outcomes and all 470 gcov arcs the host cases reach. A complete certificate is drafted for the reviewer. See `docs/CM-SXTMARK.md`.
+Comanche055 SXTMARK (SXTMARK, MARKRUPT, MARKDIF/DIFCHK, MARKCONT, MKREJECT, MKVB51, ENTANSWR and the rest, 315 words in banks 07 and 10) is compiled whole by `tools/basic_compile.py` into 42 routines of the control-transfer ABI. All 21,504 cases equal the original program in yaAGC, from flight-realistic VAC, MARKSTAT, QPRET and MKNDX states, with channel 16 (the mark buttons) a latched input. The host and sanitizer tests pass 679 frozen cases, and one C64 diagnostic passes 73 cases in VICE that reach all 344 branch outcomes and all 486 gcov arcs the host cases reach. A complete certificate is drafted for the reviewer. See `docs/CM-SXTMARK.md`.
 
 ## Translate Comanche INTEGRATION_INITIALIZATION
 
@@ -2658,7 +2658,7 @@ All of Comanche055 CONIC_SUBROUTINES (1079 words) is native C on the control-tra
 
 ## Translate Luminary RCS_FAILURE_MONITOR on the transfer ABI
 
-Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 71 frozen cases, and 1 C64 diagnostic passes 18 cases in VICE that take all 219 branch arcs the host cases take. The certificate is drafted for review. See `docs/LM-RCSMON.md`.
+Luminary099 RCS_FAILURE_MONITOR.agc (RCSMON, the T4RUPT channel-32 jet-failure check) is native C on the control-transfer ABI as 2 routines compiled by `tools/interp_compile.py`, every word of the file, so the whole-program flight run reaches it. All 1,024 cases equal the original program in yaAGC; the host and sanitizer tests pass 72 frozen cases, and 1 C64 diagnostic passes 17 cases in VICE that take all 220 branch arcs the host cases take. The domain includes NEWJOB -0 and any FIXLOC (#285). The certificate is drafted for review. See `docs/LM-RCSMON.md`.
 
 ## Translate Comanche ALARM_AND_ABORT as transfer-ABI routines
 

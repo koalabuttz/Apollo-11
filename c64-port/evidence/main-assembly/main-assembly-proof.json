@@ -1,0 +1,26 @@
+{
+  "milestone": "main-assembly",
+  "oracle": "tools/main_manifest_reference.c (yaAGC agc_engine, agc_load_binfile)",
+  "method": "yaAGC loads each rope with its own loader; each included file of the native manifest (src/main_manifest.c) is compared with the words yaAGC holds at its runs, and yaAGC runs from each unused TC-to-itself word in banks 0-37 (four instructions, Z stays)",
+  "manifest_sha256": "5ac96f56eda47ceaf9f6287c4d585f5795007d0f4a6911ce832f61d40d4cbf63",
+  "missions": {
+    "Luminary099": {
+      "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+      "source_sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
+      "cases": 146,
+      "files_equal": 89,
+      "unused_words_run": 57,
+      "differing": 0,
+      "result": "Luminary099: 89 included files equal yaAGC's loaded rope, 57 unused TC-to-itself words loop in yaAGC, 0 differing"
+    },
+    "Comanche055": {
+      "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+      "source_sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
+      "cases": 136,
+      "files_equal": 84,
+      "unused_words_run": 52,
+      "differing": 0,
+      "result": "Comanche055: 84 included files equal yaAGC's loaded rope, 52 unused TC-to-itself words loop in yaAGC, 0 differing"
+    }
+  }
+}

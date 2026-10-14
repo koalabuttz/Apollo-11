@@ -9,7 +9,7 @@
 #include "agc_image_ops.h"
 #include "cm_alarm_operands.inc"
 
-#define W s->words
+#include "agc_image_w.h"
 #define FF(z) (uint16_t)(2048u+((z)-04000u))
 #define B10(z) (uint16_t)(010u*1024u+((z)-02000u))
 #define L 1u
@@ -41,12 +41,12 @@ static agc_word indexed(agc_word word,agc_register idx){
  return (agc_word)(agc_correct(agc_add_register(agc_extend((agc_word)(agc_correct(idx)&077777u)),agc_extend(word)))&077777u);
 }
 /* INDEX idx; CA 0 (ALARM2's idx is Q, BAILOUT's and POODOO's ALMCADR): the
- * word at the caller's return address, its compiled alarm code (or an
- * erasable word). */
+ * word at the caller's return address, its compiled alarm code. A return
+ * address in erasable (no caller runs from erasable) is refused. */
 static int code(const agc_native_program *p,apollo_overlay_state *s,cm_native_io *x,agc_register idx){
  agc_word ins=indexed(030000u,idx),address=(agc_word)(ins&07777u),w;
  if((ins>>12)!=3u||address<010u)return 0;
- if(address<02000u){ai_ca(s,address);return 1;}
+ if(address<02000u)return 0;
  if(!agc_transfer_operand(p,s,x->superbank,address,&w))return 0;
  ai_caf(s,w);return 1;
 }

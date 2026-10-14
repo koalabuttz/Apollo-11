@@ -4,7 +4,7 @@
   "release": "evidence-rtb-op-codes",
   "files": {
     "rtb-op-codes-c64-outcomes.json": {
-      "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0",
+      "sha256": "f5247946e6ae20e443671fcf0e895a7ed2684aa0dafaab0362ab1c5f022aabb8",
       "bytes": 652,
       "store": "tree"
     },
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "rtb-op-codes-proof.json": {
-      "sha256": "66a72d11652181f3e93581201a52afda09d8e1654e0df8a47a83257f2e6bef25",
-      "bytes": 17753,
+      "sha256": "f5dc03b8301414d193f9d3e9907b5928c10390c73dc9ed4fb6f17b4d0eb2a32c",
+      "bytes": 17764,
       "store": "tree"
     },
     "rtb-op-codes-source-map.json": {
@@ -29,7 +29,7 @@
       "store": "release"
     },
     "rtb-op-codes-vice.log": {
-      "sha256": "01af11acd383ac3232ca2f700db5a2ba31de259d21cc6911f97eb9aebb78a8d2",
+      "sha256": "f163b4cc884bd36dd8bc5195c68c3b92561d8828eda8de6eaa5ad76edd480483",
       "bytes": 456,
       "store": "release"
     }

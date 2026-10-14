@@ -7,11 +7,17 @@
 .globl ov2_irq_count
 ov2_irq_entry:
     pha
+    lda $01             /* code may run with I/O banked out ($34/$30, the */
+    pha                 /* $D000 extension): see I/O to acknowledge CIA1 */
+    lda #$35
+    sta $01
     lda $dc0d
     inc ov2_irq_count
     bne 1f
     inc ov2_irq_count+1
 1:  pla
+    sta $01
+    pla
 ov2_nmi_entry:
     rti
 .section .bss.ov2_irq,"aw",@nobits

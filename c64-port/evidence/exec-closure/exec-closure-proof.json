@@ -119,6 +119,28 @@
      "cases": 5120
     }
    }
+  },
+  "waitlist-entries": {
+   "manifest": "evidence/waitlist-entries/SHA256.json",
+   "sha256": "dc61738e781e2de1ecd5738815f0fb3e602d5df8bffd723121627955127adb84",
+   "oracle_cases": {
+    "run": {
+     "missions": [
+      "Comanche055",
+      "Luminary099"
+     ],
+     "ropes_sha256": {
+      "Luminary099": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+      "Comanche055": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+     },
+     "cases": 1437
+    }
+   },
+   "taskover_superbank": [
+    "Luminary099: 488 TASKOVER RESUME cases from yaAGC's own T3RUPT, 364 where the word under the task's superbank differs",
+    "Comanche055: 493 TASKOVER RESUME cases from yaAGC's own T3RUPT, 366 where the word under the task's superbank differs"
+   ],
+   "traced": false
   }
  },
  "method": "each milestone differential rerun with tools/oracle_trace linked into its yaAGC reference; a word is executed when the original program ran it in that comparison (each run ends where the native routine ended, so the word is inside a native routine's compared path)"

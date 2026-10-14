@@ -4,8 +4,8 @@
   "release": "evidence-lm-q-r-axis",
   "files": {
     "lm-q-r-axis-c64-cover.json": {
-      "sha256": "43f6e6df9cf03c99d323239e08d5872d6455e57ae3e2585a33dc951c86807aea",
-      "bytes": 30604,
+      "sha256": "a6af9d273b69b3bc3eb1282a3eacc1d118bf3c84586a809afbb7a08d567abedf",
+      "bytes": 31207,
       "store": "tree"
     },
     "lm-q-r-axis-host.log": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "lm-q-r-axis-vice.log": {
-      "sha256": "9e7b5868e50537027d39c16055361f3748200329587322b90089c68270510112",
+      "sha256": "af3a77adcb114aa6ece3886f8885c0c2fce30f48165cd71ac240d19ecdf27de7",
       "bytes": 297,
       "store": "tree"
     }

@@ -7,11 +7,11 @@ certificates.
   python3 tools/lanec/wholefile_pin.py OUTDIR
 
 It reads every assembled word of the file from the pinned listings and runs
-the Lane C Pinball suites (pin-gaps and the 92 pw-* suites of lanec-pw)
+the Lane C Pinball suites (pin-keys, pin-gaps and the 92 pw-* suites of lanec-pw)
 through the oracle with LANEC_TRACE. Each word gets exactly one owner:
   - an instruction word started by the unchanged original program in Virtual
-    AGC under a suite's cases belongs to that suite's milestone (pin-gaps
-    first, then the pw-* suites in name order), and names the native module
+    AGC under a suite's cases belongs to that suite's milestone (pin-keys
+    first, then pin-gaps, then the pw-* suites in name order), and names the native module
     that carries it (the module's run wrapper for a pw-* suite);
   - a data word right after a call (its argument: CADR, ADRES, ...) belongs
     to the call's owner;
@@ -39,14 +39,15 @@ DATA = wholefile.DATA | {'BBCON', '2FCADR', 'FCADR', 'BBCON*', 'DEC*', '2DEC*'}
 
 def suites():
     """(suite, milestone, native) in ownership priority order."""
-    rows = [('pin-gaps', 'lanec-pin-gaps', 'src/lanec_pin_gaps.c')]
+    rows = [('pin-keys', 'lanec-pin-keys', 'src/lanec_pin_keys.c'), ('pin-gaps', 'lanec-pin-gaps', 'src/lanec_pin_gaps.c')]
     for path in sorted((ROOT / 'tests').glob('lanec_pw_*_cases.c')):
         text = path.read_text()
         name = re.search(r'"(pw-[a-z0-9-]+)"', text).group(1)
         mod = re.search(r'\((src/[a-z0-9_]+\.c)', text)
         run = re.search(r'lanec_pw_[a-z0-9_]+_run', text)
         rows.append((name, 'lanec-pw', f'{mod.group(1) if mod else "src/lanec_pw_runs.c"} via {run.group(0)}'))
-    return rows
+    # the key labels' cases run the earlier key modules, which own those words first
+    return rows + [('pin-key-labels', 'lanec-pin-keys', 'src/lanec_pin_keys.c')]
 
 
 SUITES = suites()
