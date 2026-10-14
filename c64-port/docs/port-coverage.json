@@ -699,7 +699,9 @@
             "path": "evidence/cm-conics/cm-conics-vice.log",
             "sha256": "cf7a3dd9c60d874a45986eff89d666cfb3bfd1bea271a3e12811c26d22ba2c0a",
             "vice_targets": {
-              "vice-cm-conics": 616
+              "vice-cm-conics-1": 316,
+              "vice-cm-conics-2": 120,
+              "vice-cm-conics-3": 180
             }
           },
           "c64_branch_outcomes": {
@@ -2068,7 +2070,9 @@
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
             "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1290
+              "vice-imu-mode-switching-1": 495,
+              "vice-imu-mode-switching-2": 369,
+              "vice-imu-mode-switching-3": 426
             }
           },
           "independent_review": {
@@ -8884,7 +8888,9 @@
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
             "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1290
+              "vice-imu-mode-switching-1": 495,
+              "vice-imu-mode-switching-2": 369,
+              "vice-imu-mode-switching-3": 426
             }
           },
           "independent_review": {

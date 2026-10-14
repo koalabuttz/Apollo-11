@@ -6,7 +6,7 @@ CM_CONICS_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_or
 CM_CONICS_SRC = src/cm_conics.c tests/cm_conics_target.c $(CM_CONICS_COMMON)
 CM_CONICS_HDR = include/cm_conics.h tests/interp_case.h tests/cm_conics_vectors.h tests/cm_conics_c64_vectors.h
 CM_CONICS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
-.PHONY: test-cm-conics sanitize-cm-conics c64-cm-conics vice-cm-conics cm-conics-differential
+.PHONY: test-cm-conics sanitize-cm-conics cm-conics-differential
 all: build/test-cm-conics
 test: test-cm-conics
 sanitize: sanitize-cm-conics
@@ -27,8 +27,9 @@ cm-conics-differential:
 include tools/mk/cm-conics.groups
 CM_CONICS_C64_PRGS = $(foreach g,$(CM_CONICS_GROUPS),build/cm-conics-$(g).prg)
 CM_CONICS_C64_SRC = src/cm_conics.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_conics_target.c
-c64-cm-conics: $(CM_CONICS_C64_PRGS)
 build/cm-conics-%.prg: $(CM_CONICS_SRC) platform/c64/cm_conics_diagnostic.c tools/mk/cm-conics.groups $(CM_CONICS_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(CM_CONICS_MOS_FLAGS) $(CM_CONICS_GROUP_FLAGS_$*) -Wl,-Map,build/cm-conics-$*.map $(CM_CONICS_C64_SRC) platform/c64/cm_conics_diagnostic.c -o $@
-vice-cm-conics: $(CM_CONICS_C64_PRGS)
-	for p in $(CM_CONICS_C64_PRGS); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+# CI parts (tools/mk/_ci-split.mk): c64-/vice-cm-conics-1..3 over
+# consecutive groups; cm-conics-c64 and cm-conics-vice run them all.
+cm_conics_vice = for p in $(2); do python3 tools/vice_run.py $$p --cycles 3000000000 --timeout 1200 || exit 1; done
+$(eval $(call CI_SPLIT_RULE,cm-conics,$(CM_CONICS_C64_PRGS),3,cm_conics_vice))
