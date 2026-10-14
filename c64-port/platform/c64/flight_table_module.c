@@ -9,7 +9,9 @@
  * defines FS_CHUNK_TABLE and FS_CHUNK, an X-macro list of the entry indices
  * the chunk holds (consecutive, so still sorted by key), and an empty
  * FS_BASIC: the entries are copied by constant index, so LTO folds the
- * loads and links only the chunk's routines. FS_SITES lists the inline
+ * loads and links only the chunk's routines. FS_PICK, X(table, index) in key
+ * order, does the same across several tables (the entries whose keys no
+ * other table resolves first). FS_SITES lists the inline
  * operands the module's sources compile ({physical, word} pairs, sorted):
  * the module's routines read their callers' operands from it, not from the
  * resident's Executive site table. FS_FIXED_DATA names the module's
@@ -55,7 +57,16 @@ FS_INTERP(FS_DECLARE)
 /* Copied from the tables at entry: C99 cannot initialize an array from
  * other objects. */
 #define FS_COUNT(t) +1
-#ifdef FS_CHUNK
+#ifdef FS_PICK
+/* Picked entries of several basic tables, in key order (FS_PICK, X(table,
+ * index)): the build leaves out the entries whose keys another table
+ * resolves first, so their routines are not linked. */
+#define FS_PICK_DECLARE(t,i) extern const agc_routine_table t;
+FS_PICK(FS_PICK_DECLARE)
+#define FS_PICK_COUNT(t,i) +1
+static agc_routine_entry chunk[0 FS_PICK(FS_PICK_COUNT)];
+static agc_routine_table basic[1];
+#elif defined FS_CHUNK
 extern const agc_routine_table FS_CHUNK_TABLE;
 static agc_routine_entry chunk[0 FS_CHUNK(FS_COUNT)];
 static agc_routine_table basic[1];
@@ -106,7 +117,11 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  (void)selector;
  if(!t->ready){
   uint8_t n=0;
-#ifdef FS_CHUNK
+#ifdef FS_PICK
+#define FS_COPY_PICK(t,i) chunk[n].physical=t.entries[i].physical;chunk[n++].call=t.entries[i].call;
+  FS_PICK(FS_COPY_PICK)
+  basic[0].entries=chunk;basic[0].count=n;
+#elif defined FS_CHUNK
 /* Field by field: a whole-struct copy lowers to a memcpy from the entries
  * array, which keeps every routine linked (Lane F). */
 #define FS_COPY_ENTRY(i) chunk[n].physical=FS_CHUNK_TABLE.entries[i].physical;chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
