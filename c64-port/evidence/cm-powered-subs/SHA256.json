@@ -9,18 +9,18 @@
       "store": "tree"
     },
     "cm-powered-subs-differential.log": {
-      "sha256": "9c87a5ed23458a55f328a502708d0dfede5333769e821878b8775364023bbe6d",
-      "bytes": 2820,
+      "sha256": "e9a5bf88aebac48e47a52d9e5503a5f3741677b98d3eb2b313dd69abbbcbd9fb",
+      "bytes": 2819,
       "store": "release"
     },
     "cm-powered-subs-host.log": {
-      "sha256": "2812bfc1dad19cc97404e68b22c2295772203a9dbc98d0a4eb487b69db0e4df8",
+      "sha256": "657f025a2208314fab72aa1d453ff1af843c8db5f9ccc091d87d5d154bdcc565",
       "bytes": 1104,
       "store": "release"
     },
     "cm-powered-subs-proof.json": {
-      "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c",
-      "bytes": 6407,
+      "sha256": "ee354fd58034301e3c848f6f8fa8fa5d6f0b4fdea9e3b48bf8322f13bad82590",
+      "bytes": 6510,
       "store": "tree"
     },
     "cm-powered-subs-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-powered-subs-vice.log": {
-      "sha256": "a5b7f4fab0046f10225c3238c4c46fd510b32d631beba50efba2699ef4cc9248",
-      "bytes": 546,
+      "sha256": "7040611f20b87df84a313a1ab08e62f6e95a7ad55464fd4039c47d8ac2ebd69f",
+      "bytes": 1679,
       "store": "release"
     }
   }
