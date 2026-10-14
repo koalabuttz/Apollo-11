@@ -803,6 +803,24 @@ SPECS = {
         'target': 'tests/lm_lambert_aim_target.c',
     },
     # Lane A: Luminary099 P76 (target delta-V), basic and interpretive.
+    'lm-p30-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'P30,P37.agc'},
+        'source_path': {'lm': 'P30_P37.agc'},
+        'base': {'lm': 'lm_p30_file'},
+        'symbol': {'lm': 'lm_p30_file'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        'target': 'tests/lm_p30_file_target.c',
+    },
     'lm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
