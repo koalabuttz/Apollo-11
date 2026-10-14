@@ -2,7 +2,7 @@
 /* flight-store-vice: the flight resident booted on the whole-program flight
  * store (tools/flight_store_build.py, docs/FLIGHT-STORE.md). The program
  * boots like the flight resident (KERNAL out, the store opened and
- * verified, the boundary-word module run), then
+ * verified, the boundary-word table found at its tail), then
  *
  *  1. resolves every resolver record of the store through the resident's
  *     resolver and checks the module it names (before any module load: the
@@ -125,7 +125,7 @@ static uint32_t run(uint16_t id,uint8_t step){apollo_ov2_cont at={id,0},resume;u
  return t;}
 
 /* Where a cached call goes: the runtime alone (a cached run of the
- * boundary-word module, whose main only returns), and the resident's own
+ * null module 0x01E0, whose main only returns), and the resident's own
  * transfer point and resolve from FL_IDLE_Z, which every flight module
  * repeats with its own copy. Cycles, timer cost included, at $c3f0-$c3f5. */
 static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint16_t value;uint8_t action;

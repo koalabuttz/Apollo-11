@@ -54,7 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from overlay_runtime_library import prepare  # noqa: E402
 from resident_flight_build import (COMMON, MISSION, RESIDENT_MODULES, SERVICES, canonical_record,  # noqa: E402
                                    resident_sources, wrapper_records)
-from resident_boundary_words import header_text  # noqa: E402
+from resident_boundary_words import header_text, tail_bytes  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
@@ -395,23 +395,23 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
 
 def resident_modules(cc, host_cc, m, resolver, library, pin_task=False):
     """Link the resident's modules (tools/resident_flight_build.py
-    RESIDENT_MODULES) for this store: the boundary-word module holds the word
-    at every key of the resident's tables and of these resolver records.
-    pin_task: a class-4 module holds $E000, so the task-slot ones link for
-    the job slot, but the boundary-word module: boot runs it in the task
-    slot (boot itself runs in the job slot) before it loads class 4."""
+    RESIDENT_MODULES) for this store, and write the boundary-word table the
+    store ends with (build/flight-store/<m>-boundary.bin, overlay_v2_pack.py
+    --tail): the word at every key of the resident's tables and of these
+    resolver records. pin_task: a class-4 module holds $E000, so the
+    task-slot ones link for the job slot."""
     text = header_text(host_cc, m, resolver)
     if text is None:
         raise SystemExit(f'{m}: boundary words disagree with the listing')
-    header = ROOT / OUT / f'{m}-boundary-words.h'
-    header.write_text(text)
+    (ROOT / OUT / f'{m}-boundary-words.h').write_text(text)
+    (ROOT / OUT / f'{m}-boundary.bin').write_bytes(tail_bytes(text))
     prgs = []
     for ident, slot, defines, sources in RESIDENT_MODULES:
         if m not in sources:
             continue
-        slot = 0 if pin_task and ident != 0x01E0 else slot
+        slot = 0 if pin_task else slot
         prg = OUT / m / f'resident-{ident:04x}.prg'
-        extra = list(defines) + ([f'-DRK_BOUNDARY_HEADER="{header}"'] if ident == 0x01E0 else [])
+        extra = list(defines)
         subprocess.run([str(c) for c in [
             cc, *COMMON, *MISSION[m], *extra, '-ffunction-sections', '-fdata-sections', '-nostdlib',
             '-Lplatform/c64', f'-L{OUT}', '-T', f'platform/c64/overlay_v2_slot_{"job" if slot == 0 else "task"}.ld',
@@ -1164,6 +1164,7 @@ def main():
         (ROOT / OUT / f'{m}-boot-resolver.json').write_text(json.dumps(resolver + wrappers) + '\n')
         pack = subprocess.run([sys.executable, 'tools/overlay_v2_pack.py', *good, *boot, '--mission', m.upper(),
                     '--services', hex(SERVICES), '--resolver', OUT / f'{m}-boot-resolver.json',
+                    '--tail', OUT / f'{m}-boundary.bin',
                     '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'],
                    cwd=ROOT, capture_output=True, text=True)
         if pack.returncode:
