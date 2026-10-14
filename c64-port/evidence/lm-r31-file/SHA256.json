@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-r31-file",
+  "release": "evidence-lm-r31-file",
+  "files": {
+    "lm-r31-file-c64-cover.json": {
+      "sha256": "66fc8aef998de36cd1b30055a30fe39339b0291b8c7503c9d42f54a01529a6bb",
+      "bytes": 5153,
+      "store": "tree"
+    },
+    "lm-r31-file-closure.json": {
+      "sha256": "d4f2e0c9148e18842bcc6f53f2be8f7b1a4b55141b122b6ebe4fa73651ace139",
+      "bytes": 33096,
+      "store": "tree"
+    },
+    "lm-r31-file-differential.log": {
+      "sha256": "5401828bbc0a9e5aa2a28db8b2b7eb1b9af5adb5286912a39db639f4927f75bd",
+      "bytes": 28113,
+      "store": "tree"
+    },
+    "lm-r31-file-host.log": {
+      "sha256": "fd3b63235e8bf36d3516c8aa6618c9c927d5fdfc80b039f2d3a99edf91d7960a",
+      "bytes": 1380,
+      "store": "release"
+    },
+    "lm-r31-file-proof.json": {
+      "sha256": "33417b2506314b8f8f6691c52d0656a41b86aba97417fb060a534e7de488ddcb",
+      "bytes": 29125,
+      "store": "tree"
+    },
+    "lm-r31-file-source-map.json": {
+      "sha256": "3d837487ebfbdac818cffa917a7ff67c671c71d689c805ca2da062797f6d5ab5",
+      "bytes": 28389,
+      "store": "tree"
+    },
+    "lm-r31-file-vice.log": {
+      "sha256": "1708a5bb233d5852a3dea2a63a3aa6d395fbd0457270de2ce564070ce25c01f8",
+      "bytes": 21246,
+      "store": "release"
+    }
+  }
+}

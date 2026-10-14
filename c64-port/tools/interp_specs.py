@@ -967,6 +967,39 @@ SPECS = {
         'image_w': True,
         'target': 'tests/lm_p76_file_target.c',
     },
+    'lm-r31-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'R31.agc'},
+        'base': {'lm': 'lm_r31_file'},
+        'symbol': {'lm': 'lm_r31_file'},
+        'basic': 'full',
+        # GOMARKF's three returns: terminate and proceed (TC B5OFF) and a
+        # value loaded through the DSKY (TCF DISPN5X).
+        'entries': ['@external', 'DISPN5X+4', 'DISPN5X+5'],
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'NORMUNX1': {'lm': ('lm_normunx1(s,io)', 'stops')}},
+        'includes': ['rtb_angles.h', 'lm_normunit.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_normunit.c', 'src/rtb_vector.c', 'src/rtb_unit.c',
+                           'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c',
+                           'src/guidance_product.c'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        # (As the .mk builds the diagnostics: without inlining, a static
+        # stack and zero-page globals, so NORMUNX1's runs through COMPDISP
+        # fit one diagnostic.)
+        'c64_cuts': True,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # RTB NORMUNX1's UNIT runs on a vector MPAC (MODE -1), as the VSU
+        # before it leaves it; other modes are outside rtb_unit's domain.
+        'states': {'37,3243': {'0163': [0o77776]}},
+        'target': 'tests/lm_r31_file_target.c',
+    },
     'cm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1269,9 +1302,11 @@ SPECS = {
                    '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
-        # BDDV's divisor (MPAC, from the NORM ROUND at 11,2734) zero in half
-        # the 11,2736 resumes (their flowed state otherwise): the divide
-        # overflow paths of either sign, which only long DIFEQ runs reach.
+        # Widened-domain overflow states: half the 11,2736 resumes take
+        # BDDV's divisor (MPAC, after the NORM ROUND at 11,2734) with its
+        # high word +0 (a tiny divisor, rarely exactly zero), so the divide
+        # overflows, with either sign; flight never gets there after NORM
+        # ROUND, and otherwise only long DIFEQ runs take these paths.
         'resume_states': {'11,2736': {'0154': [0, 'flow']}},
         'max_steps': 1000,
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
@@ -1415,6 +1450,10 @@ SPECS = {
             # APSIDES, TIMETHET and TIMERAD after their SETPD 0: PDVL's
             # push stays below X1.
             '12,3706': {'0166': ['vac+0']}, '12,3710': {'0166': ['vac+0']}, '12,3713': {'0166': ['vac+6']},
+            # COMMNOUT's CALL NEWSTATE (12,2773) pushes a vector: PUSHLOC low
+            # on the pushdown list as DELTIME leaves it, or the push
+            # overruns S1, S2 and QPRET (#325).
+            '12,2770': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
             '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
             '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
         },
@@ -1432,6 +1471,12 @@ SPECS = {
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
     },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a
