@@ -44,9 +44,53 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
+/* IRC_QWATCH (#409): after each SWITCH's TS Q (INDEX A, CA STATE, TS Q),
+ * find the next instruction that reads or writes Q outside SWITCH's own
+ * words, running on past the case's stop when it comes first, and whether
+ * Q's bit 16 then equals its bit 15 (and Q's sign). Counts go to stderr
+ * at the end; the rows are then not the differential's. */
+static unsigned qw_on,qw_watch,qw_tsq,qw_skip=0xffffffffu,qw_frontier;static unsigned long qw_n,qw_bad_a;
+static struct{char k[96];unsigned long n;}qw_tab[256];static unsigned qw_nt;
+static void qw_count(const char *k){unsigned i;for(i=0;i<qw_nt;++i)if(!strcmp(qw_tab[i].k,k)){qw_tab[i].n++;return;}if(qw_nt<256u){strncpy(qw_tab[qw_nt].k,k,95);qw_tab[qw_nt++].n=1;}}
+static unsigned fword(unsigned p){return (unsigned)machine.Fixed[p/1024u][p%1024u]&077777u;}
+static unsigned iword(unsigned z){unsigned p=z_physical(z);return p==0xfffeu?get(z):fword(p);}
+static int qdec(unsigned z,const char **nm,unsigned *endz){unsigned w=iword(z),ext=0,off=0,op,qc,k10,k12;
+ for(;;){if(!ext&&w==6u){ext=1;w=iword(++z);continue;}
+  if((w>>12)==5u&&((w>>10)&3u)==0u&&!(w==050017u&&!ext)){unsigned kk=ext?(w&07777u):(w&01777u);off+=(kk<02000u?(unsigned)*memory(kk):iword(kk));w=iword(++z);continue;}
+  break;}
+ *endz=z;w=(w+off)&077777u;op=w>>12;qc=(w>>10)&3u;k10=w&01777u;k12=w&07777u;*nm="";
+ if(!ext){switch(op){
+  case 0:if(w==3u||w==4u)return 0;if(k12==2u){*nm="TC Q";return 3;}*nm="TC";return 2;
+  case 1:if(qc==0u&&k10==2u){*nm="CCS Q";return 1;}return 0;
+  case 2:if(qc==0u&&(k10==2u||k10==3u)){*nm="DAS";return 3;}if(k10!=2u)return 0;*nm=qc==1u?"LXCH Q":qc==2u?"INCR Q":"ADS Q";return 3;
+  case 3:if(k12==2u){*nm="CA Q";return 1;}return 0;
+  case 4:if(k12==2u){*nm="CS Q";return 1;}return 0;
+  case 5:if(qc==1u&&(k10==2u||k10==3u)){*nm="DXCH";return 3;}if(k10!=2u)return 0;if(qc==2u){*nm="TS Q";return 2;}if(qc==3u){*nm="XCH Q";return 3;}return 0;
+  case 6:if(k12==2u){*nm="AD Q";return 1;}return 0;
+  default:if(k12==2u){*nm="MASK Q";return 1;}return 0;}}
+ switch(op){
+  case 0:{unsigned io=(w>>9)&7u;static const char *n[8]={"READ Q","WRITE Q","RAND Q","WAND Q","ROR Q","WOR Q","RXOR Q","EDRUPT"};static const int t[8]={1,2,1,3,1,3,1,0};if((w&0777u)!=2u)return 0;*nm=n[io];return t[io];}
+  case 1:if(qc==0u&&k10==2u){*nm="DV Q";return 1;}return 0;
+  case 2:if(qc==1u){*nm="QXCH";return 3;}if(k10!=2u)return 0;*nm=qc==0u?"MSU Q":qc==2u?"AUG Q":"DIM Q";return qc==0u?1:3;
+  case 3:if(k12==2u||k12==3u){*nm="DCA";return 1;}return 0;
+  case 4:if(k12==2u||k12==3u){*nm="DCS";return 1;}return 0;
+  case 6:if(qc==0u&&k10==2u){*nm="SU Q";return 1;}return 0;
+  case 7:if(k12==2u){*nm="MP Q";return 1;}return 0;}
+ return 0;}
+static void qw_hook(unsigned pc){unsigned zp=z_physical(pc),endz,q,insw;const char *nm;int t;char k[96];
+ if(pc==qw_skip){qw_skip=0xffffffffu;return;}qw_skip=0xffffffffu;
+ if(iword(pc)==054002u&&iword(pc-1u)==030074u){unsigned a=(unsigned)*memory(0)&0177777u;
+  if(qw_watch)qw_count("SWITCH again before Q was read or written");
+  qw_watch=1;qw_tsq=zp;qw_frontier=0;qw_n++;if(((a>>15)&1u)!=((a>>14)&1u))qw_bad_a++;return;}
+ if(!qw_watch)return;
+ t=qdec(pc,&nm,&endz);if(endz!=pc)qw_skip=endz;if(!t)return;
+ q=(unsigned)*memory(2)&0177777u;insw=zp!=0xfffeu&&zp+12u>=qw_tsq&&zp<=qw_tsq+40u;
+ snprintf(k,sizeof k,"%s %s %+d%s: %s (Q bit 16 %s bit 15; Q %s)",insw?"inside SWITCH":"after SWITCH",t==2?"write":"read",insw?(int)zp-(int)qw_tsq:0,qw_frontier?" past the case's stop":"",nm,((q>>15)&1u)==((q>>14)&1u)?"=":"!=",(q>>14)&1u?"negative":"positive");
+ if(!insw&&t!=2&&((q>>14)&1u)&&strcmp(nm,"TC Q")&&strcmp(nm,"QXCH")){char k2[160];snprintf(k2,sizeof k2,"   at %02o,%04o (SWITCH TS Q at %02o,%04o) %s",zp/1024u,(zp%1024u)+((zp/1024u==2u||zp/1024u==3u)?(zp/1024u)*02000u:02000u),qw_tsq/1024u,(qw_tsq%1024u)+02000u,nm);qw_count(k2);}
+ qw_count(k);if(!insw)qw_watch=0;}
 int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
- dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
+ dump=argc>4&&!strcmp(argv[4],"dump");qw_on=getenv("IRC_QWATCH")!=0;InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
  if(rd32(f)!=0x32435249ul){fprintf(stderr,"bad case file\n");return 2;}
@@ -78,7 +122,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
   {unsigned z0=z_physical(get(RegZ));if(z0<0xfffeu)was_in=!outside(t,z0);}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   for(cycles=0;cycles<maxcycles;++cycles){
-   if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
+   if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);if(qw_on)qw_hook(pc);
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap&&snaprow){snapped=stopped=1;break;}
     if(snap!=0xffffu&&((pc==t->newops&&(!through||(get(0164)>=02000u&&get(0164)<010000u&&get(0120)==init[0120]))&&loc_physical()==snap)||(through&&pc!=t->newops&&get(0120)==init[0120]&&z_physical(pc)==snap))){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
@@ -107,6 +151,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
     if(stopped)break;
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
+  if(qw_watch){unsigned k;qw_frontier=1;for(k=0;k<400000u&&qw_watch;++k){machine.ScalerCounter=0;if(agc_engine(&machine))return 2;
+   if(!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode)qw_hook(get(RegZ));}
+   if(qw_watch){qw_count("unresolved after 400000 more instructions");qw_watch=0;}}
   if(snapmode&&(!snaprow||!snapped)){if(!snapped)printf("%u N\n",n);continue;}}
   if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
   if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
@@ -117,5 +164,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
   printf("%u 0 %u %lu",n,pc,(unsigned long)irc_digest(0,&s,(uint16_t)machine.AllowInterrupt));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]);printf(" %u",(unsigned)machine.AllowInterrupt);}
   printf("\n");
- }return 0;
+ }
+ if(qw_on){unsigned i;fprintf(stderr,"SWITCH TS Q executions: %lu (A bit 16 != bit 15 at TS: %lu)\n",qw_n,qw_bad_a);for(i=0;i<qw_nt;++i)fprintf(stderr,"%8lu  %s\n",qw_tab[i].n,qw_tab[i].k);}
+ return 0;
 }
