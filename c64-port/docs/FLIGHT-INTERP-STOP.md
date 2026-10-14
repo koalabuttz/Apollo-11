@@ -26,7 +26,7 @@ the flag (host tests, certificates, C64 rows) the code is unchanged.
 | `lm_lunar_landing` | F | 3,478 (was 24,207 over) |
 | `lm_imu_performance` | D1 | 11,328 (was 38,827 over) |
 | `lm_burn_baby` | F | 15,310 (was 16,519 over) |
-| `lm_servicer` | F | still 4,993 over: its basic code is one 21 KB step machine |
+| `lm_servicer` | F | two parts, 14,581 and 14,302 ([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)); one module was 5,642 over |
 
 The sizes come from `tools/flight_store_build.py`'s `link_module` with the
 file's basic tables and `-DAGC_FLIGHT_INTERPRETER` added to the common

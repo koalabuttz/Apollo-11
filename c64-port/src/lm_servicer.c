@@ -853,7 +853,27 @@ static __attribute__((unused)) int vac(agc_word f){
  return 0;
 }
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#ifndef LMSV_FLIGHT_PART
 #define AT(b,a) case PH(b,a): L##b##_##a: __attribute__((unused)) SV_PATH(PATHOF(b,a))
+#else
+/* Flight parts (docs/LM-SERVICER-FLIGHT-PARTS.md): a part build keeps the
+ * basic words on its side of LMSV_PART_CUT; a run that reaches a word of
+ * the other part stops there when the word is a key of the file (the other
+ * part's module runs on from it), and is refused otherwise. The other
+ * part's code is dead and drops out of the build. */
+#ifndef LMSV_PART_CUT
+#define LMSV_PART_CUT PH(33,03420)  /* basic_entries[LMSV_PART_KEYS] */
+#define LMSV_PART_KEYS 85u
+#endif
+#if LMSV_FLIGHT_PART==1
+#define SV_IN_PART(ph) ((ph)<LMSV_PART_CUT)
+#else
+#define SV_IN_PART(ph) ((ph)>=LMSV_PART_CUT)
+#endif
+static int part_leave(apollo_overlay_state *s,uint16_t ph);
+#define AT(b,a) case PH(b,a): L##b##_##a: __attribute__((unused)) \
+ if(!SV_IN_PART(PH(b,a))){return part_leave(s,PH(b,a));} SV_PATH(PATHOF(b,a))
+#endif
 #define GOTO(b,a) goto L##b##_##a
 #define TC(r,b,a) do{ai_tc(s,(r));GOTO(b,a);}while(0)
 
@@ -861,6 +881,9 @@ static __attribute__((unused)) int vac(agc_word f){
 static int basic(apollo_overlay_state *s,lm_sv_io *io,uint16_t ph){
  unsigned v=0;uint8_t c;
  (void)s;(void)io;(void)v;(void)c;
+#ifdef LMSV_FLIGHT_PART
+ if(!SV_IN_PART(ph))return part_leave(s,ph);
+#endif
  switch(ph){
 #if SV_G(1)
  /* PREREAD CAF SEVEN; TC GNUFAZE5; CAF PRIO21; TC NOVAC */
@@ -2276,8 +2299,24 @@ static const agc_routine_entry interp_entries[]={
 #endif
 };
 #define COUNT(t) (uint16_t)(sizeof t/sizeof t[0])
+#ifndef LMSV_FLIGHT_PART
 const agc_routine_table lm_servicer_routines={basic_entries,COUNT(basic_entries)};
 const agc_routine_table lm_servicer_interpretive={interp_entries,COUNT(interp_entries)};
+#else
+/* basic_entries is sorted, so part 1's keys are its first LMSV_PART_KEYS
+ * entries and part 2's the rest; the interpretive code is the
+ * interpreter's. */
+#if LMSV_FLIGHT_PART==1
+const agc_routine_table lm_servicer_routines={basic_entries,LMSV_PART_KEYS};
+#else
+const agc_routine_table lm_servicer_routines={basic_entries+LMSV_PART_KEYS,COUNT(basic_entries)-LMSV_PART_KEYS};
+#endif
+const agc_routine_table lm_servicer_interpretive={interp_entries,0};
+static int part_leave(apollo_overlay_state *s,uint16_t ph){unsigned i;
+ for(i=0;i<COUNT(basic_entries);++i)if(basic_entries[i].physical==ph){W[5]=(agc_word)(02000u+ph%1024u);return STOP;}
+ return REFUSE;
+}
+#endif
 const agc_site_operand lm_servicer_flag_sites[LMSV_FLAG_SITES]={
 #include "lm_servicer_flag_sites.inc"
 };
