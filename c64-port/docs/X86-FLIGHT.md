@@ -46,7 +46,7 @@ A table's kind (basic, keyed by Z; or interpretive, keyed by LOC under BANKSET) 
 
 Each routine adds its cost to a virtual AGC clock (85,333 machine cycles a second). Every 853 1/3 cycles is one clock period, run at the next boundary, with no cap and nothing dropped. At `X86_SPEED` 1 the program sleeps whenever AGC time gets ahead of `CLOCK_MONOTONIC`. When the host falls behind, AGC time runs late (scaled time, docs/RESIDENT-FLIGHT.md). Keys and pokes arrive on AGC time.
 
-The costs come from `docs/flight-routine-mct.json`: for each routine point, the median machine cycles yaAGC took for it over the host differential's scenarios and the LM DAP hold (`make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`). Points no scenario reaches cost the median of their kind. One interpreter core slot costs 30 cycles, an estimate. The C64 resident's work clock takes its weights from the same file.
+The costs come from `docs/flight-routine-mct.json`: for each routine point, the machine cycles yaAGC took for it over the host differential's scenarios and the LM DAP holding and firing (median, runs, sum, sum of squares, least, most and the table that ran; `make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`). The x86 clock charges each point its median. Points no scenario reaches cost the median of their kind. One interpreter core slot costs 30 cycles, an estimate. The C64 resident's work clock takes its per-module weights from the same file.
 
 ## Acceptance: lockstep against yaAGC
 
@@ -58,7 +58,7 @@ On base 42682de7 with this change:
 |---|---|---|---|
 | LM P00, 4000 cs | 258,393 / 258,393 | 0 | 0 / 0 |
 | CM P00, 4000 cs | 261,359 / 261,359 | 0 | 0 / 0 |
-| LM DAP hold, 3000 cs | 177,228 / 177,228 | 0 | 0 / 0 |
+| LM DAP hold, 3000 cs | 177,143 / 177,143 | 0 | 0 / 0 |
 | CM V37E00E, 3000 cs | 193,758 / 195,199 | 0 | 4 / 108 |
 | CM V37E06E, 3000 cs | 195,381 / 195,385 | 0 | 2 / 4 |
 

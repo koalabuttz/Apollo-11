@@ -498,8 +498,8 @@ x=flight_io_enter(e->io,&io,&hw,&b);channels_in(&hw);st=call(&p,&s,x);channels_o
      if(scaled)spend(span_mct);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
-       * point (tools/x86_flight_mct.py). */
-      if(mct_out){int in;uint16_t k=point(before.words,io0.superbank,&in);fprintf(mct_out,"%d %u %lu\n",in,k,span_mct);}}
+       * point and table (tools/x86_flight_mct.py). */
+      if(mct_out){int in;uint16_t k=point(before.words,io0.superbank,&in);fprintf(mct_out,"%d %u %lu %s\n",in,k,span_mct,e->name);}}
      else miss(e->name,before.words,io0.superbank,s.words,first);
      continue;}}
    /* A refusal: undo whatever the routine did and bridge the point. */
