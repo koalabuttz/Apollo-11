@@ -81,9 +81,13 @@ extern uint8_t rk_tick_phase;
 #define RK_DILATION 0x6fb8u
 extern uint32_t rk_dilation;
 /* The resident's own modules (lane A numbers 0xe0-0xef). */
-#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
-/* What the boundary-word module (resident_boundary_module.c) hands boot. */
-typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_table;
+#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* null module (resident_boundary_module.c) */
+/* The boundary-word table, which ends the REU store image
+ * (tools/overlay_v2_pack.py --tail): its entries (sorted by physical key)
+ * and their count, which boot reads; entry i, by REU fetch (false past the
+ * end or on a DMA fault). */
+extern uint16_t rk_boundary_count;
+bool rk_boundary_entry(uint16_t i,agc_site_operand *entry);
 /* What the step hands every module in frame value: the resident program
  * (tables, hardware, fixed_data, site operands) and io. A module that
  * runs AGC routines (the interrupt-body wrappers) reports a routine's

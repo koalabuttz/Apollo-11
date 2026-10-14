@@ -341,8 +341,11 @@ def build_modules(cc, m, cases, library):
         prgs.append(prg)
     resolver = OUT / f'{m}-resolver.json'
     resolver.write_text(json.dumps(PROBES + wrapper_records(os.environ.get('CC', 'cc'), m), indent=1) + '\n')
+    from resident_boundary_words import tail_bytes
+    tail = OUT / f'{m}-boundary.bin'
+    tail.write_bytes(tail_bytes((ROOT / f'platform/c64/resident_boundary_words_{m}.h').read_text()))
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(CHECK_SERVICES),
-         '--resolver', resolver, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
+         '--resolver', resolver, '--tail', tail, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
     return prgs
 
 

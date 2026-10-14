@@ -63,9 +63,10 @@ __attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_modu
 #endif
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
-/* The boundary-word table: its REU bank and address (in its module's
- * image, within one 64 KB bank) and record count. */
-static uint16_t boundary_address,boundary_count;
+/* The boundary-word table: its REU bank and address (the store image's
+ * tail, within one 64 KB bank) and record count. */
+static uint16_t boundary_address;
+uint16_t rk_boundary_count;
 static uint8_t boundary_bank;
 
 /* The kernel's routine tables and SPSIN/SPCOS, filled at boot. */
@@ -165,26 +166,19 @@ uint8_t BOOT rk_boot(void) {
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);
     {
-        /* Run through the step's module runner, which LTO then keeps as
-         * the runtime's only caller. */
-        apollo_ov2_cont at={RK_MODULE_BOUNDARY,0};
-        apollo_ov2_dirent d;
-        const rk_boundary_table *t;
-        uint32_t first,last;
-        if(rk_run_module(at)!=APOLLO_OV2_OK || run_action!=APOLLO_OV2_DONE ||
-           !rk_runtime.store.lookup(rk_runtime.store.user,RK_MODULE_BOUNDARY,&d))
+        /* The boundary-word table ends the image: its entries, then their
+         * count and a zero word (tools/overlay_v2_pack.py --tail). */
+        uint32_t end=rk_store.base+((uint32_t)rk_store.pages<<8),first;
+        uint16_t tail[2];
+        if((apollo_reu_transfer(APOLLO_REU_FETCH,tail,end-sizeof tail,sizeof tail)&
+            (APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))!=APOLLO_REU_STATUS_END || !tail[0] || tail[1])
             return 3;
-        /* The module image sits at its page of the store, loaded at the
-         * task slot's base. */
-        t=(const rk_boundary_table *)(uintptr_t)run_value;
-        first=rk_store.base+((uint32_t)d.page<<8)+(uint16_t)((uintptr_t)t->words-APOLLO_OV2_TASK_ADDRESS);
-        last=first+(uint32_t)t->count*sizeof(agc_site_operand)-1u;
-        if(!t->count || (first>>16)!=(last>>16)) return 3;
-        boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; boundary_count=t->count;
+        first=end-sizeof tail-(uint32_t)tail[0]*sizeof(agc_site_operand);
+        if((first>>16)!=((end-1u)>>16) || first<rk_store.base+((uint32_t)rk_store.resolver_page<<8)) return 3;
+        boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; rk_boundary_count=tail[0];
     }
-    /* Then the boot-loaded modules: the boundary-word module ran in the task
-     * slot first, as boot itself runs in the job slot, and a class-4 module
-     * now takes its place there, so the runtime forgets it. */
+    /* Then the boot-loaded modules; a class-4 module holds the task slot's
+     * RAM, so the runtime has no task-slot module loaded. */
     {
         uint8_t pinned=0;
         if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,&pinned) || (pinned && !rk_pin_main())) return 4;
@@ -194,23 +188,28 @@ uint8_t BOOT rk_boot(void) {
     return 0;
 }
 
-/* One 4-byte REU fetch per probe, by register (as apollo_reu_transfer does,
- * without its 32-bit address arithmetic). */
-bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word) {
-    uint16_t low=0,high=boundary_count;
-    static agc_site_operand probe;   /* DMA target */
+/* One 4-byte REU fetch, by register (as apollo_reu_transfer does, without
+ * its 32-bit address arithmetic: the table lies in one 64 KB bank). */
+bool rk_boundary_entry(uint16_t i,agc_site_operand *entry) {
+    uint16_t at=(uint16_t)(boundary_address+i*sizeof *entry);
     volatile uint8_t *reu=(volatile uint8_t *)0xdf00u;
+    if(i>=rk_boundary_count) return false;
+    (void)reu[APOLLO_REU_STATUS];
+    reu[APOLLO_REU_ADDR_CONTROL]=0;
+    reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)entry; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)entry>>8);
+    reu[APOLLO_REU_REU_LO]=(uint8_t)at; reu[APOLLO_REU_REU_HI]=(uint8_t)(at>>8); reu[APOLLO_REU_REU_BANK]=boundary_bank;
+    reu[APOLLO_REU_LEN_LO]=sizeof *entry; reu[APOLLO_REU_LEN_HI]=0;
+    reu[APOLLO_REU_COMMAND]=APOLLO_REU_FETCH;
+    return (reu[APOLLO_REU_STATUS]&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==APOLLO_REU_STATUS_END;
+}
+/* The word at a boundary key, by binary search of the table. */
+bool rk_fixed_word(const agc_native_program *p, uint16_t physical, agc_word *word) {
+    uint16_t low=0,high=rk_boundary_count;
+    static agc_site_operand probe;   /* DMA target */
     (void)p;
     while(low<high) {
         uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
-        uint16_t at=(uint16_t)(boundary_address+middle*sizeof probe);
-        (void)reu[APOLLO_REU_STATUS];
-        reu[APOLLO_REU_ADDR_CONTROL]=0;
-        reu[APOLLO_REU_C64_LO]=(uint8_t)(uintptr_t)&probe; reu[APOLLO_REU_C64_HI]=(uint8_t)((uintptr_t)&probe>>8);
-        reu[APOLLO_REU_REU_LO]=(uint8_t)at; reu[APOLLO_REU_REU_HI]=(uint8_t)(at>>8); reu[APOLLO_REU_REU_BANK]=boundary_bank;
-        reu[APOLLO_REU_LEN_LO]=sizeof probe; reu[APOLLO_REU_LEN_HI]=0;
-        reu[APOLLO_REU_COMMAND]=APOLLO_REU_FETCH;
-        if((reu[APOLLO_REU_STATUS]&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))!=APOLLO_REU_STATUS_END) return false;
+        if(!rk_boundary_entry(middle,&probe)) return false;
         if(probe.physical==physical) { *word=probe.word; return true; }
         if(probe.physical<physical) low=(uint16_t)(middle+1u); else high=middle;
     }
