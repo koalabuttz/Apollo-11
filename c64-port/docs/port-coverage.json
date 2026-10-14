@@ -12597,7 +12597,7 @@
       "sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
       "bytes": 5909,
       "lines": 196,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12618,6 +12618,44 @@
           "verification": "docs/LM-SPS-BACKUP.md"
         }
       ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Entry at SPSRCS (21,3727) with FB of bank 21 under EB 6 (the file's EBANK= TJU), AXISCTR -1 (P), +0 or -0 (U) or +1 (V), any Q (the caller's return, TC Q; ISWRETRN 04707, IBNKCALL's return, in half of the cases), any FIXLOC (a VAC area, a NOVAC job's or any erasable address: SPSRCS runs in T5RUPT over whatever job is current and never names FIXLOC), NEWJOB +0, positive or -0 (DUMMYJOB idling), and any values of the other erasables; in half of the cases TJP/TJU/TJV (+-0, +-1, HALF), PJETCTR/UJETCTR/VJETCTR (+-0, +-1, 4), EDOT around the rate limits and coast zone and at 0634, 01000, 01166 and 01167 either sign (above RATELIM2, up to the outer limit), E up to +-037777 and DKDB from a joint set, so both outcomes of every coast-zone BZMF, including +7's BZMF POSTHRST, run.",
+        "external_continuations": [
+          "The caller's return through Q (TC Q)"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-source-map.json",
+            "sha256": "6212b57ecef767d5b4a95e79f7cdb0ef34c665f60dd76b46e9aedf3a3553bf91"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-proof.json",
+            "sha256": "790c02a5e399d35432f4eea48afd67a8b5efb7ff5c9c2190460942b47d134dcb"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-host.log",
+            "sha256": "a3af6ce65313ab62d0bb5d2a26477f4d50c0390c76df0327be42dfdcfd184a23"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-vice.log",
+            "sha256": "6acfc64572d1c5c6f4558b6b47aef7dc942f9df7263d82ab4ccaa59fdb99f810",
+            "vice_targets": {
+              "vice-lm-sps-backup": 9
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-c64-cover.json",
+            "sha256": "9c1aac3f4b67a53fd488b9203aeafd7e39ff21a0af7d4957fca69b0a3fc85ad7"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a2-388.md",
+            "sha256": "9cd3f61c503cd0b485fa98113c57c44a6ba39108ccf1cb9671be831c08ec9474"
+          }
+        }
+      },
       "withdrawn_certificate": {
         "withdrawn_by": "port auditor",
         "date": "2026-10-13",
@@ -12645,41 +12683,6 @@
               "path": "evidence/lm-sps-rcs-proof.json",
               "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
             }
-          }
-        }
-      },
-      "pending_complete_certificate": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "Entry at SPSRCS (21,3727) with FB of bank 21 under EB 6 (the file's EBANK= TJU), AXISCTR -1 (P), +0 or -0 (U) or +1 (V), any Q (the caller's return, TC Q; ISWRETRN 04707, IBNKCALL's return, in half of the cases), any FIXLOC (a VAC area, a NOVAC job's or any erasable address: SPSRCS runs in T5RUPT over whatever job is current and never names FIXLOC), NEWJOB +0, positive or -0 (DUMMYJOB idling), and any values of the other erasables; in half of the cases TJP/TJU/TJV (+-0, +-1, HALF), PJETCTR/UJETCTR/VJETCTR (+-0, +-1, 4), EDOT around the rate limits and coast zone and at 0634, 01000, 01166 and 01167 either sign (above RATELIM2, up to the outer limit), E up to +-037777 and DKDB from a joint set, so both outcomes of every coast-zone BZMF, including +7's BZMF POSTHRST, run.",
-        "external_continuations": [
-          "The caller's return through Q (TC Q)"
-        ],
-        "awaiting": "certificate reviewer",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-sps-backup/lm-sps-backup-source-map.json",
-            "sha256": "6212b57ecef767d5b4a95e79f7cdb0ef34c665f60dd76b46e9aedf3a3553bf91"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-sps-backup/lm-sps-backup-proof.json",
-            "sha256": "790c02a5e399d35432f4eea48afd67a8b5efb7ff5c9c2190460942b47d134dcb"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-sps-backup/lm-sps-backup-host.log",
-            "sha256": "a3af6ce65313ab62d0bb5d2a26477f4d50c0390c76df0327be42dfdcfd184a23"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-sps-backup/lm-sps-backup-vice.log",
-            "sha256": "6acfc64572d1c5c6f4558b6b47aef7dc942f9df7263d82ab4ccaa59fdb99f810",
-            "vice_targets": {
-              "vice-lm-sps-backup": 9
-            }
-          },
-          "c64_branch_outcomes": {
-            "path": "evidence/lm-sps-backup/lm-sps-backup-c64-cover.json",
-            "sha256": "9c1aac3f4b67a53fd488b9203aeafd7e39ff21a0af7d4957fca69b0a3fc85ad7"
           }
         }
       }
