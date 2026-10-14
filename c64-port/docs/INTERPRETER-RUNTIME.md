@@ -47,10 +47,90 @@ generated from the listings into `include/interp_runtime_tables.h`
 fixed operand (ADDRWD in 02000-03777 after address formation) is read from the
 rope at FB/ADDRWD, so indexed fixed tables need no per-file data.
 
-Today the order bodies are the image-level ones the compiled routines call
-(`src/lm_interp_steps.c`, `src/lm_interp_orders.c`), which are verified against
-yaAGC body by body. They are about 54 KB on the C64; the compact rewrite for one
-16 KB slot is the lane's next milestone.
+The verification interpreter's order bodies are the image-level ones the
+compiled routines call (`src/lm_interp_steps.c`, `src/lm_interp_orders.c`),
+verified against yaAGC body by body. They are about 54 KB on the C64.
+
+## Compact interpreter (flight build)
+
+`lm_interp_core` / `cm_interp_core` (`src/lm_interp_core.c`; the CM unit
+includes it with `INTERP_COMANCHE`) are the same interpreter in one
+translation unit for the C64 job slot:
+
+- One image: with `AGC_FIXED_IMAGE` on llvm-mos the bodies address the
+  canonical image at $7000 directly, and the entry refuses any other.
+- Its own instruction helpers (`ai_*`), with one-byte entries for constant
+  register addresses and small constants, chosen at compile time. The
+  flight module builds with `INTERP_K_OPS`: the ops the resident kernel
+  exports as ABI 2 services (`k_ca` ... `k_bzmf`, docs/FLIGHT-STORE.md)
+  come from the resident, and only the rest are linked in.
+- Table dispatch for the address, miscellaneous and unary orders.
+- Its own module entry, `platform/c64/interp_module.c`. It runs slots until Z
+  leaves the interpreter, so it needs no transfer-ABI table wrapper.
+
+It must equal the verification interpreter word for word:
+
+- `make interp-core-fuzz` runs random interpretive programs in a bank of the
+  rope against both interpreters and compares every NEWOPS slot: Z, all 2048
+  words, the status and the io record. Inputs no program produces are left
+  out and counted (an EBANK window over the registers, an index register or
+  store run wild, MODE outside -1..+1).
+- The fuzz runs a second build with `INTERP_K_OPS`, in which
+  `tools/interp_core_kops.c` stands in for the resident's ops
+  (agc_image_ops on the bound image).
+- `make interp-core-differential` runs the yaAGC differential above with the
+  compact interpreter.
+
+`make interp-runtime-size` links it as module `$0A01` (16 KB job slot target);
+`--runtime` links the verification interpreter instead.
+
+The interpreter extension (`INTERP_EXTENSION`, `--ext`) is 4 KB of RAM under
+I/O at $D000-$DFFF (steward ruling, 2026-10-13). It is its own ABI 2
+module, `$0A02`, of slot class 2 (`APOLLO_OV2_SLOT_FIXED`), which the
+resident's boot loads once and verifies (`rk_load_fixed`):
+
+- It holds the cold math bodies (`XT`: SQRT, UNIT, VSQ, SIN, COS,
+  ASIN, ACOS with POLY, DDV, BDDV, DOT, VPROJ, VXSC, MXV, VXM, V/SC), linked
+  by `platform/c64/interp_ext.ld`.
+- None of these bodies reads the rope, since the REU registers are I/O.
+- They are reached only from the address and unary order tables. Every call
+  through a table banks I/O out ($01 = $34) and back in. The resident's IRQ
+  entry saves $01 and banks I/O in.
+- `$0A01` and `$0A02` are one link. `interp_runtime_size.py` cuts the
+  extension's section from the ELF as `interp-ext.prg` (24-byte header, an
+  RTS entry nothing calls, no BSS) and checks both PRGs with the store
+  packer's `parse_module`.
+- With it, the module fits: LM 15,715 and CM 15,724 of 16,384 bytes, and
+  `$0A02` takes 4,038 and 4,029 of 4,096 bytes with its header.
+- Without it, the module is 3.7 KB over.
+- The flight store does not hold `$0A01` or `$0A02` yet.
+
+`make vice-interp-core` runs the flight build on a PAL C64 in VICE
+(`tools/interp_core_vice_test.py`, `tools/interp_core_vice.c`):
+
+- The build has the resident's k_ ops and the extension. The test puts
+  module `$0A02` in the REU, and the harness loads and verifies it at $D000
+  by the resident's boot DMA (registers set with I/O in, then a write to
+  $FF00 with $01 = $34). With the module misplaced in the REU the run
+  crashes, so the code at $D000 is the DMA's.
+- The rope is in the REU at its flight address.
+- The CIA timer IRQ runs throughout, through a RAM vector that saves $01.
+- It runs 180 fuzz slot records per mission and checks each 6502 result
+  against the host's verification interpreter.
+
+`make interp-core-cycles` measures 6502 cycles per order in llvm-mos's
+simulator (`tools/interp_core_cycles.c`, flight flags, image at $7000):
+
+- It takes one order per slot from the fuzz.
+- It checks every slot's 6502 result against the host's.
+- It adds the measured REU rope read cost.
+- Results go to `build/interp-cycles/<m>.json`.
+
+`tools/interp_order_rates.py` counts the orders yaAGC runs in the flight
+scenarios (`tools/interp_order_trace.c`). It counts one per pass through the
+INDJUMP, MISCJUMP and UNAJUMP tables. It also prices a set of orders kept in
+a second module at 30K cycles a load. From a fresh start these scenarios run
+almost no interpretive code (0-8 orders a second).
 
 ## Tests
 

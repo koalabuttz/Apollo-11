@@ -1,0 +1,5392 @@
+{
+  "milestone": "main-assembly",
+  "tool": "tools/main_assembly.py",
+  "native": "src/main_manifest.c",
+  "missions": {
+    "Luminary099": {
+      "source_path": "Luminary099/MAIN.agc",
+      "source_sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
+      "assembled_main_sha256": "0cfd3412dec956c3ffc0b2a93bdb36a20e7eb88382ab191da883021e2d7adddf",
+      "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+      "includes": 89,
+      "emitted_fixed_words": 36539,
+      "main_emitted_words": 0,
+      "errata": {
+        "LAMBERT_AIMPOINT_GUIDANCE.agc": "GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+        "TRIM_GIMBAL_CNTROL_SYSTEM.agc": "TRIM_GIMBAL_CONTROL_SYSTEM.agc"
+      },
+      "bank_checksums": [
+        1022,
+        2047,
+        3071,
+        4080,
+        5115,
+        6140,
+        7158,
+        8189,
+        9215,
+        10239,
+        11263,
+        12281,
+        13310,
+        14335,
+        15356,
+        16358,
+        17404,
+        18426,
+        19453,
+        20473,
+        21503,
+        22522,
+        23551,
+        24572,
+        25599,
+        26611,
+        27645,
+        28671,
+        29695,
+        30719,
+        31735,
+        32766,
+        33741,
+        34779,
+        35836,
+        36844
+      ],
+      "rows": [
+        {
+          "include": "ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "file": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "assembler_file": "ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "TAGS_FOR_RELATIVE_SETLOC.agc",
+          "file": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+          "assembler_file": "TAGS_FOR_RELATIVE_SETLOC_AND_BLANK_BANK_CARDS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "CONTROLLED_CONSTANTS.agc",
+          "file": "Luminary099/CONTROLLED_CONSTANTS.agc",
+          "assembler_file": "CONTROLLED_CONSTANTS.agc",
+          "erratum": false,
+          "words": 463,
+          "banks": [
+            "01",
+            "03",
+            "04",
+            "05",
+            "13",
+            "14",
+            "20",
+            "21",
+            "22",
+            "25",
+            "26",
+            "27",
+            "30",
+            "31",
+            "32",
+            "33",
+            "36",
+            "37",
+            "42"
+          ],
+          "first": "74000",
+          "last": "54021",
+          "sum32": 5700998,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              30720,
+              16
+            ],
+            [
+              23552,
+              18
+            ],
+            [
+              24576,
+              2
+            ],
+            [
+              27648,
+              2
+            ],
+            [
+              25600,
+              2
+            ],
+            [
+              30736,
+              2
+            ],
+            [
+              3072,
+              1
+            ],
+            [
+              25602,
+              5
+            ],
+            [
+              26624,
+              1
+            ],
+            [
+              21504,
+              3
+            ],
+            [
+              26625,
+              4
+            ],
+            [
+              27650,
+              23
+            ],
+            [
+              17408,
+              6
+            ],
+            [
+              16384,
+              1
+            ],
+            [
+              5120,
+              1
+            ],
+            [
+              1024,
+              2
+            ],
+            [
+              16385,
+              3
+            ],
+            [
+              31744,
+              2
+            ],
+            [
+              18432,
+              4
+            ],
+            [
+              23570,
+              6
+            ],
+            [
+              27673,
+              12
+            ],
+            [
+              12288,
+              8
+            ],
+            [
+              4096,
+              20
+            ],
+            [
+              11264,
+              22
+            ],
+            [
+              23576,
+              2
+            ],
+            [
+              34816,
+              2
+            ],
+            [
+              12296,
+              223
+            ],
+            [
+              5121,
+              52
+            ],
+            [
+              22528,
+              18
+            ]
+          ]
+        },
+        {
+          "include": "INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+          "file": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+          "assembler_file": "INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "FLAGWORD_ASSIGNMENTS.agc",
+          "file": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+          "assembler_file": "FLAGWORD_ASSIGNMENTS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "ERASABLE_ASSIGNMENTS.agc",
+          "file": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+          "assembler_file": "ERASABLE_ASSIGNMENTS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "INTERRUPT_LEAD_INS.agc",
+          "file": "Luminary099/INTERRUPT_LEAD_INS.agc",
+          "assembler_file": "INTERRUPT_LEAD_INS.agc",
+          "erratum": false,
+          "words": 54,
+          "banks": [
+            "02"
+          ],
+          "first": "04000",
+          "last": "04065",
+          "sum32": 754031,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2048,
+              54
+            ]
+          ]
+        },
+        {
+          "include": "T4RUPT_PROGRAM.agc",
+          "file": "Luminary099/T4RUPT_PROGRAM.agc",
+          "assembler_file": "T4RUPT_PROGRAM.agc",
+          "erratum": false,
+          "words": 634,
+          "banks": [
+            "02",
+            "06"
+          ],
+          "first": "14000",
+          "last": "15155",
+          "sum32": 7102055,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              6144,
+              10
+            ],
+            [
+              2102,
+              12
+            ],
+            [
+              6154,
+              612
+            ]
+          ]
+        },
+        {
+          "include": "RCS_FAILURE_MONITOR.agc",
+          "file": "Luminary099/RCS_FAILURE_MONITOR.agc",
+          "assembler_file": "RCS_FAILURE_MONITOR.agc",
+          "erratum": false,
+          "words": 69,
+          "banks": [
+            "06"
+          ],
+          "first": "15156",
+          "last": "15262",
+          "sum32": 907803,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              6766,
+              69
+            ]
+          ]
+        },
+        {
+          "include": "DOWNLINK_LISTS.agc",
+          "file": "Luminary099/DOWNLINK_LISTS.agc",
+          "assembler_file": "DOWNLINK_LISTS.agc",
+          "erratum": false,
+          "words": 242,
+          "banks": [
+            "05"
+          ],
+          "first": "12065",
+          "last": "12446",
+          "sum32": 1776140,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5173,
+              242
+            ]
+          ]
+        },
+        {
+          "include": "AGS_INITIALIZATION.agc",
+          "file": "Luminary099/AGS_INITIALIZATION.agc",
+          "assembler_file": "AGS_INITIALIZATION.agc",
+          "erratum": false,
+          "words": 138,
+          "banks": [
+            "32"
+          ],
+          "first": "64005",
+          "last": "64216",
+          "sum32": 1417684,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              26629,
+              138
+            ]
+          ]
+        },
+        {
+          "include": "FRESH_START_AND_RESTART.agc",
+          "file": "Luminary099/FRESH_START_AND_RESTART.agc",
+          "assembler_file": "FRESH_START_AND_RESTART.agc",
+          "erratum": false,
+          "words": 847,
+          "banks": [
+            "03",
+            "04",
+            "05",
+            "13"
+          ],
+          "first": "12447",
+          "last": "26067",
+          "sum32": 11752282,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5415,
+              475
+            ],
+            [
+              3073,
+              8
+            ],
+            [
+              4116,
+              330
+            ],
+            [
+              11286,
+              34
+            ]
+          ]
+        },
+        {
+          "include": "RESTART_TABLES.agc",
+          "file": "Luminary099/RESTART_TABLES.agc",
+          "assembler_file": "RESTART_TABLES.agc",
+          "erratum": false,
+          "words": 132,
+          "banks": [
+            "01"
+          ],
+          "first": "02002",
+          "last": "02205",
+          "sum32": 1636322,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              1026,
+              132
+            ]
+          ]
+        },
+        {
+          "include": "AOTMARK.agc",
+          "file": "Luminary099/AOTMARK.agc",
+          "assembler_file": "AOTMARK.agc",
+          "erratum": false,
+          "words": 511,
+          "banks": [
+            "04",
+            "07",
+            "15"
+          ],
+          "first": "16000",
+          "last": "16666",
+          "sum32": 6560752,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              7168,
+              121
+            ],
+            [
+              4446,
+              32
+            ],
+            [
+              13312,
+              40
+            ],
+            [
+              7289,
+              318
+            ]
+          ]
+        },
+        {
+          "include": "EXTENDED_VERBS.agc",
+          "file": "Luminary099/EXTENDED_VERBS.agc",
+          "assembler_file": "EXTENDED_VERBS.agc",
+          "erratum": false,
+          "words": 994,
+          "banks": [
+            "01",
+            "20",
+            "23",
+            "40",
+            "42",
+            "43"
+          ],
+          "first": "106000",
+          "last": "100076",
+          "sum32": 9222415,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              35840,
+              210
+            ],
+            [
+              19456,
+              33
+            ],
+            [
+              36050,
+              50
+            ],
+            [
+              34818,
+              27
+            ],
+            [
+              36100,
+              225
+            ],
+            [
+              34845,
+              15
+            ],
+            [
+              36325,
+              64
+            ],
+            [
+              34860,
+              23
+            ],
+            [
+              36389,
+              61
+            ],
+            [
+              16388,
+              73
+            ],
+            [
+              1158,
+              94
+            ],
+            [
+              36450,
+              56
+            ],
+            [
+              32768,
+              63
+            ]
+          ]
+        },
+        {
+          "include": "PINBALL_NOUN_TABLES.agc",
+          "file": "Luminary099/PINBALL_NOUN_TABLES.agc",
+          "assembler_file": "PINBALL_NOUN_TABLES.agc",
+          "erratum": false,
+          "words": 597,
+          "banks": [
+            "42"
+          ],
+          "first": "104103",
+          "last": "105227",
+          "sum32": 3095235,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              34883,
+              597
+            ]
+          ]
+        },
+        {
+          "include": "LEM_GEOMETRY.agc",
+          "file": "Luminary099/LEM_GEOMETRY.agc",
+          "assembler_file": "LEM_GEOMETRY.agc",
+          "erratum": false,
+          "words": 113,
+          "banks": [
+            "13",
+            "23"
+          ],
+          "first": "26070",
+          "last": "46102",
+          "sum32": 1587356,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              11320,
+              79
+            ],
+            [
+              19489,
+              34
+            ]
+          ]
+        },
+        {
+          "include": "IMU_COMPENSATION_PACKAGE.agc",
+          "file": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
+          "assembler_file": "IMU_COMPENSATION_PACKAGE.agc",
+          "erratum": false,
+          "words": 282,
+          "banks": [
+            "06"
+          ],
+          "first": "15263",
+          "last": "15714",
+          "sum32": 3686881,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              6835,
+              282
+            ]
+          ]
+        },
+        {
+          "include": "R63.agc",
+          "file": "Luminary099/R63.agc",
+          "assembler_file": "R63.agc",
+          "erratum": false,
+          "words": 65,
+          "banks": [
+            "26"
+          ],
+          "first": "54022",
+          "last": "54122",
+          "sum32": 641306,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              22546,
+              65
+            ]
+          ]
+        },
+        {
+          "include": "ATTITUDE_MANEUVER_ROUTINE.agc",
+          "file": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+          "assembler_file": "ATTITUDE_MANEUVER_ROUTINE.agc",
+          "erratum": false,
+          "words": 480,
+          "banks": [
+            "22"
+          ],
+          "first": "44004",
+          "last": "44743",
+          "sum32": 6695612,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18436,
+              480
+            ]
+          ]
+        },
+        {
+          "include": "GIMBAL_LOCK_AVOIDANCE.agc",
+          "file": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+          "assembler_file": "GIMBAL_LOCK_AVOIDANCE.agc",
+          "erratum": false,
+          "words": 31,
+          "banks": [
+            "22"
+          ],
+          "first": "44744",
+          "last": "45002",
+          "sum32": 313701,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18916,
+              31
+            ]
+          ]
+        },
+        {
+          "include": "KALCMANU_STEERING.agc",
+          "file": "Luminary099/KALCMANU_STEERING.agc",
+          "assembler_file": "KALCMANU_STEERING.agc",
+          "erratum": false,
+          "words": 159,
+          "banks": [
+            "22"
+          ],
+          "first": "45003",
+          "last": "45241",
+          "sum32": 2212498,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18947,
+              159
+            ]
+          ]
+        },
+        {
+          "include": "SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "file": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "assembler_file": "SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "erratum": false,
+          "words": 32,
+          "banks": [
+            "04"
+          ],
+          "first": "10576",
+          "last": "10635",
+          "sum32": 438575,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              4478,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "IMU_PERFORMANCE_TEST_2.agc",
+          "file": "Luminary099/IMU_PERFORMANCE_TEST_2.agc",
+          "assembler_file": "IMU_PERFORMANCE_TESTS_2.agc",
+          "erratum": false,
+          "words": 336,
+          "banks": [
+            "02",
+            "37"
+          ],
+          "first": "76002",
+          "last": "04123",
+          "sum32": 3822551,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              31746,
+              318
+            ],
+            [
+              2114,
+              18
+            ]
+          ]
+        },
+        {
+          "include": "IMU_PERFORMANCE_TESTS_4.agc",
+          "file": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
+          "assembler_file": "IMU_PERFORMANCE_TESTS_4.agc",
+          "erratum": false,
+          "words": 267,
+          "banks": [
+            "37"
+          ],
+          "first": "76500",
+          "last": "77112",
+          "sum32": 3658836,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              32064,
+              267
+            ]
+          ]
+        },
+        {
+          "include": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "file": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "assembler_file": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc",
+          "erratum": false,
+          "words": 2378,
+          "banks": [
+            "02",
+            "04",
+            "40",
+            "41",
+            "42"
+          ],
+          "first": "100077",
+          "last": "101673",
+          "sum32": 28327590,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              32831,
+              334
+            ],
+            [
+              33792,
+              398
+            ],
+            [
+              33165,
+              108
+            ],
+            [
+              35480,
+              146
+            ],
+            [
+              33273,
+              15
+            ],
+            [
+              34190,
+              266
+            ],
+            [
+              33288,
+              120
+            ],
+            [
+              35626,
+              92
+            ],
+            [
+              34456,
+              79
+            ],
+            [
+              2132,
+              17
+            ],
+            [
+              34535,
+              12
+            ],
+            [
+              33408,
+              82
+            ],
+            [
+              34547,
+              37
+            ],
+            [
+              33490,
+              80
+            ],
+            [
+              2149,
+              7
+            ],
+            [
+              34584,
+              54
+            ],
+            [
+              33570,
+              35
+            ],
+            [
+              2156,
+              24
+            ],
+            [
+              34638,
+              61
+            ],
+            [
+              2180,
+              63
+            ],
+            [
+              33605,
+              23
+            ],
+            [
+              4510,
+              9
+            ],
+            [
+              33628,
+              39
+            ],
+            [
+              2243,
+              98
+            ],
+            [
+              4519,
+              7
+            ],
+            [
+              2341,
+              37
+            ],
+            [
+              34699,
+              78
+            ],
+            [
+              33667,
+              57
+            ]
+          ]
+        },
+        {
+          "include": "R60_62.agc",
+          "file": "Luminary099/R60_62.agc",
+          "assembler_file": "R60,R62.agc",
+          "erratum": false,
+          "words": 296,
+          "banks": [
+            "23",
+            "26",
+            "27"
+          ],
+          "first": "54123",
+          "last": "46115",
+          "sum32": 3724388,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              22611,
+              149
+            ],
+            [
+              23578,
+              102
+            ],
+            [
+              22760,
+              34
+            ],
+            [
+              19523,
+              11
+            ]
+          ]
+        },
+        {
+          "include": "S-BAND_ANTENNA_FOR_LM.agc",
+          "file": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+          "assembler_file": "S-BAND_ANTENNA_FOR_LM.agc",
+          "erratum": false,
+          "words": 116,
+          "banks": [
+            "42"
+          ],
+          "first": "105606",
+          "last": "105771",
+          "sum32": 1490151,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              35718,
+              116
+            ]
+          ]
+        },
+        {
+          "include": "RADAR_LEADIN_ROUTINES.agc",
+          "file": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
+          "assembler_file": "RADAR_LEADIN_ROUTINES.agc",
+          "erratum": false,
+          "words": 47,
+          "banks": [
+            "25"
+          ],
+          "first": "52003",
+          "last": "52061",
+          "sum32": 656127,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              21507,
+              47
+            ]
+          ]
+        },
+        {
+          "include": "P20-P25.agc",
+          "file": "Luminary099/P20-P25.agc",
+          "assembler_file": "P20-P25.agc",
+          "erratum": false,
+          "words": 3254,
+          "banks": [
+            "02",
+            "03",
+            "23",
+            "24",
+            "25",
+            "26",
+            "30",
+            "31",
+            "32",
+            "33"
+          ],
+          "first": "50000",
+          "last": "53670",
+          "sum32": 37442266,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              20480,
+              30
+            ],
+            [
+              26767,
+              103
+            ],
+            [
+              20510,
+              638
+            ],
+            [
+              3081,
+              9
+            ],
+            [
+              21148,
+              17
+            ],
+            [
+              19534,
+              126
+            ],
+            [
+              2378,
+              68
+            ],
+            [
+              21554,
+              835
+            ],
+            [
+              21165,
+              46
+            ],
+            [
+              22389,
+              12
+            ],
+            [
+              26870,
+              113
+            ],
+            [
+              21211,
+              19
+            ],
+            [
+              22794,
+              708
+            ],
+            [
+              3090,
+              5
+            ],
+            [
+              27685,
+              46
+            ],
+            [
+              22401,
+              6
+            ],
+            [
+              27731,
+              45
+            ],
+            [
+              21230,
+              18
+            ],
+            [
+              26983,
+              151
+            ],
+            [
+              21248,
+              69
+            ],
+            [
+              25607,
+              93
+            ],
+            [
+              24578,
+              47
+            ],
+            [
+              22407,
+              50
+            ]
+          ]
+        },
+        {
+          "include": "P30_P37.agc",
+          "file": "Luminary099/P30_P37.agc",
+          "assembler_file": "P30,P37.agc",
+          "erratum": false,
+          "words": 70,
+          "banks": [
+            "34",
+            "35"
+          ],
+          "first": "72000",
+          "last": "70056",
+          "sum32": 875543,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              29696,
+              23
+            ],
+            [
+              28672,
+              47
+            ]
+          ]
+        },
+        {
+          "include": "P32-P35_P72-P75.agc",
+          "file": "Luminary099/P32-P35_P72-P75.agc",
+          "assembler_file": "P32-P35,_P72-P75.agc",
+          "erratum": false,
+          "words": 923,
+          "banks": [
+            "34",
+            "35"
+          ],
+          "first": "72027",
+          "last": "72447",
+          "sum32": 12563599,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              29719,
+              259
+            ],
+            [
+              28719,
+              650
+            ],
+            [
+              29978,
+              14
+            ]
+          ]
+        },
+        {
+          "include": "LAMBERT_AIMPOINT_GUIDANCE.agc",
+          "file": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+          "assembler_file": "LAMBERT_AIMPOINT_GUIDANCE.agc",
+          "erratum": true,
+          "words": 61,
+          "banks": [
+            "35"
+          ],
+          "first": "72450",
+          "last": "72544",
+          "sum32": 764605,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              29992,
+              61
+            ]
+          ]
+        },
+        {
+          "include": "GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "file": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "assembler_file": "GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc",
+          "erratum": false,
+          "words": 115,
+          "banks": [
+            "24"
+          ],
+          "first": "51505",
+          "last": "51667",
+          "sum32": 1330785,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              21317,
+              115
+            ]
+          ]
+        },
+        {
+          "include": "P34-35_P74-75.agc",
+          "file": "Luminary099/P34-35_P74-75.agc",
+          "assembler_file": "P34-P35,_P74-P75.agc",
+          "erratum": false,
+          "words": 1056,
+          "banks": [
+            "04",
+            "06",
+            "10",
+            "11",
+            "23",
+            "35"
+          ],
+          "first": "72545",
+          "last": "11012",
+          "sum32": 13906186,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              30053,
+              642
+            ],
+            [
+              9216,
+              189
+            ],
+            [
+              7117,
+              30
+            ],
+            [
+              8192,
+              24
+            ],
+            [
+              19660,
+              78
+            ],
+            [
+              4526,
+              93
+            ]
+          ]
+        },
+        {
+          "include": "R31.agc",
+          "file": "Luminary099/R31.agc",
+          "assembler_file": "R31.agc",
+          "erratum": false,
+          "words": 204,
+          "banks": [
+            "37",
+            "40"
+          ],
+          "first": "101674",
+          "last": "77407",
+          "sum32": 2533970,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              33724,
+              15
+            ],
+            [
+              32331,
+              189
+            ]
+          ]
+        },
+        {
+          "include": "P76.agc",
+          "file": "Luminary099/P76.agc",
+          "assembler_file": "P76.agc",
+          "erratum": false,
+          "words": 98,
+          "banks": [
+            "13"
+          ],
+          "first": "26207",
+          "last": "26350",
+          "sum32": 1086063,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              11399,
+              98
+            ]
+          ]
+        },
+        {
+          "include": "R30.agc",
+          "file": "Luminary099/R30.agc",
+          "assembler_file": "R30.agc",
+          "erratum": false,
+          "words": 261,
+          "banks": [
+            "22"
+          ],
+          "first": "45242",
+          "last": "45646",
+          "sum32": 3150313,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              19106,
+              261
+            ]
+          ]
+        },
+        {
+          "include": "STABLE_ORBIT.agc",
+          "file": "Luminary099/STABLE_ORBIT.agc",
+          "assembler_file": "STABLE_ORBIT_-_P38-P39.agc",
+          "erratum": false,
+          "words": 233,
+          "banks": [
+            "34"
+          ],
+          "first": "71271",
+          "last": "71641",
+          "sum32": 3018164,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              29369,
+              233
+            ]
+          ]
+        },
+        {
+          "include": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+          "file": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+          "assembler_file": "BURN,_BABY,_BURN_--_MASTER_IGNITION_ROUTINE.agc",
+          "erratum": false,
+          "words": 689,
+          "banks": [
+            "03",
+            "17",
+            "27",
+            "35",
+            "36"
+          ],
+          "first": "74022",
+          "last": "56245",
+          "sum32": 7247997,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              30738,
+              359
+            ],
+            [
+              15360,
+              23
+            ],
+            [
+              31097,
+              226
+            ],
+            [
+              30695,
+              23
+            ],
+            [
+              31323,
+              12
+            ],
+            [
+              3095,
+              8
+            ],
+            [
+              23680,
+              38
+            ]
+          ]
+        },
+        {
+          "include": "P40-P47.agc",
+          "file": "Luminary099/P40-P47.agc",
+          "assembler_file": "P40-P47.agc",
+          "erratum": false,
+          "words": 931,
+          "banks": [
+            "27",
+            "36"
+          ],
+          "first": "75147",
+          "last": "57272",
+          "sum32": 11086205,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              31335,
+              398
+            ],
+            [
+              23718,
+              533
+            ]
+          ]
+        },
+        {
+          "include": "THE_LUNAR_LANDING.agc",
+          "file": "Luminary099/THE_LUNAR_LANDING.agc",
+          "assembler_file": "THE_LUNAR_LANDING.agc",
+          "erratum": false,
+          "words": 223,
+          "banks": [
+            "31",
+            "32"
+          ],
+          "first": "64776",
+          "last": "62215",
+          "sum32": 2435935,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              27134,
+              181
+            ],
+            [
+              25700,
+              42
+            ]
+          ]
+        },
+        {
+          "include": "THROTTLE_CONTROL_ROUTINES.agc",
+          "file": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+          "assembler_file": "THROTTLE_CONTROL_ROUTINES.agc",
+          "erratum": false,
+          "words": 130,
+          "banks": [
+            "31"
+          ],
+          "first": "62216",
+          "last": "62417",
+          "sum32": 1764512,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              25742,
+              130
+            ]
+          ]
+        },
+        {
+          "include": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+          "file": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+          "assembler_file": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+          "erratum": false,
+          "words": 991,
+          "banks": [
+            "11",
+            "20",
+            "22",
+            "31",
+            "32"
+          ],
+          "first": "62420",
+          "last": "45660",
+          "sum32": 12104420,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              25872,
+              603
+            ],
+            [
+              27315,
+              173
+            ],
+            [
+              9405,
+              65
+            ],
+            [
+              16461,
+              6
+            ],
+            [
+              26475,
+              134
+            ],
+            [
+              19367,
+              10
+            ]
+          ]
+        },
+        {
+          "include": "P70-P71.agc",
+          "file": "Luminary099/P70-P71.agc",
+          "assembler_file": "P70-P71.agc",
+          "erratum": false,
+          "words": 298,
+          "banks": [
+            "05",
+            "21",
+            "32"
+          ],
+          "first": "42006",
+          "last": "65767",
+          "sum32": 3581865,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              17414,
+              66
+            ],
+            [
+              5890,
+              64
+            ],
+            [
+              27488,
+              127
+            ],
+            [
+              17480,
+              16
+            ],
+            [
+              27615,
+              25
+            ]
+          ]
+        },
+        {
+          "include": "P12.agc",
+          "file": "Luminary099/P12.agc",
+          "assembler_file": "P12.agc",
+          "erratum": false,
+          "words": 183,
+          "banks": [
+            "23",
+            "30"
+          ],
+          "first": "60061",
+          "last": "46460",
+          "sum32": 2015828,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              24625,
+              160
+            ],
+            [
+              19738,
+              23
+            ]
+          ]
+        },
+        {
+          "include": "ASCENT_GUIDANCE.agc",
+          "file": "Luminary099/ASCENT_GUIDANCE.agc",
+          "assembler_file": "ASCENT_GUIDANCE.agc",
+          "erratum": false,
+          "words": 531,
+          "banks": [
+            "05",
+            "07",
+            "14",
+            "27",
+            "30",
+            "33",
+            "34"
+          ],
+          "first": "71642",
+          "last": "61103",
+          "sum32": 6622590,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              29602,
+              44
+            ],
+            [
+              24785,
+              302
+            ],
+            [
+              24251,
+              15
+            ],
+            [
+              7607,
+              21
+            ],
+            [
+              5954,
+              4
+            ],
+            [
+              12519,
+              63
+            ],
+            [
+              25087,
+              17
+            ],
+            [
+              24266,
+              7
+            ],
+            [
+              25104,
+              14
+            ],
+            [
+              27776,
+              6
+            ],
+            [
+              25118,
+              38
+            ]
+          ]
+        },
+        {
+          "include": "SERVICER.agc",
+          "file": "Luminary099/SERVICER.agc",
+          "assembler_file": "SERVICER.agc",
+          "erratum": false,
+          "words": 1203,
+          "banks": [
+            "21",
+            "22",
+            "23",
+            "27",
+            "32",
+            "33",
+            "34",
+            "37"
+          ],
+          "first": "77410",
+          "last": "67776",
+          "sum32": 15289890,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              32520,
+              89
+            ],
+            [
+              27782,
+              135
+            ],
+            [
+              19377,
+              24
+            ],
+            [
+              24273,
+              31
+            ],
+            [
+              27640,
+              3
+            ],
+            [
+              19761,
+              24
+            ],
+            [
+              27917,
+              19
+            ],
+            [
+              32609,
+              76
+            ],
+            [
+              27936,
+              7
+            ],
+            [
+              17496,
+              20
+            ],
+            [
+              27943,
+              657
+            ],
+            [
+              29646,
+              47
+            ],
+            [
+              28600,
+              71
+            ]
+          ]
+        },
+        {
+          "include": "LANDING_ANALOG_DISPLAYS.agc",
+          "file": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+          "assembler_file": "LANDING_ANALOG_DISPLAYS.agc",
+          "erratum": false,
+          "words": 467,
+          "banks": [
+            "21"
+          ],
+          "first": "42154",
+          "last": "43076",
+          "sum32": 6680579,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              17516,
+              467
+            ]
+          ]
+        },
+        {
+          "include": "FINDCDUW--GUIDAP_INTERFACE.agc",
+          "file": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
+          "assembler_file": "FINDCDUW_-_GUIDAP_INTERFACE.agc",
+          "erratum": false,
+          "words": 441,
+          "banks": [
+            "30"
+          ],
+          "first": "61104",
+          "last": "61774",
+          "sum32": 5695721,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              25156,
+              441
+            ]
+          ]
+        },
+        {
+          "include": "P51-P53.agc",
+          "file": "Luminary099/P51-P53.agc",
+          "assembler_file": "P51-P53.agc",
+          "erratum": false,
+          "words": 1646,
+          "banks": [
+            "04",
+            "14",
+            "15"
+          ],
+          "first": "32050",
+          "last": "11026",
+          "sum32": 20405660,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              13352,
+              125
+            ],
+            [
+              12582,
+              726
+            ],
+            [
+              13477,
+              783
+            ],
+            [
+              4619,
+              12
+            ]
+          ]
+        },
+        {
+          "include": "LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "file": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "assembler_file": "LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 74,
+          "banks": [
+            "15"
+          ],
+          "first": "33664",
+          "last": "33775",
+          "sum32": 1016430,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              14260,
+              74
+            ]
+          ]
+        },
+        {
+          "include": "DOWN_TELEMETRY_PROGRAM.agc",
+          "file": "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
+          "assembler_file": "DOWN-TELEMETRY_PROGRAM.agc",
+          "erratum": false,
+          "words": 180,
+          "banks": [
+            "05"
+          ],
+          "first": "13506",
+          "last": "13771",
+          "sum32": 2441529,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5958,
+              180
+            ]
+          ]
+        },
+        {
+          "include": "INTER-BANK_COMMUNICATION.agc",
+          "file": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+          "assembler_file": "INTER-BANK_COMMUNICATION.agc",
+          "erratum": false,
+          "words": 76,
+          "banks": [
+            "02"
+          ],
+          "first": "04616",
+          "last": "04731",
+          "sum32": 1213652,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2446,
+              76
+            ]
+          ]
+        },
+        {
+          "include": "INTERPRETER.agc",
+          "file": "Luminary099/INTERPRETER.agc",
+          "assembler_file": "INTERPRETER.agc",
+          "erratum": false,
+          "words": 2083,
+          "banks": [
+            "00",
+            "01",
+            "03"
+          ],
+          "first": "06037",
+          "last": "02600",
+          "sum32": 27017371,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              3103,
+              205
+            ],
+            [
+              0,
+              15
+            ],
+            [
+              3308,
+              732
+            ],
+            [
+              15,
+              974
+            ],
+            [
+              1252,
+              157
+            ]
+          ]
+        },
+        {
+          "include": "FIXED_FIXED_CONSTANT_POOL.agc",
+          "file": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
+          "assembler_file": "FIXED-FIXED_CONSTANT_POOL.agc",
+          "erratum": false,
+          "words": 96,
+          "banks": [
+            "02",
+            "03"
+          ],
+          "first": "04732",
+          "last": "07747",
+          "sum32": 810963,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2522,
+              64
+            ],
+            [
+              4040,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "INTERPRETIVE_CONSTANT.agc",
+          "file": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "assembler_file": "INTERPRETIVE_CONSTANTS.agc",
+          "erratum": false,
+          "words": 35,
+          "banks": [
+            "12",
+            "23"
+          ],
+          "first": "46511",
+          "last": "24022",
+          "sum32": 217061,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              19785,
+              16
+            ],
+            [
+              10240,
+              19
+            ]
+          ]
+        },
+        {
+          "include": "SINGLE_PRECISION_SUBROUTINES.agc",
+          "file": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+          "assembler_file": "SINGLE_PRECISION_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 32,
+          "banks": [
+            "02"
+          ],
+          "first": "05032",
+          "last": "05071",
+          "sum32": 548599,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2586,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "EXECUTIVE.agc",
+          "file": "Luminary099/EXECUTIVE.agc",
+          "assembler_file": "EXECUTIVE.agc",
+          "erratum": false,
+          "words": 345,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "05072",
+          "last": "05172",
+          "sum32": 4573088,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2618,
+              59
+            ],
+            [
+              1409,
+              280
+            ],
+            [
+              2677,
+              6
+            ]
+          ]
+        },
+        {
+          "include": "WAITLIST.agc",
+          "file": "Luminary099/WAITLIST.agc",
+          "assembler_file": "WAITLIST.agc",
+          "erratum": false,
+          "words": 267,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "05173",
+          "last": "03525",
+          "sum32": 3555042,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2683,
+              54
+            ],
+            [
+              1689,
+              145
+            ],
+            [
+              2737,
+              24
+            ],
+            [
+              1834,
+              44
+            ]
+          ]
+        },
+        {
+          "include": "LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "file": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "assembler_file": "LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 155,
+          "banks": [
+            "13"
+          ],
+          "first": "26351",
+          "last": "26603",
+          "sum32": 2117906,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              11497,
+              155
+            ]
+          ]
+        },
+        {
+          "include": "PLANETARY_INERTIAL_ORIENTATION.agc",
+          "file": "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+          "assembler_file": "PLANETARY_INERTIAL_ORIENTATION.agc",
+          "erratum": false,
+          "words": 188,
+          "banks": [
+            "06",
+            "24",
+            "25",
+            "26"
+          ],
+          "first": "55716",
+          "last": "15763",
+          "sum32": 2692768,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              23502,
+              21
+            ],
+            [
+              21432,
+              69
+            ],
+            [
+              22457,
+              63
+            ],
+            [
+              23523,
+              26
+            ],
+            [
+              7147,
+              9
+            ]
+          ]
+        },
+        {
+          "include": "MEASUREMENT_INCORPORATION.agc",
+          "file": "Luminary099/MEASUREMENT_INCORPORATION.agc",
+          "assembler_file": "MEASUREMENT_INCORPORATION.agc",
+          "erratum": false,
+          "words": 384,
+          "banks": [
+            "22",
+            "23"
+          ],
+          "first": "46531",
+          "last": "45772",
+          "sum32": 5381380,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              19801,
+              334
+            ],
+            [
+              19401,
+              50
+            ]
+          ]
+        },
+        {
+          "include": "CONIC_SUBROUTINES.agc",
+          "file": "Luminary099/CONIC_SUBROUTINES.agc",
+          "assembler_file": "CONIC_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 1072,
+          "banks": [
+            "04",
+            "12"
+          ],
+          "first": "24023",
+          "last": "25744",
+          "sum32": 13161082,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              10259,
+              455
+            ],
+            [
+              4631,
+              29
+            ],
+            [
+              10714,
+              29
+            ],
+            [
+              4660,
+              65
+            ],
+            [
+              10743,
+              494
+            ]
+          ]
+        },
+        {
+          "include": "INTEGRATION_INITIALIZATION.agc",
+          "file": "Luminary099/INTEGRATION_INITIALIZATION.agc",
+          "assembler_file": "INTEGRATION_INITIALIZATION.agc",
+          "erratum": false,
+          "words": 623,
+          "banks": [
+            "04",
+            "13"
+          ],
+          "first": "26604",
+          "last": "11252",
+          "sum32": 7036117,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              11652,
+              569
+            ],
+            [
+              4725,
+              54
+            ]
+          ]
+        },
+        {
+          "include": "ORBITAL_INTEGRATION.agc",
+          "file": "Luminary099/ORBITAL_INTEGRATION.agc",
+          "assembler_file": "ORBITAL_INTEGRATION.agc",
+          "erratum": false,
+          "words": 841,
+          "banks": [
+            "11",
+            "12",
+            "13"
+          ],
+          "first": "22376",
+          "last": "27754",
+          "sum32": 10665564,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              9470,
+              768
+            ],
+            [
+              11237,
+              25
+            ],
+            [
+              12221,
+              48
+            ]
+          ]
+        },
+        {
+          "include": "INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "file": "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "assembler_file": "INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "erratum": false,
+          "words": 184,
+          "banks": [
+            "23"
+          ],
+          "first": "47247",
+          "last": "47536",
+          "sum32": 2432239,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              20135,
+              184
+            ]
+          ]
+        },
+        {
+          "include": "POWERED_FLIGHT_SUBROUTINES.agc",
+          "file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+          "assembler_file": "POWERED_FLIGHT_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 267,
+          "banks": [
+            "10",
+            "23"
+          ],
+          "first": "47537",
+          "last": "20212",
+          "sum32": 3579890,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              20319,
+              152
+            ],
+            [
+              8216,
+              115
+            ]
+          ]
+        },
+        {
+          "include": "TIME_OF_FREE_FALL.agc",
+          "file": "Luminary099/TIME_OF_FREE_FALL.agc",
+          "assembler_file": "TIME_OF_FREE_FALL.agc",
+          "erratum": false,
+          "words": 266,
+          "banks": [
+            "27"
+          ],
+          "first": "57360",
+          "last": "57771",
+          "sum32": 3858686,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              24304,
+              266
+            ]
+          ]
+        },
+        {
+          "include": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+          "file": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+          "assembler_file": "AGC_BLOCK_TWO_SELF-CHECK.agc",
+          "erratum": false,
+          "words": 314,
+          "banks": [
+            "43"
+          ],
+          "first": "107232",
+          "last": "107723",
+          "sum32": 3932851,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              36506,
+              314
+            ]
+          ]
+        },
+        {
+          "include": "PHASE_TABLE_MAINTENANCE.agc",
+          "file": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+          "assembler_file": "PHASE_TABLE_MAINTENANCE.agc",
+          "erratum": false,
+          "words": 164,
+          "banks": [
+            "02",
+            "03",
+            "10"
+          ],
+          "first": "05311",
+          "last": "07753",
+          "sum32": 2325206,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2761,
+              14
+            ],
+            [
+              8331,
+              9
+            ],
+            [
+              2775,
+              71
+            ],
+            [
+              8340,
+              66
+            ],
+            [
+              4072,
+              4
+            ]
+          ]
+        },
+        {
+          "include": "RESTARTS_ROUTINE.agc",
+          "file": "Luminary099/RESTARTS_ROUTINE.agc",
+          "assembler_file": "RESTARTS_ROUTINE.agc",
+          "erratum": false,
+          "words": 185,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "03526",
+          "last": "03775",
+          "sum32": 2423532,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              1878,
+              43
+            ],
+            [
+              2846,
+              7
+            ],
+            [
+              1921,
+              70
+            ],
+            [
+              2853,
+              10
+            ],
+            [
+              1991,
+              55
+            ]
+          ]
+        },
+        {
+          "include": "IMU_MODE_SWITCHING_ROUTINES.agc",
+          "file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+          "assembler_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+          "erratum": false,
+          "words": 660,
+          "banks": [
+            "02",
+            "04",
+            "07",
+            "37"
+          ],
+          "first": "05457",
+          "last": "77773",
+          "sum32": 7778907,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2863,
+              5
+            ],
+            [
+              7628,
+              559
+            ],
+            [
+              4779,
+              17
+            ],
+            [
+              32685,
+              79
+            ]
+          ]
+        },
+        {
+          "include": "KEYRUPT_UPRUPT.agc",
+          "file": "Luminary099/KEYRUPT_UPRUPT.agc",
+          "assembler_file": "KEYRUPT,_UPRUPT.agc",
+          "erratum": false,
+          "words": 69,
+          "banks": [
+            "04"
+          ],
+          "first": "11274",
+          "last": "11400",
+          "sum32": 1010462,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              4796,
+              69
+            ]
+          ]
+        },
+        {
+          "include": "DISPLAY_INTERFACE_ROUTINES.agc",
+          "file": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+          "assembler_file": "DISPLAY_INTERFACE_ROUTINES.agc",
+          "erratum": false,
+          "words": 670,
+          "banks": [
+            "02",
+            "10"
+          ],
+          "first": "05464",
+          "last": "21543",
+          "sum32": 8517156,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              2868,
+              16
+            ],
+            [
+              8406,
+              654
+            ]
+          ]
+        },
+        {
+          "include": "SERVICE_ROUTINES.agc",
+          "file": "Luminary099/SERVICE_ROUTINES.agc",
+          "assembler_file": "SERVICE_ROUTINES.agc",
+          "erratum": false,
+          "words": 96,
+          "banks": [
+            "00",
+            "02",
+            "10"
+          ],
+          "first": "21544",
+          "last": "05566",
+          "sum32": 1311562,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              9060,
+              14
+            ],
+            [
+              2884,
+              32
+            ],
+            [
+              989,
+              31
+            ],
+            [
+              2916,
+              19
+            ]
+          ]
+        },
+        {
+          "include": "ALARM_AND_ABORT.agc",
+          "file": "Luminary099/ALARM_AND_ABORT.agc",
+          "assembler_file": "ALARM_AND_ABORT.agc",
+          "erratum": false,
+          "words": 135,
+          "banks": [
+            "02",
+            "10",
+            "13"
+          ],
+          "first": "05567",
+          "last": "27766",
+          "sum32": 1680264,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2935,
+              37
+            ],
+            [
+              9074,
+              9
+            ],
+            [
+              2972,
+              79
+            ],
+            [
+              12269,
+              10
+            ]
+          ]
+        },
+        {
+          "include": "UPDATE_PROGRAM.agc",
+          "file": "Luminary099/UPDATE_PROGRAM.agc",
+          "assembler_file": "UPDATE_PROGRAM.agc",
+          "erratum": false,
+          "words": 270,
+          "banks": [
+            "04",
+            "43"
+          ],
+          "first": "107724",
+          "last": "11770",
+          "sum32": 3112063,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              36820,
+              22
+            ],
+            [
+              4865,
+              248
+            ]
+          ]
+        },
+        {
+          "include": "RTB_OP_CODES.agc",
+          "file": "Luminary099/RTB_OP_CODES.agc",
+          "assembler_file": "RTB_OP_CODES.agc",
+          "erratum": false,
+          "words": 130,
+          "banks": [
+            "10"
+          ],
+          "first": "21573",
+          "last": "21774",
+          "sum32": 1575691,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              9083,
+              130
+            ]
+          ]
+        },
+        {
+          "include": "T6-RUPT_PROGRAMS.agc",
+          "file": "Luminary099/T6-RUPT_PROGRAMS.agc",
+          "assembler_file": "T6-RUPT_PROGRAMS.agc",
+          "erratum": false,
+          "words": 53,
+          "banks": [
+            "02",
+            "17"
+          ],
+          "first": "36027",
+          "last": "36071",
+          "sum32": 556882,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15383,
+              30
+            ],
+            [
+              3051,
+              18
+            ],
+            [
+              15413,
+              5
+            ]
+          ]
+        },
+        {
+          "include": "DAP_INTERFACE_SUBROUTINES.agc",
+          "file": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+          "assembler_file": "DAP_INTERFACE_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 67,
+          "banks": [
+            "20"
+          ],
+          "first": "40123",
+          "last": "40225",
+          "sum32": 949719,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              16467,
+              67
+            ]
+          ]
+        },
+        {
+          "include": "DAPIDLER_PROGRAM.agc",
+          "file": "Luminary099/DAPIDLER_PROGRAM.agc",
+          "assembler_file": "DAPIDLER_PROGRAM.agc",
+          "erratum": false,
+          "words": 284,
+          "banks": [
+            "16",
+            "20"
+          ],
+          "first": "34000",
+          "last": "40446",
+          "sum32": 4181911,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              14336,
+              139
+            ],
+            [
+              16534,
+              145
+            ]
+          ]
+        },
+        {
+          "include": "P-AXIS_RCS_AUTOPILOT.agc",
+          "file": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+          "assembler_file": "P-AXIS_RCS_AUTOPILOT.agc",
+          "erratum": false,
+          "words": 790,
+          "banks": [
+            "16"
+          ],
+          "first": "34213",
+          "last": "35640",
+          "sum32": 9845782,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              14475,
+              790
+            ]
+          ]
+        },
+        {
+          "include": "Q_R-AXIS_RCS_AUTOPILOT.agc",
+          "file": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
+          "assembler_file": "Q,R-AXES_RCS_AUTOPILOT.agc",
+          "erratum": false,
+          "words": 626,
+          "banks": [
+            "03",
+            "17"
+          ],
+          "first": "36072",
+          "last": "07755",
+          "sum32": 8304799,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15418,
+              624
+            ],
+            [
+              4076,
+              2
+            ]
+          ]
+        },
+        {
+          "include": "TJET_LAW.agc",
+          "file": "Luminary099/TJET_LAW.agc",
+          "assembler_file": "TJET_LAW.agc",
+          "erratum": false,
+          "words": 314,
+          "banks": [
+            "17"
+          ],
+          "first": "37252",
+          "last": "37743",
+          "sum32": 4577393,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              16042,
+              314
+            ]
+          ]
+        },
+        {
+          "include": "KALMAN_FILTER.agc",
+          "file": "Luminary099/KALMAN_FILTER.agc",
+          "assembler_file": "KALMAN_FILTER.agc",
+          "erratum": false,
+          "words": 60,
+          "banks": [
+            "16"
+          ],
+          "first": "35641",
+          "last": "35734",
+          "sum32": 925735,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15265,
+              60
+            ]
+          ]
+        },
+        {
+          "include": "TRIM_GIMBAL_CNTROL_SYSTEM.agc",
+          "file": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+          "assembler_file": "TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+          "erratum": true,
+          "words": 388,
+          "banks": [
+            "16",
+            "21"
+          ],
+          "first": "43077",
+          "last": "43645",
+          "sum32": 5165271,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              17983,
+              152
+            ],
+            [
+              15325,
+              29
+            ],
+            [
+              18135,
+              207
+            ]
+          ]
+        },
+        {
+          "include": "AOSTASK_AND_AOSJOB.agc",
+          "file": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+          "assembler_file": "AOSTASK_AND_AOSJOB.agc",
+          "erratum": false,
+          "words": 723,
+          "banks": [
+            "20"
+          ],
+          "first": "40447",
+          "last": "41771",
+          "sum32": 10792578,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              16679,
+              723
+            ]
+          ]
+        },
+        {
+          "include": "SPS_BACK-UP_RCS_CONTROL.agc",
+          "file": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+          "assembler_file": "SPS_BACK-UP_RCS_CONTROL.agc",
+          "erratum": false,
+          "words": 82,
+          "banks": [
+            "21"
+          ],
+          "first": "43646",
+          "last": "43767",
+          "sum32": 1019240,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              18342,
+              82
+            ]
+          ]
+        }
+      ]
+    },
+    "Comanche055": {
+      "source_path": "Comanche055/MAIN.agc",
+      "source_sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
+      "assembled_main_sha256": "ee88096c97867b901dc6dc5215d943cbe62b01f7dacdbea4ab2c1fd6eae07b70",
+      "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+      "includes": 84,
+      "emitted_fixed_words": 36504,
+      "main_emitted_words": 0,
+      "errata": {},
+      "bank_checksums": [
+        1018,
+        2042,
+        3069,
+        4095,
+        5105,
+        6143,
+        7162,
+        8191,
+        9215,
+        10239,
+        11263,
+        12287,
+        13299,
+        14319,
+        15314,
+        16353,
+        17378,
+        18423,
+        19455,
+        20476,
+        21495,
+        22526,
+        23551,
+        24565,
+        25578,
+        26611,
+        27642,
+        28671,
+        29685,
+        30714,
+        31740,
+        32765,
+        33786,
+        34815,
+        35836,
+        36856
+      ],
+      "rows": [
+        {
+          "include": "CONTRACT_AND_APPROVALS.agc",
+          "file": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+          "assembler_file": "CONTRACT_AND_APPROVALS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "file": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "assembler_file": "ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "TAGS_FOR_RELATIVE_SETLOC.agc",
+          "file": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+          "assembler_file": "TAGS_FOR_RELATIVE_SETLOC_AND_BLANK_BANK_CARDS.agc",
+          "erratum": false,
+          "words": 7,
+          "banks": [
+            "07",
+            "24",
+            "34",
+            "37"
+          ],
+          "first": "16000",
+          "last": "76000",
+          "sum32": 11564,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              7168,
+              2
+            ],
+            [
+              20480,
+              2
+            ],
+            [
+              28672,
+              2
+            ],
+            [
+              31744,
+              1
+            ]
+          ]
+        },
+        {
+          "include": "ERASABLE_ASSIGNMENTS.agc",
+          "file": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+          "assembler_file": "ERASABLE_ASSIGNMENTS.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "INTERRUPT_LEAD_INS.agc",
+          "file": "Comanche055/INTERRUPT_LEAD_INS.agc",
+          "assembler_file": "INTERRUPT_LEAD_INS.agc",
+          "erratum": false,
+          "words": 58,
+          "banks": [
+            "02"
+          ],
+          "first": "04000",
+          "last": "04071",
+          "sum32": 814756,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2048,
+              58
+            ]
+          ]
+        },
+        {
+          "include": "T4RUPT_PROGRAM.agc",
+          "file": "Comanche055/T4RUPT_PROGRAM.agc",
+          "assembler_file": "T4RUPT_PROGRAM.agc",
+          "erratum": false,
+          "words": 833,
+          "banks": [
+            "02",
+            "06",
+            "10"
+          ],
+          "first": "14000",
+          "last": "20202",
+          "sum32": 9156291,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              6144,
+              10
+            ],
+            [
+              2106,
+              12
+            ],
+            [
+              6154,
+              680
+            ],
+            [
+              8192,
+              131
+            ]
+          ]
+        },
+        {
+          "include": "DOWNLINK_LISTS.agc",
+          "file": "Comanche055/DOWNLINK_LISTS.agc",
+          "assembler_file": "DOWNLINK_LISTS.agc",
+          "erratum": false,
+          "words": 226,
+          "banks": [
+            "05"
+          ],
+          "first": "12000",
+          "last": "12341",
+          "sum32": 1776298,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5120,
+              226
+            ]
+          ]
+        },
+        {
+          "include": "FRESH_START_AND_RESTART.agc",
+          "file": "Comanche055/FRESH_START_AND_RESTART.agc",
+          "assembler_file": "FRESH_START_AND_RESTART.agc",
+          "erratum": false,
+          "words": 893,
+          "banks": [
+            "02",
+            "04",
+            "05",
+            "13",
+            "20"
+          ],
+          "first": "12342",
+          "last": "26035",
+          "sum32": 11362068,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5346,
+              430
+            ],
+            [
+              2118,
+              4
+            ],
+            [
+              4096,
+              9
+            ],
+            [
+              2122,
+              2
+            ],
+            [
+              4105,
+              250
+            ],
+            [
+              16384,
+              53
+            ],
+            [
+              4355,
+              115
+            ],
+            [
+              11264,
+              30
+            ]
+          ]
+        },
+        {
+          "include": "RESTART_TABLES.agc",
+          "file": "Comanche055/RESTART_TABLES.agc",
+          "assembler_file": "RESTART_TABLES.agc",
+          "erratum": false,
+          "words": 269,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "02000",
+          "last": "04137",
+          "sum32": 3760779,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              1024,
+              249
+            ],
+            [
+              2124,
+              20
+            ]
+          ]
+        },
+        {
+          "include": "SXTMARK.agc",
+          "file": "Comanche055/SXTMARK.agc",
+          "assembler_file": "SXTMARK.agc",
+          "erratum": false,
+          "words": 315,
+          "banks": [
+            "07",
+            "10"
+          ],
+          "first": "16002",
+          "last": "20236",
+          "sum32": 3460297,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              7170,
+              287
+            ],
+            [
+              8323,
+              28
+            ]
+          ]
+        },
+        {
+          "include": "EXTENDED_VERBS.agc",
+          "file": "Comanche055/EXTENDED_VERBS.agc",
+          "assembler_file": "EXTENDED_VERBS.agc",
+          "erratum": false,
+          "words": 703,
+          "banks": [
+            "42",
+            "43"
+          ],
+          "first": "106000",
+          "last": "107214",
+          "sum32": 5539158,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              35840,
+              370
+            ],
+            [
+              34816,
+              50
+            ],
+            [
+              36210,
+              283
+            ]
+          ]
+        },
+        {
+          "include": "PINBALL_NOUN_TABLES.agc",
+          "file": "Comanche055/PINBALL_NOUN_TABLES.agc",
+          "assembler_file": "PINBALL_NOUN_TABLES.agc",
+          "erratum": false,
+          "words": 561,
+          "banks": [
+            "42"
+          ],
+          "first": "104062",
+          "last": "105142",
+          "sum32": 2774246,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              34866,
+              561
+            ]
+          ]
+        },
+        {
+          "include": "CSM_GEOMETRY.agc",
+          "file": "Comanche055/CSM_GEOMETRY.agc",
+          "assembler_file": "CSM_GEOMETRY.agc",
+          "erratum": false,
+          "words": 253,
+          "banks": [
+            "10",
+            "23"
+          ],
+          "first": "46000",
+          "last": "46331",
+          "sum32": 3226339,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              19456,
+              109
+            ],
+            [
+              8351,
+              35
+            ],
+            [
+              19565,
+              109
+            ]
+          ]
+        },
+        {
+          "include": "IMU_COMPENSATION_PACKAGE.agc",
+          "file": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
+          "assembler_file": "IMU_COMPENSATION_PACKAGE.agc",
+          "erratum": false,
+          "words": 247,
+          "banks": [
+            "06"
+          ],
+          "first": "15262",
+          "last": "15650",
+          "sum32": 3184400,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              6834,
+              247
+            ]
+          ]
+        },
+        {
+          "include": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "file": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "assembler_file": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc",
+          "erratum": false,
+          "words": 2379,
+          "banks": [
+            "02",
+            "04",
+            "40",
+            "41",
+            "42"
+          ],
+          "first": "100000",
+          "last": "101577",
+          "sum32": 28310217,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              32768,
+              334
+            ],
+            [
+              33792,
+              398
+            ],
+            [
+              33102,
+              113
+            ],
+            [
+              35427,
+              146
+            ],
+            [
+              33215,
+              15
+            ],
+            [
+              34190,
+              266
+            ],
+            [
+              33230,
+              119
+            ],
+            [
+              35573,
+              92
+            ],
+            [
+              34456,
+              79
+            ],
+            [
+              2144,
+              17
+            ],
+            [
+              34535,
+              12
+            ],
+            [
+              33349,
+              82
+            ],
+            [
+              34547,
+              37
+            ],
+            [
+              33431,
+              80
+            ],
+            [
+              2161,
+              7
+            ],
+            [
+              34584,
+              54
+            ],
+            [
+              33511,
+              35
+            ],
+            [
+              2168,
+              24
+            ],
+            [
+              34638,
+              61
+            ],
+            [
+              2192,
+              63
+            ],
+            [
+              33546,
+              23
+            ],
+            [
+              4470,
+              9
+            ],
+            [
+              33569,
+              39
+            ],
+            [
+              2255,
+              98
+            ],
+            [
+              4479,
+              7
+            ],
+            [
+              2353,
+              37
+            ],
+            [
+              34699,
+              76
+            ],
+            [
+              33608,
+              56
+            ]
+          ]
+        },
+        {
+          "include": "R60_62.agc",
+          "file": "Comanche055/R60_62.agc",
+          "assembler_file": "R60,R62.agc",
+          "erratum": false,
+          "words": 227,
+          "banks": [
+            "27"
+          ],
+          "first": "56000",
+          "last": "56342",
+          "sum32": 2882434,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              23552,
+              227
+            ]
+          ]
+        },
+        {
+          "include": "ANGLFIND.agc",
+          "file": "Comanche055/ANGLFIND.agc",
+          "assembler_file": "ANGLFIND.agc",
+          "erratum": false,
+          "words": 479,
+          "banks": [
+            "22"
+          ],
+          "first": "44000",
+          "last": "44736",
+          "sum32": 7071009,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18432,
+              479
+            ]
+          ]
+        },
+        {
+          "include": "GIMBAL_LOCK_AVOIDANCE.agc",
+          "file": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+          "assembler_file": "GIMBAL_LOCK_AVOIDANCE.agc",
+          "erratum": false,
+          "words": 55,
+          "banks": [
+            "22"
+          ],
+          "first": "44737",
+          "last": "45025",
+          "sum32": 440742,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18911,
+              55
+            ]
+          ]
+        },
+        {
+          "include": "KALCMANU_STEERING.agc",
+          "file": "Comanche055/KALCMANU_STEERING.agc",
+          "assembler_file": "KALCMANU_STEERING.agc",
+          "erratum": false,
+          "words": 179,
+          "banks": [
+            "02",
+            "20",
+            "21",
+            "22"
+          ],
+          "first": "45026",
+          "last": "45150",
+          "sum32": 2707127,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18966,
+              76
+            ],
+            [
+              16437,
+              56
+            ],
+            [
+              17408,
+              12
+            ],
+            [
+              2390,
+              21
+            ],
+            [
+              16493,
+              7
+            ],
+            [
+              19042,
+              7
+            ]
+          ]
+        },
+        {
+          "include": "SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "file": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "assembler_file": "SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "erratum": false,
+          "words": 36,
+          "banks": [
+            "04",
+            "13",
+            "33"
+          ],
+          "first": "26036",
+          "last": "66003",
+          "sum32": 440341,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              11294,
+              27
+            ],
+            [
+              4486,
+              5
+            ],
+            [
+              27648,
+              4
+            ]
+          ]
+        },
+        {
+          "include": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+          "file": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+          "assembler_file": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+          "erratum": false,
+          "words": 1077,
+          "banks": [
+            "02",
+            "04",
+            "32",
+            "33"
+          ],
+          "first": "66004",
+          "last": "67775",
+          "sum32": 12938927,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              27652,
+              244
+            ],
+            [
+              26624,
+              15
+            ],
+            [
+              27896,
+              51
+            ],
+            [
+              2411,
+              18
+            ],
+            [
+              27947,
+              626
+            ],
+            [
+              4491,
+              26
+            ],
+            [
+              28573,
+              97
+            ]
+          ]
+        },
+        {
+          "include": "GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "file": "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "assembler_file": "GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc",
+          "erratum": false,
+          "words": 108,
+          "banks": [
+            "37"
+          ],
+          "first": "76001",
+          "last": "76154",
+          "sum32": 1211836,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              31745,
+              108
+            ]
+          ]
+        },
+        {
+          "include": "P34-35_P74-75.agc",
+          "file": "Comanche055/P34-35_P74-75.agc",
+          "assembler_file": "P34-P35,_P74-P75.agc",
+          "erratum": false,
+          "words": 1065,
+          "banks": [
+            "02",
+            "04",
+            "11",
+            "20",
+            "22",
+            "35",
+            "36",
+            "40",
+            "41",
+            "42"
+          ],
+          "first": "72000",
+          "last": "103776",
+          "sum32": 14247450,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              29696,
+              342
+            ],
+            [
+              30720,
+              10
+            ],
+            [
+              30038,
+              240
+            ],
+            [
+              2429,
+              21
+            ],
+            [
+              30278,
+              13
+            ],
+            [
+              9216,
+              174
+            ],
+            [
+              4517,
+              61
+            ],
+            [
+              19049,
+              78
+            ],
+            [
+              16500,
+              13
+            ],
+            [
+              34775,
+              18
+            ],
+            [
+              35665,
+              53
+            ],
+            [
+              33664,
+              20
+            ],
+            [
+              34793,
+              22
+            ]
+          ]
+        },
+        {
+          "include": "R31.agc",
+          "file": "Comanche055/R31.agc",
+          "assembler_file": "R31.agc",
+          "erratum": false,
+          "words": 218,
+          "banks": [
+            "31"
+          ],
+          "first": "62000",
+          "last": "62331",
+          "sum32": 3026186,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              25600,
+              218
+            ]
+          ]
+        },
+        {
+          "include": "P76.agc",
+          "file": "Comanche055/P76.agc",
+          "assembler_file": "P76.agc",
+          "erratum": false,
+          "words": 96,
+          "banks": [
+            "13"
+          ],
+          "first": "26071",
+          "last": "26230",
+          "sum32": 1140353,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              11321,
+              96
+            ]
+          ]
+        },
+        {
+          "include": "R30.agc",
+          "file": "Comanche055/R30.agc",
+          "assembler_file": "R30.agc",
+          "erratum": false,
+          "words": 283,
+          "banks": [
+            "23"
+          ],
+          "first": "46332",
+          "last": "46764",
+          "sum32": 3423641,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              19674,
+              283
+            ]
+          ]
+        },
+        {
+          "include": "STABLE_ORBIT.agc",
+          "file": "Comanche055/STABLE_ORBIT.agc",
+          "assembler_file": "STABLE_ORBIT_-_P38-P39.agc",
+          "erratum": false,
+          "words": 225,
+          "banks": [
+            "04"
+          ],
+          "first": "10742",
+          "last": "11302",
+          "sum32": 2396817,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              4578,
+              225
+            ]
+          ]
+        },
+        {
+          "include": "P11.agc",
+          "file": "Comanche055/P11.agc",
+          "assembler_file": "P11.agc",
+          "erratum": false,
+          "words": 535,
+          "banks": [
+            "23",
+            "34",
+            "37",
+            "43"
+          ],
+          "first": "70002",
+          "last": "47042",
+          "sum32": 6779897,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              28674,
+              268
+            ],
+            [
+              31853,
+              68
+            ],
+            [
+              28942,
+              138
+            ],
+            [
+              36493,
+              15
+            ],
+            [
+              19957,
+              46
+            ]
+          ]
+        },
+        {
+          "include": "TPI_SEARCH.agc",
+          "file": "Comanche055/TPI_SEARCH.agc",
+          "assembler_file": "TPI_SEARCH.agc",
+          "erratum": false,
+          "words": 443,
+          "banks": [
+            "07",
+            "35",
+            "36"
+          ],
+          "first": "73123",
+          "last": "73263",
+          "sum32": 6149999,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              30291,
+              22
+            ],
+            [
+              30730,
+              300
+            ],
+            [
+              7457,
+              46
+            ],
+            [
+              30313,
+              75
+            ]
+          ]
+        },
+        {
+          "include": "P20-P25.agc",
+          "file": "Comanche055/P20-P25.agc",
+          "assembler_file": "P20-P25.agc",
+          "erratum": false,
+          "words": 2724,
+          "banks": [
+            "02",
+            "14",
+            "16",
+            "23",
+            "27",
+            "30",
+            "31",
+            "34",
+            "37",
+            "40"
+          ],
+          "first": "76261",
+          "last": "101767",
+          "sum32": 36147192,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              31921,
+              80
+            ],
+            [
+              24576,
+              202
+            ],
+            [
+              32001,
+              148
+            ],
+            [
+              20003,
+              55
+            ],
+            [
+              29080,
+              331
+            ],
+            [
+              23779,
+              169
+            ],
+            [
+              29411,
+              231
+            ],
+            [
+              24778,
+              536
+            ],
+            [
+              25818,
+              41
+            ],
+            [
+              25314,
+              195
+            ],
+            [
+              20058,
+              2
+            ],
+            [
+              29642,
+              41
+            ],
+            [
+              25859,
+              570
+            ],
+            [
+              12288,
+              2
+            ],
+            [
+              14336,
+              16
+            ],
+            [
+              2450,
+              5
+            ],
+            [
+              33684,
+              100
+            ]
+          ]
+        },
+        {
+          "include": "P30-P37.agc",
+          "file": "Comanche055/P30-P37.agc",
+          "assembler_file": "P30,P37.agc",
+          "erratum": false,
+          "words": 374,
+          "banks": [
+            "02",
+            "31",
+            "32",
+            "35"
+          ],
+          "first": "73264",
+          "last": "04655",
+          "sum32": 4421104,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              30388,
+              113
+            ],
+            [
+              26429,
+              75
+            ],
+            [
+              26639,
+              163
+            ],
+            [
+              2455,
+              23
+            ]
+          ]
+        },
+        {
+          "include": "P32-P33_P72-P73.agc",
+          "file": "Comanche055/P32-P33_P72-P73.agc",
+          "assembler_file": "P32-P33,_P72-P73.agc",
+          "erratum": false,
+          "words": 882,
+          "banks": [
+            "02",
+            "04",
+            "05",
+            "06",
+            "07",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "22",
+            "23",
+            "24",
+            "31",
+            "35",
+            "37"
+          ],
+          "first": "11303",
+          "last": "13365",
+          "sum32": 11263113,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              4803,
+              68
+            ],
+            [
+              12290,
+              7
+            ],
+            [
+              4871,
+              77
+            ],
+            [
+              10240,
+              11
+            ],
+            [
+              4948,
+              27
+            ],
+            [
+              32149,
+              16
+            ],
+            [
+              2478,
+              4
+            ],
+            [
+              7081,
+              27
+            ],
+            [
+              30501,
+              10
+            ],
+            [
+              7108,
+              52
+            ],
+            [
+              10251,
+              23
+            ],
+            [
+              19127,
+              98
+            ],
+            [
+              20060,
+              41
+            ],
+            [
+              9390,
+              43
+            ],
+            [
+              7503,
+              48
+            ],
+            [
+              20482,
+              57
+            ],
+            [
+              8386,
+              60
+            ],
+            [
+              26504,
+              42
+            ],
+            [
+              32165,
+              28
+            ],
+            [
+              5776,
+              8
+            ],
+            [
+              26546,
+              14
+            ],
+            [
+              30511,
+              16
+            ],
+            [
+              11417,
+              11
+            ],
+            [
+              5784,
+              94
+            ]
+          ]
+        },
+        {
+          "include": "P40-P47.agc",
+          "file": "Comanche055/P40-P47.agc",
+          "assembler_file": "P40-P47.agc",
+          "erratum": false,
+          "words": 1667,
+          "banks": [
+            "16",
+            "17",
+            "20",
+            "21",
+            "22",
+            "24",
+            "27",
+            "30",
+            "42"
+          ],
+          "first": "50073",
+          "last": "42041",
+          "sum32": 19343776,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              20539,
+              155
+            ],
+            [
+              23948,
+              13
+            ],
+            [
+              20694,
+              678
+            ],
+            [
+              14352,
+              91
+            ],
+            [
+              25509,
+              67
+            ],
+            [
+              21372,
+              117
+            ],
+            [
+              19225,
+              14
+            ],
+            [
+              14443,
+              87
+            ],
+            [
+              15360,
+              10
+            ],
+            [
+              16513,
+              32
+            ],
+            [
+              14530,
+              150
+            ],
+            [
+              15370,
+              8
+            ],
+            [
+              16545,
+              157
+            ],
+            [
+              35718,
+              36
+            ],
+            [
+              16702,
+              26
+            ],
+            [
+              21489,
+              4
+            ],
+            [
+              17420,
+              22
+            ]
+          ]
+        },
+        {
+          "include": "P51-P53.agc",
+          "file": "Comanche055/P51-P53.agc",
+          "assembler_file": "P51-P53.agc",
+          "erratum": false,
+          "words": 1416,
+          "banks": [
+            "11",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "26"
+          ],
+          "first": "32000",
+          "last": "32433",
+          "sum32": 16449369,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              13312,
+              165
+            ],
+            [
+              14680,
+              50
+            ],
+            [
+              12297,
+              210
+            ],
+            [
+              13477,
+              20
+            ],
+            [
+              12507,
+              241
+            ],
+            [
+              13497,
+              27
+            ],
+            [
+              12748,
+              107
+            ],
+            [
+              13524,
+              12
+            ],
+            [
+              14730,
+              39
+            ],
+            [
+              12855,
+              137
+            ],
+            [
+              15378,
+              28
+            ],
+            [
+              12992,
+              63
+            ],
+            [
+              9433,
+              26
+            ],
+            [
+              11428,
+              84
+            ],
+            [
+              22528,
+              72
+            ],
+            [
+              14769,
+              18
+            ],
+            [
+              15406,
+              57
+            ],
+            [
+              13536,
+              60
+            ]
+          ]
+        },
+        {
+          "include": "LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "file": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "assembler_file": "LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 71,
+          "banks": [
+            "26"
+          ],
+          "first": "54110",
+          "last": "54216",
+          "sum32": 1075723,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              22600,
+              71
+            ]
+          ]
+        },
+        {
+          "include": "P61-P67.agc",
+          "file": "Comanche055/P61-P67.agc",
+          "assembler_file": "P61-P67.agc",
+          "erratum": false,
+          "words": 495,
+          "banks": [
+            "10",
+            "26",
+            "27"
+          ],
+          "first": "54217",
+          "last": "20437",
+          "sum32": 5924892,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              22671,
+              429
+            ],
+            [
+              23961,
+              32
+            ],
+            [
+              8446,
+              34
+            ]
+          ]
+        },
+        {
+          "include": "SERVICER207.agc",
+          "file": "Comanche055/SERVICER207.agc",
+          "assembler_file": "SERVICER207.agc",
+          "erratum": false,
+          "words": 375,
+          "banks": [
+            "37"
+          ],
+          "first": "76701",
+          "last": "77467",
+          "sum32": 4631508,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              32193,
+              375
+            ]
+          ]
+        },
+        {
+          "include": "ENTRY_LEXICON.agc",
+          "file": "Comanche055/ENTRY_LEXICON.agc",
+          "assembler_file": "ENTRY_LEXICON.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "REENTRY_CONTROL.agc",
+          "file": "Comanche055/REENTRY_CONTROL.agc",
+          "assembler_file": "REENTRY_CONTROL.agc",
+          "erratum": false,
+          "words": 1172,
+          "banks": [
+            "25",
+            "26"
+          ],
+          "first": "52000",
+          "last": "55323",
+          "sum32": 15116152,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              21504,
+              176
+            ],
+            [
+              23100,
+              41
+            ],
+            [
+              21680,
+              844
+            ],
+            [
+              23141,
+              111
+            ]
+          ]
+        },
+        {
+          "include": "CM_BODY_ATTITUDE.agc",
+          "file": "Comanche055/CM_BODY_ATTITUDE.agc",
+          "assembler_file": "CM_BODY_ATTITUDE.agc",
+          "erratum": false,
+          "words": 195,
+          "banks": [
+            "37"
+          ],
+          "first": "77470",
+          "last": "77772",
+          "sum32": 2740931,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              32568,
+              195
+            ]
+          ]
+        },
+        {
+          "include": "P37_P70.agc",
+          "file": "Comanche055/P37_P70.agc",
+          "assembler_file": "P37,P70.agc",
+          "erratum": false,
+          "words": 1368,
+          "banks": [
+            "16",
+            "31",
+            "32",
+            "35",
+            "36"
+          ],
+          "first": "74466",
+          "last": "73634",
+          "sum32": 20221294,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              31030,
+              374
+            ],
+            [
+              26802,
+              391
+            ],
+            [
+              14787,
+              13
+            ],
+            [
+              27193,
+              4
+            ],
+            [
+              26560,
+              49
+            ],
+            [
+              27197,
+              443
+            ],
+            [
+              30527,
+              94
+            ]
+          ]
+        },
+        {
+          "include": "S-BAND_ANTENNA_FOR_CM.agc",
+          "file": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+          "assembler_file": "S-BAND_ANTENNA_FOR_CM.agc",
+          "erratum": false,
+          "words": 80,
+          "banks": [
+            "42"
+          ],
+          "first": "105652",
+          "last": "105771",
+          "sum32": 1059731,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              35754,
+              80
+            ]
+          ]
+        },
+        {
+          "include": "LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+          "file": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+          "assembler_file": "LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+          "erratum": false,
+          "words": 0,
+          "banks": [],
+          "first": null,
+          "last": null,
+          "sum32": 0,
+          "coverage_status": "complete",
+          "runs": []
+        },
+        {
+          "include": "TVCINITIALIZE.agc",
+          "file": "Comanche055/TVCINITIALIZE.agc",
+          "assembler_file": "TVCINITIALIZE.agc",
+          "erratum": false,
+          "words": 259,
+          "banks": [
+            "17"
+          ],
+          "first": "36147",
+          "last": "36551",
+          "sum32": 3577232,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15463,
+              259
+            ]
+          ]
+        },
+        {
+          "include": "TVCEXECUTIVE.agc",
+          "file": "Comanche055/TVCEXECUTIVE.agc",
+          "assembler_file": "TVCEXECUTIVE.agc",
+          "erratum": false,
+          "words": 144,
+          "banks": [
+            "16"
+          ],
+          "first": "34720",
+          "last": "35137",
+          "sum32": 1772903,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              14800,
+              144
+            ]
+          ]
+        },
+        {
+          "include": "TVCMASSPROP.agc",
+          "file": "Comanche055/TVCMASSPROP.agc",
+          "assembler_file": "TVCMASSPROP.agc",
+          "erratum": false,
+          "words": 91,
+          "banks": [
+            "05"
+          ],
+          "first": "13366",
+          "last": "13520",
+          "sum32": 1202359,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5878,
+              91
+            ]
+          ]
+        },
+        {
+          "include": "TVCRESTARTS.agc",
+          "file": "Comanche055/TVCRESTARTS.agc",
+          "assembler_file": "TVCRESTARTS.agc",
+          "erratum": false,
+          "words": 90,
+          "banks": [
+            "16"
+          ],
+          "first": "35140",
+          "last": "35271",
+          "sum32": 944126,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              14944,
+              90
+            ]
+          ]
+        },
+        {
+          "include": "TVCDAPS.agc",
+          "file": "Comanche055/TVCDAPS.agc",
+          "assembler_file": "TVCDAPS.agc",
+          "erratum": false,
+          "words": 489,
+          "banks": [
+            "20"
+          ],
+          "first": "40530",
+          "last": "41500",
+          "sum32": 6526591,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              16728,
+              489
+            ]
+          ]
+        },
+        {
+          "include": "TVCSTROKETEST.agc",
+          "file": "Comanche055/TVCSTROKETEST.agc",
+          "assembler_file": "TVCSTROKETEST.agc",
+          "erratum": false,
+          "words": 73,
+          "banks": [
+            "20"
+          ],
+          "first": "41501",
+          "last": "41611",
+          "sum32": 838745,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              17217,
+              73
+            ]
+          ]
+        },
+        {
+          "include": "TVCROLLDAP.agc",
+          "file": "Comanche055/TVCROLLDAP.agc",
+          "assembler_file": "TVCROLLDAP.agc",
+          "erratum": false,
+          "words": 278,
+          "banks": [
+            "16"
+          ],
+          "first": "35272",
+          "last": "35717",
+          "sum32": 3533673,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15034,
+              278
+            ]
+          ]
+        },
+        {
+          "include": "MYSUBS.agc",
+          "file": "Comanche055/MYSUBS.agc",
+          "assembler_file": "MYSUBS.agc",
+          "erratum": false,
+          "words": 35,
+          "banks": [
+            "21"
+          ],
+          "first": "42042",
+          "last": "42104",
+          "sum32": 460704,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              17442,
+              35
+            ]
+          ]
+        },
+        {
+          "include": "RCS-CSM_DIGITAL_AUTOPILOT.agc",
+          "file": "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
+          "assembler_file": "RCS-CSM_DIGITAL_AUTOPILOT.agc",
+          "erratum": false,
+          "words": 611,
+          "banks": [
+            "21"
+          ],
+          "first": "42105",
+          "last": "43247",
+          "sum32": 8464455,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              17477,
+              611
+            ]
+          ]
+        },
+        {
+          "include": "AUTOMATIC_MANEUVERS.agc",
+          "file": "Comanche055/AUTOMATIC_MANEUVERS.agc",
+          "assembler_file": "AUTOMATIC_MANEUVERS.agc",
+          "erratum": false,
+          "words": 333,
+          "banks": [
+            "21"
+          ],
+          "first": "43250",
+          "last": "43764",
+          "sum32": 4060592,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              18088,
+              333
+            ]
+          ]
+        },
+        {
+          "include": "RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+          "file": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+          "assembler_file": "RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+          "erratum": false,
+          "words": 33,
+          "banks": [
+            "22"
+          ],
+          "first": "45447",
+          "last": "45507",
+          "sum32": 414126,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              19239,
+              33
+            ]
+          ]
+        },
+        {
+          "include": "JET_SELECTION_LOGIC.agc",
+          "file": "Comanche055/JET_SELECTION_LOGIC.agc",
+          "assembler_file": "JET_SELECTION_LOGIC.agc",
+          "erratum": false,
+          "words": 629,
+          "banks": [
+            "17"
+          ],
+          "first": "36552",
+          "last": "37736",
+          "sum32": 8224314,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              15722,
+              629
+            ]
+          ]
+        },
+        {
+          "include": "CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+          "file": "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+          "assembler_file": "CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+          "erratum": false,
+          "words": 813,
+          "banks": [
+            "03",
+            "15",
+            "20"
+          ],
+          "first": "32434",
+          "last": "33754",
+          "sum32": 11604776,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              13596,
+              60
+            ],
+            [
+              3072,
+              6
+            ],
+            [
+              13656,
+              6
+            ],
+            [
+              17290,
+              86
+            ],
+            [
+              13662,
+              655
+            ]
+          ]
+        },
+        {
+          "include": "DOWN-TELEMETRY_PROGRAM.agc",
+          "file": "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
+          "assembler_file": "DOWN-TELEMETRY_PROGRAM.agc",
+          "erratum": false,
+          "words": 173,
+          "banks": [
+            "05"
+          ],
+          "first": "13521",
+          "last": "13775",
+          "sum32": 2409739,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              5969,
+              173
+            ]
+          ]
+        },
+        {
+          "include": "INTER-BANK_COMMUNICATION.agc",
+          "file": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+          "assembler_file": "INTER-BANK_COMMUNICATION.agc",
+          "erratum": false,
+          "words": 76,
+          "banks": [
+            "02"
+          ],
+          "first": "04662",
+          "last": "04775",
+          "sum32": 1213928,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2482,
+              76
+            ]
+          ]
+        },
+        {
+          "include": "INTERPRETER.agc",
+          "file": "Comanche055/INTERPRETER.agc",
+          "assembler_file": "INTERPRETER.agc",
+          "erratum": false,
+          "words": 2080,
+          "banks": [
+            "00",
+            "01",
+            "03"
+          ],
+          "first": "06006",
+          "last": "02625",
+          "sum32": 26981027,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              3078,
+              205
+            ],
+            [
+              0,
+              15
+            ],
+            [
+              3283,
+              732
+            ],
+            [
+              15,
+              971
+            ],
+            [
+              1273,
+              157
+            ]
+          ]
+        },
+        {
+          "include": "FIXED_FIXED_CONSTANT_POOL.agc",
+          "file": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
+          "assembler_file": "FIXED-FIXED_CONSTANT_POOL.agc",
+          "erratum": false,
+          "words": 94,
+          "banks": [
+            "02",
+            "03"
+          ],
+          "first": "04776",
+          "last": "07716",
+          "sum32": 810907,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2558,
+              62
+            ],
+            [
+              4015,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "INTERPRETIVE_CONSTANTS.agc",
+          "file": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "assembler_file": "INTERPRETIVE_CONSTANTS.agc",
+          "erratum": false,
+          "words": 35,
+          "banks": [
+            "04",
+            "26"
+          ],
+          "first": "55324",
+          "last": "11601",
+          "sum32": 217061,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              23252,
+              16
+            ],
+            [
+              4975,
+              19
+            ]
+          ]
+        },
+        {
+          "include": "SINGLE_PRECISION_SUBROUTINES.agc",
+          "file": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+          "assembler_file": "SINGLE_PRECISION_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 32,
+          "banks": [
+            "02"
+          ],
+          "first": "05074",
+          "last": "05133",
+          "sum32": 548815,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2620,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "EXECUTIVE.agc",
+          "file": "Comanche055/EXECUTIVE.agc",
+          "assembler_file": "EXECUTIVE.agc",
+          "erratum": false,
+          "words": 337,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "05134",
+          "last": "05234",
+          "sum32": 4519970,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2652,
+              59
+            ],
+            [
+              1430,
+              272
+            ],
+            [
+              2711,
+              6
+            ]
+          ]
+        },
+        {
+          "include": "WAITLIST.agc",
+          "file": "Comanche055/WAITLIST.agc",
+          "assembler_file": "WAITLIST.agc",
+          "erratum": false,
+          "words": 252,
+          "banks": [
+            "01",
+            "02",
+            "03"
+          ],
+          "first": "05235",
+          "last": "03517",
+          "sum32": 3396863,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2717,
+              55
+            ],
+            [
+              4047,
+              3
+            ],
+            [
+              1702,
+              139
+            ],
+            [
+              2772,
+              24
+            ],
+            [
+              1841,
+              31
+            ]
+          ]
+        },
+        {
+          "include": "LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "file": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "assembler_file": "LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 159,
+          "banks": [
+            "13"
+          ],
+          "first": "26370",
+          "last": "26626",
+          "sum32": 2102393,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              11512,
+              159
+            ]
+          ]
+        },
+        {
+          "include": "PLANETARY_INERTIAL_ORIENTATION.agc",
+          "file": "Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc",
+          "assembler_file": "PLANETARY_INERTIAL_ORIENTATION.agc",
+          "erratum": false,
+          "words": 204,
+          "banks": [
+            "26"
+          ],
+          "first": "55344",
+          "last": "55657",
+          "sum32": 2933294,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              23268,
+              204
+            ]
+          ]
+        },
+        {
+          "include": "MEASUREMENT_INCORPORATION.agc",
+          "file": "Comanche055/MEASUREMENT_INCORPORATION.agc",
+          "assembler_file": "MEASUREMENT_INCORPORATION.agc",
+          "erratum": false,
+          "words": 385,
+          "banks": [
+            "14",
+            "35",
+            "36"
+          ],
+          "first": "75254",
+          "last": "73674",
+          "sum32": 5821710,
+          "coverage_status": "untranslated",
+          "runs": [
+            [
+              31404,
+              334
+            ],
+            [
+              13055,
+              19
+            ],
+            [
+              30621,
+              32
+            ]
+          ]
+        },
+        {
+          "include": "CONIC_SUBROUTINES.agc",
+          "file": "Comanche055/CONIC_SUBROUTINES.agc",
+          "assembler_file": "CONIC_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 1079,
+          "banks": [
+            "04",
+            "12"
+          ],
+          "first": "24042",
+          "last": "11756",
+          "sum32": 13089486,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              10274,
+              450
+            ],
+            [
+              4994,
+              29
+            ],
+            [
+              10724,
+              29
+            ],
+            [
+              5023,
+              64
+            ],
+            [
+              10753,
+              491
+            ],
+            [
+              5087,
+              16
+            ]
+          ]
+        },
+        {
+          "include": "INTEGRATION_INITIALIZATION.agc",
+          "file": "Comanche055/INTEGRATION_INITIALIZATION.agc",
+          "assembler_file": "INTEGRATION_INITIALIZATION.agc",
+          "erratum": false,
+          "words": 685,
+          "banks": [
+            "11",
+            "13",
+            "27",
+            "35"
+          ],
+          "first": "26627",
+          "last": "56756",
+          "sum32": 8048762,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              11671,
+              231
+            ],
+            [
+              9459,
+              7
+            ],
+            [
+              11902,
+              229
+            ],
+            [
+              30653,
+              59
+            ],
+            [
+              12131,
+              105
+            ],
+            [
+              23993,
+              54
+            ]
+          ]
+        },
+        {
+          "include": "ORBITAL_INTEGRATION.agc",
+          "file": "Comanche055/ORBITAL_INTEGRATION.agc",
+          "assembler_file": "ORBITAL_INTEGRATION.agc",
+          "erratum": false,
+          "words": 816,
+          "banks": [
+            "11",
+            "13"
+          ],
+          "first": "22372",
+          "last": "27767",
+          "sum32": 10417120,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              9466,
+              772
+            ],
+            [
+              12236,
+              44
+            ]
+          ]
+        },
+        {
+          "include": "INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "file": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "assembler_file": "INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "erratum": false,
+          "words": 186,
+          "banks": [
+            "23"
+          ],
+          "first": "47205",
+          "last": "47476",
+          "sum32": 2435575,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              20101,
+              186
+            ]
+          ]
+        },
+        {
+          "include": "POWERED_FLIGHT_SUBROUTINES.agc",
+          "file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+          "assembler_file": "POWERED_FLIGHT_SUBROUTINES.agc",
+          "erratum": false,
+          "words": 187,
+          "banks": [
+            "23"
+          ],
+          "first": "47477",
+          "last": "47771",
+          "sum32": 2422798,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              20287,
+              187
+            ]
+          ]
+        },
+        {
+          "include": "TIME_OF_FREE_FALL.agc",
+          "file": "Comanche055/TIME_OF_FREE_FALL.agc",
+          "assembler_file": "TIME_OF_FREE_FALL.agc",
+          "erratum": false,
+          "words": 268,
+          "banks": [
+            "27"
+          ],
+          "first": "56757",
+          "last": "57372",
+          "sum32": 3905927,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              24047,
+              268
+            ]
+          ]
+        },
+        {
+          "include": "STAR_TABLES.agc",
+          "file": "Comanche055/STAR_TABLES.agc",
+          "assembler_file": "STAR_TABLES.agc",
+          "erratum": false,
+          "words": 223,
+          "banks": [
+            "14"
+          ],
+          "first": "31422",
+          "last": "31760",
+          "sum32": 3514269,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              13074,
+              223
+            ]
+          ]
+        },
+        {
+          "include": "AGC_BLOCK_TWO_SELF-CHECK.agc",
+          "file": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+          "assembler_file": "AGC_BLOCK_TWO_SELF-CHECK.agc",
+          "erratum": false,
+          "words": 314,
+          "banks": [
+            "43"
+          ],
+          "first": "107234",
+          "last": "107725",
+          "sum32": 3934290,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              36508,
+              314
+            ]
+          ]
+        },
+        {
+          "include": "PHASE_TABLE_MAINTENANCE.agc",
+          "file": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+          "assembler_file": "PHASE_TABLE_MAINTENANCE.agc",
+          "erratum": false,
+          "words": 159,
+          "banks": [
+            "02",
+            "10"
+          ],
+          "first": "05354",
+          "last": "05477",
+          "sum32": 2261126,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2796,
+              14
+            ],
+            [
+              8480,
+              9
+            ],
+            [
+              2810,
+              66
+            ],
+            [
+              8489,
+              66
+            ],
+            [
+              2876,
+              4
+            ]
+          ]
+        },
+        {
+          "include": "RESTARTS_ROUTINE.agc",
+          "file": "Comanche055/RESTARTS_ROUTINE.agc",
+          "assembler_file": "RESTARTS_ROUTINE.agc",
+          "erratum": false,
+          "words": 185,
+          "banks": [
+            "01",
+            "02"
+          ],
+          "first": "03520",
+          "last": "03767",
+          "sum32": 2423807,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              1872,
+              43
+            ],
+            [
+              2880,
+              7
+            ],
+            [
+              1915,
+              70
+            ],
+            [
+              2887,
+              10
+            ],
+            [
+              1985,
+              55
+            ]
+          ]
+        },
+        {
+          "include": "IMU_MODE_SWITCHING_ROUTINES.agc",
+          "file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+          "assembler_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+          "erratum": false,
+          "words": 656,
+          "banks": [
+            "02",
+            "07",
+            "26"
+          ],
+          "first": "05521",
+          "last": "55776",
+          "sum32": 7740351,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2897,
+              5
+            ],
+            [
+              7551,
+              572
+            ],
+            [
+              23472,
+              79
+            ]
+          ]
+        },
+        {
+          "include": "KEYRUPT_UPRUPT.agc",
+          "file": "Comanche055/KEYRUPT_UPRUPT.agc",
+          "assembler_file": "KEYRUPT,_UPRUPT.agc",
+          "erratum": false,
+          "words": 68,
+          "banks": [
+            "07"
+          ],
+          "first": "17673",
+          "last": "17776",
+          "sum32": 994282,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              8123,
+              68
+            ]
+          ]
+        },
+        {
+          "include": "DISPLAY_INTERFACE_ROUTINES.agc",
+          "file": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+          "assembler_file": "DISPLAY_INTERFACE_ROUTINES.agc",
+          "erratum": false,
+          "words": 667,
+          "banks": [
+            "02",
+            "10"
+          ],
+          "first": "05526",
+          "last": "21765",
+          "sum32": 8521834,
+          "coverage_status": "partial",
+          "runs": [
+            [
+              2902,
+              16
+            ],
+            [
+              8555,
+              651
+            ]
+          ]
+        },
+        {
+          "include": "SERVICE_ROUTINES.agc",
+          "file": "Comanche055/SERVICE_ROUTINES.agc",
+          "assembler_file": "SERVICE_ROUTINES.agc",
+          "erratum": false,
+          "words": 123,
+          "banks": [
+            "00",
+            "02",
+            "03"
+          ],
+          "first": "07722",
+          "last": "05647",
+          "sum32": 1764173,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              4050,
+              27
+            ],
+            [
+              2918,
+              32
+            ],
+            [
+              986,
+              30
+            ],
+            [
+              2950,
+              34
+            ]
+          ]
+        },
+        {
+          "include": "ALARM_AND_ABORT.agc",
+          "file": "Comanche055/ALARM_AND_ABORT.agc",
+          "assembler_file": "ALARM_AND_ABORT.agc",
+          "erratum": false,
+          "words": 108,
+          "banks": [
+            "02",
+            "03",
+            "10"
+          ],
+          "first": "05650",
+          "last": "05772",
+          "sum32": 1208589,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              2984,
+              41
+            ],
+            [
+              9206,
+              9
+            ],
+            [
+              4077,
+              16
+            ],
+            [
+              3025,
+              42
+            ]
+          ]
+        },
+        {
+          "include": "UPDATE_PROGRAM.agc",
+          "file": "Comanche055/UPDATE_PROGRAM.agc",
+          "assembler_file": "UPDATE_PROGRAM.agc",
+          "erratum": false,
+          "words": 280,
+          "banks": [
+            "27",
+            "43"
+          ],
+          "first": "107726",
+          "last": "57762",
+          "sum32": 3286561,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              36822,
+              32
+            ],
+            [
+              24315,
+              248
+            ]
+          ]
+        },
+        {
+          "include": "RT8_OP_CODES.agc",
+          "file": "Comanche055/RT8_OP_CODES.agc",
+          "assembler_file": "RTB_OP_CODES.agc",
+          "erratum": false,
+          "words": 206,
+          "banks": [
+            "12",
+            "13",
+            "22"
+          ],
+          "first": "45510",
+          "last": "25776",
+          "sum32": 2667940,
+          "coverage_status": "complete",
+          "runs": [
+            [
+              19272,
+              181
+            ],
+            [
+              12280,
+              6
+            ],
+            [
+              11244,
+              19
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}

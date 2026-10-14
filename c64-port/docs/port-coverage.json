@@ -2791,8 +2791,57 @@
       "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
       "bytes": 3545,
       "lines": 99,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 84 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[1]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). In the listing MAIN.agc emits no word, each of the 36504 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
@@ -3776,8 +3825,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04140-04525) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 278 routines: 265 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 866 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 92 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,171 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 280 routines: 267 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-decdsp3: 111 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank. Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -3789,7 +3838,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "99349e445393f60c490041d7ae02073611896965ecdb1791cda7e35c1cdd2add"
+            "sha256": "dbcc6b3c2b4e57ef1c9fb0a0ae92c28e935fff2d05b01fae2a84bf234deaa57a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -5099,7 +5148,7 @@
       "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
       "bytes": 38224,
       "lines": 1467,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5125,7 +5174,56 @@
           "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
           "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the native I/O record (cm_native_io); InIsr and channels 10-14, 30, 32 and 33 in agc_hardware for the core and IMU tables; channels 11-14 in cm_native_io and 30-33 in cm_channels for the optics routines (one record on a flight build: the shared channel model, Lane D1; docs/CM-T4RUPT-CHAIN.md).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_t4rupt_core_routines (3), cm_t4rupt_imu_routines (22) or cm_t4rupt_optics_basic (8) at its original address: T4RUPT, the T4JUMP targets, the IMU and optics tasks, OPTDRIVE, ENDZOPT, and the continuation after each call that leaves the file. The core and IMU routines run inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/CM-T4RUPT-IMU.md and docs/CM-T4RUPT-OPTICS.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change. Channel 13's trap bits and channel 14's drive bits are not refused: the comparisons keep them clear because yaAGC's hardware model acts on them (docs/CM-T4RUPT-CHAIN.md).",
+          "unreached": "One instruction word is unreached: 10,2110, the positive slot of CCS A in OPTDRIVE's shaft stop check, where A is +0 or negative after MASK BIT15 and RXOR LCHAN of two sign bits (docs/CM-T4RUPT-CHAIN.md). Three constants (TABLNTH, 120MRUPT, OCT37737) would run as instructions only on paths no producer reaches (docs/T4RUPT-CORE.md).",
+          "data_validity": "Original constants and scaling; RELTAB, the IFAILJMP/C33JMP tables and the 2CADR/CADR/ADRES operands are read as data or followed as the original transfers. The checked-in scan spells ZOPFINI as ZOPFIN1 (marked in the source); the native code and the maps follow the listing's word. yaAGC's peripheral model empties the CDU, gyro and optics command counters when channel 14's drive bits are set; the comparisons start with those counters +0 and no drive in progress."
+        },
+        "external_continuations": [
+          "RESUME and the interrupted program (rupt-lead-ins); NOVAC for PROCKEY (cm-exec-services)",
+          "The IBNKCALL targets (OPTDRIVE from OPTTEST is in this file and native; SETCOARS), ZEROICDU",
+          "ALARM and VARALARM (ALARM_AND_ABORT), WAITLIST, VARDELAY and TASKOVER (cm-exec-services, cm-exec-jobs), and the tasks they start",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-source-map.json",
+            "sha256": "016a958e2f3244524f804a4dc27cade0854605136dc68cc40d7faaf18d11fd0d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-proof.json",
+            "sha256": "6acf0c763e6625ed2e4766525ef175d4fda461c3f25ff003cd2d24e489b81aaa"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-host.log",
+            "sha256": "d9dad2ad0ebfdbbd25b4d46f7c4957a5837aeb0a1424717d1b45e386c6a656e4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-vice.log",
+            "sha256": "0dc1ff801ec9200faebda2d2e3e3c229f38b4b0c08d4544c6db3863cc57e3b0c",
+            "vice_targets": {
+              "vice-t4rupt-core": 280,
+              "vice-cm-t4rupt-imu": 301,
+              "vice-cm-t4rupt-optics": 46,
+              "vice-cm-t4rupt-chain": 269
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-t4rupt.md",
+            "sha256": "1a1fca6a3ccd1eb5f83c44f35ff0b176c4c722a748591d93d1c41de787d0e0b4"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-chain-c64-cover.json",
+            "sha256": "d38a6a788528949b0822ad993dd76a1d158a441e28ed94a0d739d681fb91ffdf"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -6172,7 +6270,7 @@
       "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
       "bytes": 16963,
       "lines": 695,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6187,7 +6285,7 @@
           "verification": "docs/LM-AOTMARK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -6198,7 +6296,6 @@
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "hardware_side_effects": "Channel 016 (NAVKEYIN, the mark and reject buttons) is read as a latched input; channels 1 and 2 are the L and Q registers. Raising MARKRUPT from the mark buttons is a device-adapter obligation.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-aotmark/lm-aotmark-source-map.json",
@@ -6206,7 +6303,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
-            "sha256": "4577d07d39fc48402d910e91782dda2cca6b4c42d38db0508c707d85ac57d5f3"
+            "sha256": "29735a22fb30232426a969b6d5c56b4951197c0314bfda38f2965e68f557d9f9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-host.log",
@@ -6214,14 +6311,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
-            "sha256": "11817ddb49e99d9cc5a4ff25f6b401fb724a1905dea7498e46a7793845b89207",
+            "sha256": "6a7089237204181a7c77ad822e33abf9b12c6ee6bef5ef6458fd4a29b6dab249",
             "vice_targets": {
-              "vice-lm-aotmark": 300
+              "vice-lm-aotmark": 302
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-294-aotmark.md",
+            "sha256": "3f60a61049e4f9be474c9c68e9cbd32cb243951d237e182699447254f390d572"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
-            "sha256": "e6a4ae1072c3ce1f54367f9438b0609dbef29c7b291be2aa931cff5f783e8cf0"
+            "sha256": "e85e834133a6e594b65ae6ae47010a2901b248e5d54564f181b49c9b16d34978"
           }
         }
       }
@@ -9108,8 +9209,57 @@
       "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
       "bytes": 3815,
       "lines": 91,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 89 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[0]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). Two include lines name files the scan saved under other names (LAMBERT_AIMPOINT_GUIDANCE.agc is the checked-in GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc; TRIM_GIMBAL_CNTROL_SYSTEM.agc is TRIM_GIMBAL_CONTROL_SYSTEM.agc), as the tool's ERRATA records. In the listing MAIN.agc emits no word, each of the 36539 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
@@ -10051,7 +10201,7 @@
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04124-04511) and banks 04, 40, 41 and 42.",
           "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 281 routines: 268 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 866 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 92 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,171 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank, and READ of channel 33 (LRPOSOUT: the landing radar antenna position, bits 7-6). Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -10063,7 +10213,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "977873ba6cca47cf928d9ca91d7391dd56f72182380a5438c7c0b37ac3ecec9a"
+            "sha256": "601c505786d072d0e67b800d00333d38df3b35b8ba446a0507d9a69fc751f8b9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -11422,9 +11572,9 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-vice.log",
-            "sha256": "40460a8426fdad9f985610375743c2631c730e662578cf23b4d40bd0567724ba",
+            "sha256": "9525ea00596baf5bdba24ea416a8a1619b36cb938c7361a81afb99578d965483",
             "vice_targets": {
-              "vice-t4rupt-core": 279,
+              "vice-t4rupt-core": 280,
               "vice-lm-t4rupt-imu": 301,
               "vice-lm-t4rupt-rr": 216,
               "vice-lm-t4rupt-chain": 266

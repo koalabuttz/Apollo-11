@@ -21,7 +21,9 @@ import interp_routine_differential as D
 import interp_specs
 
 R, B = D.R, D.B
-RT = ['src/lm_interp_runtime.c', 'src/cm_interp_runtime.c', 'src/rope_image_host.c', 'tools/interp_runtime_target.c']
+RT = ['src/lm_interp_runtime.c', 'src/cm_interp_runtime.c', 'src/lm_interp_core.c', 'src/cm_interp_core.c',
+      'src/rope_image_host.c', 'tools/interp_runtime_target.c']
+CORE = []   # ['-DIRT_CORE'] with --core: the compact interpreter
 
 
 def rtb_table(spec_id, spec, missions):
@@ -44,6 +46,10 @@ def rtb_table(spec_id, spec, missions):
                 expr = x.get(m) if isinstance(x, dict) else None
                 if not expr or lab not in mi.L.labels:
                     continue
+                if isinstance(expr, tuple):
+                    # (call, 'stops'): 2 is a run that ends outside the file
+                    # (an alarm), as RTB_OK a stop at the image it leaves.
+                    expr = '({int r_=(int)(%s);r_!=2&&r_!=RTB_OK;})' % expr[0]
                 f = 'rtb_%s_%d' % (m, len(ents))
                 if cm:
                     out.append('static enum exec_status %s(const agc_native_program *p,apollo_overlay_state *s,void *v){cm_native_io *c=v;'
@@ -63,12 +69,12 @@ def rtb_table(spec_id, spec, missions):
 
 def build(spec_id, spec, missions):
     ref, _ = D.build(spec_id, spec)
-    nat = os.path.join(B, '%s-runtime' % spec_id)
+    nat = os.path.join(B, '%s-runtime%s' % (spec_id, '-core' if CORE else ''))
     obj = os.path.join(B, '%s-runtime-target.o' % spec_id)
     steps = min(60000, spec.get('max_steps', 200) * 40)
     subprocess.run(['cc', *D.FLAGS, '-c', '-Dirc_program=irc_program_compiled', spec['target'], '-o', obj], cwd=R, check=True)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + D.common(spec)
-    subprocess.run(['cc', *D.FLAGS, *(['-DIRT_RTB_TRACE'] if os.environ.get('IRT_RTB_TRACE') else []), '-DIRC_MAX_STEPS=%d' % steps, *D.cut_flags(spec), *srcs, *RT, obj, rtb_table(spec_id, spec, missions),
+    subprocess.run(['cc', *D.FLAGS, *(['-DIRT_RTB_TRACE'] if os.environ.get('IRT_RTB_TRACE') else []), '-DIRC_MAX_STEPS=%d' % steps, *CORE, *D.cut_flags(spec), *srcs, *RT, obj, rtb_table(spec_id, spec, missions),
                     'tools/interp_routine_native.c', '-o', nat], cwd=R, check=True)
     return ref, nat
 
@@ -146,7 +152,10 @@ def main():
     ap.add_argument('--show', type=int, default=8)
     ap.add_argument('--dump', type=int, default=0, help='word diffs of the first N differing cases')
     ap.add_argument('--all', action='store_true', help='also cases from basic routines')
+    ap.add_argument('--core', action='store_true', help='the compact interpreter (src/lm_interp_core.c)')
     a = ap.parse_args()
+    if a.core:
+        CORE.append('-DIRT_CORE')
     total = bad = 0
     for s in a.specs or sorted(interp_specs.SPECS):
         try:

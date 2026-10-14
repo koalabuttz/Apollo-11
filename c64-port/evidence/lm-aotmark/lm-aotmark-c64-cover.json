@@ -10,14 +10,14 @@
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "73c1349b72b60f5b5d5ecc56b1189fc7e4934fc67496ed627c4ac7fe9ac284d3",
+  "tests/interp_case.c": "a5bf4f4bdda9311dd537d88fbfb1c0d56521ee1ea516fc1f5430c7722ac62153",
   "tests/interp_cut.c": "4933a2e2faa736add3dcd7d79d0009e4e511e6d96eabde394ecf56f7dfa7f5c8",
   "tests/lm_aotmark_target.c": "750c10929d7da59d14d10946fbe3440f3b7e86ea49942e84399d142970e7cc33"
  },
- "host_cases": 15953,
+ "host_cases": 15937,
  "host_case_stride": 4,
  "c64_rows": [
   16,
@@ -40,14 +40,16 @@
   7900,
   8308,
   8772,
+  9240,
   9520,
   9728,
   9752,
   9760,
-  9788,
-  9880,
+  9848,
+  9876,
   9926,
   9930,
+  10016,
   10256,
   10269,
   10284,
@@ -321,8 +323,8 @@
   62451,
   62464
  ],
- "host_branch_arcs": 1673,
- "c64_branch_arcs": 1673,
+ "host_branch_arcs": 1681,
+ "c64_branch_arcs": 1681,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -337,8 +339,8 @@
    15
   ],
   "src/agc_transfer.c": [
-   45,
-   45
+   48,
+   48
   ],
   "src/agc_word.c": [
    5,
@@ -353,8 +355,8 @@
    0
   ],
   "src/lm_aotmark.c": [
-   1045,
-   1045
+   1046,
+   1046
   ],
   "src/lm_interp_orders.c": [
    0,
@@ -377,8 +379,8 @@
    25
   ],
   "tests/interp_case.c": [
-   32,
-   32
+   36,
+   36
   ],
   "tests/interp_cut.c": [
    13,
@@ -394,7 +396,7 @@
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 1658,
+ "all_cases_branch_arcs": 1666,
  "all_cases_branches_missing_on_c64": [],
  "truncated_rows": [
   {

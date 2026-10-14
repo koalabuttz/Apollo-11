@@ -11,8 +11,15 @@ left against $0801-$6EFF.
 `platform/c64/resident_flight.ld` keeps the map of
 `overlay_v2_resident.ld`: resident code and data in $0801-$6EFF, the service
 jump table at $6F00, the canonical image at $7000, the job slot at $8000,
-the task slot at $E000, the soft stack below $D000 (it grows down through
-$C000-$CFFF). The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+the task slot at $E000, the soft stack below $D000 (1 KB, $CC00-$CFFF).
+Below the stack, $C000-$CBFF is slot class 3 (`APOLLO_OV2_SLOT_PINNED`):
+boot loads the store's one pinned module there by plain DMA, verifies it,
+zeroes its BSS and runs its main once to build its table list
+(`rk_pinned`); from then on `rk_direct` tries its tables before the job and
+task slots', and no run loads it. Boot writes a canary at $CC00, the
+stack's last byte; a resident step that finds it changed (the stack ran
+into the pinned module) returns `EXEC_INVALID_ACTION` before running
+anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
@@ -229,13 +236,13 @@ about 0.3 KB.
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step, boundary-word reader and direct calls | 1,471 | 1,489 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,508 | 1,525 |
 | IRQ entry (saves and restores $01) | 26 | 26 |
-| C runtime and library (crt0, multiply, divide, memcpy, memset) | 480 | 480 |
-| **Resident, $0801 to the end of bss** | **24,273** | **23,980** |
-| Free below the service table (of 26,367) | 2,094 | 2,387 |
+| C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
+| **Resident, $0801 to the end of bss** | **24,316** | **24,022** |
+| Free below the service table (of 26,367) | 2,051 | 2,345 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
-| Boot-only, in the job slot (with the $D000 boot load) | 3,794 | 3,763 |
+| Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,196 | 4,168 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
 half of the resident. The seam hooks add 225 LM and 222 CM bytes to the

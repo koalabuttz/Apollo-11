@@ -70,6 +70,9 @@ static inline void rk_module_program(agc_native_program *p,const rk_module_table
     memcpy(p,t,offsetof(rk_module_tables,fixed_data));
     p->fixed_data=t->fixed_data;
 }
+/* The pinned module's tables (slot class 3, built at boot), or 0: rk_direct
+ * tries them before the job and task slots'. */
+extern const rk_module_tables *rk_pinned;
 /* Routines one module run may chain before it returns to the step. */
 #define RK_MODULE_STEPS 256u
 /* A module's run, as the step reports it: an unmapped point after at least
@@ -101,8 +104,14 @@ extern flight_io rk_flight;
 #else
 #define RK_IO_BASE FLIGHT_IO_CM_NATIVE
 #endif
-/* 256 bytes of boot scratch for apollo_reu_store_verify. */
+/* 256 bytes of boot scratch for apollo_reu_store_verify (before the
+ * pinned module loads over it). */
 #define RK_BOOT_SCRATCH 0xc100u
+/* The soft stack's last byte above the pinned module (slot class 3, up to
+ * $CBFF): boot writes the canary, and a step that finds it changed returns
+ * EXEC_INVALID_ACTION before it runs anything. */
+#define RK_STACK_CANARY 0xcc00u
+#define RK_STACK_CANARY_VALUE 0xa5u
 
 extern apollo_reu_store rk_store;
 extern apollo_ov2_runtime rk_runtime;
@@ -116,10 +125,12 @@ extern uint16_t rk_pending, rk_ticks;
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
  * verified, the runtime initialized on the image at $7000, and the
- * fixed-extension modules (slot class 2) loaded at $D000, and the
- * boundary-word module run once for its table (rk_fixed_word). Returns 0,
- * or 1 (store header), 2 (store contents), 3 (boundary-word module) or 4
- * (a fixed-extension load).
+ * fixed-extension modules (slot class 2) loaded at $D000, the pinned
+ * module (slot class 3, at most one) loaded at $C000 and its tables built
+ * (rk_pinned), the boundary-word module run once for its table
+ * (rk_fixed_word), and the stack canary written. Returns 0, or 1 (store
+ * header), 2 (store contents), 3 (boundary-word module) or 4 (a
+ * fixed-extension or pinned load).
  * Lives in the job slot: call it once, before any module runs. */
 uint8_t rk_boot(void);
 /* Boot-only (job slot): one REU command with I/O banked out during the DMA,

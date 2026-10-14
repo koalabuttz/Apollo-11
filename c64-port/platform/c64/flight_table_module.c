@@ -18,12 +18,18 @@
  * record the group's tables take (include/flight_io.h) where it is not the
  * mission's base record (rk_io), and FS_IO_CM is 1 when that record starts
  * with cm_native_io: the module then runs them on that record, written from
- * the resident's (rk_device, rk_hardware and rk_flight)
- * and written back after, and is never called directly. Value: the step's
+ * the resident's (rk_device, rk_hardware, and rk_flight)
+ * and written back after, and is never called directly. FS_DIRECT_ONLY
+ * (pinned modules, base record only) links no transfer engine: the main
+ * only builds the table list and returns EXEC_OK, and the resident runs the
+ * routines through rk_direct from the next step on. Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
 #ifdef FS_IO_KIND
 #include "flight_io.h"
+#ifdef FS_DIRECT_ONLY
+#error "a direct-only module takes the base record (rk_direct passes rk_device)"
+#endif
 #endif
 #ifdef FS_FIXED_DATA
 #include "self_check.h"
@@ -110,6 +116,11 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  }
  rk_module_program(&p,t);
+#ifdef FS_DIRECT_ONLY
+ (void)io;(void)steps;(void)status;
+ e->status=EXEC_OK;
+ return APOLLO_OV2_DONE;
+#endif
 #ifdef FS_IO_KIND
  {
   static flight_io_buffer b;   /* static: absolute addressing is smaller than the soft stack */

@@ -18,6 +18,18 @@ const agc_native_program *irc_program_compiled(uint8_t cm);
 /* The spec's native RTB routines (tools/interp_runtime_differential.py). */
 extern const agc_routine_table irt_rtb_lm,irt_rtb_cm;
 const agc_native_program *irc_program(uint8_t cm);
+/* -DIRT_CORE runs the compact interpreter (src/lm_interp_core.c) instead. */
+#ifdef IRT_CORE
+#define IRT_LM lm_interp_core
+#define IRT_CM cm_interp_core
+#define IRT_LM_BASIC lm_interp_core_basic
+#define IRT_CM_BASIC cm_interp_core_basic
+#else
+#define IRT_LM lm_interp_runtime
+#define IRT_CM cm_interp_runtime
+#define IRT_LM_BASIC lm_interp_runtime_basic
+#define IRT_CM_BASIC cm_interp_runtime_basic
+#endif
 static agc_native_program prog[2];
 static agc_routine_table basic[2][8], interp[2][2];
 static agc_routine_entry *points[2];
@@ -74,14 +86,14 @@ const agc_native_program *irc_program(uint8_t cm){
    r=*e==','?e+1:e;}
   for(i=0;i<40960u;++i)n+=(in[i>>3]>>(i&7u))&1u;
   points[cm]=calloc(n?n:1u,sizeof *points[cm]);
-  for(i=0;i<40960u;++i)if((in[i>>3]>>(i&7u))&1u){points[cm][k].physical=(uint16_t)i;points[cm][k].call=cm?cm_interp_runtime:lm_interp_runtime;++k;}
+  for(i=0;i<40960u;++i)if((in[i>>3]>>(i&7u))&1u){points[cm][k].physical=(uint16_t)i;points[cm][k].call=cm?IRT_CM:IRT_LM;++k;}
   prog[cm]=*p;
   if(p->basic_count>6u){fprintf(stderr,"too many basic tables\n");exit(2);}
   /* The spec's RTB natives first: the file's compiled basic code may hold
    * a routine at an RTB target that only its inline call ever reached. */
   basic[cm][0]=cm?irt_rtb_cm:irt_rtb_lm;
   for(i=0;i<p->basic_count;++i)basic[cm][i+1u]=p->basic[i];
-  basic[cm][i+1u]=cm?cm_interp_runtime_basic:lm_interp_runtime_basic;
+  basic[cm][i+1u]=cm?IRT_CM_BASIC:IRT_LM_BASIC;
   prog[cm].basic=basic[cm];prog[cm].basic_count=(uint8_t)(p->basic_count+2u);
   k=0;
 #ifdef AGC_TRANSFER_DANZIG_MARKER
