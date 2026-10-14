@@ -3536,8 +3536,64 @@
           ],
           "scope": "All of P76 (13,2071-13,2230), 96 words, as fifteen basic routines keyed by Z and twelve interpretive routines keyed at their NEWOPS, of the control-transfer ABI on the Comanche055 interpretive bodies: P76 (UPFLAG TRACKFLG), the V06N84 and V06N33 GOFLASH displays and their terminate/proceed/recycle returns, TIG and OTHPREC, COMPMAT (UNIT, VCOMP, VXV, VXM, VSL1, VAD, INTSTALL), P76SUB1 calls, VCV/RCV by VSR* 0,2, TET, CLEAR INTYPFLG, INTEGRVS, INTSTALL, RRECT/RCV/TET and MINIRECT, PHASCHNG 04024, REINTFLG, ATOPOTH, SSP QPRET OUT, INTWAKE1, OUT, ENDP76 (MARKCTR, VHFCNT, MRKBUF2, GOTOPOOH) and P76SUB1 (CLEAR MOONFLAG, SLOAD X2, BHIZ, SET MOONFLAG, RVQ): from each entry through the trampoline to the first point outside them (UPFLAG, PHASCHNG, BANKCALL, GOTOPOOH, INTPRET, POODOO, or a NEWOPS outside 13,2110-2174, 2202-2206, 2211 and 2222-2230).",
           "verification": "docs/CM-P76.md"
+        },
+        {
+          "native_files": [
+            "src/cm_p76_file.c",
+            "include/cm_p76_file.h"
+          ],
+          "scope": "The whole file (13,2071-2230): P76 (TRACKFLG, the V06N84 and V06N33 displays with their three GOFLASH returns each), COMPMAT, INTOTHIS through ATOPOTH and BANKCALL INTWAKE1, OUT, ENDP76 (MARKCTR, VHFCNT, MRKBUF2) and P76SUB1, basic and interpretive (cm_p76_file_basic, cm_p76_file_interpretive), and the V06N84 constants.",
+          "verification": "docs/CM-P76-FILE.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the counters (010-061) from the case seed in the image; the interrupt-enable bit, SUPERBNK and the I/O channels in the native I/O record (flight-device engine).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Basic (cm_p76_file_basic): 13,2071 P76, 2073 and 2201 (after UPFLAG), 2177 (after PHASCHNG), 2076 and 2104 (after BANKCALL GOFLASH: terminate), 2077 and 2105 (proceed) and 2100 and 2106 (loaded through the DSKY), 2175 and 2207 (after EXIT), and 2212 ENDP76. Interpretive (cm_p76_file_interpretive, at NEWOPS with LOC there): 2110 and 2202 (after TC INTPRET), 2114 COMPMAT and 2157 (STCALL returns), the CALL returns 2136, 2140, 2161, 2163, 2174 and 2204, 2211 OUT (QPRET's return from INTWAKE1), 2222 P76SUB1, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (2112, 2116, 2117, 2120, 2122, 2123, 2125, 2127, 2131, 2133, 2134, 2143, 2145, 2147, 2151, 2152, 2155 INTOTHIS, 2165, 2166, 2170, 2172, 2225, 2230; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 13 with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 13, an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "unreached": "None. The oracle executed all 22 basic instructions and read all 66 interpretive words (evidence/cm-p76-file/cm-p76-file-closure.json).",
+          "data_validity": "ADRES TRACKFLG and REINTFLG (read by UPFLAG), OCT 04024 (read by PHASCHNG), the CADRs after BANKCALL (GOFLASH, INTWAKE1) and V06N84 / V06N84 +1 (NV 0684, 0633, read by CAF) are read as the original constants."
+        },
+        "external_continuations": [
+          "UPFLAG, PHASCHNG and BANKCALL GOFLASH, which return to this file's registered return points",
+          "BANKCALL INTWAKE1, which returns interpretively through QPRET to OUT",
+          "GOTOPOOH (ENDP76)",
+          "The interpreter (INTPRET, NEWOPS) and the routines it calls: OTHPREC, INTSTALL, INTEGRVS, MINIRECT and ATOPOTH",
+          "The Executive's CHANG2 (05170) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p76-file/cm-p76-file-source-map.json",
+            "sha256": "578bd8b0bb12b3348a1070073c3afa0be3f1c90d1d063120df0739b58e85a480"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p76-file/cm-p76-file-proof.json",
+            "sha256": "5d1c1fabc720ed58d00c6a69596a7b645c727e0e778bb5e6c2d7501c5f69ab56"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p76-file/cm-p76-file-host.log",
+            "sha256": "c89b551e790d2af5882c4d6bf56f771efbcc36970d14f89949d02a70c7aace8f"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p76-file/cm-p76-file-vice.log",
+            "sha256": "ce35e7cbcbda848e958fed544c8bbb220b025c087cac1cb83f55f44e90fb29b4",
+            "vice_targets": {
+              "vice-cm-p76-file": 76
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p76-file/cm-p76-file-proof.json",
+            "sha256": "5d1c1fabc720ed58d00c6a69596a7b645c727e0e778bb5e6c2d7501c5f69ab56"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-p76-file/cm-p76-file-closure.json",
+            "sha256": "f275a2522917ac6d99b2987527dda3f906f8ec3df33ea48639a8b35c04e5e9a3"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
