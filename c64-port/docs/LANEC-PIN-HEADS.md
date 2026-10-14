@@ -49,6 +49,19 @@ missions) covers the heads where they join the rest of Pinball.
 | family | replaces | points |
 |---|---|---|
 | load | load_request, load_complete | ABCLOAD, ABLOAD, ALOAD, BLOAD, CLOAD calls and returns (bank 41); LOADLV, LOADLV +5 |
+| lamp | lamp_lifecycle | VBTSTLTS (CM: and its BANKCALL return), TSTLTS1, TSTLTS2, TSTLTS3 (bank 41) |
+| request | operator_request, operator_schedule | VBRQEXEC, VBRQWAIT (bank 41) |
+| proceed | load_control | VBPROC, VBTERM, PROCKEY, VBRESEQ, RECALTST (bank 40) |
+| nvsub | nv_admission, nv_consumer | NVSUB, NVMONOPT (fixed-fixed) |
+
+Dropped: nv_update (nv_update_general accepts its states), decimal and
+decimal_raw (decimal_general and, in Comanche, cm_formatter accept theirs);
+pin-transfer completes as many round trips without them.
+
+A head's test cases must not leave for an address no caller returns to
+(a TC Q with a made-up Q): routines.py takes every exit of every suite as
+a place the original may go, and a made-up one turns other round trips
+that stop there into refusals.
 
 `dropped` (same cfg) removes composites from every try-list, not only at
 head points: where the rest of a try-list or a head accepts every state the

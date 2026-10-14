@@ -361,10 +361,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33404u, 0u, 123u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 267u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 378u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
-    { 33430u, 0u, 1u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 256u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 512u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 767u, 150u, LANEC_LM },   /* 40,3226 decimal */
+    { 33430u, 0u, 2u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 256u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 514u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 768u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
     { 33434u, 0u, 23u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 3403u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 6731u, 221u, LANEC_LM },   /* 40,3232 gaps */
@@ -377,10 +377,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33451u, 0u, 3353u, 221u, LANEC_LM },   /* 40,3253 gaps */
     { 33451u, 0u, 6681u, 221u, LANEC_LM },   /* 40,3253 gaps */
     { 33451u, 0u, 10009u, 221u, LANEC_LM },   /* 40,3253 gaps */
-    { 33458u, 0u, 0u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 255u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 513u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 768u, 150u, LANEC_LM },   /* 40,3262 decimal */
+    { 33458u, 0u, 0u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 254u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 510u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 767u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
     { 33462u, 0u, 0u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
     { 33462u, 0u, 128u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
     { 33462u, 0u, 256u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
@@ -581,22 +581,22 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33992u, 0u, 123u, 128u, LANEC_LM },   /* 41,2310 address_request */
     { 33992u, 0u, 267u, 128u, LANEC_LM },   /* 41,2310 address_request */
     { 33992u, 0u, 378u, 128u, LANEC_LM },   /* 41,2310 address_request */
-    { 33999u, 0u, 256u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 288u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 320u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 352u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 34000u, 0u, 384u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 416u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 448u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 480u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34015u, 0u, 0u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 32u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 64u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 96u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34016u, 0u, 128u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 160u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 192u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 224u, 200u, LANEC_LM },   /* 41,2340 nv_update */
+    { 33999u, 0u, 256u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 288u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 320u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 352u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 34000u, 0u, 384u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 416u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 448u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 480u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34015u, 0u, 0u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 32u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 64u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 96u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34016u, 0u, 128u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 160u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 192u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 224u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
     { 34023u, 0u, 13316u, 221u, LANEC_LM },   /* 41,2347 gaps */
     { 34023u, 0u, 13700u, 221u, LANEC_LM },   /* 41,2347 gaps */
     { 34023u, 0u, 14084u, 221u, LANEC_LM },   /* 41,2347 gaps */
@@ -1713,22 +1713,22 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33992u, 0u, 642u, 128u, LANEC_CM },   /* 41,2310 address_request */
     { 33992u, 0u, 758u, 128u, LANEC_CM },   /* 41,2310 address_request */
     { 33992u, 0u, 890u, 128u, LANEC_CM },   /* 41,2310 address_request */
-    { 33999u, 0u, 768u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 800u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 832u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 864u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 34000u, 0u, 896u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 928u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 960u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 992u, 200u, LANEC_CM },   /* 41,2320 nv_update */
+    { 33999u, 0u, 768u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 800u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 832u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 864u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 34000u, 0u, 896u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 928u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 960u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 992u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34015u, 0u, 36u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 513u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 1043u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 1520u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34016u, 0u, 640u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 672u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 704u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 736u, 200u, LANEC_CM },   /* 41,2340 nv_update */
+    { 34016u, 0u, 640u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 672u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 704u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 736u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34023u, 0u, 13322u, 221u, LANEC_CM },   /* 41,2347 gaps */
     { 34023u, 0u, 13706u, 221u, LANEC_CM },   /* 41,2347 gaps */
     { 34023u, 0u, 14090u, 221u, LANEC_CM },   /* 41,2347 gaps */
@@ -2636,10 +2636,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33404u, 0u, 123u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 267u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
     { 33404u, 0u, 378u, 167u, LANEC_LM },   /* 40,3174 input_arithmetic */
-    { 33430u, 0u, 1u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 256u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 512u, 150u, LANEC_LM },   /* 40,3226 decimal */
-    { 33430u, 0u, 767u, 150u, LANEC_LM },   /* 40,3226 decimal */
+    { 33430u, 0u, 2u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 256u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 514u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
+    { 33430u, 0u, 768u, 152u, LANEC_LM },   /* 40,3226 decimal_general */
     { 33434u, 0u, 23u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 3403u, 221u, LANEC_LM },   /* 40,3232 gaps */
     { 33434u, 0u, 6731u, 221u, LANEC_LM },   /* 40,3232 gaps */
@@ -2652,10 +2652,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33451u, 0u, 3353u, 221u, LANEC_LM },   /* 40,3253 gaps */
     { 33451u, 0u, 6681u, 221u, LANEC_LM },   /* 40,3253 gaps */
     { 33451u, 0u, 10009u, 221u, LANEC_LM },   /* 40,3253 gaps */
-    { 33458u, 0u, 0u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 255u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 513u, 150u, LANEC_LM },   /* 40,3262 decimal */
-    { 33458u, 0u, 768u, 150u, LANEC_LM },   /* 40,3262 decimal */
+    { 33458u, 0u, 0u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 254u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 510u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
+    { 33458u, 0u, 767u, 152u, LANEC_LM },   /* 40,3262 decimal_general */
     { 33462u, 0u, 0u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
     { 33462u, 0u, 128u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
     { 33462u, 0u, 256u, 164u, LANEC_LM },   /* 40,3266 fraction_pair */
@@ -2856,22 +2856,22 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33992u, 0u, 123u, 128u, LANEC_LM },   /* 41,2310 address_request */
     { 33992u, 0u, 267u, 128u, LANEC_LM },   /* 41,2310 address_request */
     { 33992u, 0u, 378u, 128u, LANEC_LM },   /* 41,2310 address_request */
-    { 33999u, 0u, 256u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 288u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 320u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 352u, 200u, LANEC_LM },   /* 41,2317 nv_update */
-    { 34000u, 0u, 384u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 416u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 448u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 480u, 200u, LANEC_LM },   /* 41,2320 nv_update */
-    { 34015u, 0u, 0u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 32u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 64u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34015u, 0u, 96u, 200u, LANEC_LM },   /* 41,2337 nv_update */
-    { 34016u, 0u, 128u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 160u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 192u, 200u, LANEC_LM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 224u, 200u, LANEC_LM },   /* 41,2340 nv_update */
+    { 33999u, 0u, 256u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 288u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 320u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 352u, 201u, LANEC_LM },   /* 41,2317 nv_update_general */
+    { 34000u, 0u, 384u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 416u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 448u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 480u, 201u, LANEC_LM },   /* 41,2320 nv_update_general */
+    { 34015u, 0u, 0u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 32u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 64u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 96u, 201u, LANEC_LM },   /* 41,2337 nv_update_general */
+    { 34016u, 0u, 128u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 160u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 192u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 224u, 201u, LANEC_LM },   /* 41,2340 nv_update_general */
     { 34023u, 0u, 13316u, 221u, LANEC_LM },   /* 41,2347 gaps */
     { 34023u, 0u, 13700u, 221u, LANEC_LM },   /* 41,2347 gaps */
     { 34023u, 0u, 14084u, 221u, LANEC_LM },   /* 41,2347 gaps */
@@ -3988,22 +3988,22 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33992u, 0u, 642u, 128u, LANEC_CM },   /* 41,2310 address_request */
     { 33992u, 0u, 758u, 128u, LANEC_CM },   /* 41,2310 address_request */
     { 33992u, 0u, 890u, 128u, LANEC_CM },   /* 41,2310 address_request */
-    { 33999u, 0u, 768u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 800u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 832u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 33999u, 0u, 864u, 200u, LANEC_CM },   /* 41,2317 nv_update */
-    { 34000u, 0u, 896u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 928u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 960u, 200u, LANEC_CM },   /* 41,2320 nv_update */
-    { 34000u, 0u, 992u, 200u, LANEC_CM },   /* 41,2320 nv_update */
+    { 33999u, 0u, 768u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 800u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 832u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 33999u, 0u, 864u, 201u, LANEC_CM },   /* 41,2317 nv_update_general */
+    { 34000u, 0u, 896u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 928u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 960u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
+    { 34000u, 0u, 992u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34015u, 0u, 36u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 513u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 1043u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
     { 34015u, 0u, 1520u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34016u, 0u, 640u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 672u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 704u, 200u, LANEC_CM },   /* 41,2340 nv_update */
-    { 34016u, 0u, 736u, 200u, LANEC_CM },   /* 41,2340 nv_update */
+    { 34016u, 0u, 640u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 672u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 704u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
+    { 34016u, 0u, 736u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34023u, 0u, 13322u, 221u, LANEC_CM },   /* 41,2347 gaps */
     { 34023u, 0u, 13706u, 221u, LANEC_CM },   /* 41,2347 gaps */
     { 34023u, 0u, 14090u, 221u, LANEC_CM },   /* 41,2347 gaps */
@@ -4811,11 +4811,11 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 655u, { 34131u, 0u, 384u, 151u, LANEC_LM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_decimal_lm
+#ifdef LANEC_PIN_C64_MOD_pw_decimal_general_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 348u, { 33430u, 0u, 1u, 150u, LANEC_LM } },
-    { 349u, { 33430u, 0u, 256u, 150u, LANEC_LM } },
-    { 364u, { 33458u, 0u, 0u, 150u, LANEC_LM } },
+    { 348u, { 33430u, 0u, 2u, 152u, LANEC_LM } },
+    { 349u, { 33430u, 0u, 256u, 152u, LANEC_LM } },
+    { 364u, { 33458u, 0u, 0u, 152u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_row_lm
@@ -5278,16 +5278,16 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 36u, { 2178u, 0u, 0u, 199u, LANEC_LM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_nv_update_cm
+#ifdef LANEC_PIN_C64_MOD_pw_nv_update_general_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1715u, { 34016u, 0u, 736u, 200u, LANEC_CM } },
+    { 1715u, { 34016u, 0u, 736u, 201u, LANEC_CM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_nv_update_lm
+#ifdef LANEC_PIN_C64_MOD_pw_nv_update_general_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
-    { 569u, { 33999u, 0u, 288u, 200u, LANEC_LM } },
-    { 573u, { 34000u, 0u, 416u, 200u, LANEC_LM } },
-    { 576u, { 34015u, 0u, 0u, 200u, LANEC_LM } },
+    { 569u, { 33999u, 0u, 288u, 201u, LANEC_LM } },
+    { 573u, { 34000u, 0u, 416u, 201u, LANEC_LM } },
+    { 576u, { 34015u, 0u, 0u, 201u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_consumer_cm

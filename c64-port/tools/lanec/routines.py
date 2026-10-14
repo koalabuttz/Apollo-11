@@ -74,7 +74,7 @@ FAMILIES = {
                        'nvsub': ('nv_admission', 'nv_consumer')},
                 # modules no routine tries (the rest of the try-list and the heads accept
                 # their states; their suites stay as host tests of the composite)
-                dropped=()),
+                dropped=('nv_update', 'decimal', 'decimal_raw')),
 }
 
 
