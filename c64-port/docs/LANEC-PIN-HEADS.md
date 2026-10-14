@@ -54,9 +54,14 @@ missions) covers the heads where they join the rest of Pinball.
 | proceed | load_control | VBPROC, VBTERM, PROCKEY, VBRESEQ, RECALTST (bank 40) |
 | nvsub | nv_admission, nv_consumer | NVSUB, NVMONOPT (fixed-fixed) |
 
-Dropped: nv_update (nv_update_general accepts its states), decimal and
-decimal_raw (decimal_general and, in Comanche, cm_formatter accept theirs);
-pin-transfer completes as many round trips without them.
+Dropped: nv_update (nv_update_general accepts its states), decimal
+(decimal_general and decimal_raw accept its states), Comanche's
+decimal_general (cm_formatter and decimal_raw accept its states at
+DSPDECWD; Luminary keeps it) and the six display composites the display
+heads replace (docs/LANEC-PIN-HEADS-DISPLAY.md: decimal_consumer,
+decimal_time_consumer, monitor_consumer, cm_dynamic_display,
+cm_normal_display, cm_nv85). pin-transfer and pin-decdsp3 complete as many
+round trips without them, give or take a few cases.
 
 A head's test cases must not leave for an address no caller returns to
 (a TC Q with a made-up Q): routines.py takes every exit of every suite as

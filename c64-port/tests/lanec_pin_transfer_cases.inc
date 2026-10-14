@@ -245,26 +245,26 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33231u, 0u, 244u, 214u, LANEC_LM },   /* 40,2717 scale */
     { 33231u, 0u, 513u, 214u, LANEC_LM },   /* 40,2717 scale */
     { 33231u, 0u, 777u, 214u, LANEC_LM },   /* 40,2717 scale */
-    { 33242u, 0u, 66u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 130u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 400u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 642u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33243u, 0u, 3u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 202u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 458u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 714u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33244u, 0u, 196u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 274u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 530u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 651u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33246u, 0u, 12u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 197u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 467u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 773u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33253u, 0u, 134u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 390u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 646u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 845u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
+    { 33242u, 0u, 0u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 128u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 256u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 384u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33243u, 0u, 0u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 2034u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 4116u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 6150u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33244u, 0u, 5u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 2038u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 4121u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 6154u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33246u, 0u, 1u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 2035u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 4117u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 6151u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33253u, 0u, 4u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 2042u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 4120u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 6158u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
     { 33255u, 0u, 0u, 210u, LANEC_LM },   /* 40,2747 read_pair */
     { 33255u, 0u, 128u, 210u, LANEC_LM },   /* 40,2747 read_pair */
     { 33255u, 0u, 257u, 210u, LANEC_LM },   /* 40,2747 read_pair */
@@ -665,10 +665,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34125u, 0u, 123u, 192u, LANEC_LM },   /* 41,2515 noun_check */
     { 34125u, 0u, 267u, 192u, LANEC_LM },   /* 41,2515 noun_check */
     { 34125u, 0u, 378u, 192u, LANEC_LM },   /* 41,2515 noun_check */
-    { 34131u, 0u, 0u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 128u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 256u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 384u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
+    { 34131u, 0u, 0u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 128u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 256u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 384u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
     { 34143u, 0u, 0u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
     { 34143u, 0u, 128u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
     { 34143u, 0u, 256u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
@@ -677,10 +677,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34166u, 0u, 120u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
     { 34166u, 0u, 240u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
     { 34166u, 0u, 375u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
-    { 34168u, 0u, 15u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 253u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 523u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 777u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
+    { 34168u, 0u, 0u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 1775u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 3550u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 5325u, 229u, LANEC_LM },   /* 41,2570 head_decount */
     { 34190u, 0u, 0u, 224u, LANEC_LM },   /* 41,2616 head_load */
     { 34190u, 0u, 336u, 224u, LANEC_LM },   /* 41,2616 head_load */
     { 34190u, 0u, 672u, 224u, LANEC_LM },   /* 41,2616 head_load */
@@ -1065,62 +1065,62 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34770u, 0u, 165u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
     { 34770u, 0u, 309u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
     { 34770u, 0u, 409u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
-    { 35480u, 0u, 194u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 450u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 514u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 706u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35484u, 0u, 131u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 387u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 643u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 707u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35488u, 0u, 4u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 68u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 644u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 900u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35490u, 0u, 5u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 261u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 325u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 581u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35499u, 0u, 198u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 262u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 518u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 774u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35501u, 0u, 135u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 391u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 455u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 711u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35508u, 0u, 72u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 328u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 648u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 712u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35510u, 0u, 9u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 252u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 522u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 779u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35523u, 0u, 2u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 258u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 578u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 722u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35555u, 0u, 11u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 195u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 451u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 771u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35559u, 0u, 20u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 204u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 452u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 708u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35561u, 0u, 69u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 277u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 645u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 717u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35569u, 0u, 6u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 142u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 470u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 838u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35577u, 0u, 7u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 263u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 519u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 775u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
+    { 35480u, 0u, 0u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 256u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 512u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 768u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35484u, 0u, 1u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 257u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 513u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 769u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35488u, 0u, 2u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 258u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 514u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 770u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35490u, 0u, 3u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 259u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 515u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 771u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35499u, 0u, 4u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 260u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 516u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 772u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35501u, 0u, 5u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 261u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 517u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 773u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35508u, 0u, 6u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 262u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 518u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 774u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35510u, 0u, 7u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 263u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 519u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 775u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35523u, 0u, 0u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 129u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 258u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 387u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35555u, 0u, 2u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 1969u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 3944u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 5920u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35559u, 0u, 3u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 1971u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 3945u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 5916u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35561u, 0u, 4u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 1976u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 3954u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 5918u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35569u, 0u, 0u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 1968u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 3947u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 5923u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35577u, 0u, 1u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 1974u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 3949u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 5922u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
     { 35626u, 0u, 0u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 120u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 240u, 173u, LANEC_LM },   /* 42,3452 input_time */
@@ -1169,10 +1169,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 2168u, 0u, 194u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
     { 2168u, 0u, 386u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
     { 2168u, 0u, 578u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
-    { 2169u, 0u, 35u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 512u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 1042u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 1519u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
+    { 2169u, 0u, 3u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 195u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 387u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 579u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
     { 2176u, 0u, 1024u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
     { 2176u, 0u, 1052u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
     { 2176u, 0u, 1081u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
@@ -1361,30 +1361,30 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 33169u, 0u, 1024u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
     { 33169u, 0u, 2047u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
     { 33169u, 0u, 3070u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
-    { 33171u, 0u, 40u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 521u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 1047u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 1528u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33182u, 0u, 1090u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1225u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1666u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1922u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33183u, 0u, 1027u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1091u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1361u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1603u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33184u, 0u, 1028u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1220u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1419u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1796u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33186u, 0u, 1157u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1235u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1491u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1612u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33193u, 0u, 1094u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1293u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1478u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1748u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
+    { 33171u, 0u, 1026u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 2562u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 5122u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 6658u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33182u, 0u, 512u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 640u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 768u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 896u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33183u, 0u, 42u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 2061u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 4091u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 6125u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33184u, 0u, 43u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 2070u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 4099u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 6126u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33186u, 0u, 47u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 2069u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 4098u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 6118u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33193u, 0u, 46u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 2071u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 4096u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 6122u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
     { 33195u, 0u, 1844u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
     { 33195u, 0u, 1895u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
     { 33195u, 0u, 1946u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
@@ -1721,10 +1721,10 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34000u, 0u, 928u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34000u, 0u, 960u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34000u, 0u, 992u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
-    { 34015u, 0u, 36u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 513u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 1043u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 1520u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
+    { 34015u, 0u, 512u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 544u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 576u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 608u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
     { 34016u, 0u, 640u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34016u, 0u, 672u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34016u, 0u, 704u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
@@ -1797,22 +1797,22 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34125u, 0u, 644u, 192u, LANEC_CM },   /* 41,2515 noun_check */
     { 34125u, 0u, 786u, 192u, LANEC_CM },   /* 41,2515 noun_check */
     { 34125u, 0u, 892u, 192u, LANEC_CM },   /* 41,2515 noun_check */
-    { 34131u, 0u, 512u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 640u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 768u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 896u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34143u, 0u, 39u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 520u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 1046u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 1527u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34166u, 0u, 41u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 522u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 1048u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 1529u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34168u, 0u, 42u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 523u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 1049u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 1530u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
+    { 34131u, 0u, 512u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 640u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 768u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 896u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34143u, 0u, 512u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 640u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 768u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 896u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34166u, 0u, 515u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 635u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 756u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 892u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34168u, 0u, 534u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 2433u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 4332u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 6231u, 229u, LANEC_CM },   /* 41,2570 head_decount */
     { 34190u, 0u, 21u, 224u, LANEC_CM },   /* 41,2616 head_load */
     { 34190u, 0u, 357u, 224u, LANEC_CM },   /* 41,2616 head_load */
     { 34190u, 0u, 693u, 224u, LANEC_CM },   /* 41,2616 head_load */
@@ -2157,14 +2157,14 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34685u, 0u, 1621u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
     { 34685u, 0u, 1650u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
     { 34685u, 0u, 1678u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
-    { 34690u, 0u, 37u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 514u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 1044u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 1521u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34692u, 0u, 38u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 515u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 1045u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 1522u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
+    { 34690u, 0u, 1707u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1735u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1764u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1792u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34692u, 0u, 1821u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1849u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1877u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1905u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
     { 34698u, 0u, 1934u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
     { 34698u, 0u, 1962u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
     { 34698u, 0u, 1991u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
@@ -2201,38 +2201,38 @@ static const transfer_case cases[LANEC_PIN_TRANSFER_CASES] = {
     { 34769u, 0u, 650u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
     { 34769u, 0u, 772u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
     { 34769u, 0u, 896u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
-    { 35427u, 0u, 1154u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1218u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1474u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1538u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35431u, 0u, 1155u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1411u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1667u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1731u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35435u, 0u, 1092u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1348u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1668u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1924u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35437u, 0u, 1029u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1285u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1605u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1861u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35446u, 0u, 1222u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1286u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1542u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1798u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35448u, 0u, 1159u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1223u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1479u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1735u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35455u, 0u, 1096u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1352u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1416u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1672u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35457u, 0u, 1033u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1290u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1546u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1790u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
+    { 35427u, 0u, 1024u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1280u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1536u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1792u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35431u, 0u, 1025u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1281u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1537u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1793u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35435u, 0u, 1026u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1282u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1538u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1794u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35437u, 0u, 1027u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1283u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1539u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1795u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35446u, 0u, 1028u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1284u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1540u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1796u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35448u, 0u, 1029u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1285u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1541u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1797u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35455u, 0u, 1030u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1286u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1542u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1798u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35457u, 0u, 1031u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1287u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1543u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1799u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35470u, 0u, 0u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
     { 35470u, 0u, 510u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
     { 35470u, 0u, 1026u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
@@ -2520,26 +2520,26 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33231u, 0u, 244u, 214u, LANEC_LM },   /* 40,2717 scale */
     { 33231u, 0u, 513u, 214u, LANEC_LM },   /* 40,2717 scale */
     { 33231u, 0u, 777u, 214u, LANEC_LM },   /* 40,2717 scale */
-    { 33242u, 0u, 66u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 130u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 400u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33242u, 0u, 642u, 157u, LANEC_LM },   /* 40,2732 decimal_time_consumer */
-    { 33243u, 0u, 3u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 202u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 458u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33243u, 0u, 714u, 157u, LANEC_LM },   /* 40,2733 decimal_time_consumer */
-    { 33244u, 0u, 196u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 274u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 530u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33244u, 0u, 651u, 157u, LANEC_LM },   /* 40,2734 decimal_time_consumer */
-    { 33246u, 0u, 12u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 197u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 467u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33246u, 0u, 773u, 157u, LANEC_LM },   /* 40,2736 decimal_time_consumer */
-    { 33253u, 0u, 134u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 390u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 646u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
-    { 33253u, 0u, 845u, 157u, LANEC_LM },   /* 40,2745 decimal_time_consumer */
+    { 33242u, 0u, 0u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 128u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 256u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33242u, 0u, 384u, 219u, LANEC_LM },   /* 40,2732 two_integer */
+    { 33243u, 0u, 0u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 2034u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 4116u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33243u, 0u, 6150u, 231u, LANEC_LM },   /* 40,2733 head_twoint */
+    { 33244u, 0u, 5u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 2038u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 4121u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33244u, 0u, 6154u, 231u, LANEC_LM },   /* 40,2734 head_twoint */
+    { 33246u, 0u, 1u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 2035u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 4117u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33246u, 0u, 6151u, 231u, LANEC_LM },   /* 40,2736 head_twoint */
+    { 33253u, 0u, 4u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 2042u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 4120u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
+    { 33253u, 0u, 6158u, 231u, LANEC_LM },   /* 40,2745 head_twoint */
     { 33255u, 0u, 0u, 210u, LANEC_LM },   /* 40,2747 read_pair */
     { 33255u, 0u, 128u, 210u, LANEC_LM },   /* 40,2747 read_pair */
     { 33255u, 0u, 257u, 210u, LANEC_LM },   /* 40,2747 read_pair */
@@ -2940,10 +2940,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34125u, 0u, 123u, 192u, LANEC_LM },   /* 41,2515 noun_check */
     { 34125u, 0u, 267u, 192u, LANEC_LM },   /* 41,2515 noun_check */
     { 34125u, 0u, 378u, 192u, LANEC_LM },   /* 41,2515 noun_check */
-    { 34131u, 0u, 0u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 128u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 256u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 384u, 151u, LANEC_LM },   /* 41,2523 decimal_consumer */
+    { 34131u, 0u, 0u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 128u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 256u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 384u, 153u, LANEC_LM },   /* 41,2523 decimal_load */
     { 34143u, 0u, 0u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
     { 34143u, 0u, 128u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
     { 34143u, 0u, 256u, 156u, LANEC_LM },   /* 41,2537 decimal_select */
@@ -2952,10 +2952,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34166u, 0u, 120u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
     { 34166u, 0u, 240u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
     { 34166u, 0u, 375u, 155u, LANEC_LM },   /* 41,2566 decimal_row */
-    { 34168u, 0u, 15u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 253u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 523u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
-    { 34168u, 0u, 777u, 157u, LANEC_LM },   /* 41,2570 decimal_time_consumer */
+    { 34168u, 0u, 0u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 1775u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 3550u, 229u, LANEC_LM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 5325u, 229u, LANEC_LM },   /* 41,2570 head_decount */
     { 34190u, 0u, 0u, 224u, LANEC_LM },   /* 41,2616 head_load */
     { 34190u, 0u, 336u, 224u, LANEC_LM },   /* 41,2616 head_load */
     { 34190u, 0u, 672u, 224u, LANEC_LM },   /* 41,2616 head_load */
@@ -3340,62 +3340,62 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34770u, 0u, 165u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
     { 34770u, 0u, 309u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
     { 34770u, 0u, 409u, 177u, LANEC_LM },   /* 41,3722 lamp_test */
-    { 35480u, 0u, 194u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 450u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 514u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35480u, 0u, 706u, 157u, LANEC_LM },   /* 42,3230 decimal_time_consumer */
-    { 35484u, 0u, 131u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 387u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 643u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35484u, 0u, 707u, 157u, LANEC_LM },   /* 42,3234 decimal_time_consumer */
-    { 35488u, 0u, 4u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 68u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 644u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35488u, 0u, 900u, 157u, LANEC_LM },   /* 42,3240 decimal_time_consumer */
-    { 35490u, 0u, 5u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 261u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 325u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35490u, 0u, 581u, 157u, LANEC_LM },   /* 42,3242 decimal_time_consumer */
-    { 35499u, 0u, 198u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 262u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 518u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35499u, 0u, 774u, 157u, LANEC_LM },   /* 42,3253 decimal_time_consumer */
-    { 35501u, 0u, 135u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 391u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 455u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35501u, 0u, 711u, 157u, LANEC_LM },   /* 42,3255 decimal_time_consumer */
-    { 35508u, 0u, 72u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 328u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 648u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35508u, 0u, 712u, 157u, LANEC_LM },   /* 42,3264 decimal_time_consumer */
-    { 35510u, 0u, 9u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 252u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 522u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35510u, 0u, 779u, 157u, LANEC_LM },   /* 42,3266 decimal_time_consumer */
-    { 35523u, 0u, 2u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 258u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 578u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35523u, 0u, 722u, 157u, LANEC_LM },   /* 42,3303 decimal_time_consumer */
-    { 35555u, 0u, 11u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 195u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 451u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35555u, 0u, 771u, 157u, LANEC_LM },   /* 42,3343 decimal_time_consumer */
-    { 35559u, 0u, 20u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 204u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 452u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35559u, 0u, 708u, 157u, LANEC_LM },   /* 42,3347 decimal_time_consumer */
-    { 35561u, 0u, 69u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 277u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 645u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35561u, 0u, 717u, 157u, LANEC_LM },   /* 42,3351 decimal_time_consumer */
-    { 35569u, 0u, 6u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 142u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 470u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35569u, 0u, 838u, 157u, LANEC_LM },   /* 42,3361 decimal_time_consumer */
-    { 35577u, 0u, 7u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 263u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 519u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
-    { 35577u, 0u, 775u, 157u, LANEC_LM },   /* 42,3371 decimal_time_consumer */
+    { 35480u, 0u, 0u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 256u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 512u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35480u, 0u, 768u, 165u, LANEC_LM },   /* 42,3230 hours_output */
+    { 35484u, 0u, 1u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 257u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 513u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35484u, 0u, 769u, 165u, LANEC_LM },   /* 42,3234 hours_output */
+    { 35488u, 0u, 2u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 258u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 514u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35488u, 0u, 770u, 165u, LANEC_LM },   /* 42,3240 hours_output */
+    { 35490u, 0u, 3u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 259u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 515u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35490u, 0u, 771u, 165u, LANEC_LM },   /* 42,3242 hours_output */
+    { 35499u, 0u, 4u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 260u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 516u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35499u, 0u, 772u, 165u, LANEC_LM },   /* 42,3253 hours_output */
+    { 35501u, 0u, 5u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 261u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 517u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35501u, 0u, 773u, 165u, LANEC_LM },   /* 42,3255 hours_output */
+    { 35508u, 0u, 6u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 262u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 518u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35508u, 0u, 774u, 165u, LANEC_LM },   /* 42,3264 hours_output */
+    { 35510u, 0u, 7u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 263u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 519u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35510u, 0u, 775u, 165u, LANEC_LM },   /* 42,3266 hours_output */
+    { 35523u, 0u, 0u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 129u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 258u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35523u, 0u, 387u, 185u, LANEC_LM },   /* 42,3303 minutes_output */
+    { 35555u, 0u, 2u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 1969u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 3944u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35555u, 0u, 5920u, 232u, LANEC_LM },   /* 42,3343 head_minsec */
+    { 35559u, 0u, 3u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 1971u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 3945u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35559u, 0u, 5916u, 232u, LANEC_LM },   /* 42,3347 head_minsec */
+    { 35561u, 0u, 4u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 1976u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 3954u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35561u, 0u, 5918u, 232u, LANEC_LM },   /* 42,3351 head_minsec */
+    { 35569u, 0u, 0u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 1968u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 3947u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35569u, 0u, 5923u, 232u, LANEC_LM },   /* 42,3361 head_minsec */
+    { 35577u, 0u, 1u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 1974u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 3949u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
+    { 35577u, 0u, 5922u, 232u, LANEC_LM },   /* 42,3371 head_minsec */
     { 35626u, 0u, 0u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 120u, 173u, LANEC_LM },   /* 42,3452 input_time */
     { 35626u, 0u, 240u, 173u, LANEC_LM },   /* 42,3452 input_time */
@@ -3444,10 +3444,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 2168u, 0u, 194u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
     { 2168u, 0u, 386u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
     { 2168u, 0u, 578u, 228u, LANEC_CM },   /* FF,4170 head_nvsub */
-    { 2169u, 0u, 35u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 512u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 1042u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
-    { 2169u, 0u, 1519u, 143u, LANEC_CM },   /* FF,4171 cm_dynamic_display */
+    { 2169u, 0u, 3u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 195u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 387u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
+    { 2169u, 0u, 579u, 228u, LANEC_CM },   /* FF,4171 head_nvsub */
     { 2176u, 0u, 1024u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
     { 2176u, 0u, 1052u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
     { 2176u, 0u, 1081u, 197u, LANEC_CM },   /* FF,4200 nv_continuation */
@@ -3636,30 +3636,30 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 33169u, 0u, 1024u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
     { 33169u, 0u, 2047u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
     { 33169u, 0u, 3070u, 149u, LANEC_CM },   /* 40,2621 cm_scale */
-    { 33171u, 0u, 40u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 521u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 1047u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33171u, 0u, 1528u, 143u, LANEC_CM },   /* 40,2623 cm_dynamic_display */
-    { 33182u, 0u, 1090u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1225u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1666u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33182u, 0u, 1922u, 157u, LANEC_CM },   /* 40,2636 decimal_time_consumer */
-    { 33183u, 0u, 1027u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1091u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1361u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33183u, 0u, 1603u, 157u, LANEC_CM },   /* 40,2637 decimal_time_consumer */
-    { 33184u, 0u, 1028u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1220u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1419u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33184u, 0u, 1796u, 157u, LANEC_CM },   /* 40,2640 decimal_time_consumer */
-    { 33186u, 0u, 1157u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1235u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1491u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33186u, 0u, 1612u, 157u, LANEC_CM },   /* 40,2642 decimal_time_consumer */
-    { 33193u, 0u, 1094u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1293u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1478u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
-    { 33193u, 0u, 1748u, 157u, LANEC_CM },   /* 40,2651 decimal_time_consumer */
+    { 33171u, 0u, 1026u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 2562u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 5122u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33171u, 0u, 6658u, 230u, LANEC_CM },   /* 40,2623 head_dpout */
+    { 33182u, 0u, 512u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 640u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 768u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33182u, 0u, 896u, 219u, LANEC_CM },   /* 40,2636 two_integer */
+    { 33183u, 0u, 42u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 2061u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 4091u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33183u, 0u, 6125u, 231u, LANEC_CM },   /* 40,2637 head_twoint */
+    { 33184u, 0u, 43u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 2070u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 4099u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33184u, 0u, 6126u, 231u, LANEC_CM },   /* 40,2640 head_twoint */
+    { 33186u, 0u, 47u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 2069u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 4098u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33186u, 0u, 6118u, 231u, LANEC_CM },   /* 40,2642 head_twoint */
+    { 33193u, 0u, 46u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 2071u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 4096u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
+    { 33193u, 0u, 6122u, 231u, LANEC_CM },   /* 40,2651 head_twoint */
     { 33195u, 0u, 1844u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
     { 33195u, 0u, 1895u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
     { 33195u, 0u, 1946u, 213u, LANEC_CM },   /* 40,2653 scalar_output */
@@ -3996,10 +3996,10 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34000u, 0u, 928u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34000u, 0u, 960u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
     { 34000u, 0u, 992u, 201u, LANEC_CM },   /* 41,2320 nv_update_general */
-    { 34015u, 0u, 36u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 513u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 1043u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
-    { 34015u, 0u, 1520u, 143u, LANEC_CM },   /* 41,2337 cm_dynamic_display */
+    { 34015u, 0u, 512u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 544u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 576u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
+    { 34015u, 0u, 608u, 201u, LANEC_CM },   /* 41,2337 nv_update_general */
     { 34016u, 0u, 640u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34016u, 0u, 672u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
     { 34016u, 0u, 704u, 201u, LANEC_CM },   /* 41,2340 nv_update_general */
@@ -4072,22 +4072,22 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34125u, 0u, 644u, 192u, LANEC_CM },   /* 41,2515 noun_check */
     { 34125u, 0u, 786u, 192u, LANEC_CM },   /* 41,2515 noun_check */
     { 34125u, 0u, 892u, 192u, LANEC_CM },   /* 41,2515 noun_check */
-    { 34131u, 0u, 512u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 640u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 768u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34131u, 0u, 896u, 151u, LANEC_CM },   /* 41,2523 decimal_consumer */
-    { 34143u, 0u, 39u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 520u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 1046u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34143u, 0u, 1527u, 143u, LANEC_CM },   /* 41,2537 cm_dynamic_display */
-    { 34166u, 0u, 41u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 522u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 1048u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34166u, 0u, 1529u, 143u, LANEC_CM },   /* 41,2566 cm_dynamic_display */
-    { 34168u, 0u, 42u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 523u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 1049u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
-    { 34168u, 0u, 1530u, 143u, LANEC_CM },   /* 41,2570 cm_dynamic_display */
+    { 34131u, 0u, 512u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 640u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 768u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34131u, 0u, 896u, 153u, LANEC_CM },   /* 41,2523 decimal_load */
+    { 34143u, 0u, 512u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 640u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 768u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34143u, 0u, 896u, 156u, LANEC_CM },   /* 41,2537 decimal_select */
+    { 34166u, 0u, 515u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 635u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 756u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34166u, 0u, 892u, 155u, LANEC_CM },   /* 41,2566 decimal_row */
+    { 34168u, 0u, 534u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 2433u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 4332u, 229u, LANEC_CM },   /* 41,2570 head_decount */
+    { 34168u, 0u, 6231u, 229u, LANEC_CM },   /* 41,2570 head_decount */
     { 34190u, 0u, 21u, 224u, LANEC_CM },   /* 41,2616 head_load */
     { 34190u, 0u, 357u, 224u, LANEC_CM },   /* 41,2616 head_load */
     { 34190u, 0u, 693u, 224u, LANEC_CM },   /* 41,2616 head_load */
@@ -4432,14 +4432,14 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34685u, 0u, 1621u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
     { 34685u, 0u, 1650u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
     { 34685u, 0u, 1678u, 197u, LANEC_CM },   /* 41,3575 nv_continuation */
-    { 34690u, 0u, 37u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 514u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 1044u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34690u, 0u, 1521u, 143u, LANEC_CM },   /* 41,3602 cm_dynamic_display */
-    { 34692u, 0u, 38u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 515u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 1045u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
-    { 34692u, 0u, 1522u, 143u, LANEC_CM },   /* 41,3604 cm_dynamic_display */
+    { 34690u, 0u, 1707u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1735u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1764u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34690u, 0u, 1792u, 197u, LANEC_CM },   /* 41,3602 nv_continuation */
+    { 34692u, 0u, 1821u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1849u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1877u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
+    { 34692u, 0u, 1905u, 197u, LANEC_CM },   /* 41,3604 nv_continuation */
     { 34698u, 0u, 1934u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
     { 34698u, 0u, 1962u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
     { 34698u, 0u, 1991u, 197u, LANEC_CM },   /* 41,3612 nv_continuation */
@@ -4476,38 +4476,38 @@ static const transfer_case c64_cases[LANEC_PIN_TRANSFER_C64_CASES] = {
     { 34769u, 0u, 650u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
     { 34769u, 0u, 772u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
     { 34769u, 0u, 896u, 177u, LANEC_CM },   /* 41,3721 lamp_test */
-    { 35427u, 0u, 1154u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1218u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1474u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35427u, 0u, 1538u, 157u, LANEC_CM },   /* 42,3143 decimal_time_consumer */
-    { 35431u, 0u, 1155u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1411u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1667u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35431u, 0u, 1731u, 157u, LANEC_CM },   /* 42,3147 decimal_time_consumer */
-    { 35435u, 0u, 1092u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1348u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1668u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35435u, 0u, 1924u, 157u, LANEC_CM },   /* 42,3153 decimal_time_consumer */
-    { 35437u, 0u, 1029u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1285u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1605u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35437u, 0u, 1861u, 157u, LANEC_CM },   /* 42,3155 decimal_time_consumer */
-    { 35446u, 0u, 1222u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1286u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1542u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35446u, 0u, 1798u, 157u, LANEC_CM },   /* 42,3166 decimal_time_consumer */
-    { 35448u, 0u, 1159u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1223u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1479u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35448u, 0u, 1735u, 157u, LANEC_CM },   /* 42,3170 decimal_time_consumer */
-    { 35455u, 0u, 1096u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1352u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1416u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35455u, 0u, 1672u, 157u, LANEC_CM },   /* 42,3177 decimal_time_consumer */
-    { 35457u, 0u, 1033u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1290u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1546u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
-    { 35457u, 0u, 1790u, 157u, LANEC_CM },   /* 42,3201 decimal_time_consumer */
+    { 35427u, 0u, 1024u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1280u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1536u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35427u, 0u, 1792u, 165u, LANEC_CM },   /* 42,3143 hours_output */
+    { 35431u, 0u, 1025u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1281u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1537u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35431u, 0u, 1793u, 165u, LANEC_CM },   /* 42,3147 hours_output */
+    { 35435u, 0u, 1026u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1282u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1538u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35435u, 0u, 1794u, 165u, LANEC_CM },   /* 42,3153 hours_output */
+    { 35437u, 0u, 1027u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1283u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1539u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35437u, 0u, 1795u, 165u, LANEC_CM },   /* 42,3155 hours_output */
+    { 35446u, 0u, 1028u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1284u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1540u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35446u, 0u, 1796u, 165u, LANEC_CM },   /* 42,3166 hours_output */
+    { 35448u, 0u, 1029u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1285u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1541u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35448u, 0u, 1797u, 165u, LANEC_CM },   /* 42,3170 hours_output */
+    { 35455u, 0u, 1030u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1286u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1542u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35455u, 0u, 1798u, 165u, LANEC_CM },   /* 42,3177 hours_output */
+    { 35457u, 0u, 1031u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1287u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1543u, 165u, LANEC_CM },   /* 42,3201 hours_output */
+    { 35457u, 0u, 1799u, 165u, LANEC_CM },   /* 42,3201 hours_output */
     { 35470u, 0u, 0u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
     { 35470u, 0u, 510u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
     { 35470u, 0u, 1026u, 145u, LANEC_CM },   /* 42,3216 cm_minutes_seconds */
@@ -4657,6 +4657,18 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[19] = {
     { 812u, { 34306u, 0u, 20u, 224u, LANEC_LM } },
 };
 #endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_minsec_lm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+    { 1089u, { 35555u, 0u, 1969u, 232u, LANEC_LM } },
+    { 1100u, { 35569u, 0u, 0u, 232u, LANEC_LM } },
+    { 1107u, { 35577u, 0u, 5922u, 232u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_cm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1159u, { 2169u, 0u, 579u, 228u, LANEC_CM } },
+};
+#endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 20u, { 2156u, 0u, 0u, 228u, LANEC_LM } },
@@ -4682,6 +4694,11 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
 #ifdef LANEC_PIN_C64_MOD_pin_head_request_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 956u, { 34614u, 0u, 0u, 226u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_twoint_cm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1369u, { 33193u, 0u, 2071u, 231u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_key_labels_cm
@@ -4781,17 +4798,6 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1501u, { 33403u, 0u, 256u, 142u, LANEC_CM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_cm_dynamic_display_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
-    { 1159u, { 2169u, 0u, 1519u, 143u, LANEC_CM } },
-    { 1708u, { 34015u, 0u, 36u, 143u, LANEC_CM } },
-    { 1792u, { 34166u, 0u, 41u, 143u, LANEC_CM } },
-    { 1793u, { 34166u, 0u, 522u, 143u, LANEC_CM } },
-    { 2145u, { 34690u, 0u, 514u, 143u, LANEC_CM } },
-    { 2146u, { 34690u, 0u, 1044u, 143u, LANEC_CM } },
-    { 2148u, { 34692u, 0u, 38u, 143u, LANEC_CM } },
-};
-#endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_pinball_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 1536u, { 33431u, 0u, 0u, 148u, LANEC_CM } },
@@ -4805,17 +4811,23 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 1344u, { 33169u, 0u, 1u, 149u, LANEC_CM } },
 };
 #endif
-#ifdef LANEC_PIN_C64_MOD_pw_decimal_consumer_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
-    { 652u, { 34131u, 0u, 0u, 151u, LANEC_LM } },
-    { 655u, { 34131u, 0u, 384u, 151u, LANEC_LM } },
-};
-#endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_general_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 348u, { 33430u, 0u, 2u, 152u, LANEC_LM } },
     { 349u, { 33430u, 0u, 256u, 152u, LANEC_LM } },
     { 364u, { 33458u, 0u, 0u, 152u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pw_decimal_load_lm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 652u, { 34131u, 0u, 0u, 153u, LANEC_LM } },
+    { 655u, { 34131u, 0u, 384u, 153u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pw_decimal_row_cm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1792u, { 34166u, 0u, 515u, 155u, LANEC_CM } },
+    { 1793u, { 34166u, 0u, 635u, 155u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_row_lm
@@ -4828,27 +4840,6 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 656u, { 34143u, 0u, 0u, 156u, LANEC_LM } },
     { 658u, { 34143u, 0u, 256u, 156u, LANEC_LM } },
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_decimal_time_consumer_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
-    { 1369u, { 33193u, 0u, 1293u, 157u, LANEC_CM } },
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_decimal_time_consumer_lm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[12] = {
-    { 234u, { 33242u, 0u, 400u, 157u, LANEC_LM } },
-    { 1060u, { 35488u, 0u, 4u, 157u, LANEC_LM } },
-    { 1062u, { 35488u, 0u, 644u, 157u, LANEC_LM } },
-    { 1063u, { 35488u, 0u, 900u, 157u, LANEC_LM } },
-    { 1068u, { 35499u, 0u, 198u, 157u, LANEC_LM } },
-    { 1075u, { 35501u, 0u, 711u, 157u, LANEC_LM } },
-    { 1079u, { 35508u, 0u, 712u, 157u, LANEC_LM } },
-    { 1080u, { 35510u, 0u, 9u, 157u, LANEC_LM } },
-    { 1084u, { 35523u, 0u, 2u, 157u, LANEC_LM } },
-    { 1089u, { 35555u, 0u, 195u, 157u, LANEC_LM } },
-    { 1100u, { 35569u, 0u, 6u, 157u, LANEC_LM } },
-    { 1107u, { 35577u, 0u, 775u, 157u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_display_release_lm
@@ -4910,6 +4901,17 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
     { 368u, { 33462u, 0u, 0u, 164u, LANEC_LM } },
     { 369u, { 33462u, 0u, 128u, 164u, LANEC_LM } },
     { 370u, { 33462u, 0u, 256u, 164u, LANEC_LM } },
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pw_hours_output_lm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[7] = {
+    { 1060u, { 35488u, 0u, 2u, 165u, LANEC_LM } },
+    { 1062u, { 35488u, 0u, 514u, 165u, LANEC_LM } },
+    { 1063u, { 35488u, 0u, 770u, 165u, LANEC_LM } },
+    { 1068u, { 35499u, 0u, 4u, 165u, LANEC_LM } },
+    { 1075u, { 35501u, 0u, 773u, 165u, LANEC_LM } },
+    { 1079u, { 35508u, 0u, 774u, 165u, LANEC_LM } },
+    { 1080u, { 35510u, 0u, 7u, 165u, LANEC_LM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_angle_cm
@@ -5126,6 +5128,11 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 952u, { 34602u, 0u, 1u, 184u, LANEC_LM } },
 };
 #endif
+#ifdef LANEC_PIN_C64_MOD_pw_minutes_output_lm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 1084u, { 35523u, 0u, 0u, 185u, LANEC_LM } },
+};
+#endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_cm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 1680u, { 33937u, 0u, 512u, 186u, LANEC_CM } },
@@ -5252,10 +5259,13 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[5] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_continuation_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[3] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[6] = {
     { 1172u, { 2192u, 0u, 1252u, 197u, LANEC_CM } },
     { 2130u, { 34678u, 0u, 1536u, 197u, LANEC_CM } },
     { 2131u, { 34678u, 0u, 1564u, 197u, LANEC_CM } },
+    { 2145u, { 34690u, 0u, 1735u, 197u, LANEC_CM } },
+    { 2146u, { 34690u, 0u, 1764u, 197u, LANEC_CM } },
+    { 2148u, { 34692u, 0u, 1821u, 197u, LANEC_CM } },
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_continuation_lm
@@ -5279,7 +5289,8 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_update_general_cm
-static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
+    { 1708u, { 34015u, 0u, 512u, 201u, LANEC_CM } },
     { 1715u, { 34016u, 0u, 736u, 201u, LANEC_CM } },
 };
 #endif
@@ -5461,6 +5472,11 @@ static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
     { 392u, { 33478u, 0u, 0u, 218u, LANEC_LM } },
 };
 #endif
+#ifdef LANEC_PIN_C64_MOD_pw_two_integer_lm
+static const struct { uint16_t n; transfer_case c; } c64_frozen[1] = {
+    { 234u, { 33242u, 0u, 256u, 219u, LANEC_LM } },
+};
+#endif
 #ifdef LANEC_PIN_C64_MOD_pw_verb_dispatch_lm
 static const struct { uint16_t n; transfer_case c; } c64_frozen[2] = {
     { 540u, { 33883u, 0u, 0u, 220u, LANEC_LM } },
@@ -5477,5 +5493,5 @@ static const lanec_point cm_external_exits[7] = { { LANEC_ANY_BANK, 05175u }, { 
 static const lanec_range cm_external_ranges[167] = { { LANEC_ANY_BANK, 04000u, 04003u }, { LANEC_ANY_BANK, 04662u, 04737u }, { LANEC_ANY_BANK, 04757u, 04772u }, { LANEC_ANY_BANK, 05134u, 05157u }, { LANEC_ANY_BANK, 05201u, 05224u }, { LANEC_ANY_BANK, 05227u, 05233u }, { LANEC_ANY_BANK, 05245u, 05261u }, { LANEC_ANY_BANK, 05263u, 05265u }, { LANEC_ANY_BANK, 05553u, 05624u }, { LANEC_ANY_BANK, 05650u, 05671u }, { LANEC_ANY_BANK, 05673u, 05675u }, { LANEC_ANY_BANK, 05677u, 05703u }, { LANEC_ANY_BANK, 05706u, 05720u }, { LANEC_ANY_BANK, 06006u, 06016u }, { LANEC_ANY_BANK, 06027u, 06034u }, { LANEC_ANY_BANK, 06036u, 06042u }, { LANEC_ANY_BANK, 06044u, 06053u }, { LANEC_ANY_BANK, 06055u, 06060u }, { LANEC_ANY_BANK, 06062u, 06112u }, { LANEC_ANY_BANK, 06164u, 06167u }, { LANEC_ANY_BANK, 06172u, 06176u }, { LANEC_ANY_BANK, 06204u, 06207u }, { LANEC_ANY_BANK, 06216u, 06217u }, { LANEC_ANY_BANK, 06221u, 06236u }, { LANEC_ANY_BANK, 06241u, 06241u }, { LANEC_ANY_BANK, 06243u, 06243u }, { LANEC_ANY_BANK, 06246u, 06246u }, { LANEC_ANY_BANK, 06256u, 06256u }, { LANEC_ANY_BANK, 06302u, 06302u }, { LANEC_ANY_BANK, 06315u, 06315u }, { LANEC_ANY_BANK, 06320u, 06320u }, { LANEC_ANY_BANK, 06331u, 06340u }, { LANEC_ANY_BANK, 06357u, 06362u }, { LANEC_ANY_BANK, 06371u, 06373u }, { LANEC_ANY_BANK, 06376u, 06407u }, { LANEC_ANY_BANK, 06412u, 06422u }, { LANEC_ANY_BANK, 06454u, 06471u }, { LANEC_ANY_BANK, 06607u, 06635u }, { LANEC_ANY_BANK, 06644u, 06651u }, { LANEC_ANY_BANK, 06672u, 06702u }, { LANEC_ANY_BANK, 06704u, 06704u }, { LANEC_ANY_BANK, 06706u, 06715u }, { LANEC_ANY_BANK, 06736u, 06736u }, { LANEC_ANY_BANK, 06766u, 06775u }, { LANEC_ANY_BANK, 06777u, 07002u }, { LANEC_ANY_BANK, 07004u, 07004u }, { LANEC_ANY_BANK, 07052u, 07104u }, { LANEC_ANY_BANK, 07107u, 07115u }, { LANEC_ANY_BANK, 07121u, 07122u }, { LANEC_ANY_BANK, 07125u, 07145u }, { LANEC_ANY_BANK, 07147u, 07161u }, { LANEC_ANY_BANK, 07171u, 07223u }, { LANEC_ANY_BANK, 07226u, 07241u }, { LANEC_ANY_BANK, 07243u, 07264u }, { LANEC_ANY_BANK, 07303u, 07305u }, { LANEC_ANY_BANK, 07311u, 07350u }, { LANEC_ANY_BANK, 07353u, 07373u }, { LANEC_ANY_BANK, 07501u, 07512u }, { LANEC_ANY_BANK, 07562u, 07564u }, { LANEC_ANY_BANK, 07755u, 07760u }, { LANEC_ANY_BANK, 07762u, 07764u }, { LANEC_ANY_BANK, 07766u, 07773u }, { 01u, 02414u, 02416u }, { 01u, 02454u, 02456u }, { 01u, 02461u, 02470u }, { 01u, 02473u, 02473u }, { 01u, 02514u, 02514u }, { 01u, 02517u, 02517u }, { 01u, 02534u, 02535u }, { 01u, 02537u, 02542u }, { 01u, 02626u, 02631u }, { 01u, 02633u, 02633u }, { 01u, 02635u, 02635u }, { 01u, 02637u, 02637u }, { 01u, 02641u, 02641u }, { 01u, 02643u, 02656u }, { 01u, 02660u, 02674u }, { 01u, 02700u, 02723u }, { 01u, 02725u, 03012u }, { 01u, 03030u, 03031u }, { 01u, 03044u, 03053u }, { 01u, 03055u, 03111u }, { 01u, 03113u, 03142u }, { 01u, 03145u, 03146u }, { 01u, 03150u, 03152u }, { 01u, 03155u, 03156u }, { 01u, 03161u, 03162u }, { 01u, 03165u, 03166u }, { 01u, 03171u, 03171u }, { 01u, 03174u, 03212u }, { 01u, 03216u, 03231u }, { 01u, 03235u, 03240u }, { 01u, 03246u, 03326u }, { 01u, 03330u, 03334u }, { 01u, 03336u, 03342u }, { 01u, 03344u, 03350u }, { 01u, 03352u, 03356u }, { 01u, 03360u, 03364u }, { 01u, 03366u, 03372u }, { 01u, 03374u, 03375u }, { 01u, 03377u, 03400u }, { 01u, 03403u, 03415u }, { 05u, 02365u, 02420u }, { 05u, 02424u, 02477u }, { 05u, 02501u, 02524u }, { 05u, 02526u, 02533u }, { 05u, 02535u, 02554u }, { 05u, 02651u, 02662u }, { 05u, 02667u, 02700u }, { 05u, 02746u, 02746u }, { 05u, 02750u, 02750u }, { 05u, 02753u, 03152u }, { 010u, 02642u, 02653u }, { 010u, 02707u, 02711u }, { 010u, 02722u, 02725u }, { 010u, 02770u, 02777u }, { 010u, 03001u, 03001u }, { 010u, 03003u, 03006u }, { 010u, 03021u, 03030u }, { 010u, 03032u, 03032u }, { 010u, 03034u, 03041u }, { 010u, 03144u, 03155u }, { 010u, 03160u, 03166u }, { 010u, 03172u, 03175u }, { 010u, 03312u, 03332u }, { 010u, 03341u, 03342u }, { 010u, 03344u, 03346u }, { 010u, 03350u, 03350u }, { 010u, 03352u, 03352u }, { 010u, 03354u, 03355u }, { 010u, 03357u, 03361u }, { 010u, 03363u, 03365u }, { 010u, 03367u, 03372u }, { 010u, 03377u, 03404u }, { 010u, 03427u, 03434u }, { 010u, 03436u, 03447u }, { 010u, 03453u, 03454u }, { 010u, 03616u, 03620u }, { 010u, 03622u, 03627u }, { 020u, 02000u, 02030u }, { 020u, 02033u, 02063u }, { 022u, 03513u, 03526u }, { 023u, 03500u, 03501u }, { 023u, 03507u, 03526u }, { 023u, 03530u, 03534u }, { 023u, 03536u, 03544u }, { 023u, 03546u, 03554u }, { 023u, 03626u, 03631u }, { 023u, 03645u, 03645u }, { 023u, 03650u, 03653u }, { 023u, 03656u, 03676u }, { 023u, 03701u, 03730u }, { 023u, 03733u, 03734u }, { 024u, 03325u, 03325u }, { 024u, 03331u, 03331u }, { 024u, 03342u, 03344u }, { 024u, 03363u, 03364u }, { 037u, 03013u, 03021u }, { 037u, 03777u, 03777u }, { 042u, 02062u, 02132u }, { 043u, 02000u, 02075u }, { 043u, 02120u, 02121u }, { 043u, 02730u, 02733u }, { 043u, 03303u, 03306u }, { 043u, 03310u, 03310u }, { 043u, 03334u, 03336u }, { 043u, 03340u, 03340u } };
 /* the suites the cases come from, in module order */
 #ifndef LANEC_PIN_TRANSFER_C64
-static const lanec_suite *const modules[101] = { &lanec_suite_pw_address_request, &lanec_suite_pw_alarm_cycle, &lanec_suite_pw_alarm_recycle, &lanec_suite_pw_blank, &lanec_suite_pw_blanksub, &lanec_suite_pw_charin_alarm, &lanec_suite_pw_charin_clear, &lanec_suite_pw_charin_number, &lanec_suite_pw_charin_nv, &lanec_suite_pw_charin_release, &lanec_suite_pw_charin_reset, &lanec_suite_pw_charin_sign, &lanec_suite_pw_cm_charin_number, &lanec_suite_pw_cm_charin_nv, &lanec_suite_pw_cm_decimal_pair, &lanec_suite_pw_cm_dynamic_display, &lanec_suite_pw_cm_formatter, &lanec_suite_pw_cm_minutes_seconds, &lanec_suite_pw_cm_normal_display, &lanec_suite_pw_cm_nv85, &lanec_suite_pw_cm_pinball, &lanec_suite_pw_cm_scale, &lanec_suite_pw_decimal, &lanec_suite_pw_decimal_consumer, &lanec_suite_pw_decimal_general, &lanec_suite_pw_decimal_load, &lanec_suite_pw_decimal_raw, &lanec_suite_pw_decimal_row, &lanec_suite_pw_decimal_select, &lanec_suite_pw_decimal_time_consumer, &lanec_suite_pw_display_release, &lanec_suite_pw_enter, &lanec_suite_pw_enter_zero, &lanec_suite_pw_extended_dispatch, &lanec_suite_pw_five_blank, &lanec_suite_pw_fixed_display, &lanec_suite_pw_fraction_pair, &lanec_suite_pw_hours_output, &lanec_suite_pw_input_angle, &lanec_suite_pw_input_arithmetic, &lanec_suite_pw_input_factor, &lanec_suite_pw_input_mode, &lanec_suite_pw_input_scale, &lanec_suite_pw_input_select, &lanec_suite_pw_input_store, &lanec_suite_pw_input_time, &lanec_suite_pw_jam_control, &lanec_suite_pw_lamp_lifecycle, &lanec_suite_pw_lamp_release, &lanec_suite_pw_lamp_test, &lanec_suite_pw_lm_pinball_busy, &lanec_suite_pw_load_complete, &lanec_suite_pw_load_control, &lanec_suite_pw_load_request, &lanec_suite_pw_load_store, &lanec_suite_pw_machine_cadr, &lanec_suite_pw_major_request, &lanec_suite_pw_minutes_output, &lanec_suite_pw_mixed_noun, &lanec_suite_pw_mode_admit, &lanec_suite_pw_mode_job, &lanec_suite_pw_monitor, &lanec_suite_pw_monitor_consumer, &lanec_suite_pw_monitor_paste, &lanec_suite_pw_noun_check, &lanec_suite_pw_nv_admission, &lanec_suite_pw_nv_blank, &lanec_suite_pw_nv_busy, &lanec_suite_pw_nv_consumer, &lanec_suite_pw_nv_continuation, &lanec_suite_pw_nv_key, &lanec_suite_pw_nv_return, &lanec_suite_pw_nv_update, &lanec_suite_pw_nv_update_general, &lanec_suite_pw_octal_consumer, &lanec_suite_pw_octal_display, &lanec_suite_pw_octal_verb, &lanec_suite_pw_operator_release, &lanec_suite_pw_operator_request, &lanec_suite_pw_operator_response, &lanec_suite_pw_operator_schedule, &lanec_suite_pw_pinball, &lanec_suite_pw_read_pair, &lanec_suite_pw_request_control, &lanec_suite_pw_response_recall, &lanec_suite_pw_scalar_output, &lanec_suite_pw_scale, &lanec_suite_pw_sign_output, &lanec_suite_pw_source_alarm, &lanec_suite_pw_test_noun, &lanec_suite_pw_two_digit, &lanec_suite_pw_two_integer, &lanec_suite_pw_verb_dispatch, &lanec_suite_pin_gaps, &lanec_suite_pin_keys, &lanec_suite_pin_key_labels, &lanec_suite_pin_head_load, &lanec_suite_pin_head_lamp, &lanec_suite_pin_head_request, &lanec_suite_pin_head_proceed, &lanec_suite_pin_head_nvsub };
+static const lanec_suite *const modules[105] = { &lanec_suite_pw_address_request, &lanec_suite_pw_alarm_cycle, &lanec_suite_pw_alarm_recycle, &lanec_suite_pw_blank, &lanec_suite_pw_blanksub, &lanec_suite_pw_charin_alarm, &lanec_suite_pw_charin_clear, &lanec_suite_pw_charin_number, &lanec_suite_pw_charin_nv, &lanec_suite_pw_charin_release, &lanec_suite_pw_charin_reset, &lanec_suite_pw_charin_sign, &lanec_suite_pw_cm_charin_number, &lanec_suite_pw_cm_charin_nv, &lanec_suite_pw_cm_decimal_pair, &lanec_suite_pw_cm_dynamic_display, &lanec_suite_pw_cm_formatter, &lanec_suite_pw_cm_minutes_seconds, &lanec_suite_pw_cm_normal_display, &lanec_suite_pw_cm_nv85, &lanec_suite_pw_cm_pinball, &lanec_suite_pw_cm_scale, &lanec_suite_pw_decimal, &lanec_suite_pw_decimal_consumer, &lanec_suite_pw_decimal_general, &lanec_suite_pw_decimal_load, &lanec_suite_pw_decimal_raw, &lanec_suite_pw_decimal_row, &lanec_suite_pw_decimal_select, &lanec_suite_pw_decimal_time_consumer, &lanec_suite_pw_display_release, &lanec_suite_pw_enter, &lanec_suite_pw_enter_zero, &lanec_suite_pw_extended_dispatch, &lanec_suite_pw_five_blank, &lanec_suite_pw_fixed_display, &lanec_suite_pw_fraction_pair, &lanec_suite_pw_hours_output, &lanec_suite_pw_input_angle, &lanec_suite_pw_input_arithmetic, &lanec_suite_pw_input_factor, &lanec_suite_pw_input_mode, &lanec_suite_pw_input_scale, &lanec_suite_pw_input_select, &lanec_suite_pw_input_store, &lanec_suite_pw_input_time, &lanec_suite_pw_jam_control, &lanec_suite_pw_lamp_lifecycle, &lanec_suite_pw_lamp_release, &lanec_suite_pw_lamp_test, &lanec_suite_pw_lm_pinball_busy, &lanec_suite_pw_load_complete, &lanec_suite_pw_load_control, &lanec_suite_pw_load_request, &lanec_suite_pw_load_store, &lanec_suite_pw_machine_cadr, &lanec_suite_pw_major_request, &lanec_suite_pw_minutes_output, &lanec_suite_pw_mixed_noun, &lanec_suite_pw_mode_admit, &lanec_suite_pw_mode_job, &lanec_suite_pw_monitor, &lanec_suite_pw_monitor_consumer, &lanec_suite_pw_monitor_paste, &lanec_suite_pw_noun_check, &lanec_suite_pw_nv_admission, &lanec_suite_pw_nv_blank, &lanec_suite_pw_nv_busy, &lanec_suite_pw_nv_consumer, &lanec_suite_pw_nv_continuation, &lanec_suite_pw_nv_key, &lanec_suite_pw_nv_return, &lanec_suite_pw_nv_update, &lanec_suite_pw_nv_update_general, &lanec_suite_pw_octal_consumer, &lanec_suite_pw_octal_display, &lanec_suite_pw_octal_verb, &lanec_suite_pw_operator_release, &lanec_suite_pw_operator_request, &lanec_suite_pw_operator_response, &lanec_suite_pw_operator_schedule, &lanec_suite_pw_pinball, &lanec_suite_pw_read_pair, &lanec_suite_pw_request_control, &lanec_suite_pw_response_recall, &lanec_suite_pw_scalar_output, &lanec_suite_pw_scale, &lanec_suite_pw_sign_output, &lanec_suite_pw_source_alarm, &lanec_suite_pw_test_noun, &lanec_suite_pw_two_digit, &lanec_suite_pw_two_integer, &lanec_suite_pw_verb_dispatch, &lanec_suite_pin_gaps, &lanec_suite_pin_keys, &lanec_suite_pin_key_labels, &lanec_suite_pin_head_load, &lanec_suite_pin_head_lamp, &lanec_suite_pin_head_request, &lanec_suite_pin_head_proceed, &lanec_suite_pin_head_nvsub, &lanec_suite_pin_head_decount, &lanec_suite_pin_head_dpout, &lanec_suite_pin_head_twoint, &lanec_suite_pin_head_minsec };
 #endif

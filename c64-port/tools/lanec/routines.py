@@ -71,10 +71,18 @@ FAMILIES = {
                 heads={'load': ('load_request', 'load_complete'), 'lamp': ('lamp_lifecycle',),
                        'request': ('operator_request', 'operator_schedule'),
                        'proceed': ('load_control',),
-                       'nvsub': ('nv_admission', 'nv_consumer')},
+                       'nvsub': ('nv_admission', 'nv_consumer'),
+                       # the display heads (docs/LANEC-PIN-HEADS-DISPLAY.md)
+                       'decount': ('decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85'),
+                       'dpout': ('decimal_consumer', 'decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display',
+                                 'cm_nv85'),
+                       'twoint': ('decimal_time_consumer', 'cm_normal_display'),
+                       'minsec': ('decimal_time_consumer', 'cm_normal_display')},
                 # modules no routine tries (the rest of the try-list and the heads accept
-                # their states; their suites stay as host tests of the composite)
-                dropped=('nv_update', 'decimal', 'decimal_raw')),
+                # their states; their suites stay as host tests of the composite);
+                # MISSION:module drops it from that mission's lists only
+                dropped=('nv_update', 'decimal', 'CM:decimal_general', 'decimal_consumer', 'decimal_time_consumer',
+                         'monitor_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85')),
 }
 
 
@@ -167,8 +175,8 @@ def main():
                         got[:] = rest[:min(at)] + [f'head_{h}'] + rest[min(at):] if at else rest + [f'head_{h}']
         # dropped: composites no routine tries any more (their suites stay as host
         # tests); every point they claimed needs another module or a head
-        drop = set(cfg.get('dropped', ()))
         for mission in points:
+            drop = {d.split(':')[-1] for d in cfg.get('dropped', ()) if ':' not in d or d.startswith(mission + ':')}
             for kind in points[mission]:
                 for key, (got, bank, z) in points[mission][kind].items():
                     if drop & set(got):
