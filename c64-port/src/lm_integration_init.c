@@ -11,7 +11,7 @@
 #include "rtb_angles.h"
 #include "rtb_agreement.h"
 #include "lm_integration_moves.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -73,7 +73,7 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  unsigned i,vac=W[0120];
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
- if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+ if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
  return 1;
 }
@@ -86,8 +86,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -671,8 +671,8 @@ static enum exec_status r26667(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2674 MOVEACSM (native entry MOVEACSM) */
 static enum exec_status r26674(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_ACSM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEACSM, DANZIG */
 }
 #endif
@@ -745,8 +745,8 @@ static enum exec_status r26722(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2723 MOVEPCSM (native entry MOVEPCSM) */
 static enum exec_status r26723(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_PCSM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEPCSM, DANZIG */
 }
 #endif
@@ -798,8 +798,8 @@ static enum exec_status r26742(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2747 MOVEALEM (native entry MOVEALEM) */
 static enum exec_status r26747(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_ALEM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEALEM, DANZIG */
 }
 #endif
@@ -838,8 +838,8 @@ static enum exec_status r26764(apollo_overlay_state *s,p66_bias_io *io){
 /* 13,2770 MOVEPLEM (native entry MOVEPLEM) */
 static enum exec_status r26770(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,026000u))return EXEC_OUT_OF_SCOPE;
- if(W[023])return EXEC_OUT_OF_SCOPE;
  if(lm_integration_move(s,io,LM_MOVE_PLEM)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
  (void)next(s);return EXEC_OK; /* MOVEPLEM, DANZIG */
 }
 #endif

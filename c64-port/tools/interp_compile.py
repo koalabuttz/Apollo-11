@@ -173,6 +173,13 @@ class Compiler:
         # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
         # Executive's resume (NEWOPS at LOC +1) has its key.
         self.rk = bool(spec.get('resume_keys'))
+        # 'pending_danzig' (with resume_keys): a pair whose left order is an
+        # RTB to basic code returns through DANZIG with its right order in
+        # EDOP and LOC at the RTB's operand word (include/agc_transfer.h).
+        # That word is a routine of its own: {operand word: (right order,
+        # its first operand word, the EDOP code)}.
+        self.pending_danzig = bool(spec.get('pending_danzig'))
+        self.pending = {}
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
         # (tasks and NOVAC jobs call them too), not only a VAC area.
         self.any_fixloc = bool(spec.get('any_fixloc'))
@@ -397,10 +404,12 @@ class Compiler:
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
             self.starts[phys] = ('b', 'native entry ' + lab)
-            # (they end TC DANZIG, run here as a pair's end: a left-hand RTB,
-            # EDOP holding its pair's right order, is out of scope)
-            self.blocks[phys] = ['if(W[023])return EXEC_OUT_OF_SCOPE;',
-                                 'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+            # (they end TC DANZIG, run here as a pair's end. After a
+            # left-hand RTB, EDOP holds the pair's right order, and DANZIG
+            # takes it at OPJUMP: the routine stops at DANZIG, the caller's
+            # interpreter continuation.)
+            self.blocks[phys] = ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+                                 'if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */',
                                  '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
         self.channel_blocks = set(p for p, b in self.blocks.items() if b and any('I/O channel */' in x for x in b))
@@ -472,6 +481,33 @@ class Compiler:
         self.cur_start = start
         bank = start // 1024
         first = True
+        if start in self.pending:
+            # A pending right-hand order (DANZIG at Z, LOC at the RTB's
+            # operand word): EDOP must hold this pair's order. DANZIG's CA
+            # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
+            # NEWOPS as at the end of any pair.
+            op, cur, edop = self.pending[start]
+            out.append('/* %s pending DANZIG: RTB on the left, %s on the right */' % (self.where(start), op))
+            out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
+            out.append('TRACE(s);')
+            out.append('right(s);')
+            self.last_order = True
+            stmts, nxt, done, setpd = self.order(op, cur, bank)
+            if done == 'pair':
+                done = False
+            elif not done:
+                stmts.append('setpd_next(s);' if setpd else 'next(s);')
+            if not done and stmts[-1] in ('next(s);', 'setpd_next(s);'):
+                stmts[-1] = 'if(%s)return EXEC_OK;' % stmts[-1][:-1]
+                self.add_start(nxt, 'i', 'CHANG2 resume')
+                self.externals_any[self.L.labels['CHANG2']] = 'CHANG2'
+            for q in range(cur, nxt):
+                self.owner.setdefault(q, start)
+            out.extend(stmts)
+            if done:
+                return out
+            p = nxt
+            first = False
         while True:
             if not first and p in self.starts:
                 out.append('return EXEC_OK; /* on to %s */' % self.where(p))
@@ -620,6 +656,7 @@ class Compiler:
             return st + more, cur, done
         st = ['%snewops(s,0%05o);' % (P, w)]
         ops = [ln.op] + ([ln.operand] if ln.operand else [])
+        self.pair = (w, ops)
         prev_setpd = False
         for i, op in enumerate(ops):
             if i == 1:
@@ -905,7 +942,15 @@ class Compiler:
                         q += 1
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
-                        end = q
+                        # (With 'pending_danzig' the right order's words
+                        # belong to the routine at the RTB's operand word.)
+                        end = cur if self.pending_danzig else q
+                    if self.pending_danzig:
+                        # The operand word: DANZIG's pending right order.
+                        pw = self.pair[0]
+                        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
+                        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
+                        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
                 return st, end, True, False
             if lab not in self.rtb:
@@ -943,7 +988,12 @@ class Compiler:
                 st.append('  return EXEC_OUT_OF_SCOPE;')
                 st.append('case %sBOV_RTB:%srtb(s);return EXEC_OK;' % (P.upper(), P))
             else:
-                st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
+                if t is not None and self.in_file(t) and t in self.code and not is_interp_op(self.code[t].op):
+                    # BOVB to the file's own basic code that the spec runs
+                    # natively (TIME_OF_FREE_FALL's BOVB TCDANZIG): no GOTO.
+                    st.append('  return EXEC_OUT_OF_SCOPE;')
+                else:
+                    st.extend(['  ' + x for x in self.goto(w, 'BOV target')])
                 if base == 'BOVB' and self.rtb.get(self.L.label_at(t)) is not None:
                     # BOVB to a basic routine the spec runs natively (as RTB).
                     lab = self.L.label_at(t)
@@ -1367,8 +1417,16 @@ class Compiler:
                     # RESUME (INDEX 17): the next instruction is BRUPT's,
                     # run in place (yaAGC's substitute instruction); here a
                     # TCF, as CONTABRT stores (any other word is refused).
+                    # RESUME also ends the interrupt, as yaAGC clears
+                    # InIsr: the program's agc_hardware in_interrupt, so
+                    # the spec must set 'in_isr' (refused otherwise, not
+                    # skipped silently).
+                    if not self.spec.get('in_isr'):
+                        raise CompileError("RESUME at %04o ends an interrupt: the spec needs 'in_isr'" % ln.loc)
+                    self.uses_hw = True
+                    clr = 'if(agc_channels_hw)agc_channels_hw->in_interrupt=0u;'
                     return st + ['{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
-                                 'W[5]=(agc_word)(b&07777u);return EXEC_OK;}'], []
+                                 '%sW[5]=(agc_word)(b&07777u);return EXEC_OK;}' % clr], []
                 if qc == 1 and k10 - 1 == 5 and index is None:
                     # DTCB (DXCH Z): Z,BB <-> A,L; BB sets FB and EB. The
                     # run loop goes on from the new Z under the new FB.
@@ -1643,27 +1701,40 @@ class Compiler:
         leave test, one entry routine for all keys, and the part's slice."""
         import bisect
         S = sym.upper()
-        assert self.m == 'cm' and self.basic.io == 'cm_native_io' and self.spec.get('basic_split')
+        io_t = self.basic.io
+        assert io_t in ('cm_native_io', 'p66_bias_io')
         cuts = self.basic.flight_cuts
         every = sorted(set(keys) | set(self.basic.flight_extra))
         c = ['/* Flight: the keys of every part (routines and part keys). */',
              'static const uint16_t %s_flight_keys[%d]={%s};' % (sym, len(every), ','.join('%uu' % k for k in every)),
              'static enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at){unsigned i;' % sym,
-             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%%1024u);return EXEC_OK;}' % (len(every), sym),
+             # A fixed-fixed key's Z is its physical address (banks 02, 03).
+             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(%s);return EXEC_OK;}' % (
+                 len(every), sym, 'at>=04000u&&at<010000u?at:02000u+at%1024u'
+                 if any(k // 1024 in (2, 3) for k in every) else '02000u+at%1024u'),
              ' return EXEC_OUT_OF_SCOPE;',
              '}',
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
              'static enum exec_status %s_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){' % sym,
-             ' cm_native_io *io=v;uint16_t at;']
-        c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.uses_hw else ' (void)p;')
+             ' %s *io=v;uint16_t at;' % io_t]
+        if io_t == 'p66_bias_io':
+            c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
+        else:
+            c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.uses_hw else ' (void)p;')
         c += [' if(!s||!io)return EXEC_OUT_OF_SCOPE;',
               ' at=agc_fixed_physical(W[5],W[4],io->superbank);',
               ' switch(at/1024u){']
+        chan = ''
+        if self.uses_channels:
+            chan = 'agc_channels_in=&((%s_channel_io *)v)->in;' % ('lm' if io_t == 'p66_bias_io' else 'cm')
         for b in sorted({k // 1024 for k in every}):
             bfb = (b - 0o10) << 10 | 0o100000 if b >= 0o40 else b << 10
-            c.append(' case 0%ou:if(!basic_sane(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, bfb, 'agc_channels_in=&((cm_channel_io *)v)->in;' if self.uses_channels else '',
-                self.basic.callee(S, b)))
+            run = self.basic.callee(S, b) if self.spec.get('basic_split') else 'basic_run'
+            # Fixed-fixed: any FB and SUPERBNK (basic_compile.py flight_parts
+            # allows it only with 'fixed_fixed_any_fb'), as the per-key entries.
+            sane = '0177777u' if b in (2, 3) else '0%05ou' % bfb
+            c.append(' case 0%ou:if(!basic_sane(s,io,%s))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, sane, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         for j in range(len(cuts) + 1):
@@ -1839,7 +1910,10 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
-        c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
+        # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
+        # as STATEINT's INTSTALL runs under it.)
+        c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
+                 ' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.extend(self.image_scan())
         c.append(' return 1;')
         c.append('}')
@@ -1870,6 +1944,15 @@ class Compiler:
         sb = 'W[4]==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else 'W[4]==fb'
         c.append(' return W[5]==0%04ou&&%s&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % (self.newops, sb))
         c.append('}')
+        if self.pending:
+            # ('pending_danzig') DANZIG at Z with LOC at an RTB operand
+            # word: BANKSET names the routine's bank (FB and BBANK are the
+            # RTB target's until DANZIG's TS BBANK), its EB part a bank.
+            dz = self.L.labels['DANZIG'] - 2048 + 0o4000
+            sbd = '(W[0165]&076000u)==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else '(W[0165]&076000u)==fb'
+            c.append('static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+            c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);' % (dz, sbd))
+            c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
         c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
@@ -2002,7 +2085,7 @@ class Compiler:
             if kind == 'b' and phys // 1024 in (2, 3):
                 c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = 'at_newops' if kind == 'i' else 'at_basic' + nv
+                chk = ('at_danzig' if phys in self.pending else 'at_newops') if kind == 'i' else 'at_basic' + nv
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')
@@ -2028,7 +2111,8 @@ class Compiler:
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
                 bind, '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         elif self.m == 'lm':
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s(void)p;return s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}' % bind)
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s%sreturn s&&v?f(s,(p66_bias_io *)v):EXEC_OUT_OF_SCOPE;}' % (
+                bind, '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         else:
             c.append('/* Comanche routines take the two latches the bodies use from the')
             c.append(' * mission\'s cm_native_io and copy them back. */')

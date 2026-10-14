@@ -12,7 +12,11 @@
  * interpreter. The first arrival at each distinct (entry, LOC) pair, up to
  * N, is written as a case: the 2048 erasable words and the superbank.
  *
- *   interp-flight-capture capture ROPE.bin CS KEYS N CASES.bin
+ *   interp-flight-capture capture ROPE.bin CS KEYS N CASES.bin [CORE]
+ *
+ * With CORE (a yaAGC core dump, agc_engine_init's format) the scenario
+ * starts from that state instead of GOJAM, and the keys are pressed from 2 s
+ * after it; a space in KEYS waits another half second.
  *
  * check: each case's C64 result (the exit Z and FB and a digest of the
  * image, from platform/c64/interp_flight_check.c) must be a state yaAGC
@@ -71,7 +75,8 @@ static unsigned rope_word(unsigned z,unsigned fb,unsigned sb){unsigned p=physica
 static unsigned long now(void){return ((unsigned long)(mword(024)&037777u)<<14)|(mword(025)&037777u);}
 /* Scenario time: centiseconds of machine cycles since GOJAM (about 853.3
  * MCT each), whatever the program does to TIME1/TIME2. */
-static unsigned long elapsed(void){return (unsigned long)(m.CycleCounter*3u/2560u);}
+static unsigned long long start;
+static unsigned long elapsed(void){return (unsigned long)((m.CycleCounter-start)*3u/2560u);}
 static int entry(void){unsigned z=mword(5)&07777u,i;for(i=0;i<POINTS;++i)if(z==points[i])return (int)i;return -1;}
 
 /* The digest platform/c64/interp_flight_check.c takes: two 16-bit running
@@ -85,17 +90,20 @@ static unsigned long digest(unsigned sb){unsigned a=0,b=0,i;
 static unsigned keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(unsigned)(c-'0');}
 
-static int capture(unsigned long cs,const char *keys,unsigned want,const char *out){
- static struct { unsigned point,loc,bankset; } seen[4096];
- unsigned nseen=0,written=0,pressed=0,i;unsigned long n,arrivals=0;FILE *f=fopen(out,"wb");
+static int capture(unsigned long cs,const char *keys,unsigned want,const char *out,const char *rope,const char *core){
+ static struct { unsigned point,loc,bankset; } seen[16384];
+ unsigned nseen=0,written=0,pressed=0,waits=0,i;unsigned long n,arrivals=0;FILE *f=fopen(out,"wb");
  if(!f)return 2;
- cold();
+ if(!core)cold();
+ else if(agc_engine_init(&m,rope,core,1)){fprintf(stderr,"cannot load core dump %s\n",core);fclose(f);return 2;}
+ start=m.CycleCounter;
  for(n=0;n<2000000000ul&&elapsed()<=cs;++n){
   if(quiet()&&!m.InIsr){
    unsigned z=mword(5)&07777u;int e;
    /* DSKY keys as flight_host_run's reference presses them: at an idle pass
     * through ADVAN, from 2 s, one every half second. */
-   if(z==ADVAN&&(m.InputChannel[4]&020)&&(mword(NEWJOB)==077777u)&&keys[pressed]&&now()>=200ul+pressed*50ul){
+   while(keys[pressed]==' '){++pressed;++waits;}
+   if(z==ADVAN&&(m.InputChannel[4]&020)&&(mword(NEWJOB)==077777u)&&keys[pressed]&&(core?elapsed():now())>=200ul+(pressed+waits)*50ul){
     m.InputChannel[015]=(int16_t)keycode(keys[pressed++]);
     if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,mword(4),(unsigned)m.OutputChannel7);
      *cell(5)=(int16_t)(04000u+4u*KEYRUPT1);m.InIsr=1;}
@@ -111,7 +119,8 @@ static int capture(unsigned long cs,const char *keys,unsigned want,const char *o
       printf("case %u: %lu cs entry %05o LOC %05o BANKSET %05o FB %05o\n",written-1u,elapsed(),points[e],loc,bs,mword(4));}}}}
   if(agc_engine(&m)){fclose(f);return 2;}}
  fclose(f);
- printf("captured %u cases (%u distinct entries, %lu arrivals) in %lu cs\n",written,nseen,arrivals,cs);
+ printf("captured %u cases (%u distinct entries, %lu arrivals) in %lu of %lu cs, %lu instructions\n",written,nseen,arrivals,elapsed(),cs,n);
+ if(getenv("IF_SHOW"))printf("MODREG %05o VERBREG %05o NOUNREG %05o, %u keys pressed\n",mword(01011),mword(01001),mword(01002),pressed);
  return written?0:1;}
 
 static int check(const char *cases,const char *results){
@@ -140,8 +149,10 @@ static int check(const char *cases,const char *results){
 int main(int argc,char **argv){
  InhibitAlarms=1;
  if(argc==7&&!strcmp(argv[1],"capture")&&!agc_load_binfile(&loaded,argv[2]))
-  return capture(strtoul(argv[3],0,0),argv[4],(unsigned)strtoul(argv[5],0,0),argv[6]);
+  return capture(strtoul(argv[3],0,0),argv[4],(unsigned)strtoul(argv[5],0,0),argv[6],argv[2],0);
+ if(argc==8&&!strcmp(argv[1],"capture")&&!agc_load_binfile(&loaded,argv[2]))
+  return capture(strtoul(argv[3],0,0),argv[4],(unsigned)strtoul(argv[5],0,0),argv[6],argv[2],argv[7]);
  if(argc==5&&!strcmp(argv[1],"check")&&!agc_load_binfile(&loaded,argv[2]))
   return check(argv[3],argv[4]);
- fprintf(stderr,"usage: interp-flight-capture capture ROPE.bin CS KEYS N CASES.bin | check ROPE.bin CASES.bin RESULTS.bin\n");
+ fprintf(stderr,"usage: interp-flight-capture capture ROPE.bin CS KEYS N CASES.bin [CORE] | check ROPE.bin CASES.bin RESULTS.bin\n");
  return 2;}

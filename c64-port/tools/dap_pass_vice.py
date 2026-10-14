@@ -53,17 +53,17 @@ def snapshot(exe, name, cs):
     return header
 
 
-def link(cc, name, header, cs, scratch, steps=False):
+def link(cc, name, header, cs, scratch, steps=False, m='lm'):
     out = WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
-        cc, *COMMON, *MISSION['lm'], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
+        cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
         f'-DDP_SCRATCH=0x{scratch:x}ul', *(['-DDP_STEPS'] if steps else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-        'platform/c64/dap_pass_check.c', *resident_sources('lm'), OUT / 'overlay_v2_services.S', '-o', out]],
+        'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
 
 
-def vice(a, name, prg, pinned):
+def vice(a, name, prg, pinned, m='lm'):
     rom = a.rom_dir.resolve()
     work = WORK / f'vice-{name}'
     work.mkdir(parents=True, exist_ok=True)
@@ -75,7 +75,7 @@ def vice(a, name, prg, pinned):
     commands.write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
                         + f'g {int(sys_at[1]):04x}\nbsave "{dump}" 0 c000 cbff\nquit\n')
     reu = work / 'image.reu'
-    reu.write_bytes((OUT / 'lm.reu').read_bytes())
+    reu.write_bytes((OUT / f'{m}.reu').read_bytes())
     env = dict(os.environ, XDG_CACHE_HOME=str(work / 'cache'), XDG_CONFIG_HOME=str(work / 'config'))
     for key in ('XDG_CACHE_HOME', 'XDG_CONFIG_HOME'):
         pathlib.Path(env[key]).mkdir(parents=True, exist_ok=True)
@@ -93,7 +93,10 @@ def vice(a, name, prg, pinned):
     data = dump.read_bytes()
     if data[0] != 0xa5:
         return dict(scenario=name, ok=False, error='mailbox not written')
-    cycles, dilation, steps, start_cs, end_cs, count, z, fb, status, lost = struct.unpack_from('<3I5H2B', data, 0x10)
+    cycles, dilation, steps, start_cs, end_cs, count, z, fb, superbank, status, lost = struct.unpack_from(
+        '<3I6H2B', data, 0x10)
+    # The physical bank: FB 030-037 with superbank bit 0100 are banks 040-047.
+    bank = (fb >> 10) + (0o10 if fb >= 0o60000 and superbank & 0o100 else 0)
     records = [dict(zip(('request', 'job_loads', 'task_loads', 'status', 'steps', 'cycles'),
                         struct.unpack_from('<4BHI', data, 0x40 + 10 * i))) for i in range(count)]
     for r in records:
@@ -108,6 +111,7 @@ def vice(a, name, prg, pinned):
         for k in ('steps', 'job_loads', 'task_loads'):
             b[k] += r[k]
     return dict(scenario=name, ok=status == 0 and not lost, status=status, z=f'{z:05o}', fb=f'{fb:05o}',
+                superbank=f'{superbank:04o}', bank=f'{bank:02o}',
                 wall_cycles=cycles, agc_cs=agc_cs, dropped_ticks=dilation, steps=steps,
                 wall_per_agc=round(cycles / (agc_cs * PAL_HZ / 100), 3) if agc_cs else None,
                 by_request=by, records=records, lost=bool(lost))
@@ -148,7 +152,7 @@ def main():
         results.append(r)
         if not r['ok']:
             failed += 1
-            print(f"FAIL: {name}: {r.get('error') or 'status %d at Z %s FB %s' % (r['status'], r['z'], r['fb'])}")
+            print(f"FAIL: {name}: {r.get('error') or 'status %d at %s,%s (Z %s FB %s superbank %s)' % (r['status'], r['bank'], r['z'][1:], r['z'], r['fb'], r['superbank'])}")
         if 'by_request' in r:
             print(f"{name}: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs ({r['wall_per_agc']} x real time), "
                   f"{r['dropped_ticks']} ticks dropped, {r['steps']} steps")

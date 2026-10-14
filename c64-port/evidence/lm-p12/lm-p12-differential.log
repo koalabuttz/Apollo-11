@@ -1,3 +1,5 @@
+# make lm-p12-differential at c0382d7a1ac0f057d95a72a412c2f2efc9bb0d41
+python3 tools/interp_routine_differential.py lm-p12 --cases 512 --freeze
 PASS: 46592 lm-p12 cases equal the original programs (91 routines)
   LM 23,2432 GUIDINIT: 05126 x147, 06070 x365
   LM 23,2435 : 05126 x129, 06070 x383
@@ -91,3 +93,5 @@ PASS: 46592 lm-p12 cases equal the original programs (91 routines)
   LM 30,2316 : 05126 x117, 06070 x395
   LM 30,2317 : 06070 x512
 froze 1456 vectors to tests/lm_p12_vectors.h
+git diff --exit-code -- tests/lm_p12_vectors.h tests/lm_p12_c64_vectors.h tools/mk/lm-p12.groups
+exit 0

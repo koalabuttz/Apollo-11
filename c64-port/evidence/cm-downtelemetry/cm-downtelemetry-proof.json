@@ -3,7 +3,7 @@
  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
  "oracle": "yaAGC (deps/virtualagc), host only",
  "cases": 48,
- "snapshot_sha256": "2880fbd3ddb8ddd2e2c622583c0511379c585e21f3959958f4dc4c4a8b3d099a",
+ "snapshot_sha256": "9ad519a373584e362d345c8d88930957117df2630549fe9222afef6d121649a1",
  "entries": [
   "05,3521 DODOWNTM",
   "DNTMGOTO (erasable 0335)",

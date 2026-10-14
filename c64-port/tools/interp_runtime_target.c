@@ -42,11 +42,33 @@ static agc_native_program outer[2];
 static agc_routine_table otab_b[2][8],otab_i[2][2];
 static uint8_t inrange[2][40960/8];
 static uint16_t stops[2][128];static unsigned nstops[2];
+/* STORE,1 or STORE,2 at NEWOPS with an indexed address that leaves
+ * erasable (#422): the address goes negative, STORE's CCS takes the
+ * work-area branch, and FIXLOC plus it lies above 01777, where the
+ * original's INDEX ADDRWD turns the DXCH into another instruction. The
+ * contract keeps indexed erasable inside erasable: the compact core wraps
+ * the address (docs/INTERPRETER-RUNTIME.md), the runtime interpreter
+ * refuses (store_outside). Both are refused here, before the routine runs,
+ * so that the tool counts such cases without comparing them. */
+static int store_outside(unsigned cm,const apollo_overlay_state *s,agc_word sb){
+ agc_word w;unsigned kind,nx,a;uint16_t ph;
+ if(s->words[5]!=(cm?06037u:06070u))return 0;   /* NEWOPS */
+ ph=agc_fixed_physical(s->words[0164],s->words[0165],sb);   /* LOC under BANKSET */
+ if(ph==AGC_TRANSFER_NONE||!apollo_rope_read(cm,ph,&w)||(w&040000u))return 0;
+ kind=(w>>11)&7u;if(kind-1u>1u)return 0;
+ nx=~(unsigned)s->words[(s->words[0120]+045u+kind)&01777u]&077777u;   /* -X1 or -X2 */
+ if(nx<040000u)return 0;
+ a=(w&03777u)+nx;if(a>077777u)a-=077777u;
+ if(!(a&040000u))return 0;
+ a+=s->words[0120];if(a>077777u)a-=077777u;
+ return a>01777u;
+}
 static enum exec_status stopper(const agc_native_program *p,apollo_overlay_state *s,void *io){
  unsigned cm=p==&outer[1],i;agc_word sb=cm?((cm_native_io *)io)->superbank:((p66_bias_io *)io)->superbank;
  uint16_t pt=agc_transfer_point(&prog[cm],s,sb),z;agc_routine call=agc_transfer_resolve(&prog[cm],s,sb);
  enum exec_status st;unsigned inside=pt<40960u&&((inrange[cm][pt>>3]>>(pt&7u))&1u);
  if(!call)return EXEC_UNMAPPED;
+ if(store_outside(cm,s,sb))return EXEC_OUT_OF_SCOPE;
  st=call(&prog[cm],s,io);
  if(st==EXEC_OUT_OF_SCOPE&&getenv("IRT_TRACE"))fprintf(stderr,"refused at point %u Z %05o Q %05o A %06o L %06o FB %05o EB %05o BB %05o NEWJOB %05o SB %o FIXLOC %04o\n",pt,s->words[5],s->words[2],s->words[0],s->words[1],s->words[4],s->words[3],s->words[6],s->words[067],(unsigned)sb,s->words[0120]);
  if(st!=EXEC_OK||!inside)return st;
@@ -88,6 +110,11 @@ const agc_native_program *irc_program(uint8_t cm){
   points[cm]=calloc(n?n:1u,sizeof *points[cm]);
   for(i=0;i<40960u;++i)if((in[i>>3]>>(i&7u))&1u){points[cm][k].physical=(uint16_t)i;points[cm][k].call=cm?IRT_CM:IRT_LM;++k;}
   prog[cm]=*p;
+  /* (A program with no agc_hardware is run as a copy that carries one
+   * (tests/interp_case.c irc_cm_begin). Give it its own, which the routines
+   * here and outer[cm] share, so that the program stopper() is handed is
+   * still outer[cm] and the routines read the case's channels.) */
+  {static agc_hardware hw[2];if(!prog[cm].hardware)prog[cm].hardware=&hw[cm];}
   if(p->basic_count>6u){fprintf(stderr,"too many basic tables\n");exit(2);}
   /* The spec's RTB natives first: the file's compiled basic code may hold
    * a routine at an RTB target that only its inline call ever reached. */

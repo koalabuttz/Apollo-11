@@ -51,9 +51,13 @@ _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks
 #define RK_DILATION 0x6fb8u
 extern uint32_t rk_dilation;
 /* The resident's own modules (lane A numbers 0xe0-0xef). */
-#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
-/* What the boundary-word module (resident_boundary_module.c) hands boot. */
-typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_table;
+#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* null module (resident_boundary_module.c) */
+/* The boundary-word table, which ends the REU store image
+ * (tools/overlay_v2_pack.py --tail): its entries (sorted by physical key)
+ * and their count, which boot reads; entry i, by REU fetch (false past the
+ * end or on a DMA fault). */
+extern uint16_t rk_boundary_count;
+bool rk_boundary_entry(uint16_t i,agc_site_operand *entry);
 /* What the step hands every module in frame value: the resident program
  * (tables, hardware, fixed_data, site operands) and io. A module that
  * runs AGC routines (the interrupt-body wrappers) reports a routine's
@@ -107,6 +111,10 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
+/* The hardware restart (platform/c64/resident_gojam_module.c,
+ * docs/FLIGHT-RESTART.md): the GOJAM change to the image and rk_hardware;
+ * run with rk_run_module from a resident trigger. */
+#define RK_MODULE_GOJAM APOLLO_OV2_ID(APOLLO_LANE_A, 0xe5) /* task slot */
 /* The flight program's device fields neither rk_io nor agc_hardware holds
  * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
  * latches, ...), for the modules whose tables take another io record. Its
