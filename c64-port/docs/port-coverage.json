@@ -808,8 +808,8 @@
             "sha256": "eb4aa4da6e838eaa8d1a3332aafce9d6b2bf7cb1d35e1eac45d2094fc0a473a9"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-245.md",
-            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         }
       }
@@ -2144,8 +2144,8 @@
             "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-128.md",
-            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         },
         "precheck_notes": [
@@ -9092,8 +9092,8 @@
             "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-128.md",
-            "sha256": "2192abb8a2b8ee8170b843f4982aea317b5ffd84c6608329e54143bc677172a4"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         },
         "precheck_notes": [
@@ -9974,8 +9974,8 @@
             "sha256": "eb4aa4da6e838eaa8d1a3332aafce9d6b2bf7cb1d35e1eac45d2094fc0a473a9"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-245.md",
-            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         },
         "precheck_notes": [
@@ -10477,8 +10477,8 @@
             "sha256": "1e7a597c84d2e9b793fbf57ed6454fd80d78c43b5f346417270081ec6420baca"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-171.md",
-            "sha256": "23aa505e92a81394b3d8c5d30e2dc6b92b5fd8e0f1932ec4db90e4fc539c4a0c"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         }
       }
@@ -12109,8 +12109,8 @@
             "sha256": "03a2e4bcf69dc7fba2a396f495a011f5fc62205d0e9ffd3d71b586bf7c25791d"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-171.md",
-            "sha256": "23aa505e92a81394b3d8c5d30e2dc6b92b5fd8e0f1932ec4db90e4fc539c4a0c"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         },
         "newjob_note": "NEWJOB positive at a DANZIG is not refused: the run stops at CHANG2 as the original does (compared with yaAGC), and every word after a DANZIG is a registered resume key (resume_keys), so the resumed job runs natively."
@@ -12244,8 +12244,8 @@
             "sha256": "3c03e0c7315f5cd73e0efa0f7b1b5a6e7ec03e038ff32a9e90e8b7283b4f20ca"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-287.md",
-            "sha256": "88dd0c96e287935f07063067130967fd82feb4b198e4428db43635985a6ac133"
+            "path": "docs/audits/rev2-recite-1014b.md",
+            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
           }
         }
       },
