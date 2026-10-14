@@ -77,7 +77,8 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FBB` | Resident service jump table (62 entries max; the resident linker script asserts it ends at or below `$6FBC`) | 188 |
+| `$6F00..$6FB7` | Resident service jump table (61 entries max; the resident linker script asserts it ends at or below `$6FB8`) | 184 |
+| `$6FB8..$6FBB` | Flight: `rk_dilation`, the 32-bit count of clock ticks scaled time dropped (`RK_DILATION`, docs/RESIDENT-FLIGHT.md) | 4 |
 | `$6FBC..$6FBD` | Flight: `ov2_irq_count`, the CIA1 interrupt count (`RK_IRQ_COUNT`); a long-running module (the interpreter) returns to the step when it moves. Modules link it with `--defsym` | 2 |
 | `$6FBE..$6FDB` | Flight: `rk_hardware`, the resident's `agc_hardware` record; modules link it with `--defsym` | 30 |
 | `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
@@ -254,10 +255,10 @@ overlaps a live module frame. The REU's own interrupt is unused.
 
 At 1 MHz, a C translation of ones-complement arithmetic runs well below AGC
 speed, so the integrated programs cannot keep up with the AGC's real-time clock.
-Lane A's timer adapters need a mission clock that advances with executed work
-(TIME1/TIME3/TIME4/TIME5/TIME6 driven by the adapter), not by wall-clock CIA
-ticks. Otherwise WAITLIST tasks overrun. This is a requirement on Lane A's
-adapter, recorded here because the overlay latency figures feed it.
+The flight resident's clock is therefore scaled (docs/RESIDENT-FLIGHT.md,
+Scaled time): each step catches up at most `RK_TICK_LAG` 10 ms periods
+and drops the rest into `rk_dilation`, so AGC time falls behind wall time
+instead of WAITLIST tasks overrunning.
 
 ## Allocation plan
 
