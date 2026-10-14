@@ -113,8 +113,8 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
   irc_in_case=0;
 #endif
   printf("%u %u %u %lu",n,kind,(unsigned)(s.words[5]&077777u),(unsigned long)irc_digest(0,&s,ie));
-  /* fb: the FB the run stops under, to place a stop at Z in a bank (#325). */
-  if(fbs)printf(" %u",(unsigned)(s.words[4]&077777u));
+  /* fb: the FB the run stops under, LOC and BANKSET, to place a stop in a bank (#325). */
+  if(fbs)printf(" %u %u %u",(unsigned)(s.words[4]&077777u),(unsigned)(s.words[0164]&077777u),(unsigned)(s.words[0165]&077777u));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
   if(covers)for(i=0;i<8192u;++i)if(cover[i>>3]&(1u<<(i&7u)))printf(" c%u",i);

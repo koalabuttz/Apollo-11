@@ -1146,6 +1146,13 @@ def main():
         keep = [i for i in range(len(cases)) if i not in loops]
         cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
         write_cases(path, missions, cases)
+    fbrows = run([nat, path, 'fb'])
+    refused = operand_stops(missions, cases, rows_n, fbrows)
+    if refused:
+        print('refused (GOTO to an operand word of the file): %d cases' % len(refused))
+        keep = [i for i in range(len(cases)) if i not in refused]
+        cases, rows_r, rows_n, fbrows = ([v[i] for i in keep] for v in (cases, rows_r, rows_n, fbrows))
+        write_cases(path, missions, cases)
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
     # A native run that ends refusing in a routine with an I/O channel
     # instruction waits for a channel model: counted, not compared.
@@ -1194,7 +1201,7 @@ def main():
     timeouts = [r for i, r in enumerate(rows_r) if r[1] != '0' and i not in chan]
     if timeouts:
         sys.exit('FAIL: %d oracle timeouts' % len(timeouts))
-    inside = in_file_stops(missions, cases, rows_n, nat, path, chan)
+    inside = in_file_stops(missions, cases, rows_n, nat, path, chan, fbrows)
     if inside:
         sys.exit('FAIL: %d native stops at words of the file no routine covers (yaAGC runs on there, #325): %s' % (
             sum(inside.values()), ', '.join('%s x%d' % kv for kv in sorted(inside.items()))))
@@ -1225,7 +1232,39 @@ def main():
 
 
 
-def in_file_stops(missions, cases, rows_n, nat, path, skip=()):
+def place(z, fb, sb):
+    """Physical address of logical z under FB fb and superbank sb, or None
+    outside fixed memory."""
+    if 0o4000 <= z < 0o10000:
+        return 2048 + z - 0o4000
+    if 0o2000 <= z < 0o4000:
+        b = (fb >> 10) & 0o37
+        if b >= 0o30 and (sb & 0o160) == 0o100:
+            b += 8
+        return b * 1024 + z - 0o2000
+    return None
+
+
+def operand_stops(missions, cases, rows_n, fbrows, skip=()):
+    """Cases whose native run stops at NEWOPS with LOC on a word of the file
+    that does not start an interpretive order (an operand or data word a
+    drawn S1/S2 or CADR sent GOTO to): the AGC would run that word as orders,
+    a state the program never makes. Refused, not compared (steward, #224)."""
+    out = set()
+    for i, (c, r, l) in enumerate(zip(cases, rows_n, fbrows)):
+        if i in skip or r[1] != '0':
+            continue
+        mi = missions[c['cm']]
+        newops = mi.cp.L.labels.get('NEWOPS')
+        if newops is None or int(r[2]) != mi.cp.logical_of(newops):
+            continue
+        q = place(int(l[5]), int(l[6]), c.get('sb', 0))
+        if q is not None and q in mi.cp.words and not (q in mi.cp.code and IC.is_interp_op(mi.cp.code[q].op)):
+            out.add(i)
+    return out
+
+
+def in_file_stops(missions, cases, rows_n, nat, path, skip=(), fbrows=None):
     """{routine: cases} of native runs that stop (no routine covers Z) at a
     word of the file under test, other than the case's own stop: yaAGC runs
     on from there, so the stop is not the program's (#325); the spec's idle
@@ -1234,18 +1273,11 @@ def in_file_stops(missions, cases, rows_n, nat, path, skip=()):
     out = collections.Counter()
     if not any(r[1] == '0' for r in rows_n):
         return out
-    for i, (c, r, l) in enumerate(zip(cases, rows_n, run([nat, path, 'fb']))):
+    for i, (c, r, l) in enumerate(zip(cases, rows_n, fbrows or run([nat, path, 'fb']))):
         if i in skip or r[1] != '0':
             continue
-        z, fb = int(r[2]), int(l[4])
-        if 0o4000 <= z < 0o10000:
-            phys = 2048 + z - 0o4000
-        elif 0o2000 <= z < 0o4000:
-            b = (fb >> 10) & 0o37
-            if b >= 0o30 and (c.get('sb', 0) & 0o160) == 0o100:
-                b += 8
-            phys = b * 1024 + z - 0o2000
-        else:
+        phys = place(int(r[2]), int(l[4]), c.get('sb', 0))
+        if phys is None:
             continue
         mi = missions[c['cm']]
         if phys in mi.cp.words and phys != c['stop'] and phys not in mi.cp.idle:
