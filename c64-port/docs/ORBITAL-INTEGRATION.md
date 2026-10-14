@@ -35,6 +35,10 @@ The cases also draw flight edge values (review #165, `integration_joint` in `too
 
 A CHANG2 resume starts from the state the original program is in when it gets there (`resume_flow`: the oracle runs each case of the routine before it to that LOC). Before, the 11,2674 `STORE S1` resume drew a random MODE: entered in vector mode it stored 6 words into QPRET, which the program never does, since the `DLOAD* ASCALE,1` before it always leaves MODE in DP.
 
+The three `DDV ALPHAM` resumes (COMTERM +26, +38 and +42, 11,3104/3120/3124) also draw MPAC and ALPHAM jointly (`ddv_majors_joint`): MODE DP, ALPHAM's major part one more than MPAC's, and minor parts of either sign, so the divide takes its near-equal-majors paths (`src/lm_interp_orders.c` DDV), which independent random words almost never reach.
+
+S1 and S2 are the VAC words 050 and 051 (review #224 item 1: the spec used to set 051/052, S2 and QPRET, so S1 was never drawn from the stored set and every QPRET was 0-6).
+
 A quarter of the cases have a job waiting (NEWJOB positive). A resume in the middle of a sequence keeps that sequence's invariant. Between ACCOMP's `XCHX,2 DIFEQCNT` pairs, X2 holds the DIFEQ stage and DIFEQCNT holds PBODY. Inside GAMCOMP's `XCHX,2 S1` pair, S1 holds PBODY. NBRANCH's `DMP CGOTO` has stage 0 loaded (NBRANCH itself runs every stage). TIMESTEP's W stores follow a VLOAD and index by COLREG. A case may run up to 1,000 routines, because one DIFEQ step runs several hundred pairs.
 
 ## Evidence

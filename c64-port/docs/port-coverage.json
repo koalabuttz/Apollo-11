@@ -6445,22 +6445,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-proof.json",
-            "sha256": "9299013c5621e6cff243e35ff940bec465cccb964dcfb849242674ae73376c0a"
+            "sha256": "91c7298311061dc7f17d4afbef439336b18bd54082c3643117aa95a3fe7e102a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-host.log",
-            "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25"
+            "sha256": "6b6025d1f3febd0c34f3ed62c1a607a3af423dadf6c8c9710e4ee097f93b0de5"
           },
           "c64_execution_results": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-vice.log",
-            "sha256": "1a0e86d5ef42ea7a938a3a1ba92745ca94cd39c410809992e8c79c94e95a34e6",
+            "sha256": "56fa96e5bd5a6d60977f6586dfcbe35ab213356d117c02e40b0eb2756f350291",
             "vice_targets": {
               "vice-lm-conic-compiled": 522
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
-            "sha256": "6adecc0b3212baa2729b882c82ec69abd813dfdaff933a0f04ca2e16c2405c0b"
+            "sha256": "88119a42842a3f752de21cdcbaa7d9053e1593580a65d1f04636f9bdfcc3dddb"
           }
         }
       }
@@ -8197,22 +8197,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "36a0785439675190f5a0729e4f3bb3547ed91427bc3fe06d907286edc54d4361"
+            "sha256": "2c2bc5883407a6bc153a7534e00e5dffceba0f9bd2054d71e6ecc92d55b224c6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "6c8d7ca60dac7f8ed0c6da351fecf8e555ca99558402b8b9bfee98596a6ad8b0"
+            "sha256": "8a11fcb8ac87c45509f15a6788f35f3c62a7f1eb05a1cc209952c5ff65a2bd6c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "cebd9d217ba92922ba53289d7e30e84758fd743d7784e35410f5c93f891aec9b",
+            "sha256": "d424916272d52862d3bb3742a76200976388667f92ffcace8a9cf2a2b351a8ae",
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
-            "sha256": "77afcd6c7879535f3cdbaf544ec5ce2a3902e4410a7d0deb4465d7cf1ff455d7"
+            "sha256": "9ac7e0b0121fda20f1c5ae3e65e7d703c3f76e29e3c319b139ea2b4700bcbad8"
           }
         }
       }
@@ -11271,22 +11271,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-proof.json",
-            "sha256": "2efc487819e40aa868c42971ef660cfebb543d57e0ecc1c9bb793d7fbfb93520"
+            "sha256": "8fa084befdf3d6947a69122937ebe8fde36440d90c53501fbff1c7cd42251c89"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-host.log",
-            "sha256": "cf2c547a1dcb38e26c9318bc5cd7ae6fdb73ab6d977b1c45517184a3ddb779b2"
+            "sha256": "da36f02bb3063f3dad3db7ef77bdaf2bb55d5b2185805807379b6cca624f04eb"
           },
           "c64_execution_results": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-vice.log",
-            "sha256": "0309fb0aaa3c5a6ccc772f34823817fc0705a18fbbc8fc025eb28a554d9e1fa0",
+            "sha256": "a906660015684a5402c1b955f9fab1e5e454f47c8491a125f85747fe7b5a6c73",
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
-            "sha256": "33c55c7399c0932fe4604796fa531d8347f42649a257fead487b9f99c9d4af35"
+            "sha256": "24c44da16577f113f668c2486de583ecd61d8585e97735dc5b28fcb1e08a426a"
           }
         }
       }
