@@ -519,6 +519,9 @@ SPECS = {
         'resume_keys': True,
         # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as

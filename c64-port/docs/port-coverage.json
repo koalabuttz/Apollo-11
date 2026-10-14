@@ -2122,7 +2122,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -2130,14 +2130,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
@@ -9067,7 +9067,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/inflight-align/inflight-align-proof.json",
-            "sha256": "0aeb3bca2af43b4b643035a73aaccb37ab3142d87be21603d2bb1b9cb807975a"
+            "sha256": "f8cdd5a5dd11453f2c0ea06796b686cff050b8e5ece19f8c9c5fd96426f0bd55"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/inflight-align/inflight-align-host.log",
@@ -9075,14 +9075,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/inflight-align/inflight-align-vice.log",
-            "sha256": "76bd89010e5d3bf7b3197c878956d2a309aec0aff7af70f368873834c8dd69ba",
+            "sha256": "a8ebde033130c49199b2c1747d00c61d1b84c8192d157216f8504d99c2e6441f",
             "vice_targets": {
-              "vice-inflight-align": 224
+              "vice-inflight-align": 219
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/inflight-align/inflight-align-c64-outcomes.json",
-            "sha256": "56e25386725fbcbab3a466272fad51aada7eb0e018962562f61b566f6d10c974"
+            "sha256": "a2fc86eaa050fe70887b3aacc12dd411699af5bb3158cb83f1efcdd6335535bb"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-128.md",
