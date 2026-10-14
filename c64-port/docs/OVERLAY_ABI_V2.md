@@ -77,7 +77,8 @@ module's 7.8 KB.
 | `$0200..$03FF` | Resident DMA buffers (store record, module header), IRQ queues | 512 |
 | `$0400..$07E7` | Screen RAM: DSKY rendering and diagnostics | 1,000 |
 | `$0801..$6EFF` | Resident code and initialized data | 26,367 |
-| `$6F00..$6FBD` | Resident service jump table (63 entries max; the resident linker script asserts it ends at or below `$6FBE`) | 190 |
+| `$6F00..$6FBB` | Resident service jump table (62 entries max; the resident linker script asserts it ends at or below `$6FBC`) | 188 |
+| `$6FBC..$6FBD` | Flight: `ov2_irq_count`, the CIA1 interrupt count (`RK_IRQ_COUNT`); a long-running module (the interpreter) returns to the step when it moves. Modules link it with `--defsym` | 2 |
 | `$6FBE..$6FDB` | Flight: `rk_hardware`, the resident's `agc_hardware` record; modules link it with `--defsym` | 30 |
 | `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
 | `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |

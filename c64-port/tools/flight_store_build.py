@@ -303,10 +303,12 @@ def lane_slot(stem, mission, owners, place):
 # (platform/c64/flight_image_op_services.c, docs/overlay-v2-services.json).
 SHARED_OPS = ('ca caf cs csf ad adf maskf ts xch lxch ads dxch ccs tc dcaf bzf bzmf').split()
 # Modules use the resident's rk_hardware, rk_flight and (CM) cm_channels
-# records (platform/c64/resident_flight.h RK_HARDWARE, RK_FLIGHT_IO,
-# RK_CM_CHANNELS), not copies of their own.
-CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc'],
-            'cm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=cm_channels=0x6ff4']}
+# records and its interrupt count (platform/c64/resident_flight.h
+# RK_HARDWARE, RK_FLIGHT_IO, RK_CM_CHANNELS, RK_IRQ_COUNT), not copies of
+# their own.
+CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc'],
+            'cm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc,'
+                   '--defsym=cm_channels=0x6ff4']}
 
 
 # Slot classes a flight module links for (include/overlay_v2.h): job, task,
