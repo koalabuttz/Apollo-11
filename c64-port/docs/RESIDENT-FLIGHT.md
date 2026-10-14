@@ -23,11 +23,8 @@ anything. A store can also keep the task slot's RAM for one module, slot
 class 4 (`APOLLO_OV2_SLOT_PINNED_TASK`): boot loads it at $E000 by plain
 DMA and zeroes its BSS before the class-3 main runs, and that main's table
 list names its tables, so `rk_direct` reaches both regions through
-`rk_pinned`. Such a store has no task-slot modules but the boundary-word
-module (the packer refuses others), so task runs load into the job slot.
-Boot runs the boundary-word module in the task slot first, since boot
-itself runs in the job slot, then loads the boot-loaded classes, so class 4
-lands over it and the runtime forgets it. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+`rk_pinned`. Such a store has no task-slot modules (the packer refuses
+them), so task runs load into the job slot. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
@@ -65,8 +62,8 @@ KERNAL and BASIC out ($01=$35), sets the resident RAM interrupt vectors,
 starts CIA1 timer A at 10 ms × `RK_TIME_DIVISOR` (PAL latch 9851 at the
 default 1), fills
 the kernel's routine tables, opens the REU store and verifies it,
-initializes the runtime on the image at $7000, and runs the boundary-word
-module once to find its table (below).
+initializes the runtime on the image at $7000, and reads where the
+boundary-word table lies from the store's last four bytes (below).
 
 `rk_resident_step()` joins the kernel, the AGC clock and the modules. It
 first runs the clock and takes a pending interrupt (below), then one
@@ -286,11 +283,19 @@ and writes `platform/c64/resident_boundary_words_<m>.h`: 69 LM and 61 CM
 sorted {physical key, word} records. A key the listing has no word for is
 an error.
 
-The table lives in the REU store as a task-slot data module (lane A id
-0x01E0, `platform/c64/resident_boundary_module.c`), not in the resident.
-Boot runs it once for the table's address in the image; after that
-`rk_fixed_word` binary-searches it in the REU with one 4-byte DMA per probe,
-as the store's resolver does, and never loads it again. A key that is not in
+The table lives at the end of the REU store image, not in the resident and
+not in any slot, so it grows with the store's resolver records (the
+whole-program store: about 2,500 LM and 2,800 CM words, past what one task
+slot holds). The packer writes it there (`tools/overlay_v2_pack.py --tail`,
+`tail_bytes` in the tool above): the entries, then their count and a zero
+word, ending on the image's last page and inside one 64 KB REU bank. Boot
+reads the count from the image's last four bytes and the table's address
+from the page count; after that `rk_boundary_entry` fetches an entry with
+one 4-byte DMA (16-bit address arithmetic, which the one-bank rule allows)
+and `rk_fixed_word` binary-searches them, as the store's resolver does.
+Lane A id 0x01E0 (`platform/c64/resident_boundary_module.c`), which carried
+the table until it outgrew the task slot, is now a null module whose main
+only returns: the load check times a cached call through it. A key that is not in
 the table gives no word, so the interrupt entry refuses to vector there and
 the request stays pending. A store builder that adds resolver records passes
 them with `--resolver lm=JSON` so their keys get words; `make
@@ -339,9 +344,9 @@ each multiple of 12, because NEWJOB/12 pulled in the 125-byte
 `__udivmodqi4`. The single-precision component measures 172 bytes less
 with its table linked than without it. `rk_fixed_word` is 253 bytes: it
 programs the REU registers itself, because `apollo_reu_transfer`'s 32-bit
-address arithmetic doubled it, and boot runs the boundary-word module
-through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
-LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
+address arithmetic doubled it, and boot runs no module through
+`apollo_ov2_run`, because a second caller stops LTO inlining it and costs
+about 450 bytes. The wrappers add 55 bytes to the
 resident: the step hands each module `rk_env` and returns its status. Both
 missions fit with 2.2-2.4 KB to spare, so the kernel stays as it is.
 
@@ -459,8 +464,8 @@ boundary-word table's check in `boundary_words`) of
 
 - The flight store's resolver records. The committed boundary-word tables
   hold the check's two probe records; the flight store
-  (`tools/flight_store_build.py`) builds its own boundary-word module with
-  its records (`RK_BOUNDARY_HEADER`).
+  (`tools/flight_store_build.py`) builds its own boundary-word table with
+  its records and ends its store with it.
 - What the interrupt bodies continue into: Waitlist tasks T4RUPT and the
   T5RUPT handlers start, and the other lane's banked code a lead-in reaches.
   The step resolves those through the store like any module once their

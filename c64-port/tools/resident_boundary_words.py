@@ -16,9 +16,10 @@ listing when build/fixed-data/<program>/assembly.lst exists, and writes
 
   platform/c64/resident_boundary_words_<m>.h   sorted {physical key, 15-bit word}
 
-which the boundary-word data module (platform/c64/resident_boundary_module.c)
-carries in the REU store. The resident binary-searches it there; a key that
-is not in it refuses the interrupt, which stays pending.
+whose entries end the REU store image (tail_bytes, overlay_v2_pack.py --tail:
+the entries, little-endian, then their count and a zero word). The resident
+binary-searches them there; a key that is not in it refuses the interrupt,
+which stays pending.
 
   resident_boundary_words.py [--cc CC] [--resolver lm|cm=JSON ...] [--check]
 
@@ -32,6 +33,7 @@ import textwrap
 import json
 from pathlib import Path
 import re
+import struct
 import subprocess
 import sys
 
@@ -125,6 +127,15 @@ def render(m, rows, sources):
         out.append(' ' + ''.join(f'{{{k},0{w:05o}}},' for k, _, w in rows[i:i + 6]))
     out.append('};')
     return '\n'.join(out) + '\n'
+
+
+def tail_bytes(text):
+    """The REU store's tail (overlay_v2_pack.py --tail) for a boundary-word
+    header: each {physical key, word} as two little-endian 16-bit words
+    (agc_site_operand), then the count and a zero word, which the resident
+    reads from the image's last four bytes (platform/c64/resident_flight.c)."""
+    rows = re.findall(r'\{(\d+),0([0-7]+)\},', text)
+    return b''.join(struct.pack('<HH', int(k), int(w, 8)) for k, w in rows) + struct.pack('<HH', len(rows), 0)
 
 
 def header_text(cc, m, resolver):
