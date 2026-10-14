@@ -25,6 +25,8 @@
  *
  * Reference side: yaAGC from the same cold start with its own clock, without
  * DOWNRUPT (the native side has no downlink yet).
+ * FLIGHT_DOWNRUPT=1: both sides take a DOWNRUPT every 20 ms of AGC time and
+ * the channel 34/35 word streams are compared (tools/flight_downlink.h).
  *
  * Both are sampled at the first idle pass through ADVAN at or after each centisecond
  * 1..CS and their erasable memory compared, without the central registers
@@ -65,6 +67,8 @@
 #include "self_check.h"
 #include "standard_lead_routines.h"
 #include "flight_gojam.h"
+/* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
+#include "flight_downlink.h"
 #if RK_LM
 #define MISSION 0u
 #define FETCH LM_INTERPRETER_FETCH
@@ -565,6 +569,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   snap_path=path_buf;}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
  if(!gojam_parse(getenv("FLIGHT_GOJAM"))){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 2;}
+ dl_parse();
  pokes_sort();
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
@@ -613,6 +618,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  refs=scaled?cs:next-1u;
  if(refs<cs)printf("reference: only %lu of %lu centiseconds reached an idle boundary\n",refs,cs);
  /* Native. */
+ dl_native_phase();
  cold();
  memset(&s,0,sizeof s);memset(&io,0,sizeof io);memset(&hw,0,sizeof hw);memset(&p,0,sizeof p);
  io.undo=&undo;s.words[5]=04000u;io.interrupt_enabled=1;
@@ -675,9 +681,11 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
     if(n<0&&!scaled&&scaler_latch(&before,&io0,&hw1,&s,io.superbank,50000l)){
      s=before;io=io0;hw=hw1;pending=pending0;
      x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+     dl_clear();
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
     if(st==EXEC_OK){
      if(scaled)spend(span_mct);
+     dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
        * point and table (tools/x86_flight_mct.py). */
@@ -694,8 +702,10 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
      continue;}}
    /* A refusal: undo whatever the routine did and bridge the point. */
    s=before;io=io0;hw=hw0;}
+  dl_clear();
   {agc_word w[2048];long n;memcpy(w,s.words,sizeof w);
    if((n=bridge(&s,&io,&hw,&pending,5000000l))<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
+   dl_bridged(w);
    hole(w,io.superbank,(unsigned long)n,e?e->name:0);bridged+=(unsigned long)n;}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
   MISSION?"CM":"LM",steps,locked,bridged,samples,samples-diffs,diffs);
@@ -716,6 +726,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
  printf("module loads (%lu in %lu cs):\n",nloads,now(s.words));
  for(i=0;i<nload_points;++i)printf("  load %s slot %u %s %02o,%04o: %lu\n",loads[i].module,loads[i].slot,loads[i].in?"interp":"basic ",
   loads[i].key/1024u,loads[i].key%1024u+02000u,loads[i].count);
+ dl_report();
  printf("last routines:\n");
  for(i=0;i<TRACE&&i<steps;++i){unsigned long t=(steps-1u-i)%TRACE;printf("  Z %05o FB %05o %s\n",trace[t][0],trace[t][1],names[t]);}
  return 0;}

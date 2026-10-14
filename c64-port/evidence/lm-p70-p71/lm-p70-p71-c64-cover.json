@@ -2,18 +2,18 @@
  "milestone": "lm-p70-p71",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_p70_p71.c": "82519052e954aad488594f03609ee418a91b9fc956ebbe485b85a89f68e92a54",
+  "src/lm_p70_p71.c": "4a08898656ccc32dacb9e8bd43c78a764707af5d87b266374527b839592ed45c",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
   "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
-  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
+  "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
   "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "93f38cb00fd1021533195364b37d5663b20872dd4eed245bb34fe0f899cd8477",
+  "tests/interp_case.c": "64afac6c2fcc64acaf20d636f46f0971131623de44fe95da14905717e4ce062d",
   "tests/lm_p70_p71_target.c": "353a04afc0c5c23c9bf44e071fff8a559ae7887123c2125ea0c5083f96569374"
  },
  "host_cases": 37715,
@@ -123,8 +123,8 @@
   43008,
   44876
  ],
- "host_branch_arcs": 901,
- "c64_branch_arcs": 901,
+ "host_branch_arcs": 899,
+ "c64_branch_arcs": 899,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -179,8 +179,8 @@
    25
   ],
   "tests/interp_case.c": [
-   45,
-   45
+   43,
+   43
   ],
   "tests/lm_p70_p71_target.c": [
    0,
