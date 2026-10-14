@@ -25,7 +25,9 @@ on:
 # never cancels a queued full run on the same branch, or waits behind one.
 concurrency:
   group: port-ci-${{ github.event.pull_request.number || inputs.ref || github.ref }}-${{ inputs.full && 'full' || 'affected' }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  # A newer push supersedes an affected run (PR or base); full runs (nightly,
+  # manual) always finish, since the vice manifest comes from them.
+  cancel-in-progress: ${{ !inputs.full }}
 
 permissions:
   contents: read
