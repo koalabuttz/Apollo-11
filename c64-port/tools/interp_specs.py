@@ -2764,11 +2764,22 @@ SPECS = {
                       'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
         # P40-P47 run as jobs: any DANZIG can find a job waiting.
         'resume_keys': True,
+        # The Waitlist tasks (TRIMGIMB from R03, PITCHOFF, ENGOFTSK,
+        # STARTP47, the FIXDELAY and VARDELAY returns) run in T3RUPT
+        # whatever job is waiting: the basic routines that never name FIXLOC
+        # or NEWJOB take any FIXLOC and NEWJOB -0 (DUMMYJOB idling) too.
+        'any_fixloc': True,
+        'any_newjob': True,
         'noreturn': ['POSTJUMP'],
         'resume_orphans': True,
-        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
-        # output-channel model.
-        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # WAND/WOR CHAN12 (TRIMGIMB, PITCHOFF), RAND/WRITE DSALMOUT and WOR
+        # CHAN14 (ENGINOF3) through the program's agc_hardware
+        # (include/agc_channel_ops.h), the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # The channels the file's orders name, compared after every case
+        # (channel 14 without the IMU CDU and gyro drive bits).
+        'io_channels': {0o11: 0o77777, 0o12: 0o77777, 0o14: 0o6777},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
         # C64 rows chosen by branch outcome over every linked source.
@@ -2791,6 +2802,7 @@ SPECS = {
         # W from include/agc_image_w.h: flight builds address the fixed
         # $7000 image.
         'image_w': True,
+        'trusted_image': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
