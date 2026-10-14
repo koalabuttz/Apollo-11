@@ -2,10 +2,11 @@
 # Milestone lanec-pin-heads (lane C): Pinball's own words at the points
 # where an earlier module ran on through other routines in one C call
 # (docs/LANEC-PIN-HEADS.md), LM and CM. One suite per head family.
-LANEC_PIN_HEADS = load
-LANEC_PIN_HEADS_SRC = $(foreach h,$(LANEC_PIN_HEADS),src/lanec_pin_head_$(h).c tests/lanec_pin_head_$(h)_cases.c)
+LANEC_PIN_HEADS = load lamp
+LANEC_PIN_HEADS_SRC = $(foreach h,$(LANEC_PIN_HEADS),src/lanec_pin_head_$(h).c tests/lanec_pin_head_$(h)_cases.c) \
+  tests/lanec_pin_head_cases.c
 LANEC_SUITE_SRC += $(LANEC_PIN_HEADS_SRC)
-LANEC_SUITE_HDR += include/lanec_pin_heads.h
+LANEC_SUITE_HDR += include/lanec_pin_heads.h tests/lanec_pin_head_cases.h
 .PHONY: test-lanec-pin-heads sanitize-lanec-pin-heads
 test: test-lanec-pin-heads
 sanitize: sanitize-lanec-pin-heads

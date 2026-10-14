@@ -26,7 +26,6 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {1721u, 0x3efb9190u},
     {1996u, 0x886aebdcu},
     {2068u, 0x885fe899u},
-    {2167u, 0x288a6c5cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_gaps_lm
@@ -54,6 +53,18 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {866u, 0xa00c0b89u},
     {936u, 0x554d9da2u},
     {1034u, 0x5f8308f2u},
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_lamp_cm
+static const struct { uint32_t n, hash; } lanec_frozen[] = {
+    {2156u, 0xe08772d7u},
+    {2167u, 0x288a6c5cu},
+};
+#endif
+#ifdef LANEC_PIN_C64_MOD_pin_head_lamp_lm
+static const struct { uint32_t n, hash; } lanec_frozen[] = {
+    {1039u, 0x34b89d45u},
+    {1047u, 0xade0744cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_load_cm
@@ -452,17 +463,6 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {51u, 0xcd4f70a3u},
     {53u, 0xd9bb26bcu},
     {55u, 0x6b056437u},
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_lamp_lifecycle_cm
-static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2156u, 0xe08772d7u},
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_lamp_lifecycle_lm
-static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1039u, 0x34b89d45u},
-    {1047u, 0xade0744cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_release_lm

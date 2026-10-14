@@ -68,7 +68,7 @@ FAMILIES = {
                 # head families (src/lanec_pin_head_<h>.c, suite pin-head-<h>): at every point
                 # a head claims, it takes the place of the modules named here, which ran on
                 # through other routines in one C call (docs/LANEC-PIN-HEADS.md)
-                heads={'load': ('load_request', 'load_complete')},
+                heads={'load': ('load_request', 'load_complete'), 'lamp': ('lamp_lifecycle',)},
                 # modules no routine tries (the rest of the try-list and the heads accept
                 # their states; their suites stay as host tests of the composite)
                 dropped=()),

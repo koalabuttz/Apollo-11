@@ -934,6 +934,17 @@
 #define LANEC_LM_RECALTST 03547u /* RECALTST F 40 */
 #define LANEC_LM_RECALTST_BANK 040u
 #define LANEC_LM_VD1 04360u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_LM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
+#define LANEC_LM_VBTSTLTS_BANK 041u
+#define LANEC_LM_TSTLTS1 03631u /* TSTLTS1 F 41 */
+#define LANEC_LM_TSTLTS1_BANK 041u
+#define LANEC_LM_TSTLTS2 03662u /* TSTLTS2 F 41 */
+#define LANEC_LM_TSTLTS2_BANK 041u
+#define LANEC_LM_IMODES33 01303u /* IMODES33 E fixed-fixed/unswitched */
+#define LANEC_LM_IMODES30 01302u /* IMODES30 E fixed-fixed/unswitched */
+#define LANEC_LM_DSPTAB 01023u /* DSPTAB E fixed-fixed/unswitched */
+#define LANEC_LM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
+#define LANEC_LM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -1793,4 +1804,16 @@
 #define LANEC_CM_RECALTST 03454u /* RECALTST F 40 */
 #define LANEC_CM_RECALTST_BANK 040u
 #define LANEC_CM_VD1 04374u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_CM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
+#define LANEC_CM_VBTSTLTS_BANK 041u
+#define LANEC_CM_TSTLTS1 03633u /* TSTLTS1 F 41 */
+#define LANEC_CM_TSTLTS1_BANK 041u
+#define LANEC_CM_TSTLTS2 03662u /* TSTLTS2 F 41 */
+#define LANEC_CM_TSTLTS2_BANK 041u
+#define LANEC_CM_IMODES33 01321u /* IMODES33 E fixed-fixed/unswitched */
+#define LANEC_CM_IMODES30 01320u /* IMODES30 E fixed-fixed/unswitched */
+#define LANEC_CM_DSPTAB 01023u /* DSPTAB E fixed-fixed/unswitched */
+#define LANEC_CM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
+#define LANEC_CM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
+#define LANEC_CM_OPTMODES 01331u /* OPTMODES E fixed-fixed/unswitched */
 #endif

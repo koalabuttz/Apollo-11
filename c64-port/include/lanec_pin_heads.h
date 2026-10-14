@@ -13,4 +13,7 @@
  *         (bank 41) -> COMPTEST, NOUNTEST, UPDATVB -1, REQDATX/Y/Z;
  *         LOADLV -> RELDSP, LOADLV +5 (RELDSP returns) -> POSTJUMP. */
 enum lanec_status lanec_pin_head_load_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+/*   lamp  VBTSTLTS (CM: and its BANKCALL return), TSTLTS1 -> WAITLIST or
+ *         TSTLTS1 again, TSTLTS2 -> NOVAC, TSTLTS3 -> BANKCALL (DSPMM). */
+enum lanec_status lanec_pin_head_lamp_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #endif
