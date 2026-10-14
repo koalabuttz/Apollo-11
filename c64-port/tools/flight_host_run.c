@@ -456,7 +456,7 @@ static void adopt(apollo_overlay_state *after,agc_hardware *hw){unsigned i;
  hw->channel3=(agc_word)(m.InputChannel[3]&077777);hw->channel4=(agc_word)(m.InputChannel[4]&077777);
  if(!(m.InputChannel[013]&040000))hw->channel13&=037777u;}
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
-                     agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first){
+                     agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0;
  first[5]=077777u;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
@@ -465,7 +465,10 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
    * instruction: the native continuation is that point. */
   if(n&&(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode))
      &&point(view(),(agc_word)m.OutputChannel7,&in)==target&&in==tin){
-   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)&&mword(i)!=after->words[i])break;
+   /* An interpretive step (SWITCH's TS Q) may leave yaAGC's Q with bit 16,
+    * a copy of bit 15, where the native frontier holds 15 bits (#409). */
+   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)
+                          &&(i==2u&&interp?(mword(2)^after->words[2])&077777u:mword(i)!=after->words[i]))break;
    if(i==2048u){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);return n;}
    if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}}
   if(step(&got))return -1;}
@@ -678,14 +681,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #endif
 x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
-   if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;
-    n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);
+   if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;int interp;(void)point(before.words,io0.superbank,&interp);
+    n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);
     /* Again with the scalers yaAGC read (scaler_latch). */
     if(n<0&&!scaled&&scaler_latch(&before,&io0,&hw1,&s,io.superbank,50000l)){
      s=before;io=io0;hw=hw1;pending=pending0;
      x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
      dl_clear();
-     if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
+     if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
      if(scaled)spend(span_mct);
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);

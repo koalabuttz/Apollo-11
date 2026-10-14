@@ -49,6 +49,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from overlay_runtime_library import prepare  # noqa: E402
@@ -685,6 +686,51 @@ def check_site_includers():
                                  'not exactly one source')
 
 
+# Everything the build reads: sources, headers, platform code, the tools it
+# imports and runs, the docs tables and the assembled listings. The C
+# compilers are named by path, size and mtime.
+STAMP_INPUTS = ('src', 'include', 'platform', 'tools', 'docs', 'build/fixed-data')
+
+
+def input_digest(a):
+    h = hashlib.sha256(repr((a.cc, a.host_cc, a.missions, a.host_only, os.environ.get('RK_FLIGHT_OUT'))).encode())
+    for tool in (a.cc, a.host_cc, NM):
+        try:
+            st = os.stat(tool if os.sep in str(tool) else subprocess.run(
+                ['sh', '-c', f'command -v {tool}'], capture_output=True, text=True).stdout.strip() or tool)
+            h.update(f'{tool}:{st.st_size}:{st.st_mtime_ns}'.encode())
+        except OSError:
+            h.update(f'{tool}:missing'.encode())
+    for top in STAMP_INPUTS:
+        for f in sorted((ROOT / top).rglob('*')):
+            if f.is_file() and '__pycache__' not in f.parts:
+                h.update(f.relative_to(ROOT).as_posix().encode() + b'\0' + f.read_bytes())
+    return h.hexdigest()
+
+
+def output_digests(since):
+    return {f.relative_to(ROOT / OUT).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest()
+            for f in sorted((ROOT / OUT).rglob('*'))
+            if f.is_file() and not f.name.startswith('.stamp-') and f.stat().st_mtime >= since}
+
+
+def up_to_date(stamp, digest):
+    """The last build with these arguments read the same inputs, and every file
+    it wrote is still as it left it (a --missions lm build rewrites the LM
+    outputs a full build recorded, so the full build runs again)."""
+    try:
+        record = json.loads(stamp.read_text())
+    except (OSError, ValueError):
+        return False
+    if record.get('inputs') != digest:
+        return False
+    for name, sha in record.get('outputs', {}).items():
+        f = ROOT / OUT / name
+        if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != sha:
+            return False
+    return True
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -693,8 +739,17 @@ def main():
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 4)
     p.add_argument('--host-only', action='store_true',
                    help='steps 1-3 only: the host index and build/flight-store/<m>-host.inc')
+    p.add_argument('--force', action='store_true', help='build even when the last build is up to date')
     a = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
+    stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
+                          + ('-host' if a.host_only else ''))
+    digest = input_digest(a)
+    if not a.force and up_to_date(stamp, digest):
+        print(f'{OUT}: up to date ({stamp.name}; --force rebuilds)')
+        return 0
+    stamp.unlink(missing_ok=True)
+    started = time.time() - 2
     index, objects = host_index(a.host_cc, a.jobs)
     declared = table_names()
     tables = {s: o for o, (d, _) in index.items() for s, k in d.items()
@@ -1237,6 +1292,7 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+    stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
     return 0
 
 

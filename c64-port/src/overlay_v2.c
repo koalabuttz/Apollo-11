@@ -149,9 +149,21 @@ void apollo_ov2_seam_exchange(apollo_ov2_runtime *r,uint8_t a,uint8_t b) {
 void apollo_ov2_seam_release(apollo_ov2_runtime *r,uint8_t context) {
     if(context<APOLLO_OV2_CONTEXTS) r->seams[context].depth=0;
 }
-void apollo_ov2_restart(apollo_ov2_runtime *r) {
+/* Both restarts: every seam, both run-slot caches, busy and the fault
+ * latch. Slot classes 2 to 4 have no cache entry here, and no slot, header
+ * or image byte is written. */
+static void restart_runs(apollo_ov2_runtime *r)
+{
     uint8_t i;
     for(i=0;i<APOLLO_OV2_CONTEXTS;++i) r->seams[i].depth=0;
     for(i=0;i<APOLLO_OV2_SLOTS;++i) { r->loaded[i]=0; r->selectors[i]=0; }
     r->busy=0; r->fault=0;
+}
+void apollo_ov2_restart(apollo_ov2_runtime *r)
+{
+    restart_runs(r);
+}
+void apollo_ov2_restart_keep_pinned(apollo_ov2_runtime *r)
+{
+    restart_runs(r);
 }

@@ -10,12 +10,12 @@
   ci-watch-interp-flight-flowed-vice-1 ci-watch-interp-flight-flowed-vice-2 ci-watch-interp-flight-flowed-vice-3 \
   ci-watch-interp-flight-flowed-vice-4 \
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
-  ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-downlink-check ci-watch-flight-downlink-vice
+  ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
+  ci-watch-flight-downlink-vice
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
   flight-downlink-check
-ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 interp-flight-flowed-vice-4 \
-  interp-flight-p63-vice flight-restart-vice \
-  flight-downlink-vice
+ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
+  interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice
 CI_EXTRA_INTERP := src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c \
   src/cm_interp_orders.c src/cm_interp_steps.c include/interp_runtime_tables.h
 ci-watch-interp-flight-vice: $(CI_EXTRA_INTERP) tools/interp_flight_test.py platform/c64/interp_flight_check.c \
@@ -37,6 +37,8 @@ CI_EXTRA_RESTART := src/lm_fresh_start.c src/cm_fresh_start.c src/lm_restart_rou
   tools/flight_host_run.c tools/flight_host_differential.py tools/flight_restart_check.py
 ci-watch-flight-restart-check: $(CI_EXTRA_RESTART)
 ci-watch-flight-restart-vice: $(CI_EXTRA_RESTART) platform/c64/restart_check.c tools/flight_restart_reference.c
+ci-watch-flight-gojam-vice: $(CI_EXTRA_RESTART) platform/c64/restart_check.c tools/flight_restart_reference.c \
+  platform/c64/resident_gojam_module.c src/overlay_v2.c include/overlay_v2.h
 # flight-downlink-check and -vice run the restart scenarios: they watch the
 # restart's files, the downlink's own and downtelemetry's.
 CI_EXTRA_DOWNLINK := $(CI_EXTRA_RESTART) src/lm_downtelemetry.c src/cm_downtelemetry.c src/lm_downtelemetry_data.inc \

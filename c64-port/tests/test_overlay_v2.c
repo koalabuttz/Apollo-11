@@ -349,7 +349,48 @@ int main(int argc,char **argv) {
         assert(apollo_ov2_slot_address(APOLLO_OV2_SLOT_PINNED_TASK)==0xe000u &&
                apollo_ov2_slot_bytes(APOLLO_OV2_SLOT_PINNED_TASK)==0x1ffau);
         value=41; assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_OK && value==42);
-        check_loaded(0x0a04,APOLLO_OV2_TASK_ADDRESS,150,8); guards(); pinned_loaded=0;
+        check_loaded(0x0a04,APOLLO_OV2_TASK_ADDRESS,150,8); guards();
+        /* The hardware restart's variant (apollo_ov2_restart_keep_pinned):
+         * seams in job and task contexts, a cached job module, a latched
+         * fault and a busy runtime all go, as apollo_ov2_restart drops them;
+         * the class-3 and class-4 modules, their BSS, the header buffer and
+         * the image keep every byte, and a job run after it reloads the job
+         * module and leaves the class-4 region in place. */
+        {
+            static uint8_t pinned[APOLLO_OV2_PINNED_BYTES],task[APOLLO_OV2_TASK_BYTES],header[APOLLO_OV2_HEADER_BYTES];
+            static apollo_ov2_runtime plain;
+            assert(rt.loaded[0]==0x0101 && rt.selectors[0] && !rt.loaded[1]);
+            rt.seams[3].depth=2; rt.seams[APOLLO_OV2_TASK_CONTEXT].depth=1; rt.seams[7].depth=4;
+            rt.fault=APOLLO_OV2_UNMAPPED; rt.busy=1;
+            memcpy(pinned,ram+APOLLO_OV2_PINNED_ADDRESS,sizeof pinned);
+            memcpy(task,ram+APOLLO_OV2_TASK_ADDRESS,sizeof task);
+            memcpy(header,HEADER,sizeof header);
+            saved=*state; plain=rt;
+            apollo_ov2_restart_keep_pinned(&rt);
+            apollo_ov2_restart(&plain);
+            for(i=0;i<APOLLO_OV2_CONTEXTS;++i) assert(rt.seams[i].depth==0);
+            assert(!rt.loaded[0] && !rt.loaded[1] && !rt.selectors[0] && !rt.selectors[1] && !rt.fault && !rt.busy);
+            assert(memcmp(&rt,&plain,sizeof rt)==0);   /* the runtime as apollo_ov2_restart leaves it */
+            assert(memcmp(state,&saved,sizeof saved)==0 && memcmp(header,HEADER,sizeof header)==0);
+            assert(memcmp(pinned,ram+APOLLO_OV2_PINNED_ADDRESS,sizeof pinned)==0);
+            assert(memcmp(task,ram+APOLLO_OV2_TASK_ADDRESS,sizeof task)==0);
+            check_loaded(0x0a03,APOLLO_OV2_PINNED_ADDRESS,120,8);
+            check_loaded(0x0a04,APOLLO_OV2_TASK_ADDRESS,150,8);
+            before=dmas; value=41;
+            assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_OK && value==42 && rt.loaded[0]==0x0101);
+            assert(dmas>before && !rt.loaded[1]);   /* reloaded; the task slot cache stays empty */
+            assert(memcmp(pinned,ram+APOLLO_OV2_PINNED_ADDRESS,sizeof pinned)==0);
+            assert(memcmp(task,ram+APOLLO_OV2_TASK_ADDRESS,sizeof task)==0);
+            guards();
+            /* A fault a run latched clears the same way. */
+            value=0; assert(run(0,0x0777,0,&value,&action,&resume)==APOLLO_OV2_UNMAPPED && rt.fault);
+            assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_FAULTED);
+            apollo_ov2_restart_keep_pinned(&rt);
+            value=41; assert(run(0,0x0101,0,&value,&action,&resume)==APOLLO_OV2_OK && value==42);
+            assert(memcmp(task,ram+APOLLO_OV2_TASK_ADDRESS,sizeof task)==0);
+            check_loaded(0x0a03,APOLLO_OV2_PINNED_ADDRESS,120,8);
+        }
+        pinned_loaded=0;
         boot(1); expect_fault(APOLLO_OV2_BAD_DIRECTORY,0,0x0a04,0);
         boot(0); reu[256u+0x0a04u*16u+10u]=5;               /* no slot class 5 */
         assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);

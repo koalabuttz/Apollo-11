@@ -25,7 +25,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SHARED = ('Makefile', 'include/agc_word.h', 'src/agc_word.c', 'tools/ci_affected.py')
+SHARED = ('Makefile', 'include/agc_word.h', 'src/agc_word.c', 'tools/ci_affected.py', 'tools/mk/_ci-split.mk')
 IGNORED = re.compile(r'^(docs/|evidence/|README\.md$|CONTRIBUTING-port\.md$|tools/ledgers\.py$|'
                      r'tools/evidence\.py$|tools/new_milestone\.py$|tools/setup_cloud\.sh$|\.gitignore$)')
 WORD = re.compile(r'[A-Za-z0-9_./+-]+')
@@ -143,15 +143,24 @@ def closure(target, rules, seen, scripts):
     return words
 
 
-def mk_targets(path):
+SPLIT_CALL = re.compile(r'\$\(call\s+CI_SPLIT_RULE\s*,\s*([A-Za-z0-9_.-]+)\s*,')
+
+
+def mk_targets(path, rules=()):
+    """Targets a .mk file defines: its literal rules, plus the c64-<m>-<n>
+    and vice-<m>-<n> parts its CI_SPLIT_RULE calls make with $(eval)."""
     targets = set()
     try:
-        for line in (ROOT / path).read_text().splitlines():
-            match = re.match(r'^([A-Za-z0-9_./-]+)\s*:(?!=)', line)
-            if match:
-                targets.add(match.group(1))
+        text = (ROOT / path).read_text()
     except OSError:
-        pass
+        return targets
+    for line in text.splitlines():
+        match = re.match(r'^([A-Za-z0-9_./-]+)\s*:(?!=)', line)
+        if match:
+            targets.add(match.group(1))
+    for milestone in SPLIT_CALL.findall(text):
+        part = re.compile(r'^(c64|vice)-' + re.escape(milestone) + r'-[0-9]+$')
+        targets |= {t for t in rules if part.match(t)}
     return targets
 
 
@@ -180,7 +189,7 @@ def main():
         defined = set()
         for f in relevant:
             if f.endswith('.mk'):
-                defined |= mk_targets(f)
+                defined |= mk_targets(f, rules)
         scripts = {}
         for group in ('test', 'sanitize', 'c64'):
             roots = sorted(t for t in rules.get(group, (set(), ''))[0] if t != 'all')
@@ -195,14 +204,14 @@ def main():
                 words = closure(watch if watch in rules else target, rules, set(), scripts)
                 if (target in defined or words & names) and target not in result[group]:
                     result[group].append(target)
-        for target in result['c64']:
-            vice = 'vice-' + target[len('c64-'):]
-            if vice in rules:
-                result['vice'].append(vice)
         for target in sorted(defined):
             for group in ('test', 'sanitize', 'c64'):
                 if target.startswith(group + '-') and target not in result[group]:
                     result[group].append(target)
+        for target in result['c64']:
+            vice = 'vice-' + target[len('c64-'):]
+            if vice in rules and vice not in result['vice']:
+                result['vice'].append(vice)
         for group in ('test', 'sanitize'):
             core = group + '-core'
             if core in rules and core not in result[group] and \

@@ -219,7 +219,8 @@ Hashes are in `evidence/cm-p21/SHA256.json`. Bulk files are assets of the
     PUSHLOC for the interpretive ones.
 
   See `cm-p21-checks.log`.
-- **C64 execution results.** Run `make vice-cm-p21`. Two PRGs each register
+- **C64 execution results.** Run `make cm-p21-vice`
+  (vice-cm-p21-1 and -2 on CI, one per group). Two PRGs each register
   only the routines their cases reach:
   - group 1: TDEC1 through P21VSAVE (INTEGRV, DDV, ASIN) (516 cases);
   - group 2: every other entry (518 cases).
