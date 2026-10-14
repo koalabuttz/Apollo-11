@@ -423,7 +423,13 @@ Hashes: `evidence/lm-conic-lambert/SHA256.json`. Bulk files are assets of the
 - Host and sanitizer results: `make test-lm-conic-lambert
   sanitize-lm-conic-lambert`. Strict and ASAN/UBSAN builds each pass 11
   frozen entries, 24 admission guards, 176 frozen phase steps and the full
-  65536-entry stream (`lm-conic-lambert-checks.log`).
+  65536-entry stream (`lm-conic-lambert-checks.log`). CI runs them as
+  `test-lm-conic-lambert-1` to `-4` and `sanitize-lm-conic-lambert-1` to `-4`:
+  each part runs 16384 consecutive entries in the pinned yaAGC and in the
+  native producer, compares every row and checks the part's SHA256 in
+  `lm-conic-lambert-source-stream-parts.json`, recorded by
+  `tools/oracle_stream_part.py --record 4` from the whole stream, which must
+  equal the pinned identity. Part 1 also runs the frozen entries and steps.
 - Phase frontiers: `tools/freeze_lm_conic_lambert_phases.py` requires each of
   the 717 native frontiers of the 11 frozen entries (which together take all
   77 transitions) to equal, in order, an original NEWOPS image of the oracle,
