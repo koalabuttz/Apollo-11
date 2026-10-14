@@ -105,6 +105,12 @@ extern rk_module_env rk_env;
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */
 #define RK_HARDWARE 0x6fbeu
+/* The CIA1 interrupt count (ov2_irq_count, platform/c64/overlay_v2_irq.S)
+ * sits at RK_IRQ_COUNT, below rk_hardware: a long-running module (the
+ * interpreter, platform/c64/interp_module.c) returns to the step when it
+ * moves, so the step takes the interrupt. Read it twice: an interrupt
+ * between its two bytes can tear one read. */
+#define RK_IRQ_COUNT 0x6fbcu
 extern flight_io rk_flight;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66

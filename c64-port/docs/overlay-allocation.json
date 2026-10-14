@@ -171,8 +171,8 @@
    "resident_capacity": 26367,
    "resident_measured": {
     "source": "evidence/resident-kernel/resident-flight-sizes.json",
-    "resident_bytes": 24316,
-    "free_bytes": 2051,
+    "resident_bytes": 24314,
+    "free_bytes": 2053,
     "boot_only_bytes": 4196,
     "components": {
      "kernel": 10524,
@@ -183,7 +183,7 @@
      "AGC timers and interrupt entry": 1092,
      "service table exports": 637,
      "C runtime and library": 486,
-     "IRQ entry": 26,
+     "IRQ entry": 24,
      "BASIC header and alignment": 0
     }
    },
@@ -1320,8 +1320,8 @@
    "resident_capacity": 26367,
    "resident_measured": {
     "source": "evidence/resident-kernel/resident-flight-sizes.json",
-    "resident_bytes": 24022,
-    "free_bytes": 2345,
+    "resident_bytes": 24020,
+    "free_bytes": 2347,
     "boot_only_bytes": 4168,
     "components": {
      "kernel": 10281,
@@ -1332,7 +1332,7 @@
      "AGC timers and interrupt entry": 1092,
      "service table exports": 637,
      "C runtime and library": 486,
-     "IRQ entry": 26,
+     "IRQ entry": 24,
      "BASIC header and alignment": 0
     }
    },
