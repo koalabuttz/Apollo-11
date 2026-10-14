@@ -72,7 +72,7 @@ def main():
              'snapshot_sha256': hashlib.sha256(ref).hexdigest(),
              'entries': ['05,3506 DODOWNTM', 'DNTMGOTO (erasable 0335)', '05,3515 DNPHASE1', '05,3523 DNPHASE2',
                          '05,3707 DNDUMPI', '05,3712 DNDUMPI+3', '05,3722 DNDUMP', '05,3735 DNDUMP1'],
-             'downrupts': sum(len(r) - 1 - 3 - 2048 for r in rows) // 3,
+             'downrupts': sum(len(r) - 1 - 3 - 2048 for r in rows) // 4,   # channels 13, 34, 35 and Q each
              'boundary': 'DOWNRUPT lead-in state at DODOWNTM to TCF RESUME, for every downrupt of each case',
              'full_physical_words': 2048}
     (B / 'lm-downtelemetry-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
