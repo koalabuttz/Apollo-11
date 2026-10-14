@@ -23,15 +23,16 @@ sanitize-lanec-pin-heads: build/lanec-native-sanitize build/lanec-oracle tools/l
 # with the host's run of the same routine (tools/lanec/native.c --flight,
 # tools/module_test.py, docs/MODULE-TEST.md). Where the suite's own module
 # accepts the case (the rows tools/lanec/diff.py checks against Virtual AGC),
-# that is the suite's row; where it refuses, the try-list's next module runs. For the head
-# families and the modules that do not fit a stand-alone C64 program
-# (fixed-display). c64-lanec-pin-flight builds the store.
+# that is the suite's row; where it refuses, the try-list's next module runs.
+# It runs the head families and fixed-display, which no stand-alone C64
+# program holds (lanec-pin-transfer's LANEC_PIN_C64_TOO_BIG).
+# c64-lanec-pin-flight builds the store (it needs build/fixed-data).
 LANEC_PIN_FLIGHT_SUITES = $(foreach h,$(LANEC_PIN_HEADS) $(LANEC_PIN_HEAD_FAMILIES),pin-head-$(h)) pw-fixed-display
 LANEC_PIN_FLIGHT_MODULES = lanec_pin_routines,lanec_pin_keys_num_routines,lanec_pin_keys_cmd_routines,lanec_pin_keys_release_routines,lanec_pin_keys_sign_routines,lanec_pin_keys_clear_routines
 .PHONY: c64-lanec-pin-flight vice-lanec-pin-flight
 c64-lanec-pin-flight:
 	python3 tools/flight_store_build.py
-vice-lanec-pin-flight: build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
+vice-lanec-pin-flight: c64-lanec-pin-flight build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
 	set -e; for s in $(LANEC_PIN_FLIGHT_SUITES); do \
 	  build/lanec-native --states $$s > build/lanec-$$s-states.txt; \
 	  build/lanec-native --flight $$s > build/lanec-$$s-flight.txt; \

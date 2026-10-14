@@ -58,14 +58,17 @@ LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/lanec_pin_t
   src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c tests/lanec_pin_transfer_cases.c
 # These modules' programs do not build or fit below the mailbox page with
 # INTER-BANK and the harness: the head families (their cases chain through
-# every Pinball routine), the keypress modules and eleven modules over $C000.
+# every Pinball routine), the keypress modules and eleven modules over $C000;
+# and the fixed display, whose rows read the rope (DSPFMEM), which a
+# program without the REU store does not carry.
 # Their rows do not run (tools/lanec/cover.py record --not-run); their
 # modules run on the C64 in their own pw-* programs and through the flight
 # store (vice-lanec-pin-flight, module-test-lanec-pin-keys), and the record
 # pools those programs' arcs (--pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
 LANEC_PIN_C64_TOO_BIG = $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
   proceed_cm proceed_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \
-  pin_keys_lm pw_address_request_cm pw_address_request_lm pw_hours_output_cm pw_hours_output_lm pw_jam_control_cm \
+  pin_keys_lm pw_address_request_cm pw_address_request_lm pw_fixed_display_cm pw_fixed_display_lm \
+  pw_hours_output_cm pw_hours_output_lm pw_jam_control_cm \
   pw_jam_control_lm pw_lamp_release_lm pw_operator_release_cm pw_operator_release_lm pw_operator_response_cm \
   pw_operator_response_lm pw_response_recall_cm pw_response_recall_lm
 LANEC_PIN_C64_MODULES := $(filter-out $(LANEC_PIN_C64_TOO_BIG),$(shell sed -n 's/^\#ifdef LANEC_PIN_C64_MOD_//p' \
