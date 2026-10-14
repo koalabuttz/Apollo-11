@@ -29,7 +29,7 @@ RTB CDULOGIC is native (`src/rtb_angles.c`). SIN, COS, UNIT, VXV, VXSC and the o
 
 The cases hold the erasables AOTMARK reads at values the flight program gives them. Random words there take paths flight never takes, such as indexing into the rope or the registers. The pinned values:
 - **VAC areas.** VAC1USE to VAC5USE are 0 (busy) or their own address (free, as FRESH_START leaves them).
-- **MARKSTAT.** Either 0, or the marks' VAC area +1 in the low 9 bits under any of flag bits 10-14. Past MARKRUPT's CCS MARKSTAT, it is never 0. At the AOTMARK entry, half the cases have MARKSTAT 0 (joint_states), so MKVACFND's search runs past every VAC area, busy or free, through to BAILOUT1. A quarter of them have only VAC5 free, with EXTVBACT's bits 1-2 clear, so the search takes its last area (07,2024-2025).
+- **MARKSTAT.** Either 0, or the marks' VAC area +1 in the low 9 bits under any of flag bits 10-14. Past MARKRUPT's CCS MARKSTAT, it is never 0. At the AOTMARK entry, half the cases have MARKSTAT 0 (joint_states), so MKVACFND's search runs past every VAC area, busy or free, through to BAILOUT1. A quarter of all entry cases (131 of 512) have only VAC5 free, with EXTVBACT's bits 1-2 clear, so the search takes its last area (07,2024-2025).
 - **FIXLOC.** Any value in the basic routines (`any_fixloc`): CHANGEVB runs under NOVAC with FIXLOC 0110, and MARKRUPT and MKRELEAS can interrupt it. Half of their cases put FIXLOC outside the VAC areas.
 - **Counters and codes.** MARKCNTR is 0-5. AOTCODE holds a detent of 0-7 in bits 7-9 under a star code.
 - **MKDEX.** In flight it is the mark verb index (0-3). On the surface (FLAGWRD8 bit 8), it is a mark slot: the area +1 plus 6 words a mark.
