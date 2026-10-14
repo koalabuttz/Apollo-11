@@ -976,11 +976,14 @@ class Basic:
         bank's function."""
         S = sym.upper()
         banks = sorted(set(self.node_banks))
-        c = ['#ifndef %s_BANKS' % S, '#define %s_BANKS 0xffffffffffffffffull' % S, '#endif',
-             '#define %s_HAS(b) ((%s_BANKS >> (b)) & 1u)' % (S, S)]
         lab = {}
         for k in order:
             lab[self.label(*k)] = k
+        c = self.flight_parts(S, lab) if self.spec.get('flight_parts') else []
+        cut_banks = {x // 1024 for x in getattr(self, 'flight_cuts', [])
+                     if any(k[0] // 1024 == x // 1024 and k[0] < x for k in order)}
+        c += ['#ifndef %s_BANKS' % S, '#define %s_BANKS 0xffffffffffffffffull' % S, '#endif',
+              '#define %s_HAS(b) ((%s_BANKS >> (b)) & 1u)' % (S, S)]
         # Words another bank's code may reach (computed transfers) and
         # the entries, per bank.
         into = {b: set() for b in banks}
@@ -997,7 +1000,11 @@ class Basic:
             body = []
             for n, k in mine:
                 body.append('%s:' % self.label(*k))
-                body.append(' IRC_COVER(%du);' % n)
+                if b in cut_banks:
+                    # (A flight part build leaves at a word of another part.)
+                    body.append(' %s_FP(%uu) IRC_COVER(%du);' % (S, k[0], n))
+                else:
+                    body.append(' IRC_COVER(%du);' % n)
                 twin = (k[0], k[1], False)
                 if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in self.nodes[k]]:
                     body.append(' goto %s;' % self.label(*twin))
@@ -1019,9 +1026,23 @@ class Basic:
             c.append('static enum exec_status basic_run_%o(apollo_overlay_state *s,%s *io,uint16_t at){' % (b, self.io))
             c.append(self.index_locals())
             c.append(' (void)ix;(void)e;(void)p;')
+            if b in cut_banks:
+                c.append(' %s_FP(at)' % S)
             c.append(' switch(at){')
             for q in sorted(into[b]):
                 c.append(' case %uu:goto %s;' % (q, self.label(q)))
+            extra = [q for q in getattr(self, 'flight_extra', []) if q // 1024 == b and q not in into[b]]
+            if extra:
+                c.append('#ifdef %s_FLIGHT_PART' % S)
+                for q in extra:
+                    if (q, False, False) in self.nodes:
+                        c.append(' case %uu:goto %s;' % (q, self.label(q)))
+                    else:
+                        # (Only reached with A free of overflow: the part
+                        # that stopped there.)
+                        c.append(' case %uu:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto %s;' % (
+                            q, self.label(q, False, True)))
+                c.append('#endif')
             c.append(' default:return EXEC_OUT_OF_SCOPE;')
             c.append(' }')
             c.extend(body)
@@ -1050,9 +1071,64 @@ class Basic:
         S = sym.upper()
         out = []
         for b in sorted(set(self.node_banks)):
-            out += ['#if %s_HAS(0%o)' % (S, b), '#define %s_RUN_%o basic_run_%o' % (S, b, b), '#else',
-                    '#define %s_RUN_%o(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)' % (S, b), '#endif']
+            out += ['#if %s_HAS(0%o)' % (S, b), '#define %s_RUN_%o basic_run_%o' % (S, b, b)]
+            if self.spec.get('flight_parts'):
+                out += ['#elif defined(%s_FLIGHT_PART)' % S,
+                        '#define %s_RUN_%o(s,io,at) ((void)(io),%s_leave((s),(at)))' % (S, b, S.lower())]
+            out += ['#else', '#define %s_RUN_%o(s,io,at) ((void)(s),(void)(io),EXEC_OUT_OF_SCOPE)' % (S, b), '#endif']
         return out
+
+    # ---- flight parts (spec 'flight_parts') -------------------------------
+    # The C64 flight store links a module per part when the file's basic
+    # code does not fit one job slot. 'flight_parts' lists the cuts
+    # (physical addresses, ascending); <SYM>_FLIGHT_PART=j (1-based) builds
+    # part j: the banks it holds (<SYM>_BANKS), the words of a cut bank on
+    # its side of the cut (<SYM>_FP), and a routine table of its keys. A
+    # run that reaches a word of another part sets Z to it and returns
+    # EXEC_OK when the word is a key of some part, so the transfer engine
+    # goes on in that part's module; any other word is refused. Part keys
+    # (flight builds only) are the words a goto across a cut reaches and
+    # every computed-transfer target. Without <SYM>_FLIGHT_PART the file
+    # compiles as before.
+    def flight_parts(self, S, lab):
+        import bisect
+        cuts = sorted(self.spec['flight_parts'])
+        self.flight_cuts = cuts
+        part = lambda p: bisect.bisect_right(cuts, p)
+        extra = set()
+        for k, body in self.nodes.items():
+            for x in body or ():
+                for m in re.finditer(r'goto ([A-Z][0-7]+c?);', x):
+                    t = lab.get(m.group(1))
+                    if t is not None and part(t[0]) != part(k[0]):
+                        if t[1]:
+                            raise BasicError('extended word %s across a flight cut' % self.where(t[0]))
+                        extra.add(t[0])
+        extra |= {p for p in self.dispatch if (p, False, False) in self.nodes}
+        self.flight_extra = sorted(extra - self.entries)
+        if any(p // 1024 in (2, 3) for p in self.entries | extra):
+            raise BasicError('flight parts need every key in a switched bank')
+        words = sorted({k[0] for k in self.nodes})
+        bounds = [0] + cuts + [0o200000]
+        c = ['/* Flight parts (spec \'flight_parts\', docs/FLIGHT-PARTS.md): %s_FLIGHT_PART=j' % S,
+             ' * builds part j of %d for the C64 flight store, the basic words between' % (len(cuts) + 1),
+             ' * its cuts (%s_OUT: the others); a run that reaches another part\'s word stops there' % S,
+             ' * when it is a key (%s_leave), and is refused otherwise. */' % S.lower(),
+             '#ifdef %s_FLIGHT_PART' % S]
+        for j in range(len(cuts) + 1):
+            lo, hi = bounds[j], bounds[j + 1]
+            mask = 0
+            for w in words:
+                if lo <= w < hi:
+                    mask |= 1 << (w // 1024)
+            out = ' || '.join(t for t in ('(at)<%uu' % lo if j else '', '(at)>=%uu' % hi if j < len(cuts) else '') if t)
+            c += ['#%s %s_FLIGHT_PART==%d' % ('if' if j == 0 else 'elif', S, j + 1),
+                  '#define %s_BANKS 0x%xull' % (S, mask), '#define %s_OUT(at) (%s)' % (S, out)]
+        c += ['#else', '#error %s_FLIGHT_PART names no part' % S, '#endif',
+              'static MAYBE_UNUSED enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at);' % S.lower(),
+              '#define %s_FP(at) if(%s_OUT(at)){return %s_leave(s,(at));}' % (S, S, S.lower()),
+              '#else', '#define %s_FP(at)' % S, '#endif']
+        return c
 
     def channel_helpers(self):
         c = ['/* Channel orders on the mission\'s output channels, as yaAGC\'s. */']

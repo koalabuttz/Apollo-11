@@ -1309,6 +1309,10 @@ SPECS = {
         # Its basic code (banks 16, 20, 21, 24, 27, 42) does not fit one C64
         # diagnostic with interpretive bodies: one function per bank.
         'basic_split': True,
+        # ... nor one flight job slot: five flight modules, cut at banks 20,
+        # 21 and 27 and inside bank 24 (docs/FLIGHT-PARTS.md).
+        'flight_parts': [0o20 * 1024, 0o21 * 1024, 0o24 * 1024 + 0o2300 - 0o2000, 0o24 * 1024 + 0o3000 - 0o2000,
+                         0o24 * 1024 + 0o3300 - 0o2000],
         # RCSDAPON ends TS FLAGWRD6 / TC Q: the TS skip past the bank's
         # last word needs an overflowing A, which CS OCT60000 / MASK / AD
         # BIT14 never makes.
