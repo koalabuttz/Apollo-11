@@ -10324,7 +10324,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "6c09706d86c907f4faba04c9cd54515766aa8553c169b43bd41658e6a372a427"
+            "sha256": "1630eb508dd04df5a539210a1873ce85e7a0872d28790b0da1c9528e374b5f3c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
@@ -10332,14 +10332,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "b87e452fa8f45dc3c1ba847c6b22640968a8fcba9c0f8c11596a254bc76cde88",
+            "sha256": "a9e1040b205e93705fa0000eaca37002ccd1a85b2c6b5e6bdac2a7b83b71b937",
             "vice_targets": {
-              "vice-lm-orbital-integration": 403
+              "vice-lm-orbital-integration": 400
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "4e3e3ae7b624fd87c8f4672b7150b67c548ed37f6570d54e8c203dff315b42c4"
+            "sha256": "f7dfa10ef17666f460205132436ab5fc5ffb0b5653ea97e9ea018e07bb52ca3f"
           }
         }
       }
