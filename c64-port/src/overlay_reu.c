@@ -116,7 +116,7 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             for(i=0;i<APOLLO_REU_INDEX_RECORD;++i) if(s->record[i]) return APOLLO_OV2_BAD_DIRECTORY;
             continue;
         }
-        if(!lookup(s,id,&d) || d.slot>APOLLO_OV2_SLOT_PINNED || d.selectors==0 ||
+        if(!lookup(s,id,&d) || d.slot>APOLLO_OV2_SLOT_PINNED_TASK || d.selectors==0 ||
            APOLLO_OV2_LANE(id)==0 || d.bytes<=APOLLO_OV2_HEADER_BYTES ||
            d.bytes>apollo_ov2_slot_bytes(d.slot) || d.flags!=APOLLO_OV2_DIRENT_PRESENT ||
            s->record[12] || s->record[13] || s->record[14] || s->record[15])

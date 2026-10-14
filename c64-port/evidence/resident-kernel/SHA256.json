@@ -4,12 +4,12 @@
   "release": "evidence-resident-kernel",
   "files": {
     "resident-flight-sizes.json": {
-      "sha256": "1633db1d058a7ac93357d3cae551122327ae823bea2ccd1a31ea979a23d115c6",
-      "bytes": 1753,
+      "sha256": "5cb4fc4a6d73ef9a7d5cad8f63e6ae64eb3a8444f4dcda99bd39c2efc4f10b3f",
+      "bytes": 1691,
       "store": "tree"
     },
     "resident-flight-vice.log": {
-      "sha256": "fa4ba99f001f945f2c70c520d577b0da4be7efab601c8fc51fdef696350125ca",
+      "sha256": "d44197cc5e9e8fd88938f28aa40733c082d31526f733172f24749dd34113bbf9",
       "bytes": 1456,
       "store": "tree"
     },
