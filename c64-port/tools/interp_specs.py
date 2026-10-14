@@ -3910,7 +3910,7 @@ SPECS = {
         # end-around carry, the fixed $7000 image, and a CCS arm on the
         # word after an EXTEND refused.)
         'index_carry16': True,
-        'image_w': True,
+        'image_w': True, 'trusted_image': True,
         'refuse_unextended': True,
         # Opt-in basic code forms: INDEX Q reads of a caller's inline word
         # (RRLIMCHK's ADRES), INDEX L/Q; TC returns past the caller's, and
