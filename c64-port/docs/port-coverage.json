@@ -3446,7 +3446,50 @@
           "scope": "Every word of the file (1,368 words): P37/P70 and its displays, P37PROC, P370ALRM, TMRAD100, RTEDISP, INVC100, PREC100, RTENCK1-3, V2T100, GAMDV10, DVCALC and XT1LIM, as 194 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P37-P70.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Four C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; one of them (resumed_at 32,3560) starts from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
+          "PHASCHNG with its inline phase words (restart groups)",
+          "VARALARM with its alarm codes",
+          "TC POLY with its inline degree and coefficients",
+          "ENDOFJOB, TC GOTOPOOH and TC POODOO",
+          "Returns through the saved CADRs RTENCKEX and SPRTEX",
+          "CSMPREC, GETERAD, LAT-LONG, PARAM, TIMERAD, TIMETHET, VN1645 and VNSTORE through CALL, STCALL or GOTO (interpretive), and GOTO through a CADR held in the push-down list (20D, 31D, 32D, 33D)",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p37-p70/cm-p37-p70-source-map.json",
+            "sha256": "e8d29b2e163c1442d6bb543a0eedd50c74286713b5baffac08113cc8a7103dfe"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p37-p70/cm-p37-p70-proof.json",
+            "sha256": "f5a20be540d13f273d2a4954e5531603be38c0e3f6df595fc239562e98b4ebea"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p37-p70/cm-p37-p70-host.log",
+            "sha256": "b757e1d910d736278802ea2074756d788bc29877a234d858a7f3ea2aae38d4df"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p37-p70/cm-p37-p70-vice.log",
+            "sha256": "86bf530b33b5a52546a270af0b6feac1aa109db3809c53fa5f3a714f9d07e1e1",
+            "vice_targets": {
+              "vice-cm-p37-p70": 700
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
+            "sha256": "5cd07e6a599745f6bde1a13f1e82cd9998ab4ec0caf64d566e000683b4563bf7"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P40-P47.agc",
