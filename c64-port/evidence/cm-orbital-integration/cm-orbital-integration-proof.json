@@ -9,20 +9,20 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 85248,
- "cases_sha256": "093b3b872702f62adfda7930fbf84a841237e39120fd0acd391f40dfe589d457",
- "oracle_sha256": "3034b35310443945ae654009b02d2c0e207d6f7809bf4c12adc487dda8a717f7",
+ "cases_sha256": "c74290e6cf5c53c81729bcea131fee2933bf4562abe1f228006c719eb991dc63",
+ "oracle_sha256": "0cb41c866171470e40099fd3d7f734d5153559dbd2b2d3591795c2758166b0e6",
  "frozen_vectors": 666,
  "c64_vectors": [
   {
    "mission": "cm",
    "keep": "0xfffffff",
-   "cases": 29,
+   "cases": 28,
    "case_ids": [
     151,
     35,
     168,
-    199,
     3,
+    199,
     249,
     409,
     518,
@@ -45,15 +45,15 @@
     4888,
     5143,
     5393,
-    5774,
-    5926
+    5774
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xffffffffff",
+   "keep": "0x7fffffffff",
    "cases": 20,
    "case_ids": [
+    5926,
     6149,
     6404,
     6656,
@@ -72,15 +72,15 @@
     9152,
     9282,
     9478,
-    9812,
-    10023
+    9812
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x1ffffffffff00000fff0000000000",
-   "cases": 11,
+   "keep": "0x1ffffffffff00000fff8000000000",
+   "cases": 12,
    "case_ids": [
+    10023,
     10253,
     10243,
     10724,
@@ -166,7 +166,7 @@
   {
    "mission": "cm",
    "keep": "0xf801ffffffffffffe000000000000000",
-   "cases": 13,
+   "cases": 12,
    "case_ids": [
     15698,
     15712,
@@ -179,15 +179,15 @@
     17311,
     17504,
     17842,
-    17730,
-    17932
+    17730
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x3c0000ffc0000000000000000f800007fffffff038000000000000800000000000000000",
-   "cases": 4,
+   "keep": "0x3c0000ffc0000000000000000f800007fffffff038000000000001c00000000000000000",
+   "cases": 5,
    "case_ids": [
+    17932,
     18199,
     18211,
     18341,
@@ -239,9 +239,9 @@
     25908,
     26149,
     26506,
-    26650,
-    27107,
-    27179
+    26667,
+    27021,
+    27176
    ]
   },
   {
@@ -249,9 +249,9 @@
    "keep": "0x7ff8000000000000000000000000000ffff800000000000000000000000001",
    "cases": 19,
    "case_ids": [
-    27507,
-    27752,
-    27866,
+    27502,
+    27882,
+    27751,
     27925,
     28283,
     28554,
@@ -418,7 +418,7 @@
   {
    "mission": "cm",
    "keep": "0x1fff0781fe00000000ffff80000003fff000018000000000000000000000000000000000000800000000",
-   "cases": 19,
+   "cases": 18,
    "case_ids": [
     52347,
     52299,
@@ -437,15 +437,15 @@
     54823,
     54832,
     55213,
-    55355,
-    55585
+    55355
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x1e020004007ffffffffffffc000100000000000000000000000000000000000000000000000000",
-   "cases": 59,
+   "keep": "0x1e020004007ffffffffffffe000100000000000000000000000000000000000000000000000000",
+   "cases": 56,
    "case_ids": [
+    55585,
     55814,
     56079,
     56386,
@@ -500,18 +500,18 @@
     67617,
     68006,
     68136,
-    68409,
-    68656,
-    68614,
-    68870,
-    69120
+    68409
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x101ffffffffff80000000000000001000000000000000000000000000000000000000000000000000",
-   "cases": 49,
+   "keep": "0x101fffffffffff0000000000000001000000000000000000000000000000000000000000000000000",
+   "cases": 53,
    "case_ids": [
+    68656,
+    68614,
+    68870,
+    69120,
     69523,
     69406,
     69445,
@@ -598,72 +598,68 @@
     84853,
     85043
    ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x1f00000007ff8000000ffffe000000000000000000000000001ff0000007ff800000000",
+   "cases": 30,
+   "case_ids": [
+    48420,
+    48420,
+    48420,
+    48420,
+    49510,
+    49510,
+    49510,
+    50242,
+    50242,
+    50762,
+    51365,
+    51580,
+    51796,
+    52092,
+    70668,
+    70969,
+    71225,
+    71481,
+    71737,
+    9017,
+    9273,
+    9485,
+    9767,
+    10197,
+    10240,
+    10496,
+    10752,
+    11026,
+    9362,
+    48935
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x7e000000000200000000000000000000000000ff800000000",
+   "cases": 3,
+   "case_ids": [
+    48556,
+    49181,
+    9012
+   ]
   }
  ],
  "c64_coverage": {
   "host_labels": 6,
   "c64_labels": 6,
-  "host_edges": 3724,
-  "c64_edges": 3622,
-  "host_edges_not_c64": 102,
+  "host_edges": 3739,
+  "c64_edges": 3732,
+  "host_edges_not_c64": 7,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 1725,
-  "c64_taken": 1673,
-  "host_taken_not_c64": 52,
-  "missing": [
-   "src/cm_orbital_integration.c:761 branch 2",
-   "src/cm_orbital_integration.c:773 branch 2",
-   "src/cm_orbital_integration.c:785 branch 2",
-   "src/cm_orbital_integration.c:799 branch 2",
-   "src/cm_orbital_integration.c:810 branch 2",
-   "src/cm_orbital_integration.c:826 branch 2",
-   "src/cm_orbital_integration.c:837 branch 2",
-   "src/cm_orbital_integration.c:849 branch 2",
-   "src/cm_orbital_integration.c:863 branch 2",
-   "src/cm_orbital_integration.c:2885 branch 2",
-   "src/cm_orbital_integration.c:2899 branch 2",
-   "src/cm_orbital_integration.c:2915 branch 2",
-   "src/cm_orbital_integration.c:2933 branch 2",
-   "src/cm_orbital_integration.c:2947 branch 2",
-   "src/cm_orbital_integration.c:2961 branch 2",
-   "src/cm_orbital_integration.c:2979 branch 2",
-   "src/cm_orbital_integration.c:2993 branch 2",
-   "src/cm_orbital_integration.c:3009 branch 2",
-   "src/cm_orbital_integration.c:3021 branch 2",
-   "src/cm_orbital_integration.c:3025 branch 2",
-   "src/cm_orbital_integration.c:3049 branch 2",
-   "src/cm_orbital_integration.c:3061 branch 2",
-   "src/cm_orbital_integration.c:3072 branch 2",
-   "src/cm_orbital_integration.c:3084 branch 2",
-   "src/cm_orbital_integration.c:4035 branch 2",
-   "src/cm_orbital_integration.c:4047 branch 2",
-   "src/cm_orbital_integration.c:4058 branch 2",
-   "src/cm_orbital_integration.c:4072 branch 2",
-   "src/cm_orbital_integration.c:4084 branch 2",
-   "src/lm_interp_orders.c:316 branch 1",
-   "src/lm_interp_orders.c:336 branch 0",
-   "src/lm_interp_orders.c:344 branch 1",
-   "src/lm_interp_orders.c:606 branch 1",
-   "src/lm_interp_orders.c:611 branch 1",
-   "src/lm_interp_orders.c:640 branch 1",
-   "src/lm_interp_orders.c:641 branch 0",
-   "src/lm_interp_orders.c:641 branch 1",
-   "src/lm_interp_orders.c:644 branch 1",
-   "src/lm_interp_orders.c:645 branch 1",
-   "src/lm_interp_orders.c:648 branch 1",
-   "src/lm_interp_orders.c:668 branch 4",
-   "src/lm_interp_orders.c:671 branch 1",
-   "src/lm_interp_orders.c:673 branch 2",
-   "src/lm_interp_orders.c:713 branch 1",
-   "src/lm_interp_orders.c:716 branch 0",
-   "src/lm_interp_orders.c:716 branch 1",
-   "src/lm_interp_orders.c:717 branch 1",
-   "src/lm_interp_orders.c:720 branch 1",
-   "src/lm_interp_orders.c:721 branch 0",
-   "src/lm_interp_orders.c:909 branch 0"
-  ],
+  "host_taken": 1732,
+  "c64_taken": 1746,
+  "host_taken_not_c64": 0,
+  "missing": [],
   "sources": [
    "src/cm_orbital_integration.c",
    "src/lm_interp_orders.c",
@@ -676,6 +672,7 @@
    "src/agc_word.c",
    "src/agc_multiword.c",
    "tests/interp_case.c",
+   "tests/interp_cut.c",
    "tests/cm_orbital_integration_target.c"
   ],
   "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
@@ -1352,29 +1349,29 @@
    "05170": 62
   },
   "CM 11,2736 ": {
-   "06037": 166,
-   "03352": 32,
-   "05170": 58
+   "06037": 172,
+   "05170": 65,
+   "03352": 19
   },
   "CM 11,2741 ": {
-   "05170": 72,
-   "03352": 25,
-   "06037": 159
+   "06037": 173,
+   "05170": 69,
+   "03352": 14
   },
   "CM 11,2742 ": {
-   "03352": 28,
-   "05170": 70,
-   "06037": 158
+   "06037": 182,
+   "05170": 61,
+   "03352": 13
   },
   "CM 11,2745 ": {
-   "05170": 61,
-   "06037": 168,
-   "03352": 27
+   "06037": 178,
+   "05170": 64,
+   "03352": 14
   },
   "CM 11,2750 ": {
-   "06037": 165,
-   "05170": 64,
-   "03352": 27
+   "06037": 188,
+   "05170": 50,
+   "03352": 18
   },
   "CM 11,2752 ": {
    "03352": 53,
@@ -2403,56 +2400,5 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
  "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
- "host_branches_missing_on_c64": [
-  "src/cm_orbital_integration.c:761 branch 2",
-  "src/cm_orbital_integration.c:773 branch 2",
-  "src/cm_orbital_integration.c:785 branch 2",
-  "src/cm_orbital_integration.c:799 branch 2",
-  "src/cm_orbital_integration.c:810 branch 2",
-  "src/cm_orbital_integration.c:826 branch 2",
-  "src/cm_orbital_integration.c:837 branch 2",
-  "src/cm_orbital_integration.c:849 branch 2",
-  "src/cm_orbital_integration.c:863 branch 2",
-  "src/cm_orbital_integration.c:2885 branch 2",
-  "src/cm_orbital_integration.c:2899 branch 2",
-  "src/cm_orbital_integration.c:2915 branch 2",
-  "src/cm_orbital_integration.c:2933 branch 2",
-  "src/cm_orbital_integration.c:2947 branch 2",
-  "src/cm_orbital_integration.c:2961 branch 2",
-  "src/cm_orbital_integration.c:2979 branch 2",
-  "src/cm_orbital_integration.c:2993 branch 2",
-  "src/cm_orbital_integration.c:3009 branch 2",
-  "src/cm_orbital_integration.c:3021 branch 2",
-  "src/cm_orbital_integration.c:3025 branch 2",
-  "src/cm_orbital_integration.c:3049 branch 2",
-  "src/cm_orbital_integration.c:3061 branch 2",
-  "src/cm_orbital_integration.c:3072 branch 2",
-  "src/cm_orbital_integration.c:3084 branch 2",
-  "src/cm_orbital_integration.c:4035 branch 2",
-  "src/cm_orbital_integration.c:4047 branch 2",
-  "src/cm_orbital_integration.c:4058 branch 2",
-  "src/cm_orbital_integration.c:4072 branch 2",
-  "src/cm_orbital_integration.c:4084 branch 2",
-  "src/lm_interp_orders.c:316 branch 1",
-  "src/lm_interp_orders.c:336 branch 0",
-  "src/lm_interp_orders.c:344 branch 1",
-  "src/lm_interp_orders.c:606 branch 1",
-  "src/lm_interp_orders.c:611 branch 1",
-  "src/lm_interp_orders.c:640 branch 1",
-  "src/lm_interp_orders.c:641 branch 0",
-  "src/lm_interp_orders.c:641 branch 1",
-  "src/lm_interp_orders.c:644 branch 1",
-  "src/lm_interp_orders.c:645 branch 1",
-  "src/lm_interp_orders.c:648 branch 1",
-  "src/lm_interp_orders.c:668 branch 4",
-  "src/lm_interp_orders.c:671 branch 1",
-  "src/lm_interp_orders.c:673 branch 2",
-  "src/lm_interp_orders.c:713 branch 1",
-  "src/lm_interp_orders.c:716 branch 0",
-  "src/lm_interp_orders.c:716 branch 1",
-  "src/lm_interp_orders.c:717 branch 1",
-  "src/lm_interp_orders.c:720 branch 1",
-  "src/lm_interp_orders.c:721 branch 0",
-  "src/lm_interp_orders.c:909 branch 0"
- ]
+ "host_branches_missing_on_c64": []
 }

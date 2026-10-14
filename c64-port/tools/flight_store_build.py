@@ -312,9 +312,10 @@ CHANNELS = {'lm': ['-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--
 
 
 # Slot classes a flight module links for (include/overlay_v2.h): job, task,
-# and pinned (class 3, loaded once at boot and only called directly).
-SLOT_NAME = {0: 'job', 1: 'task', 3: 'pinned'}
-SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072}
+# pinned (class 3, $C000) and the pinned task region (class 4, $E000), both
+# loaded once at boot and only called directly.
+SLOT_NAME = {0: 'job', 1: 'task', 3: 'pinned', 4: 'pinned_task'}
+SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072, 4: 8186}
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
@@ -369,10 +370,13 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
 
 
 
-def resident_modules(cc, host_cc, m, resolver, library):
+def resident_modules(cc, host_cc, m, resolver, library, pin_task=False):
     """Link the resident's modules (tools/resident_flight_build.py
     RESIDENT_MODULES) for this store: the boundary-word module holds the word
-    at every key of the resident's tables and of these resolver records."""
+    at every key of the resident's tables and of these resolver records.
+    pin_task: a class-4 module holds $E000, so the task-slot ones link for
+    the job slot, but the boundary-word module: boot runs it in the task
+    slot (boot itself runs in the job slot) before it loads class 4."""
     text = header_text(host_cc, m, resolver)
     if text is None:
         raise SystemExit(f'{m}: boundary words disagree with the listing')
@@ -382,6 +386,7 @@ def resident_modules(cc, host_cc, m, resolver, library):
     for ident, slot, defines, sources in RESIDENT_MODULES:
         if m not in sources:
             continue
+        slot = 0 if pin_task and ident != 0x01E0 else slot
         prg = OUT / m / f'resident-{ident:04x}.prg'
         extra = list(defines) + ([f'-DRK_BOUNDARY_HEADER="{header}"'] if ident == 0x01E0 else [])
         subprocess.run([str(c) for c in [
@@ -425,7 +430,8 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
     this store, which resolves every record and times each flight module's
     load (platform/c64/flight_load_check.c, tools/flight_vice_load.py).
     pinned: the store's class-3 module, {id, bank, loc, module}: one of its
-    points and the module that packs the same table."""
+    points and the module that packs the same table; task_id, when a class-4
+    module holds $E000, its id."""
     idle = next(z for z in range(0o7777, 0o4000, -1) if 3 * 1024 + (z & 0o1777) not in keys)
     # The direct-call check keeps the boot image in the store file's unused tail.
     reu = (ROOT / OUT / f'{m}.reu').read_bytes()
@@ -448,6 +454,7 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
                    f'0{first.get(mod["id"], {}).get("loc", 0):o}u}}' for mod in modules) + '};\n'
         + (f'#define FL_PINNED 0x{pinned["id"]:04x}u\n#define FL_PINNED_BANK 0{pinned["bank"]:o}u\n'
            f'#define FL_PINNED_LOC 0{pinned["loc"]:o}u\n#define FL_PINNED_MODULE 0x{pinned["module"]:04x}u\n'
+           + (f'#define FL_PINNED_TASK 0x{pinned["task_id"]:04x}u\n' if pinned.get('task_id') else '')
            if pinned else ''))
     out = OUT / f'{m}-load-check.prg'
     subprocess.run([str(c) for c in [
@@ -467,11 +474,13 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
 # set as one module and reports its size. A class-3 set (slot 3, $C000)
 # that fits direct-only goes into the store: the resident loads it at boot
 # and its routines run from there through rk_direct; the resolver still
-# names their packed modules. The job- and task-slot pinning follows once a
-# set fits. LM: the RCS DAP hold cycle (Lane F,
-# /mnt/project-files/lane-f/dap-cycle-trace.md).
-PIN = {'lm': {1: ['lm_dapidler_routines', 'lm_p_axis_routines', 'lm_q_r_axis_routines', 'lm_tjet_law_routines'],
-              3: ['lm_self_check_idle_routines']},
+# names their packed modules. A class-4 set (slot 4, the task slot's $E000)
+# goes in beside a packed class-3 set, whose table list names its tables;
+# every task-slot module then links for the job slot. LM: the RCS DAP hold
+# cycle (Lane F, /mnt/project-files/lane-f/dap-cycle-trace.md) across both
+# regions (D2 splits it into the hot subsets that fit); the self-check idle
+# loop is an ordinary job-slot module there. CM: the self-check idle loop.
+PIN = {'lm': {4: ['lm_dapidler_routines', 'lm_p_axis_routines', 'lm_q_r_axis_routines', 'lm_tjet_law_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
 # The compact interpreter (Interpreter lane, platform/c64/interp_module.c):
 # module $0A01 in the job slot, its cold bodies module $0A02 at $D000 (slot
@@ -516,8 +525,10 @@ def part_keys(cc, m, stem, tables):
     """[{table: [keys]}] per FLIGHT_PARTS build of stem: its host object
     with the part's defines and each table renamed, read by table_keys."""
     parts = []
+    # Not in host/: tools/flight_host_differential.py links every object there.
+    (ROOT / OUT / 'host-parts').mkdir(parents=True, exist_ok=True)
     for j, defines in enumerate(FLIGHT_PARTS[m][stem], 1):
-        obj = ROOT / OUT / 'host' / f'{stem}.part{j}.o'
+        obj = ROOT / OUT / 'host-parts' / f'{stem}.part{j}.o'
         run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER', *defines,
              *(f'-D{t}={t}_part{j}' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
         got = table_keys(cc, [f'{t}_part{j}' for t in tables], [obj])
@@ -697,18 +708,70 @@ def main():
 
         def link(mod):
             prg = OUT / m / f'{mod.get("prg_name") or "module-%04x" % mod["id"]}.prg'
+            # A module on the base record links no transfer engine: the
+            # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
+            direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              mod.get('direct_only', False), mod.get('defines', ()))
+                              direct_only, mod.get('defines', ()))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   mod.get('direct_only', False), mod.get('defines', ()))
+                                   direct_only, mod.get('defines', ()))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
+        # The pinned sets, measured: one module per slot with the set's
+        # tables and its files' operand sites (a fit as linked; an overflow
+        # beyond the slot otherwise).
+        pinned = []
+        for slot, ts in PIN[m].items():
+            ts = [t for t in ts if t in packed]
+            if not ts:
+                continue
+            stems = list(dict.fromkeys(packed[t] for t in ts))
+            lane = lane_slot(stems[0], m, owners, place)[0]
+            sites = {}
+            for st in stems:
+                sites.update(file_sites(a.host_cc, m, st))
+            # A pinned module runs only through rk_direct (no transfer
+            # engine), which hands it the base record; one whose tables take
+            # another io kind links its conversion and engine until that kind
+            # folds into agc_hardware, and direct_bytes projects the set
+            # without them.
+            io = module_io(m, stems)
+            size = SLOT_BYTES[slot]
+
+            def measure(io, direct_only, name):
+                res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
+                                basic=[t for t in ts if 'interpret' not in t],
+                                interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
+                                sources=c64_sources(index, *stems, 'agc_transfer'), io=io, direct_only=direct_only,
+                                prg_name=name))[2]
+                if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
+                    res = dict(ok=False, overflow=res['task_overflow'])
+                return res, res.get('bytes') or (size + res['overflow'] if res.get('overflow') else None)
+            res, nbytes = measure(io, not io, f'pin-{SLOT_NAME[slot]}')
+            direct = measure(None, True, f'pin-{SLOT_NAME[slot]}-direct')[1] if io else nbytes
+            pinned.append(dict(slot=SLOT_NAME[slot], tables=ts, ok=res['ok'], bytes=nbytes,
+                               direct_only=not io, io=io, direct_bytes=direct, slot_bytes=size,
+                               error=res.get('error'), id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
+                               prg=str(OUT / m / f'pin-{SLOT_NAME[slot]}.prg'),
+                               packed=slot in (3, 4) and res['ok'] and not io))
+        # Class 4 runs only through the class-3 module's table list, so it
+        # goes into the store only beside a packed class-3 module. Then it
+        # holds $E000, and every task-slot module links for the job slot.
+        if not any(p['packed'] and p['slot'] == 'pinned' for p in pinned):
+            for p in pinned:
+                if p['slot'] == 'pinned_task':
+                    p['packed'] = False
+        pin_task = any(p['packed'] and p['slot'] == 'pinned_task' for p in pinned)
+        if pin_task:
+            for mod in modules:
+                if mod['slot'] == 1:
+                    mod.update(slot=0, task_pinned_out=True)
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
         # A basic-only module over its slot is split into chunks of
@@ -791,43 +854,6 @@ def main():
                         continue  # resolved to the table's own module
                     for k in mod.get('key_slice', keys)[t]:
                         module_of[(t, k)] = mod['id']
-        # The pinned sets, measured: one module per slot with the set's
-        # tables and its files' operand sites (a fit as linked; an overflow
-        # beyond the slot otherwise).
-        pinned = []
-        for slot, ts in PIN[m].items():
-            ts = [t for t in ts if t in packed]
-            if not ts:
-                continue
-            stems = list(dict.fromkeys(packed[t] for t in ts))
-            lane = lane_slot(stems[0], m, owners, place)[0]
-            sites = {}
-            for st in stems:
-                sites.update(file_sites(a.host_cc, m, st))
-            # A pinned module runs only through rk_direct (no transfer
-            # engine), which hands it the base record; one whose tables take
-            # another io kind links its conversion and engine until that kind
-            # folds into agc_hardware, and direct_bytes projects the set
-            # without them.
-            io = module_io(m, stems)
-            size = SLOT_BYTES[slot]
-
-            def measure(io, direct_only, name):
-                res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                                basic=[t for t in ts if 'interpret' not in t],
-                                interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
-                                sources=c64_sources(index, *stems, 'agc_transfer'), io=io, direct_only=direct_only,
-                                prg_name=name))[2]
-                if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
-                    res = dict(ok=False, overflow=res['task_overflow'])
-                return res, res.get('bytes') or (size + res['overflow'] if res.get('overflow') else None)
-            res, nbytes = measure(io, not io, f'pin-{SLOT_NAME[slot]}')
-            direct = measure(None, True, f'pin-{SLOT_NAME[slot]}-direct')[1] if io else nbytes
-            pinned.append(dict(slot=SLOT_NAME[slot], tables=ts, ok=res['ok'], bytes=nbytes,
-                               direct_only=not io, io=io, direct_bytes=direct, slot_bytes=size,
-                               error=res.get('error'), id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                               prg=str(OUT / m / f'pin-{SLOT_NAME[slot]}.prg'),
-                               packed=slot == 3 and res['ok'] and not io))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
@@ -865,11 +891,15 @@ def main():
             if not p['packed']:
                 continue
             good.append(Path(p['prg']))
+            if p['slot'] == 'pinned_task':
+                continue  # its tables run through the class-3 list
             t = p['tables'][0]
             k = next((k for k in keys[t] if k < ERASABLE_BASE and (t, k) in module_of), None)
             if k is not None:
                 bank, loc = canonical_record(k)
                 pin_check = dict(id=p['id'], bank=bank, loc=loc, module=module_of[(t, k)])
+        if pin_check and pin_task:
+            pin_check['task_id'] = next(p['id'] for p in pinned if p['packed'] and p['slot'] == 'pinned_task')
         # The resident's own modules, so the store boots the flight resident:
         # the interrupt-body wrappers and their resolver records, and the
         # boundary words for every key the resident can stop at.
@@ -900,7 +930,7 @@ def main():
                 continue
             interp_records.append(dict(bank=bank, loc=z, module=INTERP_MODULE, selector=0))
         wrappers = wrappers + interp_records
-        boot = resident_modules(a.cc, a.host_cc, m, resolver + wrappers, library)
+        boot = resident_modules(a.cc, a.host_cc, m, resolver + wrappers, library, pin_task)
         (ROOT / OUT / f'{m}-boot-resolver.json').write_text(json.dumps(resolver + wrappers) + '\n')
         pack = subprocess.run([sys.executable, 'tools/overlay_v2_pack.py', *good, *boot, '--mission', m.upper(),
                     '--services', hex(SERVICES), '--resolver', OUT / f'{m}-boot-resolver.json',
@@ -932,7 +962,7 @@ def main():
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
-                                                    'task_overflow')} | dict(sites=len(mod.get('sites') or {}))
+                                                    'task_overflow', 'task_pinned_out')} | dict(sites=len(mod.get('sites') or {}))
                          for mod in modules])
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
@@ -941,7 +971,7 @@ def main():
                                       f"{len(interp_records)} records" if interp['ok'] else f"does not link: {interp}")
               + (f" (held elsewhere: {', '.join(f'{k} {v}' for k, v in interp_kept.items())})" if interp_kept else ''))
         for p in pinned:
-            where = 'class-3' if p['slot'] == 'pinned' else p['slot']
+            where = {'pinned': 'class-3', 'pinned_task': 'class-4'}.get(p['slot'], p['slot'])
             print(f"{m}: pinned {where} slot set {' '.join(p['tables'])}: {p['bytes']} of {p['slot_bytes']} bytes"
                   f"{'' if p['ok'] else ' (does not fit)'}"
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))

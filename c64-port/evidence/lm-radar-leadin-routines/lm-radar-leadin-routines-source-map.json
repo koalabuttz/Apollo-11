@@ -3,7 +3,7 @@
   "native_file": "src/lm_radar_leadin_routines.c",
   "words": 47,
   "untranslated_words": 0,
-  "routines": 7,
+  "routines": 8,
   "map": [
    {
     "address": "25,2003",

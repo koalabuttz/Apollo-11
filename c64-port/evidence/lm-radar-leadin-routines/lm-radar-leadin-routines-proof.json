@@ -8,44 +8,47 @@
   "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
- "cases": 1792,
- "cases_sha256": "352ac0a4072a8138adaf7e9f326be6b774f5bcde5aac6e9924b93880c599ee75",
- "oracle_sha256": "40587846cacb3e8563b6e180ab0a600d532631849533960bdd2aed2e7a93f022",
- "frozen_vectors": 56,
+ "cases": 2048,
+ "cases_sha256": "a64e193341955b19b6e32c31a1882576a8a6e038159d65b2ce70baf5f1be9939",
+ "oracle_sha256": "9c2f1c77176e0e47f7aab1e0cee6029c2448e2d9c1e3af16f918daa5230e9326",
+ "frozen_vectors": 64,
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x7f",
-   "cases": 14,
+   "keep": "0xff",
+   "cases": 17,
    "case_ids": [
-    240,
-    57,
-    128,
-    28,
-    232,
-    500,
-    612,
-    588,
-    768,
+    180,
+    45,
+    224,
+    16,
+    92,
+    300,
+    580,
+    700,
+    748,
+    980,
     896,
-    1076,
-    1180,
-    1508,
-    1656
+    1032,
+    1280,
+    1334,
+    1328,
+    1764,
+    2000
    ]
   }
  ],
  "c64_coverage": {
-  "host_labels": 33,
-  "c64_labels": 33,
-  "host_edges": 315,
-  "c64_edges": 315,
+  "host_labels": 34,
+  "c64_labels": 34,
+  "host_edges": 326,
+  "c64_edges": 326,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 179,
-  "c64_taken": 179,
+  "host_taken": 186,
+  "c64_taken": 186,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -66,8 +69,8 @@
  },
  "stops": {
   "LM 25,2003 RADSAMP": {
-   "05203": 214,
-   "05261": 42
+   "05203": 222,
+   "05261": 34
   },
   "LM 25,2011 ": {
    "05072": 256
@@ -77,6 +80,9 @@
   },
   "LM 25,2023 DORSAMP": {
    "04622": 256
+  },
+  "LM 25,2024 ": {
+   "04616": 256
   },
   "LM 25,2026 ": {
    "05155": 256

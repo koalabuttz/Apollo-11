@@ -1,0 +1,9 @@
+python3 tools/interp_core_vice_test.py lm
+LM: 180 records
+PASS: VICE PAL interp-core-vice-lm.prg: 181 checks, 0 failures
+PRG sha256: 203f97da3110f427aa3b86639f7c15089235b96c28d5461e051f33c6983ad99e interp-core-vice-lm.prg
+python3 tools/interp_core_vice_test.py cm
+CM: 180 records
+PASS: VICE PAL interp-core-vice-cm.prg: 181 checks, 0 failures
+PRG sha256: 435364d338a36d6f775fb90f8fbeadbf438fc01291e7d645f0d39c6feb9e6643 interp-core-vice-cm.prg
+exit 0

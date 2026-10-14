@@ -21,8 +21,8 @@
  * the resident's (rk_device, rk_hardware, rk_flight and, CM, cm_channels)
  * and written back after, and is never called directly. FS_DIRECT_ONLY
  * (pinned modules, base record only) links no transfer engine: the main
- * only builds the table list and returns EXEC_OK, and the resident runs the
- * routines through rk_direct from the next step on. Value: the step's
+ * only builds the table list and returns EXEC_UNMAPPED (nothing ran), and
+ * the resident runs the point through rk_direct in the same step. Value: the step's
  * rk_module_env. */
 #include "resident_flight.h"
 #ifdef FS_IO_KIND
@@ -118,7 +118,7 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  rk_module_program(&p,t);
 #ifdef FS_DIRECT_ONLY
  (void)io;(void)steps;(void)status;
- e->status=EXEC_OK;
+ e->status=EXEC_UNMAPPED;
  return APOLLO_OV2_DONE;
 #endif
 #ifdef FS_IO_KIND

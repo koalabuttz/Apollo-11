@@ -102,7 +102,7 @@ ADDRESS = re.compile(r'^(?:(\d\d),)?([0-7]{4})$')
 SYMBOL = re.compile(r'\b\d+,([FE]):\s+(\S+)\s+(?:(\d\d),)?([0-7]{4})\b')
 BASIC = set('''TC TCF TCR CA CAF CAE CS AD ADS SU MSU MASK MP DV DAS DXCH LXCH QXCH INCR AUG
 DIM DCA DCS INDEX NDX EXTEND RELINT INHINT XCH TS CCS -CCS BZF BZMF RAND READ WAND WOR ROR WRITE
-RXOR EDRUPT RESUME NOOP COM DOUBLE DDOUBL ZL ZQ SQUARE OVSK RETURN DTCB DTCF TCAA XLQ XXALQ'''.split())
+RXOR EDRUPT RESUME NOOP COM DOUBLE DDOUBL ZL ZQ SQUARE OVSK RETURN DTCB DTCF TCAA XLQ XXALQ DCOM'''.split())
 PSEUDO = set('''OCT 2OCT OCTAL DEC DEC* 2DEC 2DEC* CADR 2CADR -2CADR FCADR 2FCADR GENADR -GENADR
 ADRES REMADR ECADR BBCON BBCON* 2BCADR MM NV VN = =MINUS EQUALS ERASE BANK BLOCK SETLOC EBANK=
 SBANK= COUNT COUNT* BNKSUM MEMORY DNCHAN -DNCHAN DNPTR SUBRO'''.split())
@@ -393,6 +393,12 @@ def routine_keys(cc='cc'):
     """{'lm': {physical: [source...]}, 'cm': {...}}, plus probe errors."""
     sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'src').glob('*.c')
                      if re.search(r'agc_routine_(entry|table)\b', p.read_text(errors='replace')))
+    # (A mission build of another source, as src/cm_interp_core.c includes
+    # src/lm_interp_core.c, registers that source's tables under its names.)
+    names = {pathlib.Path(s).name for s in sources}
+    sources += sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'src').glob('*.c')
+                      if str(p.relative_to(ROOT)) not in sources and any(
+                          n in names for n in re.findall(r'#\s*include\s*"([^"]+\.c)"', p.read_text(errors='replace'))))
     shared = hashlib.sha256()
     for path in sorted(ROOT.glob('include/*.h')) + sorted(ROOT.glob('src/*.inc')):
         shared.update(path.name.encode() + path.read_bytes())

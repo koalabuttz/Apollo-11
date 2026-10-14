@@ -29,6 +29,15 @@
 #define APOLLO_OV2_SLOT_PINNED 3u
 #define APOLLO_OV2_PINNED_ADDRESS 0xc000u
 #define APOLLO_OV2_PINNED_BYTES 0x0c00u
+/* Slot class 4: the pinned task region, the task slot's $e000..$fff9 kept
+ * for one module. The resident loads it once at boot (apollo_reu_store_fixed)
+ * by plain DMA and zeroes its BSS; it runs no main: the class-3 module's
+ * table list names its tables, so it is only called directly. A store with
+ * a class-4 module has no task-slot (class 1) module but one that no
+ * resolver record names, which boot runs before it loads class 4 over it:
+ * every task module links for the job slot. A run never loads a class-4
+ * module, and no resolver record names one. */
+#define APOLLO_OV2_SLOT_PINNED_TASK 4u
 /* Native contexts owning a seam stack: eight Executive core-set positions,
  * then one task (interrupt-level) context. */
 #define APOLLO_OV2_JOB_CONTEXTS 8u

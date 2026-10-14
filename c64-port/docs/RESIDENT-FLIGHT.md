@@ -19,7 +19,15 @@ zeroes its BSS and runs its main once to build its table list
 task slots', and no run loads it. Boot writes a canary at $CC00, the
 stack's last byte; a resident step that finds it changed (the stack ran
 into the pinned module) returns `EXEC_INVALID_ACTION` before running
-anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+anything. A store can also keep the task slot's RAM for one module, slot
+class 4 (`APOLLO_OV2_SLOT_PINNED_TASK`): boot loads it at $E000 by plain
+DMA and zeroes its BSS before the class-3 main runs, and that main's table
+list names its tables, so `rk_direct` reaches both regions through
+`rk_pinned`. Such a store has no task-slot modules but the boundary-word
+module (the packer refuses others), so task runs load into the job slot.
+Boot runs the boundary-word module in the task slot first, since boot
+itself runs in the job slot, then loads the boot-loaded classes, so class 4
+lands over it and the runtime forgets it. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
@@ -315,11 +323,11 @@ about 0.3 KB.
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap and the scalers) | 1,183 | 1,183 |
-| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module; a refusing loaded table falls through to the resolver) | 1,500 | 1,518 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module; a refusing loaded table falls through to the resolver; a direct-only module's point runs in the step that loads it) | 1,512 | 1,530 |
 | IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
 | C runtime and library (crt0, multiply, memcpy, memset) | 361 | 361 |
-| **Resident, $0801 to the end of bss** | **24,241** | **23,954** |
-| Free below the service table (of 26,367) | 2,126 | 2,413 |
+| **Resident, $0801 to the end of bss** | **24,253** | **23,966** |
+| Free below the service table (of 26,367) | 2,114 | 2,401 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,216 | 4,195 |
 
