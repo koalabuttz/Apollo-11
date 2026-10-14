@@ -2,8 +2,8 @@
  * diagnostic runs besides its T4_C64 rows, so its rows take every branch arc
  * (gcov -b, all linked sources) the 4416 host cases take; native digests, equal to
  * yaAGC's by the host test. */
-#define T4_C64_ROWS 3u
-static const uint16_t t4_c64_row[3]={
-143u,643u,4406u};
-static const uint32_t t4_c64_row_digest[3]={
-0x09f55b08ul,0x93889093ul,0x1b46ba59ul};
+#define T4_C64_ROWS 4u
+static const uint16_t t4_c64_row[4]={
+143u,643u,2383u,4406u};
+static const uint32_t t4_c64_row_digest[4]={
+0x09f55b08ul,0x93889093ul,0xd9a6b979ul,0x1b46ba59ul};

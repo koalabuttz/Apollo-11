@@ -13,15 +13,16 @@
   ],
   "defines": [],
   "host_cases": 4416,
-  "host_branch_arcs": 207,
-  "c64_rows": 279,
+  "host_branch_arcs": 211,
+  "c64_rows": 280,
   "stride_rows": 276,
-  "cover_rows": 3,
+  "cover_rows": 4,
   "cover_cases": [
     143,
     643,
+    2383,
     4406
   ],
-  "c64_branch_arcs": 207,
+  "c64_branch_arcs": 211,
   "host_branches_missing_on_c64": []
 }

@@ -10,10 +10,10 @@
   },
   "cm-t4rupt-imu": {
    "proof": "evidence/cm-t4rupt-imu/cm-t4rupt-imu-proof.json",
-   "sha256": "d872d023d9effaf37ab33f277b8a48ebaa3be0c50ae7386943654552ab3c6289",
+   "sha256": "53d229020687f608af15bb0a70a836d69b592e4635667e115c5c724255334e54",
    "cases": 4736,
    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
-   "snapshot_sha256": "ce37b9ca413fb8b0b6cf44ce8bfeca84dd67773a0eb294fa526e452ebef4edb0"
+   "snapshot_sha256": "175118a153d68a2e8a0bbaa4ba5e0b5a696a026499bf68625dd39d9f2883398e"
   },
   "cm-t4rupt-optics": {
    "proof": "evidence/cm-t4rupt-optics/cm-t4rupt-optics-proof.json",

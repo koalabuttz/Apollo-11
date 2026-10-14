@@ -59,6 +59,10 @@ M = {
     'cm-alarm': ('cm_alarm_cases.h', 'cm_al_digest(&image,n,&(enum exec_status){EXEC_OK})', 'CM_AL_SRC', '', 'cm_al',
                  'CM_AL'),
 }
+# Cases a milestone's C64 rows run even when another row already takes their arcs:
+# t4rupt-core's FLAGWRD5 -0 case (DSPOUT's CCS FLAGWRD5 fourth branch) in both
+# missions, since the shared native code would let one mission's row stand for both.
+MUST = {'t4rupt-core': (143, 2240 + 143)}
 TWO = {'rupt-lead-ins': ('RLI_LM_CASES', 'RLI_CM_CASES'), 'keyrupt-uprupt': ('KU_CASES', 'KU_CASES'),
        't4rupt-core': ('T4_LM_CASES', 'T4_CM_CASES')}
 
@@ -156,7 +160,7 @@ def main():
         c64_row_cover.check(trace, sorted(set(seed) | set(extra)))
         print(f'{name}: {len(seed)} stride rows and {len(extra)} cover rows take every host branch arc')
         return
-    rows = c64_row_cover.cover(trace, seed=seed)
+    rows = c64_row_cover.cover(trace, seed=sorted(set(seed) | set(MUST.get(name, ()))))
     extra = sorted(set(rows) - set(seed))
     digests = [subprocess.run([str(exe), str(n)], cwd=R, check=True, capture_output=True, text=True,
                               env=dict(os.environ, GCOV_PREFIX='/tmp/lane-a-cover-discard')).stdout.strip()
