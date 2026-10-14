@@ -114,6 +114,16 @@ def one(spec_id, a):
     rows_r = D.run([ref, *D.ROPES, path])
     rows_n = D.run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
+    # A cycle of erasable CADRs: the oracle loops in GOTOERS to its step
+    # limit (kind 9), the core hands the job back at GOTO after 64 hops
+    # (lmi_goto_any, #224). Counted, not compared, as the routine
+    # differential counts both sides looping.
+    goto = {0: 0o6646, 1: 0o6615}
+    loops = [i for i in bad if rows_r[i][1] == '9' and rows_n[i][1] == '0'
+             and int(rows_n[i][2]) == goto[cases[i]['cm']]]
+    bad = [i for i in bad if i not in loops]
+    if loops:
+        print('  (%d cases loop in an erasable CADR cycle: not compared)' % len(loops))
     # As in the compiled differential: a run that ends refusing at a basic
     # block with an I/O channel instruction waits for a channel model, and
     # is counted, not compared.
