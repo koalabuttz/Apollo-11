@@ -1259,11 +1259,9 @@ SPECS = {
         'fixed_tables': {'VREFER': (0, 91)},
         # KEP's RTB P66 is the first order of its pair: P66 returns through
         # TC DANZIG with SSP still in EDOP, so the interpreter runs SSP
-        # GOTOADDR KEP2 from OPJUMP, not at NEWOPS where the transfer ABI
-        # keys interpretive routines.
-        'partial': {'cm': 'SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it '
-                          'runs from the interpreter\'s DANZIG/OPJUMP when P66 returns, a point the transfer ABI '
-                          'does not key yet (interpretive routines are keyed by LOC at NEWOPS)'},
+        # GOTOADDR KEP2 from OPJUMP. That point is a routine of its own,
+        # keyed at the RTB's operand word (25,3314).
+        'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
         # positive in both words, as STARTENT and LEWDOVFL leave it.
         # Negative (a negative low word under a +0 high word too),
@@ -1272,7 +1270,10 @@ SPECS = {
                   'E7,1725': list(range(0, 0o40000, 0o1001))},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline'],
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
