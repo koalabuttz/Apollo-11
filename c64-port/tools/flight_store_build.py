@@ -471,6 +471,32 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
 PIN = {'lm': {1: ['lm_dapidler_routines', 'lm_p_axis_routines', 'lm_q_r_axis_routines', 'lm_tjet_law_routines'],
               3: ['lm_self_check_idle_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
+# The compact interpreter (Interpreter lane, platform/c64/interp_module.c):
+# module $0A01 in the job slot, its cold bodies module $0A02 at $D000 (slot
+# class 2, loaded at boot), linked by tools/interp_runtime_size.py link_core.
+# The resolver sends the interpreter's fixed entry points (logical Z, include/
+# interp_runtime_tables.h) to $0A01; a table or the resident that holds one
+# of them keeps it. CHANG2 is left out: the Executive's job switch, where the
+# interpreter hands back.
+INTERP_MODULE = 0x0A01
+INTERP_POINTS = {
+    'lm': {'NEWOPS': 0o6070, 'DANZIG': 0o6061, 'NOIBNKSW': 0o6063, 'DIRADRES': 0o6106, 'DODLOAD': 0o6460,
+           'DODLOADX': 0o6144, 'DOVLOAD': 0o6463, 'DOVLOADX': 0o6466, 'B15BITADR': 0o6252, 'GOTO': 0o6646,
+           'SWRETURN': 0o4631, 'INTPRET': 0o6037},
+    'cm': {'NEWOPS': 0o6037, 'DANZIG': 0o6030, 'NOIBNKSW': 0o6032, 'DIRADRES': 0o6055, 'DODLOAD': 0o6427,
+           'DODLOADX': 0o6113, 'DOVLOAD': 0o6432, 'DOVLOADX': 0o6435, 'B15BITADR': 0o6221, 'GOTO': 0o6615,
+           'SWRETURN': 0o4675, 'INTPRET': 0o6006}}
+
+
+def interp_modules(cc, m, library):
+    """Link the interpreter's two modules for the store; their PRGs and
+    link_core's result."""
+    import interp_runtime_size
+    prg = OUT / m / 'interp.prg'
+    res = interp_runtime_size.link_core(cc, m, prg, interp_runtime_size.CORE[m], library, ext=True)
+    return ([prg, prg.parent / 'interp-ext.prg'] if res['ok'] else []), res
+
+
 # Modules whose fixed_data is not the resident's boundary words: self-check's
 # own hook (include/self_check.h), or 'rope', every rope word from the REU
 # image (include/rope_image.h; LM TRIM_GIMBAL's GTS reads DOSHIFT's indexed
@@ -790,6 +816,21 @@ def main():
         # the interrupt-body wrappers and their resolver records, and the
         # boundary words for every key the resident can stop at.
         wrappers = wrapper_records(a.host_cc, m)
+        # The interpreter's modules and its points' records, where no
+        # table record or resident table already holds the point.
+        interp_prgs, interp = interp_modules(a.cc, m, library)
+        good += interp_prgs
+        taken = {(r['bank'], r['loc']) for r in resolver + wrappers}
+        held = {k for kind, k in resident_keys if kind == 'b'}
+        interp_records, interp_kept = [], {}
+        for name, z in INTERP_POINTS[m].items():
+            bank = 0o6000 if z >= 0o6000 else 0o4000
+            physical = (bank >> 10) * 1024 + (z & 0o1777)
+            if not interp_prgs or (bank, z) in taken or physical in held:
+                interp_kept[name] = 'resident' if physical in held else 'table' if (bank, z) in taken else 'unlinked'
+                continue
+            interp_records.append(dict(bank=bank, loc=z, module=INTERP_MODULE, selector=0))
+        wrappers = wrappers + interp_records
         boot = resident_modules(a.cc, a.host_cc, m, resolver + wrappers, library)
         (ROOT / OUT / f'{m}-boot-resolver.json').write_text(json.dumps(resolver + wrappers) + '\n')
         pack = subprocess.run([sys.executable, 'tools/overlay_v2_pack.py', *good, *boot, '--mission', m.upper(),
@@ -816,6 +857,7 @@ def main():
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],
             modules=len(modules), modules_linked=len(good), failed=failed, boot_modules=[p.name for p in boot],
             pinned=pinned,
+            interpreter=dict(interp, records=len(interp_records), points_kept_elsewhere=interp_kept),
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
@@ -824,6 +866,9 @@ def main():
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
+        print(f"{m}: interpreter " + (f"{interp['bytes']} + {interp['extension_bytes']} bytes, "
+                                      f"{len(interp_records)} records" if interp['ok'] else f"does not link: {interp}")
+              + (f" (held elsewhere: {', '.join(f'{k} {v}' for k, v in interp_kept.items())})" if interp_kept else ''))
         for p in pinned:
             where = 'class-3' if p['slot'] == 'pinned' else p['slot']
             print(f"{m}: pinned {where} slot set {' '.join(p['tables'])}: {p['bytes']} of {p['slot_bytes']} bytes"
