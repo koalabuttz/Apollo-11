@@ -1361,7 +1361,7 @@
       "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
       "bytes": 31075,
       "lines": 1315,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1437,7 +1437,7 @@
           "verification": "docs/CM-EXTENDED-VERBS-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1475,6 +1475,10 @@
             "vice_targets": {
               "vice-cm-extended-verbs-file": 294
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-extended-verbs.md",
+            "sha256": "ea3d885d22513068f2e39563ae52966c40f132c78e020ac7c5f7b89d23e9f858"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
