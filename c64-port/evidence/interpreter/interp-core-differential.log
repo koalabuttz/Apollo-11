@@ -1,4 +1,4 @@
-# make interp-core-differential (tools/interp_runtime_differential.py --core --cases 8), every compiled milestone; tree at dc9eaa9d plus the #366 tool fixes (flow_seed spec, single rope link)
+# make interp-core-differential (tools/interp_runtime_differential.py --core --cases 8), every compiled milestone; the #366 tool fixes as in #368 (flow_seed with the spec, one rope link)
 attitude-maneuver: 3528 cases, 0 differ
 cm-auto-man: 0 cases, 0 differ
 cm-body-attitude: 536 cases, 0 differ

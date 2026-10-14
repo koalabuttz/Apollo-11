@@ -155,11 +155,13 @@ extern uint16_t rk_pending, rk_ticks;
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
- * verified, the runtime initialized on the image at $7000, and the
- * fixed-extension modules (slot class 2) loaded at $D000, the pinned
- * module (slot class 3, at most one) loaded at $C000 and its tables built
- * (rk_pinned), the boundary-word module run once for its table
- * (rk_fixed_word), and the stack canary written. Returns 0, or 1 (store
+ * verified, the runtime initialized on the image at $7000, the
+ * boundary-word module (task slot) run once for its table (rk_fixed_word),
+ * then the fixed-extension modules (slot class 2) loaded at $D000, the
+ * pinned module (slot class 3, at most one) loaded at $C000 and the pinned
+ * task region (slot class 4, at most one) at $E000, over the boundary-word
+ * module, then the class-3 module's tables built (rk_pinned; they may name
+ * class-4 tables), and the stack canary written. Returns 0, or 1 (store
  * header), 2 (store contents), 3 (boundary-word module) or 4 (a
  * fixed-extension or pinned load).
  * Lives in the job slot: call it once, before any module runs. */

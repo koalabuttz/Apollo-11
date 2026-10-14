@@ -58,8 +58,10 @@ uint8_t apollo_reu_store_open(apollo_reu_store *,uint32_t base,uint8_t mission,
  * resolver's ordering. buffer is 256 bytes of C64 RAM (scratch). */
 enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *,uint8_t *buffer);
 /* Boot-time: load(user, REU address, entry) for every slot-class-2 module
- * (fixed extension, APOLLO_OV2_SLOT_FIXED) and slot-class-3 module (pinned,
- * APOLLO_OV2_SLOT_PINNED; d->slot says which), in id order; 0 if a load fails.
+ * (fixed extension, APOLLO_OV2_SLOT_FIXED), slot-class-3 module (pinned,
+ * APOLLO_OV2_SLOT_PINNED) and slot-class-4 module (pinned task region,
+ * APOLLO_OV2_SLOT_PINNED_TASK; d->slot says which), in id order; 0 if a load
+ * fails.
  * The store is verified first, so each entry and image is already checked. */
 uint8_t apollo_reu_store_fixed(apollo_reu_store *,
     uint8_t (*load)(void *,uint32_t,const apollo_ov2_dirent *),void *user);

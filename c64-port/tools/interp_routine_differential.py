@@ -1191,9 +1191,9 @@ def main():
     rng = random.Random('interp-routine:' + a.spec + os.environ.get('IRC_SALT', ''))
     proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
     if a.cover_check is not None and os.path.exists(proof):
-        # (The freeze's cases per routine, from the case count it froze.)
-        # (Rounded up: the freeze drops the cases both sides loop on and
-        # the refused ones below, a few out of the whole set, #366.)
+        # (The freeze's cases per routine, from the case count it froze. That
+        # count is after the loop and refusal filters below, which drop fewer
+        # cases than there are routines: round up.)
         n = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
         a.cases = max(1, -(-json.load(open(proof)).get('cases', a.cases * n) // n))
     cases = []
@@ -1212,11 +1212,7 @@ def main():
         flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
-        # The frozen set leaves out the same cases as below (#366): the
-        # oracle runs only when the native side loops somewhere.
-        rows_n = run([nat, path])
-        rows_r = run([ref, *ROPES, path]) if any(y[1] == '9' for y in rows_n) else rows_n
-        cases, rows_r, rows_n = freeze_filters(missions, cases, rows_r, rows_n, path, nat, sys.stderr)[:3]
+        cases = frozen_only(missions, cases, ref, nat, path)
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     if a.stops_only:
         inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
@@ -1226,7 +1222,23 @@ def main():
         sys.exit(0)
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
-    cases, rows_r, rows_n, fbrows = freeze_filters(missions, cases, rows_r, rows_n, path, nat)
+    # A case both sides loop on (the oracle at its step limit, the native
+    # runner in lmi_goto_any's erasable-CADR cycle, kind 9) matches: the AGC
+    # loops there until the night watchman restarts it. Counted, then left
+    # out of the frozen set, as the C64 build would loop too (#224).
+    loops = {i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '9'}
+    if loops:
+        print('both sides loop (erasable CADR cycle): %d cases' % len(loops))
+        keep = [i for i in range(len(cases)) if i not in loops]
+        cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
+        write_cases(path, missions, cases)
+    fbrows = run([nat, path, 'fb'])
+    refused = operand_stops(missions, cases, rows_n, fbrows)
+    if refused:
+        print('refused (GOTO to an operand word of the file): %d cases' % len(refused))
+        keep = [i for i in range(len(cases)) if i not in refused]
+        cases, rows_r, rows_n, fbrows = ([v[i] for i in keep] for v in (cases, rows_r, rows_n, fbrows))
+        write_cases(path, missions, cases)
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
     # A native run that ends refusing in a routine with an I/O channel
     # instruction waits for a channel model: counted, not compared.
@@ -1319,6 +1331,28 @@ def place(z, fb, sb):
     return None
 
 
+def frozen_only(missions, cases, ref, nat, path):
+    """The cases the freeze kept: the main run's loop and refusal filters,
+    with the oracle run only on the cases the native runner loops on. Writes
+    the kept cases to path and returns them."""
+    rows_n = run([nat, path])
+    nine = [i for i, y in enumerate(rows_n) if y[1] == '9']
+    loops = set()
+    if nine:
+        sub = path + '.loops'
+        write_cases(sub, missions, [cases[i] for i in nine])
+        loops = {i for i, x in zip(nine, run([ref, *ROPES, sub])) if x[1] == '9'}
+        os.remove(sub)
+    if loops:
+        cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]
+        write_cases(path, missions, cases)
+    refused = operand_stops(missions, cases, rows_n, run([nat, path, 'fb']))
+    if refused:
+        cases = [c for i, c in enumerate(cases) if i not in refused]
+        write_cases(path, missions, cases)
+    return cases
+
+
 def operand_stops(missions, cases, rows_n, fbrows, skip=()):
     """Cases whose native run stops at NEWOPS with LOC on a word of the file
     that does not start an interpretive order (an operand or data word a
@@ -1357,29 +1391,6 @@ def in_file_stops(missions, cases, rows_n, nat, path, skip=(), fbrows=None):
         if phys in mi.cp.words and phys != c['stop'] and phys not in mi.cp.idle:
             out['%s %s -> %s' % (mi.m, mi.cp.where(c['point']), mi.cp.where(phys))] += 1
     return out
-
-
-def freeze_filters(missions, cases, rows_r, rows_n, path, nat, out=sys.stdout):
-    """The cases the freeze leaves out: both sides loop, or the native run is
-    refused at an operand word (#224). Rewrites path without them."""
-    # A case both sides loop on (the oracle at its step limit, the native
-    # runner in lmi_goto_any's erasable-CADR cycle, kind 9) matches: the AGC
-    # loops there until the night watchman restarts it. Counted, then left
-    # out of the frozen set, as the C64 build would loop too (#224).
-    loops = {i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '9'}
-    if loops:
-        print('both sides loop (erasable CADR cycle): %d cases' % len(loops), file=out)
-        keep = [i for i in range(len(cases)) if i not in loops]
-        cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
-        write_cases(path, missions, cases)
-    fbrows = run([nat, path, 'fb'])
-    refused = operand_stops(missions, cases, rows_n, fbrows)
-    if refused:
-        print('refused (GOTO to an operand word of the file): %d cases' % len(refused), file=out)
-        keep = [i for i in range(len(cases)) if i not in refused]
-        cases, rows_r, rows_n, fbrows = ([v[i] for i in keep] for v in (cases, rows_r, rows_n, fbrows))
-        write_cases(path, missions, cases)
-    return cases, rows_r, rows_n, fbrows
 
 
 def cover_check(spec_id, spec, missions, cases, path, record):
