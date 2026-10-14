@@ -57,7 +57,7 @@ resident-kernel-size: | build
 # each mission's flight resident with its per-component sizes, and per part a
 # check program (the same resident) that runs the C64 rows from case modules
 # in an REU store.
-RF_SRC = platform/c64/resident_boundary_module.c platform/c64/resident_boundary_words_lm.h platform/c64/resident_boundary_words_cm.h src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
+RF_SRC = platform/c64/resident_boundary_module.c platform/c64/resident_gojam_module.c platform/c64/resident_boundary_words_lm.h platform/c64/resident_boundary_words_cm.h src/sp_routines.c include/sp_routines.h src/resident_rupt.c include/resident_rupt.h tests/resident_rupt_cases.c tests/resident_rupt_cases.h tests/resident_rupt_c64_rows.h platform/c64/resident_flight_rupt_cases.c platform/c64/resident_flight.c platform/c64/resident_flight.h platform/c64/resident_flight.ld platform/c64/resident_flight_main.c platform/c64/resident_flight_check.c platform/c64/resident_flight_check.h platform/c64/resident_flight_cases.c platform/c64/resident_flight_data.c platform/c64/overlay_v2_irq.S platform/c64/overlay_v2_entry.S platform/c64/overlay_reu_platform.c src/overlay_v2.c src/overlay_reu.c src/overlay_runtime.c src/lm_single_trig.c src/cm_quictrig.c src/cm_single_return.c src/lm_restart_routines.c src/lm_restart_select.c docs/overlay-v2-services.json tests/lm_kernel_c64_rows.h tests/cm_kernel_c64_rows.h tests/resident_kernel_cases.c
 RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4 5,build/resident-flight/$(m)-check-$(p).prg))
 # The boundary-word tables (platform/c64/resident_boundary_words_<m>.h) must
 # match the routine tables, the rope and, when built, the listings.
@@ -65,20 +65,23 @@ RF_CHECKS = $(foreach m,lm cm,$(foreach p,1 2 3 4 5,build/resident-flight/$(m)-c
 test: resident-boundary-words
 resident-boundary-words: | build
 	python3 tools/resident_boundary_words.py --cc $(CC) --check
-# Scaled time (docs/RESIDENT-FLIGHT.md): `make ... RK_TICK_LAG=n` (ticks one
-# step catches up, default 2) and `RK_TIME_DIVISOR=n` (AGC time at 1/n of
-# wall time, default 1) reach tools/resident_flight_build.py, and so every
-# flight build, through the environment.
+# Scaled time (docs/RESIDENT-FLIGHT.md): the work clock by default;
+# `make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead, with
+# `RK_TICK_LAG=n` (ticks one step catches up, default 2) and
+# `RK_TIME_DIVISOR=n` (AGC time at 1/n of wall time, default 1). They reach
+# tools/resident_flight_build.py, and so every flight build, through the
+# environment.
 .PHONY: c64-resident-flight vice-resident-flight vice-resident-flight-half resident-flight-size
 c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
 	python3 tools/resident_flight_build.py --cc $(MOS_CC)
 vice-resident-flight: c64-resident-flight
 	for m in lm cm; do for p in 1 2 3 4 5; do python3 tools/vice_run.py build/resident-flight/$$m-check-$$p.prg --reu build/resident-flight/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done; done
-# Scaled time at x0.5 (RK_TIME_DIVISOR=2): the clock checks (part 4) on a
-# half-speed resident built in its own directory. Full and nightly runs only:
+# The CIA wall clock at x0.5 (RK_WALL_CLOCK, RK_TIME_DIVISOR=2): the clock
+# checks (part 4) on a half-speed wall-clock resident built in its own
+# directory, so the wall path stays tested. Full and nightly runs only:
 # it has no c64- target, so tools/ci_affected.py never picks it for a PR.
 vice-resident-flight-half: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
-	RK_FLIGHT_OUT=build/resident-flight-half RK_TIME_DIVISOR=2 python3 tools/resident_flight_build.py --cc $(MOS_CC)
+	RK_FLIGHT_OUT=build/resident-flight-half RK_WALL_CLOCK=1 RK_TIME_DIVISOR=2 python3 tools/resident_flight_build.py --cc $(MOS_CC)
 	for m in lm cm; do python3 tools/vice_run.py build/resident-flight-half/$$m-check-4.prg --reu build/resident-flight-half/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done
 resident-flight-size: c64-resident-flight
 	cat build/resident-flight/sizes.json

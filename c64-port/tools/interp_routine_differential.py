@@ -669,6 +669,17 @@ def case(mi, point, n, rng):
                     break
             E[2] = logical(q)
             stop = q
+        sites = sorted(getattr(mi.cp, 'inline_sites', {}).get(point, ()), key=lambda x: (x[0], x[1] or 0))
+        if sites:
+            # A routine that reads its inline arguments at C(Q) (MAGSUB,
+            # RRLIMCHK): Q a return to one of the file's calls, under that
+            # call's FB.
+            ret, cfb = rng.choice(sites)
+            E[2] = ret
+            if cfb is not None:
+                E[4] = cfb
+                E[6] = cfb | eb
+            stop = mi.cp.phys_of(ret, (cfb or 0) >> 10)
         # Saved returns a TC to erasable runs (TC MPAC +2, TC TBASE2): the same.
         # A state the spec pins there (a caller's return in the file) stays.
         for k in mi.cp.tc_erasable:
@@ -1223,6 +1234,30 @@ def run(cmd):
     return [l.split() for l in out.splitlines()]
 
 
+def oracle_env(spec):
+    """The oracle's environment for a spec (tools/interp_routine_reference.c)."""
+    env = {}
+    if spec.get('channel_inputs'):
+        env['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
+    if spec.get('pending_danzig') or (spec.get('basic') == 'full' and spec.get('rtb')):
+        cp0 = IC.Compiler(spec, spec['missions'][0])
+        cp0.decode()
+    if spec.get('pending_danzig'):
+        # (DANZIG with an order pending in EDOP is no oracle stop: the
+        # native program resolves it through the DANZIG marker.)
+        env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
+            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    if spec.get('basic') == 'full' and spec.get('rtb'):
+        # (An 'rtb' label of the file's own basic code runs natively from a
+        # BOVB: the oracle runs on through its TC DANZIG.)
+        own = sorted(set(cp0.L.labels[k] for k in spec['rtb'] if k in cp0.L.labels
+                         and cp0.in_file(cp0.L.labels[k]) and cp0.L.labels[k] in cp0.code
+                         and not IC.is_interp_op(cp0.code[cp0.L.labels[k]].op)))
+        if own:
+            env['IRC_RTB_IN_FILE'] = ' '.join(str(x) for x in [cp0.L.labels['DANZIG']] + own)
+    return env
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('spec')
@@ -1237,15 +1272,7 @@ def main():
                          'evidence/<id>/<id>-c64-cover.json, else -proof.json) and print it as JSON')
     a = ap.parse_args()
     spec = interp_specs.SPECS[a.spec]
-    if spec.get('channel_inputs'):
-        os.environ['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
-    if spec.get('pending_danzig'):
-        # (DANZIG with an order pending in EDOP is no oracle stop: the
-        # native program resolves it through the DANZIG marker.)
-        cp0 = IC.Compiler(spec, spec['missions'][0])
-        cp0.decode()
-        os.environ['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
-            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    os.environ.update(oracle_env(spec))
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]

@@ -50,10 +50,11 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from overlay_runtime_library import prepare  # noqa: E402
-from resident_flight_build import (COMMON, MISSION, RESIDENT_MODULES, SERVICES, canonical_record,  # noqa: E402
+from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, mct_weight,  # noqa: E402
                                    resident_sources, wrapper_records)
 from resident_boundary_words import header_text, tail_bytes  # noqa: E402
 
@@ -404,6 +405,18 @@ def map_symbols(path):
             and '(' not in p[4] and '.' not in p[4]}
 
 
+def host_mct(m, t):
+    """The work clock's weight the host flight run gives table t
+    (FLIGHT_SCALED=W): the resident's or a wrapper's for the tables they run,
+    otherwise the table's own calibrated MCT per routine (the C64 module
+    averages its tables', tools/flight_host_run.c)."""
+    if t in RESIDENT[m]:
+        wrap = [i for w, i in WRAPPED.items() if t == f'{m}_{w}']
+        tables = [f'{m}_{w}' for w, i in WRAPPED.items() if wrap and i == wrap[0]] or KERNEL_TABLES[m]
+        return mct_weight(m, tables)
+    return mct_weight(m, [t], interp='interpret' in t)
+
+
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
                 io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None):
     """chunk: (table, first, last) links only entries first..last-1 of one
@@ -436,6 +449,9 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         sources = [*sources, 'platform/c64/rope_image_reu.c']
     elif fixed_data:
         head += f'#define FS_FIXED_DATA {fixed_data}\n'
+    # The work clock's weight (resident_flight.h): its tables' calibrated
+    # MCT per routine.
+    head += f'#define FS_MCT {mct_weight(m, [chunk[0]] if chunk else list(basic) + list(interp))}u\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
@@ -564,8 +580,11 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 
 # Tables also packed into another module, so the routines they hold run there
 # without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
-# leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it.
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
+# leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it,
+# and with the LM idle loop's own module (CM pins its idle loop), so an idle
+# pass loads nothing (that module's runs are the work clock's idle,
+# RK_MCT_IDLE: the interbank routines run there only from the idle loop).
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines']}}
 # Tables pinned in a slot (docs/FLIGHT-STORE.md): loaded once and kept, so
 # a cycle that runs them all costs no swaps. The builder links each slot's
@@ -751,6 +770,51 @@ def check_site_includers():
                                  'not exactly one source')
 
 
+# Everything the build reads: sources, headers, platform code, the tools it
+# imports and runs, the docs tables and the assembled listings. The C
+# compilers are named by path, size and mtime.
+STAMP_INPUTS = ('src', 'include', 'platform', 'tools', 'docs', 'build/fixed-data')
+
+
+def input_digest(a):
+    h = hashlib.sha256(repr((a.cc, a.host_cc, a.missions, a.host_only, os.environ.get('RK_FLIGHT_OUT'))).encode())
+    for tool in (a.cc, a.host_cc, NM):
+        try:
+            st = os.stat(tool if os.sep in str(tool) else subprocess.run(
+                ['sh', '-c', f'command -v {tool}'], capture_output=True, text=True).stdout.strip() or tool)
+            h.update(f'{tool}:{st.st_size}:{st.st_mtime_ns}'.encode())
+        except OSError:
+            h.update(f'{tool}:missing'.encode())
+    for top in STAMP_INPUTS:
+        for f in sorted((ROOT / top).rglob('*')):
+            if f.is_file() and '__pycache__' not in f.parts:
+                h.update(f.relative_to(ROOT).as_posix().encode() + b'\0' + f.read_bytes())
+    return h.hexdigest()
+
+
+def output_digests(since):
+    return {f.relative_to(ROOT / OUT).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest()
+            for f in sorted((ROOT / OUT).rglob('*'))
+            if f.is_file() and not f.name.startswith('.stamp-') and f.stat().st_mtime >= since}
+
+
+def up_to_date(stamp, digest):
+    """The last build with these arguments read the same inputs, and every file
+    it wrote is still as it left it (a --missions lm build rewrites the LM
+    outputs a full build recorded, so the full build runs again)."""
+    try:
+        record = json.loads(stamp.read_text())
+    except (OSError, ValueError):
+        return False
+    if record.get('inputs') != digest:
+        return False
+    for name, sha in record.get('outputs', {}).items():
+        f = ROOT / OUT / name
+        if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != sha:
+            return False
+    return True
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -759,8 +823,17 @@ def main():
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 4)
     p.add_argument('--host-only', action='store_true',
                    help='steps 1-3 only: the host index and build/flight-store/<m>-host.inc')
+    p.add_argument('--force', action='store_true', help='build even when the last build is up to date')
     a = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
+    stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
+                          + ('-host' if a.host_only else ''))
+    digest = input_digest(a)
+    if not a.force and up_to_date(stamp, digest):
+        print(f'{OUT}: up to date ({stamp.name}; --force rebuilds)')
+        return 0
+    stamp.unlink(missing_ok=True)
+    started = time.time() - 2
     index, objects = host_index(a.host_cc, a.jobs)
     declared = table_names()
     tables = {s: o for o, (d, _) in index.items() for s, k in d.items()
@@ -812,13 +885,14 @@ def main():
             f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight program\'s tables, '
             'resident first, in resolution order: table, interpretive, io kind, module (empty when '
             'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table, '
-            'fixed_data (0 boundary words, 1 self-check, 2 rope). */\n'
+            'fixed_data (0 boundary words, 1 self-check, 2 rope), work clock MCT per routine. */\n'
             + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
                       f'FLIGHT_IO_{io_kind(m, tables[t])}, "{packed.get(t, "") if t not in RESIDENT[m] else ""}", '
                       f'{lane_slot(packed[t], m, owners, place)[1] if t in packed and t not in RESIDENT[m] else 0}, '
                       f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
                       f'"{" ".join(also[t])}", '
-                      f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0})\n'
+                      f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0}, '
+                      f'{host_mct(m, t)}u)\n'
                       for t in order if t in tables))
         if a.host_only:
             continue
@@ -1320,6 +1394,7 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+    stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
     return 0
 
 

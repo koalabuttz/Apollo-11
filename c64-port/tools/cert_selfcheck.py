@@ -21,8 +21,9 @@ For an interp spec (tools/interp_specs.py):
                    evidence/<id>/<id>-c64-cover.json. Each row, with its cut
                    (irc_c64_cut) and, for c64_segments rows, stopped at the
                    resume LOC (IRC_SNAPROW), is re-run on yaAGC and must give
-                   the header's frozen digest. pending_danzig and
-                   channel_inputs specs get IRC_PENDING_DANZIG/IRC_INPUTS.
+                   the header's frozen digest. The oracle runs with the
+                   differential's oracle_env (IRC_PENDING_DANZIG,
+                   IRC_RTB_IN_FILE, IRC_INPUTS).
   3. branches      the native runner built -O0 --coverage over the cover
                    sources runs every frozen case (host), and each C64 group,
                    built with its KEEP mask from tools/mk/<id>.groups (and
@@ -31,7 +32,13 @@ For an interp spec (tools/interp_specs.py):
                    included sources do not overwrite each other. A branch
                    outcome (object, source, line, index) the host takes that no
                    group takes is a GAP; a line whose branch count differs in a
-                   group build (#if'd arms) is judged by line execution.
+                   group build (#if'd arms) is judged by line execution. In
+                   a source other cover records also pin (agc_transfer, ...),
+                   an outcome that depends on table linkage (find() missing
+                   inside a group's table range) is a NOTE when another spec's
+                   self-check on the same source took it on C64
+                   (build/selfcheck-arcs and the shared
+                   /mnt/project-files/selfcheck-arcs); otherwise a GAP.
                    Host-executed lines no group executes are listed too.
 
 For a Lane F module (tools/lane_f_c64_rows.py MODULES) only the branch check
@@ -65,6 +72,79 @@ GAPS = []
 def gap(msg):
     GAPS.append(msg)
     print('GAP ' + msg, flush=True)
+
+
+def shared_sources():
+    """src/ paths more than one c64-cover record pins (agc_transfer, interp orders/steps, ...)."""
+    n = collections.Counter()
+    for f in glob.glob(os.path.join(R, 'evidence', '*', '*-c64-cover.json')):
+        op = json.load(open(f)).get('linked_sources')
+        if isinstance(op, dict):
+            n.update(op.keys())
+    return {k for k, v in n.items() if v > 1}
+
+
+# Shared-runtime arcs taken on C64, one file per (source sha256, spec):
+# <root>/<sha>/<id>.json. build/selfcheck-arcs is this container's cache; lanes
+# run in separate containers, so each run also writes to a folder every lane
+# reads ($SELFCHECK_ARCS, default /mnt/project-files/selfcheck-arcs when present).
+ARCS = [os.path.join(B, 'selfcheck-arcs')]
+_shared = os.environ.get('SELFCHECK_ARCS') or ('/mnt/project-files/selfcheck-arcs'
+                                               if os.path.isdir('/mnt/project-files') else '')
+if _shared:
+    ARCS.append(_shared)
+
+
+def src_sha(base):
+    f = os.path.join(R, 'src', base)
+    return hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else None
+
+
+def shared_arcs(sid, c64_taken, miss, shared):
+    """Shared-runtime arcs (steward, Lane F LLGE), in src/agc_*.c and the interp
+    orders/steps (not a milestone's own files). Whether find() takes an arc can
+    depend on table linkage (a KEEP-mask group's table holds only its own
+    routines). Record the shared-source arcs this spec takes on C64 (ARCS); a
+    host arc no group takes in a shared source is a NOTE when another spec's
+    run on the same source sha256 took it on C64, else it stays a GAP. Returns
+    the misses still gaps."""
+    base = {os.path.basename(x) for x in shared if re.match(r'src/(agc_\w+|\w+_interp_(orders|steps))\.c$', x)}
+    mine = collections.defaultdict(list)
+    for k, ln, bi in c64_taken:
+        b = k.split('>')[-1]
+        if b in base:
+            mine[b].append([ln, bi])
+    for b, v in mine.items():
+        sha = src_sha(b)
+        for root in ARCS:
+            try:
+                os.makedirs(os.path.join(root, sha), exist_ok=True)
+                with open(os.path.join(root, sha, sid + '.json'), 'w') as f:
+                    json.dump({'source': 'src/' + b, 'spec': sid, 'taken': sorted(v)}, f)
+            except OSError as e:
+                say('    (could not write %s: %s)' % (root, e))
+    seen = collections.defaultdict(set)
+    for b in {x[0].split('>')[-1] for x in miss} & base:
+        for root in ARCS:
+            for f in glob.glob(os.path.join(root, src_sha(b), '*.json')):
+                o = json.load(open(f))
+                if o.get('spec') != sid and o.get('source') == 'src/' + b:
+                    for ln, bi in o['taken']:
+                        seen[(b, ln, bi)].add(o['spec'])
+    left, wit = [], collections.defaultdict(list)
+    for x in miss:
+        b = x[0].split('>')[-1]
+        if b in base and seen.get((b, x[1], x[2])):
+            wit[b].append('%d/%d (%s)' % (x[1], x[2], ','.join(sorted(seen[(b, x[1], x[2])])[:3])))
+        else:
+            left.append(x)
+    for b in sorted(wit):
+        say('    NOTE %s: host outcomes no group takes, taken on C64 by another spec on this source '
+            '(table linkage, not a gap): %s' % (b, ' '.join(wit[b][:20])))
+    for b in sorted({x[0].split('>')[-1] for x in left} & base):
+        say('    (%s is shared: an outcome another spec takes on C64 becomes a NOTE once that spec has '
+            'run cert_selfcheck on this source; searched %s)' % (b, ', '.join(ARCS)))
+    return left
 
 
 def say(msg):
@@ -218,18 +298,14 @@ def interp(sid, a, out):
         # agc_transfer, ...) goes stale whenever another lane changes it: report it,
         # and let the branch re-derivation below decide (steward, #450). A stale pin
         # on the spec's own sources means this record was not refrozen.
-        shared = collections.Counter()
-        for other in glob.glob(os.path.join(R, 'evidence', '*', '*-c64-cover.json')):
-            op = json.load(open(other)).get('linked_sources')
-            if isinstance(op, dict):
-                shared.update(op.keys())
+        shared = shared_sources()
         for src, h in sorted(pins.items()):
             f = os.path.join(R, src)
             now = hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else 'missing'
             if now == h:
                 continue
             msg = '%s pins %s at %s, the tree has %s' % (os.path.relpath(cover_p, R), src, h[:8], now[:8])
-            if shared[src] > 1:
+            if src in shared:
                 say('NOTE %s (a shared source; the branch check below re-derives it)' % msg)
             else:
                 gap(msg + ': refreeze so the cover record matches this tree')
@@ -237,14 +313,7 @@ def interp(sid, a, out):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):
             assemble(m, pathlib.Path(B) / 'fixed-data')
-    env = dict(os.environ)
-    if spec.get('channel_inputs'):
-        env['IRC_INPUTS'] = '1'
-    if spec.get('pending_danzig'):
-        cp0 = IC.Compiler(spec, spec['missions'][0])
-        cp0.decode()
-        env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
-            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    env = dict(os.environ, **D.oracle_env(spec))
     missions = [D.Mission(spec, m) if m in spec['missions'] else D.Absent(m) for m in ('lm', 'cm')]
     npts = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
     per = -(-proof['cases'] // npts)
@@ -482,7 +551,7 @@ def interp(sid, a, out):
     for k, what in ((drv, [x for x in miss if x[0] == drv]), (drv, [x for x in lmiss if x[0] == drv])):
         if what:
             say('    NOTE %s (runner driver, not a gap): %s' % (k, ' '.join(str(x[1:]) for x in what[:20])))
-    miss = [x for x in miss if x[0] != drv]
+    miss = shared_arcs(sid, c64_taken, [x for x in miss if x[0] != drv], shared_sources())
     lmiss = [x for x in lmiss if x[0] != drv]
     by = collections.defaultdict(list)
     for k, ln, bi in miss:
@@ -609,7 +678,7 @@ def lanef(m, a, out):
         say('    build %s: %d host outcomes' % (g, len(mine & host)))
         c64 |= mine
         cl |= ln
-    miss, lmiss = sorted(host - c64), sorted(hl - cl)
+    miss, lmiss = shared_arcs(m, c64, sorted(host - c64), shared_sources()), sorted(hl - cl)
     say('[3] gcov: host %d branch outcomes, C64 rows take %d; host lines %d' % (len(host), len(host & c64), len(hl)))
     for x in miss:
         gap('%s:%d branch %d: host takes it, no C64 row does' % x)

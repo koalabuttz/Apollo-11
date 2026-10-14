@@ -7,7 +7,9 @@
 # memory compared each centisecond, logs and per-lane unregistered points in
 # build/flight-store/differential/. flight-store-vice: the flight resident
 # boots on the store in VICE, resolves every record and times each module's
-# load (build/flight-store/vice-load.json). None gates `test`: they measure the whole
+# load (build/flight-store/vice-load.json). flight_store_build.py skips the
+# build when its inputs and last outputs are unchanged (build/flight-store/
+# .stamp-<missions>; --force rebuilds). None gates `test`: they measure the whole
 # program while lanes are still filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
 .PHONY: flight-store flight-host-differential flight-store-vice

@@ -483,15 +483,15 @@
     "address": "13,2733",
     "word": "04303",
     "source": "  CMOONFLG",
-    "routine": "13,2731",
-    "function": "r26731"
+    "routine": "13,2732",
+    "function": "r26732"
    },
    {
     "address": "13,2734",
     "word": "26742",
     "source": "  SETMOON",
-    "routine": "13,2731",
-    "function": "r26731"
+    "routine": "13,2732",
+    "function": "r26732"
    },
    {
     "address": "13,2735",
@@ -2433,8 +2433,8 @@
     "address": "13,3353",
     "word": "20211",
     "source": "  8D",
-    "routine": "13,3351",
-    "function": "r27351"
+    "routine": "13,3352",
+    "function": "r27352"
    },
    {
     "address": "13,3354",
@@ -3451,15 +3451,15 @@
     "address": "35,3730",
     "word": "01127",
     "source": "  TRKMKCNT",
-    "routine": "35,3726",
-    "function": "r73726"
+    "routine": "35,3727",
+    "function": "r73727"
    },
    {
     "address": "35,3731",
     "word": "00000",
     "source": "  0",
-    "routine": "35,3726",
-    "function": "r73726"
+    "routine": "35,3727",
+    "function": "r73727"
    },
    {
     "address": "35,3732",
@@ -3829,8 +3829,8 @@
     "address": "13,3571",
     "word": "03732",
     "source": "  T-TO-ADD",
-    "routine": "13,3567",
-    "function": "r27567"
+    "routine": "13,3570",
+    "function": "r27570"
    },
    {
     "address": "13,3572",
@@ -4151,8 +4151,8 @@
     "address": "13,3647",
     "word": "03732",
     "source": "  T-TO-ADD",
-    "routine": "13,3645",
-    "function": "r27645"
+    "routine": "13,3646",
+    "function": "r27646"
    },
    {
     "address": "13,3650",
@@ -4235,8 +4235,8 @@
     "address": "13,3663",
     "word": "01517",
     "source": "  TET",
-    "routine": "13,3661",
-    "function": "r27661"
+    "routine": "13,3662",
+    "function": "r27662"
    },
    {
     "address": "13,3664",

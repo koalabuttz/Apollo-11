@@ -9,6 +9,7 @@
 #include "agc_image_ops.h"
 #include "rtb_angles.h"
 #include "rtb_modes.h"
+#include "cm_integration_moves.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -96,7 +97,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -5081,7 +5086,7 @@ static enum exec_status r65563(apollo_overlay_state *s,p66_bias_io *io){
  switch(cmi_bov(s)){case CMI_BOV_NONE:break;case CMI_BOV_GOTO:
    cmi_goto(s);
    return EXEC_OK;
- case CMI_BOV_RTB:cmi_rtb(s);return EXEC_OK;
+ case CMI_BOV_RTB:cmi_rtb(s);if(cm_integration_tcdanzig(s)!=RTB_OK)return EXEC_OUT_OF_SCOPE;break; /* ENDT(X) */
  default:return EXEC_OUT_OF_SCOPE;}
  right(s);
  cmi_address_pushup(s,060221,006021);cmi_dload_op(s,0);
@@ -12408,4 +12413,4 @@ const cm_p37_p70_point cm_p37_p70_points[CM_P37_P70_POINTS]={
  {31395,0}
 };
 const agc_word cm_p37_p70_cadr_words[CM_P37_P70_CADR_WORDS]={00024,00037,00040,00041,03733,03762,03763};
-const agc_word cm_p37_p70_externals[CM_P37_P70_EXTERNALS]={04106,04662,05170,05217,05412,05526,05721,05764,07171,057352};
+const agc_word cm_p37_p70_externals[CM_P37_P70_EXTERNALS]={04106,04662,05170,05217,05412,05526,05721,05764,07171};
