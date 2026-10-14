@@ -1,2 +1,3 @@
-lm-aostask-1.prg sha256 9f0a7495212f4fad63b35e627903c749de00129ac63be77f219ac67daffac299
-PASS: VICE PAL lm-aostask-1.prg: 33 checks, 0 failures
+lm-aostask-1.prg sha256 90df2ee63b8406a43a1946a0310d587ac1d256654a4f2e8c1e9e1e0e5cb9e140
+PASS: VICE PAL lm-aostask-1.prg: 38 checks, 0 failures
+PRG sha256: 90df2ee63b8406a43a1946a0310d587ac1d256654a4f2e8c1e9e1e0e5cb9e140 lm-aostask-1.prg

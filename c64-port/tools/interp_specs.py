@@ -3145,6 +3145,13 @@ SPECS = {
         # bit, 0 or BIT13 (20,2463-2465); negative it would fall into
         # DVOVSUB with no call.
         'states': {'20,2773': {'157': [0, 0o10000]}},
+        # 1/ACCS's "is the DAP running?" test (CS T5ADR; AD PAXISADR): T5ADR
+        # names P-AXIS (02213, the DAP running) in half the draws. Its "is
+        # GTS in control?" CCS INGTS: INGTS is +0, positive or -0 in flight
+        # (QGIMTIMR+1, set by the trim gimbal control); negative it would
+        # run TIMEGMBL's CADR as an instruction.
+        'all_states': {'T5ADR': [0o2213, 0o2213, 0o2000, 0o3507, 0o2213, 0o2100],
+                       'INGTS': [0, 1, 0o77777, 0o12, 0o37777]},
         'target': 'tests/lm_aostask_target.c',
         'index_carry16': True,
         'image_w': True,
@@ -3174,8 +3181,10 @@ SPECS = {
         'ebank': 6,
         'target': 'tests/lm_kalman_target.c',
         # RATELOOP runs on every DAP pass (P-AXIS's SUPERJOB), in the pinned
-        # per-cycle set: the EB 6 window fast forms.
+        # per-cycle set: the EB 6 window fast forms, and no image scan at
+        # its entry in flight.
         'fast_window': True,
+        'trusted_image': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'index_carry16': True,
         'image_w': True,
@@ -3196,7 +3205,9 @@ SPECS = {
         'base': {'lm': 'lm_radar_leadin_routines'},
         'symbol': {'lm': 'lm_radar_leadin_routines'},
         'basic': 'full',
-        'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP2', 'VARADAR'],
+        # DORSAMP+1: DORSAMP's TC VARADAR return (TC BANKCALL; CADR
+        # RADSTALL), where the radar read comes back through SWCALL.
+        'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP+1', 'DORSAMP2', 'VARADAR'],
         'channels': 'all',
         'channel_inputs': True,
         'io_channels': 'auto',
@@ -3210,8 +3221,9 @@ SPECS = {
         # four DP samples, so RTSTLOC and RTSTMAX step 0-6 by two, RTSTBASE
         # is 0 (RR) or 2 (LR) and RTSTDEX names one of RDRLOCS' six radar
         # reads. RSAMPDT is the sample period or +0 (stop); -0 would run
-        # RADSAMP's 2CADR as an instruction.
-        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': list(range(6)), '2352': [0, 2, 4, 6],
+        # RADSAMP's 2CADR as an instruction. DORSAMP2 stores -0 in RTSTLOC
+        # on every wrap, and RTSTDEX may be -0 too (INDEX -0 reads RDRLOCS).
+        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': [*range(6), 0o77777], '2352': [0, 2, 4, 6, 0o77777],
                                                   '2353': [0, 2], '2354': [0, 2, 4, 6],
                                                   '2355': [0, 1, 0o144, 0o37777, 0o40000, 0o77776]})],
         'target': 'tests/lm_radar_leadin_routines_target.c',
