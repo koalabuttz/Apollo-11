@@ -256,7 +256,13 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   and RATELOOP (`lm_kalman_basic`, which runs in the same pass) in one
   job-slot module, so a pass that leaves the pinned sets loads one module,
   not two (P-axis 11,603 bytes and Q,R-axis 11,971). RATELOOP moved here
-  from class 4 to make room for RESUME. On LM it is 14,145 bytes.
+  from class 4 to make room for RESUME. It also carries the jet writes
+  (`lm_t6rupt_jets_hot_routines`: WRITEP, WRITEU, WRITEV and their -1
+  entries), which a firing pass makes three times; before, each loaded the
+  T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
+  `RIDE`: run through `rk_direct` while the excursion is loaded, while
+  their resolver records keep the wrapper for every other caller. On LM it
+  is 15,438 bytes.
 - The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
   (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
   $01E2's `lm_t4rupt_core_routines`) and the radar step
