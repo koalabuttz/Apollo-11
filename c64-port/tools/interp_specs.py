@@ -1273,6 +1273,8 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
         'index_carry16': True,
         'image_w': True,
+        # (No 'fast_window': it needs one EBANK, and this file runs under the
+        # listing's per-routine EBANK=.)
         'trusted_image': True,
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
