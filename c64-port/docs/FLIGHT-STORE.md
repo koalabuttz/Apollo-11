@@ -59,9 +59,9 @@ goes into the store as two modules linked by `tools/interp_runtime_size.py`
 bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
 `INTERP_POINTS` gives the resolver a record to $0A01 at each of the
 interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
-unless a table record or a resident routine already holds it: SWRETURN and
-INTPRET are table records, so 10 of 12 are the interpreter's on each
-mission. DANZIG is one of them: the resident's DANZIG marker is not a
+unless a table record or a resident routine already holds it: SWRETURN is
+a table record (the interbank tables), and INTPRET always goes to the
+interpreter (#335), so 11 of 12 are the interpreter's on each mission. DANZIG is one of them: the resident's DANZIG marker is not a
 routine, and the flight resident's own program has no marker table, so
 without the record a job left pending at DANZIG would not resolve. CHANG2 is left out, since that is where
 the interpreter hands back to the Executive. The module returns to the step
