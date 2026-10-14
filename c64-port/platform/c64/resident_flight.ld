@@ -25,6 +25,10 @@ REGION_ALIAS("c_writeable", ram)
 SECTIONS {
     .basic_header : { *(.basic_header) } >ram
     INCLUDE zp.ld
+    /* ov2_irq_count at RK_IRQ_COUNT (resident_flight.h), below rk_hardware:
+     * flight modules link its address. Before the .bss rule, which would
+     * take it otherwise. */
+    .rk_irq_count 0x6fbc : { KEEP(*(.bss.ov2_irq)) } >services
     .boot : {
         __rk_boot_start = .;
         *(.boot.text .boot.text.*)
@@ -39,8 +43,20 @@ SECTIONS {
     INCLUDE bss-symbols.ld
     .noinit (NOLOAD) : { INCLUDE noinit-sections.ld } >ram
     __rk_resident_end = .;
-    .apollo_services : { KEEP(*(.apollo_services)) } >services
+    .apollo_services 0x6f00 : { KEEP(*(.apollo_services)) } >services
+    __rk_services_end = .;
+    /* rk_hardware at RK_HARDWARE, rk_flight at RK_FLIGHT_IO and, CM,
+     * cm_channels at RK_CM_CHANNELS (resident_flight.h): flight modules
+     * link these addresses. */
+    .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
+    .rk_flight 0x6fdc : { KEEP(*(.rk_flight)) } >services
+    .rk_channels 0x6ff4 : { KEEP(*(.rk_channels)) } >services
 }
+ASSERT(__rk_services_end<=0x6fbc,"the service table overlaps ov2_irq_count")
+ASSERT(ov2_irq_count==0x6fbc && SIZEOF(.rk_irq_count)==2,"ov2_irq_count is not at RK_IRQ_COUNT")
+ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1e,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
+ASSERT(rk_flight==0x6fdc && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO or overlaps cm_channels")
+ASSERT(!DEFINED(cm_channels) || cm_channels==0x6ff4,"cm_channels is not at RK_CM_CHANNELS")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
 OUTPUT_FORMAT { SHORT(0x0801) FULL(ram) FULL(services) FULL(image) TRIM(boot) }

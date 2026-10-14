@@ -160,6 +160,10 @@ class Compiler:
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
         # (tasks and NOVAC jobs call them too), not only a VAC area.
         self.any_fixloc = bool(spec.get('any_fixloc'))
+        # 'any_newjob' (with any_fixloc): those routines, when they also never
+        # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
+        # T4RUPT still runs them).
+        self.any_newjob = bool(spec.get('any_newjob'))
         self.sload_k = False
         self.uses_channels = False
         # 'channels': 'all' on a Luminary file: its channel orders run on the
@@ -1456,7 +1460,8 @@ class Compiler:
         """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
         and does not enter the interpreter (TC INTPRET)."""
         return (self.any_fixloc and self.starts[phys][0] == 'b'
-                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys]))
+                and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -1719,8 +1724,10 @@ class Compiler:
             c.append('/* The same for a basic routine that never names FIXLOC: any FIXLOC. */')
             c.append('static MAYBE_UNUSED uint8_t sane_nv(const apollo_overlay_state *s,const p66_bias_io *io){')
             c.append(' unsigned i;')
-            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
-                     % ('W[067]>037777u' if self.rk else 'W[067]'))
+            nj = 'W[067]>037777u' if self.rk else 'W[067]'
+            if self.any_newjob:
+                nj = '(%s&&W[067]!=077777u)' % nj
+            c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
             c.append(' for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;')
             c.append(' return 1;')

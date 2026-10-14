@@ -59,6 +59,19 @@ interrupt flags are identical. The proof
 (`evidence/waitlist-entries/waitlist-entries-proof.json`) lists the hashes of
 the native sources it depends on.
 
+The same freeze also checks TASKOVER's RESUME check (#144) against the real
+ropes (`tools/taskover_superbank_reference.c`, recorded under
+`taskover_superbank` in the proof). In each case, yaAGC takes T3RUPT in a
+program running in banks 030-033 under one superbank, so the hardware fills
+ZRUPT and BRUPT from the rope. BANKRUPT keeps that superbank, as T3RUPT's
+`ROR SUPERBNK` does, and channel 7 holds the task's superbank. The native
+TASKOVER, given the rope as `fixed_data`, resumes in every case, and its
+result equals yaAGC running TASKOVER until the interrupt ends: 488 Luminary099
+and 493 Comanche055 cases. In 364 and 366 of them the word under channel 7's
+superbank differs from BRUPT, so a check that read under channel 7 (the bug
+#144 fixed) would refuse those cases; with that bug put back, the oracle
+reports 364 Luminary099 failures.
+
 `tests/test_waitlist_entries.c` checks the frozen digests, one refusal per
 kind, and TASKOVER's RESUME check in both missions under BANKRUPT's
 superbank (BANKRUPT 060100 with channel 7 at 060: TASKOVER writes BANKRUPT

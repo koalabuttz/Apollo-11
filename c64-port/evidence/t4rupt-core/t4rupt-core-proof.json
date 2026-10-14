@@ -3,7 +3,7 @@
   "mission": "Luminary099",
   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "cases": 2240,
-  "snapshot_sha256": "bb75d23e96498b29822d0069fbf459623a229c461bb9932d6e2abaa0176a5fd0",
+  "snapshot_sha256": "9d0a60bf45eba3cf0dd1d58d5e2caba15ff19d5e70b12d61bc5986557a0667f3",
   "outcomes": {
    "06,2000 T4RUPT:returned": 2048,
    "06,2116 T4JUMP (NOVAC return):returned": 64,
@@ -21,7 +21,7 @@
   "mission": "Comanche055",
   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
   "cases": 2176,
-  "snapshot_sha256": "71cf8e3fd74ba8c5622aae4675589cbadd243522af8d131392cfabb14bce3814",
+  "snapshot_sha256": "662885e5fe711a6f42aad165756d395a96177ef286dbaebfe98d042e271cb96f",
   "outcomes": {
    "06,2000 T4RUPT:returned": 2048,
    "06,2116 T4JUMP (NOVAC return):returned": 64,

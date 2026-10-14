@@ -11,7 +11,33 @@ left against $0801-$6EFF.
 `platform/c64/resident_flight.ld` keeps the map of
 `overlay_v2_resident.ld`: resident code and data in $0801-$6EFF, the service
 jump table at $6F00, the canonical image at $7000, the job slot at $8000,
-the task slot at $E000, the soft stack below $D000. One mission's resident is:
+the task slot at $E000, the soft stack below $D000 (1 KB, $CC00-$CFFF).
+Below the stack, $C000-$CBFF is slot class 3 (`APOLLO_OV2_SLOT_PINNED`):
+boot loads the store's one pinned module there by plain DMA, verifies it,
+zeroes its BSS and runs its main once to build its table list
+(`rk_pinned`); from then on `rk_direct` tries its tables before the job and
+task slots', and no run loads it. Boot writes a canary at $CC00, the
+stack's last byte; a resident step that finds it changed (the stack ran
+into the pinned module) returns `EXEC_INVALID_ACTION` before running
+anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
+loads every class-2 module there once (`apollo_reu_store_fixed`,
+`rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
+without execute-now, and a write to $FF00 starts the DMA with $01=$34. Its
+code runs with I/O banked out, so the IRQ entry saves $01, sets $35 to
+acknowledge CIA1 and restores it.
+
+The top of the service-table page holds the device records flight modules
+reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
+`RK_FLIGHT_IO`, `RK_CM_CHANNELS` in `resident_flight.h`): `rk_hardware`
+(`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
+`rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
+`cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
+values yaAGC starts with. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+`ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
+(the interpreter) can return to the step when an interrupt arrives. The
+service table must end at or below $6FBC (62 entries); the linker script
+asserts it. One mission's resident is:
 
 | Component | Sources |
 |---|---|
@@ -207,18 +233,18 @@ about 0.3 KB.
 | Component | LM bytes | CM bytes |
 |---|---|---|
 | Kernel (with the seam hooks) | 10,524 | 10,281 |
-| Transfer ABI trampoline and Executive call sites | 3,481 | 3,413 |
+| Transfer ABI trampoline and Executive call sites | 3,501 | 3,433 |
 | ABI 2 runtime and REU store | 5,235 | 5,235 |
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step, boundary-word reader and direct calls | 1,499 | 1,517 |
-| IRQ entry | 16 | 16 |
-| C runtime and library (crt0, multiply, divide, memcpy, memset) | 480 | 480 |
-| **Resident, $0801 to the end of bss** | **24,271** | **23,978** |
-| Free below the service table (of 26,367) | 2,096 | 2,389 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,508 | 1,525 |
+| IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
+| C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
+| **Resident, $0801 to the end of bss** | **24,314** | **24,020** |
+| Free below the service table (of 26,367) | 2,053 | 2,347 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
-| Boot-only, in the job slot | 3,252 | 3,219 |
+| Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,196 | 4,168 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
 half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
@@ -230,8 +256,7 @@ address arithmetic doubled it, and boot runs the boundary-word module
 through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
 LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
 resident: the step hands each module `rk_env` and returns its status. Both
-missions fit with 2.1-2.4 KB to spare, so neither $C000-$CBFF nor $D000 is
-needed and the kernel stays as it is.
+missions fit with 2.1-2.4 KB to spare, so the kernel stays as it is.
 
 Since flight modules share the resident's runtime (docs/FLIGHT-STORE.md,
 runtime sharing), the resident exports 21 more services (service table

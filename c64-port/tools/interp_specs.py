@@ -204,6 +204,49 @@ def lat_long_axis_joint():
 # AOTMARK: MARKSTAT (zero, or the marks' VAC area +1 under flag bits 10-14)
 # and the surface mark slots (that area plus 6 words a mark).
 AOT_MARKSTAT = [0] + [(f << 9) | a for f in range(32) for a in (0o401, 0o455, 0o531, 0o605, 0o661)]
+
+
+# SXTMARK (#255): marks whose CDUs are within a few bits of the current
+# ones, so DIFCHK's accept path (|mark - current| <= 3) and its 121 alarm
+# at 4 both run. At MARKDIF all three axes (CDUCHKWD > 0); at DIFCHK one
+# axis (MKNDX -1, 0, 1 picks CDUX, CDUY, CDUZ; A the mark CDU). Half the
+# cases keep the random states.
+SXT_CDU_BASES = (0, 3, 0o17777, 0o37775, 0o40002, 0o77775)
+SXT_CDU_DIFFS = ((0, 0, 0), (1, -1, 2), (-2, 3, -3), (3, 0, -1), (-3, -2, 1), (2, 1, 0),
+                 (4, 0, 0), (0, -4, 0), (0, 0, 4), (-1, 1, -4))
+
+
+def sxt_markdif_joint():
+    sets = []
+    for i, x in enumerate(SXT_CDU_BASES):
+        for d in SXT_CDU_DIFFS:
+            v = {'CDUCHKWD': 1 + i}
+            for k, (axis, e) in enumerate(zip('XYZ', d)):
+                m = (x + 0o1111 * k) & 0o77777
+                v['MKCDU' + axis] = m
+                v['%04o' % (0o32 + k)] = (m - e) & 0o77777   # CDUX-CDUZ
+            sets.append(v)
+    return sets + [{}] * len(sets)
+
+
+def sxt_difchk_joint():
+    sets = [{'MKNDX': k, '0': x, cdu: (x - e) & 0o77777}
+            for k, cdu in ((0o77776, '0032'), (0, '0033'), (1, '0034'))   # CDUX-CDUZ
+            for x in SXT_CDU_BASES if x < 0o40000
+            for e in range(-4, 5)]
+    return sets + [{}] * len(sets)
+
+
+# MARKCONT with no marks wanted (MARKSTAT +0) and STATE+2 bit 14 clear (or
+# set: R21's MARKIT1): the marking system (EXTVBACT bit 2) and V59FLAG
+# (STATE+5 bit 12) on or off, so MARKET3's alarm 122 and the P23 calibration
+# display both run. A third of the cases keep the random states.
+def sxt_markcont_joint():
+    sets = [{'MARKSTAT': 0, 'STATE+2': s2, 'EXTVBACT': ev, 'STATE+5': v59}
+            for s2 in (0, 0o17777, 0o20000)
+            for ev in (0, 2, 0o77775, 0o77777)
+            for v59 in (0, 0o4000, 0o73777, 0o77777)]
+    return sets + [{}] * (len(sets) // 2)
 AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in range(6)]
 
 # LLGE's ROOTPSRS work words (MPAC +3 to +6, PWRPTR, DERPTR, RETROOT)
@@ -244,7 +287,18 @@ SPECS = {
                           for a in range(lo, hi)},
                        # Past MARKRUPT's CCS MARKSTAT, marks are being accepted.
                        **{'07,%04o' % a: {'MARKSTAT': AOT_MARKSTAT[1:]} for a in range(0o2365, 0o2430)}),
+        # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
+        # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
+        'any_fixloc': True,
         'joint_states': {
+                         # AOTMARK's entry with no marks in progress (MARKSTAT
+                         # +0) in half the cases: the VAC area search and
+                         # BAILOUT1 when none is free. A quarter of the cases
+                         # have only VAC5 free, with no extended verb active
+                         # (EXTVBACT bits 1-2 clear): the search's last area.
+                         'AOTMARK': [{'MARKSTAT': 0}, {},
+                                     {'MARKSTAT': 0, 'EXTVBACT': 0, 'VAC1USE': 0, 'VAC2USE': 0,
+                                      'VAC3USE': 0, 'VAC4USE': 0, 'VAC5USE': 0o660}, {}],
                          # 15,2041 VSL1 VAD from the state the original reaches it
                          # in after AVEIT and SURFSTAR (the oracle's, at that NEWOPS):
                          # VAD's overflow there carries into a word that does not
@@ -283,11 +337,17 @@ SPECS = {
         # site); TIME1/TIME2 and the CDUs vary; a quarter of the cases put
         # edge values in MPAC and the operands.
         'c64_rows': 'cover',
-        'cover_stride': 8,
+        # Two DDV arcs (V/SC with the high words equal) only runs too long
+        # for one diagnostic take: truncated rows (tests/interp_cut.h).
+        'c64_cuts': True,
+        'cover_stride': 4,
         'site_edges': True,
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     # Lane D1: Comanche055 SXTMARK, the whole file (basic code) as routines
@@ -324,6 +384,10 @@ SPECS = {
         # DIFCHK is entered with MKNDX -1, 0 or 1 (it indexes CDUX-CDUZ).
         'states': {'DIFCHK': {'MKNDX': [0o77776, 0, 1]},
                    'MKVACFND': {'0': [0o377, 0o453, 0o527, 0o603, 0o657]}},
+        # (#255) Marks close to the current CDUs at MARKDIF and DIFCHK, and
+        # MARKCONT with no marks wanted.
+        'joint_states': {'MARKDIF': sxt_markdif_joint(), 'DIFCHK': sxt_difchk_joint(),
+                         'MARKCONT': sxt_markcont_joint()},
         'channel_inputs': True,
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS', '-DIRC_CHANNELS'],
         'target': 'tests/cm_sxtmark_target.c',
@@ -332,6 +396,9 @@ SPECS = {
         'cover': True,
         'counters': True,
         'edge_values': True,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 32,
     },
     # Lane D1: Luminary099 ASCENT_GUIDANCE, the whole file (basic and
@@ -486,6 +553,8 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # (#260) C64 INDEX end-around carry.
+        'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
         'base': {'cm': 'cm_t4rupt_optics'},
         'symbol': {'cm': 'cm_t4rupt_optics'},
@@ -515,6 +584,79 @@ SPECS = {
         'target': 'tests/cm_t4rupt_optics_target.c',
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
+    'cm-rcs-dap-exec': {
+        'missions': ('cm',),
+        'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
+        'base': {'cm': 'cm_rcs_dap_exec'},
+        'symbol': {'cm': 'cm_rcs_dap_exec'},
+        'basic': 'full',
+        # The RCS DAP's job (2CADR AMBGUPDT at 21,2356 and 21,2614).
+        'entries': ['AMBGUPDT'],
+        # FLAGWRD6: mostly the RCS autopilot (bit 14 only of the top two), so
+        # most runs reach the matrix; TVC, both, neither and +-0 for the gates.
+        'states': {'AMBGUPDT': {'FLAGWRD6': [0o20000, 0o20001, 0o21234, 0o37777, 0o20000, 0o30000,
+                                             0o40000, 0o60000, 0, 0o77777, 0o17777]}},
+        # CDUX and CDUZ (counters): around 0, the 7.25-degree jet quad
+        # offset QUADANGL (660), 90 and 180 degrees, and -0.
+        'cells': {a: [0, 1, 659, 660, 661, 0o17777, 0o20000, 0o37777, 0o40000, 0o57777, 0o60000,
+                      0o77116, 0o77117, 0o77776, 0o77777] for a in (0o32, 0o34)},
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_rcs_dap_exec_target.c',
+    },
+    # Lane A: Comanche055 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
+    # NBSM/SMNB, AX*SR*T, SMCDURES), basic and interpretive.
+    'cm-powered-subs': {
+        # Any DANZIG can find a job waiting: every word after one is a CHANG2
+        # resume key.
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
+        'base': {'cm': 'cm_powered_subs'},
+        'symbol': {'cm': 'cm_powered_subs'},
+        'basic': 'full',
+        # Every caller's entry, and the interface routines no other file
+        # calls (CD*TR*G, TRG*SMNB, CDU*NBSM).
+        'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM'],
+        # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
+        'fixed_tables': {'INDEXI': (0, 3)},
+        # The words each resume point finds, as the file's own runs leave them.
+        # CD*TR*GS's loop (after CDULOGIC, COSINE, SINE): TEM3 the angle
+        # offset (4, 2, 0), TEM2 its caller's return (CDUTRIG, CD*TR*G,
+        # CDU*SMNB, TRG*SMNB, CDU*NBSM and TRG*NBSM, or a TC from outside the
+        # file).
+        'states': dict(
+            {p: {'143': [0, 2, 4], '142': [0o3501, 0o3505, 0o3623, 0o3626, 0o3636, 0o3641, 0o5000]}
+             for p in ('23,3530', '23,3536', '23,3546')},
+            # QUICTRIG's loop (after SPSIN, SPCOS): ITEMP2 the offset, ITEMP1
+            # the caller's return (BANKCALL or an RTB, outside the file).
+            **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356]} for p in ('23,3566', '23,3575')},
+            # NBSM: S1 (the job's VAC +40D) holds the address of the CDU angles (MARKDATA +2 in
+            # P20-P25, a mark VAC's ICDU in P51-P53), at NBSM and its LXC,1 resume key.
+            **{p: {'vac+050': [0o1244, 0o1250, 0o766, 0o122]} for p in ('NBSM', '23,3610')},
+            # AX*SR*T's loop (after DMPSUB): DEXDEX +-3 to +-1, DEX1 and DEX2
+            # offsets, BUF the component index, RTNSAVER the return (C*MM*N2's
+            # TC, or outside the file).
+            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
+                   '130': [0, 1], '145': [0o3631, 0o5000]} for p in ('23,3676', '23,3714')}),
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_powered_subs_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
@@ -2130,8 +2272,14 @@ SPECS = {
         # with a higher bit the DOUBLE loop never overflows (the original
         # runs forever too).
         'all_states': {'PVALVEST': list(range(0o400))},
-        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive.
+        # T4RUPT runs it whatever job is waiting: NEWJOB +0 or positive, or
+        # -0 while DUMMYJOB idles (any_newjob), and from any FIXLOC
+        # (any_fixloc): it never names either.
         'resume_keys': True,
+        'any_fixloc': True,
+        'any_newjob': True,
+        'index_carry16': True,
+        'image_w': True,
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',

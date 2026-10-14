@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -507,8 +507,8 @@
             "sha256": "ff279e4173c88ba7684c263ee2cc3690d2cb6bc50add88375166e664a1173884"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -641,8 +641,8 @@
             "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -653,7 +653,7 @@
       "sha256": "b71ca76c2835831676ed58e7708132fe30a239fedffaf8a17decea177569d6af",
       "bytes": 47233,
       "lines": 1922,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -668,7 +668,7 @@
           "verification": "docs/CM-CONICS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -682,7 +682,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-conics/cm-conics-source-map.json",
@@ -706,6 +705,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
             "sha256": "8eefc643ca5d491641f73e4a89353898aa4b06de7c1906e346dc0dd5312934b4"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -748,7 +751,7 @@
       "sha256": "93414cefa5c6ed833b4bc0610c5055a2ded393aea6938dc65d13cf2b717bc101",
       "bytes": 9913,
       "lines": 415,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -765,7 +768,7 @@
           "verification": "docs/GEOMETRY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -779,7 +782,6 @@
           "RTB CDULOGIC, 1STO2S (src/rtb_angles.c), TRANSP1, TRANSP2 (src/rtb_agreement.c) and SXTLOGIC (src/geometry_rtb.c), native",
           "POODOO and ALARM from the interpreter bodies"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/geometry/geometry-source-map.json",
@@ -803,6 +805,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/geometry/geometry-c64-outcomes.json",
             "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         }
       }
@@ -1315,7 +1321,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
+            "sha256": "ff67e71e928b871416dee320c7a7c8448687cb40abad6aa72d087bce238c9e54"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -2024,7 +2030,7 @@
       "sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
       "bytes": 26531,
       "lines": 1174,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2039,7 +2045,7 @@
           "verification": "docs/CM-INTEGRATION-INIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2065,7 +2071,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-integration-init/cm-integration-init-source-map.json",
@@ -2089,6 +2094,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
             "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -2457,7 +2466,7 @@
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
             "sha256": "cf7c471a70af860b424086115664f349acefe95b9f707c9bd4745951ddf7ddb2",
             "vice_targets": {
-              "vice-cm-jet-select": 28
+              "vice-cm-jet-select": 27
             }
           },
           "c64_branch_outcomes": {
@@ -2465,8 +2474,8 @@
             "sha256": "754b86579dccd72e0c2084eb0b222beebb581d4f5ff0d63e2cf258bd775c1334"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -2683,7 +2692,7 @@
       "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
       "bytes": 5394,
       "lines": 198,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2698,7 +2707,7 @@
           "verification": "docs/CM-EPHEMERIS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2708,7 +2717,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-source-map.json",
@@ -2728,6 +2736,10 @@
             "vice_targets": {
               "vice-cm-ephemeris": 38
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-277.md",
+            "sha256": "0db05c2f6f158f9791830b8f36b88fcc47610da4bbda0a0d7db27206962ac1f6"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-ephemeris/cm-ephemeris-proof.json",
@@ -2779,8 +2791,61 @@
       "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
       "bytes": 3545,
       "lines": 99,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 84 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[1]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). In the listing MAIN.agc emits no word, each of the 36504 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "750ef17a9f55ad210e93edd4297c501f865ba779b259082e70362c665ef3c247"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
@@ -3195,7 +3260,7 @@
       "sha256": "8ca37189556a5030fe1d42037a2c97a8e6b4163b185f8e1d663cad61ca234120",
       "bytes": 40894,
       "lines": 2213,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3212,7 +3277,7 @@
           "verification": "docs/P51-P53.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3225,7 +3290,6 @@
           "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/p51-p53/p51-p53-source-map.json",
@@ -3249,6 +3313,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
             "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         }
       }
@@ -3739,8 +3807,16 @@
           "native_files": [
             "src/lanec_pin_gaps.c",
             "src/lanec_pin_routines.c",
+            "src/lanec_pin_keys_num_routines.c",
+            "src/lanec_pin_keys_cmd_routines.c",
+            "src/lanec_pin_keys_release_routines.c",
+            "src/lanec_pin_keys_sign_routines.c",
+            "src/lanec_pin_keys_clear_routines.c",
+            "src/lanec_pin_keys.c",
+            "src/lanec_pin_trampoline.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
+            "include/lanec_pin_keys.h",
             "include/lanec_symbols.h"
           ],
           "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1/GOALMCYC lead-ins, to their callee boundaries, register-exact against the original program.",
@@ -3753,8 +3829,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04140-04525) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 268 routines in lanec_pin_cm_routines (src/lanec_pin_routines.inc, generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order: lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 864 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303 and the 92 pw-* suites: 20 refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,161 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 280 routines: 267 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-decdsp3: 111 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank. Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -3766,7 +3842,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "fcaf42de7e59781d204bb5c7074ff6ce87015a23c1aed30a322690c768e8196e"
+            "sha256": "dbcc6b3c2b4e57ef1c9fb0a0ae92c28e935fff2d05b01fae2a84bf234deaa57a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -3936,6 +4012,14 @@
           ],
           "scope": "All original emitted executable and data words, all documented entry and numerical/return paths; source line312 positive-zero return unreachable from documented +/-3 AX input. Producer ownership, live scheduling and external continuation bodies remain application work.",
           "verification": "docs/COMANCHE-POWERED-FLIGHT.md"
+        },
+        {
+          "native_files": [
+            "src/cm_powered_subs.c",
+            "include/cm_powered_subs.h"
+          ],
+          "scope": "The whole file: CDUTRIG, CD*TR*G, CDUTRIGS, CD*TR*GS, QUICTRIG, NBSM, the SMNB/NBSM interface routines, AX*SR*T and SMCDURES, basic and interpretive (cm_powered_subs_basic, cm_powered_subs_interpretive), and the SINESLOC and INDEXI constants.",
+          "verification": "docs/CM-POWERED-SUBS.md"
         }
       ],
       "withdrawn_certificate": {
@@ -3973,6 +4057,53 @@
               "path": "evidence/cm-powered-file-proof.json",
               "sha256": "755f6e961cb9ea23e692a68ed27a89e1b91111943462b6d25bc1c47dd211717f"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (cm_powered_subs_interpretive, at NEWOPS with LOC there): 23,3477 CDUTRIG, 3502, 3503 CD*TR*G, 3506, 3606 NBSM, 3617, 3621 CDU*SMNB, 3624 TRG*SMNB, 3632, 3634 CDU*NBSM, 3637 TRG*NBSM, 3644 *SMNB*, 3646 *NBSM*, 3742 SMCDURES, and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3610, 3613, 3615, 3745, 3750, 3751, 3753, 3754, 3756, 3760, 3762, 3765, 3767, 3770, 3771; a quarter of the cases have NEWJOB positive). Basic (cm_powered_subs_basic): 3500, 3504 (after EXIT), 3530, 3536, 3546 (CD*TR*GS after CDULOGIC, COSINE and SINE), 3555 QUICTRIG, 3566, 3575 (after SPSIN, SPCOS), 3622, 3625, 3635, 3640, 3645, 3647 (after EXIT), 3627, 3642 (after MPACVBUF), 3676, 3714 (AX*SR*T after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); NBSM's S1 an erasable address of three angles. Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "23,3732 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; 36 cases with DEXDEX +1 and BUF 0 take the -0 exit in yaAGC and natively. The oracle executed the other 131 basic instructions and read all 47 interpretive words (evidence/cm-powered-subs/cm-powered-subs-closure.json).",
+          "data_validity": "SINESLOC (ADRES SINCDU) and INDEXI (4, 2, 0, 4) are read as the original constants: SINESLOC by CA, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
+        },
+        "external_continuations": [
+          "CDULOGIC, COSINE and SINE through USPRCADR, which return to this file's registered return points",
+          "SPSIN and SPCOS (QUICTRIG)",
+          "MPACVBUF and DMPSUB (AX*SR*T)",
+          "The interpreter (INTPRET, NEWOPS) and the callers' returns (TC TEM2, TC A, TC RTNSAVER, RVQ)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-source-map.json",
+            "sha256": "15a5f917ba391ba99ab227be48be6cc3caeccdc501e9d91329626756a174b226"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
+            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-host.log",
+            "sha256": "2812bfc1dad19cc97404e68b22c2295772203a9dbc98d0a4eb487b69db0e4df8"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-vice.log",
+            "sha256": "a5b7f4fab0046f10225c3238c4c46fd510b32d631beba50efba2699ef4cc9248",
+            "vice_targets": {
+              "vice-cm-powered-subs": 74
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
+            "sha256": "91a8263efd6f4b2d8aab362ecd2c4703cb59a06a821423daa65e51c49a3c794c"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-powered-subs/cm-powered-subs-closure.json",
+            "sha256": "e90a9feeea3d6625cb213913ecb7874bff9170082473f6bb60b50b3f0ebfd6fe"
           }
         }
       }
@@ -4145,6 +4276,14 @@
           ],
           "scope": "All33 original containing-source words mapped: two FLAGWRD6 gates, all source trig calls/offset/products/stores, actual ENDOFJOB transfer and QUADANGLconstant. Stops at external ENDOFJOB05217 before native Executive completion. Original RCS job entrybank22,3447 requires E6 and coherentBB,REGZERO0. No arbitrarywrongbank/producercoherence, completeRCSautopilot or eitherfullflight application claimed.",
           "verification": "docs/COMANCHE-RCS-MATRIX.md"
+        },
+        {
+          "native_files": [
+            "src/cm_rcs_dap_exec.c",
+            "include/cm_rcs_dap_exec.h"
+          ],
+          "scope": "The whole file: AMBGUPDT and the returns after its four trig calls (cm_rcs_dap_exec_basic), and the QUADANGL constant.",
+          "verification": "docs/CM-RCS-DAP-EXEC.md"
         }
       ],
       "withdrawn_certificate": {
@@ -4174,6 +4313,51 @@
               "path": "evidence/cm-rcs-matrix-proof.json",
               "sha256": "8296e1d4e2c44858deb4537d6ade1b54b29b73af1be4f3ae68f1484143d6dbd7"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_rcs_dap_exec_basic at its original address: AMBGUPDT (22,3447, the job the RCS DAP starts with 2CADR AMBGUPDT) and the returns after TC SPSIN2, SPCOS2, SPCOS1 and SPSIN1 (22,3457, 22,3462, 22,3470, 22,3501). Inputs outside the generated sane() domain (an incoherent bank set, NEWJOB not +0, FIXLOC not a VAC area, a word over 15 bits) return EXEC_OUT_OF_SCOPE before any change.",
+          "unreached": "None: the oracle executed all 32 instructions of the file (evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json).",
+          "data_validity": "QUADANGL (DEC 660, 7.25 degrees) is read as the original constant by CAF."
+        },
+        "external_continuations": [
+          "SPSIN and SPCOS (SPSIN1/2, SPCOS1/2), which return to this file's registered return points",
+          "ENDOFJOB (the Executive)",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-source-map.json",
+            "sha256": "7b2642c1b7d52fb4bd090c990804b3a5a03dc4ba0dbdb9b8dd4408623ac67618"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-host.log",
+            "sha256": "f71b62d4e17f7a3f01ba821c417201286f1121a14f7fc27a009a85a631dee95d"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-vice.log",
+            "sha256": "befa7dd4d357bdccbc75d0acded3479440ba76371225348c913184fb25bcafe1",
+            "vice_targets": {
+              "vice-cm-rcs-dap-exec": 13
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
+            "sha256": "c237771ece8b8f4c3c035f6d32ce4b68d04a11eef0dec82a61e310d261eb935a"
+          },
+          "executed_instruction_closure": {
+            "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-closure.json",
+            "sha256": "7ff97e0f04ddc290b93c735106c15225321ff7759982feb7bde30b44e1eec76a"
           }
         }
       }
@@ -4240,8 +4424,8 @@
             "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -4494,8 +4678,8 @@
             "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         }
       },
@@ -4804,7 +4988,7 @@
       "sha256": "ced73fe04353aa9e58b875714fc8f4769e75b776622f7d6994e929b68374fc55",
       "bytes": 9172,
       "lines": 422,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4819,7 +5003,7 @@
           "verification": "docs/CM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4838,7 +5022,6 @@
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED",
           "Erasable continuation E4,1767 (this file): accepts only TC 02750, TC 03041, TC 03152, TC 03154"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-source-map.json",
@@ -4862,6 +5045,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
             "sha256": "d340184cccb8e5a47c1bbd784d35ef7544db4ab06d37bd9ef7b50164596efa10"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -4914,7 +5101,7 @@
       "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
       "bytes": 15461,
       "lines": 659,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4926,7 +5113,7 @@
           "verification": "docs/CM-SXTMARK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4935,7 +5122,6 @@
           "Basic: ALARM, BAILOUT, BANKCALL (KLEENEX, GOMARK4), CHECKMM, CLEARMRK, ENDMARK, GENTRAN, IBNKCALL (GOODEND, MARKCONT), NOVAC, POSTJUMP (KEYCOM, TERM52), RESUME, SWRETURN, TASKOVER, UPFLAG and WAITLIST, with their inline words"
         ],
         "hardware_side_effects": "Channel 016 (NAVKEYIN: mark, mark reject and key code bits) is read as a latched input; MKRLEES's WAND CHAN12 clears bit 2 (the optics error counter enable) in the io record. Raising MARKRUPT from the mark buttons and driving the optics from channel 12 are device-adapter obligations.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-source-map.json",
@@ -4943,22 +5129,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-proof.json",
-            "sha256": "62a32f9574f15b086c8665b65e82921dbb555f71ceb6bf1e4517b6463fb07a36"
+            "sha256": "5648fd01c4d422e02862525bf4dd3c659fd387f2324fd1f2609dd87ce9db48f1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-host.log",
-            "sha256": "7b5e4014a87625b8aa68cb639f715b67f97b73d0ece0545d72d43a2a70a95475"
+            "sha256": "99a63dbeae177c92ee88fdf8049a89029c50c9833de85e45c51674cdc1f8210a"
           },
           "c64_execution_results": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-vice.log",
-            "sha256": "5ced31f8ffd72a0a88ca91f0c97dc7288450a5cd75e0295082375757d1886584",
+            "sha256": "f0e17a03529ac636fbee27a46acf27b6051ee6f4ab46dddf3b94549f2da4e670",
             "vice_targets": {
-              "vice-cm-sxtmark": 71
+              "vice-cm-sxtmark": 73
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-282-sxtmark.md",
+            "sha256": "2d99c7052b1b4925f1bde743d64190672f520237667946e89bcde2816257af5c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-sxtmark/cm-sxtmark-c64-outcomes.json",
-            "sha256": "a9446d45cbf6bb9936523e83bc69cf4d66c029387982739a28e656562e2873d3"
+            "sha256": "ff0400312f9763a30ddef6979eff4306a3dab60224d60a3565a22826d029aca6"
           }
         }
       }
@@ -5070,7 +5260,7 @@
       "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
       "bytes": 38224,
       "lines": 1467,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5096,7 +5286,56 @@
           "scope": "OPTMON through the end of bank 06 (06,2765-3262: the optics monitor, the zero-optics sequence SETZOEND/ENDZOPT/ZEROPCDU, the switch-change handlers and OCDUFTST) and OPTDRIVE (10,2000-2202: the optics CDU drive), compiled whole-file by tools/basic_compile.py as cm_t4rupt_optics_basic (8 routines: OPTMON, OPTDRIVE, ENDZOPT and the ALARM, WAITLIST and VARDELAY continuations). With t4rupt_core and cm_t4rupt_imu every word of the file is native.",
           "verification": "docs/CM-T4RUPT-OPTICS.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the native I/O record (cm_native_io); InIsr and channels 10-14, 30, 32 and 33 in agc_hardware for the core and IMU tables; channels 11-14 in cm_native_io and 30-33 in cm_channels for the optics routines (one record on a flight build: the shared channel model, Lane D1; docs/CM-T4RUPT-CHAIN.md).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_t4rupt_core_routines (3), cm_t4rupt_imu_routines (22) or cm_t4rupt_optics_basic (8) at its original address: T4RUPT, the T4JUMP targets, the IMU and optics tasks, OPTDRIVE, ENDZOPT, and the continuation after each call that leaves the file. The core and IMU routines run inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/CM-T4RUPT-IMU.md and docs/CM-T4RUPT-OPTICS.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change. Channel 13's trap bits and channel 14's drive bits are not refused: the comparisons keep them clear because yaAGC's hardware model acts on them (docs/CM-T4RUPT-CHAIN.md).",
+          "unreached": "One instruction word is unreached: 10,2110, the positive slot of CCS A in OPTDRIVE's shaft stop check, where A is +0 or negative after MASK BIT15 and RXOR LCHAN of two sign bits (docs/CM-T4RUPT-CHAIN.md). Three constants (TABLNTH, 120MRUPT, OCT37737) would run as instructions only on paths no producer reaches (docs/T4RUPT-CORE.md).",
+          "data_validity": "Original constants and scaling; RELTAB, the IFAILJMP/C33JMP tables and the 2CADR/CADR/ADRES operands are read as data or followed as the original transfers. The checked-in scan spells ZOPFINI as ZOPFIN1 (marked in the source); the native code and the maps follow the listing's word. yaAGC's peripheral model empties the CDU, gyro and optics command counters when channel 14's drive bits are set; the comparisons start with those counters +0 and no drive in progress."
+        },
+        "external_continuations": [
+          "RESUME and the interrupted program (rupt-lead-ins); NOVAC for PROCKEY (cm-exec-services)",
+          "The IBNKCALL targets (OPTDRIVE from OPTTEST is in this file and native; SETCOARS), ZEROICDU",
+          "ALARM and VARALARM (ALARM_AND_ABORT), WAITLIST, VARDELAY and TASKOVER (cm-exec-services, cm-exec-jobs), and the tasks they start",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-source-map.json",
+            "sha256": "016a958e2f3244524f804a4dc27cade0854605136dc68cc40d7faaf18d11fd0d"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-proof.json",
+            "sha256": "6acf0c763e6625ed2e4766525ef175d4fda461c3f25ff003cd2d24e489b81aaa"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-host.log",
+            "sha256": "d9dad2ad0ebfdbbd25b4d46f7c4957a5837aeb0a1424717d1b45e386c6a656e4"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-vice.log",
+            "sha256": "0dc1ff801ec9200faebda2d2e3e3c229f38b4b0c08d4544c6db3863cc57e3b0c",
+            "vice_targets": {
+              "vice-t4rupt-core": 280,
+              "vice-cm-t4rupt-imu": 301,
+              "vice-cm-t4rupt-optics": 46,
+              "vice-cm-t4rupt-chain": 269
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-t4rupt.md",
+            "sha256": "1a1fca6a3ccd1eb5f83c44f35ff0b176c4c722a748591d93d1c41de787d0e0b4"
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-t4rupt-chain/cm-t4rupt-chain-c64-cover.json",
+            "sha256": "d38a6a788528949b0822ad993dd76a1d158a441e28ed94a0d739d681fb91ffdf"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
@@ -5146,7 +5385,7 @@
       "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
       "bytes": 23513,
       "lines": 683,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5161,7 +5400,7 @@
           "verification": "docs/CM-TIME-FREE-FALL.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5174,7 +5413,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-source-map.json",
@@ -5198,6 +5436,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
             "sha256": "8536b1f259ccfe511c60a8a7c7f0a19327d9577cd5077d43f9f617dad92898d5"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5322,8 +5564,8 @@
             "sha256": "e4f1644129f16efc04df033f88f95e145182519f0fc01a1b3e7f0853f154e806"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5384,8 +5626,8 @@
             "sha256": "8cb18f95f71abfda0949a068458e5cfc210b39d3fb71dd6f4f8006de96a69682"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5448,8 +5690,8 @@
             "sha256": "6cb27961e78dc0b9a1eb7370222d0b7d78247701c1679da1673a97af8e97f3a4"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5499,7 +5741,7 @@
             "path": "evidence/cm-tvc-massprop/cm-tvc-massprop-vice.log",
             "sha256": "d199abd0f331ad4506688ab778b907df73559077139dc59cb8cc13737a6cdecc",
             "vice_targets": {
-              "vice-cm-tvc-massprop": 6
+              "vice-cm-tvc-massprop": 7
             }
           },
           "c64_branch_outcomes": {
@@ -5507,8 +5749,8 @@
             "sha256": "d00b58d2ab8c214f83d83c157831a4a98b8b0fb568269de3ec4be135877d7b6e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5572,8 +5814,8 @@
             "sha256": "09bc161007c116a0019f5df741c5bad1ee8ee857b41ce4adfd88c59ac6ea1950"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5633,8 +5875,8 @@
             "sha256": "43bc683be6cf8a2a70e556bdbdda68cff547a4dbd5340d8eca93154e21eb9338"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
         }
       }
@@ -5645,7 +5887,7 @@
       "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
       "bytes": 8776,
       "lines": 260,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -5658,7 +5900,7 @@
           "verification": "docs/CM-TVC-STROKE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5687,7 +5929,7 @@
             "path": "evidence/cm-tvc-stroke/cm-tvc-stroke-vice.log",
             "sha256": "dbab541ebe590f753f399348964282869322eebfb862c331233fe1fadd43c1af",
             "vice_targets": {
-              "vice-cm-tvc-stroke": 12
+              "vice-cm-tvc-stroke": 13
             }
           },
           "c64_branch_outcomes": {
@@ -5695,11 +5937,10 @@
             "sha256": "ccfe884f7ecc07276773eb252c70147405fd7232d2aa787fd96a7160f91fd624"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-107.md",
-            "sha256": "ddfb4f3f9e16572de01950d3bc90fa647c38cbc7ed0064a2524bc4aa9c257b44"
+            "path": "docs/audits/lane-g-258.md",
+            "sha256": "9985c62a3d61902c61d02e8b07105d73798e0ae670edc4ca5e4366654a993ab6"
           }
-        },
-        "awaiting": "certificate reviewer"
+        }
       }
     },
     {
@@ -5878,7 +6119,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
+            "sha256": "ff67e71e928b871416dee320c7a7c8448687cb40abad6aa72d087bce238c9e54"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",
@@ -6141,7 +6382,7 @@
       "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
       "bytes": 16963,
       "lines": 695,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -6156,18 +6397,17 @@
           "verification": "docs/LM-AOTMARK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it, NEWJOB +0 or positive. The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it; basic routines that never name FIXLOC with any FIXLOC (CHANGEVB runs under NOVAC, and MARKRUPT and MKRELEAS can interrupt it); NEWJOB +0 or positive. The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "Basic: ALARM, BAILOUT1, BANKCALL (GOMARKF, GOMARK4 and the other display CADRs), ENDMARK, FINDVAC, GOTOPOOH, IBNKCALL, NOVAC, POODOO, POSTJUMP (DESCBITS), RESUME and WAITLIST, with their inline words",
           "Interpretive CALL and STCALL to TRG*NBSM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
         "hardware_side_effects": "Channel 016 (NAVKEYIN, the mark and reject buttons) is read as a latched input; channels 1 and 2 are the L and Q registers. Raising MARKRUPT from the mark buttons is a device-adapter obligation.",
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-aotmark/lm-aotmark-source-map.json",
@@ -6175,22 +6415,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
-            "sha256": "39225e6c6b5859afcb604fb844c2d9af636c594205e5af9b84d1da9da78c5eea"
+            "sha256": "29735a22fb30232426a969b6d5c56b4951197c0314bfda38f2965e68f557d9f9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-host.log",
-            "sha256": "268eb56f254dbcd04339d16e45dadb232fb5d7fb87afa455727c46d3a37df398"
+            "sha256": "309943eff0f8e5b466db8594ab29bd85d51826c2c7416c717c57f3b5d743cf64"
           },
           "c64_execution_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
-            "sha256": "0e804e65ae6357a8d5412a16e58818c232bfadb6d9ebcbbbf952fa8560fbafea",
+            "sha256": "6a7089237204181a7c77ad822e33abf9b12c6ee6bef5ef6458fd4a29b6dab249",
             "vice_targets": {
-              "vice-lm-aotmark": 293
+              "vice-lm-aotmark": 302
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1-294-aotmark.md",
+            "sha256": "3f60a61049e4f9be474c9c68e9cbd32cb243951d237e182699447254f390d572"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
-            "sha256": "7858e6023de821e1454ae38b0ff718988cdbb76f78f6f58c7cb074b7c7f0be72"
+            "sha256": "e85e834133a6e594b65ae6ae47010a2901b248e5d54564f181b49c9b16d34978"
           }
         }
       }
@@ -6545,8 +6789,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-236.md",
-            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
+            "path": "docs/audits/lane-f-278.md",
+            "sha256": "52958af90a7fd47f580dc2254ba25b7ccc55970b6656b7e693e55fdb8198e9e2"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-dapidler/lm-dapidler-c64-cover.json",
@@ -7102,7 +7346,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
+            "sha256": "ff67e71e928b871416dee320c7a7c8448687cb40abad6aa72d087bce238c9e54"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/exec-closure/exec-closure-host.log",
@@ -8899,8 +9143,8 @@
             "sha256": "a65f73e04aeff864a26897e802b517ed9a46e61faab8485d3e72dfb63912fc14"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         },
         "precheck_notes": [
@@ -9077,8 +9321,61 @@
       "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
       "bytes": 3815,
       "lines": 91,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "complete",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 89 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[0]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). Two include lines name files the scan saved under other names (LAMBERT_AIMPOINT_GUIDANCE.agc is the checked-in GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc; TRIM_GIMBAL_CNTROL_SYSTEM.agc is TRIM_GIMBAL_CONTROL_SYSTEM.agc), as the tool's ERRATA records. In the listing MAIN.agc emits no word, each of the 36539 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "750ef17a9f55ad210e93edd4297c501f865ba779b259082e70362c665ef3c247"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
@@ -9214,8 +9511,8 @@
             "sha256": "fe0f9f97eba973a2b817a2663c29050aa949f9cb0dafcc70eeb8e324666e57d2"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-233.md",
-            "sha256": "f2686130a8212fbe58b1316d5aa9384e0d1bf2ced7b8b24f0561d99de58cbc37"
+            "path": "docs/audits/lane-f-278.md",
+            "sha256": "52958af90a7fd47f580dc2254ba25b7ccc55970b6656b7e693e55fdb8198e9e2"
           }
         }
       }
@@ -9516,7 +9813,7 @@
       "sha256": "becc16af5767c23bc14bcce9f89456f3f93fe7c81a0e00455cd5ca757ca4b0c2",
       "bytes": 43690,
       "lines": 2341,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9533,7 +9830,7 @@
           "verification": "docs/P51-P53.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9546,7 +9843,6 @@
           "Display interface, Executive and other alignment-file destinations stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/p51-p53/p51-p53-source-map.json",
@@ -9570,6 +9866,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-outcomes.json",
             "sha256": "37595183ced3e05250893597690636879d04f65e6707e8713c42eac8201e87dd"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         }
       }
@@ -9994,8 +10294,16 @@
           "native_files": [
             "src/lanec_pin_gaps.c",
             "src/lanec_pin_routines.c",
+            "src/lanec_pin_keys_num_routines.c",
+            "src/lanec_pin_keys_cmd_routines.c",
+            "src/lanec_pin_keys_release_routines.c",
+            "src/lanec_pin_keys_sign_routines.c",
+            "src/lanec_pin_keys_clear_routines.c",
+            "src/lanec_pin_keys.c",
+            "src/lanec_pin_trampoline.c",
             "src/lanec.c",
             "include/lanec_pin_gaps.h",
+            "include/lanec_pin_keys.h",
             "include/lanec_symbols.h"
           ],
           "scope": "Verb 07 DSPDPDEC through ENDDPDEC (MIXBR branches, DCA/DXCH of the noun pair, TPAGREE, DSP2DEC and ENTEXIT returns), DSP2DEC through END2DEC (to 11DSPIN, DSPSIGN and DSPDCWD1, including the TS WDRET overflow skip), CHANLOAD (channel 7 skip, WRITE of channels 0-77) and the NVSUBB/LOADLV1/GOALMCYC lead-ins, to their callee boundaries, register-exact against the original program.",
@@ -10008,8 +10316,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04124-04511) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 273 routines in lanec_pin_lm_routines (src/lanec_pin_routines.inc, generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order: lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 864 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303 and the 92 pw-* suites: 20 refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,161 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 281 routines: 268 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank, and READ of channel 33 (LRPOSOUT: the landing radar antenna position, bits 7-6). Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -10021,7 +10329,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "b3c25763f28aea1ec542b01125079ac243cb48eea4c54657a9adbba9bf548f56"
+            "sha256": "601c505786d072d0e67b800d00333d38df3b35b8ba446a0507d9a69fc751f8b9"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -10282,8 +10590,8 @@
             "sha256": "a6af9d273b69b3bc3eb1282a3eacc1d118bf3c84586a809afbb7a08d567abedf"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-236.md",
-            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
+            "path": "docs/audits/lane-f-278.md",
+            "sha256": "52958af90a7fd47f580dc2254ba25b7ccc55970b6656b7e693e55fdb8198e9e2"
           }
         }
       }
@@ -10499,7 +10807,7 @@
       "sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
       "bytes": 5834,
       "lines": 173,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10520,6 +10828,45 @@
           "verification": "docs/LM-RCSMON.md"
         }
       ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Entry at RCSMON (06,3156) with FB of bank 06 under any EB, PVALVEST 0-0377 (a higher bit never ends the DOUBLE loop, in the original too), any latched channel 32 and any other erasable words, NEWJOB +0, -0 (DUMMYJOB idling) or positive and FIXLOC anywhere (T4RUPT runs it whatever job waits or idles; #285); and the NOVAC return (06,3242).",
+        "external_continuations": [
+          "RESUME (TCF RCSMONEX)",
+          "NOVAC with 2CADR 1/ACCJOB"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-source-map.json",
+            "sha256": "e8ca47f62e0a663021d7953aa25afb3b3c8132aa6bc1c1f51fe7795198569e26"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
+            "sha256": "a0c900e9c464164e93218cf7538c3e3b84a83bf588032fbfcafe24644ad116bc"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
+            "sha256": "7ddeefdc3edffe0e7c6bbd8d779930172d4c7ab3e807d37cac96d205ceaea02c"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
+            "sha256": "d430b681ac3b1d7a5efa36f1c8cb25d6978184fe46d2efe93a3b50bc1eaf6f59",
+            "vice_targets": {
+              "vice-lm-rcsmon": 17
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
+            "sha256": "c6f3d308e883fe639252015a7fe5326f99360ab26edec3b9c3098022551f26d9"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-f-287.md",
+            "sha256": "88dd0c96e287935f07063067130967fd82feb4b198e4428db43635985a6ac133"
+          }
+        }
+      },
       "withdrawn_certificate": {
         "withdrawn_by": "port auditor",
         "date": "2026-10-13",
@@ -10547,42 +10894,6 @@
               "path": "evidence/lm-rcs-monitor-proof.json",
               "sha256": "c38d66f4576d7c8cf5f388573b5f8c71f906cc8aa721aa9847f8fb6b5ebf09d5"
             }
-          }
-        }
-      },
-      "pending_complete_certificate": {
-        "reviewed_all_source_paths": true,
-        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-        "qualification_kind": "native_translation",
-        "supported_domain": "Entry at RCSMON (06,3156) with FB of bank 06 under any EB, PVALVEST 0-0377 (a higher bit never ends the DOUBLE loop, in the original too), any latched channel 32 and any other erasable words, NEWJOB +0 or positive (T4RUPT runs it whatever job waits); and the NOVAC return (06,3242).",
-        "external_continuations": [
-          "RESUME (TCF RCSMONEX)",
-          "NOVAC with 2CADR 1/ACCJOB"
-        ],
-        "awaiting": "certificate reviewer",
-        "evidence": {
-          "source_to_native_map": {
-            "path": "evidence/lm-rcsmon/lm-rcsmon-source-map.json",
-            "sha256": "e8ca47f62e0a663021d7953aa25afb3b3c8132aa6bc1c1f51fe7795198569e26"
-          },
-          "independent_assembly_comparison": {
-            "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
-            "sha256": "ed286e30995183d8fd188918f39ba07af09d06e2ac114af609117c862ef9b0d8"
-          },
-          "host_and_sanitizer_results": {
-            "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
-            "sha256": "5ce841928e5c1483dce2f5dc000e14eead4b83557438687055e198848c13c43b"
-          },
-          "c64_execution_results": {
-            "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
-            "sha256": "47e655bb6bdba0d0da01ab005ae293c80ccfe5ef27dbfb58ea6a171777f27bb6",
-            "vice_targets": {
-              "vice-lm-rcsmon": 18
-            }
-          },
-          "c64_branch_outcomes": {
-            "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
-            "sha256": "f21b07723089045c314221c0fff9d05be93bdd96f3339d75ca940503eba5bf2e"
           }
         }
       }
@@ -10823,8 +11134,8 @@
             "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/lane-d1b-245.md",
+            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
           }
         }
       },
@@ -11369,18 +11680,18 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-proof.json",
-            "sha256": "7dd0598bc77c4cc0deae5955bae980441b90252239eb60b1670d1e19bd5188b1"
+            "sha256": "7bae67eda88740debffae741c7e5724bf7552cbca9011fec805910dd42b800ec"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-host.log",
-            "sha256": "2eb875e188f5e9542058bad90b8adf5bce5149bd4e3974eb68ecda2b59005461"
+            "sha256": "8f0d1044c4a78d74d2b75eb675b6662cc75ebe65a632acb0a3dd40cb896e7d3c"
           },
           "c64_execution_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-vice.log",
-            "sha256": "6f56c1a3e9614d11090aac01b930a8cf62109db4007037ea056f6b6b5a163523",
+            "sha256": "9525ea00596baf5bdba24ea416a8a1619b36cb938c7361a81afb99578d965483",
             "vice_targets": {
-              "vice-t4rupt-core": 276,
-              "vice-lm-t4rupt-imu": 300,
+              "vice-t4rupt-core": 280,
+              "vice-lm-t4rupt-imu": 301,
               "vice-lm-t4rupt-rr": 216,
               "vice-lm-t4rupt-chain": 266
             }
@@ -11774,8 +12085,8 @@
             "sha256": "c682c508ea2c5c68e32bbaf6eaad31526b29d4dab2d0499613acab7c6116ccf4"
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-236.md",
-            "sha256": "74846a15d0f95070d6ce6a51ebffef9462210f9fd68c0fe470285506ee4d2571"
+            "path": "docs/audits/lane-f-278.md",
+            "sha256": "52958af90a7fd47f580dc2254ba25b7ccc55970b6656b7e693e55fdb8198e9e2"
           }
         }
       }
@@ -12050,7 +12361,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/exec-closure/exec-closure-proof.json",
-            "sha256": "9a47b71ec338f7e6e3b0f5b83fd98685af4e06b1518ab54c3082d02a5950b549"
+            "sha256": "ff67e71e928b871416dee320c7a7c8448687cb40abad6aa72d087bce238c9e54"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/waitlist-entries/waitlist-closure-host.log",

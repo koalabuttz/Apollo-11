@@ -13,6 +13,7 @@
 #include <string.h>
 #include "overlay_reu.h"
 #include "resident_kernel.h"
+#include "flight_io.h"
 #if RK_LM
 #include "p66_bias.h"
 typedef p66_bias_io rk_io;
@@ -54,8 +55,14 @@ typedef struct {
     agc_routine_table *interpretive; uint8_t interpretive_count;
     const agc_site_operand *operands; uint16_t operand_count;
     bool (*fixed_data)(const agc_native_program *,uint16_t physical,agc_word *word);
-    uint8_t ready;
+    uint8_t ready;   /* 0 not built, RK_TABLES_DIRECT or RK_TABLES_NOT_DIRECT */
 } rk_module_tables;
+/* Built, and the resident may call the routines straight from the slot
+ * (rk_direct); or built, but the tables take an io record other than rk_io
+ * (flight_table_module.c FS_IO_KIND), so they run only through the module
+ * main, which converts it. */
+#define RK_TABLES_DIRECT 1u
+#define RK_TABLES_NOT_DIRECT 2u
 _Static_assert(offsetof(rk_module_tables,operand_count)==offsetof(agc_native_program,operand_count),
                "rk_module_tables must start like agc_native_program");
 /* The resident's program with a module's tables, operands and fixed_data. */
@@ -63,6 +70,9 @@ static inline void rk_module_program(agc_native_program *p,const rk_module_table
     memcpy(p,t,offsetof(rk_module_tables,fixed_data));
     p->fixed_data=t->fixed_data;
 }
+/* The pinned module's tables (slot class 3, built at boot), or 0: rk_direct
+ * tries them before the job and task slots'. */
+extern const rk_module_tables *rk_pinned;
 /* Routines one module run may chain before it returns to the step. */
 #define RK_MODULE_STEPS 256u
 /* A module's run, as the step reports it: an unmapped point after at least
@@ -79,8 +89,42 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
-/* 256 bytes of boot scratch for apollo_reu_store_verify. */
+/* CM: the one cm_channels record (include/cm_native_image.h: RCS jet
+ * channels 5 and 6, input channels 30-33), at the top of the service-table
+ * page. The resident defines it there and every CM flight module links
+ * --defsym=cm_channels=RK_CM_CHANNELS (tools/flight_store_build.py), so no
+ * module keeps a private copy in its slot. Interim until agc_hardware
+ * carries these channels. */
+#define RK_CM_CHANNELS 0x6ff4u
+/* The flight program's device fields neither rk_io nor agc_hardware holds
+ * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
+ * latches, ...), for the modules whose tables take another io record. Its
+ * superbank and interrupt_enabled are copies, refreshed from rk_device
+ * around each such run. At RK_FLIGHT_IO, below cm_channels. */
+#define RK_FLIGHT_IO 0x6fdcu
+/* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
+ * convert with absolute addressing. */
+#define RK_HARDWARE 0x6fbeu
+/* The CIA1 interrupt count (ov2_irq_count, platform/c64/overlay_v2_irq.S)
+ * sits at RK_IRQ_COUNT, below rk_hardware: a long-running module (the
+ * interpreter, platform/c64/interp_module.c) returns to the step when it
+ * moves, so the step takes the interrupt. Read it twice: an interrupt
+ * between its two bytes can tear one read. */
+#define RK_IRQ_COUNT 0x6fbcu
+extern flight_io rk_flight;
+#if RK_LM
+#define RK_IO_BASE FLIGHT_IO_P66
+#else
+#define RK_IO_BASE FLIGHT_IO_CM_NATIVE
+#endif
+/* 256 bytes of boot scratch for apollo_reu_store_verify (before the
+ * pinned module loads over it). */
 #define RK_BOOT_SCRATCH 0xc100u
+/* The soft stack's last byte above the pinned module (slot class 3, up to
+ * $CBFF): boot writes the canary, and a step that finds it changed returns
+ * EXEC_INVALID_ACTION before it runs anything. */
+#define RK_STACK_CANARY 0xcc00u
+#define RK_STACK_CANARY_VALUE 0xa5u
 
 extern apollo_reu_store rk_store;
 extern apollo_ov2_runtime rk_runtime;
@@ -94,10 +138,17 @@ extern uint16_t rk_pending, rk_ticks;
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
  * verified, the runtime initialized on the image at $7000, and the
- * boundary-word module run once for its table (rk_fixed_word). Returns 0,
- * or 1 (store header), 2 (store contents) or 3 (boundary-word module).
+ * fixed-extension modules (slot class 2) loaded at $D000, the pinned
+ * module (slot class 3, at most one) loaded at $C000 and its tables built
+ * (rk_pinned), the boundary-word module run once for its table
+ * (rk_fixed_word), and the stack canary written. Returns 0, or 1 (store
+ * header), 2 (store contents), 3 (boundary-word module) or 4 (a
+ * fixed-extension or pinned load).
  * Lives in the job slot: call it once, before any module runs. */
 uint8_t rk_boot(void);
+/* Boot-only (job slot): one REU command with I/O banked out during the DMA,
+ * started through $FF00; 1 when it ends without a fault. */
+uint8_t rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes);
 
 /* One resident step. First the AGC clock: one 10 ms timer period
  * (rk_timer_tick) per CIA1 interrupt since the last step. Then the highest

@@ -89,8 +89,24 @@ def main():
                           'dispatched task; DLY2 -1: from DELAYJOB through DLY2 -1, WAIT2 and TCGETCAD to JOBSLEEP or '
                           'BAILOUT; NOQBRSM +1: to the end of the interrupt. yaAGC stops at the native Z (and FB when '
                           'banked) or when InIsr clears')}
+    # TASKOVER's RESUME check (#144) with ZRUPT and BRUPT that yaAGC's own T3RUPT saved from the real rope.
+    subprocess.run([f for f in FLAGS if f not in ('-Wall', '-Wextra', '-Werror')] + [f'-I{E}',
+                    'tools/taskover_superbank_reference.c', 'tests/cm_executive_cases.c'] +
+                   [s for s in src if s != 'src/cm_executive.c'] + ['src/cm_executive.c', str(E / 'agc_engine.o'),
+                   str(E / 'agc_engine_init.o'), str(E / 'rfopen.o'), '-o', 'build/taskover-superbank-reference'],
+                   cwd=R, check=True)
+    tsb = subprocess.run(['./build/taskover-superbank-reference'] + [str(r) for r in ropes], cwd=R,
+                         capture_output=True, text=True)
+    assert tsb.returncode == 0 and tsb.stdout.endswith('\n0 failures\n'), tsb.stdout + tsb.stderr
+    proof['taskover_superbank'] = {
+        'oracle': 'tools/taskover_superbank_reference.c',
+        'result': tsb.stdout.splitlines()[:2],
+        'check': ('yaAGC takes T3RUPT in banks 030-033 under one superbank and fills ZRUPT and BRUPT from the rope; '
+                  'BANKRUPT keeps that superbank, channel 7 holds another; native TASKOVER with the rope as '
+                  'fixed_data resumes and equals yaAGC (SUPERBNK, interrupt enable, 2048 erasable words)')}
     (R / 'build/waitlist-entries-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
     print(f'PASS: {len(cases)} waitlist-entries cases identical to yaAGC, {reached} reach the continuation')
+    print('PASS: TASKOVER RESUME from yaAGC\'s own T3RUPT: ' + '; '.join(proof['taskover_superbank']['result']))
 
 
 if __name__ == '__main__':

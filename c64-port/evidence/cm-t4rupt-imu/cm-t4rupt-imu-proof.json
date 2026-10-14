@@ -2,7 +2,7 @@
  "mission": "Comanche055",
  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
  "cases": 4736,
- "snapshot_sha256": "ce37b9ca413fb8b0b6cf44ce8bfeca84dd67773a0eb294fa526e452ebef4edb0",
+ "snapshot_sha256": "175118a153d68a2e8a0bbaa4ba5e0b5a696a026499bf68625dd39d9f2883398e",
  "outcomes": {
   "06,2174 IMUMON:returned": 2048,
   "06,2260 ALARM 213 return:returned": 128,
@@ -29,14 +29,14 @@
  },
  "continuations": {
   "04701": 11,
-  "04740": 935,
-  "05245": 540,
+  "04740": 943,
+  "05245": 536,
   "05272": 159,
   "05324": 148,
-  "05333": 792,
+  "05333": 816,
   "05521": 256,
-  "05650": 708,
-  "05764": 1098,
+  "05650": 726,
+  "05764": 1052,
   "06000": 1,
   "06003": 1,
   "06006": 1,
@@ -150,9 +150,9 @@
  ],
  "boundary": "one routine from its entry to the continuation it leaves in Z (RESUME, ALARM, VARALARM, WAITLIST, VARDELAY, TASKOVER, IBNKCALL, POSTJUMP, ZEROICDU, or the SETISSW caller); the original runs to the first time it reaches that Z (and FB in banked memory)",
  "c64_rows": {
-  "cases": 300,
-  "host_edges": 155,
-  "row_edges": 155
+  "cases": 301,
+  "host_edges": 156,
+  "row_edges": 156
  },
  "compared": "outcome kind; all 2048 erasable words, SUPERBNK, channels 11, 12, 14, 30, 33",
  "full_physical_words": 2048
