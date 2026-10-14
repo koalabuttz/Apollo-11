@@ -2957,7 +2957,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "e5a168d86ef1c4bde908e64e51b39ebca3172149c13332191f677509eda063b7",
+            "sha256": "44f97674bd2eac8e54e31ddb420380396f958d5e6c673ee2f39a69ed256de0e8",
             "vice_targets": {
               "vice-measurement-inc": 353
             }
@@ -9671,7 +9671,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "e5a168d86ef1c4bde908e64e51b39ebca3172149c13332191f677509eda063b7",
+            "sha256": "44f97674bd2eac8e54e31ddb420380396f958d5e6c673ee2f39a69ed256de0e8",
             "vice_targets": {
               "vice-measurement-inc": 353
             }
