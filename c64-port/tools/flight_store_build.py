@@ -882,7 +882,8 @@ def main():
             nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
                                 text=True, check=True).stdout
             addr = {p[2]: p[0] for p in (l.split() for l in nm.splitlines()) if len(p) == 3 and p[1] in 'TW'}
-            share = sorted(map_symbols(ROOT / OUT / m / 'excursion.prg.map') & set(addr))
+            share = sorted(n for n in map_symbols(ROOT / OUT / m / 'excursion.prg.map') & set(addr)
+                           if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')))
             excursion['shared'] = len(share)
             if share:
                 excursion['link_flags'] = ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)]
