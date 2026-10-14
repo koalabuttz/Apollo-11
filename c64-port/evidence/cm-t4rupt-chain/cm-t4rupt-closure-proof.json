@@ -1,0 +1,37 @@
+{
+ "source_path": "Comanche055/T4RUPT_PROGRAM.agc",
+ "milestones": {
+  "t4rupt-core": {
+   "proof": "evidence/t4rupt-core/t4rupt-core-proof.json",
+   "sha256": "79dbbe8d627afb8e15ca021237dc87341c123419274ccce7598c98e1c9d05fb9",
+   "cases": 2176,
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "snapshot_sha256": "662885e5fe711a6f42aad165756d395a96177ef286dbaebfe98d042e271cb96f"
+  },
+  "cm-t4rupt-imu": {
+   "proof": "evidence/cm-t4rupt-imu/cm-t4rupt-imu-proof.json",
+   "sha256": "d872d023d9effaf37ab33f277b8a48ebaa3be0c50ae7386943654552ab3c6289",
+   "cases": 4736,
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "snapshot_sha256": "ce37b9ca413fb8b0b6cf44ce8bfeca84dd67773a0eb294fa526e452ebef4edb0"
+  },
+  "cm-t4rupt-optics": {
+   "proof": "evidence/cm-t4rupt-optics/cm-t4rupt-optics-proof.json",
+   "sha256": "441a17f4bab48fb8458d9506e90b1b790e91ad798129d6b9c12f793a1f7ec513",
+   "cases": 4096,
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "snapshot_sha256": "83187be640a2e62060cb31bef23e9cb7c9435e008dc464c42d09c6b98d023996"
+  },
+  "cm-t4rupt-chain": {
+   "proof": "evidence/cm-t4rupt-chain/cm-t4rupt-chain-proof.json",
+   "sha256": "b1803bcb68c1ac2749e6b3f450ef797b9ba8a8850b2b532436418d56b78e8bf0",
+   "cases": 4096,
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "snapshot_sha256": "8d676f55a976a2c899be0d64204bcafb6d092d82bb6905c31479c53a4d87ca4c"
+  }
+ },
+ "boundary": "each milestone compares its routines entry by entry with the original program in yaAGC; cm-t4rupt-chain runs whole T4RUPT interrupts through agc_transfer_run over all three routine tables and compares them with the original from T4RUPT to the first exit from the file",
+ "instruction_lines": 773,
+ "instruction_lines_executed_by_oracle": 772,
+ "unreached_instruction_lines": 1
+}

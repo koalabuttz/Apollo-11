@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-t4rupt-chain",
+  "release": "evidence-cm-t4rupt-chain",
+  "files": {
+    "cm-t4rupt-chain-c64-cover.json": {
+      "sha256": "d38a6a788528949b0822ad993dd76a1d158a441e28ed94a0d739d681fb91ffdf",
+      "bytes": 913,
+      "store": "tree"
+    },
+    "cm-t4rupt-chain-proof.json": {
+      "sha256": "b1803bcb68c1ac2749e6b3f450ef797b9ba8a8850b2b532436418d56b78e8bf0",
+      "bytes": 892,
+      "store": "tree"
+    },
+    "cm-t4rupt-closure-host.log": {
+      "sha256": "df29b758b1bdf9be01b3030c71fc8f6314f5ea92cf9d2e30c555ea7c2cdfef40",
+      "bytes": 4800,
+      "store": "release"
+    },
+    "cm-t4rupt-closure-proof.json": {
+      "sha256": "03b1a352b004eb495fd094317b744c5bcf6f0a054881315f2f56db6ebe9ac865",
+      "bytes": 1926,
+      "store": "tree"
+    },
+    "cm-t4rupt-closure-source-map.json": {
+      "sha256": "016a958e2f3244524f804a4dc27cade0854605136dc68cc40d7faaf18d11fd0d",
+      "bytes": 246847,
+      "store": "tree"
+    },
+    "cm-t4rupt-closure-vice.log": {
+      "sha256": "85795238762cb784c9cab7122c2c56db3a2c96cb259f4926406b121131b95e2a",
+      "bytes": 1248,
+      "store": "release"
+    }
+  }
+}
