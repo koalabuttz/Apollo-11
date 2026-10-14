@@ -35,8 +35,8 @@ before, in the host build and in every C64 segment group.
 | 2 | 80 | 14,302 |
 
 The sizes come from `tools/flight_store_build.py`'s `link_module`, with the
-part's flags added to the common flags. The flight store needs to link the
-file twice with those flags, as two modules.
+part's flags added to the common flags. The flight store links the file
+twice with those flags, as two modules (`FLIGHT_PARTS`).
 
 ## Where the cut is safe
 

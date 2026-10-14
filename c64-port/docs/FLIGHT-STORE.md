@@ -59,15 +59,41 @@ goes into the store as two modules linked by `tools/interp_runtime_size.py`
 bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
 `INTERP_POINTS` gives the resolver a record to $0A01 at each of the
 interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
-unless a table record or a resident routine already holds it: SWRETURN and
-INTPRET are table records, so 10 of 12 are the interpreter's on each
-mission. DANZIG is one of them: the resident's DANZIG marker is not a
+unless a table record or a resident routine already holds it: SWRETURN is
+a table record (the interbank tables), and INTPRET always goes to the
+interpreter (#335), so 11 of 12 are the interpreter's on each mission. DANZIG is one of them: the resident's DANZIG marker is not a
 routine, and the flight resident's own program has no marker table, so
 without the record a job left pending at DANZIG would not resolve. CHANG2 is left out, since that is where
 the interpreter hands back to the Executive. The module returns to the step
 when the CIA1 count at $6FBC moves, so an interrupt waits at most one
 interpretive slot. The load check resolves the records; it does not run the
 interpreter (`make vice-interp-core` does).
+
+Every C64 flight module compiles with `-DAGC_FLIGHT_INTERPRETER`. In the
+files listed in `FLIGHT_INTERP_STOP`, that flag ends a chain at NEWOPS
+([FLIGHT-INTERP-STOP.md](FLIGHT-INTERP-STOP.md)). The store leaves those
+files' interpretive tables, and the `INTERP_ONLY` tables (LM
+`lm_ephemeris_routines`, `lm_s3435_routines` and `lm_s3435b_routines`:
+compiled interpretive code entered and left at NEWOPS; and on both
+missions the compiled interpreter's `*_interp_core_basic` and
+`*_interp_runtime_basic`, whose SWRETURN, INTPRET and DANZIG keys the
+interbank tables, the interpreter's records and the DANZIG marker hold),
+to the interpreter. Their
+keys need no record: the step resolves by Z, which is NEWOPS there, and
+NEWOPS has the interpreter's record. The report counts these keys as
+`interpreter_keys`, separately from `unplaced_keys`. The host index and
+`<m>-host.inc` keep the compiled tables.
+
+`FLIGHT_PARTS` links one file as several modules, one per define set.
+Each part's keys are what its own build's tables hold. The builder reads
+them from a host object of the part, with the tables renamed, so a part
+can key hand-off words the whole file does not. LM `lm_servicer` is linked
+this way, as `-DLMSV_FLIGHT_PART=1` (85 keys, 14,581 bytes) and `=2`
+(80 keys, 14,302 bytes)
+([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)). Parts are
+never chunked. With both lists in place, the five LM files fit their
+slots. The LM load check then runs 1,269 checks (889 before) on
+67 modules, with 0 failures.
 
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,

@@ -254,7 +254,9 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         enum exec_status status;
         rk_module_program(&module_program,t);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
-        if(status==EXEC_UNMAPPED && !steps) continue;   /* not this module's point */
+        /* Not this module's point, or its table refuses the entry: the next
+         * slot, then the resolver, may hold the point another way. */
+        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) continue;
         return rk_module_status(status,steps,RK_MODULE_STEPS);
     }
     return EXEC_UNMAPPED;

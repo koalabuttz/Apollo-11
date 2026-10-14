@@ -30,8 +30,8 @@ the flag (host tests, certificates, C64 rows) the code is unchanged.
 
 The sizes come from `tools/flight_store_build.py`'s `link_module` with the
 file's basic tables and `-DAGC_FLIGHT_INTERPRETER` added to the common
-flags. The flight store needs that flag, and needs to leave the files'
-interpretive tables unpacked, before it uses these builds.
+flags. The flight store builds them that way (`FLIGHT_INTERP_STOP` in
+`tools/flight_store_build.py`, [FLIGHT-STORE.md](FLIGHT-STORE.md)).
 
 ## Evidence
 
