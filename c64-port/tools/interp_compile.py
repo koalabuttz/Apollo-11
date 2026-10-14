@@ -173,6 +173,13 @@ class Compiler:
         # a job whose DANZIG finds NEWJOB positive stops at CHANG2 and the
         # Executive's resume (NEWOPS at LOC +1) has its key.
         self.rk = bool(spec.get('resume_keys'))
+        # 'pending_danzig' (with resume_keys): a pair whose left order is an
+        # RTB to basic code returns through DANZIG with its right order in
+        # EDOP and LOC at the RTB's operand word (include/agc_transfer.h).
+        # That word is a routine of its own: {operand word: (right order,
+        # its first operand word, the EDOP code)}.
+        self.pending_danzig = bool(spec.get('pending_danzig'))
+        self.pending = {}
         # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
         # (tasks and NOVAC jobs call them too), not only a VAC area.
         self.any_fixloc = bool(spec.get('any_fixloc'))
@@ -471,6 +478,33 @@ class Compiler:
         self.cur_start = start
         bank = start // 1024
         first = True
+        if start in self.pending:
+            # A pending right-hand order (DANZIG at Z, LOC at the RTB's
+            # operand word): EDOP must hold this pair's order. DANZIG's CA
+            # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
+            # NEWOPS as at the end of any pair.
+            op, cur, edop = self.pending[start]
+            out.append('/* %s pending DANZIG: RTB on the left, %s on the right */' % (self.where(start), op))
+            out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
+            out.append('TRACE(s);')
+            out.append('right(s);')
+            self.last_order = True
+            stmts, nxt, done, setpd = self.order(op, cur, bank)
+            if done == 'pair':
+                done = False
+            elif not done:
+                stmts.append('setpd_next(s);' if setpd else 'next(s);')
+            if not done and stmts[-1] in ('next(s);', 'setpd_next(s);'):
+                stmts[-1] = 'if(%s)return EXEC_OK;' % stmts[-1][:-1]
+                self.add_start(nxt, 'i', 'CHANG2 resume')
+                self.externals_any[self.L.labels['CHANG2']] = 'CHANG2'
+            for q in range(cur, nxt):
+                self.owner.setdefault(q, start)
+            out.extend(stmts)
+            if done:
+                return out
+            p = nxt
+            first = False
         while True:
             if not first and p in self.starts:
                 out.append('return EXEC_OK; /* on to %s */' % self.where(p))
@@ -619,6 +653,7 @@ class Compiler:
             return st + more, cur, done
         st = ['%snewops(s,0%05o);' % (P, w)]
         ops = [ln.op] + ([ln.operand] if ln.operand else [])
+        self.pair = (w, ops)
         prev_setpd = False
         for i, op in enumerate(ops):
             if i == 1:
@@ -905,6 +940,12 @@ class Compiler:
                     if q in self.code:
                         self.add_start(q, 'i', 'after RTB %s' % lab)
                         end = q
+                    if self.pending_danzig:
+                        # The operand word: DANZIG's pending right order.
+                        pw = self.pair[0]
+                        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
+                        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
+                        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
                 return st, end, True, False
             if lab not in self.rtb:
@@ -1872,6 +1913,15 @@ class Compiler:
         sb = 'W[4]==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else 'W[4]==fb'
         c.append(' return W[5]==0%04ou&&%s&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);' % (self.newops, sb))
         c.append('}')
+        if self.pending:
+            # ('pending_danzig') DANZIG at Z with LOC at an RTB operand
+            # word: BANKSET names the routine's bank (FB and BBANK are the
+            # RTB target's until DANZIG's TS BBANK), its EB part a bank.
+            dz = self.L.labels['DANZIG'] - 2048 + 0o4000
+            sbd = '(W[0165]&076000u)==(fb&076000u)&&sb_ok(io,fb)' if self.high_banks else '(W[0165]&076000u)==fb'
+            c.append('static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+            c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);' % (dz, sbd))
+            c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
         c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
@@ -2004,7 +2054,7 @@ class Compiler:
             if kind == 'b' and phys // 1024 in (2, 3):
                 c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = 'at_newops' if kind == 'i' else 'at_basic' + nv
+                chk = ('at_danzig' if phys in self.pending else 'at_newops') if kind == 'i' else 'at_basic' + nv
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')

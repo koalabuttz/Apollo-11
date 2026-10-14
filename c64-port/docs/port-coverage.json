@@ -4920,10 +4920,61 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "All but 2 words of the file (1172 words): The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. As 390 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at A0CALC, BECONSTD, CONSTD, CONSTD1, CONT1, CONT3, CONTINU2, D0EQ, DCONSTD, DHOOKYQ7, DOWNCNTL, DSTORE, ENDEXIT, FOREHUNT, GETANGLE, GETDHOOK, GETETA, GETLEWD, GETUNITV, GETVEL, GLIMITER, GOMAXL/D, GONEGLAD, GOPOSLAD, GOTOUPSY, HAVDNRNG, HUNTEST, HUNTEST1, HUNTEST3, INITRL1, INITROLL, INROLOUT, KATEST, KEP, KEP2, L350, L353, L355, L357, LEWDOVFL, LEWDPTR, LIMITL/D, LWDSTORE, NEGAMA, NEGTESTS, NEXT1, NO.05G, NODISKY, NOLDCALC, OVERNOUT, PRE-HUNT, PREDICT3, PREFINAL, RANGER, REFAZE10, SCALEPOP, SERVNOUT, SETMIND, SIDETRAK, STARTEN1, STARTENT, STEEROFF, STOREL/D, SUBETA, SUBETA2, TARGETNG, THETDONE, TINYTHET, UPCNTRL3, UPCONTRL, UPDATERT, V1LEAD, VLTEST and the continuations after outside calls. Untranslated (2 words): SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS).",
+          "scope": "Every word of the file (1172 words): The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. As 392 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at A0CALC, BECONSTD, CONSTD, CONSTD1, CONT1, CONT3, CONTINU2, D0EQ, DCONSTD, DHOOKYQ7, DOWNCNTL, DSTORE, ENDEXIT, FOREHUNT, GETANGLE, GETDHOOK, GETETA, GETLEWD, GETUNITV, GETVEL, GLIMITER, GOMAXL/D, GONEGLAD, GOPOSLAD, GOTOUPSY, HAVDNRNG, HUNTEST, HUNTEST1, HUNTEST3, INITRL1, INITROLL, INROLOUT, KATEST, KEP, KEP2, L350, L353, L355, L357, LEWDOVFL, LEWDPTR, LIMITL/D, LWDSTORE, NEGAMA, NEGTESTS, NEXT1, NO.05G, NODISKY, NOLDCALC, OVERNOUT, PRE-HUNT, PREDICT3, PREFINAL, RANGER, REFAZE10, SCALEPOP, SERVNOUT, SETMIND, SIDETRAK, STARTEN1, STARTENT, STEEROFF, STOREL/D, SUBETA, SUBETA2, TARGETNG, THETDONE, TINYTHET, UPCNTRL3, UPCONTRL, UPDATERT, V1LEAD, VLTEST and the continuations after outside calls.",
           "verification": "docs/CM-REENTRY.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The two pairs with an RTB on the left and an order on the right (KEP's RTB P66 / SSP at 25,3313 and RTB SIGNMPAC / DMP at 25,3472) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). PREDICT3 reads VREFER and the tables after it at JJ 0 to 91 (13 words per BACK2 pass). The repository copy of the file differs from the flight rope only in text that assembles to the same words: the label GETDLEWD where its one reference says GETLEWD (repaired to GETLEWD in the assembled listing), DEC .063296 (the rope listing has .063298; both assemble to 02015) and KT1's exponent spacing. LEWD (E7,1724-1725) is positive in both words, as STARTENT and LEWDOVFL leave it: negative, LWDSTORE's BMN LEWDPTR loop never ends on the AGC either.",
+        "external_continuations": [
+          "2PHSCHNG (outside basic routine)",
+          "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
+          "BOVB ENDT(X) (outside basic routine)",
+          "CHANG1 (outside basic routine; Lane A Executive/Waitlist)",
+          "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
+          "NOVAC (outside basic routine; Lane A Executive/Waitlist)",
+          "PHASCHNG (outside basic routine)",
+          "POSTJUMP (outside basic routine; Lane A Executive/Waitlist)",
+          "PRIOCHNG (outside basic routine)",
+          "RTB KILLGRP4 (outside basic routine)",
+          "RTB P64 (outside basic routine)",
+          "RTB P65 (outside basic routine)",
+          "RTB P66 (outside basic routine)",
+          "RTB P67 (outside basic routine)",
+          "RTB SIGNMPAC (outside basic routine)",
+          "The caller's return through Q (TC Q runs the TC word held in Q)",
+          "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-reentry/cm-reentry-source-map.json",
+            "sha256": "8c25f278b8945ef33cc3fd47cd090b20c78e6a20194965f8a310a9d6f050bbdf"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-reentry/cm-reentry-proof.json",
+            "sha256": "ff37b230b841f47fb4d831aba9670e064d3de03d4b841f313e213f322e1c19c2"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-reentry/cm-reentry-host.log",
+            "sha256": "e3bb40b89cd3b8eeb350e2f7a07d8b2ab43779bc6434432b9520f9e096910c88"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-reentry/cm-reentry-vice.log",
+            "sha256": "a846b6aee3d6d153f07aa437381398e5cc9509d695a2f31f13b96dd389e70e4e",
+            "vice_targets": {
+              "vice-cm-reentry": 547
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-reentry/cm-reentry-proof.json",
+            "sha256": "ff37b230b841f47fb4d831aba9670e064d3de03d4b841f313e213f322e1c19c2"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/RESTARTS_ROUTINE.agc",
@@ -10677,18 +10728,66 @@
         {
           "native_files": [
             "src/lm_p40_p47.c",
+            "include/lm_p40_p47.h",
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
             "src/agc_hardware_divide.c",
             "src/agc_word.c",
-            "src/agc_multiword.c"
+            "src/agc_multiword.c",
+            "include/agc_channel_ops.h"
           ],
-          "scope": "914 of the 931 words (27,2246-3272 and 36,3147-3764): P40, P41, P42 and P47 (P47BODY, the FINDVAC job, an entry), S40.1, S40.2,3, S40.8, S40.9, S40.13, S41.1, TRIMGIMB, POSTBURN, TIGNOW, ENGOFTSK, ENGINOF1-4, REDO6.7, CALCN85, IMPLBURN and UPDATEVG, as 403 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 17 output-channel words (27,3223, 27,3225-3226, 27,3232-3233, 27,3235-3236, 27,3245-3246, 27,3261-3262: WAND/WOR CHAN12 in TRIMGIMB and PITCHOFF; 36,3570-3571, 36,3573-3574: RAND/WRITE DSALMOUT in ENGINOF3; 36,3603-3604: WOR CHAN14), which wait for Lane D1's shared output-channel model.",
+          "scope": "Every word of the file, 931 in all (27,2246-3272 and 36,3147-3764): P40, P41, P42 and P47 (P47BODY, the FINDVAC job, an entry), S40.1, S40.2,3, S40.8, S40.9, S40.13, S41.1, TRIMGIMB and PITCHOFF, POSTBURN, TIGNOW, ENGOFTSK, ENGINOF1-4, REDO6.7, CALCN85, IMPLBURN and UPDATEVG, as 385 routines of the control-transfer ABI (110 basic, 275 interpretive) compiled by tools/interp_compile.py, including the 17 output-channel words (27,3223, 27,3225-3226, 27,3232-3233, 27,3235-3236, 27,3245-3246, 27,3261-3262: WAND/WOR CHAN12 in TRIMGIMB and PITCHOFF; 36,3570-3571, 36,3573-3574: RAND/WRITE DSALMOUT in ENGINOF3; 36,3603-3604: WOR CHAN14), which run through include/agc_channel_ops.h on the program's agc_hardware.",
           "verification": "docs/LM-P40-P47.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the interrupt-enable bit and SUPERBNK in the native I/O record; the input channels latched per case (the file reads none); output channels 11 (DSALMOUT), 12 and 14 in the program's agc_hardware, set by each case on both sides (channel 14 without the IMU CDU and gyro drive bits, which yaAGC's device models act on at once) and compared after the run with channel 13's trap flags.",
+          "channel_inputs_outputs": "Inputs: none read; the case's latched inputs (channels 3, 4, 016, 030-033) are present and unchanged. Outputs: TRIMGIMB's WAND/WOR CHAN12 (the trim-gimbal pitch and roll drive bits) and its roll-off WAND, PITCHOFF's WAND CHAN12 (pitch off), ENGINOF3's RAND DSALMOUT then WRITE DSALMOUT (channel 11, the engine on/off bits) and WOR CHAN14 (the thrust-drive bit 4), each as agc_ch_op on hardware->channel11/12/14 with yaAGC's result in A.",
+          "entry_contracts": "Every routine of the file is a control-transfer ABI routine at its original address, 385 in all: the entries P40LM, P41LM, P42LM, P47LM, P47BODY, POSTBURN, TIGNOW, REDO6.7, CALCN85, P42STAGE, IMPLBURN, ENGOFTSK, ENGINOF1-4, S40.8, S40.13, S40.133, TRIMGIMB, S40.1, S40.2,3, S40.9, S41.1 and UPDATEVG; the Waitlist task points (STARTP47, PITCHOFF, COASTSET); every point another file returns to (BANKCALL, IBNKCALL, PHASCHNG, 2PHSCHNG, FIXDELAY, VARDELAY, UPFLAG, DOWNFLAG, TPAGREE and display returns); and every word after a DANZIG as a CHANG2 resume key (a quarter of the cases have NEWJOB positive). Basic routines run at Z with FB their bank, interpretive ones at NEWOPS with LOC there. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard (the generated sane(), sane_nv() and basic_sane(): an incoherent bank set, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; at NEWOPS also NEWJOB -0 or negative and FIXLOC not a VAC area). The basic routines that never name FIXLOC or NEWJOB and never enter the interpreter (the Waitlist tasks and their FIXDELAY/VARDELAY returns, which T3RUPT runs whatever job is waiting) take any FIXLOC and NEWJOB -0 too (any_fixloc, any_newjob). edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
+          "excluded_cases": "One of the 197,120 generated cases loops on both sides (the erasable-CADR cycle, which the AGC runs until the night watchman restarts it); it is counted and left out of the compared and frozen sets.",
+          "data_validity": "The file's ADRES, CADR, 2CADR, DEC, 2DEC and OCT constants are read as the original constants (the source map lists every word with its routine; none is untranslated)."
+        },
+        "external_continuations": [
+          "The callers' returns: NEWOPS with LOC outside the file (RVQ and interpretive returns) and basic returns through Q",
+          "PHASCHNG, 2PHSCHNG, BANKCALL, IBNKCALL, UPFLAG, DOWNFLAG, TPAGREE, FIXDELAY, VARDELAY, TWIDDLE, WAITLIST, NOVAC, FINDVAC, PRIOCHNG, NOULLAGE and ALARM, which return to this file's registered return points",
+          "TASKOVER, ENDOFJOB, GOTOPOOH, POSTJUMP, ISWRETRN, TCF BURNBABY, TCF B*RNB*B*, TCF P40ALM and TCF REDO4.2",
+          "The interpreter (INTPRET, NEWOPS) and its exits POODOO1 and ALARM1, with RTB NORMUNX1 (no native body: the run ends at it)",
+          "The Executive's CHANG2 (05126) with a job waiting",
+          "Integrated C64 application acceptance"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-p40-p47/lm-p40-p47-source-map.json",
+            "sha256": "b7eacd1cbb0966088e0f03b0668f8e2b595b55dc6a8194198013c2a709777d80"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-p40-p47/lm-p40-p47-proof.json",
+            "sha256": "71695db2b8067381f9906a4bb78ec9da51ee8717248f14992032eb9e14355e4e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-p40-p47/lm-p40-p47-host.log",
+            "sha256": "7c999ba816ac9dbc4a8ff6c27302c963ff0fc93567a332eb3dc500bd3a9581e7"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-p40-p47/lm-p40-p47-vice.log",
+            "sha256": "806cf7b88230cce6f5d032b8ec0441d247aad7039ba9a7ae0da3b2ce5f6d8dfe",
+            "vice_targets": {
+              "vice-lm-p40-p47": 468
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
+            "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/P51-P53.agc",
