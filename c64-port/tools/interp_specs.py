@@ -1146,9 +1146,11 @@ SPECS = {
                    '11,3030': {'0166': ['vac+0'], '0163': [0o77776]},
                    '11,3522': {'0163': [0o77776],
                                'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717]}},
-        # BDDV's divisor (MPAC, from the NORM ROUND at 11,2734) zero in half
-        # the 11,2736 resumes (their flowed state otherwise): the divide
-        # overflow paths of either sign, which only long DIFEQ runs reach.
+        # Widened-domain overflow states: half the 11,2736 resumes take
+        # BDDV's divisor (MPAC, after the NORM ROUND at 11,2734) with its
+        # high word +0 (a tiny divisor, rarely exactly zero), so the divide
+        # overflows, with either sign; flight never gets there after NORM
+        # ROUND, and otherwise only long DIFEQ runs take these paths.
         'resume_states': {'11,2736': {'0154': [0, 'flow']}},
         'max_steps': 1000,
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
@@ -1292,6 +1294,10 @@ SPECS = {
             # APSIDES, TIMETHET and TIMERAD after their SETPD 0: PDVL's
             # push stays below X1.
             '12,3706': {'0166': ['vac+0']}, '12,3710': {'0166': ['vac+0']}, '12,3713': {'0166': ['vac+6']},
+            # COMMNOUT's CALL NEWSTATE (12,2773) pushes a vector: PUSHLOC low
+            # on the pushdown list as DELTIME leaves it, or the push
+            # overruns S1, S2 and QPRET (#325).
+            '12,2770': {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
             '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
             '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
         },
@@ -1309,6 +1315,12 @@ SPECS = {
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (INDEX's end-around carry kept within 16 bits for the C64)
+        'index_carry16': True,
+        # (W is the fixed image at $7000 on the C64: agc_image_w.h)
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
     },
     'cm-p40-p47': {
         # GOPERF1/GOFLASH returns and other words only the display or a
