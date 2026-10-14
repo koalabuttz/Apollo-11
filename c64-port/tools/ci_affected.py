@@ -204,16 +204,14 @@ def main():
                 words = closure(watch if watch in rules else target, rules, set(), scripts)
                 if (target in defined or words & names) and target not in result[group]:
                     result[group].append(target)
-        for target in result['c64']:
-            vice = 'vice-' + target[len('c64-'):]
-            if vice in rules:
-                result['vice'].append(vice)
         for target in sorted(defined):
-            if target.startswith('vice-') and target in rules and target not in result['vice']:
-                result['vice'].append(target)
             for group in ('test', 'sanitize', 'c64'):
                 if target.startswith(group + '-') and target not in result[group]:
                     result[group].append(target)
+        for target in result['c64']:
+            vice = 'vice-' + target[len('c64-'):]
+            if vice in rules and vice not in result['vice']:
+                result['vice'].append(vice)
         for group in ('test', 'sanitize'):
             core = group + '-core'
             if core in rules and core not in result[group] and \

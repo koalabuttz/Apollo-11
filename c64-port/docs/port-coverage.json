@@ -699,7 +699,9 @@
             "path": "evidence/cm-conics/cm-conics-vice.log",
             "sha256": "cf7a3dd9c60d874a45986eff89d666cfb3bfd1bea271a3e12811c26d22ba2c0a",
             "vice_targets": {
-              "vice-cm-conics": 616
+              "vice-cm-conics-1": 316,
+              "vice-cm-conics-2": 120,
+              "vice-cm-conics-3": 180
             }
           },
           "c64_branch_outcomes": {
@@ -2068,7 +2070,9 @@
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
             "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1290
+              "vice-imu-mode-switching-1": 495,
+              "vice-imu-mode-switching-2": 369,
+              "vice-imu-mode-switching-3": 426
             }
           },
           "independent_review": {
@@ -3478,7 +3482,8 @@
             "src/cm_interp_steps.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c",
-            "src/rtb_modes.c"
+            "src/rtb_modes.c",
+            "src/cm_integration_moves.c"
           ],
           "scope": "Every word of the file (1,368 words): P37/P70 and its displays, P37PROC, P370ALRM, TMRAD100, RTEDISP, INVC100, PREC100, RTENCK1-3, V2T100, GAMDV10, DVCALC and XT1LIM, as 595 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P37-P70.md"
@@ -3488,7 +3493,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Four C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; one of them (resumed_at 32,3560) starts from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; two of them (resumed_at 32,3451 and 32,3560) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "PHASCHNG with its inline phase words (restart groups)",
@@ -3497,6 +3502,7 @@
           "ENDOFJOB, TC GOTOPOOH and TC POODOO",
           "Returns through the saved CADRs RTENCKEX and SPRTEX",
           "CSMPREC, GETERAD, LAT-LONG, PARAM, TIMERAD, TIMETHET, VN1645 and VNSTORE through CALL, STCALL or GOTO (interpretive), and GOTO through a CADR held in the push-down list (20D, 31D, 32D, 33D)",
+          "TCDANZIG (ENDT(X)) through GAMDV45's BOVB, native (src/cm_integration_moves.c)",
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
@@ -3507,22 +3513,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-proof.json",
-            "sha256": "f5a20be540d13f273d2a4954e5531603be38c0e3f6df595fc239562e98b4ebea"
+            "sha256": "857a9fd1b94212529530d3acc8218d87857bda65b899a143d9844e3cee8b15c7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-host.log",
-            "sha256": "b757e1d910d736278802ea2074756d788bc29877a234d858a7f3ea2aae38d4df"
+            "sha256": "ea2797b162424a38869d257b29b77c1dd551bbe9e45ba891178c20608206ebee"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-vice.log",
-            "sha256": "86bf530b33b5a52546a270af0b6feac1aa109db3809c53fa5f3a714f9d07e1e1",
+            "sha256": "66aaecd11f63b096bfc200b9a5612804d1f5720e26571856e5b213b1034ec449",
             "vice_targets": {
-              "vice-cm-p37-p70": 700
+              "vice-cm-p37-p70": 692
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
-            "sha256": "5cd07e6a599745f6bde1a13f1e82cd9998ab4ec0caf64d566e000683b4563bf7"
+            "sha256": "40e3748f3d395ba6dd9cd3d1a2959d91f3eb2e2fe04851897f25cbac82081c48"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-372.md",
@@ -8882,7 +8888,9 @@
             "path": "evidence/imu-mode-switching/imu-mode-switching-vice.log",
             "sha256": "eb15a69c678a07541ea96e1f3db170a51ea9981c184f62f8d660f250a53e79cc",
             "vice_targets": {
-              "vice-imu-mode-switching": 1290
+              "vice-imu-mode-switching-1": 495,
+              "vice-imu-mode-switching-2": 369,
+              "vice-imu-mode-switching-3": 426
             }
           },
           "independent_review": {
