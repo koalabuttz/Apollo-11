@@ -3701,6 +3701,10 @@ SPECS = {
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        'trusted_image': True,
         'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P32-P35,_P72-P75.agc'},
