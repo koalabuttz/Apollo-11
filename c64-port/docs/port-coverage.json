@@ -12936,7 +12936,7 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12951,7 +12951,7 @@
           "verification": "docs/LM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12965,7 +12965,6 @@
           "TC RTRN to the saved return outside the file",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
@@ -12985,6 +12984,10 @@
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-stable-orbit.md",
+            "sha256": "af050e887817539c78001bee15c51adc301b0c552ea65fc80cd454f80e393009"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
