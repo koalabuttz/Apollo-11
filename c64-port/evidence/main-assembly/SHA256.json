@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "main-assembly",
+  "release": "evidence-main-assembly",
+  "files": {
+    "main-assembly-host.log": {
+      "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e",
+      "bytes": 917,
+      "store": "release"
+    },
+    "main-assembly-proof.json": {
+      "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68",
+      "bytes": 1369,
+      "store": "tree"
+    },
+    "main-assembly-source-map.json": {
+      "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205",
+      "bytes": 120259,
+      "store": "tree"
+    },
+    "main-assembly-vice.log": {
+      "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+      "bytes": 341,
+      "store": "release"
+    }
+  }
+}

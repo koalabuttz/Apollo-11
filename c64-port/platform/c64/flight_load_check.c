@@ -17,6 +17,10 @@
  *     through the resident's direct call (rk_direct), with the module's
  *     slot the only loaded one. Status, image and channels
  *     (agc_hardware) must match; both are timed.
+ *  0. before any of that, with a pinned module (slot class 3, FL_PINNED):
+ *     one of its points through the module packing the same table and
+ *     through rk_direct with only the pinned module present (steps 10-11);
+ *     the pinned module is then dropped, since the mailbox reuses its RAM.
  *
  * FL_DATA names the generated data header (records, modules, FL_IDLE_Z).
  * For bisecting a crash, -DFL_FIRST=n -DFL_LIMIT=n run modules [FIRST,LIMIT)
@@ -24,7 +28,7 @@
  * being run; -DFL_PROFILE_MARKS stores to $c007 and $c008 around each cached
  * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
  * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
- * (4 bytes), $c3f0-5 the call profile (profile()), $c3fe the module count, $c400 one fl_timing per module (up to
+ * (4 bytes), $c3f0-5 the call profile (profile()), $c3f6 the soft-stack peak, $c3fe the module count, $c400 one fl_timing per module (up to
  * $cbff, FL_MODULES at most 204), $c3e0 the indices of up to 8 modules whose
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
@@ -58,7 +62,8 @@ static fl_module module;
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 static fl_timing *const timing=(fl_timing *)0xc400;
 static uint16_t failures,checks;
-static void expect(uint8_t ok,uint8_t step){++checks;if(!ok){++failures;if(!mail[5])mail[5]=step;}}
+static uint8_t first_failure;   /* to $c005 at the end: the mailbox page is the pinned module's until then */
+static void expect(uint8_t ok,uint8_t step){++checks;if(!ok){++failures;if(!first_failure)first_failure=step;}}
 
 static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
  for(i=0;i<FL_RECORDS;++i)
@@ -71,7 +76,7 @@ static void BOOT resolve_records(void){uint16_t i;apollo_ov2_cont at;
  * entry must restore I/O to acknowledge them, or the CPU never returns. */
 extern volatile uint16_t ov2_irq_count;
 static uint16_t BOOT irq_count(void){uint16_t n;do n=ov2_irq_count;while(n!=ov2_irq_count);return n;}
-static void BOOT fixed_extension(void){uint8_t *b=(uint8_t *)RK_BOOT_SCRATCH;uint16_t i,bad=0,t;
+static void BOOT fixed_extension(void){uint8_t b[256];uint16_t i,bad=0,t;   /* on the stack: $C000 holds the pinned module */
  for(i=0;i<256u;++i)b[i]=(uint8_t)(i^0x5au);
  apollo_reu_transfer(APOLLO_REU_STASH,b,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u);
  expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
@@ -176,10 +181,36 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
  return t;}
 
+#ifdef FL_PINNED
+/* The pinned module (slot class 3): boot loaded it at $C000 and built its
+ * tables (rk_pinned). One of its points, from the boot state, through the
+ * module that packs the same table (its main, ABI 2 run) and then through
+ * rk_direct with no other module loaded: status, image and channels must
+ * match. Then it is dropped (rk_pinned 0): the mailbox and the timings
+ * reuse $C000-$CBFF. */
+static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_BANK,FL_PINNED_LOC};
+ apollo_ov2_cont at={FL_PINNED_MODULE,0},resume;uint16_t value,sum;uint8_t action,i;enum exec_status a;
+ expect(rk_pinned&&((const uint8_t *)APOLLO_OV2_PINNED_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED,10);
+ direct_state(&p);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
+ expect(apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK,11);
+ a=rk_env.status;sum=image_sum();
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)rk_runtime.loaded[i]=0;
+ direct_state(&p);
+ expect(rk_pinned&&rk_direct(AGC_TRANSFER_NONE)==a&&image_sum()==sum,11);
+ rk_pinned=0;
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();}
+#endif
+
+/* Soft-stack watermark: free stack below the timings is filled before the
+ * module runs and scanned after; $c3f6 gets the peak depth below $D000. */
+#define FL_STACK_FLOOR ((volatile uint8_t *)(0xc400u+FL_MODULES*sizeof(fl_timing)))
+static void stack_fill(void){volatile uint8_t here,*p=FL_STACK_FLOOR;
+ while(p<&here-16)*p++=0x5a;}
+static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
+ while(*p==0x5a)++p;
+ *(volatile uint16_t *)0xc3f6=(uint16_t)(0xd000u-(uintptr_t)p);}
+
 int main(void){uint16_t i;
- for(i=1;i<5;++i)mail[i]=0;
- mail[0x3df]=0;
- mail[5]=0;
  expect(rk_boot()==0,1);
  if(!failures){
   apollo_reu_transfer(APOLLO_REU_STASH,(void *)fl_modules,FL_MODULE_TABLE,sizeof fl_modules);
@@ -187,7 +218,13 @@ int main(void){uint16_t i;
   fixed_extension();
   __asm__ volatile("sei");
   apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;CHANNELS_SAVE();
+#ifdef FL_PINNED
+  pinned();
+#endif
+  rk_pinned=0;
+  for(i=1;i<0x3e0u;++i)mail[i]=0;
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
+  stack_fill();
 #ifndef FL_NO_PROFILE
   profile();
 #endif
@@ -205,7 +242,10 @@ int main(void){uint16_t i;
    timing[i].direct=module.loc?direct(i,&module,&timing[i].main):0u;
   }
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
+  stack_peak();
   __asm__ volatile("cli");}
+ else for(i=1;i<0x3e0u;++i)mail[i]=0;
+ mail[5]=first_failure;
  mail[1]=(uint8_t)failures;mail[2]=(uint8_t)(failures>>8);
  mail[3]=(uint8_t)checks;mail[4]=(uint8_t)(checks>>8);
  mail[0]=0xa5;

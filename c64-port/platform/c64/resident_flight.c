@@ -63,10 +63,32 @@ uint8_t BOOT rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes
     return (uint8_t)((apollo_reu_peek(APOLLO_REU_STATUS)&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==
         APOLLO_REU_STATUS_END);
 }
+const rk_module_tables *rk_pinned;
+static uint8_t BOOT rk_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes) {
+    return (uint8_t)((apollo_reu_transfer(command,c64,reu,bytes)&(APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==
+        APOLLO_REU_STATUS_END);
+}
+/* Slot class 2 at $D000 (I/O banked out), or the one class-3 module at
+ * $C000: plain DMA, BSS zeroed, then its main once to build its tables,
+ * which must be direct (rk_pinned). */
 static uint8_t BOOT rk_load_fixed(void *user,uint32_t reu,const apollo_ov2_dirent *d) {
-    void *at=(void *)APOLLO_OV2_FIXED_ADDRESS;
+    uint8_t *at=(uint8_t *)APOLLO_OV2_PINNED_ADDRESS;
+    const rk_module_tables *t;
+    apollo_ov2_frame f;
     (void)user;
-    return rk_hidden_dma(APOLLO_REU_FETCH,at,reu,d->bytes) && rk_hidden_dma(APOLLO_REU_VERIFY,at,reu,d->bytes);
+    if(d->slot==APOLLO_OV2_SLOT_FIXED)
+        return rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes) &&
+               rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,reu,d->bytes);
+    if(rk_pinned || !rk_dma(APOLLO_REU_FETCH,at,reu,d->bytes) || !rk_dma(APOLLO_REU_VERIFY,at,reu,d->bytes))
+        return 0;
+    memset((void *)(uintptr_t)(at[APOLLO_OV2_H_BSS]|(uint16_t)at[APOLLO_OV2_H_BSS+1]<<8),0,
+           at[APOLLO_OV2_H_BSS_BYTES]|(uint16_t)at[APOLLO_OV2_H_BSS_BYTES+1]<<8);
+    memset(&f,0,sizeof f);
+    f.value=(uint16_t)(uintptr_t)&rk_env; f.state=IMAGE;
+    t=(const rk_module_tables *)(uintptr_t)(at[APOLLO_OV2_H_TABLES]|(uint16_t)at[APOLLO_OV2_H_TABLES+1]<<8);
+    if(!t || c64_ov2_invoke(0,at,&f,0)!=APOLLO_OV2_DONE || t->ready!=RK_TABLES_DIRECT) return 0;
+    rk_pinned=t;
+    return 1;
 }
 uint8_t BOOT rk_boot(void) {
     __asm__ volatile("sei");
@@ -112,6 +134,7 @@ uint8_t BOOT rk_boot(void) {
         if(!t->count || (first>>16)!=(last>>16)) return 3;
         boundary_bank=(uint8_t)(first>>16); boundary_address=(uint16_t)first; boundary_count=t->count;
     }
+    *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
     return 0;
 }
 
@@ -193,16 +216,21 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
 static agc_native_program module_program;   /* static: absolute addressing is smaller than the soft stack */
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
     uint8_t i;
-    for(i=0;i<APOLLO_OV2_SLOTS;++i) {
-        const uint8_t *h=rk_runtime.slot[i];
-        const rk_module_tables *t;
+    /* The pinned module (slot class 3) first, then the job and task slots. */
+    for(i=0;i<=APOLLO_OV2_SLOTS;++i) {
+        const rk_module_tables *t=rk_pinned;
         uint16_t steps;
-        if(!rk_runtime.loaded[i]) continue;
-        t=(const rk_module_tables *)(uintptr_t)(h[APOLLO_OV2_H_TABLES]|(uint16_t)h[APOLLO_OV2_H_TABLES+1]<<8);
-        /* The loader does not read TABLES; the packer checked it lies in the
-         * slot, and it is checked again here before it is followed. */
-        if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
-           (uint16_t)(apollo_ov2_slot_bytes(i)-APOLLO_OV2_HEADER_BYTES) || t->ready!=RK_TABLES_DIRECT) continue;
+        if(i) {
+            const uint8_t *h=rk_runtime.slot[i-1u];
+            if(!rk_runtime.loaded[i-1u]) continue;
+            t=(const rk_module_tables *)(uintptr_t)(h[APOLLO_OV2_H_TABLES]|(uint16_t)h[APOLLO_OV2_H_TABLES+1]<<8);
+            /* The loader does not read TABLES; the packer checked it lies in
+             * the slot, and it is checked again here before it is followed. */
+            if((uint16_t)((uintptr_t)t-(uintptr_t)h-APOLLO_OV2_HEADER_BYTES)>=
+               (uint16_t)((i-1u==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES : APOLLO_OV2_JOB_BYTES)-
+                         APOLLO_OV2_HEADER_BYTES)) continue;
+        }
+        if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
         memcpy(&module_program,&rk_program,sizeof module_program);
         rk_module_program(&module_program,t);
@@ -218,6 +246,8 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
+    /* The soft stack ran into the pinned module below it. */
+    if(*(volatile uint8_t *)RK_STACK_CANARY!=RK_STACK_CANARY_VALUE) return EXEC_INVALID_ACTION;
     rk_rupts();
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
