@@ -461,7 +461,9 @@ port) runs one mission:
    the idle loop (a dump is usually inside a routine), the native side
    takes that state with any `FLIGHT_CH30`-`33` given overriding the
    core's, and AGC time (keys, pokes, the centisecond count) runs from the
-   core's TIME1/TIME2. `FLIGHT_MISS_LOG` prints each routine yaAGC did
+   core's TIME1/TIME2. It does not combine with `FLIGHT_DOWNRUPT` (yaAGC's
+   steps to the idle loop would enter the downlink reference stream).
+   `FLIGHT_MISS_LOG` prints each routine yaAGC did
    not match with its centisecond, Z, FB and Q (a diagnostic); set to a
    directory, it also names the three routines before each and writes the
    erasable state the first eight started in there.
