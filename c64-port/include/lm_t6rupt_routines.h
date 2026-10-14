@@ -31,6 +31,8 @@
 extern const agc_routine_table lm_t6rupt_routines;
 /* The RESUME family's four entries (the flight store's pinned set). */
 extern const agc_routine_table lm_t6rupt_hot_routines;
+/* The jet writes (WRITEP, WRITEU, WRITEV and their -1 entries). */
+extern const agc_routine_table lm_t6rupt_jets_hot_routines;
 #define LM_T6RUPT_VECTOR 04004u
 #define LM_T6JOBCHK 02027u
 #define LM_DOT6RUPT 02065u

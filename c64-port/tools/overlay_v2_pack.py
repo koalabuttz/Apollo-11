@@ -10,6 +10,11 @@ hardware; VICE can attach the image directly with -reuimage.
 Inputs are linked module PRGs (two-byte load address, then the 24-byte
 NATV header and payload) and an optional resolver JSON list of
 {"bank":int,"loc":int,"module":int,"selector":int} records.
+
+--tail adds raw data at the very end of the image, ending on its last page
+and inside one 64 KB REU bank, so a reader finds it from the image's page
+count alone, with 16-bit address arithmetic (the flight resident's
+boundary-word table: entries, then a count, tools/resident_boundary_words.py).
 """
 import argparse
 import hashlib
@@ -90,7 +95,7 @@ def parse_module(path, mission, services):
                 crc16=crc16(payload), payload=payload, sha256=hashlib.sha256(data).hexdigest())
 
 
-def build_image(modules, resolver, mission, services):
+def build_image(modules, resolver, mission, services, tail=b''):
     ids = [m['id'] for m in modules]
     if len(set(ids)) != len(ids):
         raise ValueError('duplicate module identity')
@@ -131,7 +136,14 @@ def build_image(modules, resolver, mission, services):
             page = (page // BANK_PAGES + 1) * BANK_PAGES
         placed.append(dict(m, page=page))
         page += size
-    pages = page
+    tail_pages = -(-len(tail) // 256)
+    if len(tail) > 0x10000:
+        raise ValueError(f'tail of {len(tail)} bytes exceeds one 64 KB REU bank')
+    start = page * 256 + (-len(tail)) % 256
+    if tail and start >> 16 != (start + len(tail) - 1) >> 16:
+        page = (page * 256 >> 16) + 1 << 8
+        start = page * 256 + (-len(tail)) % 256
+    pages = page + tail_pages
     image = bytearray(pages * 256)
     struct.pack_into('<4sBBHHHHHH', image, 0, b'NREU', 1, mission, services, len(modules),
                      index_page, resolver_page, len(resolver), pages)
@@ -139,6 +151,8 @@ def build_image(modules, resolver, mission, services):
         struct.pack_into('<5HBB', image, index_page * 256 + m['id'] * INDEX_RECORD,
                          m['id'], m['page'], m['bytes'], m['crc16'], m['selectors'], m['slot'], 1)
         image[m['page'] * 256:m['page'] * 256 + m['bytes']] = m['payload']
+    if tail:
+        image[start:start + len(tail)] = tail
     for i, r in enumerate(resolver):
         struct.pack_into('<4H', image, resolver_page * 256 + i * RESOLVER_RECORD,
                          r['bank'], r['loc'], r['module'], r['selector'])
@@ -249,6 +263,7 @@ def main():
     p.add_argument('--resident-bytes', type=int, default=26624)
     p.add_argument('--output', type=Path, default=Path('build/overlay-v2.reu'))
     p.add_argument('--manifest', type=Path)
+    p.add_argument('--tail', type=Path, help='raw data the image ends with (see above)')
     p.add_argument('--selftest', type=Path, help='write synthetic modules here and pack them')
     p.add_argument('--selftest-pinned-task', type=Path,
                    help='write the synthetic class-4 store\'s modules here and pack them')
@@ -262,7 +277,8 @@ def main():
         p.error('no modules')
     modules = [parse_module(path, mission, args.services) for path in args.modules]
     resolver = json.loads(args.resolver.read_text()) if args.resolver else []
-    image, placed = build_image(modules, resolver, mission, args.services)
+    tail = args.tail.read_bytes() if args.tail else b''
+    image, placed = build_image(modules, resolver, mission, args.services, tail)
     kb = reu_size_kb(len(image))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     # VICE wants the image file to match the configured REU size.
@@ -272,7 +288,7 @@ def main():
         image_sha256=hashlib.sha256(image).hexdigest(),
         modules=[{k: m[k] for k in ('id', 'slot', 'bytes', 'selectors', 'crc16', 'page', 'path', 'sha256')}
                  for m in placed],
-        resolver_records=len(resolver),
+        resolver_records=len(resolver), tail_bytes=len(tail),
         disk_plan=disk_plan(len(image), args.resident_bytes, args.mission))
     out = args.manifest or args.output.with_suffix('.json')
     out.write_text(json.dumps(manifest, indent=1) + '\n')

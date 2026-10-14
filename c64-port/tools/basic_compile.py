@@ -845,7 +845,7 @@ class Basic:
             c.append('static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const %s *io,unsigned e,agc_word *k){' % self.io)
             c.append(' unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;')
             c.append(' if(e>=04000u)p=(uint16_t)(2048u+e-04000u);')
-            c.append(' else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
+            c.append(' else{if(b>=030u&&(sb&0100u)){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
             c.append(' return apollo_rope_read(%du,p,k);' % (0 if self.io == 'p66_bias_io' else 1))
             c.append('}')
             c.append('#define fx(s,e,k) fxr(s,io,e,k)')

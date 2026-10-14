@@ -217,8 +217,7 @@ task slot's $E000-$FFF9 (8,186 bytes), and is packed only beside a packed
 class-3 set, whose table list names its tables (the class-4 module runs no
 main). With a class-4 module in the store every task-slot module, the
 resident's interrupt wrappers included, links for the job slot
-(`task_pinned_out` in the module list). The boundary-word module stays in
-the task slot: boot runs it there once, before it loads class 4 over it. This is the steward's DAP rule
+(`task_pinned_out` in the module list), and so does the null module 0x01E0. This is the steward's DAP rule
 in two regions, with the LM RCS DAP hold cycle split by what one pass
 reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
 #356):
@@ -239,7 +238,13 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   and RATELOOP (`lm_kalman_basic`, which runs in the same pass) in one
   job-slot module, so a pass that leaves the pinned sets loads one module,
   not two (P-axis 11,603 bytes and Q,R-axis 11,971). RATELOOP moved here
-  from class 4 to make room for RESUME. On LM it is 14,145 bytes.
+  from class 4 to make room for RESUME. It also carries the jet writes
+  (`lm_t6rupt_jets_hot_routines`: WRITEP, WRITEU, WRITEV and their -1
+  entries), which a firing pass makes three times; before, each loaded the
+  T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
+  `RIDE`: run through `rk_direct` while the excursion is loaded, while
+  their resolver records keep the wrapper for every other caller. On LM it
+  is 15,438 bytes.
 - The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
   (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
   $01E2's `lm_t4rupt_core_routines`) and the radar step
@@ -308,13 +313,17 @@ resolves pending RTB right-hand orders through it.
 
 `make flight-store-vice` (`tools/flight_vice_load.py`) boots the flight
 resident on the whole-program store in VICE. The store builder also packs
-the resident's own modules into the store (the boundary-word module, built
-for the store's resolver records, and the interrupt-body wrappers with their
-records), so `build/flight-store/<m>.reu` is a bootable flight image. It
+the resident's own modules into the store (the interrupt-body wrappers with
+their records, and the null module), ends it with the boundary-word table
+built for the store's resolver records (`build/flight-store/<m>-boundary.bin`,
+docs/RESIDENT-FLIGHT.md), so `build/flight-store/<m>.reu` is a bootable flight image. It
 also links `build/flight-store/<m>-load-check.prg`: the resident with
 `platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
-resolves every resolver record through the resident's resolver (LM 245, CM
-226, the wrappers' included) and checks the module it names. It then runs each
+reads every resolver record from the store, resolves its key through the
+resident's resolver and checks the module it names. The record count and a
+Fletcher checksum over each record's bank, loc and module in key order must
+match the builder's list (`FL_RECORDS`, `FL_RECORD_SUM`); the list itself
+is not linked, as LM's 2,480 records would overrun the boot-only region. It then runs each
 flight module twice, with interrupts off, from a fixed point no table holds:
 once loading it from the REU into its slot, and once already loaded. Each run
 must come back with `EXEC_UNMAPPED`. CIA2's cascaded timers count the
