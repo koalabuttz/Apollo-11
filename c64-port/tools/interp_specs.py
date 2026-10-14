@@ -3040,7 +3040,7 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
-        'entries': ['@external'],
+        'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,
         'io_channels': 'auto',

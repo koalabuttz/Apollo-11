@@ -11,7 +11,7 @@ extern const agc_routine_table lm_aostask_interpretive,lm_aostask_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_aostask_point;
-#define LM_AOSTASK_POINTS 10u
+#define LM_AOSTASK_POINTS 11u
 #define LM_AOSTASK_CADR_WORDS 1u
 #define LM_AOSTASK_EXTERNALS 6u
 #define LM_AOSTASK_FIRST 16679u
