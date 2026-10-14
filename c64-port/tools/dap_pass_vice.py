@@ -36,6 +36,10 @@ PAL_HZ = 985248
 SCRATCH_BYTES = 32768
 CH30, CH31 = '036377', '057777'
 SCENARIOS = {'hold': '', 'firing': '{cs}:033=02000,{cs}:034=077000'}
+# platform/c64/resident_flight.c RK_PROF segments, in order.
+SEGMENTS = ['check loop', 'rk_rupts', 'trampoline hit', 'trampoline miss', 'direct slot scan',
+            'direct slot miss', 'direct hit (lookup + body)', 'direct miss tail', 'resolver lookup',
+            'module run (load + main)', 'step return']
 RUPTS = {0: 'background', 1: 'T6RUPT', 2: 'T5RUPT', 3: 'T3RUPT', 4: 'T4RUPT', 5: 'KEYRUPT1', 6: 'KEYRUPT2',
          7: 'UPRUPT', 8: 'DOWNRUPT', 9: 'RADARUPT', 10: 'HANDRUPT'}
 
@@ -53,11 +57,11 @@ def snapshot(exe, name, cs):
     return header
 
 
-def link(cc, name, header, cs, scratch, steps=False, m='lm'):
+def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False):
     out = WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
         cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
-        f'-DDP_SCRATCH=0x{scratch:x}ul', *(['-DDP_STEPS'] if steps else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
+        f'-DDP_SCRATCH=0x{scratch:x}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
         'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
@@ -124,6 +128,7 @@ def main():
     p.add_argument('--snap-cs', type=int, default=3000, help='AGC centisecond the run starts from')
     p.add_argument('--cs', type=int, default=100, help='AGC centiseconds to run on the C64')
     p.add_argument('--scenarios', default='hold,firing')
+    p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
     p.add_argument('--steps', action='store_true', help='one record per step (Z, FB bank, loads) for debugging')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
@@ -146,8 +151,15 @@ def main():
     results, failed = [], 0
     for name in a.scenarios.split(','):
         header = snapshot(exe, name, a.snap_cs)
-        prg = link(a.cc, name, header, a.cs, scratch, a.steps)
+        prg = link(a.cc, name, header, a.cs, scratch, a.steps, profile=a.profile)
         r = vice(a, name, prg, pinned)
+        if a.profile and r.get('ok') is not None and (WORK / f'vice-{name}' / 'results.bin').exists():
+            data = (WORK / f'vice-{name}' / 'results.bin').read_bytes()
+            r['profile'] = [dict(zip(('segment', 'cycles', 'calls'), (SEGMENTS[i], *struct.unpack_from('<IH', data, 0xb80 + 6 * i))))
+                            for i in range(len(SEGMENTS))]
+            for x in r['profile']:
+                print(f"  {x['segment']}: {x['calls']} x, {x['cycles']} cycles"
+                      f" ({x['cycles'] // x['calls'] if x['calls'] else 0} each)")
         r.update(pinned=sorted(f"0x{m['id']:04x} class {m['slot']}" for m in manifest['modules'] if m['slot'] >= 3))
         results.append(r)
         if not r['ok']:

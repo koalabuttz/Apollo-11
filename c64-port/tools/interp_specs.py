@@ -190,6 +190,17 @@ def integration_joint():
     return out
 
 
+def n49_wait():
+    """R22LEM96's wait for the N49 display (SLOAD N49FLAG, BZE -3): a zero
+    flag loops until another job is waiting (NEWJOB positive)."""
+    return [{'N49FLAG': 0, '0067': 1}, {'N49FLAG': 1}, {'N49FLAG': 0o77776}, {'N49FLAG': 2}]
+
+
+def v67_loop():
+    """V67's W-matrix loop state: X1 a pass (6 to 54), S1 6."""
+    return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
+
+
 def ddv_majors_joint(num=('0154', '0155'), den=('ALPHAM', 'ALPHAM+1'), his=(0o1, 0o1234, 0o17777, 0o30000)):
     """A DDV (or BDDV) with the divisor den's major part equal to or one
     above the dividend num's (lm_interp_orders.c's near-equal-majors steps
@@ -495,6 +506,12 @@ SPECS = {
         'freeze_stride': 32,
         'index_carry16': True,
         'image_w': True, 'c64_cuts': True,
+        # ENGOFF1 and its returns run as a waitlist task (TWIDDLE, the group 4
+        # restart), over any job: any FIXLOC, and NEWJOB -0 while DUMMYJOB
+        # idles (#403). No image scan at the entries in flight.
+        'any_fixloc': True,
+        'any_newjob': True,
+        'trusted_image': True,
     },
     'inflight-align': {
         'missions': ('lm', 'cm'),
@@ -2550,7 +2567,7 @@ SPECS = {
         # The flowed state replaces generated states at a resume LOC, so the
         # near-equal-majors divides take their sets here, after the flow
         # (review #165): COMTERM's DDV ALPHAM pairs, KEPPREP's DDV 2D and
-        # GAMCOMP's NORM BDDV (the dividend popped from 0D at PL 2, the
+        # GAMCOMP's NORM BDDV (the dividend popped from 2D at PL 4, the
         # divisor MPAC already normalized, so NORM leaves it). RECTEST's BMN
         # gets |TNUV| - 3/4 in [0, 1/4) with a job waiting: not taken, then
         # DANZIG to CHANG2.
@@ -2559,7 +2576,10 @@ SPECS = {
               for a in ('11,3104', '11,3120', '11,3124')],
             ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
             ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
-                num=('vac+0', 'vac+1'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+                num=('vac+2', 'vac+3'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: -12, -24 or -36
+            # (DIFEQ+12, +24 and +36), as the flight stages reach it.
+            ('11,3705', '11,3765', {'vac+046': [0o77763, 0o77747, 0o77733]}),
             ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
                                                          for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
                                                          for j in (1, 0o37777)]})],
@@ -2699,7 +2719,7 @@ SPECS = {
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        'native_sources': ['src/rtb_angles.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # Without inlining the runs that take every branch outcome fit one
         # diagnostic (the C64 cover misses none).
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
@@ -2735,7 +2755,7 @@ SPECS = {
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
         'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
-        'noreturn': ['POSTJUMP'],
+        'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
         'resume_orphans': 'all',
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'},
@@ -2743,11 +2763,29 @@ SPECS = {
                 'CDULOGIC': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
                 'PULSEIMU': None, 'SGNAGREE': None},
         'includes': ['rtb_angles.h'],
-        'native_sources': ['src/rtb_angles.c'],
+        'native_sources': ['src/rtb_angles.c', 'src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # Without inlining the runs that take every branch outcome fit one
         # diagnostic (the C64 cover misses none).
         'c64_flags': ['-fno-inline', '-DIRC_INPUTS'],
         'target': 'tests/cm_imu_calibration_target.c',
+        # The fine-align and gyro-compensation loops run as flight tasks and
+        # jobs: basic code compiled in one function with the EB 5 window fast
+        # forms, and no image scan at their entries in flight. (Whole-file
+        # basic entries check no FIXLOC or NEWJOB, so ALLOOP's task needs no
+        # any_fixloc/any_newjob.)
+        'basic': 'full',
+        'fast_window': True,
+        'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
+        # the caller's A overflowed: refused, never run as basic code.
+        'interp_not_basic': True,
+        # FINETIME (bank 02) runs under its caller's FB.
+        'fixed_fixed_any_fb': True,
+        # TC QPLACE/QPLACES (E5) runs the saved return stored there.
+        'switched_tc': True,
+        # ALKLP's DLOAD* ALSK +1,1 with X1 +1 or -1 (CMPX1): ALSK or the
+        # 2DEC after it.
+        'fixed_index': {'ALSK': [-1, 1]},
         # EBANK= POSITON and XSM: the file's erasables are in E5.
         'ebank': 5,
         # CHECKG1 spins until a PIPA pulse moves PIPAX, FINETIME +1 while
@@ -2756,7 +2794,6 @@ SPECS = {
         # FINETIME reads the scalers and CHKCOMED channel 30 (liftoff).
         'channel_inputs': True,
         # INDEX POSITON and the like must leave a 12-bit operand erasable.
-        'index_guard': True,
         # PIPACHK's and PIPJOBB's INDEX NDXCTR; TC +1 (NDXCTR 0 or 1).
         'tc_tables': {'PIPACHK+1': 2, 'PIPJOBB+1': 2},
         # ONCEMORE's TC LAT(SPL) (E7) calls the erasable program the
@@ -2827,6 +2864,9 @@ SPECS = {
         # Rows by gcov arc as well (the ?: outcomes clang folds, as DIM's
         # negative operand in ai_dim).
         'c64_rows': 'cover',
+        # (ALFLT's longest runs fit no diagnostic; their DAS carry arcs come
+        # back as truncated rows.)
+        'c64_cuts': True,
         'cover_stride': 64,
         'cover': True,
         'counters': True,
@@ -3547,6 +3587,7 @@ SPECS = {
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'trusted_image': True,
         'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
@@ -3563,19 +3604,16 @@ SPECS = {
                     'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
                     'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
-                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
+                    'VNPOOH'],  # (P30_P37, P32-P33 and P34-P35 call it: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
                       'ENDEXT': None, 'ENDMARK': None,
                       'VNPOOH': 0},
-        # VNPOOH switches FBANK in basic code (XCH FBANK), which the compiled
-        # basic code does not model yet: its 15 words stay with the original.
-        'outside': {'VNPOOH': 15},
         'noreturn': ['POSTJUMP'],
         'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
         'resume_orphans': True,
-        'partial': {'cm': 'VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet'},
         # SGNAGREE (RT8_OP_CODES' TPAGREE) has no native routine yet: the
         # RTB ends the routine there. DPMODE is src/rtb_modes.c.
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
@@ -3585,7 +3623,16 @@ SPECS = {
         # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
         # (moon), as SELECTMU's AXC,1 sets it.
         'fixed_index': {'MUTABLE': [2, 10]},
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        # VNPOOH's way back (VNBANK-1 on proceed, VNBANK+1 after a
+        # recycle): TS FBANK puts TBASE5 back in FB and TC RTRN runs RTRN,
+        # the caller's Q. They hold one of this file's calls (bank 35):
+        # RTRN (E4,1767 as the routine names it, 1767 under the case's EB,
+        # so each EB's word).
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   **{lab: {'01063': [0o72000],
+                            **{'0%o' % (eb * 0o400 + 0o367): [0o2006, 0o2072, 0o2150, 0o2756, 0o2777]
+                               for eb in range(8)}}
+                      for lab in ('VNBANK-1', 'VNBANK+1')}},
         'target': 'tests/cm_p34_p35_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -3835,7 +3882,11 @@ SPECS = {
         # GETX pushes from 0D (its callers CALL it at PL 0); a PUSHLOC near
         # the top of the VAC pushes into the index registers and sends
         # 1/WLOOP's TIX,2 round thousands of times.
-        'states': {'GETX': {'0166': ['vac+0']},
+        # BRNCHCTR's CHECKCTR counts ITERCTR (22D) down; entered with 1 or
+        # 2 left, KEPLOOP's iteration-limit exit (BHIZ KEPCONVG on 0) and
+        # one more pass are both taken (review #165: the flight cases
+        # converge before the 20th pass).
+        'states': {'GETX': {'0166': ['vac+0']}, 'BRNCHCTR': {'vac+026': [1, 1, 2]},
                    **{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
                    **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
                                          **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
@@ -4032,6 +4083,116 @@ SPECS = {
         'edge_cases': True,
         'c64_rows': 'cover',
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    'lm-p20-p25': {
+        'missions': ('lm',),
+        'file': {'lm': 'P20-P25.agc'},
+        'base': {'lm': 'lm_p20_p25'},
+        'symbol': {'lm': 'lm_p20_p25'},
+        # PROG20/22/25 from FRESH_START, the rest the labels other files call.
+        # Channel instructions run on the shared I/O channel model ('channels',
+        # #259); the file names no channel 010 or 015.
+        # (Shared compiler options every refreeze sets now: the C64 INDEX
+        # end-around carry, the fixed $7000 image, and a CCS arm on the
+        # word after an EXTEND refused.)
+        'index_carry16': True,
+        'image_w': True, 'trusted_image': True,
+        'refuse_unextended': True,
+        # Opt-in basic code forms: INDEX Q reads of a caller's inline word
+        # (RRLIMCHK's ADRES), INDEX L/Q; TC returns past the caller's, and
+        # TS FBANK/BBANK ending the routine unless FB stays.
+        'inline_reads': True,
+        'ts_bank_guard': True,
+        # A TS overflow skip, or an INCR Q return, landing on the word after
+        # an EXTEND would run it unextended (DGCHECK's TS ITEMP1 skipping
+        # RAND CHAN33's EXTEND): refused.
+        'refuse_skip_unextended': True,
+        'channels': 'all',
+        # RROUT's WOR CHAN14 sets the RR CDU drive bits, and yaAGC's optics
+        # model then dumps CDUT/CDUS (its OPTY/OPTX) at once: the oracle
+        # runs without its IMU and optics device models.
+        'engine': 'flight-device',
+        # DESCOUNT, the designate time limit MOREDES counts down, is never
+        # -0: STDESIG1's CCS would skip into the WAND after its EXTEND, run
+        # unextended as TC 3012, and loop in erasable.
+        # PIPCTR (PHSPRDT2), SERVICER's 4-per-second pass count from 7 down,
+        # is never -0 either: R29's CCS PIPCTR would skip into WAITLIST's
+        # inline 2CADR.
+        'cells': {0o1114: [0, 1, 2, 5, 0o24, 0o144, 0o37777, 0o77776, 0o40000],
+                  0o1056: [0, 1, 2, 3, 4, 5, 6, 7]},
+        'entries': ['PROG20', 'PROG25', 'R21LEM', 'R22LEM', 'CLRADMOD', 'DORREPOS', 'GOTOV56', 'LRALT', 'LRPOS2',
+                    'LRVEL', 'LRVELX', 'LRVELY', 'LRVELZ', 'P20LEMC1', 'P25LEM1', 'R12LITES', 'R22RSTRT',
+                    'R29', 'RADAREAD', 'RRDESNB', 'RRLIMCHK', 'RRRANGE', 'RRRDOT', 'RRTURNON', 'RRZERO', 'SETTRKF',
+                    'V67CALL',
+                    # (reached through BANKCALL, WAITLIST and NOVAC CADRs and
+                    # P70-P71's TC FLIP)
+                    'FLIP', 'R21LEM2', 'R29RDJOB', 'SETRRECR', 'REMODE', 'RROUT', 'BEGDES', 'RGOODEND',
+                    'R29DODES'],
+        'externals': {'SPSIN': 'auto', 'SPCOS': 'auto', 'MPACVBUF': 'auto', 'USPRCADR': 'auto', 'RESUME': 'auto', 'CHANG1': 'auto', 'BANKJUMP': 'auto', 'LONGCALL': 'auto', 'FALTON': 'auto', 'MAKECADR': 'auto', 'KILLTASK': 'auto', 'TWIDDLE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto',
+                      'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'NOVAC': 'auto',
+                      'WAITLIST': 'auto', 'FIXDELAY': 'auto', 'VARDELAY': 'auto', 'BLANKET': 'auto',
+                      'ALARM': 'auto', 'PRIOCHNG': 'auto', 'JOBWAKE': 'auto', 'JOBSLEEP': None,
+                      'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None, 'POSTJUMP': 1},
+        'noreturn': ['POSTJUMP'],
+        # Returns a case starts with only as their producers leave them:
+        # G+N,AUTO's A (0 in AUTO, else positive) and LRS22.1's MPAC (0 good
+        # data, 1 or 2 for its two bad-data returns).
+        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the caller's
+        # Q that LITIT saved there, a basic return outside the file:
+        # LODSAMPT's address stands in for it, the case's Q and stop too.)
+        'states': {'LITIT+3': {'ITEMP6': [0o4400], '2': [0o4400]},
+                   'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+                   # (LPS20.2's and LRS22.2's MPAC: 0 or 1, for the INDEX MPAC
+                   # after the CALL's EXIT and after the BANKCALL)
+                   'P20LEM1+11': {'0154': [0, 1]}, 'P20LEM1+12': {'0154': [0, 1]},
+                   'R22LEM2+10': {'0154': [0, 1]},
+                   # (SPCOS's A, no overflow: the TS SAVECDUT +1 it returns
+                   # to never skips into the EXTEND, MP pair; and R29's pass
+                   # flag, as at TESTCOS +6)
+                   '32,2662': {'0000': [0, 0o20000, 0o37777, 0o177777, 0o140000, 0o157777], 'TANG': [0, 1]},
+                   # (LRVEL's A: the beam's VBEAM index, 0, 2 or 4, from its
+                   # callers' CAF)
+                   'LRVEL': {'0000': [0, 2, 4]},
+                   # (X1 an index, as the STORE,1 that TC INTPRET at
+                   # R21LEM7 +1 is to the interpreter assumes)
+                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   # (S1 6 from V67WW's SSP S1 on)
+                   'V67WW+10': {'vac+50': [6]}, 'V67WW+11': {'vac+50': [6]},
+                   'V67WW+12': {'vac+50': [6]}, 'V67WW+13': {'vac+50': [6]},
+                   # (R29's pass flag: 1 on the first pass, then 0)
+                   'TESTCOS+6': {'TANG': [0, 1]},
+                   # (RR1AXIS's axis index, 0 or 1, through RR1AX2)
+                   **{'RR1AX2+%d' % n: {'RRINDEX': [0, 1]} for n in range(30)}},
+        # V67's W-matrix loop (NXPOSVEL ... ADDPOS ... TIX,1 NXPOSVEL): X1
+        # steps from 54 by S1 = 6.
+        'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
+                             + [('NXPOSVEL+%d' % n, v67_loop()) for n in range(4)]
+                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
+        'channel_inputs': True,
+        'resume_flow': True,
+        'edge_cases': True,
+        'counters': True,
+        'c64_rows': 'cover',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'resume_keys': True,
+        'resume_orphans': True,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
+                'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},
+                # BOVB TCDANZIG (P20-P25 3216): TC DANZIG, natively (#414);
+                # the word is ENDT(X) in TIME_OF_FREE_FALL.
+                'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'},
+                'NORMUNX1': None, 'READCDUD': None},
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_integration_moves.c'],
+        # INDEX MPAC; TC +1 after LPS20.2: within or beyond 400 n.m.
+        'tc_tables': {'P20LEM1+13': 2, 'R22LEM12+20': 3, 'R22LEM2+11': 2, 'LRVEL+3': 5},
+        'basic_fixed_index': {'HFLSHBIT': [0, -1]},   # (ONLITES, HLIGHT: H or V)
+        'target': 'tests/lm_p20_p25_target.c',
+        'rope_bin': True,
     },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.
