@@ -44,7 +44,7 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,q16=0,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
@@ -110,13 +110,11 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,q16=0,ret=0
   if(snapmode&&(!snaprow||!snapped)){if(!snapped)printf("%u N\n",n);continue;}}
   if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
   if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
-  q16=(unsigned)*memory(2)&0177777u;
   {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));
   for(i=0;i<t->nd;++i)s.words[t->device[i]]=keep[i];}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)irc_ch[i]=(agc_word)((unsigned)machine.InputChannel[irc_ch_num[i]]&077777u);irc_trap[0]=(agc_word)machine.Trap31A;irc_trap[1]=(agc_word)machine.Trap31B;irc_trap[2]=(agc_word)machine.Trap32;}
   printf("%u 0 %u %lu",n,pc,(unsigned long)irc_digest(0,&s,(uint16_t)machine.AllowInterrupt));
-  if(getenv("IRC_Q16"))printf(" q%u",q16); /* Q at 16 bits (the digest keeps 15) */
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]);printf(" %u",(unsigned)machine.AllowInterrupt);}
   printf("\n");
  }return 0;

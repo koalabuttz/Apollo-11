@@ -265,7 +265,7 @@ uint8_t lmi_switch(apollo_overlay_state *s,p66_bias_io *io){
  static const agc_word bits[16]={040000,020000,010000,04000,02000,01000,0400,0200,0100,040,020,010,4,2,1,0};
  unsigned op,word;agc_word old;
  caf(s,017);mask(s,0117);caf(s,bits[acc(s)&017u]);(void)ts(s,0131);caf(s,0100);mpf(s,W[0117]);(void)ts(s,0130);
- io->interrupt_enabled=0;word=(unsigned)acc(s);ca(s,074u+word);W[2]=acc(s);old=agc_correct(acc(s)); /* TS Q: Q takes A's 16 bits (sign-extended) */
+ io->interrupt_enabled=0;word=(unsigned)acc(s);ca(s,074u+word);(void)ts(s,2);old=W[2];
  caf(s,02000);mpf(s,W[0117]);maskf(s,014);op=(unsigned)acc(s);
  if(op==0u){ca(s,0131);set_a(s,(agc_register)(acc(s)|agc_extend(old)));(void)ts(s,074u+W[0130]);}
  else if(op==4u){ca(s,0131);set_a(s,(agc_register)(acc(s)^agc_extend(old)));(void)ts(s,074u+W[0130]);}
@@ -273,8 +273,7 @@ uint8_t lmi_switch(apollo_overlay_state *s,p66_bias_io *io){
  io->interrupt_enabled=1;caf(s,010000);mpf(s,W[0117]);maskf(s,014);op=(unsigned)acc(s);
  if(op==014u){danzig_entry(s);return 0;}
  if(op==4u)return 1; /* +5 TCF SWBRANCH */
- /* CS Q or CA Q: Q is a 16-bit register (ones' complement of all 16 bits). */
- set_a(s,op==0u?(agc_register)(~W[2]&0177777u):(agc_register)W[2]);
+ if(op==0u)cs(s,2);else ca(s,2);
  /* TEST MASK SWBIT; CCS A: positive skips, +0 branches. */
  mask(s,0131);
  if(ccs_a(s)==1u)return 1;
