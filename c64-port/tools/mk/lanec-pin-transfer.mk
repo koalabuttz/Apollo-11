@@ -15,10 +15,12 @@ test-lanec-pin-transfer: build/lanec-native build/lanec-oracle tools/lanec/diff.
 	python3 tools/lanec/diff.py pin-transfer --refusals
 	python3 tools/lanec/diff.py pin-transfer-c64 --refusals
 	python3 tools/lanec/diff.py pin-refuse --refusals-only
+	python3 tools/lanec/diff.py pin-decdsp3 --refusals
 sanitize-lanec-pin-transfer: build/lanec-native-sanitize build/lanec-oracle tools/lanec/diff.py
 	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py pin-transfer --refusals --native build/lanec-native-sanitize
 	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py pin-transfer-c64 --refusals --native build/lanec-native-sanitize
 	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py pin-refuse --refusals-only --native build/lanec-native-sanitize
+	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py pin-decdsp3 --refusals --native build/lanec-native-sanitize
 # The C64 round trips (pin-transfer-c64, one program per module) are built
 # by tools/mk/lanec-pw.mk, which comes after every pw-* suite's makefile:
 # c64-lanec-pin-transfer, vice-lanec-pin-transfer.

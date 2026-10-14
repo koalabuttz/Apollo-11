@@ -19,6 +19,7 @@ enum lanec_status lanec_pw_charin_sign_run(apollo_overlay_state *, lanec_io *, e
 enum lanec_status lanec_pw_cm_charin_number_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_cm_charin_nv_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_cm_decimal_pair_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_scale_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_cm_dynamic_display_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_cm_formatter_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 enum lanec_status lanec_pw_cm_minutes_seconds_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);

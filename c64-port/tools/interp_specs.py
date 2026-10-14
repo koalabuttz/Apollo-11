@@ -562,6 +562,33 @@ SPECS = {
         'target': 'tests/cm_t4rupt_optics_target.c',
     },
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
+    'cm-rcs-dap-exec': {
+        'missions': ('cm',),
+        'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
+        'base': {'cm': 'cm_rcs_dap_exec'},
+        'symbol': {'cm': 'cm_rcs_dap_exec'},
+        'basic': 'full',
+        # The RCS DAP's job (2CADR AMBGUPDT at 21,2356 and 21,2614).
+        'entries': ['AMBGUPDT'],
+        # FLAGWRD6: mostly the RCS autopilot (bit 14 only of the top two), so
+        # most runs reach the matrix; TVC, both, neither and +-0 for the gates.
+        'states': {'AMBGUPDT': {'FLAGWRD6': [0o20000, 0o20001, 0o21234, 0o37777, 0o20000, 0o30000,
+                                             0o40000, 0o60000, 0, 0o77777, 0o17777]}},
+        # CDUX and CDUZ (counters): around 0, the 7.25-degree jet quad
+        # offset QUADANGL (660), 90 and 180 degrees, and -0.
+        'cells': {a: [0, 1, 659, 660, 661, 0o17777, 0o20000, 0o37777, 0o40000, 0o57777, 0o60000,
+                      0o77116, 0o77117, 0o77776, 0o77777] for a in (0o32, 0o34)},
+        'seed_counters': True,
+        'cover': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'ebank': 'listing',
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        'target': 'tests/cm_rcs_dap_exec_target.c',
+    },
     'cm-servicer': {
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
