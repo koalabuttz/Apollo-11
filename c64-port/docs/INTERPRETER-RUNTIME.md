@@ -258,6 +258,7 @@ The core's contract is that indexed and push-down erasable addresses stay inside
 
 `make interp-core-differential` (`evidence/interpreter/interp-core-differential.log`) runs 74,792 cases over every compiled milestone, and none differ. PR CI runs it (`ci-extra-host`) when the interpreter's own files change (`ci-watch-interp-core-differential`).
 - One lm-p40-p47 case (27,3042) is not compared. It enters a cycle of erasable CADRs: the oracle loops in GOTOERS until its step limit, as the AGC does until the night watchman restarts it. The core hands the job back at GOTO after 64 hops (#224). The tool counts such cases without comparing them, as the routine differential does when both sides loop.
+- Since #308, a CM program with no agc_hardware runs as a copy that carries one (`tests/interp_case.c` `irc_cm_begin`). `tools/interp_runtime_target.c` therefore gives its program one: its stops find the mission by the program they are handed, and its routines read the case's channels there.
 - measurement-inc reads 0 of 2,464 since D2's flight-range states (#393). Before that, 14 FAZB1 cases started from WIXA and X1 values far outside flight and indexed past erasable.
 
 The other 113 differences that measurement-inc showed before #366 came from the tool. It called `flow_seed` without the spec, so the spec's `flow_from` entries were ignored.

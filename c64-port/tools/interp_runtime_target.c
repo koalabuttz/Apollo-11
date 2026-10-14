@@ -88,6 +88,11 @@ const agc_native_program *irc_program(uint8_t cm){
   points[cm]=calloc(n?n:1u,sizeof *points[cm]);
   for(i=0;i<40960u;++i)if((in[i>>3]>>(i&7u))&1u){points[cm][k].physical=(uint16_t)i;points[cm][k].call=cm?IRT_CM:IRT_LM;++k;}
   prog[cm]=*p;
+  /* (A program with no agc_hardware is run as a copy that carries one
+   * (tests/interp_case.c irc_cm_begin). Give it its own, which the routines
+   * here and outer[cm] share, so that the program stopper() is handed is
+   * still outer[cm] and the routines read the case's channels.) */
+  {static agc_hardware hw[2];if(!prog[cm].hardware)prog[cm].hardware=&hw[cm];}
   if(p->basic_count>6u){fprintf(stderr,"too many basic tables\n");exit(2);}
   /* The spec's RTB natives first: the file's compiled basic code may hold
    * a routine at an RTB target that only its inline call ever reached. */
