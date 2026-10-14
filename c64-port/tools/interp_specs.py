@@ -969,6 +969,10 @@ SPECS = {
         'base': {'cm': 'cm_extended_verbs_file'},
         'symbol': {'cm': 'cm_extended_verbs_file'},
         'basic': 'full',
+        # The C64 flight store links the basic words as two parts
+        # (docs/FLIGHT-PARTS.md): chunked, every module held the whole
+        # basic_run.
+        'flight_parts': [0o43 * 1024 + 0o2600 - 0o2000],
         # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
         # and DAPDISP (fan targets, so their states below apply), and the returns the
         # compiler cannot find on its own: after the in-file checks that pass
@@ -3814,6 +3818,9 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
+        # The C64 flight store links the basic words as three parts
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
+        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,

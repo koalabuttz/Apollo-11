@@ -53,12 +53,21 @@ P63_KEYS = '@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E'
 # drag, so P63 senses 0.05 g and P64 and P67 guide the roll to the splash
 # point (on yaAGC: P64 at 204 s, P67 at 306 s, peak 6.7 g, drogue
 # conditions at 470 s about 1 nm from the target).
+# lm-p63-nassp: Apollo 11's own P63 state (FLIGHT_CORE, the NASSP core of
+# tools/scenarios/luminary099-p63-ignition.core, 102:25 GET) with AUTO, the
+# LR antenna in position 2 and the descent engine model: V37E63E, proceed
+# on the TIG display, ENTER through R51 and R60, proceed on V99N62; the LLGE
+# flies the braking phase to P64 at about 1,118 s (yaAGC alone the same).
+NASSP = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
+         'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_ENGINE': '15100'}
+NASSP_KEYS = '@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E'
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
-          ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY)]
+          ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
+          ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP)]
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured

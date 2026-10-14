@@ -2213,7 +2213,7 @@
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
             "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
-              "vice-cm-integration-init": 322
+              "vice-cm-integration-init": 331
             }
           },
           "c64_branch_outcomes": {
@@ -2221,8 +2221,8 @@
             "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/lane-g-417.md",
+            "sha256": "e42ee2722fb2a4ba88372518fb41c7bca3b2099b775710d08dd6117c1c2015c6"
           }
         }
       }
@@ -9133,7 +9133,7 @@
       "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
       "bytes": 25139,
       "lines": 1102,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9150,7 +9150,7 @@
           "verification": "docs/INTEGRATION-INITIALIZATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9165,7 +9165,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET or Q"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-integration-init/lm-integration-init-source-map.json",
@@ -9185,6 +9184,10 @@
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-integration-init.md",
+            "sha256": "2ce18acd5cb83d8e762415fc83f12e114ebd6b4aee39b7bd3974ff0e75494d7c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
@@ -10637,7 +10640,7 @@
       "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
       "bytes": 34716,
       "lines": 1764,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10649,7 +10652,7 @@
             "src/rtb_angles.c",
             "src/rtb_modes.c"
           ],
-          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 178 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "scope": "Every word of the file (1,056 words in banks 04, 06, 10, 11, 23 and 35): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, VNPOOH, INITVEL, the MGA routines, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 509 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P34-P35.md"
         },
         {
@@ -10725,7 +10728,7 @@
           "verification": "docs/LM-S3435B.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10740,7 +10743,6 @@
           "The interpreter exits POODOO and ALARM (ACOSABRT among them)",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-source-map.json",
@@ -10764,6 +10766,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
             "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-e-419.md",
+            "sha256": "ee81946d5922215c3b908d6d661b05f031179407a653cac32e9ba9ba7f7ec6a8"
           }
         }
       }
@@ -10774,7 +10780,7 @@
       "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
       "bytes": 30910,
       "lines": 1471,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10793,7 +10799,7 @@
           "verification": "docs/LM-P40-P47.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10812,7 +10818,6 @@
           "The Executive's CHANG2 (05126) with a job waiting",
           "Integrated C64 application acceptance"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-source-map.json",
@@ -10836,6 +10841,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
             "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a2-410.md",
+            "sha256": "f4c5b829243d8885bb2c080f2bf0062431871bf5c122673abd48052c5334fe54"
           }
         }
       }
@@ -10913,7 +10922,7 @@
       "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
       "bytes": 7797,
       "lines": 439,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10939,7 +10948,7 @@
           "verification": "docs/LM-P70-P71-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10983,6 +10992,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-p70-p71-file/lm-p70-p71-file-closure.json",
             "sha256": "b4b1c45f0de47a0328980fb252abb4c546b67a610fc6f8ffe745b04a20ded456"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-408.md",
+            "sha256": "6e179a61946e45df3fc00b14ae83cd2c053c6442c4216dc84214b3410d53acf9"
           }
         }
       }
@@ -12935,7 +12948,7 @@
       "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
       "bytes": 9235,
       "lines": 436,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -12950,7 +12963,7 @@
           "verification": "docs/LM-STABLE-ORBIT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -12964,7 +12977,6 @@
           "TC RTRN to the saved return outside the file",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-source-map.json",
@@ -12984,6 +12996,10 @@
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-stable-orbit.md",
+            "sha256": "af050e887817539c78001bee15c51adc301b0c552ea65fc80cd454f80e393009"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
