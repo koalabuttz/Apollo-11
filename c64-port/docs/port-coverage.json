@@ -3044,7 +3044,7 @@
       "sha256": "07939648f0f52a6b3dae03f6246acbbf28d66d36cf51c98936cc00b0d1e070a9",
       "bytes": 8790,
       "lines": 496,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3061,7 +3061,7 @@
           "verification": "docs/MEASUREMENT-INCORPORATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3073,7 +3073,6 @@
           "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/measurement-inc/measurement-inc-source-map.json",
@@ -3093,6 +3092,10 @@
             "vice_targets": {
               "vice-measurement-inc": 354
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/measurement-inc.md",
+            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
@@ -10131,7 +10134,7 @@
       "sha256": "735aebaba4df4159e83d48b4cbe509479a9d29fb66ce05adf4bcb79076302fdc",
       "bytes": 8613,
       "lines": 495,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10148,7 +10151,7 @@
           "verification": "docs/MEASUREMENT-INCORPORATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10160,7 +10163,6 @@
           "INTSTALL, GRP2PC, RECTIFY, SVDWN1, SVDWN2 and the Executive stop with EXEC_UNMAPPED, as the original leaves the file there",
           "The caller's return through Q or QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/measurement-inc/measurement-inc-source-map.json",
@@ -10180,6 +10182,10 @@
             "vice_targets": {
               "vice-measurement-inc": 354
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/measurement-inc.md",
+            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
