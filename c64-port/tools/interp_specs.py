@@ -3079,6 +3079,120 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'rope_bin': True,
     },
+    # Lane D2: Luminary099 AOSTASK_AND_AOSJOB (1/ACCS, the DAP's mass and
+    # jet-acceleration interface, and the AOSTASK/AOSJOB offset filter), the
+    # whole file as basic routines at its original addresses.
+    'lm-aostask': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
+        'base': {'lm': 'lm_aostask'},
+        'symbol': {'lm': 'lm_aostask'},
+        'basic': 'full',
+        'entries': ['@external', '1/ACCS+2'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= AOSQ (E6).
+        'ebank': 6,
+        # DVOVSUB (INCR Q) returns past its ADRES of the divisor.
+        'call_skips': {'DVOVSUB': 1},
+        # The constants the file reads under INDEX: the inertia and mass
+        # tables (INERCONA..GFACTM, 20,3037-3110), the jet torque and
+        # acceleration coefficients (TORQCONS..COEFF, 20,3145-3230), the
+        # U/V jet masks (20,3762-3771) and DVOVSUB's divisors (TORKJET1,
+        # 20,2000, through its ADRES).
+        # DVOVSUB's INDEX Q reads the ADRES after each TC DVOVSUB (LRESC +4
+        # .. +22, and TORQCONS +11 and +42 in its table).
+        'fixed_tables': {'TORKJET1': (0, 0), 'INERCONA': (-0o41, 0o47), 'TORQCONS': (0, 0o63), '-UMASK': (-4, 3),
+                         'LRESC': (4, 0o22)},
+        # TC ARET runs ARET's word: DO1/NET+'s saved return (QXCH ARET) or
+        # ACCHERE's TCF ACCTHERE (CA ACCHERE; TS ARET).
+        'tcf_words': True,
+        # DOCKTEST's CCS DOCKTEMP: DOCKTEMP (MPAC +3) is DAPBOOLS' CSMDOCKD
+        # bit, 0 or BIT13 (20,2463-2465); negative it would fall into
+        # DVOVSUB with no call.
+        'states': {'20,2773': {'157': [0, 0o10000]}},
+        'target': 'tests/lm_aostask_target.c',
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane D2: Luminary099 KALMAN_FILTER (RATELOOP: the jet torque and
+    # rate the DAP's 100 ms cycle feeds its filter), basic routines at
+    # its original addresses.
+    'lm-kalman': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'KALMAN_FILTER.agc'},
+        'base': {'lm': 'lm_kalman'},
+        'symbol': {'lm': 'lm_kalman'},
+        'basic': 'full',
+        'entries': ['@external'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= NO.UJETS (E6).
+        'ebank': 6,
+        'target': 'tests/lm_kalman_target.c',
+        # RATELOOP runs on every DAP pass (P-AXIS's SUPERJOB), in the pinned
+        # per-cycle set: the EB 6 window fast forms.
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
+    # Lane D2: Luminary099 RADAR_LEADIN_ROUTINES (RADSAMP, the radar
+    # sampling task, DORSAMP its job, and VARADAR's radar read dispatch),
+    # basic routines at their original addresses. (src/lm_radar_leadin.c is
+    # the earlier hand-written partial translation.)
+    'lm-radar-leadin-routines': {
+        'rope_fallback': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
+        'base': {'lm': 'lm_radar_leadin_routines'},
+        'symbol': {'lm': 'lm_radar_leadin_routines'},
+        'basic': 'full',
+        'entries': ['RADSAMP', 'DORSAMP', 'DORSAMP2', 'VARADAR'],
+        'channels': 'all',
+        'channel_inputs': True,
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        'externals': {},
+        # EBANK= RSTACK (E4).
+        'ebank': 4,
+        # VARADAR's INDEX RTSTDEX; CAF RDRLOCS: the six radar read CADRs.
+        'fixed_tables': {'RDRLOCS': (0, 5)},
+        # The sampling words as P20-P25 and R77 set them (E4): RSTACK holds
+        # four DP samples, so RTSTLOC and RTSTMAX step 0-6 by two, RTSTBASE
+        # is 0 (RR) or 2 (LR) and RTSTDEX names one of RDRLOCS' six radar
+        # reads. RSAMPDT is the sample period or +0 (stop); -0 would run
+        # RADSAMP's 2CADR as an instruction.
+        'range_states': [('RADSAMP', 'RDRLOCS', {'2351': list(range(6)), '2352': [0, 2, 4, 6],
+                                                  '2353': [0, 2], '2354': [0, 2, 4, 6],
+                                                  '2355': [0, 1, 0o144, 0o37777, 0o40000, 0o77776]})],
+        'target': 'tests/lm_radar_leadin_routines_target.c',
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 32,
+        'edge_cases': True,
+        'c64_rows': 'cover',
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+    },
     # Lane A2: Luminary099 FINDCDUW--GUIDAP_INTERFACE (bank 30), basic and
     # interpretive.
     'findcduw': {

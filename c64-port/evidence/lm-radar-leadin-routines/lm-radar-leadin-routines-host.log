@@ -1,0 +1,6 @@
+cc -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_radar_leadin_routines.c tests/lm_radar_leadin_routines_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_radar_leadin_routines.c -o build/test-lm-
+./build/test-lm-radar-leadin-routines
+lm-radar-leadin-routines: 56 checks, 0 failures
+cc -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_radar_leadin_routines.c tests/lm_radar_leadin_routines_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_radar_leadin_routines.c -o build/te
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-radar-leadin-routines-sanitize
+lm-radar-leadin-routines: 56 checks, 0 failures
