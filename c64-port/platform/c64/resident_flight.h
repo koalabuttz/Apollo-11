@@ -111,6 +111,10 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
+/* The hardware restart (platform/c64/resident_gojam_module.c,
+ * docs/FLIGHT-RESTART.md): the GOJAM change to the image and rk_hardware;
+ * run with rk_run_module from a resident trigger. */
+#define RK_MODULE_GOJAM APOLLO_OV2_ID(APOLLO_LANE_A, 0xe5) /* task slot */
 /* The flight program's device fields neither rk_io nor agc_hardware holds
  * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
  * latches, ...), for the modules whose tables take another io record. Its
