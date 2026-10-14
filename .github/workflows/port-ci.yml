@@ -48,6 +48,7 @@ jobs:
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
       host_shards: ${{ steps.plan.outputs.host_shards }}
       c64_full: ${{ steps.plan.outputs.c64_full }}
+      c64_nshards: ${{ steps.plan.outputs.c64_nshards }}
       sha: ${{ steps.sha.outputs.sha }}
     steps:
       - &checkout
@@ -95,7 +96,17 @@ jobs:
           # A full c64 run is over two hours of builds and VICE: split it.
           c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
           echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
-          echo "c64_shards=$([ "$c64_full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
+          # A PR's own c64 list gets a runner per hour of measured target time
+          # (tools/ci_target_seconds.json), up to 4: shared kernel PRs pick
+          # 9+ VICE targets of 5-25 minutes each.
+          if [ "$c64_full" = 1 ]; then c64_n=4
+          else
+            c64_n=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))' \
+                    | xargs python3 tools/ci_run.py --count-shards 4 2>/dev/null | tail -1)
+            case "$c64_n" in [1-4]) ;; *) c64_n=1 ;; esac
+          fi
+          echo "c64_nshards=$c64_n" >> "$GITHUB_OUTPUT"
+          echo "c64_shards=$(python3 -c "print(list(range($c64_n)))")" >> "$GITHUB_OUTPUT"
           # A full host run is about 1,000 targets and an hour on one runner.
           full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')
           echo "host_shards=$([ "$full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
@@ -228,7 +239,7 @@ jobs:
         env:
           AFFECTED: ${{ needs.plan.outputs.affected }}
           SHARD: ${{ matrix.shard }}
-          SHARDS: ${{ needs.plan.outputs.c64_full == '1' && 4 || 1 }}
+          SHARDS: ${{ needs.plan.outputs.c64_nshards }}
           C64_FULL: ${{ needs.plan.outputs.c64_full }}
         run: |
           source deps/env.sh
