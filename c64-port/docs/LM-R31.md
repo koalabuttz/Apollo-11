@@ -324,8 +324,8 @@ Hashes are in `evidence/lm-r31/SHA256.json`. Bulk files are assets of the
     PUSHLOC for the interpretive ones.
 
   See `lm-r31-checks.log`.
-- **C64 execution results.** Run `make vice-lm-r31-1 vice-lm-r31-2
-  vice-lm-r31-3` (groups 1-3, 4-5 and 6). Six PRGs each register
+- **C64 execution results.** Run `make lm-r31-vice`
+  (vice-lm-r31-1 to -6 on CI, one per group). Six PRGs each register
   only the routines their cases reach, built with `-fno-inline-functions`:
   - group 1: COMPDISP (NORMUNX1) (128 cases);
   - group 2: RANGE and RRATE (UNIT) (128 cases);
