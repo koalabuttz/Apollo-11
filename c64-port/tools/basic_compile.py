@@ -204,6 +204,12 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
+            if not self.in_file(k[0]) and k[0] in self.cp.cut_words and not k[1]:
+                # Spec 'inside': flow runs on into a segment the spec leaves
+                # to other code (INTERPRETER's core); the routine stops there.
+                self.nodes[k] = ['/* %s: outside the spec\'s segments */' % self.where(k[0]),
+                                 'W[5]=0%04ou;return EXEC_OK;' % self.logical(k[0])]
+                continue
             if not self.in_file(k[0]):
                 # Spec 'fall_out': a TS overflow skip or CCS exit past the
                 # file's last word, which no admitted state takes (the
@@ -701,7 +707,11 @@ class Basic:
                 st.append('ai_%s(s,0%05ou); /* %s */' % (lo_name, self.L.word(fp), sym))
             st.append(cont())
             return st
-        if writes and a in (4, 5, 6) or (op == 'DXCH' and a in (4, 5, 6, 7)):
+        # Spec 'bb_writes': words that may write BBANK (INTRSM's LXCH BBANK,
+        # which TCFs to fixed-fixed code next, so no banked transfer follows
+        # under the new FB).
+        bb_ok = op in ('LXCH', 'TS', 'XCH') and a == 6 and self.where(here) in self.spec.get('bb_writes', ())
+        if writes and a in (4, 5, 6) and not bb_ok or (op == 'DXCH' and a in (4, 5, 6, 7)):
             raise BasicError('%s on %o at %s' % (op, a, self.where(here)))
         st.append(self.operand_stmt(op, a, here, False))
         st.append(cont())
@@ -807,6 +817,21 @@ class Basic:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
         c.append('}')
+        if self.spec.get('fixed_rope'):
+            # Spec 'fixed_rope' (INTERPRETER's subroutines): an INDEX read of
+            # fixed memory reads the caller's word from the mission's rope
+            # image under FB and SUPERBNK, as the AGC does (DMP's ADRES after
+            # its TC, POLY's inline coefficients). The rope is the program's
+            # data here, as it is for the interpreter core that runs the
+            # same file (include/rope_image.h).
+            c.append('#include "rope_image.h"')
+            c.append('static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const %s *io,unsigned e,agc_word *k){' % self.io)
+            c.append(' unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;')
+            c.append(' if(e>=04000u)p=(uint16_t)(2048u+e-04000u);')
+            c.append(' else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
+            c.append(' return apollo_rope_read(%du,p,k);' % (0 if self.io == 'p66_bias_io' else 1))
+            c.append('}')
+            c.append('#define fx(s,e,k) fxr(s,io,e,k)')
         # (msu: tools/interp_compile.py's helper.)
         c.append('/* Host coverage builds (tools/interp_routine_differential.py --freeze)')
         c.append(' * count each label a case reaches, to pick C64 cases that take every')
