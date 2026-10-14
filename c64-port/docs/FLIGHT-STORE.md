@@ -172,6 +172,24 @@ than 64 KB is `too big to split`. Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
 
+Shadowed entries are left out. Several files are compiled by more than one
+lane (CM EXTENDED_VERBS as Lane C's `lanec_ev_cm_*` tables and as
+`cm_extended_verbs_file_basic`, for example). A key resolves to its first
+holder that is not the interpreter's, so the other tables' entries for it
+never run. A module or chunk with such entries links only its live ones,
+in key order (`FS_PICK`, X(table, index)). `--gc-sections` then drops the
+shadowed routines, and a module with no live entries is left out. The
+report lists `shadowed_entries` per table and
+`modules_left_out_shadowed`. Flight parts keep their own key slices.
+Erasable keys are always kept.
+
+With every table fitting, both stores ran past the rope image of a
+2 MB REU (LM 2,146,816 bytes against 1,835,008; CM 2,552,576 against
+1,966,080). After pruning (573 LM and 665 CM entries, 10 and 8 modules
+left out) and CM EXTENDED_VERBS as two flight parts
+(`docs/FLIGHT-PARTS.md`), they are LM 1,485,568 and CM 1,434,880 bytes.
+Unplaced keys did not change (LM 268, CM 267: Lane C's Pinball routines).
+
 ### Fit with chunking (this branch, after #209)
 
 | | Tables | Modules | Linked | Failed | Store image |
