@@ -1511,11 +1511,20 @@ SPECS = {
                    '27,2745': {'0330': [0o3704]}},
         # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
         # land on interpretive words, never run as basic code.
+        # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
+        # start): FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET).
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
+        # RTB-left pairs (PTOACSM's, DT/2COMP's) resume their right order
+        # from DANZIG.
+        'pending_danzig': True,
         'interp_not_basic': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'target': 'tests/cm_integration_init_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.

@@ -2174,7 +2174,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return; at 27,2745 (TC INTWAKUQ) INTWAKUQ holds 03704, the return its QXCH saved. Other erasables take any value.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return; at 27,2745 (TC INTWAKUQ) INTWAKUQ holds 03704, the return its QXCH saved. INTSTALL, its EXIT and GOBAC's RVQ also run in NOVAC jobs (V37's fresh start): a quarter of their cases have FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET). The six pairs with an RTB on the left and an order on the right (RTB MOVEPCSM, SGNAGREE, LOADTIME three times, MOVEACSM) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). Other erasables take any value.",
         "external_continuations": [
           "ALARM (outside basic routine)",
           "BANKJUMP (outside basic routine)",
@@ -2199,26 +2199,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-integration-init/cm-integration-init-source-map.json",
-            "sha256": "5b5e7d834a553a8983a3a1a46db0759db14cd029cd1b0695327582a4a0a0bd8c"
+            "sha256": "1940b18e03e9064054fe9a76b81ee078fa1020d46aa39566a4b3618475baa00e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-host.log",
-            "sha256": "f7c41463d442356d7dbd4f37057e6a0c3e0d4760cdc8a79f37995fc6b235fe01"
+            "sha256": "bff824a026ecacc94905d9bee19514f86857942ac9b19954a18a880b24932f5a"
           },
           "c64_execution_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
-            "sha256": "2da5c2ca32c1d8580cfd5682ffcc9ab0ce2ae60f1b4e3acb8a4548dc0ab096b2",
+            "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
             "vice_targets": {
               "vice-cm-integration-init": 322
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "15c3be4e4679dcfe6bcee094e82b15ea8f0c657f97fb0cb864d673c24f0f46bc"
+            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-370.md",
