@@ -30,6 +30,14 @@ uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
 #endif
+/* The step profile (platform/c64/dap_pass_check.c -DRK_STEP_PROFILE): the
+ * check's rk_prof(n) charges the cycles since its last call to segment n. */
+#ifdef RK_STEP_PROFILE
+void rk_prof(uint8_t segment);
+#define RK_PROF(n) rk_prof(n)
+#else
+#define RK_PROF(n) ((void)0)
+#endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
@@ -273,10 +281,12 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
         rk_module_program(&module_program,t);
+        RK_PROF(4);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. */
-        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) continue;
+        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) { RK_PROF(5); continue; }
+        RK_PROF(6);
         return rk_module_status(status,steps,RK_MODULE_STEPS);
     }
     return EXEC_UNMAPPED;
@@ -289,17 +299,23 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     uint16_t loc;
     /* The soft stack ran into the pinned module below it. */
     if(*(volatile uint8_t *)RK_STACK_CANARY!=RK_STACK_CANARY_VALUE) return EXEC_INVALID_ACTION;
+    RK_PROF(0);
     rk_rupts();
+    RK_PROF(1);
     status=rk_trampoline(stop_physical);
-    if(status!=EXEC_UNMAPPED) return status;
+    if(status!=EXEC_UNMAPPED) { RK_PROF(2); return status; }
+    RK_PROF(3);
 #ifndef RK_NO_DIRECT
     status=rk_direct(stop_physical);
     if(status!=EXEC_UNMAPPED) return status;
+    RK_PROF(7);
 #endif
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
+    RK_PROF(8);
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
+    RK_PROF(9);
 #ifndef RK_NO_DIRECT
     /* A direct-only module's main only builds its tables: the point runs
      * through them in this step. */

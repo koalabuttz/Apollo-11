@@ -45,6 +45,8 @@
  * match yaAGC run from the same state with the clock frozen, the clock
  * counters included, so the run is one yaAGC run under the same tick
  * schedule. No free-running reference is run.
+ * FLIGHT_MCT=PATH: the machine cycles yaAGC took for each matched routine,
+ * by table and entry (mct_write), for the work clock's weights.
  * FLIGHT_SNAPSHOT=CS,PATH: at the first native sample point at or after
  * centisecond CS (after that point's pokes), write the native state (the
  * erasable image, the superbank, the interrupt enable, agc_hardware and the
@@ -415,6 +417,23 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
  for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
+/* FLIGHT_MCT=PATH: each matched routine's yaAGC machine cycles by table and
+ * entry key (count, sum, sum of squares, least, most), the calibration of
+ * the flight resident's work clock (tools/flight_mct.py). */
+enum { MCTS=8192 };
+static struct { const char *table; uint16_t key; uint8_t in; unsigned long n,sum,least,most; double sq; } mcts[MCTS];
+static unsigned nmcts;
+static void mct_note(const char *table,const agc_word *w,agc_word sb,unsigned long mct){int in;uint16_t key=point(w,sb,&in);unsigned i;
+ for(i=0;i<nmcts;++i)if(mcts[i].table==table&&mcts[i].key==key&&mcts[i].in==(uint8_t)in)break;
+ if(i==nmcts){if(nmcts==MCTS)return;mcts[i].table=table;mcts[i].key=key;mcts[i].in=(uint8_t)in;mcts[i].least=mct;++nmcts;}
+ ++mcts[i].n;mcts[i].sum+=mct;mcts[i].sq+=(double)mct*(double)mct;
+ if(mct<mcts[i].least)mcts[i].least=mct;
+ if(mct>mcts[i].most)mcts[i].most=mct;}
+static void mct_write(const char *path){FILE *f=fopen(path,"w");unsigned i;
+ if(!f){perror(path);return;}
+ for(i=0;i<nmcts;++i)fprintf(f,"%s %u %u %lu %lu %.0f %lu %lu\n",mcts[i].table,(unsigned)mcts[i].key,(unsigned)mcts[i].in,
+  mcts[i].n,mcts[i].sum,mcts[i].sq,mcts[i].least,mcts[i].most);
+ fclose(f);}
 static unsigned long snap_cs;
 static const char *snap_path;
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[8192][2048],first[2048];
@@ -524,7 +543,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);channels_in(&hw);st=call(&p,&s,x);channels_o
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
     if(st==EXEC_OK){
      if(scaled)spend(span_mct);
-     if(n>=0)locked+=(unsigned long)n;
+     if(n>=0){locked+=(unsigned long)n;mct_note(e->name,before.words,io0.superbank,span_mct);}
      else miss(e->name,before.words,io0.superbank,s.words,first);
      continue;}}
    /* A refusal: undo whatever the routine did and bridge the point. */
@@ -532,6 +551,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);channels_in(&hw);st=call(&p,&s,x);channels_o
   {agc_word w[2048];long n;memcpy(w,s.words,sizeof w);
    if((n=bridge(&s,&io,&hw,&pending,5000000l))<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    hole(w,io.superbank,(unsigned long)n,e?e->name:0);bridged+=(unsigned long)n;}}
+ if(getenv("FLIGHT_MCT"))mct_write(getenv("FLIGHT_MCT"));
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
   MISSION?"CM":"LM",steps,locked,bridged,samples,samples-diffs,diffs);
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
