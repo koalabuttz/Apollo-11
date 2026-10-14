@@ -6,10 +6,22 @@ const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
 uint8_t irc_ch_on;
 #if IRC_IO && !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
+/* C64 builds of the 'all' specs name the diagnostic's agc_hardware to the
+ * programs with -DAGC_CHANNELS_HW=irc_cm_hw (absolute addressing, as the
+ * flight store's rk_hardware), which keeps their groups the size they were
+ * with cm_channels; other builds take it through p->hardware. (.noinit
+ * keeps it out of -mlto-zp's zero page, where it cost the static-stack
+ * groups up to 3 KB; irc_cm_begin zeroes it.) */
+#ifdef AGC_CHANNELS_HW
+agc_hardware AGC_CHANNELS_HW __attribute__((section(".noinit")));
+#define IRC_CM_H(h) ((void)(h),&AGC_CHANNELS_HW)
+#else
+#define IRC_CM_H(h) (h)
+#endif
 /* Comanche ('channels': 'all'): 011-014 and the traps in the run's
  * cm_native_io, 5, 6 and 030-033 in the program's agc_hardware. */
 void irc_cm_io(void *cm_io,agc_hardware *h,unsigned save){cm_native_io *io=(cm_native_io *)cm_io;
- agc_word *f[IRC_NCH];unsigned i;
+ agc_word *f[IRC_NCH];unsigned i;h=IRC_CM_H(h);
  f[0]=&h->channel5;f[1]=&h->channel6;f[2]=&io->channel11;f[3]=&io->channel12;f[4]=&io->channel13;
  f[5]=&io->channel14;f[6]=&h->channel30;f[7]=&h->channel31;f[8]=&h->channel32;f[9]=&h->channel33;
  for(i=0;i<IRC_NCH;++i){if(save)irc_ch[i]=*f[i];else *f[i]=irc_ch[i];}
@@ -20,9 +32,15 @@ void irc_cm_io(void *cm_io,agc_hardware *h,unsigned save){cm_native_io *io=(cm_n
  * the program has none: q, a copy of p, takes it), then the case's
  * channels. Returns the program to run. */
 const agc_native_program *irc_cm_begin(const agc_native_program *p,agc_native_program *q,void *cm_io){
+#ifdef AGC_CHANNELS_HW
+ uint8_t *b=(uint8_t *)&AGC_CHANNELS_HW;unsigned i;
+ (void)q;for(i=0;i<sizeof(agc_hardware);++i)b[i]=0;
+#else
  static agc_hardware cm_hw;agc_hardware z={0};
  if(!p->hardware){*q=*p;q->hardware=&cm_hw;p=q;}
- *p->hardware=z;if(irc_ch_on)irc_cm_io(cm_io,p->hardware,0);
+ *p->hardware=z;
+#endif
+ if(irc_ch_on)irc_cm_io(cm_io,p->hardware,0);
  return p;
 }
 #endif

@@ -5,7 +5,7 @@
 CM_ORBITAL_INTEGRATION_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_ORBITAL_INTEGRATION_SRC = src/cm_orbital_integration.c tests/cm_orbital_integration_target.c $(CM_ORBITAL_INTEGRATION_COMMON)
 CM_ORBITAL_INTEGRATION_HDR = include/cm_orbital_integration.h tests/interp_case.h tests/cm_orbital_integration_vectors.h tests/cm_orbital_integration_c64_vectors.h
-CM_ORBITAL_INTEGRATION_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS
+CM_ORBITAL_INTEGRATION_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-orbital-integration sanitize-cm-orbital-integration c64-cm-orbital-integration vice-cm-orbital-integration cm-orbital-integration-differential
 all: build/test-cm-orbital-integration
 test: test-cm-orbital-integration
