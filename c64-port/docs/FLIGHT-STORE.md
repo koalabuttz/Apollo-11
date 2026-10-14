@@ -435,7 +435,18 @@ port) runs one mission:
    tools/flight_scenarios/) the same way; `FLIGHT_CH32` and `FLIGHT_CH33`
    set those input channels as `FLIGHT_CH30` does. In the keys argument,
    `@CS` holds the next key until CS centiseconds (keys otherwise go every
-   half second from 2 s). The reference keeps up to 32,767 centiseconds.
+   half second from 2 s). The reference keeps up to 32,767 centiseconds
+   (scaled time, which has none, any number). `FLIGHT_CORE=FILE` (scaled
+   time only) starts from a yaAGC core dump (agc_engine_init's format,
+   e.g. a NASSP save) in place of GOJAM: yaAGC loads it and finishes any
+   EXTEND, INDEX or interrupt sequence it stopped inside and runs on to
+   the idle loop (a dump is usually inside a routine), the native side
+   takes that state with any `FLIGHT_CH30`-`33` given overriding the
+   core's, and AGC time (keys, pokes, the centisecond count) runs from the
+   core's TIME1/TIME2. `FLIGHT_MISS_LOG` prints each routine yaAGC did
+   not match with its centisecond, Z, FB and Q (a diagnostic); set to a
+   directory, it also names the three routines before each and writes the
+   erasable state the first eight started in there.
    `FLIGHT_ENGINE=KG` (LM) adds a minimal descent engine, the same on both
    sides at each sample point: from ENGONFLG it thrusts at 10% (373
    throttle bits of 12.53 N), follows each throttle command (PSEUDO55 when
@@ -490,9 +501,39 @@ port) runs one mission:
    (470 s, 24 km, 650 m/s) N66 shows about 1 nm crossrange and 2 nm
    downrange error. On base 4f0e3d4a the native run (32,000 cs, scaled x1)
    takes 1,432,112 routines (11,557 bridged instructions) and is in P67
-   at the end; 1 routine yaAGC did not match (INTEGRATION_INITIALIZATION's
-   compiled interpretive Q, as above) and 16 unregistered or refused
+   at the end; each is checked in lockstep against yaAGC from the same
+   state, and 1 did not match (INTEGRATION_INITIALIZATION's compiled
+   interpretive Q, as above) and 16 unregistered or refused
    points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
+   `lm-p63-nassp`: Apollo 11's own P63 state, the NASSP core
+   tools/scenarios/luminary099-p63-ignition.core (102:25 GET), with AUTO,
+   the LR antenna in position 2 (`FLIGHT_CH33=036673`; position 1, as the
+   core has it, gives alarm 523 at high gate) and `FLIGHT_ENGINE=15100`;
+   the keys are those of `lm-p63-descent`. The LLGE flies the braking
+   phase to P64 at about 1,118 s after the core (on yaAGC alone too); with
+   no landing radar model, alarms 511 and 522 recur every 2 s.
+   tools/flight_scenario_vice.py runs a flight scenario on the C64: the
+   host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
+   the LM flight resident on the whole-program store in VICE
+   (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
+   for `--cs` centiseconds with cycles, steps and module loads per AGC
+   interrupt; a refused or untranslated point stops it.
+   On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
+   1,150 s (240,234 bridged instructions, 41 unregistered points) and is
+   in P64 (MODREG 100) at the end. Under
+   scaled time there is no sample-by-sample reference (yaAGC's clock is
+   frozen); each native routine is instead checked in lockstep against
+   yaAGC from the same state: 8 of the 5,031,476 did not match (5 points),
+   all the compiled interpretive Q of INTEGRATION_INITIALIZATION (as
+   above). The core was dumped inside
+   DOWNRUPT, so yaAGC runs it to the idle loop before the native side
+   starts: entering DOWNTELEMETRY's continuation with the dump's Q (00336)
+   gives no state a flight reaches.
+   `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
+   LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
+   centiseconds (2.4 times real time), then a point the store does not map
+   (NB2CDUSP+1; 46 of the 124 LM table modules do not link into the
+   flight store yet).
 
 10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
