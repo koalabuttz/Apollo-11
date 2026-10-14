@@ -532,7 +532,7 @@ port) runs one mission:
    no landing radar model, alarms 511 and 522 recur every 2 s.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
-   the LM flight resident on the whole-program store in VICE
+   the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
    interrupt; a refused or untranslated point stops it.
@@ -551,7 +551,14 @@ port) runs one mission:
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
    (NB2CDUSP+1; 46 of the 124 LM table modules do not link into the
-   flight store yet).
+   flight store yet). With every table linked (6f894e00) it stops at the
+   same Z, 30,3534 (the DLOAD DSQ operand at NB2CDUSP), after 65
+   centiseconds: an Executive job change (01,3210, NUCHANG2) resumes the
+   interpretive job at its operand word, not at the next instruction.
+   `cm-entry` from 175 s runs 1,596 centiseconds at 9.0 times real time
+   (857 steps), then stops at Comanche 30,3441, the operand of the TIX,1
+   at 30,3440: the same resume. `FSV_STEPS=1` links DP_STEPS and prints
+   the last step records (FB bank, Z, status).
 
 10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
