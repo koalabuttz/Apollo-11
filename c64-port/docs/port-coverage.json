@@ -2791,7 +2791,7 @@
       "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
       "bytes": 3545,
       "lines": 99,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -2803,7 +2803,7 @@
           "verification": "docs/MAIN-ASSEMBLY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -2835,6 +2835,10 @@
             "vice_targets": {
               "vice-main-assembly": 177
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
           },
           "c64_branch_outcomes": {
             "path": "docs/MAIN-ASSEMBLY.md",
@@ -9209,7 +9213,7 @@
       "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
       "bytes": 3815,
       "lines": 91,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -9221,7 +9225,7 @@
           "verification": "docs/MAIN-ASSEMBLY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -9253,6 +9257,10 @@
             "vice_targets": {
               "vice-main-assembly": 177
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/main-assembly.md",
+            "sha256": "870ab84f56d6be192c4ec65c4c5993c29e21c678da2063d35c4842ddd7c5906d"
           },
           "c64_branch_outcomes": {
             "path": "docs/MAIN-ASSEMBLY.md",
