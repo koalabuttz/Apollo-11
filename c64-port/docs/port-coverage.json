@@ -3524,7 +3524,7 @@
       "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
       "bytes": 4804,
       "lines": 162,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3546,7 +3546,7 @@
           "verification": "docs/CM-P76-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3591,6 +3591,10 @@
           "executed_instruction_closure": {
             "path": "evidence/cm-p76-file/cm-p76-file-closure.json",
             "sha256": "f275a2522917ac6d99b2987527dda3f906f8ec3df33ea48639a8b35c04e5e9a3"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-344.md",
+            "sha256": "ed97fe4d651c9a9d95d4d177d398adac9aecf8cfa8eb1765a6608a87df6ba507"
           }
         }
       }
