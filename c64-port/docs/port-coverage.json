@@ -1700,7 +1700,7 @@
       "sha256": "78875ef9f79433fa096eb975dd9658709cd2e4ea09cff47e2165c74251489f1b",
       "bytes": 4642,
       "lines": 205,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -1722,7 +1722,7 @@
           "verification": "docs/CM-GROUND-TRACK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -1766,6 +1766,10 @@
           "executed_instruction_closure": {
             "path": "evidence/cm-ground-track/cm-ground-track-closure.json",
             "sha256": "3bd538bd3154392492798b1b4a21e9bda49e1f851c9dce30b8f2ea4f3168e783"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-320.md",
+            "sha256": "1f1c3b0d0a17f682f80a9570ca6b04e31536d8e66e9850e297d6cb8e953a121d"
           }
         }
       }
@@ -4723,7 +4727,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
+            "sha256": "f5dc03b8301414d193f9d3e9907b5928c10390c73dc9ed4fb6f17b4d0eb2a32c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -4731,18 +4735,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
+            "sha256": "f163b4cc884bd36dd8bc5195c68c3b92561d8828eda8de6eaa5ad76edd480483",
             "vice_targets": {
-              "vice-rtb-op-codes": 144
+              "vice-rtb-op-codes": 145
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
-            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+            "sha256": "f5247946e6ae20e443671fcf0e895a7ed2684aa0dafaab0362ab1c5f022aabb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-245.md",
-            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
+            "path": "docs/audits/lane-d1b-330.md",
+            "sha256": "316ec7f22738a77f6cb38374af2c143b09e0a9f139877814cc6ac6789076071a"
           }
         }
       },
@@ -7887,7 +7891,7 @@
       "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
       "bytes": 4308,
       "lines": 168,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7909,7 +7913,7 @@
           "verification": "docs/LM-LAMBERT-AIM.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7952,6 +7956,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-lambert-aim/lm-lambert-aim-closure.json",
             "sha256": "6c4d21304ebdb779258549f0fb042b2ffea239cc35ed85e9a91fe6ea8cb63e17"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-320.md",
+            "sha256": "1f1c3b0d0a17f682f80a9570ca6b04e31536d8e66e9850e297d6cb8e953a121d"
           }
         }
       }
@@ -8078,7 +8086,7 @@
       "sha256": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140",
       "bytes": 4796,
       "lines": 208,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -8100,7 +8108,7 @@
           "verification": "docs/LM-GROUND-TRACK.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -8144,6 +8152,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-ground-track/lm-ground-track-closure.json",
             "sha256": "47a1a84bd3ca43f4655fe9992a8517b51a3afb46d45fdf3cc1a659658daef985"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-320.md",
+            "sha256": "1f1c3b0d0a17f682f80a9570ca6b04e31536d8e66e9850e297d6cb8e953a121d"
           }
         }
       }
@@ -10082,7 +10094,7 @@
       "sha256": "b94d0907e3d64318a3fd225ac8d0106109182d40646e3dcbdcffa354e3f08925",
       "bytes": 4400,
       "lines": 161,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10105,7 +10117,7 @@
           "verification": "docs/LM-P76-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10150,6 +10162,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-p76-file/lm-p76-file-closure.json",
             "sha256": "3e2f759fb9daefa52b078c57291b27a81ae9ec08d673ad74c2fc2e32378034ac"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-320.md",
+            "sha256": "1f1c3b0d0a17f682f80a9570ca6b04e31536d8e66e9850e297d6cb8e953a121d"
           }
         }
       }
@@ -11409,7 +11425,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
+            "sha256": "f5dc03b8301414d193f9d3e9907b5928c10390c73dc9ed4fb6f17b4d0eb2a32c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -11417,18 +11433,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
+            "sha256": "f163b4cc884bd36dd8bc5195c68c3b92561d8828eda8de6eaa5ad76edd480483",
             "vice_targets": {
-              "vice-rtb-op-codes": 144
+              "vice-rtb-op-codes": 145
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
-            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+            "sha256": "f5247946e6ae20e443671fcf0e895a7ed2684aa0dafaab0362ab1c5f022aabb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-245.md",
-            "sha256": "79f57f1feee015de65614ec4d943ba759767350e87fbe3b4cb9acfc0945c6147"
+            "path": "docs/audits/lane-d1b-330.md",
+            "sha256": "316ec7f22738a77f6cb38374af2c143b09e0a9f139877814cc6ac6789076071a"
           }
         }
       },
