@@ -967,6 +967,39 @@ SPECS = {
         'image_w': True,
         'target': 'tests/lm_p76_file_target.c',
     },
+    'lm-r31-file': {
+        'resume_keys': True,
+        'missions': ('lm',),
+        'file': {'lm': 'R31.agc'},
+        'base': {'lm': 'lm_r31_file'},
+        'symbol': {'lm': 'lm_r31_file'},
+        'basic': 'full',
+        # GOMARKF's three returns: terminate and proceed (TC B5OFF) and a
+        # value loaded through the DSKY (TCF DISPN5X).
+        'entries': ['@external', 'DISPN5X+4', 'DISPN5X+5'],
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
+                'NORMUNX1': {'lm': ('lm_normunx1(s,io)', 'stops')}},
+        'includes': ['rtb_angles.h', 'lm_normunit.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/lm_normunit.c', 'src/rtb_vector.c', 'src/rtb_unit.c',
+                           'src/guidance_unit_phased.c', 'src/guidance_length_phased.c', 'src/guidance_norm.c',
+                           'src/guidance_product.c'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        # (As the .mk builds the diagnostics: without inlining, a static
+        # stack and zero-page globals, so NORMUNX1's runs through COMPDISP
+        # fit one diagnostic.)
+        'c64_cuts': True,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # RTB NORMUNX1's UNIT runs on a vector MPAC (MODE -1), as the VSU
+        # before it leaves it; other modes are outside rtb_unit's domain.
+        'states': {'37,3243': {'0163': [0o77776]}},
+        'target': 'tests/lm_r31_file_target.c',
+    },
     'cm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.

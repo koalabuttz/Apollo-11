@@ -9,4 +9,7 @@
  * caller's file; RTB_OUT_OF_SCOPE when an input is outside those bodies'
  * domain. */
 int lm_normunit(apollo_overlay_state *,p66_bias_io *);
+/* RTB NORMUNX1 (FB 10, Z 03724): CAF ONE, then NORMUNIT +1, so the
+ * shift count goes to X1 (FIXLOC+1) instead of X2. */
+int lm_normunx1(apollo_overlay_state *,p66_bias_io *);
 #endif
