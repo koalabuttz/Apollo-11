@@ -172,7 +172,11 @@ never chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
 (`one routine over its slot`, with its `routine_key`), and a file more than
 64 KB over its slot is `too big to split` unless `SPLIT_ANY` names it (Lane
-C's Pinball routines, whose try-lists each fit). The build prints, per
+C's Pinball routines, whose try-lists each fit). A stem in `CHUNK_ORDER`
+packs its routines in its own order instead of by key, and each chunk is
+then a set of entries (`FS_PICK`): Pinball's (`lanec_pin_order`) are grouped
+by the modules their try-lists run, so a chunk links few of them (on LM this
+took the store image from 2.11 to 1.85 MB). The build prints, per
 mission, the chunk count, their mean fill and the store image against the
 rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
 `rope_base`). Before #211-era step-machine splits and

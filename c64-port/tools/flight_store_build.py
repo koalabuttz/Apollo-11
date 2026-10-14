@@ -85,6 +85,25 @@ SPLIT_LIMIT = 65536
 SPLIT_ANY = {'lanec_pin_routines'}
 
 
+def lanec_pin_order(table, n):
+    """Pinball's routines grouped by the modules their try-lists run
+    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
+    with the same modules sit together, and address order is kept within a
+    group. A chunk is then a set of entries (FS_PICK), not a key range."""
+    inc = (ROOT / 'src/lanec_pin_routines.inc').read_text()
+    tries = {k: tuple(sorted(v.replace(' ', '').split(',')[:-1]))
+             for k, v in re.findall(r'static const dispatch (try\d+)\[\d+\] = \{ (.*?) \};', inc)}
+    body = inc.split(f'agc_routine_entry {table[len("lanec_pin_"):-len("_routines")]}_entries[')[1].split('};')[0]
+    calls = re.findall(r'\{ \d+u, (try\d+)_(?:lm|cm) \}', body)
+    if len(calls) != n:
+        raise SystemExit(f'{table}: {len(calls)} entries in src/lanec_pin_routines.inc, {n} keys')
+    return sorted(range(n), key=lambda i: (tries[calls[i]], i))
+
+
+# Chunk order per stem: (table, entries) -> the entries' order for packing.
+CHUNK_ORDER = {'lanec_pin_routines': lanec_pin_order}
+
+
 def pack_chunks(n, fits, probes):
     """Greedy packing of routines 0..n-1 into chunks of consecutive routines.
 
@@ -847,17 +866,23 @@ def main():
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
+        # A table chunked in CHUNK_ORDER: chunk (t, lo, hi) holds entries
+        # order[t][lo:hi]; otherwise entries lo..hi-1.
+        order = {}
+
+        def chunk_entries(c):
+            return sorted(order[c[0]][c[1]:c[2]]) if c[0] in order else range(c[1], c[2])
+
         def pick_of(mod):
             """The module's live entries in key order, or None when it links
             every entry of its tables (FS_BASIC or FS_CHUNK as before)."""
             if mod.get('defines') or mod.get('excursion') or mod['interp']:
                 return None
             if mod.get('chunk'):
-                t, lo, hi = mod['chunk']
-                spans = [(t, range(lo, hi))]
+                spans = [(mod['chunk'][0], chunk_entries(mod['chunk']))]
             else:
                 spans = [(t, range(len(keys[t]))) for t in mod['basic']]
-            if not any(t in live and t not in mod['also'] for t, _ in spans):
+            if not any(t in live and t not in mod['also'] or t in order for t, _ in spans):
                 return None
             return sorted(((t, i) for t, r in spans for i in r
                            if t in mod['also'] or t not in live or i in live[t]), key=lambda e: keys[e[0]][e[1]])
@@ -1077,6 +1102,8 @@ def main():
                     with ThreadPoolExecutor(a.jobs) as pool:
                         got = list(pool.map(lambda e: trial((t, start, e), mod), ends))
                     return [True if r['ok'] or r.get('empty') else r.get('overflow') or None for r in got]
+                if mod['stem'] in CHUNK_ORDER:
+                    order[t] = CHUNK_ORDER[mod['stem']](t, len(keys[t]))
                 got = pack_chunks(len(keys[t]), fits, max(1, a.jobs))
                 if got is None:
                     return None
@@ -1119,8 +1146,8 @@ def main():
             mod['prg'] = str(prg)
             if res['ok']:
                 if mod.get('chunk'):
-                    t, first, last = mod['chunk']
-                    for i in range(first, last):
+                    t = mod['chunk'][0]
+                    for i in chunk_entries(mod['chunk']):
                         if t not in live or i in live[t]:
                             module_of[(t, keys[t][i])] = mod['id']
                     continue
@@ -1251,7 +1278,7 @@ def main():
                         pin_check)
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
                        error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'),
-                       routine_key=keys[mod['chunk'][0]][mod['chunk'][1]]
+                       routine_key=keys[mod['chunk'][0]][chunk_entries(mod['chunk'])[0]]
                        if mod.get('chunk') and mod['chunk'][2] - mod['chunk'][1] == 1 else None)
                   for mod in modules if not mod['ok']]
         report[m] = dict(
