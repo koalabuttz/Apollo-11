@@ -4,23 +4,23 @@
   "release": "evidence-lm-sps-backup",
   "files": {
     "lm-sps-backup-c64-cover.json": {
-      "sha256": "3037cce83fbc84ee1fdb67b28da5e14c1cd1d8e706dddcb8000191d18ebb452c",
-      "bytes": 2352,
+      "sha256": "9c1aac3f4b67a53fd488b9203aeafd7e39ff21a0af7d4957fca69b0a3fc85ad7",
+      "bytes": 2339,
       "store": "tree"
     },
     "lm-sps-backup-differential.log": {
-      "sha256": "c576af0746d39bc33a59b749a9198a0f4c0f474729c55efea2bdd7eeb5f34f5d",
-      "bytes": 4219,
+      "sha256": "9e151f65b340952c6127f1b8e781bae8b84b0c6616c5ce80ba110b3d7af0dcab",
+      "bytes": 422,
       "store": "release"
     },
     "lm-sps-backup-host.log": {
-      "sha256": "ff30bf01ade6f55f8d3f307034f31405b929beabeb37f94bc2d1e5517ae93684",
-      "bytes": 103,
+      "sha256": "a3af6ce65313ab62d0bb5d2a26477f4d50c0390c76df0327be42dfdcfd184a23",
+      "bytes": 84,
       "store": "release"
     },
     "lm-sps-backup-proof.json": {
-      "sha256": "f4e27310058cd03d9b9ea57a28bdf1223efb4bdba4334ed595bd987d6dfd3781",
-      "bytes": 8023,
+      "sha256": "790c02a5e399d35432f4eea48afd67a8b5efb7ff5c9c2190460942b47d134dcb",
+      "bytes": 2249,
       "store": "tree"
     },
     "lm-sps-backup-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "lm-sps-backup-vice.log": {
-      "sha256": "a88ec19d401609f6211a82b3f7f42150f64a5ca1879536bb23acea22d0452f8f",
-      "bytes": 998,
+      "sha256": "6acfc64572d1c5c6f4558b6b47aef7dc942f9df7263d82ab4ccaa59fdb99f810",
+      "bytes": 997,
       "store": "release"
     }
   }

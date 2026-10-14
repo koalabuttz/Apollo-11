@@ -82,7 +82,7 @@ module's 7.8 KB.
 | `$6FBC..$6FBD` | Flight: `ov2_irq_count`, the CIA1 interrupt count (`RK_IRQ_COUNT`); a long-running module (the interpreter) returns to the step when it moves. Modules link it with `--defsym` | 2 |
 | `$6FBE..$6FDB` | Flight: `rk_hardware`, the resident's `agc_hardware` record; modules link it with `--defsym` | 30 |
 | `$6FDC..$6FF3` | Flight: `rk_flight`, the resident's record of the flight_io fields neither `rk_io` nor `agc_hardware` holds (channels 16/34/35, traps, alarms, warning); modules link it with `--defsym`. Both missions | 24 |
-| `$6FF4..$6FFF` | CM flight: the one `cm_channels` (channels 5, 6, 30-33), owned by the resident; CM modules link `--defsym=cm_channels=0x6FF4`, and the store build fails on a private copy. Goes when the channel model moves these into `agc_hardware` | 12 |
+| `$6FF4..$6FFF` | Free (was the CM's `cm_channels`; channels 5, 6 and 30-33 now live in `rk_hardware`) | 12 |
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$CBFF` | Slot class 3: pinned modules. Boot loads the store's class-3 module once by plain DMA, verifies it, zeroes its BSS and runs its main once to build its tables; from then on the resident only calls its routines directly (`rk_direct`, before the job and task slots). No resolver record names it, and a run never loads it. Before boot finishes, `$C100..$C1FF` is the store-verify scratch; test programs without a pinned module use the page for mailboxes | 3,072 |

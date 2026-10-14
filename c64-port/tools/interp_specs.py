@@ -2818,22 +2818,40 @@ SPECS = {
         # counters (+-0, +-1, the 4 the P axis sets), and EDOT, E and DKDB
         # near the rate limits (RATELIM1 032, RATELIM2 0632) and in the
         # coast zone, so every jet-sense, CTRCHECK and coast path runs.
+        # EDOT also takes 0634-01166 (and their negatives), above RATELIM2
+        # but inside the outer limit (EDOT x 032 < 040000), and E up to
+        # +-037777: then (EDOT + E) x DKDB goes negative with EDOT above
+        # RATELIM2, and +7's BZMF POSTHRST falls through to TJZERO (review
+        # #386).
         'joint_states': {'*': [
             {'TJP': tj, 'TJU': tj, 'TJV': tj, 'PJETCTR': ct, 'UJETCTR': ct, 'VJETCTR': ct, 'EDOT': ed,
-             'E': (0, 1, 0o77776, 0o200, 0o77577)[n % 5], 'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 5) % 5]}
+             'E': (0, 1, 0o77776, 0o200, 0o77577, 0o1000, 0o76777, 0o4000, 0o73777,
+                   0o37777, 0o40000)[n % 11],
+             'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 11) % 5]}
             for n, (tj, ct, ed) in enumerate(
                 (tj, ct, ed) for tj in (0, 0o77777, 1, 0o77776, 0o20000, 0o57777)
                 for ct in (0, 0o77777, 1, 0o77776, 4)
-                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777))]},
+                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777,
+                           0o634, 0o77143, 0o1000, 0o76777, 0o1166, 0o76611, 0o1167, 0o76610))]},
+        # IBNKCALL is the only caller (the P and Q,R axis autopilots'
+        # TC IBNKCALL; CADR SPSRCS): Q = ISWRETRN (04707) in half of the
+        # cases, a caller return in bank 21 outside the file otherwise.
+        'states': {'SPSRCS': {'2': [0o4707, 0o4707, 0o4707, 0o2017, 0o2400, 0o3000]}},
         # INDEX AXISCTR; CA UTIME: the P counter (4) or the U, V one (012).
         'basic_fixed_index': {'UTIME': [-1, 0, 1]},
         'resume_keys': True,
         'edge_cases': True,
+        # SPSRCS runs in T5RUPT over whatever job is current: any FIXLOC
+        # (a NOVAC job's, FAKEPRET 0110) and NEWJOB -0 while DUMMYJOB idles
+        # (review #386). It never names either.
+        'any_fixloc': True,
+        'any_newjob': True,
         'target': 'tests/lm_sps_backup_target.c',
         'c64_rows': 'cover',
         'cover': True,
         'index_carry16': True,
         'image_w': True,
+        'trusted_image': True,
         'freeze_stride': 16,
     },
     'cm-r31': {
@@ -3429,6 +3447,24 @@ SPECS = {
         # rarely reached from random corrections: where no flow gets there,
         # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
         'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        # The W-matrix loop's indices as INCORP2 keeps them (54DD, 6DD = -6,
+        # MINUS2): WIXA/WIXB step 54 down to 6 and ZIXA/ZIXB 0 down to -16,
+        # and FAZB1's X1 is WIXA. A random WIXA sends FAZB1's indexed
+        # STOREs out of the W matrix's window.
+        'range_states': [('FAZA', 'FAZC', {n: list(range(54, 0, -6)) for n in ('WIXA', 'WIXB')}
+                          | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] for n in ('ZIXA', 'ZIXB')}),
+                         ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6))})],
+        # The flowed cases stop at FAZA's PHASCHNG, so every flowed loop
+        # state is the first pass (WIXA 54): the same indices on later
+        # passes, so FAZB2's TIX,1 (X1 6) and FAZB5's BHIZ (ZIXB -12) exit;
+        # and INCORP1's DDV (DELTAQ/A) with a zero dividend in MPAC.
+        'flow_range_states': {m: [
+            ('FAZA', 'FAZC', {n: list(range(54, 0, -6)) + ['flow'] for n in ('WIXA', 'WIXB')}
+             | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] + ['flow'] for n in ('ZIXA', 'ZIXB')}),
+            ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6)) + ['flow']}),
+            (ddv, end,
+             {'*': ['flow'] * 6 + [{'0154': 0, '0155': 0}, {'0154': 0o77777, '0155': 0o77777}]})]
+            for m, ddv, end in (('lm', '23,2664', '23,2665'), ('cm', '36,3407', '36,3410'))},
         'edge_cases': True,
         'c64_rows': 'cover',
         'freeze_stride': 64,

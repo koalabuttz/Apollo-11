@@ -14,7 +14,11 @@ Why it was partial: the older `src/lm_sps_rcs.c` (`docs/LUMINARY-SPS-RCS.md`, Da
 
 One routine: SPSRCS. The file has no other entry: every other label is reached from inside it. `INDEX AXISCTR` on `CA UTIME` is compiled for AXISCTR -1, 0 and +1, the three axes (`basic_fixed_index`); the indexed erasable words (TJU, UJETCTR) are compiled for any AXISCTR that keeps the operand an ordinary E6 word.
 
-Domain: entry at SPSRCS with FB of bank 21 under EB 6 (the file's `EBANK= TJU`), AXISCTR -1, +0, +1 or -0 (the autopilots set -1, 0 or 1), any Q (the caller's return), NEWJOB +0 or positive, and any values of the other erasables. In half of the cases the jet times, the inhibition counters, EDOT, E and DKDB take values from a joint set (`joint_states`): jets off at +-0, firing either way and HALF; counters +-0, +-1 and 4; EDOT at and around the rate limits and the coast zone.
+Domain: entry at SPSRCS with FB of bank 21 under EB 6 (the file's `EBANK= TJU`), AXISCTR -1, +0, +1 or -0 (the autopilots set -1, 0 or 1), any Q (the caller's return; ISWRETRN 04707, where IBNKCALL returns, in half of the cases), any FIXLOC and NEWJOB +0, positive or -0, and any values of the other erasables. In half of the cases the jet times, the inhibition counters, EDOT, E and DKDB take values from a joint set (`joint_states`): jets off at +-0, firing either way and HALF; counters +-0, +-1 and 4; EDOT at and around the rate limits and the coast zone, and at 0634, 01000, 01166 and 01167 either sign (above RATELIM2, up to the outer limit); E at +-0, +-1, +-0200, +-01000, +-04000 and +-037777; DKDB 0, 1, 040, 0777 and 037777.
+
+FIXLOC and NEWJOB (review #386): SPSRCS runs in T5RUPT, from the P and Q,R axis autopilots, over whatever job is current, so a NOVAC job's FIXLOC (FAKEPRET 0110, or any value) and NEWJOB -0 while DUMMYJOB idles are normal states there. The routine never names either word, so the spec sets `any_fixloc` and `any_newjob` (`docs/INTERP-COMPILE.md`): the entry guard is `sane_nv`, without the VAC-area test on FIXLOC and with NEWJOB -0 allowed, and the differential puts FIXLOC anywhere in erasable in half of the cases and NEWJOB at -0 in a quarter: of the 512, 269 have FIXLOC outside the VAC areas and 126 NEWJOB -0 (94 positive, 292 +0).
+
+The coast zone (review #386): `+7`'s `BZMF POSTHRST` (21,3765) runs only when (EDOT + E) x DKDB is negative, and it falls through to TJZERO only when EDOT is also above RATELIM2. The earlier joint set tied each E to one EDOT and kept |E| at most 0200, so the BZMF never branched. With the wider E and EDOT, the 512 cases reach it 27 times: 23 branch to POSTHRST and 4 fall through to TJZERO; the C64 rows take each outcome once.
 
 Paths the cases do not take, and why none can run: `CCS OLDSENSE` with OLDSENSE -0 (SPSRCS always sets OLDSENSE to +1, -1 or the +0 CCS leaves), `CCS A` after `MASK DRIFTBIT` going negative or -0 (the mask leaves +0 or 0200), overflow skips of `TS OLDSENSE` (A is +-1 or +0), and the compiled refusals for an INDEX that changes the instruction or lands outside ordinary erasable.
 
@@ -23,9 +27,9 @@ Paths the cases do not take, and why none can run: `CCS OLDSENSE` with OLDSENSE 
 Hashes: `evidence/lm-sps-backup/SHA256.json`.
 
 - **Source map.** `lm-sps-backup-source-map.json` lists all 82 words (instructions, RATELIM2 and the UTIME table) with the routine that compiles each; none is untranslated.
-- **Independent assembly comparison.** `tools/interp_routine_differential.py lm-sps-backup --cases 512 --freeze`: 512 states of SPSRCS run the unmodified Luminary099 rope in yaAGC (with the hardware divide) to the same stop. All 512 equal it in Z, all 2,048 erasable words and the interrupt-enable state. Every case returns through TC Q to the caller.
-- **Host and sanitizer results.** `make test-lm-sps-backup sanitize-lm-sps-backup` run the 36 frozen cases (every 16th, plus the edge cover).
-- **C64 execution results.** `make vice-lm-sps-backup` runs 1 diagnostic with 11 cases chosen by `tools/c64_row_cover.py`: they take every branch arc (gcov, every linked source) and every clang edge the 512 host cases take (`lm-sps-backup-c64-cover.json`).
+- **Independent assembly comparison.** `tools/interp_routine_differential.py lm-sps-backup --cases 512 --freeze`: 512 states of SPSRCS run the unmodified Luminary099 rope in yaAGC (with the hardware divide) to the same stop. All 512 equal it in Z, all 2,048 erasable words and the interrupt-enable state. Every case returns through TC Q to the caller: 274 to ISWRETRN 04707, the others to bank-21 returns outside the file. `--cover-check` re-derives the C64 cover from the committed record: 201 gcov branch outcomes on the host and on the C64 rows, 0 missing.
+- **Host and sanitizer results.** `make test-lm-sps-backup sanitize-lm-sps-backup` run the 36 frozen cases (every 16th, plus the edge cover); 0 failures.
+- **C64 execution results.** `make vice-lm-sps-backup` runs 1 diagnostic with 9 cases chosen by `tools/c64_row_cover.py`: they take every branch arc (gcov, every linked source) and every clang edge the 512 host cases take (`lm-sps-backup-c64-cover.json`).
 
 ## Review notes (for the certificate reviewer)
 
@@ -33,4 +37,5 @@ The certificate is drafted as `pending_complete_certificate` in `docs/port-cover
 
 - AXISCTR -0: the hand-written translation accepted it as U; here it is in the domain too (the INDEX of -0 is an index of 0 in ones' complement).
 - E, DKDB and EDOT are E6 words shared with other DAP work (E is DAPTREG6, EDOT is OMEGAV); SPSRCS only reads them.
+- FIXLOC and NEWJOB are free at entry (`any_fixloc`, `any_newjob`): SPSRCS never reads or writes either.
 - The P-axis caller runs it under INHINT; the interrupt-enable state is compared but not changed by the file.

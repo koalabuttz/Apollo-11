@@ -6,4 +6,3 @@
 #include "cm_interp_names.h"
 #include "lm_interp_orders.c"
 #include "cm_native_image.h"
-cm_native_channels cm_channels;
