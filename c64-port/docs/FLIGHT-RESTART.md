@@ -218,10 +218,10 @@ with no resident trigger. Two VICE runs follow for each scenario:
    from the post-GOJAM state, and the runtime must end with no cached run
    slot and no fault.
 
-Results on base 4bde5ef8 with this change. The module is 486 bytes in
+Results on base 1b20b3a8 with this change. The module is 486 bytes in
 the LM store (job slot, since the LM store has a class-4 module) and 730
 bytes in the CM store (task slot). Both stores keep their image size
-(784,896 and 1,347,584 bytes), with no new overflow or link failure in
+(1,499,392 and 1,434,880 bytes), with no new overflow or link failure in
 `report.json`. The resident sizes (`build/resident-flight/sizes.json`) are
 unchanged.
 
