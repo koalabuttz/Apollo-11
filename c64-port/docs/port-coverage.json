@@ -4266,7 +4266,7 @@
       "sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
       "bytes": 2352,
       "lines": 85,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4316,7 +4316,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4350,6 +4350,10 @@
             "vice_targets": {
               "vice-cm-rcs-dap-exec": 13
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-rcs-dap-exec.md",
+            "sha256": "6a88fe09bb64e729ada0ccc3c52639bafb72d56a31ebf19292a3ea6292e6dbcb"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap-exec/cm-rcs-dap-exec-proof.json",
