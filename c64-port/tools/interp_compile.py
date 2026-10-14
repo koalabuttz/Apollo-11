@@ -1640,7 +1640,8 @@ class Compiler:
         leave test, one entry routine for all keys, and the part's slice."""
         import bisect
         S = sym.upper()
-        assert self.m == 'cm' and self.basic.io == 'cm_native_io' and self.spec.get('basic_split')
+        io_t = self.basic.io
+        assert io_t in ('cm_native_io', 'p66_bias_io')
         cuts = self.basic.flight_cuts
         every = sorted(set(keys) | set(self.basic.flight_extra))
         c = ['/* Flight: the keys of every part (routines and part keys). */',
@@ -1651,16 +1652,22 @@ class Compiler:
              '}',
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
              'static enum exec_status %s_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){' % sym,
-             ' cm_native_io *io=v;uint16_t at;']
-        c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.uses_hw else ' (void)p;')
+             ' %s *io=v;uint16_t at;' % io_t]
+        if io_t == 'p66_bias_io':
+            c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
+        else:
+            c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.uses_hw else ' (void)p;')
         c += [' if(!s||!io)return EXEC_OUT_OF_SCOPE;',
               ' at=agc_fixed_physical(W[5],W[4],io->superbank);',
               ' switch(at/1024u){']
+        chan = ''
+        if self.uses_channels:
+            chan = 'agc_channels_in=&((%s_channel_io *)v)->in;' % ('lm' if io_t == 'p66_bias_io' else 'cm')
         for b in sorted({k // 1024 for k in every}):
             bfb = (b - 0o10) << 10 | 0o100000 if b >= 0o40 else b << 10
+            run = self.basic.callee(S, b) if self.spec.get('basic_split') else 'basic_run'
             c.append(' case 0%ou:if(!basic_sane(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, bfb, 'agc_channels_in=&((cm_channel_io *)v)->in;' if self.uses_channels else '',
-                self.basic.callee(S, b)))
+                b, bfb, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         for j in range(len(cuts) + 1):

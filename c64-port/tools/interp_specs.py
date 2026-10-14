@@ -3651,6 +3651,9 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
+        # The C64 flight store links the basic words as three parts
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
+        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,

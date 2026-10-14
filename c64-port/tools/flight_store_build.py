@@ -544,8 +544,9 @@ INTERP_POINTS = {
 FLIGHT_INTERP_STOP = {'lm': {'lm_ags_init', 'lm_burn_baby', 'lm_lunar_landing', 'lm_servicer', 'lm_imu_performance'},
                       'cm': set()}
 INTERP_ONLY = {'lm': {'lm_ephemeris_routines', 'lm_s3435_routines', 'lm_s3435b_routines',
-                      'lm_interp_core_basic', 'lm_interp_runtime_basic'},
-               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic'}}
+                      'lm_interp_core_basic', 'lm_interp_runtime_basic',
+                      'lanec_ev_lm_intpret'},
+               'cm': {'cm_interp_core_basic', 'cm_interp_runtime_basic', 'lanec_ev_cm_intpret'}}
 
 # The host index's interpretive flag: a table keyed by LOC under BANKSET.
 # Generated interpretive tables end in _interpretive(_routines); the DANZIG
@@ -564,8 +565,9 @@ def interpretive_table(t):
 # (docs/LM-SERVICER-FLIGHT-PARTS.md). A part's keys are what its own build's
 # tables hold (part_keys), which can include hand-off words the whole file
 # does not key.
-FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']]},
-                'cm': {}}
+FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
+                       'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
+                'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)]}}
 
 
 def part_keys(cc, m, stem, tables):
@@ -672,16 +674,16 @@ def main():
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
         packed = {t: o for t, o in mine.items() if t not in skipped and keys[t]}
         empty = sorted(t for t, o in mine.items() if t not in skipped and not keys[t])
-        resident_keys = {('i' if 'interpret' in t else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
+        resident_keys = {('i' if interpretive_table(t) else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
         parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
-                                                           if o == stem and 'interpret' not in t))
+                                                           if o == stem and not interpretive_table(t)))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
         for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
             if hot_full(t):
                 continue
-            kind = 'i' if 'interpret' in t else 'b'
+            kind = 'i' if interpretive_table(t) else 'b'
             more = [k for p in parts.get(packed[t], []) for k in p.get(t, [])]
             for k in sorted(set(keys[t]) | set(more)):
                 holders[(kind, k)].append(t)
@@ -719,7 +721,8 @@ def main():
         if a.host_only:
             continue
         to_interp = {t for t, o in packed.items()
-                     if t in INTERP_ONLY[m] or (o in FLIGHT_INTERP_STOP[m] and 'interpret' in t)}
+                     if t in INTERP_ONLY[m] or (interpretive_table(t) and not t.endswith('_marker'))
+                     or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
         by_stem = collections.defaultdict(list)
         for t, o in packed.items():
             if t not in to_interp and not hot_full(t):
@@ -737,8 +740,8 @@ def main():
             for st in sources:
                 sites.update(file_sites(a.host_cc, m, st))
             mod = dict(stem=stem, agc=agc, lane=lane, slot=slot,
-                       basic=[t for t in ts if 'interpret' not in t] + [t for t in extra if 'interpret' not in t],
-                       interp=[t for t in ts if 'interpret' in t] + [t for t in extra if 'interpret' in t],
+                       basic=[t for t in ts if not interpretive_table(t)] + [t for t in extra if not interpretive_table(t)],
+                       interp=[t for t in ts if interpretive_table(t)] + [t for t in extra if interpretive_table(t)],
                        also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
                        sources=c64_sources(index, *sources, 'agc_transfer'))
             for i, defines in enumerate(FLIGHT_PARTS[m].get(stem, [()])):
@@ -793,7 +796,7 @@ def main():
             result, its bytes and the shared symbols."""
             hp = params[f'pin-{SLOT_NAME[4]}']
             own = [f for f in sources if f not in set(hp['sources'])]
-            basic = [t for t in ts if 'interpret' not in t] + hp['basic']
+            basic = [t for t in ts if not interpretive_table(t)] + hp['basic']
             (ROOT / OUT / m / f'pin-{SLOT_NAME[3]}.prg.map').unlink(missing_ok=True)
             res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', (), own, basic)
 
@@ -853,8 +856,8 @@ def main():
 
             def measure(io, direct_only, name, flags=(), sources=None, basic=None):
                 mod = dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                           basic=basic or [t for t in ts if 'interpret' not in t],
-                           interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
+                           basic=basic or [t for t in ts if not interpretive_table(t)],
+                           interp=[t for t in ts if interpretive_table(t)], also=[], sites=sites,
                            sources=sources or c64_sources(index, *stems, 'agc_transfer'), io=io,
                            direct_only=direct_only, prg_name=name, link_flags=PIN_LTO + list(flags),
                            defines=['-DFS_PIN_HOME=1'] if slot == 4 and 3 in PIN[m] else [])

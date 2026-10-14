@@ -865,6 +865,11 @@ class Basic:
             return c + self.emit_split(sym, order)
         if self.spec.get('basic_parts'):
             return c + self.emit_parts(sym, order)
+        fp = self.spec.get('flight_parts')
+        if fp:
+            # (One function: every word leaves at another part's word.)
+            S = sym.upper()
+            c += self.flight_parts(S, {self.label(*k): k for k in order})
         c.append('/* Every basic word of the file. */')
         c.append('static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,%s *io,uint16_t at){' % self.io)
         c.append(self.index_locals())
@@ -872,6 +877,16 @@ class Basic:
         c.append(' switch(at){')
         for p in sorted(self.entries):
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
+        extra = [q for q in getattr(self, 'flight_extra', []) if q not in self.entries] if fp else []
+        if extra:
+            c.append('#ifdef %s_FLIGHT_PART' % S)
+            for q in extra:
+                if (q, False, False) in self.nodes:
+                    c.append(' case %uu:goto %s;' % (q, self.label(q)))
+                else:
+                    c.append(' case %uu:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto %s;' % (
+                        q, self.label(q, False, True)))
+            c.append('#endif')
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
         # The spec's idle points (a word that spins until hardware moves,
@@ -881,7 +896,7 @@ class Basic:
         spin = {self.label(*k): '{W[5]=0%04o;return EXEC_IDLE;}' % self.logical(k[0]) for k in self.nodes if k[0] in idle}
         for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
-            c.append(' IRC_COVER(%du);' % n)
+            c.append(' %s_FP(%uu) IRC_COVER(%du);' % (S, k[0], n) if fp else ' IRC_COVER(%du);' % n)
             body = self.nodes[k]
             if spin:
                 body = [re.sub(r'goto ([A-Za-z][A-Za-z0-9]*);', lambda m: spin.get(m.group(1), m.group(0)), x) for x in body]
