@@ -16,7 +16,7 @@
   {
    "mission": "cm",
    "keep": "0xffffff",
-   "cases": 21,
+   "cases": 22,
    "case_ids": [
     197,
     147,
@@ -27,6 +27,7 @@
     183,
     3,
     202,
+    77,
     238,
     448,
     627,
@@ -121,7 +122,7 @@
   {
    "mission": "cm",
    "keep": "0x18003ffc000ffff87ffffc000000000",
-   "cases": 14,
+   "cases": 15,
    "case_ids": [
     9896,
     9864,
@@ -136,15 +137,15 @@
     10273,
     10511,
     10758,
-    11128
+    11128,
+    11471
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xff40000ffffffff00000000000",
+   "keep": "0xff40001fffffffe00000000000",
    "cases": 41,
    "case_ids": [
-    11471,
     11619,
     11586,
     11791,
@@ -184,15 +185,15 @@
     18480,
     18688,
     19052,
-    19227
+    19227,
+    19624
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x1fffffffffff0000000000000000000",
-   "cases": 53,
+   "keep": "0x1ffffffffffe0000000000000000000",
+   "cases": 52,
    "case_ids": [
-    19624,
     19727,
     19971,
     20224,
@@ -251,14 +252,14 @@
  "c64_coverage": {
   "host_labels": 2,
   "c64_labels": 2,
-  "host_edges": 2131,
-  "c64_edges": 2131,
+  "host_edges": 2145,
+  "c64_edges": 2145,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 1011,
-  "c64_taken": 1011,
+  "host_taken": 1017,
+  "c64_taken": 1017,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [

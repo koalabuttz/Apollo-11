@@ -26,7 +26,8 @@ int main(void) {
         unsigned kind;
         irc_build(S, &irc_c64_cases[i]);
 #ifdef IRC_C64_CUTS
-        kind = irc_run_cut(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], irc_c64_cut[i], 1000, &ie);  /* (the spec's max_steps) */
+        kind = irc_run_cut(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], irc_c64_cut[i],
+                           1000, &ie); /* (the spec's max_steps) */
 #else
         kind = irc_run(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], 1000, &ie);  /* (the spec's max_steps) */
 #endif
