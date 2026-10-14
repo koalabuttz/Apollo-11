@@ -182,6 +182,15 @@ class Mission:
                              for a, b, st in spec.get('range_states', ())]
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
         self.resume_states = {self.point_of(k): v for k, v in spec.get('resume_states', {}).items()}
+        # flow_range_states: (FROM, TO, states) for the flowed cases
+        # (resume_flow) of every point from FROM up to (not including) TO
+        # (labels or 'bank,addr'; a list per mission as {'lm': [...], ...}):
+        # one choice per address, 'flow' keeping the flowed value; key '*'
+        # chooses one dict of addresses and values (or 'flow') for them all.
+        frs = spec.get('flow_range_states', ())
+        if isinstance(frs, dict):
+            frs = frs.get(m, ())
+        self.flow_range_states = [(self.point_of(a), self.point_of(b), st) for a, b, st in frs]
         self.flow = {}   # ('flow_states') point -> states its entries' runs reach it in
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
@@ -854,6 +863,13 @@ def flow_seed(missions, cases, rng, ref, path, spec=None):
                 v = rng.choice(choices)
                 if v != 'flow':
                     E[int(k, 8)] = v
+            mi = missions[r[0]]
+            for k, choices in [kv for lo, hi, st in mi.flow_range_states if lo <= r[1] < hi for kv in st.items()]:
+                v = rng.choice(choices)
+                if v == 'flow':
+                    continue
+                for a, w in (v.items() if k == '*' else [(k, v)]):
+                    E[state_address(mi, a, E[0o120])] = w
             cases[j] = dict(cases[j], seed=c['seed'], ie=c['ie'], sb=c['sb'], stop=0xffff, edits=Edits(E.items()))
             flowed.add(r)
     if os.path.exists(sub):

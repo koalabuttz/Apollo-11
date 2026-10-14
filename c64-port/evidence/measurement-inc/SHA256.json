@@ -4,23 +4,23 @@
   "release": "evidence-measurement-inc",
   "files": {
     "measurement-inc-c64-cover.json": {
-      "sha256": "169368e5811d99bb0fbccdf5f34d03ccbe382b74cf93b069e6bb9e979931355c",
-      "bytes": 6600,
+      "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724",
+      "bytes": 6613,
       "store": "tree"
     },
     "measurement-inc-differential.log": {
-      "sha256": "be1a8c51a29efc30d7acc5f4251b69340de6dc11aabc95e4d82bb1bf87365c6a",
-      "bytes": 13035,
+      "sha256": "a357793664ebb95f5c43ee8cc7da7a900882821b481af4545166856f7db93300",
+      "bytes": 13304,
       "store": "tree"
     },
     "measurement-inc-host.log": {
-      "sha256": "c482d31a7a06aa9143ef78aac7283bc7a4823b3df4eda9d638ef74029103939d",
-      "bytes": 578,
+      "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee",
+      "bytes": 711,
       "store": "tree"
     },
     "measurement-inc-proof.json": {
-      "sha256": "47e8eeaa8651b8a9d5d27046c3dd5b19e0171f900be9ddb3233b1327d2dedee1",
-      "bytes": 27064,
+      "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265",
+      "bytes": 27362,
       "store": "tree"
     },
     "measurement-inc-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "measurement-inc-vice.log": {
-      "sha256": "44f97674bd2eac8e54e31ddb420380396f958d5e6c673ee2f39a69ed256de0e8",
-      "bytes": 2941,
+      "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
+      "bytes": 2786,
       "store": "tree"
     }
   }

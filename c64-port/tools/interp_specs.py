@@ -3423,6 +3423,24 @@ SPECS = {
         # rarely reached from random corrections: where no flow gets there,
         # X2 holds AXT,2's 0 or 2 (moon or earth scaling) and MODE vector.
         'states': {'FAZAB1%+d' % n: {'vac+047': [0, 2], '0163': [0o77776]} for n in (-9, -7, -4, -2)},
+        # The W-matrix loop's indices as INCORP2 keeps them (54DD, 6DD = -6,
+        # MINUS2): WIXA/WIXB step 54 down to 6 and ZIXA/ZIXB 0 down to -16,
+        # and FAZB1's X1 is WIXA. A random WIXA sends FAZB1's indexed
+        # STOREs out of the W matrix's window.
+        'range_states': [('FAZA', 'FAZC', {n: list(range(54, 0, -6)) for n in ('WIXA', 'WIXB')}
+                          | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] for n in ('ZIXA', 'ZIXB')}),
+                         ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6))})],
+        # The flowed cases stop at FAZA's PHASCHNG, so every flowed loop
+        # state is the first pass (WIXA 54): the same indices on later
+        # passes, so FAZB2's TIX,1 (X1 6) and FAZB5's BHIZ (ZIXB -12) exit;
+        # and INCORP1's DDV (DELTAQ/A) with a zero dividend in MPAC.
+        'flow_range_states': {m: [
+            ('FAZA', 'FAZC', {n: list(range(54, 0, -6)) + ['flow'] for n in ('WIXA', 'WIXB')}
+             | {n: [0] + [0o77777 - k for k in range(2, 17, 2)] + ['flow'] for n in ('ZIXA', 'ZIXB')}),
+            ('FAZB1', 'FAZC', {'vac+046': list(range(54, 0, -6)) + ['flow']}),
+            (ddv, end,
+             {'*': ['flow'] * 6 + [{'0154': 0, '0155': 0}, {'0154': 0o77777, '0155': 0o77777}]})]
+            for m, ddv, end in (('lm', '23,2664', '23,2665'), ('cm', '36,3407', '36,3410'))},
         'edge_cases': True,
         'c64_rows': 'cover',
         'freeze_stride': 64,
