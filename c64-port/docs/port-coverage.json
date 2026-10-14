@@ -2791,8 +2791,57 @@
       "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
       "bytes": 3545,
       "lines": 99,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 84 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[1]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). In the listing MAIN.agc emits no word, each of the 36504 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
@@ -9157,8 +9206,57 @@
       "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
       "bytes": 3815,
       "lines": 91,
-      "status": "untranslated",
-      "native_coverage": []
+      "status": "partial",
+      "native_coverage": [
+        {
+          "native_files": [
+            "src/main_manifest.c",
+            "include/main_manifest.h",
+            "tests/main_manifest_check.c"
+          ],
+          "scope": "The include manifest: all 89 includes in assembly order, each with the fixed words it emits in the assembled program.",
+          "verification": "docs/MAIN-ASSEMBLY.md"
+        }
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "MAIN.agc emits no word; its content is the ordered include list. The native form is the manifest in src/main_manifest.c (main_manifests[0]), generated from yaYUL's listing by tools/main_assembly.py (--check fails on drift).",
+          "entry_contracts": "No entry: MAIN.agc holds no instruction. main_manifest_check(mission) checks the manifest against the mission's rope through include/rope_image.h (host: the yaYUL binary; C64: the REU image the self-check program uses).",
+          "data_validity": "Every include names a checked-in file and every other checked-in .agc of the mission is included exactly once, in the order of the pinned MAIN.agc that yaYUL assembles (its own file names mapped by ALIAS). Two include lines name files the scan saved under other names (LAMBERT_AIMPOINT_GUIDANCE.agc is the checked-in GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc; TRIM_GIMBAL_CNTROL_SYSTEM.agc is TRIM_GIMBAL_CONTROL_SYSTEM.agc), as the tool's ERRATA records. In the listing MAIN.agc emits no word, each of the 36539 emitted fixed words belongs to exactly one include and equals the rope, and every other word is fill (+0 or TC to itself) or one of the 36 bank checksums."
+        },
+        "external_continuations": [
+          "The included files themselves, each under its own coverage entry",
+          "Integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/main-assembly/main-assembly-source-map.json",
+            "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/main-assembly/main-assembly-proof.json",
+            "sha256": "f6d0001aa6932d1d39d856ecf7600c2235a148539f2e73cb328ee0af10c1ce68"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/main-assembly/main-assembly-host.log",
+            "sha256": "6238cd5901c8e994fd6b753608d7d289e72f80087231c522e399c7610e8c0b2e"
+          },
+          "c64_execution_results": {
+            "path": "evidence/main-assembly/main-assembly-vice.log",
+            "sha256": "153dab562e54d9bcf55c542202724a7e1245ae85365909bbb803e08b9980efbb",
+            "vice_targets": {
+              "vice-main-assembly": 177
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "docs/MAIN-ASSEMBLY.md",
+            "sha256": "f139aa5186938785204c94eb3ab98bf669538e66debe03b09c72e5ceb536d911"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
