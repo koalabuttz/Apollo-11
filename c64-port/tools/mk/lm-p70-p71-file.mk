@@ -6,7 +6,7 @@
 LM_P70_P71_FILE_COMMON = src/rtb_angles.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 LM_P70_P71_FILE_SRC = src/lm_p70_p71_file.c tests/lm_p70_p71_file_target.c $(LM_P70_P71_FILE_COMMON)
 LM_P70_P71_FILE_HDR = include/lm_p70_p71_file.h tests/interp_case.h tests/lm_p70_p71_file_vectors.h tests/lm_p70_p71_file_c64_vectors.h
-LM_P70_P71_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS
+LM_P70_P71_FILE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DIRC_INPUTS -DIRC_IN_ISR
 .PHONY: test-lm-p70-p71-file sanitize-lm-p70-p71-file c64-lm-p70-p71-file vice-lm-p70-p71-file lm-p70-p71-file-differential
 all: build/test-lm-p70-p71-file
 test: test-lm-p70-p71-file

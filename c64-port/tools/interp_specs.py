@@ -201,24 +201,25 @@ def v67_loop():
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
 
 
-def ddv_majors_joint():
-    """COMTERM's DDV ALPHAM with the divisor's major part equal to or one
-    above the dividend's (lm_interp_orders.c's near-equal-majors steps after
-    MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below the
-    other's, DVOVF), signs varied (each minor part of either sign, for the
-    sign-agreement fold), MODE DP. Otherwise only long 11,2606-2620 runs
-    reach them. Half the cases keep the random states."""
+def ddv_majors_joint(num=('0154', '0155'), den=('ALPHAM', 'ALPHAM+1'), his=(0o1, 0o1234, 0o17777, 0o30000)):
+    """A DDV (or BDDV) with the divisor den's major part equal to or one
+    above the dividend num's (lm_interp_orders.c's near-equal-majors steps
+    after MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below
+    the other's, DVOVF), signs varied (each minor part of either sign, for
+    the sign-agreement fold), MODE DP. Defaults: COMTERM's DDV ALPHAM.
+    Otherwise only long 11,2606-2620 runs reach them. Half the cases keep
+    the flowed states."""
     sgn = lambda v, x: v if x > 0 else ones(-v)
     sets = []
-    for hi in (0o1, 0o1234, 0o17777, 0o30000):
+    for hi in his:
         for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
             for d in (0, 1):
                 for sm in (1, -1):
                     for sa in (1, -1):
                         for ml in (sm, -sm):
                             for sl in (sa, -sa):
-                                sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, ml), '0163': 0,
-                                             'ALPHAM': sgn(hi + d, sa), 'ALPHAM+1': sgn(alo, sl)})
+                                sets.append({num[0]: sgn(hi, sm), num[1]: sgn(lo, ml), '0163': 0,
+                                             den[0]: sgn(hi + d, sa), den[1]: sgn(alo, sl)})
     return sets + [{}] * len(sets)
 
 
@@ -530,6 +531,9 @@ SPECS = {
         'resume_keys': True,
         # Every 128th case (with the cover) keeps the vectors under the 1 MB fast-checkout limit.
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
         # AXISGEN's loops entered directly: index registers and steps as
@@ -559,7 +563,19 @@ SPECS = {
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
-        'states': {'cm': {lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')}},
+        'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              # EARROT1-OVERADAY: OVFIND as the interpreter
+                              # sets it (TS of an overflowed A: +-1), +0 in
+                              # three cases of five. EARROT2's BOVB counts
+                              # OVFIND down rather than clearing it, so from
+                              # any other word the original swings between
+                              # EARROT2 and OVERADAY for thousands of passes
+                              # (yaAGC); DTEAROT and MPAC range freely.
+                              # EARROT1's RVQ returns through QPRET (42D) to
+                              # its caller, outside the file.
+                              **{lab: {'OVFIND': [0, 0, 0, 1, 0o77776], 'vac+052': ['outside']}
+                                 for lab in ('23,2215', '23,2220', '23,2221', '23,2223', '23,2225', '23,2230',
+                                             '23,2245', '23,2250', '23,2252', '23,2253')})},
         'index_states': True,
         'rtb': {'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)',
                              'cm': 'rtb_angles(s,io,RTB_CM,RTB_CDU_LOGIC)'},
@@ -569,9 +585,13 @@ SPECS = {
                            'cm': 'rtb_angles(s,io,RTB_CM,RTB_ONE_TO_TWO)'},
                 'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'},
                 'TRANSP1': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE1)'},
-                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'}},
-        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h'],
-        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c'],
+                'TRANSP2': {'cm': 'rtb_agreement(s,io,RTB_CM,RTB_TRANSPOSE2)'},
+                # EARROT2's BOVB TCDANZIG (CSM_GEOMETRY.agc 355), natively
+                # (27,3352, where the listing's first label is ENDT(X)).
+                'TCDANZIG': {'cm': 'cm_integration_tcdanzig(s)'},
+                'ENDT(X)': {'cm': 'cm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'rtb_agreement.h', 'geometry_rtb.h', 'cm_integration_moves.h'],
+        'native_sources': ['src/rtb_angles.c', 'src/rtb_agreement.c', 'src/geometry_rtb.c', 'src/cm_integration_moves.c'],
         'target': 'tests/geometry_target.c',
         # Host vectors and C64 cases chosen to reach every branch outcome;
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
@@ -584,6 +604,9 @@ SPECS = {
         # the word after it is the routine the job resumes at.
         'resume_keys': True,
         # KALCMANU's matrix loops run past 200 routines from some resume points.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'freeze_stride': 128,
     },
@@ -980,6 +1003,10 @@ SPECS = {
         'base': {'cm': 'cm_extended_verbs_file'},
         'symbol': {'cm': 'cm_extended_verbs_file'},
         'basic': 'full',
+        # The C64 flight store links the basic words as two parts
+        # (docs/FLIGHT-PARTS.md): chunked, every module held the whole
+        # basic_run.
+        'flight_parts': [0o43 * 1024 + 0o2600 - 0o2000],
         # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
         # and DAPDISP (fan targets, so their states below apply), and the returns the
         # compiler cannot find on its own: after the in-file checks that pass
@@ -1128,8 +1155,11 @@ SPECS = {
         # (Channel 30 named too: 'auto' leaves out the channel READ CHAN30
         # takes as an input, and the case's channel edits zero it.)
         'io_channels': {0o11: 0o77777, 0o14: 0o6777, 0o30: 0o77777},
+        # CONTABRT's RESUME ends an interrupt (R10,R11 runs as a T3RUPT task):
+        # in_interrupt (InIsr) 0 or 1 at the start and in the digest.
+        'in_isr': True,
         'engine': 'flight-device',
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DIRC_IN_ISR'],
         # ABRTJASK's INDEX Q; CAF MODE70 reads MODE70 to MODE70 +2.
         'fixed_tables': {'MODE70': (0, 2)},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
@@ -1328,11 +1358,9 @@ SPECS = {
         'fixed_tables': {'VREFER': (0, 91)},
         # KEP's RTB P66 is the first order of its pair: P66 returns through
         # TC DANZIG with SSP still in EDOP, so the interpreter runs SSP
-        # GOTOADDR KEP2 from OPJUMP, not at NEWOPS where the transfer ABI
-        # keys interpretive routines.
-        'partial': {'cm': 'SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it '
-                          'runs from the interpreter\'s DANZIG/OPJUMP when P66 returns, a point the transfer ABI '
-                          'does not key yet (interpretive routines are keyed by LOC at NEWOPS)'},
+        # GOTOADDR KEP2 from OPJUMP. That point is a routine of its own,
+        # keyed at the RTB's operand word (25,3314).
+        'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
         # positive in both words, as STARTENT and LEWDOVFL leave it.
         # Negative (a negative low word under a +0 high word too),
@@ -1341,7 +1369,12 @@ SPECS = {
                   'E7,1725': list(range(0, 0o40000, 0o1001))},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline'],
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        # (No 'fast_window': it needs one EBANK, and this file runs under the
+        # listing's per-routine EBANK=.)
+        'trusted_image': True,
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
@@ -1519,11 +1552,20 @@ SPECS = {
                    '27,2745': {'0330': [0o3704]}},
         # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
         # land on interpretive words, never run as basic code.
+        # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
+        # start): FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET).
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
+        # RTB-left pairs (PTOACSM's, DT/2COMP's) resume their right order
+        # from DANZIG.
+        'pending_danzig': True,
         'interp_not_basic': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 1000,
         'target': 'tests/cm_integration_init_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
@@ -2333,6 +2375,9 @@ SPECS = {
         'joint_states': p51_p53_states()[1],
         # The star-pair search (up to 666 pairs of the 37 catalog stars) runs
         # past 4,000 routines.
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'max_steps': 10000,
         'freeze_stride': 192,
     },
@@ -2476,11 +2521,26 @@ SPECS = {
         # TIME2/TIME1 and the CDUs, and integration_joint's sets.
         'edge_cases': True,
         'counters': True,
-        'joint_states': {'*': integration_joint(),
-                         **{'COMTERM+%d' % n: ddv_majors_joint() for n in (26, 38, 42)}},
+        'joint_states': {'*': integration_joint()},
         # A CHANG2 resume starts from the state the program reaches it in
         # (MODE DP after a DLOAD; review #165).
         'resume_flow': True,
+        # The flowed state replaces generated states at a resume LOC, so the
+        # near-equal-majors divides take their sets here, after the flow
+        # (review #165): COMTERM's DDV ALPHAM pairs, KEPPREP's DDV 2D and
+        # GAMCOMP's NORM BDDV (the dividend popped from 0D at PL 2, the
+        # divisor MPAC already normalized, so NORM leaves it). RECTEST's BMN
+        # gets |TNUV| - 3/4 in [0, 1/4) with a job waiting: not taken, then
+        # DANZIG to CHANG2.
+        'flow_range_states': [
+            *[(a, '11,%o' % (int(a[3:], 8) + 1), {'*': ['flow'] + ddv_majors_joint()})
+              for a in ('11,3104', '11,3120', '11,3124')],
+            ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
+            ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
+                num=('vac+0', 'vac+1'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+            ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
+                                                         for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
+                                                         for j in (1, 0o37777)]})],
         # The C64 rows cover every branch arc of the host cases.
         'c64_rows': 'cover',
         # Arcs only runs too long for one diagnostic take come from
@@ -2772,11 +2832,22 @@ SPECS = {
                       'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
         # P40-P47 run as jobs: any DANZIG can find a job waiting.
         'resume_keys': True,
+        # The Waitlist tasks (TRIMGIMB from R03, PITCHOFF, ENGOFTSK,
+        # STARTP47, the FIXDELAY and VARDELAY returns) run in T3RUPT
+        # whatever job is waiting: the basic routines that never name FIXLOC
+        # or NEWJOB take any FIXLOC and NEWJOB -0 (DUMMYJOB idling) too.
+        'any_fixloc': True,
+        'any_newjob': True,
         'noreturn': ['POSTJUMP'],
         'resume_orphans': True,
-        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
-        # output-channel model.
-        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # WAND/WOR CHAN12 (TRIMGIMB, PITCHOFF), RAND/WRITE DSALMOUT and WOR
+        # CHAN14 (ENGINOF3) through the program's agc_hardware
+        # (include/agc_channel_ops.h), the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # The channels the file's orders name, compared after every case
+        # (channel 14 without the IMU CDU and gyro drive bits).
+        'io_channels': {0o11: 0o77777, 0o12: 0o77777, 0o14: 0o6777},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
         # C64 rows chosen by branch outcome over every linked source.
@@ -2799,6 +2870,7 @@ SPECS = {
         # W from include/agc_image_w.h: flight builds address the fixed
         # $7000 image.
         'image_w': True,
+        'trusted_image': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
@@ -2821,6 +2893,10 @@ SPECS = {
         'c64_rows': 'cover',
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
+        # V89 runs in flight: skip the entry checks' whole-image scan there.
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
     },
     'lm-p12': {
         'missions': ('lm',),
@@ -2840,6 +2916,9 @@ SPECS = {
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
         'edge_cases': True,
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p12_target.c',
         'freeze_stride': 32,
@@ -2861,6 +2940,9 @@ SPECS = {
         'noreturn': ['POSTJUMP'],
         'resume_keys': True,
         'resume_orphans': True,
+        # CONTABRT's RESUME ends an interrupt: in_interrupt (yaAGC's InIsr)
+        # in each case and digest.
+        'in_isr': True,
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
@@ -2870,6 +2952,8 @@ SPECS = {
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
+        'image_w': True,
+        'index_carry16': True,
         'edge_cases': True,
         'c64_rows': 'cover',
         'target': 'tests/lm_p70_p71_target.c',
@@ -3003,6 +3087,7 @@ SPECS = {
         'channel_inputs': True,
         'c64_flags': ['-DIRC_INPUTS'],
         'target': 'tests/lm_rcsmon_target.c',
+        'trusted_image': True,
         'c64_rows': 'cover',
         'cover': True,
         'freeze_stride': 16,
@@ -3547,6 +3632,10 @@ SPECS = {
         'freeze_stride': 256,
     },
     'lm-p34-p35': {
+        'trusted_image': True,
+        'index_carry16': True,
+        'image_w': True,
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'P34-P35,_P74-P75.agc'},
         'source_path': {'lm': 'P34-35_P74-75.agc'},
@@ -3558,7 +3647,8 @@ SPECS = {
                     'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'GET+MGA', 'GET.LVC',
                     'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE', 'CSMSTORE',
-                    'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+                    'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
+                    'VNPOOH'],  # (P30_P37 calls it: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
@@ -3571,11 +3661,17 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_modes.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
         'fixed_index': {'MUTABLE': [2, 10]},
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        'states': {'INTLOOP+7': {'0154': [0], '0155': [0]},  # (BZE after its CALL: MPAC zero)
+                   'SETMUER': {'vac+046': [0o77775, 0o77765]}},
         # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},
         'target': 'tests/lm_p34_p35_target.c',
+        'edge_cases': True,
+        'resume_keys': True,
+        'resume_flow': True,
+        'c64_rows': 'cover',
+        'cover_stride': 16,
         'freeze_stride': 512,
     },
     'lm-p32-p35': {
@@ -3695,18 +3791,24 @@ SPECS = {
                     'LAMENTER', 'PARAM', 'GEOM', 'GETX', 'INITV', 'TARGETV'],
         'externals': {'POLY': 'auto', 'POODOO': 'auto'},
         'noreturn': ['POODOO'],
-        # MUTABLE,1: X1 is 0 (Earth) or -8 (Moon).
-        'indexed_fixed': {'MUTABLE': (0, 8)},
-        # X1 the body (MUTABLE,1: 0 Earth, -8 Moon); X2 and S2 the GETX and
-        # INVRSEQN loop count (AXT,2 3, SSP S2 1).
-        'all_states': {'vac+046': [0, 0o77767], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
+        # MUTABLE,1: X1 is -2 (Earth) or -10D (Moon), as SELECTMU's AXC,1
+        # and INTEGRATION_INITIALIZATION's AXT,1 leave it, so the loads
+        # read MUTABLE +2 to +7 or +10 to +15.
+        'indexed_fixed': {'MUTABLE': (2, 10)},
+        # X1 the body (MUTABLE,1: -2 Earth, -10D Moon); X2 and S2 the GETX
+        # and INVRSEQN loop count (AXT,2 3, SSP S2 1).
+        'all_states': {'vac+046': [0o77775, 0o77765], 'vac+047': [0, 1, 2, 3], 'vac+051': [1]},
         # PERIODCH subtracts the period (0D) from TAU. (2073) until less than
         # one is left. A random TAU. over a random period loops for millions
         # of passes, so resumes before it take TAU. +0 (its own entries keep
         # any TAU.) and resumes in the loop a period of at least 10000 octal
         # against a TAU. of a few. The period is in MPAC at PERIODCH and its
         # GOTO (PUSHLOC 0D), pushed at 0D in between (PUSHLOC 2D).
-        'states': {**{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
+        # GETX pushes from 0D (its callers CALL it at PL 0); a PUSHLOC near
+        # the top of the VAC pushes into the index registers and sends
+        # 1/WLOOP's TIX,2 round thousands of times.
+        'states': {'GETX': {'0166': ['vac+0']},
+                   **{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
                    **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
                                          **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
                                             if n in (0, 0o10) else {'0166': ['vac+2']})}
@@ -3719,6 +3821,8 @@ SPECS = {
         'flow_states': True,
         'resume_keys': True,
         # (a LAMBERT iteration runs about 100 pairs, up to 20 of them)
+        # (Entry checks skip the whole-image scan in flight builds.)
+        'trusted_image': True,
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
@@ -3782,6 +3886,9 @@ SPECS = {
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
+        # The C64 flight store links the basic words as three parts
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
+        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,

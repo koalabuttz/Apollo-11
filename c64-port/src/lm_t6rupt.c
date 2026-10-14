@@ -105,3 +105,15 @@ static const agc_routine_entry entries[13]={
  {FF(LM_WRITEV-1u),writex},{FF(LM_WRITEV),writex},
  {B17(LM_T6JOBCHK),t6jobchk_entry},{B17(LM_DOT6RUPT),dot6rupt}};
 const agc_routine_table lm_t6rupt_routines={entries,13};
+/* The RESUME family alone: every interrupt ends here, so the flight store
+ * pins it (tools/flight_store_build.py PIN) and an interrupt's end loads no
+ * module. The resident's wrapper (0x01E4) still holds the whole table. */
+static const agc_routine_entry hot_entries[4]={
+ {FF(LM_RESUME),resume},{FF(LM_NOQRSM),resume},{FF(LM_NOQBRSM),resume},{FF(LM_NOQBRSM+1u),resume}};
+const agc_routine_table lm_t6rupt_hot_routines={hot_entries,4};
+/* WRITEP, WRITEU and WRITEV (with their -1 entries): the jet writes an RCS
+ * DAP pass makes, carried by the flight store's DAP excursion. */
+static const agc_routine_entry jets_entries[6]={
+ {FF(LM_WRITEP-1u),writex},{FF(LM_WRITEP),writex},{FF(LM_WRITEU-1u),writex},{FF(LM_WRITEU),writex},
+ {FF(LM_WRITEV-1u),writex},{FF(LM_WRITEV),writex}};
+const agc_routine_table lm_t6rupt_jets_hot_routines={jets_entries,6};

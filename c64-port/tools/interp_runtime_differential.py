@@ -88,7 +88,9 @@ def one(spec_id, a):
     missions = [D.Mission(spec, m) if m in spec['missions'] else D.Absent(m) for m in ('lm', 'cm')]
     if spec.get('flow_states'):
         D.flow_states(spec_id, spec, missions)
-    rng = random.Random('interp-routine:' + spec_id)
+    # IRC_SALT: another case set than the frozen one (audits), as in
+    # tools/interp_routine_differential.py.
+    rng = random.Random('interp-routine:' + spec_id + os.environ.get('IRC_SALT', ''))
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -114,6 +116,25 @@ def one(spec_id, a):
     rows_r = D.run([ref, *D.ROPES, path])
     rows_n = D.run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
+    # A cycle of erasable CADRs: the oracle loops in GOTOERS to its step
+    # limit (kind 9), the core hands the job back at GOTO after 64 hops
+    # (lmi_goto_any, #224). Counted, not compared, as the routine
+    # differential counts both sides looping.
+    goto = {0: 0o6646, 1: 0o6615}
+    loops = [i for i in bad if rows_r[i][1] == '9' and rows_n[i][1] == '0'
+             and int(rows_n[i][2]) == goto[cases[i]['cm']]]
+    bad = [i for i in bad if i not in loops]
+    if loops:
+        print('  (%d cases loop in an erasable CADR cycle: not compared)' % len(loops))
+    # STORE,1/STORE,2 (or STADR) with an indexed address that leaves
+    # erasable: the original's INDEX ADDRWD turns the DXCH into another
+    # instruction, the interpreter refuses at NEWOPS or at STADR's body
+    # (store_outside, #422). Counted, not compared.
+    outside = {0: (0o6070, 0o6354), 1: (0o6037, 0o6323)}
+    stores = [i for i in bad if rows_n[i][1] == '2' and int(rows_n[i][2]) in outside[cases[i]['cm']]]
+    bad = [i for i in bad if i not in stores]
+    if stores:
+        print('  (%d cases refuse a STORE outside erasable: not compared)' % len(stores))
     # As in the compiled differential: a run that ends refusing at a basic
     # block with an I/O channel instruction waits for a channel model, and
     # is counted, not compared.

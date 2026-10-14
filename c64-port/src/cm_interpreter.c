@@ -116,7 +116,7 @@ static MAYBE_UNUSED uint8_t fx(const apollo_overlay_state *s,unsigned e,agc_word
 static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const cm_native_io *io,unsigned e,agc_word *k){
  unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;
  if(e>=04000u)p=(uint16_t)(2048u+e-04000u);
- else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}
+ else{if(b>=030u&&(sb&0100u)){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}
  return apollo_rope_read(1u,p,k);
 }
 #define fx(s,e,k) fxr(s,io,e,k)

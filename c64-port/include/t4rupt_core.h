@@ -25,5 +25,7 @@
  * display programs keep them; RUPTREG1 0-7 at T4JUMP. Anything else is
  * refused unchanged. */
 extern const agc_routine_table lm_t4rupt_core_routines;
+/* The same entries, packed by the flight store beside T4RUPT's radar step. */
+extern const agc_routine_table lm_t4rupt_core_hot_routines;
 extern const agc_routine_table cm_t4rupt_core_routines;
 #endif
