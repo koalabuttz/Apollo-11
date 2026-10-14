@@ -7028,7 +7028,7 @@
       "sha256": "bfcd1300884bc8ab69748562fe287178f56bdfe9b7f13460b6ae73a1db3406a2",
       "bytes": 11209,
       "lines": 647,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7043,7 +7043,7 @@
           "verification": "docs/LM-ASCENT.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7076,6 +7076,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
             "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-lm-ascent.md",
+            "sha256": "4aba504bbd90a03bff509f9e8dded1c0586b5c63c0fc0403ddf49ad6adf54774"
           }
         }
       }
