@@ -61,12 +61,21 @@ interp-flight-vice: flight-store build/agc_engine_hardware_dv.o
 # (tools/interp_flight_flowed.c), those the verification interpreter keeps
 # to the contract for (tools/interp_flight_verify.c), through the flight
 # store in VICE as interp-flight-vice runs them, several boots.
-interp-flight-flowed-vice: flight-store build/agc_engine_hardware_dv.o
+interp-flight-flowed-vice: flight-store-lm build/agc_engine_hardware_dv.o
 	python3 tools/interp_flight_test.py --missions lm --flowed
+# interp-flight-flowed-vice-1..4: the same boots split four ways for CI
+# (tools/mk/ci-extra.mk), each in its own output directory. The full
+# target above writes the evidence.
+INTERP_FLIGHT_FLOWED_PARTS := 1 2 3 4
+INTERP_FLIGHT_FLOWED_VICE := $(addprefix interp-flight-flowed-vice-,$(INTERP_FLIGHT_FLOWED_PARTS))
+.PHONY: $(INTERP_FLIGHT_FLOWED_VICE)
+$(INTERP_FLIGHT_FLOWED_VICE): interp-flight-flowed-vice-%: flight-store-lm build/agc_engine_hardware_dv.o
+	python3 tools/interp_flight_test.py --missions lm --flowed --part $*/$(words $(INTERP_FLIGHT_FLOWED_PARTS)) \
+	  --out build/interp-flight-flowed-$*
 # interp-flight-p63-vice: mission flight. Apollo 11 about ten minutes
 # before PDI (Virtual AGC's NASSP core, tools/scenarios/README.md), keyed
 # into P63 through the ignition countdown and SERVICER's start; 1000 of the
 # first arrivals at interpreter entry points, through the flight store in
 # VICE as interp-flight-vice runs them.
-interp-flight-p63-vice: flight-store build/agc_engine_hardware_dv.o
+interp-flight-p63-vice: flight-store-lm build/agc_engine_hardware_dv.o
 	python3 tools/interp_flight_test.py --missions lm --p63
