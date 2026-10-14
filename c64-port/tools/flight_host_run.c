@@ -293,6 +293,7 @@ static void hole(const agc_word *w,agc_word sb,unsigned long instructions,const 
  * which can differ from the word at Z (an interrupted INDEX leaves the
  * indexed instruction there), in place of the next instruction. */
 static int substitute;
+static FILE *mct_out;
 /* Native state into yaAGC and back. */
 static const unsigned short ch[]={3,4,5,6,010,011,012,013,014,015,030,031,032,033};
 static agc_word *hwc(agc_hardware *hw,unsigned i){agc_word *c[]={&hw->channel3,&hw->channel4,&hw->channel5,&hw->channel6,&hw->channel10,
@@ -473,6 +474,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
+ if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
  if(getenv("FLIGHT_CH31"))chan31=strtoul(getenv("FLIGHT_CH31"),0,8)&077777u;
  if(getenv("FLIGHT_CH32"))chan32=strtoul(getenv("FLIGHT_CH32"),0,8)&077777u;
@@ -583,7 +585,10 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first);}
     if(st==EXEC_OK){
      if(scaled)spend(span_mct);
-     if(n>=0)locked+=(unsigned long)n;
+     if(n>=0){locked+=(unsigned long)n;
+      /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
+       * point and table (tools/x86_flight_mct.py). */
+      if(mct_out){int in;uint16_t k=point(before.words,io0.superbank,&in);fprintf(mct_out,"%d %u %lu %s\n",in,k,span_mct,e->name);}}
      else miss(e->name,before.words,io0.superbank,s.words,first);
      continue;}}
    /* A refusal: undo whatever the routine did and bridge the point. */
