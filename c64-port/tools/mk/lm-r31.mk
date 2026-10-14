@@ -20,7 +20,7 @@ sanitize-lm-r31: build/lm-r31-reference.snapshots.bin.xz | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-r31-sanitize
 # Six PRGs, each registering only the routines its cases reach, with the
 # image under KERNAL ROM.
-build/lm-r31-%.prg: $(LM_R31_SRC) tests/lm_r31_cases.c platform/c64/lm_r31_diagnostic.c $(LM_R31_HDR) | build
+build/lm-r31-%.prg: $(LM_R31_SRC) tests/lm_r31_cases.c platform/c64/lm_r31_diagnostic.c $(LM_R31_HDR) tools/mk/lm-r31.mk | build
 	$(MOS_CC) $(CPPFLAGS) -DLM_R31_C64_GROUP=$* -std=c99 -Oz -fno-inline-functions -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/lm-r31-$*.map $(LM_R31_SRC) tests/lm_r31_cases.c platform/c64/lm_r31_diagnostic.c -o $@
 	python3 -c "import re,sys;m=open('build/lm-r31-$*.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else 'image and BSS reach the mailbox page: '+hex(e))"
 # The VICE run as one CI part per group, c64-lm-r31-<n> and vice-lm-r31-<n>
