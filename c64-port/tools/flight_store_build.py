@@ -321,7 +321,10 @@ SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072, 4: 8186}
 
 
 def map_symbols(path):
-    """The symbol names an lld map lists (address, VMA, size, align, name)."""
+    """The symbol names an lld map lists (address, VMA, size, align, name);
+    none when the link wrote no map (lld writes none on undefined symbols)."""
+    if not Path(path).exists():
+        return set()
     return {p[4] for p in (l.split() for l in Path(path).read_text().splitlines())
             if len(p) == 5 and re.fullmatch(r'[0-9a-f]+', p[0]) and not p[4].startswith(('.', '<', '/', 'build'))
             and '(' not in p[4] and '.' not in p[4]}
@@ -772,6 +775,7 @@ def main():
             hp = params[f'pin-{SLOT_NAME[4]}']
             own = [f for f in sources if f not in set(hp['sources'])]
             basic = [t for t in ts if 'interpret' not in t] + hp['basic']
+            (ROOT / OUT / m / f'pin-{SLOT_NAME[3]}.prg.map').unlink(missing_ok=True)
             res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', (), own, basic)
 
             def asked():
@@ -799,7 +803,8 @@ def main():
                 flags = ['-Wl,--error-limit=0'] + (
                     ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in share)] if share else [])
                 res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', flags, own, basic)
-                more = asked() - ask - set(share)
+                # A failed link may leave the last link's map: read only this one's.
+                more = (asked() if res['ok'] or res.get('overflow') else set()) - ask - set(share)
                 if not set(res.get('undefined') or ()) - want and not more:
                     return res, nbytes, share
                 want |= set(res.get('undefined') or ())
@@ -876,6 +881,7 @@ def main():
             excursion = dict(stem=stems[0], lane=lane, slot=0, id=LANE_BYTE[lane] << 8 | 0xF5, basic=ets,
                              interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
                              sources=c64_sources(index, *stems, 'agc_transfer'), prg_name='excursion')
+            (ROOT / OUT / m / 'excursion.prg.map').unlink(missing_ok=True)
             res = link(dict(excursion))[2]
             # Every function it links that the home holds as a global is the
             # home's (--defsym from the home's map), as for class 3.
