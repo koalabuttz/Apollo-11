@@ -4,7 +4,7 @@
   "release": "evidence-resident-kernel",
   "files": {
     "resident-flight-sizes.json": {
-      "sha256": "9747eedf6aefa69514e4527627a86c9aa6414dbe276781b249c832467fcd9707",
+      "sha256": "1633db1d058a7ac93357d3cae551122327ae823bea2ccd1a31ea979a23d115c6",
       "bytes": 1753,
       "store": "tree"
     },

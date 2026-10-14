@@ -122,11 +122,16 @@ pinned LM DAP set, against about 750 for a base-kind module); the set
 measures 39,341 bytes. Every CM module links the resident's
 `cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
 
-A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
-engine, its main only builds the table list and returns `EXEC_OK`, and the
-resident runs its routines through `rk_direct` from the next step. That
-needs the base record, so a pinned set whose tables take another kind
-links the engine and conversion until the kind folds into `agc_hardware`;
+Every module on the base record, pinned or not, is direct-only
+(`FS_DIRECT_ONLY`). It links no transfer engine, and its main only builds
+the table list and returns `EXEC_UNMAPPED` (nothing ran). After such a run
+`rk_resident_step` calls `rk_direct` in the same step, so the point runs
+through the new tables without an extra step. This saves about 490 bytes
+per module. Against the build before it on the same tables, the CM image
+fell from 1,417,728 to 1,368,576 bytes, because chunked CM DAP files need
+fewer chunks. Direct-only needs the base record, so a module or pinned set
+whose tables take another kind links the engine and conversion until the
+kind folds into `agc_hardware`;
 `report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
 measures 39,341 bytes today and 38,534 direct-only.
 
@@ -279,7 +284,12 @@ cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
 The check then runs one resolver record per module both ways: through the
 module's main (an ABI 2 run) and through `rk_direct`, from the same image,
 slot contents and channels (snapshotted in the REU's last 32 KB), with only
-that module loaded. Status, image and channels must match. On def640e3d
+that module loaded. Status, image and channels must match. A direct-only
+module's main must return `EXEC_UNMAPPED` and leave image and channels as
+they were (step 12). Its point then runs through `rk_direct` alone, and the
+report gives those cycles (`direct_only`; LM 25 modules at 3,344-27,187
+cycles, CM 45 at 4,155-22,076). The pinned check's reference run goes
+through a direct-only twin's tables with the pinned module set aside. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
