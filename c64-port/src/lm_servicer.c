@@ -2076,6 +2076,11 @@ static enum exec_status steps(apollo_overlay_state *s,lm_sv_io *io){
    if(inner(s,io))return EXEC_OUT_OF_SCOPE;
    return EXEC_OK;}
   /* NEWOPS reads the order word under FB, which DANZIG set from BANKSET. */
+#ifdef AGC_FLIGHT_INTERPRETER
+  /* Flight: the native interpreter runs the file's interpretive code
+   * from NEWOPS, so a chain stops where it reaches it. */
+  if(interp)return n?EXEC_OK:EXEC_OUT_OF_SCOPE;
+#endif
   if(interp&&(((W[FBANK]^W[BANKSET])&076000u)||!work_area(s)))return EXEC_OUT_OF_SCOPE;
   if(!interp&&dependent_word(ph))return EXEC_OUT_OF_SCOPE;
   st=interp?interpretive(s,io,ph):basic(s,io,ph);
