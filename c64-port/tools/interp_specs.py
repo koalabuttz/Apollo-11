@@ -893,6 +893,57 @@ SPECS = {
         'superbank_bit': True,
         'target': 'tests/lm_p30_file_target.c',
     },
+    'cm-extended-verbs-file': {
+        'resume_keys': True,
+        'missions': ('cm',),
+        'file': {'cm': 'EXTENDED_VERBS.agc'},
+        'base': {'cm': 'cm_extended_verbs_file'},
+        'symbol': {'cm': 'cm_extended_verbs_file'},
+        'basic': 'full',
+        # XACTALM and XACT0 (labels nobody calls), VBZERO, VBCOARK, STABLISH
+        # and DAPDISP (fan targets, so their states below apply), and the returns the
+        # compiler cannot find on its own: after the in-file checks that pass
+        # by TC Q or TCF Q+1 elsewhere (CHKPOOH, CKMODCAD, CKLFTBTS's
+        # before-liftoff return at TRMATTCK +2), after CHECKMM's skip return
+        # (the word after its inline mode), GOXDSPF's proceed and recycle
+        # returns, and the BANKCALL NEEDLE11 and NEEDLER2 returns.
+        'entries': ['@external', 'XACTALM', 'XACT0', 'VBZERO', 'VBCOARK', 'STABLISH', 'DAPDISP',
+                    'IMUZEROK+1', 'IMUCOARK+1', 'OPTCOARK+2', 'IMUFINEK+1', 'SYSTEST+1',
+                    'IMUATTCK+1', 'VB64+1',
+                    'CREWMANU+1', 'V89PERF+1', 'SHOWSUM+1', 'TRMATTCK+2',
+                    'CKOPTVB+3', 'CHAZFOGC+3', 'VERB94+9', 'V52+3',
+                    'IMUATTCK+15', 'IMUATTCK+16', 'DONOUN46+5', 'DONOUN47+5', 'NOKILL+6',
+                    'IMUATTCK+20', 'IMUATTCK+22'],
+        'edge_values': True,
+        'seed_counters': True,
+        'cover': True,
+        'ebank': 'listing',
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        'channels': 'all',
+        'io_channels': 'auto',
+        'engine': 'flight-device',
+        # VERB69 (TC VERB69) spins until the night watchman restarts the
+        # computer: reaching it ends the run.
+        'idle': ['VERB69'],
+        # GOEXTVB (INDEX MPAC; TC LST2FAN): MPAC is the extended verb less
+        # 40, an index into the fan's 60 words.
+        'states': {'43,2000': {'0154': list(range(60))},
+                   # OP/INERT's nouns: 20 (ICDU) and 91 (OCDU), or another.
+                   '43,2124': {'NOUNREG': [0o24, 0o24, 0o133, 0o133, 0o12]},
+                   '43,2150': {'NOUNREG': [0o24, 0o24, 0o133, 0o133, 0o12]},
+                   # V46 and V48's TVC test (CS FLAGWRD6, MASK OCT60000, BZMF).
+                   # (and DAPDATR1, E6 03066 after TS EBANK: bit 14 is CSM/LM).
+                   '43,2524': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0],
+                               '3066': [0o20000, 0o60000, 0, 0o40000]},
+                   '43,2552': {'FLAGWRD6': [0o40000, 0o40000, 0o60000, 0o20000, 0]},
+                   # NVSUB's return (TC MPAC +1): the Q SETXTACT saved, the word
+                   # after one of the file's TC TESTXACT (or XACT0's TC SETXTACT).
+                   '43,2112': {'155': [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570, 0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202]}},
+        'index_targets': {'43,2001': 59},
+        'target': 'tests/cm_extended_verbs_file_target.c',
+    },
     'lm-p76-file': {
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
