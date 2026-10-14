@@ -75,10 +75,10 @@ void irc_cover(unsigned k){if(k<8192u)cover[k>>3]=(uint8_t)(cover[k>>3]|1u<<(k&7
 #ifdef IRC_EDGE_COVER
 unsigned irc_edge_count(void);void irc_edges_reset(void);int irc_edge_hit(unsigned k);unsigned irc_edge_byte(unsigned k);
 #endif
-int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,edges;static FILE *f;static irc_edit edits[4096];
+int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,edges,fbs;static FILE *f;static irc_edit edits[4096];
  /* (static: a case may longjmp back here, IRC_WRAP_EXIT) */
  if(argc<2)return 2;
- dump=argc>2&&!strcmp(argv[2],"dump");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
+ dump=argc>2&&!strcmp(argv[2],"dump");fbs=argc>2&&!strcmp(argv[2],"fb");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  edges=argc>2&&!strcmp(argv[2],"edges");
  f=fopen(argv[1],"rb");if(!f)return 2;
  if(rd32(f)!=0x32435249ul)return 2;
@@ -113,6 +113,8 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
   irc_in_case=0;
 #endif
   printf("%u %u %u %lu",n,kind,(unsigned)(s.words[5]&077777u),(unsigned long)irc_digest(0,&s,ie));
+  /* fb: the FB the run stops under, LOC and BANKSET, to place a stop in a bank (#325). */
+  if(fbs)printf(" %u %u %u",(unsigned)(s.words[4]&077777u),(unsigned)(s.words[0164]&077777u),(unsigned)(s.words[0165]&077777u));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
   if(covers)for(i=0;i<8192u;++i)if(cover[i>>3]&(1u<<(i&7u)))printf(" c%u",i);

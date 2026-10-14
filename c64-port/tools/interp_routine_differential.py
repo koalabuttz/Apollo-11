@@ -1140,6 +1140,8 @@ def main():
     ap.add_argument('spec')
     ap.add_argument('--cases', type=int, default=64, help='cases per routine')
     ap.add_argument('--freeze', action='store_true')
+    ap.add_argument('--stops-only', action='store_true',
+                    help='run the native side only and count its stops inside the file (#325)')
     ap.add_argument('--show', type=int, default=3)
     ap.add_argument('--only', default='')
     ap.add_argument('--cover-check', metavar='RECORD', nargs='?', const='',
@@ -1178,6 +1180,12 @@ def main():
     write_cases(path, missions, cases)
     if a.cover_check is not None:
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
+    if a.stops_only:
+        inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
+        print('%s: %d native stops inside the file' % (a.spec, sum(inside.values())))
+        for k, v in sorted(inside.items()):
+            print('  %s x%d' % (k, v))
+        sys.exit(0)
     rows_r = run([ref, *ROPES, path])
     rows_n = run([nat, path])
     # A case both sides loop on (the oracle at its step limit, the native
@@ -1189,6 +1197,13 @@ def main():
         print('both sides loop (erasable CADR cycle): %d cases' % len(loops))
         keep = [i for i in range(len(cases)) if i not in loops]
         cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
+        write_cases(path, missions, cases)
+    fbrows = run([nat, path, 'fb'])
+    refused = operand_stops(missions, cases, rows_n, fbrows)
+    if refused:
+        print('refused (GOTO to an operand word of the file): %d cases' % len(refused))
+        keep = [i for i in range(len(cases)) if i not in refused]
+        cases, rows_r, rows_n, fbrows = ([v[i] for i in keep] for v in (cases, rows_r, rows_n, fbrows))
         write_cases(path, missions, cases)
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
     # A native run that ends refusing in a routine with an I/O channel
@@ -1238,6 +1253,10 @@ def main():
     timeouts = [r for i, r in enumerate(rows_r) if r[1] != '0' and i not in chan]
     if timeouts:
         sys.exit('FAIL: %d oracle timeouts' % len(timeouts))
+    inside = in_file_stops(missions, cases, rows_n, nat, path, chan, fbrows)
+    if inside:
+        sys.exit('FAIL: %d native stops at words of the file no routine covers (yaAGC runs on there, #325): %s' % (
+            sum(inside.values()), ', '.join('%s x%d' % kv for kv in sorted(inside.items()))))
     print('PASS: %d %s cases equal the original programs (%d routines)' % (
         len(cases), a.spec, sum(len(mi.points) for mi in missions if mi.m in spec['missions'])))
     for k in sorted(stops):
@@ -1262,6 +1281,60 @@ def main():
         if spec.get('cover'):
             edges = edge_sets(build_edges(a.spec, spec), path)
         freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers)
+
+
+
+def place(z, fb, sb):
+    """Physical address of logical z under FB fb and superbank sb, or None
+    outside fixed memory."""
+    if 0o4000 <= z < 0o10000:
+        return 2048 + z - 0o4000
+    if 0o2000 <= z < 0o4000:
+        b = (fb >> 10) & 0o37
+        if b >= 0o30 and (sb & 0o160) == 0o100:
+            b += 8
+        return b * 1024 + z - 0o2000
+    return None
+
+
+def operand_stops(missions, cases, rows_n, fbrows, skip=()):
+    """Cases whose native run stops at NEWOPS with LOC on a word of the file
+    that does not start an interpretive order (an operand or data word a
+    drawn S1/S2 or CADR sent GOTO to): the AGC would run that word as orders,
+    a state the program never makes. Refused, not compared (steward, #224)."""
+    out = set()
+    for i, (c, r, l) in enumerate(zip(cases, rows_n, fbrows)):
+        if i in skip or r[1] != '0':
+            continue
+        mi = missions[c['cm']]
+        newops = mi.cp.L.labels.get('NEWOPS')
+        if newops is None or int(r[2]) != mi.cp.logical_of(newops):
+            continue
+        q = place(int(l[5]), int(l[6]), c.get('sb', 0))
+        if q is not None and q in mi.cp.words and not (q in mi.cp.code and IC.is_interp_op(mi.cp.code[q].op)):
+            out.add(i)
+    return out
+
+
+def in_file_stops(missions, cases, rows_n, nat, path, skip=(), fbrows=None):
+    """{routine: cases} of native runs that stop (no routine covers Z) at a
+    word of the file under test, other than the case's own stop: yaAGC runs
+    on from there, so the stop is not the program's (#325); the spec's idle
+    points (where both sides stop by design) are left out. Z with the FB
+    the run ends under places the stop in a bank."""
+    out = collections.Counter()
+    if not any(r[1] == '0' for r in rows_n):
+        return out
+    for i, (c, r, l) in enumerate(zip(cases, rows_n, fbrows or run([nat, path, 'fb']))):
+        if i in skip or r[1] != '0':
+            continue
+        phys = place(int(r[2]), int(l[4]), c.get('sb', 0))
+        if phys is None:
+            continue
+        mi = missions[c['cm']]
+        if phys in mi.cp.words and phys != c['stop'] and phys not in mi.cp.idle:
+            out['%s %s -> %s' % (mi.m, mi.cp.where(c['point']), mi.cp.where(phys))] += 1
+    return out
 
 
 def cover_check(spec_id, spec, missions, cases, path, record):
