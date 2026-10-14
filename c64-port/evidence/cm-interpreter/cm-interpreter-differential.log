@@ -1,0 +1,11 @@
+rm -f build/cm-interpreter-executed.txt build/cm-interpreter-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
+PATH=/home/claude/Apollo-11/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/home/claude/Apollo-11/c64-port/build/cm-interpreter-executed.txt AGC_READ_WORDS=/home/claude/Apollo-11/c64-port/build/cm-interpreter-read.txt make --no-print-directory cm-interpreter-differential
+python3 tools/interp_routine_differential.py cm-interpreter --cases 512 --freeze
+refused (GOTO to an operand word of the file): 4 cases
+PASS: 18940 cm-interpreter cases equal the original programs (37 routines)
+froze 1189 vectors to tests/cm_interpreter_vectors.h
+git diff --exit-code -- tests/cm_interpreter_vectors.h tests/cm_interpreter_c64_vectors.h tools/mk/cm-interpreter.groups
+rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
+python3 tools/interp_executed_closure.py cm-interpreter
+PASS: Comanche055/INTERPRETER.agc: 2080 words, 2027 instructions, 381 executed by the oracle, 0 interpreted, 0 named unreached, 53 data, 1646 run by the interpreter core
+exit 0

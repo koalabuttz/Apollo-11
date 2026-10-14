@@ -121,3 +121,4 @@ PASS: 30976 cm-time-free-fall cases equal the original programs (121 routines)
   CM 27,3334 T(X): 07171 x256
   CM 27,3352 ENDT(X): 06030 x256
 froze 968 vectors to tests/cm_time_free_fall_vectors.h
+rc=0

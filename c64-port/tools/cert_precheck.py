@@ -392,6 +392,12 @@ def routine_keys(cc='cc'):
     """{'lm': {physical: [source...]}, 'cm': {...}}, plus probe errors."""
     sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'src').glob('*.c')
                      if re.search(r'agc_routine_(entry|table)\b', p.read_text(errors='replace')))
+    # (A mission build of another source, as src/cm_interp_core.c includes
+    # src/lm_interp_core.c, registers that source's tables under its names.)
+    names = {pathlib.Path(s).name for s in sources}
+    sources += sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'src').glob('*.c')
+                      if str(p.relative_to(ROOT)) not in sources and any(
+                          n in names for n in re.findall(r'#\s*include\s*"([^"]+\.c)"', p.read_text(errors='replace'))))
     shared = hashlib.sha256()
     for path in sorted(ROOT.glob('include/*.h')) + sorted(ROOT.glob('src/*.inc')):
         shared.update(path.name.encode() + path.read_bytes())

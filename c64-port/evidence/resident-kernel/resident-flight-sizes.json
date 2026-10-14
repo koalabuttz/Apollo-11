@@ -1,10 +1,10 @@
 {
  "lm": {
-  "resident_bytes": 24253,
+  "resident_bytes": 24263,
   "resident_capacity": 26367,
-  "free_bytes": 2114,
+  "free_bytes": 2104,
   "service_table_bytes": 72,
-  "boot_only_bytes": 4216,
+  "boot_only_bytes": 4531,
   "components": {
    "kernel": 10493,
    "ABI 2 runtime and REU store": 5235,
@@ -13,7 +13,7 @@
    "single-precision subroutines": 1307,
    "AGC timers and interrupt entry": 1183,
    "service table exports": 637,
-   "C runtime and library": 361,
+   "C runtime and library": 371,
    "IRQ entry": 24,
    "BASIC header and alignment": 0
   },
@@ -26,9 +26,9 @@
    "__zero_bss": 19,
    "main": 19,
    "__ashlhi3": 19,
+   "cst8": 16,
    ".basic_header": 12,
    "exit": 6,
-   ".Lswitch.table.apollo_ov2_slot_bytes": 6,
    ".fini": 4,
    "": 4,
    ".call_main": 3,
@@ -37,11 +37,11 @@
   }
  },
  "cm": {
-  "resident_bytes": 23966,
+  "resident_bytes": 23976,
   "resident_capacity": 26367,
-  "free_bytes": 2401,
+  "free_bytes": 2391,
   "service_table_bytes": 72,
-  "boot_only_bytes": 4195,
+  "boot_only_bytes": 4506,
   "components": {
    "kernel": 10256,
    "ABI 2 runtime and REU store": 5235,
@@ -50,7 +50,7 @@
    "single-precision subroutines": 1307,
    "AGC timers and interrupt entry": 1183,
    "service table exports": 637,
-   "C runtime and library": 361,
+   "C runtime and library": 371,
    "IRQ entry": 24,
    "BASIC header and alignment": 0
   },
@@ -63,9 +63,9 @@
    "__zero_bss": 19,
    "main": 19,
    "__ashlhi3": 19,
+   "cst8": 16,
    ".basic_header": 12,
    "exit": 6,
-   ".Lswitch.table.apollo_ov2_slot_bytes": 6,
    ".fini": 4,
    "": 4,
    ".call_main": 3,

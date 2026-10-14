@@ -1,3 +1,3 @@
-lm-radar-leadin-routines-1.prg sha256 04355e336d2913f9267e86c87cfd621697d7529f1764e242881409b242653177
-PASS: VICE PAL lm-radar-leadin-routines-1.prg: 15 checks, 0 failures
-PRG sha256: 04355e336d2913f9267e86c87cfd621697d7529f1764e242881409b242653177 lm-radar-leadin-routines-1.prg
+lm-radar-leadin-routines-1.prg sha256 d7f582f198d3d23e7f4d0b3252341218b585a2d1c2cfb28eaf9b533142a76fb1
+PASS: VICE PAL lm-radar-leadin-routines-1.prg: 17 checks, 0 failures
+PRG sha256: d7f582f198d3d23e7f4d0b3252341218b585a2d1c2cfb28eaf9b533142a76fb1 lm-radar-leadin-routines-1.prg
