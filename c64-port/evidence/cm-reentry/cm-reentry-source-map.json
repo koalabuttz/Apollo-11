@@ -2,8 +2,8 @@
  "Comanche055/REENTRY_CONTROL.agc": {
   "native_file": "src/cm_reentry.c",
   "words": 1172,
-  "untranslated_words": 2,
-  "routines": 390,
+  "untranslated_words": 0,
+  "routines": 392,
   "map": [
    {
     "address": "25,2000",
@@ -5310,13 +5310,15 @@
     "address": "25,3315",
     "word": "03646",
     "source": "  GOTOADDR",
-    "untranslated": "SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS)"
+    "routine": "25,3313",
+    "function": "r53313"
    },
    {
     "address": "25,3316",
     "word": "53317",
     "source": "  KEP2",
-    "untranslated": "SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS)"
+    "routine": "25,3313",
+    "function": "r53313"
    },
    {
     "address": "25,3317",
@@ -6085,7 +6087,8 @@
     "address": "25,3474",
     "word": "03624",
     "source": "  LAD",
-    "constant": "K53470"
+    "routine": "25,3472",
+    "function": "r53472"
    },
    {
     "address": "25,3475",

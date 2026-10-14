@@ -1,23 +1,31 @@
 {
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "results": [
-  "PASS: VICE PAL lanec-di-dsp.prg: 37 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-mark.prg: 36 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-play.prg: 35 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-dsp.prg: 42 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-mark.prg: 46 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-play.prg: 36 checks, 0 failures",
   "PASS: VICE PAL lanec-di-sleep.prg: 23 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-idle.prg: 38 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-idle.prg: 43 checks, 0 failures",
   "PASS: VICE PAL lanec-di-nvdsp.prg: 32 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-transfer.prg: 54 checks, 0 failures",
-  "PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures"
+  "PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer.prg: 55 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer-mark-nvdsp-lm.prg: 41 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer-mark-nvdsp-cm.prg: 10 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer-sleep-idle-lm.prg: 51 checks, 0 failures",
+  "PASS: VICE PAL lanec-di-transfer-sleep-idle-cm.prg: 9 checks, 0 failures"
  ],
  "prg_sha256": {
-  "lanec-di-dsp.prg": "b921c54fd851d5f6a6c53aa390a97773e6f58ed998453896fa706f4cd02c1578",
-  "lanec-di-mark.prg": "4f69d2af9f6b9ef5c8447f031d1bbe7f672c85c592cd78aa99badd0a9a400fcd",
-  "lanec-di-play.prg": "6de730a2e4c909b754cf3c7c080ba3cfdbf491d1747ac50670844e02974bf5ea",
-  "lanec-di-sleep.prg": "d703b8a0ce44c3c3b25521de15ac2f5f3bc23b47b9b2fdb00894287407d5a83d",
-  "lanec-di-idle.prg": "0c33b856405a73507569cd41b25bab147159b5aa2a55b2d9324c068518692938",
-  "lanec-di-nvdsp.prg": "12b6725246debe5de2a5acd702f09d1dcd9febd4c77429bb12418f798230f171",
-  "lanec-di-transfer.prg": "7e964884174a12b2a5a4806998dd479b6e4a27de13a540d2eac0cd9c979b1a3f",
-  "lanec-di-transfer-cm.prg": "1734b6cc568d1df9289870cdd4f3a46cde54e96d3452255ef9922188c4f730a1"
+  "lanec-di-dsp.prg": "eb61b81c10c850ad6d2926876d987cb407168af01515d2aa7399220f6dc6075b",
+  "lanec-di-mark.prg": "d64383a0ae5c9045702c5620ecedba3a5db5774af42d7095c187fa10fd80239d",
+  "lanec-di-play.prg": "0488a1b39c781a07cb9dd86c7a0a6b29f2ba7dd73c017e2f7402f5e6f021e40b",
+  "lanec-di-sleep.prg": "4cb93679039de90b107c6fbdbb711d972f129114101e79644f97d9071b9f284f",
+  "lanec-di-idle.prg": "0790922e73bf779b4649234a011ab64039f089792a26f891aeb0d78aade4b4ee",
+  "lanec-di-nvdsp.prg": "f2655735b7185b9b152b205533906bc231e6519774e588d588134bbe38242d4a",
+  "lanec-di-transfer-cm.prg": "352317bae27cd0a7108bf3130a081058315ccda6144c15a96ee70649331b7ee2",
+  "lanec-di-transfer.prg": "9e33f6113f6464cce7c9887f98ea89eb974ebb403652d881484cd45b79feed34",
+  "lanec-di-transfer-mark-nvdsp-lm.prg": "de21a9acc4fcda27ea8a28935849f8476f05a3f4ec0459ca08f1c04f1023c8f3",
+  "lanec-di-transfer-mark-nvdsp-cm.prg": "ffb04d2c092ff3d79b59e22d1a244e3ab8dd2059a7adbf366d5bbee0e4db1778",
+  "lanec-di-transfer-sleep-idle-lm.prg": "ece532ae9aa9e9e5358360c74f509fb43bb42546b4f7c6de4b6f2794b6db4d21",
+  "lanec-di-transfer-sleep-idle-cm.prg": "9240384a3cb68072e7b8c8874b5f13d702de810b09b5cde63b4c38f947c513ed"
  }
 }

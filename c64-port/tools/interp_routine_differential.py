@@ -135,6 +135,7 @@ class Mission:
             # its first word (files that switch EBANK= between routines).
             self.ebank = self.listing_ebanks()
         self.edge = spec.get('edge_cases', False)
+        self.novac = set(self.cp.label_phys(k) for k in spec.get('novac', ()))
         self.rk = bool(spec.get('resume_keys'))
         self.index_returns = bool(spec.get('index_returns'))
         self.all_states = spec.get('all_states', {})
@@ -144,6 +145,10 @@ class Mission:
         # (Lane G) 010-061 from the case seed (IRC_COUNTERS) plus relate().
         self.seed_counters = spec.get('seed_counters', False)
         self.edges = spec.get('edge_values', False)
+        # edge_skip: (FROM, TO) label ranges whose cases keep the as-is shape
+        # instead of the edge one (an edge input the original loops on).
+        self.edge_skip = [(self.cp.label_phys(a), self.cp.label_phys(b))
+                          for a, b in spec.get('edge_skip', ())]
         js = spec.get('joint_states', {})
         self.joint_any = js.get('*', [])
         if js and set(js) <= {'lm', 'cm'}:
@@ -181,6 +186,10 @@ class Mission:
         self.range_states = [(self.cp.label_phys(a), self.cp.label_phys(b), st)
                              for a, b, st in spec.get('range_states', ())]
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
+        # Native entries other files reach from a left-hand RTB: with EDOP
+        # set (the pair's right order) the run ends at their TC DANZIG.
+        self.native_entries = set(self.cp.label_phys(k) for k in spec.get('native_entries', {}))
+        self.danzig = L.labels['DANZIG']
         self.resume_states = {self.point_of(k): v for k, v in spec.get('resume_states', {}).items()}
         # flow_range_states: (FROM, TO, states) for the flowed cases
         # (resume_flow) of every point from FROM up to (not including) TO
@@ -474,11 +483,17 @@ def case(mi, point, n, rng):
     # waiting, so the next DANZIG goes to CHANG2.
     E[0o67] = newjob = rng.randrange(1, 0o40000) if mi.rk and rng.random() < 0.25 else 0
     vac = 0o401 + 0o54 * rng.randrange(5)
+    if point in mi.novac and rng.random() < 0.25:
+        # ('novac') A NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET): its
+        # work area is the core set's registers.
+        vac = 0o110
     E[0o120] = vac
     # Shapes: 0 the VAC area and operands as they are, 1 random words,
     # 2 random half-unit vectors, and a fourth with 'edge_values' (edge
     # vectors below) or 'edge_cases' (tools/edge_cases.py).
     shape = n % 4 if (mi.edges or mi.edge) else n % 3
+    if shape == 3 and any(lo <= point < hi for lo, hi in mi.edge_skip):
+        shape = 0
     if shape >= 1:
         for a in range(vac, vac + 0o46):
             w = rng.randrange(0o4000)
@@ -616,6 +631,15 @@ def case(mi, point, n, rng):
         E[0o165] = fb | eb
         E[0o115] = fb & 0o40000
         stop = 0xffff
+        if point in mi.cp.pending:
+            # ('pending_danzig') The RTB's basic code has returned through
+            # TC DANZIG: Z there, EDOP the pair's right order, FB and BBANK
+            # still the basic code's (any bank).
+            E[5] = mi.cp.L.labels['DANZIG'] - 2048 + 0o4000
+            E[0o23] = mi.cp.pending[point][2]
+            ob = rng.randrange(4, 0o30) << 10
+            E[4] = ob
+            E[6] = ob | eb
     else:
         E[5] = logical(point)
         # Q: a return in the caller's bank outside the file, the case's stop
@@ -647,6 +671,10 @@ def case(mi, point, n, rng):
             a = k if k < 0o1400 else eb * 0o400 + k - 0o1400
             if a not in pinned:
                 E[a] = E[2]
+        if point in mi.native_entries and dict(E).get(0o23):
+            stop = mi.danzig
+    if vac == 0o110:
+        E[0o120] = vac   # (the work area holds FIXLOC itself)
     return seed, list(E.items()), n & 1, stop, sb
 
 
@@ -2051,6 +2079,8 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
     for arc in sorted(want):
         if arc not in want:
             continue
+        # (The fewest-edit 256: an arc only rare long runs take can need more
+        # than a few tries for a prefix that fits.)
         cands = sorted((i for i in arcs if arc in arcs[i] and not cases[i].get('cut')),
                        key=lambda i: (len(cases[i]['edits']), i))[:256]
         sub = os.path.join(B, '%s-cuts.bin' % spec_id)
@@ -2109,6 +2139,11 @@ def cut_cases(spec_id, spec, sym, missions, cases, rows, visits, arcs, want):
             break
     print('  C64 cuts: %d truncated rows (%d cuts the oracle does not stop at, %d differing), %d arcs left' % (
         made, refused, differ, len(want)))
+    for arc in sorted(want):
+        took = [i for i in arcs if arc in arcs[i]]
+        print('  C64 cuts: %s left: %d cases take it, from %s' % (arc, len(took), ', '.join(sorted(set(
+            '%s %s' % (missions[cases[i]['cm']].m.upper(), missions[cases[i]['cm']].cp.where(cases[i]['point']))
+            for i in took)))[:400]))
     if differ:
         # The oracle and the native code stop at the same cut in the same
         # state, or the native code is wrong there.
@@ -2154,6 +2189,44 @@ C64_PICKS = []       # each group's cases, for the outcome cover
 CUT_ROWS_CASES = []  # the cases with the truncated rows appended ('c64_cuts')
 
 
+C64_LAZY_SETS = 400  # distinct routine sets past which the row cover probes lazily
+
+
+def lazy_fit_cover(mine, arcs, cost, fits, size, seed=()):
+    """{case: arcs} of a greedy cover of the arcs of the cases that fit one
+    C64 diagnostic, probing only the case the cover picks next. size(i) is
+    (routine set, edit count): a case of a set with no more edits than one
+    that fits fits too, one with as many as one that does not, does not."""
+    import heapq
+    known = {}
+    def fit(i):
+        v, e = size(i)
+        lo, hi = known.get(v, (-1, float('inf')))
+        if e <= lo:
+            return True
+        if e >= hi:
+            return False
+        r = fits(i)
+        known[v] = (max(lo, e), hi) if r else (lo, min(hi, e))
+        return r
+    out = {i: arcs[i] for i in seed}     # (rows already chosen, kept)
+    have = set().union(*out.values())
+    heap = [(-len(arcs[i]), cost(i), i) for i in mine if i not in out]
+    heapq.heapify(heap)
+    while heap:
+        g, c, i = heapq.heappop(heap)
+        gain = len(arcs[i] - have)
+        if not gain:
+            continue
+        if -g != gain:
+            heapq.heappush(heap, (-gain, c, i))
+            continue
+        if fit(i):
+            out[i] = arcs[i]
+            have |= arcs[i]
+    return out
+
+
 def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(), edges=None):
     """Groups of routines whose diagnostic fits below $c000, each with the
     spec's c64_per_point cases (default 2) per routine whose run stays in
@@ -2192,6 +2265,22 @@ def _freeze_c64_rows(spec_id, spec, sym, missions, cases, rows, visits, chan=(),
             by = collections.defaultdict(list)
             for i in sorted(mine, key=lambda i: len(cases[i]['edits'])):
                 by[visits[i]].append(i)
+            if len(by) > C64_LAZY_SETS:
+                # Cases visiting many distinct routine sets (orbital
+                # integration's DIFEQ runs): probing each set would take
+                # days, so the greedy cover probes only the case it picks
+                # next, and drops it when it does not fit (a lazy greedy:
+                # a case's gain only shrinks as the cover grows).
+                def fit1(i):
+                    if (visits[i], i) not in fits:
+                        fits[visits[i], i] = c64_size(spec, sym, mi.m, visits[i], group_text(
+                            sym, [(mi.m, visits[i], [i])], cases, rows)) is not None
+                    return fits[visits[i], i]
+                ok = lazy_fit_cover(mine, arcs, cost, fit1, lambda i: (visits[i], len(cases[i]['edits'])),
+                                    seed=[i for i in seed if i in mine])
+                chosen |= set(ok)
+                okall.update(ok)
+                continue
             limit = {}
             # (The probes are independent compiles: the largest case of each
             # set first, on every core.)

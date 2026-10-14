@@ -174,6 +174,42 @@ def cdutodcm_states():
     return out
 
 
+def integration_joint():
+    """Flight values of the integration erasables that only mean something
+    together or at one value (review #165): TDEC = TET (the last pass of an
+    integration, DT/2COMP +0), UPSVFLAG +0 (UPDATE_PROGRAM's normal
+    INTWAKEU) and +-2, MODREG +0 and 27 (P27 running), and a small ALPHAV
+    after RECTIFY. One set per case, in half of every routine's cases."""
+    out = []
+    for hi, lo in ((0, 0), (0o1234, 0o4567), (0o37777, 0o37777), (ones(-0o1234), ones(-0o4567))):
+        out.append({'TDEC': hi, 'TDEC+1': lo, 'TET': hi, 'TET+1': lo})
+    out += [{'UPSVFLAG': v} for v in (0, 2, ones(-2))]
+    out += [{'MODREG': v} for v in (0, 0o27)]
+    for v in ((0, 3, 0, ones(-5), 0, 1), (0, 0o40, ones(-0o20), 0, 0, 0o100), (0, 1, 0, 0, 0, 0)):
+        out.append({'ALPHAV+%d' % k: x for k, x in enumerate(v)})
+    return out
+
+
+def ddv_majors_joint():
+    """COMTERM's DDV ALPHAM with the divisor's major part equal to or one
+    above the dividend's (lm_interp_orders.c's near-equal-majors steps after
+    MPAC+ AD BUF: the -0 compare into MAXDVSW and, a minor part below the
+    other's, DVOVF), signs varied (each minor part of either sign, for the
+    sign-agreement fold), MODE DP. Otherwise only long 11,2606-2620 runs
+    reach them. Half the cases keep the random states."""
+    sgn = lambda v, x: v if x > 0 else ones(-v)
+    sets = []
+    for hi in (0o1, 0o1234, 0o17777, 0o30000):
+        for lo, alo in ((0, 0), (0o4567, 0o1234), (0o37777, 0o37777), (0o1234, 0o4567)):
+            for d in (0, 1):
+                for sm in (1, -1):
+                    for sa in (1, -1):
+                        for ml in (sm, -sm):
+                            for sl in (sa, -sa):
+                                sets.append({'0154': sgn(hi, sm), '0155': sgn(lo, ml), '0163': 0,
+                                             'ALPHAM': sgn(hi + d, sa), 'ALPHAM+1': sgn(alo, sl)})
+    return sets + [{}] * len(sets)
+
 
 # Lat-long ARCTAN's quadrant edges (reviewer 1, #175): SINTH and COSTH at
 # +-0 together (BZE: theta 0/0), SINTH +-0 (ASIN +-0; with COSTH negative,
@@ -1285,11 +1321,9 @@ SPECS = {
         'fixed_tables': {'VREFER': (0, 91)},
         # KEP's RTB P66 is the first order of its pair: P66 returns through
         # TC DANZIG with SSP still in EDOP, so the interpreter runs SSP
-        # GOTOADDR KEP2 from OPJUMP, not at NEWOPS where the transfer ABI
-        # keys interpretive routines.
-        'partial': {'cm': 'SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it '
-                          'runs from the interpreter\'s DANZIG/OPJUMP when P66 returns, a point the transfer ABI '
-                          'does not key yet (interpretive routines are keyed by LOC at NEWOPS)'},
+        # GOTOADDR KEP2 from OPJUMP. That point is a routine of its own,
+        # keyed at the RTB's operand word (25,3314).
+        'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
         # positive in both words, as STARTENT and LEWDOVFL leave it.
         # Negative (a negative low word under a +0 high word too),
@@ -1298,7 +1332,12 @@ SPECS = {
                   'E7,1725': list(range(0, 0o40000, 0o1001))},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline'],
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        # (No 'fast_window': it needs one EBANK, and this file runs under the
+        # listing's per-routine EBANK=.)
+        'trusted_image': True,
     },
     # Lane G: Comanche055 P40-P47 (the SPS and RCS thrusting programs),
     # basic and interpretive.
@@ -2415,7 +2454,7 @@ SPECS = {
                    **{'TIMESTEP+%d' % n: {'vac+047': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717],
                                           '0163': [0o77776]} for n in (178, 179, 180, 182, 184)}},
         'all_states': {'2030': [0, 2], '1117': [0, 0o77771, 0o77763, 0o77755, 0o77747, 0o77741, 0o77733, 0o77725, 0o77717], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
-                       'vac+051': [0, 2, 4, 6], 'vac+052': [0, 2, 4, 6],
+                       'vac+050': [0, 2, 4, 6], 'vac+051': [0, 2, 4, 6],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # BOVB TCDANZIG: TCDANZIG is ENDT(X) in TIME_OF_FREE_FALL, TC DANZIG.
         'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
@@ -2429,7 +2468,24 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint(),
+                         **{'COMTERM+%d' % n: ddv_majors_joint() for n in (26, 38, 42)}},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
+        # Arcs only runs too long for one diagnostic take come from
+        # truncated rows ('c64_cuts').
+        'c64_cuts': True,
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'lm-integration-init': {
         'missions': ('lm',),
@@ -2454,7 +2510,11 @@ SPECS = {
         # Their DANZIG resumes the RTB that called them as its pair's right
         # order: LOC its address word (this file's own RTBs; MOVEPCSM's are
         # left orders, so a word of bank 14), BANKSET its bank, INTBIT15 0.
-        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0]}
+        # EDOP: +0, or the right order a left-hand RTB leaves (MEASUREMENT_
+        # INCORPORATION's RTB GOTO and RTB CALL: 0127, 0153), which DANZIG
+        # takes at OPJUMP.
+        'states': {lab: {'0164': [loc], '0165': [bank | e for e in range(8)], '0115': [0],
+                         '0023': [0, 0, 0o127, 0o153]}
                    for lab, loc, bank in (('MOVEACSM', 0o2663, 0o26000), ('MOVEPCSM', 0o2500, 0o30000),
                                           ('MOVEALEM', 0o2736, 0o26000), ('MOVEPLEM', 0o2763, 0o26000))},
         'noreturn': ['BANKJUMP', 'ENDOFJOB', 'TASKOVER', 'JOBSLEEP'],
@@ -2465,6 +2525,9 @@ SPECS = {
         # (X2 = PBODY, 0 earth or 2 moon) or ASCALE's NORM count.
         'indexed_fixed': {'MUEARTH': (-4, 0), 'MUM': (-4, 4), 'J2REQSQ': (-4, 0), 'J4REQ/J3': (-4, 0),
                           '2J3RE/J2': (-4, 0), 'RDE': (-4, 0), 'ASCALE': (-16, 2), 'LODPMAX1': (-4, 0)},
+        # STATEINT (from P00 and V37) runs INTSTALL under a NOVAC job: its
+        # EXIT, the stall test and GOBAC's RVQ back to the caller.
+        'novac': ['INTSTALL', 'INTSTALL+1', 'GOBAC+1'],
         'all_states': {'1167': [0o5155], '2030': [0, 2], '1500': [0, 0o77763, 0o77747], 'vac+046': [0, 2], 'vac+047': [0, 2],
                        '0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']},
         # TBASE2 holds INTWAKE's saved QPRET, which RVQ at GOBAC returns to.
@@ -2487,7 +2550,20 @@ SPECS = {
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         # (bank checksums the listing omits, such as OCT27's DSU second word)
+        # Flight edge values (review #165): tools/edge_cases.py's shape,
+        # TIME2/TIME1 and the CDUs, and integration_joint's sets.
+        'edge_cases': True,
+        'counters': True,
+        'joint_states': {'*': integration_joint()},
+        # A CHANG2 resume starts from the state the program reaches it in
+        # (MODE DP after a DLOAD; review #165).
+        'resume_flow': True,
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     'rtb-op-codes': {
         'missions': ('lm', 'cm'),
@@ -2692,11 +2768,22 @@ SPECS = {
                       'P40ALM': None, 'REDO4.2': None, 'BURNBABY': None, 'B*RNB*B*': None, 'ISWRETRN': None},
         # P40-P47 run as jobs: any DANZIG can find a job waiting.
         'resume_keys': True,
+        # The Waitlist tasks (TRIMGIMB from R03, PITCHOFF, ENGOFTSK,
+        # STARTP47, the FIXDELAY and VARDELAY returns) run in T3RUPT
+        # whatever job is waiting: the basic routines that never name FIXLOC
+        # or NEWJOB take any FIXLOC and NEWJOB -0 (DUMMYJOB idling) too.
+        'any_fixloc': True,
+        'any_newjob': True,
         'noreturn': ['POSTJUMP'],
         'resume_orphans': True,
-        # WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the
-        # output-channel model.
-        'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
+        # WAND/WOR CHAN12 (TRIMGIMB, PITCHOFF), RAND/WRITE DSALMOUT and WOR
+        # CHAN14 (ENGINOF3) through the program's agc_hardware
+        # (include/agc_channel_ops.h), the input channels latched per case.
+        'channels': 'all',
+        'channel_inputs': True,
+        # The channels the file's orders name, compared after every case
+        # (channel 14 without the IMU CDU and gyro drive bits).
+        'io_channels': {0o11: 0o77777, 0o12: 0o77777, 0o14: 0o6777},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
         # C64 rows chosen by branch outcome over every linked source.
@@ -2719,6 +2806,7 @@ SPECS = {
         # W from include/agc_image_w.h: flight builds address the fixed
         # $7000 image.
         'image_w': True,
+        'trusted_image': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
@@ -3642,7 +3730,54 @@ SPECS = {
         'max_steps': 5000,
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (No resume_flow: the CHANG2 resumes in PERIODCH's loop keep the
+        # TAU. and period pins above; a snapshot from a random TAU. loops
+        # for millions of passes.)
+        'edge_cases': True,
+        # KEPLERN's routines before PERIODCH take no edge inputs: from an
+        # edge state vector PERIODCH can loop forever in the original as
+        # well (yaAGC times out, the native run stops at max_steps).
+        'edge_skip': [('KEPLERN', 'PERIODCH')],
+        # The C64 rows cover every branch arc of the host cases.
+        'c64_rows': 'cover',
         'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
+    },
+    'lm-stable-orbit': {
+        'missions': ('lm',),
+        'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
+        'source_path': {'lm': 'STABLE_ORBIT.agc'},
+        'base': {'lm': 'lm_stable_orbit'},
+        'symbol': {'lm': 'lm_stable_orbit'},
+        # P38/P78 (stable orbit rendezvous) and P39/P79 (its midcourse), the
+        # major modes FRESH_START_AND_RESTART's tables start.
+        'entries': ['P38', 'P78', 'P39', 'P79'],
+        'externals': {'BANKCALL': 'auto', 'BLANKET': 'auto', 'GOTOPOOH': None, 'ENDOFJOB': None},
+        # GOFLASH returns to the first, second or third word after its CADR
+        # (terminate, proceed, recycle); GOFLASHR also to the fourth at once.
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
+        'resume_orphans': True,
+        'resume_keys': True,
+        # EBANK= SUBEXIT: the P38/P39 temporaries are E7 words.
+        'ebank': 7,
+        'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
+        'includes': ['rtb_angles.h'],
+        'native_sources': ['src/rtb_angles.c'],
+        'target': 'tests/lm_stable_orbit_target.c',
+        'edge_cases': True,
+        # The C64 rows are the fewest cases that take every branch arc of
+        # every traced host case (every case: 101 routines are cheap).
+        'c64_rows': 'cover',
+        'freeze_stride': 128,
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # A CHANG2 resume starts from the state the program reaches it in.
+        'resume_flow': True,
+        'rope_bin': True,
+        # 6502 INDEX end-around carry and the fixed flight image (#260).
+        'index_carry16': True,
+        'image_w': True,
     },
     # Lane D2: Luminary099 AOSTASK_AND_AOSJOB (1/ACCS, the DAP's mass and
     # jet-acceleration interface, and the AOSTASK/AOSJOB offset filter), the
