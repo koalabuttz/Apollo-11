@@ -19,7 +19,15 @@ zeroes its BSS and runs its main once to build its table list
 task slots', and no run loads it. Boot writes a canary at $CC00, the
 stack's last byte; a resident step that finds it changed (the stack ran
 into the pinned module) returns `EXEC_INVALID_ACTION` before running
-anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+anything. A store can also keep the task slot's RAM for one module, slot
+class 4 (`APOLLO_OV2_SLOT_PINNED_TASK`): boot loads it at $E000 by plain
+DMA and zeroes its BSS before the class-3 main runs, and that main's table
+list names its tables, so `rk_direct` reaches both regions through
+`rk_pinned`. Such a store has no task-slot modules but the boundary-word
+module (the packer refuses others), so task runs load into the job slot.
+Boot runs the boundary-word module in the task slot first, since boot
+itself runs in the job slot, then loads the boot-loaded classes, so class 4
+lands over it and the runtime forgets it. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed

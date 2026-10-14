@@ -187,7 +187,7 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
 
 #ifdef FL_PINNED
 /* The pinned module (slot class 3): boot loaded it at $C000 and built its
- * tables (rk_pinned). One of its points, from the boot state, through the
+ * tables (rk_pinned), and the class-4 module, if any, at $E000. One of its points, from the boot state, through the
  * module that packs the same table (its main, ABI 2 run) and then through
  * rk_direct with no other module loaded: status, image and channels must
  * match. Then it is dropped (rk_pinned 0): the mailbox and the timings
@@ -195,6 +195,11 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
 static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_BANK,FL_PINNED_LOC};
  apollo_ov2_cont at={FL_PINNED_MODULE,0},resume;uint16_t value,sum;uint8_t action,i;enum exec_status a;
  expect(rk_pinned&&((const uint8_t *)APOLLO_OV2_PINNED_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED,10);
+#ifdef FL_PINNED_TASK
+ /* The pinned task region (slot class 4) at $E000, beside it. */
+ expect(((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_SLOT]==APOLLO_OV2_SLOT_PINNED_TASK&&
+        ((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED_TASK,10);
+#endif
  const rk_module_tables *const pin=rk_pinned;
  direct_state(&p);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
  expect(apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK,11);

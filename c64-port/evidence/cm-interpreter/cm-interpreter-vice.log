@@ -1,0 +1,5 @@
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DIRC_GROUP=1 -DIRC_CM_ONLY -DCM_INTERPRETER_KEEP0=0x1fffffffff -Wl,-Map,build/cm-interpreter-1.map src/cm_interpreter.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_interpreter_target.c src/overlay_reu.c platform/c64/overlay_reu_platform.c platform/c64/rope_image_reu.c platform/c64/cm_interpreter_diagnostic.c -o build/cm-interpreter-1.prg
+for p in build/cm-interpreter-1.prg; do python3 tools/vice_run.py $p --reu build/self-check.reu --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-interpreter-1.prg: 67 checks, 0 failures
+PRG sha256: 162e1f6b72ad7f5861a026f2e812d13456adef8679d12ef06e87f51075c291c9 cm-interpreter-1.prg
+exit 0

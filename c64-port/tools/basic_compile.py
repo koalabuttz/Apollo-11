@@ -140,12 +140,16 @@ class Basic:
             self.channels = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
             self.channels.update({k: 'agc_channels_hw->channel%o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
             self.cp.uses_hw = True
+            # SUPERBNK (7) too, only in files that name it (EXTENDED_VERBS'
+            # GOLOADLV), so no other file's helpers change.
+            self.cm_superbank = True
         self.work = []
         self.words = set()       # every word compiled as basic code
         self.operands = set()    # inline operand words of outside TCs
         self.data_landings = set()
         self.erasable_refs = set()   # erasable addresses the basic code names
         self.channels_used = set()   # I/O channels its channel orders name
+        self.inputs_used = set()     # latched input channels it reads (AGC_CHANNEL)
 
     # ---- addresses -------------------------------------------------------
     def bank(self, phys):
@@ -206,6 +210,12 @@ class Basic:
         self.add(phys)
         while self.work:
             k = self.work.pop()
+            if not self.in_file(k[0]) and k[0] in self.cp.cut_words and not k[1]:
+                # Spec 'inside': flow runs on into a segment the spec leaves
+                # to other code (INTERPRETER's core); the routine stops there.
+                self.nodes[k] = ['/* %s: outside the spec\'s segments */' % self.where(k[0]),
+                                 'W[5]=0%04ou;return EXEC_OK;' % self.logical(k[0])]
+                continue
             if not self.in_file(k[0]):
                 # Spec 'fall_out': a TS overflow skip or CCS exit past the
                 # file's last word, which no admitted state takes (the
@@ -500,6 +510,14 @@ class Basic:
         here = phys
         out = self.clean_after(op, a, dyn, clean)
         cont = lambda: 'goto %s;' % self.add(nxt, False, out)
+        if op == 'RESUME' and not dyn:
+            # RESUME (INDEX 17) outside an interrupt: the next instruction is
+            # BRUPT's, run in place (yaAGC's substitute instruction); here a
+            # TCF to fixed memory, as CONTABRT stores (any other word is
+            # refused).
+            st.append('{agc_word b=W[017];if((b&070000u)!=010000u||(b&07777u)<02000u)return EXEC_OUT_OF_SCOPE;'
+                      'W[5]=(agc_word)(b&07777u);}goto dispatch;')
+            return st
         if op in ('TC', 'TCF'):
             call = op == 'TC'
             if dyn:
@@ -615,6 +633,7 @@ class Basic:
             # An input channel the caller latches (spec 'channel_inputs',
             # include/agc_input_channels.h), as tools/interp_compile.py reads it.
             v = 'AGC_CHANNEL(%s)' % INPUT_CHANNELS[a]
+            self.inputs_used.add(a)
             st.append({'READ': 'W[0]=agc_extend(%s);', 'RAND': 'W[0]=agc_extend((agc_word)(oc16(W[0])&%s));',
                        'ROR': 'W[0]=agc_extend((agc_word)(oc16(W[0])|%s));',
                        'RXOR': 'W[0]=agc_extend((agc_word)(oc16(W[0])^%s));'}[op] % v)
@@ -631,6 +650,8 @@ class Basic:
             st.append(cont())
             return st
         if op in CHANNEL_OPS:
+            if a == 0o7 and getattr(self, 'cm_superbank', False):
+                self.channels[0o7] = 'superbank'
             if a not in self.channels:
                 raise BasicError('channel %o at %s' % (a, self.where(here)))
             if op == 'EDRUPT':
@@ -703,7 +724,11 @@ class Basic:
                 st.append('ai_%s(s,0%05ou); /* %s */' % (lo_name, self.L.word(fp), sym))
             st.append(cont())
             return st
-        if writes and a in (4, 5, 6) or (op == 'DXCH' and a in (4, 5, 6, 7)):
+        # Spec 'bb_writes': words that may write BBANK (INTRSM's LXCH BBANK,
+        # which TCFs to fixed-fixed code next, so no banked transfer follows
+        # under the new FB).
+        bb_ok = op in ('LXCH', 'TS', 'XCH') and a == 6 and self.where(here) in self.spec.get('bb_writes', ())
+        if writes and a in (4, 5, 6) and not bb_ok or (op == 'DXCH' and a in (4, 5, 6, 7)):
             raise BasicError('%s on %o at %s' % (op, a, self.where(here)))
         st.append(self.operand_stmt(op, a, here, False))
         st.append(cont())
@@ -809,6 +834,21 @@ class Basic:
             c.append(' if(p>=%uu&&p<=%uu){*k=T%o[p-%uu];return 1;}' % (lo, hi, lo, lo))
         c.append(' (void)p;(void)k;return 0;')
         c.append('}')
+        if self.spec.get('fixed_rope'):
+            # Spec 'fixed_rope' (INTERPRETER's subroutines): an INDEX read of
+            # fixed memory reads the caller's word from the mission's rope
+            # image under FB and SUPERBNK, as the AGC does (DMP's ADRES after
+            # its TC, POLY's inline coefficients). The rope is the program's
+            # data here, as it is for the interpreter core that runs the
+            # same file (include/rope_image.h).
+            c.append('#include "rope_image.h"')
+            c.append('static MAYBE_UNUSED uint8_t fxr(const apollo_overlay_state *s,const %s *io,unsigned e,agc_word *k){' % self.io)
+            c.append(' unsigned b=(W[4]>>10)&037u,sb=io->superbank&0160u;uint16_t p;')
+            c.append(' if(e>=04000u)p=(uint16_t)(2048u+e-04000u);')
+            c.append(' else{if(b>=030u&&sb){if(sb!=0100u)return 0;b+=010u;}p=(uint16_t)(b*1024u+(e&01777u));}')
+            c.append(' return apollo_rope_read(%du,p,k);' % (0 if self.io == 'p66_bias_io' else 1))
+            c.append('}')
+            c.append('#define fx(s,e,k) fxr(s,io,e,k)')
         # (msu: tools/interp_compile.py's helper.)
         c.append('/* Host coverage builds (tools/interp_routine_differential.py --freeze)')
         c.append(' * count each label a case reaches, to pick C64 cases that take every')
@@ -834,10 +874,17 @@ class Basic:
             c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OUT_OF_SCOPE;')
         c.append(' }')
+        # The spec's idle points (a word that spins until hardware moves,
+        # such as VERB69's TC VERB69): reached again, the run idles there,
+        # as the oracle stops there; an entry there runs its word once.
+        idle = getattr(self.cp, 'idle', set())
+        spin = {self.label(*k): '{W[5]=0%04o;return EXEC_IDLE;}' % self.logical(k[0]) for k in self.nodes if k[0] in idle}
         for n, k in enumerate(sorted(self.nodes)):
             c.append('%s:' % self.label(*k))
             c.append(' IRC_COVER(%du);' % n)
             body = self.nodes[k]
+            if spin:
+                body = [re.sub(r'goto ([A-Za-z][A-Za-z0-9]*);', lambda m: spin.get(m.group(1), m.group(0)), x) for x in body]
             twin = (k[0], k[1], False)
             if k[2] and twin in self.nodes and self.nodes[twin] == [x.replace(self.label(*k), self.label(*twin)) for x in body]:
                 # The same code as the copy reached with A unknown.
@@ -862,7 +909,9 @@ class Basic:
         c.append(' p=agc_fixed_physical(W[5],W[4],io->superbank);')
         c.append(' switch(p){')
         for p in sorted(self.dispatch):
-            if (p, False, False) in self.nodes:
+            if p in idle:
+                c.append(' case %uu:W[5]=0%04o;return EXEC_IDLE;' % (p, self.logical(p)))
+            elif (p, False, False) in self.nodes:
                 c.append(' case %uu:goto %s;' % (p, self.label(p)))
         c.append(' default:return EXEC_OK;')
         c.append(' }')
@@ -1144,6 +1193,9 @@ class Basic:
         c.append('static MAYBE_UNUSED void ch_out(cm_native_io *io,unsigned k,agc_word v){')
         c.append(' if(k==013u){if(v&04000u)io->trap31a=1;if(v&010000u)io->trap31b=1;if(v&020000u)io->trap32=1;v&=043777u;}')
         c.append(' if(k==033u)v=(agc_word)(*chan(io,k)|076000u);')
+        if 0o7 in self.channels:
+            # Channel 7 keeps only bits 5-7 (superbank select).
+            c.append(' if(k==07u)v&=0160u;')
         c.append(' *chan(io,k)=(agc_word)(v&077777u);')
         c.append('}')
         c.append('static MAYBE_UNUSED void ch_write(apollo_overlay_state *s,cm_native_io *io,unsigned k){ch_out(io,k,(agc_word)(oc16(W[0])&077777u));}')
