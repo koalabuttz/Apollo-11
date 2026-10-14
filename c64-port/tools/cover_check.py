@@ -20,6 +20,7 @@ newest manifest for the certificates a change touches.
   python3 tools/cover_check.py --only r30 cm-p11 --out /dev/stdout
 """
 import argparse
+import hashlib
 import json
 import pathlib
 import subprocess
@@ -60,7 +61,33 @@ def check(milestone, record):
                 'reason': 'cover check failed: ' + (run.stderr or run.stdout)[-500:]}
     result = json.loads(lines[-1])
     result.pop('milestone', None)
+    result.update(drift(milestone, record, result))
     return result
+
+
+def drift(milestone, record, result):
+    """Stale linked_sources pins and branch-count drift against the committed
+    record: reported (WARN), never failed. Pins refresh at the record's next
+    refreeze; only missing branches fail."""
+    out = {}
+    cover = ROOT / 'evidence' / milestone / ('%s-c64-cover.json' % milestone)
+    pins = json.loads(cover.read_text()).get('linked_sources') if cover.exists() else None
+    if isinstance(pins, dict):
+        stale = sorted(src for src, h in pins.items()
+                       if not (ROOT / src).exists() or hashlib.sha256((ROOT / src).read_bytes()).hexdigest() != h)
+        if stale:
+            out['stale_pins'] = stale
+    committed = None
+    for path in (ROOT / record, ROOT / 'evidence' / milestone / ('%s-proof.json' % milestone)):
+        try:
+            committed = (json.loads(path.read_text()).get('c64_gcov_branches') or {}).get('host_taken')
+        except (OSError, ValueError):
+            continue
+        if committed is not None:
+            break
+    if committed is not None and result.get('host_taken') is not None and committed != result['host_taken']:
+        out['host_taken_committed'] = committed
+    return out
 
 
 def main():
@@ -82,6 +109,11 @@ def main():
                              'MISS' if r.get('verified') else 'UNVERIFIED', milestone,
                              '%d host branches missing on C64' % r.get('missing_count', 0) if r.get('verified')
                              else r.get('reason')), flush=True)
+        if r.get('stale_pins') or 'host_taken_committed' in r:
+            print('WARN %s: %s%s' % (milestone,
+                                     'stale pins %s; ' % ' '.join(r['stale_pins']) if r.get('stale_pins') else '',
+                                     'host branches %s committed, %s now' % (r['host_taken_committed'], r.get('host_taken'))
+                                     if 'host_taken_committed' in r else 'branch counts unchanged'), flush=True)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps({'name': args.name, 'commit': commit, 'targets': {}, 'c64_cover': cover},
                                    indent=1, sort_keys=True) + '\n')
