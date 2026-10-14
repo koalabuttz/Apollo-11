@@ -4723,7 +4723,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
+            "sha256": "f5dc03b8301414d193f9d3e9907b5928c10390c73dc9ed4fb6f17b4d0eb2a32c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -4731,14 +4731,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
+            "sha256": "f163b4cc884bd36dd8bc5195c68c3b92561d8828eda8de6eaa5ad76edd480483",
             "vice_targets": {
-              "vice-rtb-op-codes": 144
+              "vice-rtb-op-codes": 145
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
-            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+            "sha256": "f5247946e6ae20e443671fcf0e895a7ed2684aa0dafaab0362ab1c5f022aabb8"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
@@ -11409,7 +11409,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-proof.json",
-            "sha256": "246c998120795db74119eb9e606599f806c2e402666dd9bf5ace5f29d0f73dd3"
+            "sha256": "f5dc03b8301414d193f9d3e9907b5928c10390c73dc9ed4fb6f17b4d0eb2a32c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-host.log",
@@ -11417,14 +11417,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-vice.log",
-            "sha256": "01800a07bcc980251be0d9355a437a5902dd8c26cf6eb84488ebb373b8d1badf",
+            "sha256": "f163b4cc884bd36dd8bc5195c68c3b92561d8828eda8de6eaa5ad76edd480483",
             "vice_targets": {
-              "vice-rtb-op-codes": 144
+              "vice-rtb-op-codes": 145
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/rtb-op-codes/rtb-op-codes-c64-outcomes.json",
-            "sha256": "ed2f92cb16ca4f1bbfa06a1bc5f94948942adc2fa23aef610b67416e0379afd0"
+            "sha256": "f5247946e6ae20e443671fcf0e895a7ed2684aa0dafaab0362ab1c5f022aabb8"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-245.md",
