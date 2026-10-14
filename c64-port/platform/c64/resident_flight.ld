@@ -25,6 +25,12 @@ REGION_ALIAS("c_writeable", ram)
 SECTIONS {
     .basic_header : { *(.basic_header) } >ram
     INCLUDE zp.ld
+    /* rk_dilation at RK_DILATION and ov2_irq_count at RK_IRQ_COUNT
+     * (resident_flight.h), below rk_hardware: flight modules link
+     * ov2_irq_count's address. Before the .bss rule, which would take them
+     * otherwise. */
+    .rk_dilation 0x6fb8 : { KEEP(*(.bss.rk_dilation)) } >services
+    .rk_irq_count 0x6fbc : { KEEP(*(.bss.ov2_irq)) } >services
     .boot : {
         __rk_boot_start = .;
         *(.boot.text .boot.text.*)
@@ -39,14 +45,16 @@ SECTIONS {
     INCLUDE bss-symbols.ld
     .noinit (NOLOAD) : { INCLUDE noinit-sections.ld } >ram
     __rk_resident_end = .;
-    .apollo_services : { KEEP(*(.apollo_services)) } >services
+    .apollo_services 0x6f00 : { KEEP(*(.apollo_services)) } >services
     __rk_services_end = .;
     /* rk_hardware at RK_HARDWARE and rk_flight at RK_FLIGHT_IO
      * (resident_flight.h): flight modules link these addresses. */
     .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
     .rk_flight 0x6fdc : { KEEP(*(.rk_flight)) } >services
 }
-ASSERT(__rk_services_end<=0x6fbe,"the service table overlaps rk_hardware")
+ASSERT(__rk_services_end<=0x6fb8,"the service table overlaps rk_dilation")
+ASSERT(rk_dilation==0x6fb8 && SIZEOF(.rk_dilation)==4,"rk_dilation is not at RK_DILATION")
+ASSERT(ov2_irq_count==0x6fbc && SIZEOF(.rk_irq_count)==2,"ov2_irq_count is not at RK_IRQ_COUNT")
 ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1e,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
 ASSERT(rk_flight==0x6fdc && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO")
 __stack = 0xd000;

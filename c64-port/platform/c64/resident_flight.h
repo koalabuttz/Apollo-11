@@ -29,9 +29,27 @@ typedef cm_native_io rk_io;
 #ifndef RK_SERVICES_VERSION
 #define RK_SERVICES_VERSION 0x0203u
 #endif
-/* CIA1 timer A latch for one interrupt per 10 ms (PAL, 985,248 Hz: the
- * timer counts latch..0). */
-#define RK_CIA_LATCH 9851u
+/* Scaled time: AGC time runs at 1/RK_TIME_DIVISOR of wall time (the
+ * nightly x0.5 run builds with 2). CIA1 timer A latch for one interrupt per
+ * RK_TIME_DIVISOR * 10 ms (PAL, 985,248 Hz: the timer counts latch..0). */
+#ifndef RK_TIME_DIVISOR
+#define RK_TIME_DIVISOR 1u
+#endif
+#define RK_CIA_LATCH (9852u*RK_TIME_DIVISOR-1u)
+_Static_assert(RK_TIME_DIVISOR>=1u && RK_TIME_DIVISOR<=6u,"RK_CIA_LATCH must fit timer A");
+/* The clock ticks one step catches up: when more CIA1 interrupts than this
+ * arrived since the last step (the step ran longer than RK_TICK_LAG AGC
+ * periods), the rest are dropped and counted in rk_dilation, so AGC time
+ * stretches instead of the timers bunching (docs/RESIDENT-FLIGHT.md). */
+#ifndef RK_TICK_LAG
+#define RK_TICK_LAG 2u
+#endif
+_Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks");
+/* The dropped ticks, 32 bits at a fixed address below ov2_irq_count (the
+ * service table ends at or below it, 61 entries at most), so a VICE run or
+ * a module can read how far AGC time fell behind wall time. */
+#define RK_DILATION 0x6fb8u
+extern uint32_t rk_dilation;
 /* The resident's own modules (lane A numbers 0xe0-0xef). */
 #define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
 /* What the boundary-word module (resident_boundary_module.c) hands boot. */
@@ -98,6 +116,12 @@ extern rk_module_env rk_env;
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */
 #define RK_HARDWARE 0x6fbeu
+/* The CIA1 interrupt count (ov2_irq_count, platform/c64/overlay_v2_irq.S)
+ * sits at RK_IRQ_COUNT, below rk_hardware: a long-running module (the
+ * interpreter, platform/c64/interp_module.c) returns to the step when it
+ * moves, so the step takes the interrupt. Read it twice: an interrupt
+ * between its two bytes can tear one read. */
+#define RK_IRQ_COUNT 0x6fbcu
 extern flight_io rk_flight;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66
@@ -119,7 +143,7 @@ extern rk_io rk_device;
 extern agc_hardware rk_hardware;
 extern agc_native_program rk_program;
 /* AGC interrupt requests waiting (RK_RUPT_BIT, include/resident_rupt.h),
- * and the CIA1 interrupts the AGC clock has consumed. */
+ * and the CIA1 interrupts the AGC clock has consumed or dropped. */
 extern uint16_t rk_pending, rk_ticks;
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
@@ -138,7 +162,8 @@ uint8_t rk_boot(void);
 uint8_t rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes);
 
 /* One resident step. First the AGC clock: one 10 ms timer period
- * (rk_timer_tick) per CIA1 interrupt since the last step. Then the highest
+ * (rk_timer_tick) per CIA1 interrupt since the last step, at most
+ * RK_TICK_LAG (the rest are dropped into rk_dilation). Then the highest
  * pending interrupt, if it can be taken here (rk_rupt_take). Then one
  * kernel routine from the image's Z, unless Z is already at stop. At a
  * point with no kernel routine the store's resolver maps the canonical bank

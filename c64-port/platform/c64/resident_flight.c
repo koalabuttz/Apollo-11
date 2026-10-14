@@ -29,6 +29,7 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
 #endif
 __attribute__((used,section(".rk_flight"))) flight_io rk_flight;
 uint16_t rk_pending,rk_ticks;
+__attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK};
 static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
 /* The boundary-word table: its REU bank and address (in its module's
@@ -45,6 +46,13 @@ static agc_routine_table basic[4];
 agc_native_program rk_program={basic,sizeof basic/sizeof basic[0],0,0,0,0,AGC_TRANSFER_NONE,0,0,rk_fixed_word,0,
                                &rk_hardware};
 
+#ifndef RK_NO_DIRECT
+/* rk_program with a loaded module's tables (rk_direct): boot copies
+ * rk_program once, and each direct run sets only the table fields
+ * (rk_module_program), as nothing else in either changes after boot.
+ * Static: absolute addressing is smaller than the soft stack. */
+static agc_native_program module_program;
+#endif
 static enum apollo_ov2_status rk_run_module(apollo_ov2_cont at);
 /* The last module run's result value and action (boot reads them). */
 static uint16_t run_value;
@@ -112,6 +120,9 @@ uint8_t BOOT rk_boot(void) {
     basic[3]=cm_sp_routines;
     rk_program.operands=cm_exec_site_table(&rk_program.operand_count);
 #endif
+#ifndef RK_NO_DIRECT
+    module_program=rk_program;
+#endif
     if(!apollo_reu_store_open(&rk_store,0,RK_MISSION,RK_SERVICES_VERSION,record)) return 1;
     if(apollo_reu_store_verify(&rk_store,(uint8_t *)RK_BOOT_SCRATCH)!=APOLLO_OV2_OK) return 2;
     if(!apollo_reu_store_fixed(&rk_store,rk_load_fixed,0)) return 4;
@@ -171,14 +182,22 @@ void rk_seams_exchange(agc_word newjob) {
 }
 void rk_seams_release(void) { apollo_ov2_seam_release(&rk_runtime,0); }
 
-/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step,
- * then the highest pending interrupt if it can be taken at this boundary.
- * The count is read twice so an interrupt between its two bytes cannot
- * tear it. Out of line, so the size report counts it with the timers. */
+/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step
+ * up to RK_TICK_LAG (the rest dropped into rk_dilation), then the highest
+ * pending interrupt if it can be taken at this boundary.
+ * The count is read with interrupts held off (and their flag restored: the
+ * checks step with it set) so one between its two bytes cannot tear it.
+ * Out of line, so the size report counts it with the timers. */
 __attribute__((noinline)) static void rk_rupts(void) {
     uint16_t now;
-    do now=ov2_irq_count; while(now!=ov2_irq_count);
-    while(rk_ticks!=now) { rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); ++rk_ticks; }
+    uint8_t take=RK_TICK_LAG;
+    __asm__ volatile("php\n\tsei" ::: "memory");
+    now=ov2_irq_count;
+    __asm__ volatile("plp" ::: "memory");
+    for(;rk_ticks!=now;++rk_ticks) {
+        if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
+        else ++rk_dilation;
+    }
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
 }
 
@@ -215,7 +234,6 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * built yet (its first run after a load builds it) is left to the resolver.
  * Where two packed tables hold a key, the loaded one runs it. */
 #ifndef RK_NO_DIRECT
-static agc_native_program module_program;   /* static: absolute addressing is smaller than the soft stack */
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
     uint8_t i;
     /* The pinned module (slot class 3) first, then the job and task slots. */
@@ -234,7 +252,6 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         if(!t || t->ready!=RK_TABLES_DIRECT) continue;
         enum exec_status status;
-        memcpy(&module_program,&rk_program,sizeof module_program);
         rk_module_program(&module_program,t);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,RK_MODULE_STEPS,&steps);
         if(status==EXEC_UNMAPPED && !steps) continue;   /* not this module's point */

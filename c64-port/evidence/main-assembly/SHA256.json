@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "main-assembly-source-map.json": {
-      "sha256": "83323a7360433cd720d330bc110e0cc01ae423916c302a21888c9454a9d65205",
-      "bytes": 120259,
+      "sha256": "750ef17a9f55ad210e93edd4297c501f865ba779b259082e70362c665ef3c247",
+      "bytes": 113171,
       "store": "tree"
     },
     "main-assembly-vice.log": {

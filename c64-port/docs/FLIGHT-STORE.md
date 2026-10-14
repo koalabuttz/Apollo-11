@@ -53,6 +53,20 @@ The 2 MB REU, by address:
 | 0x1e0000-0x1f1fff | CM rope image (CM store only) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
+The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
+goes into the store as two modules linked by `tools/interp_runtime_size.py`
+`link_core`: $0A01 in the job slot (LM 15,847, CM 15,856 bytes) and its cold
+bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
+`INTERP_POINTS` gives the resolver a record to $0A01 at each of the
+interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
+unless a table record or a resident table already holds it: today DANZIG is
+the resident's, and SWRETURN and INTPRET are table records, so 9 of 12 are
+the interpreter's on each mission. CHANG2 is left out, since that is where
+the interpreter hands back to the Executive. The module returns to the step
+when the CIA1 count at $6FBC moves, so an interrupt waits at most one
+interpretive slot. The load check resolves the records; it does not run the
+interpreter (`make vice-interp-core` does).
+
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which

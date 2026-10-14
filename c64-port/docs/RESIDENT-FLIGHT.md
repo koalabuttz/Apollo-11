@@ -34,8 +34,12 @@ $6FBE, which also holds the channels compiled routines use (5, 6, 30-33 on
 the CM, the LM DAP's channels, built with `-DAGC_CHANNELS_HW=rk_hardware`;
 on the CM inputs 30-33 start at the values yaAGC starts with), and
 `rk_flight` (the `flight_io` fields neither `rk_io` nor `agc_hardware`
-holds) at $6FDC. The service table must end at or below $6FBE (63
-entries); the linker script asserts it. One mission's resident is:
+holds) at $6FDC. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+`ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
+(the interpreter) can return to the step when an interrupt arrives, and
+below that, at $6FB8 (`RK_DILATION`), `rk_dilation`, the 32-bit count of
+clock ticks scaled time dropped (below). The service table must end at or
+below $6FB8 (61 entries); the linker script asserts it. One mission's resident is:
 
 | Component | Sources |
 |---|---|
@@ -50,7 +54,8 @@ entries); the linker script asserts it. One mission's resident is:
 
 `platform/c64/resident_flight.h` is the interface. `rk_boot()` switches
 KERNAL and BASIC out ($01=$35), sets the resident RAM interrupt vectors,
-starts CIA1 timer A at 10 ms (PAL latch 9851), fills
+starts CIA1 timer A at 10 ms × `RK_TIME_DIVISOR` (PAL latch 9851 at the
+default 1), fills
 the kernel's routine tables, opens the REU store and verifies it,
 initializes the runtime on the image at $7000, and runs the boundary-word
 module once to find its table (below).
@@ -114,9 +119,47 @@ ASan/UBSan.
   fixed word it cannot read takes nothing, and the request stays pending.
 
 The step calls both through `rk_rupts`. That consumes one tick per CIA1
-interrupt counted by `overlay_v2_irq.S` since the last step, then tries the
-entry. T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
+interrupt counted by `overlay_v2_irq.S` since the last step, at most
+`RK_TICK_LAG` of them (scaled time, below), then tries the entry. T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
 each task due and TASKOVER, to RESUME.
+
+### Scaled time
+
+The C64 runs some flight work slower than the AGC did (the LM DAP needs
+about 1.7 times the CPU a PAL C64 has in 100 ms, as measured). The project chose scaled time: AGC time runs
+behind wall time when the C64 falls behind, by one factor shared by every
+AGC clock and timer, so the AGC program sees the same sequence of events
+it would at full speed. Two build settings control it, both make
+variables passed to `tools/resident_flight_build.py` (its `COMMON` flags,
+which every flight build shares):
+
+- `RK_TICK_LAG` (default 2): the most clock ticks one step catches up.
+  When more CIA1 interrupts arrived since the last step (it ran longer
+  than that many 10 ms periods), `rk_rupts` runs `RK_TICK_LAG` timer
+  periods and drops the rest, counting them in `rk_dilation` ($6FB8). The
+  timers therefore never bunch: no step sees more than two periods' worth
+  of TIME3-TIME6 requests, and AGC time stretches by exactly the dropped
+  ticks. Wall time is AGC time plus `rk_dilation` periods.
+- `RK_TIME_DIVISOR` (default 1): AGC time at 1/n of wall time, by a CIA1
+  latch of 9852 × n − 1. A fixed x0.5 build (`RK_TIME_DIVISOR=2`) runs
+  nightly only.
+
+Ticks are counted as wall-clock interrupts and dropped whole, so a
+dropped tick never splits a timer period: TIME1-TIME6 step together, in
+`agc_engine`'s order, once per period the AGC sees.
+
+The invariant this rests on: **every AGC-visible input is an AGC-time
+event.** IMU and CDU counts, radar, the hand controller, keys, uplink and
+discretes must reach the AGC on its clock (at a step, through the image or
+`rk_hardware`), never from a C64 wall-clock source in between. A lane that
+models an input against wall time breaks the equivalence and must instead
+schedule it in AGC periods.
+
+The resident check (part 4) covers the cap: after five or more CIA
+interrupts TIME1 counts `RK_TICK_LAG` and `rk_dilation` the rest, and with
+a backlog past the cap and both T5RUPT and T6RUPT coming due in the first
+period, one step takes `RK_TICK_LAG` periods, drops the rest and enters
+T6RUPT alone, leaving T5RUPT pending: AGC priority order, no overlap.
 
 `make test-resident-rupt` checks this against yaAGC itself
 (`tools/resident_rupt_reference.c` links Virtual AGC's `agc_engine`, and
@@ -235,14 +278,14 @@ about 0.3 KB.
 | ABI 2 runtime and REU store | 5,235 | 5,235 |
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
-| AGC timers and interrupt entry (`rk_rupts`) | 1,092 | 1,092 |
-| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,508 | 1,525 |
-| IRQ entry (saves and restores $01) | 26 | 26 |
+| AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap) | 1,128 | 1,128 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,467 | 1,484 |
+| IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
 | C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
-| **Resident, $0801 to the end of bss** | **24,316** | **24,022** |
-| Free below the service table (of 26,367) | 2,051 | 2,345 |
+| **Resident, $0801 to the end of bss** | **24,309** | **24,015** |
+| Free below the service table (of 26,367) | 2,058 | 2,352 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
-| Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,196 | 4,168 |
+| Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,216 | 4,195 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
 half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
@@ -308,9 +351,11 @@ that no tick lands, it runs every 32nd T3RUPT case
 (0x01F7, `platform/c64/resident_flight_rupt_cases.c`) writes each case into
 the image. The program sets T3RUPT pending and runs resident steps until
 RESUME brings Z back. The image, channel 7, the interrupt enable and the
-interrupt flag must give yaAGC's digest. Then, with the timer running, TIME1
-must have counted exactly the ticks the steps consumed (at least five), and
-CIA1 timer A must be counting down from the 10 ms latch.
+interrupt flag must give yaAGC's digest. Then, with the timer running,
+after at least five interrupts TIME1 must count `RK_TICK_LAG` and
+`rk_dilation` the rest, CIA1 timer A must be counting down from its latch,
+and a backlog past the cap with T5RUPT and T6RUPT coming due must enter
+T6RUPT alone (Scaled time, above).
 
 Part 5, again with the CIA interrupt held off, runs every 16th other-vector
 case (72 per mission, eight per vector). A job-slot module (0x01F8,
@@ -333,16 +378,16 @@ each routine, the LM part 5 program fails five.
 
 | Program | Rows | Checks |
 |---|---|---|
-| LM services | 153 | 312 |
-| LM jobs | 161 | 328 |
-| LM idle | 86 | 178 |
-| CM services | 129 | 264 |
-| CM jobs | 110 | 226 |
-| CM idle | 90 | 186 |
-| LM clock and T3RUPT | 64 | 72 |
-| CM clock and T3RUPT | 64 | 72 |
-| LM other vectors and boundary words | 72 | 81 |
-| CM other vectors and boundary words | 72 | 81 |
+| LM services | 153 | 315 |
+| LM jobs | 161 | 329 |
+| LM idle | 86 | 179 |
+| CM services | 129 | 265 |
+| CM jobs | 110 | 227 |
+| CM idle | 90 | 187 |
+| LM clock and T3RUPT | 64 | 74 |
+| CM clock and T3RUPT | 64 | 74 |
+| LM other vectors and boundary words | 72 | 82 |
+| CM other vectors and boundary words | 72 | 82 |
 
 All 873 rows pass, the same rows as `make vice-resident-kernel`. A one-word
 kernel mutation (CS TWO to CS THREE in DUMMYJOB) fails the LM idle program.
