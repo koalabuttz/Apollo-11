@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-sps-backup",
+  "release": "evidence-lm-sps-backup",
+  "files": {
+    "lm-sps-backup-c64-cover.json": {
+      "sha256": "66e2858ee97884573dd70b66f760ad9491dfffa245cd61259f96281798296053",
+      "bytes": 2352,
+      "store": "tree"
+    },
+    "lm-sps-backup-differential.log": {
+      "sha256": "c576af0746d39bc33a59b749a9198a0f4c0f474729c55efea2bdd7eeb5f34f5d",
+      "bytes": 4219,
+      "store": "release"
+    },
+    "lm-sps-backup-host.log": {
+      "sha256": "ff30bf01ade6f55f8d3f307034f31405b929beabeb37f94bc2d1e5517ae93684",
+      "bytes": 103,
+      "store": "release"
+    },
+    "lm-sps-backup-proof.json": {
+      "sha256": "7eca9c236a182b205acd9cae928ee554a93132bc282b65338ea8e0cc167ea6ac",
+      "bytes": 8023,
+      "store": "tree"
+    },
+    "lm-sps-backup-source-map.json": {
+      "sha256": "6212b57ecef767d5b4a95e79f7cdb0ef34c665f60dd76b46e9aedf3a3553bf91",
+      "bytes": 11454,
+      "store": "tree"
+    },
+    "lm-sps-backup-vice.log": {
+      "sha256": "4fb79eec230d31854e9e7f19871bade6fe65483300771c6259a267e5ba86006c",
+      "bytes": 998,
+      "store": "release"
+    }
+  }
+}

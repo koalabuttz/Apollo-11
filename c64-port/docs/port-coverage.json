@@ -11161,6 +11161,17 @@
           ],
           "scope": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
           "verification": "docs/LUMINARY-SPS-RCS.md"
+        },
+        {
+          "native_files": [
+            "src/lm_sps_backup.c",
+            "src/agc_image_ops.c",
+            "src/agc_transfer.c",
+            "src/agc_word.c",
+            "src/agc_multiword.c"
+          ],
+          "scope": "Every word of the file (82 words, 21,3646-3767): SPSRCS with POSTHRST, NEGCHECK, SETCTR, ZAPTJ, POSCHECK, CTRCHECK, NEGFIRE, PLUSFIRE, SPSSTART, NEGTHRST, TJZERO and the RATELIM2 and UTIME constants, as 1 routine of the control-transfer ABI compiled by tools/interp_compile.py, registered at 21,3727 (the IBNKCALL CADR of P-AXIS and Q,R-AXIS).",
+          "verification": "docs/LM-SPS-BACKUP.md"
         }
       ],
       "withdrawn_certificate": {
@@ -11190,6 +11201,41 @@
               "path": "evidence/lm-sps-rcs-proof.json",
               "sha256": "8125470eea65c4c959042569be471590fc2818f522df7d519e970e140ea1dfa1"
             }
+          }
+        }
+      },
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Entry at SPSRCS (21,3727) with FB of bank 21 under EB 6 (the file's EBANK= TJU), AXISCTR -1 (P), +0 or -0 (U) or +1 (V), any Q (the caller's return, TC Q), NEWJOB +0 or positive, and any values of the other erasables; in half of the cases TJP/TJU/TJV (+-0, +-1, HALF), PJETCTR/UJETCTR/VJETCTR (+-0, +-1, 4), EDOT around the rate limits and coast zone, E and DKDB from a joint set.",
+        "external_continuations": [
+          "The caller's return through Q (TC Q)"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-source-map.json",
+            "sha256": "6212b57ecef767d5b4a95e79f7cdb0ef34c665f60dd76b46e9aedf3a3553bf91"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-proof.json",
+            "sha256": "7eca9c236a182b205acd9cae928ee554a93132bc282b65338ea8e0cc167ea6ac"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-host.log",
+            "sha256": "ff30bf01ade6f55f8d3f307034f31405b929beabeb37f94bc2d1e5517ae93684"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-vice.log",
+            "sha256": "4fb79eec230d31854e9e7f19871bade6fe65483300771c6259a267e5ba86006c",
+            "vice_targets": {
+              "vice-lm-sps-backup": 11
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-sps-backup/lm-sps-backup-c64-cover.json",
+            "sha256": "66e2858ee97884573dd70b66f760ad9491dfffa245cd61259f96281798296053"
           }
         }
       }

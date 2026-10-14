@@ -1,0 +1,90 @@
+{
+ "milestone": "lm-sps-backup",
+ "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/lm_sps_backup.c": "2f12a05a4d2d758519d299e1d599b575b7de9816c3aa37dbe98ae17e0286d6f4",
+  "src/lm_interp_orders.c": "e2996e140562d04d289224de90ada55f9fc328bb11bf899394619b3c27f5a71a",
+  "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
+  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
+  "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/interp_case.c": "73c1349b72b60f5b5d5ecc56b1189fc7e4934fc67496ed627c4ac7fe9ac284d3",
+  "tests/lm_sps_backup_target.c": "05ba8821854ee3f2590b49be3c8be434afebaf566103cf5276a55c6683570037"
+ },
+ "host_cases": 512,
+ "host_case_stride": 1,
+ "c64_rows": [
+  45,
+  53,
+  72,
+  96,
+  128,
+  140,
+  182,
+  328,
+  329,
+  368,
+  472
+ ],
+ "host_branch_arcs": 225,
+ "c64_branch_arcs": 225,
+ "arcs_by_source_host_c64": {
+  "src/agc_hardware_divide.c": [
+   0,
+   0
+  ],
+  "src/agc_image_ops.c": [
+   43,
+   43
+  ],
+  "src/agc_multiword.c": [
+   9,
+   9
+  ],
+  "src/agc_transfer.c": [
+   38,
+   38
+  ],
+  "src/agc_word.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_sps_backup.c": [
+   77,
+   77
+  ],
+  "tests/interp_case.c": [
+   32,
+   32
+  ],
+  "tests/lm_sps_backup_target.c": [
+   0,
+   0
+  ],
+  "tools/interp_routine_native.c": [
+   26,
+   26
+  ]
+ },
+ "host_branches_missing_on_c64": []
+}

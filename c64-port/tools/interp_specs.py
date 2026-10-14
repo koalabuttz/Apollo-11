@@ -2124,6 +2124,45 @@ SPECS = {
         'cover': True,
         'freeze_stride': 16,
     },
+    # Luminary099 SPS_BACK-UP_RCS_CONTROL (SPSRCS, the docked RCS jet
+    # law the P and Q,R axis autopilots call through IBNKCALL), the whole
+    # file (basic code). (src/lm_sps_rcs.c is the earlier hand-written
+    # translation, kept for its legacy targets.)
+    'lm-sps-backup': {
+        'missions': ('lm',),
+        'file': {'lm': 'SPS_BACK-UP_RCS_CONTROL.agc'},
+        'base': {'lm': 'lm_sps_backup'},
+        'symbol': {'lm': 'lm_sps_backup'},
+        'entries': ['SPSRCS'],
+        'externals': {},
+        # The file's EBANK= TJU: E6 (AXISCTR, TJU, UJETCTR, EDOT, DKDB).
+        'ebank': 6,
+        # AXISCTR: -1 (P), 0 (U) or +1 (V), as the autopilots set it; -0
+        # also selects U.
+        'all_states': {'AXISCTR': [0o77776, 0, 1, 0o77777]},
+        # In half of the cases, one joint set: the jet times (TJP, TJU,
+        # TJV: off at +-0, firing either way, HALF), the inhibition
+        # counters (+-0, +-1, the 4 the P axis sets), and EDOT, E and DKDB
+        # near the rate limits (RATELIM1 032, RATELIM2 0632) and in the
+        # coast zone, so every jet-sense, CTRCHECK and coast path runs.
+        'joint_states': {'*': [
+            {'TJP': tj, 'TJU': tj, 'TJV': tj, 'PJETCTR': ct, 'UJETCTR': ct, 'VJETCTR': ct, 'EDOT': ed,
+             'E': (0, 1, 0o77776, 0o200, 0o77577)[n % 5], 'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 5) % 5]}
+            for n, (tj, ct, ed) in enumerate(
+                (tj, ct, ed) for tj in (0, 0o77777, 1, 0o77776, 0o20000, 0o57777)
+                for ct in (0, 0o77777, 1, 0o77776, 4)
+                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777))]},
+        # INDEX AXISCTR; CA UTIME: the P counter (4) or the U, V one (012).
+        'basic_fixed_index': {'UTIME': [-1, 0, 1]},
+        'resume_keys': True,
+        'edge_cases': True,
+        'target': 'tests/lm_sps_backup_target.c',
+        'c64_rows': 'cover',
+        'cover': True,
+        'index_carry16': True,
+        'image_w': True,
+        'freeze_stride': 16,
+    },
     'cm-r31': {
         'missions': ('cm',),
         'file': {'cm': 'R31.agc'},
