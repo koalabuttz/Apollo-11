@@ -68,7 +68,7 @@ def common(spec):
 
 MOS_CC = os.environ.get('MOS_CC', os.path.join(R, 'deps/llvm-mos/bin/mos-c64-clang'))
 C64_FLAGS = ['-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']
-FLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
+FLAGS = ['-std=c99', *os.environ.get('IRC_OPT','-O2').split(), '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests']
 # Host native runners end a case that calls exit(3) (lmi_goto_any on a cycle
 # of erasable CADRs) as a timeout row, kind 9, instead of ending the run
 # (tools/interp_routine_native.c, #224).
@@ -151,6 +151,23 @@ class Mission:
             self.joint_any = js.get('*', [])
         self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
+        # 'q_callers' [LABEL, ...]: the routine reads words after its call
+        # (DMP's ADRES, POLY's coefficients), so each case returns to one of
+        # the mission's real TC LABEL sites outside the file, under that
+        # site's bank: {point: [physical return word, ...]}.
+        self.q_callers = {}
+        for lab in spec.get('q_callers', ()):
+            pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
+            sites = []
+            for raw in open(os.path.join(R, IL.LISTINGS[m]), errors='replace'):
+                g = pat.match(raw)
+                if g:
+                    ph = int(g.group(1), 8) * 1024 + int(g.group(2), 8) - 0o2000 + 1
+                    if not self.cp.in_file(ph - 1):
+                        sites.append(ph)
+            if not sites:
+                raise SystemExit('q_callers: no TC %s outside the file' % lab)
+            self.q_callers[self.cp.label_phys(lab)] = sites
         # 'states' may name each mission's own ({'lm': {...}, 'cm': {...}}).
         st = spec.get('states', {})
         if st and set(st) <= {'lm', 'cm'}:
@@ -422,7 +439,10 @@ def case(mi, point, n, rng):
     E = collections.OrderedDict()
     seed = rng.getrandbits(32)
     bank = point // 1024
-    if bank in (2, 3):
+    qsite = rng.choice(mi.q_callers[point]) if point in mi.q_callers else None
+    if qsite is not None and qsite // 1024 not in (2, 3):
+        bank = qsite // 1024
+    elif bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
@@ -589,7 +609,10 @@ def case(mi, point, n, rng):
         # (or the returns the spec's states give the point: banked ones in
         # the case's bank).
         fixed_q = mi.states.get(point, {}).get('2')
-        if fixed_q:
+        if qsite is not None:
+            E[2] = logical(qsite)
+            stop = qsite
+        elif fixed_q:
             E[2] = rng.choice(fixed_q)
             stop = 2048 + E[2] - 0o4000 if E[2] >= 0o4000 else bank * 1024 + E[2] - 0o2000
         else:
@@ -1168,9 +1191,11 @@ def main():
     rng = random.Random('interp-routine:' + a.spec + os.environ.get('IRC_SALT', ''))
     proof = os.path.join(R, 'evidence/%s/%s-proof.json' % (a.spec, a.spec))
     if a.cover_check is not None and os.path.exists(proof):
-        # (The freeze's cases per routine, from the case count it froze.)
+        # (The freeze's cases per routine, from the case count it froze. That
+        # count is after the loop and refusal filters below, which drop fewer
+        # cases than there are routines: round up.)
         n = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
-        a.cases = max(1, json.load(open(proof)).get('cases', a.cases * n) // n)
+        a.cases = max(1, -(-json.load(open(proof)).get('cases', a.cases * n) // n))
     cases = []
     for cm, mi in enumerate(missions):
         if mi.m not in spec['missions']:
@@ -1187,6 +1212,7 @@ def main():
         flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
+        cases = frozen_only(missions, cases, ref, nat, path)
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     if a.stops_only:
         inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
@@ -1303,6 +1329,28 @@ def place(z, fb, sb):
             b += 8
         return b * 1024 + z - 0o2000
     return None
+
+
+def frozen_only(missions, cases, ref, nat, path):
+    """The cases the freeze kept: the main run's loop and refusal filters,
+    with the oracle run only on the cases the native runner loops on. Writes
+    the kept cases to path and returns them."""
+    rows_n = run([nat, path])
+    nine = [i for i, y in enumerate(rows_n) if y[1] == '9']
+    loops = set()
+    if nine:
+        sub = path + '.loops'
+        write_cases(sub, missions, [cases[i] for i in nine])
+        loops = {i for i, x in zip(nine, run([ref, *ROPES, sub])) if x[1] == '9'}
+        os.remove(sub)
+    if loops:
+        cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]
+        write_cases(path, missions, cases)
+    refused = operand_stops(missions, cases, rows_n, run([nat, path, 'fb']))
+    if refused:
+        cases = [c for i, c in enumerate(cases) if i not in refused]
+        write_cases(path, missions, cases)
+    return cases
 
 
 def operand_stops(missions, cases, rows_n, fbrows, skip=()):
@@ -1679,7 +1727,7 @@ C64_TOP = 0xbf00
 
 def c64_sources(spec, m):
     return (['src/%s.c' % spec['base'][m], 'src/%s_interp_orders.c' % m, 'src/%s_interp_steps.c' % m]
-            + spec.get('native_sources', []) + [x for x in common(spec) if '_interp_' not in x] + [spec['target']])
+            + spec.get('c64_native_sources', spec.get('native_sources', [])) + [x for x in common(spec) if '_interp_' not in x] + [spec['target']])
 
 
 KEEP_WORDS = {}   # symbol -> the generated file's KEEP words

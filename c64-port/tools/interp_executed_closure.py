@@ -47,17 +47,24 @@ def main():
            'oracle': 'yaAGC (tools/oracle_trace) in the milestone\'s differential', 'files': {}}
     bad = []
     for path, rec in smap.items():
-        rows, counts = [], {'words': 0, 'data': 0, 'instructions': 0, 'executed': 0, 'interpreted': 0, 'unreached': 0}
+        rows, counts = [], {'words': 0, 'data': 0, 'instructions': 0, 'executed': 0, 'interpreted': 0, 'unreached': 0, 'core': 0}
+        data = False
         for w in rec['map']:
             op = (w['source'].split() + ['', ''])[1] if not w['source'].startswith(' ') else (w['source'].split() + [''])[0]
-            data = op.upper() in DATA or 'constant' in w
+            # (+1): the second word of a two-word constant (2CADR, 2DEC) is data too.
+            data = op.upper() in DATA or 'constant' in w or (w['source'].strip() == '(+1)' and data)
             p = physical(w['address'])
             ran = p in executed
             interp = w.get('function') not in (None, 'basic_run')
             interpreted = interp and p in read
             counts['words'] += 1
             counts['data' if data else 'instructions'] += 1
-            if not data:
+            core = w.get('routine') == 'interpreter core'
+            if not data and core:
+                # (INTERPRETER's words the compact core runs, not this
+                # milestone's routines: the core's own evidence covers them.)
+                counts['core'] += 1
+            elif not data:
                 if ran:
                     counts['executed'] += 1
                 elif interpreted:
@@ -67,7 +74,7 @@ def main():
                 else:
                     bad.append(f'{path} {w["address"]} {w["source"].strip()}')
             rows.append({'address': w['address'], 'source': w['source'].strip(), 'data': data, 'executed': ran,
-                         **({'interpreted': True} if interpreted else {}),
+                         **({'interpreted': True} if interpreted else {}), **({'core': True} if core else {}),
                          **({'unreached': unreached[w['address']]} if w['address'] in unreached else {})})
         out['files'][path] = {**counts, 'map': rows}
     if bad:
@@ -75,7 +82,8 @@ def main():
     (R / f'build/{m}-closure.json').write_text(json.dumps(out, indent=2) + '\n')
     for path, f in out['files'].items():
         print(f'PASS: {path}: {f["words"]} words, {f["instructions"]} instructions, {f["executed"]} executed by the '
-              f'oracle, {f["interpreted"]} interpreted, {f["unreached"]} named unreached, {f["data"]} data')
+              f'oracle, {f["interpreted"]} interpreted, {f["unreached"]} named unreached, {f["data"]} data'
+              + (f', {f["core"]} run by the interpreter core' if f['core'] else ''))
 
 
 if __name__ == '__main__':
