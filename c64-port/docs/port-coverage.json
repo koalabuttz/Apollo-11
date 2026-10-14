@@ -10007,7 +10007,7 @@
       "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
       "bytes": 4937,
       "lines": 185,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10030,7 +10030,7 @@
           "verification": "docs/LM-P30-FILE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10075,6 +10075,10 @@
           "executed_instruction_closure": {
             "path": "evidence/lm-p30-file/lm-p30-file-closure.json",
             "sha256": "d4d8bc628cf45789baa56635dc7df3bc4f5ff92b3e7dce207c16d577e067fd18"
+          },
+          "independent_review": {
+            "path": "docs/audits/lane-a-354.md",
+            "sha256": "30ea0436609e9490b10de76344df4725b9790854a7a25f7ac9cbdeb53423ecb7"
           }
         }
       }
