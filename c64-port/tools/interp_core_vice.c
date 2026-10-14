@@ -7,8 +7,11 @@
  *   (platform/c64/rope_image_reu.c), as in flight.
  * - The k_ ops are the resident kernel's (k_<op>(a) is ai_<op> on the image
  *   at $7000, src/resident_kernel_body.inc).
- * - The extension's bytes are copied to $D000 with I/O banked out, as the
- *   flight loader will.
+ * - The extension, module $0A02, is loaded from the REU (EXT_REU) to $D000
+ *   and verified there as the resident's boot loads slot class 2
+ *   (platform/c64/resident_flight.c rk_hidden_dma): registers set with I/O
+ *   in, the command armed without execute-now, a write to $FF00 with
+ *   $01=$34.
  * - The CIA 1 timer IRQ runs throughout, through a RAM vector whose entry
  *   saves $01 and banks I/O in: interrupts land while the order bodies run
  *   with I/O banked out.
@@ -50,7 +53,8 @@ uint8_t k_bzmf(void) { return ai_bzmf(IMG); }
 #define CIA1_ICR (*(volatile uint8_t *)0xdc0du)
 #define MAIL ((volatile uint8_t *)0xc000u)
 /* tools/vice_run.py's mailbox: $A5, failures, checks; then the IRQ count and
- * the first failure (record, word, 6502 value, host value, status). */
+ * the first failure (record, word, 6502 value, host value, status).
+ * Failures $EEEE: the extension did not load. */
 enum { MAIL_DONE = 0, MAIL_FAIL = 1, MAIL_CHECKS = 3, MAIL_IRQS = 5, MAIL_FIRST = 7, MAIL_WORD = 9, MAIL_GOT = 11,
        MAIL_WANT = 13, MAIL_STATUS = 15 };
 static void mail16(uint8_t at, uint16_t v) { MAIL[at] = (uint8_t)v; MAIL[at + 1] = (uint8_t)(v >> 8); }
@@ -67,7 +71,22 @@ __attribute__((interrupt)) static void irq(void)
 }
 __attribute__((interrupt)) static void nmi(void) {}
 
-extern char __interp_ext_start[], __interp_ext_end[], __interp_ext_load[];
+extern char __interp_ext_start[], __interp_ext_end[];
+#define EXT_REU 0x1d8000ul
+
+/* rk_hidden_dma's DMA (boot-only in the resident): 1 when it ended clean. */
+static uint8_t hidden_dma(uint8_t command, uint16_t bytes)
+{
+    volatile uint8_t *trigger = (volatile uint8_t *)0xff00u;
+    (void)apollo_reu_transfer((uint8_t)(command & ~0x10u), __interp_ext_start, EXT_REU, bytes);
+    __asm__ volatile("sei");
+    CPU_PORT = 0x34;
+    *trigger = *trigger;
+    CPU_PORT = 0x35;
+    __asm__ volatile("cli");
+    return (uint8_t)((apollo_reu_peek(APOLLO_REU_STATUS) & (APOLLO_REU_STATUS_END | APOLLO_REU_STATUS_FAULT)) ==
+                     APOLLO_REU_STATUS_END);
+}
 
 /* Buffers above the image ($8000-$81FF; the program ends below $7000). */
 #define want ((agc_word *)0x8000u)
@@ -82,10 +101,13 @@ int main(void)
     CPU_PORT = 0x35;   /* KERNAL and BASIC out: the vectors are RAM */
     *(volatile uint16_t *)0xfffeu = (uint16_t)(uintptr_t)irq;
     *(volatile uint16_t *)0xfffau = (uint16_t)(uintptr_t)nmi;
-    CPU_PORT = 0x34;
-    for (i = 0; i < (uint16_t)(__interp_ext_end - __interp_ext_start); ++i) __interp_ext_start[i] = __interp_ext_load[i];
-    CPU_PORT = 0x35;
     __asm__ volatile("cli");
+    n = (uint16_t)(__interp_ext_end - __interp_ext_start);
+    if (!hidden_dma(APOLLO_REU_FETCH, n) || !hidden_dma(APOLLO_REU_VERIFY, n)) {
+        mail16(MAIL_FAIL, 0xeeeeu); mail16(MAIL_CHECKS, 1u);
+        MAIL[MAIL_DONE] = 0xa5;
+        for (;;) {}
+    }
     (void)apollo_reu_transfer(APOLLO_REU_FETCH, &n, 0, 2);
     mail16(MAIL_FIRST, 0xffffu);
     for (k = 0; k < n; ++k) {

@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import re
 
 import flight_store_build as F
+import overlay_v2_pack as P
 from resident_flight_build import COMMON, MISSION, SERVICES
 
 ROOT = F.ROOT
@@ -57,6 +58,15 @@ def link_core(cc, m, prg, sources, library, ext=False):
         syms = dict((n, int(v, 16)) for v, n in re.findall(r'^\s*([0-9a-f]+)\s+\S+\s+\S+\s+\S+\s+(__interp_ext_\w+) = ',
                                                            (ROOT / (str(prg) + '.map')).read_text(), re.M))
         out['extension_bytes'] = syms['__interp_ext_end'] - syms['__interp_ext_start']
+        # Module $0A02: the extension's section cut from the same ELF (a PRG
+        # at $D000), checked as the store packer checks every module.
+        ext_prg = ROOT / prg.parent / 'interp-ext.prg'
+        objcopy = Path(cc).parent / 'llvm-objcopy'
+        subprocess.run([str(objcopy), '-O', 'binary', '-j', '.interp_ext', f'{ROOT / prg}.elf', f'{ext_prg}.bin'], check=True)
+        ext_prg.write_bytes(b'\x00\xd0' + Path(f'{ext_prg}.bin').read_bytes())
+        mission = 1 if m == 'lm' else 2
+        for path in (ROOT / prg, ext_prg):
+            P.parse_module(path, mission, SERVICES)
     return out
 
 
@@ -81,7 +91,7 @@ def main():
         out[m] = r
         if r['ok']:
             print('%s: %d bytes of %d (job slot)%s' % (m.upper(), r['bytes'], F.SLOT_BYTES[0],
-                  ', extension %d of 4096' % r['extension_bytes'] if 'extension_bytes' in r else ''))
+                  ', extension module $0A02 %d of 4096' % r['extension_bytes'] if 'extension_bytes' in r else ''))
         else:
             print('%s: does not fit the job slot (over by %s bytes) %s' % (m.upper(), r.get('overflow'), r.get('error') or ''))
     (ROOT / OUT / ('size-runtime.json' if a.runtime else 'size-ext.json' if a.ext else 'size.json')).write_text(json.dumps(out, indent=1) + '\n')

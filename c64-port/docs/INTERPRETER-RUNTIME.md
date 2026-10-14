@@ -85,26 +85,34 @@ It must equal the verification interpreter word for word:
 `--runtime` links the verification interpreter instead.
 
 The interpreter extension (`INTERP_EXTENSION`, `--ext`) is 4 KB of RAM under
-I/O at $D000-$DFFF (steward ruling, 2026-10-13), loaded once with the
-interpreter:
+I/O at $D000-$DFFF (steward ruling, 2026-10-13). It is its own ABI 2
+module, `$0A02`, of slot class 2 (`APOLLO_OV2_SLOT_FIXED`), which the
+resident's boot loads once and verifies (`rk_load_fixed`):
 
-- It holds the cold math bodies (`XT`: SQRT, UNIT, ABVAL, VSQ, SIN, COS,
+- It holds the cold math bodies (`XT`: SQRT, UNIT, VSQ, SIN, COS,
   ASIN, ACOS with POLY, DDV, BDDV, DOT, VPROJ, VXSC, MXV, VXM, V/SC), linked
   by `platform/c64/interp_ext.ld`.
 - None of these bodies reads the rope, since the REU registers are I/O.
 - They are reached only from the address and unary order tables. Every call
   through a table banks I/O out ($01 = $34) and back in. The resident's IRQ
   entry saves $01 and banks I/O in.
-- With it, the module fits: LM 16,038 and CM 16,054 of 16,384 bytes, and the
-  extension takes 4,062 and 4,071 of 4,096 bytes.
+- `$0A01` and `$0A02` are one link. `interp_runtime_size.py` cuts the
+  extension's section from the ELF as `interp-ext.prg` (24-byte header, an
+  RTS entry nothing calls, no BSS) and checks both PRGs with the store
+  packer's `parse_module`.
+- With it, the module fits: LM 15,715 and CM 15,724 of 16,384 bytes, and
+  `$0A02` takes 4,038 and 4,029 of 4,096 bytes with its header.
 - Without it, the module is 3.7 KB over.
-- The flight store does not load it yet.
+- The flight store does not hold `$0A01` or `$0A02` yet.
 
 `make vice-interp-core` runs the flight build on a PAL C64 in VICE
 (`tools/interp_core_vice_test.py`, `tools/interp_core_vice.c`):
 
-- The build has the resident's k_ ops and the extension, which is copied to
-  $D000 with I/O banked out.
+- The build has the resident's k_ ops and the extension. The test puts
+  module `$0A02` in the REU, and the harness loads and verifies it at $D000
+  by the resident's boot DMA (registers set with I/O in, then a write to
+  $FF00 with $01 = $34). With the module misplaced in the REU the run
+  crashes, so the code at $D000 is the DMA's.
 - The rope is in the REU at its flight address.
 - The CIA timer IRQ runs throughout, through a RAM vector that saves $01.
 - It runs 180 fuzz slot records per mission and checks each 6502 result

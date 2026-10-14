@@ -1505,7 +1505,7 @@ static NI XT uint8_t sqrt_body(void){
 }
 static NI XT uint8_t lmi_sqrt(void){return sqrt_body();}
 /* ABVALABS 03176: ABS on a scalar, ABVAL (length, LVSQUARE kept) on a vector. */
-static NI XT uint8_t lmi_abvalabs(void){
+static NI uint8_t lmi_abvalabs(void){
  if(CCS(rMODE)<2u){lmi_abs();return 0;}
  TC(03202);vsqsub();LXCH(rMODE);DCA(rMPAC);DXCH(AT(W[rFIXLOC]+tLVSQUARE));
  return sqrt_body();
