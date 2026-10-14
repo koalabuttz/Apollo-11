@@ -219,10 +219,35 @@ main). With a class-4 module in the store every task-slot module, the
 resident's interrupt wrappers included, links for the job slot
 (`task_pinned_out` in the module list). The boundary-word module stays in
 the task slot: boot runs it there once, before it loads class 4 over it. This is the steward's DAP rule
-in two regions: the LM RCS DAP hold cycle (DAPIDLER, P-axis, Q/R-axis, TJET
-law) is the LM slot-4 set; it measures about 38.5 KB direct-only, so it is
-reported and not packed until Rendezvous navigation (D2) splits it into hot
-subsets for both regions. CM pins the background self-check idle loop in
+in two regions, with the LM RCS DAP hold cycle split by what one pass
+reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
+#356):
+
+- Class 4 holds TJETLAW (`lm_tjet_law_routines`) and RATELOOP
+  (`lm_kalman_basic`), and is the *runtime home*: every global function the
+  class-3 module links (the fast ops, the image-op wrappers, the DAP files'
+  shared helpers in `include/lm_dap_shared.h`) is linked once, here.
+- Class 3 holds DAPIDLER's per-pass entries (`lm_dapidler_hot_routines`, a
+  file's `*_hot_routines` subset: PIN only, its file's modules still pack
+  the full table) and the table list naming both sets.
+- The *excursion* (`EXCURSION`, module $07F5) packs P-axis's and Q,R-axis's
+  per-pass entries (`lm_p_axis_hot_routines`, `lm_q_r_axis_hot_routines`)
+  in one job-slot module, so a pass that leaves the pinned sets loads one
+  module, not two (P-axis 11,603 bytes and Q,R-axis 11,971). It is linked
+  only beside a packed class-4 home, takes every function the home holds
+  as a global (`--defsym`), and the resolver sends its 26 keys to it before
+  their files' modules. On LM with #308 it is 13,787 bytes.
+
+The two link separately (`pin_pair`). Class 4 links first with class 3's
+files as well, keeping only what class 3 asks for (`-Wl,--undefined=` for
+each name in class 3's map; LTO and `--gc-sections` drop the rest). Class 3
+then links only its own files, taking those addresses from class 4's ELF
+(`-Wl,--defsym=`). The pair relinks until class 3 resolves and links no new
+name. The class-4 module is compiled with `FS_PIN_HOME`: its main is a stub,
+as the resident never runs it, and it only keeps its tables linked. Both
+link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
+also stops inlining. On LM with #308's direct DAP tables, class 4 is 7,359
+of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
 class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
 without loading a module; on LM that loop is an ordinary job-slot module, as
 class 3 is kept for the DAP. The load check runs one of the class-3 set's

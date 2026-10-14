@@ -72,11 +72,24 @@ static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 rk_module_tables rk_module_tables_of_module;
 /* The header's TABLES word (platform/c64/overlay_v2_payload.ld). */
 __attribute__((used,section(".ov2_tables"))) rk_module_tables *const rk_module_tables_word=&rk_module_tables_of_module;
+#ifdef FS_PIN_HOME
+/* The class-4 module (FS_PIN_HOME): the resident never runs its main, as the
+ * class-3 module's table list names its tables (rk_pin_main), so it builds
+ * nothing and only keeps its tables linked. */
+#define FS_HOME_TABLE(t) &t,
+__attribute__((used)) static const agc_routine_table *const home_tables[]={FS_BASIC(FS_HOME_TABLE)};
+uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
+ (void)f;(void)selector;(void)rk_module_tables_word;
+ return APOLLO_OV2_DONE;
+}
+#else
 uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  rk_module_env *e=(rk_module_env *)(uintptr_t)f->value;
  rk_io *io=(rk_io *)e->io;
  rk_module_tables *t=&rk_module_tables_of_module;
+#ifndef FS_DIRECT_ONLY
  agc_native_program p=*e->program;
+#endif
  uint16_t steps;
  enum exec_status status;
  (void)selector;
@@ -89,7 +102,8 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   FS_CHUNK(FS_COPY_ENTRY)
   basic[0].entries=chunk;basic[0].count=n;
 #else
-#define FS_COPY_BASIC(t) basic[n++]=t;
+/* Field by field, as above: a struct copy is a memcpy call each. */
+#define FS_COPY_BASIC(t) basic[n].entries=t.entries;basic[n++].count=t.count;
   FS_BASIC(FS_COPY_BASIC)
 #endif
 #ifdef FS_HAS_INTERP
@@ -101,12 +115,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #ifdef FS_SITES
   t->operands=sites;t->operand_count=(uint16_t)(sizeof sites/sizeof sites[0]);
 #else
-  t->operands=p.operands;t->operand_count=p.operand_count;
+  t->operands=e->program->operands;t->operand_count=e->program->operand_count;
 #endif
 #ifdef FS_FIXED_DATA
   t->fixed_data=FS_FIXED_DATA;
 #else
-  t->fixed_data=p.fixed_data;
+  t->fixed_data=e->program->fixed_data;
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
 #ifdef FS_IO_KIND
@@ -115,12 +129,14 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   t->ready=RK_TABLES_DIRECT;
 #endif
  }
- rk_module_program(&p,t);
+ /* A direct-only module runs nothing here (the resident calls its
+  * routines through rk_direct): no program to build. */
 #ifdef FS_DIRECT_ONLY
  (void)io;(void)steps;(void)status;
  e->status=EXEC_UNMAPPED;
  return APOLLO_OV2_DONE;
-#endif
+#else
+ rk_module_program(&p,t);
 #ifdef FS_IO_KIND
  {
   static flight_io_buffer b;   /* static: absolute addressing is smaller than the soft stack */
@@ -161,4 +177,6 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  e->status=rk_module_status(status,steps,RK_MODULE_STEPS);
  return APOLLO_OV2_DONE;
+#endif
 }
+#endif
