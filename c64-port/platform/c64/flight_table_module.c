@@ -87,6 +87,18 @@ static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #else
 #define FS_LIMIT RK_MODULE_STEPS
 #endif
+/* FS_KEYS: the chunk's or pick's physical keys in entry order, which the
+ * build reads from the same tables (tools/flight_store_build.py
+ * table_keys). Copied as data in one loop, so the per-entry code at entry
+ * stores only the call (a store each for the key and call was most of a
+ * chunk module's main). */
+#ifdef FS_KEYS
+static const uint16_t chunk_keys[]={FS_KEYS};
+_Static_assert(sizeof chunk_keys/sizeof chunk_keys[0]==sizeof chunk/sizeof chunk[0],"FS_KEYS names every entry");
+#define FS_COPY_KEYS {uint8_t k;for(k=0;k<n;++k)chunk[k].physical=chunk_keys[k];}
+#else
+#define FS_COPY_KEYS
+#endif
 /* The module's table list (resident_flight.h), named by the header's TABLES
  * word: built on the first run after a load, then read in place by the
  * resident, which calls this module's routines directly while it stays
@@ -118,14 +130,24 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  if(!t->ready){
   uint8_t n=0;
 #ifdef FS_PICK
+#ifdef FS_KEYS
+#define FS_COPY_PICK(t,i) chunk[n++].call=t.entries[i].call;
+#else
 #define FS_COPY_PICK(t,i) chunk[n].physical=t.entries[i].physical;chunk[n++].call=t.entries[i].call;
+#endif
   FS_PICK(FS_COPY_PICK)
+  FS_COPY_KEYS
   basic[0].entries=chunk;basic[0].count=n;
 #elif defined FS_CHUNK
 /* Field by field: a whole-struct copy lowers to a memcpy from the entries
  * array, which keeps every routine linked (Lane F). */
+#ifdef FS_KEYS
+#define FS_COPY_ENTRY(i) chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
+#else
 #define FS_COPY_ENTRY(i) chunk[n].physical=FS_CHUNK_TABLE.entries[i].physical;chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
+#endif
   FS_CHUNK(FS_COPY_ENTRY)
+  FS_COPY_KEYS
   basic[0].entries=chunk;basic[0].count=n;
 #else
 /* Field by field, as above: a struct copy is a memcpy call each. */

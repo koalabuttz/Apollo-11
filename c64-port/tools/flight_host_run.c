@@ -590,6 +590,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
 #endif
  core_path=getenv("FLIGHT_CORE");
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
+ /* core_start's yaAGC steps to the idle loop would land in the downlink
+  * reference stream, so the two are not combined (no scenario sets both). */
+ if(core_path&&getenv("FLIGHT_DOWNRUPT")&&*getenv("FLIGHT_DOWNRUPT")&&strcmp(getenv("FLIGHT_DOWNRUPT"),"0")){fprintf(stderr,"FLIGHT_CORE does not take FLIGHT_DOWNRUPT\n");return 2;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
  else if(getenv("FLIGHT_SCALED")){scaled=1;AgcFrozenClock=1;

@@ -21,8 +21,9 @@ For an interp spec (tools/interp_specs.py):
                    evidence/<id>/<id>-c64-cover.json. Each row, with its cut
                    (irc_c64_cut) and, for c64_segments rows, stopped at the
                    resume LOC (IRC_SNAPROW), is re-run on yaAGC and must give
-                   the header's frozen digest. pending_danzig and
-                   channel_inputs specs get IRC_PENDING_DANZIG/IRC_INPUTS.
+                   the header's frozen digest. The oracle runs with the
+                   differential's oracle_env (IRC_PENDING_DANZIG,
+                   IRC_RTB_IN_FILE, IRC_INPUTS).
   3. branches      the native runner built -O0 --coverage over the cover
                    sources runs every frozen case (host), and each C64 group,
                    built with its KEEP mask from tools/mk/<id>.groups (and
@@ -212,18 +213,32 @@ def interp(sid, a, out):
     proof = json.load(open(proof_p))
     cover_p = os.path.join(ev, '%s-c64-cover.json' % sid)
     cover = json.load(open(cover_p)) if os.path.exists(cover_p) else {}
+    pins = cover.get('linked_sources')
+    if isinstance(pins, dict):
+        # A source other cover records also pin (interp orders/steps, interp_case/cut,
+        # agc_transfer, ...) goes stale whenever another lane changes it: report it,
+        # and let the branch re-derivation below decide (steward, #450). A stale pin
+        # on the spec's own sources means this record was not refrozen.
+        shared = collections.Counter()
+        for other in glob.glob(os.path.join(R, 'evidence', '*', '*-c64-cover.json')):
+            op = json.load(open(other)).get('linked_sources')
+            if isinstance(op, dict):
+                shared.update(op.keys())
+        for src, h in sorted(pins.items()):
+            f = os.path.join(R, src)
+            now = hashlib.sha256(open(f, 'rb').read()).hexdigest() if os.path.exists(f) else 'missing'
+            if now == h:
+                continue
+            msg = '%s pins %s at %s, the tree has %s' % (os.path.relpath(cover_p, R), src, h[:8], now[:8])
+            if shared[src] > 1:
+                say('NOTE %s (a shared source; the branch check below re-derives it)' % msg)
+            else:
+                gap(msg + ': refreeze so the cover record matches this tree')
     if not all(os.path.exists(p) for p in D.ROPES):
         from fixed_data_generate import assemble
         for m in ('Luminary099', 'Comanche055'):
             assemble(m, pathlib.Path(B) / 'fixed-data')
-    env = dict(os.environ)
-    if spec.get('channel_inputs'):
-        env['IRC_INPUTS'] = '1'
-    if spec.get('pending_danzig'):
-        cp0 = IC.Compiler(spec, spec['missions'][0])
-        cp0.decode()
-        env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
-            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
+    env = dict(os.environ, **D.oracle_env(spec))
     missions = [D.Mission(spec, m) if m in spec['missions'] else D.Absent(m) for m in ('lm', 'cm')]
     npts = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
     per = -(-proof['cases'] // npts)

@@ -525,3 +525,25 @@ boundary-word table's check in `boundary_words`) of
   `RK_RUPT_UP`) once the DSKY input sets them in `rk_pending`.
 - The site operand table holds the Executive and Waitlist call sites only.
   The flight program's table grows with every module that calls them.
+- DOWNRUPT in flight builds, which is a standing default (steward ruling,
+  2026-10-14), not a gap. The AGC raises DOWNRUPT every 20 ms. The resident
+  never requests it in flight, so a flight build sends no downlink. The
+  harness's verification builds (`FLIGHT_DOWNRUPT=1`, `make
+  flight-downlink-check` and `flight-downlink-vice`; see FLIGHT-DOWNLINK.md)
+  raise it on the AGC's schedule, and DOWN-TELEMETRY certificates are judged
+  on those. The reason is cost, measured in VICE on PAL with 100
+  back-to-back passes:
+  - LM: a median pass is ~130k cycles and 2 REU loads (the lead-ins and the
+    10,570 B lm_downtelemetry module evict each other).
+  - CM: a median pass is ~104k cycles and no loads.
+  - At 50 passes per AGC second that is 6.6-6.9x real time on the LM and
+    ~5.5x on the CM, for DOWNRUPT alone.
+  - Loads are only 15-20% of the cost. With zero loads a pass would still
+    take ~105k cycles, ~17-25k of it in resident overhead for each of its
+    three steps. A hot/cold split would need ~5.1 KB pinned, and classes 3
+    and 4 have 227 B free.
+  Nothing on board reads downlink state, so guidance and the DAP are the
+  same either way. Leaving DOWNRUPT out does give the other jobs the time
+  its MCTs would have taken, so job timing differs slightly from yaAGC's.
+  Revisit if the resident's per-step cost drops a lot.
+  Numbers: /mnt/project-files/steward/downrupt-cost.md.

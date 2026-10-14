@@ -351,19 +351,24 @@ def host_mct(m, t):
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=(), link_flags=(), pick=None):
+                io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
     [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
     module's io kind (module_io). direct_only: no transfer engine, the
     resident runs the routines (FS_DIRECT_ONLY; pinned modules). defines:
     the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
-    flags (a pinned pair's --undefined and --defsym, pin_pair)."""
+    flags (a pinned pair's --undefined and --defsym, pin_pair). keys: the
+    table keys ({table: [physical]}); with chunk or pick, the entries'
+    keys go in as data (FS_KEYS), so the module's main stores only calls."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
     if pick is not None:
         head, basic = '#define FS_PICK(X) ' + ' '.join(f'X({t},{i})' for t, i in pick) + '\n', []
+    if keys is not None and (chunk or pick is not None):
+        picked = pick if pick is not None else [(chunk[0], i) for i in range(chunk[1], chunk[2])]
+        head += '#define FS_KEYS ' + ','.join(f'{keys[t][i]}u' for t, i in picked) + '\n'
     if direct_only:
         head += '#define FS_DIRECT_ONLY 1\n'
     if io:
@@ -612,9 +617,11 @@ def interpretive_table(t):
 # tables hold (part_keys), which can include hand-off words the whole file
 # does not key.
 FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
-                       'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
+                       'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)],
+                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
-                       'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
+                       'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
 
 
 def part_keys(cc, m, stem, tables):
@@ -845,12 +852,12 @@ def main():
             direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick)
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys)
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()), (), pick)
+                                   direct_only, mod.get('defines', ()), (), pick, keys)
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0

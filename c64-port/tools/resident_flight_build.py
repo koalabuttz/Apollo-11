@@ -169,6 +169,8 @@ PROBES = [dict(bank=0o24000, loc=0o2000, module=0x01F1, selector=1),
 # defines, sources by mission). 0x01E0 is the boundary-word table
 # (tools/resident_boundary_words.py); 0x01E1-0x01E4 wrap the interrupt
 # bodies' tables (platform/c64/resident_rupt_module.c; 0x01E4 LM only).
+# 0x01E5 is the hardware restart (platform/c64/resident_gojam_module.c,
+# docs/FLIGHT-RESTART.md), which a resident trigger runs by id.
 # The wrappers link with a negative inline threshold: inlining the image
 # operations into each routine is what overflows the task slot (LM T4RUPT
 # core 8,506 B at -Oz alone, 7,731 B with it).
@@ -181,6 +183,7 @@ RESIDENT_MODULES = [
     (0x01E2, 1, ['-DRK_WRAP=2', *WRAP_FLAGS], {m: WRAP_COMMON + ['src/t4rupt_core.c'] for m in ('lm', 'cm')}),
     (0x01E3, 1, ['-DRK_WRAP=3', *WRAP_FLAGS], {m: WRAP_COMMON + ['src/keyrupt_uprupt.c'] for m in ('lm', 'cm')}),
     (0x01E4, 1, ['-DRK_WRAP=4', *WRAP_FLAGS], {'lm': WRAP_COMMON + ['src/lm_t6rupt.c']}),
+    (0x01E5, 1, [], {m: ['platform/c64/resident_gojam_module.c'] for m in ('lm', 'cm')}),
 ]
 # Which wrapper runs each interrupt body table (tools/resident_boundary_keys.c names).
 WRAPPED = {'lead_in_routines': 0x01E1, 't6rupt_routines': 0x01E4, 't4rupt_core_routines': 0x01E2,
