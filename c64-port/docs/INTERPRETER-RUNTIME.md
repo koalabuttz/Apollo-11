@@ -190,3 +190,16 @@ almost no interpretive code (0-8 orders a second).
   and the interrupt-enable state equal yaAGC's at the stop.
 - `make interp-runtime-size`: each mission's interpreter linked as one ABI 2
   job-slot module, id `$0A01` (lane I), with the flight store's flags.
+
+### Operands outside the E-bank window
+
+Both interpreters keep every erasable operand inside the image:
+- `ai_ea` masks an address to 01777, so an operand that an index runs past 01777 wraps into low erasable.
+- The original reads fixed memory there, under FB, and its writes there do nothing.
+- An indexed STORE address that overflows 11 bits is not modelled either.
+
+Flight never forms these addresses. On base 1004a6dc, `make interp-core-differential`'s 127 measurement-inc differences all come from case states with index registers far outside flight values:
+- X2 at INCOR2 is 0637 in the case state, where flight sets 162 (AXT,2 162D).
+- WIXA at FAZB1 is random.
+
+With those values, VXM* W+198D,2 walks ADDRWD to 01777, 02001, 02003 and so on. The compiled routines reproduce the fixed reads word for word. The interpreters do not, so they differ there.
