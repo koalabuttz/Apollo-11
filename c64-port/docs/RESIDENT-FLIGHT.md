@@ -19,7 +19,15 @@ zeroes its BSS and runs its main once to build its table list
 task slots', and no run loads it. Boot writes a canary at $CC00, the
 stack's last byte; a resident step that finds it changed (the stack ran
 into the pinned module) returns `EXEC_INVALID_ACTION` before running
-anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+anything. A store can also keep the task slot's RAM for one module, slot
+class 4 (`APOLLO_OV2_SLOT_PINNED_TASK`): boot loads it at $E000 by plain
+DMA and zeroes its BSS before the class-3 main runs, and that main's table
+list names its tables, so `rk_direct` reaches both regions through
+`rk_pinned`. Such a store has no task-slot modules but the boundary-word
+module (the packer refuses others), so task runs load into the job slot.
+Boot runs the boundary-word module in the task slot first, since boot
+itself runs in the job slot, then loads the boot-loaded classes, so class 4
+lands over it and the runtime forgets it. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
@@ -29,11 +37,12 @@ acknowledge CIA1 and restores it.
 
 The top of the service-table page holds the device records flight modules
 reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
-`RK_FLIGHT_IO`, `RK_CM_CHANNELS` in `resident_flight.h`): `rk_hardware`
-(`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
-`rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
-`cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
-values yaAGC starts with. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+`RK_FLIGHT_IO` in `resident_flight.h`): `rk_hardware` (`agc_hardware`) at
+$6FBE, which also holds the channels compiled routines use (5, 6, 30-33 on
+the CM, the LM DAP's channels, built with `-DAGC_CHANNELS_HW=rk_hardware`;
+on the CM inputs 30-33 start at the values yaAGC starts with), and
+`rk_flight` (the `flight_io` fields neither `rk_io` nor `agc_hardware`
+holds) at $6FDC. Below them, at $6FBC (`RK_IRQ_COUNT`), is
 `ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
 (the interpreter) can return to the step when an interrupt arrives, and
 below that, at $6FB8 (`RK_DILATION`), `rk_dilation`, the 32-bit count of
@@ -315,11 +324,11 @@ about 0.3 KB.
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
 | AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap and the scalers) | 1,183 | 1,183 |
-| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module; a refusing loaded table falls through to the resolver) | 1,500 | 1,518 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module; a refusing loaded table falls through to the resolver; a direct-only module's point runs in the step that loads it) | 1,512 | 1,530 |
 | IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
 | C runtime and library (crt0, multiply, memcpy, memset) | 361 | 361 |
-| **Resident, $0801 to the end of bss** | **24,241** | **23,954** |
-| Free below the service table (of 26,367) | 2,126 | 2,413 |
+| **Resident, $0801 to the end of bss** | **24,253** | **23,966** |
+| Free below the service table (of 26,367) | 2,114 | 2,401 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,216 | 4,195 |
 

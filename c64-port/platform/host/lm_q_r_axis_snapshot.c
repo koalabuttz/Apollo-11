@@ -11,7 +11,7 @@ int main(void){unsigned n,i,kind;
  for(n=0;n<LM_QR_CASES;++n){apollo_overlay_state s;lm_flight_io io;uint16_t steps;
   kind=lm_qr_run(&s,&io,(uint16_t)n,&steps);
   if(kind>=LM_QR_NONE){fprintf(stderr,"lm-q-r-axis case %u stopped at %05o\n",n,(unsigned)s.words[5]);return 1;}
-  printf("%u %u %u %u %u",n,kind,(unsigned)io.chan13,(unsigned)io.bias.interrupt_enabled,(unsigned)io.in_isr);
+  printf("%u %u %u %u %u",n,kind,(unsigned)io.hw.channel13,(unsigned)io.bias.interrupt_enabled,(unsigned)io.hw.in_interrupt);
   for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]&(i<2u?0177777u:077777u));
   putchar('\n');
  }return 0;}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p30-file",
+  "release": "evidence-lm-p30-file",
+  "files": {
+    "lm-p30-file-closure.json": {
+      "sha256": "d4d8bc628cf45789baa56635dc7df3bc4f5ff92b3e7dce207c16d577e067fd18",
+      "bytes": 11781,
+      "store": "tree"
+    },
+    "lm-p30-file-differential.log": {
+      "sha256": "5c5560f3d57d30a7566d6ba5436fcd22553f2cc576387c0681326c2d6f7fd414",
+      "bytes": 2190,
+      "store": "tree"
+    },
+    "lm-p30-file-host.log": {
+      "sha256": "3e5d3f24ee7e715d9a8f1cae43726cdf7df1531573463d7bf8292305e910dbb4",
+      "bytes": 1048,
+      "store": "release"
+    },
+    "lm-p30-file-proof.json": {
+      "sha256": "4794ff3696cbef80390360d2ff516d7598a8aa82ec164f5ea7826d8e074fb879",
+      "bytes": 5478,
+      "store": "tree"
+    },
+    "lm-p30-file-source-map.json": {
+      "sha256": "9f0e8972a0725091b4cf9534fcafb3f148583a56c13d348da7c83a73d0cdb0e1",
+      "bytes": 9771,
+      "store": "tree"
+    },
+    "lm-p30-file-vice.log": {
+      "sha256": "a81d83ae5d5f191bdf9fbccafe838c52f4db9c4195d4d47044f0c7002a230ed6",
+      "bytes": 1596,
+      "store": "release"
+    }
+  }
+}

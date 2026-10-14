@@ -16,7 +16,9 @@
  *     in the REU at FL_SCRATCH): through the module's main (ABI 2 run) and
  *     through the resident's direct call (rk_direct), with the module's
  *     slot the only loaded one. Status, image and channels
- *     (agc_hardware) must match; both are timed.
+ *     (agc_hardware) must match; both are timed. A direct-only module's
+ *     main only builds its tables (EXEC_UNMAPPED, nothing written, step
+ *     12): its point runs through rk_direct alone;
  *  0. before any of that, with a pinned module (slot class 3, FL_PINNED):
  *     one of its points through the module packing the same table and
  *     through rk_direct with only the pinned module present (steps 10-11);
@@ -134,28 +136,18 @@ static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint1
  timer_start();(void)agc_transfer_point(&rk_program,IMAGE,rk_device.superbank);out[1]=(uint16_t)timer_stop();
  timer_start();(void)agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);out[2]=(uint16_t)timer_stop();}
 
-/* A 16-bit sum of the image and the channels, rotated per byte so moved
+/* A 16-bit sum of the image and the channels (rk_hardware), rotated per byte so moved
  * words differ. */
 static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
  while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
  return h;}
-#if RK_CM
-#define CHANNELS_SUM(h) sum_bytes(h,&cm_channels,sizeof cm_channels)
-static cm_native_channels channels;
-#define CHANNELS_SAVE() (channels=cm_channels)
-#define CHANNELS_LOAD() (cm_channels=channels)
-#else
-#define CHANNELS_SUM(h) (h)
-#define CHANNELS_SAVE() ((void)0)
-#define CHANNELS_LOAD() ((void)0)
-#endif
 static uint16_t image_sum(void){
- return CHANNELS_SUM(sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware));}
+ return sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware);}
 static rk_io device;
 static agc_hardware hardware;
 static void direct_state(const fl_module *m){
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
- rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+ rk_device=device;rk_hardware=hardware;
  IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
  rk_device.superbank=(agc_word)(m->bank&0100u);}
 static uint8_t differ;
@@ -169,28 +161,33 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  /* The whole slot too: a module's own statics (device records, step state)
   * must start both runs alike. */
  apollo_reu_transfer(APOLLO_REU_STASH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
- direct_state(m);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
+ direct_state(m);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;sum=image_sum();
  timer_start();ok=apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK;*main_cycles=(uint16_t)timer_stop();
  expect(ok,5);
- a=rk_env.status;sum=image_sum();
+ a=rk_env.status;
+ /* A direct-only module's main only builds its tables: EXEC_UNMAPPED, the
+  * image and channels untouched. Its point then runs through rk_direct
+  * alone (timed; main 0 marks the module), as rk_resident_step runs it. */
  /* Tables on another io record run only through the main (no direct call
   * to compare). */
  {const rk_module_tables *tb=(const rk_module_tables *)(uintptr_t)(slot[APOLLO_OV2_H_TABLES]|(uint16_t)slot[APOLLO_OV2_H_TABLES+1]<<8);
   if(tb&&tb->ready==RK_TABLES_NOT_DIRECT){
-   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
    return 0;}}
+ if(a==EXEC_UNMAPPED){expect(image_sum()==sum,12);*main_cycles=0;}
+ sum=image_sum();
  for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
  direct_state(m);
  apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
  timer_start();b=rk_direct(AGC_TRANSFER_NONE);t=(uint16_t)timer_stop();
- ok=a==b&&image_sum()==sum;expect(ok,6);
+ ok=!*main_cycles||(a==b&&image_sum()==sum);expect(ok,6);
  if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
- apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
  return t;}
 
 #ifdef FL_PINNED
 /* The pinned module (slot class 3): boot loaded it at $C000 and built its
- * tables (rk_pinned). One of its points, from the boot state, through the
+ * tables (rk_pinned), and the class-4 module, if any, at $E000. One of its points, from the boot state, through the
  * module that packs the same table (its main, ABI 2 run) and then through
  * rk_direct with no other module loaded: status, image and channels must
  * match. Then it is dropped (rk_pinned 0): the mailbox and the timings
@@ -198,14 +195,24 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
 static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_BANK,FL_PINNED_LOC};
  apollo_ov2_cont at={FL_PINNED_MODULE,0},resume;uint16_t value,sum;uint8_t action,i;enum exec_status a;
  expect(rk_pinned&&((const uint8_t *)APOLLO_OV2_PINNED_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED,10);
+#ifdef FL_PINNED_TASK
+ /* The pinned task region (slot class 4) at $E000, beside it. */
+ expect(((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_SLOT]==APOLLO_OV2_SLOT_PINNED_TASK&&
+        ((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED_TASK,10);
+#endif
+ const rk_module_tables *const pin=rk_pinned;
  direct_state(&p);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
  expect(apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK,11);
- a=rk_env.status;sum=image_sum();
+ a=rk_env.status;
+ /* A direct-only twin only built its tables: the reference run goes
+  * through them, without the pinned module. */
+ if(a==EXEC_UNMAPPED){direct_state(&p);rk_pinned=0;a=rk_direct(AGC_TRANSFER_NONE);rk_pinned=pin;}
+ sum=image_sum();
  for(i=0;i<APOLLO_OV2_SLOTS;++i)rk_runtime.loaded[i]=0;
  direct_state(&p);
  expect(rk_pinned&&rk_direct(AGC_TRANSFER_NONE)==a&&image_sum()==sum,11);
  rk_pinned=0;
- apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;CHANNELS_LOAD();}
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;}
 #endif
 
 /* Soft-stack watermark: free stack below the timings is filled before the
@@ -224,7 +231,7 @@ int main(void){uint16_t i;
   resolve_records();
   fixed_extension();
   __asm__ volatile("sei");
-  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;CHANNELS_SAVE();
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
 #ifdef FL_PINNED
   pinned();
 #endif

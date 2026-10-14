@@ -1,0 +1,46 @@
+# make lm-p30-file-closure at 0de0e574eba949aee83538ecb0865ef1b9165aa0
+rm -f build/lm-p30-file-executed.txt build/lm-p30-file-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
+PATH=/tmp/x/alarm/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/tmp/x/alarm/c64-port/build/lm-p30-file-executed.txt AGC_READ_WORDS=/tmp/x/alarm/c64-port/build/lm-p30-file-read.txt make --no-print-directory lm-p30-file-differential
+python3 tools/interp_routine_differential.py lm-p30-file --cases 512 --freeze
+PASS: 17920 lm-p30-file cases equal the original programs (35 routines)
+  LM 34,2000 S30.1: 05126 x122, 06070 x390
+  LM 34,2003 : 06070 x512
+  LM 34,2005 : 05126 x129, 06070 x383
+  LM 34,2010 : 05126 x119, 06070 x393
+  LM 34,2011 : 05126 x122, 06070 x390
+  LM 34,2012 : 05126 x133, 06070 x379
+  LM 34,2014 : 05126 x124, 06070 x388
+  LM 34,2015 : 05126 x131, 06070 x381
+  LM 34,2017 : 05126 x142, 06070 x370
+  LM 34,2022 : 05126 x127, 06070 x385
+  LM 34,2024 : 05126 x131, 06070 x381
+  LM 34,2025 : 05126 x123, 06070 x389
+  LM 34,2030 : 05126 x126, 06070 x386
+  LM 34,2032 : 05126 x120, 06070 x392
+  LM 34,2033 : 05126 x118, 06070 x394
+  LM 34,2034 : 05126 x127, 06070 x385
+  LM 34,2036 : 05126 x129, 06070 x383
+  LM 34,2041 : 06070 x512
+  LM 34,2043 : 06070 x512
+  LM 34,2045 : 06070 x512
+  LM 34,2047 : 05126 x115, 06070 x397
+  LM 34,2051 : 06070 x512
+  LM 34,2053 : 06070 x512
+  LM 34,2055 : 06070 x512
+  LM 35,2000 P30: 05504 x512
+  LM 35,2002 : 05504 x512
+  LM 35,2004 P30N33: 03712 x512
+  LM 35,2006 : 03712 x512
+  LM 35,2010 : 05516 x512
+  LM 35,2012 : 05126 x133, 06070 x379
+  LM 35,2013 : 05126 x124, 06070 x388
+  LM 35,2015 : 03712 x512
+  LM 35,2017 PARAM30: 03712 x512
+  LM 35,2021 : 06070 x512
+  LM 35,2022 : 06070 x512
+froze 1127 vectors to tests/lm_p30_file_vectors.h
+git diff --exit-code -- tests/lm_p30_file_vectors.h tests/lm_p30_file_c64_vectors.h tools/mk/lm-p30-file.groups
+rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
+python3 tools/interp_executed_closure.py lm-p30-file
+PASS: Luminary099/P30_P37.agc: 70 words, 65 instructions, 11 executed by the oracle, 54 interpreted, 0 named unreached, 5 data
+exit 0

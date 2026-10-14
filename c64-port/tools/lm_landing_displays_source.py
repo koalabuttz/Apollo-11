@@ -14,7 +14,7 @@ HELPERS = {'flow': ['oc', 'rand', 'wor', 'wand', 'leave', 'jump', 'tc_ladqsave']
 # Branches composed in C: the transfers among this file's own words (its
 # labels, and the TC DISINDAT calls with their returns).
 INLINE = {'flow': {0o2231, 0o2233, 0o2254, 0o2270, 0o2272, 0o2273, 0o2313, 0o2320, 0o2324, 0o2374, 0o2503, 0o2620, 0o2627, 0o2635, 0o2643, 0o2651, 0o2656, 0o2662, 0o2667, 0o2674, 0o2701, 0o2703, 0o2712, 0o2716, 0o2720, 0o2730, 0o2735, 0o2742, 0o2761, 0o2766, 0o2772, 0o2775, 0o3020, 0o3024, 0o3027, 0o3053, 0o3067}}
-CHANNELS = {0o12: 'chan12', 0o14: 'chan14', 0o30: 'chan30'}
+CHANNELS = {0o12: 'channel12', 0o14: 'channel14', 0o30: 'channel30'}
 SITES = {'lm_landing_displays_sites': 'src/lm_landing_displays_sites.inc'}
 
 

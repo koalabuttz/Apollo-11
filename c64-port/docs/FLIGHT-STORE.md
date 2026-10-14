@@ -112,21 +112,26 @@ On the C64 the resident hands every module its base record (`rk_io`:
 (`module_io`; `FS_IO_KIND` in `platform/c64/flight_table_module.c`) builds
 that record with `flight_io_enter` from `rk_hardware`, `rk_flight` and
 `rk_device` before its run and writes it back with `flight_io_leave` after;
-on the CM it also copies `cm_channels` to and from `rk_hardware`'s channels
-5, 6 and 30-33. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
+compiled routines' channels are already in `rk_hardware` (built with
+`-DAGC_CHANNELS_HW=rk_hardware`), so nothing is copied. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
 leaves them to the module main. A module may mix the base kind only with a
 kind whose record starts with the base record (LM_*, CM_*), and the builder
 refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
-conversion adds about 330 bytes to the module main (1,076 bytes in the
-pinned LM DAP set, against about 750 for a base-kind module); the set
-measures 39,341 bytes. Every CM module links the resident's
-`cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
+conversion adds about 330 bytes to the module main, against about 750 for
+a base-kind module. The LM DAP tables take the base record (their channels
+are `rk_hardware`'s), so `rk_direct` calls them with no module main; the
+pinned LM DAP set measures 37,500 bytes.
 
-A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
-engine, its main only builds the table list and returns `EXEC_OK`, and the
-resident runs its routines through `rk_direct` from the next step. That
-needs the base record, so a pinned set whose tables take another kind
-links the engine and conversion until the kind folds into `agc_hardware`;
+Every module on the base record, pinned or not, is direct-only
+(`FS_DIRECT_ONLY`). It links no transfer engine, and its main only builds
+the table list and returns `EXEC_UNMAPPED` (nothing ran). After such a run
+`rk_resident_step` calls `rk_direct` in the same step, so the point runs
+through the new tables without an extra step. This saves about 490 bytes
+per module. Against the build before it on the same tables, the CM image
+fell from 1,417,728 to 1,368,576 bytes, because chunked CM DAP files need
+fewer chunks. Direct-only needs the base record, so a module or pinned set
+whose tables take another kind links the engine and conversion until the
+kind folds into `agc_hardware`;
 `report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
 measures 39,341 bytes today and 38,534 direct-only.
 
@@ -202,20 +207,54 @@ each module. On def640e3d, against the same tree without sharing:
 Fewer modules link because more files fit whole and need no chunks; the
 resolver records (keys the store can run) go up on both missions.
 
-`PIN` names task-slot tables that must link as one module (the steward's
-DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
-(DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
-8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
-packed yet. A slot-3 set goes to slot class 3 ($C000-$CBFF, 3,072 bytes;
-docs/RESIDENT-FLIGHT.md): when it fits direct-only the builder packs it into
-the store, the resident loads it at boot, and its routines run from there
-through `rk_direct` while the resolver still names their packed modules. Both
-missions pin the background self-check idle loop there (LM
-`lm_self_check_idle_routines` 1,897 bytes, CM `cm_self_check_idle_routines`
-1,920), so those routines run without loading a module. The load check runs one
-of the pinned set's points through the module that packs the same table and through
-`rk_direct` with only the pinned module present, compares them, and then
-drops the pinned module (its mailbox and timings use $C000-$CBFF).
+`PIN` names the tables pinned in a region, each set linked as one module
+and reported (`report.json` `pinned`). A slot-3 set goes to slot class 3
+($C000-$CBFF, 3,072 bytes; docs/RESIDENT-FLIGHT.md): when it fits
+direct-only the builder packs it into the store, the resident loads it at
+boot, and its routines run from there through `rk_direct` while the resolver
+still names their packed modules. A slot-4 set goes to slot class 4, the
+task slot's $E000-$FFF9 (8,186 bytes), and is packed only beside a packed
+class-3 set, whose table list names its tables (the class-4 module runs no
+main). With a class-4 module in the store every task-slot module, the
+resident's interrupt wrappers included, links for the job slot
+(`task_pinned_out` in the module list). The boundary-word module stays in
+the task slot: boot runs it there once, before it loads class 4 over it. This is the steward's DAP rule
+in two regions, with the LM RCS DAP hold cycle split by what one pass
+reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
+#356):
+
+- Class 4 holds TJETLAW (`lm_tjet_law_routines`) and RATELOOP
+  (`lm_kalman_basic`), and is the *runtime home*: every global function the
+  class-3 module links (the fast ops, the image-op wrappers, the DAP files'
+  shared helpers in `include/lm_dap_shared.h`) is linked once, here.
+- Class 3 holds DAPIDLER's per-pass entries (`lm_dapidler_hot_routines`, a
+  file's `*_hot_routines` subset: PIN only, its file's modules still pack
+  the full table) and the table list naming both sets.
+- The *excursion* (`EXCURSION`, module $07F5) packs P-axis's and Q,R-axis's
+  per-pass entries (`lm_p_axis_hot_routines`, `lm_q_r_axis_hot_routines`)
+  in one job-slot module, so a pass that leaves the pinned sets loads one
+  module, not two (P-axis 11,603 bytes and Q,R-axis 11,971). It is linked
+  only beside a packed class-4 home, takes every function the home holds
+  as a global (`--defsym`), and the resolver sends its 26 keys to it before
+  their files' modules. On LM with #308 it is 13,787 bytes.
+
+The two link separately (`pin_pair`). Class 4 links first with class 3's
+files as well, keeping only what class 3 asks for (`-Wl,--undefined=` for
+each name in class 3's map; LTO and `--gc-sections` drop the rest). Class 3
+then links only its own files, taking those addresses from class 4's ELF
+(`-Wl,--defsym=`). The pair relinks until class 3 resolves and links no new
+name. The class-4 module is compiled with `FS_PIN_HOME`: its main is a stub,
+as the resident never runs it, and it only keeps its tables linked. Both
+link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
+also stops inlining. On LM with #308's direct DAP tables, class 4 is 7,359
+of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
+class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
+without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 is kept for the DAP. The load check runs one of the class-3 set's
+points through the module that packs the same table and through `rk_direct`
+with only the pinned module present, compares them, checks the class-4
+header at $E000 when there is one, and then drops the pinned module (its
+mailbox and timings use $C000-$CBFF).
 
 ### Direct calls into a loaded module
 
@@ -279,7 +318,12 @@ cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
 The check then runs one resolver record per module both ways: through the
 module's main (an ABI 2 run) and through `rk_direct`, from the same image,
 slot contents and channels (snapshotted in the REU's last 32 KB), with only
-that module loaded. Status, image and channels must match. On def640e3d
+that module loaded. Status, image and channels must match. A direct-only
+module's main must return `EXEC_UNMAPPED` and leave image and channels as
+they were (step 12). Its point then runs through `rk_direct` alone, and the
+report gives those cycles (`direct_only`; LM 25 modules at 3,344-27,187
+cycles, CM 45 at 4,155-22,076). The pinned check's reference run goes
+through a direct-only twin's tables with the pinned module set aside. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of

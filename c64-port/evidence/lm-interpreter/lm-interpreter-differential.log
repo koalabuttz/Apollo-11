@@ -1,0 +1,11 @@
+rm -f build/lm-interpreter-executed.txt build/lm-interpreter-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
+PATH=/home/claude/Apollo-11/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/home/claude/Apollo-11/c64-port/build/lm-interpreter-executed.txt AGC_READ_WORDS=/home/claude/Apollo-11/c64-port/build/lm-interpreter-read.txt make --no-print-directory lm-interpreter-differential
+python3 tools/interp_routine_differential.py lm-interpreter --cases 512 --freeze
+refused (GOTO to an operand word of the file): 4 cases
+PASS: 21500 lm-interpreter cases equal the original programs (42 routines)
+froze 1348 vectors to tests/lm_interpreter_vectors.h
+git diff --exit-code -- tests/lm_interpreter_vectors.h tests/lm_interpreter_c64_vectors.h tools/mk/lm-interpreter.groups
+rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
+python3 tools/interp_executed_closure.py lm-interpreter --unreached '03,3255=POLY counts POLYCNT down to +0 and returns there, so CCS POLYCNT never takes its negative exit into DPAGREE (no other code enters DPAGREE in Luminary099)' '03,3256=as 03,3255: reached only through DPAGREE'
+PASS: Luminary099/INTERPRETER.agc: 2083 words, 2030 instructions, 414 executed by the oracle, 0 interpreted, 2 named unreached, 53 data, 1614 run by the interpreter core
+exit 0

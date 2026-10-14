@@ -10,7 +10,7 @@ int main(void){unsigned n,i,kind;
  for(n=0;n<LM_LAD_CASES;++n){apollo_overlay_state s;lm_flight_io io;uint16_t steps;
   kind=lm_lad_run(&s,&io,(uint16_t)n,&steps);
   if(kind>=LM_LAD_NONE){fprintf(stderr,"lm-landing-displays case %u stopped at %05o\n",n,(unsigned)s.words[5]);return 1;}
-  printf("%u %u %u %u",n,kind,(unsigned)io.chan12,(unsigned)io.chan14);
+  printf("%u %u %u %u",n,kind,(unsigned)io.hw.channel12,(unsigned)io.hw.channel14);
   for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]&(i<2u?0177777u:077777u));
   putchar('\n');
  }return 0;}

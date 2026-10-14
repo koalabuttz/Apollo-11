@@ -30,8 +30,8 @@ HELPERS = {'chekbits_body': ['moreidle', 'shutdown', 'dtcb', 'rd'], 'moreidle': 
 INLINE = {'chekbits_body': {0o2157, 0o2206, 0o2163}, 'chekmore': {0o2157}, 'dapidler_body': {0o2041},
           'checkup_body': {0o2000}, 'accsokay': {0o2157}, 'shutdown': {0o2152},
           'altdsply': {0o2322, 0o2252, 0o2442, 0o2435, 0o2362, 0o2353, 0o2373, 0o2406, 0o2414, 0o2374}}
-CHANNELS = {0o1: 'rxor_l', 0o5: 'chan5', 0o6: 'chan6', 0o12: 'chan12', 0o14: 'chan14', 0o30: 'chan30',
-            0o31: 'chan31'}
+CHANNELS = {0o1: 'rxor_l', 0o5: 'channel5', 0o6: 'channel6', 0o12: 'channel12', 0o14: 'channel14', 0o30: 'channel30',
+            0o31: 'channel31'}
 SITES = {'lm_exec_sites': 'src/lm_exec_sites.inc', 'lm_interbank_sites': 'src/lm_interbank_sites.inc'}
 
 
