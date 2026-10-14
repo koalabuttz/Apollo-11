@@ -945,6 +945,14 @@
 #define LANEC_LM_DSPTAB 01023u /* DSPTAB E fixed-fixed/unswitched */
 #define LANEC_LM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
 #define LANEC_LM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
+#define LANEC_LM_VBRQEXEC 03466u /* VBRQEXEC F 41 */
+#define LANEC_LM_VBRQEXEC_BANK 041u
+#define LANEC_LM_VBRQWAIT 03512u /* VBRQWAIT F 41 */
+#define LANEC_LM_VBRQWAIT_BANK 041u
+#define LANEC_LM_SETVAC 03510u /* SETVAC F 41 */
+#define LANEC_LM_SETVAC_BANK 041u
+#define LANEC_LM_REQEX1 03473u /* REQEX1 F 41 */
+#define LANEC_LM_REQEX1_BANK 041u
 #define LANEC_CM_GOEXTVB 02000u /* GOEXTVB F 43 */
 #define LANEC_CM_GOEXTVB_BANK 043u
 #define LANEC_CM_LST2FAN 02002u /* LST2FAN F 43 */
@@ -1816,4 +1824,13 @@
 #define LANEC_CM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
 #define LANEC_CM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
 #define LANEC_CM_OPTMODES 01331u /* OPTMODES E fixed-fixed/unswitched */
+#define LANEC_CM_VBRQEXEC 03466u /* VBRQEXEC F 41 */
+#define LANEC_CM_VBRQEXEC_BANK 041u
+#define LANEC_CM_VBRQWAIT 03512u /* VBRQWAIT F 41 */
+#define LANEC_CM_VBRQWAIT_BANK 041u
+#define LANEC_CM_DSPTEM1 01045u /* DSPTEM1 E fixed-fixed/unswitched */
+#define LANEC_CM_SETVAC 03510u /* SETVAC F 41 */
+#define LANEC_CM_SETVAC_BANK 041u
+#define LANEC_CM_REQEX1 03473u /* REQEX1 F 41 */
+#define LANEC_CM_REQEX1_BANK 041u
 #endif

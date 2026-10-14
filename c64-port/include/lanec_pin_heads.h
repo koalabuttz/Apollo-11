@@ -16,4 +16,6 @@ enum lanec_status lanec_pin_head_load_run(apollo_overlay_state *, lanec_io *, en
 /*   lamp  VBTSTLTS (CM: and its BANKCALL return), TSTLTS1 -> WAITLIST or
  *         TSTLTS1 again, TSTLTS2 -> NOVAC, TSTLTS3 -> BANKCALL (DSPMM). */
 enum lanec_status lanec_pin_head_lamp_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+/*   request  VBRQEXEC -> SETVAC or REQEX1, VBRQWAIT -> REQUESTC -1. */
+enum lanec_status lanec_pin_head_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
 #endif
