@@ -142,7 +142,8 @@
   6804,
   6900,
   6948,
-  7012,
+  6988,
+  7030,
   7088,
   7108,
   7192,
@@ -535,8 +536,8 @@
   29008,
   29084
  ],
- "host_branch_arcs": 3087,
- "c64_branch_arcs": 3087,
+ "host_branch_arcs": 3088,
+ "c64_branch_arcs": 3088,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -571,8 +572,8 @@
    11
   ],
   "src/lm_conic_compiled.c": [
-   2394,
-   2394
+   2395,
+   2395
   ],
   "src/lm_interp_orders.c": [
    0,

@@ -2550,7 +2550,7 @@ SPECS = {
         # The flowed state replaces generated states at a resume LOC, so the
         # near-equal-majors divides take their sets here, after the flow
         # (review #165): COMTERM's DDV ALPHAM pairs, KEPPREP's DDV 2D and
-        # GAMCOMP's NORM BDDV (the dividend popped from 0D at PL 2, the
+        # GAMCOMP's NORM BDDV (the dividend popped from 2D at PL 4, the
         # divisor MPAC already normalized, so NORM leaves it). RECTEST's BMN
         # gets |TNUV| - 3/4 in [0, 1/4) with a job waiting: not taken, then
         # DANZIG to CHANG2.
@@ -2559,7 +2559,10 @@ SPECS = {
               for a in ('11,3104', '11,3120', '11,3124')],
             ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
             ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
-                num=('vac+0', 'vac+1'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+                num=('vac+2', 'vac+3'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
+            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: -12, -24 or -36
+            # (DIFEQ+12, +24 and +36), as the flight stages reach it.
+            ('11,3705', '11,3765', {'vac+046': [0o77763, 0o77747, 0o77733]}),
             ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
                                                          for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
                                                          for j in (1, 0o37777)]})],
@@ -3833,7 +3836,11 @@ SPECS = {
         # GETX pushes from 0D (its callers CALL it at PL 0); a PUSHLOC near
         # the top of the VAC pushes into the index registers and sends
         # 1/WLOOP's TIX,2 round thousands of times.
-        'states': {'GETX': {'0166': ['vac+0']},
+        # BRNCHCTR's CHECKCTR counts ITERCTR (22D) down; entered with 1 or
+        # 2 left, KEPLOOP's iteration-limit exit (BHIZ KEPCONVG on 0) and
+        # one more pass are both taken (review #165: the flight cases
+        # converge before the 20th pass).
+        'states': {'GETX': {'0166': ['vac+0']}, 'BRNCHCTR': {'vac+026': [1, 1, 2]},
                    **{'PERIODCH%+d' % n: {'2073': [0], '2074': [0]} for n in range(-0o66, 0)},
                    **{'PERIODCH+%d' % n: {'2073': [0, 1, 0o77776], 'vac+0': [0o10000, 0o20000, 0o30000],
                                          **({'0154': [0o10000, 0o20000, 0o30000], '0166': ['vac+0']}
