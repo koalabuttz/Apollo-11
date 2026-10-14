@@ -1,0 +1,26 @@
+{
+  "decoded_sha256": "b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3",
+  "row_bytes": 4106,
+  "parts": [
+    {
+      "first": 0,
+      "limit": 16384,
+      "sha256": "80fdced8d157b2cdacb33dbc44f9ddbd957e44c23ad38fd0b02dbd956fd70b00"
+    },
+    {
+      "first": 16384,
+      "limit": 32768,
+      "sha256": "6ed8a44138b60461657ef9edb72422576a2a7200a0dea18cc277feda52e6e950"
+    },
+    {
+      "first": 32768,
+      "limit": 49152,
+      "sha256": "ea36540bb4c213bc62409cd50d9d9e1d5798b7014e4d9f9dc13f6a6f133f1777"
+    },
+    {
+      "first": 49152,
+      "limit": 65536,
+      "sha256": "923327e45ad112a96aa495aa67dfab9e110cd56e0595396167598c35d5c64417"
+    }
+  ]
+}
