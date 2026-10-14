@@ -10453,22 +10453,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p12/lm-p12-proof.json",
-            "sha256": "7a5b7f445ccd12e9724383c9895091738919332d80ca9faff95d16c9c260fb34"
+            "sha256": "143e77db9905666fb2f7fd18551bc840734b2446433e7369622c03a48ee0ccb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p12/lm-p12-host.log",
-            "sha256": "1124d6b9be0bdb47cad8b859f089e81a2a1e8e9a4bfb146830cd7e27c5bab405"
+            "sha256": "9e5b42a7b8f1489970e2ea31603883c6a2d70bfa87c1196039be3b44fc125c15"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p12/lm-p12-vice.log",
-            "sha256": "c1b81b2ffff3f54d4b2b9aceb2fb9d2d131f1167d3a736b1ab6e0e3ef8cb454a",
+            "sha256": "1664aee6fe1dda3ef8959fd9b0226480a87c2093e2713aaa1f1860153eec12ec",
             "vice_targets": {
-              "vice-lm-p12": 112
+              "vice-lm-p12": 110
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p12/lm-p12-c64-cover.json",
-            "sha256": "1386cba797cc3d572fa9ba3d8fd69c84baa37c50e54e63dbb30a86c08d6627bf"
+            "sha256": "1e7a597c84d2e9b793fbf57ed6454fd80d78c43b5f346417270081ec6420baca"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-171.md",
@@ -12220,22 +12220,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-proof.json",
-            "sha256": "a0c900e9c464164e93218cf7538c3e3b84a83bf588032fbfcafe24644ad116bc"
+            "sha256": "e6b135788b31dbebf22845f84773e538412fdf535c0aebc29e21b4ee7eb67638"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-host.log",
-            "sha256": "7ddeefdc3edffe0e7c6bbd8d779930172d4c7ab3e807d37cac96d205ceaea02c"
+            "sha256": "3d36401d5669c82909154d9b3aa92ef843c118f15edcf68326200d66cdce550b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-vice.log",
-            "sha256": "d430b681ac3b1d7a5efa36f1c8cb25d6978184fe46d2efe93a3b50bc1eaf6f59",
+            "sha256": "67cae21f35c699ff26aca32326e6fd8a41cbc9366602d262d78549ec58164001",
             "vice_targets": {
               "vice-lm-rcsmon": 17
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-rcsmon/lm-rcsmon-c64-cover.json",
-            "sha256": "c6f3d308e883fe639252015a7fe5326f99360ab26edec3b9c3098022551f26d9"
+            "sha256": "966cfd9c19fffc1173addadbd62c114ce695f1c19167a9a0adf7482a8233dead"
           },
           "independent_review": {
             "path": "docs/audits/lane-f-287.md",

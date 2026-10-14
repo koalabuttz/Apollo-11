@@ -1,3 +1,0 @@
-lm-rcsmon-1.prg sha256 d3fef721a8d8f88b6b7a1bc1b5c9ca161e22098b858251bb5beccc1142deacf6
-lm-rcsmon: 1 C64 diagnostics, 17 frozen cases (tests/lm_rcsmon_c64_vectors.h) compared with yaAGC digests; they take all 220 of the 220 host branch arcs
-PASS: VICE PAL lm-rcsmon-1.prg: 17 checks, 0 failures
