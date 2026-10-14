@@ -1235,6 +1235,13 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     if spec.get('channel_inputs'):
         os.environ['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
+    if spec.get('pending_danzig'):
+        # (DANZIG with an order pending in EDOP is no oracle stop: the
+        # native program resolves it through the DANZIG marker.)
+        cp0 = IC.Compiler(spec, spec['missions'][0])
+        cp0.decode()
+        os.environ['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
+            '%d:%d' % (k, e) for k, (_, _, e) in sorted(cp0.pending.items())])
     if IC.main(['', a.spec, '--check']):
         sys.exit('generated sources are stale: run tools/interp_compile.py ' + a.spec)
     missions = [Mission(spec, m) if m in spec['missions'] else Absent(m) for m in ('lm', 'cm')]

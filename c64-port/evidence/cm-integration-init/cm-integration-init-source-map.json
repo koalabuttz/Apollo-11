@@ -3,7 +3,7 @@
   "native_file": "src/cm_integration_init.c",
   "words": 685,
   "untranslated_words": 0,
-  "routines": 235,
+  "routines": 241,
   "map": [
    {
     "address": "13,2627",
