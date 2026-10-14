@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p20-p25",
+  "release": "evidence-cm-p20-p25",
+  "files": {
+    "cm-p20-p25-c64-outcomes.json": {
+      "sha256": "7a91dd47ffacdedb5a31ef97848e79094dedc0badf20c02768d813ba7e0640cc",
+      "bytes": 1133,
+      "store": "tree"
+    },
+    "cm-p20-p25-differential.log": {
+      "sha256": "b8add743ca5272250fa672fb62d0f3c51f814ec263eb4a8d01237fcd529fb580",
+      "bytes": 69797,
+      "store": "release"
+    },
+    "cm-p20-p25-host.log": {
+      "sha256": "fade5a7d0feb43b603c85414377fc2ac86af121141193d533d84bb716bf88f15",
+      "bytes": 171,
+      "store": "release"
+    },
+    "cm-p20-p25-proof.json": {
+      "sha256": "013ee2c50a706f9b2428c12b6ac8e383047cf3c0dec346083b53f458922a8f4e",
+      "bytes": 111625,
+      "store": "tree"
+    },
+    "cm-p20-p25-source-map.json": {
+      "sha256": "09451c4c780241ffb7b8326f3273fbbf8c8108b20b1e9db774f52b21412654bd",
+      "bytes": 374435,
+      "store": "release"
+    },
+    "cm-p20-p25-vice.log": {
+      "sha256": "4d554e26f39a53b3a40164d9414be34a7474977d5cca086fbcca3357bf39a5ae",
+      "bytes": 15989,
+      "store": "release"
+    }
+  }
+}

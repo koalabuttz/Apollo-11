@@ -5,7 +5,7 @@
  * (tests/lm_orbital_integration_c64_vectors.h), each digest against the yaAGC
  * oracle's. */
 #include <stdint.h>
-#include "interp_case.h"
+#include "interp_cut.h"
 #include "lm_orbital_integration_c64_vectors.h"
 const agc_native_program *irc_program(uint8_t cm);
 /* The 4 KB image lives in the RAM under KERNAL ($01=$35, interrupts off). */
@@ -21,7 +21,11 @@ int main(void) {
         uint16_t ie = 0;
         unsigned kind;
         irc_build(S, &irc_c64_cases[i]);
+#ifdef IRC_C64_CUTS
+        kind = irc_run_cut(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], irc_c64_cut[i], 1000, &ie);
+#else
         kind = irc_run(irc_program(irc_c64_cases[i].cm), S, &irc_c64_cases[i], 1000, &ie);  /* (the spec's max_steps) */
+#endif
         ++checks;
         if (kind != IRC_STOPPED || irc_digest(kind, S, ie) != irc_c64_expected[i]) ++failures;
     }

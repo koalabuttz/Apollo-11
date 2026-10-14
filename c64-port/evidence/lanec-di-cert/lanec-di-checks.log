@@ -14,15 +14,21 @@ di-transfer strict: PASS: 996 complete states (2048 erasable words, A/L/Q/EB/FB/
 di-transfer sanitize: PASS: 996 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 di-transfer-c64 strict: PASS: 1136 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 28 out-of-domain cases refused with the state unchanged
 di-transfer-c64 sanitize: PASS: 1136 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 28 out-of-domain cases refused with the state unchanged
+di-transfer-c64m strict: PASS: 1110 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 38 out-of-domain cases refused with the state unchanged
+di-transfer-c64m sanitize: PASS: 1110 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 38 out-of-domain cases refused with the state unchanged
 di-refuse strict: PASS: 384 out-of-domain cases refused with the image and I/O unchanged
 di-refuse sanitize: PASS: 384 out-of-domain cases refused with the image and I/O unchanged
 PASS LM Luminary099/DISPLAY_INTERFACE_ROUTINES.agc: 670 assembled words, 612/612 instruction words executed by the oracle; owners {'constant table': 39, 'lanec-di-dsp': 143, 'lanec-di-idle': 149, 'lanec-di-mark': 81, 'lanec-di-nvdsp': 93, 'lanec-di-play': 105, 'lanec-di-sleep': 60}
 PASS CM Comanche055/DISPLAY_INTERFACE_ROUTINES.agc: 667 assembled words, 609/609 instruction words executed by the oracle; owners {'constant table': 39, 'lanec-di-dsp': 140, 'lanec-di-idle': 149, 'lanec-di-mark': 81, 'lanec-di-nvdsp': 93, 'lanec-di-play': 105, 'lanec-di-sleep': 60}
-di-dsp C64: PASS: VICE PAL lanec-di-dsp.prg: 37 checks, 0 failures
-di-mark C64: PASS: VICE PAL lanec-di-mark.prg: 36 checks, 0 failures
-di-play C64: PASS: VICE PAL lanec-di-play.prg: 35 checks, 0 failures
+di-dsp C64: PASS: VICE PAL lanec-di-dsp.prg: 42 checks, 0 failures
+di-mark C64: PASS: VICE PAL lanec-di-mark.prg: 46 checks, 0 failures
+di-play C64: PASS: VICE PAL lanec-di-play.prg: 36 checks, 0 failures
 di-sleep C64: PASS: VICE PAL lanec-di-sleep.prg: 23 checks, 0 failures
-di-idle C64: PASS: VICE PAL lanec-di-idle.prg: 38 checks, 0 failures
+di-idle C64: PASS: VICE PAL lanec-di-idle.prg: 43 checks, 0 failures
 di-nvdsp C64: PASS: VICE PAL lanec-di-nvdsp.prg: 32 checks, 0 failures
-di-transfer-c64 C64: PASS: VICE PAL lanec-di-transfer.prg: 54 checks, 0 failures
 di-transfer-c64 C64: PASS: VICE PAL lanec-di-transfer-cm.prg: 9 checks, 0 failures
+di-transfer-c64 C64: PASS: VICE PAL lanec-di-transfer.prg: 55 checks, 0 failures
+di-transfer-c64m C64: PASS: VICE PAL lanec-di-transfer-mark-nvdsp-lm.prg: 41 checks, 0 failures
+di-transfer-c64m C64: PASS: VICE PAL lanec-di-transfer-mark-nvdsp-cm.prg: 10 checks, 0 failures
+di-transfer-c64m C64: PASS: VICE PAL lanec-di-transfer-sleep-idle-lm.prg: 51 checks, 0 failures
+di-transfer-c64m C64: PASS: VICE PAL lanec-di-transfer-sleep-idle-cm.prg: 9 checks, 0 failures

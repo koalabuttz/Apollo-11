@@ -394,10 +394,12 @@ class Compiler:
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
             self.starts[phys] = ('b', 'native entry ' + lab)
-            # (they end TC DANZIG, run here as a pair's end: a left-hand RTB,
-            # EDOP holding its pair's right order, is out of scope)
-            self.blocks[phys] = ['if(W[023])return EXEC_OUT_OF_SCOPE;',
-                                 'if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+            # (they end TC DANZIG, run here as a pair's end. After a
+            # left-hand RTB, EDOP holds the pair's right order, and DANZIG
+            # takes it at OPJUMP: the routine stops at DANZIG, the caller's
+            # interpreter continuation.)
+            self.blocks[phys] = ['if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE;' % calls[self.m],
+                                 'if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */',
                                  '(void)next(s);return EXEC_OK; /* %s, DANZIG */' % lab]
         # Routines that refuse at an I/O channel instruction on some path.
         self.channel_blocks = set(p for p, b in self.blocks.items() if b and any('I/O channel */' in x for x in b))
@@ -577,7 +579,12 @@ class Compiler:
             raise CompileError('%s with an indexed fixed operand' % what)
         need = K_WORDS.get(what, 6)
         b0 = fp // 1024 * 1024
-        lo, hi = max(b0, fp - 0o40), min(b0 + 1024, fp + 0o40 + need)
+        rng = self.spec.get('indexed_fixed', {}).get(self.name(fp))
+        if rng is not None:
+            # (a table the spec bounds: its range, as indexed_k reads it)
+            lo, hi = max(b0, fp + rng[0]), min(b0 + 1024, fp + rng[1] + need)
+        else:
+            lo, hi = max(b0, fp - 0o40), min(b0 + 1024, fp + 0o40 + need)
         self.kx[lo] = (hi - lo, fp)
         self.kx_used = True
         st[-1] += '{uint8_t bad=0;const agc_word *k=kx(s,KX%o,%uu,%uu,%uu,&bad);if(bad)return EXEC_OUT_OF_SCOPE;' % (lo, lo, hi - lo, need)
@@ -1369,6 +1376,10 @@ class Compiler:
                                  'W[5]=z;return EXEC_OK;}' % (ln.loc + 1)], []
                 if qc == 1:
                     return st + ['ai_dxch(s,%s);' % eras(k10 - 1, 'dxch')], [nxt]
+                if qc == 2 and k10 == 6 and index is None:
+                    # TS BBANK (P20-P25's CAF BUFBANK; TS BBANK): only the EB
+                    # half may change; a new FB would leave the routine.
+                    return st + ['if((agc_correct(W[0])&076000u)!=(W[4]&076000u)||ai_ts(s,06u))return EXEC_OUT_OF_SCOPE;'], [nxt]
                 if qc == 2:
                     if not self.is_basic(nxt + 1):
                         # An overflow skip out of the code has no producer.
@@ -1625,6 +1636,47 @@ class Compiler:
             return [loop]
         return ['#if !RK_FIXED_IMAGE', loop, '#else', ' (void)i;', '#endif']
 
+    def flight_table(self, sym, keys):
+        """A flight part's basic table (spec 'flight_parts',
+        tools/basic_compile.py flight_parts): every key of every part, the
+        leave test, one entry routine for all keys, and the part's slice."""
+        import bisect
+        S = sym.upper()
+        assert self.m == 'cm' and self.basic.io == 'cm_native_io' and self.spec.get('basic_split')
+        cuts = self.basic.flight_cuts
+        every = sorted(set(keys) | set(self.basic.flight_extra))
+        c = ['/* Flight: the keys of every part (routines and part keys). */',
+             'static const uint16_t %s_flight_keys[%d]={%s};' % (sym, len(every), ','.join('%uu' % k for k in every)),
+             'static enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at){unsigned i;' % sym,
+             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%%1024u);return EXEC_OK;}' % (len(every), sym),
+             ' return EXEC_OUT_OF_SCOPE;',
+             '}',
+             '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
+             'static enum exec_status %s_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){' % sym,
+             ' cm_native_io *io=v;uint16_t at;']
+        c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.uses_hw else ' (void)p;')
+        c += [' if(!s||!io)return EXEC_OUT_OF_SCOPE;',
+              ' at=agc_fixed_physical(W[5],W[4],io->superbank);',
+              ' switch(at/1024u){']
+        for b in sorted({k // 1024 for k in every}):
+            bfb = (b - 0o10) << 10 | 0o100000 if b >= 0o40 else b << 10
+            c.append(' case 0%ou:if(!basic_sane(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, bfb, 'agc_channels_in=&((cm_channel_io *)v)->in;' if self.uses_channels else '',
+                self.basic.callee(S, b)))
+        c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
+        bounds = [0] + cuts + [0o200000]
+        for j in range(len(cuts) + 1):
+            mine = [k for k in every if bounds[j] <= k < bounds[j + 1]]
+            c.append('#%s %s_FLIGHT_PART==%d' % ('if' if j == 0 else 'elif', S, j + 1))
+            c.append('static const agc_routine_entry basic_entries[]={')
+            for i in range(0, len(mine), 6):
+                c.append(''.join(' {%u,%s_flight_entry},' % (k, sym) for k in mine[i:i + 6]))
+            c.append(' {0xffffu,0}')
+            c.append('};')
+        c.append('#endif')
+        c.append('#endif')
+        return c
+
     def emit(self):
         s = self.spec
         base = s['base'][self.m]
@@ -1786,7 +1838,10 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
-        c.append(' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
+        # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
+        # as STATEINT's INTSTALL runs under it.)
+        c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
+                 ' if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;')
         c.extend(self.image_scan())
         c.append(' return 1;')
         c.append('}')
@@ -1911,7 +1966,8 @@ class Compiler:
             fb = ((bank - 8) << 10) | 1 if bank >= 0o40 else bank << 10
             # basic_sane's superbank form: FB 30-33 with bit 15 for SUPERBNK 0100.
             bfb = (bank - 0o10) << 10 | 0o100000 if bank >= 0o40 else bank << 10
-            c.append(guard(i))
+            fp_off = ' && !defined(%s_FLIGHT_PART)' % sym.upper() if kind == 'b' and s.get('flight_parts') else ''
+            c.append(guard(i) + fp_off)
             c.append('/* %s %s (%s) */' % (self.where(phys), lab, why))
             if kind == 'b' and self.basic:
                 c.append('static enum exec_status %s_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
@@ -1997,6 +2053,9 @@ class Compiler:
             if not rs:
                 c.append('const agc_routine_table %s_%s={0,0};' % (sym, tab))
                 continue
+            flight = kind == 'b' and self.basic and s.get('flight_parts')
+            if flight:
+                c.append('#ifndef %s_FLIGHT_PART' % sym.upper())
             c.append('static const agc_routine_entry %s_entries[]={' % tab)
             for phys, kind, fn, lab, why in rs:
                 c.append(guard(index[phys]))
@@ -2007,6 +2066,9 @@ class Compiler:
                     c.append(' {%u,%s_abi},' % (key, fn))
             c.append(' {0xffffu,0}')
             c.append('};')
+            if flight:
+                c.append('#else')
+                c += self.flight_table(sym, [r[0] for r in rs])
             c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'
                      % (sym, tab, tab, tab, tab))
         # Test metadata.
