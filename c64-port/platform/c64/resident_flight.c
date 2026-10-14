@@ -279,5 +279,11 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     loc=(uint16_t)(s->words[5]&07777u);
     if(!rk_runtime.store.resolve(rk_runtime.store.user,rk_resolver_bank(s->words[4],rk_device.superbank,loc),loc,&at))
         return EXEC_UNMAPPED;
-    return rk_run_module(at)==APOLLO_OV2_OK ? rk_env.status : EXEC_UNMAPPED;
+    if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
+#ifndef RK_NO_DIRECT
+    /* A direct-only module's main only builds its tables: the point runs
+     * through them in this step. */
+    if(rk_env.status==EXEC_UNMAPPED) return rk_direct(stop_physical);
+#endif
+    return rk_env.status;
 }
