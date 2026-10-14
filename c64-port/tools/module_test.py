@@ -23,6 +23,7 @@ run of build/module-test/<m>-module-test.prg (tools/module_test.c). Results:
 build/module-test/<NAME>-<m>.json.
 """
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -61,7 +62,7 @@ def rows(path, skip=1):
 def expected(oracle, native, cells):
     v = [int(x) for x in (native if int(native[-1]) == 1 else oracle)]
     z = v[5]
-    if v[-1] == 0 and (z < 8 or z in cells):
+    if cells is not None and v[-1] == 0 and (z < 8 or z in cells):
         # The trampoline executes a TC or TCF-to-fixed it ends at in a
         # register or return cell (src/lanec_pin_trampoline.c cell_return).
         w = v[z]
@@ -145,6 +146,9 @@ def main():
     p.add_argument('--tc-cells', default='',
                    help='octal erasable cells (with registers 0-7) where the modules\' routines take the TC or TCF '
                         'a result ends at, as the transfer ABI trampoline does; the host row is advanced the same way')
+    p.add_argument('--flight-rows', action='store_true',
+                   help='ORACLE/NATIVE are tools/lanec/native.c --flight rows (the one routine registered at the '
+                        'entry, run on the host as here): compared as they are, no TC-cell step')
     p.add_argument('--name', required=True)
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
@@ -178,7 +182,7 @@ def main():
     if a.cases:
         pick = {int(x) for x in a.cases.split(',')}
         mine = [n for n in mine if n in pick]
-    cells = {int(x, 8) for x in a.tc_cells.split(',') if x}
+    cells = None if a.flight_rows else {int(x, 8) for x in a.tc_cells.split(',') if x}
     records = [record(n, states[n], expected(oracle[n], native[n], cells), a.limit) for n in mine]
     store = STORE / f'{m}.reu'
     image = bytearray(store.read_bytes())
@@ -187,6 +191,9 @@ def main():
     if room < 1 or any(image[blob:ROPE[m]]):
         sys.exit(f'FAIL: {m}: no free gap below the rope in {store}')
     prg = build(a, m, ids, next(iter(kinds)), blob)
+    named = OUT / f'{a.name}-{m}.prg'   # this run's program, kept for its hash
+    named.write_bytes(prg.read_bytes())
+    store_sha = hashlib.sha256(image).hexdigest()
     total = dict(failures=0, checks=0, routines=0, failing=[], batches=0)
     for first in range(0, len(records), room):
         part = records[first:first + room]
@@ -202,15 +209,15 @@ def main():
         total['failing'] += got['failing']
         total['batches'] += 1
     result = dict(mission=m, name=a.name, modules=stems, module_ids=[f'0x{i:04x}' for i in ids], cases=len(records),
-                  **total)
+                  store_sha256=store_sha, prg_sha256=hashlib.sha256(named.read_bytes()).hexdigest(), **total)
     (OUT / f'{a.name}-{m}.json').write_text(json.dumps(result, indent=1) + '\n')
     if total['failures'] or total['checks'] != len(records):
         print(f"FAIL: VICE PAL {m} {a.name}: {total['failures']} of {len(records)} cases differ from the host "
               f"(first: {total['failing'][:8]})")
         return 1
-    print(f"PASS: VICE PAL {m} {a.name}: {len(records)} cases through flight modules {' '.join(stems)} loaded from the "
-          f"REU store, {total['routines']} routines, every complete result equal to the host's "
-          f"({total['batches']} batches)")
+    print(f"PASS: VICE PAL {named.relative_to(ROOT / 'build')}: {m} {a.name}: {len(records)} cases through flight "
+          f"modules {' '.join(stems)} ({len(ids)} modules) loaded from the REU store (sha256 {store_sha[:16]}), "
+          f"{total['routines']} routines, every complete result equal to the host's ({total['batches']} batches)")
     return 0
 
 
