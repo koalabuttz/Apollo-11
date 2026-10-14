@@ -58,6 +58,7 @@ from resident_boundary_words import header_text  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
+NM = ROOT / 'deps/llvm-mos/bin/llvm-nm'
 REU_LIMIT = 0x1c0000          # tools/overlay_allocation.py REU_STORE_LIMIT
 SLOT_BYTES = {0: 0x4000, 1: 0x1FFA}
 LANE_BYTE = {'A': 0x01, 'B': 0x02, 'C': 0x03, 'D1': 0x04, 'D2': 0x05, 'E': 0x06, 'F': 0x07, 'G': 0x08, 'H': 0x09}
@@ -319,12 +320,13 @@ SLOT_BYTES = {0: 16384, 1: 8186, 3: 3072, 4: 8186}
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=()):
+                io=None, direct_only=False, defines=(), link_flags=()):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). io: the
     module's io kind (module_io). direct_only: no transfer engine, the
     resident runs the routines (FS_DIRECT_ONLY; pinned modules). defines:
-    the module's own -D flags (FLIGHT_PARTS)."""
+    the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
+    flags (a pinned pair's --undefined and --defsym, pin_pair)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
@@ -356,13 +358,14 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
            '-T', 'platform/c64/overlay_v2_payload.ld',
            f'-Wl,--gc-sections,--defsym=__ov2_slot={slot},--defsym=__ov2_mission={1 if m == "lm" else 2},'
            f'--defsym=__ov2_id={ident},--defsym=__ov2_services={SERVICES},--defsym=__ov2_selectors=1,'
-           f'-Map,{prg}.map', *(f'-Wl,--wrap=ai_{op}' for op in SHARED_OPS), *CHANNELS[m],
+           f'-Map,{prg}.map', *(f'-Wl,--wrap=ai_{op}' for op in SHARED_OPS), *CHANNELS[m], *link_flags,
            wrapper, *sources, 'platform/c64/flight_image_op_services.c', 'platform/c64/overlay_v2_entry.S', '-lc', library,
            '-lcrt', '-o', prg]
     r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
     if r.returncode:
         over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", r.stderr)]
-        return dict(ok=False, overflow=max(over) if over else None,
+        undefined = sorted(set(re.findall(r'undefined symbol: (\S+)', r.stderr)))
+        return dict(ok=False, overflow=max(over) if over else None, undefined=undefined,
                     error=None if over else [l for l in r.stderr.splitlines() if 'error' in l][:4])
     if re.search(r'\((?:\.bss|\.data)\.cm_channels\)', (ROOT / f'{prg}.map').read_text()):
         raise SystemExit(f'{prg}: links its own cm_channels (CHANNELS)')
@@ -480,8 +483,17 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines']},
 # cycle (Lane F, /mnt/project-files/lane-f/dap-cycle-trace.md) across both
 # regions (D2 splits it into the hot subsets that fit); the self-check idle
 # loop is an ordinary job-slot module there. CM: the self-check idle loop.
-PIN = {'lm': {4: ['lm_dapidler_routines', 'lm_p_axis_routines', 'lm_q_r_axis_routines', 'lm_tjet_law_routines']},
+# The LM set is the hot subsets D2 measured (docs/FLIGHT-STORE.md): class 4
+# holds TJETLAW, RATELOOP and the runtime both regions share (the runtime
+# home, pin_pair); class 3 holds DAPIDLER's hot entries and the table list
+# naming both. P-AXIS and Q,R-AXIS run from their job-slot modules.
+PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_kalman_basic'], 3: ['lm_dapidler_hot_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
+# Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
+# for PIN only: the file's modules pack its full table, which holds the same
+# keys and routines.
+def hot_full(t):
+    return t[:-len('_hot_routines')] + '_routines' if t.endswith('_hot_routines') else None
 # The compact interpreter (Interpreter lane, platform/c64/interp_module.c):
 # module $0A01 in the job slot, its cold bodies module $0A02 at $D000 (slot
 # class 2, loaded at boot), linked by tools/interp_runtime_size.py link_core.
@@ -632,6 +644,8 @@ def main():
                                                            if o == stem and 'interpret' not in t))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
         for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
+            if hot_full(t):
+                continue
             kind = 'i' if 'interpret' in t else 'b'
             more = [k for p in parts.get(packed[t], []) for k in p.get(t, [])]
             for k in sorted(set(keys[t]) | set(more)):
@@ -639,7 +653,7 @@ def main():
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
         order = list(dict.fromkeys(RESIDENT[m] + sorted(
-            packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
+            (t for t in packed if not hot_full(t)), key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
         check_site_includers()
         also = collections.defaultdict(list)
         for host, ts in CO_LOCATE[m].items():
@@ -673,7 +687,7 @@ def main():
                      if t in INTERP_ONLY[m] or (o in FLIGHT_INTERP_STOP[m] and 'interpret' in t)}
         by_stem = collections.defaultdict(list)
         for t, o in packed.items():
-            if t not in to_interp:
+            if t not in to_interp and not hot_full(t):
                 by_stem[o].append(t)
         modules, seq = [], collections.Counter()
         for stem in sorted(by_stem):
@@ -713,7 +727,7 @@ def main():
             direct_only = mod.get('direct_only', not mod.get('io'))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()))
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
@@ -725,10 +739,41 @@ def main():
             return mod, prg, res
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
-        # beyond the slot otherwise).
-        pinned = []
-        for slot, ts in PIN[m].items():
-            ts = [t for t in ts if t in packed]
+        # beyond the slot otherwise). Class 4 links first: beside it, class
+        # 3 links only its own files and takes the rest from class 4's map
+        # (pin_pair), and its table list names both sets.
+        pinned, params = [], {}
+
+        def pin_pair(home, ts, measure, sources):
+            """Class 3 beside the class-4 module, which homes the runtime
+            both use: class 3 links only its own files (sources less the
+            home's) and its table list names the home's tables too; every
+            symbol it needs from the home's files is the home's
+            (--defsym from the home's map), and the home keeps each of them
+            (--undefined). Relinks both until class 3 resolves. Returns
+            class 3's link result, its bytes and the shared symbols."""
+            hp = params[f'pin-{SLOT_NAME[4]}']
+            own = [f for f in sources if f not in set(hp['sources'])]
+            basic = [t for t in ts if 'interpret' not in t] + hp['basic']
+            want = set()
+            for _ in range(8):
+                hres = link(dict(hp, link_flags=[f'-Wl,--undefined={u}' for u in sorted(want)]))[2]
+                home.update(ok=hres['ok'], bytes=hres.get('bytes') or (
+                    SLOT_BYTES[4] + hres['overflow'] if hres.get('overflow') else None), shared=len(want))
+                if not hres['ok']:
+                    return hres, None, want
+                nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
+                                    text=True, check=True).stdout
+                addr = {p[2]: p[0] for p in (l.split() for l in nm.splitlines()) if len(p) == 3}
+                flags = ['-Wl,--error-limit=0'] + (
+                    ['-Wl,' + ','.join(f'--defsym={u}=0x{addr[u]}' for u in sorted(want))] if want else [])
+                res, nbytes = measure(None, True, f'pin-{SLOT_NAME[3]}', flags, own, basic)
+                if res['ok'] or not set(res.get('undefined') or ()) - want:
+                    return res, nbytes, want
+                want |= set(res['undefined'])
+            return res, nbytes, want
+        for slot in sorted(PIN[m], reverse=True):
+            ts = [t for t in PIN[m][slot] if t in packed]
             if not ts:
                 continue
             stems = list(dict.fromkeys(packed[t] for t in ts))
@@ -743,22 +788,35 @@ def main():
             # without them.
             io = module_io(m, stems)
             size = SLOT_BYTES[slot]
+            home = next((p for p in pinned if p['slot'] == 'pinned_task' and p['ok'] and not p['io']), None) \
+                if slot == 3 else None
+            if home:
+                for st in home['stems']:
+                    sites.update(file_sites(a.host_cc, m, st))
 
-            def measure(io, direct_only, name):
-                res = link(dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                                basic=[t for t in ts if 'interpret' not in t],
-                                interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
-                                sources=c64_sources(index, *stems, 'agc_transfer'), io=io, direct_only=direct_only,
-                                prg_name=name))[2]
+            def measure(io, direct_only, name, flags=(), sources=None, basic=None):
+                mod = dict(stem=stems[0], slot=slot, id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
+                           basic=basic or [t for t in ts if 'interpret' not in t],
+                           interp=[t for t in ts if 'interpret' in t], also=[], sites=sites,
+                           sources=sources or c64_sources(index, *stems, 'agc_transfer'), io=io,
+                           direct_only=direct_only, prg_name=name, link_flags=list(flags))
+                params[name] = mod
+                res = link(dict(mod))[2]
                 if res.get('moved_to_job_slot'):  # fits the job slot, not the task slot it is pinned in
                     res = dict(ok=False, overflow=res['task_overflow'])
                 return res, res.get('bytes') or (size + res['overflow'] if res.get('overflow') else None)
-            res, nbytes = measure(io, not io, f'pin-{SLOT_NAME[slot]}')
-            direct = measure(None, True, f'pin-{SLOT_NAME[slot]}-direct')[1] if io else nbytes
-            pinned.append(dict(slot=SLOT_NAME[slot], tables=ts, ok=res['ok'], bytes=nbytes,
+            if home:
+                res, nbytes, shared = pin_pair(home, ts, measure, c64_sources(index, *stems, 'agc_transfer'))
+                direct = nbytes
+            else:
+                res, nbytes = measure(io, not io, f'pin-{SLOT_NAME[slot]}')
+                direct = measure(None, True, f'pin-{SLOT_NAME[slot]}-direct')[1] if io else nbytes
+                shared = []
+            pinned.append(dict(slot=SLOT_NAME[slot], tables=ts + (home['tables'] if home else []), own=ts,
+                               stems=stems, ok=res['ok'], bytes=nbytes,
                                direct_only=not io, io=io, direct_bytes=direct, slot_bytes=size,
                                error=res.get('error'), id=LANE_BYTE[lane] << 8 | 0xF0 | slot,
-                               prg=str(OUT / m / f'pin-{SLOT_NAME[slot]}.prg'),
+                               prg=str(OUT / m / f'pin-{SLOT_NAME[slot]}.prg'), shared=len(shared),
                                packed=slot in (3, 4) and res['ok'] and not io))
         # Class 4 runs only through the class-3 module's table list, so it
         # goes into the store only beside a packed class-3 module. Then it
@@ -894,10 +952,11 @@ def main():
             if p['slot'] == 'pinned_task':
                 continue  # its tables run through the class-3 list
             t = p['tables'][0]
-            k = next((k for k in keys[t] if k < ERASABLE_BASE and (t, k) in module_of), None)
+            full = hot_full(t) or t  # a hot subset's keys are its full table's
+            k = next((k for k in keys[t] if k < ERASABLE_BASE and (full, k) in module_of), None)
             if k is not None:
                 bank, loc = canonical_record(k)
-                pin_check = dict(id=p['id'], bank=bank, loc=loc, module=module_of[(t, k)])
+                pin_check = dict(id=p['id'], bank=bank, loc=loc, module=module_of[(full, k)])
         if pin_check and pin_task:
             pin_check['task_id'] = next(p['id'] for p in pinned if p['packed'] and p['slot'] == 'pinned_task')
         # The resident's own modules, so the store boots the flight resident:
