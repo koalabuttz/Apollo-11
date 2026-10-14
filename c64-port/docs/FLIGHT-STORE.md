@@ -243,8 +243,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   entries), which a firing pass makes three times; before, each loaded the
   T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
   `RIDE`: run through `rk_direct` while the excursion is loaded, while
-  their resolver records keep the wrapper for every other caller. On LM it
-  is 15,438 bytes.
+  their resolver records keep the wrapper for every other caller. IBNKCALL
+  and ISWRETRN ride the same way (`lm_interbank_dap_hot_routines`, a
+  compact copy of `lm_interbank_routines`' two entries, checked against
+  them by `make test-lm-interbank-dap`): the passes call across banks
+  through them, and each call loaded the interbank module and then
+  reloaded the excursion. Their CADR operands are the callers' words from
+  `lm_interbank_routines`' site list (`RIDE_SITES`), the ones in the banks
+  the excursion's own entries are in. On LM it is 16,295 bytes.
 - The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
   (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
   $01E2's `lm_t4rupt_core_routines`) and the radar step
@@ -319,8 +325,11 @@ built for the store's resolver records (`build/flight-store/<m>-boundary.bin`,
 docs/RESIDENT-FLIGHT.md), so `build/flight-store/<m>.reu` is a bootable flight image. It
 also links `build/flight-store/<m>-load-check.prg`: the resident with
 `platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
-resolves every resolver record through the resident's resolver (LM 245, CM
-226, the wrappers' included) and checks the module it names. It then runs each
+reads every resolver record from the store, resolves its key through the
+resident's resolver and checks the module it names. The record count and a
+Fletcher checksum over each record's bank, loc and module in key order must
+match the builder's list (`FL_RECORDS`, `FL_RECORD_SUM`); the list itself
+is not linked, as LM's 2,480 records would overrun the boot-only region. It then runs each
 flight module twice, with interrupts off, from a fixed point no table holds:
 once loading it from the REU into its slot, and once already loaded. Each run
 must come back with `EXEC_UNMAPPED`. CIA2's cascaded timers count the
