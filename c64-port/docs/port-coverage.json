@@ -5132,7 +5132,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the native I/O record (cm_native_io); InIsr and channels 10-14, 30, 32 and 33 in agc_hardware for the core and IMU tables; channels 11-14 in cm_native_io and 30-33 in cm_channels for the optics routines (one record on a flight build: the shared channel model, Lane D1; docs/CM-T4RUPT-CHAIN.md).",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_t4rupt_core_routines (3), cm_t4rupt_imu_routines (22) or cm_t4rupt_optics_basic (8) at its original address: T4RUPT, the T4JUMP targets, the IMU and optics tasks, OPTDRIVE, ENDZOPT, and the continuation after each call that leaves the file. The core and IMU routines run inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/CM-T4RUPT-IMU.md and docs/CM-T4RUPT-OPTICS.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change.",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine of cm_t4rupt_core_routines (3), cm_t4rupt_imu_routines (22) or cm_t4rupt_optics_basic (8) at its original address: T4RUPT, the T4JUMP targets, the IMU and optics tasks, OPTDRIVE, ENDZOPT, and the continuation after each call that leaves the file. The core and IMU routines run inside T4RUPT with FB 06; the domains in docs/T4RUPT-CORE.md, docs/CM-T4RUPT-IMU.md and docs/CM-T4RUPT-OPTICS.md apply, and inputs outside them return EXEC_OUT_OF_SCOPE before any change. Channel 13's trap bits and channel 14's drive bits are not refused: the comparisons keep them clear because yaAGC's hardware model acts on them (docs/CM-T4RUPT-CHAIN.md).",
           "unreached": "One instruction word is unreached: 10,2110, the positive slot of CCS A in OPTDRIVE's shaft stop check, where A is +0 or negative after MASK BIT15 and RXOR LCHAN of two sign bits (docs/CM-T4RUPT-CHAIN.md). Three constants (TABLNTH, 120MRUPT, OCT37737) would run as instructions only on paths no producer reaches (docs/T4RUPT-CORE.md).",
           "data_validity": "Original constants and scaling; RELTAB, the IFAILJMP/C33JMP tables and the 2CADR/CADR/ADRES operands are read as data or followed as the original transfers. The checked-in scan spells ZOPFINI as ZOPFIN1 (marked in the source); the native code and the maps follow the listing's word. yaAGC's peripheral model empties the CDU, gyro and optics command counters when channel 14's drive bits are set; the comparisons start with those counters +0 and no drive in progress."
         },
@@ -5149,18 +5149,18 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-proof.json",
-            "sha256": "03b1a352b004eb495fd094317b744c5bcf6f0a054881315f2f56db6ebe9ac865"
+            "sha256": "6acf0c763e6625ed2e4766525ef175d4fda461c3f25ff003cd2d24e489b81aaa"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-host.log",
-            "sha256": "df29b758b1bdf9be01b3030c71fc8f6314f5ea92cf9d2e30c555ea7c2cdfef40"
+            "sha256": "d9dad2ad0ebfdbbd25b4d46f7c4957a5837aeb0a1424717d1b45e386c6a656e4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-t4rupt-chain/cm-t4rupt-closure-vice.log",
-            "sha256": "85795238762cb784c9cab7122c2c56db3a2c96cb259f4926406b121131b95e2a",
+            "sha256": "0dc1ff801ec9200faebda2d2e3e3c229f38b4b0c08d4544c6db3863cc57e3b0c",
             "vice_targets": {
-              "vice-t4rupt-core": 279,
-              "vice-cm-t4rupt-imu": 300,
+              "vice-t4rupt-core": 280,
+              "vice-cm-t4rupt-imu": 301,
               "vice-cm-t4rupt-optics": 46,
               "vice-cm-t4rupt-chain": 269
             }
@@ -11471,9 +11471,9 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-t4rupt-chain/lm-t4rupt-closure-vice.log",
-            "sha256": "40460a8426fdad9f985610375743c2631c730e662578cf23b4d40bd0567724ba",
+            "sha256": "9525ea00596baf5bdba24ea416a8a1619b36cb938c7361a81afb99578d965483",
             "vice_targets": {
-              "vice-t4rupt-core": 279,
+              "vice-t4rupt-core": 280,
               "vice-lm-t4rupt-imu": 301,
               "vice-lm-t4rupt-rr": 216,
               "vice-lm-t4rupt-chain": 266
