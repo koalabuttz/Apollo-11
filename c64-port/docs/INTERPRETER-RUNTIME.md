@@ -253,6 +253,7 @@ Both interpreters keep every erasable operand inside the image:
 - `ai_ea` masks an address to 01777. So an operand that an index or the push-down pointer runs past 01777 wraps into low erasable.
 - The original reads fixed memory there, under FB, and its writes there do nothing.
 - A wild indexed STORE address wraps the same way, through the 10-bit erasable field (`src/agc_image_ops.c` `ai_ea`, `src/lm_interp_steps.c` `ea`). The AGC writes elsewhere.
+- One STORE is refused instead (#422). STORE,1, STORE,2 or STADR can index the address negative. STORE's CCS then takes the work-area branch, and FIXLOC plus that address lies above 01777. There, `INDEX ADDRWD` turns the DXCH into another instruction, so the AGC stores nothing. Both interpreters refuse that store at NEWOPS or STADR's body (`store_outside`). The differential counts those cases without comparing them.
 
 The core's contract is that indexed and push-down erasable addresses stay inside erasable. Every flight path keeps them there. INCOR1 and INCOR2 set X1 and X2 by AXT (at most 162D, stepping down to the S1 or S2 step), so every W+k,X operand stays inside W. FAZB1's WIXA is 6 to 54.
 

@@ -2060,6 +2060,21 @@ static NI void lmi_sload_fixed(void){const agc_word *k=kop();
 #define MISSION IF_(0u,1u)
 enum { rNEWJOB = 067 };
 enum { DONE = 0, MORE = 1, REFUSE = 2 };
+/* Whether STORE,1 or STORE,2 would store outside erasable (#422): a
+ * negative indexed address takes STORE's work-area branch, and FIXLOC plus
+ * that address lies above 01777, where INDEX ADDRWD turns the DXCH into
+ * another instruction. Refused: indexed erasable stays inside erasable. */
+static NI uint8_t store_outside(agc_word code)
+{
+    unsigned kind = (code >> 11) & 7u, nx, a;
+    if (kind - 1u > 1u) return 0;
+    nx = ~(unsigned)W[W[rFIXLOC] + (kind == 1u ? tX1 : tX2)] & 077777u;
+    if (nx < 040000u) return 0;
+    a = (code & 03777u) + nx; if (a > 077777u) a -= 077777u;
+    if (!(a & 040000u)) return 0;
+    a += W[rFIXLOC]; if (a > 077777u) a -= 077777u;
+    return a > 01777u;
+}
 static const agc_word t_indjump[32] = IRT_INDJUMP, miscjump[16] = IRT_MISCJUMP, unajump[15] = IRT_UNAJUMP;
 
 /* Physical rope address of fixed logical address a under bank register b
@@ -2205,6 +2220,8 @@ static NI uint8_t order(uint8_t c)
     }
     if (idx == 014u) {
         if (!code_word(1u)) return REFUSE;
+        /* (STADR's store code: CS 0; AD NEGONE.) */
+        if (store_outside((agc_word)(cw & 077777u ? (~(unsigned)cw & 077777u) - 1u : 077776u))) return REFUSE;
         lmi_stadr(cw); return MORE;
     }
     if (idx == 015u) { lmi_rvq(); return DONE; }
@@ -2257,7 +2274,7 @@ static NI enum exec_status run(void)
         switch (point()) {
         case P_NEWOPS:
             if (!code_word(0u)) return EXEC_OUT_OF_SCOPE;
-            if (!(cw & 040000u)) { lmi_store_code(cw); break; }
+            if (!(cw & 040000u)) { if (store_outside(cw)) return EXEC_OUT_OF_SCOPE; lmi_store_code(cw); break; }
             lmi_newops(cw);
             r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
         case P_DANZIG: ai_ca(rBANKSET); (void)ai_ts(6);   /* DANZIG CA BANKSET, TS BBANK */
