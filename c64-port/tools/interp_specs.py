@@ -2526,7 +2526,10 @@ SPECS = {
                     'P42STAGE', 'IMPLBURN', 'ENGOFTSK', 'ENGINOF1', 'ENGINOF2', 'ENGINOF3', 'ENGINOF4',
                     'S40.8', 'S40.13', 'TRIMGIMB', 'S40.1', 'S40.2,3', 'S40.9', 'S41.1', 'UPDATEVG',
                     # dead code after a GOTO, kept as its own routine
-                    'S40.133'],
+                    'S40.133',
+                    # P47LM's FINDVAC job (2CADR P47BODY): the Executive
+                    # enters it.
+                    'P47BODY'],
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto',
                       '2PHSCHNG': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto',
                       'NOVAC': 'auto', 'WAITLIST': 'auto', 'TWIDDLE': 'auto', 'FIXDELAY': 'auto',
@@ -2542,6 +2545,26 @@ SPECS = {
         'partial': {'lm': 'WAND/WOR CHAN12, RAND/WRITE DSALMOUT and WOR CHAN14 wait for an output-channel model'},
         # RTB routines without a native body: the run ends at them.
         'rtb': {'NORMUNX1': None},
+        # C64 rows chosen by branch outcome over every linked source.
+        'c64_rows': 'cover',
+        # Trace every 5th case for the gcov arcs (a divisor of
+        # freeze_stride, so every frozen host vector is traced). (At 64,
+        # the only traced cases taking OVERFLOW's carry into OVFIND ran
+        # too long for one C64 program.)
+        'cover_stride': 5,
+        # Arcs only runs too long for one C64 program take (LM 27,3123)
+        # get truncated rows, run to a cut (tests/interp_cut.h).
+        'c64_cuts': True,
+        # A quarter of the cases put edge values (+-0, one LSB, 1/2, just
+        # below 1, axis and plane vectors) in MPAC and the operands, so
+        # short runs take the VROUND and DDV overflow paths too.
+        'edge_values': True,
+        # INDEX by a negative value: the end-around carry the C64 build
+        # needs (unsigned is 16 bits there).
+        'index_carry16': True,
+        # W from include/agc_image_w.h: flight builds address the fixed
+        # $7000 image.
+        'image_w': True,
         'target': 'tests/lm_p40_p47_target.c',
         'freeze_stride': 640,
     },
@@ -2748,6 +2771,45 @@ SPECS = {
         'target': 'tests/lm_rcsmon_target.c',
         'c64_rows': 'cover',
         'cover': True,
+        'freeze_stride': 16,
+    },
+    # Luminary099 SPS_BACK-UP_RCS_CONTROL (SPSRCS, the docked RCS jet
+    # law the P and Q,R axis autopilots call through IBNKCALL), the whole
+    # file (basic code). (src/lm_sps_rcs.c is the earlier hand-written
+    # translation, kept for its legacy targets.)
+    'lm-sps-backup': {
+        'missions': ('lm',),
+        'file': {'lm': 'SPS_BACK-UP_RCS_CONTROL.agc'},
+        'base': {'lm': 'lm_sps_backup'},
+        'symbol': {'lm': 'lm_sps_backup'},
+        'entries': ['SPSRCS'],
+        'externals': {},
+        # The file's EBANK= TJU: E6 (AXISCTR, TJU, UJETCTR, EDOT, DKDB).
+        'ebank': 6,
+        # AXISCTR: -1 (P), 0 (U) or +1 (V), as the autopilots set it; -0
+        # also selects U.
+        'all_states': {'AXISCTR': [0o77776, 0, 1, 0o77777]},
+        # In half of the cases, one joint set: the jet times (TJP, TJU,
+        # TJV: off at +-0, firing either way, HALF), the inhibition
+        # counters (+-0, +-1, the 4 the P axis sets), and EDOT, E and DKDB
+        # near the rate limits (RATELIM1 032, RATELIM2 0632) and in the
+        # coast zone, so every jet-sense, CTRCHECK and coast path runs.
+        'joint_states': {'*': [
+            {'TJP': tj, 'TJU': tj, 'TJV': tj, 'PJETCTR': ct, 'UJETCTR': ct, 'VJETCTR': ct, 'EDOT': ed,
+             'E': (0, 1, 0o77776, 0o200, 0o77577)[n % 5], 'DKDB': (0, 1, 0o40, 0o777, 0o37777)[(n // 5) % 5]}
+            for n, (tj, ct, ed) in enumerate(
+                (tj, ct, ed) for tj in (0, 0o77777, 1, 0o77776, 0o20000, 0o57777)
+                for ct in (0, 0o77777, 1, 0o77776, 4)
+                for ed in (0, 0o77777, 1, 0o77776, 0o632, 0o77145, 0o633, 0o77144, 0o7000, 0o70777))]},
+        # INDEX AXISCTR; CA UTIME: the P counter (4) or the U, V one (012).
+        'basic_fixed_index': {'UTIME': [-1, 0, 1]},
+        'resume_keys': True,
+        'edge_cases': True,
+        'target': 'tests/lm_sps_backup_target.c',
+        'c64_rows': 'cover',
+        'cover': True,
+        'index_carry16': True,
+        'image_w': True,
         'freeze_stride': 16,
     },
     'cm-r31': {

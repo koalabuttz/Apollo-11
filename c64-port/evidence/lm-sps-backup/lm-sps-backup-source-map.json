@@ -1,0 +1,580 @@
+{
+ "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc": {
+  "native_file": "src/lm_sps_backup.c",
+  "words": 82,
+  "untranslated_words": 0,
+  "routines": 1,
+  "map": [
+   {
+    "address": "21,3646",
+    "word": "00632",
+    "source": "RATELIM2 OCT 00632",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "21,3647",
+    "word": "34736",
+    "source": "POSTHRST CA HALF",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3650",
+    "word": "51505",
+    "source": " NDX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3651",
+    "word": "55525",
+    "source": " TS TJU",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3652",
+    "word": "11745",
+    "source": " CCS OLDSENSE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3653",
+    "word": "13673",
+    "source": " TCF POSCHECK",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3654",
+    "word": "13676",
+    "source": " TCF CTRCHECK",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3655",
+    "word": "51505",
+    "source": "NEGCHECK INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3656",
+    "word": "41525",
+    "source": " CS TJU",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3657",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3660",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3661",
+    "word": "13663",
+    "source": " TCF +2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3662",
+    "word": "13663",
+    "source": " TCF +1",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3663",
+    "word": "51505",
+    "source": "SETCTR INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3664",
+    "word": "33705",
+    "source": " CA UTIME",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3665",
+    "word": "51505",
+    "source": " INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3666",
+    "word": "55770",
+    "source": " TS UJETCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3667",
+    "word": "34755",
+    "source": "ZAPTJ CA ZERO",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3670",
+    "word": "51505",
+    "source": " INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3671",
+    "word": "55525",
+    "source": " TS TJU",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3672",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3673",
+    "word": "51505",
+    "source": "POSCHECK INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3674",
+    "word": "31525",
+    "source": " CA TJU",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3675",
+    "word": "13657",
+    "source": " TCF NEGCHECK   +2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3676",
+    "word": "51505",
+    "source": "CTRCHECK INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3677",
+    "word": "11770",
+    "source": " CCS UJETCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3700",
+    "word": "13702",
+    "source": " TCF +2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3701",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3702",
+    "word": "13667",
+    "source": " TCF ZAPTJ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3703",
+    "word": "00002",
+    "source": " TC Q",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3704",
+    "word": "00004",
+    "source": " OCT 00004",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "21,3705",
+    "word": "00012",
+    "source": "UTIME OCT 00012",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "21,3706",
+    "word": "00012",
+    "source": " OCT 00012",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "21,3707",
+    "word": "44753",
+    "source": "NEGFIRE CS ONE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3710",
+    "word": "55745",
+    "source": " TS OLDSENSE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3711",
+    "word": "31427",
+    "source": " CA EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3712",
+    "word": "13716",
+    "source": " TCF +4",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3713",
+    "word": "34753",
+    "source": "PLUSFIRE CA ONE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3714",
+    "word": "55745",
+    "source": " TS OLDSENSE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3715",
+    "word": "41427",
+    "source": " CS EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3716",
+    "word": "22000",
+    "source": " LXCH A",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3717",
+    "word": "40111",
+    "source": " CS DAPBOOLS",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3720",
+    "word": "74744",
+    "source": " MASK DRIFTBIT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3721",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3722",
+    "word": "34767",
+    "source": " CA RATEDB1",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3723",
+    "word": "60001",
+    "source": " AD L",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3724",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3725",
+    "word": "63735",
+    "source": " BZMF SPSSTART",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3726",
+    "word": "13652",
+    "source": " TCF POSTHRST   +3",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3727",
+    "word": "51505",
+    "source": "SPSRCS INDEX AXISCTR",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3730",
+    "word": "11525",
+    "source": " CCS TJU",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3731",
+    "word": "13713",
+    "source": " TCF PLUSFIRE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3732",
+    "word": "13734",
+    "source": " TCF +2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3733",
+    "word": "13707",
+    "source": " TCF NEGFIRE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3734",
+    "word": "55745",
+    "source": " TS OLDSENSE",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3735",
+    "word": "31427",
+    "source": "SPSSTART CA EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3736",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3737",
+    "word": "74766",
+    "source": " MP RATELIM1",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3740",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3741",
+    "word": "13760",
+    "source": " TCF NEGTHRST",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3742",
+    "word": "13744",
+    "source": " TCF +2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3743",
+    "word": "13647",
+    "source": " TCF POSTHRST",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3744",
+    "word": "31427",
+    "source": " CA EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3745",
+    "word": "61752",
+    "source": " AD E",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3746",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3747",
+    "word": "71411",
+    "source": " MP DKDB",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3750",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3751",
+    "word": "13766",
+    "source": " BZF TJZERO",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3752",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3753",
+    "word": "63762",
+    "source": " BZMF +7",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3754",
+    "word": "31427",
+    "source": " CA EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3755",
+    "word": "63646",
+    "source": " AD RATELIM2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3756",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3757",
+    "word": "63766",
+    "source": " BZMF TJZERO",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3760",
+    "word": "44736",
+    "source": "NEGTHRST CS HALF",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3761",
+    "word": "13650",
+    "source": " TCF POSTHRST   +1",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3762",
+    "word": "43646",
+    "source": "+7 CS RATELIM2",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3763",
+    "word": "61427",
+    "source": " AD EDOT",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3764",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3765",
+    "word": "63647",
+    "source": " BZMF POSTHRST",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3766",
+    "word": "34755",
+    "source": "TJZERO CA ZERO",
+    "routine": "21,3727",
+    "function": "r43727"
+   },
+   {
+    "address": "21,3767",
+    "word": "13650",
+    "source": " TCF POSTHRST   +1",
+    "routine": "21,3727",
+    "function": "r43727"
+   }
+  ]
+ }
+}
