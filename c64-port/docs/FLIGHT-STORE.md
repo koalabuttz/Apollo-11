@@ -313,8 +313,11 @@ built for the store's resolver records (`build/flight-store/<m>-boundary.bin`,
 docs/RESIDENT-FLIGHT.md), so `build/flight-store/<m>.reu` is a bootable flight image. It
 also links `build/flight-store/<m>-load-check.prg`: the resident with
 `platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
-resolves every resolver record through the resident's resolver (LM 245, CM
-226, the wrappers' included) and checks the module it names. It then runs each
+reads every resolver record from the store, resolves its key through the
+resident's resolver and checks the module it names. The record count and a
+Fletcher checksum over each record's bank, loc and module in key order must
+match the builder's list (`FL_RECORDS`, `FL_RECORD_SUM`); the list itself
+is not linked, as LM's 2,480 records would overrun the boot-only region. It then runs each
 flight module twice, with interrupts off, from a fixed point no table holds:
 once loading it from the REU into its slot, and once already loaded. Each run
 must come back with `EXEC_UNMAPPED`. CIA2's cascaded timers count the
