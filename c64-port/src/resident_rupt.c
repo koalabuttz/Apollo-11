@@ -19,6 +19,9 @@ void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending)
     if(pinc(&w[027])) *pending|=RK_RUPT_BIT(RK_RUPT_T4);
     if(pinc(&w[025])) pinc(&w[024]);
     if(pinc(&w[026])) *pending|=RK_RUPT_BIT(RK_RUPT_T3);
+    /* The scalers (channels 4 and 3) count AGC time too: 32 SCALER1
+     * counts per period, SCALER2 on its overflow. */
+    if(!(hw->channel4=(agc_word)((hw->channel4+32u)&037777u))) hw->channel3=(agc_word)((hw->channel3+1u)&037777u);
     /* yaAGC CounterDINC: toward zero by one through the one's complement
      * adder, so +1 and -1 both step to -0; at +0 or -0 the ZOUT. */
     for(i=0;i<16u && (hw->channel13&040000u);++i) {

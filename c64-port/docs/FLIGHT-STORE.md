@@ -325,6 +325,24 @@ port) runs one mission:
    `5000:035=02000` moves CDUY). The reference keeps up to 8,191
    centiseconds.
 
+9. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
+   docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
+   `tools/flight_host_differential.py` builds a local engine variant whose
+   `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
+   cycles their counts take) and the IMU CDU drive, which bursts on
+   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   AGC clock then runs only as the flight resident runs it: a modeled C64
+   wall clock advances by each span's AGC machine cycles times K, plus
+   20 ms for each module swap (the VICE load cost), each optionally
+   jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
+   D × 10 ms of it, and at each native boundary at most LAG of them become
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
+   code takes its periods between instructions. Lockstep then compares the
+   clock counters too and adopts nothing from yaAGC, so every routine must
+   match yaAGC run from the same state under the same periods, and the
+   run as a whole is one yaAGC run under that tick schedule. No
+   free-running reference runs, and no samples are compared.
+
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.
 
