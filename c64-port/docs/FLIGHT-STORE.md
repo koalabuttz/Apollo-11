@@ -182,6 +182,11 @@ shadowed routines, and a module with no live entries is left out. The
 report lists `shadowed_entries` per table and
 `modules_left_out_shadowed`. Flight parts keep their own key slices.
 Erasable keys are always kept.
+A chunk or pick module gets its entries' keys as data (`FS_KEYS`, read
+by the build from the same tables): its main copies them in one loop and
+stores only the calls, where it stored both per entry (about 25 bytes of
+code each). On LM that is 11,776 bytes of the store; DAP pass cycles in
+VICE do not change.
 
 With every table fitting, both stores ran past the rope image of a
 2 MB REU (LM 2,146,816 bytes against 1,835,008; CM 2,552,576 against

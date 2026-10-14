@@ -834,6 +834,10 @@ SPECS = {
         # which '@external' reads as register Q.
         # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
         'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
+        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
+        # flight store chunked it into 13, each with the whole basic_run
+        # (docs/FLIGHT-PARTS.md).
+        'flight_parts': [0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
