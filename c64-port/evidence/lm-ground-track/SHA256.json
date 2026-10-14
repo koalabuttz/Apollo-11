@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-ground-track",
+  "release": "evidence-lm-ground-track",
+  "files": {
+    "lm-ground-track-closure.json": {
+      "sha256": "47a1a84bd3ca43f4655fe9992a8517b51a3afb46d45fdf3cc1a659658daef985",
+      "bytes": 19090,
+      "store": "tree"
+    },
+    "lm-ground-track-differential.log": {
+      "sha256": "3d1ce5975009f1a16efaed36c03032713b534434838e6251dc602f4df49d7908",
+      "bytes": 3079,
+      "store": "release"
+    },
+    "lm-ground-track-host.log": {
+      "sha256": "bc5a1b16e39ea618071e7bfc700bc12dd3ae65056b6fb1d5f0f5e0f6c7388cc7",
+      "bytes": 1104,
+      "store": "release"
+    },
+    "lm-ground-track-proof.json": {
+      "sha256": "b5d4e1e3c034dda9d862866352a41b37f8e66c6a4b43cf8f2e02836fdaebf78d",
+      "bytes": 9000,
+      "store": "tree"
+    },
+    "lm-ground-track-source-map.json": {
+      "sha256": "648cfe6de12c8c39ca80c7ea55fc131549d7eebbb0e4e5d8edd76d035e63a6a9",
+      "bytes": 15870,
+      "store": "tree"
+    },
+    "lm-ground-track-vice.log": {
+      "sha256": "bbffd39df02d04360f65f8e3f06cc7dfc7f5bbba24fb12691375b0b7b7298d54",
+      "bytes": 16794,
+      "store": "release"
+    }
+  }
+}

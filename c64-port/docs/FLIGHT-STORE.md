@@ -59,13 +59,41 @@ goes into the store as two modules linked by `tools/interp_runtime_size.py`
 bodies $0A02 at $D000 (slot class 2, loaded at boot; LM 4,038, CM 4,029).
 `INTERP_POINTS` gives the resolver a record to $0A01 at each of the
 interpreter's fixed entry points (logical Z, canonical bank 04000 or 06000)
-unless a table record or a resident table already holds it: today DANZIG is
-the resident's, and SWRETURN and INTPRET are table records, so 9 of 12 are
-the interpreter's on each mission. CHANG2 is left out, since that is where
+unless a table record or a resident routine already holds it: SWRETURN is
+a table record (the interbank tables), and INTPRET always goes to the
+interpreter (#335), so 11 of 12 are the interpreter's on each mission. DANZIG is one of them: the resident's DANZIG marker is not a
+routine, and the flight resident's own program has no marker table, so
+without the record a job left pending at DANZIG would not resolve. CHANG2 is left out, since that is where
 the interpreter hands back to the Executive. The module returns to the step
 when the CIA1 count at $6FBC moves, so an interrupt waits at most one
 interpretive slot. The load check resolves the records; it does not run the
 interpreter (`make vice-interp-core` does).
+
+Every C64 flight module compiles with `-DAGC_FLIGHT_INTERPRETER`. In the
+files listed in `FLIGHT_INTERP_STOP`, that flag ends a chain at NEWOPS
+([FLIGHT-INTERP-STOP.md](FLIGHT-INTERP-STOP.md)). The store leaves those
+files' interpretive tables, and the `INTERP_ONLY` tables (LM
+`lm_ephemeris_routines`, `lm_s3435_routines` and `lm_s3435b_routines`:
+compiled interpretive code entered and left at NEWOPS; and on both
+missions the compiled interpreter's `*_interp_core_basic` and
+`*_interp_runtime_basic`, whose SWRETURN, INTPRET and DANZIG keys the
+interbank tables, the interpreter's records and the DANZIG marker hold),
+to the interpreter. Their
+keys need no record: the step resolves by Z, which is NEWOPS there, and
+NEWOPS has the interpreter's record. The report counts these keys as
+`interpreter_keys`, separately from `unplaced_keys`. The host index and
+`<m>-host.inc` keep the compiled tables.
+
+`FLIGHT_PARTS` links one file as several modules, one per define set.
+Each part's keys are what its own build's tables hold. The builder reads
+them from a host object of the part, with the tables renamed, so a part
+can key hand-off words the whole file does not. LM `lm_servicer` is linked
+this way, as `-DLMSV_FLIGHT_PART=1` (85 keys, 14,581 bytes) and `=2`
+(80 keys, 14,302 bytes)
+([LM-SERVICER-FLIGHT-PARTS.md](LM-SERVICER-FLIGHT-PARTS.md)). Parts are
+never chunked. With both lists in place, the five LM files fit their
+slots. The LM load check then runs 1,269 checks (889 before) on
+67 modules, with 0 failures.
 
 `CO_LOCATE` packs a table into a second module as well, when two modules
 would otherwise swap all the time: the interbank routines (POSTJUMP,
@@ -84,21 +112,26 @@ On the C64 the resident hands every module its base record (`rk_io`:
 (`module_io`; `FS_IO_KIND` in `platform/c64/flight_table_module.c`) builds
 that record with `flight_io_enter` from `rk_hardware`, `rk_flight` and
 `rk_device` before its run and writes it back with `flight_io_leave` after;
-on the CM it also copies `cm_channels` to and from `rk_hardware`'s channels
-5, 6 and 30-33. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
+compiled routines' channels are already in `rk_hardware` (built with
+`-DAGC_CHANNELS_HW=rk_hardware`), so nothing is copied. Its tables are marked `RK_TABLES_NOT_DIRECT`, so `rk_direct`
 leaves them to the module main. A module may mix the base kind only with a
 kind whose record starts with the base record (LM_*, CM_*), and the builder
 refuses a kind with no `flight_io_enter`/`flight_io_leave` case. The
-conversion adds about 330 bytes to the module main (1,076 bytes in the
-pinned LM DAP set, against about 750 for a base-kind module); the set
-measures 39,341 bytes. Every CM module links the resident's
-`cm_channels` (`--defsym`); the builder refuses one that keeps a copy.
+conversion adds about 330 bytes to the module main, against about 750 for
+a base-kind module. The LM DAP tables take the base record (their channels
+are `rk_hardware`'s), so `rk_direct` calls them with no module main; the
+pinned LM DAP set measures 37,500 bytes.
 
-A pinned module is direct-only (`FS_DIRECT_ONLY`): it links no transfer
-engine, its main only builds the table list and returns `EXEC_OK`, and the
-resident runs its routines through `rk_direct` from the next step. That
-needs the base record, so a pinned set whose tables take another kind
-links the engine and conversion until the kind folds into `agc_hardware`;
+Every module on the base record, pinned or not, is direct-only
+(`FS_DIRECT_ONLY`). It links no transfer engine, and its main only builds
+the table list and returns `EXEC_UNMAPPED` (nothing ran). After such a run
+`rk_resident_step` calls `rk_direct` in the same step, so the point runs
+through the new tables without an extra step. This saves about 490 bytes
+per module. Against the build before it on the same tables, the CM image
+fell from 1,417,728 to 1,368,576 bytes, because chunked CM DAP files need
+fewer chunks. Direct-only needs the base record, so a module or pinned set
+whose tables take another kind links the engine and conversion until the
+kind folds into `agc_hardware`;
 `report.json` gives both sizes (`bytes`, `direct_bytes`). The LM DAP set
 measures 39,341 bytes today and 38,534 direct-only.
 
@@ -181,20 +214,79 @@ each module. On def640e3d, against the same tree without sharing:
 Fewer modules link because more files fit whole and need no chunks; the
 resolver records (keys the store can run) go up on both missions.
 
-`PIN` names task-slot tables that must link as one module (the steward's
-DAP rule: the LM T6 hot path pinned in one task-slot module). The LM set
-(DAPIDLER, P-axis, Q/R-axis, TJET law) measures 47,075 bytes against the
-8,186-byte task slot, so it is reported (`report.json` `pinned`) and not
-packed yet. A slot-3 set goes to slot class 3 ($C000-$CBFF, 3,072 bytes;
-docs/RESIDENT-FLIGHT.md): when it fits direct-only the builder packs it into
-the store, the resident loads it at boot, and its routines run from there
-through `rk_direct` while the resolver still names their packed modules. Both
-missions pin the background self-check idle loop there (LM
-`lm_self_check_idle_routines` 1,897 bytes, CM `cm_self_check_idle_routines`
-1,920), so those routines run without loading a module. The load check runs one
-of the pinned set's points through the module that packs the same table and through
-`rk_direct` with only the pinned module present, compares them, and then
-drops the pinned module (its mailbox and timings use $C000-$CBFF).
+`PIN` names the tables pinned in a region, each set linked as one module
+and reported (`report.json` `pinned`). A slot-3 set goes to slot class 3
+($C000-$CBFF, 3,072 bytes; docs/RESIDENT-FLIGHT.md): when it fits
+direct-only the builder packs it into the store, the resident loads it at
+boot, and its routines run from there through `rk_direct` while the resolver
+still names their packed modules. A slot-4 set goes to slot class 4, the
+task slot's $E000-$FFF9 (8,186 bytes), and is packed only beside a packed
+class-3 set, whose table list names its tables (the class-4 module runs no
+main). With a class-4 module in the store every task-slot module, the
+resident's interrupt wrappers included, links for the job slot
+(`task_pinned_out` in the module list), and so does the null module 0x01E0. This is the steward's DAP rule
+in two regions, with the LM RCS DAP hold cycle split by what one pass
+reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
+#356):
+
+- Class 4 holds TJETLAW (`lm_tjet_law_routines`) and the RESUME family
+  (`lm_t6rupt_hot_routines`: RESUME, NOQRSM, NOQBRSM, NOQBRSM +1), and is
+  the *runtime home*: every global function the class-3 module links (the
+  fast ops, the image-op wrappers, the DAP files' shared helpers in
+  `include/lm_dap_shared.h`) is linked once, here. Every interrupt ends at
+  RESUME, which otherwise loads the T6RUPT wrapper ($01E4, 7,991 bytes);
+  `rk_direct` finds the pinned entries first, and the wrapper's resolver
+  records stay as the fallback.
+- Class 3 holds DAPIDLER's per-pass entries (`lm_dapidler_hot_routines`, a
+  file's `*_hot_routines` subset: PIN only, its file's modules still pack
+  the full table) and the table list naming both sets.
+- The *excursion* (`EXCURSION`, module $07F5) packs P-axis's and Q,R-axis's
+  per-pass entries (`lm_p_axis_hot_routines`, `lm_q_r_axis_hot_routines`)
+  and RATELOOP (`lm_kalman_basic`, which runs in the same pass) in one
+  job-slot module, so a pass that leaves the pinned sets loads one module,
+  not two (P-axis 11,603 bytes and Q,R-axis 11,971). RATELOOP moved here
+  from class 4 to make room for RESUME. It also carries the jet writes
+  (`lm_t6rupt_jets_hot_routines`: WRITEP, WRITEU, WRITEV and their -1
+  entries), which a firing pass makes three times; before, each loaded the
+  T6RUPT wrapper ($01E4) and then reloaded the excursion. They are in
+  `RIDE`: run through `rk_direct` while the excursion is loaded, while
+  their resolver records keep the wrapper for every other caller. On LM it
+  is 15,438 bytes.
+- The *T4RUPT pack* (`T4PACK`, module $07F6) packs T4RUPT's core
+  (`lm_t4rupt_core_hot_routines`, the same entries as the resident wrapper
+  $01E2's `lm_t4rupt_core_routines`) and the radar step
+  (`lm_t4rupt_rr_routines`), 6,773 bytes, so a radar T4RUPT loads one
+  module instead of two. The core's wrapper resolver records point at the
+  pack. RCSMON (`lm_rcsmon_basic`) stays in its own module: it takes
+  `lm_channel_io`, and a pack holding it would run every step through the
+  transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
+  31 K cycles instead of 16 K).
+
+The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
+class-4 home. Each links once on its own before `pin_pair`; the home then
+keeps global (`--undefined`) those of a pack's functions it links anyway,
+and the pack takes every function the home holds as a global
+(`--defsym`). A function only a pack uses stays in the pack. The resolver
+sends a pack's keys to it before their files' modules.
+Measurements: `/mnt/project-files/steward/cpu-budget.md` (D2, 10-14).
+
+The two link separately (`pin_pair`). Class 4 links first with class 3's
+files as well, keeping only what class 3 asks for (`-Wl,--undefined=` for
+each name in class 3's map; LTO and `--gc-sections` drop the rest). Class 3
+then links only its own files, taking those addresses from class 4's ELF
+(`-Wl,--defsym=`). The pair relinks until class 3 resolves and links no new
+name. The class-4 module is compiled with `FS_PIN_HOME`: its main is a stub,
+as the resident never runs it, and it only keeps its tables linked. Both
+link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
+also stops inlining. On LM, class 4 is 8,121
+of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
+class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
+without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 is kept for the DAP. The load check runs one of the class-3 set's
+points through the module that packs the same table and through `rk_direct`
+with only the pinned module present, compares them, checks the class-4
+header at $E000 when there is one, and then drops the pinned module (its
+mailbox and timings use $C000-$CBFF).
 
 ### Direct calls into a loaded module
 
@@ -228,13 +320,17 @@ resolves pending RTB right-hand orders through it.
 
 `make flight-store-vice` (`tools/flight_vice_load.py`) boots the flight
 resident on the whole-program store in VICE. The store builder also packs
-the resident's own modules into the store (the boundary-word module, built
-for the store's resolver records, and the interrupt-body wrappers with their
-records), so `build/flight-store/<m>.reu` is a bootable flight image. It
+the resident's own modules into the store (the interrupt-body wrappers with
+their records, and the null module), ends it with the boundary-word table
+built for the store's resolver records (`build/flight-store/<m>-boundary.bin`,
+docs/RESIDENT-FLIGHT.md), so `build/flight-store/<m>.reu` is a bootable flight image. It
 also links `build/flight-store/<m>-load-check.prg`: the resident with
 `platform/c64/flight_load_check.c` as main. After `rk_boot`, the check
-resolves every resolver record through the resident's resolver (LM 245, CM
-226, the wrappers' included) and checks the module it names. It then runs each
+reads every resolver record from the store, resolves its key through the
+resident's resolver and checks the module it names. The record count and a
+Fletcher checksum over each record's bank, loc and module in key order must
+match the builder's list (`FL_RECORDS`, `FL_RECORD_SUM`); the list itself
+is not linked, as LM's 2,480 records would overrun the boot-only region. It then runs each
 flight module twice, with interrupts off, from a fixed point no table holds:
 once loading it from the REU into its slot, and once already loaded. Each run
 must come back with `EXEC_UNMAPPED`. CIA2's cascaded timers count the
@@ -258,7 +354,12 @@ cleaner transfer cost. For bisecting a crash, `flight_load_check.c` takes
 The check then runs one resolver record per module both ways: through the
 module's main (an ABI 2 run) and through `rk_direct`, from the same image,
 slot contents and channels (snapshotted in the REU's last 32 KB), with only
-that module loaded. Status, image and channels must match. On def640e3d
+that module loaded. Status, image and channels must match. A direct-only
+module's main must return `EXEC_UNMAPPED` and leave image and channels as
+they were (step 12). Its point then runs through `rk_direct` alone, and the
+report gives those cycles (`direct_only`; LM 25 modules at 3,344-27,187
+cycles, CM 45 at 4,155-22,076). The pinned check's reference run goes
+through a direct-only twin's tables with the pinned module set aside. On def640e3d
 plus this change both missions pass (LM 903 checks, 44 modules compared;
 CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
@@ -304,7 +405,8 @@ port) runs one mission:
 3. **Lockstep timing.** A native routine has no clock, so each call is
    checked by running yaAGC from the same before-state until it reaches the
    routine's continuation with equal erasable memory (024-031 and Z
-   excepted; a RESUME boundary with SubstituteInstruction set counts). On a
+   excepted; A, L and Q at 16 bits; a RESUME boundary with
+   SubstituteInstruction set counts). On a
    match the native side takes yaAGC's timers 024-031, channels 3/4, channel
    13 bit 15 and the interrupt requests raised up to the match. On a
    mismatch the routine is reported and the timing comes from yaAGC's first
@@ -329,8 +431,88 @@ port) runs one mission:
    `036377` and `057777` for IMU operate, PGNCS control and AUTO, so
    DAPIDLER starts the DAP); `FLIGHT_POKE=CS:ADDR=VALUE,...` sets erasable
    words at the first sample point at or after CS centiseconds (e.g.
-   `5000:035=02000` moves CDUY). The reference keeps up to 8,191
-   centiseconds.
+   `5000:035=02000` moves CDUY); `FLIGHT_LOAD=CS:FILE,...` sets the
+   erasable words of a load file (octal `ADDR VALUE` lines, `#` comments;
+   tools/flight_scenarios/) the same way; `FLIGHT_CH32` and `FLIGHT_CH33`
+   set those input channels as `FLIGHT_CH30` does. In the keys argument,
+   `@CS` holds the next key until CS centiseconds (keys otherwise go every
+   half second from 2 s). The reference keeps up to 32,767 centiseconds.
+   `FLIGHT_ENGINE=KG` (LM) adds a minimal descent engine, the same on both
+   sides at each sample point: from ENGONFLG it thrusts at 10% (373
+   throttle bits of 12.53 N), follows each throttle command (PSEUDO55 when
+   TTHROT changes) up to FMAXPOS, burns KG kilograms down at DPSVEX, and
+   adds its velocity to PIPAX-Z (1 cm/s a count) along body X from CDUY
+   and CDUZ. No attitude dynamics: while it burns, CDUX-Z are set to the
+   DAP's desired angles CDUXD-ZD. `FLIGHT_AERO=B` (CM) adds drag and lift
+   for a capsule of ballistic coefficient B kg/m^2 and L/D 0.3: while
+   SERVICER runs and the CM is below 140 km, each sample point takes the
+   trajectory from the AGC's own RN and VN (exact PIPAs make its
+   navigation the truth), puts drag (an exponential atmosphere, 6.7 km
+   scale height, against the earth-relative velocity) and lift turned by
+   the commanded roll ROLLC into PIPAX-Z (5.85 cm/s a count, through
+   REFSMMAT). No attitude dynamics: while P62 waits for the maneuver to
+   entry attitude (P63FLAG +1), CDUX-Z are set to the desired angles
+   THETAD.
+
+9. **Flight scenarios** (tools/flight_scenarios/, `FLIGHT` in
+   tools/flight_host_differential.py). `lm-p63-descent`: lm_p63.py writes
+   lm-p63.load, a synthetic but self-consistent P63 start loaded at 20 s
+   (state vector in a 15 x 110 km descent orbit, REFSMMAT, Tranquility
+   RLS, braking and approach targets, ignition criteria, mass). With the
+   IMU operating, PGNCS, AUTO, auto throttle and the LR antenna in position
+   1, the keys run V37E63E, proceed at the TIG display, ENTER on fine align
+   (R51), proceed and then ENTER on the attitude maneuver (R60), and
+   proceed on V99N62: ignition at 146 s, SERVICER, LUNLAND and QUADGUID
+   every 2 s from 172 s. Without an engine DVMON flashes V97 (thrust fail).
+   `lm-p63-descent-thrust` adds `FLIGHT_ENGINE=15100`: DVMON passes and the
+   LLGE throttles and steers the braking phase (yaAGC alone reaches P64 at
+   787 s and 4,000 ft at 900 s). Both run under scaled time x1 with
+   `FLIGHT_SWAP_MCT=0` (the DAP pinned): unscaled, yaAGC's TIME3 can tick
+   between WAITLIST's CS TIME3 and XCH TIME3, which a native routine
+   cannot match (LST1 one count apart from 0.63 s on with the IMU
+   operating); with 20 ms swaps the DAP's ~40 loads a second leave the CPU
+   no idle time, and no key is taken.
+   On base df172441: `lm-p63-descent` runs 1,127,577 native routines in
+   250 s (154,791 bridged instructions) and `lm-p63-descent-thrust`
+   1,276,118 in 300 s (252,398 bridged), both in P63 at the end. Each has
+   8 routines yaAGC did not match, all compiled interpretive ones
+   (INTEGRATION_INITIALIZATION, GIMBAL_LOCK, KALCMANU_STEERING) leaving Q
+   without the sign extension yaAGC gives it (040000 for 0140000), and 75
+   unregistered or refused points, 47 of them in INTERPRETER.agc.
+   `cm-entry`: cm_entry.py writes cm-entry.load, a synthetic lunar-return
+   entry loaded at 20 s (CSM state vector 150 s before an entry interface
+   at 400,000 ft, 11.03 km/s and -6.5 degrees; REFSMMAT with Y along the
+   orbit normal, as S61.1 checks; splash point 2,400 km downrange; EMS
+   altitude, trim angle and L/D pads). With the IMU operating and
+   `FLIGHT_AERO=355`, the keys run V37E61E and proceed through P61 (N61,
+   N60, N63) and P62 (separation request V50N25 00041, then N61); P63
+   senses 0.05 g and P64 and P67 fly the roll. yaAGC alone: P63 at 99 s,
+   P64 at 204 s, P67 at 306 s, peak 6.7 g, and at drogue conditions
+   (470 s, 24 km, 650 m/s) N66 shows about 1 nm crossrange and 2 nm
+   downrange error. On base 4f0e3d4a the native run (32,000 cs, scaled x1)
+   takes 1,432,112 routines (11,557 bridged instructions) and is in P67
+   at the end; 1 routine yaAGC did not match (INTEGRATION_INITIALIZATION's
+   compiled interpretive Q, as above) and 16 unregistered or refused
+   points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
+
+10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
+   docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
+   `tools/flight_host_differential.py` builds a local engine variant whose
+   `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
+   cycles their counts take) and the IMU CDU drive, which bursts on
+   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   AGC clock then runs only as the flight resident runs it: a modeled C64
+   wall clock advances by each span's AGC machine cycles times K, plus
+   20 ms for each module swap (the VICE load cost; `FLIGHT_SWAP_MCT`
+   sets it in AGC machine cycles, 1,707 by default), each optionally
+   jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
+   D × 10 ms of it, and at each native boundary at most LAG of them become
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
+   code takes its periods between instructions. Lockstep then compares the
+   clock counters too and adopts nothing from yaAGC, so every routine must
+   match yaAGC run from the same state under the same periods, and the
+   run as a whole is one yaAGC run under that tick schedule. No
+   free-running reference runs, and no samples are compared.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.

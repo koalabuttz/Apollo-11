@@ -21,20 +21,27 @@ static agc_word *ic_image;
 #endif
 /* INTERP_EXTENSION (flight build): the cold math bodies (XT) live in the
  * interpreter extension, RAM under I/O at $D000-$DFFF, loaded once with
- * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope (the REU
- * registers are I/O) and are reached only through the order tables, whose
+ * the interpreter (docs/INTERPRETER-RUNTIME.md). They read no rope themselves
+ * (the REU registers are I/O; fixed_indexed, in the job slot, banks I/O in
+ * for its read) and are reached only through the order tables, whose
  * calls bank I/O out ($01 = $34). */
 #if defined(__mos__) && AGC_FIXED_IMAGE && INTERP_EXTENSION
 #define XT __attribute__((section(".interp_ext")))
-/* Around every order-table call (no table body reads the rope); the
- * resident's IRQ entry saves $01 and banks I/O in. */
+/* Around every order-table call (a table body reads the rope only through
+ * fixed_indexed, which banks I/O back in); the resident's IRQ entry saves $01
+ * and banks I/O in. */
 static uint8_t xt_mem;
 #define XT_IN (xt_mem = *(volatile uint8_t *)1, *(volatile uint8_t *)1 = 0x34)
 #define XT_OUT (*(volatile uint8_t *)1 = xt_mem)
+/* A rope read from under an order-table call: I/O in for the REU. */
+#define RD_IN uint8_t rd_mem = *(volatile uint8_t *)1; *(volatile uint8_t *)1 = rd_mem | 1u
+#define RD_OUT (*(volatile uint8_t *)1 = rd_mem)
 #else
 #define XT
 #define XT_IN ((void)0)
 #define XT_OUT ((void)0)
+#define RD_IN ((void)0)
+#define RD_OUT ((void)0)
 #endif
 static p66_bias_io *io;
 static NI const agc_word *kop(void);
@@ -960,18 +967,19 @@ static NI uint8_t lmi_push(void){
 #define SQUARE() ai_square()
 #define DDOUBL() ai_ddoubl()
 #define AUGA() ai_aug(0u)
-/* INDEX v; CAF k for k in FIXED_FIXED 04730-04777 (the bit table runs
- * BIT15 04735 to BIT1 04753), v taken as a one's-complement index. */
+static NI uint16_t phys(unsigned a, agc_word b);
+static NI uint8_t rope(uint16_t p, agc_word *w);
+/* INDEX v; CAF k (k a FIXED_FIXED constant: the bit table runs BIT15 04735
+ * to BIT1 04753), v taken as a one's-complement index: the rope word at
+ * k + v (under FB in 02000-03777), as the AGC reads it, wherever the index
+ * lands (#224). One that leaves fixed memory (no legal state's does) reads 0.
+ * Order-table bodies call it with I/O banked out (XT_IN). */
 static NI agc_word fixed_indexed(unsigned k,agc_word v){
- static const agc_word t[]={01007,02,037777,037777,057777,040000,020000,010000,04000,02000,01000,0400,0200,0100,
-#ifdef INTERP_COMANCHE
-  /* Comanche055 has no OCT33 and OCT35 here (pool at 04774). */
-  040,020,010,04,02,01,077777,0,05,07,013,015,017,030,032,045,046,050,055,060,062,0120,0140,0144,0310,0401};
-#else
-  040,020,010,04,02,01,077777,0,05,07,013,015,017,030,033,035,032,045,046,050,055,060,062,0120,0140,0144};
-#endif
- int i=(int)k-(int)IF_(04730,04774)+signed_word((agc_word)(v&077777u));
- return i>=0&&i<(int)(sizeof t/sizeof t[0])?t[i]:0u;
+ uint16_t a=(uint16_t)(k+(unsigned)signed_word((agc_word)(v&077777u)));agc_word w=0;
+ RD_IN;
+ if(a>=02000u&&a<010000u)(void)rope(phys(a,W[rFB]),&w);
+ RD_OUT;
+ return w;
 }
 #define BIT15_AT IF_(04735u,05001u)
 #define BIT14_AT IF_(04736u,05002u)
@@ -1982,9 +1990,14 @@ static NI void lmi_call(void){
 }
 static NI void lmi_goto_any(void){
  /* GOTO CA POLISH; MASK HIGH4; BZF GOTOERS (an erasable CADR is fetched,
-  * through the work area or the EBANK it names, until a fixed one). */
+  * through the work area or the EBANK it names, until a fixed one). A cycle
+  * of erasable CADRs never ends (the AGC loops until the night watchman
+  * restarts it): after 64 hops the job is handed back at GOTO with the
+  * current POLISH, where the next step goes on looping, so interrupts and
+  * the resident still run (#224). */
+ uint8_t c,n=64u;
  for(;;){
-  uint8_t c;
+  if(!--n){W[5]=IF_(06646,06615);return;}
   CA(rPOLISH);MASKF(074000u);
   if(!ai_bzf())break;
   CA(rPOLISH);ADF(ENDVAC_NEG);c=CCS(rA);
@@ -2050,15 +2063,16 @@ enum { DONE = 0, MORE = 1, REFUSE = 2 };
 static const agc_word t_indjump[32] = IRT_INDJUMP, miscjump[16] = IRT_MISCJUMP, unajump[15] = IRT_UNAJUMP;
 
 /* Physical rope address of fixed logical address a under bank register b
- * (FB or BANKSET's bits 14-11) and the channel-7 superbank bits; 0xffff for
- * erasable or outside the rope. */
+ * (FB or BANKSET's bits 14-11) and the channel-7 superbank bits (0, 1, 2
+ * and 3 the same banks, as in flight with SUPERBNK 3; 4 banks 040-043);
+ * 0xffff for erasable or outside the rope. */
 static NI uint16_t phys(unsigned a, agc_word b)
 {
     unsigned bank, sb = io->superbank & 0160u;
     if (a >= 04000u) return (uint16_t)(2048u + (a & 07777u) - 04000u);
     if (a < 02000u) return 0xffffu;
     bank = (b >> 10) & 037u;
-    if (bank >= 030u && sb) {
+    if (bank >= 030u && (sb & 0100u)) {
         if (sb != 0100u) return 0xffffu;
         bank += 010u;
     }
@@ -2152,6 +2166,8 @@ static const plain_order unary_orders[12] = {
     lmi_vdef, lmi_unit, lmi_abvalabs, lmi_vsq
 };
 
+static NI uint8_t misc_body(uint8_t c);
+
 /* One order with code c (OPJUMP done: CYR holds it, A its CCS). */
 static NI uint8_t order(uint8_t c)
 {
@@ -2170,28 +2186,9 @@ static NI uint8_t order(uint8_t c)
         return addr_body(idx);
     }
     if (c & 2u) {
-        idx = c >> 3;
         if (!code_word(1u)) return REFUSE;
-        lmi_misc(cw, miscjump[idx]);
-        if (idx < 014u) g = misc_orders[idx]();
-        else if (idx == 014u) {
-            (void)ai_ccs(rCYR);
-            if (!(c & 4u)) { lmi_rtb(); return DONE; }
-            g = lmi_bhiz();
-        } else if (idx == 015u) {
-            if (c & 4u) { lmi_ita(); return MORE; }
-            lmi_call(); g = 1;
-        } else if (idx == 016u) {
-            if (!lmi_switch()) return MORE;
-            if (!code_word(1u)) return REFUSE;
-            swbranch(cw); return DONE;
-        } else {
-            g = lmi_bov();
-            if (g == LMI_BOV_RTB) { lmi_rtb(); return DONE; }
-            if (g == LMI_BOV_OUT_OF_SCOPE) return DONE;
-        }
-        if (g) { lmi_goto_any(); return DONE; }
-        return MORE;
+        lmi_misc(cw, miscjump[c >> 3]);
+        return misc_body(c);
     }
     if (c & 4u) {
         lmi_short_dispatch();
@@ -2214,6 +2211,31 @@ static NI uint8_t order(uint8_t c)
     lmi_push(); return MORE;
 }
 
+/* A MISCJUMP body (15BITADR done: Z at MISCJUMP + (c >> 3)) for order code c. */
+static NI uint8_t misc_body(uint8_t c)
+{
+    uint8_t idx = c >> 3, g;
+    if (idx < 014u) g = misc_orders[idx]();
+    else if (idx == 014u) {
+        (void)ai_ccs(rCYR);
+        if (!(c & 4u)) { lmi_rtb(); return DONE; }
+        g = lmi_bhiz();
+    } else if (idx == 015u) {
+        if (c & 4u) { lmi_ita(); return MORE; }
+        lmi_call(); g = 1;
+    } else if (idx == 016u) {
+        if (!lmi_switch()) return MORE;
+        if (!code_word(1u)) return REFUSE;
+        swbranch(cw); return DONE;
+    } else {
+        g = lmi_bov();
+        if (g == LMI_BOV_RTB) { lmi_rtb(); return DONE; }
+        if (g == LMI_BOV_OUT_OF_SCOPE) return DONE;
+    }
+    if (g) { lmi_goto_any(); return DONE; }
+    return MORE;
+}
+
 /* From the image's Z through the dispatch paths and bodies to the end of
  * the slot. */
 static const agc_word points[] = {
@@ -2230,7 +2252,7 @@ static uint8_t point(void)
 }
 static NI enum exec_status run(void)
 {
-    uint8_t r = MORE, load = 0, guard;
+    uint8_t r = MORE, load, guard, idx;
     for (guard = 0; guard < 16u && r == MORE; ++guard) {
         switch (point()) {
         case P_NEWOPS:
@@ -2248,13 +2270,18 @@ static NI enum exec_status run(void)
             (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB);
             if (W[rNEWJOB]) { W[5] = IRT_CHANG2; return EXEC_OK; }
             ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
-        case P_DODLOAD: lmi_dodload(); load = 0; break;
-        case P_DOVLOAD: lmi_dovload(); load = 1; break;
+        case P_DODLOAD: lmi_dodload(); break;
+        case P_DOVLOAD: lmi_dovload(); break;
         case P_DIRADRES:
-            if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
-            if (cw & 040000u) lmi_diradres_pushup(cw, t_indjump[load ? 000 : 006]);
-            else lmi_diradres(cw, t_indjump[load ? 000 : 006]);
-            r = addr_body(load ? 000 : 006); break;
+            /* The INDJUMP index is in CYR (40000 + code, cycled right:
+             * 20000 + index), as DODLOAD, DOVLOAD or ADDRESS left it. */
+            idx = (uint8_t)(W[rCYR] & 037u);
+            if ((W[rCYR] & 077740u) != 020000u || !code_word(1u)) return EXEC_OUT_OF_SCOPE;
+            if (cw & 040000u) {
+                if (idx == 037u || idx == 004u || idx == 011u) return EXEC_OUT_OF_SCOPE;
+                lmi_diradres_pushup(cw, t_indjump[idx]);
+            } else lmi_diradres(cw, t_indjump[idx]);
+            r = addr_body(idx); break;
         case P_DODLOADX: case P_DOVLOADX:
             load = W[5] == IRT_DOVLOADX;
             if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
@@ -2262,8 +2289,15 @@ static NI enum exec_status run(void)
             lmi_indexed(cw, t_indjump[load ? 000 : 006]);
             r = addr_body(load ? 000 : 006); break;
         case P_B15BITADR:
-            if (!code_word(1u)) return EXEC_OUT_OF_SCOPE;
-            lmi_15bitadr(cw, miscjump[015]); lmi_call(); lmi_goto_any(); return EXEC_OK;
+            /* The MISCJUMP index is CYR's low bits (MASK CYR under LOW7):
+             * after OPJUMP's TS and two CCS, the code cycled right three
+             * places, so CYR is 20000 + index plus 40000 for the code's
+             * bit 4 (CALL or ITA, RTB or BHIZ); STOTC leaves CALLCODE
+             * cycled once, 15. */
+            if ((W[rCYR] & 017760u) || !code_word(1u)) return EXEC_OUT_OF_SCOPE;
+            idx = (uint8_t)(W[rCYR] & 017u);
+            lmi_15bitadr(cw, miscjump[idx]);
+            r = misc_body((uint8_t)(idx << 3 | 2u | (W[rCYR] & 040000u ? 4u : 0u))); break;
         case P_GOTO: lmi_goto_any(); return EXEC_OK;
         case P_SWRETURN: lmi_swreturn(); break;
         case P_INTPRET: lmi_intpret(); return EXEC_OK;
@@ -2279,7 +2313,9 @@ static NI uint8_t sane(void)
     uint8_t v;
     if (W[7] || W[rNEWJOB] > 037777u || W[3] > 03400u || (W[3] & 0377u) || W[6] != (agc_word)((W[4] & 076000u) | (W[3] >> 8))) return 0;
     if (io->interrupt_enabled > 1u || (io->superbank & ~0160u)) return 0;
-    /* FIXLOC at one of the five VAC areas, 0401 + 054 k (all 01xx) */
+    /* FIXLOC at one of the five VAC areas, 0401 + 054 k (all 01xx), or a
+     * NOVAC job's FAKEPRET (MPAC -36D: QPRET at MPAC +6). */
+    if (W[rFIXLOC] == rMPAC - 044u) return 1;
     if ((W[rFIXLOC] >> 8) != 1u) return 0;
     for (v = 1u; v <= 0261u; v += 054u) if (v == (uint8_t)W[rFIXLOC]) return 1;
     return 0;

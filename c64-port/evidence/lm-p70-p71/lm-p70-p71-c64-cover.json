@@ -1,24 +1,195 @@
 {
  "milestone": "lm-p70-p71",
- "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "measured_sources": [
-  "src/agc_hardware_divide.c",
-  "src/agc_image_ops.c",
-  "src/agc_multiword.c",
-  "src/agc_transfer.c",
-  "src/agc_word.c",
-  "src/cm_interp_orders.c",
-  "src/cm_interp_steps.c",
-  "src/lm_interp_orders.c",
-  "src/lm_interp_steps.c",
-  "src/lm_p70_p71.c",
-  "src/rtb_angles.c",
-  "tests/interp_case.c"
+ "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/lm_p70_p71.c": "82519052e954aad488594f03609ee418a91b9fc956ebbe485b85a89f68e92a54",
+  "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
+  "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
+  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
+  "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/interp_case.c": "93f38cb00fd1021533195364b37d5663b20872dd4eed245bb34fe0f899cd8477",
+  "tests/lm_p70_p71_target.c": "353a04afc0c5c23c9bf44e071fff8a559ae7887123c2125ea0c5083f96569374"
+ },
+ "host_cases": 37715,
+ "host_case_stride": 1,
+ "c64_rows": [
+  2572,
+  3092,
+  3584,
+  3612,
+  3620,
+  4116,
+  4148,
+  4220,
+  4440,
+  4644,
+  4716,
+  5168,
+  6208,
+  6684,
+  6696,
+  7692,
+  7748,
+  8704,
+  8712,
+  9032,
+  9220,
+  9736,
+  10256,
+  10760,
+  11268,
+  11788,
+  12304,
+  12800,
+  13316,
+  13824,
+  14340,
+  15272,
+  15554,
+  15920,
+  16395,
+  16516,
+  16640,
+  16666,
+  16687,
+  16758,
+  16840,
+  16875,
+  16984,
+  17043,
+  17075,
+  17299,
+  17827,
+  17936,
+  18488,
+  18980,
+  19718,
+  20108,
+  20784,
+  21036,
+  21508,
+  22176,
+  22552,
+  23044,
+  23643,
+  23847,
+  24080,
+  24140,
+  24660,
+  25104,
+  25652,
+  26136,
+  26656,
+  27184,
+  27836,
+  28284,
+  28704,
+  29184,
+  29779,
+  29855,
+  29987,
+  29988,
+  29991,
+  30132,
+  30424,
+  30860,
+  31240,
+  31968,
+  32412,
+  32776,
+  33284,
+  34320,
+  34828,
+  35840,
+  36368,
+  36880,
+  37388,
+  37892,
+  38400,
+  38924,
+  39432,
+  40008,
+  40452,
+  40960,
+  41480,
+  42068,
+  42548,
+  43008,
+  44876
  ],
- "host_cases_traced": 37747,
- "host_branch_arcs": 854,
- "c64_rows": 101,
- "c64_branch_arcs": 854,
- "host_branches_missing_on_c64": [],
- "c64_vectors": "tests/lm_p70_p71_c64_vectors.h"
+ "host_branch_arcs": 901,
+ "c64_branch_arcs": 901,
+ "arcs_by_source_host_c64": {
+  "src/agc_hardware_divide.c": [
+   21,
+   21
+  ],
+  "src/agc_image_ops.c": [
+   120,
+   120
+  ],
+  "src/agc_multiword.c": [
+   10,
+   10
+  ],
+  "src/agc_transfer.c": [
+   48,
+   48
+  ],
+  "src/agc_word.c": [
+   3,
+   3
+  ],
+  "src/cm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
+   180,
+   180
+  ],
+  "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
+   41,
+   41
+  ],
+  "src/lm_p70_p71.c": [
+   379,
+   379
+  ],
+  "src/rtb_angles.c": [
+   25,
+   25
+  ],
+  "tests/interp_case.c": [
+   45,
+   45
+  ],
+  "tests/lm_p70_p71_target.c": [
+   0,
+   0
+  ],
+  "tools/interp_routine_native.c": [
+   29,
+   29
+  ]
+ },
+ "host_branches_missing_on_c64": []
 }

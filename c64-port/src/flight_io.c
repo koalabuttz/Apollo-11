@@ -27,9 +27,6 @@ void *flight_io_enter(enum flight_io_kind kind,const flight_io *io,const agc_har
   x->channel5=hw->channel5;x->channel6=hw->channel6;x->channel12=hw->channel12;x->channel13=hw->channel13;x->channel14=hw->channel14;
   x->channel15=hw->channel15;x->channel16=io->channel16;x->channel33=hw->channel33;
   x->trap31a=io->trap31a;x->trap31b=io->trap31b;x->trap32=io->trap32;break;}
- case FLIGHT_IO_LM_FLIGHT:{lm_flight_io *x=&b->lm_flight;p66_in(&x->bias,io);
-  x->chan14=hw->channel14;x->chan5=hw->channel5;x->chan6=hw->channel6;x->chan12=hw->channel12;
-  x->chan30=hw->channel30;x->chan31=hw->channel31;x->chan13=hw->channel13;x->chan4=hw->channel4;x->in_isr=hw->in_interrupt;break;}
  case FLIGHT_IO_LM_SV:{lm_sv_io *x=&b->lm_sv;p66_in(&x->control,io);
   x->chan11=hw->channel11;x->chan12=hw->channel12;x->chan32=hw->channel32;x->chan33=hw->channel33;x->undo=io->undo;break;}
  case FLIGHT_IO_LM_LLD:{lm_lld_io *x=&b->lm_lld;p66_in(&x->control,io);x->chan12=hw->channel12;x->chan33=hw->channel33;x->undo=io->undo;break;}
@@ -58,9 +55,6 @@ void flight_io_leave(enum flight_io_kind kind,flight_io *io,agc_hardware *hw,con
   hw->channel5=x->channel5;hw->channel6=x->channel6;hw->channel12=x->channel12;hw->channel13=x->channel13;hw->channel14=x->channel14;
   hw->channel15=x->channel15;io->channel16=x->channel16;hw->channel33=x->channel33;
   io->trap31a=x->trap31a;io->trap31b=x->trap31b;io->trap32=x->trap32;break;}
- case FLIGHT_IO_LM_FLIGHT:{const lm_flight_io *x=&b->lm_flight;p66_out(&x->bias,io);
-  hw->channel14=x->chan14;hw->channel5=x->chan5;hw->channel6=x->chan6;hw->channel12=x->chan12;
-  hw->channel30=x->chan30;hw->channel31=x->chan31;hw->channel13=x->chan13;hw->channel4=x->chan4;hw->in_interrupt=(uint16_t)x->in_isr;break;}
  case FLIGHT_IO_LM_SV:{const lm_sv_io *x=&b->lm_sv;p66_out(&x->control,io);
   hw->channel11=x->chan11;hw->channel12=x->chan12;hw->channel32=x->chan32;hw->channel33=x->chan33;break;}
  case FLIGHT_IO_LM_LLD:{const lm_lld_io *x=&b->lm_lld;p66_out(&x->control,io);hw->channel12=x->chan12;hw->channel33=x->chan33;break;}

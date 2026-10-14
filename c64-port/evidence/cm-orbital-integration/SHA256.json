@@ -3,9 +3,14 @@
   "milestone": "cm-orbital-integration",
   "release": "evidence-cm-orbital-integration",
   "files": {
+    "cm-orbital-integration-c64-cover.json": {
+      "sha256": "df48fb97c396c2010d0175413051e384d85a873575986dc10142b23254b0835f",
+      "bytes": 17137,
+      "store": "tree"
+    },
     "cm-orbital-integration-differential.log": {
-      "sha256": "db7a98ec5a0d90f1355fa0d690a99cf4be18b8cd69e345dc832f60dc85f23f78",
-      "bytes": 15807,
+      "sha256": "22fe9134538c39c77e77f0eb33f87bd6fca70f24b944715fac50ba7cfb1e5527",
+      "bytes": 15966,
       "store": "tree"
     },
     "cm-orbital-integration-host.log": {
@@ -14,8 +19,8 @@
       "store": "tree"
     },
     "cm-orbital-integration-proof.json": {
-      "sha256": "4bcd1f2ce4241f864c39a13f7a5baa72eebeb11b4ef73456535b11b7fc08dc42",
-      "bytes": 85476,
+      "sha256": "c1d6da2cfc38ab00a7303676e85aafb26e22a029e160709c843f0a83e3464534",
+      "bytes": 81599,
       "store": "tree"
     },
     "cm-orbital-integration-source-map.json": {
@@ -24,8 +29,8 @@
       "store": "tree"
     },
     "cm-orbital-integration-vice.log": {
-      "sha256": "bc6f4b7b420dc71c5f096ef7775bcfb55a7f3cbfea7e69f046b4e5c195fd7f8c",
-      "bytes": 8029,
+      "sha256": "bd0818b4df3974dbf8e189887fc42e439e97105d7562edb914633327a46eef4f",
+      "bytes": 8654,
       "store": "tree"
     }
   }

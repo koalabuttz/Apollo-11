@@ -1,0 +1,10 @@
+PASS: 2048 lm-radar-leadin-routines cases equal the original programs (8 routines)
+  LM 25,2003 RADSAMP: 05203 x222, 05261 x34
+  LM 25,2011 : 05072 x256
+  LM 25,2015 : 05261 x256
+  LM 25,2023 DORSAMP: 04622 x256
+  LM 25,2024 : 04616 x256
+  LM 25,2026 : 05155 x256
+  LM 25,2027 DORSAMP2: 05155 x256
+  LM 25,2047 VARADAR: 04622 x256
+froze 64 vectors to tests/lm_radar_leadin_routines_vectors.h

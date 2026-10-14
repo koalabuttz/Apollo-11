@@ -89,8 +89,11 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
 static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
  image->words[025]=0;rk_device.interrupt_enabled=0;
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
- image->words[025]=0;t=rk_ticks;irq=ov2_irq_count;d=rk_dilation;
- while((uint16_t)(ov2_irq_count-irq)<5u){}
+ image->words[025]=0;t=rk_ticks;d=rk_dilation;
+ /* The count is read twice each time: one read between its two bytes'
+  * carry can tear (it ended the wait early in the x0.5 build). */
+ do irq=ov2_irq_count; while(irq!=ov2_irq_count);
+ for(;;){uint16_t a=ov2_irq_count;if(a==ov2_irq_count&&(uint16_t)(a-irq)>=5u)break;}
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
  expect((uint16_t)(rk_ticks-t)>=5u&&image->words[025]==RK_TICK_LAG&&
         rk_dilation-d==(uint16_t)(rk_ticks-t-RK_TICK_LAG),11);
@@ -98,7 +101,8 @@ static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
 }
 /* A backlog past the cap with T5 and T6 both coming due in the first tick:
  * one step takes RK_TICK_LAG ticks, drops the rest, and enters T6RUPT
- * alone (AGC priority), with T5RUPT left pending for after its RESUME. */
+ * alone (AGC priority), with T5RUPT left pending for after its RESUME. The
+ * scalers count the periods taken, SCALER2 on SCALER1's overflow. */
 static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
  __asm__ volatile("sei");
  rk_ticks=(uint16_t)(ov2_irq_count-RK_TICK_LAG-7u);d=rk_dilation;
@@ -106,10 +110,12 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
  image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
  image->words[025]=0;image->words[026]=0;image->words[027]=0;
+ rk_hardware.channel4=037740u;rk_hardware.channel3=037777u;   /* SCALER1 overflows in the first period, and SCALER2 with it */
  expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
         rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
         image->words[025]==RK_TICK_LAG&&image->words[026]==RK_TICK_LAG&&
-        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u),18);
+        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u)&&
+        rk_hardware.channel4==(uint16_t)(32u*RK_TICK_LAG-32u)&&rk_hardware.channel3==0u,18);
  rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
  __asm__ volatile("cli");
 }
@@ -126,7 +132,7 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  * free RAM above the mailbox and the boot scratch: the check has no room
  * for it beside the resident. */
 #define VECTOR_ROW ((rk_vector_row *)0xc200)
-typedef char vector_row_fits[sizeof(rk_vector_row)<=0xd000u-0xc200u?1:-1];
+typedef char vector_row_fits[sizeof(rk_vector_row)<=RK_STACK_CANARY-0xc200u?1:-1];
 static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VECTOR_ROW;uint16_t r,stop,n;
  enum exec_status st;uint8_t kind;
  __asm__ volatile("sei");
@@ -148,20 +154,21 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
  rk_pending=0;
  __asm__ volatile("cli");
 }
-/* The boundary-word table from the REU store (loaded once into the task
- * slot to list its records): every key gives its word through
- * rk_fixed_word and the next key that is not in the table gives none; at a fixed-fixed
- * boundary the entry stores that word in BRUPT, and at a fixed point
- * missing from the table it takes nothing and the request stays pending. */
+/* The boundary-word table at the REU store's tail (rk_boundary_entry):
+ * every key gives its word through rk_fixed_word and the next key that is
+ * not in the table gives none; at a fixed-fixed boundary the entry stores
+ * that word in BRUPT, and at a fixed point missing from the table it takes
+ * nothing and the request stays pending. */
 static void boundary_check(apollo_overlay_state *image){uint16_t i,k;agc_word w;uint8_t ok=1,taken=0;
- const rk_boundary_table *t=(const rk_boundary_table *)(uintptr_t)call(APOLLO_OV2_TASK_CONTEXT,RK_MODULE_BOUNDARY,0,0);
- const agc_site_operand *b=t->words;
- for(i=0;i<t->count;++i){k=b[i].physical;
-  if(!rk_fixed_word(&rk_program,k,&w)||w!=b[i].word)ok=0;
-  if((i+1u==t->count||b[i+1u].physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
- expect(ok&&t->count>0u,13);
+ agc_site_operand e,next;
+ for(i=0;i<rk_boundary_count;++i){
+  if(!rk_boundary_entry(i,&e)){ok=0;break;}
+  k=e.physical;
+  if(!rk_fixed_word(&rk_program,k,&w)||w!=e.word)ok=0;
+  if((!rk_boundary_entry((uint16_t)(i+1u),&next)||next.physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
+ expect(ok&&rk_boundary_count>0u,13);
  image->words[0]=0;image->words[4]=RK_PROBE_FB;rk_device.superbank=0;rk_hardware.in_interrupt=0;
- for(i=0;i<t->count;++i){k=b[i].physical;w=b[i].word;
+ for(i=0;rk_boundary_entry(i,&e);++i){k=e.physical;w=e.word;
   if(k<04000u||k>=010000u||w==3u||w==4u||w==6u)continue;   /* fixed-fixed: Z is the key */
   image->words[5]=(agc_word)k;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
   taken=(uint8_t)(rk_rupt_take(&rk_program,image,0,1,&rk_pending)==RK_RUPT_T3&&image->words[017]==w&&

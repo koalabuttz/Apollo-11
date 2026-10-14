@@ -6,7 +6,7 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 
 ## Scope
 
-235 routines, keyed by physical address in `cm_integration_init_basic` and `cm_integration_init_interpretive`:
+241 routines, keyed by physical address in `cm_integration_init_basic` and `cm_integration_init_interpretive`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
@@ -38,6 +38,7 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 | 13,2713  | interpretive | CALL return |
 | 13,2720 MOVEACSM | basic | entry MOVEACSM (MEASUREMENT_INCORPORATION.agc  MOVEACSM) |
 | 13,2731 PTOACSM | interpretive | entry PTOACSM (EXTENDED_VERBS.agc  PTOACSM) |
+| 13,2732  | interpretive | pending DANZIG after RTB MOVEPCSM |
 | 13,2735 CLRMOON | interpretive | entry CLRMOON (ORBITAL_INTEGRATION.agc  CLRMOON) |
 | 13,2741  | interpretive | CHANG2 resume |
 | 13,2742 SETMOON | interpretive | entry SETMOON (ORBITAL_INTEGRATION.agc  SETMOON) |
@@ -126,6 +127,7 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 | 13,3343  | interpretive | CHANG2 resume |
 | 13,3346 DT/2COMP | interpretive | CHANG2 resume |
 | 13,3351  | interpretive | CHANG2 resume |
+| 13,3352  | interpretive | pending DANZIG after RTB SGNAGREE |
 | 13,3354  | interpretive | after RTB SGNAGREE |
 | 13,3355  | interpretive | CHANG2 resume |
 | 13,3357  | interpretive | CHANG2 resume |
@@ -170,6 +172,7 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 | 13,3561  | interpretive | after RTB LOADTIME |
 | 13,3564  | interpretive | CHANG2 resume |
 | 13,3567 ENTMID2 | interpretive | CALL return |
+| 13,3570  | interpretive | pending DANZIG after RTB LOADTIME |
 | 13,3572  | interpretive | after RTB LOADTIME |
 | 13,3573 ENTMID1 | interpretive | BPL target |
 | 13,3576  | interpretive | CALL return |
@@ -188,11 +191,13 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 | 13,3637  | interpretive | after RTB LOADTIME |
 | 13,3642  | interpretive | CHANG2 resume |
 | 13,3645 TIMEINC | interpretive | CALL return |
+| 13,3646  | interpretive | pending DANZIG after RTB LOADTIME |
 | 13,3650  | interpretive | after RTB LOADTIME |
 | 13,3652 MID2 | interpretive | switch branch target |
 | 13,3655  | interpretive | CHANG2 resume |
 | 13,3657  | interpretive | CHANG2 resume |
 | 13,3661  | interpretive | CHANG2 resume |
+| 13,3662  | interpretive | pending DANZIG after RTB LOADTIME |
 | 13,3664  | interpretive | after RTB LOADTIME |
 | 13,3667  | interpretive | CHANG2 resume |
 | 13,3672  | interpretive | CHANG2 resume |
@@ -234,6 +239,7 @@ Lane G (CM flight). Milestone `cm-integration-init`. How the routines are made a
 | 35,3721  | interpretive | CHANG2 resume |
 | 35,3723  | interpretive | CHANG2 resume |
 | 35,3726  | interpretive | CALL return |
+| 35,3727  | interpretive | pending DANZIG after RTB MOVEACSM |
 | 35,3732  | interpretive | after RTB MOVEACSM |
 | 35,3736  | interpretive | CHANG2 resume |
 | 35,3740  | interpretive | switch branch target |
@@ -250,13 +256,13 @@ Destinations outside the file: ALARM, BANKJUMP, CHANG2, DANZIG, DOWNFLAG, ENDOFJ
 
 ## Domain
 
-Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return. Other erasables take any value.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under EB 6 (the file's `EBANK=`), FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return; at 27,2745 (TC INTWAKUQ) INTWAKUQ holds 03704, the return its QXCH saved. INTSTALL, its EXIT and GOBAC's RVQ also run in NOVAC jobs (V37's fresh start): a quarter of their cases have FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET). The six pairs with an RTB on the left and an order on the right (RTB MOVEPCSM, SGNAGREE, LOADTIME three times, MOVEACSM) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). Other erasables take any value.
 
 ## Evidence
 
 Hashes: `evidence/cm-integration-init/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-integration-init-source-map.json` lists all 685 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-integration-init-differential` runs 256 states per routine (60,160 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-integration-init-proof.json` (`cm-integration-init-differential.log` is the run). One case in 128 is frozen in `tests/cm_integration_init_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-integration-init sanitize-cm-integration-init` runs the 470 frozen cases (`cm-integration-init-host.log`).
-- **C64 execution results.** `make vice-cm-integration-init` runs 9 diagnostic programs with 322 cases (`cm-integration-init-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 60,160 differential cases take: 2691 of 2691 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 123 of 123 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1344 of the 1344 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **Independent assembly comparison.** `make cm-integration-init-differential` runs 256 states per routine (61,696 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-integration-init-proof.json` (`cm-integration-init-differential.log` is the run). One case in 128 is frozen in `tests/cm_integration_init_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-integration-init sanitize-cm-integration-init` runs the 482 frozen cases (`cm-integration-init-host.log`).
+- **C64 execution results.** `make vice-cm-integration-init` runs 12 diagnostic programs with 331 cases (`cm-integration-init-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 61,696 differential cases take: 2793 of 2793 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 123 of 123 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1400 of the 1400 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

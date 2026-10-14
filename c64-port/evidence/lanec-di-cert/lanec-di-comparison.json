@@ -100,6 +100,19 @@
     "LM": 562
    }
   },
+  "di-transfer-c64m": {
+   "suite": "di-transfer-c64m",
+   "cases": 1148,
+   "differing": 0,
+   "refused_unchanged": 38,
+   "native_sha256": "24181333fc5781c31eda4b9946d8f64b8d1fa6b0c5d544ee6b99253954f85579",
+   "oracle_sha256": "3fc04b287118383572dbd8c67cddebc443954bdcf41f8150e5d78f881d753578",
+   "oracle_crc_sha256": "8849fc4766d714d44ba610cdc5d84d90a5f210f2114e6a4dd1fccb4fce46d433",
+   "accepted_cases_by_mission": {
+    "CM": 548,
+    "LM": 562
+   }
+  },
   "di-refuse": {
    "suite": "di-refuse",
    "cases": 384,
@@ -107,7 +120,7 @@
    "native_sha256": "016149d4a1ca7be45eb2f9fe9799e73a1e33e5f6ffaf141be5c0c00aa7e47698"
   }
  },
- "total_cases": 21216,
+ "total_cases": 22364,
  "total_differing": 0,
- "total_refused_unchanged": 648
+ "total_refused_unchanged": 686
 }

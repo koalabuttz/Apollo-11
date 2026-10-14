@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_interpreter.c tests/lm_interpreter_target.c src/rope_image_host.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_interpreter.c -o build/test-lm-interpreter
+./build/test-lm-interpreter
+lm-interpreter: 1348 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_interpreter.c tests/lm_interpreter_target.c src/rope_image_host.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_lm_interpreter.c -o build/test-lm-interpreter-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-interpreter-sanitize
+lm-interpreter: 1348 checks, 0 failures
+exit 0

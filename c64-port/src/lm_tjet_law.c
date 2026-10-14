@@ -138,7 +138,7 @@ static void rufsetup(agc_image *s,agc_word ret,uint8_t full){
  ai_tc(s,QREG+1u); /* TC Q: Z = ret, Q = 3 */
 }
 
-static enum exec_status tjetlaw(const agc_native_program *p,agc_image *s,void *io){agc_word a;uint8_t c;(void)p;(void)io;
+static enum exec_status tjetlaw(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);agc_word a;uint8_t c;(void)p;(void)io;
  static const agc_word axisdiff[3]={077757u,0u,020u}; /* AXISDIFF -1, 0, +1: DEC -16, +0, 16 B-14 */
  static const agc_word p00375a8[2]={00007u,025605u};  /* .00375A8: 2DEC .00375 B-3 */
  AFR_BIND(s);

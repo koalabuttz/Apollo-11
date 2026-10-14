@@ -3,29 +3,34 @@
   "milestone": "cm-p34-p35",
   "release": "evidence-cm-p34-p35",
   "files": {
+    "cm-p34-p35-c64-cover.json": {
+      "sha256": "d8110f796b06485848a4e9413f51e62cde3a62fd11e59f9b939df7adb1497d37",
+      "bytes": 16874,
+      "store": "tree"
+    },
     "cm-p34-p35-differential.log": {
-      "sha256": "fa35cb5803a3ced0be807fada74f9c34790336331b42ed736a17afde89b6c1f4",
-      "bytes": 12000,
+      "sha256": "e9043f3bca731e4d072c8a87b93647117f89c251ec4387ed9706d250bb042ce9",
+      "bytes": 26446,
       "store": "release"
     },
     "cm-p34-p35-host.log": {
-      "sha256": "9ff1de55a5ebe9581b43234063f915b253013def7912aea5936b0a8826809f75",
-      "bytes": 70,
+      "sha256": "7aeb60958f36fbc8d7c3cdf63c8ac2fc8fe4fff33a9699756d275d6cc6bca53b",
+      "bytes": 542,
       "store": "release"
     },
     "cm-p34-p35-proof.json": {
-      "sha256": "f88690031a7b7b436f8fa2f4356ee9e15b01b86bba33da4e75ecc994183bdc68",
-      "bytes": 20221,
+      "sha256": "894996fe57f08129b4820ef60eb80fee5031b531f71e9fa61bad5d55e205d961",
+      "bytes": 54718,
       "store": "tree"
     },
     "cm-p34-p35-source-map.json": {
-      "sha256": "8a1e0f6e499fbda3994cc5853903fdfdc402a51f22ed3d124992d0d1ba225ecd",
+      "sha256": "ba36ed954424d5fa5d2bf6994f7293dbb209ffbe8aa9be7e5a25eaa7a0dfd6ff",
       "bytes": 146518,
       "store": "tree"
     },
     "cm-p34-p35-vice.log": {
-      "sha256": "85cda85e6547265ad75cbe9bc573131610ccf9bb55921740e4795e089b2bd0c7",
-      "bytes": 1217,
+      "sha256": "3b5d412bd8f48376ad8989dd4a2dcbf67226ad223b86c2c0c3b90284ae9dde0c",
+      "bytes": 41993,
       "store": "release"
     }
   }

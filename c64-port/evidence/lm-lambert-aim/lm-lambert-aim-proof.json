@@ -1,0 +1,234 @@
+{
+ "milestone": "lm-lambert-aim",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 16384,
+ "cases_sha256": "94b79bce8a41ccc96c732223423fc95a205d8e4ce6cb460c63a27c339807e71a",
+ "oracle_sha256": "fd5575542ff34c7229bdad5d37de75c2db3d538efc3acddca5c3bf7a23a9af12",
+ "frozen_vectors": 1028,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0xffffffff",
+   "cases": 55,
+   "case_ids": [
+    180,
+    57,
+    600,
+    1328,
+    1036,
+    1632,
+    2140,
+    2048,
+    2656,
+    2620,
+    2684,
+    2768,
+    2616,
+    2712,
+    3208,
+    4056,
+    4256,
+    4656,
+    5428,
+    5124,
+    5784,
+    6200,
+    6668,
+    7376,
+    7483,
+    7555,
+    7372,
+    7267,
+    7616,
+    7324,
+    7807,
+    7887,
+    8183,
+    7800,
+    7780,
+    7723,
+    8240,
+    8704,
+    9304,
+    9540,
+    9736,
+    10248,
+    10760,
+    11288,
+    11360,
+    11784,
+    12288,
+    12804,
+    12876,
+    13400,
+    13872,
+    14400,
+    14868,
+    15368,
+    15924
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 9,
+  "c64_labels": 9,
+  "host_edges": 1006,
+  "c64_edges": 1006,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 525,
+  "c64_taken": 525,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_lambert_aim.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_lambert_aim_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 507,
+  "edges_host_vectors": 507,
+  "edges_c64": 507,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "LM 35,2450 P31": {
+   "02361": 512
+  },
+  "LM 35,2451 ": {
+   "03712": 512
+  },
+  "LM 35,2453 ": {
+   "06070": 361,
+   "05126": 151
+  },
+  "LM 35,2454 ": {
+   "06070": 380,
+   "05126": 132
+  },
+  "LM 35,2457 ": {
+   "06070": 512
+  },
+  "LM 35,2461 ": {
+   "06070": 377,
+   "05126": 135
+  },
+  "LM 35,2464 ": {
+   "06070": 395,
+   "05126": 117
+  },
+  "LM 35,2465 ": {
+   "06070": 381,
+   "05126": 131
+  },
+  "LM 35,2467 ": {
+   "06070": 381,
+   "05126": 131
+  },
+  "LM 35,2470 ": {
+   "06070": 395,
+   "05126": 117
+  },
+  "LM 35,2472 ": {
+   "06070": 393,
+   "05126": 119
+  },
+  "LM 35,2474 ": {
+   "06070": 386,
+   "05126": 126
+  },
+  "LM 35,2477 ": {
+   "06070": 370,
+   "05126": 142
+  },
+  "LM 35,2500 ": {
+   "06070": 512
+  },
+  "LM 35,2503 ": {
+   "06070": 382,
+   "05126": 130
+  },
+  "LM 35,2505 ": {
+   "06070": 383,
+   "05126": 129
+  },
+  "LM 35,2506 ": {
+   "06070": 374,
+   "05126": 138
+  },
+  "LM 35,2510 ": {
+   "06070": 512
+  },
+  "LM 35,2512 ": {
+   "06070": 388,
+   "05126": 124
+  },
+  "LM 35,2515 ": {
+   "06070": 512
+  },
+  "LM 35,2517 ": {
+   "06070": 512
+  },
+  "LM 35,2521 ": {
+   "06070": 512
+  },
+  "LM 35,2523 ": {
+   "06070": 362,
+   "05126": 150
+  },
+  "LM 35,2525 ": {
+   "06070": 512
+  },
+  "LM 35,2527 ": {
+   "06070": 512
+  },
+  "LM 35,2531 ": {
+   "03712": 396,
+   "05126": 116
+  },
+  "LM 35,2532 ": {
+   "03712": 512
+  },
+  "LM 35,2533 ": {
+   "03712": 512
+  },
+  "LM 35,2535 ": {
+   "03712": 512
+  },
+  "LM 35,2537 ": {
+   "06070": 512
+  },
+  "LM 35,2540 REVN1645": {
+   "06070": 512
+  },
+  "LM 35,2543 ": {
+   "06070": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: CHANG2, P20FLGON, VNPOOH); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

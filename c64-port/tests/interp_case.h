@@ -25,6 +25,17 @@ typedef struct {
  * editing registers and the counters: TIME1-TIME6, the CDUs, PIPAs and the
  * rest) from the seed, before its other edits; without one they stay 0. */
 #define IRC_COUNTERS 0x4000u
+/* InIsr edit (spec 'in_isr'): a case holding an edit whose addr is IRC_ISR
+ * starts with the program's agc_hardware in_interrupt (yaAGC's InIsr) at
+ * its word, and its digest also covers the flag after the run; a case
+ * without one is unchanged. (No channel is 0777.) */
+#define IRC_ISR (IRC_CHANNEL | 0777u)
+/* (A C64 diagnostic carries the InIsr code only when built with -DIRC_IN_ISR.) */
+#if !defined(__mos__) || defined(IRC_IN_ISR)
+#define IRC_ISR_ON 1
+#else
+#define IRC_ISR_ON 0
+#endif
 /* Both edits work on the host; a C64 diagnostic carries their code (about
  * 1.3 KB, which the bigger groups of other files need for their soft stack)
  * only when built with -DIRC_CHANNELS, as the Lane G specs' are. */
@@ -36,7 +47,8 @@ typedef struct {
 enum { IRC_NCH = 10 };
 extern const uint8_t irc_ch_num[IRC_NCH];
 extern agc_word irc_ch[IRC_NCH], irc_trap[3];
-extern uint8_t irc_ch_on;
+extern uint8_t irc_ch_on, irc_isr_on;
+extern uint16_t irc_isr;
 /* Fill all 2048 words from the seed (A and L sign-extended, the special
  * and counter registers 010-061 and ZERO cleared unless the case has the
  * IRC_COUNTERS edit), then apply the edits. */
@@ -61,7 +73,8 @@ unsigned irc_run(const agc_native_program *, apollo_overlay_state *, const irc_c
                  uint16_t max_steps, uint16_t *ie);
 /* The CM io record's channels and traps from irc_ch/irc_trap (save 0), or
  * back into them (save 1). */
-void irc_cm_io(void *cm_io, unsigned save);
+void irc_cm_io(void *cm_io, agc_hardware *h, unsigned save);
+const agc_native_program *irc_cm_begin(const agc_native_program *p, agc_native_program *q, void *cm_io);
 /* Running sums over the kind, the 2048 words (A, L 16-bit) and ie, then the
  * channels and traps when the case set channels. */
 uint32_t irc_digest(unsigned kind, const apollo_overlay_state *, uint16_t ie);

@@ -5,7 +5,7 @@
 CM_T4RUPT_OPTICS_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_T4RUPT_OPTICS_SRC = src/cm_t4rupt_optics.c tests/cm_t4rupt_optics_target.c $(CM_T4RUPT_OPTICS_COMMON)
 CM_T4RUPT_OPTICS_HDR = include/cm_t4rupt_optics.h tests/interp_case.h tests/cm_t4rupt_optics_vectors.h tests/cm_t4rupt_optics_c64_vectors.h
-CM_T4RUPT_OPTICS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_T4RUPT_OPTICS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-t4rupt-optics sanitize-cm-t4rupt-optics c64-cm-t4rupt-optics vice-cm-t4rupt-optics cm-t4rupt-optics-differential
 all: build/test-cm-t4rupt-optics
 test: test-cm-t4rupt-optics

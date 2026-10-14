@@ -10,6 +10,11 @@ hardware; VICE can attach the image directly with -reuimage.
 Inputs are linked module PRGs (two-byte load address, then the 24-byte
 NATV header and payload) and an optional resolver JSON list of
 {"bank":int,"loc":int,"module":int,"selector":int} records.
+
+--tail adds raw data at the very end of the image, ending on its last page
+and inside one 64 KB REU bank, so a reader finds it from the image's page
+count alone, with 16-bit address arithmetic (the flight resident's
+boundary-word table: entries, then a count, tools/resident_boundary_words.py).
 """
 import argparse
 import hashlib
@@ -25,9 +30,17 @@ HEADER = 24
 # Slot class 3: pinned modules at $C000, loaded once at boot by plain DMA
 # (APOLLO_OV2_SLOT_PINNED, BSS zeroed) and only called directly; no resolver
 # record names one either.
-SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA), 2: (0xD000, 0x1000), 3: (0xC000, 0x0C00)}
+# Slot class 4: the pinned task region, the task slot's RAM at $E000 kept for
+# one module (APOLLO_OV2_SLOT_PINNED_TASK): loaded at boot by plain DMA, BSS
+# zeroed, no main; the class-3 module's table list names its tables. A store
+# with one has no task-slot module but one boot-only module (build_image).
+SLOTS = {0: (0x8000, 0x4000), 1: (0xE000, 0x1FFA), 2: (0xD000, 0x1000), 3: (0xC000, 0x0C00),
+         4: (0xE000, 0x1FFA)}
+TASK = 1
 FIXED = 2
 PINNED = 3
+PINNED_TASK = 4
+BOOT_LOADED = (FIXED, PINNED, PINNED_TASK)
 INDEX_ENTRIES = 4096
 INDEX_RECORD = 16
 RESOLVER_RECORD = 8
@@ -82,10 +95,23 @@ def parse_module(path, mission, services):
                 crc16=crc16(payload), payload=payload, sha256=hashlib.sha256(data).hexdigest())
 
 
-def build_image(modules, resolver, mission, services):
+def build_image(modules, resolver, mission, services, tail=b''):
     ids = [m['id'] for m in modules]
     if len(set(ids)) != len(ids):
         raise ValueError('duplicate module identity')
+    # Classes 2 to 4 each load at one fixed address at boot: a second
+    # module of one class would silently replace the first.
+    for slot in BOOT_LOADED:
+        if sum(m['slot'] == slot for m in modules) > 1:
+            raise ValueError(f'more than one slot class {slot} module')
+    # Class 4 keeps the task slot's RAM: a task-slot load would overwrite it.
+    # The one exception is boot's own: a task-slot module no resolver record
+    # names, which boot runs once before it loads class 4 over it (the flight
+    # resident's boundary-word module; boot itself runs in the job slot).
+    task = [m for m in modules if m['slot'] == TASK]
+    if any(m['slot'] == PINNED_TASK for m in modules) and (
+            len(task) > 1 or any(r['module'] == m['id'] for m in task for r in resolver)):
+        raise ValueError('a slot class 4 module shares $E000 with a task-slot module other than one boot-only module')
     by_id = {m['id']: m for m in modules}
     keys = set()
     for r in resolver:
@@ -94,7 +120,7 @@ def build_image(modules, resolver, mission, services):
             raise ValueError(f'duplicate resolver key {key}')
         keys.add(key)
         target = by_id.get(r['module'])
-        if target is None or not 0 <= r['selector'] < target['selectors'] or target['slot'] in (FIXED, PINNED):
+        if target is None or not 0 <= r['selector'] < target['selectors'] or target['slot'] in BOOT_LOADED:
             raise ValueError(f'resolver record {r} names no valid continuation')
     resolver = sorted(resolver, key=lambda r: (r['bank'], r['loc']))
     index_page = 1
@@ -110,7 +136,14 @@ def build_image(modules, resolver, mission, services):
             page = (page // BANK_PAGES + 1) * BANK_PAGES
         placed.append(dict(m, page=page))
         page += size
-    pages = page
+    tail_pages = -(-len(tail) // 256)
+    if len(tail) > 0x10000:
+        raise ValueError(f'tail of {len(tail)} bytes exceeds one 64 KB REU bank')
+    start = page * 256 + (-len(tail)) % 256
+    if tail and start >> 16 != (start + len(tail) - 1) >> 16:
+        page = (page * 256 >> 16) + 1 << 8
+        start = page * 256 + (-len(tail)) % 256
+    pages = page + tail_pages
     image = bytearray(pages * 256)
     struct.pack_into('<4sBBHHHHHH', image, 0, b'NREU', 1, mission, services, len(modules),
                      index_page, resolver_page, len(resolver), pages)
@@ -118,6 +151,8 @@ def build_image(modules, resolver, mission, services):
         struct.pack_into('<5HBB', image, index_page * 256 + m['id'] * INDEX_RECORD,
                          m['id'], m['page'], m['bytes'], m['crc16'], m['selectors'], m['slot'], 1)
         image[m['page'] * 256:m['page'] * 256 + m['bytes']] = m['payload']
+    if tail:
+        image[start:start + len(tail)] = tail
     for i, r in enumerate(resolver):
         struct.pack_into('<4H', image, resolver_page * 256 + i * RESOLVER_RECORD,
                          r['bank'], r['loc'], r['module'], r['selector'])
@@ -187,6 +222,37 @@ def selftest(out_dir, mission=1, services=0x0201):
     return paths, out_dir / 'resolver.json'
 
 
+def selftest_pinned_task(out_dir, mission=1, services=0x0201):
+    """A store with a class-4 module (tests/test_overlay_v2.c, second image):
+    a job module, a boot-only task-slot module, the class-3 module and the
+    class-4 module. Checks first that the packer refuses class 4 beside a
+    task-slot module a record names, two task-slot modules or a second class 4."""
+    def parsed(ident, slot, body, bss):
+        data = synthetic_module(ident, slot, mission, services, 1, body, bss)
+        return dict(id=ident, slot=slot, bytes=len(data) - 2, selectors=1, crc16=crc16(data[2:]),
+                    payload=data[2:], path='', sha256='')
+    named = [dict(bank=0o24000, loc=0o2100, module=0x0301, selector=0)]
+    for extra, records in (([parsed(0x0301, TASK, 200, 8)], named),
+                           ([parsed(0x0301, TASK, 200, 8), parsed(0x0302, TASK, 60, 0)], []),
+                           ([parsed(0x0A05, PINNED_TASK, 60, 0)], [])):
+        try:
+            build_image([parsed(0x0101, 0, 300, 16), parsed(0x0A04, PINNED_TASK, 150, 8), *extra], records,
+                        mission, services)
+        except ValueError:
+            continue
+        raise SystemExit(f'overlay_v2_pack: class 4 packed beside slot class {extra[0]["slot"]}')
+    out_dir.mkdir(parents=True, exist_ok=True)
+    paths = []
+    for ident, slot, selectors, body, bss in [(0x0101, 0, 4, 300, 16), (0x0301, TASK, 1, 200, 8),
+                                              (0x0A03, PINNED, 1, 120, 8), (0x0A04, PINNED_TASK, 1, 150, 8)]:
+        p = out_dir / f'm{ident:04x}.prg'
+        p.write_bytes(synthetic_module(ident, slot, mission, services, selectors, body, bss))
+        paths.append(p)
+    resolver = [dict(bank=0o24000, loc=0o2000, module=0x0101, selector=3)]
+    (out_dir / 'resolver.json').write_text(json.dumps(resolver, indent=1) + '\n')
+    return paths, out_dir / 'resolver.json'
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('modules', nargs='*', type=Path)
@@ -197,16 +263,22 @@ def main():
     p.add_argument('--resident-bytes', type=int, default=26624)
     p.add_argument('--output', type=Path, default=Path('build/overlay-v2.reu'))
     p.add_argument('--manifest', type=Path)
+    p.add_argument('--tail', type=Path, help='raw data the image ends with (see above)')
     p.add_argument('--selftest', type=Path, help='write synthetic modules here and pack them')
+    p.add_argument('--selftest-pinned-task', type=Path,
+                   help='write the synthetic class-4 store\'s modules here and pack them')
     args = p.parse_args()
     mission = 1 if args.mission == 'LM' else 2
     if args.selftest:
         args.modules, args.resolver = selftest(args.selftest, mission, args.services)
+    if args.selftest_pinned_task:
+        args.modules, args.resolver = selftest_pinned_task(args.selftest_pinned_task, mission, args.services)
     if not args.modules:
         p.error('no modules')
     modules = [parse_module(path, mission, args.services) for path in args.modules]
     resolver = json.loads(args.resolver.read_text()) if args.resolver else []
-    image, placed = build_image(modules, resolver, mission, args.services)
+    tail = args.tail.read_bytes() if args.tail else b''
+    image, placed = build_image(modules, resolver, mission, args.services, tail)
     kb = reu_size_kb(len(image))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     # VICE wants the image file to match the configured REU size.
@@ -216,7 +288,7 @@ def main():
         image_sha256=hashlib.sha256(image).hexdigest(),
         modules=[{k: m[k] for k in ('id', 'slot', 'bytes', 'selectors', 'crc16', 'page', 'path', 'sha256')}
                  for m in placed],
-        resolver_records=len(resolver),
+        resolver_records=len(resolver), tail_bytes=len(tail),
         disk_plan=disk_plan(len(image), args.resident_bytes, args.mission))
     out = args.manifest or args.output.with_suffix('.json')
     out.write_text(json.dumps(manifest, indent=1) + '\n')

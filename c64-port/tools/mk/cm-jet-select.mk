@@ -5,7 +5,7 @@
 CM_JET_SELECT_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 CM_JET_SELECT_SRC = src/cm_jet_select.c tests/cm_jet_select_target.c $(CM_JET_SELECT_COMMON)
 CM_JET_SELECT_HDR = include/cm_jet_select.h tests/interp_case.h tests/cm_jet_select_vectors.h tests/cm_jet_select_c64_vectors.h
-CM_JET_SELECT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+CM_JET_SELECT_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-jet-select sanitize-cm-jet-select c64-cm-jet-select vice-cm-jet-select cm-jet-select-differential
 all: build/test-cm-jet-select
 test: test-cm-jet-select

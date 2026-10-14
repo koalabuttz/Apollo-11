@@ -19,7 +19,12 @@ zeroes its BSS and runs its main once to build its table list
 task slots', and no run loads it. Boot writes a canary at $CC00, the
 stack's last byte; a resident step that finds it changed (the stack ran
 into the pinned module) returns `EXEC_INVALID_ACTION` before running
-anything. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
+anything. A store can also keep the task slot's RAM for one module, slot
+class 4 (`APOLLO_OV2_SLOT_PINNED_TASK`): boot loads it at $E000 by plain
+DMA and zeroes its BSS before the class-3 main runs, and that main's table
+list names its tables, so `rk_direct` reaches both regions through
+`rk_pinned`. Such a store has no task-slot modules (the packer refuses
+them), so task runs load into the job slot. The RAM under I/O, $D000-$DFFF, is the interpreter extension:
 up to 4 KB of cold math bodies, slot class 2 (`APOLLO_OV2_SLOT_FIXED`). Boot
 loads every class-2 module there once (`apollo_reu_store_fixed`,
 `rk_hidden_dma`): the REU registers are set with I/O in, the command is armed
@@ -29,11 +34,12 @@ acknowledge CIA1 and restores it.
 
 The top of the service-table page holds the device records flight modules
 reach by absolute address (`--defsym` at link, `RK_HARDWARE`,
-`RK_FLIGHT_IO`, `RK_CM_CHANNELS` in `resident_flight.h`): `rk_hardware`
-(`agc_hardware`) at $6FBE, `rk_flight` (the `flight_io` fields neither
-`rk_io` nor `agc_hardware` holds) at $6FDC, and on the CM the one
-`cm_channels` record (channels 5, 6, 30-33) at $6FF4, with inputs at the
-values yaAGC starts with. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+`RK_FLIGHT_IO` in `resident_flight.h`): `rk_hardware` (`agc_hardware`) at
+$6FBE, which also holds the channels compiled routines use (5, 6, 30-33 on
+the CM, the LM DAP's channels, built with `-DAGC_CHANNELS_HW=rk_hardware`;
+on the CM inputs 30-33 start at the values yaAGC starts with), and
+`rk_flight` (the `flight_io` fields neither `rk_io` nor `agc_hardware`
+holds) at $6FDC. Below them, at $6FBC (`RK_IRQ_COUNT`), is
 `ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
 (the interpreter) can return to the step when an interrupt arrives, and
 below that, at $6FB8 (`RK_DILATION`), `rk_dilation`, the 32-bit count of
@@ -56,8 +62,8 @@ KERNAL and BASIC out ($01=$35), sets the resident RAM interrupt vectors,
 starts CIA1 timer A at 10 ms × `RK_TIME_DIVISOR` (PAL latch 9851 at the
 default 1), fills
 the kernel's routine tables, opens the REU store and verifies it,
-initializes the runtime on the image at $7000, and runs the boundary-word
-module once to find its table (below).
+initializes the runtime on the image at $7000, and reads where the
+boundary-word table lies from the store's last four bytes (below).
 
 `rk_resident_step()` joins the kernel, the AGC clock and the modules. It
 first runs the clock and takes a pending interrupt (below), then one
@@ -105,7 +111,10 @@ ASan/UBSan.
 
 - `rk_timer_tick` is one 10 ms scaler period. TIME1 counts, and its
   overflow counts TIME2. TIME3, TIME4 and TIME5 count, and an overflow
-  requests T3RUPT, T4RUPT or T5RUPT. While channel 13 bit 15 is set, TIME6
+  requests T3RUPT, T4RUPT or T5RUPT. The scalers count AGC time with
+  them: SCALER1 (channel 4) by 32, as it counts 3,200 times a second, and
+  SCALER2 (channel 3) on its overflow. Before scaled time the C64 never
+  advanced them at all. While channel 13 bit 15 is set, TIME6
   takes its sixteen 1/1600 s DINCs. +1 and -1 step to -0 through the one's
   complement adder, and a DINC of ±0 requests T6RUPT and clears the bit.
   T6RUPT therefore lands at the end of the 10 ms period, not at its 0.625
@@ -140,8 +149,9 @@ which every flight build shares):
   of TIME3-TIME6 requests, and AGC time stretches by exactly the dropped
   ticks. Wall time is AGC time plus `rk_dilation` periods.
 - `RK_TIME_DIVISOR` (default 1): AGC time at 1/n of wall time, by a CIA1
-  latch of 9852 × n − 1. A fixed x0.5 build (`RK_TIME_DIVISOR=2`) runs
-  nightly only.
+  latch of 9852 × n − 1. `make vice-resident-flight-half` builds the
+  resident at x0.5 in build/resident-flight-half and runs the clock checks
+  (part 4). It has no `c64-` twin, so only full and nightly runs take it.
 
 Ticks are counted as wall-clock interrupts and dropped whole, so a
 dropped tick never splits a timer period: TIME1-TIME6 step together, in
@@ -153,6 +163,39 @@ discretes must reach the AGC on its clock (at a step, through the image or
 `rk_hardware`), never from a C64 wall-clock source in between. A lane that
 models an input against wall time breaks the equivalence and must instead
 schedule it in AGC periods.
+
+The proof is a replay against yaAGC (docs/FLIGHT-STORE.md, host
+differential, scaled time): `tools/flight_host_differential.py` runs
+`tools/flight_host_run.c` with yaAGC's own clock frozen and the AGC clock
+driven by a modeled C64 tick schedule through the same cap, and every
+native routine must match yaAGC run from the same state under the same
+periods, the clock counters included. Under every schedule both sides see
+the same AGC-time events, so the run is one yaAGC run on an AGC whose
+clock ran at the schedule's speed. On 30 s of AGC time:
+
+| Scenario | Schedule (K, D, lag, seed) | Native routines | yaAGC did not match | Periods taken / dropped |
+|---|---|---|---|---|
+| LM V37E12E | x1 (1, 1, 2) | 77,140 | 0 | 3,000 / 8 |
+| LM V37E12E | x0.5 (1.7, 2, 2) | 120,442 | 0 | 3,005 / 0 |
+| LM V37E12E | overrun (4, 1, 2, 1) | 16,839 | 0 | 3,000 / 1,228 |
+| LM V37E12E, DAP running | x1 | 52,885 | 0 | 3,004 / 47 |
+| LM V37E12E, DAP running | x0.5 | 98,239 | 0 | 3,000 / 0 |
+| LM V37E12E, DAP running | overrun | 12,534 | 0 | 3,101 / 1,304 |
+| CM V37E06E | x1 | 160,987 | 0 | 3,000 / 5 |
+| CM V37E06E | x0.5 | 209,481 | 0 | 3,000 / 0 |
+| CM V37E06E | overrun | 30,257 | 0 | 3,002 / 398 |
+
+K is the C64's slowdown over the AGC, D the time divisor; x0.5 is the
+half-speed build on a C64 1.7 times slower than the AGC (the measured LM
+DAP load), and overrun a C64 four times slower with every span jittered
+from 1/4 to 4 times, so module swaps and long spans drop ticks. With the
+DAP running (`FLIGHT_CH30=036377 FLIGHT_CH31=057777`, CDUY moved at
+15 s), the unscaled run misses six DAP routines 92 times each because
+yaAGC's IMU CDU drive drains the CDU command counters 050-052 on its own
+cycle clock and nothing drives them natively. That drive is an
+AGC-visible output the invariant above still has to bring onto AGC time.
+The tick schedule logged from a whole C64 flight run replaces the modeled
+one once the flight image runs end to end.
 
 The resident check (part 4) covers the cap: after five or more CIA
 interrupts TIME1 counts `RK_TICK_LAG` and `rk_dilation` the rest, and with
@@ -240,11 +283,19 @@ and writes `platform/c64/resident_boundary_words_<m>.h`: 69 LM and 61 CM
 sorted {physical key, word} records. A key the listing has no word for is
 an error.
 
-The table lives in the REU store as a task-slot data module (lane A id
-0x01E0, `platform/c64/resident_boundary_module.c`), not in the resident.
-Boot runs it once for the table's address in the image; after that
-`rk_fixed_word` binary-searches it in the REU with one 4-byte DMA per probe,
-as the store's resolver does, and never loads it again. A key that is not in
+The table lives at the end of the REU store image, not in the resident and
+not in any slot, so it grows with the store's resolver records (the
+whole-program store: about 2,500 LM and 2,800 CM words, past what one task
+slot holds). The packer writes it there (`tools/overlay_v2_pack.py --tail`,
+`tail_bytes` in the tool above): the entries, then their count and a zero
+word, ending on the image's last page and inside one 64 KB REU bank. Boot
+reads the count from the image's last four bytes and the table's address
+from the page count; after that `rk_boundary_entry` fetches an entry with
+one 4-byte DMA (16-bit address arithmetic, which the one-bank rule allows)
+and `rk_fixed_word` binary-searches them, as the store's resolver does.
+Lane A id 0x01E0 (`platform/c64/resident_boundary_module.c`), which carried
+the table until it outgrew the task slot, is now a null module whose main
+only returns: the load check times a cached call through it. A key that is not in
 the table gives no word, so the interrupt entry refuses to vector there and
 the request stays pending. A store builder that adds resolver records passes
 them with `--resolver lm=JSON` so their keys get words; `make
@@ -272,31 +323,32 @@ about 0.3 KB.
 
 | Component | LM bytes | CM bytes |
 |---|---|---|
-| Kernel (with the seam hooks) | 10,524 | 10,281 |
+| Kernel (with the seam hooks) | 10,493 | 10,256 |
 | Transfer ABI trampoline and Executive call sites | 3,501 | 3,433 |
 | ABI 2 runtime and REU store | 5,235 | 5,235 |
 | Single-precision subroutines and their table | 1,307 | 1,307 |
 | Service table exports | 637 | 637 |
-| AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap) | 1,128 | 1,128 |
-| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module) | 1,467 | 1,484 |
+| AGC timers and interrupt entry (`rk_rupts`, with the scaled-time cap and the scalers) | 1,183 | 1,183 |
+| Resident state, step (with the stack canary), boundary-word reader and direct calls (with the pinned module; a refusing loaded table falls through to the resolver; a direct-only module's point runs in the step that loads it) | 1,512 | 1,530 |
 | IRQ entry (saves and restores $01; its count is at $6FBC) | 24 | 24 |
-| C runtime and library (crt0, multiply, divide, memcpy, memset) | 486 | 486 |
-| **Resident, $0801 to the end of bss** | **24,309** | **24,015** |
-| Free below the service table (of 26,367) | 2,058 | 2,352 |
+| C runtime and library (crt0, multiply, memcpy, memset) | 361 | 361 |
+| **Resident, $0801 to the end of bss** | **24,253** | **23,966** |
+| Free below the service table (of 26,367) | 2,114 | 2,401 |
 | Service table at $6F00 (24 entries) | 72 | 72 |
 | Boot-only, in the job slot (with the $D000 and $C000 boot loads) | 4,216 | 4,195 |
 
 The kernel, including its operand reader (`inline_word`, about 0.7 KB), is
-half of the resident. The seam hooks add 225 LM and 222 CM bytes to the
-kernel, and the NEWJOB/12 in `rk_seams_exchange` pulls in the 125-byte
+half of the resident. The seam hooks add 194 LM and 197 CM bytes to the
+kernel. `rk_seams_exchange` finds the job context by comparing NEWJOB with
+each multiple of 12, because NEWJOB/12 pulled in the 125-byte
 `__udivmodqi4`. The single-precision component measures 172 bytes less
 with its table linked than without it. `rk_fixed_word` is 253 bytes: it
 programs the REU registers itself, because `apollo_reu_transfer`'s 32-bit
-address arithmetic doubled it, and boot runs the boundary-word module
-through `rk_run_module`, because a second caller of `apollo_ov2_run` stops
-LTO inlining it and costs about 450 bytes. The wrappers add 55 bytes to the
+address arithmetic doubled it, and boot runs no module through
+`apollo_ov2_run`, because a second caller stops LTO inlining it and costs
+about 450 bytes. The wrappers add 55 bytes to the
 resident: the step hands each module `rk_env` and returns its status. Both
-missions fit with 2.1-2.4 KB to spare, so the kernel stays as it is.
+missions fit with 2.2-2.4 KB to spare, so the kernel stays as it is.
 
 Since flight modules share the resident's runtime (docs/FLIGHT-STORE.md,
 runtime sharing), the resident exports 21 more services (service table
@@ -403,7 +455,8 @@ results with their PRG hashes (`resident-flight-vice.log`), the size report
 into docs/overlay-allocation.json), the host differential with the seam
 counts (`resident-kernel-host.log`), the SPSIN/SPCOS results
 (`sp-routines-host.log`), the clock and interrupt results against yaAGC
-(`resident-rupt-host.log`), and the `flight_resident` section (with the
+(`resident-rupt-host.log`), the scaled-time replay rows of the host
+differential (`scaled-time-replay.json`), and the `flight_resident` section (with the
 boundary-word table's check in `boundary_words`) of
 `resident-kernel-proof.json` with the source and rope hashes.
 
@@ -411,8 +464,8 @@ boundary-word table's check in `boundary_words`) of
 
 - The flight store's resolver records. The committed boundary-word tables
   hold the check's two probe records; the flight store
-  (`tools/flight_store_build.py`) builds its own boundary-word module with
-  its records (`RK_BOUNDARY_HEADER`).
+  (`tools/flight_store_build.py`) builds its own boundary-word table with
+  its records and ends its store with it.
 - What the interrupt bodies continue into: Waitlist tasks T4RUPT and the
   T5RUPT handlers start, and the other lane's banked code a lead-in reaches.
   The step resolves those through the store like any module once their

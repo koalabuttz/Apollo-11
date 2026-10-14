@@ -69,11 +69,17 @@ resident-boundary-words: | build
 # step catches up, default 2) and `RK_TIME_DIVISOR=n` (AGC time at 1/n of
 # wall time, default 1) reach tools/resident_flight_build.py, and so every
 # flight build, through the environment.
-.PHONY: c64-resident-flight vice-resident-flight resident-flight-size
+.PHONY: c64-resident-flight vice-resident-flight vice-resident-flight-half resident-flight-size
 c64-resident-flight: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
 	python3 tools/resident_flight_build.py --cc $(MOS_CC)
 vice-resident-flight: c64-resident-flight
 	for m in lm cm; do for p in 1 2 3 4 5; do python3 tools/vice_run.py build/resident-flight/$$m-check-$$p.prg --reu build/resident-flight/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done; done
+# Scaled time at x0.5 (RK_TIME_DIVISOR=2): the clock checks (part 4) on a
+# half-speed resident built in its own directory. Full and nightly runs only:
+# it has no c64- target, so tools/ci_affected.py never picks it for a PR.
+vice-resident-flight-half: $(RK_LM_SRC) $(RK_CM_SRC) $(RK_HDR) $(RF_SRC) tools/resident_flight_build.py | build
+	RK_FLIGHT_OUT=build/resident-flight-half RK_TIME_DIVISOR=2 python3 tools/resident_flight_build.py --cc $(MOS_CC)
+	for m in lm cm; do python3 tools/vice_run.py build/resident-flight-half/$$m-check-4.prg --reu build/resident-flight-half/$$m.reu --cycles 3000000000 --timeout 1200 || exit 1; done
 resident-flight-size: c64-resident-flight
 	cat build/resident-flight/sizes.json
 # SPSIN/SPCOS on the transfer ABI (src/sp_routines.c), against the frozen

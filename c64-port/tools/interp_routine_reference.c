@@ -44,8 +44,10 @@ static unsigned loc_physical(void){unsigned loc=get(0164),bank=(get(0165)>>10)&0
  if(loc>=04000u)return 2048u+(loc-04000u);
  return bank*1024u+(loc&01777u);
 }
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
+ if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
+  if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
  dump=argc>4&&!strcmp(argv[4],"dump");InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
@@ -61,6 +63,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   if(c.nedits>4096u)return 2;
   if(c.interrupt_enabled&0x80u){c.interrupt_enabled&=0x7fu;cut=rd16(f);}
   for(i=0;i<c.nedits;++i){edits[i].addr=(uint16_t)rd16(f);edits[i].word=(agc_word)rd16(f);}
+  {unsigned j=0;ret=0xffffu;retloc=0;for(i=0;i<c.nedits;++i){if(through&&edits[i].addr>=0xfffeu){ret=edits[i].word;retloc=edits[i].addr==0xfffeu;}else edits[j++]=edits[i];}c.nedits=(uint16_t)j;}
   c.edits=edits;irc_build(&s,&c);t=&st[c.cm];
   {unsigned snap=0xffffu,snapped=0;if(snapmode){snap=stop;stop=0xffffu;for(i=0;i<2048u;++i)init[i]=s.words[i];}
   machine=baseline[c.cm];
@@ -76,25 +79,40 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
    * to outside the file. */
   {unsigned z0=z_physical(get(RegZ));if(z0<0xfffeu)was_in=!outside(t,z0);}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
-  for(cycles=0;cycles<4000000u;++cycles){
+  if(irc_isr_on)machine.InIsr=irc_isr;
+  for(cycles=0;cycles<maxcycles;++cycles){
    if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap&&snaprow){snapped=stopped=1;break;}
-    if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap){printf("%u S",n);
+    if(snap!=0xffffu&&((pc==t->newops&&(!through||(get(0164)>=02000u&&get(0164)<010000u&&get(0120)==init[0120]))&&loc_physical()==snap)||(through&&pc!=t->newops&&get(0120)==init[0120]&&z_physical(pc)==snap))){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
      printf("\n");snapped=stopped=1;break;}
     if(pc==t->newops&&cut&&loc_physical()==cut){stopped=atcut=1;break;}
+    /* (A snapshot run through outside code ends at its entry's caller
+     * return: Z there, or the interpreter's LOC for an interpretive one.) */
+    if(through&&ret!=0xffffu&&((!retloc&&z_physical(pc)==ret)||(retloc&&pc==t->newops&&get(0120)==init[0120]&&loc_physical()==ret))){stopped=1;break;}
+    /* (IRC_SNAP_THROUGH: a snapshot run goes on through outside code, and
+     * takes LOC only as a word of fixed memory, in the job it began in: FIXLOC
+     * unchanged.) */
+    if(!through){
     if(pc==t->newops){unsigned p=loc_physical();if(flow){unsigned v=get(0120);fprintf(stderr,"F %u %u %u %u %u %u %u %u\n",n,p,(get(0166)-v)&077777u,get(0163),get(v+046),get(v+047),get(v+050),get(v+051));}if(trace==n){printf("T %05o",get(0164));for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i<2u?0177777u:077777u));printf("\n");}if(outside(t,p)){stopped=1;break;}}
     if(trace==n&&getenv("IRC_ZTRACE"))fprintf(stderr,"Z %05o FB %05o A %06o L %06o Q %05o MPAC %05o %05o %05o BUF %05o %05o %05o BUF2 %05o %05o MPTEMP %05o IE %d\n",pc,get(4),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,get(2),get(0154),get(0155),get(0156),get(0130),get(0131),get(0132),get(0134),get(0135),get(0136),machine.AllowInterrupt);
     zp=z_physical(pc);
+    /* (IRC_PENDING_DANZIG, spec 'pending_danzig': DANZIG with a right-hand
+     * order still in EDOP is no stop when LOC is one of the file's RTB
+     * operand words and EDOP its pair's order: the run goes on into the
+     * order, as the native program does through the mission's DANZIG
+     * marker. "danzig key:edop ..." in physical addresses.) */
+    pend=0;if(pendz&&zp==pendz){unsigned l=loc_physical(),e=get(023);for(i=0;i<pendn;++i)if(l==pendk[i]&&e==pende[i])pend=1;}
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
-    if(prev_in){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp))){stopped=1;break;}for(i=0;i<t->nf&&t->from_file[i]!=0xffffu;++i)if(zp==t->from_file[i]){stopped=1;break;}
+    if(prev_in&&!pend){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp))){stopped=1;break;}for(i=0;i<t->nf&&t->from_file[i]!=0xffffu;++i)if(zp==t->from_file[i]){stopped=1;break;}
 }
     /* (any: only once Z has been in the file's own words.) */
-    if(t->any&&was_in&&zp<0xfffeu&&zp!=t->intpret&&outside(t,zp))stopped=1;
+    if(!pend&&t->any&&was_in&&zp<0xfffeu&&zp!=t->intpret&&outside(t,zp))stopped=1;
     if(zp<0xfffeu)was_in=!outside(t,zp);
-    for(i=0;i<t->n;++i)if(zp==t->ext[i]||(pc<02000u&&t->ext[i]==(0xc000u|pc))){stopped=1;break;}
+    if(!pend)for(i=0;i<t->n;++i)if(zp==t->ext[i]||(pc<02000u&&t->ext[i]==(0xc000u|pc))){stopped=1;break;}
     if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
+    }
     if(stopped)break;
    }
    machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
@@ -105,6 +123,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,trace=geten
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));
   for(i=0;i<t->nd;++i)s.words[t->device[i]]=keep[i];}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)irc_ch[i]=(agc_word)((unsigned)machine.InputChannel[irc_ch_num[i]]&077777u);irc_trap[0]=(agc_word)machine.Trap31A;irc_trap[1]=(agc_word)machine.Trap31B;irc_trap[2]=(agc_word)machine.Trap32;}
+  if(irc_isr_on)irc_isr=(uint16_t)machine.InIsr;
   printf("%u 0 %u %lu",n,pc,(unsigned long)irc_digest(0,&s,(uint16_t)machine.AllowInterrupt));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)s.words[i]);printf(" %u",(unsigned)machine.AllowInterrupt);}
   printf("\n");

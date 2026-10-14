@@ -51,9 +51,13 @@ _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks
 #define RK_DILATION 0x6fb8u
 extern uint32_t rk_dilation;
 /* The resident's own modules (lane A numbers 0xe0-0xef). */
-#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* task slot, data */
-/* What the boundary-word module (resident_boundary_module.c) hands boot. */
-typedef struct { const agc_site_operand *words; uint16_t count; } rk_boundary_table;
+#define RK_MODULE_BOUNDARY APOLLO_OV2_ID(APOLLO_LANE_A,0xe0)   /* null module (resident_boundary_module.c) */
+/* The boundary-word table, which ends the REU store image
+ * (tools/overlay_v2_pack.py --tail): its entries (sorted by physical key)
+ * and their count, which boot reads; entry i, by REU fetch (false past the
+ * end or on a DMA fault). */
+extern uint16_t rk_boundary_count;
+bool rk_boundary_entry(uint16_t i,agc_site_operand *entry);
 /* What the step hands every module in frame value: the resident program
  * (tables, hardware, fixed_data, site operands) and io. A module that
  * runs AGC routines (the interrupt-body wrappers) reports a routine's
@@ -107,18 +111,11 @@ extern rk_module_env rk_env;
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
 #define RK_MODULE_LM_T6 APOLLO_OV2_ID(APOLLO_LANE_A,0xe4)      /* task slot, LM only */
-/* CM: the one cm_channels record (include/cm_native_image.h: RCS jet
- * channels 5 and 6, input channels 30-33), at the top of the service-table
- * page. The resident defines it there and every CM flight module links
- * --defsym=cm_channels=RK_CM_CHANNELS (tools/flight_store_build.py), so no
- * module keeps a private copy in its slot. Interim until agc_hardware
- * carries these channels. */
-#define RK_CM_CHANNELS 0x6ff4u
 /* The flight program's device fields neither rk_io nor agc_hardware holds
  * (include/flight_io.h flight_io: channels 16, 34, 35, the trap and alarm
  * latches, ...), for the modules whose tables take another io record. Its
  * superbank and interrupt_enabled are copies, refreshed from rk_device
- * around each such run. At RK_FLIGHT_IO, below cm_channels. */
+ * around each such run. At RK_FLIGHT_IO. */
 #define RK_FLIGHT_IO 0x6fdcu
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */
@@ -155,11 +152,13 @@ extern uint16_t rk_pending, rk_ticks;
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
- * verified, the runtime initialized on the image at $7000, and the
- * fixed-extension modules (slot class 2) loaded at $D000, the pinned
- * module (slot class 3, at most one) loaded at $C000 and its tables built
- * (rk_pinned), the boundary-word module run once for its table
- * (rk_fixed_word), and the stack canary written. Returns 0, or 1 (store
+ * verified, the runtime initialized on the image at $7000, the
+ * boundary-word module (task slot) run once for its table (rk_fixed_word),
+ * then the fixed-extension modules (slot class 2) loaded at $D000, the
+ * pinned module (slot class 3, at most one) loaded at $C000 and the pinned
+ * task region (slot class 4, at most one) at $E000, over the boundary-word
+ * module, then the class-3 module's tables built (rk_pinned; they may name
+ * class-4 tables), and the stack canary written. Returns 0, or 1 (store
  * header), 2 (store contents), 3 (boundary-word module) or 4 (a
  * fixed-extension or pinned load).
  * Lives in the job slot: call it once, before any module runs. */

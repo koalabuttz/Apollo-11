@@ -2,13 +2,11 @@
 
 Lane G (CM flight). Milestone `cm-reentry`. How the routines are made and checked: `docs/INTERP-COMPILE.md` (whole-file basic code: `tools/basic_compile.py`).
 
-`Comanche055/REENTRY_CONTROL.agc` (`src/cm_reentry.c`) is native C but for 2 words: The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
-
-Not yet translated: SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in EDOP across RTB P66: it runs from the interpreter's DANZIG/OPJUMP when P66 returns, a point the transfer ABI does not key yet (interpretive routines are keyed by LOC at NEWOPS). The file stays partial until that point is keyed; no complete certificate is drafted.
+`Comanche055/REENTRY_CONTROL.agc` (`src/cm_reentry.c`) is native C in full: The entry guidance: STARTENT and the two-second steering loop (INITROLL, HUNTEST, UPCONTRL, KEP2/BALLISTIC, PREDICT3 with its reference-trajectory tables, the roll command and lift-vector logic, the G-limit and final-phase tests), with the entry displays and restart points, basic and interpretive. Each routine runs the file from its entry, or from where it resumes, to the point where control leaves the file. Every original word is one call of the basic-instruction primitives (`src/agc_image_ops.c`) under a label named for its address, with TS overflow skips, CCS four-way skips and INDEX on the whole word kept; computed transfers (TC Q, indexed TCF) go through one dispatch on the target address.
 
 ## Scope
 
-390 routines, keyed by physical address in `cm_reentry_basic` and `cm_reentry_interpretive`:
+392 routines, keyed by physical address in `cm_reentry_basic` and `cm_reentry_interpretive`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
@@ -326,6 +324,7 @@ Not yet translated: SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in ED
 | 25,3307  | interpretive | CHANG2 resume |
 | 25,3311  | interpretive | CHANG2 resume |
 | 25,3313 KEP | interpretive | BMN target |
+| 25,3314  | interpretive | pending DANZIG after RTB P66 |
 | 25,3317 KEP2 | interpretive | after RTB P66 |
 | 25,3322  | interpretive | CHANG2 resume |
 | 25,3325  | interpretive | CHANG2 resume |
@@ -347,6 +346,7 @@ Not yet translated: SSP GOTOADDR KEP2 (25,3315-3316), the order KEP leaves in ED
 | 25,3466  | interpretive | CHANG2 resume |
 | 25,3470 GONEGLAD | interpretive | switch branch target |
 | 25,3472 GOMAXL/D | interpretive | BOV target |
+| 25,3473  | interpretive | pending DANZIG after RTB SIGNMPAC |
 | 25,3475  | interpretive | after RTB SIGNMPAC |
 | 25,3476 GLIMITER | interpretive | STCALL target |
 | 25,3501  | interpretive | CHANG2 resume |
@@ -407,13 +407,13 @@ Destinations outside the file: 2PHSCHNG, BANKCALL, BOVB ENDT(X), CHANG1, CHANG2,
 
 ## Domain
 
-Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under the routine's `EBANK=`, FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. PREDICT3 reads VREFER and the tables after it at JJ 0 to 91 (13 words per BACK2 pass). The repository copy of the file differs from the flight rope only in text that assembles to the same words: the label GETDLEWD where its one reference says GETLEWD (repaired to GETLEWD in the assembled listing), DEC .063296 (the rope listing has .063298; both assemble to 02015) and KT1's exponent spacing. LEWD (E7,1724-1725) is positive in both words, as STARTENT and LEWDOVFL leave it: negative, LWDSTORE's BMN LEWDPTR loop never ends on the AGC either.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under the routine's `EBANK=`, FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The two pairs with an RTB on the left and an order on the right (KEP's RTB P66 / SSP at 25,3313 and RTB SIGNMPAC / DMP at 25,3472) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). PREDICT3 reads VREFER and the tables after it at JJ 0 to 91 (13 words per BACK2 pass). The repository copy of the file differs from the flight rope only in text that assembles to the same words: the label GETDLEWD where its one reference says GETLEWD (repaired to GETLEWD in the assembled listing), DEC .063296 (the rope listing has .063298; both assemble to 02015) and KT1's exponent spacing. LEWD (E7,1724-1725) is positive in both words, as STARTENT and LEWDOVFL leave it: negative, LWDSTORE's BMN LEWDPTR loop never ends on the AGC either.
 
 ## Evidence
 
 Hashes: `evidence/cm-reentry/SHA256.json`; all files are in the tree.
 
-- **Source map.** `cm-reentry-source-map.json` lists all 1172 words of the file with the routine that compiles each (or why a constant is never run as code); 2 are untranslated.
-- **Independent assembly comparison.** `make cm-reentry-differential` runs 256 states per routine (99,840 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-reentry-proof.json` (`cm-reentry-differential.log` is the run). One case in 128 is frozen in `tests/cm_reentry_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-reentry sanitize-cm-reentry` runs the 780 frozen cases (`cm-reentry-host.log`).
-- **C64 execution results.** `make vice-cm-reentry` runs 47 diagnostic programs with 544 cases (`cm-reentry-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 99,840 differential cases take: 4138 of 4138 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 89 of 89 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1943 of the 1943 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **Source map.** `cm-reentry-source-map.json` lists all 1172 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
+- **Independent assembly comparison.** `make cm-reentry-differential` runs 256 states per routine (100,352 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-reentry-proof.json` (`cm-reentry-differential.log` is the run). One case in 128 is frozen in `tests/cm_reentry_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-reentry sanitize-cm-reentry` runs the 784 frozen cases (`cm-reentry-host.log`).
+- **C64 execution results.** `make vice-cm-reentry` runs 49 diagnostic programs with 547 cases (`cm-reentry-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 100,352 differential cases take: 4196 of 4196 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 89 of 89 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1990 of the 1990 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

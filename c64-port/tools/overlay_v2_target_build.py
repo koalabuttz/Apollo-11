@@ -19,7 +19,8 @@ def main():
     p.add_argument('--cc', default='mos-c64-clang')
     args = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
-    subprocess.run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', str(OUT)],
+    subprocess.run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', str(OUT),
+                    '--version', hex(SERVICES)],
                    cwd=ROOT, check=True)
     common = [args.cc, '-Iinclude', '-Iplatform/c64', '-std=c99', '-Os', '-fno-static-stack',
               '-mlto-zp=0', '-Wall', '-Wextra', '-Werror']

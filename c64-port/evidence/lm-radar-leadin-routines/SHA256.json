@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-radar-leadin-routines",
+  "release": "evidence-lm-radar-leadin-routines",
+  "files": {
+    "lm-radar-leadin-routines-differential.log": {
+      "sha256": "17aedd51e39f8e0a895b61804ffc3d381e7640c3c3de7379bccf8093a82c3b22",
+      "bytes": 392,
+      "store": "tree"
+    },
+    "lm-radar-leadin-routines-host.log": {
+      "sha256": "0b7fe6e61b83fcb2e1c79a56317279eacb5185998657590540a00164e5edcf69",
+      "bytes": 1104,
+      "store": "tree"
+    },
+    "lm-radar-leadin-routines-proof.json": {
+      "sha256": "768eb69c2497fa6ff451781db7ac265d458192609996952a40896f1770d8eee3",
+      "bytes": 3446,
+      "store": "tree"
+    },
+    "lm-radar-leadin-routines-source-map.json": {
+      "sha256": "71334d2f13355d611c77dc15ad4fc03b4960ed5aec1df3f486854f3dc3b27bc1",
+      "bytes": 6873,
+      "store": "tree"
+    },
+    "lm-radar-leadin-routines-vice.log": {
+      "sha256": "b5d7d0edacaa1d89a99ff50d97b3a7d8dc503eb54d08d6a4c30b8e8e6e5786bb",
+      "bytes": 280,
+      "store": "tree"
+    }
+  }
+}

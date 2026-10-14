@@ -1,0 +1,320 @@
+{
+ "milestone": "cm-p76-file",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 24576,
+ "cases_sha256": "a1a585a27212d48400a095d6ff4bb6718f90a44f84f221df7aa0f3c7e25d298a",
+ "oracle_sha256": "f93e7894318562f334d2bce8bb2130b9d841b18a85cd8e60b05911d8d799b70b",
+ "frozen_vectors": 1543,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x1fffff",
+   "cases": 35,
+   "case_ids": [
+    280,
+    9,
+    1008,
+    1480,
+    1544,
+    2132,
+    2636,
+    3112,
+    3556,
+    3796,
+    4484,
+    4632,
+    4616,
+    5440,
+    5231,
+    5335,
+    5275,
+    5348,
+    5279,
+    5512,
+    5477,
+    5840,
+    6004,
+    5740,
+    5715,
+    6184,
+    6824,
+    7272,
+    7748,
+    8376,
+    8948,
+    9088,
+    9284,
+    9812,
+    10256
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xffffffe00000",
+   "cases": 41,
+   "case_ids": [
+    10880,
+    11007,
+    11092,
+    11112,
+    10812,
+    10952,
+    10783,
+    10840,
+    10860,
+    11492,
+    11632,
+    11828,
+    12065,
+    12336,
+    12396,
+    12452,
+    12614,
+    12892,
+    13332,
+    13872,
+    14336,
+    14896,
+    15372,
+    15928,
+    16444,
+    16896,
+    17408,
+    17952,
+    18432,
+    19000,
+    19492,
+    20364,
+    20584,
+    21156,
+    21688,
+    22016,
+    22760,
+    23064,
+    23564,
+    23755,
+    24088
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 22,
+  "c64_labels": 22,
+  "host_edges": 1304,
+  "c64_edges": 1304,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 637,
+  "c64_taken": 637,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_p76_file.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_p76_file_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 670,
+  "edges_host_vectors": 670,
+  "edges_c64": 670,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 13,2071 P76": {
+   "05546": 512
+  },
+  "CM 13,2073 ": {
+   "04662": 512
+  },
+  "CM 13,2076 ": {
+   "04106": 512
+  },
+  "CM 13,2077 ": {
+   "04662": 512
+  },
+  "CM 13,2100 ": {
+   "04662": 512
+  },
+  "CM 13,2104 ": {
+   "04106": 512
+  },
+  "CM 13,2105 ": {
+   "05170": 114,
+   "06037": 398
+  },
+  "CM 13,2106 ": {
+   "04662": 512
+  },
+  "CM 13,2110 ": {
+   "05170": 121,
+   "06037": 391
+  },
+  "CM 13,2112 ": {
+   "06037": 512
+  },
+  "CM 13,2114 COMPMAT": {
+   "06037": 376,
+   "05170": 136
+  },
+  "CM 13,2116 ": {
+   "06037": 378,
+   "05170": 134
+  },
+  "CM 13,2117 ": {
+   "05170": 136,
+   "06037": 376
+  },
+  "CM 13,2120 ": {
+   "06037": 401,
+   "05170": 111
+  },
+  "CM 13,2122 ": {
+   "06037": 397,
+   "05170": 115
+  },
+  "CM 13,2123 ": {
+   "06037": 384,
+   "05170": 128
+  },
+  "CM 13,2125 ": {
+   "05170": 125,
+   "06037": 387
+  },
+  "CM 13,2127 ": {
+   "06037": 375,
+   "05170": 137
+  },
+  "CM 13,2131 ": {
+   "06037": 371,
+   "05170": 141
+  },
+  "CM 13,2133 ": {
+   "06037": 396,
+   "05170": 116
+  },
+  "CM 13,2134 ": {
+   "06037": 512
+  },
+  "CM 13,2136 ": {
+   "06037": 391,
+   "05170": 121
+  },
+  "CM 13,2140 ": {
+   "05170": 117,
+   "06037": 395
+  },
+  "CM 13,2143 ": {
+   "06037": 399,
+   "05170": 113
+  },
+  "CM 13,2145 ": {
+   "06037": 367,
+   "05170": 145
+  },
+  "CM 13,2147 ": {
+   "06037": 373,
+   "05170": 139
+  },
+  "CM 13,2151 ": {
+   "06037": 370,
+   "05170": 142
+  },
+  "CM 13,2152 ": {
+   "06037": 376,
+   "05170": 136
+  },
+  "CM 13,2155 INTOTHIS": {
+   "06037": 512
+  },
+  "CM 13,2157 ": {
+   "06037": 512
+  },
+  "CM 13,2161 ": {
+   "05170": 137,
+   "06037": 375
+  },
+  "CM 13,2163 ": {
+   "05170": 131,
+   "06037": 381
+  },
+  "CM 13,2165 ": {
+   "06037": 393,
+   "05170": 119
+  },
+  "CM 13,2166 ": {
+   "05170": 133,
+   "06037": 379
+  },
+  "CM 13,2170 ": {
+   "05170": 132,
+   "06037": 380
+  },
+  "CM 13,2172 ": {
+   "06037": 512
+  },
+  "CM 13,2174 ": {
+   "05412": 512
+  },
+  "CM 13,2175 ": {
+   "05412": 512
+  },
+  "CM 13,2177 ": {
+   "05546": 512
+  },
+  "CM 13,2201 ": {
+   "06037": 512
+  },
+  "CM 13,2202 ": {
+   "06037": 512
+  },
+  "CM 13,2204 ": {
+   "04662": 512
+  },
+  "CM 13,2207 ": {
+   "04662": 512
+  },
+  "CM 13,2211 OUT": {
+   "04106": 512
+  },
+  "CM 13,2212 ENDP76": {
+   "04106": 512
+  },
+  "CM 13,2222 P76SUB1": {
+   "06037": 390,
+   "05170": 122
+  },
+  "CM 13,2225 ": {
+   "06037": 393,
+   "05170": 119
+  },
+  "CM 13,2230 ": {
+   "06037": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: BANKCALL, CHANG2, GOTOPOOH, PHASCHNG, UPFLAG); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

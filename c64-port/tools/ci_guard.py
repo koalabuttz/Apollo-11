@@ -83,12 +83,21 @@ def changed_certificates(base, errors, remote=False):
 # The runtime interpreter (INTERPRETER.agc, decided 2026-10-13) runs the
 # interpretive programs as the rope data they are, so it reads the rope too.
 # main-assembly checks MAIN.agc's include manifest against every rope word.
-ROPE_IMAGE_USERS = {'src/lm_interp_runtime.c', 'src/lm_interp_core.c', 'tools/interp_core_fuzz.c', 'tools/interp_core_cycles.c',
-                    'tools/interp_runtime_target.c', 'tools/interp_core_vice.c',
+# INTERPRETER's compiled basic subroutines (lm/cm-interpreter) read their
+# callers' words (DMP's ADRES, POLY's coefficients) as the core does.
+# The x86_64 flight program (platform/x86, docs/X86-FLIGHT.md) and its
+# lockstep check load the image and serve it as fixed_data, as
+# flight_host_run.c and the C64 flight store do.
+ROPE_IMAGE_USERS = {'src/lm_interpreter.c', 'src/cm_interpreter.c',
+                    'tests/lm_interpreter_target.c', 'tests/cm_interpreter_target.c',
+                    'src/lm_interp_runtime.c', 'src/lm_interp_core.c', 'tools/interp_core_fuzz.c', 'tools/interp_core_cycles.c',
+                    'tools/interp_runtime_target.c', 'tools/interp_core_vice.c', 'tools/interp_flight_replay.c',
+                    'tools/interp_flight_verify.c',
                     'src/self_check_body.inc', 'src/rope_image_host.c', 'platform/c64/rope_image_reu.c',
                     'tests/self_check_cases.c', 'tests/test_self_check.c', 'platform/host/self_check_snapshot.c',
                     'tools/flight_host_run.c', 'platform/c64/flight_table_module.c',
-                    'tests/main_manifest_check.c', 'tests/test_main_manifest.c'}
+                    'tests/main_manifest_check.c', 'tests/test_main_manifest.c',
+                    'platform/x86/flight_dispatch.c', 'platform/x86/flight_main.c', 'tools/x86_flight_lockstep.c'}
 
 
 def rope_image_includes(errors):

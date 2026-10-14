@@ -9,15 +9,20 @@ OV2_HDR = include/overlay_runtime.h include/overlay_v2.h include/overlay_reu.h
 build/overlay-v2/selftest.reu: tools/overlay_v2_pack.py
 	mkdir -p build/overlay-v2
 	python3 tools/overlay_v2_pack.py --selftest build/overlay-v2/selftest --output $@
+build/overlay-v2/selftest-pinned-task.reu: tools/overlay_v2_pack.py
+	mkdir -p build/overlay-v2
+	python3 tools/overlay_v2_pack.py --selftest-pinned-task build/overlay-v2/selftest-pinned-task --output $@
 build/overlay-v2/test: $(OV2_SRC) $(OV2_HDR)
 	mkdir -p build/overlay-v2
 	$(CC) $(OV2_CFLAGS) -O2 -g $(OV2_SRC) -o $@
 build/overlay-v2/test-sanitize: $(OV2_SRC) $(OV2_HDR)
 	mkdir -p build/overlay-v2
 	$(CC) $(OV2_CFLAGS) -O1 -g -fsanitize=address,undefined $(OV2_SRC) -o $@
-overlay-v2-test: build/overlay-v2/selftest.reu build/overlay-v2/test build/overlay-v2/test-sanitize
-	./build/overlay-v2/test build/overlay-v2/selftest.reu
-	ASAN_OPTIONS=detect_leaks=0 ./build/overlay-v2/test-sanitize build/overlay-v2/selftest.reu
+overlay-v2-test: build/overlay-v2/selftest.reu build/overlay-v2/selftest-pinned-task.reu \
+    build/overlay-v2/test build/overlay-v2/test-sanitize
+	./build/overlay-v2/test build/overlay-v2/selftest.reu build/overlay-v2/selftest-pinned-task.reu
+	ASAN_OPTIONS=detect_leaks=0 ./build/overlay-v2/test-sanitize build/overlay-v2/selftest.reu \
+	    build/overlay-v2/selftest-pinned-task.reu
 	python3 tools/overlay_v2_services.py --out-dir build/overlay-v2
 	python3 tools/overlay_allocation.py --output build/overlay-v2/allocation.json
 	cmp build/overlay-v2/allocation.json docs/overlay-allocation.json

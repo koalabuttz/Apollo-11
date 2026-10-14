@@ -32,7 +32,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from overlay_runtime_library import prepare  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = Path('build/resident-flight')
+# RK_FLIGHT_OUT: another build directory (the x0.5 check builds beside the
+# default one).
+OUT = Path(os.environ.get('RK_FLIGHT_OUT') or 'build/resident-flight')
 SERVICES = 0x0203
 COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0',
           '-DRK_FIXED_IMAGE=1', '-DRK_SEAMS=1', '-Wall', '-Wextra', '-Werror',
@@ -288,8 +290,11 @@ def build_modules(cc, m, cases, library):
         prgs.append(prg)
     resolver = OUT / f'{m}-resolver.json'
     resolver.write_text(json.dumps(PROBES + wrapper_records(os.environ.get('CC', 'cc'), m), indent=1) + '\n')
+    from resident_boundary_words import tail_bytes
+    tail = OUT / f'{m}-boundary.bin'
+    tail.write_bytes(tail_bytes((ROOT / f'platform/c64/resident_boundary_words_{m}.h').read_text()))
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(CHECK_SERVICES),
-         '--resolver', resolver, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
+         '--resolver', resolver, '--tail', tail, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
     return prgs
 
 

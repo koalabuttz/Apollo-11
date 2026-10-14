@@ -12,7 +12,7 @@ extern const agc_routine_table cm_r60_r62_interpretive,cm_r60_r62_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_r60_r62_point;
-#define CM_R60_R62_POINTS 85u
+#define CM_R60_R62_POINTS 83u
 #define CM_R60_R62_CADR_WORDS 1u
 #define CM_R60_R62_EXTERNALS 14u
 #define CM_R60_R62_FIRST 23552u

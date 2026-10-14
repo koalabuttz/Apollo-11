@@ -74,8 +74,8 @@ def build(spec_id, spec, missions):
     steps = min(60000, spec.get('max_steps', 200) * 40)
     subprocess.run(['cc', *D.FLAGS, '-c', '-Dirc_program=irc_program_compiled', spec['target'], '-o', obj], cwd=R, check=True)
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + D.common(spec)
-    subprocess.run(['cc', *D.FLAGS, *(['-DIRT_RTB_TRACE'] if os.environ.get('IRT_RTB_TRACE') else []), '-DIRC_MAX_STEPS=%d' % steps, *CORE, *D.cut_flags(spec), *srcs, *RT, obj, rtb_table(spec_id, spec, missions),
-                    'tools/interp_routine_native.c', '-o', nat], cwd=R, check=True)
+    subprocess.run(['cc', *D.FLAGS, *(['-DIRT_RTB_TRACE'] if os.environ.get('IRT_RTB_TRACE') else []), '-DIRC_MAX_STEPS=%d' % steps, *CORE, *D.cut_flags(spec), *srcs, *[x for x in RT if x not in srcs], obj, rtb_table(spec_id, spec, missions),
+                    *D.WRAP, 'tools/interp_routine_native.c', '-o', nat], cwd=R, check=True)
     return ref, nat
 
 
@@ -109,11 +109,21 @@ def one(spec_id, a):
     ref, nat = build(spec_id, spec, missions)
     D.BUILT[:] = [ref, nat]
     if spec.get('resume_flow'):
-        D.flow_seed(missions, cases, rng, ref, path)
+        D.flow_seed(missions, cases, rng, ref, path, spec)
     D.write_cases(path, missions, cases)
     rows_r = D.run([ref, *D.ROPES, path])
     rows_n = D.run([nat, path])
     bad = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x != y]
+    # A cycle of erasable CADRs: the oracle loops in GOTOERS to its step
+    # limit (kind 9), the core hands the job back at GOTO after 64 hops
+    # (lmi_goto_any, #224). Counted, not compared, as the routine
+    # differential counts both sides looping.
+    goto = {0: 0o6646, 1: 0o6615}
+    loops = [i for i in bad if rows_r[i][1] == '9' and rows_n[i][1] == '0'
+             and int(rows_n[i][2]) == goto[cases[i]['cm']]]
+    bad = [i for i in bad if i not in loops]
+    if loops:
+        print('  (%d cases loop in an erasable CADR cycle: not compared)' % len(loops))
     # As in the compiled differential: a run that ends refusing at a basic
     # block with an I/O channel instruction waits for a channel model, and
     # is counted, not compared.
