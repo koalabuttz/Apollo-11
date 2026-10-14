@@ -101,6 +101,12 @@ static void clock_check(apollo_overlay_state *image){
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
  expect(image->words[025]==2u&&rk_work==5u&&rk_tick_phase==2u,11);
  expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
+ /* The real-time cap: with no lag owed, three periods of work take three
+  * ticks only as CIA1 counts three more periods. */
+ {uint8_t c=*(volatile uint8_t *)&ov2_irq_count;
+  image->words[025]=0;rk_tick_phase=0;rk_work=2560u;rk_cap=c;
+  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+  expect(image->words[025]==3u&&(uint8_t)(*(volatile uint8_t *)&ov2_irq_count-c)>=3u,19);}
 }
 /* Nine periods of work (three of each phase, 7,680 MCT) with T5 and T6
  * both coming due in the first: one step takes all nine (none dropped) and enters T6RUPT alone (AGC
@@ -109,6 +115,7 @@ static void clock_check(apollo_overlay_state *image){
 static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
  __asm__ volatile("sei");
  d=rk_dilation;rk_tick_phase=0;rk_work=3u*2560u;
+ rk_cap=(uint8_t)(ov2_irq_count-9u);   /* nine periods of lag owed: the cap lets all nine through */
  rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
  image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
  image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
