@@ -25,10 +25,18 @@ static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
     return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,dest,reu,count) &
         (APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==APOLLO_REU_STATUS_END);
 }
+/* A resolver record for each of four point classes (two loc bits). The
+ * search reads its probes into the point's entry, so an entry always holds
+ * a real record, and the next lookup of that point skips the search. Open
+ * fills them with a key no record has (bank 0xFFFF). The cache is valid
+ * only because resolver records are read-only once the store is open:
+ * restart and GOJAM keep it, and only a reopen clears it. */
+static uint8_t cache[4][APOLLO_REU_RESOLVER_RECORD];
 uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record) {
     uint8_t *h=record,i;
     s->base=base; s->record=record;
+    for (i = 0; i < 4; ++i) cache[i][0] = cache[i][1] = 0xFFu;
     if(!read_bytes(base,h,APOLLO_REU_INDEX_RECORD)) return 0;
     if(h[0]!='N' || h[1]!='R' || h[2]!='E' || h[3]!='U' || h[4]!=APOLLO_REU_FORMAT ||
        h[5]!=mission || le16(h+6)!=services) return 0;
@@ -70,18 +78,20 @@ static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *ou
     apollo_reu_store *s=(apollo_reu_store *)user;
     uint16_t low=0,high=s->resolver_count;
     uint32_t key=((uint32_t)bank<<16)|loc;
-    while(low<high) {
+    uint8_t *e = cache[(uint8_t)(loc ^ (loc >> 2)) & 3u];
+    uint32_t probe = ((uint32_t)le16(e) << 16) | le16(e + 2);
+    while (probe != key) {
         uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
-        uint32_t probe;
-        if(!read_bytes(page_address(s,s->resolver_page)+(uint32_t)middle*APOLLO_REU_RESOLVER_RECORD,
-            s->record,APOLLO_REU_RESOLVER_RECORD)) return 0;
-        probe=((uint32_t)le16(s->record)<<16)|le16(s->record+2);
-        if(probe==key) {
-            out->module=le16(s->record+4); out->selector=le16(s->record+6); return 1;
-        }
+        if (low >= high || !read_bytes(page_address(s, s->resolver_page) +
+                                           (uint32_t)middle * APOLLO_REU_RESOLVER_RECORD,
+                                       e, APOLLO_REU_RESOLVER_RECORD))
+            return 0;
+        probe = ((uint32_t)le16(e) << 16) | le16(e + 2);
         if(probe<key) low=(uint16_t)(middle+1u); else high=middle;
     }
-    return 0;
+    out->module = le16(e + 4);
+    out->selector = le16(e + 6);
+    return 1;
 }
 static uint16_t invoke(void *user,uint8_t *slot,apollo_ov2_frame *frame,uint16_t selector) {
     apollo_reu_store *s=(apollo_reu_store *)user;

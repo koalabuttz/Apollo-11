@@ -21,9 +21,14 @@ static unsigned dmas;
 static int fail_dma_at=-1;
 
 /* ---- 17xx controller model (fetch/stash/verify, immediate execute) ---- */
+/* For the store's static resolver cache: on the C64 it sits in C64 RAM,
+ * but on the host it is outside this model's RAM, so a transfer naming it
+ * runs against it directly, through FOREIGN. */
+#define FOREIGN 0xff00u
+static uint8_t *foreign;
 uint16_t apollo_reu_c64_address(const void *p) {
     const uint8_t *b=(const uint8_t *)p;
-    assert(b>=ram && b<ram+sizeof ram);
+    if(b<ram || b>=ram+sizeof ram) { foreign=(uint8_t *)p; return FOREIGN; }
     return (uint16_t)(b-ram);
 }
 uint8_t apollo_reu_peek(uint8_t reg) {
@@ -43,7 +48,7 @@ void apollo_reu_poke(uint8_t reg,uint8_t value) {
     if(fail_dma_at>=0 && dmas==(unsigned)fail_dma_at) { ++dmas; regs[0]=0x20u; return; }
     ++dmas;
     for(i=0;i<length;++i) {
-        uint8_t *c=&ram[(c64+i)&0xffffu],*r=&reu[(address+i)%reu_size];
+        uint8_t *c=c64==FOREIGN && foreign ? foreign+i : &ram[(c64+i)&0xffffu],*r=&reu[(address+i)%reu_size];
         switch(value & 3u) {
         case 0: *r=*c; break;
         case 1: *c=*r; break;
@@ -51,7 +56,7 @@ void apollo_reu_poke(uint8_t reg,uint8_t value) {
         default: if(*c!=*r) { regs[0]|=0x20u; i=length; } break;
         }
     }
-    regs[0]|=0x40u;
+    regs[0]|=0x40u; foreign=0;
 }
 
 /* ---- Simulated module bodies, dispatched on the loaded header ---- */
@@ -272,6 +277,31 @@ int main(int argc,char **argv) {
     assert(action==APOLLO_OV2_DONE && value==(6u^0x2222u) && rt.seams[5].depth==0);
     apollo_ov2_seam_exchange(&rt,5,APOLLO_OV2_TASK_CONTEXT);   /* task context never exchanges */
     apollo_ov2_seam_release(&rt,5);
+
+    /* Resolver cache: every record resolves, a repeat needs no DMA, misses
+     * leave the entries right, and a reopen drops them. */
+    boot(0); {
+        apollo_ov2_store b=apollo_reu_store_backend(&store,body,0);
+        unsigned long r=(unsigned long)store.resolver_page*256ul;
+        uint16_t k,pass; unsigned before; apollo_ov2_cont at;
+        for(pass=0;pass<3;++pass) for(k=0;k<store.resolver_count;++k) {
+            const uint8_t *q=reu+r+k*8ul;
+            uint16_t bank=(uint16_t)(q[0]|q[1]<<8),loc=(uint16_t)(q[2]|q[3]<<8);
+            uint16_t module=(uint16_t)(q[4]|q[5]<<8),selector=(uint16_t)(q[6]|q[7]<<8);
+            assert(b.resolve(b.user,bank,loc,&at) && at.module==module && at.selector==selector);
+            before=dmas;
+            assert(b.resolve(b.user,bank,loc,&at) && at.module==module && at.selector==selector);
+            assert(dmas==before);
+            if(pass==1) assert(!b.resolve(b.user,bank,(uint16_t)(loc^0x0400u),&at));
+            if(pass==2) assert(!b.resolve(b.user,(uint16_t)(bank+0x100u),loc,&at));
+        }
+        assert(b.resolve(b.user,(uint16_t)(reu[r]|reu[r+1u]<<8),(uint16_t)(reu[r+2u]|reu[r+3u]<<8),&at));
+        reu[r+6u]^=1u;
+        assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
+        assert(b.resolve(b.user,(uint16_t)(reu[r]|reu[r+1u]<<8),(uint16_t)(reu[r+2u]|reu[r+3u]<<8),&at));
+        assert(at.selector==(uint16_t)(reu[r+6u]|reu[r+7u]<<8));
+        reu[r+6u]^=1u;
+    }
 
     /* Historical continuation: resolver hit and miss. */
     boot(1); value=4;
