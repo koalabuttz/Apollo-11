@@ -49,7 +49,8 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               (tools/interp_specs.py, found by the evidence/<id>/ the
               certificate cites, or by its file) lacks a key of
               REFREEZE_SPEC_KEYS ('index_carry16': the generated INDEX keeps
-              its end-around carry on the C64); set it at the next refreeze.
+              its end-around carry on the C64; 'image_w': flight builds address
+              the fixed $7000 image); set them at the next refreeze.
 
 Calls between files certified together (one source map or comparison record,
 IMU_PERFORMANCE_TEST_2/TESTS_4) are internal. On a certificate already flipped
@@ -779,8 +780,16 @@ def check_c64(report, label, certificate):
 # evidence pins. The steward keeps them off the specs that do not ask for them
 # (regenerating every spec would stale the pinned sources), so a certificate
 # whose spec lacks one gets a WARN, never a FAIL, until its next refreeze.
-# 'image_w' (steward PR #260) joins this list when it lands.
-REFREEZE_SPEC_KEYS = ('index_carry16',)
+# 'image_w' (steward PR #260): W from include/agc_image_w.h, so flight builds
+# address the fixed $7000 image.
+REFREEZE_SPEC_KEYS = ('index_carry16', 'image_w')
+# What a spec without each key gets wrong (the WARN's text).
+REFREEZE_REASONS = {
+    'index_carry16': 'the generated INDEX (ixw) drops its end-around carry on the C64 (16-bit unsigned) '
+                     'for a negative index value',
+    'image_w': 'flight builds (RK_FIXED_IMAGE) address the image through s->words instead of the fixed '
+               '$7000 image',
+}
 
 
 def interp_specs():
@@ -821,8 +830,7 @@ def check_spec_keys(report, label, path, certificate, specs):
         flags = sorted(missing)
         keys = sorted({k for v in missing.values() for k in v})
         report.add('WARN', label, f'interp spec {", ".join(keys)} lacks {", ".join(repr(f) for f in flags)}: '
-                   'the generated INDEX (ixw) drops its end-around carry on the C64 (16-bit unsigned) '
-                   'for a negative index value (docs/INTERP-COMPILE.md)',
+                   + '; '.join(REFREEZE_REASONS[f] for f in flags) + ' (docs/INTERP-COMPILE.md)',
                    f'set {", ".join(repr(f) for f in flags)} in tools/interp_specs.py at the lane\'s next refreeze')
 
 
