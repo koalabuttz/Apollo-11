@@ -21,6 +21,7 @@ job slot.
   resident_flight_build.py [--cc MOS_CC] [--missions lm,cm] [--json]
 """
 import argparse
+import functools
 import json
 import os
 from pathlib import Path
@@ -41,13 +42,75 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
           # The resident and every flight module resolve a pending DANZIG
           # (RTB right-hand order) through the mission's marker table.
           '-DAGC_TRANSFER_DANZIG_MARKER']
-# Scaled time (docs/RESIDENT-FLIGHT.md): RK_TICK_LAG, the clock ticks one
+# Scaled time (docs/RESIDENT-FLIGHT.md), with RK_WALL_CLOCK: RK_TICK_LAG, the clock ticks one
 # step may catch up before the rest are dropped (default 2), and
 # RK_TIME_DIVISOR, AGC time at 1/n of wall time (default 1; the nightly
 # x0.5 run builds with 2). make passes its command-line variables in the
 # environment.
 COMMON += [f'-D{k}={os.environ[k]}u' for k in ('RK_TICK_LAG', 'RK_TIME_DIVISOR') if os.environ.get(k)]
+# The work clock is the default; RK_WALL_CLOCK=1 builds the CIA wall clock.
+COMMON += ['-DRK_WALL_CLOCK=1'] if os.environ.get('RK_WALL_CLOCK') else []
 MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
+
+
+@functools.lru_cache(maxsize=None)
+def _mct_data():
+    """docs/flight-routine-mct.json (tools/x86_flight_mct.py, shared with
+    the x86_64 build) by mission: 'table interp key' -> n, sum, sq, least,
+    most of the yaAGC MCT per run."""
+    path = Path(__file__).resolve().parents[1] / 'docs/flight-routine-mct.json'
+    if not path.exists():
+        return {}
+    return {m: {f'{t} {i} {k}': dict(n=n, sum=total, sq=sq, least=lo, most=hi)
+                for i, k, _median, n, total, sq, lo, hi, t in d['points']}
+            for m, d in json.loads(path.read_text()).items()}
+
+
+def _calibrated(table, named):
+    """The calibration's name for a table: a hot subset
+    (lm_p_axis_hot_routines, lm_t6rupt_jets_hot_routines) runs its full
+    table's routines, which the calibration keys by the full table."""
+    if table in named or '_hot_' not in table:
+        return table
+    full = table.replace('_hot_', '_')
+    return full if full in named else re.sub(r'_[a-z0-9]+_hot_', '_', table)
+
+
+def mct_weight(m, tables, interp=False):
+    """The work clock's weight for a module running these tables
+    (platform/c64/resident_flight.h): the mean yaAGC MCT per routine run
+    over the calibration (docs/flight-routine-mct.json), of
+    their basic keys (interp: their interpretive keys; tables None: every
+    table's). Tables with no calibrated run take the mission's mean; no
+    calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
+    0 marks the background self-check loop (any *_self_check_idle_routines
+    table): idle, whose run takes the rest of the tick (RK_MCT_IDLE)."""
+    if tables and any(t.endswith('_self_check_idle_routines') for t in tables):
+        return 0
+    keys = _mct_data().get(m, {})
+    named = {k.split()[0] for k in keys}
+    mine = [v for k, v in keys.items()
+            if (tables is None or k.split()[0] in {_calibrated(t, named) for t in tables})
+            and k.split()[1] == str(int(interp))]
+    pool = mine if sum(v['n'] for v in mine) else list(keys.values())
+    n = sum(v['n'] for v in pool)
+    return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24
+
+
+# The work clock's weights (resident_flight.h): the trampoline's tables',
+# but for the Executive's idle loop (*_kernel_idle_routines, 16 MCT a run
+# against 59-83 for the others): its runs outnumber the rest 100 to 1 in the
+# calibration, and since the self-check idle module's pass takes the rest of
+# the tick (RK_MCT_IDLE) its own weight changes nothing.
+KERNEL_TABLES = {'lm': ['lm_kernel_routines', 'lm_kernel_job_routines', 'lm_kernel_task_routines', 'lm_sp_routines'],
+                 'cm': ['cm_kernel_routines', 'cm_kernel_job_routines', 'cm_sp_routines']}
+for _m in MISSION:
+    MISSION[_m] += [f'-DRK_RESIDENT_MCT={mct_weight(_m, KERNEL_TABLES[_m])}u',
+                    # 0x01E1-0x01E4 (WRAPPED, below), and the interpreter's per slot.
+                    '-DRK_WRAP_MCT_LIST=' + ','.join(
+                        f'{mct_weight(_m, [f"{_m}_{t}"])}u' for t in ('lead_in_routines', 't4rupt_core_routines',
+                                                                      'keyrupt_routines', 't6rupt_routines')),
+                    f'-DRK_INTERP_MCT={mct_weight(_m, None, interp=True)}u']
 
 # The resident's sources, by component (the size report's classes).
 COMPONENTS = {

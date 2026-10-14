@@ -57,7 +57,7 @@ static uint8_t load_case(uint16_t module){return (uint8_t)call(0,module,0,(uint1
 #endif
 #if PART(4)
 /* T3RUPT rows (tests/resident_rupt_c64_rows.h): with the CIA interrupt
- * held off, so no clock tick lands, the T3RUPT case module
+ * held off (and the work clock held), so no clock tick lands, the T3RUPT case module
  * (resident_flight_rupt_cases.c) writes each row's state, and with T3RUPT
  * pending it
  * runs through resident steps (the entry, the kernel's T3RUPT, its tasks
@@ -74,6 +74,9 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
   rk_pending=RK_RUPT_BIT(RK_RUPT_T3);
   stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
   for(guard=0;guard<64u;++guard){
+#ifdef RK_WORK_CLOCK
+   rk_work=0;   /* the work clock held too: no tick from the rows' own work */
+#endif
    if(rk_resident_step(stop)!=EXEC_OK)break;
    if(!rk_hardware.in_interrupt&&agc_transfer_point(&rk_program,image,rk_device.superbank)==stop)break;}
   h=rr_mix(RR_BASIS,(uint16_t)(guard<64u&&!rk_hardware.in_interrupt));
@@ -86,6 +89,40 @@ static void rupt_rows(apollo_overlay_state *image){static rk_rupt_row row;uint16
  * RK_TICK_LAG of them (TIME1) and drops the rest into rk_dilation, so the
  * two together count exactly the interrupts consumed; CIA1 timer A must be
  * counting from the latch. */
+#ifdef RK_WORK_CLOCK
+/* The work clock: two whole periods of work (854 and 853 MCT, from phase 0)
+ * and five MCT more become two ticks (TIME1) at the next step, the five
+ * carried into the third period; a step that runs nothing adds no
+ * work. CIA1 timer A still counts from the latch. */
+static void clock_check(apollo_overlay_state *image){
+ image->words[025]=0;rk_device.interrupt_enabled=0;
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ image->words[025]=0;rk_tick_phase=0;rk_work=854u+853u+5u;
+ rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
+ expect(image->words[025]==2u&&rk_work==5u&&rk_tick_phase==2u,11);
+ expect(*(volatile uint8_t *)0xdc05<=(uint8_t)(RK_CIA_LATCH>>8),12);
+}
+/* Nine periods of work (three of each phase, 7,680 MCT) with T5 and T6
+ * both coming due in the first: one step takes all nine (none dropped) and enters T6RUPT alone (AGC
+ * priority), with T5RUPT left pending for after its RESUME. The scalers
+ * count the periods, SCALER2 on SCALER1's overflow. */
+static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fixed_physical(04004u,image->words[4],0);
+ __asm__ volatile("sei");
+ d=rk_dilation;rk_tick_phase=0;rk_work=3u*2560u;
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
+ image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
+ image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
+ image->words[025]=0;image->words[026]=0;image->words[027]=0;
+ rk_hardware.channel4=037740u;rk_hardware.channel3=037777u;   /* SCALER1 overflows in the first period, and SCALER2 with it */
+ expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
+        rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
+        image->words[025]==9u&&image->words[026]==9u&&rk_work==0u&&rk_tick_phase==0u&&
+        rk_dilation==d&&!(rk_hardware.channel13&040000u)&&
+        rk_hardware.channel4==(uint16_t)(32u*9u-32u)&&rk_hardware.channel3==0u,18);
+ rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
+ __asm__ volatile("cli");
+}
+#else
 static void clock_check(apollo_overlay_state *image){uint16_t t,irq;uint32_t d;
  image->words[025]=0;rk_device.interrupt_enabled=0;
  rk_resident_step(agc_transfer_point(&rk_program,image,rk_device.superbank));
@@ -120,9 +157,10 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  __asm__ volatile("cli");
 }
 #endif
+#endif
 #if PART(5)
 /* Other-vector rows (tests/resident_rupt_c64_rows.h): with the CIA
- * interrupt held off, the other-vector case module
+ * interrupt held off (and the work clock held), the other-vector case module
  * (resident_flight_vector_cases.c) writes each row's state, and with that
  * vector pending it runs through resident steps (the entry, the lead-in and
  * the interrupt body from their task-slot wrappers, the kernel where a body
@@ -144,6 +182,9 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
   stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
   kind=RR_V_RUNAWAY;
   for(n=0;n<RR_V_MAX;++n){
+#ifdef RK_WORK_CLOCK
+   rk_work=0;   /* the work clock held too */
+#endif
    st=rk_resident_step(stop);
    if(st==EXEC_UNMAPPED){kind=RR_V_STOPPED;break;}
    if(st!=EXEC_OK){kind=RR_V_REFUSED;break;}
@@ -160,15 +201,15 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
  * that word in BRUPT, and at a fixed point missing from the table it takes
  * nothing and the request stays pending. */
 static void boundary_check(apollo_overlay_state *image){uint16_t i,k;agc_word w;uint8_t ok=1,taken=0;
- agc_site_operand e,next;
+ agc_site_operand e;const agc_site_operand *at;
  for(i=0;i<rk_boundary_count;++i){
-  if(!rk_boundary_entry(i,&e)){ok=0;break;}
-  k=e.physical;
+  if(!(at=rk_boundary_entry(i))){ok=0;break;}
+  e=*at;k=e.physical;
   if(!rk_fixed_word(&rk_program,k,&w)||w!=e.word)ok=0;
-  if((!rk_boundary_entry((uint16_t)(i+1u),&next)||next.physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
+  if((!(at=rk_boundary_entry((uint16_t)(i+1u)))||at->physical!=k+1u)&&rk_fixed_word(&rk_program,(uint16_t)(k+1u),&w))ok=0;}
  expect(ok&&rk_boundary_count>0u,13);
  image->words[0]=0;image->words[4]=RK_PROBE_FB;rk_device.superbank=0;rk_hardware.in_interrupt=0;
- for(i=0;rk_boundary_entry(i,&e);++i){k=e.physical;w=e.word;
+ for(i=0;(at=rk_boundary_entry(i));++i){k=at->physical;w=at->word;
   if(k<04000u||k>=010000u||w==3u||w==4u||w==6u)continue;   /* fixed-fixed: Z is the key */
   image->words[5]=(agc_word)k;rk_pending=RK_RUPT_BIT(RK_RUPT_T3);rk_hardware.in_interrupt=0;
   taken=(uint8_t)(rk_rupt_take(&rk_program,image,0,1,&rk_pending)==RK_RUPT_T3&&image->words[017]==w&&
