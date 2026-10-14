@@ -130,12 +130,19 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. A chunk holds only its own file's sources
-and operand sites; a table co-located into another module is never
-chunked. Chunks that fit are kept even when others do not; a single
+each as large as fits: `pack_chunks` grows a chunk 1, 2, 4, ... routines
+until one does not fit, then cuts the gap with a batch of parallel trial
+links, so the chunks are the same on every build (`make test-flight-chunks`
+checks it against a brute-force greedy packing). A chunk holds only its own
+file's sources and operand sites; a table co-located into another module is
+never chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
-(`one routine over its slot`, with its `routine_key`), and a file of more
-than 64 KB is `too big to split`. Before #211-era step-machine splits and
+(`one routine over its slot`, with its `routine_key`), and a file more than
+64 KB over its slot is `too big to split` unless `SPLIT_ANY` names it (Lane
+C's Pinball routines, whose try-lists each fit). The build prints, per
+mission, the chunk count, their mean fill and the store image against the
+rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
+`rope_base`). Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
 
