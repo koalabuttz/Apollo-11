@@ -476,7 +476,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
 #if (LM_KALMAN_KEEP0 >> 0) & 1
 /* 16,3641 RATELOOP (entry RATELOOP (P-AXIS_RCS_AUTOPILOT.agc TCF RATELOOP)) */
 static enum exec_status r35641_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
- AFR_BIND(s);
+ AFR_BIND(s);AFO_FIX(s);
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,034000u))return EXEC_OUT_OF_SCOPE;
  (void)p;
  return basic_run(s,(p66_bias_io *)v,15265u);

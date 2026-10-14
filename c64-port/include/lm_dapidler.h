@@ -32,6 +32,8 @@
  * record, and a CHEKBITS or CHEKMORE return in Q that is not a TC into fixed
  * memory. */
 extern const agc_routine_table lm_dapidler_routines;
+/* The entries an attitude-hold or jet-firing DAP pass reaches (the pinned DAP set). */
+extern const agc_routine_table lm_dapidler_hot_routines;
 #define LM_DI_FB16 034000u
 #define LM_DI_FB20 040000u
 #define LM_DI_EB 03000u

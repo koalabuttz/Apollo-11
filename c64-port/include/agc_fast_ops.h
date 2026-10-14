@@ -30,6 +30,15 @@ extern agc_image *afo_s;
 #define AFO_S afo_s
 #define AFO_BIND(x) ((void)(afo_s=(agc_image *)(x)))
 #endif
+/* AFO_FIX(s) at a routine's entry: in fixed-image builds the routine's own
+ * image pointer becomes the constant canonical image (the one the resident
+ * passes), so helpers that take s do not keep it live, spilled and reloaded
+ * around every op call. Elsewhere it does nothing. */
+#if RK_FIXED_IMAGE
+#define AFO_FIX(s) ((void)((s)=(void *)AFO_S))
+#else
+#define AFO_FIX(s) ((void)(s))
+#endif
 typedef uint16_t afo_cell;
 void afo_ca(const afo_cell *);
 void afo_cs(const afo_cell *);

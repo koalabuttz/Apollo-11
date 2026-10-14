@@ -815,7 +815,7 @@ static enum exec_status afterchek_body(agc_image *s){
 }
 /* PAXIS: CA MS100; ADS TIME5; LXCH BANKRUPT; EXTEND; QXCH QRUPT;
  * CCS DAPZRUPT; TC BAILOUT; OCT 02000 (TC CHEKBITS); TC CHEKBITS. */
-static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){uint8_t c;(void)p;
+static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);uint8_t c;(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  ai_caf(s,MS100);ai_ads(s,TIME5);ai_lxch(s,BANKRUPT);ai_qxch(s,QRUPT);
  c=ai_ccs(s,DAPZRUPT);LM_PA_PATH(111u+c);
@@ -824,30 +824,30 @@ static enum exec_status paxis(const agc_native_program *p,agc_image *s,void *v){
  if(c==2u)return leave(s,02224u,LM_PA_CHEKBITS);
  return afterchek_body(s);
 }
-static enum exec_status chekbits2(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status chekbits2(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return leave(s,02224u,LM_PA_CHEKBITS);
 }
-static enum exec_status afterchek(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status afterchek(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return afterchek_body(s);
 }
-static enum exec_status afteracdt(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status afteracdt(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  return afteracdt_body(s);
 }
 /* SUPERJOB: TCF RATELOOP (RESUME of the job PAXFILT set up). */
-static enum exec_status superjob(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status superjob(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v))return EXEC_OUT_OF_SCOPE;
  W[5]=LM_PA_RATELOOP;return EXEC_OK;
 }
 /* CALCPERR, entered by TC or IBNKCALL with the return in Q. */
-static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];calcperr_body(s);return EXEC_OK;
 }
-static int flow_ok(agc_image *s,void *v){return entry(s,v)&&ai_word(s,OLDPMIN)!=077777u;}
-#define FLOW(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){(void)p; \
+static int flow_ok(agc_image *s,void *v){AFO_FIX(s);return entry(s,v)&&ai_word(s,OLDPMIN)!=077777u;}
+#define FLOW(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p; \
  if(!flow_ok(s,v))return EXEC_OUT_OF_SCOPE; \
  return body;}
 FLOW(backp,rateloop(s))
@@ -871,7 +871,7 @@ FLOW(purgency4,urgency(s,v,LM_PA_PURGENCY4))
 FLOW(spsret,jetselect(s,v,AT_SPSRET))
 FLOW(tjetret,jetselect(s,v,AT_TJETRET))
 FLOW(selalarm,jetsoff(s))
-static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status writepret(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!flow_ok(s,v)||W[ai_ea(s,ROTINDEX)]>1u)return EXEC_OUT_OF_SCOPE;
  return writepret_body(s,v);
 }
@@ -898,3 +898,13 @@ static const agc_routine_entry entries[28]={
  {P16(LM_PA_PURGENCY4),purgency4},{P16(LM_PA_SPSRET),spsret},{P16(LM_PA_TJETRET),tjetret},
  {P16(LM_PA_SELALARM),selalarm}};
 const agc_routine_table lm_p_axis_routines={entries,28};
+/* The entries one 100 ms DAP pass reaches in attitude hold or jet firing
+ * (Lane F's RCS DAP cycle trace, /mnt/project-files/lane-f/dap-cycle-trace.md):
+ * the pinned DAP set links this table, so the other entries stay in the
+ * file's packed module (docs/FLIGHT-STORE.md). */
+static const agc_routine_entry hot_entries[14]={
+ {P16(LM_PA_PAXIS),paxis},{P16(LM_PA_AFTERCHEK),afterchek},{P16(LM_PA_BACKP),backp},{P16(LM_PA_TRAPS),traps_e},
+ {P16(LM_PA_QRATE),qrate_e},{P16(LM_PA_RRATE),rrate_e},{P16(LM_PA_SUPERJOB),superjob},{P16(LM_PA_PRETIMCK),pretimck_e},
+ {P16(LM_PA_CHKVISFZ),chkvisfz_e},{P16(LM_PA_TSNEXTP),tsnextp},{P16(LM_PA_DETENTCK),detentck_e},
+ {P16(LM_PA_JETSOFFRET),jetsoffret},{P16(LM_PA_PURGENCY),purgency},{P16(LM_PA_TJETRET),tjetret}};
+const agc_routine_table lm_p_axis_hot_routines={hot_entries,14};

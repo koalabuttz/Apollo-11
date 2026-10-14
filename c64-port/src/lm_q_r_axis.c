@@ -751,7 +751,7 @@ static int checks(agc_image *s,void *v,unsigned at){lm_flight_io *io=v;agc_word 
  }
  return 1;
 }
-#define ENTRY(name,at,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){ \
+#define ENTRY(name,at,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s); \
  lm_flight_io *io=v;(void)p;(void)io;if(!checks(s,v,at))return EXEC_OUT_OF_SCOPE; \
  body}
 ENTRY(callqerr,AT_CALLQERR,return callqerr_part(s,io);)
@@ -772,7 +772,7 @@ ENTRY(writeuret,AT_WRITEURET,return writeuret_part(s,io);)
 ENTRY(writevret,AT_WRITEVRET,return writevret_part(s,io);)
 ENTRY(selalarmret,AT_SELALARMRET,return norotat(s,io);)
 /* The parts' own keys. */
-#define PART(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){ \
+#define PART(name,body) static enum exec_status name(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s); \
  lm_flight_io *io=v;(void)p;if(!entry(s,v))return EXEC_OUT_OF_SCOPE; \
  return body;}
 PART(rcs_e,rcs(s,io,LM_QR_RCS))
@@ -792,15 +792,15 @@ PART(xtrans_e,xtrans(s,io))
 PART(closeout,closeout_part(s,io))
 /* QERRCALC, JTLST and ROT-TOUV, entered by TC or IBNKCALL with the return
  * in Q. */
-static enum exec_status qerrcalc(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status qerrcalc(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];qerrcalc_body(s);return EXEC_OK;
 }
-static enum exec_status jtlst(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status jtlst(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];jtlst_body(s,v);return EXEC_OK;
 }
-static enum exec_status rottouv(const agc_native_program *p,agc_image *s,void *v){(void)p;
+static enum exec_status rottouv(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);(void)p;
  if(!entry(s,v)||!tc_word(W[QREG]))return EXEC_OUT_OF_SCOPE;
  W[5]=W[QREG];rot_touv_body(s);return EXEC_OK;
 }
@@ -828,3 +828,13 @@ static const agc_routine_entry entries[30]={
  {P17(LM_QR_WRITEVRET),writevret},{P17(LM_QR_JTLST),jtlst},{P17(LM_QR_ROTTOUV),rottouv},
  {P17(LM_QR_SELALARMRET),selalarmret},{P17(LM_QR_CLOSEOUT),closeout}};
 const agc_routine_table lm_q_r_axis_routines={entries,30};
+/* The entries one 100 ms DAP pass reaches in attitude hold or jet firing
+ * (Lane F's RCS DAP cycle trace, /mnt/project-files/lane-f/dap-cycle-trace.md):
+ * the pinned DAP set links this table, so the other entries stay in the
+ * file's packed module (docs/FLIGHT-STORE.md). */
+static const agc_routine_entry hot_entries[12]={
+ {P17(LM_QR_CALLQERR),callqerr},{P17(LM_QR_RCS),rcs_e},{P17(LM_QR_QRCONTRL),qrcontrl_e},{P17(LM_QR_TRYGTS),trygts_e},
+ {P17(LM_QR_STILLRCS),stillrcs_e},{P17(LM_QR_TJLAW3),tjlaw3_e},{P17(LM_QR_TJETRET),tjetret},
+ {P17(LM_QR_WRITEPRET),writepret},{P17(LM_QR_NOROTATRET),norotatret},{P17(LM_QR_LOOPER),looper_e},
+ {P17(LM_QR_DOSKIP),doskip_e},{P17(LM_QR_NOTMINRET),notminret}};
+const agc_routine_table lm_q_r_axis_hot_routines={hot_entries,12};

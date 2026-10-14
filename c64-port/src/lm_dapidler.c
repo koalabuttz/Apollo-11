@@ -198,12 +198,12 @@ static enum exec_status chekbits_body(agc_image *s,lm_flight_io *io){static cons
  if(c<=2u)ai_maskf(s,BIT3);
  ai_ads(s,RCSFLAGS);return shutdown(s,io);
 }
-static enum exec_status chekbits(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status chekbits(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16)||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  return chekbits_body(s,io);}
 /* CHECKUP: TC CHEKBITS. */
 static enum exec_status checkup_body(agc_image *s,lm_flight_io *io){ai_tc(s,02042u);return chekbits_body(s,io);}
-static enum exec_status checkup(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status checkup(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return checkup_body(s,io);}
 /* DAPIDLER: LXCH BANKRUPT; EXTEND; QXCH QRUPT; CA RCSFLAGS; MASK BIT13;
@@ -218,12 +218,12 @@ static enum exec_status dapidler_body(agc_image *s,lm_flight_io *io,uint8_t from
  if(c<=2u)ai_ads(s,RCSFLAGS);
  ai_caf(s,PRIO27);return transfer(s,02037u,NOVAC);
 }
-static enum exec_status dapidler(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status dapidler(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return dapidler_body(s,io,0u);}
 /* CHEKMORE: CAF BIT10; EXTEND; RAND CHAN30; CCS A; TCF MOREIDLE; RETURN
  * (then DAPIDLER and its EXTEND for the negative exits). */
-static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *v){lm_flight_io *io=v;uint8_t c;(void)p;
+static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);lm_flight_io *io=v;uint8_t c;(void)p;
  if(!entry(s,io,LM_DI_FB16)||!tc_word(W[2]))return EXEC_OUT_OF_SCOPE;
  ai_caf(s,BIT10);rand(s,io->chan30);
  c=ai_ccs(s,0u);LM_DI_PATH(9u+c);
@@ -233,7 +233,7 @@ static enum exec_status chekmore(const agc_native_program *p,agc_image *s,void *
 }
 /* 16,2042: CAE DAPBOOLS; MASK ACCSOKAY; EXTEND; BZF MOREIDLE; STARTDAP
  * TC IBNKCALL; FCADR ZATTEROR. */
-static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  ai_ca(s,DAPBOOLS);ai_maskf(s,ACCSOKAY);
  if(ai_bzf(s)){LM_DI_PATH(13);return moreidle(s);}
@@ -243,7 +243,7 @@ static enum exec_status accsokay(const agc_native_program *p,agc_image *s,void *
  * by MANFLAG and BIT12; OLDXFORP, OLDZFORQ; SKIPU/V; TIME6, T6NEXT,
  * T6FURTHA, NXT6ADR; NEXTP/U/V; DAPZRUPT; NPTRAPS..; T5ADR = PAXIS), then
  * SETTIME5. */
-static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  static const agc_word paxadidl[2]={02213u,034106u};
  static const agc_word zeroed[31]={TJP,TJU,TJV,OMEGAP,OMEGAQ,OMEGAR,TRAPEDP,TRAPEDQ,TRAPEDR,AOSQ,AOSQ1,AOSR,AOSR1,
   ALPHAQ,ALPHAR,NEGUQ,NEGUR,AOSQTERM,AOSRTERM,QACCDOT,RACCDOT,ALLOWGTS,COTROLER,INGTS,QGIMTIMR,RGIMTIMR,
@@ -263,11 +263,11 @@ static enum exec_status startdap(const agc_native_program *p,agc_image *s,void *
  return settime5(s);
 }
 /* 16,2161: TC IBNKCALL; CADR CALCPERR. */
-static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status calcperr(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return transfer(s,02162u,IBNKCALL);}
 /* 16,2163 SHUTDOWN. */
-static enum exec_status shutdown_entry(const agc_native_program *p,agc_image *s,void *io){(void)p;
+static enum exec_status shutdown_entry(const agc_native_program *p,agc_image *s,void *io){AFO_FIX(s);(void)p;
  if(!entry(s,io,LM_DI_FB16))return EXEC_OUT_OF_SCOPE;
  return shutdown(s,io);}
 
@@ -282,7 +282,7 @@ static void oversub2(agc_image *s,agc_word ret){static const agc_word limits[3]=
 static enum exec_status retnmore(agc_image *s){static const agc_word morecadr[2]={02016u,034106u};
  ai_dcaf(s,morecadr);dtcb(s,02444u);return EXEC_OK;}
 /* ALTDSPLY .. RETNMORE. */
-static enum exec_status altdsply(const agc_native_program *p,agc_image *s,void *v){lm_flight_io *io=v;uint8_t c;
+static enum exec_status altdsply(const agc_native_program *p,agc_image *s,void *v){AFO_FIX(s);lm_flight_io *io=v;uint8_t c;
  static const agc_word daclimit[3]={077177u,037200u,0600u}; /* DEC -384, DACLIMIT 16000, 384 B-14 */
  (void)p;
  if(!entry(s,io,LM_DI_FB20))return EXEC_OUT_OF_SCOPE;
@@ -373,3 +373,10 @@ static const agc_routine_entry entries[9]={
  {P16(02000u),chekbits},{P16(02016u),chekmore},{P16(02024u),dapidler},{P16(02041u),checkup},{P16(02042u),accsokay},
  {P16(02050u),startdap},{P16(02161u),calcperr},{P16(02163u),shutdown_entry},{P20(02226u),altdsply}};
 const agc_routine_table lm_dapidler_routines={entries,9};
+/* The entries one 100 ms DAP pass reaches in attitude hold or jet firing
+ * (Lane F's RCS DAP cycle trace, /mnt/project-files/lane-f/dap-cycle-trace.md):
+ * the pinned DAP set links this table, so the other entries stay in the
+ * file's packed module (docs/FLIGHT-STORE.md). */
+static const agc_routine_entry hot_entries[3]={
+ {P16(02000u),chekbits},{P16(02016u),chekmore},{P20(02226u),altdsply}};
+const agc_routine_table lm_dapidler_hot_routines={hot_entries,3};
