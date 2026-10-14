@@ -3982,7 +3982,7 @@
       "sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
       "bytes": 10390,
       "lines": 371,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4060,7 +4060,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -4096,6 +4096,10 @@
             "vice_targets": {
               "vice-cm-powered-subs": 84
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/cm-powered-subs.md",
+            "sha256": "682bc9689497a885bdab3b805bb7cd40f9b9b38f3e843e3a450ab743529d261c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
@@ -10478,7 +10482,7 @@
       "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
       "bytes": 10932,
       "lines": 447,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10541,7 +10545,7 @@
           }
         }
       },
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10578,6 +10582,10 @@
             "vice_targets": {
               "vice-lm-powered-subs": 67
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-powered-subs.md",
+            "sha256": "732efc7fd5ecaff2a7897e194066f6bd413b4ab9b3c45ab68470f95f16c41406"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
