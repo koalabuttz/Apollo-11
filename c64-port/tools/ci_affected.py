@@ -197,8 +197,10 @@ def main():
                     result[group].append(target)
         for target in result['c64']:
             vice = 'vice-' + target[len('c64-'):]
-            if vice in rules:
-                result['vice'].append(vice)
+            # vice-<m>-<n>: the pieces of a VICE run split to fit a CI job.
+            piece = re.compile(re.escape(vice) + r'-\d+$')
+            result['vice'] += [vice] if vice in rules else []
+            result['vice'] += sorted((t for t in rules if piece.match(t)), key=lambda t: int(t.rsplit('-', 1)[1]))
         for target in sorted(defined):
             for group in ('test', 'sanitize', 'c64'):
                 if target.startswith(group + '-') and target not in result[group]:
