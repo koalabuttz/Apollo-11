@@ -861,7 +861,10 @@ SPECS = {
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
                    'NEWMODE', 'TLOAD', 'TMODE', 'VMODE', 'DDV/BDDV', 'BUFZERO', 'SGNDVOVF', 'DVOVF', 'UNIT', 'SMALL2',
                    'LARGE', 'LARGE3', 'LARGE2', 'SMALL', 'UNITDV', 'UMPAC-', 'UMPAC+', 'ABS', 'COSINE', 'PRESINE',
-                   'SINE', 'SN1', 'VXV'],
+                   'SINE', 'SN1', 'VXV', 'OVF+', 'BUF-', 'BUF+', 'BUFPOS', 'BUFNEG', 'FINALDV', 'DSQSUB',
+                   'VSQSUB', 'SQRTSUB', 'ENDVXV', 'OVERFLWZ', 'OVERFLWY', 'VROTATEX', 'COMP', 'MPAC-', 'MPAC+', 'SQRTNEG', 'ZEROANS',
+                   'SMPAC+', 'FIXROOT', 'ENDDOT', 'DCOMP', 'DVNORM', 'SQRTABRT', 'SRTEST',
+                   'OVERFLOW', 'BUFNORM', 'SQRTNORM', 'SETOVF2'],
         # The rest (dispatch, order bodies, DANZIG) is the compact core's.
         'inside_core': {'lm': 'src/lm_interp_core.c', 'cm': 'src/cm_interp_core.c'},
         # NEG's INDEX Q; TC 2 is its last word (TC Q's skip never runs on).
