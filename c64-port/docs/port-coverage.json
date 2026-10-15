@@ -11110,7 +11110,7 @@
             "src/agc_multiword.c",
             "src/rtb_angles.c"
           ],
-          "scope": "290 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 88 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: the 8 channel-instruction words (READ CHAN30, RAND/WRITE DSALMOUT, WOR CHAN14), which wait for the channel model.",
+          "scope": "251 of the 298 words (21,2006-2127, 05,3402-3501 and 32,3540-3767): R10,R11, P70, P71, LEGAL?, CONTABRT, ABRTJASK, GOABORT, P70INIT, INJTARG, BOTHPOLY, UPRATE, UPTHROT, P71RET, TGOCOMP and THROTUP, as 83 routines of the control-transfer ABI compiled by tools/interp_compile.py. Not translated: R10,R11A to its TCF LANDISP (21,2021-2071, 41 words, READ CHAN30), run in flight by lm-p70-p71-file, and the 6 words of RAND/WRITE DSALMOUT and WOR CHAN14, which wait for the channel model.",
           "verification": "docs/LM-P70-P71.md"
         },
         {

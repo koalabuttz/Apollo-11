@@ -1438,8 +1438,10 @@ class Compiler:
                     # inline CADR returns to one of several words; 'returns'
                     # 0 is a callee that never returns (BANKCALL DISPEXIT +3).
                     callee = self.code[nxt].operand.strip() if n == 1 and nxt in self.code else None
+                    # (A return into the spec's 'outside' words leaves the
+                    # file: another module holds that point.)
                     if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n) and \
-                            self.spec.get('returns', {}).get(callee, 1):
+                            nxt + n in self.words and self.spec.get('returns', {}).get(callee, 1):
                         self.add_start(nxt + n, 'b', 'return from ' + lab)
                         for i in range(1, self.spec.get('returns', {}).get(callee, 1)):
                             if self.is_basic(nxt + n + i):
