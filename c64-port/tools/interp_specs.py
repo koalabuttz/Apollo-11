@@ -832,6 +832,10 @@ SPECS = {
         # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
         # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT).
         'usprcadr_exits': True,
+        # FLESHPOT's TCF VXV word (10,2173): it leaves LOC there and BIT8 in
+        # EDOP, so VXV's DANZIG runs EXIT into FLESHPOT+93 (D1's host sweep
+        # on 84d550f5, LM P63).
+        'edop_exits': ['FLESHPOT+92'],
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
@@ -852,12 +856,13 @@ SPECS = {
             # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
             # (16 bits, 177774), Q a return.
             **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
-            # FLESHPOT after DMP, DMPSUB and VXV: TEM1 the matrix's switched
+            # FLESHPOT after DMP, DMPSUB and VXV (and VXV's DANZIG at the TCF
+        # VXV word): TEM1 the matrix's switched
             # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
             # caller's EBANK.
             **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
                for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
-                         '10,2174')}),
+                         '10,2173', '10,2174')}),
         'edge_values': True,
         'seed_counters': True,
         'cover': True,
@@ -1251,6 +1256,11 @@ SPECS = {
         'target': 'tests/cm_p76_file_target.c',
     },
     'cm-servicer': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1355,6 +1365,11 @@ SPECS = {
     },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1444,6 +1459,10 @@ SPECS = {
         'base': {'cm': 'cm_time_free_fall'},
         'symbol': {'cm': 'cm_time_free_fall'},
         'basic': 'full',
+        # TFFXTEST's RTB DMP T(X): T(X)'s TC DANZIG comes back with DMP in
+        # EDOP and LOC at the T(X) word (D1's host sweep on 84d550f5, CM
+        # entry).
+        'pending_danzig': True,
         # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively, and
         # the routine goes on with the pair's right-hand order (#414, as
         # measurement-incorporation does).
@@ -1453,7 +1472,9 @@ SPECS = {
         'entries': ['@external'],
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        # (The DANZIG marker the pending orders resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
         # (INDEX's end-around carry kept within 16 bits for the C64)
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
@@ -1680,6 +1701,10 @@ SPECS = {
         'base': {'cm': 'cm_conics'},
         'symbol': {'cm': 'cm_conics'},
         'basic': 'full',
+        # DELTIME's two RTB PDDL TPMODE: TPMODE's DANZIG comes back with
+        # PDDL in EDOP and LOC at the TPMODE word (D1's host sweep on
+        # 84d550f5, CM entry).
+        'pending_danzig': True,
         'entries': ['@external'],
         # (TC DANZIG goes on in interpretive code: the word after it is no
         # return point.)
@@ -1731,7 +1756,9 @@ SPECS = {
         'c64_drop_superset': True,
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (The DANZIG marker the pending orders resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
         # (INDEX's end-around carry kept within 16 bits for the C64)
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
@@ -2079,6 +2106,11 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
@@ -2195,6 +2227,11 @@ SPECS = {
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-entry-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2209,6 +2246,15 @@ SPECS = {
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
+        # entry window (cm-entry from 17000 cs, per-routine profile,
+        # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
+        # the flight store's entry pack, so a pass loads one module rather
+        # than about five chunks of the whole table.
+        'hot_points': ('15,2434', '15,2507', '15,2522', '15,2536', '15,2540', '15,2543', '15,2551',
+                       '15,2607', '15,2651', '15,2665', '15,2676', '15,2700', '15,2712', '15,2724',
+                       '15,2730', '15,2734', '15,2741', '15,2770', '15,3006', '15,3037', '15,3112',
+                       '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
         'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2754,6 +2800,9 @@ SPECS = {
         # unsigned too)
         'index_carry16': True,
         'image_w': True,
+        # CDULOGIC runs in the CM entry window and every attitude pass: no
+        # whole-image scan in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).

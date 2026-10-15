@@ -24,6 +24,7 @@ Paths with no producer: WOTEST's CCS of a masked single bit is never negative or
 | DNPHASE1 3515, DNPHASE2 3523, DNDUMPI 3707, DNDUMPI+3 3712, DNDUMP 3722, DNDUMP1 3735 | `body` from the matching label, to TCF RESUME |
 | NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP/SNAPAGN, FETCH2WD, DOSUBLST/NEXTINSL, DNTMEXIT, DNDUMP2, SENDID | labels `L<address>` in `body` |
 | DOWNLINK_LISTS words, constants | `lm_dntm_data` (`src/lm_downtelemetry_data.inc`) |
+| The constants the program's own instructions name (`k(K_...)`) | `LM_DNTM_CONSTANT` (same `.inc`, same words): `k()` folds a constant address to its word at compile time; any other address still searches `lm_dntm_data` |
 
 ## Evidence
 

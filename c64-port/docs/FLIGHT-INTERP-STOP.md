@@ -33,6 +33,25 @@ file's basic tables and `-DAGC_FLIGHT_INTERPRETER` added to the common
 flags. The flight store builds them that way (`FLIGHT_INTERP_STOP` in
 `tools/flight_store_build.py`, [FLIGHT-STORE.md](FLIGHT-STORE.md)).
 
+## EXIT returns
+
+The interpreter's EXIT leaves Z at the basic word after the EXIT order word
+and its operand words, and the flight program looks that word up as a basic
+key. The host build runs on across EXIT in one call, so the word has no key
+there, and the host flight run never bridges it (`--stop-on-holes` does not
+see it). A file keys these words in its flight build only:
+`tools/flight_exit_returns.py` lists them from the listing and checks the
+files in its `OPT_IN` set, and the flight store reads these files' keys from
+a `-DAGC_FLIGHT_INTERPRETER` build (`flight_keys`).
+
+| File | EXIT returns | Keyed |
+|---|---|---|
+| `lm_servicer` | 18 | yes (15 added, flight only) |
+| `lm_ags_init` | 2 | not yet |
+| `lm_lunar_landing` | 4 | not yet |
+| `lm_imu_performance` | 8 (1 already a key) | yes (7 added, flight only) |
+| `lm_burn_baby` | 0 | nothing to key |
+
 ## Evidence
 
 `make flight-interp-check` (`tools/flight_interp_check.py`) builds each

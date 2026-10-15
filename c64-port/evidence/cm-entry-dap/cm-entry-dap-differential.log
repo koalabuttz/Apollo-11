@@ -28,4 +28,4 @@ PASS: 7168 cm-entry-dap cases equal the original programs (138 routines)
   CM 20,3716 : 05372 x256
   CM 20,3732 : 04701 x256
 froze 224 vectors to tests/cm_entry_dap_vectors.h
-rc=0
+exit 0
