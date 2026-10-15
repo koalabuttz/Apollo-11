@@ -10125,7 +10125,7 @@
       "sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
       "bytes": 31942,
       "lines": 1474,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded P66 RODCOMP prefix through PDVL GDT/2; complete P66 and other landing guidance routines remain incomplete.",
@@ -10210,7 +10210,7 @@
           "verification": "docs/LM-LLGE.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10251,6 +10251,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/lm-llge/lm-llge-c64-cover.json",
             "sha256": "f5d803a739226d3282d5ff821d1bd764b1769aecfbe30d3447bc51d589fbdce5"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-lm-llge.md",
+            "sha256": "ce4ea75ca752ba55b5b43d155ecac46216a454cd4f73a0edcd889e5111dcfc57"
           }
         }
       }
