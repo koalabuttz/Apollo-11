@@ -6,7 +6,7 @@ Lane G (CM flight). Milestone `cm-conics`. How the routines are made and checked
 
 ## Scope
 
-445 routines, keyed by physical address in `cm_conics_basic` and `cm_conics_interpretive`:
+449 routines, keyed by physical address in `cm_conics_basic` and `cm_conics_interpretive`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
@@ -118,6 +118,7 @@ Lane G (CM flight). Milestone `cm-conics`. How the routines are made and checked
 | 12,2302  | interpretive | CHANG2 resume |
 | 12,2304  | interpretive | CHANG2 resume |
 | 12,2305 BRNCHCTR | interpretive | CHANG2 resume |
+| 12,2306  | interpretive | pending DANZIG after RTB CHECKCTR |
 | 12,2310  | interpretive | after RTB CHECKCTR |
 | 12,2312 PDXCHNGE | interpretive | BOV target |
 | 12,2315  | interpretive | CHANG2 resume |
@@ -167,9 +168,11 @@ Lane G (CM flight). Milestone `cm-conics`. How the routines are made and checked
 | 12,2520  | interpretive | CHANG2 resume |
 | 12,2521  | interpretive | CHANG2 resume |
 | 12,2523  | interpretive | CHANG2 resume |
+| 12,2524  | interpretive | pending DANZIG after RTB TPMODE |
 | 12,2525  | interpretive | after RTB TPMODE |
 | 12,2530  | interpretive | CHANG2 resume |
 | 12,2532  | interpretive | CHANG2 resume |
+| 12,2533  | interpretive | pending DANZIG after RTB TPMODE |
 | 12,2535  | interpretive | after RTB TPMODE |
 | 12,2537  | interpretive | CHANG2 resume |
 | 12,2542  | interpretive | CHANG2 resume |
@@ -290,6 +293,7 @@ Lane G (CM flight). Milestone `cm-conics`. How the routines are made and checked
 | 12,3161  | interpretive | CHANG2 resume |
 | 12,3163 1/WLOOP | interpretive | CHANG2 resume |
 | 12,3164  | interpretive | CHANG2 resume |
+| 12,3165  | interpretive | pending DANZIG after RTB TPMODE |
 | 12,3167  | interpretive | after RTB TPMODE |
 | 12,3171  | interpretive | CHANG2 resume |
 | 12,3172  | interpretive | CHANG2 resume |
@@ -456,6 +460,8 @@ Lane G (CM flight). Milestone `cm-conics`. How the routines are made and checked
 | 12,3751 ABTCONIC | interpretive | switch branch target |
 | 12,3752  | basic | after EXIT |
 
+The RTB operand words whose pair has a right-hand order (12,2306 after RTB CHECKCTR, BHIZ; 12,2524 and 12,2533 in DELTIME and 12,3165, PDDL after RTB TPMODE) are routines keyed at DANZIG (`pending_danzig`): the RTB's TC DANZIG comes back with that order still in EDOP and LOC at the word, and the routine runs DANZIG's BANKSET load and the order, as the interpreter does. The program puts the mission's DANZIG marker first among its interpretive tables (`tests/cm_conics_target.c`). D1's host sweep on 84d550f5 met 12,2524 and 12,2533 in the CM entry flight.
+
 Destinations outside the file: CHANG2, DANZIG, POLY, POODOO, RTB TPMODE. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
 ## Domain
@@ -467,6 +473,6 @@ Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the
 Hashes: `evidence/cm-conics/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-conics-source-map.json` lists all 1079 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-conics-differential` runs 256 states per routine (113,920 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-conics-proof.json` (`cm-conics-differential.log` is the run). One case in 32 is frozen in `tests/cm_conics_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-conics sanitize-cm-conics` runs the 3560 frozen cases (`cm-conics-host.log`).
-- **C64 execution results.** `make cm-conics-vice` runs 33 diagnostic programs with 616 cases (CI: `vice-cm-conics-1` to `-3`, groups 1-11, 12-22 and 23-33, with 316, 120 and 180 cases) (`cm-conics-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 113,920 differential cases take: 4566 of 4566 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 12 of 12 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 2121 of the 2121 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **Independent assembly comparison.** `make cm-conics-differential` runs 256 states per routine (114,944 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-conics-proof.json` (`cm-conics-differential.log` is the run). One case in 32 is frozen in `tests/cm_conics_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-conics sanitize-cm-conics` runs the 3592 frozen cases (`cm-conics-host.log`).
+- **C64 execution results.** `make cm-conics-vice` runs 30 diagnostic programs with 620 cases (CI: `vice-cm-conics-1` to `-3`, groups 1-10, 11-20 and 21-30, with 317, 122 and 181 cases) (`cm-conics-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take the control-flow edges (both outcomes of each branch) of every linked source that the 114,944 differential cases take: 4632 of 4633 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp; the one left is reached only by cases whose runs do not fit one C64 diagnostic, `c64_drop_superset`) and 12 of 12 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 2159 of the 2159 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
