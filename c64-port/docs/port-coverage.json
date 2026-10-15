@@ -10766,7 +10766,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (923 words in banks 34 and 35): P32/P72 (CSI) and P33/P73 (CDH) with their displays, ALMXIT, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC, the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C, INTINT3P and COMPTGO, as 135 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
+          "scope": "Every word of the file (923 words in banks 34 and 35): P32/P72 (CSI) and P33/P73 (CDH) with their displays, ALMXIT, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC, the CSI search, S32/33.1, S32/33.X, CDHMVR, ROTATE, INTINT2C, INTINT3P and COMPTGO, as 421 routines of the control-transfer ABI compiled by tools/interp_compile.py. The earlier hand-written segments below stay as they were.",
           "verification": "docs/LM-P32-P35.md"
         }
       ],
@@ -10810,8 +10810,8 @@
             "sha256": "4a0b6fa48d1f90d5aa96f3c69d340349faeaf68dc6ae940982847ba298f280b6"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-194.md",
-            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
+            "path": "docs/audits/rev2-recite-a2-494.md",
+            "sha256": "7b0b9404e1f0cd73d67d2a04e6f9a4012531d4db28a9d6d9021b9ee79c480fba"
           }
         }
       }
