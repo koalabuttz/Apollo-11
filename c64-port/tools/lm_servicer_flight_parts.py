@@ -33,7 +33,7 @@ def part_cut():
     m = re.search(r'#define LMSV_PART_CUT PH\((\d\d),(0[0-7]+)\).*\n#define LMSV_PART_KEYS (\d+)u', src)
     cut, n = int(m.group(1), 8) * 1024 + int(m.group(2), 8) - 0o2000, int(m.group(3))
     body = src[src.index('basic_entries[]={'):src.index('interp_entries[]={')]
-    keys = [int(b, 8) * 1024 + int(a, 8) - 0o2000 for b, a in re.findall(r'R(\d\d)\((0[0-7]+)\)', body)]
+    keys = [int(b, 8) * 1024 + int(a, 8) - 0o2000 for b, a in re.findall(r'[RX](\d\d)\((0[0-7]+)\)', body)]
     assert keys == sorted(keys) and keys[n] == cut, 'LMSV_PART_KEYS is not the index of LMSV_PART_CUT'
     return cut
 
@@ -45,7 +45,7 @@ def crossings(cut):
     src = (R / 'src/lm_servicer.c').read_text()
     i = src.index('static int basic(')
     body = src[i:src.index('\n}\n', i)]
-    keys = {ph(b, a) for b, a in re.findall(r'R(\d\d)\((0[0-7]+)\)',
+    keys = {ph(b, a) for b, a in re.findall(r'[RX](\d\d)\((0[0-7]+)\)',
                                             src[src.index('basic_entries[]={'):src.index('interp_entries[]={')])}
     side = lambda p: p < cut
     bad, at, prev = [], None, None

@@ -8,7 +8,7 @@
 #include "cm_interp.h"
 #include "agc_image_ops.h"
 #include "agc_channel_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -46,7 +46,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -58,8 +62,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -4799,7 +4803,11 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
  unsigned i;
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 
@@ -6348,6 +6356,90 @@ static const agc_routine_entry basic_entries[]={
  {0xffffu,0}
 };
 const agc_routine_table cm_entry_dap_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
+/* The basic routines one pass reaches (the spec's hot_points): the
+ * flight store packs them in one module, so a pass loads it once. */
+static const agc_routine_entry hot_entries[]={
+#if (CM_ENTRY_DAP_KEEP0 >> 1) & 1
+ {13596,r32434_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 10) & 1
+ {13639,r32507_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 12) & 1
+ {13650,r32522_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 14) & 1
+ {13662,r32536_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 15) & 1
+ {13664,r32540_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 16) & 1
+ {13667,r32543_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 17) & 1
+ {13673,r32551_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 20) & 1
+ {13703,r32607_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 27) & 1
+ {13737,r32651_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 28) & 1
+ {13749,r32665_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 29) & 1
+ {13758,r32676_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 30) & 1
+ {13760,r32700_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 31) & 1
+ {13770,r32712_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 32) & 1
+ {13780,r32724_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 33) & 1
+ {13784,r32730_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 34) & 1
+ {13788,r32734_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 35) & 1
+ {13793,r32741_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 39) & 1
+ {13816,r32770_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 43) & 1
+ {13830,r33006_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 45) & 1
+ {13855,r33037_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 56) & 1
+ {13898,r33112_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 57) & 1
+ {13907,r33123_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 8) & 1
+ {13995,r33253_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 51) & 1
+ {14271,r33677_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 54) & 1
+ {14277,r33705_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 55) & 1
+ {14287,r33717_abi},
+#endif
+ {0xffffu,0}
+};
+const agc_routine_table cm_entry_dap_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};
 const cm_entry_dap_point cm_entry_dap_points[CM_ENTRY_DAP_POINTS]={
  {3072,0},
  {13596,0},

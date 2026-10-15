@@ -6,7 +6,7 @@ Lane G (CM flight). Milestone `cm-time-free-fall`. How the routines are made and
 
 ## Scope
 
-121 routines, keyed by physical address in `cm_time_free_fall_basic` and `cm_time_free_fall_interpretive`:
+123 routines, keyed by physical address in `cm_time_free_fall_basic` and `cm_time_free_fall_interpretive`:
 
 | Entry | Kind | Why it is a routine |
 |---|---|---|
@@ -90,6 +90,7 @@ Lane G (CM flight). Milestone `cm-time-free-fall`. How the routines are made and
 | 27,3205  | interpretive | CHANG2 resume |
 | 27,3207  | interpretive | CHANG2 resume |
 | 27,3210  | interpretive | CHANG2 resume |
+| 27,3211  | interpretive | pending DANZIG after RTB T(X) |
 | 27,3212  | interpretive | after RTB T(X) |
 | 27,3214  | interpretive | CHANG2 resume |
 | 27,3216  | interpretive | CHANG2 resume |
@@ -116,6 +117,7 @@ Lane G (CM flight). Milestone `cm-time-free-fall`. How the routines are made and
 | 27,3267  | interpretive | CHANG2 resume |
 | 27,3272  | interpretive | CHANG2 resume |
 | 27,3273  | interpretive | CHANG2 resume |
+| 27,3274  | interpretive | pending DANZIG after RTB T(X) |
 | 27,3276  | interpretive | after RTB T(X) |
 | 27,3300  | interpretive | CHANG2 resume |
 | 27,3301  | interpretive | CHANG2 resume |
@@ -132,6 +134,8 @@ Lane G (CM flight). Milestone `cm-time-free-fall`. How the routines are made and
 | 27,3334 T(X) | basic | RTB target |
 | 27,3352 ENDT(X) | basic | return from POLY |
 
+The two RTB T(X) operand words (27,3211 and 27,3274) are routines keyed at DANZIG (`pending_danzig`): T(X)'s TC DANZIG comes back with DMP still in EDOP and LOC at the word, and the routine runs DANZIG's BANKSET load and the DMP, as the interpreter does. The program puts the mission's DANZIG marker first among its interpretive tables (`tests/cm_time_free_fall_target.c`). D1's host sweep on 84d550f5 met 27,3211 in the CM entry flight.
+
 Destinations outside the file: BOVB SIGNMPAC, CHANG2, DANZIG, POLY. Lane A has not yet registered the Comanche Executive and Waitlist routines (WAITLIST, NOVAC, FINDVAC, TASKOVER, ENDOFJOB, IBNKCALL with ISWRETRN, POSTJUMP, BANKCALL, RESUME) or the T5RUPT/T6RUPT vectors that dispatch T5LOC/T6LOC; until it does, a transfer to them stops with EXEC_UNMAPPED at the frontier.
 
 ## Domain
@@ -143,6 +147,6 @@ Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the
 Hashes: `evidence/cm-time-free-fall/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-time-free-fall-source-map.json` lists all 268 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-time-free-fall-differential` runs 256 states per routine (30,976 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-time-free-fall-proof.json` (`cm-time-free-fall-differential.log` is the run). One case in 32 is frozen in `tests/cm_time_free_fall_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-time-free-fall sanitize-cm-time-free-fall` runs the 968 frozen cases (`cm-time-free-fall-host.log`).
-- **C64 execution results.** `make vice-cm-time-free-fall` runs 7 diagnostic programs with 190 cases (`cm-time-free-fall-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 30,976 differential cases take: 2164 of 2164 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 2 of 2 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1026 of the 1026 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **Independent assembly comparison.** `make cm-time-free-fall-differential` runs 256 states per routine (31,488 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-time-free-fall-proof.json` (`cm-time-free-fall-differential.log` is the run). One case in 32 is frozen in `tests/cm_time_free_fall_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-time-free-fall sanitize-cm-time-free-fall` runs the 984 frozen cases (`cm-time-free-fall-host.log`).
+- **C64 execution results.** `make vice-cm-time-free-fall` runs 8 diagnostic programs with 194 cases (`cm-time-free-fall-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 31,488 differential cases take: 2202 of 2202 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 2 of 2 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 1047 of the 1047 branch outcomes all the cases take (`c64_gcov_branches` in the proof).

@@ -27,7 +27,10 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel
 #else
 __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
 #endif
-__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
+/* undo: a non-null marker only. The modules whose io record takes an undo
+ * image stash it in the REU (include/flight_undo.h), not at this pointer. */
+__attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
+                                                                        (apollo_overlay_state *)1};
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
@@ -298,8 +301,9 @@ __attribute__((noinline)) static void rk_rupts(void) {
  * (tools/resident_flight_build.py) count them as their own components. */
 __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_physical) {
     agc_routine call;
-    if(agc_transfer_point(&rk_program,IMAGE,rk_device.superbank)==stop_physical) return EXEC_OK;
-    call=agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);
+    if (agc_transfer_next(&rk_program, IMAGE, rk_device.superbank, stop_physical, &call) ==
+        stop_physical)
+        return EXEC_OK;
     if(!call) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK
     rk_charge(RK_RESIDENT_MCT,1u);

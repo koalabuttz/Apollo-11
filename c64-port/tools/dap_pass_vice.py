@@ -121,6 +121,13 @@ def vice(a, name, prg, pinned, m='lm'):
                 by_request=by, records=records, lost=bool(lost))
 
 
+def profile(name):
+    """The RK_STEP_PROFILE segments from a run's mailbox: cycles and calls each."""
+    data = (WORK / f'vice-{name}' / 'results.bin').read_bytes()
+    return [dict(zip(('segment', 'cycles', 'calls'), (SEGMENTS[i], *struct.unpack_from('<IH', data, 0xb80 + 6 * i))))
+            for i in range(len(SEGMENTS))]
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -154,9 +161,7 @@ def main():
         prg = link(a.cc, name, header, a.cs, scratch, a.steps, profile=a.profile)
         r = vice(a, name, prg, pinned)
         if a.profile and r.get('ok') is not None and (WORK / f'vice-{name}' / 'results.bin').exists():
-            data = (WORK / f'vice-{name}' / 'results.bin').read_bytes()
-            r['profile'] = [dict(zip(('segment', 'cycles', 'calls'), (SEGMENTS[i], *struct.unpack_from('<IH', data, 0xb80 + 6 * i))))
-                            for i in range(len(SEGMENTS))]
+            r['profile'] = profile(name)
             for x in r['profile']:
                 print(f"  {x['segment']}: {x['calls']} x, {x['cycles']} cycles"
                       f" ({x['cycles'] // x['calls'] if x['calls'] else 0} each)")

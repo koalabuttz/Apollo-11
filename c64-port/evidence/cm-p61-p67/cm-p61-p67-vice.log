@@ -1,38 +1,35 @@
 PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-ad3851d40f19df7908287011bc9d18350e35c0824722cd6e40a25a954c58d778  build/cm-p61-p67-1.prg
-cde5416ee83183bbbfac8eca659976b0c2e00e7479b710602aff5ad1a69e4be4  build/cm-p61-p67-10.prg
-e578a6c777f3d347b620005fe73004997b7b41daf690f6a92d1c0cfd183709e1  build/cm-p61-p67-11.prg
-76f112907ea05a0e8441da530f8ea366091f385e2a289e05e987e62496540c66  build/cm-p61-p67-2.prg
-41a9b587c2ce27b3671b3ee35cf11d3cc7bc5a36845a14201fd86f16182e909e  build/cm-p61-p67-3.prg
-d990c95a026614619028a664d412087111f746adcd2e5e57776253baf7a0b3b3  build/cm-p61-p67-4.prg
-63229245acbf407a156ba969c959ea3d3a4688f01d0be2cc7765f6b17dc6a7ad  build/cm-p61-p67-5.prg
-1cb17dd8ab98163f55e533541752823820b2fa40f8b16e7d13367541baa93a8d  build/cm-p61-p67-6.prg
-4cceb2eeb62ffaa5b046b9ee2f1cbf9b66096ca31e9128156adba72a277ebde1  build/cm-p61-p67-7.prg
-bc802cfdfb79917bfb6f08bc2433610ef18619e5eb41eb4821a01ffd6462420c  build/cm-p61-p67-8.prg
-6acafa99ee020f51c30852fde4466507e1c8194b2c6397fe798fa2ae6425b4e6  build/cm-p61-p67-9.prg
+3088ab302f5d82479c25da2be4eb5f7b9c657d83a5910a583ca1de30c62fee84  build/cm-p61-p67-1.prg
+3109319c7f2ea7f68df8eb8385f3e22180d3cf2e490af3ee02f91af8e5cb334d  build/cm-p61-p67-10.prg
+9dfdc764169d1c7c1151b900adba7c2da5857f7c9c9f28dade85dace37761c96  build/cm-p61-p67-2.prg
+8294ee14e8925c2a4fd1de6ff9dd7fd84f5131c351415c521d00bc885538fb41  build/cm-p61-p67-3.prg
+647544b31f0d16d101fe719ecdc9b590580cb3f3e8d1fe2b33da3fd4d56900d7  build/cm-p61-p67-4.prg
+c2a4a5112506187154f0e83c8c5fa0d81d2ae5572b4425fc0e9bda6eaacfc955  build/cm-p61-p67-5.prg
+124f057fe53b02ee09d15f0bc30d3362bcc99d6638c5c13dbcfc14ab93f64b45  build/cm-p61-p67-6.prg
+f2fca5834592e64ccb99fe45ea26acde3c5ca250c7f7bdc1a4a8ca4359971a08  build/cm-p61-p67-7.prg
+8cecbb664c3ce48660dfa0cf883289bd21c318baee86b459b419bb88deffaafe  build/cm-p61-p67-8.prg
+3cec155553470f6b9ccb7cc136c25b238c8b72810707e1ba443ae623e7bd62a2  build/cm-p61-p67-9.prg
 
 $ make vice-cm-p61-p67
-for p in build/cm-p61-p67-1.prg build/cm-p61-p67-2.prg build/cm-p61-p67-3.prg build/cm-p61-p67-4.prg build/cm-p61-p67-5.prg build/cm-p61-p67-6.prg build/cm-p61-p67-7.prg build/cm-p61-p67-8.prg build/cm-p61-p67-9.prg build/cm-p61-p67-10.prg build/cm-p61-p67-11.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-p61-p67-1.prg: 38 checks, 0 failures
-PRG sha256: ad3851d40f19df7908287011bc9d18350e35c0824722cd6e40a25a954c58d778 cm-p61-p67-1.prg
-PASS: VICE PAL cm-p61-p67-2.prg: 43 checks, 0 failures
-PRG sha256: 76f112907ea05a0e8441da530f8ea366091f385e2a289e05e987e62496540c66 cm-p61-p67-2.prg
-PASS: VICE PAL cm-p61-p67-3.prg: 32 checks, 0 failures
-PRG sha256: 41a9b587c2ce27b3671b3ee35cf11d3cc7bc5a36845a14201fd86f16182e909e cm-p61-p67-3.prg
+for p in build/cm-p61-p67-1.prg build/cm-p61-p67-2.prg build/cm-p61-p67-3.prg build/cm-p61-p67-4.prg build/cm-p61-p67-5.prg build/cm-p61-p67-6.prg build/cm-p61-p67-7.prg build/cm-p61-p67-8.prg build/cm-p61-p67-9.prg build/cm-p61-p67-10.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-p61-p67-1.prg: 40 checks, 0 failures
+PRG sha256: 3088ab302f5d82479c25da2be4eb5f7b9c657d83a5910a583ca1de30c62fee84 cm-p61-p67-1.prg
+PASS: VICE PAL cm-p61-p67-2.prg: 40 checks, 0 failures
+PRG sha256: 9dfdc764169d1c7c1151b900adba7c2da5857f7c9c9f28dade85dace37761c96 cm-p61-p67-2.prg
+PASS: VICE PAL cm-p61-p67-3.prg: 45 checks, 0 failures
+PRG sha256: 8294ee14e8925c2a4fd1de6ff9dd7fd84f5131c351415c521d00bc885538fb41 cm-p61-p67-3.prg
 PASS: VICE PAL cm-p61-p67-4.prg: 33 checks, 0 failures
-PRG sha256: d990c95a026614619028a664d412087111f746adcd2e5e57776253baf7a0b3b3 cm-p61-p67-4.prg
-PASS: VICE PAL cm-p61-p67-5.prg: 15 checks, 0 failures
-PRG sha256: 63229245acbf407a156ba969c959ea3d3a4688f01d0be2cc7765f6b17dc6a7ad cm-p61-p67-5.prg
-PASS: VICE PAL cm-p61-p67-6.prg: 6 checks, 0 failures
-PRG sha256: 1cb17dd8ab98163f55e533541752823820b2fa40f8b16e7d13367541baa93a8d cm-p61-p67-6.prg
-PASS: VICE PAL cm-p61-p67-7.prg: 13 checks, 0 failures
-PRG sha256: 4cceb2eeb62ffaa5b046b9ee2f1cbf9b66096ca31e9128156adba72a277ebde1 cm-p61-p67-7.prg
-PASS: VICE PAL cm-p61-p67-8.prg: 21 checks, 0 failures
-PRG sha256: bc802cfdfb79917bfb6f08bc2433610ef18619e5eb41eb4821a01ffd6462420c cm-p61-p67-8.prg
-PASS: VICE PAL cm-p61-p67-9.prg: 9 checks, 0 failures
-PRG sha256: 6acafa99ee020f51c30852fde4466507e1c8194b2c6397fe798fa2ae6425b4e6 cm-p61-p67-9.prg
-PASS: VICE PAL cm-p61-p67-10.prg: 23 checks, 0 failures
-PRG sha256: cde5416ee83183bbbfac8eca659976b0c2e00e7479b710602aff5ad1a69e4be4 cm-p61-p67-10.prg
-PASS: VICE PAL cm-p61-p67-11.prg: 18 checks, 0 failures
-PRG sha256: e578a6c777f3d347b620005fe73004997b7b41daf690f6a92d1c0cfd183709e1 cm-p61-p67-11.prg
+PRG sha256: 647544b31f0d16d101fe719ecdc9b590580cb3f3e8d1fe2b33da3fd4d56900d7 cm-p61-p67-4.prg
+PASS: VICE PAL cm-p61-p67-5.prg: 21 checks, 0 failures
+PRG sha256: c2a4a5112506187154f0e83c8c5fa0d81d2ae5572b4425fc0e9bda6eaacfc955 cm-p61-p67-5.prg
+PASS: VICE PAL cm-p61-p67-6.prg: 13 checks, 0 failures
+PRG sha256: 124f057fe53b02ee09d15f0bc30d3362bcc99d6638c5c13dbcfc14ab93f64b45 cm-p61-p67-6.prg
+PASS: VICE PAL cm-p61-p67-7.prg: 24 checks, 0 failures
+PRG sha256: f2fca5834592e64ccb99fe45ea26acde3c5ca250c7f7bdc1a4a8ca4359971a08 cm-p61-p67-7.prg
+PASS: VICE PAL cm-p61-p67-8.prg: 9 checks, 0 failures
+PRG sha256: 8cecbb664c3ce48660dfa0cf883289bd21c318baee86b459b419bb88deffaafe cm-p61-p67-8.prg
+PASS: VICE PAL cm-p61-p67-9.prg: 25 checks, 0 failures
+PRG sha256: 3cec155553470f6b9ccb7cc136c25b238c8b72810707e1ba443ae623e7bd62a2 cm-p61-p67-9.prg
+PASS: VICE PAL cm-p61-p67-10.prg: 17 checks, 0 failures
+PRG sha256: 3109319c7f2ea7f68df8eb8385f3e22180d3cf2e490af3ee02f91af8e5cb334d cm-p61-p67-10.prg
 exit 0

@@ -4,13 +4,13 @@
   "release": "evidence-lm-p32-p35",
   "files": {
     "lm-p32-p35-c64-cover.json": {
-      "sha256": "599b3ff810b38d825c6b3e2a4901c4f6654fd8340615bf1801aa4d3a1ddf8fb6",
-      "bytes": 7486,
+      "sha256": "4a0b6fa48d1f90d5aa96f3c69d340349faeaf68dc6ae940982847ba298f280b6",
+      "bytes": 7335,
       "store": "tree"
     },
     "lm-p32-p35-differential.log": {
-      "sha256": "323febeb299377bce4e35bef7488316ea5c6cc8c02fcdd543725ed245ac2a4c4",
-      "bytes": 34300,
+      "sha256": "0a68e4739457905ee2b2c6bec98bb8867035934a663ffc053aef4088c6997f29",
+      "bytes": 34279,
       "store": "release"
     },
     "lm-p32-p35-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "lm-p32-p35-proof.json": {
-      "sha256": "a14b8e008d42a1c7644dbaa66777a84d1c9a8c99df7436bca91a46e2069d4404",
-      "bytes": 57169,
+      "sha256": "ffc5e7869c77c56ccdc1a1824eecf0762989c584dcdd4d3bf2640e35c26d2dfd",
+      "bytes": 65001,
       "store": "tree"
     },
     "lm-p32-p35-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "lm-p32-p35-vice.log": {
-      "sha256": "659421e9e16f6b5ce8372038f4b0828a7e4428025ec0d7613b037f95973cc4a7",
-      "bytes": 40250,
+      "sha256": "e9f3808a654bc913db32f76175eb6ad7e7b0cd178f437aaf9c7c5f84013c1027",
+      "bytes": 40437,
       "store": "release"
     }
   }

@@ -8,7 +8,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -75,7 +75,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -94,8 +98,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */
@@ -2723,10 +2727,11 @@ static enum exec_status r70742(apollo_overlay_state *s,p66_bias_io *io){
 /* 34,2744  (CHANG2 resume) */
 static enum exec_status r70744(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,070000u))return EXEC_OUT_OF_SCOPE;
+ if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;
  /* 34,2744 DSU* BMN */
  TRACE(s);
  lmi_newops(s,050023);
- lmi_indexed(s,030072,007005);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+ lmi_indexed(s,030072,007005);{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
    case 28731u:k=K70073;break;
    case 28739u:k=K70103;break;
    default:return EXEC_OUT_OF_SCOPE;}
@@ -2759,10 +2764,11 @@ static enum exec_status r70747(apollo_overlay_state *s,p66_bias_io *io){
 /* 34,2752  (CHANG2 resume) */
 static enum exec_status r70752(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,070000u))return EXEC_OUT_OF_SCOPE;
+ if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;
  /* 34,2752 DSU* BMN */
  TRACE(s);
  lmi_newops(s,050023);
- lmi_indexed(s,030072,007005);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+ lmi_indexed(s,030072,007005);{const agc_word *k;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
    case 28731u:k=K70073;break;
    case 28739u:k=K70103;break;
    default:return EXEC_OUT_OF_SCOPE;}
@@ -4388,10 +4394,11 @@ static enum exec_status r72040(apollo_overlay_state *s,p66_bias_io *io){
 /* 35,2042  (CHANG2 resume) */
 static enum exec_status r72042(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,072000u))return EXEC_OUT_OF_SCOPE;
+ if(io->superbank&0100u)return EXEC_OUT_OF_SCOPE;
  /* 35,2042 SLOAD* EXIT */
  TRACE(s);
  lmi_newops(s,077533);
- lmi_indexed(s,032423,006501);if(io->superbank&0160u)return EXEC_OUT_OF_SCOPE;{agc_word w;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
+ lmi_indexed(s,032423,006501);{agc_word w;switch((unsigned)((W[4]>>10)*1024u+W[0116]-02000u)){
    case 29971u:w=K72423[0];break;
    case 29972u:w=K72424[0];break;
    case 29973u:w=K72425[0];break;
