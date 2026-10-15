@@ -1807,6 +1807,10 @@ SPECS = {
         'symbol': {'cm': 'cm_p61_p67'},
         'basic': 'full',
         'entries': ['@external'],
+        # GOFLASH also returns to L+2 (proceed) and L+3 (recycle); GOFLASHR
+        # and GOPERF1R to L+4 too once the display is up (P61's GOFLASHR
+        # L+4 is P61.3 itself).
+        'returns': {'GOFLASH': 3, 'GOFLASHR': 4, 'GOPERF1R': 4},
         # P61.2's RTB LOADTIME is the first order of its pair (RTB DSU):
         # the native LOADTIME, so the DSU runs on in the same routine.
         # BOVB's TCDANZIG (ENDT(X), TIME_OF_FREE_FALL's TC DANZIG) runs
