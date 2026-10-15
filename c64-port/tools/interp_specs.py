@@ -1398,11 +1398,14 @@ SPECS = {
         # keyed at the RTB's operand word (25,3314).
         'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
-        # positive in both words, as STARTENT and LEWDOVFL leave it.
-        # Negative (a negative low word under a +0 high word too),
+        # any positive double word, as STARTENT, LEWDOVFL and LWDSTORE (DAD,
+        # BMN, BOV, STORE: the words need not agree in sign) leave it
+        # (reviewer 2, #457): a nonzero high word over a low word of either
+        # sign, or a +0 or -0 high word over a positive low word. Negative,
         # LWDSTORE's BMN LEWDPTR loop never ends (on the AGC too).
-        'cells': {'E7,1724': list(range(0, 0o40000, 0o1001)),
-                  'E7,1725': list(range(0, 0o40000, 0o1001))},
+        'cell_pairs': [('E7,1724', 'E7,1725',
+                        [(h, l) for h in range(1, 0o40000, 0o1001) for l in range(0, 0o100000, 0o1001)]
+                        + [(h, l) for h in (0, 0o77777) for l in range(1, 0o40000, 0o401)])],
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
@@ -2242,6 +2245,9 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # (with 'cover', the C64 rows also take every gcov branch arc: the
+        # transfer table search's not-found exit, agc_transfer.c:26)
+        'c64_rows': 'cover',
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -2251,6 +2257,9 @@ SPECS = {
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
+        # TOBALLC's CCS A (LM 26,2164) takes G+N,AUTO's A: +0 (G+N and auto),
+        # BIT10 (not G+N) or BIT14 (not auto), never -0 (auditor, salted run).
+        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}}, 'cm': {}},
         # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
         # read latched input channels.
         'channel_inputs': True,

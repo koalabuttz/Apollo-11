@@ -1,8 +1,8 @@
 $ make test-r60-r62 sanitize-r60-r62
 cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_r60_r62.c src/cm_r60_r62.c tests/r60_r62_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_r60_r62.c -o build/test-r60-r62
 ./build/test-r60-r62
-r60-r62: 836 checks, 0 failures
+r60-r62: 832 checks, 0 failures
 cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_r60_r62.c src/cm_r60_r62.c tests/r60_r62_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_r60_r62.c -o build/test-r60-r62-sanitize
 ASAN_OPTIONS=detect_leaks=0 ./build/test-r60-r62-sanitize
-r60-r62: 836 checks, 0 failures
+r60-r62: 832 checks, 0 failures
 exit 0

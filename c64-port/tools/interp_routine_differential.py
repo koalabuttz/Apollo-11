@@ -204,6 +204,9 @@ class Mission:
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
+        # Cells held together ('cell_pairs': [(a, b, [(x, y), ...])]): a
+        # double word whose two words' signs the program relates.
+        self.cell_pairs = spec.get('cell_pairs', [])
         # (Luminary 'channels': 'all' compares its channels unless told otherwise.)
         self.io_channels = spec.get('io_channels', 'auto' if self.cp.lm_channels else {})
         if self.io_channels == 'auto' and self.cp.lm_channels:
@@ -621,6 +624,17 @@ def case(mi, point, n, rng):
                 continue
             a = (eb << 8) + int(x, 8) - 0o1400
         E[a] = rng.choice(choices)
+    for a, b, choices in mi.cell_pairs:
+        (x, y), ab = rng.choice(choices), []
+        for c in (a, b):
+            if isinstance(c, str):
+                bk, w = c[1:].split(',')
+                if int(bk, 8) != eb:
+                    break
+                c = (eb << 8) + int(w, 8) - 0o1400
+            ab.append(c)
+        else:
+            E[ab[0]], E[ab[1]] = x, y
     # I/O channels the file reads or writes (spec 'io_channels', channel:
     # mask of the bits a case may set): a channel edit each, so the run and
     # the digest cover them (tests/interp_case.h).
