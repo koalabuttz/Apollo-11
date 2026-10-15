@@ -161,6 +161,11 @@ class Mission:
         # the mission's real TC LABEL sites outside the file, under that
         # site's bank: {point: [physical return word, ...]}.
         self.q_callers = {}
+        # 'file_q' {POINT: ['bank,addr', ...]}: half the point's cases
+        # return (TC Q) to one of these words of the file under its bank,
+        # and run on past it (FINETIME +1 back into CHECKG's tail).
+        self.file_q = {self.point_of(k): [self.point_of(r) for r in v]
+                       for k, v in spec.get('file_q', {}).items()}
         for lab in spec.get('q_callers', ()):
             pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
             sites = []
@@ -470,6 +475,10 @@ def case(mi, point, n, rng):
     elif bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
+    file_q = None
+    if point in mi.file_q and qsite is None and rng.random() < 0.5:
+        file_q = rng.choice(mi.file_q[point])
+        bank = file_q // 1024
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
     sb = 0o100 if bank >= 0o40 else 0
     fb = (bank - 8 if bank >= 0o40 else bank) << 10
@@ -682,6 +691,10 @@ def case(mi, point, n, rng):
         if qsite is not None:
             E[2] = logical(qsite)
             stop = qsite
+        elif file_q is not None:
+            # (no stop: the run goes on in the file to its boundary)
+            E[2] = logical(file_q)
+            stop = 0xffff
         elif fixed_q:
             E[2] = rng.choice(fixed_q)
             stop = 2048 + E[2] - 0o4000 if E[2] >= 0o4000 else bank * 1024 + E[2] - 0o2000

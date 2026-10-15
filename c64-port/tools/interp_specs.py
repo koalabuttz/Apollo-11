@@ -2782,7 +2782,7 @@ SPECS = {
         'base': {'cm': 'cm_imu_calibration'},
         'symbol': {'cm': 'cm_imu_calibration'},
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
-        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
         'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
@@ -2854,7 +2854,16 @@ SPECS = {
             '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
                       0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE
             '02426': [0o2134, 0o2173, 0o2251, 0o2527, 0o3320],        # QPLACES
-            '02424': [0o3545, 0o3572]},                               # QPLAC
+            '02424': [0o3545, 0o3572],                                # QPLAC
+            # MODREG: the prelaunch programs, and 07 (the performance test,
+            # CHKCOMED's GOBKCALB return).
+            'MODREG': [0, 1, 2, 3, 7, 0o77770]},
+        # GOFLASH returns to L+1 (terminate), L+2 (proceed) and L+3
+        # (recycle); IMUSTALL and OPTSTALL to L+1 (bad) and L+2 (good).
+        'returns': {'GOFLASH': 3, 'IMUSTALL': 2, 'OPTSTALL': 2},
+        # FINETIME +1's TC Q back into CHECKG (TC FINETIME at 33,2347): half
+        # its cases return there under FB 33 and run CHECKG's tail.
+        'file_q': {'FINETIME+1': ['33,2350']},
         # The ALFLT filter's loops (33,2645-3033) run with S1 4 and S2 2
         # (INTVAL) and their own index values; a wider index stores over
         # CMPX1 or ALX1S and the next LXC/LXA loads data as an index.
