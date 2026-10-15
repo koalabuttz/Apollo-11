@@ -357,6 +357,19 @@ class Compiler:
                 raise CompileError('usprcadr exit %s is not a CADR after TC USPRCADR' % lab)
             self.pending[phys] = ('EXIT', phys + 1, 1)
             self.add_start(phys, 'i', 'USPRCADR return through DANZIG')
+        # 'edop_exits': labels of basic words that the file's own basic code
+        # leaves in LOC, with BIT8 in EDOP, before it goes to an
+        # interpretive order's basic code (FLESHPOT's DCA Z, AD FOUR, DXCH
+        # LOC, CAF BIT8, TS EDOP, TCF VXV): that code ends at DANZIG, whose
+        # CCS EDOP runs EXIT into the word after this one, as for
+        # 'usprcadr_exits'.
+        for lab in self.spec.get('edop_exits', ()):
+            phys = self.label_phys(lab)
+            if (phys is None or phys not in self.code or not self.in_file(phys) or phys + 1 not in self.code
+                    or self.code.get(phys - 1) is None or (self.code[phys - 1].op, self.code[phys - 1].operand) != ('TS', 'EDOP')):
+                raise CompileError('edop exit %s is not the word after a TS EDOP' % lab)
+            self.pending[phys] = ('EXIT', phys + 1, 1)
+            self.add_start(phys, 'i', 'EXIT in EDOP, return through DANZIG')
         self.blocks = {}
         self.owner = {}
         while True:
@@ -508,8 +521,13 @@ class Compiler:
             # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
             # NEWOPS as at the end of any pair.
             op, cur, edop = self.pending[start]
-            out.append('/* %s pending DANZIG: %s */' % (self.where(start), 'USPRCADR\'s EXIT in EDOP' if op == 'EXIT'
-                                                           else 'RTB on the left, %s on the right' % op))
+            if op != 'EXIT':
+                why = 'RTB on the left, %s on the right' % op
+            elif self.code[start - 1].operand == 'EDOP':
+                why = 'EXIT in EDOP from the TS EDOP before'
+            else:
+                why = 'USPRCADR\'s EXIT in EDOP'
+            out.append('/* %s pending DANZIG: %s */' % (self.where(start), why))
             out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
             out.append('TRACE(s);')
             out.append('right(s);')
@@ -715,6 +733,13 @@ class Compiler:
                 return st, cur, True
         st.append('setpd_next(s);' if prev_setpd else 'next(s);')
         return st, cur, False
+
+    def pending_rtb(self, cur, lab):
+        """The RTB's operand word (cur - 1): DANZIG's pending right order."""
+        pw = self.pair[0]
+        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
+        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
+        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
 
     def call_return(self, cur, why):
         """The word after a CALL is a routine when it is interpretive code; a
@@ -981,6 +1006,11 @@ class Compiler:
                 end = cur
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
+                    if self.pending_danzig and self.right_op:
+                        # (A right order that takes the pushdown list, as
+                        # TFFXTEST's RTB DMP T(X): no words of its own, but
+                        # still pending in EDOP at the operand word.)
+                        self.pending_rtb(cur, lab)
                 elif self.rk:
                     # RTB with an order on its right: DANZIG runs that order,
                     # then NEWOPS at the word after its operands (words of
@@ -994,11 +1024,7 @@ class Compiler:
                         # belong to the routine at the RTB's operand word.)
                         end = cur if self.pending_danzig else q
                     if self.pending_danzig:
-                        # The operand word: DANZIG's pending right order.
-                        pw = self.pair[0]
-                        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
-                        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
-                        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
+                        self.pending_rtb(cur, lab)
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
                 return st, end, True, False
             if lab not in self.rtb:
@@ -1758,7 +1784,9 @@ class Compiler:
             p = work.pop()
             if p in units:
                 continue
-            if p != start and p in self.starts and self.starts[p][0] == 'i':
+            # (An 'edop_exits' word is an interpretive key and the basic
+            # instruction the routine runs.)
+            if p != start and p in self.starts and self.starts[p][0] == 'i' and p not in self.pending:
                 raise CompileError('basic flow runs into interpretive %s' % self.where(p))
             if p != start and p in self.idle:
                 units[p] = (['W[5]=0%04o;return EXEC_IDLE; /* idle point */' % self.logical_of(p)], [])

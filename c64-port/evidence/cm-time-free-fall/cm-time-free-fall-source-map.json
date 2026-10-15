@@ -3,7 +3,7 @@
   "native_file": "src/cm_time_free_fall.c",
   "words": 268,
   "untranslated_words": 0,
-  "routines": 121,
+  "routines": 123,
   "map": [
    {
     "address": "27,2757",
@@ -1451,8 +1451,8 @@
     "address": "27,3275",
     "word": "00043",
     "source": "  TFFX",
-    "routine": "27,3273",
-    "function": "r57273"
+    "routine": "27,3274",
+    "function": "r57274"
    },
    {
     "address": "27,3276",

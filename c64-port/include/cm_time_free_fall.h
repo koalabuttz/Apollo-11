@@ -12,7 +12,7 @@ extern const agc_routine_table cm_time_free_fall_interpretive,cm_time_free_fall_
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_time_free_fall_point;
-#define CM_TIME_FREE_FALL_POINTS 121u
+#define CM_TIME_FREE_FALL_POINTS 123u
 #define CM_TIME_FREE_FALL_CADR_WORDS 1u
 #define CM_TIME_FREE_FALL_EXTERNALS 4u
 #define CM_TIME_FREE_FALL_FIRST 24047u

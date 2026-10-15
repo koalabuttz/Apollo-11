@@ -3,7 +3,7 @@
   "native_file": "src/lm_powered_subs.c",
   "words": 267,
   "untranslated_words": 0,
-  "routines": 48,
+  "routines": 49,
   "map": [
    {
     "address": "23,3537",

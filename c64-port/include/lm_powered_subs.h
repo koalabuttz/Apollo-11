@@ -11,7 +11,7 @@ extern const agc_routine_table lm_powered_subs_interpretive,lm_powered_subs_basi
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_powered_subs_point;
-#define LM_POWERED_SUBS_POINTS 48u
+#define LM_POWERED_SUBS_POINTS 49u
 #define LM_POWERED_SUBS_CADR_WORDS 1u
 #define LM_POWERED_SUBS_EXTERNALS 9u
 #define LM_POWERED_SUBS_FIRST 8216u
