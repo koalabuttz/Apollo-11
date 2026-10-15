@@ -3406,7 +3406,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p32-p33 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there.",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p32-p33 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Two C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "AVFLAGA, AVFLAGP, P20FLGON, VNPOOH and TC GOTOPOOH",
@@ -3422,7 +3422,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-proof.json",
-            "sha256": "8116c22ece4ac3de32648e5fdb7c107b2c119100bc819e6c1d8a7a7fc670e128"
+            "sha256": "49223d0626f0d843abb392ed37d50a44fa2311d30f9926abdd01316d6ac18952"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-host.log",
@@ -3430,14 +3430,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-vice.log",
-            "sha256": "add9e826c159a2b666fb4a161270014da59eeedc941f575ce45d3b8461a6f6b8",
+            "sha256": "cae2af18bec6e292d4db5c8e29f5babbcd4f952d39044bd17422e550af43afa5",
             "vice_targets": {
               "vice-cm-p32-p33": 477
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
-            "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f"
+            "sha256": "5c25c97878c8864b079b8a3ea36d2a2b331d484fa09ad8c4b697e291a1664236"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-194.md",
