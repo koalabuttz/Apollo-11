@@ -16,7 +16,7 @@ Prints wall cycles per AGC second, the AGC time reached, the step status
 bridge to on the C64) and per-interrupt costs; writes
 build/flight-store/flight-scenario-vice.json.
 
-  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N]
+  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--profile]
 """
 import argparse
 import json
@@ -59,6 +59,7 @@ def main():
                    default=pathlib.Path(os.environ.get('VICE_DATA_DIR', ROOT / 'deps/vice-data')))
     p.add_argument('--cycles', type=int, default=6_000_000_000)
     p.add_argument('--timeout', type=int, default=3600)
+    p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
@@ -74,8 +75,10 @@ def main():
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
     header = snapshot(exe, a.scenario, a.snap_cs)
-    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m)
+    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile)
     r = dp.vice(a, a.scenario, prg, pinned, m)
+    if a.profile:
+        r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs)
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
@@ -91,6 +94,9 @@ def main():
         for k, b in sorted(r['by_request'].items()):
             print(f"  {k}: {b['count']} x, mean {b['cycles'] // b['count']} cycles (max {b['max_cycles']}), "
                   f"{b['steps']} steps, {b['job_loads']} job and {b['task_loads']} task loads")
+        for x in r.get('profile', []):
+            print(f"  {x['segment']}: {x['calls']} x, {x['cycles']} cycles"
+                  f" ({x['cycles'] // x['calls'] if x['calls'] else 0} each)")
     else:
         print(f"FAIL: {a.scenario}: {r.get('error')}")
     return 0 if r.get('ok') else 1

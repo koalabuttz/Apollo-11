@@ -552,7 +552,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
-            "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1"
+            "sha256": "6a9499e89726cb19befac6168328803c59ea31f9c2e18872c168e1a18c837ef7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-host.log",
@@ -560,14 +560,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-vice.log",
-            "sha256": "fdcc337974d22c8d50778383e0498fb9585ccf50b6ebb3b06016a6daf8db57c6",
+            "sha256": "366f39bc5ebbaa39fdc28456e2edc003c972748f46507dd1ab3477973e15b93c",
             "vice_targets": {
               "vice-cm-body-attitude": 97
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-body-attitude/cm-body-attitude-proof.json",
-            "sha256": "bfd9a9763c575c4ebdae07201a2b3d0817a718c4dbf76c25d9bd3b1de729a0f1"
+            "sha256": "6a9499e89726cb19befac6168328803c59ea31f9c2e18872c168e1a18c837ef7"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
@@ -623,7 +623,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
+            "sha256": "501e31a23a64d4fc149fd94dda1a8b912213c5a17f40e7c91e856c851a2b9bea"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -631,14 +631,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "f63e1fadefbea15c63f4eaf8f7374f0a50bc8aa2722299422cf8aa960eea9bf1",
+            "sha256": "aa57ea9ee5a622acef00f6c445ad980158ab83544b2e0249e9b1ae61e866e894",
             "vice_targets": {
               "vice-cm-entry-dap": 79
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "18eab1fca97167ca736eb85d20e47c924096facb59df4c5978ff98b0b8dc197e"
+            "sha256": "501e31a23a64d4fc149fd94dda1a8b912213c5a17f40e7c91e856c851a2b9bea"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-258.md",
@@ -4933,7 +4933,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
+            "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
@@ -4941,14 +4941,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "c56f2e956712da37aeed740a3201f6623294071c640817c5a318815bc2f507ff",
+            "sha256": "1ae45cf89dda18f9b76c2e4232a38f01bebe4f8242391681e271ad0fced56e2c",
             "vice_targets": {
               "vice-cm-rcs-dap": 43
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5"
+            "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-258.md",
@@ -5415,7 +5415,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-servicer/cm-servicer-proof.json",
-            "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c"
+            "sha256": "5cdb20bb71fb800db6908a4cba8f424d85eb875df1640c7d135b658c90ffa37b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-servicer/cm-servicer-host.log",
@@ -5423,14 +5423,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-servicer/cm-servicer-vice.log",
-            "sha256": "7fc62204212fb25345bec9e361bbed4197229e9b4be44b726f34e4084147e751",
+            "sha256": "7488e65ee8c58bace6186dd0fae487fbf14cd7fe3297eadacfa7f219cbaceb5b",
             "vice_targets": {
-              "vice-cm-servicer": 123
+              "vice-cm-servicer": 122
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-servicer/cm-servicer-proof.json",
-            "sha256": "7118e013fb5c363934bc72292daf05be4fa8526e2c7029576ebb8b55e3e9652c"
+            "sha256": "5cdb20bb71fb800db6908a4cba8f424d85eb875df1640c7d135b658c90ffa37b"
           },
           "independent_review": {
             "path": "docs/audits/lane-g-107.md",
