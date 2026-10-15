@@ -2208,9 +2208,10 @@ SPECS = {
         # CNTCHK (27,2361) is a label nothing names: STQ POINTEX, then
         # CONTCHK.
         'entries': ['@external', 'CNTCHK'],
-        'partial': {'cm': 'the I/O channel orders and the EXTENDs before them wait for an I/O channel model: '
-                          'RANGERD\'s WAND CHAN13 and WOR CHAN13 (27,2420-2424) and VHFREAD\'s RAND CHAN33 (27,2532-2533), '
-                          'and AUTOCK\'s RXOR CHAN31 (34,3360-3361) and WOR DSALMOUT (34,3427-3430)'},
+        # RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33, AUTOCK's RXOR
+        # CHAN31 and WOR DSALMOUT (11) on the mission's channels.
+        'channels': 'all',
+        'io_channels': 'auto',
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
                       'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
                       'MAKECADR': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto', 'LINUS': 'auto',
@@ -2263,7 +2264,10 @@ SPECS = {
                                      'vac+016': [2, 28]}),
             # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
             # of 6 up to the 36 of S22NXTWI's AXT,1.
-            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]})],
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]}),
+            # AUTOCK's angle check loop: DTHETASM counts the three CDUs 2, 1,
+            # 0 (CDULOOP's INDEX DTHETASM; CA CDUX) up to STKTEST.
+            ('CDULOOP', 'STKTEST', {'DTHETASM': [0, 1, 2]})],
         # From P23.16's last check (TC INTPRET before P23.17) to its CALL
         # LOWMEMRY the program runs with a catalog star code,
         # as P23.16's checks leave it; LOWMEMRY with X1 6 times one.
@@ -2289,6 +2293,15 @@ SPECS = {
         # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
         # segment rows cut them at the next resume LOC.
         'c64_segments': True,
+        # Branch outcomes only runs too long for one diagnostic take (AUTOCK's
+        # WOR DSALMOUT into STEP3CK, the S22 DDVs): truncated rows.
+        # C64 rows chosen by gcov branch arc over every linked source, so
+        # arcs only runs too long for one C64 program take get truncated
+        # rows (c64_cuts). Every 16th case is traced (a divisor of
+        # freeze_stride).
+        'c64_rows': 'cover',
+        'cover_stride': 16,
+        'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
         'max_steps': 40000,

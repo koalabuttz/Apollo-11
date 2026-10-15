@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_listing as IL
 import interp_specs
 import basic_compile
+import types
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,6 +46,12 @@ K_WORDS = {'MXV': 18, 'VXM': 18}
 INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
 # The channels a Luminary 'channels': 'all' file's orders reach.
 LM_CHANNELS = basic_compile.LM_CHANNELS
+# A Comanche 'channels': 'all' file's channels, as tools/basic_compile.py
+# models them: 011-014 in the mission's cm_native_io, 5, 6 and 030-033 in
+# the program's agc_hardware.
+CM_CHANNELS = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
+CM_CHANNELS.update({k: 'agc_channels_hw->channel%o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+CHANNEL_OP_NAMES = ('read', 'write', 'rand', 'wand', 'ror', 'wor', 'rxor')
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
 MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
@@ -195,6 +202,11 @@ class Compiler:
         self.lm_channels = mission == 'lm' and spec.get('channels') == 'all'
         if self.lm_channels and not spec.get('channel_inputs'):
             raise CompileError("Luminary 'channels': 'all' needs 'channel_inputs'")
+        # On a Comanche file its step-machine channel orders run on
+        # tools/basic_compile.py's per-file helpers (ch_read ...) against the
+        # mission's cm_native_io and the program's agc_hardware. (A 'basic':
+        # 'full' spec's basic code takes them from tools/basic_compile.py.)
+        self.cm_channels = mission == 'cm' and spec.get('channels') == 'all' and spec.get('basic') != 'full'
         self.uses_hw = False         # a channel order reaches agc_ch_op
         self.channels_used = set()   # the channels those orders name
         self.inputs_used = set()     # latched input channels they read (AGC_CHANNEL)
@@ -1463,6 +1475,20 @@ class Compiler:
                 self.channels_used.add(chan)
                 return st + ['if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,%d,0%o))'
                              'return EXEC_OUT_OF_SCOPE;' % (io_op, chan)], [nxt]
+            if op == 0 and self.cm_channels and index is None and io_op in (0, 2, 4, 6) and chan == 7:
+                # READ, RAND, ROR, RXOR SUPERBNK: the run's superbank (bits
+                # 5-7), as include/agc_channel_ops.h reads it. (A write
+                # would move FB 30-37 and waits, uncompiled, below.)
+                v = '(io->superbank&0160u)'
+                if io_op:
+                    v = '((((W[0]>>1)&040000u)|(W[0]&037777u))%s%s)' % ({2: '&', 4: '|', 6: '^'}[io_op], v)
+                return st + ['ai_caf(s,(agc_word)%s);' % v], [nxt]
+            if op == 0 and self.cm_channels and index is None and io_op < 7 and chan in CM_CHANNELS:
+                # The mission's channels (channel_helpers below); the wrappers
+                # refuse a program without agc_hardware.
+                self.uses_hw = True
+                self.channels_used.add(chan)
+                return st + ['ch_%s(s,cm_chio,0%o);' % (CHANNEL_OP_NAMES[io_op], chan)], [nxt]
             if op == 0:
                 # I/O channels are not in the image: the instruction (and the
                 # routine from it) waits for a channel model, uncompiled.
@@ -1868,6 +1894,11 @@ class Compiler:
             c.append('static MAYBE_UNUSED agc_hardware *agc_channels_hw;')
             c.append('#define AGC_CH_HW_SET(p) ((agc_channels_hw=(p)->hardware)!=0)')
             c.append('#endif')
+        if self.cm_channels and self.uses_hw:
+            c.append('/* The mission\'s cm_native_io of the run, set by the wrappers. */')
+            c.append('static MAYBE_UNUSED cm_native_io *cm_chio;')
+            c.extend(basic_compile.Basic.channel_helpers(types.SimpleNamespace(
+                channels={k: CM_CHANNELS[k] for k in sorted(self.channels_used)})))
         if self.sload_k:
             c.append('/* SLOAD of a fixed word: ZL; INDEX ADDRWD, CA 0; SLOAD2 DXCH MPAC;')
             c.append(' * CAF ZERO; TS MPAC +2; NEWMODE TS MODE; DANZIG. */')
@@ -2101,10 +2132,13 @@ class Compiler:
             c.append(' if(!s||!io)return EXEC_OUT_OF_SCOPE;')
             if self.uses_channels:
                 c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
+            if self.cm_channels and self.uses_hw:
+                c.append(' cm_chio=io;')
             c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);')
             c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;return st;')
             c.append('}')
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){(void)p;return latched(f,s,v);}')
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%sreturn latched(f,s,v);}' % (
+                'if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.cm_channels and self.uses_hw else '(void)p;'))
         index = {r[0]: i for i, r in enumerate(routines)}
         for i, (phys, kind, fn, lab, why) in enumerate(routines):
             if kind == 'b' and self.basic:
