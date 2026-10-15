@@ -692,6 +692,9 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # The CM T4RUPT runs every 120 ms: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         # (#260) C64 INDEX end-around carry.
         'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
@@ -725,6 +728,9 @@ SPECS = {
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-rcs-dap-exec': {
         'missions': ('cm',),
+        # The CM RCS DAP's executive runs every DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
         'base': {'cm': 'cm_rcs_dap_exec'},
         'symbol': {'cm': 'cm_rcs_dap_exec'},
@@ -820,6 +826,10 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # FLESHPOT and QUICTRIG run every LM guidance pass (P63-P67, about 15%
+        # of the P63 window's cycles in the scan): no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'lm': 'lm_powered_subs'},
         'symbol': {'lm': 'lm_powered_subs'},
@@ -2193,6 +2203,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
+        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -4232,6 +4245,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # The landing radar reads run through P63-P66: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
         'base': {'lm': 'lm_radar_leadin_routines'},
         'symbol': {'lm': 'lm_radar_leadin_routines'},
