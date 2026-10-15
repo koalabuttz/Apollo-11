@@ -824,7 +824,7 @@ SPECS = {
         'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM', 'FLESHPOT-1', 'FLESHPOT+93'],
         # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
         # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT).
-        'usprcadr_exits': ['TR*GL**P+7', 'TR*GL**P+13', 'TR*GL**P+21'],
+        'usprcadr_exits': True,
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
