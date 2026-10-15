@@ -2,8 +2,8 @@
  "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc": {
   "native_file": "src/lm_llge.c",
   "words": 991,
-  "untranslated_words": 3,
-  "routines": 248,
+  "untranslated_words": 0,
+  "routines": 246,
   "map": [
    {
     "address": "31,2420",
@@ -135,29 +135,29 @@
     "address": "31,2442",
     "word": "13360",
     "source": " TCF EXNORM",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,2443",
     "word": "13473",
     "source": "WHATDISP TCF P63DISPS",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,2444",
     "word": "13477",
     "source": " TCF P64DISPS",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,2445",
     "word": "13527",
     "source": " TCF VERTDISP",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,2446",
@@ -993,34 +993,36 @@
     "address": "31,2635",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "WOR CHAN13 (STARTP64) waits for an output-channel model"
+    "routine": "31,2632",
+    "function": "r62632"
    },
    {
     "address": "31,2636",
     "word": "05013",
     "source": " WOR CHAN13",
-    "untranslated": "WOR CHAN13 (STARTP64) waits for an output-channel model"
+    "routine": "31,2632",
+    "function": "r62632"
    },
    {
     "address": "31,2637",
     "word": "05516",
     "source": " TC DOWNFLAG",
-    "routine": "31,2637",
-    "function": "r62637"
+    "routine": "31,2632",
+    "function": "r62632"
    },
    {
     "address": "31,2640",
     "word": "00143",
     "source": " ADRES REDFLAG",
-    "routine": "31,2637",
-    "function": "r62637"
+    "routine": "31,2632",
+    "function": "r62632"
    },
    {
     "address": "31,2641",
     "word": "06037",
     "source": "TTFINCR TC INTPRET",
-    "routine": "31,2627",
-    "function": "r62627"
+    "routine": "31,2641",
+    "function": "r62641"
    },
    {
     "address": "31,2642",
@@ -3364,8 +3366,8 @@
     "address": "31,3360",
     "word": "06037",
     "source": "EXNORM TC INTPRET",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3361",
@@ -3658,113 +3660,113 @@
     "address": "31,3432",
     "word": "30076",
     "source": "STEER? CA FLAGWRD2",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3433",
     "word": "74741",
     "source": " MASK STEERBIT",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3434",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3435",
     "word": "13443",
     "source": " BZF RATESTOP",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3436",
     "word": "30121",
     "source": "EXVERT CA OVFIND",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3437",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3440",
     "word": "13453",
     "source": " BZF +13",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3441",
     "word": "05567",
     "source": "EXOVFLOW TC ALARM",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3442",
     "word": "01410",
     "source": " OCT 01410",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3443",
     "word": "34737",
     "source": "RATESTOP CAF BIT13",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3444",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3445",
     "word": "02031",
     "source": " RAND CHAN31",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3446",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3447",
     "word": "13460",
     "source": " BZF DISPEXIT",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3450",
     "word": "04616",
     "source": " TC BANKCALL",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3451",
     "word": "40165",
     "source": " CADR STOPRATE",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3452",
@@ -3777,8 +3779,8 @@
     "address": "31,3453",
     "word": "02216",
     "source": "GDUMP1 TC THROTTLE",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3454",
@@ -3812,64 +3814,64 @@
     "address": "31,3460",
     "word": "00006",
     "source": "DISPEXIT EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3461",
     "word": "34755",
     "source": " DCA NEG0",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3462",
     "word": "52757",
     "source": " DXCH -PHASE3",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3373",
+    "function": "r63373"
    },
    {
     "address": "31,3463",
     "word": "40104",
     "source": "+3 CS FLAGWRD8",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3464",
     "word": "74742",
     "source": " MASK FLUNDBIT",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3465",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3466",
     "word": "13476",
     "source": " BZF ENDLLJOB",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3467",
     "word": "51621",
     "source": " INDEX WCHPHOLD",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3470",
     "word": "12443",
     "source": " TCF WHATDISP",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3471",
@@ -3889,99 +3891,99 @@
     "address": "31,3473",
     "word": "33756",
     "source": "P63DISPS CAF V06N63",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3474",
     "word": "04616",
     "source": "DISPCOMN TC BANKCALL",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3475",
     "word": "20470",
     "source": " CADR REGODSPR",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3476",
     "word": "15155",
     "source": "ENDLLJOB TCF ENDOFJOB",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3477",
     "word": "31666",
     "source": "P64DISPS CA TREDES",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3500",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3501",
     "word": "13523",
     "source": " BZF RED-OVER",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3502",
     "word": "40102",
     "source": " CS FLAGWRD6",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3503",
     "word": "74746",
     "source": " MASK REDFLBIT",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3504",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3505",
     "word": "13525",
     "source": " BZF REDES-OK",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3506",
     "word": "33757",
     "source": " CAF V06N64",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3507",
     "word": "04616",
     "source": " TC BANKCALL",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3510",
     "word": "20462",
     "source": " CADR REFLASHR",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3511",
@@ -4057,43 +4059,43 @@
     "address": "31,3523",
     "word": "05516",
     "source": "RED-OVER TC DOWNFLAG",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3524",
     "word": "00143",
     "source": " ADRES REDFLAG",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3525",
     "word": "33757",
     "source": "REDES-OK CAF V06N64",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3526",
     "word": "13474",
     "source": " TCF DISPCOMN",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3527",
     "word": "33760",
     "source": "VERTDISP CAF V06N60",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3530",
     "word": "13474",
     "source": " TCF DISPCOMN",
-    "routine": "31,3237",
-    "function": "r63237"
+    "routine": "31,3463",
+    "function": "r63463"
    },
    {
     "address": "31,3531",
@@ -5662,7 +5664,8 @@
     "address": "11,2336",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "WOR CHAN13 (STARTP64) waits for an output-channel model"
+    "routine": "11,2321",
+    "function": "r22321"
    },
    {
     "address": "11,2337",
@@ -5675,8 +5678,8 @@
     "address": "11,2340",
     "word": "15261",
     "source": " TCF TASKOVER",
-    "routine": "11,2340",
-    "function": "r22340"
+    "routine": "11,2321",
+    "function": "r22321"
    },
    {
     "address": "11,2341",

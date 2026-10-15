@@ -138,7 +138,9 @@ measures 39,341 bytes today and 38,534 direct-only.
 The VICE load check also fills the free soft stack below the timings with a
 pattern and reports the deepest byte touched (`soft_stack_peak_bytes` in
 `vice-load.json`): 302 bytes LM and 174 bytes CM, over every module's main
-and one resolver record per module run through `rk_direct`.
+and one resolver record per module run through `rk_direct`. The timings (10 bytes
+per module from $C400, at most 256 modules) leave the stack 512 bytes below
+$D000, and the check fails (step 13) if the stack reaches them.
 
 ### Fit on 6b6ed2dc
 
@@ -308,7 +310,7 @@ class 3 is kept for the DAP. The load check runs one of the class-3 set's
 points through the module that packs the same table and through `rk_direct`
 with only the pinned module present, compares them, checks the class-4
 header at $E000 when there is one, and then drops the pinned module (its
-mailbox and timings use $C000-$CBFF).
+mailbox and timings use $C000-$CDFF).
 
 ### Direct calls into a loaded module
 
