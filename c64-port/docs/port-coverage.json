@@ -1036,7 +1036,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/CM-DOWNTELEMETRY.md",
-            "sha256": "1433f530b1009b10443d6467b36308b7c1fcf645876a6f8a26be8216ab2c8798"
+            "sha256": "17a7df884851358ffb9873e7d7a699ca737241c6375588b9ed5a6f7952c7352e"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-proof.json",
@@ -1044,11 +1044,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-host.log",
-            "sha256": "68ba761ae8a38c03b407b65d1dcc17e8f98809548ac25d0fe1db342bdaa33839"
+            "sha256": "f96c211e21fc86d2b6404d2811b043f73441cc32ac2ea3e601e306128a5d1c47"
           },
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
-            "sha256": "cd26563b7bbaeb85808d1e9f5f5f2d3a41be173fb539c116d21f21225154675d",
+            "sha256": "23754c09e5fccfc880ed3f2fc6aef9c588ac68c71bc8464fa09ba3b2e3d1c80d",
             "vice_targets": {
               "vice-cm-downtelemetry": 24
             }
@@ -7784,7 +7784,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "docs/LM-DOWNTELEMETRY.md",
-            "sha256": "9ebc04b4a8473c1ee714cd103244c6a0f879c7bd906c9d8d413c05ab30c8e87b"
+            "sha256": "86ab0d1c2018660880c71938392b7fb9087567556104f7dd24199b95d77214f4"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-proof.json",
@@ -7792,11 +7792,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-host.log",
-            "sha256": "4c1de6c55bbb3a6c6ad2f138add16f1e77130c96e3932421b62b33a5fb045a4f"
+            "sha256": "6e43df0cb35499b70927a9f9f727261c435dad48d7ffdd77aa73f20a1f00098d"
           },
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
-            "sha256": "48e94fa2e7e75956654779357a2ae4e759c0f41c995f9e6402f0bba5455ad1f7",
+            "sha256": "46afe73a9dca3ef0a4e364246a35ee021cdce28571fe96bf23da135040fd3eae",
             "vice_targets": {
               "vice-lm-downtelemetry": 48
             }

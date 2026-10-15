@@ -9,8 +9,8 @@
       "store": "release"
     },
     "lm-downtelemetry-host.log": {
-      "sha256": "4c1de6c55bbb3a6c6ad2f138add16f1e77130c96e3932421b62b33a5fb045a4f",
-      "bytes": 1650,
+      "sha256": "6e43df0cb35499b70927a9f9f727261c435dad48d7ffdd77aa73f20a1f00098d",
+      "bytes": 1635,
       "store": "release"
     },
     "lm-downtelemetry-proof.json": {
@@ -19,7 +19,7 @@
       "store": "tree"
     },
     "lm-downtelemetry-vice.log": {
-      "sha256": "48e94fa2e7e75956654779357a2ae4e759c0f41c995f9e6402f0bba5455ad1f7",
+      "sha256": "46afe73a9dca3ef0a4e364246a35ee021cdce28571fe96bf23da135040fd3eae",
       "bytes": 619,
       "store": "release"
     }
