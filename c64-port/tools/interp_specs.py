@@ -3037,12 +3037,17 @@ SPECS = {
         # basic routines never name FIXLOC or NEWJOB, so they take any.
         'any_fixloc': True,
         'any_newjob': True,
+        # R10,R11A to TCF LANDISP (21,2021-2071) reads CHAN30 for an abort
+        # stage or abort command whenever LETABORT is set (all of P63): left
+        # to lm-p70-p71-file, which runs the channel orders, so its points
+        # (R10,R11A and the FLIP returns) resolve there in the flight store.
+        'outside': {'R10,R11A': 0o51},
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
         # 8D): the DPS or the APS coefficients, eight words on.
         'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
-        'partial': {'lm': 'READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
+        'partial': {'lm': 'R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
@@ -3600,6 +3605,10 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        'trusted_image': True,
         'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P32-P33,_P72-P73.agc'},
@@ -4191,13 +4200,17 @@ SPECS = {
                       'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None, 'POSTJUMP': 1},
         'noreturn': ['POSTJUMP'],
         # Returns a case starts with only as their producers leave them:
-        # G+N,AUTO's A (0 in AUTO, else positive) and LRS22.1's MPAC (0 good
-        # data, 1 or 2 for its two bad-data returns).
-        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the caller's
-        # Q that LITIT saved there, a basic return outside the file:
-        # LODSAMPT's address stands in for it, the case's Q and stop too.)
-        'states': {'LITIT+3': {'ITEMP6': [0o4400], '2': [0o4400]},
-                   'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+        # G+N,AUTO's A (0 in AUTO, 0777 from CCS BIT10 outside G+N, BIT14
+        # outside AUTO; R60_62.agc) and LRS22.1's MPAC (0 good data, 1 or 2
+        # for its two bad-data returns).
+        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the Q that
+        # LITIT saved there, R12LITES's own return after its TC HLIGHT
+        # (25,3614) or TC HLIGHT -3 (25,3615), so the case runs on through
+        # R12LITES to ISWRETRN. The Q it swaps into ITEMP6 is not read
+        # again: LODSAMPT's address stands in, outside the file, so it is
+        # not the case's stop.)
+        'states': {'LITIT+3': {'ITEMP6': [0o3614, 0o3615], '2': [0o4400]},
+                   'R61LEM1+21': {'0000': [0, 0o777, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
                    # (LPS20.2's and LRS22.2's MPAC: 0 or 1, for the INDEX MPAC
                    # after the CALL's EXIT and after the BANKCALL)
                    'P20LEM1+11': {'0154': [0, 1]}, 'P20LEM1+12': {'0154': [0, 1]},
@@ -4209,11 +4222,13 @@ SPECS = {
                    # (LRVEL's A: the beam's VBEAM index, 0, 2 or 4, from its
                    # callers' CAF)
                    'LRVEL': {'0000': [0, 2, 4]},
-                   # (X1 an index, as the STORE,1 that TC INTPRET at
-                   # R21LEM7 +1 is to the interpreter assumes)
-                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},
-                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775]},
-                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   # (X1 for the STORE,1 that TC INTPRET at R21LEM7 +1 is:
+                   # INTEXIT's -2 (earth) or -10D (moon), which LPS20.1's
+                   # CSMCONIC/LEMCONIC leaves in the same job, and small
+                   # indexes besides)
+                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
+                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
+                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
                    # (S1 6 from V67WW's SSP S1 on)
                    'V67WW+10': {'vac+50': [6]}, 'V67WW+11': {'vac+50': [6]},
                    'V67WW+12': {'vac+50': [6]}, 'V67WW+13': {'vac+50': [6]},
@@ -4235,6 +4250,13 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'resume_keys': True,
         'resume_orphans': True,
+        # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
+        # job: the basic routines they reach (CLRADMOD and the RR/LR
+        # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule
+        # for interrupt-context specs; the P63 flight scenario reaches
+        # CLRADMOD with a NOVAC job's FIXLOC).
+        'any_fixloc': True,
+        'any_newjob': True,
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
                 'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
                 'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},

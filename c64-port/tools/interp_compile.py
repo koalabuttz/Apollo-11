@@ -182,12 +182,14 @@ class Compiler:
         # its first operand word, the EDOP code)}.
         self.pending_danzig = bool(spec.get('pending_danzig'))
         self.pending = {}
-        # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
-        # (tasks and NOVAC jobs call them too), not only a VAC area.
+        # 'any_fixloc': basic routines that never index through FIXLOC take
+        # any FIXLOC (tasks and NOVAC jobs call them too), not only a VAC
+        # area. (A TS FIXLOC does not count: R29DODES sets its own.)
         self.any_fixloc = bool(spec.get('any_fixloc'))
-        # 'any_newjob' (with any_fixloc): those routines, when they also never
-        # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
-        # T4RUPT still runs them).
+        # 'any_newjob' (with any_fixloc): those routines, when they also do
+        # not run the native DANZIG's NEWJOB test, take NEWJOB -0 too
+        # (DUMMYJOB idles with it while T4RUPT still runs them). Their own
+        # CCS NEWJOB takes -0 as any other value: the cases compare it.
         self.any_newjob = bool(spec.get('any_newjob'))
         self.sload_k = False
         self.uses_channels = False
@@ -1456,8 +1458,10 @@ class Compiler:
                     # inline CADR returns to one of several words; 'returns'
                     # 0 is a callee that never returns (BANKCALL DISPEXIT +3).
                     callee = self.code[nxt].operand.strip() if n == 1 and nxt in self.code else None
+                    # (A return into the spec's 'outside' words leaves the
+                    # file: another module holds that point.)
                     if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n) and \
-                            self.spec.get('returns', {}).get(callee, 1):
+                            nxt + n in self.words and self.spec.get('returns', {}).get(callee, 1):
                         self.add_start(nxt + n, 'b', 'return from ' + lab)
                         for i in range(1, self.spec.get('returns', {}).get(callee, 1)):
                             if self.is_basic(nxt + n + i):
@@ -1732,8 +1736,11 @@ class Compiler:
         return (ln is not None and ln.op and (ln.op == 'INCR' or not is_interp_op(ln.op)) and ln.op not in DATA_OPS)
 
     def novac(self, phys):
-        """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
-        and does not enter the interpreter (TC INTPRET)."""
+        """Under 'any_fixloc', a basic routine that never indexes through
+        FIXLOC (ixw(...,0120u), W[W[0120]+k]; the generated TS FIXLOC writes
+        00120u, which does not match) and does not enter the interpreter
+        (TC INTPRET). The NEWJOB test matches the native DANZIG's W[067] and
+        ai_ccs(s,067), not a routine's own CCS NEWJOB (00067u)."""
         return (self.any_fixloc and self.starts[phys][0] == 'b'
                 and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
                 and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))

@@ -4,13 +4,13 @@
   "release": "evidence-cm-p32-p33",
   "files": {
     "cm-p32-p33-c64-cover.json": {
-      "sha256": "b085f0fd3795528963567d5778027f00f92003c326544a51e436941f27acc95f",
-      "bytes": 7306,
+      "sha256": "5c25c97878c8864b079b8a3ea36d2a2b331d484fa09ad8c4b697e291a1664236",
+      "bytes": 7513,
       "store": "tree"
     },
     "cm-p32-p33-differential.log": {
-      "sha256": "106d44f319e3f31fa86d03c8658702ec56ac52bee933fb1e2ae35787c8e1cfec",
-      "bytes": 19112,
+      "sha256": "fcce7a1f86dbf42bb594161838ee0b7594178476b091b2e25c41fcec3f062593",
+      "bytes": 19182,
       "store": "release"
     },
     "cm-p32-p33-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "cm-p32-p33-proof.json": {
-      "sha256": "8116c22ece4ac3de32648e5fdb7c107b2c119100bc819e6c1d8a7a7fc670e128",
-      "bytes": 34622,
+      "sha256": "49223d0626f0d843abb392ed37d50a44fa2311d30f9926abdd01316d6ac18952",
+      "bytes": 41625,
       "store": "tree"
     },
     "cm-p32-p33-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-p32-p33-vice.log": {
-      "sha256": "add9e826c159a2b666fb4a161270014da59eeedc941f575ce45d3b8461a6f6b8",
-      "bytes": 35917,
+      "sha256": "cae2af18bec6e292d4db5c8e29f5babbcd4f952d39044bd17422e550af43afa5",
+      "bytes": 33020,
       "store": "release"
     }
   }
