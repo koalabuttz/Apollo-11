@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* lm_interbank_dap_hot_routines against lm_interbank_routines: for IBNKCALL
- * and ISWRETRN, random CPU states (most of them in the accepted context, Q
- * erasable or fixed, the CADR erasable or a compiled operand) must give the
+/* lm_interbank_dap_hot_routines and lm_interbank_postjump_hot_routines
+ * against lm_interbank_routines: for IBNKCALL, ISWRETRN and POSTJUMP,
+ * random CPU states (most of them in the accepted context, Q erasable or
+ * fixed, the CADR erasable or a compiled operand) must give the
  * same status, image and io record through either table. */
 #include "lm_interbank_dap.h"
 #include "lm_interbank_routines.h"
@@ -34,15 +35,16 @@ static void state(apollo_overlay_state *s,p66_bias_io *io,uint16_t z,uint16_t n)
   case 3:io->interrupt_enabled=2;break;case 4:s->words[3]=0100;break;case 5:s->words[2]=07776u;break;default:break;}
 }
 int main(void){agc_native_program p;apollo_overlay_state a,b;p66_bias_io ia,ib;uint32_t n,checks=0,fails=0,ok=0;uint16_t i,e;
- static const uint16_t z[2]={04674u,04707u};
+ static const uint16_t z[3]={04674u,04707u,04635u};
+ static const char *const name[3]={"IBNKCALL","ISWRETRN","POSTJUMP"};
  for(i=0;i<SITES;++i){sites[i].physical=(uint16_t)(4u*1024u+i*331u%(28u*1024u));sites[i].word=rnd()%2u?(uint16_t)(rnd()&077777u):(uint16_t)(rnd()|0100000u);}
  for(i=1;i<SITES;++i){agc_site_operand t=sites[i];uint16_t j=i;while(j&&sites[j-1u].physical>t.physical){sites[j]=sites[j-1u];--j;}sites[j]=t;}
  memset(&p,0,sizeof p);p.operands=sites;p.operand_count=SITES;
- for(n=0;n<200000u;++n)for(e=0;e<2u;++e){enum exec_status sa,sb;uint16_t key=(uint16_t)(2048u+(z[e]-04000u));
+ for(n=0;n<200000u;++n)for(e=0;e<3u;++e){enum exec_status sa,sb;uint16_t key=(uint16_t)(2048u+(z[e]-04000u));
   state(&a,&ia,z[e],(uint16_t)n);b=a;ib=ia;
-  sa=find(&lm_interbank_routines,key)(&p,&a,&ia);sb=find(&lm_interbank_dap_hot_routines,key)(&p,&b,&ib);
+  sa=find(&lm_interbank_routines,key)(&p,&a,&ia);sb=find(e<2u?&lm_interbank_dap_hot_routines:&lm_interbank_postjump_hot_routines,key)(&p,&b,&ib);
   ++checks;if(sa==EXEC_OK)++ok;
-  if(sa!=sb||memcmp(&a,&b,sizeof a)||memcmp(&ia,&ib,sizeof ia)){if(++fails<5)printf("FAIL: %s case %lu status %d vs %d\n",e?"ISWRETRN":"IBNKCALL",(unsigned long)n,(int)sa,(int)sb);}
+  if(sa!=sb||memcmp(&a,&b,sizeof a)||memcmp(&ia,&ib,sizeof ia)){if(++fails<5)printf("FAIL: %s case %lu status %d vs %d\n",name[e],(unsigned long)n,(int)sa,(int)sb);}
  }
  printf("lm-interbank-dap: %lu checks (%lu returned), %lu failures\n",(unsigned long)checks,(unsigned long)ok,(unsigned long)fails);
  return fails!=0;
