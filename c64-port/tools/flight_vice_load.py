@@ -39,7 +39,7 @@ def run(m, a):
     pinned = '#define FL_PINNED ' in (OUT / f'{m}-load-check.h').read_text()
     commands.write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
                         + f'g {int(sys_at[1]):04x}\n'
-                        f'bsave "{dump}" 0 c000 cbff\nquit\n')
+                        f'bsave "{dump}" 0 c000 cdff\nquit\n')
     reu = work / 'image.reu'
     reu.write_bytes((OUT / f'{m}.reu').read_bytes())
     cmd = [a.vice, '-default', '-console', '-pal', '-warp', '+sound',
