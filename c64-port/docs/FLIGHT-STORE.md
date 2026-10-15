@@ -376,7 +376,14 @@ After the trampoline and before the resolver, the resident's step calls
 most 256 steps. `EXEC_UNMAPPED` with no step means the point is not that
 module's; the resolver and an ABI 2 run follow only when no loaded module
 holds the point. A module's main does the same through its own list, so
-both paths run the same tables.
+both paths run the same tables. The list also carries the high bytes of
+the lowest key its basic tables hold and how far above it the highest
+key's is (`FS_KEY_LO`, `FS_KEY_SPAN`, from the builder), and `rk_direct`
+skips a module whose range misses the high byte of the step's fixed point
+(0xff when Z is erasable; a module holding an erasable key, or with
+interpretive tables, spans to 0xff), so most slots that do not hold the
+point cost a byte compare instead of a run. Measured on the LM DAP hold
+(work clock, VICE): 11.92x to 11.19x real time, for 43 resident bytes.
 
 A module never crosses a 512 KB REU bank (`tools/overlay_v2_pack.py`
 starts it on the next bank instead): one DMA loads a module, and the REU's

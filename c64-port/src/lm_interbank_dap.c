@@ -2,7 +2,6 @@
 #include "lm_interbank_dap.h"
 #include "p66_bias.h"
 #include "agc_image_w.h"
-/* A or L through BUF2: overflow-corrected, then sign-extended again. */
 /* High byte of word i (both targets are little-endian). */
 #define HI(i) ((uint8_t *)&W[i])[1]
 /* A or L through BUF2: overflow-corrected, then sign-extended again (bit
