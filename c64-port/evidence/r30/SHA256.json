@@ -4,8 +4,8 @@
   "release": "evidence-r30",
   "files": {
     "r30-c64-cover.json": {
-      "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb",
-      "bytes": 5210,
+      "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9",
+      "bytes": 5201,
       "store": "tree"
     },
     "r30-differential.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "r30-proof.json": {
-      "sha256": "de06b4813f7b488861754dcf6f53382702ed449df080ddf292de511ab5d48d3c",
-      "bytes": 16922,
+      "sha256": "61ed22ffa53e3f08ef7f2ddb32b4ccbf6e112acdcf73a9560c7b68d8ab054705",
+      "bytes": 16910,
       "store": "tree"
     },
     "r30-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "r30-vice.log": {
-      "sha256": "784657bf544e592cba2de996eba94f1473e4b3e216d5d840839cfa92905217dc",
-      "bytes": 4112,
+      "sha256": "0daaee13785d7dfc0c6ab6a070ce679ae02cf24d98f761bd8df1007ad015d1d0",
+      "bytes": 4111,
       "store": "release"
     }
   }

@@ -4630,7 +4630,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "de06b4813f7b488861754dcf6f53382702ed449df080ddf292de511ab5d48d3c"
+            "sha256": "61ed22ffa53e3f08ef7f2ddb32b4ccbf6e112acdcf73a9560c7b68d8ab054705"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -4638,14 +4638,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "784657bf544e592cba2de996eba94f1473e4b3e216d5d840839cfa92905217dc",
+            "sha256": "0daaee13785d7dfc0c6ab6a070ce679ae02cf24d98f761bd8df1007ad015d1d0",
             "vice_targets": {
-              "vice-r30": 260
+              "vice-r30": 259
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+            "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-235.md",
@@ -12052,7 +12052,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "de06b4813f7b488861754dcf6f53382702ed449df080ddf292de511ab5d48d3c"
+            "sha256": "61ed22ffa53e3f08ef7f2ddb32b4ccbf6e112acdcf73a9560c7b68d8ab054705"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -12060,14 +12060,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "784657bf544e592cba2de996eba94f1473e4b3e216d5d840839cfa92905217dc",
+            "sha256": "0daaee13785d7dfc0c6ab6a070ce679ae02cf24d98f761bd8df1007ad015d1d0",
             "vice_targets": {
-              "vice-r30": 260
+              "vice-r30": 259
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "35ef2e16a0ad0de928a696a4ca315e0c3902ee7c25dfe04f52eb073b86cef7cb"
+            "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-235.md",
