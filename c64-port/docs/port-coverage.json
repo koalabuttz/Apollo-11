@@ -2711,7 +2711,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the steering erasables (HOLDFLAG, RATEINDX, BCDU, NCDU, TM, NEXTIME, BRATE, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= BCDU), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, any FB for STOPRATE in fixed-fixed), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the steering erasables (HOLDFLAG, RATEINDX, BCDU, NCDU, TM, NEXTIME, BRATE, TIME1/TIME2). NEWJOB +0 or positive (also -0 for those basic routines, which waitlist tasks such as UPDTCALL, MANUSTOP and GOODMANU run while DUMMYJOB idles: spec any_newjob): a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
         "external_continuations": [
           "BANKCALL and IBNKCALL (basic, their inline CADR)",
           "POSTJUMP with its inline CADR (no return)",
@@ -2728,22 +2728,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "818951eed038fefaa740978af2c23b6ae6f1a68c35fed20f09cda16c86f01f0d"
+            "sha256": "a1a55cf95ae03b79ada615065440b818de24a430c0e873bd32b539baf59c86ca"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "c77ef5ed3fedd74da1ae25fbe937a675030780f9a4e41ba3ecadb379960d8d49"
+            "sha256": "be104fc44ecd5b21ba2c6074ebde5f96917d2f72d9db950fa70d6591d95877df"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "2455a2f7797ac277c455c603dc6e4851db9f50129ac4f42ae2af9f8bb614fc4e",
+            "sha256": "6692bbdee6500aaead0b5b7dfd7428ac9613d7aea841d18a1b8b726ffcfb9234",
             "vice_targets": {
-              "vice-kalcmanu-steering": 77
+              "vice-kalcmanu-steering": 78
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
-            "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
+            "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-231.md",
@@ -9697,7 +9697,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or 020000 (CHAN31 & BIT14) at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2). NEWJOB +0 or positive: a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
+        "supported_domain": "Canonical 2048-word image under EB 6 (the file's EBANK= TTEMP), entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB 22), FIXLOC a VAC area (any FIXLOC for the basic routines that never name FIXLOC or enter the interpreter, such as STOPRATE, which tasks and NOVAC jobs call: spec any_fixloc, half their cases), any PUSHLOC within it, MODE, OVFIND, Q a caller return, A +0 or 020000 (CHAN31 & BIT14) at NEWDELHI's ISITAUTO return, and any values of the steering erasables (BCDU, NCDU, DELDCDU, CDUXD, TM, NEXTIME, OMEGAPD, DELPEROR, TIME1/TIME2). NEWJOB +0 or positive (also -0 for those basic routines, which waitlist tasks such as UPDTCALL, MANUSTOP and GOODMANU run while DUMMYJOB idles: spec any_newjob): a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG is a registered resume routine entered at NEWOPS from any such state (resume_keys), with MODE, PUSHLOC and the index registers the code leaves there.",
         "external_continuations": [
           "BANKCALL ISITAUTO and IBNKCALL (basic, their inline CADR)",
           "MXM3 and DCMTOCDU through CALL (interpretive)",
@@ -9713,22 +9713,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-proof.json",
-            "sha256": "818951eed038fefaa740978af2c23b6ae6f1a68c35fed20f09cda16c86f01f0d"
+            "sha256": "a1a55cf95ae03b79ada615065440b818de24a430c0e873bd32b539baf59c86ca"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-host.log",
-            "sha256": "c77ef5ed3fedd74da1ae25fbe937a675030780f9a4e41ba3ecadb379960d8d49"
+            "sha256": "be104fc44ecd5b21ba2c6074ebde5f96917d2f72d9db950fa70d6591d95877df"
           },
           "c64_execution_results": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-vice.log",
-            "sha256": "2455a2f7797ac277c455c603dc6e4851db9f50129ac4f42ae2af9f8bb614fc4e",
+            "sha256": "6692bbdee6500aaead0b5b7dfd7428ac9613d7aea841d18a1b8b726ffcfb9234",
             "vice_targets": {
-              "vice-kalcmanu-steering": 77
+              "vice-kalcmanu-steering": 78
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/kalcmanu-steering/kalcmanu-steering-c64-outcomes.json",
-            "sha256": "796759a8ca413c957a07b7f600a3ae2677df6950e1a9ed34a3543c351ba1c33a"
+            "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
             "path": "docs/audits/lane-d1b-231.md",
