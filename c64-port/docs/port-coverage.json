@@ -4777,8 +4777,8 @@
             "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-374.md",
-            "sha256": "2344bf26ef8955d1e3f81e4c1f5d5b61b181c90c5cef1fb8f9aafa0736c2608f"
+            "path": "docs/audits/rev2-cm-reentry.md",
+            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
           }
         }
       }
@@ -4972,7 +4972,7 @@
       "sha256": "47788f4f2139d31f9f87f63c33518b49b193ff762f9b3c1259d76f2074dcf408",
       "bytes": 31542,
       "lines": 1609,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4988,7 +4988,7 @@
           "verification": "docs/CM-REENTRY.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -5011,7 +5011,6 @@
           "The caller's return through Q (TC Q runs the TC word held in Q)",
           "Lane A: Comanche T5RUPT/T6RUPT dispatch of T5LOC/T6LOC and the Executive/Waitlist routines; until registered, transfers to them stop with EXEC_UNMAPPED"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-reentry/cm-reentry-source-map.json",
@@ -5035,6 +5034,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
             "sha256": "676754fa0aac185a2d8730ff206765a5a4cc816640f4afe51522c5def09bd423"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-cm-reentry.md",
+            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
           }
         }
       }
@@ -12214,8 +12217,8 @@
             "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-374.md",
-            "sha256": "2344bf26ef8955d1e3f81e4c1f5d5b61b181c90c5cef1fb8f9aafa0736c2608f"
+            "path": "docs/audits/rev2-cm-reentry.md",
+            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
           }
         }
       }
