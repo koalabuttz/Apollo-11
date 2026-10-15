@@ -4429,17 +4429,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
+            "sha256": "b52a116b703111478bb83911dde9f319d6f168c00679821d258e34c73466adfb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
-            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+            "sha256": "16ac5f7a453493796b084c52334ea7ec00e86d5945c5aa747c9ff6e5defea616"
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
+            "sha256": "ebad135e1602e685a9f4912613975d06ce769c4451c1f6c518d6a79cbc8f942c",
             "vice_targets": {
-              "vice-planetary": 204
+              "vice-planetary": 206
             }
           },
           "independent_review": {
@@ -4448,7 +4448,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
+            "sha256": "79e1f202b40a1dd5f51b96d35b1f7476ffdf46c527cf908a832ba6a1c48a5829"
           }
         }
       }
@@ -8284,15 +8284,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
+            "sha256": "1ff8390ec9797c7dd7bc911fbbddd71bcd694edfa504a5a41769538d66f1b18d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/findcduw/findcduw-host.log",
-            "sha256": "271a1ebbbd27e06b6c80358657c7eb040f6eaa9c3515a21a4864b50a614f94fa"
+            "sha256": "ed3ccef88529c787fc51cd97d5f2e416963b511346f8f0bcb747424070313e09"
           },
           "c64_execution_results": {
             "path": "evidence/findcduw/findcduw-vice.log",
-            "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
+            "sha256": "fc7c3d7cb9bf0ea4cba65eec27976dd54df28bdbefa4a00b4ce59f948476124f",
             "vice_targets": {
               "vice-findcduw": 146
             }
@@ -8303,7 +8303,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/findcduw/findcduw-proof.json",
-            "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485"
+            "sha256": "1ff8390ec9797c7dd7bc911fbbddd71bcd694edfa504a5a41769538d66f1b18d"
           }
         }
       }
@@ -11782,17 +11782,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/planetary/planetary-proof.json",
-            "sha256": "786a33a55cdea46de691bcb83028d9fe5d6110e4a22abbad2b3c63e3a27b0af8"
+            "sha256": "b52a116b703111478bb83911dde9f319d6f168c00679821d258e34c73466adfb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/planetary/planetary-host.log",
-            "sha256": "d96a844866ece07adf74ded0bfcdffa971f098f294ff558ceee4da62a9357ed3"
+            "sha256": "16ac5f7a453493796b084c52334ea7ec00e86d5945c5aa747c9ff6e5defea616"
           },
           "c64_execution_results": {
             "path": "evidence/planetary/planetary-vice.log",
-            "sha256": "92226f5649f70abb313a973f8091103594492112819e0ab26d38fc2f286fbd9f",
+            "sha256": "ebad135e1602e685a9f4912613975d06ce769c4451c1f6c518d6a79cbc8f942c",
             "vice_targets": {
-              "vice-planetary": 204
+              "vice-planetary": 206
             }
           },
           "independent_review": {
@@ -11801,7 +11801,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/planetary/planetary-c64-cover.json",
-            "sha256": "12cfed9a3303c6f84ec53c5881245d9f5c844127c7870aecd1a06b1e5bc81730"
+            "sha256": "79e1f202b40a1dd5f51b96d35b1f7476ffdf46c527cf908a832ba6a1c48a5829"
           }
         }
       }
