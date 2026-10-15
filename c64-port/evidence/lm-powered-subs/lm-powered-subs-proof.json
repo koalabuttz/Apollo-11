@@ -8,22 +8,22 @@
   "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
- "cases": 23040,
- "cases_sha256": "7672846eb63ff42f9be8f922c8e9a6fd2ad929a5c79872dee29d420c8e5c584f",
- "oracle_sha256": "afb7b29c22fd63c29aeb2d6862193104e77efc79ca6cf546487fe560e6af7cb6",
- "frozen_vectors": 1440,
+ "cases": 24576,
+ "cases_sha256": "28e8989183db26ff103f7ffe00cfa9418112798686c7df3d9aca97ae8d1191eb",
+ "oracle_sha256": "69b970570d8f12a78a32796860e130d33f208cfb8489319bf405d2f1933be491",
+ "frozen_vectors": 1537,
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x1fffffffffff",
-   "cases": 67,
+   "keep": "0xffffffffffff",
+   "cases": 70,
    "case_ids": [
     32,
     317,
     380,
+    0,
     828,
     1460,
-    1196,
     1536,
     2332,
     2584,
@@ -48,57 +48,60 @@
     9256,
     9980,
     10244,
-    10964,
-    11424,
-    11864,
-    11988,
-    12016,
-    12120,
-    11996,
-    11928,
-    12264,
-    11872,
-    12376,
-    12912,
-    13276,
-    13324,
-    13580,
+    10764,
+    11656,
+    11776,
+    12460,
+    12944,
+    12808,
+    12888,
+    12960,
+    13252,
+    12880,
+    12936,
+    13068,
+    13628,
     13840,
-    14752,
-    14864,
-    15468,
-    15908,
-    16460,
-    16912,
-    17448,
-    17964,
-    18796,
-    19292,
-    19524,
-    20464,
-    20520,
-    21256,
-    21676,
-    22140,
-    22188,
-    22548,
-    22788,
-    22948,
-    22648
+    14364,
+    14732,
+    14900,
+    15172,
+    15396,
+    16372,
+    16388,
+    17108,
+    17672,
+    17920,
+    18432,
+    19116,
+    19460,
+    19996,
+    20696,
+    21032,
+    21720,
+    22036,
+    22628,
+    23136,
+    23876,
+    24012,
+    24220,
+    24088,
+    24420,
+    24448
    ]
   }
  ],
  "c64_coverage": {
   "host_labels": 221,
   "c64_labels": 221,
-  "host_edges": 828,
-  "c64_edges": 828,
+  "host_edges": 868,
+  "c64_edges": 868,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 521,
-  "c64_taken": 521,
+  "host_taken": 544,
+  "c64_taken": 544,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -119,9 +122,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 410,
-  "edges_host_vectors": 410,
-  "edges_c64": 410,
+  "edges_all_cases": 427,
+  "edges_host_vectors": 427,
+  "edges_c64": 427,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -188,17 +191,29 @@
   "LM 23,3546 ": {
    "06070": 512
   },
+  "LM 23,3567 ": {
+   "04713": 512
+  },
   "LM 23,3570 ": {
+   "04713": 512
+  },
+  "LM 23,3575 ": {
    "04713": 512
   },
   "LM 23,3576 ": {
    "04713": 512
   },
+  "LM 23,3605 ": {
+   "07532": 95,
+   "04713": 346,
+   "05000": 24,
+   "06070": 47
+  },
   "LM 23,3606 ": {
-   "04713": 339,
-   "07532": 99,
-   "05000": 23,
-   "06070": 51
+   "06070": 41,
+   "04713": 365,
+   "07532": 84,
+   "05000": 22
   },
   "LM 23,3615 QUICTRIG": {
    "05033": 512
@@ -207,10 +222,10 @@
    "05032": 512
   },
   "LM 23,3635 ": {
-   "05033": 347,
-   "06000": 61,
-   "02356": 51,
-   "05000": 53
+   "05000": 72,
+   "05033": 337,
+   "06000": 47,
+   "02356": 56
   },
   "LM 23,3646 CDU*SMNB": {
    "04713": 512
@@ -264,9 +279,9 @@
    "07107": 512
   },
   "LM 23,3741 ": {
-   "07107": 430,
-   "05000": 35,
-   "06070": 47
+   "07107": 433,
+   "05000": 39,
+   "06070": 40
   }
  },
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, DMP, DMPSUB, MPACVBUF, SPCOS, SPSIN, SWRETURN, USPRCADR, VXV); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
