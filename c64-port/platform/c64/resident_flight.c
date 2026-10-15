@@ -27,7 +27,10 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel
 #else
 __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
 #endif
-__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
+/* undo: a non-null marker only. The modules whose io record takes an undo
+ * image stash it in the REU (include/flight_undo.h), not at this pointer. */
+__attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
+                                                                        (apollo_overlay_state *)1};
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;

@@ -8,6 +8,7 @@
  * lm_interp_steps/lm_interp_orders paths with the pair's words as literal
  * arguments; branches follow the outcomes those paths return. */
 #include "lm_ags_init.h"
+#include "flight_undo.h"
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
@@ -306,10 +307,14 @@ static enum exec_status steps(apollo_overlay_state *s,lm_ags_io *io){
 }
 static enum exec_status run(apollo_overlay_state *s,void *v){
  lm_ags_io *io=v,entry;enum exec_status st;
- if(!s||!io||!io->undo||io->undo==s)return EXEC_OUT_OF_SCOPE;
- *io->undo=*s;entry=*io;
+ if (!s || !io || !io->undo || FLIGHT_UNDO_ALIAS(io, s)) return EXEC_OUT_OF_SCOPE;
+ FLIGHT_UNDO_SAVE(io, s);
+ entry = *io;
  st=steps(s,io);
- if(st!=EXEC_OK){*s=*entry.undo;*io=entry;}
+ if (st != EXEC_OK) {
+     FLIGHT_UNDO_RESTORE(&entry, s);
+     *io = entry;
+ }
  return st;
 }
 static enum exec_status routine(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;return run(s,io);}
