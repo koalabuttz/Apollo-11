@@ -8,7 +8,7 @@ static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.I
 static const unsigned in_channels[8]={011,012,013,014,030,031,032,033};
 /* Each case: the same initial image and, before each downrupt, the same
  * lead-in registers and input channels as tests/cm_downtelemetry_cases.c;
- * runs DODOWNTM until Z reaches RESUME. Prints channels 13, 34 and 35 after
+ * runs DODOWNTM until Z reaches RESUME. Prints channels 13, 34 and 35 and Q after
  * each downrupt, then the channel-13 traps and all 2048 erasable words. */
 int main(int argc,char **argv){unsigned n,i,k,cycles;
  if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;
@@ -28,7 +28,7 @@ int main(int argc,char **argv){unsigned n,i,k,cycles;
     if(cycles&&quiet()&&get(RegZ)==CM_DNTM_RESUME)break;
     machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
    if(cycles==4000u){fprintf(stderr,"CM downtelemetry %u step %u timeout %05o\n",n,k,get(RegZ));return 2;}
-   printf(" %u %u %u",(unsigned)machine.InputChannel[013]&077777u,(unsigned)machine.InputChannel[034]&077777u,(unsigned)machine.InputChannel[035]&077777u);
+   printf(" %u %u %u %u",(unsigned)machine.InputChannel[013]&077777u,(unsigned)machine.InputChannel[034]&077777u,(unsigned)machine.InputChannel[035]&077777u,(unsigned)*memory(2)&077777u);
   }
   printf(" %u %u %u",(unsigned)machine.Trap31A,(unsigned)machine.Trap31B,(unsigned)machine.Trap32);
   for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i==0||i==1?0177777u:077777u));putchar('\n');

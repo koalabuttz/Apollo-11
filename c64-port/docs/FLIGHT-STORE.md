@@ -182,6 +182,11 @@ shadowed routines, and a module with no live entries is left out. The
 report lists `shadowed_entries` per table and
 `modules_left_out_shadowed`. Flight parts keep their own key slices.
 Erasable keys are always kept.
+A chunk or pick module gets its entries' keys as data (`FS_KEYS`, read
+by the build from the same tables): its main copies them in one loop and
+stores only the calls, where it stored both per entry (about 25 bytes of
+code each). On LM that is 11,776 bytes of the store; DAP pass cycles in
+VICE do not change.
 
 With every table fitting, both stores ran past the rope image of a
 2 MB REU (LM 2,146,816 bytes against 1,835,008; CM 2,552,576 against
@@ -461,7 +466,9 @@ port) runs one mission:
    the idle loop (a dump is usually inside a routine), the native side
    takes that state with any `FLIGHT_CH30`-`33` given overriding the
    core's, and AGC time (keys, pokes, the centisecond count) runs from the
-   core's TIME1/TIME2. `FLIGHT_MISS_LOG` prints each routine yaAGC did
+   core's TIME1/TIME2. It does not combine with `FLIGHT_DOWNRUPT` (yaAGC's
+   steps to the idle loop would enter the downlink reference stream).
+   `FLIGHT_MISS_LOG` prints each routine yaAGC did
    not match with its centisecond, Z, FB and Q (a diagnostic); set to a
    directory, it also names the three routines before each and writes the
    erasable state the first eight started in there.
@@ -532,7 +539,7 @@ port) runs one mission:
    no landing radar model, alarms 511 and 522 recur every 2 s.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
-   the LM flight resident on the whole-program store in VICE
+   the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
    interrupt; a refused or untranslated point stops it.
@@ -550,8 +557,14 @@ port) runs one mission:
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
-   (NB2CDUSP+1; 46 of the 124 LM table modules do not link into the
-   flight store yet).
+   (40,3534; 46 of the 124 LM table modules do not link into the
+   flight store yet). With every table but Pinball's linked (6f894e00) it
+   stops at 40,3534 after 65 centiseconds, and `cm-entry` from 175 s at
+   40,3441 after 1,596 (9.0 times real time, 857 steps): DSPMMJB, the
+   Pinball job SETUPDSP starts through NOVAC (FB 30 with superbank bit
+   0100, so not NB2CDUSP+1 in bank 30). Pinball is not in the store yet.
+   `FSV_STEPS=1` links DP_STEPS and prints the last step records as
+   physical bank,Z (superbank applied).
 
 10. **Scaled time** (`FLIGHT_SCALED=K,D,LAG[,SEED]`, the replay proof of
    docs/RESIDENT-FLIGHT.md, Scaled time). yaAGC's own clock is frozen:
@@ -571,6 +584,11 @@ port) runs one mission:
    match yaAGC run from the same state under the same periods, and the
    run as a whole is one yaAGC run under that tick schedule. No
    free-running reference runs, and no samples are compared.
+   `FLIGHT_SCALED=W` replays the work clock instead (docs/RESIDENT-FLIGHT.md,
+   The work clock): each native routine advances the clock by its
+   module's MCT weight (as the flight build computes it from
+   docs/flight-routine-mct.json), a self-check idle routine moves it to
+   the next tick, module swaps cost nothing, and no tick is dropped.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
 unregistered or refused point from the listing and the allocation.

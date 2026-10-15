@@ -76,6 +76,29 @@ static agc_routine_table basic[0 FS_BASIC(FS_COUNT)];
 #ifdef FS_HAS_INTERP
 static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #endif
+/* The work clock's weight (resident_flight.h): the MCT one of this module's
+ * routines takes on average, from the calibration (tools/flight_store_build.py
+ * FS_MCT); a run chains no further than the step's budget reaches. */
+#ifndef FS_MCT
+#define FS_MCT RK_RESIDENT_MCT
+#endif
+#ifdef RK_WORK_CLOCK
+#define FS_LIMIT rk_module_limit(e->budget,FS_MCT)
+#else
+#define FS_LIMIT RK_MODULE_STEPS
+#endif
+/* FS_KEYS: the chunk's or pick's physical keys in entry order, which the
+ * build reads from the same tables (tools/flight_store_build.py
+ * table_keys). Copied as data in one loop, so the per-entry code at entry
+ * stores only the call (a store each for the key and call was most of a
+ * chunk module's main). */
+#ifdef FS_KEYS
+static const uint16_t chunk_keys[]={FS_KEYS};
+_Static_assert(sizeof chunk_keys/sizeof chunk_keys[0]==sizeof chunk/sizeof chunk[0],"FS_KEYS names every entry");
+#define FS_COPY_KEYS {uint8_t k;for(k=0;k<n;++k)chunk[k].physical=chunk_keys[k];}
+#else
+#define FS_COPY_KEYS
+#endif
 /* The module's table list (resident_flight.h), named by the header's TABLES
  * word: built on the first run after a load, then read in place by the
  * resident, which calls this module's routines directly while it stays
@@ -107,14 +130,24 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  if(!t->ready){
   uint8_t n=0;
 #ifdef FS_PICK
+#ifdef FS_KEYS
+#define FS_COPY_PICK(t,i) chunk[n++].call=t.entries[i].call;
+#else
 #define FS_COPY_PICK(t,i) chunk[n].physical=t.entries[i].physical;chunk[n++].call=t.entries[i].call;
+#endif
   FS_PICK(FS_COPY_PICK)
+  FS_COPY_KEYS
   basic[0].entries=chunk;basic[0].count=n;
 #elif defined FS_CHUNK
 /* Field by field: a whole-struct copy lowers to a memcpy from the entries
  * array, which keeps every routine linked (Lane F). */
+#ifdef FS_KEYS
+#define FS_COPY_ENTRY(i) chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
+#else
 #define FS_COPY_ENTRY(i) chunk[n].physical=FS_CHUNK_TABLE.entries[i].physical;chunk[n++].call=FS_CHUNK_TABLE.entries[i].call;
+#endif
   FS_CHUNK(FS_COPY_ENTRY)
+  FS_COPY_KEYS
   basic[0].entries=chunk;basic[0].count=n;
 #else
 /* Field by field, as above: a struct copy is a memcpy call each. */
@@ -138,6 +171,7 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   t->fixed_data=e->program->fixed_data;
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
+  t->mct=FS_MCT;
 #ifdef FS_IO_KIND
   t->ready=RK_TABLES_NOT_DIRECT;
 #else
@@ -168,9 +202,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   b.p66.superbank=io->superbank;b.p66.interrupt_enabled=io->interrupt_enabled;
 #endif
 #if FS_IO_CM
-  status=agc_transfer_run(&p,f->state,x,&((cm_native_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+  status=agc_transfer_run(&p,f->state,x,&((cm_native_io *)x)->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #else
-  status=agc_transfer_run(&p,f->state,x,&((p66_bias_io *)x)->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+  status=agc_transfer_run(&p,f->state,x,&((p66_bias_io *)x)->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #endif
   flight_io_leave(FS_IO_KIND,&rk_flight,hw,&b);
 #if FS_IO_CM==RK_CM
@@ -180,9 +214,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  }
 #else
- status=agc_transfer_run(&p,f->state,io,&io->superbank,AGC_TRANSFER_NONE,RK_MODULE_STEPS,&steps);
+ status=agc_transfer_run(&p,f->state,io,&io->superbank,AGC_TRANSFER_NONE,FS_LIMIT,&steps);
 #endif
- e->status=rk_module_status(status,steps,RK_MODULE_STEPS);
+ e->status=rk_module_status(status,steps,FS_LIMIT);
+#ifdef RK_WORK_CLOCK
+ e->work=FS_MCT==RK_MCT_IDLE ? e->budget : (uint16_t)(steps*FS_MCT);
+#endif
  return APOLLO_OV2_DONE;
 #endif
 }

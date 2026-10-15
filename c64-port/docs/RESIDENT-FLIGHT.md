@@ -126,9 +126,12 @@ ASan/UBSan.
   EB from 01400), or from fixed memory through `program->fixed_data`. A
   fixed word it cannot read takes nothing, and the request stays pending.
 
-The step calls both through `rk_rupts`. That consumes one tick per CIA1
-interrupt counted by `overlay_v2_irq.S` since the last step, at most
-`RK_TICK_LAG` of them (scaled time, below), then tries the entry. T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
+The step calls both through `rk_rupts`. That consumes the ticks due
+since the last step, then tries the entry. Under the work clock (the
+flight default, below) a tick is due when the work the resident ran
+reaches the next 10 ms period; under the CIA wall clock (`RK_WALL_CLOCK=1`)
+it is one per CIA1 interrupt counted by `overlay_v2_irq.S`, at most
+`RK_TICK_LAG` of them (scaled time, below). T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
 each task due and TASKOVER, to RESUME.
 
 ### Scaled time
@@ -219,6 +222,54 @@ case reaches RESUME: 4,984 LM and 5,006 CM kernel routines. Two
 mutations fail the test: BRUPT off by one (160 checks) and TIME3's
 overflow raising T4RUPT (115 checks). The fixed words come from the
 unmodified ropes in `evidence/fixed-data-<m>-original.rope.bin`.
+
+### The work clock
+
+The CIA wall clock above starves the AGC on a C64: module loads and
+dispatch take wall time the AGC never spends, so the cap drops most ticks
+(measured: one T5RUPT a second instead of ten). The flight default is
+instead a work clock: AGC time advances by the work the resident ran.
+
+- Every routine is charged a calibrated MCT weight. `rk_work` counts the
+  MCT since the last tick, and one tick is 853⅓ MCT (periods 854, 853,
+  853, `RK_TICK_MCT(phase)`), taken at the next routine boundary. Nothing
+  is dropped, and module loads, IRQs and dispatch are not counted, so the
+  same state and inputs always give the same tick schedule.
+- Weights are per module, one byte (`FS_MCT`, 4-255): the module's total
+  MCT over its total runs, from Lane B's shared calibration
+  `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
+  `tools/resident_flight_build.py` and `tools/flight_store_build.py`
+  compute them. The resident's weight leaves out the Executive idle table
+  (LM 35, CM 73). The interrupt wrappers report their weight in
+  `rk_module_env.scale`, and a module reports its routine count in
+  `rk_module_env.work`.
+- A module runs at most `rk_module_limit(budget, mct)` routines before it
+  hands back, so a tick is never more than one routine late.
+- The self-check idle tables (`*_self_check_idle_routines`) carry weight
+  0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick. Without it
+  the AGC background fills each second with about 85,000 MCT of
+  self-check, and the LM DAP hold ran at 221x real time. The LM idle
+  module also packs the interbank tables (`CO_LOCATE` in
+  `tools/flight_store_build.py`), so an idle pass loads nothing.
+
+Measured in VICE (LM, 100 AGC cs from the cs 3000 snapshot,
+`tools/dap_pass_vice.py`): the DAP hold runs at 16.7x real time and
+firing at 16.9x, with 10 T5RUPT, 9 T4RUPT and no tick dropped. The rest is
+background work (12 M cycles per AGC second) and job reloads (118 per AGC
+second).
+
+The host replay schedules ticks the same way (`FLIGHT_SCALED=W` in
+`tools/flight_host_run.c`, with the idle rule and no swap charge), and
+every routine of the work rows matches yaAGC:
+
+| Scenario | Native routines | yaAGC did not match | Periods taken / dropped |
+|---|---|---|---|
+| LM V37E12E | 14,697 | 0 | 3,000 / 0 |
+| LM V37E12E, DAP running (V37 at 16 s; reaches P12) | 18,337 | 0 | 3,000 / 0 |
+| CM V37E06E | 10,380 | 0 | 3,000 / 0 |
+
+`make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead;
+`make vice-resident-flight-half` builds it at x0.5.
 
 ### The interrupt bodies
 
@@ -474,3 +525,25 @@ boundary-word table's check in `boundary_words`) of
   `RK_RUPT_UP`) once the DSKY input sets them in `rk_pending`.
 - The site operand table holds the Executive and Waitlist call sites only.
   The flight program's table grows with every module that calls them.
+- DOWNRUPT in flight builds, which is a standing default (steward ruling,
+  2026-10-14), not a gap. The AGC raises DOWNRUPT every 20 ms. The resident
+  never requests it in flight, so a flight build sends no downlink. The
+  harness's verification builds (`FLIGHT_DOWNRUPT=1`, `make
+  flight-downlink-check` and `flight-downlink-vice`; see FLIGHT-DOWNLINK.md)
+  raise it on the AGC's schedule, and DOWN-TELEMETRY certificates are judged
+  on those. The reason is cost, measured in VICE on PAL with 100
+  back-to-back passes:
+  - LM: a median pass is ~130k cycles and 2 REU loads (the lead-ins and the
+    10,570 B lm_downtelemetry module evict each other).
+  - CM: a median pass is ~104k cycles and no loads.
+  - At 50 passes per AGC second that is 6.6-6.9x real time on the LM and
+    ~5.5x on the CM, for DOWNRUPT alone.
+  - Loads are only 15-20% of the cost. With zero loads a pass would still
+    take ~105k cycles, ~17-25k of it in resident overhead for each of its
+    three steps. A hot/cold split would need ~5.1 KB pinned, and classes 3
+    and 4 have 227 B free.
+  Nothing on board reads downlink state, so guidance and the DAP are the
+  same either way. Leaving DOWNRUPT out does give the other jobs the time
+  its MCTs would have taken, so job timing differs slightly from yaAGC's.
+  Revisit if the resident's per-step cost drops a lot.
+  Numbers: /mnt/project-files/steward/downrupt-cost.md.

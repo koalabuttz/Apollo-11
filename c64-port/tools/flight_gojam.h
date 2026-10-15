@@ -4,8 +4,8 @@
  * first sample point at or after each CS centiseconds, on both sides.
  *
  * The sample point is a clean one: idle at ADVAN, no interrupt in progress,
- * none pending, no instruction half done (no DOWNRUPT either: the harness
- * runs none), after that point's pokes and before its key. There the
+ * none pending, no instruction half done (so no DOWNRUPT either, with
+ * FLIGHT_DOWNRUPT: tools/flight_downlink.h), after that point's pokes and before its key. There the
  * restart is yaAGC's own GOJAM (agc_engine.c, "If we triggered any
  * alarms, simulate a GOJAM": the GOJAM and TC 4000 sequences), the same
  * thing a TC trap (V69), night watchman, rupt lock or parity alarm does:

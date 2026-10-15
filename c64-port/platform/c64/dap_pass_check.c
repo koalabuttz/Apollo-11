@@ -37,10 +37,22 @@ typedef struct { uint8_t request, job_loads, task_loads, status; uint16_t steps;
 _Static_assert(sizeof(dp_record)==10u,"records are 10 bytes (tools/dap_pass_vice.py)");
 typedef struct {
     uint32_t cycles, dilation, steps;
-    uint16_t start_cs, end_cs, records, z, fb;
+    uint16_t start_cs, end_cs, records, z, fb, superbank;
     uint8_t status, lost;
 } __attribute__((packed)) dp_summary;
-#define DP_MAX ((0xcc00u-0xc040u)/sizeof(dp_record))
+#ifdef RK_STEP_PROFILE
+/* The step profile (resident_flight.c RK_PROF): cycles and calls per
+ * segment, at $CB80 at the end, below it the records. */
+#define DP_SEGMENTS 11u
+#define DP_TOP 0xcb80u
+#define PROFILE ((dp_segment *)DP_TOP)
+typedef struct { uint32_t cycles; uint16_t calls; } __attribute__((packed)) dp_segment;
+static dp_segment prof[DP_SEGMENTS];
+static uint32_t prof_last;
+#else
+#define DP_TOP 0xcc00u
+#endif
+#define DP_MAX ((DP_TOP-0xc040u)/sizeof(dp_record))
 #define RECORDS ((dp_record *)0xc040)
 #define SUMMARY ((dp_summary *)0xc010)
 /* The REU scratch: the store file's unused tail (tools/dap_pass_vice.py). */
@@ -59,6 +71,9 @@ static void BOOT timer_start(void){
 static uint32_t now(void){uint8_t b0,b1,a0,a1;
  do{b1=CIA2[0x07];b0=CIA2[0x06];a1=CIA2[0x05];a0=CIA2[0x04];}while(b0!=CIA2[0x06]);
  return ~(((uint32_t)b1<<24)|((uint32_t)b0<<16)|((uint16_t)a1<<8)|a0);}
+#ifdef RK_STEP_PROFILE
+void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
+#endif
 static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
 
 static void BOOT load_snapshot(void){
@@ -93,19 +108,27 @@ int main(void){
  t=now();
  for(;;){uint32_t s0=now(),s1;
 #ifdef DP_STEPS
-  uint16_t z0=IMAGE->words[5],fb0=IMAGE->words[4];
+  uint16_t z0=IMAGE->words[5],fb0=IMAGE->words[4],sb0=rk_device.superbank;
 #endif
   rk_rupt_last=0;
+#ifdef RK_STEP_PROFILE
+  prof_last=now();
+#endif
   st=rk_resident_step(AGC_TRANSFER_NONE);
+#ifdef RK_STEP_PROFILE
+  rk_prof(10);
+#endif
   s1=now();
   ++sum.steps;
   /* A record ends where the step that takes the next interrupt starts (one
    * interrupt can end and the next start between two steps, or one can
    * start and end in one step), and where an interrupt goes off. */
 #ifdef DP_STEPS
-  /* One record per step (debugging): the Z (steps) and FB bank (job_loads)
-   * it started at, and in task_loads 1 if the job slot changed, 2 the task slot. */
-  {r.request=rk_rupt_last;r.steps=z0;r.job_loads=(uint8_t)(fb0>>10);r.task_loads=0;
+  /* One record per step (debugging): the Z (steps) and physical bank
+   * (job_loads: FB, or 040-047 for FB 030-037 with superbank bit 0100) it
+   * started at, and in task_loads 1 if the job slot changed, 2 the task slot. */
+  {r.request=rk_rupt_last;r.steps=z0;r.task_loads=0;
+   r.job_loads=(uint8_t)((fb0>>10)+((fb0>=060000u&&(sb0&0100u))?010u:0u));
    if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job)r.task_loads|=1;
    if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task)r.task_loads|=2;
    job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];
@@ -122,9 +145,12 @@ int main(void){
  sum.cycles=now();
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
- sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];
+ sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];sum.superbank=rk_device.superbank;
  apollo_reu_transfer(APOLLO_REU_FETCH,RECORDS,DP_SCRATCH,sum.records*sizeof r);
  *SUMMARY=sum;
+#ifdef RK_STEP_PROFILE
+ memcpy(PROFILE,prof,sizeof prof);
+#endif
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);
  mail[0]=0xa5;

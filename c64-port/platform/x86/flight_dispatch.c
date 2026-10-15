@@ -27,10 +27,10 @@
 extern const agc_routine CORE;
 
 #include FLIGHT_HOST_SITES
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) extern const agc_routine_table t;
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
 #include FLIGHT_HOST_TABLES
 #undef FLIGHT_TABLE
-#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed) {&t,#t,i,k,sites,n,fixed},
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) {&t,#t,i,k,sites,n,fixed},
 const fd_table fd_tables[]={
 #include FLIGHT_HOST_TABLES
 };
@@ -99,7 +99,9 @@ uint16_t fd_point(const fd_state *st,int *interp){const agc_word *w=st->s.words;
 unsigned long fd_centiseconds(const fd_state *st){return ((unsigned long)(st->s.words[024]&037777u)<<14)|(st->s.words[025]&037777u);}
 
 uint8_t fd_boundary(fd_state *st){
- while(st->mct>=st->next_period){rk_timer_tick(&st->s,&st->hw,&st->pending);++st->periods;st->next_period+=85333.0/100.0;}
+ while(st->mct>=st->next_period){agc_word c=st->hw.channel4;
+  rk_timer_tick(&st->s,&st->hw,&st->pending);++st->periods;st->next_period+=85333.0/100.0;
+  if(st->downrupt&&((c&037777u)>>6)!=((st->hw.channel4&037777u)>>6))st->pending|=RK_RUPT_BIT(RK_RUPT_DOWN);}
  st->p.fixed_data=rope_data;st->p.operands=0;st->p.operand_count=0;
  return rk_rupt_take(&st->p,&st->s,st->io.superbank,st->io.interrupt_enabled,&st->pending);}
 

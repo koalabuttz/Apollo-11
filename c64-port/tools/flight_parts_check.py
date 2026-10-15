@@ -69,8 +69,14 @@ def main():
         f.write('static agc_native_program prog={parts,%d,&%s_interpretive_p1,%s,0,0,'
                 '(uint16_t)(2048u+0%ou-04000u),0164,0165,0,0,%s};\n'
                 % (n, sym, icount, 0o6070 if m == 'lm' else 0o6037, '&hw' if '&hw' in own else '0'))
-        f.write('const agc_native_program *irc_program(uint8_t m){(void)m;\n%s return &prog;}\n' % ''.join(
-            ' parts[%d]=%s_basic_p%d;\n' % (j - 1, sym, j) for j in range(1, n + 1)))
+        # A 'fixed_rope' spec's target loads the rope image its routines
+        # read their callers' words from (as tests/<file>_target.c does).
+        rope = re.search(r'#define IRC_ROPE "([^"]+)"', own) if 'apollo_rope_load' in own else None
+        if rope:
+            f.write('#include "rope_image.h"\nstatic int rope_loaded;\n')
+        f.write('const agc_native_program *irc_program(uint8_t m){(void)m;\n%s%s return &prog;}\n' % (
+            ' if(!rope_loaded)rope_loaded=apollo_rope_load(%du,"%s")?1:-1;\n' % (int(m == 'cm'), rope.group(1))
+            if rope else '', ''.join(' parts[%d]=%s_basic_p%d;\n' % (j - 1, sym, j) for j in range(1, n + 1))))
     runner = os.path.join(out, 'native-parts')
     subprocess.run(['cc', *IRD.FLAGS, steps, *IRD.cut_flags(spec), *objs, *spec.get('native_sources', []),
                     *IRD.common(spec), target, 'tools/interp_routine_native.c', '-o', runner], cwd=R, check=True)

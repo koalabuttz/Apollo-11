@@ -8,9 +8,12 @@
 # so it watches them all). Full runs run them all.
 .PHONY: ci-extra-host ci-extra-c64 ci-watch-interp-flight-vice ci-watch-interp-flight-flowed-vice \
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
-  ci-watch-flight-restart-check ci-watch-flight-restart-vice
-ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check
-ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice interp-flight-p63-vice flight-restart-vice
+  ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
+  ci-watch-flight-downlink-vice
+ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
+  flight-downlink-check
+ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice interp-flight-p63-vice flight-restart-vice \
+  flight-gojam-vice flight-downlink-vice
 CI_EXTRA_INTERP := src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c \
   src/cm_interp_orders.c src/cm_interp_steps.c include/interp_runtime_tables.h
 ci-watch-interp-flight-vice: $(CI_EXTRA_INTERP) tools/interp_flight_test.py platform/c64/interp_flight_check.c \
@@ -27,7 +30,15 @@ ci-watch-x86-flight-check: $(wildcard src/*.c src/*.inc include/*.h platform/x86
 # flight-restart-check and -vice link every source too: they watch the
 # restart's own files and the harness.
 CI_EXTRA_RESTART := src/lm_fresh_start.c src/cm_fresh_start.c src/lm_restart_routines.c src/lm_restart_select.c \
-  src/cm_restart_routines.c src/cm_restart_select.c src/lm_phase_table.c src/cm_phase_table.c tools/flight_gojam.h \
+  src/cm_restart_routines.c src/cm_restart_select.c src/lm_phase_table.c src/cm_phase_table.c tools/flight_gojam.h tools/flight_downlink.h \
   tools/flight_host_run.c tools/flight_host_differential.py tools/flight_restart_check.py
 ci-watch-flight-restart-check: $(CI_EXTRA_RESTART)
 ci-watch-flight-restart-vice: $(CI_EXTRA_RESTART) platform/c64/restart_check.c tools/flight_restart_reference.c
+ci-watch-flight-gojam-vice: $(CI_EXTRA_RESTART) platform/c64/restart_check.c tools/flight_restart_reference.c \
+  platform/c64/resident_gojam_module.c src/overlay_v2.c include/overlay_v2.h
+# flight-downlink-check and -vice run the restart scenarios: they watch the
+# restart's files, the downlink's own and downtelemetry's.
+CI_EXTRA_DOWNLINK := $(CI_EXTRA_RESTART) src/lm_downtelemetry.c src/cm_downtelemetry.c src/lm_downtelemetry_data.inc \
+  src/cm_downtelemetry_data.inc tools/flight_downlink.h tools/flight_downlink_check.py
+ci-watch-flight-downlink-check: $(CI_EXTRA_DOWNLINK)
+ci-watch-flight-downlink-vice: $(CI_EXTRA_DOWNLINK) platform/c64/downlink_check.c tools/flight_downlink_reference.c
