@@ -10357,7 +10357,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow), with X1 in DOW.. the DIFEQ stage -12, -24 or -36, and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow), with X1 in DOW.. the DIFEQ stage 0, -12 or -24, and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "INTEGRATION_INITIALIZATION (A-PCHK, ATOPCSM, ATOPLEM, STATEINT) at NEWOPS",
@@ -10374,7 +10374,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "1630eb508dd04df5a539210a1873ce85e7a0872d28790b0da1c9528e374b5f3c"
+            "sha256": "3d41fe7b9a6dcbde41d97ed156dd4fbd3c3e6eb09ca258a832047a85667aed31"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
@@ -10382,14 +10382,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "a9e1040b205e93705fa0000eaca37002ccd1a85b2c6b5e6bdac2a7b83b71b937",
+            "sha256": "c8b38271e75ff24181ddd64bac544d6e5655438d7152d34f5100472ce1056f87",
             "vice_targets": {
               "vice-lm-orbital-integration": 400
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "f7dfa10ef17666f460205132436ab5fc5ffb0b5653ea97e9ea018e07bb52ca3f"
+            "sha256": "77053d326bfef22d04fd248b2647323b6bc72c20290a72b62cd97745c64f9d53"
           }
         }
       }
