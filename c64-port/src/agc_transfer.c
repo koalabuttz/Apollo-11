@@ -1,10 +1,19 @@
 /* SPDX-License-Identifier: MIT */
 #include "agc_transfer.h"
-uint16_t agc_fixed_physical(agc_word logical,agc_word fb,agc_word superbank){agc_word bank;
- logical&=07777u;if(logical<02000u)return AGC_TRANSFER_NONE;
- if(logical>=06000u)bank=3;else if(logical>=04000u)bank=2;
- else{bank=(agc_word)((fb&076000u)>>10);if(bank>=030u&&(superbank&0100u))bank=(agc_word)(bank+8u);}
- return (uint16_t)(bank*1024u+(logical&01777u));
+/* Built a byte at a time: the high byte is the bank times four (FB's bank
+ * bits already sit there) plus Z's top two bits. */
+uint16_t agc_fixed_physical(agc_word logical, agc_word fb, agc_word superbank)
+{
+    uint8_t hi;
+    logical &= 07777u;
+    if (logical < 02000u) return AGC_TRANSFER_NONE;
+    if (logical >= 04000u)
+        hi = (uint8_t)(logical >= 06000u ? 014u : 010u);
+    else {
+        hi = (uint8_t)((fb >> 8) & 0174u);
+        if (hi >= 0140u && (superbank & 0100u)) hi = (uint8_t)(hi + 040u);
+    }
+    return (uint16_t)((unsigned)(hi | ((uint8_t)(logical >> 8) & 3u)) << 8 | (logical & 0377u));
 }
 bool agc_resume_exact(const agc_native_program *p,const apollo_overlay_state *s,agc_word fb,agc_word eb,agc_word superbank){
  agc_word z=(agc_word)((s->words[015]-1u)&07777u),w;
@@ -73,10 +82,23 @@ uint16_t agc_transfer_point(const agc_native_program *p,const apollo_overlay_sta
  if(!p||!s)return AGC_TRANSFER_NONE;
  return transfer_point(p,s,superbank,&in);
 }
-agc_routine agc_transfer_resolve(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank){uint16_t point;bool in;
- if(!p||!s)return 0;
- point=transfer_point(p,s,superbank,&in);
- return resolve_at(p,point,in);
+uint16_t agc_transfer_next(const agc_native_program *p, const apollo_overlay_state *s,
+                           agc_word superbank, uint16_t stop, agc_routine *call)
+{
+    uint16_t point;
+    bool in;
+    *call = 0;
+    if (!p || !s) return AGC_TRANSFER_NONE;
+    point = transfer_point(p, s, superbank, &in);
+    if (point != stop) *call = resolve_at(p, point, in);
+    return point;
+}
+agc_routine agc_transfer_resolve(const agc_native_program *p, const apollo_overlay_state *s,
+                                 agc_word superbank)
+{
+    agc_routine call;
+    (void)agc_transfer_next(p, s, superbank, AGC_TRANSFER_NONE, &call);
+    return call;
 }
 bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state *s,agc_word superbank,agc_word q,agc_word *word){uint16_t physical;
  if(!p||!s||!word||q>07777u)return false;

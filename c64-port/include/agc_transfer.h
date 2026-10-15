@@ -131,6 +131,11 @@ bool agc_transfer_operand(const agc_native_program *, const apollo_overlay_state
  * Z, its erasable key when Z is erasable, or LOC under BANKSET when Z is the
  * interpreter fetch point or a pending DANZIG. */
 uint16_t agc_transfer_point(const agc_native_program *, const apollo_overlay_state *, agc_word superbank);
+/* Both at once, for a trampoline: the point (agc_transfer_point), and in
+ * *call its routine (agc_transfer_resolve), or NULL when the point is stop
+ * (not searched) or has none. One transfer point instead of two. */
+uint16_t agc_transfer_next(const agc_native_program *, const apollo_overlay_state *,
+                           agc_word superbank, uint16_t stop, agc_routine *call);
 /* Trampoline: call the routine at the current point, then the routine at its
  * continuation, and so on, until the point equals stop (the caller's own
  * continuation) or a routine reports anything but EXEC_OK. Each routine returns
