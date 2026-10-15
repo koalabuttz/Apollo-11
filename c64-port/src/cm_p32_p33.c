@@ -7,7 +7,7 @@
 #include "cm_p32_p33.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
-#define W s->words
+#include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -100,8 +100,8 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
  unsigned i=k<3u?((W[k]&037777u)|((W[k]>>1)&040000u)):ai_word(s,k),a,b,sum;
- a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=a+b;
- if(sum&0200000u)sum=(sum+1u)&0177777u;
+ a=(i&040000u)?(i|0100000u):i;b=(w&040000u)?(w|0100000u):w;sum=(a+b)&0177777u;
+ if(sum<a)sum=(sum+1u)&0177777u;
  return (agc_word)(((sum&037777u)|((sum>>1)&040000u))&077777u);
 }
 /* MSU K: two's-complement A - C(K) to ones' complement (no agc_image_ops form). */

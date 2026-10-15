@@ -3542,6 +3542,8 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'index_carry16': True,
+        'image_w': True,
         'superbank_bit': True,
         'trusted_image': True,
         'c64_cuts': True,

@@ -3430,14 +3430,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-vice.log",
-            "sha256": "159c4141d1e3e93f1dac592ce0c2f811931b45754f498f60ddc7b44936b5e427",
+            "sha256": "cae2af18bec6e292d4db5c8e29f5babbcd4f952d39044bd17422e550af43afa5",
             "vice_targets": {
               "vice-cm-p32-p33": 477
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p32-p33/cm-p32-p33-c64-cover.json",
-            "sha256": "2a5253baad8c67dcbb6d1d2a24d24dda798d980156e2c66a4af515655dbd53c4"
+            "sha256": "5c25c97878c8864b079b8a3ea36d2a2b331d484fa09ad8c4b697e291a1664236"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-194.md",
