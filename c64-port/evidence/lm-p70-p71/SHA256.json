@@ -4,23 +4,23 @@
   "release": "evidence-lm-p70-p71",
   "files": {
     "lm-p70-p71-c64-cover.json": {
-      "sha256": "36f849a679bc3f87a929d29d2d54034ca0243423c989d769c5cadf8fc071eff7",
-      "bytes": 3455,
+      "sha256": "7e9635972d0410b57a816ea86cb9debfc06c1c54110b356fbe4ea85d27ea9f71",
+      "bytes": 3446,
       "store": "tree"
     },
     "lm-p70-p71-differential.log": {
-      "sha256": "f76f5ff113431f66c0447a5c0290d6ef6aa150fcc0042324051af75d7c67b265",
-      "bytes": 16967,
+      "sha256": "3065c3e2ad0669635c832557e485f51140e63036eb3e9cc7ce92fa44af3c327f",
+      "bytes": 17077,
       "store": "tree"
     },
     "lm-p70-p71-host.log": {
-      "sha256": "d34b54a83f82edeedb8f13d47f7d9cf43b22ca2e258270721f3d0d0cf7179e85",
+      "sha256": "e3cd60680270baee4906c7cc671584b15ec67bded7049b4c99df13afccb7a392",
       "bytes": 1068,
       "store": "release"
     },
     "lm-p70-p71-proof.json": {
-      "sha256": "19f3c54464d7ef781153d186fb667d159b3dca8f5358e407c2cdd990b3552360",
-      "bytes": 27816,
+      "sha256": "794f9cd24b517b761143212238e46df372497a13553512144d72a41ce9798306",
+      "bytes": 27970,
       "store": "tree"
     },
     "lm-p70-p71-source-map.json": {
@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "lm-p70-p71-vice.log": {
-      "sha256": "6f8ea1fab6c7e8ff349139699efee93f8eda4e0f7d864c05fc96570fd3874184",
+      "sha256": "bd9d25a404d5d4ede30b2a454a9da39f6dfa588b6b6a2465c717ad0df2311228",
       "bytes": 3550,
       "store": "release"
     }
