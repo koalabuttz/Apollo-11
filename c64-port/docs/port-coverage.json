@@ -1874,7 +1874,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; BANKCALL GOFLASH returns to L+1 (terminate), L+2 (proceed) or L+3 (recycle), IMUSTALL and OPTSTALL to L+1 (bad) or L+2 (good), each a registered routine; POSTJUMP",
           "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
@@ -1891,17 +1891,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "09f0588c77af8662da48028ba3c8c6590f8f3c67085f3007e0a14666a59eebd4"
+            "sha256": "c6ecdea499706a799584e86d9e4424ff88d3cc8424c65d4edd6d282c6de049fc"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "9249e801ee261c52c503af4efdc7be07bc0971b9ba0481a00e2ba03cc642c6b6"
+            "sha256": "a9ff9470c5a1e63e14436208f60e69b907af6b4f5c77140342a9079b5cfba91b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "8d84cafb06bf069072042eda688bab4a0ed8d0a6d27745b481fd7868ec212297",
+            "sha256": "82c0a83690603f613ede7d318771ea18519ba0da68c54dbb3005e2059462e6ca",
             "vice_targets": {
-              "vice-cm-imu-calibration": 464
+              "vice-cm-imu-calibration": 468
             }
           },
           "independent_review": {
@@ -1910,7 +1910,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "1acf0366975c8055a8c13c09535b3544936288766116b97efe01fd0a4459d699"
+            "sha256": "74a607bdadd7836d28b6e1d4cffafc041c2012d08bbfc36bebc9951e71a60a32"
           }
         }
       }

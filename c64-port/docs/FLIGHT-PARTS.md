@@ -93,6 +93,24 @@ parts check needs the rope image the spec's target loads (DMP, POLY and
 the others read their callers' words from it); `tools/flight_parts_check.py`
 loads it whenever the spec's own target does.
 
+## Comanche055 IMU_CALIBRATION_AND_ALIGNMENT
+
+`'basic': 'full'`, cut at bank 33 `02400` and `03000`. As one module it
+was 10,237 bytes over a job slot, and the splitter left one-routine chunks
+that each linked the whole `basic_run`. The parts' flight links:
+
+| Part | Basic words | Bytes |
+|---|---|---|
+| 1 | banks 02 (FINETIME), 04 and 32, bank 33 to `02377` | 15,854 |
+| 2 | bank 33 `02400`-`02777` | 13,508 |
+| 3 | bank 33 from `03000` | 15,337 |
+
+A single cut at `03000` left a first part that crashes llvm-mos's linker
+(the greedy register allocator, in `basic_run` under LTO). The file is a
+`'fast_window'` spec, so its flight entry binds the E5 window
+(`AFR_BIND`) before it reads Z, as the per-key entries do. All 176,640
+cases (512 per routine) end the same over the 3 parts.
+
 ## Store classification
 
 `tools/flight_store_build.py` uses `interpretive_table()` everywhere it

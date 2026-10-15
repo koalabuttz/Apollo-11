@@ -166,6 +166,10 @@ class Mission:
         # and run on past it (FINETIME +1 back into CHECKG's tail).
         self.file_q = {self.point_of(k): [self.point_of(r) for r in v]
                        for k, v in spec.get('file_q', {}).items()}
+        # 'any_superbank': below bank 040, half the cases run with SUPERBNK
+        # 020, 040 or 060 (channel 7), which select nothing there; a job a
+        # bank 30-37 BBCON or 2CADR starts runs under 060 (SUPER011).
+        self.any_superbank = spec.get('any_superbank', False)
         for lab in spec.get('q_callers', ()):
             pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
             sites = []
@@ -484,6 +488,8 @@ def case(mi, point, n, rng):
         bank = file_q // 1024
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
     sb = 0o100 if bank >= 0o40 else 0
+    if mi.any_superbank and not sb and rng.random() < 0.5:
+        sb = rng.choice((0o20, 0o40, 0o60))
     fb = (bank - 8 if bank >= 0o40 else bank) << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
         if isinstance(mi.ebank, dict) else mi.ebank

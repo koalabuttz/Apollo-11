@@ -1982,6 +1982,8 @@ class Compiler:
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
              'static enum exec_status %s_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){' % sym,
              ' %s *io=v;uint16_t at;' % io_t]
+        if self.spec.get('fast_window'):
+            c.append(' AFR_BIND(s);AFO_FIX(s);')  # (as the per-key entries)
         if io_t == 'p66_bias_io':
             c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         else:
