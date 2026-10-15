@@ -19,7 +19,7 @@
       "store": "release"
     },
     "lm-powered-subs-proof.json": {
-      "sha256": "91767371eb0e614a83fddd95c2ef0da3ced04be82f913b105b08613281c0eb47",
+      "sha256": "beba9a7ebf9b082d828797faa00198174cce2d1bff9876bcd920c9eefa31af30",
       "bytes": 6088,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "lm-powered-subs-vice.log": {
-      "sha256": "c9c89d8246b6493a07921953807b3fe515837c0ecbe3700a3299452faa572244",
+      "sha256": "872ebecf42bbb68a6b94a756824b0fe25ae24416c0c625f180f3892f46e68b49",
       "bytes": 159,
       "store": "release"
     }

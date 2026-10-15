@@ -2192,6 +2192,13 @@ class Compiler:
             c.append('static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
             c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);' % (dz, sbd))
             c.append('}')
+            if any(v[0] == 'EXIT' for v in self.pending.values()):
+                # (A pending EXIT decodes no address, so INTBIT15 is not
+                # checked: FLESHPOT's DXCH LOC sets LOC and BANKSET without
+                # INTPRET +2, and INTBIT15 is still its caller's.)
+                c.append('static MAYBE_UNUSED uint8_t at_exit(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+                c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&sane(s,io);' % (dz, sbd))
+                c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
         c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
@@ -2327,7 +2334,12 @@ class Compiler:
             if kind == 'b' and phys // 1024 in (2, 3):
                 c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = ('at_danzig' if phys in self.pending else 'at_newops') if kind == 'i' else 'at_basic' + nv
+                if kind != 'i':
+                    chk = 'at_basic' + nv
+                elif phys in self.pending:
+                    chk = 'at_exit' if self.pending[phys][0] == 'EXIT' else 'at_danzig'
+                else:
+                    chk = 'at_newops'
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')
