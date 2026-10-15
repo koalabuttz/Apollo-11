@@ -692,6 +692,9 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # The CM T4RUPT runs every 120 ms: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         # (#260) C64 INDEX end-around carry.
         'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
@@ -725,6 +728,9 @@ SPECS = {
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-rcs-dap-exec': {
         'missions': ('cm',),
+        # The CM RCS DAP's executive runs every DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
         'base': {'cm': 'cm_rcs_dap_exec'},
         'symbol': {'cm': 'cm_rcs_dap_exec'},
@@ -764,6 +770,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # The CM powered-flight subroutines run every burn pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'cm': 'cm_powered_subs'},
         'symbol': {'cm': 'cm_powered_subs'},
@@ -820,6 +829,10 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # FLESHPOT and QUICTRIG run every LM guidance pass (P63-P67, about 15%
+        # of the P63 window's cycles in the scan): no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'lm': 'lm_powered_subs'},
         'symbol': {'lm': 'lm_powered_subs'},
@@ -832,6 +845,10 @@ SPECS = {
         # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
         # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT).
         'usprcadr_exits': True,
+        # FLESHPOT's TCF VXV word (10,2173): it leaves LOC there and BIT8 in
+        # EDOP, so VXV's DANZIG runs EXIT into FLESHPOT+93 (D1's host sweep
+        # on 84d550f5, LM P63).
+        'edop_exits': ['FLESHPOT+92'],
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
@@ -852,12 +869,13 @@ SPECS = {
             # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
             # (16 bits, 177774), Q a return.
             **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
-            # FLESHPOT after DMP, DMPSUB and VXV: TEM1 the matrix's switched
+            # FLESHPOT after DMP, DMPSUB and VXV (and VXV's DANZIG at the TCF
+        # VXV word): TEM1 the matrix's switched
             # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
             # caller's EBANK.
             **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
                for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
-                         '10,2174')}),
+                         '10,2173', '10,2174')}),
         'edge_values': True,
         'seed_counters': True,
         'cover': True,
@@ -986,6 +1004,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P21 ground track runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
         'base': {'lm': 'lm_ground_track'},
         'symbol': {'lm': 'lm_ground_track'},
@@ -1039,6 +1060,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # Lambert aimpoint guidance runs every LM powered-flight pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'LAMBERT_AIMPOINT_GUIDANCE.agc'},
         'base': {'lm': 'lm_lambert_aim'},
         'symbol': {'lm': 'lm_lambert_aim'},
@@ -1056,6 +1080,9 @@ SPECS = {
     'lm-p30-file': {
         'resume_keys': True,
         'missions': ('lm',),
+        # P30/P37 targeting runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P30,P37.agc'},
         'source_path': {'lm': 'P30_P37.agc'},
         'base': {'lm': 'lm_p30_file'},
@@ -1149,6 +1176,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P76 target delta-V runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P76.agc'},
         'base': {'lm': 'lm_p76_file'},
         'symbol': {'lm': 'lm_p76_file'},
@@ -1282,6 +1312,11 @@ SPECS = {
         'target': 'tests/cm_p76_file_target.c',
     },
     'cm-servicer': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1347,6 +1382,9 @@ SPECS = {
         'file': {'cm': 'P11.agc'},
         'base': {'cm': 'cm_p11'},
         'symbol': {'cm': 'cm_p11'},
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'basic': 'full',
         'entries': ['@external'],
         'channels': 'all',
@@ -1386,6 +1424,11 @@ SPECS = {
     },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1475,6 +1518,10 @@ SPECS = {
         'base': {'cm': 'cm_time_free_fall'},
         'symbol': {'cm': 'cm_time_free_fall'},
         'basic': 'full',
+        # TFFXTEST's RTB DMP T(X): T(X)'s TC DANZIG comes back with DMP in
+        # EDOP and LOC at the T(X) word (D1's host sweep on 84d550f5, CM
+        # entry).
+        'pending_danzig': True,
         # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively, and
         # the routine goes on with the pair's right-hand order (#414, as
         # measurement-incorporation does).
@@ -1484,7 +1531,9 @@ SPECS = {
         'entries': ['@external'],
         'target': 'tests/cm_time_free_fall_target.c',
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline'],
+        # (The DANZIG marker the pending orders resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
         # (INDEX's end-around carry kept within 16 bits for the C64)
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
@@ -1497,6 +1546,10 @@ SPECS = {
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
     # LUNVEL and SOLPOS are routine keys of the transfer ABI).
     'cm-ephemeris': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1670,6 +1723,11 @@ SPECS = {
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
     'cm-stable-orbit': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1711,6 +1769,10 @@ SPECS = {
         'base': {'cm': 'cm_conics'},
         'symbol': {'cm': 'cm_conics'},
         'basic': 'full',
+        # DELTIME's two RTB PDDL TPMODE: TPMODE's DANZIG comes back with
+        # PDDL in EDOP and LOC at the TPMODE word (D1's host sweep on
+        # 84d550f5, CM entry).
+        'pending_danzig': True,
         'entries': ['@external'],
         # (TC DANZIG goes on in interpretive code: the word after it is no
         # return point.)
@@ -1762,7 +1824,9 @@ SPECS = {
         'c64_drop_superset': True,
         'target': 'tests/cm_conics_target.c',
         'freeze_stride': 32,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        # (The DANZIG marker the pending orders resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
         # (INDEX's end-around carry kept within 16 bits for the C64)
         'index_carry16': True,
         # (W is the fixed image at $7000 on the C64: agc_image_w.h)
@@ -1771,6 +1835,11 @@ SPECS = {
         'trusted_image': True,
     },
     'cm-p40-p47': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # GOPERF1/GOFLASH returns and other words only the display or a
         # restart enters (terminate, proceed, enter after a BANKCALL).
         'resume_orphans': True,
@@ -1873,6 +1942,11 @@ SPECS = {
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1912,6 +1986,11 @@ SPECS = {
     # Lane G: Comanche055 TVCEXECUTIVE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-exec': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1938,6 +2017,11 @@ SPECS = {
     # Lane G: Comanche055 TVCRESTARTS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-restarts': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1968,6 +2052,11 @@ SPECS = {
     # Lane G: Comanche055 TVCSTROKETEST, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-stroke': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2004,6 +2093,9 @@ SPECS = {
     # Lane G: Comanche055 TVCINITIALIZE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-init': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2059,6 +2151,11 @@ SPECS = {
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-roll': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2088,6 +2185,11 @@ SPECS = {
     # Lane G: Comanche055 TVCDAPS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-daps': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2110,6 +2212,11 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
@@ -2153,6 +2260,11 @@ SPECS = {
     # Lane G: Comanche055 AUTOMATIC_MANEUVERS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-auto-man': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2186,9 +2298,17 @@ SPECS = {
     # Lane G: Comanche055 JET_SELECTION_LOGIC, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-jet-select': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
+        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -2226,6 +2346,11 @@ SPECS = {
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-entry-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2240,6 +2365,15 @@ SPECS = {
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
+        # entry window (cm-entry from 17000 cs, per-routine profile,
+        # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
+        # the flight store's entry pack, so a pass loads one module rather
+        # than about five chunks of the whole table.
+        'hot_points': ('15,2434', '15,2507', '15,2522', '15,2536', '15,2540', '15,2543', '15,2551',
+                       '15,2607', '15,2651', '15,2665', '15,2676', '15,2700', '15,2712', '15,2724',
+                       '15,2730', '15,2734', '15,2741', '15,2770', '15,3006', '15,3037', '15,3112',
+                       '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
         'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2334,9 +2468,10 @@ SPECS = {
         # CNTCHK (27,2361) is a label nothing names: STQ POINTEX, then
         # CONTCHK.
         'entries': ['@external', 'CNTCHK'],
-        'partial': {'cm': 'the I/O channel orders and the EXTENDs before them wait for an I/O channel model: '
-                          'RANGERD\'s WAND CHAN13 and WOR CHAN13 (27,2420-2424) and VHFREAD\'s RAND CHAN33 (27,2532-2533), '
-                          'and AUTOCK\'s RXOR CHAN31 (34,3360-3361) and WOR DSALMOUT (34,3427-3430)'},
+        # RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33, AUTOCK's RXOR
+        # CHAN31 and WOR DSALMOUT (11) on the mission's channels.
+        'channels': 'all',
+        'io_channels': 'auto',
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
                       'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
                       'MAKECADR': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto', 'LINUS': 'auto',
@@ -2347,6 +2482,12 @@ SPECS = {
                       'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
         'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
         'resume_orphans': True,
+        # VHFREAD is a WAITLIST task (it leaves through TASKOVER, GOODEND or
+        # BADEND) and RENDISP2 and ENDR57's ENDMARK NOVAC jobs: the basic
+        # routines they reach run under any FIXLOC, and with NEWJOB -0
+        # while DUMMYJOB idles (steward rule for interrupt-context specs).
+        'any_fixloc': True,
+        'any_newjob': True,
         # R61's INDEX MPAC; TC +1 picks R61END or R61C1.
         'tc_tables': {'R61C1-2': 2},
         # (CCS A after a MASK reaches only its first two arms; the others
@@ -2389,7 +2530,10 @@ SPECS = {
                                      'vac+016': [2, 28]}),
             # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
             # of 6 up to the 36 of S22NXTWI's AXT,1.
-            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]})],
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]}),
+            # AUTOCK's angle check loop: DTHETASM counts the three CDUs 2, 1,
+            # 0 (CDULOOP's INDEX DTHETASM; CA CDUX) up to STKTEST.
+            ('CDULOOP', 'STKTEST', {'DTHETASM': [0, 1, 2]})],
         # From P23.16's last check (TC INTPRET before P23.17) to its CALL
         # LOWMEMRY the program runs with a catalog star code,
         # as P23.16's checks leave it; LOWMEMRY with X1 6 times one.
@@ -2415,6 +2559,13 @@ SPECS = {
         # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
         # segment rows cut them at the next resume LOC.
         'c64_segments': True,
+        # C64 rows chosen by gcov branch arc over every linked source; arcs
+        # only runs too long for one diagnostic take (AUTOCK's WOR DSALMOUT
+        # into STEP3CK, the S22 DDVs) get truncated rows (c64_cuts). Every
+        # 16th case is traced (a divisor of freeze_stride).
+        'c64_rows': 'cover',
+        'cover_stride': 16,
+        'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
         'max_steps': 40000,
@@ -2511,6 +2662,9 @@ SPECS = {
     },
     'attitude-maneuver': {
         'missions': ('lm', 'cm'),
+        # KALCMANU runs every attitude maneuver: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
         'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
         'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
@@ -2785,6 +2939,9 @@ SPECS = {
         # unsigned too)
         'index_carry16': True,
         'image_w': True,
+        # CDULOGIC runs in the CM entry window and every attitude pass: no
+        # whole-image scan in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
@@ -2866,11 +3023,18 @@ SPECS = {
         'basic': 'full',
         'fast_window': True,
         'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # SPECSTS's FINDVAC 2CADR ALFLT (BBCON 66065) runs the ALFLT filter
+        # under SUPERBNK 060: the FB 30-37 guard tests only the superbank
+        # bit, at the routine's entry, and the cases draw 020-060.
+        'superbank_bit': True, 'any_superbank': True,
         # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
         # the caller's A overflowed: refused, never run as basic code.
         'interp_not_basic': True,
         # FINETIME (bank 02) runs under its caller's FB.
         'fixed_fixed_any_fb': True,
+        # The C64 flight store links the basic code as three modules
+        # (docs/FLIGHT-PARTS.md): one module was 10 KB over a job slot.
+        'flight_parts': [0o33 * 1024 + 0o2400 - 0o2000, 0o33 * 1024 + 0o3000 - 0o2000],
         # TC QPLACE/QPLACES (E5) runs the saved return stored there.
         'switched_tc': True,
         # ALKLP's DLOAD* ALSK +1,1 with X1 +1 or -1 (CMPX1): ALSK or the
@@ -2911,6 +3075,10 @@ SPECS = {
             'vac+047': [n for n in range(0o20)] + [0o77777 ^ n for n in range(0o20)],
             'vac+050': [1, 2, 3, 6], 'vac+051': [1, 2, 3, 6],
             '01330': [0, 0o401, 0o455, 0o531, 0o605, 0o661],            # MARKSTAT: a mark VAC or none
+            # RETARG's INDEX MARKSTAT; CA QPRET: each mark VAC's QPRET word
+            # (VAC+052), -0 when the crew proceeds with no marks (ENTANSWR's
+            # BZMF JAMIT), so the BZF to RETARG1 runs with MARKSTAT > 0.
+            **{'%05o' % (v + 0o52): [0, 0o77777, 1, 2] for v in (0o401, 0o455, 0o531, 0o605, 0o661)},
             # The saved returns: the file's own call sites.
             '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
                       0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE
@@ -3403,6 +3571,11 @@ SPECS = {
         'resume_keys': True,
         'c64_rows': 'cover',
         'cover_stride': 8,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
@@ -3443,6 +3616,9 @@ SPECS = {
         'file': {'lm': 'PLANETARY_INERTIAL_ORIENTATION.agc', 'cm': 'PLANETARY_INERTIAL_ORIENTATION.agc'},
         'base': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
         'symbol': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         # R-TO-RP and RP-TO-R (CALLed from the integration, landing,
         # P20-P25, P51-P53 and LAT-LONG).
         'entries': ['R-TO-RP', 'RP-TO-R'],
@@ -4113,6 +4289,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # AOSTASK runs as a flight task: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
@@ -4203,6 +4382,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # The landing radar reads run through P63-P66: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
         'base': {'lm': 'lm_radar_leadin_routines'},
         'symbol': {'lm': 'lm_radar_leadin_routines'},
@@ -4366,6 +4548,8 @@ SPECS = {
         'file': {'lm': 'FINDCDUW_-_GUIDAP_INTERFACE.agc'},
         'base': {'lm': 'lm_findcduw'},
         'symbol': {'lm': 'lm_findcduw'},
+        'image_w': True,
+        'trusted_image': True,
         # Entries from other files: INITCDUW (STCALL/CALL from BURNBABY and
         # P70/P71), FINDCDUW -2 (CALL, BPL from the guidance equations),
         # SPARCSIN -1 (BANKCALL from LUNAR_LANDING_GUIDANCE_EQUATIONS).

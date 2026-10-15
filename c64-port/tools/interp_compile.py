@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import interp_listing as IL
 import interp_specs
 import basic_compile
+import types
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,6 +46,12 @@ K_WORDS = {'MXV': 18, 'VXM': 18}
 INPUT_CHANNELS = {0o3: '3', 0o4: '4', 0o16: '16', 0o30: '30', 0o31: '31', 0o32: '32', 0o33: '33'}
 # The channels a Luminary 'channels': 'all' file's orders reach.
 LM_CHANNELS = basic_compile.LM_CHANNELS
+# A Comanche 'channels': 'all' file's channels, as tools/basic_compile.py
+# models them: 011-014 in the mission's cm_native_io, 5, 6 and 030-033 in
+# the program's agc_hardware.
+CM_CHANNELS = {k: 'channel%02o' % k for k in (0o11, 0o12, 0o13, 0o14)}
+CM_CHANNELS.update({k: 'agc_channels_hw->channel%o' % k for k in (0o5, 0o6, 0o30, 0o31, 0o32, 0o33)})
+CHANNEL_OP_NAMES = ('read', 'write', 'rand', 'wand', 'ror', 'wor', 'rxor')
 ADDR_ALIAS = {'DMP': 'DMP1', 'NORM': 'TSLC', 'SL': 'GSHIFT', 'SR': 'GSHIFT', 'SLR': 'GSHIFT',
               'SRR': 'GSHIFT', 'VSL': 'GSHIFT', 'VSR': 'GSHIFT'}
 MISC = {'AXT': 'AXT', 'AXC': 'AXC', 'LXA': 'LXA', 'LXC': 'LXC', 'SXA': 'SXA', 'XCHX': 'XCHX', 'INCR': 'INCR',
@@ -205,6 +212,11 @@ class Compiler:
         self.lm_channels = mission == 'lm' and spec.get('channels') == 'all'
         if self.lm_channels and not spec.get('channel_inputs'):
             raise CompileError("Luminary 'channels': 'all' needs 'channel_inputs'")
+        # On a Comanche file its step-machine channel orders run on
+        # tools/basic_compile.py's per-file helpers (ch_read ...) against the
+        # mission's cm_native_io and the program's agc_hardware. (A 'basic':
+        # 'full' spec's basic code takes them from tools/basic_compile.py.)
+        self.cm_channels = mission == 'cm' and spec.get('channels') == 'all' and spec.get('basic') != 'full'
         self.uses_hw = False         # a channel order reaches agc_ch_op
         self.channels_used = set()   # the channels those orders name
         self.inputs_used = set()     # latched input channels they read (AGC_CHANNEL)
@@ -363,6 +375,19 @@ class Compiler:
                 raise CompileError('usprcadr exit %s is not a CADR after TC USPRCADR' % lab)
             self.pending[phys] = ('EXIT', phys + 1, 1)
             self.add_start(phys, 'i', 'USPRCADR return through DANZIG')
+        # 'edop_exits': labels of basic words that the file's own basic code
+        # leaves in LOC, with BIT8 in EDOP, before it goes to an
+        # interpretive order's basic code (FLESHPOT's DCA Z, AD FOUR, DXCH
+        # LOC, CAF BIT8, TS EDOP, TCF VXV): that code ends at DANZIG, whose
+        # CCS EDOP runs EXIT into the word after this one, as for
+        # 'usprcadr_exits'.
+        for lab in self.spec.get('edop_exits', ()):
+            phys = self.label_phys(lab)
+            if (phys is None or phys not in self.code or not self.in_file(phys) or phys + 1 not in self.code
+                    or self.code.get(phys - 1) is None or (self.code[phys - 1].op, self.code[phys - 1].operand) != ('TS', 'EDOP')):
+                raise CompileError('edop exit %s is not the word after a TS EDOP' % lab)
+            self.pending[phys] = ('EXIT', phys + 1, 1)
+            self.add_start(phys, 'i', 'EXIT in EDOP, return through DANZIG')
         self.blocks = {}
         self.owner = {}
         while True:
@@ -514,8 +539,13 @@ class Compiler:
             # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
             # NEWOPS as at the end of any pair.
             op, cur, edop = self.pending[start]
-            out.append('/* %s pending DANZIG: %s */' % (self.where(start), 'USPRCADR\'s EXIT in EDOP' if op == 'EXIT'
-                                                           else 'RTB on the left, %s on the right' % op))
+            if op != 'EXIT':
+                why = 'RTB on the left, %s on the right' % op
+            elif self.code[start - 1].operand == 'EDOP':
+                why = 'EXIT in EDOP from the TS EDOP before'
+            else:
+                why = 'USPRCADR\'s EXIT in EDOP'
+            out.append('/* %s pending DANZIG: %s */' % (self.where(start), why))
             out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
             out.append('TRACE(s);')
             out.append('right(s);')
@@ -721,6 +751,13 @@ class Compiler:
                 return st, cur, True
         st.append('setpd_next(s);' if prev_setpd else 'next(s);')
         return st, cur, False
+
+    def pending_rtb(self, cur, lab):
+        """The RTB's operand word (cur - 1): DANZIG's pending right order."""
+        pw = self.pair[0]
+        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
+        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
+        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
 
     def call_return(self, cur, why):
         """The word after a CALL is a routine when it is interpretive code; a
@@ -987,6 +1024,11 @@ class Compiler:
                 end = cur
                 if cur in self.code and is_interp_op(self.code[cur].op):
                     self.add_start(cur, 'i', 'after RTB %s' % lab)
+                    if self.pending_danzig and self.right_op:
+                        # (A right order that takes the pushdown list, as
+                        # TFFXTEST's RTB DMP T(X): no words of its own, but
+                        # still pending in EDOP at the operand word.)
+                        self.pending_rtb(cur, lab)
                 elif self.rk:
                     # RTB with an order on its right: DANZIG runs that order,
                     # then NEWOPS at the word after its operands (words of
@@ -1000,11 +1042,7 @@ class Compiler:
                         # belong to the routine at the RTB's operand word.)
                         end = cur if self.pending_danzig else q
                     if self.pending_danzig:
-                        # The operand word: DANZIG's pending right order.
-                        pw = self.pair[0]
-                        a = ((~pw & 0o77777) if pw & 0o40000 else pw) - 1
-                        self.pending[cur - 1] = (self.pair[1][1], cur, (a >> 7) & 0o177)
-                        self.add_start(cur - 1, 'i', 'pending DANZIG after RTB %s' % lab)
+                        self.pending_rtb(cur, lab)
                 st[-1] += '(void)ai_ccs(s,020);%srtb(s);return EXEC_OK; /* RTB %s */' % (P, lab)
                 return st, end, True, False
             if lab not in self.rtb:
@@ -1156,6 +1194,31 @@ class Compiler:
             st = [pre + '%sdiradres(s,0%05o,0%05o);%s%s(s,%s);' % (P, w, T[load], P, fn, k)]
             cur += 1
         return st + ['next(s);'], cur, False
+
+    def hot_table(self, sym, points, routines, index, guard):
+        """<sym>_hot_routines: the basic entries at the spec's hot_points
+        ('bank,addr', octal), in key order, with the full table's guards and
+        wrappers, so a key calls the same function through either table."""
+        basic = {r[0]: r for r in routines if r[1] == 'b'}
+        keys = []
+        for pt in points:
+            b, a = pt.split(',')
+            phys = int(b, 8) * 1024 + int(a, 8) - 0o2000
+            if phys not in basic:
+                raise CompileError('hot point %s is not a basic routine of the file' % pt)
+            keys.append(phys)
+        if len(set(keys)) != len(keys):
+            raise CompileError('hot_points repeats a point')
+        c = ['/* The basic routines one pass reaches (the spec\'s hot_points): the',
+             ' * flight store packs them in one module, so a pass loads it once. */',
+             'static const agc_routine_entry hot_entries[]={']
+        for phys in sorted(keys):
+            c.append(guard(index[phys]))
+            c.append(' {%u,%s_abi},' % (phys, basic[phys][2]))
+            c.append('#endif')
+        c += [' {0xffffu,0}', '};',
+              'const agc_routine_table %s_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};' % sym]
+        return c
 
     # ---- basic code ------------------------------------------------------
     def phys_of(self, k, bank):
@@ -1602,6 +1665,20 @@ class Compiler:
                 self.channels_used.add(chan)
                 return st + ['if(!agc_ch_op(s,agc_channels_hw,agc_channels_in,&io->superbank,%d,0%o))'
                              'return EXEC_OUT_OF_SCOPE;' % (io_op, chan)], [nxt]
+            if op == 0 and self.cm_channels and index is None and io_op in (0, 2, 4, 6) and chan == 7:
+                # READ, RAND, ROR, RXOR SUPERBNK: the run's superbank (bits
+                # 5-7), as include/agc_channel_ops.h reads it. (A write
+                # would move FB 30-37 and waits, uncompiled, below.)
+                v = '(io->superbank&0160u)'
+                if io_op:
+                    v = '((((W[0]>>1)&040000u)|(W[0]&037777u))%s%s)' % ({2: '&', 4: '|', 6: '^'}[io_op], v)
+                return st + ['ai_caf(s,(agc_word)%s);' % v], [nxt]
+            if op == 0 and self.cm_channels and index is None and io_op < 7 and chan in CM_CHANNELS:
+                # The mission's channels (channel_helpers below); the wrappers
+                # refuse a program without agc_hardware.
+                self.uses_hw = True
+                self.channels_used.add(chan)
+                return st + ['ch_%s(s,cm_chio,0%o);' % (CHANNEL_OP_NAMES[io_op], chan)], [nxt]
             if op == 0:
                 # I/O channels are not in the image: the instruction (and the
                 # routine from it) waits for a channel model, uncompiled.
@@ -1764,7 +1841,9 @@ class Compiler:
             p = work.pop()
             if p in units:
                 continue
-            if p != start and p in self.starts and self.starts[p][0] == 'i':
+            # (An 'edop_exits' word is an interpretive key and the basic
+            # instruction the routine runs.)
+            if p != start and p in self.starts and self.starts[p][0] == 'i' and p not in self.pending:
                 raise CompileError('basic flow runs into interpretive %s' % self.where(p))
             if p != start and p in self.idle:
                 units[p] = (['W[5]=0%04o;return EXEC_IDLE; /* idle point */' % self.logical_of(p)], [])
@@ -1903,6 +1982,8 @@ class Compiler:
              '/* Every key of the part: Z (under FB and SUPERBNK) names it. */',
              'static enum exec_status %s_flight_entry(const agc_native_program *p,apollo_overlay_state *s,void *v){' % sym,
              ' %s *io=v;uint16_t at;' % io_t]
+        if self.spec.get('fast_window'):
+            c.append(' AFR_BIND(s);AFO_FIX(s);')  # (as the per-key entries)
         if io_t == 'p66_bias_io':
             c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
         else:
@@ -2071,6 +2152,11 @@ class Compiler:
             c.append('static MAYBE_UNUSED agc_hardware *agc_channels_hw;')
             c.append('#define AGC_CH_HW_SET(p) ((agc_channels_hw=(p)->hardware)!=0)')
             c.append('#endif')
+        if self.cm_channels and self.uses_hw:
+            c.append('/* The mission\'s cm_native_io of the run, set by the wrappers. */')
+            c.append('static MAYBE_UNUSED cm_native_io *cm_chio;')
+            c.extend(basic_compile.Basic.channel_helpers(types.SimpleNamespace(
+                channels={k: CM_CHANNELS[k] for k in sorted(self.channels_used)})))
         if self.sload_k:
             c.append('/* SLOAD of a fixed word: ZL; INDEX ADDRWD, CA 0; SLOAD2 DXCH MPAC;')
             c.append(' * CAF ZERO; TS MPAC +2; NEWMODE TS MODE; DANZIG. */')
@@ -2139,6 +2225,13 @@ class Compiler:
             c.append('static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
             c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);' % (dz, sbd))
             c.append('}')
+            if any(v[0] == 'EXIT' for v in self.pending.values()):
+                # (A pending EXIT decodes no address, so INTBIT15 is not
+                # checked: FLESHPOT's DXCH LOC sets LOC and BANKSET without
+                # INTPRET +2, and INTBIT15 is still its caller's.)
+                c.append('static MAYBE_UNUSED uint8_t at_exit(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){')
+                c.append(' return W[5]==0%04ou&&%s&&!(W[0165]&01770u)&&sane(s,io);' % (dz, sbd))
+                c.append('}')
         c.append('/* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction')
         c.append(' * word w in 16-bit ones\' complement, then overflow-corrected. */')
         c.append('static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){')
@@ -2274,7 +2367,12 @@ class Compiler:
             if kind == 'b' and phys // 1024 in (2, 3):
                 c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
             else:
-                chk = ('at_danzig' if phys in self.pending else 'at_newops') if kind == 'i' else 'at_basic' + nv
+                if kind != 'i':
+                    chk = 'at_basic' + nv
+                elif phys in self.pending:
+                    chk = 'at_exit' if self.pending[phys][0] == 'EXIT' else 'at_danzig'
+                else:
+                    chk = 'at_newops'
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')
@@ -2310,10 +2408,13 @@ class Compiler:
             c.append(' if(!s||!io)return EXEC_OUT_OF_SCOPE;')
             if self.uses_channels:
                 c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
+            if self.cm_channels and self.uses_hw:
+                c.append(' cm_chio=io;')
             c.append(' l.superbank=io->superbank;l.interrupt_enabled=io->interrupt_enabled;st=f(s,&l);')
             c.append(' io->superbank=l.superbank;io->interrupt_enabled=l.interrupt_enabled;return st;')
             c.append('}')
-            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s(void)p;return latched(f,s,v);}' % bind)
+            c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s%sreturn latched(f,s,v);}' % (
+                bind, 'if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.cm_channels and self.uses_hw else '(void)p;'))
         index = {r[0]: i for i, r in enumerate(routines)}
         for i, (phys, kind, fn, lab, why) in enumerate(routines):
             if kind == 'b' and self.basic:
@@ -2345,6 +2446,8 @@ class Compiler:
                 c += self.flight_table(sym, [r[0] for r in rs])
             c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'
                      % (sym, tab, tab, tab, tab))
+        if s.get('hot_points'):
+            c += self.hot_table(sym, s['hot_points'], routines, index, guard)
         # Test metadata.
         c.append('const %s_point %s_points[%s_POINTS]={' % (sym, sym, sym.upper()))
         c.append(',\n'.join(' {%u,%u}' % (phys, 1 if kind == 'i' else 0) for phys, kind, fn, lab, why in routines))
@@ -2365,6 +2468,10 @@ class Compiler:
         h.append('/* %s/%s: interpretive routines keyed by the physical' % (prog, s['file'][self.m]))
         h.append(' * LOC at NEWOPS (%04o), basic ones by physical Z. */' % self.newops)
         h.append('extern const agc_routine_table %s_interpretive,%s_basic;' % (sym, sym))
+        if s.get('hot_points'):
+            h.append('/* The basic routines one pass of the file reaches (spec hot_points), for')
+            h.append(' * the flight store\'s pack: the same wrappers as %s_basic. */' % sym)
+            h.append('extern const agc_routine_table %s_hot_routines;' % sym)
         h.append('/* Every routine (physical address, 1 interpretive), the erasable')
         h.append(' * words its GOTOs and CALLs read a CADR from (work-area offsets below')
         h.append(' * 045), and the outside basic addresses it transfers to. */')

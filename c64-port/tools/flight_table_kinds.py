@@ -53,12 +53,19 @@ def main():
     bad = 0
     for m in ('lm', 'cm'):
         listing = interp_listing.load(m)
-        kind = {}
+        kind, word = {}, {}
         for ln in listing.lines:
             if ln.phys is None or not ln.words:
                 continue
             for i in range(len(ln.words)):
                 kind[ln.phys + i] = 'i' if not ln.op or interp_compile.is_interp_op(ln.op) else 'b'
+                word[ln.phys + i] = (ln.op, ln.operand) if i == 0 else None
+        # A pending EXIT's key (interp_compile.py 'usprcadr_exits',
+        # 'edop_exits') is interpretive although its word is basic: the
+        # word after a TC USPRCADR or a TS EDOP.
+        for k in list(kind):
+            if word.get(k - 1) in (('TC', 'USPRCADR'), ('TS', 'EDOP')):
+                kind[k] = 'i'
         with tempfile.TemporaryDirectory() as d:
             rows = keys(a.host_cc, m, d)
         flag, counts = {}, collections.defaultdict(collections.Counter)

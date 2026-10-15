@@ -27,7 +27,10 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel
 #else
 __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
 #endif
-__attribute__((used,section(".rk_flight"))) flight_io rk_flight;
+/* undo: a non-null marker only. The modules whose io record takes an undo
+ * image stash it in the REU (include/flight_undo.h), not at this pointer. */
+__attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
+                                                                        (apollo_overlay_state *)1};
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
@@ -330,8 +333,14 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * built yet (its first run after a load builds it) is left to the resolver.
  * Where two packed tables hold a key, the loaded one runs it. */
 #ifndef RK_NO_DIRECT
+/* The high byte of the step's fixed point (Z under FB), or 0xff when Z is
+ * erasable, for rk_direct's range checks. Static: absolute addressing is
+ * smaller than the soft stack. */
+static uint8_t rk_point_hi;
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
     uint8_t i;
+    rk_point_hi =
+        (uint8_t)(agc_fixed_physical(IMAGE->words[5], IMAGE->words[4], rk_device.superbank) >> 8);
     /* The pinned module (slot class 3) first, then the job and task slots. */
     for(i=0;i<=APOLLO_OV2_SLOTS;++i) {
         const rk_module_tables *t=rk_pinned;
@@ -347,6 +356,13 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
                          APOLLO_OV2_HEADER_BYTES)) continue;
         }
         if(!t || t->ready!=RK_TABLES_DIRECT) continue;
+        /* A point outside the key range the module's tables hold (by high
+         * byte; tools/flight_store_build.py) is not its point. The step's
+         * point is never stop_physical here: rk_trampoline returned first. */
+        if ((uint8_t)(rk_point_hi - t->lo) > t->span) {
+            RK_PROF(5);
+            continue;
+        }
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint16_t limit=rk_limit(t->mct);

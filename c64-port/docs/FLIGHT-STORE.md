@@ -29,6 +29,20 @@ lists every collision for its lanes. `--host-only` writes only the host
 table index (`build/flight-store/<m>-host.inc`) and the whole-program site
 table (`build/flight-store/<m>-sites.inc`) for the differential.
 
+The host index models the store's module layout for the host flight run's
+module-load count (`tools/flight_host_run.c`). The pinned sets (slots 3 and
+4) come right after the resident tables, never load and never take a slot.
+The job-slot packs (`PACKS`: the excursion and T4RUPT) go ahead of their
+files' tables: a hot subset of a resident table goes ahead of the resident.
+A ride table (`RIDE`) holds its keys only while its pack is in the job slot
+(slot 5). With a class-4 set in, task-slot modules count in the job slot. A
+full build writes the index from the report's `pinned` and `packs`; a
+`--host-only` build reads the last `report.json` when its sets still match
+`PIN` and `PACKS`, and otherwise uses those as configured. On 84d550f5 this
+cut the counted loads for cm-entry from 873,831 to 11,901 (the CM idle
+loop's POSTJUMP and self-check run from the pinned class-3 set) and for
+lm-p63-nassp from 195,318 to 123,454.
+
 Each module carries its own operand table (`FS_SITES`): the
 `agc_site_operand` arrays its sources compile to for the mission (read from
 `cc -E` of each source), so no whole-program site table is needed. The
@@ -51,6 +65,7 @@ The 2 MB REU, by address:
 | 0x1c0000-0x1d1fff | LM rope image (LM store only) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
 | 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
 The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
@@ -121,6 +136,21 @@ P00 140,000 to 84,000, CM P00 110,000 to 72,000, CM entry 240,000 to
 128,000; `flight_downlink_check.py --vice` matches yaAGC on all 300
 DOWNRUPTs, one resident step each.
 
+The LM idle loop's own module (`lm_self_check_idle`, 0x010A) carries only
+POSTJUMP, the one interbank routine the loop calls (CHECKNJ's TC
+POSTJUMP): `lm_interbank_postjump_hot_routines` in `src/lm_interbank_dap.c`,
+checked against `lm_interbank_routines` by `tests/test_lm_interbank_dap.c`.
+The module drops from 10,287 B to 2,392 B. Every interrupt taken from idle
+reloads it, so in VICE the LM DAP hold goes from 10.52x to 9.82x real time
+and firing from 10.73x to 10.04x, with the same job loads (hold, firing, and
+the P63 descent-thrust scenario: 1/21/6/16 per T3/T4/T5/background before
+and after). The host flight run lists the hot table before
+`lm_interbank_routines` (`CO_LOCATE_HOT`). Its swap model does not model
+RIDE tables, so it now counts the DAP's IBNKCALL (which rides the excursion
+on the C64) as a swap: `lm-p00-idle` reads 77.2 loads a second, up from
+57.2, and the non-work scaled rows shift. The work rows and their 0
+mismatches are unchanged; the C64 counts are the ones to go by.
+
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
@@ -185,7 +215,11 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. A chunk holds only its own file's sources
+halving until each chunk fits. Files in `GREEDY_SPLIT`
+(`tools/flight_store_build.py`) split greedily instead: each chunk takes
+as many consecutive routines as fit, found by binary search on its end.
+The CM entry DAP is one: a pass runs its table front to back, so fewer and
+larger chunks mean fewer loads per pass. A chunk holds only its own file's sources
 and operand sites; a table co-located into another module is never
 chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
@@ -193,6 +227,15 @@ routine still over its slot is reported as a failed entry
 than 64 KB is `too big to split`. Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
+
+A key whose every holder failed has no module in the store: the C64 stops
+there, while the host run bridges it through yaAGC. `report.json`
+`unplaced` counts these keys per table, and the build fails when a table
+has more than `docs/flight-store-unplaced.json` allows (a table not listed
+is allowed none). On 80342904 that is LM P20-P25 (450 keys, the file is too
+big to split), the Pinball remainder (LM 268, CM 267) and CM IMU calibration
+(16 single routines over a slot). A fix that lowers a count lowers the file
+with it; the build prints the new count.
 
 Shadowed entries are left out. Several files are compiled by more than one
 lane (CM EXTENDED_VERBS as Lane C's `lanec_ev_cm_*` tables and as
@@ -348,7 +391,14 @@ After the trampoline and before the resolver, the resident's step calls
 most 256 steps. `EXEC_UNMAPPED` with no step means the point is not that
 module's; the resolver and an ABI 2 run follow only when no loaded module
 holds the point. A module's main does the same through its own list, so
-both paths run the same tables.
+both paths run the same tables. The list also carries the high bytes of
+the lowest key its basic tables hold and how far above it the highest
+key's is (`FS_KEY_LO`, `FS_KEY_SPAN`, from the builder), and `rk_direct`
+skips a module whose range misses the high byte of the step's fixed point
+(0xff when Z is erasable; a module holding an erasable key, or with
+interpretive tables, spans to 0xff), so most slots that do not hold the
+point cost a byte compare instead of a run. Measured on the LM DAP hold
+(work clock, VICE): 11.92x to 11.19x real time, for 43 resident bytes.
 
 A module never crosses a 512 KB REU bank (`tools/overlay_v2_pack.py`
 starts it on the next bank instead): one DMA loads a module, and the REU's

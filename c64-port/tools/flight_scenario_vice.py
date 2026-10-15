@@ -21,7 +21,7 @@ Prints wall cycles per AGC second, the AGC time reached, the step status
 bridge to on the C64) and per-interrupt costs; writes
 build/flight-store/flight-scenario-vice.json.
 
-  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--stop-on-holes]
+  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--stop-on-holes] [--profile]
 """
 import argparse
 import json
@@ -76,6 +76,7 @@ def main():
     p.add_argument('--cycles', type=int, default=6_000_000_000)
     p.add_argument('--timeout', type=int, default=3600)
     p.add_argument('--stop-on-holes', action='store_true', help='fail before VICE if the host run bridges any point')
+    p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
@@ -99,23 +100,30 @@ def main():
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
     header = snapshot(exe, a.scenario, a.snap_cs)
-    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m)
+    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile)
     r = dp.vice(a, a.scenario, prg, pinned, m)
+    if a.profile:
+        r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z
-        # (dap_pass_check.c DP_STEPS); the bank only where Z is switched fixed.
+        # (dap_pass_check.c DP_STEPS); fixed-fixed Z as bank 02 or 03.
         print('last steps (bank,Z/status):',
-              ' '.join((f"{x['job_loads']:02o},{x['steps']:04o}" if 0o2000 <= x['steps'] < 0o4000 else f"{x['steps']:05o}")
+              ' '.join((f"{x['job_loads']:02o},{x['steps']:04o}" if 0o2000 <= x['steps'] < 0o4000 else
+                        f"{x['steps'] >> 10:02o},{0o2000 + x['steps'] % 1024:04o}" if 0o4000 <= x['steps'] < 0o10000 else
+                        f"{x['steps']:05o}")
                        + f"/{x['status']}" for x in r.get('records', [])[-12:]))
     if 'by_request' in r:
         print(f"{a.scenario} from {a.snap_cs} cs: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs "
               f"({r['wall_per_agc']} x real time), {r['dropped_ticks']} ticks dropped, {r['steps']} steps, "
-              f"status {r['status']} at {r['bank']},{r['z'][1:]} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
+              f"status {r['status']} at {r['at']} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
         for k, b in sorted(r['by_request'].items()):
             print(f"  {k}: {b['count']} x, mean {b['cycles'] // b['count']} cycles (max {b['max_cycles']}), "
                   f"{b['steps']} steps, {b['job_loads']} job and {b['task_loads']} task loads")
+        for x in r.get('profile', []):
+            print(f"  {x['segment']}: {x['calls']} x, {x['cycles']} cycles"
+                  f" ({x['cycles'] // x['calls'] if x['calls'] else 0} each)")
     else:
         print(f"FAIL: {a.scenario}: {r.get('error')}")
     return 0 if r.get('ok') else 1

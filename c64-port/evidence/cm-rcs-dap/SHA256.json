@@ -4,8 +4,8 @@
   "release": "evidence-cm-rcs-dap",
   "files": {
     "cm-rcs-dap-differential.log": {
-      "sha256": "f6b21805a5699e5a0f3a08d37334a62e46d321ff28504a768226b44d98bbd02a",
-      "bytes": 14034,
+      "sha256": "201904e019eb691edb2d70214b3a94829b8461e01876901e235182f319a9192b",
+      "bytes": 14036,
       "store": "tree"
     },
     "cm-rcs-dap-host.log": {
@@ -14,7 +14,7 @@
       "store": "tree"
     },
     "cm-rcs-dap-proof.json": {
-      "sha256": "11629be65741014532634e9b59d0f72c220ddf358052dc60aac67520bb4817b5",
+      "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523",
       "bytes": 24325,
       "store": "tree"
     },
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-rcs-dap-vice.log": {
-      "sha256": "c56f2e956712da37aeed740a3201f6623294071c640817c5a318815bc2f507ff",
+      "sha256": "1ae45cf89dda18f9b76c2e4232a38f01bebe4f8242391681e271ad0fced56e2c",
       "bytes": 758,
       "store": "tree"
     }

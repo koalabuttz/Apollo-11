@@ -17,6 +17,15 @@ test-cm-entry-dap: build/test-cm-entry-dap
 sanitize-cm-entry-dap: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CM_ENTRY_DAP_SRC) tests/test_cm_entry_dap.c -o build/test-cm-entry-dap-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-entry-dap-sanitize
+# The hot table (spec hot_points, the flight store's entry pack) calls the
+# full table's functions for its keys.
+.PHONY: test-cm-entry-dap-hot
+all: build/test-cm-entry-dap-hot
+test: test-cm-entry-dap-hot
+build/test-cm-entry-dap-hot: $(CM_ENTRY_DAP_SRC) tests/test_cm_entry_dap_hot.c $(CM_ENTRY_DAP_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_ENTRY_DAP_SRC) tests/test_cm_entry_dap_hot.c -o $@
+test-cm-entry-dap-hot: build/test-cm-entry-dap-hot
+	./build/test-cm-entry-dap-hot
 # Host-only oracle comparison: the original rope in yaAGC against the native
 # routines (needs deps/virtualagc and the Comanche055 listing build).
 cm-entry-dap-differential:

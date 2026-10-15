@@ -92,8 +92,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
  if(argc<4)return 2;
  if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
   if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
- if(getenv("IRC_RTB_IN_FILE")){const char *e=getenv("IRC_RTB_IN_FILE");int k=0;unsigned a;
-  if(!pendz&&sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;rtbn<8u&&sscanf(e," %u%n",&a,&k)==1;e+=k)rtbk[rtbn++]=a;}
+ /* (Both lists start with the same DANZIG.) */
+ if(getenv("IRC_RTB_IN_FILE")){const char *e=getenv("IRC_RTB_IN_FILE");int k=0;unsigned a,dz;
+  if(sscanf(e,"%u%n",&dz,&k)==1){if(!pendz)pendz=dz;for(e+=k;rtbn<8u&&sscanf(e," %u%n",&a,&k)==1;e+=k)rtbk[rtbn++]=a;}}
  dump=argc>4&&!strcmp(argv[4],"dump");qw_on=getenv("IRC_QWATCH")!=0;InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;

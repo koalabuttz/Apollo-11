@@ -67,7 +67,7 @@
   {
    "mission": "lm",
    "keep": "0x1fffffffffffc000000000",
-   "cases": 51,
+   "cases": 56,
    "case_ids": [
     19744,
     20112,
@@ -119,19 +119,19 @@
     38440,
     38944,
     39432,
-    40000
-   ]
-  },
-  {
-   "mission": "lm",
-   "keep": "0x3ffffff80000000000000000000",
-   "cases": 31,
-   "case_ids": [
+    40000,
     40504,
     41008,
     41488,
     42312,
-    42504,
+    42504
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x3fffff000000000000000000000",
+   "cases": 26,
+   "case_ids": [
     43008,
     43528,
     44048,
@@ -163,7 +163,7 @@
   {
    "mission": "cm",
    "keep": "0x1fc000000607ffffffffffff",
-   "cases": 48,
+   "cases": 54,
    "case_ids": [
     54328,
     54816,
@@ -212,20 +212,20 @@
     74064,
     74347,
     74872,
-    75296
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x282fffffffffffffffc0000000000",
-   "cases": 65,
-   "case_ids": [
+    75296,
     75864,
     76312,
     76896,
     77320,
     77848,
-    78464,
+    78464
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x39fffffffffffffff800000000000",
+   "cases": 72,
+   "case_ids": [
     78336,
     78848,
     79368,
@@ -252,7 +252,6 @@
     87560,
     88296,
     88688,
-    88712,
     89200,
     89664,
     90120,
@@ -273,7 +272,7 @@
     96256,
     96768,
     97288,
-    97792,
+    97808,
     98304,
     98880,
     99424,
@@ -284,14 +283,7 @@
     101896,
     102424,
     102448,
-    102992
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3ffff800000000000000000000000",
-   "cases": 21,
-   "case_ids": [
+    102992,
     102944,
     103632,
     103960,
@@ -305,10 +297,17 @@
     108104,
     108720,
     108560,
-    109264,
+    109264
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3f000000000000000000000000000",
+   "cases": 7,
+   "case_ids": [
     109568,
     110504,
-    110160,
+    110256,
     110592,
     111416,
     111656,
@@ -317,8 +316,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1368,
-  "c64_taken": 1368,
+  "host_taken": 1382,
+  "c64_taken": 1382,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -1140,8 +1139,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 14504,
- "host_branch_arcs": 1394,
- "c64_rows": 260,
- "c64_branch_arcs": 1394,
+ "host_branch_arcs": 1411,
+ "c64_rows": 259,
+ "c64_branch_arcs": 1411,
  "host_branches_missing_on_c64": []
 }

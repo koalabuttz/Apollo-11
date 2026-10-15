@@ -166,6 +166,10 @@ class Mission:
         # and run on past it (FINETIME +1 back into CHECKG's tail).
         self.file_q = {self.point_of(k): [self.point_of(r) for r in v]
                        for k, v in spec.get('file_q', {}).items()}
+        # 'any_superbank': below bank 040, half the cases run with SUPERBNK
+        # 020, 040 or 060 (channel 7), which select nothing there; a job a
+        # bank 30-37 BBCON or 2CADR starts runs under 060 (SUPER011).
+        self.any_superbank = spec.get('any_superbank', False)
         for lab in spec.get('q_callers', ()):
             pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
             sites = []
@@ -230,7 +234,10 @@ class Mission:
             # Every channel the file's channel orders name, any value, but
             # channel 14's IMU CDU and gyro drive bits (yaAGC's device
             # models act on them at once; tests/interp_case.h).
-            self.io_channels = {k: (0o6777 if k == 0o14 else 0o77777) for k in self.cp.basic.channels_used}
+            # (A Comanche step-machine file's orders: tools/interp_compile.py
+            # cm_channels.)
+            used = self.cp.basic.channels_used if self.cp.basic else self.cp.channels_used
+            self.io_channels = {k: (0o6777 if k == 0o14 else 0o77777) for k in sorted(used)}
 
     def point_of(self, k):
         """A states key: a label (or label+n), or 'bank,addr' for an
@@ -481,6 +488,8 @@ def case(mi, point, n, rng):
         bank = file_q // 1024
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
     sb = 0o100 if bank >= 0o40 else 0
+    if mi.any_superbank and not sb and rng.random() < 0.5:
+        sb = rng.choice((0o20, 0o40, 0o60))
     fb = (bank - 8 if bank >= 0o40 else bank) << 10
     eb = rng.randrange(8) if mi.ebank is None else mi.ebank.get(point, rng.randrange(8)) \
         if isinstance(mi.ebank, dict) else mi.ebank
@@ -1168,6 +1177,8 @@ def segment_rows(spec_id, spec, vsym, missions, mi, cases, rows, visits, live, e
     the oracle. Appends the rows' cases, oracle rows, visits and edge sets
     (in the full build's guards); returns {point: [case]}."""
     sets, where = edges
+    # (Truncated 'c64_cuts' rows sit past the traced cases: no site edges.)
+    sets.extend([frozenset()] * (len(cases) - len(sets)))
     k_of = {p: k for k, p in enumerate(mi.points)}
     nxt = {p: mi.points[k + 1] for k, p in enumerate(mi.points[:-1])
            if mi.cp.starts[mi.points[k + 1]] == ('i', 'CHANG2 resume')}
@@ -1283,7 +1294,7 @@ def oracle_env(spec):
     env = {}
     if spec.get('channel_inputs'):
         env['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
-    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits')
+    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits') or spec.get('edop_exits')
     if pending or (spec.get('basic') == 'full' and spec.get('rtb')):
         cp0 = IC.Compiler(spec, spec['missions'][0])
         cp0.decode()

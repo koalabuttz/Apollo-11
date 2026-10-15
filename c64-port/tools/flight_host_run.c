@@ -202,8 +202,13 @@ static int interpreting(const agc_word *w,agc_word sb){uint16_t z=agc_fixed_phys
  return z==FETCH||(z==DANZIG&&edop!=0u&&edop<040000u);}
 static uint16_t point(const agc_word *w,agc_word sb,int *in){*in=interpreting(w,sb);
  return *in?agc_fixed_physical(w[0164],w[0165],sb):basic_point(w,sb);}
+/* The module loaded in each slot (job, task; module_load). */
+static const char *in_slot[2];
+/* A ride table (slot 5, flight_store_build.py RIDE) holds its keys only
+ * while its pack is loaded in the job slot. */
 static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){int in;unsigned i;uint16_t key=point(w,sb,&in);
- for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(*call=find(tables[i].t,key)))return &tables[i];
+ for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
+                         &&(*call=find(tables[i].t,key)))return &tables[i];
  return 0;}
 static void where(const agc_word *w,agc_word sb,const char *what){int in;uint16_t k=point(w,sb,&in);
  printf("%s: %s Z %05o FB %05o EB %05o superbank %03o (key %u = %02o,%04o) Q %05o LOC %05o BANKSET %05o\n",what,
@@ -528,7 +533,10 @@ static void miss(const char *name,const agc_word *before,agc_word sb,const agc_w
  * rk_fixed_word): the rope word at every point where it stops between
  * routines, the keys of every table it can resolve
  * (tools/resident_boundary_words.py with the store's resolver records). */
-static agc_site_operand boundary[8192];
+/* Sized for every table key before duplicates go (CM has over 10,000): a
+ * full array would drop the last tables and FETCH and DANZIG, and the
+ * native side would hold every interrupt at an interpretive order. */
+static agc_site_operand boundary[16384];
 static uint16_t nboundary;
 static int by_key(const void *a,const void *b){return (int)((const agc_site_operand *)a)->physical-(int)((const agc_site_operand *)b)->physical;}
 /* Interrupts take the word at Z: at a basic routine Z is its key, at an
@@ -536,7 +544,9 @@ static int by_key(const void *a,const void *b){return (int)((const agc_site_oper
  * LOC's), so those two words are boundary words too. */
 static void boundary_build(void){unsigned i,j;
  for(i=0;i<=TABLES;++i)for(j=0;j<(i<TABLES?tables[i].t->count:2u);++j){uint16_t k=i<TABLES?tables[i].t->entries[j].physical:j?DANZIG:FETCH;agc_word w=0;
-  if(k<APOLLO_ROPE_WORDS&&nboundary<sizeof boundary/sizeof boundary[0]&&apollo_rope_read(MISSION,k,&w)){boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
+  if(k<APOLLO_ROPE_WORDS&&apollo_rope_read(MISSION,k,&w)){
+   if(nboundary==sizeof boundary/sizeof boundary[0]){fprintf(stderr,"boundary words: more than %u keys\n",(unsigned)nboundary);exit(2);}
+   boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
  qsort(boundary,nboundary,sizeof boundary[0],by_key);
  for(i=j=0;i<nboundary;++i)if(!j||boundary[j-1].physical!=boundary[i].physical)boundary[j++]=boundary[i];
  nboundary=(uint16_t)j;}
@@ -545,14 +555,16 @@ static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *wo
 
 /* Module loads: the C64 keeps one module per slot (job, task); a routine of
  * another module in its slot loads that module (a swap). Counted at each
- * native call, refused or not, by module and by the point that entered it. */
+ * native call, refused or not, by module and by the point that entered it.
+ * The pinned sets (slot 3 and 4, loaded at boot, run through rk_direct
+ * before any module) never load and never take a slot; a ride table (slot
+ * 5) runs only in its loaded pack. */
 #define LOADS 512u
-static const char *in_slot[2];
 static unsigned long nloads;
 static struct { const char *module; uint16_t key; uint8_t in, slot; unsigned long count; } loads[LOADS];
 static unsigned nload_points;
 static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uint16_t key;unsigned i;
- if(in_slot[e->slot]==e->module)return;
+ if(e->slot>1||in_slot[e->slot]==e->module)return;
  /* A table packed into the loaded module too runs there (CO_LOCATE). */
  if(in_slot[e->slot]&&*e->also){const char *a=strstr(e->also,in_slot[e->slot]);size_t n=strlen(in_slot[e->slot]);
   if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}

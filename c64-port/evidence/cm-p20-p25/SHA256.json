@@ -3,34 +3,39 @@
   "milestone": "cm-p20-p25",
   "release": "evidence-cm-p20-p25",
   "files": {
+    "cm-p20-p25-c64-cover.json": {
+      "sha256": "1ee81d760d65f4e653b8fc5ae889f65af0f25dbb0513113dc5204cc393bdf9d1",
+      "bytes": 26826,
+      "store": "tree"
+    },
     "cm-p20-p25-c64-outcomes.json": {
-      "sha256": "7a91dd47ffacdedb5a31ef97848e79094dedc0badf20c02768d813ba7e0640cc",
-      "bytes": 1133,
+      "sha256": "e500e167e18ccc47acbaabb761b226a10f34732cea81e24a3177d5f80280ce8d",
+      "bytes": 611,
       "store": "tree"
     },
     "cm-p20-p25-differential.log": {
-      "sha256": "b8add743ca5272250fa672fb62d0f3c51f814ec263eb4a8d01237fcd529fb580",
-      "bytes": 69797,
+      "sha256": "9339acf1a8d82433b32aa1d681abe984b60b3671758b18bb2c3d15a759b2c670",
+      "bytes": 68527,
       "store": "release"
     },
     "cm-p20-p25-host.log": {
-      "sha256": "fade5a7d0feb43b603c85414377fc2ac86af121141193d533d84bb716bf88f15",
+      "sha256": "55fb92151eb525cf1a526a6565ff5186205cf38786aca46850e3d88ab0e05456",
       "bytes": 171,
       "store": "release"
     },
     "cm-p20-p25-proof.json": {
-      "sha256": "013ee2c50a706f9b2428c12b6ac8e383047cf3c0dec346083b53f458922a8f4e",
-      "bytes": 111625,
+      "sha256": "88a940c78f80dd1d368bdeeb9c61e5d79ed63e93bfcc585c4efa8209811c95d5",
+      "bytes": 117447,
       "store": "tree"
     },
     "cm-p20-p25-source-map.json": {
-      "sha256": "09451c4c780241ffb7b8326f3273fbbf8c8108b20b1e9db774f52b21412654bd",
-      "bytes": 374435,
+      "sha256": "ac24304214eb9ed6809c3e4991c9fe541c4d4eb07944504925ada01357f4ca29",
+      "bytes": 372296,
       "store": "release"
     },
     "cm-p20-p25-vice.log": {
-      "sha256": "4d554e26f39a53b3a40164d9414be34a7474977d5cca086fbcca3357bf39a5ae",
-      "bytes": 15989,
+      "sha256": "1de0a05172a3f17fa8a19567a683da9a4a3367779ac5f3cd3f2dde007aa1668f",
+      "bytes": 20675,
       "store": "release"
     }
   }
