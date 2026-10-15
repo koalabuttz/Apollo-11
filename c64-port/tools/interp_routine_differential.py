@@ -230,7 +230,10 @@ class Mission:
             # Every channel the file's channel orders name, any value, but
             # channel 14's IMU CDU and gyro drive bits (yaAGC's device
             # models act on them at once; tests/interp_case.h).
-            self.io_channels = {k: (0o6777 if k == 0o14 else 0o77777) for k in self.cp.basic.channels_used}
+            # (A Comanche step-machine file's orders: tools/interp_compile.py
+            # cm_channels.)
+            used = self.cp.basic.channels_used if self.cp.basic else self.cp.channels_used
+            self.io_channels = {k: (0o6777 if k == 0o14 else 0o77777) for k in sorted(used)}
 
     def point_of(self, k):
         """A states key: a label (or label+n), or 'bank,addr' for an
@@ -1168,6 +1171,8 @@ def segment_rows(spec_id, spec, vsym, missions, mi, cases, rows, visits, live, e
     the oracle. Appends the rows' cases, oracle rows, visits and edge sets
     (in the full build's guards); returns {point: [case]}."""
     sets, where = edges
+    # (Truncated 'c64_cuts' rows sit past the traced cases: no site edges.)
+    sets.extend([frozenset()] * (len(cases) - len(sets)))
     k_of = {p: k for k, p in enumerate(mi.points)}
     nxt = {p: mi.points[k + 1] for k, p in enumerate(mi.points[:-1])
            if mi.cp.starts[mi.points[k + 1]] == ('i', 'CHANG2 resume')}

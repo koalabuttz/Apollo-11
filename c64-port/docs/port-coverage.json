@@ -3312,10 +3312,51 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "2,714 of 2,724 words (2,605 compiled, 109 constants): P20 rendezvous navigation, P22 orbital navigation, P23 cislunar navigation, R21-R23 marking, R61 tracking, the V67/V89/V94 extended verbs, the VHF range read and the W-matrix initialization 9DWTO6DW, as 1,139 routines of the control-transfer ABI compiled by tools/interp_compile.py. INCORP1/INCORP2 are called as transfer routines (milestone measurement-inc). The 10 words of RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33 and AUTOCK's RXOR CHAN31 and WOR DSALMOUT, with their EXTENDs, wait for the Comanche I/O channel model.",
+          "scope": "Every word of the file (2,724 words: 2,617 compiled, 107 constants): P20 rendezvous navigation, P22 orbital navigation, P23 cislunar navigation, R21-R23 marking, R61 tracking, the V67/V89/V94 extended verbs, the VHF range read with its channel orders (RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33, AUTOCK's RXOR CHAN31 and WOR DSALMOUT) and the W-matrix initialization 9DWTO6DW, as 1,128 routines of the control-transfer ABI compiled by tools/interp_compile.py. INCORP1/INCORP2 are called as transfer routines (milestone measurement-inc).",
           "verification": "docs/CM-P20-P25.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, EB from the listing's EBANK=), the output channels 5, 6 and 11-14 in the program's agc_channels_hw and channel words and the input channels 30-33 at any values, the superbank as the run's, TIME2/TIME1, the CDUs and the counters across their range, FIXLOC a VAC area and PUSHLOC within it (any FIXLOC, and NEWJOB -0 as DUMMYJOB leaves it, at the basic routines that neither index through FIXLOC nor enter the interpreter: VHFREAD is a WAITLIST task and RENDISP2 and ENDR57's ENDMARK are NOVAC jobs; any_fixloc, any_newjob), otherwise NEWJOB +0 or positive (a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG or a CALL is a resume routine entered with the original program's state there, resume_flow), MODE, OVFIND and the index registers as the code reaching each point leaves them (index_states, flow_states), S22LOC, MARKDATA and MARKSTAT naming a mark slot, STARCODE a catalog code, BESTI a multiple of 6 up to 228, S22's TIX loops with S1 6 and X1 a multiple of 6 up to 36, 9DWTO6DW's pushdown counters DP-word indexes (J and I near the W-matrix pass's end, J never 0 inside it), AUTOCK's DTHETASM 0-2 in its CDU loop, RENDISP7's TEMPOR1 -1 or +1, R61's INDEX MPAC 0 or 1, and any values of the other erasables. Runs take up to 40,000 routines.",
+        "external_continuations": [
+          "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
+          "BANKCALL, IBNKCALL, SWCALL, SWRETURN and POSTJUMP with their inline CADRs",
+          "PHASCHNG, 2PHSCHNG, FINDVAC, NOVAC, ENDOFJOB, TASKOVER, PRIOCHNG, TWIDDLE and BLANKET (Executive and Waitlist)",
+          "UPFLAG, DOWNFLAG, FALTON, ALARM, CURTAINS, MAKECADR, LINUS, CHECKMM, CLEARMRK, GENTRAN, TRFAILON, TRFAILOF, BAILOUT, ENDMARK, BANKJUMP, GOTOPOOH and GOTOV56",
+          "INCORP1 and INCORP2 (CALL; milestone measurement-inc) and the other files' interpretive routines the file CALLs",
+          "RTB LOADTIME, TPMODE and DPMODE (native, src/rtb_angles.c, src/rtb_modes.c)",
+          "The interpreter exits POODOO1 and ALARM1"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p20-p25/cm-p20-p25-source-map.json",
+            "sha256": "ac24304214eb9ed6809c3e4991c9fe541c4d4eb07944504925ada01357f4ca29"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p20-p25/cm-p20-p25-proof.json",
+            "sha256": "88a940c78f80dd1d368bdeeb9c61e5d79ed63e93bfcc585c4efa8209811c95d5"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p20-p25/cm-p20-p25-host.log",
+            "sha256": "55fb92151eb525cf1a526a6565ff5186205cf38786aca46850e3d88ab0e05456"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p20-p25/cm-p20-p25-vice.log",
+            "sha256": "1de0a05172a3f17fa8a19567a683da9a4a3367779ac5f3cd3f2dde007aa1668f",
+            "vice_targets": {
+              "vice-cm-p20-p25": 1459
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p20-p25/cm-p20-p25-c64-cover.json",
+            "sha256": "1ee81d760d65f4e653b8fc5ae889f65af0f25dbb0513113dc5204cc393bdf9d1"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P30-P37.agc",
