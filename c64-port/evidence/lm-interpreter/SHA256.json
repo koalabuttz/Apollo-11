@@ -19,7 +19,7 @@
       "store": "tree"
     },
     "lm-interpreter-proof.json": {
-      "sha256": "3cc85f668b0cb1ad8fdfbe4b9ca484b6c47c50008cc9cddc16672b8f2fb4a144",
+      "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f",
       "bytes": 179913,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "release"
     },
     "lm-interpreter-vice.log": {
-      "sha256": "ac47591ac6d4a70f781aabe1886321eae13bfd2bc4ae5b66304ad6dd0a75251a",
+      "sha256": "3cb5d4d542401890b2f4dc07aca06d6ca4f420f66e0ea45b1aec33d6e5172a72",
       "bytes": 3441,
       "store": "tree"
     }

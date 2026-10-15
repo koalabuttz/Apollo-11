@@ -9489,7 +9489,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
-            "sha256": "3cc85f668b0cb1ad8fdfbe4b9ca484b6c47c50008cc9cddc16672b8f2fb4a144"
+            "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-interpreter/lm-interpreter-closure.json",
@@ -9501,14 +9501,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-interpreter/lm-interpreter-vice.log",
-            "sha256": "ac47591ac6d4a70f781aabe1886321eae13bfd2bc4ae5b66304ad6dd0a75251a",
+            "sha256": "3cb5d4d542401890b2f4dc07aca06d6ca4f420f66e0ea45b1aec33d6e5172a72",
             "vice_targets": {
               "vice-lm-interpreter": 105
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
-            "sha256": "3cc85f668b0cb1ad8fdfbe4b9ca484b6c47c50008cc9cddc16672b8f2fb4a144"
+            "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f"
           },
           "interpreter_core": {
             "flight": {
