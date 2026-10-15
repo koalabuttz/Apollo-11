@@ -136,16 +136,27 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             if(chunk>256u) chunk=256u;
             if(!fetch(s,&d,offset,buffer,chunk)) return APOLLO_OV2_IO_ERROR;
             if(offset==0) {
-                /* Same header rules the runtime applies at load time. */
+                /* Same header rules the runtime applies at load time, the
+                 * BSS range inside the slot included: with
+                 * APOLLO_OV2_STORE_VERIFIED a load checks only the id, and
+                 * zeroes this range. */
                 uint16_t base=apollo_ov2_slot_address(d.slot);
-                if(buffer[0]!='N' || buffer[1]!='A' || buffer[2]!='T' || buffer[3]!='V' ||
-                   buffer[APOLLO_OV2_H_ABI]!=APOLLO_OV2_ABI ||
-                   buffer[APOLLO_OV2_H_SLOT]!=d.slot || buffer[APOLLO_OV2_H_MISSION]!=s->mission ||
-                   le16(buffer+APOLLO_OV2_H_ID)!=id ||
-                   le16(buffer+APOLLO_OV2_H_ENTRY)!=(uint16_t)(base+APOLLO_OV2_HEADER_BYTES) ||
-                   le16(buffer+APOLLO_OV2_H_LOAD_BYTES)!=d.bytes ||
-                   !apollo_ov2_services_compatible(le16(buffer+APOLLO_OV2_H_SERVICES),s->services) ||
-                   le16(buffer+APOLLO_OV2_H_SELECTORS)!=d.selectors)
+                uint32_t end = (uint32_t)base + apollo_ov2_slot_bytes(d.slot);
+                uint16_t bss = le16(buffer + APOLLO_OV2_H_BSS);
+                if (buffer[0] != 'N' || buffer[1] != 'A' || buffer[2] != 'T' || buffer[3] != 'V' ||
+                    buffer[APOLLO_OV2_H_ABI] != APOLLO_OV2_ABI ||
+                    buffer[APOLLO_OV2_H_SIZE] != APOLLO_OV2_HEADER_BYTES ||
+                    (uint32_t)bss < (uint32_t)base + d.bytes || (uint32_t)bss > end ||
+                    (uint32_t)le16(buffer + APOLLO_OV2_H_BSS_BYTES) > end - bss ||
+                    buffer[APOLLO_OV2_H_SLOT] != d.slot ||
+                    buffer[APOLLO_OV2_H_MISSION] != s->mission ||
+                    le16(buffer + APOLLO_OV2_H_ID) != id ||
+                    le16(buffer + APOLLO_OV2_H_ENTRY) !=
+                        (uint16_t)(base + APOLLO_OV2_HEADER_BYTES) ||
+                    le16(buffer + APOLLO_OV2_H_LOAD_BYTES) != d.bytes ||
+                    !apollo_ov2_services_compatible(le16(buffer + APOLLO_OV2_H_SERVICES),
+                                                    s->services) ||
+                    le16(buffer + APOLLO_OV2_H_SELECTORS) != d.selectors)
                     return APOLLO_OV2_BAD_HEADER;
             }
             for(i=0;i<chunk;++i) crc=apollo_overlay_crc16(crc,buffer[i]);

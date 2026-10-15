@@ -768,17 +768,19 @@ def check_unplaced(m, unplaced):
     """The ratchet on routine keys no packed module holds (the C64 stops
     there; the host bridges them through yaAGC): per table, at most the
     count docs/flight-store-unplaced.json allows. A lower count asks for the
-    file to be lowered with it."""
+    file to be lowered with it. Returns the error, raised once report.json
+    is written."""
     allowed = json.loads((ROOT / UNPLACED).read_text()).get(m, {})
     over = {t: (n, allowed.get(t, 0)) for t, n in unplaced.items() if n > allowed.get(t, 0)}
-    if over:
-        raise SystemExit(f'{m}: routine keys with no module in the store (the C64 stops at them): '
-                         + ', '.join(f'{t} {n} (allowed {k})' for t, (n, k) in sorted(over.items()))
-                         + f'. Make them fit a slot (report.json "failed" says how each module failed), '
-                         f'or raise the count in {UNPLACED} with the reason in the PR.')
     lower = {t: (unplaced.get(t, 0), k) for t, k in allowed.items() if unplaced.get(t, 0) < k}
     for t, (n, k) in sorted(lower.items()):
         print(f'{m}: {t} has {n} unplaced keys, {k} allowed: lower {UNPLACED} to {n}')
+    if over:
+        return (f'{m}: routine keys with no module in the store (the C64 stops at them): '
+                + ', '.join(f'{t} {n} (allowed {k})' for t, (n, k) in sorted(over.items()))
+                + f'. Make them fit a slot (report.json "failed" says how each module failed), '
+                f'or raise the count in {UNPLACED} with the reason in the PR.')
+    return None
 
 
 def main():
@@ -815,6 +817,7 @@ def main():
         run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', OUT])
         library = prepare(a.cc, ROOT / OUT)
     report = {}
+    errors = []
     for m in a.missions.split(','):
         mine = {t: o for t, o in tables.items() if mission_of(t, o) == m}
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
@@ -1365,7 +1368,7 @@ def main():
                                                     'task_overflow', 'task_pinned_out')} | dict(sites=len(mod.get('sites') or {}))
                          for mod in modules])
         if not a.host_only:
-            check_unplaced(m, report[m]['unplaced'])
+            errors += [e for e in [check_unplaced(m, report[m]['unplaced'])] if e]
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
@@ -1379,6 +1382,8 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+    if errors:
+        raise SystemExit('\n'.join(errors))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
     return 0
 

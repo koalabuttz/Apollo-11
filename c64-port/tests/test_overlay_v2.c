@@ -206,6 +206,12 @@ int main(int argc,char **argv) {
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_CHECKSUM);
     boot(0); reu[reu_page(0x0301)+7]=2;                  /* header mission */
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_HEADER);
+    boot(0); reu[reu_page(0x0301)+5]=23;                 /* header size */
+    assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_HEADER);
+    boot(0); reu[reu_page(0x0101)+15]=0x40;              /* BSS past the job slot's end */
+    assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_HEADER);
+    boot(0); reu[reu_page(0x0101)+13]=0x7f;              /* BSS below the slot */
+    assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_HEADER);
     boot(0); reu[256u+0x0200u*16u+3u]=1;                 /* stray absent record */
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
     boot(0); reu[256u+0x0101u*16u+10u]=7;                /* unknown slot class */
