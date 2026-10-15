@@ -13,6 +13,7 @@ build/test-lm-servicer: $(LM_SV_SRC) tests/test_lm_servicer.c tests/lm_servicer_
 test-lm-servicer: build/test-lm-servicer
 	./build/test-lm-servicer
 	python3 tools/lm_servicer_source.py
+	python3 tools/flight_exit_returns.py
 sanitize-lm-servicer: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(LM_SV_FLAGS) -DLMSV_COUNT_PATHS -fsanitize=address,undefined $(LM_SV_SRC) tests/test_lm_servicer.c -o build/test-lm-servicer-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-servicer-sanitize

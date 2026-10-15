@@ -14,7 +14,7 @@
 #if defined(__mos__) && (defined(RK_LM) || defined(RK_CM))
 #include "overlay_reu.h"
 /* $1F2000-$1F2FFF: above the CM rope image, below the VICE records at
- * $1F8000, free on both missions (docs/RESIDENT-FLIGHT.md). */
+ * $1F8000, free on both missions (docs/FLIGHT-STORE.md). */
 #define FLIGHT_UNDO_REU 0x1F2000ul
 #define FLIGHT_UNDO_SAVE(io, s)                                                                    \
     ((void)(io),                                                                                   \
