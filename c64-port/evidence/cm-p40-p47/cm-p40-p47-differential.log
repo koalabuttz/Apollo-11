@@ -495,97 +495,6 @@ PASS: 126976 cm-p40-p47 cases equal the original programs (496 routines)
   CM 42,3636 : 05560 x256
   CM 42,3640 : 04740 x256
   CM 42,3643 : 04701 x256
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1167 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1167 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1167 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1210 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1210 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 5153 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 5153 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 5153 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 5196 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 5196 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 2171 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 7663 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 7663 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 7663 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 7706 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 7706 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1942 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1942 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1942 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1985 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1985 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1070 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1070 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1070 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1113 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1113 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 549 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 549 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 549 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 592 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 592 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 2037 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2037 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2037 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2080 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2080 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 8756 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 8756 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 8756 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 8799 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 8799 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 598 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 10424 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 10424 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 10424 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 10467 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 10467 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 7328 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 9058 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 9058 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 9058 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 9101 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 9101 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 10309 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 14391 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14391 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14391 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 14434 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 14434 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 7329 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 8939 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 8939 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 8939 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 8982 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 8982 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 6748 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 14976 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14976 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14976 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 15019 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 15019 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1512 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1512 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1512 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1555 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1555 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1fffffff0000000000000 picks [14457] edits [389]
 case 13322 (14457) does not fit one C64 diagnostic: host only
 case 13332 (14457) does not fit one C64 diagnostic: host only
 case 13386 (14457) does not fit one C64 diagnostic: host only
@@ -599,26 +508,6 @@ case 13536 (14457) does not fit one C64 diagnostic: host only
 case 13547 (14457) does not fit one C64 diagnostic: host only
 case 13557 (14457) does not fit one C64 diagnostic: host only
 case 13566 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 3921 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3921 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3921 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 3964 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 3964 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 2171 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 6419 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6419 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6419 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 6462 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 6462 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 710 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 710 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 710 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 753 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 753 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1fffffff0000000000000 picks [14457] edits [78]
 case 13348 (14457) does not fit one C64 diagnostic: host only
 case 13351 (14457) does not fit one C64 diagnostic: host only
 case 13352 (14457) does not fit one C64 diagnostic: host only
@@ -636,40 +525,6 @@ case 13522 (14457) does not fit one C64 diagnostic: host only
 case 13532 (14457) does not fit one C64 diagnostic: host only
 case 13539 (14457) does not fit one C64 diagnostic: host only
 case 13565 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 3317 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3317 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3317 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 3360 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 3360 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 5256 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 5256 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 5256 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 5299 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 5299 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1962 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1962 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1962 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2005 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2005 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1562 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1562 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1562 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1605 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1605 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 6 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 6 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1779 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1779 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1779 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1822 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1822 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000ffffff0000000000000 picks [14457] edits [391]
 case 13347 (14457) does not fit one C64 diagnostic: host only
 case 13362 (14457) does not fit one C64 diagnostic: host only
 case 13377 (14457) does not fit one C64 diagnostic: host only
@@ -685,141 +540,9 @@ case 13506 (14457) does not fit one C64 diagnostic: host only
 case 13509 (14457) does not fit one C64 diagnostic: host only
 case 13524 (14457) does not fit one C64 diagnostic: host only
 case 13553 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 2041 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2041 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2041 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2084 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2084 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 2171 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 6407 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6407 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6407 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 6450 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 6450 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 714 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 714 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 714 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 757 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 757 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1534 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1534 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1534 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1577 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1577 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1fffffff0000000000000 picks [14457] edits [75]
 case 13381 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 2029 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2029 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2029 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2072 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2072 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 4008 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 4008 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 4008 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 4051 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 4051 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 702 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 702 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 702 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 745 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 745 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000ffffff0000000000000 picks [14457] edits [79]
-case 13379 (14457) does not fit one C64 diagnostic: host only
-case 13411 (14457) does not fit one C64 diagnostic: host only
-case 13418 (14457) does not fit one C64 diagnostic: host only
-case 13431 (14457) does not fit one C64 diagnostic: host only
-case 13462 (14457) does not fit one C64 diagnostic: host only
-case 13466 (14457) does not fit one C64 diagnostic: host only
-case 13507 (14457) does not fit one C64 diagnostic: host only
-case 13534 (14457) does not fit one C64 diagnostic: host only
-case 13555 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 2001 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2001 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 2001 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2044 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2044 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 3980 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3980 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 3980 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 4023 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 4023 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 674 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 674 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 674 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 717 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 717 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000ffffff0000000000000 picks [14457] edits [72]
-case 13327 (14457) does not fit one C64 diagnostic: host only
-case 13483 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 757 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 757 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 757 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 800 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 800 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 2171 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 6395 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6395 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6395 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 6438 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 6438 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1530 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1530 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1411 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1411 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 2 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 2 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1fffffff0000000000000 picks [14457] edits [72]
 case 13420 (14457) does not fit one C64 diagnostic: host only
 case 13546 (14457) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1487 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1530 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1530 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1849 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1849 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1849 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1892 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1892 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1368 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1411 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1411 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 119 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 119 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1ffffffe0000000000000 picks [14458] edits [349]
 case 13579 (14458) does not fit one C64 diagnostic: host only
 case 13585 (14458) does not fit one C64 diagnostic: host only
 case 13596 (14458) does not fit one C64 diagnostic: host only
@@ -837,19 +560,6 @@ case 13737 (14458) does not fit one C64 diagnostic: host only
 case 13740 (14458) does not fit one C64 diagnostic: host only
 case 13743 (14458) does not fit one C64 diagnostic: host only
 case 13795 (14458) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 76 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 119 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 119 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 557 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 557 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 557 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 600 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 600 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1ffffffe0000000000000 picks [14458] edits [26]
 case 13583 (14458) does not fit one C64 diagnostic: host only
 case 13591 (14458) does not fit one C64 diagnostic: host only
 case 13592 (14458) does not fit one C64 diagnostic: host only
@@ -859,30 +569,6 @@ case 13637 (14458) does not fit one C64 diagnostic: host only
 case 13643 (14458) does not fit one C64 diagnostic: host only
 case 13788 (14458) does not fit one C64 diagnostic: host only
 case 13799 (14458) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1345 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1345 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1345 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1388 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1388 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 96 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 96 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 96 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 139 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 139 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1222 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1222 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1222 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1265 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1265 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000fffffe0000000000000 picks [14458] edits [350]
-case 13654 (14458) does not fit one C64 diagnostic: host only
-case 13660 (14458) does not fit one C64 diagnostic: host only
-case 13689 (14458) does not fit one C64 diagnostic: host only
-case 13803 (14458) does not fit one C64 diagnostic: host only
-group cm mask 1ffffffc0000000000000 picks [14460] edits [26]
 case 13847 (14460) does not fit one C64 diagnostic: host only
 case 13854 (14460) does not fit one C64 diagnostic: host only
 case 13863 (14460) does not fit one C64 diagnostic: host only
@@ -906,13 +592,6 @@ case 14039 (14460) does not fit one C64 diagnostic: host only
 case 14050 (14460) does not fit one C64 diagnostic: host only
 case 14065 (14460) does not fit one C64 diagnostic: host only
 case 14078 (14460) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1561 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1561 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1561 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1604 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1604 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000fffffc0000000000000 picks [14460] edits [349]
 case 13835 (14460) does not fit one C64 diagnostic: host only
 case 13867 (14460) does not fit one C64 diagnostic: host only
 case 13868 (14460) does not fit one C64 diagnostic: host only
@@ -924,19 +603,6 @@ case 14021 (14460) does not fit one C64 diagnostic: host only
 case 14036 (14460) does not fit one C64 diagnostic: host only
 case 14045 (14460) does not fit one C64 diagnostic: host only
 case 14060 (14460) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1251 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1251 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1251 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1294 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1294 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1132 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1132 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1132 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1175 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1175 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1ffffff80000000000000 picks [14461] edits [26]
 case 14082 (14461) does not fit one C64 diagnostic: host only
 case 14090 (14461) does not fit one C64 diagnostic: host only
 case 14111 (14461) does not fit one C64 diagnostic: host only
@@ -956,31 +622,11 @@ case 14310 (14461) does not fit one C64 diagnostic: host only
 case 14328 (14461) does not fit one C64 diagnostic: host only
 case 14330 (14461) does not fit one C64 diagnostic: host only
 case 14332 (14461) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 57 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 57 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 57 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 100 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 100 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 157 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 157 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 157 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 200 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 200 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 7c000000000000000000fffff80000000000000 picks [14461] edits [350]
 case 14157 (14461) does not fit one C64 diagnostic: host only
 case 14211 (14461) does not fit one C64 diagnostic: host only
 case 14295 (14461) does not fit one C64 diagnostic: host only
 case 14297 (14461) does not fit one C64 diagnostic: host only
 case 14334 (14461) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 276 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 276 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 276 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 319 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 319 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1ffffff00000000000000 picks [14465] edits [26]
 case 14337 (14465) does not fit one C64 diagnostic: host only
 case 14341 (14465) does not fit one C64 diagnostic: host only
 case 14345 (14465) does not fit one C64 diagnostic: host only
@@ -1028,20 +674,6 @@ case 14572 (14465) does not fit one C64 diagnostic: host only
 case 14581 (14465) does not fit one C64 diagnostic: host only
 case 14582 (14465) does not fit one C64 diagnostic: host only
 case 14585 (14465) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 547 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 547 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 547 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 590 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 590 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 5515 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 6937 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6937 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 6937 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 6980 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 6980 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1803ffffffffffc00000000000000000000000000000000000000000000000003800000000000000000000000000000000000000000000000 picks [20559] edits [26]
 case 48897 (20559) does not fit one C64 diagnostic: host only
 case 48898 (20559) does not fit one C64 diagnostic: host only
 case 48902 (20559) does not fit one C64 diagnostic: host only
@@ -1150,28 +782,6 @@ case 49148 (20559) does not fit one C64 diagnostic: host only
 case 49149 (20559) does not fit one C64 diagnostic: host only
 case 49150 (20559) does not fit one C64 diagnostic: host only
 case 49151 (20559) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 844 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 4734 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 4734 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 4734 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 4777 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 4777 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 6391 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 14495 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14495 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14495 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 14538 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 14538 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 12107 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 22685 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 22685 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 22685 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 22728 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 22728 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-group cm mask 1ffc0000000003c00000000000000000000000000000000000000000000000003800000000000000000000000000000000000000000000000 picks [20559] edits [26]
 case 48896 (20559) does not fit one C64 diagnostic: host only
 case 48899 (20559) does not fit one C64 diagnostic: host only
 case 48903 (20559) does not fit one C64 diagnostic: host only
@@ -1269,18 +879,5 @@ case 49139 (20559) does not fit one C64 diagnostic: host only
 case 49141 (20559) does not fit one C64 diagnostic: host only
 case 49145 (20559) does not fit one C64 diagnostic: host only
 case 49147 (20559) does not fit one C64 diagnostic: host only
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 6205 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 14185 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14185 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 14185 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 14228 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 14228 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
-ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 13391 bytes
-ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 24137 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 24137 bytes
-ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 24137 bytes
-ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 24180 bytes
-ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 24180 bytes
-mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
 froze 992 vectors to tests/cm_p40_p47_vectors.h
+exit 0

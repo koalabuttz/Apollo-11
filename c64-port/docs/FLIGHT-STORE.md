@@ -136,6 +136,21 @@ P00 140,000 to 84,000, CM P00 110,000 to 72,000, CM entry 240,000 to
 128,000; `flight_downlink_check.py --vice` matches yaAGC on all 300
 DOWNRUPTs, one resident step each.
 
+The LM idle loop's own module (`lm_self_check_idle`, 0x010A) carries only
+POSTJUMP, the one interbank routine the loop calls (CHECKNJ's TC
+POSTJUMP): `lm_interbank_postjump_hot_routines` in `src/lm_interbank_dap.c`,
+checked against `lm_interbank_routines` by `tests/test_lm_interbank_dap.c`.
+The module drops from 10,287 B to 2,392 B. Every interrupt taken from idle
+reloads it, so in VICE the LM DAP hold goes from 10.52x to 9.82x real time
+and firing from 10.73x to 10.04x, with the same job loads (hold, firing, and
+the P63 descent-thrust scenario: 1/21/6/16 per T3/T4/T5/background before
+and after). The host flight run lists the hot table before
+`lm_interbank_routines` (`CO_LOCATE_HOT`). Its swap model does not model
+RIDE tables, so it now counts the DAP's IBNKCALL (which rides the excursion
+on the C64) as a swap: `lm-p00-idle` reads 77.2 loads a second, up from
+57.2, and the non-work scaled rows shift. The work rows and their 0
+mismatches are unchanged; the C64 counts are the ones to go by.
+
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);

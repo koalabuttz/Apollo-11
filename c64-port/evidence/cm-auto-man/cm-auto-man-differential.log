@@ -6,4 +6,4 @@ PASS: 1536 cm-auto-man cases equal the original programs (39 routines)
   CM 21,3734 : 02042 x170, 05333 x86
   CM 21,3757 T6PROG: 05333 x256
 froze 48 vectors to tests/cm_auto_man_vectors.h
-rc=0
+exit 0

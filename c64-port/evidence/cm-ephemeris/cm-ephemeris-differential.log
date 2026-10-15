@@ -34,4 +34,4 @@ PASS: 8192 cm-ephemeris cases equal the original programs (32 routines)
   CM 26,2210 : 05170 x66, 06037 x190
   CM 26,2212 : 06037 x256
 froze 256 vectors to tests/cm_ephemeris_vectors.h
-rc=0
+exit 0

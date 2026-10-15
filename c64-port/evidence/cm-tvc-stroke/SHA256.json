@@ -4,8 +4,8 @@
   "release": "evidence-cm-tvc-stroke",
   "files": {
     "cm-tvc-stroke-differential.log": {
-      "sha256": "9ba3d691f0f6b667ec3bb0420e582a1803dca6fa1be63f1a5e15f8bc76d18f11",
-      "bytes": 289,
+      "sha256": "456c09b022752d1d31e2107bd353596a78e029de827ed365789092e1b4d8535f",
+      "bytes": 296,
       "store": "tree"
     },
     "cm-tvc-stroke-host.log": {
@@ -14,7 +14,7 @@
       "store": "tree"
     },
     "cm-tvc-stroke-proof.json": {
-      "sha256": "ccfe884f7ecc07276773eb252c70147405fd7232d2aa787fd96a7160f91fd624",
+      "sha256": "a6e662f9322612c8052a3f12c8ff83a0073113da1f589fc47df47bd44796beb6",
       "bytes": 3265,
       "store": "tree"
     },
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-tvc-stroke-vice.log": {
-      "sha256": "dbab541ebe590f753f399348964282869322eebfb862c331233fe1fadd43c1af",
+      "sha256": "8cd578352240aef6d927447cf2b86941fa36f698690c1343e05658bcd92deea2",
       "bytes": 512,
       "store": "tree"
     }

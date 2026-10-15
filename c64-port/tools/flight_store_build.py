@@ -522,16 +522,24 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # Tables also packed into another module, so the routines they hold run there
 # without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
 # leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it,
-# and with the LM idle loop's own module (CM pins its idle loop), so an idle
-# pass loads nothing (that module's runs are the work clock's idle,
-# RK_MCT_IDLE: the interbank routines run there only from the idle loop).
+# and POSTJUMP alone (src/lm_interbank_dap.c, not the 8.6 K table)
+# with the LM idle loop's own module (CM pins its idle loop), so an idle
+# pass loads nothing and its reload after an interrupt is ~2.4 K (that
+# module's runs are the work clock's idle, RK_MCT_IDLE: POSTJUMP runs there
+# only from the idle loop).
 # The DOWNRUPT vector and RESUME ride with the down-telemetry tables
 # (src/lm_dntm_rupt.c, src/cm_dntm_rupt.c), so one module run takes a whole
 # DOWNRUPT, which runs inhibited, from the vector to the resumed Z; the
 # vector's wrapper record goes to that module (DOWNRUPT_HOST).
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines'],
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_postjump_hot_routines'],
                     'lm_downtelemetry': ['lm_dntm_rupt_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+# A hot table CO_LOCATE packs, and the full table whose keys it shares: the
+# host flight run lists it just before that table, with the full table's
+# module, sites and weight, so a call from the module carrying it runs there
+# without a swap, as on the C64 (rk_direct), and any other caller swaps in
+# the full table's module.
+CO_LOCATE_HOT = {'lm_interbank_postjump_hot_routines': 'lm_interbank_routines'}
 # The module that takes the DOWNRUPT vector (04040) from the lead-in wrapper:
 # the down-telemetry file's, when it links with the DOWNRUPT ends.
 DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),
@@ -926,8 +934,11 @@ def main():
         for host, ts in CO_LOCATE[m].items():
             for t in ts:
                 also[t].append(host)
+        hot_of = {t: f for t, f in CO_LOCATE_HOT.items() if t in also and f in packed}
+        order = [x for f in order for x in [t for t, g in hot_of.items() if g == f] + [f]]
 
         def site_stem(t):
+            t = hot_of.get(t, t)
             if t in RIDE_SITES and RIDE_SITES[t] in tables:
                 return tables[RIDE_SITES[t]]
             return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
@@ -957,6 +968,7 @@ def main():
             first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
 
             def slot_of(t):
+                t = hot_of.get(t, t)
                 if t in pins:
                     return pins[t]
                 if t in packs:
@@ -966,6 +978,7 @@ def main():
                 return 0 if task_out else lane_slot(packed[t], m, owners, place)[1]
 
             def module_of_table(t):
+                t = hot_of.get(t, t)
                 if t in pins:
                     return 'pin-' + SLOT_NAME[pins[t]]
                 if t in packs:
@@ -978,14 +991,15 @@ def main():
                 'operand set, its size, other modules holding the table, '
                 'fixed_data (0 boundary words, 1 self-check, 2 rope), work clock MCT per routine. */\n'
                 + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
-                          f'FLIGHT_IO_{io_kind(m, tables[t])}, '
+                          f'FLIGHT_IO_{io_kind(m, tables[f])}, '
                           f'"{module_of_table(t)}", '
                           f'{slot_of(t)}, '
                           f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
-                          f'"{" ".join(also[t])}", '
-                          f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0}, '
-                          f'{host_mct(m, t)}u)\n'
-                          for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables))
+                          f'"{" ".join(dict.fromkeys(also[t] + also[f]))}", '
+                          f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
+                          f'{host_mct(m, f)}u)\n'
+                          for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
+                          for f in [hot_of.get(t, t)]))
         write_host(host_pins(m, packed), host_packs(m, packed))
         if a.host_only:
             continue
