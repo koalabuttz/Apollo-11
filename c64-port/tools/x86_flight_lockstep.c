@@ -69,6 +69,10 @@ static void view(fd_state *v){unsigned i;
 static unsigned differs(const fd_state *st,char *why,size_t len){unsigned i,d=0;size_t o=0;agc_hardware hw=st->hw;
  for(i=0;i<2048u;++i)if(i!=5u&&mword(i)!=st->s.words[i]){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," %04o %05o/%05o",i,(unsigned)st->s.words[i],(unsigned)mword(i));}
  for(i=0;i<CHANNELS;++i)if(ch[i]!=3u&&ch[i]!=4u&&((agc_word)(m.InputChannel[ch[i]]&077777))!=*hwc(&hw,i)){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," ch%02o %05o/%05o",ch[i],(unsigned)*hwc(&hw,i),(unsigned)(m.InputChannel[ch[i]]&077777));}
+ /* The downlink words (FLIGHT_DOWNRUPT). */
+ if((agc_word)(m.InputChannel[034]&077777)!=st->io.channel34||(agc_word)(m.InputChannel[035]&077777)!=st->io.channel35){
+  if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," ch34/35 %05o %05o/%05o %05o",(unsigned)st->io.channel34,(unsigned)st->io.channel35,
+   (unsigned)(m.InputChannel[034]&077777),(unsigned)(m.InputChannel[035]&077777));}
  if((m.OutputChannel7&0160)!=st->io.superbank||m.AllowInterrupt!=(st->io.interrupt_enabled!=0u)||m.InIsr!=(st->hw.in_interrupt!=0u)){++d;if(o<len)snprintf(why+o,len-o," superbank/inhibit/isr");}
  return d;}
 
@@ -91,6 +95,8 @@ static long lockstep(const fd_state *before,const fd_state *after,char *why,size
    if(fd_point(&v,&in)==target&&in==tin){char w[160];unsigned d=differs(after,w,sizeof w);
     if(!d){substitute=m.SubstituteInstruction;return n;}
     if(d<best){best=d;snprintf(why,len,"%s",w);}}}
+  /* yaAGC's own DOWNRUPT timer stays off: the x86 side's clock requests them. */
+  m.Downlink=0;m.DownruptTimeValid=0;
   if(agc_engine(&m))break;}
  if(best==~0u)snprintf(why,len," yaAGC never reached the native continuation (Z %05o, native Z %05o FB %05o)",(unsigned)mword(5),(unsigned)after->s.words[5],(unsigned)after->s.words[4]);
  if(getenv("X86_LOCKSTEP_TRACE")){static int shown;if(!shown++){unsigned long k;load(before);
@@ -99,17 +105,19 @@ static long lockstep(const fd_state *before,const fd_state *after,char *why,size
   for(k=0;k<24u;++k){static fd_state vv;int in2;view(&vv);printf("  yaAGC Z %05o FB %05o A %06o isr %d quiet %d pend %d xd %d iv %d xc %d sub %d point %u/%u\n",(unsigned)mword(5),(unsigned)mword(4),(unsigned)mword(0),m.InIsr,quiet(),m.PendFlag,m.ExtraDelay,m.IndexValue,m.ExtraCode,m.SubstituteInstruction,fd_point(&vv,&in2),fd_point(after,&in2));if(agc_engine(&m))break;}}}
  return -1;}
 
-int main(int argc,char **argv){static fd_state st,before;fd_ran ran;fs_inputs in;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
+int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_ran ran;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
  char why[160];unsigned i;
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: x86-flight-lockstep ROPE.bin [CS [KEYS]]\n");return 2;}
  AgcFrozenClock=1;InhibitAlarms=1;m=loaded;
- fs_parse(&in,argc>3?argv[3]:"",getenv("FLIGHT_POKE"));
- fd_init(&st,X86_INTERP_MODE,fs_channel("FLIGHT_CH30",037777u),fs_channel("FLIGHT_CH31",077777u));
+ if(!fs_parse(&in,argc>3?argv[3]:""))return 2;
+ fs_start(&st,X86_INTERP_MODE);
  while(fd_centiseconds(&st)<cs){long n;
   /* An interrupt taken at a RESUME point saves the word at Z as BRUPT:
    * yaAGC then runs the vector, not BRUPT. */
   if(fd_boundary(&st))substitute=0;
-  if(fs_at_idle_advan(&st)&&fs_inputs_due(&in,&st))continue;
+  if(fs_at_idle_advan(&st)){int k=fs_inputs_due(&in,&st);
+   if(k==FS_GOJAM){printf("GOJAM at %lu cs\n",fd_centiseconds(&st));substitute=0;}
+   if(k)continue;}
   before=st;
   if(fd_run(&st,&ran)==EXEC_UNMAPPED){printf("no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
