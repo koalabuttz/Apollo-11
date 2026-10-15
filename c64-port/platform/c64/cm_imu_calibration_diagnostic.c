@@ -3,9 +3,9 @@
  * Comanche055 IMU_CALIBRATION_AND_ALIGNMENT (the routines of its KEEP mask,
  * tools/mk/cm-imu-calibration.groups) runs its cases
  * (tests/cm_imu_calibration_c64_vectors.h), each digest against the yaAGC
- * oracle's. */
+ * oracle's. A truncated row (irc_c64_cut, 'c64_cuts') runs only to its cut. */
 #include <stdint.h>
-#include "interp_case.h"
+#include "interp_cut.h"
 #include "cm_imu_calibration_c64_vectors.h"
 const agc_native_program *irc_program(uint8_t cm);
 /* The image lives in the RAM under KERNAL ($01=$35, interrupts off). */
@@ -21,7 +21,11 @@ int main(void) {
         uint16_t ie = 0;
         unsigned kind;
         irc_build(&s, &irc_c64_cases[i]);
+#ifdef IRC_C64_CUTS
+        kind = irc_run_cut(irc_program(irc_c64_cases[i].cm), &s, &irc_c64_cases[i], irc_c64_cut[i], 200, &ie);
+#else
         kind = irc_run(irc_program(irc_c64_cases[i].cm), &s, &irc_c64_cases[i], 200, &ie);
+#endif
         ++checks;
         if (kind != IRC_STOPPED || irc_digest(kind, &s, ie) != irc_c64_expected[i]) ++failures;
     }

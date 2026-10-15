@@ -2824,11 +2824,18 @@ SPECS = {
         'basic': 'full',
         'fast_window': True,
         'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # SPECSTS's FINDVAC 2CADR ALFLT (BBCON 66065) runs the ALFLT filter
+        # under SUPERBNK 060: the FB 30-37 guard tests only the superbank
+        # bit, at the routine's entry, and the cases draw 020-060.
+        'superbank_bit': True, 'any_superbank': True,
         # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
         # the caller's A overflowed: refused, never run as basic code.
         'interp_not_basic': True,
         # FINETIME (bank 02) runs under its caller's FB.
         'fixed_fixed_any_fb': True,
+        # The C64 flight store links the basic code as three modules
+        # (docs/FLIGHT-PARTS.md): one module was 10 KB over a job slot.
+        'flight_parts': [0o33 * 1024 + 0o2400 - 0o2000, 0o33 * 1024 + 0o3000 - 0o2000],
         # TC QPLACE/QPLACES (E5) runs the saved return stored there.
         'switched_tc': True,
         # ALKLP's DLOAD* ALSK +1,1 with X1 +1 or -1 (CMPX1): ALSK or the
@@ -2869,6 +2876,10 @@ SPECS = {
             'vac+047': [n for n in range(0o20)] + [0o77777 ^ n for n in range(0o20)],
             'vac+050': [1, 2, 3, 6], 'vac+051': [1, 2, 3, 6],
             '01330': [0, 0o401, 0o455, 0o531, 0o605, 0o661],            # MARKSTAT: a mark VAC or none
+            # RETARG's INDEX MARKSTAT; CA QPRET: each mark VAC's QPRET word
+            # (VAC+052), -0 when the crew proceeds with no marks (ENTANSWR's
+            # BZMF JAMIT), so the BZF to RETARG1 runs with MARKSTAT > 0.
+            **{'%05o' % (v + 0o52): [0, 0o77777, 1, 2] for v in (0o401, 0o455, 0o531, 0o605, 0o661)},
             # The saved returns: the file's own call sites.
             '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
                       0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE

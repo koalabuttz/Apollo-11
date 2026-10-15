@@ -685,7 +685,8 @@ FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT
                        'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
                        'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
-                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)],
+                       'cm_imu_calibration': [['-DCM_IMU_CALIBRATION_FLIGHT_PART=%d' % j] for j in (1, 2, 3)]}}
 
 
 def part_keys(cc, m, stem, tables):

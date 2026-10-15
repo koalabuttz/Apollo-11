@@ -25,7 +25,7 @@ cm-imu-calibration-differential:
 # the vectors; each fits below the $c000 mailbox).
 include tools/mk/cm-imu-calibration.groups
 CIC_C64_PRGS = $(foreach g,$(CM_IMU_CALIBRATION_GROUPS),build/cm-imu-calibration-$(g).prg)
-CIC_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/agc_fast_ops.c src/agc_fast_window.c tests/interp_case.c tests/cm_imu_calibration_target.c
+CIC_C64_COMMON = src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/agc_fast_ops.c src/agc_fast_window.c tests/interp_case.c tests/interp_cut.c tests/cm_imu_calibration_target.c
 CIC_C64_cm = src/cm_imu_calibration.c src/cm_interp_orders.c src/cm_interp_steps.c
 c64-cm-imu-calibration: $(CIC_C64_PRGS)
 build/cm-imu-calibration-%.prg: $(CIC_SRC) platform/c64/cm_imu_calibration_diagnostic.c tools/mk/cm-imu-calibration.groups $(CIC_HDR) | build
