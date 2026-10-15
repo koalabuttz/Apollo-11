@@ -3421,6 +3421,11 @@ SPECS = {
         'resume_keys': True,
         'c64_rows': 'cover',
         'cover_stride': 8,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
