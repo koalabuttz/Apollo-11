@@ -7,3 +7,4 @@ PASS: 1792 cm-tvc-restarts cases equal the original programs (7 routines)
   CM 16,3243 : 05333 x256
   CM 16,3253 EXRSTRT: 03003 x35, 03011 x43, 03040 x36, 03043 x52, 03121 x34, 03132 x56
 froze 56 vectors to tests/cm_tvc_restarts_vectors.h
+exit 0

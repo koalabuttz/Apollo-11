@@ -2,3 +2,4 @@ PASS: 512 cm-tvc-roll cases equal the original programs (2 routines)
   CM 16,3272 ROLLDAP: 05324 x256
   CM 16,3676 NOROLL1: 05335 x256
 froze 16 vectors to tests/cm_tvc_roll_vectors.h
+exit 0
