@@ -38,6 +38,15 @@ static uint16_t le16(const uint8_t *bytes) {
  * of the slot is written. */
 static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     const apollo_ov2_dirent *d,const uint8_t *h) {
+#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+    /* The store was verified when it opened (apollo_reu_store_verify applies
+     * these same rules to every module's header, and the runtime's mission
+     * and services are the store's): only the id is checked, that the
+     * directory entry and the bytes fetched agree. A profile build
+     * (RK_STEP_PROFILE) keeps the full rules. */
+    (void)r;
+    return le16(h + APOLLO_OV2_H_ID) == d->id ? APOLLO_OV2_OK : APOLLO_OV2_BAD_HEADER;
+#else
     uint16_t base=run_slot_address(d->slot),capacity=run_slot_bytes(d->slot);
     uint16_t bss=le16(h+APOLLO_OV2_H_BSS),bss_bytes=le16(h+APOLLO_OV2_H_BSS_BYTES);
     uint32_t end=(uint32_t)base+capacity;
@@ -53,6 +62,7 @@ static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
        (uint32_t)bss_bytes>end-bss)
         return APOLLO_OV2_BAD_HEADER;
     return APOLLO_OV2_OK;
+#endif
 }
 static enum apollo_ov2_status load(apollo_ov2_runtime *r,const apollo_ov2_dirent *d) {
     uint8_t *slot=r->slot[d->slot],*header=r->header;   /* the caller refused slot classes 2 to 4 */

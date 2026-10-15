@@ -6,9 +6,9 @@
  * flight scenario run with FLIGHT_DOWNRUPT (FLIGHT_SNAPSHOT, DL_SNAP), and
  * with CIA1 interrupts off (no AGC clock period, no other interrupt) takes
  * DL_N DOWNRUPTs one after another: each is set pending (rk_pending), and
- * resident steps run until the resident has taken it and returned from it
- * (in_interrupt on, then off), or a step does not return EXEC_OK, or DL_MAX
- * steps. After each one, channels 34 and 35 and the word-order bit (channel
+ * resident steps run until the resident has taken it (its pending bit
+ * clear) and returned from it (in_interrupt off), or a step does not
+ * return EXEC_OK, or DL_MAX steps. After each one, channels 34 and 35 and the word-order bit (channel
  * 13 bit 7) go to the REU scratch (DL_SCRATCH), six bytes a DOWNRUPT. The
  * script compares them with yaAGC from the same state
  * (tools/flight_downlink_reference.c).
@@ -83,7 +83,9 @@ int main(void)
 #endif
             st = rk_resident_step(AGC_TRANSFER_NONE);
             ++sum.steps;
-            if (rk_hardware.in_interrupt) taken = 1;
+            /* Taken once its pending bit clears: a module run can take a
+             * whole DOWNRUPT, vector to RESUME, in one step. */
+            if (!(rk_pending & RK_RUPT_BIT(RK_RUPT_DOWN))) taken = 1;
             if (st != EXEC_OK || (taken && !rk_hardware.in_interrupt)) break;
         }
         r.channel34 = rk_flight.channel34;

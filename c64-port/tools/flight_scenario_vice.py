@@ -11,12 +11,17 @@ tools/dap_pass_vice.py does for the DAP). The C64 run has no keys and no
 engine model: it continues from the snapshot as the AGC would with the
 PIPAs still.
 
+First lists the points the host run to the end of the C64 window bridges
+to yaAGC (unregistered, or refused by their table), with file, label and
+owning lane (tools/flight_holes.py): each is a stop on the C64.
+--stop-on-holes fails there instead of running VICE.
+
 Prints wall cycles per AGC second, the AGC time reached, the step status
 (a refused or untranslated point stops the run: there is no yaAGC to
 bridge to on the C64) and per-interrupt costs; writes
 build/flight-store/flight-scenario-vice.json.
 
-  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N]
+  flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--stop-on-holes]
 """
 import argparse
 import json
@@ -28,6 +33,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import dap_pass_vice as dp  # noqa: E402
+import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
 
 
@@ -45,6 +51,16 @@ def snapshot(exe, name, cs):
     return header
 
 
+def host_holes(exe, name, cs):
+    """The points the host run to cs bridges, as flight_holes.describe dicts."""
+    _, m, _, keys, env = {s[0]: s for s in fhd.FLIGHT}[name]
+    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs), keys], cwd=ROOT,
+                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2'}, capture_output=True, text=True)
+    (dp.WORK / f'{name}-holes.log').write_text(r.stdout + r.stderr)
+    words, owners = flight_holes.listing(flight_holes.MISSION[m]), flight_holes.lanes()
+    return [flight_holes.describe(h, words, owners, m) for h in flight_holes.HOLE.finditer(r.stdout)]
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -59,6 +75,7 @@ def main():
                    default=pathlib.Path(os.environ.get('VICE_DATA_DIR', ROOT / 'deps/vice-data')))
     p.add_argument('--cycles', type=int, default=6_000_000_000)
     p.add_argument('--timeout', type=int, default=3600)
+    p.add_argument('--stop-on-holes', action='store_true', help='fail before VICE if the host run bridges any point')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
@@ -73,10 +90,18 @@ def main():
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
+    holes = host_holes(exe, a.scenario, a.snap_cs + a.cs)
+    print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(holes)} points, each a stop on the C64')
+    for d in holes:
+        print(f"  {d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals"
+              + (f"  refused by {d['refused_by']}" if d['refused_by'] else ''))
+    if holes and a.stop_on_holes:
+        (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
+        return 1
     header = snapshot(exe, a.scenario, a.snap_cs)
     prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m)
     r = dp.vice(a, a.scenario, prg, pinned, m)
-    r.update(snap_cs=a.snap_cs, requested_cs=a.cs)
+    r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z

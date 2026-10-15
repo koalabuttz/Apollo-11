@@ -4,7 +4,7 @@
 LLGE_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/lm_normunit.c src/rtb_vector.c src/rtb_unit.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/guidance_product.c tests/interp_case.c
 LLGE_SRC = src/lm_llge.c tests/lm_llge_target.c $(LLGE_COMMON)
 LLGE_HDR = include/lm_llge.h tests/interp_case.h tests/lm_llge_vectors.h tests/lm_llge_c64_vectors.h
-LLGE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS
+LLGE_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_CHANNELS -DIRC_LM_HW
 .PHONY: test-lm-llge sanitize-lm-llge c64-lm-llge vice-lm-llge lm-llge-differential
 all: build/test-lm-llge
 test: test-lm-llge
@@ -24,7 +24,7 @@ lm-llge-differential:
 # the vectors; each fits below the $c000 mailbox).
 -include tools/mk/lm-llge.groups
 LLGE_C64_PRGS = $(foreach g,$(LM_LLGE_GROUPS),build/lm-llge-$(g).prg)
-LLGE_C64_SRC = src/lm_llge.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/lm_normunit.c src/rtb_vector.c src/rtb_unit.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/guidance_product.c tests/interp_case.c tests/lm_llge_target.c
+LLGE_C64_SRC = src/lm_llge.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c src/lm_normunit.c src/rtb_vector.c src/rtb_unit.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/guidance_product.c tests/interp_case.c tests/interp_cut.c tests/lm_llge_target.c
 c64-lm-llge: $(LLGE_C64_PRGS)
 build/lm-llge-%.prg: $(LLGE_SRC) platform/c64/lm_llge_diagnostic.c tools/mk/lm-llge.groups $(LLGE_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(LLGE_MOS_FLAGS) $(LM_LLGE_GROUP_FLAGS_$*) -Wl,-Map,build/lm-llge-$*.map $(LLGE_C64_SRC) platform/c64/lm_llge_diagnostic.c -o $@
