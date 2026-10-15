@@ -380,24 +380,28 @@ def interp(sid, a, out):
     if want and want != nc64:
         gap('tests/%s_c64_vectors.h has %d rows, the proof\'s c64_vectors %d' % (sym, nc64, want))
     resumed = [t for t in cover.get('truncated_rows', []) if 'resumed_at' in t]
-    # A segment row is the C64 row of its own group (c64_vectors entry, in
-    # header group order, holding just that case): only there does it stop
-    # at the resume LOC. The same case as a host vector or in another group
-    # is a full run.
+    # A segment row is a C64 row of its segment routine's own group
+    # (c64_vectors entry, in header group order, holding only that routine's
+    # segment rows): only there does it stop at the resume LOC. The same case
+    # as a host vector or in another group is a full run.
     cv = proof.get('c64_vectors', [])
     if len(cv) != len(groups) or any(len(groups[g + 1][0]) != v.get('cases') for g, v in enumerate(cv)
                                      if g + 1 in groups):
         cv = []
     segs = {}   # (group, case) -> resume LOC
     seg_rows = (proof.get('c64_segments') or {}).get('rows', [])
+    seg_of = collections.defaultdict(set)
+    for s in seg_rows:
+        seg_of[s['mission'], s['from']].add(s['case'])
     for s in seg_rows:
         mi = next(mi for mi in missions if mi.m == s['mission'])
-        hit = [g + 1 for g, v in enumerate(cv) if v.get('mission') == s['mission'] and v.get('case_ids') == [s['case']]]
+        hit = [g + 1 for g, v in enumerate(cv) if v.get('mission') == s['mission'] and s['case'] in v.get('case_ids', [])
+               and set(v['case_ids']) <= seg_of[s['mission'], s['from']]]
         loc = D.loc_of(mi, s['to'])
         if len(hit) != 1 or loc is None:
             gap('c64_segments row %s %s to %s (case %d): %s' % (
                 s['mission'], s['from'], s['to'], s['case'],
-                'no resume LOC %s' % s['to'] if loc is None else '%d C64 groups hold only that case' % len(hit)))
+                'no resume LOC %s' % s['to'] if loc is None else '%d C64 groups hold it with only its routine\'s segment rows' % len(hit)))
             continue
         segs[hit[0], s['case']] = loc
     stats = collections.Counter()
