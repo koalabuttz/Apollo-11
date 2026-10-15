@@ -22,6 +22,8 @@ Compiler additions with this file:
 
 Every other spec's generated files are unchanged (`interp_compile.py --check` on all specs).
 
+The spec sets `index_carry16` (INDEX keeps its end-around carry on the C64, where `unsigned` is 16 bits), `image_w` and `trusted_image`: flight builds (RK_FIXED_IMAGE) address the fixed $7000 image and skip the erasable-image scan at each routine entry, about 121,000 6502 cycles a call.
+
 ## Evidence
 
 Hashes: `evidence/cm-p11/SHA256.json`. Bulk files are assets of the `evidence-cm-p11` release.
@@ -29,4 +31,4 @@ Hashes: `evidence/cm-p11/SHA256.json`. Bulk files are assets of the `evidence-cm
 - **Source map.** `cm-p11-source-map.json` lists every word with the routine that compiles it: 535 words, none untranslated.
 - **Independent assembly comparison.** `make cm-p11-differential`: 256 states per routine (37,888 cases) equal the pinned flight-device yaAGC in Z, all 2,048 erasable words, the interrupt-enable state, and channels 12, 30 and 31 with the 31A/31B/32 trap flags. Every 64th case is frozen in `tests/cm_p11_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-p11 sanitize-cm-p11` runs the 592 frozen cases (`cm-p11-host.log`).
-- **C64 execution results.** `make vice-cm-p11` runs eight diagnostics with 202 cases (`cm-p11-vice.log`). They reach all 292 labels the host cases reach and all 2,243 edges, and take all 1,148 gcov branch arcs the host cases take over every linked source (`cm-p11-proof.json`, `c64_coverage` and `c64_gcov_branches`).
+- **C64 execution results.** `make vice-cm-p11` runs eight diagnostics with 202 cases (`cm-p11-vice.log`). They reach all 292 labels the host cases reach and all 2,266 edges, and take all 1,199 gcov branch arcs the host cases take over every linked source (`cm-p11-proof.json`, `c64_coverage` and `c64_gcov_branches`).
