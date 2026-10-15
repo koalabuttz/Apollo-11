@@ -33,7 +33,7 @@
  * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
  * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
  * (4 bytes), $c3f0-5 the call profile (profile()), $c3f6 the soft-stack peak, $c3fe the module count, $c400 one fl_timing per module (up to
- * $cbff, FL_MODULES at most 204), $c3e0 the indices of up to 8 modules whose
+ * $cdff, FL_MODULES at most 256), $c3e0 the indices of up to 8 modules whose
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
 #include "resident_flight.h"
@@ -50,8 +50,10 @@ typedef struct { uint32_t load; uint16_t cached, direct, main; } fl_timing;
 #ifndef FL_LIMIT
 #define FL_LIMIT FL_MODULES
 #endif
-/* The timings at $C400 leave the soft stack (below $D000) 1 KB. */
-_Static_assert(0xc400ul+FL_MODULES*sizeof(fl_timing)<=0xcc00ul,"timings would reach the stack");
+/* The timings at $C400 leave the soft stack (below $D000) 512 bytes, about
+ * three times its measured peak; stack_peak() fails the check if it reaches them. */
+_Static_assert(0xc400ul + FL_MODULES * sizeof(fl_timing) <= 0xce00ul,
+               "timings would reach the stack");
 #define FL_IMAGE_BYTES 4096ul
 _Static_assert(sizeof(apollo_overlay_state)<=FL_IMAGE_BYTES,"the image snapshot overruns its scratch");
 _Static_assert(FL_IMAGE_BYTES+16384u<=FL_SCRATCH_BYTES,"a slot snapshot overruns the REU scratch");
@@ -229,8 +231,10 @@ static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_
 static void stack_fill(void){volatile uint8_t here,*p=FL_STACK_FLOOR;
  while(p<&here-16)*p++=0x5a;}
 static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
- while(*p==0x5a)++p;
- *(volatile uint16_t *)0xc3f6=(uint16_t)(0xd000u-(uintptr_t)p);}
+    expect(*p == 0x5a, 13); /* no fill left at the floor: the stack ran into the timings */
+    while (*p == 0x5a) ++p;
+    *(volatile uint16_t *)0xc3f6 = (uint16_t)(0xd000u - (uintptr_t)p);
+}
 
 int main(void){uint16_t i;
  expect(rk_boot()==0,1);

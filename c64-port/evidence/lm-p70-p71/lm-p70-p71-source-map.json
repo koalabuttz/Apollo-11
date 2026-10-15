@@ -2,8 +2,8 @@
  "Luminary099/P70-P71.agc": {
   "native_file": "src/lm_p70_p71.c",
   "words": 298,
-  "untranslated_words": 8,
-  "routines": 88,
+  "untranslated_words": 47,
+  "routines": 83,
   "map": [
    {
     "address": "21,2006",
@@ -86,286 +86,247 @@
     "address": "21,2021",
     "word": "41303",
     "source": "R10,R11A CS IMODES33",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2022",
     "word": "74753",
     "source": " MASK BIT1",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2023",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2024",
     "word": "12042",
     "source": " BZF 10,11",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2025",
     "word": "70107",
     "source": "FLASHH? MASK FLGWRD11",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2026",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2027",
     "word": "12033",
     "source": " BZF FLASHV?",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2030",
     "word": "34747",
     "source": " CA HLITE",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2031",
     "word": "54001",
     "source": " TS L",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2032",
     "word": "04606",
     "source": " TC FLIP",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2033",
     "word": "34752",
     "source": "FLASHV? CA VFLSHBIT",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2034",
     "word": "70107",
     "source": " MASK FLGWRD11",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2035",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2036",
     "word": "12042",
     "source": " BZF 10,11",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2037",
     "word": "34751",
     "source": " CA VLITE",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2040",
     "word": "54001",
     "source": " TS L",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2041",
     "word": "04606",
     "source": " TC FLIP",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2042",
     "word": "30105",
     "source": "10,11 CA FLAGWRD9",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2043",
     "word": "74743",
     "source": " MASK LETABBIT",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2044",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2045",
     "word": "12154",
     "source": " BZF LANDISP",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2046",
     "word": "41011",
     "source": "P71NOW? CS MODREG",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2047",
     "word": "62107",
     "source": " AD 1DEC71",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2050",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2051",
     "word": "12154",
     "source": " BZF LANDISP",
-    "routine": "21,2021",
-    "function": "r42021"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2052",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2053",
     "word": "00030",
     "source": " READ CHAN30",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2054",
     "word": "40000",
     "source": " COM ",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2055",
     "word": "54001",
     "source": " TS L",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2056",
     "word": "74750",
     "source": " MASK BIT4",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2057",
     "word": "10000",
     "source": " CCS A",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2060",
     "word": "12076",
     "source": " TCF P71A",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2061",
     "word": "41011",
     "source": "P70NOW? CS MODREG",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2062",
     "word": "62106",
     "source": " AD 1DEC70",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2063",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2064",
     "word": "12154",
     "source": " BZF LANDISP",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2065",
     "word": "30001",
     "source": " CA L",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2066",
     "word": "74753",
     "source": " MASK BIT1",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2067",
     "word": "10000",
     "source": " CCS A",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2070",
     "word": "12073",
     "source": " TCF P70A",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2071",
     "word": "12154",
     "source": " TCF LANDISP",
-    "routine": "21,2054",
-    "function": "r42054"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "21,2072",
@@ -453,13 +414,13 @@
     "address": "21,2106",
     "word": "00106",
     "source": "1DEC70 DEC 70         B-14",
-    "constant": "basic operand (inline)"
+    "constant": "data word (no instruction in the file reads it)"
    },
    {
     "address": "21,2107",
     "word": "00107",
     "source": "1DEC71 DEC 71         B-14",
-    "constant": "basic operand (inline)"
+    "constant": "data word (no instruction in the file reads it)"
    },
    {
     "address": "05,3402",
@@ -633,13 +594,13 @@
     "address": "05,3432",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "05,3433",
     "word": "02011",
     "source": " RAND DSALMOUT",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "05,3434",
@@ -652,13 +613,13 @@
     "address": "05,3435",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "05,3436",
     "word": "01011",
     "source": " WRITE DSALMOUT",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "05,3437",
@@ -1974,13 +1935,13 @@
     "address": "32,3751",
     "word": "00006",
     "source": " EXTEND ",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "32,3752",
     "word": "05014",
     "source": " WOR CHAN14",
-    "untranslated": "READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
+    "untranslated": "R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model"
    },
    {
     "address": "32,3753",

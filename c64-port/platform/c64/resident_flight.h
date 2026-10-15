@@ -59,6 +59,10 @@ _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks
 #ifndef RK_WALL_CLOCK
 #define RK_WORK_CLOCK 1
 #define RK_TICK_MCT(phase) (853u+((phase)==0u))
+/* The real-time cap's forgiven lag, in 10 ms periods (rk_rupts). */
+#ifndef RK_CAP_LAG
+#define RK_CAP_LAG 16
+#endif
 /* Weights from the calibration (tools/resident_flight_build.py): the
  * resident tables', each interrupt-body wrapper's (RK_MODULE_LEAD_INS..
  * RK_MODULE_LM_T6; a wrapper reports the routines it ran, which the step
@@ -74,6 +78,8 @@ _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks
 #endif
 extern uint16_t rk_work;
 extern uint8_t rk_tick_phase;
+/* The ticks taken, mod 256, for the real-time cap (rk_rupts). */
+extern uint8_t rk_cap;
 #endif
 /* The dropped ticks, 32 bits at a fixed address below ov2_irq_count (the
  * service table ends at or below it, 61 entries at most), so a VICE run or

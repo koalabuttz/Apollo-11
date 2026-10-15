@@ -268,6 +268,17 @@ every routine of the work rows matches yaAGC:
 | LM V37E12E, DAP running (V37 at 16 s; reaches P12) | 18,337 | 0 | 3,000 / 0 |
 | CM V37E06E | 10,380 | 0 | 3,000 / 0 |
 
+The real-time cap keeps AGC time from running ahead of wall time on a
+machine faster than real time (a turbo C64). Before each tick, the step
+waits until CIA1 has counted one more 10 ms period than the ticks taken
+(`rk_cap`, against `ov2_irq_count`'s low byte). A lag of more than
+`RK_CAP_LAG` (16) periods is forgiven, so a machine that fell behind
+doesn't race later to catch up. A stock C64 runs slower than real time,
+so it never waits there: the DAP pass cycles don't change. The cap is 24
+bytes of assembly in `rk_rupts`' tick loop (40 bytes of resident in all).
+Part 4 of the resident check takes three ticks with no lag owed and
+checks that CIA1 counted three more periods.
+
 `make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead;
 `make vice-resident-flight-half` builds it at x0.5.
 

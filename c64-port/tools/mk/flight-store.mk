@@ -12,9 +12,13 @@
 # .stamp-<missions>; --force rebuilds). None gates `test`: they measure the whole
 # program while lanes are still filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
-.PHONY: flight-store flight-host-differential flight-store-vice
+.PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice
 flight-store: | build
 	python3 tools/flight_store_build.py
+# flight-store-lm: the LM store alone, half the build, for checks that boot
+# only lm.reu (the LM interp-flight-*-vice targets).
+flight-store-lm: | build
+	python3 tools/flight_store_build.py --missions lm
 flight-host-differential: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_host_differential.py
 flight-store-vice: flight-store
