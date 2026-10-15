@@ -2754,6 +2754,9 @@ SPECS = {
         # unsigned too)
         'index_carry16': True,
         'image_w': True,
+        # CDULOGIC runs in the CM entry window and every attitude pass: no
+        # whole-image scan in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'any_fixloc': True,
         # CDUINC updates the angle BUF names: THETAD, +1 or +2 (INCRCDUS
         # steps BUF through them; nothing in Luminary calls CDUINC).
