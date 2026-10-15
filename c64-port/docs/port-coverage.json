@@ -2746,8 +2746,8 @@
             "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/rev2-recite-kalcmanu-497.md",
+            "sha256": "218197f1cd0f5b063ea16cb7d4eba62e6758d6f6f97525ec0a983a44bc81f0d8"
           }
         },
         "precheck_notes": [
@@ -9734,8 +9734,8 @@
             "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/rev2-recite-kalcmanu-497.md",
+            "sha256": "218197f1cd0f5b063ea16cb7d4eba62e6758d6f6f97525ec0a983a44bc81f0d8"
           }
         },
         "precheck_notes": [
