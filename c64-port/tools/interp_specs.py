@@ -4326,6 +4326,14 @@ SPECS = {
         # Opt-in basic code forms: INDEX Q reads of a caller's inline word
         # (RRLIMCHK's ADRES), INDEX L/Q; TC returns past the caller's, and
         # TS FBANK/BBANK ending the routine unless FB stays.
+        # Each basic routine ends at the next basic key (on to it through the
+        # transfer engine): the flight store packs one copy of each word's
+        # code (steward 10-15: the whole-file basic table was 319 KB over
+        # its slot).
+        'basic_key_stops': True,
+        # Routines take the transfer ABI directly: no per-key wrapper (about
+        # 107 KB on the C64), so the flight store's chunks fit.
+        'direct_abi': True,
         'inline_reads': True,
         'ts_bank_guard': True,
         # A TS overflow skip, or an INCR Q return, landing on the word after
@@ -4352,7 +4360,16 @@ SPECS = {
                     # (reached through BANKCALL, WAITLIST and NOVAC CADRs and
                     # P70-P71's TC FLIP)
                     'FLIP', 'R21LEM2', 'R29RDJOB', 'SETRRECR', 'REMODE', 'RROUT', 'BEGDES', 'RGOODEND',
-                    'R29DODES'],
+                    'R29DODES',
+                    # (R21LEM12's EXIT +3, RRDESSM's third DESRET return:
+                    # designate started; reviewer 1, #491)
+                    'R21LEM12+12',
+                    # (R29LOKON, so CCS PIPCTR runs in more than a few cases)
+                    'R29LOKON'],
+        # MAGSUB returns through Q+1 / Q+2 (INTERPRETER's words) to caller
+        # +2 / +3, past its inline DEC; RRLIMCHK and RRLIMNB through TC L
+        # and INDEX L; TC L to caller +2 / +3, past their ADRES.
+        'in_file_returns': {'MAGSUB': [1, 2], 'RRLIMCHK': [1, 2], 'RRLIMNB': [1, 2]},
         'externals': {'SPSIN': 'auto', 'SPCOS': 'auto', 'MPACVBUF': 'auto', 'USPRCADR': 'auto', 'RESUME': 'auto', 'CHANG1': 'auto', 'BANKJUMP': 'auto', 'LONGCALL': 'auto', 'FALTON': 'auto', 'MAKECADR': 'auto', 'KILLTASK': 'auto', 'TWIDDLE': 'auto', 'BANKCALL': 'auto', 'IBNKCALL': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto',
                       'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'NOVAC': 'auto',
                       'WAITLIST': 'auto', 'FIXDELAY': 'auto', 'VARDELAY': 'auto', 'BLANKET': 'auto',
@@ -4370,6 +4387,38 @@ SPECS = {
         # again: LODSAMPT's address stands in, outside the file, so it is
         # not the case's stop.)
         'states': {'LITIT+3': {'ITEMP6': [0o3614, 0o3615], '2': [0o4400]},
+                   # NOTP20's CCS LOSCOUNT after INHINT and CS RADMODES: the
+                   # count is 0 to 3 in flight (auditor #508: -0 refused after
+                   # those writes).
+                   # (Under the case's EBANK: the word CCS LOSCOUNT reads.)
+                   **{k: {'E:1456': [0, 1, 2, 3]} for k in ('NOTP20', 'NOTP20+5')},
+                   # Edge values every flight pass meets, half the cases
+                   # each ('any' keeps the case's own value; reviewer 1,
+                   # #491): MPAC after DONBRD's DOT within about 1.3 degrees
+                   # of COS1/2DG (CCS MPAC's +-0 arms: the RR on the LOS),
+                   # SAMPLIM +0 (RESAMPLE's DATAFAIL, TRYCOUNT, LRPOSNXT),
+                   # MODREG 20 and 22 (P20LEMB6), OPTION2 = P22ONE
+                   # (PROG20A), RADCADR 0 (the first designate pass), RNRAD
+                   # with bit 15 and a count past HISCALIM (LRSCK's high
+                   # scale), ITEMP1 = BIT5 (RADLITES), NSRCHPNT 6 (the end
+                   # of the search pattern).
+                   'DONBRD+58': {'0154': [0o7777, 0o7776, 0o10000, 'any'],
+                                 '0155': [0o33005, 0o33004, 0o33006, 0, 0o37777, 0o40000, 'any', 'any']},
+                   'NOEND': {'SAMPLIM': [0, 'any']}, 'RADAREAD': {'SAMPLIM': [0, 'any']},
+                   'LRPOSNXT+3': {'SAMPLIM': [0, 'any']},
+                   'P20LEMB+5': {'MODREG': [0o24, 0o26, 'any']},
+                   'ORBCHGO+8': {'OPTION2': [1, 'any']}, 'ORBCHG1': {'OPTION2': [1, 'any']},
+                   'DESRETRN': {'RADCADR': [0, 'any']},
+                   'GOODRAD': {'ITEMP1': [0o20, 'any']},
+                   'DATGDCHK': {'E:1736': [6, 'any']},
+                   # (RROUT's loop index, 1 then 0, at MAGSUB's returns into
+                   # RROUTLIM and SETRRCTR: INDEX ITEMP2 picks LASTYCMD or
+                   # LASTXCMD)
+                   'RROUT2+6': {'ITEMP2': [0, 1]}, 'SETRRCTR': {'ITEMP2': [0, 1]},
+                   **{k: {'0046': [0o70716, 0o77776, 0o60000, 0o40001, 0o37776, 0o33000, 0o30000, 'any']} for k in ('VELCHK', 'LRHEIGHT')},
+                   # (SPSIN's and SPCOS's A at their other returns, as at
+                   # 32,2662: TS and MP only)
+                   **{k: {'0000': [0, 0o177777, 'any']} for k in ('32,2641', '32,2644', '32,2652')},
                    'R61LEM1+21': {'0000': [0, 0o777, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
                    # (LPS20.2's and LRS22.2's MPAC: 0 or 1, for the INDEX MPAC
                    # after the CALL's EXIT and after the BANKCALL)
@@ -4395,7 +4444,11 @@ SPECS = {
                    # (R29's pass flag: 1 on the first pass, then 0)
                    'TESTCOS+6': {'TANG': [0, 1]},
                    # (RR1AXIS's axis index, 0 or 1, through RR1AX2)
-                   **{'RR1AX2+%d' % n: {'RRINDEX': [0, 1]} for n in range(30)}},
+                   **{'RR1AX2+%d' % n: {'RRINDEX': [0, 1]} for n in range(30)},
+                   # (and ITEMP1, the axis error MAGSUB tested, at its return:
+                   # 061 is a counter cell the cases otherwise zero)
+                   'RR1AX2+17': {'RRINDEX': [0, 1],
+                                 'ITEMP1': [0, 1, 5, 0o40, 0o37777, 0o77776, 0o77737, 0o40000, 0o77777]}},
         # V67's W-matrix loop (NXPOSVEL ... ADDPOS ... TIX,1 NXPOSVEL): X1
         # steps from 54 by S1 = 6.
         'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
