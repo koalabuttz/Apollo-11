@@ -129,14 +129,17 @@ void irc_cover(unsigned n);
 #define IRC_COVER(n) ((void)0)
 #endif
 /* Flight parts (spec 'flight_parts', docs/FLIGHT-PARTS.md): LM_INTERPRETER_FLIGHT_PART=j
- * builds part j of 2 for the C64 flight store, the basic words between
+ * builds part j of 3 for the C64 flight store, the basic words between
  * its cuts (LM_INTERPRETER_OUT: the others); a run that reaches another part's word stops there
  * when it is a key (lm_interpreter_leave), and is refused otherwise. */
 #ifdef LM_INTERPRETER_FLIGHT_PART
 #if LM_INTERPRETER_FLIGHT_PART==1
-#define LM_INTERPRETER_BANKS 0x9ull
-#define LM_INTERPRETER_OUT(at) ((at)>=3584u)
+#define LM_INTERPRETER_BANKS 0x1ull
+#define LM_INTERPRETER_OUT(at) ((at)>=847u)
 #elif LM_INTERPRETER_FLIGHT_PART==2
+#define LM_INTERPRETER_BANKS 0x9ull
+#define LM_INTERPRETER_OUT(at) ((at)<847u || (at)>=3584u)
+#elif LM_INTERPRETER_FLIGHT_PART==3
 #define LM_INTERPRETER_BANKS 0x8ull
 #define LM_INTERPRETER_OUT(at) ((at)<3584u)
 #else
@@ -222,6 +225,7 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,p66_bias_
  case 663u:goto B1227;
  case 664u:goto B1230;
  case 665u:goto B1231;
+ case 704u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B1300c;
  case 722u:goto B1322;
  case 728u:goto B1330;
  case 738u:goto B1342;
@@ -5062,9 +5066,9 @@ static const agc_routine_entry basic_entries[]={
 };
 #else
 /* Flight: the keys of every part (routines and part keys). */
-static const uint16_t lm_interpreter_flight_keys[97]={235u,245u,264u,267u,332u,352u,359u,360u,361u,362u,363u,364u,365u,366u,367u,368u,369u,370u,371u,372u,520u,523u,526u,529u,531u,532u,533u,537u,547u,594u,598u,602u,662u,663u,664u,665u,722u,728u,738u,739u,847u,848u,849u,850u,856u,857u,879u,880u,891u,893u,3103u,3105u,3112u,3117u,3119u,3120u,3384u,3390u,3391u,3539u,3543u,3551u,3553u,3554u,3555u,3588u,3599u,3651u,3654u,3655u,3717u,3724u,3725u,3730u,3750u,3759u,3761u,3762u,3763u,3783u,3784u,3787u,3790u,3856u,3888u,3893u,3898u,3905u,3910u,3919u,3920u,3927u,3928u,3930u,3940u,4024u,4037u};
+static const uint16_t lm_interpreter_flight_keys[98]={235u,245u,264u,267u,332u,352u,359u,360u,361u,362u,363u,364u,365u,366u,367u,368u,369u,370u,371u,372u,520u,523u,526u,529u,531u,532u,533u,537u,547u,594u,598u,602u,662u,663u,664u,665u,704u,722u,728u,738u,739u,847u,848u,849u,850u,856u,857u,879u,880u,891u,893u,3103u,3105u,3112u,3117u,3119u,3120u,3384u,3390u,3391u,3539u,3543u,3551u,3553u,3554u,3555u,3588u,3599u,3651u,3654u,3655u,3717u,3724u,3725u,3730u,3750u,3759u,3761u,3762u,3763u,3783u,3784u,3787u,3790u,3856u,3888u,3893u,3898u,3905u,3910u,3919u,3920u,3927u,3928u,3930u,3940u,4024u,4037u};
 static enum exec_status lm_interpreter_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
- for(i=0;i<97u;++i)if(lm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
+ for(i=0;i<98u;++i)if(lm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
  return EXEC_OUT_OF_SCOPE;
 }
 /* Every key of the part: Z (under FB and SUPERBNK) names it. */
@@ -5087,14 +5091,19 @@ static const agc_routine_entry basic_entries[]={
  {371,lm_interpreter_flight_entry}, {372,lm_interpreter_flight_entry}, {520,lm_interpreter_flight_entry}, {523,lm_interpreter_flight_entry}, {526,lm_interpreter_flight_entry}, {529,lm_interpreter_flight_entry},
  {531,lm_interpreter_flight_entry}, {532,lm_interpreter_flight_entry}, {533,lm_interpreter_flight_entry}, {537,lm_interpreter_flight_entry}, {547,lm_interpreter_flight_entry}, {594,lm_interpreter_flight_entry},
  {598,lm_interpreter_flight_entry}, {602,lm_interpreter_flight_entry}, {662,lm_interpreter_flight_entry}, {663,lm_interpreter_flight_entry}, {664,lm_interpreter_flight_entry}, {665,lm_interpreter_flight_entry},
- {722,lm_interpreter_flight_entry}, {728,lm_interpreter_flight_entry}, {738,lm_interpreter_flight_entry}, {739,lm_interpreter_flight_entry}, {847,lm_interpreter_flight_entry}, {848,lm_interpreter_flight_entry},
- {849,lm_interpreter_flight_entry}, {850,lm_interpreter_flight_entry}, {856,lm_interpreter_flight_entry}, {857,lm_interpreter_flight_entry}, {879,lm_interpreter_flight_entry}, {880,lm_interpreter_flight_entry},
- {891,lm_interpreter_flight_entry}, {893,lm_interpreter_flight_entry}, {3103,lm_interpreter_flight_entry}, {3105,lm_interpreter_flight_entry}, {3112,lm_interpreter_flight_entry}, {3117,lm_interpreter_flight_entry},
- {3119,lm_interpreter_flight_entry}, {3120,lm_interpreter_flight_entry}, {3384,lm_interpreter_flight_entry}, {3390,lm_interpreter_flight_entry}, {3391,lm_interpreter_flight_entry}, {3539,lm_interpreter_flight_entry},
- {3543,lm_interpreter_flight_entry}, {3551,lm_interpreter_flight_entry}, {3553,lm_interpreter_flight_entry}, {3554,lm_interpreter_flight_entry}, {3555,lm_interpreter_flight_entry},
+ {704,lm_interpreter_flight_entry}, {722,lm_interpreter_flight_entry}, {728,lm_interpreter_flight_entry}, {738,lm_interpreter_flight_entry}, {739,lm_interpreter_flight_entry},
  {0xffffu,0}
 };
 #elif LM_INTERPRETER_FLIGHT_PART==2
+static const agc_routine_entry basic_entries[]={
+ {847,lm_interpreter_flight_entry}, {848,lm_interpreter_flight_entry}, {849,lm_interpreter_flight_entry}, {850,lm_interpreter_flight_entry}, {856,lm_interpreter_flight_entry}, {857,lm_interpreter_flight_entry},
+ {879,lm_interpreter_flight_entry}, {880,lm_interpreter_flight_entry}, {891,lm_interpreter_flight_entry}, {893,lm_interpreter_flight_entry}, {3103,lm_interpreter_flight_entry}, {3105,lm_interpreter_flight_entry},
+ {3112,lm_interpreter_flight_entry}, {3117,lm_interpreter_flight_entry}, {3119,lm_interpreter_flight_entry}, {3120,lm_interpreter_flight_entry}, {3384,lm_interpreter_flight_entry}, {3390,lm_interpreter_flight_entry},
+ {3391,lm_interpreter_flight_entry}, {3539,lm_interpreter_flight_entry}, {3543,lm_interpreter_flight_entry}, {3551,lm_interpreter_flight_entry}, {3553,lm_interpreter_flight_entry}, {3554,lm_interpreter_flight_entry},
+ {3555,lm_interpreter_flight_entry},
+ {0xffffu,0}
+};
+#elif LM_INTERPRETER_FLIGHT_PART==3
 static const agc_routine_entry basic_entries[]={
  {3588,lm_interpreter_flight_entry}, {3599,lm_interpreter_flight_entry}, {3651,lm_interpreter_flight_entry}, {3654,lm_interpreter_flight_entry}, {3655,lm_interpreter_flight_entry}, {3717,lm_interpreter_flight_entry},
  {3724,lm_interpreter_flight_entry}, {3725,lm_interpreter_flight_entry}, {3730,lm_interpreter_flight_entry}, {3750,lm_interpreter_flight_entry}, {3759,lm_interpreter_flight_entry}, {3761,lm_interpreter_flight_entry},

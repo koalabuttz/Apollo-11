@@ -620,10 +620,10 @@ def interpretive_table(t):
 # does not key.
 FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
                        'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)],
-                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
+                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
                        'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
-                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)]}}
 
 
 def part_keys(cc, m, stem, tables):

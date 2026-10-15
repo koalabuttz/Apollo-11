@@ -130,14 +130,17 @@ void irc_cover(unsigned n);
 #define IRC_COVER(n) ((void)0)
 #endif
 /* Flight parts (spec 'flight_parts', docs/FLIGHT-PARTS.md): CM_INTERPRETER_FLIGHT_PART=j
- * builds part j of 2 for the C64 flight store, the basic words between
+ * builds part j of 3 for the C64 flight store, the basic words between
  * its cuts (CM_INTERPRETER_OUT: the others); a run that reaches another part's word stops there
  * when it is a key (cm_interpreter_leave), and is refused otherwise. */
 #ifdef CM_INTERPRETER_FLIGHT_PART
 #if CM_INTERPRETER_FLIGHT_PART==1
-#define CM_INTERPRETER_BANKS 0x9ull
-#define CM_INTERPRETER_OUT(at) ((at)>=3584u)
+#define CM_INTERPRETER_BANKS 0x1ull
+#define CM_INTERPRETER_OUT(at) ((at)>=847u)
 #elif CM_INTERPRETER_FLIGHT_PART==2
+#define CM_INTERPRETER_BANKS 0x9ull
+#define CM_INTERPRETER_OUT(at) ((at)<847u || (at)>=3584u)
+#elif CM_INTERPRETER_FLIGHT_PART==3
 #define CM_INTERPRETER_BANKS 0x8ull
 #define CM_INTERPRETER_OUT(at) ((at)<3584u)
 #else
@@ -216,6 +219,7 @@ static MAYBE_UNUSED enum exec_status basic_run(apollo_overlay_state *s,cm_native
  case 663u:goto B1227;
  case 664u:goto B1230;
  case 665u:goto B1231;
+ case 704u:if((W[0]^(W[0]>>1))&040000u)return EXEC_OUT_OF_SCOPE;goto B1300c;
  case 722u:goto B1322;
  case 728u:goto B1330;
  case 738u:goto B1342;
@@ -4327,9 +4331,9 @@ static const agc_routine_entry basic_entries[]={
 };
 #else
 /* Flight: the keys of every part (routines and part keys). */
-static const uint16_t cm_interpreter_flight_keys[96]={264u,267u,352u,359u,360u,361u,362u,363u,364u,365u,366u,367u,368u,369u,370u,371u,372u,520u,523u,526u,529u,531u,532u,533u,537u,547u,594u,598u,602u,662u,663u,664u,665u,722u,728u,738u,739u,846u,847u,848u,849u,855u,856u,878u,879u,890u,892u,3078u,3080u,3087u,3092u,3094u,3095u,3359u,3365u,3384u,3514u,3526u,3528u,3529u,3530u,3559u,3563u,3568u,3571u,3574u,3584u,3626u,3629u,3630u,3692u,3699u,3700u,3705u,3725u,3732u,3734u,3736u,3737u,3738u,3758u,3759u,3831u,3863u,3868u,3873u,3880u,3885u,3894u,3895u,3902u,3903u,3905u,3915u,3999u,4012u};
+static const uint16_t cm_interpreter_flight_keys[97]={264u,267u,352u,359u,360u,361u,362u,363u,364u,365u,366u,367u,368u,369u,370u,371u,372u,520u,523u,526u,529u,531u,532u,533u,537u,547u,594u,598u,602u,662u,663u,664u,665u,704u,722u,728u,738u,739u,846u,847u,848u,849u,855u,856u,878u,879u,890u,892u,3078u,3080u,3087u,3092u,3094u,3095u,3359u,3365u,3384u,3514u,3526u,3528u,3529u,3530u,3559u,3563u,3568u,3571u,3574u,3584u,3626u,3629u,3630u,3692u,3699u,3700u,3705u,3725u,3732u,3734u,3736u,3737u,3738u,3758u,3759u,3831u,3863u,3868u,3873u,3880u,3885u,3894u,3895u,3902u,3903u,3905u,3915u,3999u,4012u};
 static enum exec_status cm_interpreter_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
- for(i=0;i<96u;++i)if(cm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
+ for(i=0;i<97u;++i)if(cm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
  return EXEC_OUT_OF_SCOPE;
 }
 /* Every key of the part: Z (under FB and SUPERBNK) names it. */
@@ -4351,15 +4355,20 @@ static const agc_routine_entry basic_entries[]={
  {368,cm_interpreter_flight_entry}, {369,cm_interpreter_flight_entry}, {370,cm_interpreter_flight_entry}, {371,cm_interpreter_flight_entry}, {372,cm_interpreter_flight_entry}, {520,cm_interpreter_flight_entry},
  {523,cm_interpreter_flight_entry}, {526,cm_interpreter_flight_entry}, {529,cm_interpreter_flight_entry}, {531,cm_interpreter_flight_entry}, {532,cm_interpreter_flight_entry}, {533,cm_interpreter_flight_entry},
  {537,cm_interpreter_flight_entry}, {547,cm_interpreter_flight_entry}, {594,cm_interpreter_flight_entry}, {598,cm_interpreter_flight_entry}, {602,cm_interpreter_flight_entry}, {662,cm_interpreter_flight_entry},
- {663,cm_interpreter_flight_entry}, {664,cm_interpreter_flight_entry}, {665,cm_interpreter_flight_entry}, {722,cm_interpreter_flight_entry}, {728,cm_interpreter_flight_entry}, {738,cm_interpreter_flight_entry},
- {739,cm_interpreter_flight_entry}, {846,cm_interpreter_flight_entry}, {847,cm_interpreter_flight_entry}, {848,cm_interpreter_flight_entry}, {849,cm_interpreter_flight_entry}, {855,cm_interpreter_flight_entry},
- {856,cm_interpreter_flight_entry}, {878,cm_interpreter_flight_entry}, {879,cm_interpreter_flight_entry}, {890,cm_interpreter_flight_entry}, {892,cm_interpreter_flight_entry}, {3078,cm_interpreter_flight_entry},
- {3080,cm_interpreter_flight_entry}, {3087,cm_interpreter_flight_entry}, {3092,cm_interpreter_flight_entry}, {3094,cm_interpreter_flight_entry}, {3095,cm_interpreter_flight_entry}, {3359,cm_interpreter_flight_entry},
- {3365,cm_interpreter_flight_entry}, {3384,cm_interpreter_flight_entry}, {3514,cm_interpreter_flight_entry}, {3526,cm_interpreter_flight_entry}, {3528,cm_interpreter_flight_entry}, {3529,cm_interpreter_flight_entry},
- {3530,cm_interpreter_flight_entry}, {3559,cm_interpreter_flight_entry}, {3563,cm_interpreter_flight_entry}, {3568,cm_interpreter_flight_entry}, {3571,cm_interpreter_flight_entry}, {3574,cm_interpreter_flight_entry},
+ {663,cm_interpreter_flight_entry}, {664,cm_interpreter_flight_entry}, {665,cm_interpreter_flight_entry}, {704,cm_interpreter_flight_entry}, {722,cm_interpreter_flight_entry}, {728,cm_interpreter_flight_entry},
+ {738,cm_interpreter_flight_entry}, {739,cm_interpreter_flight_entry}, {846,cm_interpreter_flight_entry},
  {0xffffu,0}
 };
 #elif CM_INTERPRETER_FLIGHT_PART==2
+static const agc_routine_entry basic_entries[]={
+ {847,cm_interpreter_flight_entry}, {848,cm_interpreter_flight_entry}, {849,cm_interpreter_flight_entry}, {855,cm_interpreter_flight_entry}, {856,cm_interpreter_flight_entry}, {878,cm_interpreter_flight_entry},
+ {879,cm_interpreter_flight_entry}, {890,cm_interpreter_flight_entry}, {892,cm_interpreter_flight_entry}, {3078,cm_interpreter_flight_entry}, {3080,cm_interpreter_flight_entry}, {3087,cm_interpreter_flight_entry},
+ {3092,cm_interpreter_flight_entry}, {3094,cm_interpreter_flight_entry}, {3095,cm_interpreter_flight_entry}, {3359,cm_interpreter_flight_entry}, {3365,cm_interpreter_flight_entry}, {3384,cm_interpreter_flight_entry},
+ {3514,cm_interpreter_flight_entry}, {3526,cm_interpreter_flight_entry}, {3528,cm_interpreter_flight_entry}, {3529,cm_interpreter_flight_entry}, {3530,cm_interpreter_flight_entry}, {3559,cm_interpreter_flight_entry},
+ {3563,cm_interpreter_flight_entry}, {3568,cm_interpreter_flight_entry}, {3571,cm_interpreter_flight_entry}, {3574,cm_interpreter_flight_entry},
+ {0xffffu,0}
+};
+#elif CM_INTERPRETER_FLIGHT_PART==3
 static const agc_routine_entry basic_entries[]={
  {3584,cm_interpreter_flight_entry}, {3626,cm_interpreter_flight_entry}, {3629,cm_interpreter_flight_entry}, {3630,cm_interpreter_flight_entry}, {3692,cm_interpreter_flight_entry}, {3699,cm_interpreter_flight_entry},
  {3700,cm_interpreter_flight_entry}, {3705,cm_interpreter_flight_entry}, {3725,cm_interpreter_flight_entry}, {3732,cm_interpreter_flight_entry}, {3734,cm_interpreter_flight_entry}, {3736,cm_interpreter_flight_entry},

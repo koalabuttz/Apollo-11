@@ -859,10 +859,12 @@ SPECS = {
                     # TCF MAXTEST -1 land in the DDOUBL chain before MAXTEST, or
                     # (UNIT's large shift, SRDDV) at -21D.
                     *['MAXTEST-%d' % k for k in range(1, 15)], 'MAXTEST-21'],
-        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
-        # flight store chunked it into 13, each with the whole basic_run
-        # (docs/FLIGHT-PARTS.md).
-        'flight_parts': [0o3 * 1024 + 0o1000],
+        # Three C64 flight modules, cut at COSINE (00,3517) and fixed-fixed
+        # 07000: as one table the flight store chunked it into 13, each with
+        # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
+        # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
+        # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
+        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
