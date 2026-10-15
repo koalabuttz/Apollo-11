@@ -862,9 +862,12 @@ static __attribute__((unused)) int vac(agc_word f){
  * the other part stops there when the word is a key of the file (the other
  * part's module runs on from it), and is refused otherwise. The other
  * part's code is dead and drops out of the build. */
+#ifndef AGC_FLIGHT_INTERPRETER
+#error "LMSV_FLIGHT_PART builds are flight builds (-DAGC_FLIGHT_INTERPRETER)"
+#endif
 #ifndef LMSV_PART_CUT
 #define LMSV_PART_CUT PH(33,03420)  /* basic_entries[LMSV_PART_KEYS] */
-#define LMSV_PART_KEYS 85u
+#define LMSV_PART_KEYS 98u  /* flight builds: 85 and 13 EXIT returns */
 #endif
 #if LMSV_FLIGHT_PART==1
 #define SV_IN_PART(ph) ((ph)<LMSV_PART_CUT)
@@ -2142,6 +2145,17 @@ static enum exec_status routine(const agc_native_program *p,apollo_overlay_state
 #define R33(a) {K33(a),routine}
 #define R34(a) {K34(a),routine}
 #define R37(a) {K37(a),routine}
+/* Flight builds also key the basic word each EXIT returns to: there the
+ * native interpreter runs the interpretive code and its EXIT hands the word
+ * to the flight program as a basic key (tools/flight_exit_returns.py). The
+ * host build runs on across EXIT in one call and keys none of them. */
+#ifdef AGC_FLIGHT_INTERPRETER
+#define X23(a) R23(a),
+#define X33(a) R33(a),
+#else
+#define X23(a)
+#define X33(a)
+#endif
 static const agc_routine_entry basic_entries[]={
 #if SV_G(1)
  R21(02130),R21(02150),R22(03661),R22(03665),R22(03667),
@@ -2156,27 +2170,27 @@ static const agc_routine_entry basic_entries[]={
  R23(02461),
 #endif
 #if SV_G(1)
- R27(03321),R32(03770),R32(03772),R33(02206),R33(02213),
+ X23(02504)R27(03321),R32(03770),R32(03772),R33(02206),R33(02213),
 #endif
 #if SV_G(6)
  R33(02217),
 #endif
 #if SV_G(1)
- R33(02233),R33(02254),R33(02256),R33(02261),R33(02263),R33(02266),R33(02274),R33(02275),
+ X33(02223)R33(02233),R33(02254),R33(02256),R33(02261),R33(02263),R33(02266),R33(02274),R33(02275),
  R33(02276),R33(02314),R33(02323),R33(02336),R33(02342),R33(02346),R33(02352),R33(02353),
  R33(02361),R33(02365),R33(02366),R33(02370),R33(02375),R33(02400),R33(02403),R33(02411),
- R33(02420),R33(02422),R33(02423),R33(02440),R33(02447),R33(02460),R33(02476),R33(02502),
+ R33(02420),R33(02422),R33(02423),R33(02440),R33(02447),R33(02460),X33(02462)R33(02476),R33(02502),
  R33(02515),R33(02531),R33(02536),R33(02540),R33(02546),R33(02547),R33(02564),
 #endif
 #if SV_G(4)
  R33(02570),
 #endif
 #if SV_G(1)
- R33(02664),R33(02674),R33(02675),R33(02676),R33(02710),R33(02713),R33(02714),R33(02716),
+ X33(02630)R33(02664),R33(02674),R33(02675),R33(02676),R33(02710),R33(02713),R33(02714),R33(02716),
  R33(02720),R33(02721),R33(02724),R33(02725),R33(02727),
 #endif
 #if SV_G(7)
- R33(03053),R33(03065),
+ X33(03052)R33(03053),X33(03064)R33(03065),
 #endif
 #if SV_G(1)
  R33(03155),
@@ -2185,19 +2199,19 @@ static const agc_routine_entry basic_entries[]={
  R33(03165),
 #endif
 #if SV_G(6)
- R33(03210),
+ X33(03202)R33(03210),
 #endif
 #if SV_G(1)
- R33(03237),R33(03240),R33(03241),
+ X33(03223)X33(03235)R33(03237),R33(03240),R33(03241),
 #endif
 #if SV_G(2)
  R33(03243),
 #endif
 #if SV_G(1)
- R33(03257),
+ X33(03253)R33(03257),
 #endif
 #if SV_G(7)
- R33(03275),R33(03306),
+ R33(03275),X33(03305)R33(03306),
 #endif
 #if SV_G(1)
  R33(03307),R33(03310),R33(03311),R33(03315),
@@ -2206,10 +2220,10 @@ static const agc_routine_entry basic_entries[]={
  R33(03336),
 #endif
 #if SV_G(1)
- R33(03417),R33(03420),R33(03421),R33(03423),R33(03431),R33(03435),R33(03466),
+ X33(03352)X33(03415)R33(03417),R33(03420),R33(03421),R33(03423),R33(03431),R33(03435),R33(03466),
 #endif
 #if SV_G(7)
- R33(03472),R33(03512),
+ R33(03472),X33(03511)R33(03512),
 #endif
 #if SV_G(1)
  R33(03513),R33(03514),R33(03515),R33(03527),R33(03533),R33(03534),R33(03552),R33(03560),
@@ -2222,7 +2236,7 @@ static const agc_routine_entry basic_entries[]={
  R33(03740),
 #endif
 #if SV_G(1)
- R34(03716),R34(03720),R34(03722),R34(03723),R34(03744),R34(03745),R34(03753),R34(03754),
+ X33(03776)R34(03716),R34(03720),R34(03722),R34(03723),R34(03744),R34(03745),R34(03753),R34(03754),
  R34(03755),R34(03757),R37(03410),R37(03412),R37(03416),R37(03417),R37(03435),R37(03436),
  R37(03437),R37(03441),R37(03451),R37(03453),R37(03461),R37(03515),R37(03517),R37(03524),
  R37(03525),R37(03531),R37(03541),R37(03544),R37(03557),R37(03565),R37(03570),R37(03571),R37(03614),

@@ -703,6 +703,19 @@ def part_keys(cc, m, stem, tables):
     return parts
 
 
+def flight_keys(cc, stem, tables):
+    """{table: [keys]} of a FLIGHT_INTERP_STOP file built as its flight
+    module is (-DAGC_FLIGHT_INTERPRETER): the flight build can key words the
+    host build does not, such as the basic word an EXIT returns to
+    (tools/flight_exit_returns.py)."""
+    (ROOT / OUT / 'host-parts').mkdir(parents=True, exist_ok=True)
+    obj = ROOT / OUT / 'host-parts' / f'{stem}.flight.o'
+    run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER',
+         *(f'-D{t}={t}_flight' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
+    got = table_keys(cc, [f'{t}_flight' for t in tables], [obj])
+    return {t: got[f'{t}_flight'] for t in tables}
+
+
 def interp_modules(cc, m, library):
     """Link the interpreter's two modules for the store; their PRGs and
     link_core's result."""
@@ -851,6 +864,9 @@ def main():
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
         packed = {t: o for t, o in mine.items() if t not in skipped and keys[t]}
         empty = sorted(t for t, o in mine.items() if t not in skipped and not keys[t])
+        for stem in sorted(FLIGHT_INTERP_STOP[m] - set(FLIGHT_PARTS[m])):
+            keys.update(flight_keys(a.host_cc, stem, sorted(t for t, o in mine.items()
+                                                             if o == stem and not interpretive_table(t))))
         resident_keys = {('i' if interpretive_table(t) else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
