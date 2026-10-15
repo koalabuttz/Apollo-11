@@ -209,6 +209,15 @@ than 64 KB is `too big to split`. Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
 
+A key whose every holder failed has no module in the store: the C64 stops
+there, while the host run bridges it through yaAGC. `report.json`
+`unplaced` counts these keys per table, and the build fails when a table
+has more than `docs/flight-store-unplaced.json` allows (a table not listed
+is allowed none). On 80342904 that is LM P20-P25 (450 keys, the file is too
+big to split), the Pinball remainder (LM 268, CM 267) and CM IMU calibration
+(16 single routines over a slot). A fix that lowers a count lowers the file
+with it; the build prints the new count.
+
 Shadowed entries are left out. Several files are compiled by more than one
 lane (CM EXTENDED_VERBS as Lane C's `lanec_ev_cm_*` tables and as
 `cm_extended_verbs_file_basic`, for example). A key resolves to its first
