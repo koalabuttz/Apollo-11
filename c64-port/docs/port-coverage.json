@@ -10399,7 +10399,7 @@
       "sha256": "5fc234cd27586bf25918a05692b3e6849a433e0b62bfb1327c96ae06e2231b14",
       "bytes": 15916,
       "lines": 977,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10414,7 +10414,7 @@
           "verification": "docs/ORBITAL-INTEGRATION.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10427,7 +10427,6 @@
           "The interpreter exits POODOO1 and ALARM1",
           "The caller's return through QPRET"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-source-map.json",
@@ -10447,6 +10446,10 @@
             "vice_targets": {
               "vice-lm-orbital-integration": 400
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-orbital-integration.md",
+            "sha256": "a700dc83c444488190d2d69102e00590eb34228ae7739c250f960f8ac719b72b"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
