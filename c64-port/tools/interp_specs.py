@@ -1251,6 +1251,11 @@ SPECS = {
         'target': 'tests/cm_p76_file_target.c',
     },
     'cm-servicer': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1355,6 +1360,11 @@ SPECS = {
     },
     # Lane G: Comanche055 CM_BODY_ATTITUDE (bank 37), basic and interpretive.
     'cm-body-attitude': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -2079,6 +2089,11 @@ SPECS = {
     # Lane G: Comanche055 RCS-CSM_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-rcs-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
@@ -2195,6 +2210,11 @@ SPECS = {
     # Lane G: Comanche055 CM_ENTRY_DIGITAL_AUTOPILOT, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-entry-dap': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine; the CM entry window's top cost).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
