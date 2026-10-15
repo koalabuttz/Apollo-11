@@ -101,6 +101,26 @@ BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
 cut module loads from about 4,200 a second to the rates below. It only
 fits once self-check and the interbank routines shrink (fit, above).
 
+A DOWNRUPT runs in one resident step. It used to take three: the lead-in
+wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,
+DNTMGOTO, the phase, DNTMEXIT) and the RESUME wrapper, each paying the
+step's dispatch (resolver, trampoline and slot misses, about 23,000
+cycles). `<m>_dntm_rupt_routines` (`src/lm_dntm_rupt.c`,
+`src/cm_dntm_rupt.c`) copy the DOWNRUPT vector and RESUME onto the DNTM io
+records and ride with `<m>_downtelemetry` (`CO_LOCATE`); the vector's
+wrapper record goes to that module (`DOWNRUPT_HOST`), while RESUME's keys
+stay with their wrappers, since only that module's run reaches its copy.
+The run still stops at the work-clock budget, since TIME1-TIME6 count by
+cycle steal inside an inhibited interrupt too; the next step resolves the
+point it stopped at back into the same module, which is still loaded. Its
+fixed points have records already, and the erasable DNTMGOTO gets one
+under FB 05. `tests/test_dntm_rupt.c` runs every down-telemetry case's
+DOWNRUPTs from the vector both ways (37,000) and fuzzes each copy against
+its original. In VICE (A2's DOWNRUPT pass harness, mean cycles a pass): LM
+P00 140,000 to 84,000, CM P00 110,000 to 72,000, CM entry 240,000 to
+128,000; `flight_downlink_check.py --vice` matches yaAGC on all 300
+DOWNRUPTs, one resident step each.
+
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);

@@ -1,5 +1,17 @@
 name: markdownlint
-on: [push, pull_request]
+# Only the Markdown it lints, once per change: a PR runs it, and a push runs
+# it only on master (a PR branch's pushes are covered by its PR). GitHub
+# disabled Actions on this repo on 10-14 for wasted compute; this workflow
+# was over half of all runs.
+on:
+  push:
+    branches: [master]
+    paths: ['*.md', 'translations/*.md', 'Comanche055/*.md', 'Luminary099/*.md', '.markdownlint.yml']
+  pull_request:
+    paths: ['*.md', 'translations/*.md', 'Comanche055/*.md', 'Luminary099/*.md', '.markdownlint.yml']
+concurrency:
+  group: markdownlint-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   delivery:
     runs-on: ubuntu-latest

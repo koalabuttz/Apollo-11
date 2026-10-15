@@ -87,12 +87,13 @@ SPLIT_LIMIT = 65536
 IO_KIND = {
     'lm': {'lm_fresh_start': 'LM_FRESH', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
-           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
+           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lm_dntm_rupt': 'LM_DNTM',
+           'lanec_ev_routines': 'LM_DNTM',
            'lanec_pin_routines': 'LM_DNTM',
            'lanec_pin_keys_num_routines': 'LM_DNTM', 'lanec_pin_keys_cmd_routines': 'LM_DNTM',
            'lanec_pin_keys_release_routines': 'LM_DNTM',
            'lanec_pin_keys_sign_routines': 'LM_DNTM', 'lanec_pin_keys_clear_routines': 'LM_DNTM'},
-    'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM',
+    'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM', 'cm_dntm_rupt': 'CM_DNTM',
            'lanec_ev_routines': 'CM_DNTM', 'lanec_pin_routines': 'CM_DNTM',
            'lanec_pin_keys_num_routines': 'CM_DNTM', 'lanec_pin_keys_cmd_routines': 'CM_DNTM',
            'lanec_pin_keys_release_routines': 'CM_DNTM',
@@ -519,8 +520,18 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # and with the LM idle loop's own module (CM pins its idle loop), so an idle
 # pass loads nothing (that module's runs are the work clock's idle,
 # RK_MCT_IDLE: the interbank routines run there only from the idle loop).
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines']},
-             'cm': {'cm_self_check': ['cm_interbank_routines']}}
+# The DOWNRUPT vector and RESUME ride with the down-telemetry tables
+# (src/lm_dntm_rupt.c, src/cm_dntm_rupt.c), so one module run takes a whole
+# DOWNRUPT, which runs inhibited, from the vector to the resumed Z; the
+# vector's wrapper record goes to that module (DOWNRUPT_HOST).
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines'],
+                    'lm_downtelemetry': ['lm_dntm_rupt_routines']},
+             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+# The module that takes the DOWNRUPT vector (04040) from the lead-in wrapper:
+# the down-telemetry file's, when it links with the DOWNRUPT ends.
+DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),
+                 'cm': ('cm_downtelemetry', 'cm_dntm_rupt_routines')}
+DOWNRUPT_VECTOR = 2048 + 0o40   # physical 04040
 # Tables pinned in a slot (docs/FLIGHT-STORE.md): loaded once and kept, so
 # a cycle that runs them all costs no swaps. The builder links each slot's
 # set as one module and reports its size. A class-3 set (slot 3, $C000)
@@ -1241,6 +1252,32 @@ def main():
         moved = {canonical_record(k): pack['id'] for pack in packs if pack.get('ok')
                  for t in pack['basic'] if t not in RIDE and (hot_full(t) or t) in RESIDENT[m] for k in keys[t]}
         wrappers = [dict(r, module=moved.get((r['bank'], r['loc']), r['module'])) for r in wrappers]
+        # DOWNRUPT's vector goes to the down-telemetry module that carries
+        # its ends; RESUME stays with its wrappers (only that run reaches the
+        # module's copy).
+        stem, ends = DOWNRUPT_HOST[m]
+        host = next((mod['id'] for mod, _, res in linked if mod['stem'] == stem and res['ok']
+                     and ends in mod.get('also', []) and not mod.get('part')), None)
+        if host is not None:
+            vector = canonical_record(DOWNRUPT_VECTOR)
+            wrappers = [dict(r, module=host) if (r['bank'], r['loc']) == vector else r for r in wrappers]
+            # A run that stops on the work-clock budget inside the chain
+            # resumes in the same module. Its fixed points have records; an
+            # unswitched erasable point (DNTMGOTO) gets one under each FB its
+            # table runs in (bank 05), where no fixed key can be. The resolver
+            # keys it by the FB at the stop: every TC DNTMGOTO is in bank 05
+            # code (DODOWNTM after the vector's CAF DNRPTBB; XCH BBANK, and the
+            # phases), none of which writes FB.
+            table = f'{m}_downtelemetry_routines'
+            fbs = sorted({k >> 10 for k in keys[table] if k < ERASABLE_BASE})
+            taken = {(r['bank'], r['loc']) for r in resolver + wrappers}
+            for k in keys[table]:
+                if ERASABLE_BASE <= k < ERASABLE_BASE + 0o1400:
+                    for fb in fbs:
+                        record = dict(bank=fb << 10, loc=k - ERASABLE_BASE, module=host, selector=0)
+                        if (record['bank'], record['loc']) in taken:
+                            raise SystemExit(f'{m}: DOWNRUPT point {record} already has a record')
+                        wrappers.append(record)
         # The interpreter's modules and its points' records, where no
         # table record or resident table already holds the point.
         interp_prgs, interp = interp_modules(a.cc, m, library)

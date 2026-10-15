@@ -2746,8 +2746,8 @@
             "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/rev2-recite-kalcmanu-497.md",
+            "sha256": "218197f1cd0f5b063ea16cb7d4eba62e6758d6f6f97525ec0a983a44bc81f0d8"
           }
         },
         "precheck_notes": [
@@ -3756,7 +3756,7 @@
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (495 words): The entry programs: P61 and P62 (entry preparation, CM/SM separation, with the S61.1 IMU orientation check), P63 (entry initialisation), P64 to P67 (post-0.05 G, up control, ballistic and final phases) with their displays and restart points, basic and interpretive. As 188 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALLCON, DISPTARG, DUMPFISH, DUMPP61, DUMPTRIG, DUMPVGAM, FISHCALC, KILLGRP4, LUNENT, NEWRNVN, P61, P61.1, P62, P62.1, P62.2, P62.3, P63, P63.1, P64, P65, P65.1, P66, P67, P67.1, P67.2, P67.3, PREVGAM, RETRN1, RETRN2, RETRN3, S61.1A, S61.1B, S61.1C, S61.2, S62.3, TFF/TRIG, VGAMCALC, VRCALC, WAKEP62 and the continuations after outside calls.",
+          "scope": "Every word of the file (495 words): The entry programs: P61 and P62 (entry preparation, CM/SM separation, with the S61.1 IMU orientation check), P63 (entry initialisation), P64 to P67 (post-0.05 G, up control, ballistic and final phases) with their displays and restart points, basic and interpretive. As 200 routines of the control-transfer ABI compiled whole-file by tools/basic_compile.py and tools/interp_compile.py, entered at CALLCON, DISPTARG, DUMPFISH, DUMPP61, DUMPTRIG, DUMPVGAM, FISHCALC, KILLGRP4, LUNENT, NEWRNVN, P61, P61.1, P62, P62.1, P62.2, P62.3, P63, P63.1, P64, P65, P65.1, P66, P67, P67.1, P67.2, P67.3, PREVGAM, RETRN1, RETRN2, RETRN3, S61.1A, S61.1B, S61.1C, S61.2, S62.3, TFF/TRIG, VGAMCALC, VRCALC, WAKEP62 and the continuations after outside calls (each word a GOFLASH, GOFLASHR or GOPERF1R display call returns to included).",
           "verification": "docs/CM-P61-P67.md"
         }
       ],
@@ -3794,26 +3794,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-source-map.json",
-            "sha256": "91990cbe4a94975a77089998c76614677657268ec9956109b265e5c7d99f5948"
+            "sha256": "5295e18defc5a94f7aae70302c24cca762e71c5f0df575affb5df5d8fe6cb33d"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
-            "sha256": "01d2f502442a908ff61c1cbc3305712bb94f9782fd0b46f11835e4d0b6f1ff60"
+            "sha256": "fc96a987eb538a29fb2353e21d32ce905e1fc212e14957575a07aa4c5b35d502"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-host.log",
-            "sha256": "89313a0e407755d562b98db1cf2bb77407a518eea7dccbcc95b100689d19b3c6"
+            "sha256": "0929d8ee61635604bb963a44a535c47eceda0a8616a78cb7bc5e3d9473255889"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-vice.log",
-            "sha256": "bc05151f705b2080c5aa4037f3c245c28929215d4035eb9c04418911a1407970",
+            "sha256": "94e82aec956c2cae198846dd475ed7f8b919b737a73da2c6245f5ead7b6a0196",
             "vice_targets": {
-              "vice-cm-p61-p67": 251
+              "vice-cm-p61-p67": 267
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p61-p67/cm-p61-p67-proof.json",
-            "sha256": "01d2f502442a908ff61c1cbc3305712bb94f9782fd0b46f11835e4d0b6f1ff60"
+            "sha256": "fc96a987eb538a29fb2353e21d32ce905e1fc212e14957575a07aa4c5b35d502"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g457.md",
@@ -9734,8 +9734,8 @@
             "sha256": "7c616939ba1abf9f602bd2e756114a9294bf9699fdcf4aa13f16c9677d875eb8"
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1b-231.md",
-            "sha256": "7aecc36394a1361fa549f80d298435ef21d7bcce3b1269ada0f23755945ad1d4"
+            "path": "docs/audits/rev2-recite-kalcmanu-497.md",
+            "sha256": "218197f1cd0f5b063ea16cb7d4eba62e6758d6f6f97525ec0a983a44bc81f0d8"
           }
         },
         "precheck_notes": [
@@ -10418,7 +10418,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow), with X1 in DOW.. the DIFEQ stage -12, -24 or -36, and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), NEWJOB +0 or positive (a job waiting), FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, X1/X2 0 or 2 at the entries, S1/S2 0, 2, 4 or 6, PBODY 0 or 2, DIFEQCNT 0, 77763 or 77747, COLREG 0 or -6 to -48 in steps of 6, QPRET a return outside the file, and any values of the integration erasables; a CHANG2 resume starts from the state the original program reaches it in (resume_flow), with X1 in DOW.. the DIFEQ stage 0, -12 or -24, and a resume mid-sequence keeps its sequence's invariant (X2 the DIFEQ stage and DIFEQCNT PBODY between ACCOMP's XCHX,2 DIFEQCNT pairs, S1 PBODY inside GAMCOMP's XCHX,2 S1 pair, the vector MODE and COLREG index at TIMESTEP's W stores). The near-equal-majors divides (COMTERM's DDV ALPHAM, KEPPREP's DDV 2D, GAMCOMP's NORM BDDV) also take joint dividend and divisor sets after the flow, and RECTEST's BMN |TNUV| - 3/4 in [0, 1/4) with a job waiting.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "INTEGRATION_INITIALIZATION (A-PCHK, ATOPCSM, ATOPLEM, STATEINT) at NEWOPS",
@@ -10435,7 +10435,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-proof.json",
-            "sha256": "1630eb508dd04df5a539210a1873ce85e7a0872d28790b0da1c9528e374b5f3c"
+            "sha256": "3d41fe7b9a6dcbde41d97ed156dd4fbd3c3e6eb09ca258a832047a85667aed31"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
@@ -10443,14 +10443,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "a9e1040b205e93705fa0000eaca37002ccd1a85b2c6b5e6bdac2a7b83b71b937",
+            "sha256": "c8b38271e75ff24181ddd64bac544d6e5655438d7152d34f5100472ce1056f87",
             "vice_targets": {
               "vice-lm-orbital-integration": 400
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "f7dfa10ef17666f460205132436ab5fc5ffb0b5653ea97e9ea018e07bb52ca3f"
+            "sha256": "77053d326bfef22d04fd248b2647323b6bc72c20290a72b62cd97745c64f9d53"
           }
         }
       }
