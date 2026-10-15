@@ -9,6 +9,7 @@ reruns the target, so the suite needs only the evidence it actually reads.
 
   python3 tools/ci_run.py [-j N] [--log-dir build/ci-logs] TARGET...
   python3 tools/ci_run.py --group test        # every prerequisite of `make test`
+  python3 tools/ci_run.py --count-shards 4 TARGET...  # runners a PR's targets need
 """
 import argparse
 import concurrent.futures
@@ -32,6 +33,12 @@ BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[
                           r"cannot open (build/[^:\s]+): No such file|"
                           # generated headers included from build/ (-Ibuild)
                           r"fatal error: '([A-Za-z0-9_.-]+\.h)' file not found")
+# A failure that two make processes sharing build/ can cause: a file another
+# target is rewriting or has not finished writing. Only these get the serial
+# rerun; a check that ran and reported wrong results fails the same way alone.
+RACE = re.compile(r'Text file busy|No such file or directory|File exists|Directory not empty|'
+                  r'Resource temporarily unavailable|\[Errno|Killed|Segmentation fault|Bus error|'
+                  r'truncated|unexpected end of file|file format not recognized|file not found')
 
 
 def missing_build(output):
@@ -359,8 +366,12 @@ def ci_rules():
     return _RULES
 
 
+def log_path(target, log_dir):
+    return log_dir / (re.sub(r'[^A-Za-z0-9._-]', '_', target) + '.log')
+
+
 def run(target, log_dir, make_args, attempts, stack=()):
-    log = log_dir / (re.sub(r'[^A-Za-z0-9._-]', '_', target) + '.log')
+    log = log_path(target, log_dir)
     start = time.monotonic()
     tried = set()
     for _ in range(attempts):
@@ -420,19 +431,46 @@ def covered_by_vice(targets):
     return covered
 
 
+def load_weights(weights_path):
+    weights = {}
+    for table in json.loads(weights_path.read_text()).values():
+        if isinstance(table, dict):
+            weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
+    return weights
+
+
+def median_weight(targets, weights):
+    known = sorted(weights[t] for t in targets if t in weights)
+    return known[len(known) // 2] if known else 1.0
+
+
+# A PR's c64 job gets another runner for each RUNNER_SECONDS of measured
+# target time (4 targets run at once on a runner, so about 15 minutes of
+# wall time each), up to --count-shards.
+RUNNER_SECONDS = 3600
+
+
+def count_shards(targets, most, weights_path):
+    """Runners for these targets: enough that each has about RUNNER_SECONDS of
+    measured work, between 1 and most."""
+    try:
+        weights = load_weights(weights_path)
+    except (OSError, ValueError):
+        return 1
+    default = median_weight(targets, weights)
+    total = sum(weights.get(t, default) for t in targets)
+    return max(1, min(most, -(-int(total) // RUNNER_SECONDS)))
+
+
 def shard_targets(targets, k, n, weights_path):
     """Shard k of n: longest target first onto the least loaded shard, by
     measured seconds (a target never measured counts as the median). Without
     a weights file, every Nth target from the Kth, as before."""
     try:
-        weights = {}
-        for table in json.loads(weights_path.read_text()).values():
-            if isinstance(table, dict):
-                weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
+        weights = load_weights(weights_path)
     except (OSError, ValueError):
         return targets[k::n]
-    known = sorted(weights[t] for t in targets if t in weights)
-    default = known[len(known) // 2] if known else 1.0
+    default = median_weight(targets, weights)
     loads = [0.0] * n
     mine = []
     for target in sorted(targets, key=lambda t: (-weights.get(t, default), t)):
@@ -458,6 +496,8 @@ def main():
                         help='run only shard K (0-based) of N, balanced by --weights')
     parser.add_argument('--weights', type=pathlib.Path, default=WEIGHTS,
                         help='per-target seconds from earlier runs (default %(default)s)')
+    parser.add_argument('--count-shards', type=int, metavar='MAX',
+                        help='print how many shards (1 to MAX) the targets need, and run nothing')
     args = parser.parse_args()
     targets = list(dict.fromkeys(args.targets + [t for g in args.group for t in group_targets(g)]))
     covered = covered_by_vice(targets)
@@ -465,6 +505,9 @@ def main():
         print(f'{len(covered)} c64- targets run as part of their vice- target:', ' '.join(sorted(covered)),
               flush=True)
         targets = [t for t in targets if t not in covered]
+    if args.count_shards:
+        print(count_shards(targets, args.count_shards, args.weights))
+        return 0
     if args.shard:
         k, n = (int(x) for x in args.shard.split('/'))
         targets = shard_targets(targets, k, n, args.weights)
@@ -488,11 +531,16 @@ def main():
             if not ok:
                 print(tail, flush=True)
     failed = sorted(r['target'] for r in results if not r['ok'])
-    if failed:
-        # Separate make processes can race on a shared intermediate; a real
-        # failure fails again when run alone.
-        print('rerunning failed targets one at a time:', ' '.join(failed), flush=True)
-        for target in failed:
+    # Separate make processes can race on a shared intermediate; a real
+    # failure fails again when run alone. A failure with no sign of a race
+    # is not rerun (a 10-minute VICE check that reported wrong words would
+    # only report them again).
+    raced = [t for t in failed if RACE.search(log_path(t, args.log_dir).read_text(errors='replace'))]
+    if failed != raced:
+        print('not rerun, no sign of a race:', ' '.join(t for t in failed if t not in raced), flush=True)
+    if raced:
+        print('rerunning failed targets one at a time:', ' '.join(raced), flush=True)
+        for target in raced:
             _, ok, seconds, tail = run(target, args.log_dir, args.make_arg, args.attempts)
             print(f"{'PASS' if ok else 'FAIL'} {target} (serial, {seconds:.0f}s)", flush=True)
             if not ok:
