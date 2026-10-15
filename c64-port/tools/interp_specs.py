@@ -2290,6 +2290,12 @@ SPECS = {
                       'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
         'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
         'resume_orphans': True,
+        # VHFREAD is a WAITLIST task (it leaves through TASKOVER, GOODEND or
+        # BADEND) and RENDISP2 and ENDR57's ENDMARK NOVAC jobs: the basic
+        # routines they reach run under any FIXLOC, and with NEWJOB -0
+        # while DUMMYJOB idles (steward rule for interrupt-context specs).
+        'any_fixloc': True,
+        'any_newjob': True,
         # R61's INDEX MPAC; TC +1 picks R61END or R61C1.
         'tc_tables': {'R61C1-2': 2},
         # (CCS A after a MASK reaches only its first two arms; the others
@@ -2361,12 +2367,10 @@ SPECS = {
         # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
         # segment rows cut them at the next resume LOC.
         'c64_segments': True,
-        # Branch outcomes only runs too long for one diagnostic take (AUTOCK's
-        # WOR DSALMOUT into STEP3CK, the S22 DDVs): truncated rows.
-        # C64 rows chosen by gcov branch arc over every linked source, so
-        # arcs only runs too long for one C64 program take get truncated
-        # rows (c64_cuts). Every 16th case is traced (a divisor of
-        # freeze_stride).
+        # C64 rows chosen by gcov branch arc over every linked source; arcs
+        # only runs too long for one diagnostic take (AUTOCK's WOR DSALMOUT
+        # into STEP3CK, the S22 DDVs) get truncated rows (c64_cuts). Every
+        # 16th case is traced (a divisor of freeze_stride).
         'c64_rows': 'cover',
         'cover_stride': 16,
         'c64_cuts': True,
