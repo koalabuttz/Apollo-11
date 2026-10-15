@@ -2620,9 +2620,10 @@ SPECS = {
             ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
             ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
                 num=('vac+2', 'vac+3'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
-            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: -12, -24 or -36
-            # (DIFEQ+12, +24 and +36), as the flight stages reach it.
-            ('11,3705', '11,3765', {'vac+046': [0o77763, 0o77747, 0o77733]}),
+            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: 0 from DIFEQ0 (NEXTCOL's
+            # AXT,1 0), -12 or -24 from DIFEQCOM after DIFEQ+0 and +1; DIFEQ+2
+            # never returns to DOW.., so VECTAB,1 stays inside VECTABND.
+            ('11,3705', '11,3765', {'vac+046': [0, 0o77763, 0o77747]}),
             ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
                                                          for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
                                                          for j in (1, 0o37777)]})],
