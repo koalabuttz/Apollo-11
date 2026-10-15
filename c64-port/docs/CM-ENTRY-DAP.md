@@ -171,3 +171,5 @@ Hashes: `evidence/cm-entry-dap/SHA256.json`; all files are in the tree.
 ## Flight build
 
 The spec sets `trusted_image`, `image_w` and `index_carry16`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. That scan was the top cost of the CM entry window in VICE (lane-g/cm-entry-profile-80342904.md in the project files). Host tests and C64 diagnostics keep the scan.
+
+The spec's `hot_points` name the 26 basic routines one entry DAP pass (T5RUPT) reaches in that window. `cm_entry_dap_hot_routines` holds them, with the same wrappers as `cm_entry_dap_basic`, for the flight store's entry pack: a pass then loads one module instead of several chunks of the whole table. `make test-cm-entry-dap-hot` checks that each hot key calls the same function through either table.

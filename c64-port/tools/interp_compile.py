@@ -1183,6 +1183,31 @@ class Compiler:
             cur += 1
         return st + ['next(s);'], cur, False
 
+    def hot_table(self, sym, points, routines, index, guard):
+        """<sym>_hot_routines: the basic entries at the spec's hot_points
+        ('bank,addr', octal), in key order, with the full table's guards and
+        wrappers, so a key calls the same function through either table."""
+        basic = {r[0]: r for r in routines if r[1] == 'b'}
+        keys = []
+        for pt in points:
+            b, a = pt.split(',')
+            phys = int(b, 8) * 1024 + int(a, 8) - 0o2000
+            if phys not in basic:
+                raise CompileError('hot point %s is not a basic routine of the file' % pt)
+            keys.append(phys)
+        if len(set(keys)) != len(keys):
+            raise CompileError('hot_points repeats a point')
+        c = ['/* The basic routines one pass reaches (the spec\'s hot_points): the',
+             ' * flight store packs them in one module, so a pass loads it once. */',
+             'static const agc_routine_entry hot_entries[]={']
+        for phys in sorted(keys):
+            c.append(guard(index[phys]))
+            c.append(' {%u,%s_abi},' % (phys, basic[phys][2]))
+            c.append('#endif')
+        c += [' {0xffffu,0}', '};',
+              'const agc_routine_table %s_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};' % sym]
+        return c
+
     # ---- basic code ------------------------------------------------------
     def phys_of(self, k, bank):
         """Physical fixed address of a 12-bit address field (None if erasable)."""
@@ -2373,6 +2398,8 @@ class Compiler:
                 c += self.flight_table(sym, [r[0] for r in rs])
             c.append('const agc_routine_table %s_%s={%s_entries,(uint16_t)(sizeof %s_entries/sizeof %s_entries[0]-1u)};'
                      % (sym, tab, tab, tab, tab))
+        if s.get('hot_points'):
+            c += self.hot_table(sym, s['hot_points'], routines, index, guard)
         # Test metadata.
         c.append('const %s_point %s_points[%s_POINTS]={' % (sym, sym, sym.upper()))
         c.append(',\n'.join(' {%u,%u}' % (phys, 1 if kind == 'i' else 0) for phys, kind, fn, lab, why in routines))
@@ -2393,6 +2420,10 @@ class Compiler:
         h.append('/* %s/%s: interpretive routines keyed by the physical' % (prog, s['file'][self.m]))
         h.append(' * LOC at NEWOPS (%04o), basic ones by physical Z. */' % self.newops)
         h.append('extern const agc_routine_table %s_interpretive,%s_basic;' % (sym, sym))
+        if s.get('hot_points'):
+            h.append('/* The basic routines one pass of the file reaches (spec hot_points), for')
+            h.append(' * the flight store\'s pack: the same wrappers as %s_basic. */' % sym)
+            h.append('extern const agc_routine_table %s_hot_routines;' % sym)
         h.append('/* Every routine (physical address, 1 interpretive), the erasable')
         h.append(' * words its GOTOs and CALLs read a CADR from (work-area offsets below')
         h.append(' * 045), and the outside basic addresses it transfers to. */')

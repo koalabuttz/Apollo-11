@@ -6356,6 +6356,90 @@ static const agc_routine_entry basic_entries[]={
  {0xffffu,0}
 };
 const agc_routine_table cm_entry_dap_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
+/* The basic routines one pass reaches (the spec's hot_points): the
+ * flight store packs them in one module, so a pass loads it once. */
+static const agc_routine_entry hot_entries[]={
+#if (CM_ENTRY_DAP_KEEP0 >> 1) & 1
+ {13596,r32434_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 10) & 1
+ {13639,r32507_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 12) & 1
+ {13650,r32522_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 14) & 1
+ {13662,r32536_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 15) & 1
+ {13664,r32540_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 16) & 1
+ {13667,r32543_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 17) & 1
+ {13673,r32551_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 20) & 1
+ {13703,r32607_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 27) & 1
+ {13737,r32651_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 28) & 1
+ {13749,r32665_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 29) & 1
+ {13758,r32676_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 30) & 1
+ {13760,r32700_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 31) & 1
+ {13770,r32712_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 32) & 1
+ {13780,r32724_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 33) & 1
+ {13784,r32730_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 34) & 1
+ {13788,r32734_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 35) & 1
+ {13793,r32741_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 39) & 1
+ {13816,r32770_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 43) & 1
+ {13830,r33006_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 45) & 1
+ {13855,r33037_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 56) & 1
+ {13898,r33112_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP0 >> 57) & 1
+ {13907,r33123_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 8) & 1
+ {13995,r33253_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 51) & 1
+ {14271,r33677_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 54) & 1
+ {14277,r33705_abi},
+#endif
+#if (CM_ENTRY_DAP_KEEP1 >> 55) & 1
+ {14287,r33717_abi},
+#endif
+ {0xffffu,0}
+};
+const agc_routine_table cm_entry_dap_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};
 const cm_entry_dap_point cm_entry_dap_points[CM_ENTRY_DAP_POINTS]={
  {3072,0},
  {13596,0},
