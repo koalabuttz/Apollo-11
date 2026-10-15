@@ -29,6 +29,20 @@ lists every collision for its lanes. `--host-only` writes only the host
 table index (`build/flight-store/<m>-host.inc`) and the whole-program site
 table (`build/flight-store/<m>-sites.inc`) for the differential.
 
+The host index models the store's module layout for the host flight run's
+module-load count (`tools/flight_host_run.c`). The pinned sets (slots 3 and
+4) come right after the resident tables, never load and never take a slot.
+The job-slot packs (`PACKS`: the excursion and T4RUPT) go ahead of their
+files' tables: a hot subset of a resident table goes ahead of the resident.
+A ride table (`RIDE`) holds its keys only while its pack is in the job slot
+(slot 5). With a class-4 set in, task-slot modules count in the job slot. A
+full build writes the index from the report's `pinned` and `packs`; a
+`--host-only` build reads the last `report.json` when its sets still match
+`PIN` and `PACKS`, and otherwise uses those as configured. On 84d550f5 this
+cut the counted loads for cm-entry from 873,831 to 11,901 (the CM idle
+loop's POSTJUMP and self-check run from the pinned class-3 set) and for
+lm-p63-nassp from 195,318 to 123,454.
+
 Each module carries its own operand table (`FS_SITES`): the
 `agc_site_operand` arrays its sources compile to for the mission (read from
 `cc -E` of each source), so no whole-program site table is needed. The
