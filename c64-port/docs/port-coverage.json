@@ -709,8 +709,8 @@
             "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
           },
           "independent_review": {
-            "path": "docs/audits/lane-g-370.md",
-            "sha256": "cbae750523b4112d7c191746cb7b19e53c8adca0abed813f8c36dce43a34a542"
+            "path": "docs/audits/rev2-recite-b506.md",
+            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
           }
         }
       }
@@ -6019,8 +6019,8 @@
             "sha256": "aff3170fedbbe096441d33db98d29c47f8e0ae7eae532099c571901a838076c6"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g457.md",
-            "sha256": "855ea754164cb909e04174a2fc369563aa4eb6ac09aa16e6457801c48d94b083"
+            "path": "docs/audits/rev2-recite-b506.md",
+            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
           }
         }
       }
@@ -11914,8 +11914,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lm-powered-subs.md",
-            "sha256": "732efc7fd5ecaff2a7897e194066f6bd413b4ab9b3c45ab68470f95f16c41406"
+            "path": "docs/audits/rev2-recite-b506.md",
+            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
