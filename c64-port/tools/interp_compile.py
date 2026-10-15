@@ -340,6 +340,23 @@ class Compiler:
                     if (t is not None and self.in_file(t) and t in self.code and len(ln.operand.split()) == 1
                             and self.code[t].op not in self.DATA_OPS):
                         self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', ln.op + ' ' + ln.operand)
+        # 'usprcadr_exits': the CADR word after a TC USPRCADR. USPRCADR
+        # leaves LOC there and BIT8 in EDOP (which edits it to 1), so the
+        # called interpretive code returns through DANZIG, whose CCS EDOP
+        # runs the +0 order, EXIT, into the basic word after the CADR: a
+        # routine of its own.
+        # (True: every TC USPRCADR of the file's code; a list: those labels.)
+        ux = self.spec.get('usprcadr_exits', ())
+        if ux is True:
+            ux = [q + 1 for q in sorted(self.code)
+                  if self.code[q].op == 'TC' and self.code[q].operand == 'USPRCADR' and self.in_file(q)
+                  and q + 1 in self.code and self.code[q + 1].op == 'CADR']
+        for lab in ux:
+            phys = lab if isinstance(lab, int) else self.label_phys(lab)
+            if phys is None or self.code[phys].op != 'CADR' or self.code[phys - 1].operand != 'USPRCADR':
+                raise CompileError('usprcadr exit %s is not a CADR after TC USPRCADR' % lab)
+            self.pending[phys] = ('EXIT', phys + 1, 1)
+            self.add_start(phys, 'i', 'USPRCADR return through DANZIG')
         self.blocks = {}
         self.owner = {}
         while True:
@@ -491,7 +508,8 @@ class Compiler:
             # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
             # NEWOPS as at the end of any pair.
             op, cur, edop = self.pending[start]
-            out.append('/* %s pending DANZIG: RTB on the left, %s on the right */' % (self.where(start), op))
+            out.append('/* %s pending DANZIG: %s */' % (self.where(start), 'USPRCADR\'s EXIT in EDOP' if op == 'EXIT'
+                                                           else 'RTB on the left, %s on the right' % op))
             out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
             out.append('TRACE(s);')
             out.append('right(s);')

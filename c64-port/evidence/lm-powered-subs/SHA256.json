@@ -4,33 +4,33 @@
   "release": "evidence-lm-powered-subs",
   "files": {
     "lm-powered-subs-closure.json": {
-      "sha256": "5447621a64fac17603ba45243ff80f6cd5538e6aa96600ba50d45024c7fa60b5",
-      "bytes": 38174,
+      "sha256": "cbdacb7968c174fe05358b6ca2db5aba8dcbc5e0eecc9421d51b8f1b9d23bdd9",
+      "bytes": 38191,
       "store": "tree"
     },
     "lm-powered-subs-differential.log": {
-      "sha256": "3bc9fe7db0eb99370fd52fa78c9698b0bb5b1631ee1607445b53a5acbc718a55",
-      "bytes": 2599,
+      "sha256": "6600cacc5b0e5d717844a484a9036df7a221189f62aefea3a6f40a220f2b0095",
+      "bytes": 1588,
       "store": "release"
     },
     "lm-powered-subs-host.log": {
-      "sha256": "470f260cdbdd1c96ec940e2b3b1836e3a400827618d05ab4817a83570703cd7c",
-      "bytes": 1104,
+      "sha256": "44fe9a9fe432d7b1ffdae4af5068b3e4cc8c6e9e9cc67256f58ead8b41ad101f",
+      "bytes": 1000,
       "store": "release"
     },
     "lm-powered-subs-proof.json": {
-      "sha256": "d3432cc0cd56d3c2b91e5bd366a34a72b86f3902298565a5d0b30ba4f5f59e70",
-      "bytes": 5837,
+      "sha256": "2f29061c36652b43f394357d609166010302c2ba020385d55ef37cd570d957c1",
+      "bytes": 6035,
       "store": "tree"
     },
     "lm-powered-subs-source-map.json": {
-      "sha256": "4334369f70d1feff2e4458e400c26c43b0b1249e0aefeafe95a2fa08cccce83c",
+      "sha256": "a1604ccf9e617324983e0a892f418017f6feef58ff5897de8da82a7735cd2619",
       "bytes": 38447,
       "store": "tree"
     },
     "lm-powered-subs-vice.log": {
-      "sha256": "8421eb0fb8ff373fb34d7e126c4c0e22d6a5814e47d3a1b18f01b3722d50aad5",
-      "bytes": 927,
+      "sha256": "163cbea2eb2536e1f6bc49c8b64f43eb8eb59b873c271c69278d99ecac753af5",
+      "bytes": 159,
       "store": "release"
     }
   }

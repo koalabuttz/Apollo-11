@@ -1283,10 +1283,11 @@ def oracle_env(spec):
     env = {}
     if spec.get('channel_inputs'):
         env['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
-    if spec.get('pending_danzig') or (spec.get('basic') == 'full' and spec.get('rtb')):
+    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits')
+    if pending or (spec.get('basic') == 'full' and spec.get('rtb')):
         cp0 = IC.Compiler(spec, spec['missions'][0])
         cp0.decode()
-    if spec.get('pending_danzig'):
+    if pending:
         # (DANZIG with an order pending in EDOP is no oracle stop: the
         # native program resolves it through the DANZIG marker.)
         env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [

@@ -822,15 +822,19 @@ SPECS = {
         # and FLESHPOT's return from VXV (LOC set to it, EDOP BIT8: the
         # interpreter resumes the basic code there).
         'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM', 'FLESHPOT-1', 'FLESHPOT+93'],
+        # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
+        # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT).
+        'usprcadr_exits': True,
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
         # (as cm-powered-subs). CD*TR*GS's loop: TEM3 the angle offset, TEM2
         # its caller's return (CDUTRIG, CD*TR*G and the four interface
-        # routines' TCs, or outside the file).
+        # routines' TCs, or outside the file); the same at the CADR words
+        # DANZIG resumes before them.
         'states': dict(
             {p: {'143': [0, 2, 4], '142': [0o3541, 0o3545, 0o3650, 0o3653, 0o3663, 0o3666, 0o5000]}
-             for p in ('23,3570', '23,3576', '23,3606')},
+             for p in ('23,3567', '23,3570', '23,3575', '23,3576', '23,3605', '23,3606')},
             # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
             # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
             **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
@@ -854,6 +858,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'target': 'tests/lm_powered_subs_target.c',
+        # (The DANZIG marker the usprcadr_exits resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Interpreter lane: INTERPRETER.agc's words that other files enter
     # directly (BANKCALL/USPRCADR/TC/TCF), compiled as basic routines; the
