@@ -4606,7 +4606,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (283 words in bank 23): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, CANDEL, SPLRET, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 74 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "scope": "Every word of the file (283 words in bank 23): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, CANDEL, SPLRET, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 114 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R30.md"
         }
       ],
@@ -4648,8 +4648,8 @@
             "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-235.md",
-            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
+            "path": "docs/audits/rev2-recite-e532.md",
+            "sha256": "89d57aec6872ded50689ab7b3ac04fc4e4a21d090d377e13b419df9187124e2a"
           }
         }
       }
@@ -12028,7 +12028,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (261 words in bank 22): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 66 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "scope": "Every word of the file (261 words in bank 22): V82CALL, V82GOFF, V82GOFLP, V82STALL, FLAGGON, V82GOFF1, OTHSHIP, BOTHSHIP, THISSHIP, EARTHPAD, MOONPAD, BOTHPAD, TICKTPER, TICKTFF, TICKTEST, DOTICK, TFFTICK, TPERTICK, V82GON, V82REDSP, V82GON1, NEXTLINE, MOONGON, EARTHGON, V82GON2, V82GON3, SR30.1, TFFCALLS, STORHAPO, STORHPER, DOTPER, SKIPTPER and MAXCHK, as 106 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/R30.md"
         }
       ],
@@ -12070,8 +12070,8 @@
             "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-235.md",
-            "sha256": "91ca944a8ff814a230305e728493de182ffb0dd05462cf8228eb3fa0eae4afd9"
+            "path": "docs/audits/rev2-recite-e532.md",
+            "sha256": "89d57aec6872ded50689ab7b3ac04fc4e4a21d090d377e13b419df9187124e2a"
           }
         }
       }
