@@ -761,6 +761,26 @@ def up_to_date(stamp, digest):
     return True
 
 
+UNPLACED = 'docs/flight-store-unplaced.json'
+
+
+def check_unplaced(m, unplaced):
+    """The ratchet on routine keys no packed module holds (the C64 stops
+    there; the host bridges them through yaAGC): per table, at most the
+    count docs/flight-store-unplaced.json allows. A lower count asks for the
+    file to be lowered with it."""
+    allowed = json.loads((ROOT / UNPLACED).read_text()).get(m, {})
+    over = {t: (n, allowed.get(t, 0)) for t, n in unplaced.items() if n > allowed.get(t, 0)}
+    if over:
+        raise SystemExit(f'{m}: routine keys with no module in the store (the C64 stops at them): '
+                         + ', '.join(f'{t} {n} (allowed {k})' for t, (n, k) in sorted(over.items()))
+                         + f'. Make them fit a slot (report.json "failed" says how each module failed), '
+                         f'or raise the count in {UNPLACED} with the reason in the PR.')
+    lower = {t: (unplaced.get(t, 0), k) for t, k in allowed.items() if unplaced.get(t, 0) < k}
+    for t, (n, k) in sorted(lower.items()):
+        print(f'{m}: {t} has {n} unplaced keys, {k} allowed: lower {UNPLACED} to {n}')
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -1197,6 +1217,7 @@ def main():
                     for k in keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
         records, erasable, unplaced, interpreted = [], 0, 0, 0
+        unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
                 continue
@@ -1209,6 +1230,7 @@ def main():
             owner = next((module_of[(t, k)] for t in ts if (t, k) in module_of), None)
             if owner is None:
                 unplaced += 1
+                unplaced_by.setdefault(sorted(ts)[0], []).append(k)
                 continue
             bank, loc = canonical_record(k)
             records.append(dict(bank=bank, loc=loc, module=owner, selector=0, interpretive=kind == 'i'))
@@ -1328,6 +1350,7 @@ def main():
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
             unplaced_keys=unplaced, interpreter_keys=interpreted,
+            unplaced={t: len(v) for t, v in sorted(unplaced_by.items())},
             shadowed_entries={t: len(keys[t]) - len(v) for t, v in sorted(live.items())},
             modules_left_out_shadowed=[f'0x{i:04x}' for i in pruned],
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
@@ -1341,6 +1364,8 @@ def main():
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
                                                     'task_overflow', 'task_pinned_out')} | dict(sites=len(mod.get('sites') or {}))
                          for mod in modules])
+        if not a.host_only:
+            check_unplaced(m, report[m]['unplaced'])
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
