@@ -3030,12 +3030,17 @@ SPECS = {
         # basic routines never name FIXLOC or NEWJOB, so they take any.
         'any_fixloc': True,
         'any_newjob': True,
+        # R10,R11A to TCF LANDISP (21,2021-2071) reads CHAN30 for an abort
+        # stage or abort command whenever LETABORT is set (all of P63): left
+        # to lm-p70-p71-file, which runs the channel orders, so its points
+        # (R10,R11A and the FLIP returns) resolve there in the flight store.
+        'outside': {'R10,R11A': 0o51},
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
         # 8D): the DPS or the APS coefficients, eight words on.
         'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
-        'partial': {'lm': 'READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
+        'partial': {'lm': 'R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
