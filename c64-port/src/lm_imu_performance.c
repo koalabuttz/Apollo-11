@@ -9,6 +9,7 @@
  * lm_interp_steps/lm_interp_orders paths with the pair's words as literal
  * arguments; branches follow the outcomes those paths return. */
 #include "lm_imu_performance.h"
+#include "flight_undo.h"
 #include "agc_image_ops.h"
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
@@ -934,10 +935,14 @@ static enum exec_status steps(apollo_overlay_state *s,lm_ipt_io *io){
 }
 static enum exec_status run(apollo_overlay_state *s,void *v){
  lm_ipt_io *io=v,entry;enum exec_status st;
- if(!s||!io||!io->undo||io->undo==s)return EXEC_OUT_OF_SCOPE;
- *io->undo=*s;entry=*io;
+ if (!s || !io || !io->undo || FLIGHT_UNDO_ALIAS(io, s)) return EXEC_OUT_OF_SCOPE;
+ FLIGHT_UNDO_SAVE(io, s);
+ entry = *io;
  st=steps(s,io);
- if(st!=EXEC_OK){*s=*entry.undo;*io=entry;}
+ if (st != EXEC_OK) {
+     FLIGHT_UNDO_RESTORE(&entry, s);
+     *io = entry;
+ }
  return st;
 }
 static enum exec_status routine(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;return run(s,io);}
@@ -945,12 +950,22 @@ static enum exec_status routine(const agc_native_program *p,apollo_overlay_state
 #define RT(a) {B37(a),routine}
 #define FFK(a) (uint16_t)(2048u+((a)-04000u))
 #define FF(a) {FFK(a),routine}
-static const agc_routine_entry basic_entries[IPT_BASIC_ROUTINES]={
- FF(04103),FF(04112),RT(02002),RT(02004),RT(02027),RT(02034),RT(02035),RT(02036),RT(02071),RT(02100),
- RT(02111),RT(02113),RT(02115),RT(02150),RT(02151),RT(02161),RT(02165),RT(02166),RT(02272),RT(02274),
- RT(02311),RT(02313),RT(02314),RT(02324),RT(02331),RT(02335),RT(02342),RT(02354),RT(02466),RT(02467),
- RT(02470),RT(02500),RT(02504),RT(02536),RT(02561),RT(02576),RT(02577),RT(02604),RT(02776),RT(03024),
- RT(03046),RT(03051),RT(03053)};
+/* Flight builds also key the basic word each EXIT returns to: there the
+ * native interpreter runs the interpretive code and its EXIT hands the word
+ * to the flight program as a basic key (tools/flight_exit_returns.py). The
+ * host build runs on across EXIT in one call and keys none of them. */
+#ifdef AGC_FLIGHT_INTERPRETER
+#define X37(a) RT(a),
+#else
+#define X37(a)
+#endif
+static const agc_routine_entry basic_entries[]={
+ FF(04103),FF(04112),RT(02002),RT(02004),RT(02027),RT(02034),RT(02035),RT(02036),X37(02067)
+ RT(02071),RT(02100),RT(02111),RT(02113),RT(02115),RT(02150),RT(02151),RT(02161),RT(02165),
+ RT(02166),X37(02226)RT(02272),RT(02274),RT(02311),RT(02313),RT(02314),RT(02324),RT(02331),
+ RT(02335),RT(02342),RT(02354),X37(02455)RT(02466),RT(02467),RT(02470),RT(02500),RT(02504),
+ X37(02535)RT(02536),RT(02561),RT(02576),RT(02577),RT(02604),X37(02773)RT(02776),X37(03021)
+ RT(03024),X37(03033)RT(03046),RT(03051),RT(03053)};
 /* Every order-pair and store word: each can follow a DANZIG, where a job
  * switch (CHANG2) suspends the job and the Executive resumes it at NEWOPS
  * with LOC there. */
@@ -968,7 +983,7 @@ static const agc_routine_entry interp_entries[IPT_INTERPRETIVE_ROUTINES]={
  RT(02741),RT(02742),RT(02744),RT(02745),RT(02747),RT(02750),RT(02752),RT(02755),RT(02760),RT(02761),
  RT(02762),RT(02764),RT(02765),RT(02766),RT(02767),RT(02770),RT(02772),RT(03006),RT(03011),RT(03013),
  RT(03015),RT(03017),RT(03020),RT(03030),RT(03032)};
-const agc_routine_table lm_imu_performance_routines={basic_entries,IPT_BASIC_ROUTINES};
+const agc_routine_table lm_imu_performance_routines={basic_entries,sizeof basic_entries/sizeof basic_entries[0]};
 const agc_routine_table lm_imu_performance_interpretive={interp_entries,IPT_INTERPRETIVE_ROUTINES};
 const uint16_t ipt_routine_keys[IPT_ROUTINES]={
  FFK(04103),FFK(04112),B37(02002),B37(02004),B37(02027),B37(02034),B37(02035),B37(02036),B37(02071),B37(02100),

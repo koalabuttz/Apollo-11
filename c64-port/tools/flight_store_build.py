@@ -354,7 +354,8 @@ def host_mct(m, t):
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None):
+                io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None,
+                key_range=(0, 0xFF)):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
     [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
@@ -363,7 +364,10 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
     flags (a pinned pair's --undefined and --defsym, pin_pair). keys: the
     table keys ({table: [physical]}); with chunk or pick, the entries'
-    keys go in as data (FS_KEYS), so the module's main stores only calls."""
+    keys go in as data (FS_KEYS), so the module's main stores only calls.
+    key_range: the high bytes of the lowest and highest key the module's
+    tables hold (FS_KEY_LO and FS_KEY_SPAN, so the resident skips a module
+    that cannot hold the step's point; resident_flight.h)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
@@ -387,6 +391,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         head += f'#define FS_FIXED_DATA {fixed_data}\n'
     # The work clock's weight (resident_flight.h): its tables' calibrated
     # MCT per routine.
+    head += f'#define FS_KEY_LO {key_range[0]}u\n#define FS_KEY_SPAN {key_range[1] - key_range[0]}u\n'
     head += f'#define FS_MCT {mct_weight(m, [chunk[0]] if chunk else list(basic) + list(interp))}u\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
@@ -689,6 +694,14 @@ FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT
                        'cm_imu_calibration': [['-DCM_IMU_CALIBRATION_FLIGHT_PART=%d' % j] for j in (1, 2, 3)]}}
 
 
+# Files whose over-slot table splits greedily (split_greedy): each chunk
+# takes as many consecutive routines as fit, instead of halving until every
+# chunk fits. The CM entry DAP pass runs its table front to back across the
+# chunks; halving gave 4 chunks of about 9-10 KB and a pass loaded about 5
+# of them (lane-g/cm-entry-profile-80342904.md); greedy chunks of about
+# 15 KB cut its job loads by a third.
+GREEDY_SPLIT = {'lm': set(), 'cm': {'cm_entry_dap'}}
+
 def part_keys(cc, m, stem, tables):
     """[{table: [keys]}] per FLIGHT_PARTS build of stem: its host object
     with the part's defines and each table renamed, read by table_keys."""
@@ -702,6 +715,19 @@ def part_keys(cc, m, stem, tables):
         got = table_keys(cc, [f'{t}_part{j}' for t in tables], [obj])
         parts.append({t: got[f'{t}_part{j}'] for t in tables})
     return parts
+
+
+def flight_keys(cc, stem, tables):
+    """{table: [keys]} of a FLIGHT_INTERP_STOP file built as its flight
+    module is (-DAGC_FLIGHT_INTERPRETER): the flight build can key words the
+    host build does not, such as the basic word an EXIT returns to
+    (tools/flight_exit_returns.py)."""
+    (ROOT / OUT / 'host-parts').mkdir(parents=True, exist_ok=True)
+    obj = ROOT / OUT / 'host-parts' / f'{stem}.flight.o'
+    run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER',
+         *(f'-D{t}={t}_flight' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
+    got = table_keys(cc, [f'{t}_flight' for t in tables], [obj])
+    return {t: got[f'{t}_flight'] for t in tables}
 
 
 def interp_modules(cc, m, library):
@@ -813,6 +839,28 @@ def up_to_date(stamp, digest):
     return True
 
 
+UNPLACED = 'docs/flight-store-unplaced.json'
+
+
+def check_unplaced(m, unplaced):
+    """The ratchet on routine keys no packed module holds (the C64 stops
+    there; the host bridges them through yaAGC): per table, at most the
+    count docs/flight-store-unplaced.json allows. A lower count asks for the
+    file to be lowered with it. Returns the error, raised once report.json
+    is written."""
+    allowed = json.loads((ROOT / UNPLACED).read_text()).get(m, {})
+    over = {t: (n, allowed.get(t, 0)) for t, n in unplaced.items() if n > allowed.get(t, 0)}
+    lower = {t: (unplaced.get(t, 0), k) for t, k in allowed.items() if unplaced.get(t, 0) < k}
+    for t, (n, k) in sorted(lower.items()):
+        print(f'{m}: {t} has {n} unplaced keys, {k} allowed: lower {UNPLACED} to {n}')
+    if over:
+        return (f'{m}: routine keys with no module in the store (the C64 stops at them): '
+                + ', '.join(f'{t} {n} (allowed {k})' for t, (n, k) in sorted(over.items()))
+                + f'. Make them fit a slot (report.json "failed" says how each module failed), '
+                f'or raise the count in {UNPLACED} with the reason in the PR.')
+    return None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -847,11 +895,15 @@ def main():
         run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', OUT])
         library = prepare(a.cc, ROOT / OUT)
     report = {}
+    errors = []
     for m in a.missions.split(','):
         mine = {t: o for t, o in tables.items() if mission_of(t, o) == m}
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
         packed = {t: o for t, o in mine.items() if t not in skipped and keys[t]}
         empty = sorted(t for t, o in mine.items() if t not in skipped and not keys[t])
+        for stem in sorted(FLIGHT_INTERP_STOP[m] - set(FLIGHT_PARTS[m])):
+            keys.update(flight_keys(a.host_cc, stem, sorted(t for t, o in mine.items()
+                                                             if o == stem and not interpretive_table(t))))
         resident_keys = {('i' if interpretive_table(t) else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
@@ -1012,14 +1064,23 @@ def main():
             # A module on the base record links no transfer engine: the
             # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
             direct_only = mod.get('direct_only', not mod.get('io'))
+            # The high bytes of the keys its basic tables hold, for
+            # rk_direct's range check, which sees an erasable Z as 0xff; a
+            # module with interpretive tables can run at an interpretive
+            # point, so it takes every point.
+            c = mod.get('chunk')
+            ks = ([keys[t][i] for t, i in pick] if pick is not None else keys[c[0]][c[1]:c[2]] if c
+                  else [k for t in mod['basic'] for k in keys.get(t, [])])
+            rng = ((min(ks) >> 8, 0xFF if max(ks) >= ERASABLE_BASE else max(ks) >> 8)
+                   if ks and not mod['interp'] else (0, 0xFF))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys)
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys, rng)
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()), (), pick, keys)
+                                   direct_only, mod.get('defines', ()), (), pick, keys, rng)
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
@@ -1206,8 +1267,38 @@ def main():
             return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
                              prg_name=f'trial-{c[0]}-{c[1]}'))[2]
 
+        def split_greedy(mod):
+            """As split, but each chunk takes as many consecutive routines as fit
+            (binary search on its end), so a pass crosses fewer chunks."""
+            kept, over = [], []
+            for t in [t for t in mod['basic'] if t not in mod['also']]:
+                lo, n = 0, len(keys[t])
+                while lo < n:
+                    r = trial((t, lo, n), mod)
+                    if r['ok'] or r.get('empty'):
+                        kept.append((t, lo, n)); break
+                    if not r.get('overflow'):
+                        return None
+                    good, bad = lo, n          # (t, lo, good) fits (empty when good == lo), (t, lo, bad) does not
+                    while bad - good > 1:
+                        mid = (good + bad) // 2
+                        r = trial((t, lo, mid), mod)
+                        if r['ok'] or r.get('empty'):
+                            good = mid
+                        elif not r.get('overflow'):
+                            return None
+                        else:
+                            bad = mid
+                    if good == lo:
+                        over.append(((t, lo, lo + 1), r.get('overflow', 0))); lo += 1
+                    else:
+                        kept.append((t, lo, good)); lo = good
+            return (kept, over) if kept else None
+
         def split(mod):
             """(chunks that fit, [(one-routine chunk, overflow)] that do not), or None."""
+            if mod['stem'] in GREEDY_SPLIT[m]:
+                return split_greedy(mod)
             # Co-located tables stay whole in their own module.
             todo, kept, over = [(t, 0, len(keys[t])) for t in mod['basic'] if t not in mod['also']], [], []
             while todo:
@@ -1288,6 +1379,7 @@ def main():
                         module_of[(hot_full(t) or t, k)] = pack['id']
         write_host(packed_pins(pinned), pack_tables(pack_report(packs)))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
+        unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
                 continue
@@ -1300,6 +1392,7 @@ def main():
             owner = next((module_of[(t, k)] for t in ts if (t, k) in module_of), None)
             if owner is None:
                 unplaced += 1
+                unplaced_by.setdefault(sorted(ts)[0], []).append(k)
                 continue
             bank, loc = canonical_record(k)
             records.append(dict(bank=bank, loc=loc, module=owner, selector=0, interpretive=kind == 'i'))
@@ -1419,6 +1512,7 @@ def main():
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
             unplaced_keys=unplaced, interpreter_keys=interpreted,
+            unplaced={t: len(v) for t, v in sorted(unplaced_by.items())},
             shadowed_entries={t: len(keys[t]) - len(v) for t, v in sorted(live.items())},
             modules_left_out_shadowed=[f'0x{i:04x}' for i in pruned],
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
@@ -1432,6 +1526,8 @@ def main():
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
                                                     'task_overflow', 'task_pinned_out')} | dict(sites=len(mod.get('sites') or {}))
                          for mod in modules])
+        if not a.host_only:
+            errors += [e for e in [check_unplaced(m, report[m]['unplaced'])] if e]
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
@@ -1445,6 +1541,8 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+    if errors:
+        raise SystemExit('\n'.join(errors))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
     return 0
 

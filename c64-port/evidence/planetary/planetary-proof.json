@@ -30,7 +30,7 @@
   {
    "mission": "lm",
    "keep": "0x803ffffffffffffffffe1",
-   "cases": 20,
+   "cases": 19,
    "case_ids": [
     1320,
     1628,
@@ -38,7 +38,7 @@
     2240,
     2472,
     2440,
-    2568,
+    2728,
     2816,
     3076,
     3348,
@@ -50,15 +50,15 @@
     4896,
     5172,
     5380,
-    5640,
-    5948
+    5640
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x7ffffffffffff000000",
-   "cases": 55,
+   "keep": "0x7ffffffffffff800000",
+   "cases": 56,
    "case_ids": [
+    5948,
     6212,
     6448,
     6700,
@@ -78,13 +78,14 @@
     10320,
     10568,
     10764,
-    10837,
+    10964,
+    10863,
     11172,
     11444,
     11544,
     11840,
     12068,
-    12288,
+    12372,
     12580,
     12904,
     13084,
@@ -97,7 +98,6 @@
     15000,
     15316,
     15376,
-    15451,
     15680,
     15880,
     16152,
@@ -129,11 +129,11 @@
    "keep": "0x7fffffffffffffffff1801",
    "cases": 13,
    "case_ids": [
-    18944,
+    19092,
     19296,
     19684,
     19776,
-    20212,
+    19988,
     20236,
     20508,
     20744,
@@ -209,7 +209,7 @@
   {
    "mission": "cm",
    "keep": "0x3ffffffffffffffff0000000",
-   "cases": 67,
+   "cases": 69,
    "case_ids": [
     31624,
     31764,
@@ -255,16 +255,18 @@
     41804,
     42068,
     42320,
+    42412,
     42556,
     42776,
     43128,
     43328,
+    43432,
     43520,
     43780,
     44032,
     44296,
     44608,
-    44916,
+    44804,
     45108,
     45340,
     45576,
@@ -282,8 +284,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1342,
-  "c64_taken": 1342,
+  "host_taken": 1360,
+  "c64_taken": 1360,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -1055,8 +1057,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 48384,
- "host_branch_arcs": 1368,
- "c64_rows": 204,
- "c64_branch_arcs": 1368,
+ "host_branch_arcs": 1389,
+ "c64_rows": 206,
+ "c64_branch_arcs": 1389,
  "host_branches_missing_on_c64": []
 }

@@ -81,20 +81,20 @@
   {
    "mission": "cm",
    "keep": "0xffffffffffff8",
-   "cases": 3,
+   "cases": 5,
    "case_ids": [
     792,
     921,
-    787
+    787,
+    1027,
+    1039
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xffffffffffff0",
-   "cases": 12,
+   "keep": "0xfffffffffffe0",
+   "cases": 22,
    "case_ids": [
-    1027,
-    1039,
     1298,
     1750,
     1734,
@@ -104,14 +104,7 @@
     2313,
     2382,
     2632,
-    2936
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0xffffffffff000",
-   "cases": 45,
-   "case_ids": [
+    2936,
     3277,
     3081,
     3541,
@@ -123,7 +116,14 @@
     4722,
     4924,
     5123,
-    5454,
+    5454
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffffffffc00000",
+   "cases": 46,
+   "case_ids": [
     5839,
     5731,
     5683,
@@ -156,14 +156,7 @@
     12486,
     12598,
     12899,
-    13122
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3ffff0000000000000",
-   "cases": 28,
-   "case_ids": [
+    13122,
     13342,
     13366,
     13402,
@@ -176,7 +169,14 @@
     14432,
     14796,
     14857,
-    15137,
+    15137
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ff000000000000000",
+   "cases": 15,
+   "case_ids": [
     15516,
     15375,
     15435,
@@ -198,14 +198,14 @@
  "c64_coverage": {
   "host_labels": 72,
   "c64_labels": 72,
-  "host_edges": 1652,
-  "c64_edges": 1652,
+  "host_edges": 1682,
+  "c64_edges": 1682,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 795,
-  "c64_taken": 795,
+  "host_taken": 811,
+  "c64_taken": 811,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -227,11 +227,483 @@
  },
  "c64_too_big_cases": [
   {
-   "case": 160,
+   "case": 1,
+   "point": 32568
+  },
+  {
+   "case": 2,
+   "point": 32568
+  },
+  {
+   "case": 4,
+   "point": 32568
+  },
+  {
+   "case": 5,
+   "point": 32568
+  },
+  {
+   "case": 7,
+   "point": 32568
+  },
+  {
+   "case": 8,
+   "point": 32568
+  },
+  {
+   "case": 11,
+   "point": 32568
+  },
+  {
+   "case": 13,
+   "point": 32568
+  },
+  {
+   "case": 14,
+   "point": 32568
+  },
+  {
+   "case": 19,
+   "point": 32568
+  },
+  {
+   "case": 20,
+   "point": 32568
+  },
+  {
+   "case": 22,
+   "point": 32568
+  },
+  {
+   "case": 23,
+   "point": 32568
+  },
+  {
+   "case": 25,
+   "point": 32568
+  },
+  {
+   "case": 28,
+   "point": 32568
+  },
+  {
+   "case": 29,
+   "point": 32568
+  },
+  {
+   "case": 31,
+   "point": 32568
+  },
+  {
+   "case": 32,
+   "point": 32568
+  },
+  {
+   "case": 34,
+   "point": 32568
+  },
+  {
+   "case": 35,
+   "point": 32568
+  },
+  {
+   "case": 37,
+   "point": 32568
+  },
+  {
+   "case": 38,
+   "point": 32568
+  },
+  {
+   "case": 40,
    "point": 32568
   },
   {
    "case": 43,
+   "point": 32568
+  },
+  {
+   "case": 50,
+   "point": 32568
+  },
+  {
+   "case": 53,
+   "point": 32568
+  },
+  {
+   "case": 56,
+   "point": 32568
+  },
+  {
+   "case": 58,
+   "point": 32568
+  },
+  {
+   "case": 61,
+   "point": 32568
+  },
+  {
+   "case": 64,
+   "point": 32568
+  },
+  {
+   "case": 65,
+   "point": 32568
+  },
+  {
+   "case": 68,
+   "point": 32568
+  },
+  {
+   "case": 70,
+   "point": 32568
+  },
+  {
+   "case": 71,
+   "point": 32568
+  },
+  {
+   "case": 73,
+   "point": 32568
+  },
+  {
+   "case": 76,
+   "point": 32568
+  },
+  {
+   "case": 77,
+   "point": 32568
+  },
+  {
+   "case": 79,
+   "point": 32568
+  },
+  {
+   "case": 82,
+   "point": 32568
+  },
+  {
+   "case": 83,
+   "point": 32568
+  },
+  {
+   "case": 85,
+   "point": 32568
+  },
+  {
+   "case": 88,
+   "point": 32568
+  },
+  {
+   "case": 89,
+   "point": 32568
+  },
+  {
+   "case": 91,
+   "point": 32568
+  },
+  {
+   "case": 92,
+   "point": 32568
+  },
+  {
+   "case": 94,
+   "point": 32568
+  },
+  {
+   "case": 97,
+   "point": 32568
+  },
+  {
+   "case": 98,
+   "point": 32568
+  },
+  {
+   "case": 101,
+   "point": 32568
+  },
+  {
+   "case": 103,
+   "point": 32568
+  },
+  {
+   "case": 104,
+   "point": 32568
+  },
+  {
+   "case": 109,
+   "point": 32568
+  },
+  {
+   "case": 112,
+   "point": 32568
+  },
+  {
+   "case": 113,
+   "point": 32568
+  },
+  {
+   "case": 115,
+   "point": 32568
+  },
+  {
+   "case": 116,
+   "point": 32568
+  },
+  {
+   "case": 118,
+   "point": 32568
+  },
+  {
+   "case": 119,
+   "point": 32568
+  },
+  {
+   "case": 122,
+   "point": 32568
+  },
+  {
+   "case": 124,
+   "point": 32568
+  },
+  {
+   "case": 125,
+   "point": 32568
+  },
+  {
+   "case": 133,
+   "point": 32568
+  },
+  {
+   "case": 134,
+   "point": 32568
+  },
+  {
+   "case": 136,
+   "point": 32568
+  },
+  {
+   "case": 137,
+   "point": 32568
+  },
+  {
+   "case": 139,
+   "point": 32568
+  },
+  {
+   "case": 145,
+   "point": 32568
+  },
+  {
+   "case": 146,
+   "point": 32568
+  },
+  {
+   "case": 148,
+   "point": 32568
+  },
+  {
+   "case": 149,
+   "point": 32568
+  },
+  {
+   "case": 151,
+   "point": 32568
+  },
+  {
+   "case": 152,
+   "point": 32568
+  },
+  {
+   "case": 154,
+   "point": 32568
+  },
+  {
+   "case": 155,
+   "point": 32568
+  },
+  {
+   "case": 157,
+   "point": 32568
+  },
+  {
+   "case": 158,
+   "point": 32568
+  },
+  {
+   "case": 160,
+   "point": 32568
+  },
+  {
+   "case": 161,
+   "point": 32568
+  },
+  {
+   "case": 163,
+   "point": 32568
+  },
+  {
+   "case": 166,
+   "point": 32568
+  },
+  {
+   "case": 167,
+   "point": 32568
+  },
+  {
+   "case": 169,
+   "point": 32568
+  },
+  {
+   "case": 172,
+   "point": 32568
+  },
+  {
+   "case": 173,
+   "point": 32568
+  },
+  {
+   "case": 179,
+   "point": 32568
+  },
+  {
+   "case": 181,
+   "point": 32568
+  },
+  {
+   "case": 182,
+   "point": 32568
+  },
+  {
+   "case": 187,
+   "point": 32568
+  },
+  {
+   "case": 190,
+   "point": 32568
+  },
+  {
+   "case": 191,
+   "point": 32568
+  },
+  {
+   "case": 193,
+   "point": 32568
+  },
+  {
+   "case": 197,
+   "point": 32568
+  },
+  {
+   "case": 200,
+   "point": 32568
+  },
+  {
+   "case": 202,
+   "point": 32568
+  },
+  {
+   "case": 203,
+   "point": 32568
+  },
+  {
+   "case": 205,
+   "point": 32568
+  },
+  {
+   "case": 208,
+   "point": 32568
+  },
+  {
+   "case": 209,
+   "point": 32568
+  },
+  {
+   "case": 211,
+   "point": 32568
+  },
+  {
+   "case": 212,
+   "point": 32568
+  },
+  {
+   "case": 214,
+   "point": 32568
+  },
+  {
+   "case": 215,
+   "point": 32568
+  },
+  {
+   "case": 217,
+   "point": 32568
+  },
+  {
+   "case": 220,
+   "point": 32568
+  },
+  {
+   "case": 221,
+   "point": 32568
+  },
+  {
+   "case": 223,
+   "point": 32568
+  },
+  {
+   "case": 224,
+   "point": 32568
+  },
+  {
+   "case": 226,
+   "point": 32568
+  },
+  {
+   "case": 227,
+   "point": 32568
+  },
+  {
+   "case": 229,
+   "point": 32568
+  },
+  {
+   "case": 233,
+   "point": 32568
+  },
+  {
+   "case": 235,
+   "point": 32568
+  },
+  {
+   "case": 236,
+   "point": 32568
+  },
+  {
+   "case": 238,
+   "point": 32568
+  },
+  {
+   "case": 241,
+   "point": 32568
+  },
+  {
+   "case": 242,
+   "point": 32568
+  },
+  {
+   "case": 245,
+   "point": 32568
+  },
+  {
+   "case": 248,
+   "point": 32568
+  },
+  {
+   "case": 250,
+   "point": 32568
+  },
+  {
+   "case": 251,
    "point": 32568
   }
  ],

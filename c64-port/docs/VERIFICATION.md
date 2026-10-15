@@ -2470,7 +2470,7 @@ All of Comanche055 RCS-CSM_DIGITAL_AUTOPILOT (611 words) is native C on the cont
 
 ## Translate Comanche SERVICER207
 
-All of Comanche055 SERVICER207 (375 words) is native C on the control-transfer ABI, as 80 routines compiled whole-file by `tools/basic_compile.py`. All 20,480 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 160 frozen cases, and 9 C64 diagnostics pass 123 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-SERVICER.md`.
+All of Comanche055 SERVICER207 (375 words) is native C on the control-transfer ABI, as 80 routines compiled whole-file by `tools/basic_compile.py`. All 20,480 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 160 frozen cases, and 10 C64 diagnostics pass 122 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-SERVICER.md`.
 
 ## Run whole LM T4RUPT interrupts through the trampoline
 
@@ -2614,7 +2614,7 @@ All of Comanche055 TVCROLLDAP (278 words) is native C on the control-transfer AB
 
 ## Translate P51-P53
 
-All of Luminary099 and Comanche055 P51-P53 (1,646 and 1,416 words: P51, P52, P53, P54 and P57, the star-sighting and mark routines R51-R59, S50 and the star-pair search PICAPAR over the 37-star catalog) are native C on the control-transfer ABI, as 696 and 585 routines compiled by tools/interp_compile.py, with native RTB RDCDUS and SET1/PDT. The compiler gained indexed TCF tables, INDEX Q; TC n returns, and a compile error for an SLOAD* of a fixed table without fixed_index. All 327,936 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 2,174 frozen cases, and 62 C64 diagnostics pass 1,522 cases in VICE that reach all 6,592 host branch outcomes. Both files have pending complete certificates for the certificate reviewer. See `docs/P51-P53.md`.
+All of Luminary099 and Comanche055 P51-P53 (1,646 and 1,416 words: P51, P52, P53, P54 and P57, the star-sighting and mark routines R51-R59, S50 and the star-pair search PICAPAR over the 37-star catalog) are native C on the control-transfer ABI, as 696 and 585 routines compiled by tools/interp_compile.py, with native RTB RDCDUS and SET1/PDT. The compiler gained indexed TCF tables, INDEX Q; TC n returns, and a compile error for an SLOAD* of a fixed table without fixed_index. All 655,872 cases equal the original programs in yaAGC. The strict and sanitizer host tests pass 3,730 frozen cases, and 66 C64 diagnostics pass 1,565 cases in VICE that reach all 6,604 host branch outcomes. Both files have pending complete certificates for the certificate reviewer. See `docs/P51-P53.md`.
 
 ## Translate Comanche TVCSTROKETEST
 
@@ -2686,7 +2686,7 @@ All of Comanche055 ORBITAL_INTEGRATION (816 words) is native C on the control-tr
 
 ## Translate Comanche P61-P67
 
-All of Comanche055 P61-P67 (495 words) is native C on the control-transfer ABI, as 188 routines compiled whole-file by `tools/basic_compile.py`. All 47,872 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 374 frozen cases, and 11 C64 diagnostics pass 251 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-P61-P67.md`.
+All of Comanche055 P61-P67 (495 words) is native C on the control-transfer ABI, as 200 routines compiled whole-file by `tools/basic_compile.py`. All 51,200 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 400 frozen cases, and 10 C64 diagnostics pass 267 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-P61-P67.md`.
 
 ## Translate Comanche TIME_OF_FREE_FALL
 

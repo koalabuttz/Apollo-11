@@ -3,7 +3,7 @@
   "native_file": "src/cm_conics.c",
   "words": 1079,
   "untranslated_words": 0,
-  "routines": 445,
+  "routines": 449,
   "map": [
    {
     "address": "12,2042",
@@ -1164,8 +1164,8 @@
     "address": "12,2307",
     "word": "24346",
     "source": "  KEPCONVG",
-    "routine": "12,2305",
-    "function": "r24305"
+    "routine": "12,2306",
+    "function": "r24306"
    },
    {
     "address": "12,2310",
@@ -2207,8 +2207,8 @@
     "address": "12,2534",
     "word": "00041",
     "source": "  R1",
-    "routine": "12,2532",
-    "function": "r24532"
+    "routine": "12,2533",
+    "function": "r24533"
    },
    {
     "address": "12,2535",
@@ -4803,8 +4803,8 @@
     "address": "12,3166",
     "word": "02744",
     "source": "  R1A",
-    "routine": "12,3164",
-    "function": "r25164"
+    "routine": "12,3165",
+    "function": "r25165"
    },
    {
     "address": "12,3167",

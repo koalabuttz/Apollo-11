@@ -65,6 +65,7 @@ The 2 MB REU, by address:
 | 0x1c0000-0x1d1fff | LM rope image (LM store only) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
 | 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
 The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
@@ -199,7 +200,11 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. A chunk holds only its own file's sources
+halving until each chunk fits. Files in `GREEDY_SPLIT`
+(`tools/flight_store_build.py`) split greedily instead: each chunk takes
+as many consecutive routines as fit, found by binary search on its end.
+The CM entry DAP is one: a pass runs its table front to back, so fewer and
+larger chunks mean fewer loads per pass. A chunk holds only its own file's sources
 and operand sites; a table co-located into another module is never
 chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
@@ -207,6 +212,15 @@ routine still over its slot is reported as a failed entry
 than 64 KB is `too big to split`. Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
+
+A key whose every holder failed has no module in the store: the C64 stops
+there, while the host run bridges it through yaAGC. `report.json`
+`unplaced` counts these keys per table, and the build fails when a table
+has more than `docs/flight-store-unplaced.json` allows (a table not listed
+is allowed none). On 80342904 that is LM P20-P25 (450 keys, the file is too
+big to split), the Pinball remainder (LM 268, CM 267) and CM IMU calibration
+(16 single routines over a slot). A fix that lowers a count lowers the file
+with it; the build prints the new count.
 
 Shadowed entries are left out. Several files are compiled by more than one
 lane (CM EXTENDED_VERBS as Lane C's `lanec_ev_cm_*` tables and as
@@ -362,7 +376,14 @@ After the trampoline and before the resolver, the resident's step calls
 most 256 steps. `EXEC_UNMAPPED` with no step means the point is not that
 module's; the resolver and an ABI 2 run follow only when no loaded module
 holds the point. A module's main does the same through its own list, so
-both paths run the same tables.
+both paths run the same tables. The list also carries the high bytes of
+the lowest key its basic tables hold and how far above it the highest
+key's is (`FS_KEY_LO`, `FS_KEY_SPAN`, from the builder), and `rk_direct`
+skips a module whose range misses the high byte of the step's fixed point
+(0xff when Z is erasable; a module holding an erasable key, or with
+interpretive tables, spans to 0xff), so most slots that do not hold the
+point cost a byte compare instead of a run. Measured on the LM DAP hold
+(work clock, VICE): 11.92x to 11.19x real time, for 43 resident bytes.
 
 A module never crosses a 512 KB REU bank (`tools/overlay_v2_pack.py`
 starts it on the next bank instead): one DMA loads a module, and the REU's

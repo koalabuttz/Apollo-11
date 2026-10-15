@@ -82,6 +82,12 @@ static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #ifndef FS_MCT
 #define FS_MCT RK_RESIDENT_MCT
 #endif
+/* The high bytes of the keys the tables hold (tools/flight_store_build.py):
+ * rk_direct skips the module for a point outside them. */
+#ifndef FS_KEY_LO
+#define FS_KEY_LO   0u
+#define FS_KEY_SPAN 0xffu
+#endif
 #ifdef RK_WORK_CLOCK
 #define FS_LIMIT rk_module_limit(e->budget,FS_MCT)
 #else
@@ -171,7 +177,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   t->fixed_data=e->program->fixed_data;
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
-  t->mct=FS_MCT;
+  t->mct = FS_MCT;
+  t->lo = FS_KEY_LO;
+  t->span = FS_KEY_SPAN;
 #ifdef FS_IO_KIND
   t->ready=RK_TABLES_NOT_DIRECT;
 #else

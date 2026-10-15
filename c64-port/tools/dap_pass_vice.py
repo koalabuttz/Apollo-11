@@ -101,6 +101,14 @@ def vice(a, name, prg, pinned, m='lm'):
         '<3I6H2B', data, 0x10)
     # The physical bank: FB 030-037 with superbank bit 0100 are banks 040-047.
     bank = (fb >> 10) + (0o10 if fb >= 0o60000 and superbank & 0o100 else 0)
+    # Where Z is, as the listing writes it: the switched bank for 02000-03777,
+    # bank 02 or 03 for fixed-fixed 04000-07777, else the erasable address.
+    if 0o2000 <= z < 0o4000:
+        at = f'{bank:02o},{z:04o}'
+    elif 0o4000 <= z < 0o10000:
+        at = f'{z >> 10:02o},{0o2000 + z % 1024:04o}'
+    else:
+        at = f'{z:05o}'
     records = [dict(zip(('request', 'job_loads', 'task_loads', 'status', 'steps', 'cycles'),
                         struct.unpack_from('<4BHI', data, 0x40 + 10 * i))) for i in range(count)]
     for r in records:
@@ -115,10 +123,17 @@ def vice(a, name, prg, pinned, m='lm'):
         for k in ('steps', 'job_loads', 'task_loads'):
             b[k] += r[k]
     return dict(scenario=name, ok=status == 0 and not lost, status=status, z=f'{z:05o}', fb=f'{fb:05o}',
-                superbank=f'{superbank:04o}', bank=f'{bank:02o}',
+                superbank=f'{superbank:04o}', bank=f'{bank:02o}', at=at,
                 wall_cycles=cycles, agc_cs=agc_cs, dropped_ticks=dilation, steps=steps,
                 wall_per_agc=round(cycles / (agc_cs * PAL_HZ / 100), 3) if agc_cs else None,
                 by_request=by, records=records, lost=bool(lost))
+
+
+def profile(name):
+    """The RK_STEP_PROFILE segments from a run's mailbox: cycles and calls each."""
+    data = (WORK / f'vice-{name}' / 'results.bin').read_bytes()
+    return [dict(zip(('segment', 'cycles', 'calls'), (SEGMENTS[i], *struct.unpack_from('<IH', data, 0xb80 + 6 * i))))
+            for i in range(len(SEGMENTS))]
 
 
 def main():
@@ -154,9 +169,7 @@ def main():
         prg = link(a.cc, name, header, a.cs, scratch, a.steps, profile=a.profile)
         r = vice(a, name, prg, pinned)
         if a.profile and r.get('ok') is not None and (WORK / f'vice-{name}' / 'results.bin').exists():
-            data = (WORK / f'vice-{name}' / 'results.bin').read_bytes()
-            r['profile'] = [dict(zip(('segment', 'cycles', 'calls'), (SEGMENTS[i], *struct.unpack_from('<IH', data, 0xb80 + 6 * i))))
-                            for i in range(len(SEGMENTS))]
+            r['profile'] = profile(name)
             for x in r['profile']:
                 print(f"  {x['segment']}: {x['calls']} x, {x['cycles']} cycles"
                       f" ({x['cycles'] // x['calls'] if x['calls'] else 0} each)")
@@ -164,7 +177,7 @@ def main():
         results.append(r)
         if not r['ok']:
             failed += 1
-            print(f"FAIL: {name}: {r.get('error') or 'status %d at %s,%s (Z %s FB %s superbank %s)' % (r['status'], r['bank'], r['z'][1:], r['z'], r['fb'], r['superbank'])}")
+            print(f"FAIL: {name}: {r.get('error') or 'status %d at %s (Z %s FB %s superbank %s)' % (r['status'], r['at'], r['z'], r['fb'], r['superbank'])}")
         if 'by_request' in r:
             print(f"{name}: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs ({r['wall_per_agc']} x real time), "
                   f"{r['dropped_ticks']} ticks dropped, {r['steps']} steps")

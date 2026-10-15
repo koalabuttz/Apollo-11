@@ -1289,7 +1289,7 @@ def oracle_env(spec):
     env = {}
     if spec.get('channel_inputs'):
         env['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
-    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits')
+    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits') or spec.get('edop_exits')
     if pending or (spec.get('basic') == 'full' and spec.get('rtb')):
         cp0 = IC.Compiler(spec, spec['missions'][0])
         cp0.decode()
