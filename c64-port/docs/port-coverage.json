@@ -1044,11 +1044,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-host.log",
-            "sha256": "f96c211e21fc86d2b6404d2811b043f73441cc32ac2ea3e601e306128a5d1c47"
+            "sha256": "b7dac4272a93d214bdab1645d52b4c7fd57eeec5c4becb7be54123bfdab4e402"
           },
           "c64_execution_results": {
             "path": "evidence/cm-downtelemetry/cm-downtelemetry-vice.log",
-            "sha256": "23754c09e5fccfc880ed3f2fc6aef9c588ac68c71bc8464fa09ba3b2e3d1c80d",
+            "sha256": "e2b4a6db9a39725dbdb7cf3a1c46fbf65cca6c01df94ac45637813afa840a1e7",
             "vice_targets": {
               "vice-cm-downtelemetry": 24
             }
@@ -7792,11 +7792,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-host.log",
-            "sha256": "6e43df0cb35499b70927a9f9f727261c435dad48d7ffdd77aa73f20a1f00098d"
+            "sha256": "e325095971ba2d6e3077d4c0ca9c09ee050a810f183a54e081cd8189b58d727e"
           },
           "c64_execution_results": {
             "path": "evidence/lm-downtelemetry/lm-downtelemetry-vice.log",
-            "sha256": "46afe73a9dca3ef0a4e364246a35ee021cdce28571fe96bf23da135040fd3eae",
+            "sha256": "f3b134e1648f8f0381b535dd5fd867a91d483e785b020cc5da394fa616d120ae",
             "vice_targets": {
               "vice-lm-downtelemetry": 48
             }
