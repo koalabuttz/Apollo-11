@@ -267,3 +267,6 @@ static const agc_site_operand lm_dntm_data[259]={
 /* Words stored in DNTMGOTO and executed there as TC: LDNPHAS1, LDNPHAS2, LDNDUMPI, LDNDUMP, LDNDUMP1, DNDUMPI+3 (QXCH DNTMGOTO in SENDID). */
 #define LM_DNTM_GOTO_COUNT 6u
 #define LM_DNTM_GOTO_WORDS 003515u,003523u,003707u,003722u,003735u,003712u
+/* Fixed words the program's instructions name, by physical word: LM_DNTM_CONSTANT(p,miss)
+ * is the word at p, or miss for any other p (folds when p is constant). */
+#define LM_DNTM_CONSTANT(p,miss) ((p)==2049u?034054u:(p)==2287u?000377u:(p)==2533u?000100u:(p)==2538u?000002u:(p)==2540u?077777u:(p)==2541u?000000u:(p)==2569u?001776u:(p)==4050u?034000u:(p)==4065u?073777u:(p)==4071u?077776u:(p)==4075u?015402u:(p)==5173u?077340u:(p)==5409u?002172u:(p)==5973u?077753u:(p)==5977u?074001u:(p)==6000u?047777u:(p)==6048u?003523u:(p)==6096u?003722u:(p)==6097u?003735u:(miss))

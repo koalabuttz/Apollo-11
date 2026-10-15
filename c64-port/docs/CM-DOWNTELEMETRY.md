@@ -24,6 +24,7 @@ Paths with no producer: the +0 branch after `AD MINTIME2` cannot occur, and the 
 | DNPHASE1 3530, DNPHASE2 3536, DNDUMPI 3722, DNDUMPI+3 3725, DNDUMP 3735, DNDUMP1 3750 | `body` from the matching label, to TCF RESUME |
 | NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP/SNAPAGN, FETCH2WD, DOSUBLST/NEXTINSL, DNTMEXIT, DNDUMP2, SENDID | labels `L<address>` in `body` |
 | DOWNLINK_LISTS words, constants | `cm_dntm_data` (`src/cm_downtelemetry_data.inc`) |
+| The constants the program's own instructions name (`k(K_...)`) | `CM_DNTM_CONSTANT` (same `.inc`, same words): `k()` folds a constant address to its word at compile time; any other address still searches `cm_dntm_data` |
 
 ## Evidence
 

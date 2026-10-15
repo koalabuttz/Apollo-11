@@ -60,8 +60,13 @@
 #define I_READ_HI 044000u  /* 3574 INDEX 0 -4000 (executed as READ) */
 #define I_READ_LO 043777u  /* 3600 INDEX 0 -4001 */
 static const agc_word goto_words[LM_DNTM_GOTO_COUNT]={LM_DNTM_GOTO_WORDS};
-
-static agc_word k(uint16_t physical){agc_word w=0;(void)agc_site_lookup(lm_dntm_data,LM_DNTM_DATA_COUNT,physical,&w);return w;}
+#define k(physical) LM_DNTM_CONSTANT((physical), k_lookup(physical)) /* folds: see the .inc */
+static agc_word k_lookup(uint16_t physical)
+{
+    agc_word w = 0;
+    (void)agc_site_lookup(lm_dntm_data, LM_DNTM_DATA_COUNT, physical, &w);
+    return w;
+}
 /* A fixed word read only on a CCS branch with no producer: refuse when the
  * listing has no such word. */
 #define KX(physical,w) do{if(!agc_site_lookup(lm_dntm_data,LM_DNTM_DATA_COUNT,(physical),&(w)))return EXEC_OUT_OF_SCOPE;}while(0)
