@@ -688,6 +688,14 @@ FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT
                        'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
 
 
+# Files whose over-slot table splits greedily (split_greedy): each chunk
+# takes as many consecutive routines as fit, instead of halving until every
+# chunk fits. The CM entry DAP pass runs its table front to back across the
+# chunks; halving gave 4 chunks of about 9-10 KB and a pass loaded about 5
+# of them (lane-g/cm-entry-profile-80342904.md); greedy chunks of about
+# 15 KB cut its job loads by a third.
+GREEDY_SPLIT = {'lm': set(), 'cm': {'cm_entry_dap'}}
+
 def part_keys(cc, m, stem, tables):
     """[{table: [keys]}] per FLIGHT_PARTS build of stem: its host object
     with the part's defines and each table renamed, read by table_keys."""
@@ -1244,8 +1252,38 @@ def main():
             return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
                              prg_name=f'trial-{c[0]}-{c[1]}'))[2]
 
+        def split_greedy(mod):
+            """As split, but each chunk takes as many consecutive routines as fit
+            (binary search on its end), so a pass crosses fewer chunks."""
+            kept, over = [], []
+            for t in [t for t in mod['basic'] if t not in mod['also']]:
+                lo, n = 0, len(keys[t])
+                while lo < n:
+                    r = trial((t, lo, n), mod)
+                    if r['ok'] or r.get('empty'):
+                        kept.append((t, lo, n)); break
+                    if not r.get('overflow'):
+                        return None
+                    good, bad = lo, n          # (t, lo, good) fits (empty when good == lo), (t, lo, bad) does not
+                    while bad - good > 1:
+                        mid = (good + bad) // 2
+                        r = trial((t, lo, mid), mod)
+                        if r['ok'] or r.get('empty'):
+                            good = mid
+                        elif not r.get('overflow'):
+                            return None
+                        else:
+                            bad = mid
+                    if good == lo:
+                        over.append(((t, lo, lo + 1), r.get('overflow', 0))); lo += 1
+                    else:
+                        kept.append((t, lo, good)); lo = good
+            return (kept, over) if kept else None
+
         def split(mod):
             """(chunks that fit, [(one-routine chunk, overflow)] that do not), or None."""
+            if mod['stem'] in GREEDY_SPLIT[m]:
+                return split_greedy(mod)
             # Co-located tables stay whole in their own module.
             todo, kept, over = [(t, 0, len(keys[t])) for t in mod['basic'] if t not in mod['also']], [], []
             while todo:

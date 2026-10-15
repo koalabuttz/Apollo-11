@@ -200,7 +200,11 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. A chunk holds only its own file's sources
+halving until each chunk fits. Files in `GREEDY_SPLIT`
+(`tools/flight_store_build.py`) split greedily instead: each chunk takes
+as many consecutive routines as fit, found by binary search on its end.
+The CM entry DAP is one: a pass runs its table front to back, so fewer and
+larger chunks mean fewer loads per pass. A chunk holds only its own file's sources
 and operand sites; a table co-located into another module is never
 chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
