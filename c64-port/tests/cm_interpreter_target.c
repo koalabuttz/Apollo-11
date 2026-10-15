@@ -9,8 +9,14 @@
  * (tools/basic_compile.py 'fixed_rope'): the host loads the yaYUL binary
  * once; the C64 reads the REU's (build/self-check.reu). */
 #ifndef __mos__
+/* Next to this file's directory, so a runner built and run from another
+ * directory (the cert self-check's scratch builds) still finds the rope. */
+#include <stdio.h>
+#include <string.h>
 #ifndef IRC_ROPE
-#define IRC_ROPE "build/fixed-data/Comanche055/MAIN.agc.bin"
+static const char *irc_rope_path(void){static char b[1024];const char *e=strrchr(__FILE__,'/');
+ snprintf(b,sizeof b,"%.*s../build/fixed-data/Comanche055/MAIN.agc.bin",e?(int)(e-__FILE__+1):0,__FILE__);return b;}
+#define IRC_ROPE irc_rope_path()
 #endif
 static int rope_loaded;
 #endif
