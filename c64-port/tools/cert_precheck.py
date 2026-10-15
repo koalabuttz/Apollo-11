@@ -50,7 +50,9 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               certificate cites, or by its file) lacks a key of
               REFREEZE_SPEC_KEYS ('index_carry16': the generated INDEX keeps
               its end-around carry on the C64; 'image_w': flight builds address
-              the fixed $7000 image); set them at the next refreeze.
+              the fixed $7000 image; 'trusted_image': flight builds skip the
+              ~121K-cycle erasable scan at every entry); set them at the next
+              refreeze.
   bovb        a BOVB to TCDANZIG/ENDT(X) in the file needs a native 'rtb'
               entry for that word in its interp spec, else the overflow
               branch stops there and the right-hand order never runs natively
@@ -786,13 +788,18 @@ def check_c64(report, label, certificate):
 # whose spec lacks one gets a WARN, never a FAIL, until its next refreeze.
 # 'image_w' (steward PR #260): W from include/agc_image_w.h, so flight builds
 # address the fixed $7000 image.
-REFREEZE_SPEC_KEYS = ('index_carry16', 'image_w')
+# 'trusted_image': flight builds skip the entry checks' erasable-image scan
+# (~121,000 6502 cycles a call; Lane G measured it as most of the CM entry
+# DAP's cost at 79x real time).
+REFREEZE_SPEC_KEYS = ('index_carry16', 'image_w', 'trusted_image')
 # What a spec without each key gets wrong (the WARN's text).
 REFREEZE_REASONS = {
     'index_carry16': 'the generated INDEX (ixw) drops its end-around carry on the C64 (16-bit unsigned) '
                      'for a negative index value',
     'image_w': 'flight builds (RK_FIXED_IMAGE) address the image through s->words instead of the fixed '
                '$7000 image',
+    'trusted_image': 'flight builds (RK_FIXED_IMAGE) scan the whole erasable image at every routine entry, '
+                     'about 121,000 6502 cycles a call',
 }
 
 

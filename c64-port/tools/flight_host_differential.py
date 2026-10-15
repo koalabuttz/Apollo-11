@@ -14,8 +14,14 @@ yaAGC under that schedule.
 
   flight_host_differential.py [--host-cc CC] [--skip-index]
 """
-import argparse, json, os, re, subprocess, sys
+import argparse, json, os, re, resource, subprocess, sys
 from pathlib import Path
+
+# lm-p63-nassp's host run overflows the default 8 MB stack: raise the soft
+# limit to the hard one, which every host flight run (a child) inherits.
+_soft, _hard = resource.getrlimit(resource.RLIMIT_STACK)
+if _soft != resource.RLIM_INFINITY and (_hard == resource.RLIM_INFINITY or _hard > _soft):
+    resource.setrlimit(resource.RLIMIT_STACK, (_hard, _hard))
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
