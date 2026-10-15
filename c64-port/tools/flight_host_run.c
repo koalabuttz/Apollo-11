@@ -533,18 +533,18 @@ static void miss(const char *name,const agc_word *before,agc_word sb,const agc_w
  * rk_fixed_word): the rope word at every point where it stops between
  * routines, the keys of every table it can resolve
  * (tools/resident_boundary_words.py with the store's resolver records). */
-static agc_site_operand boundary[8192];
+static agc_site_operand boundary[APOLLO_ROPE_WORDS];
 static uint16_t nboundary;
-static int by_key(const void *a,const void *b){return (int)((const agc_site_operand *)a)->physical-(int)((const agc_site_operand *)b)->physical;}
 /* Interrupts take the word at Z: at a basic routine Z is its key, at an
  * interpretive one Z is the interpreter fetch point or DANZIG (the key is
- * LOC's), so those two words are boundary words too. */
-static void boundary_build(void){unsigned i,j;
- for(i=0;i<=TABLES;++i)for(j=0;j<(i<TABLES?tables[i].t->count:2u);++j){uint16_t k=i<TABLES?tables[i].t->entries[j].physical:j?DANZIG:FETCH;agc_word w=0;
-  if(k<APOLLO_ROPE_WORDS&&nboundary<sizeof boundary/sizeof boundary[0]&&apollo_rope_read(MISSION,k,&w)){boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
- qsort(boundary,nboundary,sizeof boundary[0],by_key);
- for(i=j=0;i<nboundary;++i)if(!j||boundary[j-1].physical!=boundary[i].physical)boundary[j++]=boundary[i];
- nboundary=(uint16_t)j;}
+ * LOC's), so those two words are boundary words too. (A mark per rope
+ * word, so every table's keys fit however many tables repeat them; a
+ * fixed-size list of keys before the dedupe, 8192, dropped FETCH and DANZIG
+ * once P20-P25's tables filled it.) */
+static void boundary_build(void){static uint8_t mark[APOLLO_ROPE_WORDS];unsigned i,j;agc_word w;
+ for(i=0;i<=TABLES;++i)for(j=0;j<(i<TABLES?tables[i].t->count:2u);++j){uint16_t k=i<TABLES?tables[i].t->entries[j].physical:j?DANZIG:FETCH;
+  if(k<APOLLO_ROPE_WORDS)mark[k]=1;}
+ for(i=0;i<APOLLO_ROPE_WORDS;++i)if(mark[i]&&apollo_rope_read(MISSION,(uint16_t)i,&w)){boundary[nboundary].physical=(uint16_t)i;boundary[nboundary++].word=w;}}
 static bool boundary_word(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return agc_site_lookup(boundary,nboundary,physical,word);}
 static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(MISSION,physical,word);}
 
