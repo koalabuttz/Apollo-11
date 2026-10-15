@@ -7325,7 +7325,7 @@
       "sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
       "bytes": 47595,
       "lines": 1864,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7340,7 +7340,7 @@
           "verification": "docs/LM-CONIC-COMPILED.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7351,7 +7351,6 @@
           "POLY (interpreter basic routine) and POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) through the interpreter",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-source-map.json",
@@ -7371,6 +7370,10 @@
             "vice_targets": {
               "vice-lm-conic-compiled": 516
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-conic-compiled.md",
+            "sha256": "2197377df4e1e27f99e84925fd096c9127f767d13e84fa69b1e4a2e4b5e56032"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
