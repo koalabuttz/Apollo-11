@@ -679,6 +679,13 @@ SPECS = {
         # STOPRATE (and the other basic routines that never name FIXLOC) is
         # called from tasks and NOVAC jobs (V37): any FIXLOC.
         'any_fixloc': True,
+        # UPDTCALL, MANUSTOP and GOODMANU run as waitlist tasks, over any job:
+        # NEWJOB -0 too, while DUMMYJOB idles (the LM P63 flight run's R60
+        # maneuver). No image scan at the entries in flight.
+        'any_newjob': True,
+        'trusted_image': True,
+        'index_carry16': True,
+        'image_w': True,
     },
     # Lane A: Comanche055 T4RUPT_PROGRAM.agc optics monitor and drive
     # (OPTMON 06,2765-3262, OPTDRIVE 10,2000-2202), basic only. The IMU
