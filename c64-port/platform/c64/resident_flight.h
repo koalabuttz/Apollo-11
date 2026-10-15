@@ -154,7 +154,9 @@ static inline uint16_t rk_module_limit(uint16_t budget,uint8_t mct) {
     if(mct==RK_MCT_IDLE) return 4u;   /* one pass: SELFCHK, POSTJUMP, back to ADVAN */
     /* A tick's budget is at most 854 and a weight at least 4
      * (tools/resident_flight_build.py mct_weight): under RK_MODULE_STEPS. */
-    while(budget>=mct) { budget-=mct; ++n; }
+    /* The empty asm keeps LLVM from folding the loop into a division,
+     * which links __udivhi3 (196 bytes) into every flight module. */
+    while(budget>=mct) { budget-=mct; ++n; __asm__("" : "+r"(budget)); }
     return n;
 }
 /* A module's run, as the step reports it: an unmapped point after at least
