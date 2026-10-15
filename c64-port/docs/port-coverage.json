@@ -3333,7 +3333,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every word of the file (374 words in banks 02, 31, 32 and 35): P30, P31, their displays, S30.1, S31.1, DELRSPL, AUGEKUGL, AVFLAGA, AVFLAGP and P20FLGON, as 90 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
+          "scope": "Every word of the file (374 words in banks 02, 31, 32 and 35): P30, P31, their displays, S30.1, S31.1, DELRSPL, AUGEKUGL, AVFLAGA, AVFLAGP and P20FLGON, as 143 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P30-P37.md"
         }
       ],
@@ -3376,8 +3376,8 @@
             "sha256": "fe8aa46d64631d0949a95d7aa5291b6ba1586cc381ebca18e9f1d8272cf18081"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-194.md",
-            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
+            "path": "docs/audits/rev2-recite-p30-p33.md",
+            "sha256": "db759789a9652c2783b8f8eaeb62472ee7e6cf88e3719ff32926b358445d4bf1"
           }
         }
       }
@@ -3440,8 +3440,8 @@
             "sha256": "5c25c97878c8864b079b8a3ea36d2a2b331d484fa09ad8c4b697e291a1664236"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-194.md",
-            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
+            "path": "docs/audits/rev2-recite-p30-p33.md",
+            "sha256": "db759789a9652c2783b8f8eaeb62472ee7e6cf88e3719ff32926b358445d4bf1"
           }
         }
       }
@@ -3452,7 +3452,7 @@
       "sha256": "d37b58d887c59bfaaca5506a13a9a7761d4e44ad7bcfeab34c8a59e47863f106",
       "bytes": 35303,
       "lines": 1739,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3468,7 +3468,7 @@
           "verification": "docs/CM-P34-P35.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3485,7 +3485,6 @@
           "The interpreter exits POODOO and ALARM",
           "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-source-map.json",
@@ -3509,6 +3508,10 @@
           "c64_branch_outcomes": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-c64-cover.json",
             "sha256": "5a0b54fbdffc77f409a870677962cfc91972b59441aab8a8e8a32ab969e6ead1"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-cm-p34-p35.md",
+            "sha256": "902029c84f6a9cd8dc44702e04ad1884187402f3e92a4cdc9264e1a1071b1ad5"
           }
         }
       }
