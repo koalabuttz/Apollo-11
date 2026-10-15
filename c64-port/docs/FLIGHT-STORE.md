@@ -29,6 +29,20 @@ lists every collision for its lanes. `--host-only` writes only the host
 table index (`build/flight-store/<m>-host.inc`) and the whole-program site
 table (`build/flight-store/<m>-sites.inc`) for the differential.
 
+The host index models the store's module layout for the host flight run's
+module-load count (`tools/flight_host_run.c`). The pinned sets (slots 3 and
+4) come right after the resident tables, never load and never take a slot.
+The job-slot packs (`PACKS`: the excursion and T4RUPT) go ahead of their
+files' tables: a hot subset of a resident table goes ahead of the resident.
+A ride table (`RIDE`) holds its keys only while its pack is in the job slot
+(slot 5). With a class-4 set in, task-slot modules count in the job slot. A
+full build writes the index from the report's `pinned` and `packs`; a
+`--host-only` build reads the last `report.json` when its sets still match
+`PIN` and `PACKS`, and otherwise uses those as configured. On 84d550f5 this
+cut the counted loads for cm-entry from 873,831 to 11,901 (the CM idle
+loop's POSTJUMP and self-check run from the pinned class-3 set) and for
+lm-p63-nassp from 195,318 to 123,454.
+
 Each module carries its own operand table (`FS_SITES`): the
 `agc_site_operand` arrays its sources compile to for the mission (read from
 `cc -E` of each source), so no whole-program site table is needed. The
@@ -51,6 +65,7 @@ The 2 MB REU, by address:
 | 0x1c0000-0x1d1fff | LM rope image (LM store only) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
 | 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
 The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
@@ -101,6 +116,26 @@ BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
 cut module loads from about 4,200 a second to the rates below. It only
 fits once self-check and the interbank routines shrink (fit, above).
 
+A DOWNRUPT runs in one resident step. It used to take three: the lead-in
+wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,
+DNTMGOTO, the phase, DNTMEXIT) and the RESUME wrapper, each paying the
+step's dispatch (resolver, trampoline and slot misses, about 23,000
+cycles). `<m>_dntm_rupt_routines` (`src/lm_dntm_rupt.c`,
+`src/cm_dntm_rupt.c`) copy the DOWNRUPT vector and RESUME onto the DNTM io
+records and ride with `<m>_downtelemetry` (`CO_LOCATE`); the vector's
+wrapper record goes to that module (`DOWNRUPT_HOST`), while RESUME's keys
+stay with their wrappers, since only that module's run reaches its copy.
+The run still stops at the work-clock budget, since TIME1-TIME6 count by
+cycle steal inside an inhibited interrupt too; the next step resolves the
+point it stopped at back into the same module, which is still loaded. Its
+fixed points have records already, and the erasable DNTMGOTO gets one
+under FB 05. `tests/test_dntm_rupt.c` runs every down-telemetry case's
+DOWNRUPTs from the vector both ways (37,000) and fuzzes each copy against
+its original. In VICE (A2's DOWNRUPT pass harness, mean cycles a pass): LM
+P00 140,000 to 84,000, CM P00 110,000 to 72,000, CM entry 240,000 to
+128,000; `flight_downlink_check.py --vice` matches yaAGC on all 300
+DOWNRUPTs, one resident step each.
+
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
@@ -138,7 +173,9 @@ measures 39,341 bytes today and 38,534 direct-only.
 The VICE load check also fills the free soft stack below the timings with a
 pattern and reports the deepest byte touched (`soft_stack_peak_bytes` in
 `vice-load.json`): 302 bytes LM and 174 bytes CM, over every module's main
-and one resolver record per module run through `rk_direct`.
+and one resolver record per module run through `rk_direct`. The timings (10 bytes
+per module from $C400, at most 256 modules) leave the stack 512 bytes below
+$D000, and the check fails (step 13) if the stack reaches them.
 
 ### Fit on 6b6ed2dc
 
@@ -171,6 +208,15 @@ routine still over its slot is reported as a failed entry
 than 64 KB is `too big to split`. Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
+
+A key whose every holder failed has no module in the store: the C64 stops
+there, while the host run bridges it through yaAGC. `report.json`
+`unplaced` counts these keys per table, and the build fails when a table
+has more than `docs/flight-store-unplaced.json` allows (a table not listed
+is allowed none). On 80342904 that is LM P20-P25 (450 keys, the file is too
+big to split), the Pinball remainder (LM 268, CM 267) and CM IMU calibration
+(16 single routines over a slot). A fix that lowers a count lowers the file
+with it; the build prints the new count.
 
 Shadowed entries are left out. Several files are compiled by more than one
 lane (CM EXTENDED_VERBS as Lane C's `lanec_ev_cm_*` tables and as
@@ -308,7 +354,7 @@ class 3 is kept for the DAP. The load check runs one of the class-3 set's
 points through the module that packs the same table and through `rk_direct`
 with only the pinned module present, compares them, checks the class-4
 header at $E000 when there is one, and then drops the pinned module (its
-mailbox and timings use $C000-$CBFF).
+mailbox and timings use $C000-$CDFF).
 
 ### Direct calls into a loaded module
 

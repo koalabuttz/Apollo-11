@@ -41,6 +41,7 @@ Steps, per mission:
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import collections
+import fcntl
 import functools
 import hashlib
 import json
@@ -86,12 +87,13 @@ SPLIT_LIMIT = 65536
 IO_KIND = {
     'lm': {'lm_fresh_start': 'LM_FRESH', 'lm_servicer': 'LM_SV', 'lm_lunar_landing': 'LM_LLD',
            'lm_imu_performance': 'LM_IPT', 'lm_burn_baby': 'LM_BB', 'lm_ags_init': 'LM_AGS',
-           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lanec_ev_routines': 'LM_DNTM',
+           'imu_mode_switching': 'LM_IMU', 'lm_downtelemetry': 'LM_DNTM', 'lm_dntm_rupt': 'LM_DNTM',
+           'lanec_ev_routines': 'LM_DNTM',
            'lanec_pin_routines': 'LM_DNTM',
            'lanec_pin_keys_num_routines': 'LM_DNTM', 'lanec_pin_keys_cmd_routines': 'LM_DNTM',
            'lanec_pin_keys_release_routines': 'LM_DNTM',
            'lanec_pin_keys_sign_routines': 'LM_DNTM', 'lanec_pin_keys_clear_routines': 'LM_DNTM'},
-    'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM',
+    'cm': {'cm_fresh_start': 'CM_FRESH', 'cm_v37': 'CM_FRESH', 'cm_downtelemetry': 'CM_DNTM', 'cm_dntm_rupt': 'CM_DNTM',
            'lanec_ev_routines': 'CM_DNTM', 'lanec_pin_routines': 'CM_DNTM',
            'lanec_pin_keys_num_routines': 'CM_DNTM', 'lanec_pin_keys_cmd_routines': 'CM_DNTM',
            'lanec_pin_keys_release_routines': 'CM_DNTM',
@@ -518,8 +520,18 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # and with the LM idle loop's own module (CM pins its idle loop), so an idle
 # pass loads nothing (that module's runs are the work clock's idle,
 # RK_MCT_IDLE: the interbank routines run there only from the idle loop).
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines']},
-             'cm': {'cm_self_check': ['cm_interbank_routines']}}
+# The DOWNRUPT vector and RESUME ride with the down-telemetry tables
+# (src/lm_dntm_rupt.c, src/cm_dntm_rupt.c), so one module run takes a whole
+# DOWNRUPT, which runs inhibited, from the vector to the resumed Z; the
+# vector's wrapper record goes to that module (DOWNRUPT_HOST).
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines'],
+                    'lm_downtelemetry': ['lm_dntm_rupt_routines']},
+             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+# The module that takes the DOWNRUPT vector (04040) from the lead-in wrapper:
+# the down-telemetry file's, when it links with the DOWNRUPT ends.
+DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),
+                 'cm': ('cm_downtelemetry', 'cm_dntm_rupt_routines')}
+DOWNRUPT_VECTOR = 2048 + 0o40   # physical 04040
 # Tables pinned in a slot (docs/FLIGHT-STORE.md): loaded once and kept, so
 # a cycle that runs them all costs no swaps. The builder links each slot's
 # set as one module and reports its size. A class-3 set (slot 3, $C000)
@@ -538,6 +550,57 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_i
 # run from the excursion.
 PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dapidler_hot_routines']},
        'cm': {3: ['cm_self_check_idle_routines']}}
+def packed_pins(pinned):
+    """{table: slot class} for the pinned sets that went into the store (the
+    report's "pinned", packed): their own tables, not the home's that a
+    class-3 table list names too."""
+    return {t: {'pinned': 3, 'pinned_task': 4}[p['slot']] for p in pinned if p.get('packed') for t in p['own']}
+
+
+def host_pins(m, packed):
+    """The pinned sets a host-only build models: the last full build's report
+    (build/flight-store/report.json) when its sets are still PIN's, else PIN
+    as configured (class 4 only beside class 3, as the store packs it)."""
+    try:
+        pinned = json.loads((ROOT / OUT / 'report.json').read_text())[m]['pinned']
+        if all('packed' in p for p in pinned) and \
+                sorted(map(sorted, (p['own'] for p in pinned))) == sorted(map(sorted, PIN[m].values())):
+            return packed_pins(pinned)
+    except (OSError, KeyError, ValueError):
+        pass
+    classes = [c for c in sorted(PIN[m]) if c == 3 or 3 in PIN[m]]
+    return {t: c for c in classes for t in PIN[m][c] if t in packed}
+
+
+
+def pack_report(packs):
+    """The report's "packs": each job-slot pack (PACKS) with its tables, the
+    ride ones and whether it linked."""
+    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'],
+                 ride=[t for t in p['basic'] if t in RIDE], ok=bool(p.get('ok'))) for p in packs]
+
+
+def pack_tables(packs):
+    """{table: (pack name, ride)} for the packs that linked."""
+    return {t: (p['name'], t in p['ride']) for p in packs if p['ok'] for t in p['tables']}
+
+
+def host_packs(m, packed):
+    """The packs a host-only build models: the last full build's report when
+    its packs are still PACKS', else PACKS as configured (only beside a
+    class-4 pin, as the store packs them)."""
+    want = sorted((n, sorted(t for t in ts if t in packed)) for n, ts, _ in PACKS[m] if any(t in packed for t in ts))
+    try:
+        packs = json.loads((ROOT / OUT / 'report.json').read_text())[m]['packs']
+        if sorted((p['name'], sorted(p['tables'])) for p in packs) == want:
+            return pack_tables(packs)
+    except (OSError, KeyError, ValueError):
+        pass
+    if 4 not in host_pins(m, packed).values():
+        return {}
+    return pack_tables([dict(name=n, tables=ts, ride=[t for t in ts if t in RIDE], ok=True) for n, ts in want])
+
+
 # The excursion: hot subsets one job-slot module packs together, so a DAP
 # pass that leaves the pinned sets loads one module, not one per file. It
 # takes the runtime from the class-4 home (pin_pair) and is packed only
@@ -640,6 +703,19 @@ def part_keys(cc, m, stem, tables):
     return parts
 
 
+def flight_keys(cc, stem, tables):
+    """{table: [keys]} of a FLIGHT_INTERP_STOP file built as its flight
+    module is (-DAGC_FLIGHT_INTERPRETER): the flight build can key words the
+    host build does not, such as the basic word an EXIT returns to
+    (tools/flight_exit_returns.py)."""
+    (ROOT / OUT / 'host-parts').mkdir(parents=True, exist_ok=True)
+    obj = ROOT / OUT / 'host-parts' / f'{stem}.flight.o'
+    run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-DAGC_FLIGHT_INTERPRETER',
+         *(f'-D{t}={t}_flight' for t in tables), '-c', ROOT / 'src' / f'{stem}.c', '-o', obj])
+    got = table_keys(cc, [f'{t}_flight' for t in tables], [obj])
+    return {t: got[f'{t}_flight'] for t in tables}
+
+
 def interp_modules(cc, m, library):
     """Link the interpreter's two modules for the store; their PRGs and
     link_core's result."""
@@ -729,7 +805,7 @@ def input_digest(a):
 def output_digests(since):
     return {f.relative_to(ROOT / OUT).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest()
             for f in sorted((ROOT / OUT).rglob('*'))
-            if f.is_file() and not f.name.startswith('.stamp-') and f.stat().st_mtime >= since}
+            if f.is_file() and not f.name.startswith(('.stamp-', '.lock')) and f.stat().st_mtime >= since}
 
 
 def up_to_date(stamp, digest):
@@ -749,6 +825,28 @@ def up_to_date(stamp, digest):
     return True
 
 
+UNPLACED = 'docs/flight-store-unplaced.json'
+
+
+def check_unplaced(m, unplaced):
+    """The ratchet on routine keys no packed module holds (the C64 stops
+    there; the host bridges them through yaAGC): per table, at most the
+    count docs/flight-store-unplaced.json allows. A lower count asks for the
+    file to be lowered with it. Returns the error, raised once report.json
+    is written."""
+    allowed = json.loads((ROOT / UNPLACED).read_text()).get(m, {})
+    over = {t: (n, allowed.get(t, 0)) for t, n in unplaced.items() if n > allowed.get(t, 0)}
+    lower = {t: (unplaced.get(t, 0), k) for t, k in allowed.items() if unplaced.get(t, 0) < k}
+    for t, (n, k) in sorted(lower.items()):
+        print(f'{m}: {t} has {n} unplaced keys, {k} allowed: lower {UNPLACED} to {n}')
+    if over:
+        return (f'{m}: routine keys with no module in the store (the C64 stops at them): '
+                + ', '.join(f'{t} {n} (allowed {k})' for t, (n, k) in sorted(over.items()))
+                + f'. Make them fit a slot (report.json "failed" says how each module failed), '
+                f'or raise the count in {UNPLACED} with the reason in the PR.')
+    return None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
@@ -760,6 +858,11 @@ def main():
     p.add_argument('--force', action='store_true', help='build even when the last build is up to date')
     a = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
+    # One build at a time in the tree: ci_run runs flight-store targets in
+    # parallel, and two builds rewriting build/flight-store/keys at once fail
+    # ("Text file busy"). The one that waits then finds the stamp current.
+    lock = open(ROOT / OUT / '.lock', 'w')
+    fcntl.flock(lock, fcntl.LOCK_EX)
     stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
                           + ('-host' if a.host_only else ''))
     digest = input_digest(a)
@@ -778,11 +881,15 @@ def main():
         run([sys.executable, 'tools/overlay_v2_services.py', '--out-dir', OUT])
         library = prepare(a.cc, ROOT / OUT)
     report = {}
+    errors = []
     for m in a.missions.split(','):
         mine = {t: o for t, o in tables.items() if mission_of(t, o) == m}
         skipped = {t: 'resident' for t in RESIDENT[m]} | {t: 'replaced by the thin kernel' for t in REPLACED[m]}
         packed = {t: o for t, o in mine.items() if t not in skipped and keys[t]}
         empty = sorted(t for t, o in mine.items() if t not in skipped and not keys[t])
+        for stem in sorted(FLIGHT_INTERP_STOP[m] - set(FLIGHT_PARTS[m])):
+            keys.update(flight_keys(a.host_cc, stem, sorted(t for t, o in mine.items()
+                                                             if o == stem and not interpretive_table(t))))
         resident_keys = {('i' if interpretive_table(t) else 'b', k) for t in RESIDENT[m] for k in keys.get(t, [])}
         # Key -> tables, in resolution preference order.
         holders = collections.defaultdict(list)
@@ -807,27 +914,65 @@ def main():
                 also[t].append(host)
 
         def site_stem(t):
+            if t in RIDE_SITES and RIDE_SITES[t] in tables:
+                return tables[RIDE_SITES[t]]
             return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
-        stems = sorted({site_stem(t) for t in order if t in tables})
+        stems = sorted({site_stem(t) for t in order + [t for ts in PIN[m].values() for t in ts]
+                        + [t for _, ts, _ in PACKS[m] for t in ts] if t in tables})
         (ROOT / OUT / f'{m}-sites.inc').write_text(
             f'/* Generated by tools/flight_store_build.py: the inline operands each {m.upper()} source '
             'compiles (its agc_site_operand arrays), sorted; a module carries its sources\' sets. */\n'
             + ''.join(f'static const agc_site_operand sites_{st}[]={{' + ','.join(
                 f'{{{k}u,0{w:o}u}}' for k, w in sorted(file_sites(a.host_cc, m, st).items()))
                       + (f'}};\n' if file_sites(a.host_cc, m, st) else '{AGC_TRANSFER_NONE,0u}};\n') for st in stems))
-        (ROOT / OUT / f'{m}-host.inc').write_text(
-            f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight program\'s tables, '
-            'resident first, in resolution order: table, interpretive, io kind, module (empty when '
-            'resident), slot (0 job, 1 task), operand set, its size, other modules holding the table, '
-            'fixed_data (0 boundary words, 1 self-check, 2 rope), work clock MCT per routine. */\n'
-            + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
-                      f'FLIGHT_IO_{io_kind(m, tables[t])}, "{packed.get(t, "") if t not in RESIDENT[m] else ""}", '
-                      f'{lane_slot(packed[t], m, owners, place)[1] if t in packed and t not in RESIDENT[m] else 0}, '
-                      f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
-                      f'"{" ".join(also[t])}", '
-                      f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0}, '
-                      f'{host_mct(m, t)}u)\n'
-                      for t in order if t in tables))
+        def write_host(pins, packs):
+            """build/flight-store/<m>-host.inc. pins: {table: slot class 3
+            or 4} for the pinned sets the C64 loads at boot and runs through
+            rk_direct before any module: they go right after the resident,
+            never load and never take a slot. With a class-4 set in, every
+            task-slot module links for the job slot (task_pinned_out).
+            packs: {table: (pack name, ride)} for the job-slot packs
+            (PACKS) that linked. The resolver sends a pack table's keys to
+            the pack first (a hot subset ahead of its full table, the
+            resident's included, as the wrappers move); a ride table runs
+            only while its pack is loaded (slot 5: the host skips it
+            otherwise)."""
+            task_out = 4 in pins.values()
+            pin_order = [t for t in pins if t in tables]
+            ahead = [t for t in packs if t in tables and (packs[t][1] or hot_full(t))]
+            first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
+
+            def slot_of(t):
+                if t in pins:
+                    return pins[t]
+                if t in packs:
+                    return 5 if packs[t][1] else 0
+                if t not in packed or t in RESIDENT[m]:
+                    return 0
+                return 0 if task_out else lane_slot(packed[t], m, owners, place)[1]
+
+            def module_of_table(t):
+                if t in pins:
+                    return 'pin-' + SLOT_NAME[pins[t]]
+                if t in packs:
+                    return packs[t][0]
+                return packed.get(t, '') if t not in RESIDENT[m] else ''
+            (ROOT / OUT / f'{m}-host.inc').write_text(
+                f'/* Generated by tools/flight_store_build.py: the {m.upper()} flight program\'s tables, '
+                'resident first, then the pinned sets, in resolution order: table, interpretive, io kind, '
+                'module (empty when resident), slot (0 job, 1 task, 3 and 4 pinned: never loaded), '
+                'operand set, its size, other modules holding the table, '
+                'fixed_data (0 boundary words, 1 self-check, 2 rope), work clock MCT per routine. */\n'
+                + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
+                          f'FLIGHT_IO_{io_kind(m, tables[t])}, '
+                          f'"{module_of_table(t)}", '
+                          f'{slot_of(t)}, '
+                          f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
+                          f'"{" ".join(also[t])}", '
+                          f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0}, '
+                          f'{host_mct(m, t)}u)\n'
+                          for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables))
+        write_host(host_pins(m, packed), host_packs(m, packed))
         if a.host_only:
             continue
         to_interp = {t for t, o in packed.items()
@@ -1179,7 +1324,9 @@ def main():
                         continue
                     for k in keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
+        write_host(packed_pins(pinned), pack_tables(pack_report(packs)))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
+        unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):
             if (kind, k) in resident_keys:
                 continue
@@ -1192,6 +1339,7 @@ def main():
             owner = next((module_of[(t, k)] for t in ts if (t, k) in module_of), None)
             if owner is None:
                 unplaced += 1
+                unplaced_by.setdefault(sorted(ts)[0], []).append(k)
                 continue
             bank, loc = canonical_record(k)
             records.append(dict(bank=bank, loc=loc, module=owner, selector=0, interpretive=kind == 'i'))
@@ -1235,6 +1383,32 @@ def main():
         moved = {canonical_record(k): pack['id'] for pack in packs if pack.get('ok')
                  for t in pack['basic'] if t not in RIDE and (hot_full(t) or t) in RESIDENT[m] for k in keys[t]}
         wrappers = [dict(r, module=moved.get((r['bank'], r['loc']), r['module'])) for r in wrappers]
+        # DOWNRUPT's vector goes to the down-telemetry module that carries
+        # its ends; RESUME stays with its wrappers (only that run reaches the
+        # module's copy).
+        stem, ends = DOWNRUPT_HOST[m]
+        host = next((mod['id'] for mod, _, res in linked if mod['stem'] == stem and res['ok']
+                     and ends in mod.get('also', []) and not mod.get('part')), None)
+        if host is not None:
+            vector = canonical_record(DOWNRUPT_VECTOR)
+            wrappers = [dict(r, module=host) if (r['bank'], r['loc']) == vector else r for r in wrappers]
+            # A run that stops on the work-clock budget inside the chain
+            # resumes in the same module. Its fixed points have records; an
+            # unswitched erasable point (DNTMGOTO) gets one under each FB its
+            # table runs in (bank 05), where no fixed key can be. The resolver
+            # keys it by the FB at the stop: every TC DNTMGOTO is in bank 05
+            # code (DODOWNTM after the vector's CAF DNRPTBB; XCH BBANK, and the
+            # phases), none of which writes FB.
+            table = f'{m}_downtelemetry_routines'
+            fbs = sorted({k >> 10 for k in keys[table] if k < ERASABLE_BASE})
+            taken = {(r['bank'], r['loc']) for r in resolver + wrappers}
+            for k in keys[table]:
+                if ERASABLE_BASE <= k < ERASABLE_BASE + 0o1400:
+                    for fb in fbs:
+                        record = dict(bank=fb << 10, loc=k - ERASABLE_BASE, module=host, selector=0)
+                        if (record['bank'], record['loc']) in taken:
+                            raise SystemExit(f'{m}: DOWNRUPT point {record} already has a record')
+                        wrappers.append(record)
         # The interpreter's modules and its points' records, where no
         # table record or resident table already holds the point.
         interp_prgs, interp = interp_modules(a.cc, m, library)
@@ -1285,19 +1459,22 @@ def main():
             tables=len(mine), packed_tables=len(packed), empty_tables=empty, skipped=skipped,
             keys=len(holders), keys_held_by_resident=shadowed, erasable_keys=erasable,
             unplaced_keys=unplaced, interpreter_keys=interpreted,
+            unplaced={t: len(v) for t, v in sorted(unplaced_by.items())},
             shadowed_entries={t: len(keys[t]) - len(v) for t, v in sorted(live.items())},
             modules_left_out_shadowed=[f'0x{i:04x}' for i in pruned],
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],
             modules=len(modules), modules_linked=len(good), failed=failed, boot_modules=[p.name for p in boot],
-            pinned=pinned,
+            pinned=pinned, packs=pack_report(packs),
             interpreter=dict(interp, records=len(interp_records), points_kept_elsewhere=interp_kept),
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),
             module_list=[{k: mod.get(k) for k in ('stem', 'agc', 'lane', 'slot', 'id', 'bytes', 'basic', 'interp',
                                                     'chunk', 'chunk_of', 'also', 'fixed_data', 'moved_to_job_slot',
                                                     'task_overflow', 'task_pinned_out')} | dict(sites=len(mod.get('sites') or {}))
                          for mod in modules])
+        if not a.host_only:
+            errors += [e for e in [check_unplaced(m, report[m]['unplaced'])] if e]
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")
@@ -1311,6 +1488,8 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+    if errors:
+        raise SystemExit('\n'.join(errors))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
     return 0
 

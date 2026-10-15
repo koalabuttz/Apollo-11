@@ -15,9 +15,15 @@ or `=2`:
 
 - Part 1 holds the basic words below `LMSV_PART_CUT` (bank 33 `03420`):
   banks 21, 22, 23, 27 and 32 and bank 33 up to `03417`, with the first 85
-  basic keys.
+  basic keys and 13 EXIT returns.
 - Part 2 holds the rest of bank 33 and banks 34 and 37, with the other 80
-  keys.
+  keys and 2 EXIT returns.
+- The EXIT returns are the basic words the file's interpretive EXITs
+  resume at (`X23`/`X33` in `basic_entries`, flight builds only). On the
+  C64 the native interpreter runs the interpretive code, and its EXIT hands
+  that word to the flight program as a basic key.
+  `tools/flight_exit_returns.py` derives them from the listing and checks
+  the flight build keys all 18 (3 were keys already).
 - `lm_servicer_routines` is the part's slice of the sorted `basic_entries`;
   the interpretive table is empty.
 - A run that reaches a word of the other part (a goto, a fall-through, a
@@ -31,8 +37,8 @@ before, in the host build and in every C64 segment group.
 
 | Part | Keys | Flight link (LM, bytes) |
 |---|---|---|
-| 1 | 85 | 14,581 |
-| 2 | 80 | 14,302 |
+| 1 | 85 (+13 EXIT returns) | 14,581 |
+| 2 | 80 (+2 EXIT returns) | 14,302 |
 
 The sizes come from `tools/flight_store_build.py`'s `link_module`, with the
 part's flags added to the common flags. The flight store links the file
@@ -56,8 +62,8 @@ order pair. Every case must equal the original program stopped there.
 | Part | Cases | Equal | Refused unchanged | Refused at a non-key word across the cut |
 |---|---|---|---|---|
 | 1 | 10,880 | 10,752 | 128 | 8 |
-| 2 | 10,241 | 9,970 | 271 | 19 |
+| 2 | 10,241 | 9,971 | 270 | 18 |
 
-The 27 refusals at the cut all come from a `TC Q`, `TC A` or `DTCB` whose
+The 26 refusals at the cut all come from a `TC Q`, `TC A` or `DTCB` whose
 target the case drew at random, landing mid-routine in the other part.
 No transfer in the file's own code does that, as the check above shows.

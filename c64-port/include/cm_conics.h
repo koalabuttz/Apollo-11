@@ -12,7 +12,7 @@ extern const agc_routine_table cm_conics_interpretive,cm_conics_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_conics_point;
-#define CM_CONICS_POINTS 445u
+#define CM_CONICS_POINTS 449u
 #define CM_CONICS_CADR_WORDS 3u
 #define CM_CONICS_EXTERNALS 5u
 #define CM_CONICS_FIRST 4994u

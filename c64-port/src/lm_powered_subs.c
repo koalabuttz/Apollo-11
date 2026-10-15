@@ -54,6 +54,9 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[5]==06070u&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
 }
+static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[5]==06061u&&(W[0165]&076000u)==fb&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);
+}
 /* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
@@ -1581,6 +1584,17 @@ static enum exec_status r20142_abi(const agc_native_program *p,apollo_overlay_st
 }
 #endif
 #if (LM_POWERED_SUBS_KEEP0 >> 14) & 1
+/* 10,2173  (EXIT in EDOP, return through DANZIG) */
+static enum exec_status r20173(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_danzig(s,io,020000u))return EXEC_OUT_OF_SCOPE;
+ /* 10,2173 pending DANZIG: EXIT in EDOP from the TS EDOP before */
+ if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
+ TRACE(s);
+ right(s);
+ lmi_exit(s);return EXEC_OK;
+}
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 15) & 1
 /* 10,2174  (entry FLESHPOT+93) */
 static enum exec_status r20174_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,020000u))return EXEC_OUT_OF_SCOPE;
@@ -1588,7 +1602,7 @@ static enum exec_status r20174_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,8316u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 15) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 16) & 1
 /* 23,3537 CDUTRIG (entry CDUTRIG (S-BAND_ANTENNA_FOR_LM.agc  CDUTRIG)) */
 static enum exec_status r47537(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1598,7 +1612,7 @@ static enum exec_status r47537(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 16) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 17) & 1
 /* 23,3540  (after EXIT) */
 static enum exec_status r47540_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1606,7 +1620,7 @@ static enum exec_status r47540_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20320u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 17) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
 /* 23,3542  (after TC INTPRET) */
 static enum exec_status r47542(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1616,7 +1630,7 @@ static enum exec_status r47542(apollo_overlay_state *s,p66_bias_io *io){
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 19) & 1
 /* 23,3543 CD*TR*G (entry CD*TR*G (R60,R62.agc  CD*TR*G)) */
 static enum exec_status r47543(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1626,7 +1640,7 @@ static enum exec_status r47543(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 19) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 20) & 1
 /* 23,3544  (after EXIT) */
 static enum exec_status r47544_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1634,7 +1648,7 @@ static enum exec_status r47544_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20324u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 20) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 21) & 1
 /* 23,3546  (after TC INTPRET) */
 static enum exec_status r47546(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1644,7 +1658,18 @@ static enum exec_status r47546(apollo_overlay_state *s,p66_bias_io *io){
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 21) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
+/* 23,3567  (USPRCADR return through DANZIG) */
+static enum exec_status r47567(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ /* 23,3567 pending DANZIG: USPRCADR's EXIT in EDOP */
+ if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
+ TRACE(s);
+ right(s);
+ lmi_exit(s);return EXEC_OK;
+}
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 23) & 1
 /* 23,3570  (return from USPRCADR) */
 static enum exec_status r47570_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1652,7 +1677,18 @@ static enum exec_status r47570_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20344u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
+/* 23,3575  (USPRCADR return through DANZIG) */
+static enum exec_status r47575(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ /* 23,3575 pending DANZIG: USPRCADR's EXIT in EDOP */
+ if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
+ TRACE(s);
+ right(s);
+ lmi_exit(s);return EXEC_OK;
+}
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 25) & 1
 /* 23,3576  (return from USPRCADR) */
 static enum exec_status r47576_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1660,15 +1696,26 @@ static enum exec_status r47576_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20350u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 23) & 1
-/* 23,3606  (return from USPRCADR) */
+#if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
+/* 23,3605  (USPRCADR return through DANZIG) */
+static enum exec_status r47605(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ /* 23,3605 pending DANZIG: USPRCADR's EXIT in EDOP */
+ if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
+ TRACE(s);
+ right(s);
+ lmi_exit(s);return EXEC_OK;
+}
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 27) & 1
+/* 23,3606  (after EXIT) */
 static enum exec_status r47606_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
  (void)p;
  return basic_run(s,(p66_bias_io *)v,20358u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 28) & 1
 /* 23,3615 QUICTRIG (entry QUICTRIG (P20-P25.agc CADR QUICTRIG)) */
 static enum exec_status r47615_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1676,7 +1723,7 @@ static enum exec_status r47615_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20365u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 25) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 29) & 1
 /* 23,3626  (return from SPSIN) */
 static enum exec_status r47626_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1684,7 +1731,7 @@ static enum exec_status r47626_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20374u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 30) & 1
 /* 23,3635  (return from SPCOS) */
 static enum exec_status r47635_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1692,7 +1739,7 @@ static enum exec_status r47635_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20381u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 27) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 31) & 1
 /* 23,3646 CDU*SMNB (entry CDU*SMNB (P20-P25.agc  CDU*SMNB)) */
 static enum exec_status r47646(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1702,7 +1749,7 @@ static enum exec_status r47646(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 28) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 32) & 1
 /* 23,3647  (after EXIT) */
 static enum exec_status r47647_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1710,7 +1757,7 @@ static enum exec_status r47647_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20391u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 29) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
 /* 23,3651 TRG*SMNB (entry TRG*SMNB (P20-P25.agc  TRG*SMNB)) */
 static enum exec_status r47651(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1720,7 +1767,7 @@ static enum exec_status r47651(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 30) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 34) & 1
 /* 23,3652  (after EXIT) */
 static enum exec_status r47652_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1728,7 +1775,7 @@ static enum exec_status r47652_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20394u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 31) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 35) & 1
 /* 23,3654  (return from MPACVBUF) */
 static enum exec_status r47654_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1736,7 +1783,7 @@ static enum exec_status r47654_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20396u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 32) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 36) & 1
 /* 23,3657  (after TC INTPRET) */
 static enum exec_status r47657(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1748,7 +1795,7 @@ static enum exec_status r47657(apollo_overlay_state *s,p66_bias_io *io){
  lmi_unary(s,003274);lmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 37) & 1
 /* 23,3661 CDU*NBSM (entry CDU*NBSM (R31.agc  CDU*NBSM)) */
 static enum exec_status r47661(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1758,7 +1805,7 @@ static enum exec_status r47661(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 34) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 38) & 1
 /* 23,3662  (after EXIT) */
 static enum exec_status r47662_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1766,7 +1813,7 @@ static enum exec_status r47662_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20402u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 35) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 39) & 1
 /* 23,3664 TRG*NBSM (entry TRG*NBSM (AOTMARK.agc  TRG*NBSM)) */
 static enum exec_status r47664(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1776,7 +1823,7 @@ static enum exec_status r47664(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 36) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 40) & 1
 /* 23,3665  (after EXIT) */
 static enum exec_status r47665_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1784,7 +1831,7 @@ static enum exec_status r47665_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20405u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 37) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 41) & 1
 /* 23,3667  (return from MPACVBUF) */
 static enum exec_status r47667_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1792,7 +1839,7 @@ static enum exec_status r47667_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20407u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 38) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 42) & 1
 /* 23,3671 *SMNB* (entry *SMNB* (S-BAND_ANTENNA_FOR_LM.agc  *SMNB*)) */
 static enum exec_status r47671(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1802,7 +1849,7 @@ static enum exec_status r47671(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 39) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 43) & 1
 /* 23,3672  (after EXIT) */
 static enum exec_status r47672_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1810,7 +1857,7 @@ static enum exec_status r47672_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20410u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 40) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 44) & 1
 /* 23,3673 *NBSM* (entry *NBSM* (P20-P25.agc  *NBSM*)) */
 static enum exec_status r47673(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1820,7 +1867,7 @@ static enum exec_status r47673(apollo_overlay_state *s,p66_bias_io *io){
  lmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 41) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 45) & 1
 /* 23,3674  (after EXIT) */
 static enum exec_status r47674_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1828,7 +1875,7 @@ static enum exec_status r47674_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20412u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 42) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 46) & 1
 /* 23,3675 AX*SR*T (entry AX*SR*T (P20-P25.agc CADR AX*SR*T)) */
 static enum exec_status r47675_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1836,7 +1883,7 @@ static enum exec_status r47675_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20413u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 43) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 47) & 1
 /* 23,3723  (return from DMPSUB) */
 static enum exec_status r47723_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1844,7 +1891,7 @@ static enum exec_status r47723_abi(const agc_native_program *p,apollo_overlay_st
  return basic_run(s,(p66_bias_io *)v,20435u);
 }
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 44) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 48) & 1
 /* 23,3741  (return from DMPSUB) */
 static enum exec_status r47741_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  if(!s||!v||!basic_sane(s,(p66_bias_io *)v,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1860,37 +1907,49 @@ WRAP(r20030)
 #if (LM_POWERED_SUBS_KEEP0 >> 3) & 1
 WRAP(r20034)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 15) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 14) & 1
+WRAP(r20173)
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 16) & 1
 WRAP(r47537)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 17) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
 WRAP(r47542)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 19) & 1
 WRAP(r47543)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 20) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 21) & 1
 WRAP(r47546)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 27) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
+WRAP(r47567)
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
+WRAP(r47575)
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
+WRAP(r47605)
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 31) & 1
 WRAP(r47646)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 29) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
 WRAP(r47651)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 32) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 36) & 1
 WRAP(r47657)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 37) & 1
 WRAP(r47661)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 35) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 39) & 1
 WRAP(r47664)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 38) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 42) & 1
 WRAP(r47671)
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 40) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 44) & 1
 WRAP(r47673)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -1901,37 +1960,49 @@ static const agc_routine_entry interpretive_entries[]={
 #if (LM_POWERED_SUBS_KEEP0 >> 3) & 1
  {8220,r20034_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 15) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 14) & 1
+ {8315,r20173_abi},
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 16) & 1
  {20319,r47537_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 17) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
  {20322,r47542_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 18) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 19) & 1
  {20323,r47543_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 20) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 21) & 1
  {20326,r47546_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 27) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
+ {20343,r47567_abi},
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
+ {20349,r47575_abi},
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
+ {20357,r47605_abi},
+#endif
+#if (LM_POWERED_SUBS_KEEP0 >> 31) & 1
  {20390,r47646_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 29) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
  {20393,r47651_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 32) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 36) & 1
  {20399,r47657_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 33) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 37) & 1
  {20401,r47661_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 35) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 39) & 1
  {20404,r47664_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 38) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 42) & 1
  {20409,r47671_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 40) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 44) & 1
  {20411,r47673_abi},
 #endif
  {0xffffu,0}
@@ -1974,64 +2045,64 @@ static const agc_routine_entry basic_entries[]={
 #if (LM_POWERED_SUBS_KEEP0 >> 13) & 1
  {8290,r20142_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 14) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 15) & 1
  {8316,r20174_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 16) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 17) & 1
  {20320,r47540_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 19) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 20) & 1
  {20324,r47544_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 21) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 23) & 1
  {20344,r47570_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 25) & 1
  {20350,r47576_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 23) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 27) & 1
  {20358,r47606_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 28) & 1
  {20365,r47615_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 25) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 29) & 1
  {20374,r47626_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 30) & 1
  {20381,r47635_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 28) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 32) & 1
  {20391,r47647_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 30) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 34) & 1
  {20394,r47652_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 31) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 35) & 1
  {20396,r47654_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 34) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 38) & 1
  {20402,r47662_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 36) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 40) & 1
  {20405,r47665_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 37) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 41) & 1
  {20407,r47667_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 39) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 43) & 1
  {20410,r47672_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 41) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 45) & 1
  {20412,r47674_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 42) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 46) & 1
  {20413,r47675_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 43) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 47) & 1
  {20435,r47723_abi},
 #endif
-#if (LM_POWERED_SUBS_KEEP0 >> 44) & 1
+#if (LM_POWERED_SUBS_KEEP0 >> 48) & 1
  {20449,r47741_abi},
 #endif
  {0xffffu,0}
@@ -2052,6 +2123,7 @@ const lm_powered_subs_point lm_powered_subs_points[LM_POWERED_SUBS_POINTS]={
  {8274,0},
  {8283,0},
  {8290,0},
+ {8315,1},
  {8316,0},
  {20319,1},
  {20320,0},
@@ -2059,8 +2131,11 @@ const lm_powered_subs_point lm_powered_subs_points[LM_POWERED_SUBS_POINTS]={
  {20323,1},
  {20324,0},
  {20326,1},
+ {20343,1},
  {20344,0},
+ {20349,1},
  {20350,0},
+ {20357,1},
  {20358,0},
  {20365,0},
  {20374,0},

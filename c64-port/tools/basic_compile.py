@@ -276,6 +276,14 @@ class Basic:
         noreturn = self.NORETURN + tuple(self.spec.get('noreturn', ()))
         if self.in_file(ret) and name not in noreturn and not (inline and inline[0] in noreturn):
             self.cp.add_start(ret, 'b', 'return from ' + name)
+            # Spec 'returns': a callee (by inline CADR, else by name) that
+            # also returns to the words after L+1 (GOFLASH: L+2 proceed, L+3
+            # recycle; IMUSTALL and OPTSTALL: L+2 good). Each is a routine.
+            returns = self.spec.get('returns', {})
+            callee = inline[0] if len(inline) == 1 and inline[0] in returns else name
+            for i in range(1, returns.get(callee, 1)):
+                if self.in_file(ret + i) and not self.is_data(ret + i):
+                    self.cp.add_start(ret + i, 'b', 'return %d from %s' % (i + 1, callee))
         return name
 
     # Outside routines that never come back to the word after the call.

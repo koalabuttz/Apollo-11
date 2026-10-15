@@ -19,7 +19,7 @@
    "cases": 37,
    "case_ids": [
     117,
-    90,
+    168,
     313,
     686,
     807,
@@ -59,33 +59,40 @@
   },
   {
    "mission": "cm",
-   "keep": "0xfffe007800000f000000",
-   "cases": 5,
-   "case_ids": [
-    6363,
-    6258,
-    6217,
-    6192,
-    6216
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0xfffffff800000e000000",
+   "keep": "0xfffffff800000f000000",
    "cases": 1,
    "case_ids": [
-    6446
+    6246
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xffffc000000",
-   "cases": 19,
+   "keep": "0xfffffff800000f000000",
+   "cases": 1,
    "case_ids": [
+    6381
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffe007800003f000000",
+   "cases": 8,
+   "case_ids": [
+    6217,
+    6333,
+    6216,
+    6403,
     6662,
     6978,
     7171,
-    7508,
+    7508
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0xfffc0000000",
+   "cases": 15,
+   "case_ids": [
     7713,
     7945,
     8315,
@@ -162,14 +169,14 @@
     16739,
     17088,
     16905,
-    17144,
-    17109,
-    16995,
-    16949,
     17069,
+    16986,
+    17109,
+    16949,
     16945,
     17068,
-    17227
+    17227,
+    17435
    ]
   },
   {
@@ -177,7 +184,6 @@
    "keep": "0xfffffff8000000000000",
    "cases": 10,
    "case_ids": [
-    17435,
     17713,
     18127,
     17941,
@@ -186,15 +192,15 @@
     18769,
     18968,
     19344,
-    19474
+    19474,
+    19757
    ]
   },
   {
    "mission": "cm",
-   "keep": "0xe0000000000000000000",
-   "cases": 3,
+   "keep": "0xc0000000000000000000",
+   "cases": 2,
    "case_ids": [
-    19757,
     19977,
     20281
    ]
@@ -203,14 +209,14 @@
  "c64_coverage": {
   "host_labels": 240,
   "c64_labels": 240,
-  "host_edges": 1732,
-  "c64_edges": 1732,
+  "host_edges": 1765,
+  "c64_edges": 1765,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 930,
-  "c64_taken": 930,
+  "host_taken": 989,
+  "c64_taken": 989,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -231,355 +237,7 @@
  },
  "c64_too_big_cases": [
   {
-   "case": 6338,
-   "point": 32357
-  },
-  {
-   "case": 6246,
-   "point": 32357
-  },
-  {
-   "case": 6239,
-   "point": 32357
-  },
-  {
-   "case": 6380,
-   "point": 32357
-  },
-  {
-   "case": 6288,
-   "point": 32357
-  },
-  {
-   "case": 6293,
-   "point": 32357
-  },
-  {
-   "case": 6186,
-   "point": 32357
-  },
-  {
-   "case": 6264,
-   "point": 32357
-  },
-  {
-   "case": 6344,
-   "point": 32357
-  },
-  {
-   "case": 6275,
-   "point": 32357
-  },
-  {
-   "case": 6314,
-   "point": 32357
-  },
-  {
-   "case": 6366,
-   "point": 32357
-  },
-  {
-   "case": 6372,
-   "point": 32357
-  },
-  {
-   "case": 6207,
-   "point": 32357
-  },
-  {
-   "case": 6213,
-   "point": 32357
-  },
-  {
-   "case": 6343,
-   "point": 32357
-  },
-  {
-   "case": 6320,
-   "point": 32357
-  },
-  {
-   "case": 6188,
-   "point": 32357
-  },
-  {
-   "case": 6305,
-   "point": 32357
-  },
-  {
-   "case": 6202,
-   "point": 32357
-  },
-  {
-   "case": 6196,
-   "point": 32357
-  },
-  {
-   "case": 6331,
-   "point": 32357
-  },
-  {
-   "case": 6356,
-   "point": 32357
-  },
-  {
-   "case": 6190,
-   "point": 32357
-  },
-  {
-   "case": 6263,
-   "point": 32357
-  },
-  {
-   "case": 6281,
-   "point": 32357
-  },
-  {
    "case": 6145,
-   "point": 32357
-  },
-  {
-   "case": 6204,
-   "point": 32357
-  },
-  {
-   "case": 6222,
-   "point": 32357
-  },
-  {
-   "case": 6189,
-   "point": 32357
-  },
-  {
-   "case": 6370,
-   "point": 32357
-  },
-  {
-   "case": 6381,
-   "point": 32357
-  },
-  {
-   "case": 6274,
-   "point": 32357
-  },
-  {
-   "case": 6283,
-   "point": 32357
-  },
-  {
-   "case": 6341,
-   "point": 32357
-  },
-  {
-   "case": 6353,
-   "point": 32357
-  },
-  {
-   "case": 6247,
-   "point": 32357
-  },
-  {
-   "case": 6242,
-   "point": 32357
-  },
-  {
-   "case": 6308,
-   "point": 32357
-  },
-  {
-   "case": 6337,
-   "point": 32357
-  },
-  {
-   "case": 6316,
-   "point": 32357
-  },
-  {
-   "case": 6257,
-   "point": 32357
-  },
-  {
-   "case": 6354,
-   "point": 32357
-  },
-  {
-   "case": 6252,
-   "point": 32357
-  },
-  {
-   "case": 6226,
-   "point": 32357
-  },
-  {
-   "case": 6289,
-   "point": 32357
-  },
-  {
-   "case": 6232,
-   "point": 32357
-  },
-  {
-   "case": 6292,
-   "point": 32357
-  },
-  {
-   "case": 6299,
-   "point": 32357
-  },
-  {
-   "case": 6322,
-   "point": 32357
-  },
-  {
-   "case": 6290,
-   "point": 32357
-  },
-  {
-   "case": 6229,
-   "point": 32357
-  },
-  {
-   "case": 6285,
-   "point": 32357
-  },
-  {
-   "case": 6198,
-   "point": 32357
-  },
-  {
-   "case": 6386,
-   "point": 32357
-  },
-  {
-   "case": 6158,
-   "point": 32357
-  },
-  {
-   "case": 6368,
-   "point": 32357
-  },
-  {
-   "case": 6377,
-   "point": 32357
-  },
-  {
-   "case": 6303,
-   "point": 32357
-  },
-  {
-   "case": 6357,
-   "point": 32357
-  },
-  {
-   "case": 6219,
-   "point": 32357
-  },
-  {
-   "case": 6181,
-   "point": 32357
-  },
-  {
-   "case": 6214,
-   "point": 32357
-  },
-  {
-   "case": 6392,
-   "point": 32357
-  },
-  {
-   "case": 6259,
-   "point": 32357
-  },
-  {
-   "case": 6346,
-   "point": 32357
-  },
-  {
-   "case": 6208,
-   "point": 32357
-  },
-  {
-   "case": 6336,
-   "point": 32357
-  },
-  {
-   "case": 6144,
-   "point": 32357
-  },
-  {
-   "case": 6267,
-   "point": 32357
-  },
-  {
-   "case": 6328,
-   "point": 32357
-  },
-  {
-   "case": 6218,
-   "point": 32357
-  },
-  {
-   "case": 6260,
-   "point": 32357
-  },
-  {
-   "case": 6358,
-   "point": 32357
-  },
-  {
-   "case": 6256,
-   "point": 32357
-  },
-  {
-   "case": 6277,
-   "point": 32357
-  },
-  {
-   "case": 6385,
-   "point": 32357
-  },
-  {
-   "case": 6334,
-   "point": 32357
-  },
-  {
-   "case": 6383,
-   "point": 32357
-  },
-  {
-   "case": 6384,
-   "point": 32357
-  },
-  {
-   "case": 6150,
-   "point": 32357
-  },
-  {
-   "case": 6147,
-   "point": 32357
-  },
-  {
-   "case": 6398,
-   "point": 32357
-  },
-  {
-   "case": 6373,
-   "point": 32357
-  },
-  {
-   "case": 6193,
-   "point": 32357
-  },
-  {
-   "case": 6291,
-   "point": 32357
-  },
-  {
-   "case": 6187,
-   "point": 32357
-  },
-  {
-   "case": 6340,
    "point": 32357
   },
   {
@@ -587,47 +245,243 @@
    "point": 32357
   },
   {
+   "case": 6158,
+   "point": 32357
+  },
+  {
+   "case": 6181,
+   "point": 32357
+  },
+  {
+   "case": 6187,
+   "point": 32357
+  },
+  {
+   "case": 6188,
+   "point": 32357
+  },
+  {
+   "case": 6190,
+   "point": 32357
+  },
+  {
+   "case": 6193,
+   "point": 32357
+  },
+  {
+   "case": 6196,
+   "point": 32357
+  },
+  {
+   "case": 6208,
+   "point": 32357
+  },
+  {
+   "case": 6214,
+   "point": 32357
+  },
+  {
+   "case": 6218,
+   "point": 32357
+  },
+  {
+   "case": 6226,
+   "point": 32357
+  },
+  {
+   "case": 6229,
+   "point": 32357
+  },
+  {
+   "case": 6232,
+   "point": 32357
+  },
+  {
    "case": 6233,
    "point": 32357
   },
   {
-   "case": 6351,
+   "case": 6239,
    "point": 32357
   },
   {
-   "case": 6261,
+   "case": 6242,
    "point": 32357
   },
   {
-   "case": 6369,
+   "case": 6247,
    "point": 32357
   },
   {
-   "case": 6162,
+   "case": 6256,
    "point": 32357
   },
   {
-   "case": 6312,
+   "case": 6257,
    "point": 32357
   },
   {
-   "case": 6294,
+   "case": 6259,
    "point": 32357
   },
   {
-   "case": 6183,
+   "case": 6260,
    "point": 32357
   },
   {
-   "case": 6171,
+   "case": 6263,
    "point": 32357
   },
   {
-   "case": 6159,
+   "case": 6274,
    "point": 32357
   },
   {
-   "case": 6318,
+   "case": 6275,
+   "point": 32357
+  },
+  {
+   "case": 6277,
+   "point": 32357
+  },
+  {
+   "case": 6281,
+   "point": 32357
+  },
+  {
+   "case": 6283,
+   "point": 32357
+  },
+  {
+   "case": 6289,
+   "point": 32357
+  },
+  {
+   "case": 6290,
+   "point": 32357
+  },
+  {
+   "case": 6292,
+   "point": 32357
+  },
+  {
+   "case": 6293,
+   "point": 32357
+  },
+  {
+   "case": 6299,
+   "point": 32357
+  },
+  {
+   "case": 6305,
+   "point": 32357
+  },
+  {
+   "case": 6308,
+   "point": 32357
+  },
+  {
+   "case": 6314,
+   "point": 32357
+  },
+  {
+   "case": 6316,
+   "point": 32357
+  },
+  {
+   "case": 6320,
+   "point": 32357
+  },
+  {
+   "case": 6322,
+   "point": 32357
+  },
+  {
+   "case": 6328,
+   "point": 32357
+  },
+  {
+   "case": 6331,
+   "point": 32357
+  },
+  {
+   "case": 6334,
+   "point": 32357
+  },
+  {
+   "case": 6337,
+   "point": 32357
+  },
+  {
+   "case": 6338,
+   "point": 32357
+  },
+  {
+   "case": 6340,
+   "point": 32357
+  },
+  {
+   "case": 6341,
+   "point": 32357
+  },
+  {
+   "case": 6343,
+   "point": 32357
+  },
+  {
+   "case": 6344,
+   "point": 32357
+  },
+  {
+   "case": 6346,
+   "point": 32357
+  },
+  {
+   "case": 6353,
+   "point": 32357
+  },
+  {
+   "case": 6356,
+   "point": 32357
+  },
+  {
+   "case": 6358,
+   "point": 32357
+  },
+  {
+   "case": 6368,
+   "point": 32357
+  },
+  {
+   "case": 6370,
+   "point": 32357
+  },
+  {
+   "case": 6373,
+   "point": 32357
+  },
+  {
+   "case": 6377,
+   "point": 32357
+  },
+  {
+   "case": 6380,
+   "point": 32357
+  },
+  {
+   "case": 6383,
+   "point": 32357
+  },
+  {
+   "case": 6385,
+   "point": 32357
+  },
+  {
+   "case": 6392,
+   "point": 32357
+  },
+  {
+   "case": 6398,
    "point": 32357
   }
  ],

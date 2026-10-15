@@ -323,7 +323,8 @@ body.
 ## Verification
 
 Host checks (strict C99 and ASan/UBSan): `make -f tools/overlay_v2.mk
-overlay-v2-test` from `c64-port/`. `tests/test_overlay_v2.c` drives the runtime
+overlay-v2-test` from `c64-port/`; CI runs the runtime test as `make
+overlay-v2-check` (tools/mk/ci-extra.mk). `tests/test_overlay_v2.c` drives the runtime
 over a store image produced by the real packer, through a register-level model
 of the 17xx RAM Expansion Controller (fetch, stash, verify, 64 KB lengths,
 status clearing). It covers:

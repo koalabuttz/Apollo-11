@@ -144,11 +144,13 @@ def closure(target, rules, seen, scripts):
 
 
 SPLIT_CALL = re.compile(r'\$\(call\s+CI_SPLIT_RULE\s*,\s*([A-Za-z0-9_.-]+)\s*,')
+HOST_SPLIT_CALL = re.compile(r'\$\(call\s+CI_HOST_SPLIT_RULE\s*,\s*([A-Za-z0-9_.-]+)\s*,')
 
 
 def mk_targets(path, rules=()):
     """Targets a .mk file defines: its literal rules, plus the c64-<m>-<n>
-    and vice-<m>-<n> parts its CI_SPLIT_RULE calls make with $(eval)."""
+    and vice-<m>-<n> parts its CI_SPLIT_RULE calls and the <target>-<n> parts
+    its CI_HOST_SPLIT_RULE calls make with $(eval)."""
     targets = set()
     try:
         text = (ROOT / path).read_text()
@@ -160,6 +162,9 @@ def mk_targets(path, rules=()):
             targets.add(match.group(1))
     for milestone in SPLIT_CALL.findall(text):
         part = re.compile(r'^(c64|vice)-' + re.escape(milestone) + r'-[0-9]+$')
+        targets |= {t for t in rules if part.match(t)}
+    for target in HOST_SPLIT_CALL.findall(text):
+        part = re.compile('^' + re.escape(target) + r'-[0-9]+$')
         targets |= {t for t in rules if part.match(t)}
     return targets
 
