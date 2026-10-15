@@ -692,6 +692,9 @@ SPECS = {
     # monitor and T4RUPT itself are cm_t4rupt_imu and t4rupt_core.
     'cm-t4rupt-optics': {
         'missions': ('cm',),
+        # The CM T4RUPT runs every 120 ms: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         # (#260) C64 INDEX end-around carry.
         'index_carry16': True,
         'file': {'cm': 'T4RUPT_PROGRAM.agc'},
@@ -725,6 +728,9 @@ SPECS = {
     # Lane G: Comanche055 SERVICER207 (bank 37), basic and interpretive.
     'cm-rcs-dap-exec': {
         'missions': ('cm',),
+        # The CM RCS DAP's executive runs every DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc'},
         'base': {'cm': 'cm_rcs_dap_exec'},
         'symbol': {'cm': 'cm_rcs_dap_exec'},
@@ -820,6 +826,10 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # FLESHPOT and QUICTRIG run every LM guidance pass (P63-P67, about 15%
+        # of the P63 window's cycles in the scan): no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'lm': 'lm_powered_subs'},
         'symbol': {'lm': 'lm_powered_subs'},
@@ -1326,6 +1336,9 @@ SPECS = {
         'file': {'cm': 'P11.agc'},
         'base': {'cm': 'cm_p11'},
         'symbol': {'cm': 'cm_p11'},
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         'basic': 'full',
         'entries': ['@external'],
         'channels': 'all',
@@ -2190,6 +2203,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
+        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -2349,9 +2365,10 @@ SPECS = {
         # CNTCHK (27,2361) is a label nothing names: STQ POINTEX, then
         # CONTCHK.
         'entries': ['@external', 'CNTCHK'],
-        'partial': {'cm': 'the I/O channel orders and the EXTENDs before them wait for an I/O channel model: '
-                          'RANGERD\'s WAND CHAN13 and WOR CHAN13 (27,2420-2424) and VHFREAD\'s RAND CHAN33 (27,2532-2533), '
-                          'and AUTOCK\'s RXOR CHAN31 (34,3360-3361) and WOR DSALMOUT (34,3427-3430)'},
+        # RANGERD's WAND/WOR CHAN13, VHFREAD's RAND CHAN33, AUTOCK's RXOR
+        # CHAN31 and WOR DSALMOUT (11) on the mission's channels.
+        'channels': 'all',
+        'io_channels': 'auto',
         'externals': {'ALARM': 'auto', 'BANKCALL': 'auto', 'BLANKET': 'auto', 'CURTAINS': 'auto',
                       'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'FINDVAC': 'auto', 'IBNKCALL': 'auto',
                       'MAKECADR': 'auto', 'PHASCHNG': 'auto', '2PHSCHNG': 'auto', 'LINUS': 'auto',
@@ -2362,6 +2379,12 @@ SPECS = {
                       'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
         'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
         'resume_orphans': True,
+        # VHFREAD is a WAITLIST task (it leaves through TASKOVER, GOODEND or
+        # BADEND) and RENDISP2 and ENDR57's ENDMARK NOVAC jobs: the basic
+        # routines they reach run under any FIXLOC, and with NEWJOB -0
+        # while DUMMYJOB idles (steward rule for interrupt-context specs).
+        'any_fixloc': True,
+        'any_newjob': True,
         # R61's INDEX MPAC; TC +1 picks R61END or R61C1.
         'tc_tables': {'R61C1-2': 2},
         # (CCS A after a MASK reaches only its first two arms; the others
@@ -2404,7 +2427,10 @@ SPECS = {
                                      'vac+016': [2, 28]}),
             # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
             # of 6 up to the 36 of S22NXTWI's AXT,1.
-            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]})],
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]}),
+            # AUTOCK's angle check loop: DTHETASM counts the three CDUs 2, 1,
+            # 0 (CDULOOP's INDEX DTHETASM; CA CDUX) up to STKTEST.
+            ('CDULOOP', 'STKTEST', {'DTHETASM': [0, 1, 2]})],
         # From P23.16's last check (TC INTPRET before P23.17) to its CALL
         # LOWMEMRY the program runs with a catalog star code,
         # as P23.16's checks leave it; LOWMEMRY with X1 6 times one.
@@ -2430,6 +2456,13 @@ SPECS = {
         # The S22 and HORIZ CHANG2 chains run too long for one C64 diagnostic:
         # segment rows cut them at the next resume LOC.
         'c64_segments': True,
+        # C64 rows chosen by gcov branch arc over every linked source; arcs
+        # only runs too long for one diagnostic take (AUTOCK's WOR DSALMOUT
+        # into STEP3CK, the S22 DDVs) get truncated rows (c64_cuts). Every
+        # 16th case is traced (a divisor of freeze_stride).
+        'c64_rows': 'cover',
+        'cover_stride': 16,
+        'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
         'max_steps': 40000,
@@ -2884,11 +2917,18 @@ SPECS = {
         'basic': 'full',
         'fast_window': True,
         'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # SPECSTS's FINDVAC 2CADR ALFLT (BBCON 66065) runs the ALFLT filter
+        # under SUPERBNK 060: the FB 30-37 guard tests only the superbank
+        # bit, at the routine's entry, and the cases draw 020-060.
+        'superbank_bit': True, 'any_superbank': True,
         # TARGDRVE's TS TARG1/2 skips onto the CALL after TC INTPRET only if
         # the caller's A overflowed: refused, never run as basic code.
         'interp_not_basic': True,
         # FINETIME (bank 02) runs under its caller's FB.
         'fixed_fixed_any_fb': True,
+        # The C64 flight store links the basic code as three modules
+        # (docs/FLIGHT-PARTS.md): one module was 10 KB over a job slot.
+        'flight_parts': [0o33 * 1024 + 0o2400 - 0o2000, 0o33 * 1024 + 0o3000 - 0o2000],
         # TC QPLACE/QPLACES (E5) runs the saved return stored there.
         'switched_tc': True,
         # ALKLP's DLOAD* ALSK +1,1 with X1 +1 or -1 (CMPX1): ALSK or the
@@ -2929,6 +2969,10 @@ SPECS = {
             'vac+047': [n for n in range(0o20)] + [0o77777 ^ n for n in range(0o20)],
             'vac+050': [1, 2, 3, 6], 'vac+051': [1, 2, 3, 6],
             '01330': [0, 0o401, 0o455, 0o531, 0o605, 0o661],            # MARKSTAT: a mark VAC or none
+            # RETARG's INDEX MARKSTAT; CA QPRET: each mark VAC's QPRET word
+            # (VAC+052), -0 when the crew proceeds with no marks (ENTANSWR's
+            # BZMF JAMIT), so the BZF to RETARG1 runs with MARKSTAT > 0.
+            **{'%05o' % (v + 0o52): [0, 0o77777, 1, 2] for v in (0o401, 0o455, 0o531, 0o605, 0o661)},
             # The saved returns: the file's own call sites.
             '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
                       0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE
@@ -3421,6 +3465,11 @@ SPECS = {
         'resume_keys': True,
         'c64_rows': 'cover',
         'cover_stride': 8,
+        # (#260) C64 INDEX end-around carry; flight builds address the $7000 image.
+        'index_carry16': True,
+        'image_w': True,
+        # Flight builds skip the entry checks' erasable scan (steward 10-14).
+        'trusted_image': True,
         'freeze_stride': 128,
     },
     'cm-tpi-search': {
@@ -3461,6 +3510,9 @@ SPECS = {
         'file': {'lm': 'PLANETARY_INERTIAL_ORIENTATION.agc', 'cm': 'PLANETARY_INERTIAL_ORIENTATION.agc'},
         'base': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
         'symbol': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         # R-TO-RP and RP-TO-R (CALLed from the integration, landing,
         # P20-P25, P51-P53 and LAT-LONG).
         'entries': ['R-TO-RP', 'RP-TO-R'],
@@ -4221,6 +4273,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # The landing radar reads run through P63-P66: no whole-image scan in
+        # flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'RADAR_LEADIN_ROUTINES.agc'},
         'base': {'lm': 'lm_radar_leadin_routines'},
         'symbol': {'lm': 'lm_radar_leadin_routines'},
@@ -4384,6 +4439,8 @@ SPECS = {
         'file': {'lm': 'FINDCDUW_-_GUIDAP_INTERFACE.agc'},
         'base': {'lm': 'lm_findcduw'},
         'symbol': {'lm': 'lm_findcduw'},
+        'image_w': True,
+        'trusted_image': True,
         # Entries from other files: INITCDUW (STCALL/CALL from BURNBABY and
         # P70/P71), FINDCDUW -2 (CALL, BPL from the guidance equations),
         # SPARCSIN -1 (BANKCALL from LUNAR_LANDING_GUIDANCE_EQUATIONS).

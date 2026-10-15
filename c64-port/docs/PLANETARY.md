@@ -19,6 +19,8 @@ Every word is compiled, including the constants (COSI, SINI, the libration and r
 
 The spec states the facts the cases need. Each point a run reaches past R-TO-RP or RP-TO-R is entered with PUSHLOC and MODE as their SETPDs and loads leave them: a resume point entered with a deeper pushdown list overwrites S1/S2 (VAC+050/051), and the return through them then loops on the AGC as well.
 
+The spec also sets `index_carry16` (INDEX keeps its end-around carry on the C64, where `unsigned` is 16 bits), `image_w` and `trusted_image`: flight builds (RK_FIXED_IMAGE) address the fixed $7000 image and skip the erasable-image scan at each routine entry, about 121,000 6502 cycles a call.
+
 ## Evidence
 
 Hashes: `evidence/planetary/SHA256.json`. Bulk files are assets of the `evidence-planetary` release.
@@ -26,4 +28,4 @@ Hashes: `evidence/planetary/SHA256.json`. Bulk files are assets of the `evidence
 - **Source map.** `planetary-source-map.json` lists every word with the routine that compiles it: 188 Luminary words and 204 Comanche words, none untranslated.
 - **Independent assembly comparison.** `make planetary-differential`: 256 states per routine (48,384 cases over 189 routines) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. At RP-TO-R and R-TO-RP, a quarter of the cases each start with MPAC (the body flag) at +0, -0 and a nonzero value, so the Earth branch of `BHIZ` (MPAC ±0, what LAT-LONG, LALOTORV and Comanche P20-P25 pass for Earth) is taken as well as the Moon branch; edge values are on. Every 64th case is frozen in `tests/planetary_vectors.h`.
 - **Host and sanitizer results.** `make test-planetary sanitize-planetary` runs the 756 frozen cases (`planetary-host.log`).
-- **C64 execution results.** `make vice-planetary` runs nine diagnostics with 204 cases (`planetary-vice.log`). They take every branch arc of the linked sources that the 48,384 host cases take (1,368 arcs, `tools/c64_row_cover.py`), including the Earth outcome of the `BHIZ` at both entries.
+- **C64 execution results.** `make vice-planetary` runs nine diagnostics with 206 cases (`planetary-vice.log`). They take every branch arc of the linked sources that the 48,384 host cases take (1,360 arcs, `tools/c64_row_cover.py`), including the Earth outcome of the `BHIZ` at both entries.

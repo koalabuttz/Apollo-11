@@ -46,7 +46,11 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 /* An interpretive routine at NEWOPS of its bank (LOC was matched by the
@@ -56,6 +60,9 @@ static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bi
 }
 static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[5]==06061u&&(W[0165]&076000u)==fb&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);
+}
+static MAYBE_UNUSED uint8_t at_exit(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[5]==06061u&&(W[0165]&076000u)==fb&&!(W[0165]&01770u)&&sane(s,io);
 }
 /* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction
  * word w in 16-bit ones' complement, then overflow-corrected. */
@@ -1458,7 +1465,11 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const p66_b
  unsigned i;
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
  return 1;
 }
 
@@ -1586,7 +1597,7 @@ static enum exec_status r20142_abi(const agc_native_program *p,apollo_overlay_st
 #if (LM_POWERED_SUBS_KEEP0 >> 14) & 1
 /* 10,2173  (EXIT in EDOP, return through DANZIG) */
 static enum exec_status r20173(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_danzig(s,io,020000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_exit(s,io,020000u))return EXEC_OUT_OF_SCOPE;
  /* 10,2173 pending DANZIG: EXIT in EDOP from the TS EDOP before */
  if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
  TRACE(s);
@@ -1661,7 +1672,7 @@ static enum exec_status r47546(apollo_overlay_state *s,p66_bias_io *io){
 #if (LM_POWERED_SUBS_KEEP0 >> 22) & 1
 /* 23,3567  (USPRCADR return through DANZIG) */
 static enum exec_status r47567(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_exit(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3567 pending DANZIG: USPRCADR's EXIT in EDOP */
  if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
  TRACE(s);
@@ -1680,7 +1691,7 @@ static enum exec_status r47570_abi(const agc_native_program *p,apollo_overlay_st
 #if (LM_POWERED_SUBS_KEEP0 >> 24) & 1
 /* 23,3575  (USPRCADR return through DANZIG) */
 static enum exec_status r47575(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_exit(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3575 pending DANZIG: USPRCADR's EXIT in EDOP */
  if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
  TRACE(s);
@@ -1699,7 +1710,7 @@ static enum exec_status r47576_abi(const agc_native_program *p,apollo_overlay_st
 #if (LM_POWERED_SUBS_KEEP0 >> 26) & 1
 /* 23,3605  (USPRCADR return through DANZIG) */
 static enum exec_status r47605(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_danzig(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ if(!at_exit(s,io,046000u))return EXEC_OUT_OF_SCOPE;
  /* 23,3605 pending DANZIG: USPRCADR's EXIT in EDOP */
  if(W[023]!=0001u)return EXEC_OUT_OF_SCOPE;
  TRACE(s);

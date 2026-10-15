@@ -4,7 +4,7 @@
   "release": "evidence-findcduw",
   "files": {
     "findcduw-c64-cover.json": {
-      "sha256": "2440a8e0ba1c54a8d247c0b2821dd02327b7414bfad3df2c826244fcfb5db4d0",
+      "sha256": "db98ba6ac05369cb5c49416a9d235f1558ee9bf6ff4f9eeac5717aeb759b28b2",
       "bytes": 4932,
       "store": "tree"
     },
@@ -14,12 +14,12 @@
       "store": "release"
     },
     "findcduw-host.log": {
-      "sha256": "271a1ebbbd27e06b6c80358657c7eb040f6eaa9c3515a21a4864b50a614f94fa",
+      "sha256": "ed3ccef88529c787fc51cd97d5f2e416963b511346f8f0bcb747424070313e09",
       "bytes": 1304,
       "store": "release"
     },
     "findcduw-proof.json": {
-      "sha256": "5febd844e8ce6ef04ee9c4b9b87b69d2bde3f514198afb1da03f6f3646955485",
+      "sha256": "1ff8390ec9797c7dd7bc911fbbddd71bcd694edfa504a5a41769538d66f1b18d",
       "bytes": 13016,
       "store": "tree"
     },
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "findcduw-vice.log": {
-      "sha256": "5c6ea8c558395edc4247d9334835823ad89f2f757fcc38258db99cdd0bd50dc3",
-      "bytes": 14028,
+      "sha256": "fc7c3d7cb9bf0ea4cba65eec27976dd54df28bdbefa4a00b4ce59f948476124f",
+      "bytes": 2423,
       "store": "release"
     }
   }

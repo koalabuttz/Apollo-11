@@ -419,7 +419,8 @@ def host_mct(m, t):
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
-                io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None):
+                io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None,
+                key_range=(0, 0xFF)):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
     [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
@@ -428,7 +429,10 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     the module's own -D flags (FLIGHT_PARTS). link_flags: extra linker
     flags (a pinned pair's --undefined and --defsym, pin_pair). keys: the
     table keys ({table: [physical]}); with chunk or pick, the entries'
-    keys go in as data (FS_KEYS), so the module's main stores only calls."""
+    keys go in as data (FS_KEYS), so the module's main stores only calls.
+    key_range: the high bytes of the lowest and highest key the module's
+    tables hold (FS_KEY_LO and FS_KEY_SPAN, so the resident skips a module
+    that cannot hold the step's point; resident_flight.h)."""
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
@@ -452,6 +456,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         head += f'#define FS_FIXED_DATA {fixed_data}\n'
     # The work clock's weight (resident_flight.h): its tables' calibrated
     # MCT per routine.
+    head += f'#define FS_KEY_LO {key_range[0]}u\n#define FS_KEY_SPAN {key_range[1] - key_range[0]}u\n'
     head += f'#define FS_MCT {mct_weight(m, [chunk[0]] if chunk else list(basic) + list(interp))}u\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
@@ -750,7 +755,8 @@ FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT
                        'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
                        'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
-                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]}}
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)],
+                       'cm_imu_calibration': [['-DCM_IMU_CALIBRATION_FLIGHT_PART=%d' % j] for j in (1, 2, 3)]}}
 
 
 # Files whose over-slot table splits greedily (split_greedy): each chunk
@@ -1129,14 +1135,23 @@ def main():
             # A module on the base record links no transfer engine: the
             # resident runs its routines through rk_direct (FS_DIRECT_ONLY).
             direct_only = mod.get('direct_only', not mod.get('io'))
+            # The high bytes of the keys its basic tables hold, for
+            # rk_direct's range check, which sees an erasable Z as 0xff; a
+            # module with interpretive tables can run at an interpretive
+            # point, so it takes every point.
+            c = mod.get('chunk')
+            ks = ([keys[t][i] for t, i in pick] if pick is not None else keys[c[0]][c[1]:c[2]] if c
+                  else [k for t in mod['basic'] for k in keys.get(t, [])])
+            rng = ((min(ks) >> 8, 0xFF if max(ks) >= ERASABLE_BASE else max(ks) >> 8)
+                   if ks and not mod['interp'] else (0, 0xFF))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys)
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys, rng)
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()), (), pick, keys)
+                                   direct_only, mod.get('defines', ()), (), pick, keys, rng)
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
