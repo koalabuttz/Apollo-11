@@ -679,6 +679,13 @@ SPECS = {
         # STOPRATE (and the other basic routines that never name FIXLOC) is
         # called from tasks and NOVAC jobs (V37): any FIXLOC.
         'any_fixloc': True,
+        # UPDTCALL, MANUSTOP and GOODMANU run as waitlist tasks, over any job:
+        # NEWJOB -0 too, while DUMMYJOB idles (the LM P63 flight run's R60
+        # maneuver). No image scan at the entries in flight.
+        'any_newjob': True,
+        'trusted_image': True,
+        'index_carry16': True,
+        'image_w': True,
     },
     # Lane A: Comanche055 T4RUPT_PROGRAM.agc optics monitor and drive
     # (OPTMON 06,2765-3262, OPTDRIVE 10,2000-2202), basic only. The IMU
@@ -822,15 +829,19 @@ SPECS = {
         # and FLESHPOT's return from VXV (LOC set to it, EDOP BIT8: the
         # interpreter resumes the basic code there).
         'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM', 'FLESHPOT-1', 'FLESHPOT+93'],
+        # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
+        # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT).
+        'usprcadr_exits': True,
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
         # (as cm-powered-subs). CD*TR*GS's loop: TEM3 the angle offset, TEM2
         # its caller's return (CDUTRIG, CD*TR*G and the four interface
-        # routines' TCs, or outside the file).
+        # routines' TCs, or outside the file); the same at the CADR words
+        # DANZIG resumes before them.
         'states': dict(
             {p: {'143': [0, 2, 4], '142': [0o3541, 0o3545, 0o3650, 0o3653, 0o3663, 0o3666, 0o5000]}
-             for p in ('23,3570', '23,3576', '23,3606')},
+             for p in ('23,3567', '23,3570', '23,3575', '23,3576', '23,3605', '23,3606')},
             # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
             # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
             **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
@@ -854,6 +865,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'target': 'tests/lm_powered_subs_target.c',
+        # (The DANZIG marker the usprcadr_exits resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Interpreter lane: INTERPRETER.agc's words that other files enter
     # directly (BANKCALL/USPRCADR/TC/TCF), compiled as basic routines; the
@@ -1398,11 +1412,14 @@ SPECS = {
         # keyed at the RTB's operand word (25,3314).
         'pending_danzig': True,
         # LEWD (E7,1724), the lift-over-drag ratio the loop halves toward:
-        # positive in both words, as STARTENT and LEWDOVFL leave it.
-        # Negative (a negative low word under a +0 high word too),
+        # any positive double word, as STARTENT, LEWDOVFL and LWDSTORE (DAD,
+        # BMN, BOV, STORE: the words need not agree in sign) leave it
+        # (reviewer 2, #457): a nonzero high word over a low word of either
+        # sign, or a +0 or -0 high word over a positive low word. Negative,
         # LWDSTORE's BMN LEWDPTR loop never ends (on the AGC too).
-        'cells': {'E7,1724': list(range(0, 0o40000, 0o1001)),
-                  'E7,1725': list(range(0, 0o40000, 0o1001))},
+        'cell_pairs': [('E7,1724', 'E7,1725',
+                        [(h, l) for h in range(1, 0o40000, 0o1001) for l in range(0, 0o100000, 0o1001)]
+                        + [(h, l) for h in (0, 0o77777) for l in range(1, 0o40000, 0o401)])],
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
@@ -2242,6 +2259,9 @@ SPECS = {
         # TIME1/TIME2 and the CDUs vary; a quarter of the cases put edge
         # values (+-0, one LSB, 1/2, axis and plane vectors) in MPAC and
         # the operands.
+        # (with 'cover', the C64 rows also take every gcov branch arc: the
+        # transfer table search's not-found exit, agc_transfer.c:26)
+        'c64_rows': 'cover',
         'cover': True,
         'counters': True,
         'edge_values': True,
@@ -2251,6 +2271,9 @@ SPECS = {
         # BUF2 holds the last display's return (a fixed address), as
         # CHKLINUS's restart point (BUF2 -3) assumes; 'NNNN' is erasable.
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
+        # TOBALLC's CCS A (LM 26,2164) takes G+N,AUTO's A: +0 (G+N and auto),
+        # BIT10 (not G+N) or BIT14 (not auto), never -0 (auditor, salted run).
+        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}}, 'cm': {}},
         # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
         # read latched input channels.
         'channel_inputs': True,
@@ -2608,9 +2631,10 @@ SPECS = {
             ('11,2420', '11,2421', {'*': ['flow'] + ddv_majors_joint(den=('vac+2', 'vac+3'))}),
             ('11,2667', '11,2670', {'*': ['flow'] + ddv_majors_joint(
                 num=('vac+2', 'vac+3'), den=('0154', '0155'), his=(0o10000, 0o17777, 0o30000, 0o37776))}),
-            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: -12, -24 or -36
-            # (DIFEQ+12, +24 and +36), as the flight stages reach it.
-            ('11,3705', '11,3765', {'vac+046': [0o77763, 0o77747, 0o77733]}),
+            # DOW..'s VECTAB,1 and the DIFEQ stage in X1: 0 from DIFEQ0 (NEXTCOL's
+            # AXT,1 0), -12 or -24 from DIFEQCOM after DIFEQ+0 and +1; DIFEQ+2
+            # never returns to DOW.., so VECTAB,1 stays inside VECTABND.
+            ('11,3705', '11,3765', {'vac+046': [0, 0o77763, 0o77747]}),
             ('11,3327', '11,3330', {'*': ['flow'] * 2 + [{'0154': h, '0155': l, '0163': 0, '067': j}
                                                          for h in (0, 1, 0o4000, 0o7777) for l in (0, 0o20000)
                                                          for j in (1, 0o37777)]})],
@@ -2784,7 +2808,7 @@ SPECS = {
         'base': {'cm': 'cm_imu_calibration'},
         'symbol': {'cm': 'cm_imu_calibration'},
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
-        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP'],
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
         'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
@@ -2856,7 +2880,16 @@ SPECS = {
             '02425': [0o2012, 0o2033, 0o2102, 0o2107, 0o2131, 0o2146, 0o2202, 0o2226, 0o2227,
                       0o2267, 0o2426, 0o3070, 0o3167, 0o3356],        # QPLACE
             '02426': [0o2134, 0o2173, 0o2251, 0o2527, 0o3320],        # QPLACES
-            '02424': [0o3545, 0o3572]},                               # QPLAC
+            '02424': [0o3545, 0o3572],                                # QPLAC
+            # MODREG: the prelaunch programs, and 07 (the performance test,
+            # CHKCOMED's GOBKCALB return).
+            'MODREG': [0, 1, 2, 3, 7, 0o77770]},
+        # GOFLASH returns to L+1 (terminate), L+2 (proceed) and L+3
+        # (recycle); IMUSTALL and OPTSTALL to L+1 (bad) and L+2 (good).
+        'returns': {'GOFLASH': 3, 'IMUSTALL': 2, 'OPTSTALL': 2},
+        # FINETIME +1's TC Q back into CHECKG (TC FINETIME at 33,2347): half
+        # its cases return there under FB 33 and run CHECKG's tail.
+        'file_q': {'FINETIME+1': ['33,2350']},
         # The ALFLT filter's loops (33,2645-3033) run with S1 4 and S2 2
         # (INTVAL) and their own index values; a wider index stores over
         # CMPX1 or ALX1S and the next LXC/LXA loads data as an index.
@@ -3041,12 +3074,17 @@ SPECS = {
         # basic routines never name FIXLOC or NEWJOB, so they take any.
         'any_fixloc': True,
         'any_newjob': True,
+        # R10,R11A to TCF LANDISP (21,2021-2071) reads CHAN30 for an abort
+        # stage or abort command whenever LETABORT is set (all of P63): left
+        # to lm-p70-p71-file, which runs the channel orders, so its points
+        # (R10,R11A and the FLIP returns) resolve there in the flight store.
+        'outside': {'R10,R11A': 0o51},
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
         # 8D): the DPS or the APS coefficients, eight words on.
         'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
-        'partial': {'lm': 'READ CHAN30, RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
+        'partial': {'lm': 'R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
         'native_sources': ['src/rtb_angles.c'],
@@ -3564,6 +3602,10 @@ SPECS = {
         'freeze_stride': 64,
     },
     'cm-p30-p37': {
+        'superbank_bit': True,
+        'trusted_image': True,
+        'index_carry16': True,
+        'image_w': True,
         'missions': ('cm',),
         'file': {'cm': 'P30,P37.agc'},
         'source_path': {'cm': 'P30-P37.agc'},
@@ -3604,6 +3646,10 @@ SPECS = {
         'freeze_stride': 128,
     },
     'cm-p32-p33': {
+        'index_carry16': True,
+        'image_w': True,
+        'superbank_bit': True,
+        'trusted_image': True,
         'c64_cuts': True,
         'missions': ('cm',),
         'file': {'cm': 'P32-P33,_P72-P73.agc'},
@@ -3665,7 +3711,7 @@ SPECS = {
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
                     'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
                     'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
-                    'VNPOOH'],  # (P30_P37, P32-P33 and P34-P35 call it: TC VNPOOH)
+                    'VNPOOH'],  # (P32-P33_P72-P73 and TPI_SEARCH call it too: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
@@ -3683,16 +3729,23 @@ SPECS = {
         # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
         # (moon), as SELECTMU's AXC,1 sets it.
         'fixed_index': {'MUTABLE': [2, 10]},
-        # VNPOOH's way back (VNBANK-1 on proceed, VNBANK+1 after a
-        # recycle): TS FBANK puts TBASE5 back in FB and TC RTRN runs RTRN,
-        # the caller's Q. They hold one of this file's calls (bank 35):
-        # RTRN (E4,1767 as the routine names it, 1767 under the case's EB,
-        # so each EB's word).
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]},
-                   **{lab: {'01063': [0o72000],
-                            **{'0%o' % (eb * 0o400 + 0o367): [0o2006, 0o2072, 0o2150, 0o2756, 0o2777]
-                               for eb in range(8)}}
-                      for lab in ('VNBANK-1', 'VNBANK+1')}},
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        # VNPOOH's way back (VNBANK -1 on proceed, VNBANK +1 through its
+        # TCF +2): TS FBANK puts TBASE5 back in FB and TC RTRN runs RTRN,
+        # the caller's Q. Each case takes one of Comanche's twelve TC VNPOOH
+        # sites, with TBASE5 the caller's FB and RTRN its return (E4,1767 as
+        # the routine names it, so 1767 under every EB). The seven outside
+        # this file (TPI_SEARCH, P32-P33_P72-P73) are the case's stop.
+        'joint_states': {lab: [dict({'01063': fb << 10}, **({'@stop': fb * 1024 + ret - 0o2000} if out else {}),
+                                    **{'0%o' % (eb * 0o400 + 0o367): ret for eb in range(8)})
+                               for fb, ret, out in ((0o35, 0o2006, 0), (0o35, 0o2072, 0), (0o35, 0o2150, 0),
+                                                    (0o35, 0o2756, 0), (0o35, 0o2777, 0), (0o35, 0o3157, 1),
+                                                    (0o4, 0o3341, 1), (0o4, 0o3351, 1), (0o4, 0o3416, 1),
+                                                    (0o4, 0o3445, 1), (0o4, 0o3547, 1), (0o37, 0o2642, 1))]
+                         for lab in ('VNBANK-1', 'VNBANK+1')},
+        # VNPOOH's entry: Q a return to one of its calls outside the file,
+        # under that call's FB (35, 04 or 37).
+        'q_callers': ['VNPOOH'],
         'target': 'tests/cm_p34_p35_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -4195,13 +4248,17 @@ SPECS = {
                       'TASKOVER': None, 'ENDOFJOB': None, 'GOTOPOOH': None, 'POSTJUMP': 1},
         'noreturn': ['POSTJUMP'],
         # Returns a case starts with only as their producers leave them:
-        # G+N,AUTO's A (0 in AUTO, else positive) and LRS22.1's MPAC (0 good
-        # data, 1 or 2 for its two bad-data returns).
-        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the caller's
-        # Q that LITIT saved there, a basic return outside the file:
-        # LODSAMPT's address stands in for it, the case's Q and stop too.)
-        'states': {'LITIT+3': {'ITEMP6': [0o4400], '2': [0o4400]},
-                   'R61LEM1+21': {'0000': [0, 1, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
+        # G+N,AUTO's A (0 in AUTO, 0777 from CCS BIT10 outside G+N, BIT14
+        # outside AUTO; R60_62.agc) and LRS22.1's MPAC (0 good data, 1 or 2
+        # for its two bad-data returns).
+        # (LITIT +3, TRKFLON's return: QXCH ITEMP6 takes back the Q that
+        # LITIT saved there, R12LITES's own return after its TC HLIGHT
+        # (25,3614) or TC HLIGHT -3 (25,3615), so the case runs on through
+        # R12LITES to ISWRETRN. The Q it swaps into ITEMP6 is not read
+        # again: LODSAMPT's address stands in, outside the file, so it is
+        # not the case's stop.)
+        'states': {'LITIT+3': {'ITEMP6': [0o3614, 0o3615], '2': [0o4400]},
+                   'R61LEM1+21': {'0000': [0, 0o777, 0o20000]}, 'R22LEM12+19': {'0154': [0, 1, 2]},
                    # (LPS20.2's and LRS22.2's MPAC: 0 or 1, for the INDEX MPAC
                    # after the CALL's EXIT and after the BANKCALL)
                    'P20LEM1+11': {'0154': [0, 1]}, 'P20LEM1+12': {'0154': [0, 1]},
@@ -4213,11 +4270,13 @@ SPECS = {
                    # (LRVEL's A: the beam's VBEAM index, 0, 2 or 4, from its
                    # callers' CAF)
                    'LRVEL': {'0000': [0, 2, 4]},
-                   # (X1 an index, as the STORE,1 that TC INTPRET at
-                   # R21LEM7 +1 is to the interpreter assumes)
-                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775]},
-                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775]},
-                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775]},
+                   # (X1 for the STORE,1 that TC INTPRET at R21LEM7 +1 is:
+                   # INTEXIT's -2 (earth) or -10D (moon), which LPS20.1's
+                   # CSMCONIC/LEMCONIC leaves in the same job, and small
+                   # indexes besides)
+                   'R21LEM12+14': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
+                   'R21LEM12+18': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
+                   'R21LEM12+15': {'vac+46': [0, 2, 4, 6, 0o77775, 0o77765]},
                    # (S1 6 from V67WW's SSP S1 on)
                    'V67WW+10': {'vac+50': [6]}, 'V67WW+11': {'vac+50': [6]},
                    'V67WW+12': {'vac+50': [6]}, 'V67WW+13': {'vac+50': [6]},
@@ -4239,6 +4298,13 @@ SPECS = {
         'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
         'resume_keys': True,
         'resume_orphans': True,
+        # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
+        # job: the basic routines they reach (CLRADMOD and the RR/LR
+        # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule
+        # for interrupt-context specs; the P63 flight scenario reaches
+        # CLRADMOD with a NOVAC job's FIXLOC).
+        'any_fixloc': True,
+        'any_newjob': True,
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'},
                 'CDULOGIC': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_CDU_LOGIC)'},
                 'TPMODE': {'lm': '(lmi_tpmode(s),RTB_OK)'},

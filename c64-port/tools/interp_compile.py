@@ -187,13 +187,15 @@ class Compiler:
         # its first operand word, the EDOP code)}.
         self.pending_danzig = bool(spec.get('pending_danzig'))
         self.pending = {}
-        # 'any_fixloc': basic routines that never name FIXLOC take any FIXLOC
-        # (tasks and NOVAC jobs call them too), not only a VAC area. A
+        # 'any_fixloc': basic routines that never index through FIXLOC take
+        # any FIXLOC (tasks and NOVAC jobs call them too), not only a VAC
+        # area. (A TS FIXLOC does not count: R29DODES sets its own.) A
         # {mission: bool} dict limits it (and 'any_newjob') to one mission.
         self.any_fixloc = bool(per_mission(spec.get('any_fixloc'), mission))
-        # 'any_newjob' (with any_fixloc): those routines, when they also never
-        # name NEWJOB (067), take NEWJOB -0 too (DUMMYJOB idles with it while
-        # T4RUPT still runs them).
+        # 'any_newjob' (with any_fixloc): those routines, when they also do
+        # not run the native DANZIG's NEWJOB test, take NEWJOB -0 too
+        # (DUMMYJOB idles with it while T4RUPT still runs them). Their own
+        # CCS NEWJOB takes -0 as any other value: the cases compare it.
         self.any_newjob = bool(per_mission(spec.get('any_newjob'), mission))
         self.sload_k = False
         self.uses_channels = False
@@ -344,6 +346,23 @@ class Compiler:
                     if (t is not None and self.in_file(t) and t in self.code and len(ln.operand.split()) == 1
                             and self.code[t].op not in self.DATA_OPS):
                         self.add_start(t, 'i' if is_interp_op(self.code[t].op) else 'b', ln.op + ' ' + ln.operand)
+        # 'usprcadr_exits': the CADR word after a TC USPRCADR. USPRCADR
+        # leaves LOC there and BIT8 in EDOP (which edits it to 1), so the
+        # called interpretive code returns through DANZIG, whose CCS EDOP
+        # runs the +0 order, EXIT, into the basic word after the CADR: a
+        # routine of its own.
+        # (True: every TC USPRCADR of the file's code; a list: those labels.)
+        ux = self.spec.get('usprcadr_exits', ())
+        if ux is True:
+            ux = [q + 1 for q in sorted(self.code)
+                  if self.code[q].op == 'TC' and self.code[q].operand == 'USPRCADR' and self.in_file(q)
+                  and q + 1 in self.code and self.code[q + 1].op == 'CADR']
+        for lab in ux:
+            phys = lab if isinstance(lab, int) else self.label_phys(lab)
+            if phys is None or self.code[phys].op != 'CADR' or self.code[phys - 1].operand != 'USPRCADR':
+                raise CompileError('usprcadr exit %s is not a CADR after TC USPRCADR' % lab)
+            self.pending[phys] = ('EXIT', phys + 1, 1)
+            self.add_start(phys, 'i', 'USPRCADR return through DANZIG')
         self.blocks = {}
         self.owner = {}
         while True:
@@ -495,7 +514,8 @@ class Compiler:
             # BANKSET, TS BBANK; CCS EDOP, TCF OPJUMP; then the order and
             # NEWOPS as at the end of any pair.
             op, cur, edop = self.pending[start]
-            out.append('/* %s pending DANZIG: RTB on the left, %s on the right */' % (self.where(start), op))
+            out.append('/* %s pending DANZIG: %s */' % (self.where(start), 'USPRCADR\'s EXIT in EDOP' if op == 'EXIT'
+                                                           else 'RTB on the left, %s on the right' % op))
             out.append('if(W[023]!=0%03ou)return EXEC_OUT_OF_SCOPE;' % edop)
             out.append('TRACE(s);')
             out.append('right(s);')
@@ -1444,8 +1464,10 @@ class Compiler:
                     # inline CADR returns to one of several words; 'returns'
                     # 0 is a callee that never returns (BANKCALL DISPEXIT +3).
                     callee = self.code[nxt].operand.strip() if n == 1 and nxt in self.code else None
+                    # (A return into the spec's 'outside' words leaves the
+                    # file: another module holds that point.)
                     if lab not in self.spec.get('noreturn', ()) and self.is_basic(nxt + n) and \
-                            self.spec.get('returns', {}).get(callee, 1):
+                            nxt + n in self.words and self.spec.get('returns', {}).get(callee, 1):
                         self.add_start(nxt + n, 'b', 'return from ' + lab)
                         for i in range(1, self.spec.get('returns', {}).get(callee, 1)):
                             if self.is_basic(nxt + n + i):
@@ -1720,8 +1742,11 @@ class Compiler:
         return (ln is not None and ln.op and (ln.op == 'INCR' or not is_interp_op(ln.op)) and ln.op not in DATA_OPS)
 
     def novac(self, phys):
-        """Under 'any_fixloc', a basic routine that never names FIXLOC (0120)
-        and does not enter the interpreter (TC INTPRET)."""
+        """Under 'any_fixloc', a basic routine that never indexes through
+        FIXLOC (ixw(...,0120u), W[W[0120]+k]; the generated TS FIXLOC writes
+        00120u, which does not match) and does not enter the interpreter
+        (TC INTPRET). The NEWJOB test matches the native DANZIG's W[067] and
+        ai_ccs(s,067), not a routine's own CCS NEWJOB (00067u)."""
         return (self.any_fixloc and self.starts[phys][0] == 'b'
                 and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
                 and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))

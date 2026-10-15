@@ -5,7 +5,7 @@
 LM_POWERED_SUBS_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 LM_POWERED_SUBS_SRC = src/lm_powered_subs.c tests/lm_powered_subs_target.c $(LM_POWERED_SUBS_COMMON)
 LM_POWERED_SUBS_HDR = include/lm_powered_subs.h tests/interp_case.h tests/lm_powered_subs_vectors.h tests/lm_powered_subs_c64_vectors.h
-LM_POWERED_SUBS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS
+LM_POWERED_SUBS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_TRANSFER_DANZIG_MARKER
 .PHONY: test-lm-powered-subs sanitize-lm-powered-subs c64-lm-powered-subs vice-lm-powered-subs lm-powered-subs-differential
 all: build/test-lm-powered-subs
 test: test-lm-powered-subs

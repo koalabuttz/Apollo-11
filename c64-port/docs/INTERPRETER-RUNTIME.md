@@ -192,6 +192,12 @@ its code reaches interpretive code and the interpreter takes the job.
   AGS_INITIALIZATION 26 of 26 and BURN_BABY_BURN 16 of 16; the rest have no
   state inside the contract. The rows are in
   `evidence/interpreter/interp-flight-flowed-vice.json`.
+- CI runs the boots as four targets, `interp-flight-flowed-vice-1` to `-4`
+  (`--part K/4`: boot k runs in part k mod 4 + 1, with the same batches as
+  the full run). Each part has its own `--out` directory, and the full
+  target writes the evidence. All of them, and `interp-flight-p63-vice`,
+  build only the LM store (`make flight-store-lm`), which takes half the
+  time of `flight-store`.
 
 `make interp-flight-p63-vice` runs the same check on mission flight:
 Apollo 11 about ten minutes before PDI, from Virtual AGC's NASSP core dump

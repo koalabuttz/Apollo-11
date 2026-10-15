@@ -1,7 +1,7 @@
 {
   "milestone": "lm-powered-subs",
   "tool": "tools/interp_executed_closure.py",
-  "source_map_sha256": "4334369f70d1feff2e4458e400c26c43b0b1249e0aefeafe95a2fa08cccce83c",
+  "source_map_sha256": "a1604ccf9e617324983e0a892f418017f6feef58ff5897de8da82a7735cd2619",
   "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
   "files": {
     "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc": {
@@ -11,6 +11,7 @@
       "executed": 237,
       "interpreted": 14,
       "unreached": 1,
+      "core": 0,
       "map": [
         {
           "address": "23,3537",

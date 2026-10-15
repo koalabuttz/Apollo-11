@@ -161,6 +161,11 @@ class Mission:
         # the mission's real TC LABEL sites outside the file, under that
         # site's bank: {point: [physical return word, ...]}.
         self.q_callers = {}
+        # 'file_q' {POINT: ['bank,addr', ...]}: half the point's cases
+        # return (TC Q) to one of these words of the file under its bank,
+        # and run on past it (FINETIME +1 back into CHECKG's tail).
+        self.file_q = {self.point_of(k): [self.point_of(r) for r in v]
+                       for k, v in spec.get('file_q', {}).items()}
         for lab in spec.get('q_callers', ()):
             pat = re.compile(r'^\d{6},\d{6}: (\d\d),(\d{4}) +[0-7]{5} +(?:\S+ +)?TC +%s(?:\s|$)' % re.escape(lab))
             sites = []
@@ -204,6 +209,9 @@ class Mission:
         # Erasable cells every case of the milestone holds in range (physical
         # address: choices), as the rest of the program keeps them.
         self.cells = spec.get('cells', {})
+        # Cells held together ('cell_pairs': [(a, b, [(x, y), ...])]): a
+        # double word whose two words' signs the program relates.
+        self.cell_pairs = spec.get('cell_pairs', [])
         # (Luminary 'channels': 'all' compares its channels unless told otherwise.)
         self.io_channels = spec.get('io_channels', 'auto' if self.cp.lm_channels else {})
         if self.io_channels == 'auto' and self.cp.lm_channels:
@@ -467,6 +475,10 @@ def case(mi, point, n, rng):
     elif bank in (2, 3):
         # Fixed-fixed code runs under any FB.
         bank = rng.randrange(4, 0o30)
+    file_q = None
+    if point in mi.file_q and qsite is None and rng.random() < 0.5:
+        file_q = rng.choice(mi.file_q[point])
+        bank = file_q // 1024
     # Banks 040-043 run as FB 030-033 under the superbank (channel 7 0100).
     sb = 0o100 if bank >= 0o40 else 0
     fb = (bank - 8 if bank >= 0o40 else bank) << 10
@@ -576,11 +588,20 @@ def case(mi, point, n, rng):
     joint = mi.joint.get(point)
     if joint is None and mi.joint_any and rng.random() < 0.5:
         joint = mi.joint_any
+    jstop, jpinned = None, set()
     if joint:
         if isinstance(joint, dict):
             joint = joint[mi.m]
         for k, v in rng.choice(joint).items():
-            E[state_address(mi, k, vac)] = v & 0o77777
+            if k == '@stop':
+                # The case's stop, a physical address: where the set's saved
+                # return (TC RTRN under the FB it restores) leaves the file.
+                jstop = v
+                continue
+            # (Its own set: 'held' is 'pinned', which the counters read.)
+            a = state_address(mi, k, vac)
+            jpinned.add(a)
+            E[a] = v & 0o77777
     if mi.cp.novac(point) and rng.random() < 0.5:
         # 'any_fixloc': a basic routine that never names FIXLOC runs from
         # tasks and NOVAC jobs too, so half its cases leave the VAC areas.
@@ -621,6 +642,17 @@ def case(mi, point, n, rng):
                 continue
             a = (eb << 8) + int(x, 8) - 0o1400
         E[a] = rng.choice(choices)
+    for a, b, choices in mi.cell_pairs:
+        (x, y), ab = rng.choice(choices), []
+        for c in (a, b):
+            if isinstance(c, str):
+                bk, w = c[1:].split(',')
+                if int(bk, 8) != eb:
+                    break
+                c = (eb << 8) + int(w, 8) - 0o1400
+            ab.append(c)
+        else:
+            E[ab[0]], E[ab[1]] = x, y
     # I/O channels the file reads or writes (spec 'io_channels', channel:
     # mask of the bits a case may set): a channel edit each, so the run and
     # the digest cover them (tests/interp_case.h).
@@ -659,6 +691,10 @@ def case(mi, point, n, rng):
         if qsite is not None:
             E[2] = logical(qsite)
             stop = qsite
+        elif file_q is not None:
+            # (no stop: the run goes on in the file to its boundary)
+            E[2] = logical(file_q)
+            stop = 0xffff
         elif fixed_q:
             E[2] = rng.choice(fixed_q)
             stop = 2048 + E[2] - 0o4000 if E[2] >= 0o4000 else bank * 1024 + E[2] - 0o2000
@@ -690,12 +726,14 @@ def case(mi, point, n, rng):
         # A state the spec pins there (a caller's return in the file) stays.
         for k in mi.cp.tc_erasable:
             a = k if k < 0o1400 else eb * 0o400 + k - 0o1400
-            if a not in pinned:
+            if a not in pinned and a not in jpinned:
                 E[a] = E[2]
         if point in mi.native_entries and dict(E).get(0o23):
             stop = mi.danzig
     if vac == 0o110:
         E[0o120] = vac   # (the work area holds FIXLOC itself)
+    if jstop is not None:
+        stop = jstop
     return seed, list(E.items()), n & 1, stop, sb
 
 
@@ -1245,10 +1283,11 @@ def oracle_env(spec):
     env = {}
     if spec.get('channel_inputs'):
         env['IRC_INPUTS'] = '1'   # (the oracle latches the cases' input channels)
-    if spec.get('pending_danzig') or (spec.get('basic') == 'full' and spec.get('rtb')):
+    pending = spec.get('pending_danzig') or spec.get('usprcadr_exits')
+    if pending or (spec.get('basic') == 'full' and spec.get('rtb')):
         cp0 = IC.Compiler(spec, spec['missions'][0])
         cp0.decode()
-    if spec.get('pending_danzig'):
+    if pending:
         # (DANZIG with an order pending in EDOP is no oracle stop: the
         # native program resolves it through the DANZIG marker.)
         env['IRC_PENDING_DANZIG'] = ' '.join([str(cp0.L.labels['DANZIG'])] + [
