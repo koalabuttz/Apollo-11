@@ -10524,14 +10524,16 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area, PUSHLOC within it, MODE, OVFIND, Q and caller returns outside the file, the INDEX MPAC table returns with the MPAC their producers leave (0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, DESCOUNT and PIPCTR not -0, and any values of the other erasables.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area with PUSHLOC within it for the interpretive routines and the basic routines that enter the interpreter or index through FIXLOC, and any FIXLOC with NEWJOB also -0 for the other basic routines (the WAITLIST, TWIDDLE, FIXDELAY and VARDELAY tasks, the RADARUPT and T4RUPT callers RADAREAD, RRLIMCHK, SETTRKF, RRTURNON, DORREPOS and FLIP, and the NOVAC jobs N49DSP, R29REMOJ, R29RDJOB and R29DODES, whose resumes run under its FIXLOC 052), MODE, OVFIND, Q and caller returns outside the file, and these values as their producers leave them: the INDEX MPAC table returns' MPAC (LPS20.2 and LRS22.2 0 or 1, LRS22.1 0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, G+N,AUTO's A (0, 0777 or BIT14), X1 at R21LEM12's STORE,1 (INTEXIT's -2 or -10D, and 0-6), LITIT +3's ITEMP6 (R12LITES's returns 25,3614 and 25,3615), SPCOS's A and TANG at 32,2662 and TANG at TESTCOS +6 (0 or 1), RRINDEX 0 or 1 through RR1AX2, V67's X1 from 6 to 54 with S1 6, R22LEM96's N49FLAG and NEWJOB together, HFLSHBIT's index 0 or -1, DESCOUNT and PIPCTR not -0, and any values of the other erasables.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "BANKCALL, IBNKCALL and POSTJUMP with their inline CADRs, whose returns are routines of the file",
           "PHASCHNG, 2PHSCHNG, WAITLIST, FIXDELAY, VARDELAY, LONGCALL, TASKOVER, FINDVAC, NOVAC, ENDOFJOB, JOBSLEEP, JOBWAKE, PRIOCHNG, KILLTASK, TWIDDLE and BLANKET (Executive and Waitlist)",
           "UPFLAG, DOWNFLAG, FALTON, ALARM, MAKECADR, SPSIN, SPCOS, MPACVBUF, USPRCADR, RESUME, CHANG1, BANKJUMP and GOTOPOOH",
           "The interpreter's LOADTIME and CDULOGIC through RTB (native, src/rtb_angles.c)",
-          "The interpreter exits POODOO1 and ALARM1"
+          "The interpreter exits POODOO1 and ALARM1",
+          "CHANG1 and DANZIG at the file's DANZIGs (NEWJOB +0: the job goes on at NEWOPS), TCDANZIG at the BOVB of 24,3315 (native, src/lm_integration_moves.c), and TCF Q+1 returns",
+          "The interpreter and Executive continuations NORMUNX1 (RTB), SWRETURN, ISWRETRN, ENDEXT, SUPDXCHZ, TMODE and NOR29NOW"
         ],
         "awaiting": "certificate reviewer",
         "evidence": {
@@ -10541,7 +10543,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
-            "sha256": "a5b06640bd0d9f23cdbbce4987849317d5934edab9f04500b7b9fdc204ec7ff9"
+            "sha256": "150470139587bc84ba59faed32cd68705efc774e7a836c6d8606f760843d1584"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
@@ -10549,14 +10551,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
-            "sha256": "12c7ae5edc1f303e7d650781ad5d615433c57803deda70ed07fdcda1a080a85b",
+            "sha256": "ca9cf85c7fd14e5eb42051783062b522c8e34faaaee3e332c1c1c3d917912773",
             "vice_targets": {
-              "vice-lm-p20-p25": 1349
+              "vice-lm-p20-p25": 1343
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
-            "sha256": "881f68525df8895fd146d2c49fb4fafb39295f85e8a5d1a29fcd756c545dc745"
+            "sha256": "0a51db7b0302ef3f0d55b60c3e811d869ce9f9eb270802a35fe52f2925c1aba8"
           }
         }
       }
