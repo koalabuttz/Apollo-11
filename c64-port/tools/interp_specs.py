@@ -3461,6 +3461,9 @@ SPECS = {
         'file': {'lm': 'PLANETARY_INERTIAL_ORIENTATION.agc', 'cm': 'PLANETARY_INERTIAL_ORIENTATION.agc'},
         'base': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
         'symbol': {'lm': 'lm_planetary', 'cm': 'cm_planetary'},
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
         # R-TO-RP and RP-TO-R (CALLed from the integration, landing,
         # P20-P25, P51-P53 and LAT-LONG).
         'entries': ['R-TO-RP', 'RP-TO-R'],
@@ -4384,6 +4387,8 @@ SPECS = {
         'file': {'lm': 'FINDCDUW_-_GUIDAP_INTERFACE.agc'},
         'base': {'lm': 'lm_findcduw'},
         'symbol': {'lm': 'lm_findcduw'},
+        'image_w': True,
+        'trusted_image': True,
         # Entries from other files: INITCDUW (STCALL/CALL from BURNBABY and
         # P70/P71), FINDCDUW -2 (CALL, BPL from the guidance equations),
         # SPARCSIN -1 (BANKCALL from LUNAR_LANDING_GUIDANCE_EQUATIONS).
