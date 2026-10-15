@@ -641,8 +641,8 @@
             "sha256": "cc8ec910f02afb5c4acc58b9eda7187f0336f84ebd6488d4f265bf18451ad0f4"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g515.md",
-            "sha256": "ecbefda843d8a324330de32bdd3427eed6d29b0948868f9ccd1c7483a2fcfe26"
+            "path": "docs/audits/rev2-recite-g527.md",
+            "sha256": "ebc6421f899358c08cc9472cb90d212acad056914fbc69b1f019e0533f524a82"
           }
         }
       }
