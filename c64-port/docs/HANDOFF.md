@@ -2191,7 +2191,7 @@ All of Comanche055 P32-P33_P72-P73 (882 words: CSI and CDH with the CSI search) 
 
 ## Translate Comanche055 P34-35_P74-75
 
-1,051 of the 1,065 words of Comanche055 P34-35_P74-75 (P34/P74 TPI, P35/P75 TPM and their subroutines) are native C on the control-transfer ABI, as 185 routines compiled by `tools/interp_compile.py`; VNPOOH, which switches FBANK itself, is left out. All 94,720 cases equal the original program in yaAGC; the host tests pass 185 frozen cases and 22 C64 diagnostics pass 358 cases in VICE (six routines host only). See `docs/CM-P34-P35.md`.
+All 1,065 words of Comanche055 P34-35_P74-75 (P34/P74 TPI, P35/P75 TPM and their subroutines, with VNPOOH) are native C on the control-transfer ABI, as 513 routines compiled by `tools/interp_compile.py`. All 262,656 cases equal the original program in yaAGC, VNPOOH's way back over all twelve of Comanche's `TC VNPOOH` calls; the host tests pass 513 frozen cases and 44 C64 diagnostics pass 584 cases in VICE (no routine host only). See `docs/CM-P34-P35.md`.
 
 ## Translate Comanche055 P37_P70
 
