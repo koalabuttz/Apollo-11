@@ -33,7 +33,7 @@ cm-interpreter-closure:
 	rm -f build/cm-interpreter-executed.txt build/cm-interpreter-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
 	PATH=$(CURDIR)/tools/oracle_trace:$$PATH AGC_EXECUTED_WORDS=$(CURDIR)/build/cm-interpreter-executed.txt AGC_READ_WORDS=$(CURDIR)/build/cm-interpreter-read.txt $(MAKE) --no-print-directory cm-interpreter-differential
 	rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
-	python3 tools/interp_executed_closure.py cm-interpreter
+	python3 tools/interp_executed_closure.py cm-interpreter --unreached '00,3451=SQRTSUB'"'"'s DAS MPAC overflows only for a root of 1 or more; its largest argument (MPAC 37777 37777, a joint state of the differential) gives a root below 1, so CAF POSMAX never runs'
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/cm-interpreter.groups
