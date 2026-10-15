@@ -1500,6 +1500,10 @@ SPECS = {
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
     # LUNVEL and SOLPOS are routine keys of the transfer ABI).
     'cm-ephemeris': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1673,6 +1677,11 @@ SPECS = {
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
     'cm-stable-orbit': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1780,6 +1789,11 @@ SPECS = {
         'trusted_image': True,
     },
     'cm-p40-p47': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # GOPERF1/GOFLASH returns and other words only the display or a
         # restart enters (terminate, proceed, enter after a BANKCALL).
         'resume_orphans': True,
@@ -1882,6 +1896,11 @@ SPECS = {
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1921,6 +1940,11 @@ SPECS = {
     # Lane G: Comanche055 TVCEXECUTIVE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-exec': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1947,6 +1971,11 @@ SPECS = {
     # Lane G: Comanche055 TVCRESTARTS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-restarts': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1977,6 +2006,11 @@ SPECS = {
     # Lane G: Comanche055 TVCSTROKETEST, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-stroke': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2013,6 +2047,9 @@ SPECS = {
     # Lane G: Comanche055 TVCINITIALIZE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-init': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2068,6 +2105,11 @@ SPECS = {
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-roll': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2097,6 +2139,11 @@ SPECS = {
     # Lane G: Comanche055 TVCDAPS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-daps': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2167,6 +2214,11 @@ SPECS = {
     # Lane G: Comanche055 AUTOMATIC_MANEUVERS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-auto-man': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2200,6 +2252,11 @@ SPECS = {
     # Lane G: Comanche055 JET_SELECTION_LOGIC, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-jet-select': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
