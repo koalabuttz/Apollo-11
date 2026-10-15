@@ -2183,7 +2183,7 @@ All of Luminary099 and Comanche055 R30 (261 and 283 words: V82, the orbit parame
 
 ## Translate Comanche055 P30-P37
 
-All of Comanche055 P30-P37 (374 words: P30 and P31 with their displays, S30.1, S31.1, DELRSPL and the flag subroutines) is native C on the control-transfer ABI, as 90 routines compiled by `tools/interp_compile.py`. All 46,080 cases equal the original program in yaAGC; the host tests pass 360 frozen cases and six C64 diagnostics pass 180 cases in VICE. See `docs/CM-P30-P37.md`.
+All of Comanche055 P30-P37 (374 words: P30 and P31 with their displays, S30.1, S31.1, DELRSPL and the flag subroutines) is native C on the control-transfer ABI, as 143 routines compiled by `tools/interp_compile.py`. All 73,216 cases equal the original program in yaAGC; the host tests pass 572 frozen cases and six C64 diagnostics pass 179 cases in VICE. See `docs/CM-P30-P37.md`.
 
 ## Translate Comanche055 P32-P33_P72-P73
 
