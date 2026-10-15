@@ -108,14 +108,16 @@ def main():
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z
-        # (dap_pass_check.c DP_STEPS); the bank only where Z is switched fixed.
+        # (dap_pass_check.c DP_STEPS); fixed-fixed Z as bank 02 or 03.
         print('last steps (bank,Z/status):',
-              ' '.join((f"{x['job_loads']:02o},{x['steps']:04o}" if 0o2000 <= x['steps'] < 0o4000 else f"{x['steps']:05o}")
+              ' '.join((f"{x['job_loads']:02o},{x['steps']:04o}" if 0o2000 <= x['steps'] < 0o4000 else
+                        f"{x['steps'] >> 10:02o},{0o2000 + x['steps'] % 1024:04o}" if 0o4000 <= x['steps'] < 0o10000 else
+                        f"{x['steps']:05o}")
                        + f"/{x['status']}" for x in r.get('records', [])[-12:]))
     if 'by_request' in r:
         print(f"{a.scenario} from {a.snap_cs} cs: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs "
               f"({r['wall_per_agc']} x real time), {r['dropped_ticks']} ticks dropped, {r['steps']} steps, "
-              f"status {r['status']} at {r['bank']},{r['z'][1:]} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
+              f"status {r['status']} at {r['at']} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
         for k, b in sorted(r['by_request'].items()):
             print(f"  {k}: {b['count']} x, mean {b['cycles'] // b['count']} cycles (max {b['max_cycles']}), "
                   f"{b['steps']} steps, {b['job_loads']} job and {b['task_loads']} task loads")
