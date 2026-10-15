@@ -145,7 +145,7 @@ class Compiler:
         self.inline_sites = {}   # routine -> {(Q, FB or None)} its inline reads take
         self.inline_reads = set()   # INDEX Q reads of a caller's inline word
         # 'outside': {'LABEL': words} leaves code the compiler can't model
-        # yet (VNPOOH's XCH FBANK) to the original: a transfer there leaves
+        # yet to the original: a transfer there leaves
         # the file, and its words are untranslated (the spec's 'partial').
         for lab_, n_ in spec.get('outside', {}).items():
             p_ = self.L.labels[lab_]
@@ -1304,6 +1304,11 @@ class Compiler:
                     n = 2 if what in ('dxch', 'das') else 1
                     self._ix_write = (e, n)
                 return e
+            if k == 4 and what in ('ts', 'xch') and p // 1024 in (2, 3):
+                # A new FB in fixed-fixed code (Comanche's VNPOOH: XCH FBANK,
+                # then TS FBANK) leaves the code where it is; ai_put keeps
+                # BBANK with it.
+                return ea(k)
             if k in (4, 5, 6) and writes:
                 raise CompileError('%s writes a bank or Z register at %s' % (what, self.where(p)))
             return ea(k)

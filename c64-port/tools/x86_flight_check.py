@@ -23,10 +23,17 @@ CHECK = xb.OUT / 'check'
 # the LM DAP holding attitude (IMU operate, PGNCS control, AUTO; CDUY moved
 # at 15 s, tools/flight_host_differential.py's DAP inputs); and the CM's
 # V37E00E and V37E06E, whose interpretive code (STATEUP, INTEGRATION
-# INITIALIZATION) runs compiled or through the interpreter core.
+# INITIALIZATION) runs compiled or through the interpreter core; P00 with a
+# DOWNRUPT every 20 ms (the downlink words checked against yaAGC); and
+# hardware restarts with DOWNRUPT: LM P00 at 20 s, and CM V37E06E keyed at
+# 25 s and restarted in P06 at 35 s.
 SCENARIOS = [('p00', 'lm', 4000, '', {}), ('p00', 'cm', 4000, '', {}),
              ('dap-hold', 'lm', 3000, '', fhd.DAP),
-             ('v37e00e', 'cm', 3000, 'V37E00E', {}), ('v37e06e', 'cm', 3000, 'V37E06E', {})]
+             ('v37e00e', 'cm', 3000, 'V37E00E', {}), ('v37e06e', 'cm', 3000, 'V37E06E', {}),
+             ('p00-downrupt', 'lm', 4000, '', {'FLIGHT_DOWNRUPT': '1'}),
+             ('p00-downrupt', 'cm', 4000, '', {'FLIGHT_DOWNRUPT': '1'}),
+             ('restart', 'lm', 4000, '', {'FLIGHT_GOJAM': '2000', 'FLIGHT_DOWNRUPT': '1'}),
+             ('v37e06e-restart', 'cm', 4000, '@2500V37E06E', {'FLIGHT_GOJAM': '3500', 'FLIGHT_DOWNRUPT': '1'})]
 
 
 def lockstep(cc, m, mode):

@@ -3464,10 +3464,54 @@
             "src/rtb_angles.c",
             "src/rtb_modes.c"
           ],
-          "scope": "1,051 of the file's 1,065 words: P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, N45PROC, DISPLAYE, INITVEL, MIDGIM, SELECTMU, PERIAPO, LEMSTORE, CSMSTORE, VECSHIFT, R36 and LREGCHK, as 185 routines of the control-transfer ABI compiled by tools/interp_compile.py. VNPOOH (14 words, switches FBANK itself) is not translated.",
+          "scope": "Every word of the file (1,065 words in banks 02, 04, 11, 20, 22, 35, 36 and 40-42): P34/P74 (TPI), P35/P75 (TPM), S33/34.1, S34/35.1-.5, LOMAT, INTINT, VN1645, KILCLOCK, N45PROC, CLUPDATE, DISPLAYE, P3XORP7X, INITVEL, MIDGIM, SELECTMU, PERIAPO, PRECSET, LEMSTORE, CSMSTORE, VECSHIFT, R36, LREGCHK and VNPOOH (with its own FBANK switch), as 513 routines of the control-transfer ABI compiled by tools/interp_compile.py.",
           "verification": "docs/CM-P34-P35.md"
         }
-      ]
+      ],
+      "pending_complete_certificate": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). At VNPOOH's way back (VNBANK -1 and +1) TBASE5 holds FB 35 and RTRN (1767 under the case's EB) the return of one of the file's five TC VNPOOH calls, as a call from the file leaves them. Eleven C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; four of them (resumed_at 35,2331 or 35,2377) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,2377) runs from there to the end of the case.",
+        "external_continuations": [
+          "BANKCALL with its inline CADR (DELAYJOB, GOFLASH, GOMARKF, GOXDSPF)",
+          "POSTJUMP with its inline CADR (R36A)",
+          "PHASCHNG with its inline phase words (restart groups)",
+          "UPFLAG with its inline flag word (FINALFLG)",
+          "ALARM with its alarm codes",
+          "AVFLAGA, AVFLAGP, P20FLGON, COMPTGO, ENDEXT, NORMEX and TC GOTOPOOH",
+          "VNPOOH's TC RTRN with TBASE5 back in FB: the return of a call from another file (P30_P37, P32-P33_P72-P73, TPI_SEARCH)",
+          "APSIDES, CSMPREC, INTEGRVS, LEMPREC, NORMEX, OTHPREC, THISPREC and TIMETHET through CALL, STCALL or GOTO (interpretive), and SUBEXIT",
+          "The interpreter exits POODOO and ALARM",
+          "CHANG2 when a DANZIG finds NEWJOB positive; the Executive resumes at NEWOPS with LOC +1, a routine of the file"
+        ],
+        "awaiting": "certificate reviewer",
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/cm-p34-p35/cm-p34-p35-source-map.json",
+            "sha256": "e7f6e5f898f74b56c73a7bc759823d982ae9330d772c29033239886321ca205c"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/cm-p34-p35/cm-p34-p35-proof.json",
+            "sha256": "cc22b601e3de97ea122748b0ad327205af4fd9104df643661c71a6c0f46a2c6e"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/cm-p34-p35/cm-p34-p35-host.log",
+            "sha256": "11e132f2ecb23776fae4a89a3100e58f2bdf3cfd9bacf2637d220c867d572a60"
+          },
+          "c64_execution_results": {
+            "path": "evidence/cm-p34-p35/cm-p34-p35-vice.log",
+            "sha256": "e7506df9b217c3a1bcdceaeac8ac1c9a88395b7a3ad7fe160413dd89751132f7",
+            "vice_targets": {
+              "vice-cm-p34-p35": 584
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/cm-p34-p35/cm-p34-p35-c64-cover.json",
+            "sha256": "e929734c32932eb7b50b235c269cab1d696e7de40b2734a20e38d9addec1c643"
+          }
+        }
+      }
     },
     {
       "path": "Comanche055/P37_P70.agc",
@@ -7281,7 +7325,7 @@
       "sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
       "bytes": 47595,
       "lines": 1864,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -7296,7 +7340,7 @@
           "verification": "docs/LM-CONIC-COMPILED.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -7307,7 +7351,6 @@
           "POLY (interpreter basic routine) and POODOO alarm 607 (ABTCONIC) and 1302 (UNIT/SQRT) through the interpreter",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-source-map.json",
@@ -7327,6 +7370,10 @@
             "vice_targets": {
               "vice-lm-conic-compiled": 516
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-conic-compiled.md",
+            "sha256": "2197377df4e1e27f99e84925fd096c9127f767d13e84fa69b1e4a2e4b5e56032"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-conic-compiled/lm-conic-compiled-c64-cover.json",
@@ -10078,7 +10125,7 @@
       "sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
       "bytes": 31942,
       "lines": 1474,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "scope": "Bounded P66 RODCOMP prefix through PDVL GDT/2; complete P66 and other landing guidance routines remain incomplete.",
@@ -10147,6 +10194,10 @@
             "src/rtb_angles.c",
             "src/rtb_vector.c",
             "src/rtb_unit.c",
+            "src/guidance_unit_phased.c",
+            "src/guidance_length_phased.c",
+            "src/guidance_norm.c",
+            "src/guidance_product.c",
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c",
             "src/agc_image_ops.c",
@@ -10155,10 +10206,58 @@
             "src/agc_word.c",
             "src/agc_multiword.c"
           ],
-          "scope": "987 of the 991 words (31,2420-3760, 32,3263-3537, 11,2275-2375, 20,2115-2122, 22,3647-3660): the P63-P67 guidance pass (LUNLAND, ?GUIDSUB, GUIDSUB and the phase tables), GUILDEN, STARTP64-STARTP67, TTFINCR, REDESIG, CALCRGVG, RGVGCALC, TTF/8CL, QUADGUID, AFCCALC, CGCALC, EXTLOGIC, RATESTOP, the guidance displays, ROOTPSRS, INTPRETX, TDISPSET, FASTCHNG, RODTASK, RODCOMP, VHORCOMP, PITFALL, REDESMON and DESCBITS, as 248 routines of the control-transfer ABI compiled by tools/interp_compile.py. READ CHAN30 and RAND/READ CHAN31 read the latched inputs of the run (channel_inputs). Not translated: WOR CHAN13 with its EXTEND in STARTP64 and REDESMON's RESETRPT, which wait for the output-channel model.",
+          "scope": "Every word of the file (991 words: 31,2420-3760, 32,3263-3537, 11,2275-2375, 20,2115-2122, 22,3647-3660): the P63-P67 guidance pass (LUNLAND, ?GUIDSUB, GUIDSUB and the phase tables), GUILDEN, STARTP64-STARTP67, TTFINCR, REDESIG, CALCRGVG, RGVGCALC, TTF/8CL, QUADGUID, AFCCALC, CGCALC, EXTLOGIC, RATESTOP, the guidance displays, ROOTPSRS, INTPRETX, TDISPSET, FASTCHNG, RODTASK, RODCOMP, VHORCOMP, PITFALL, REDESMON and DESCBITS, as 246 routines of the control-transfer ABI compiled by tools/interp_compile.py (spec lm-llge). READ CHAN30 and RAND/READ CHAN31 read the latched inputs of the run, and WOR CHAN13 with its EXTEND in STARTP64 and REDESMON's RESETRPT writes agc_hardware channel 13 (shared channel model, include/agc_channel_ops.h).",
           "verification": "docs/LM-LLGE.md"
         }
-      ]
+      ],
+      "complete_native_coverage": {
+        "reviewed_all_source_paths": true,
+        "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+        "qualification_kind": "native_translation",
+        "supported_domain": {
+          "canonical_state": "Canonical 2048-word erasable image (every word random except the counters, TIME1/TIME2 and CDUs seeded as tools/interp_routine_differential.py does; a quarter of the cases put the flight edge values of tools/edge_cases.py into MPAC, the pushdown top and every operand), A/L/Q raw 16-bit, coherent EB/FB, the interrupt-enable state, agc_hardware channel 13 and the latched input channels 30 and 31 carried with the image; the pinned yaAGC with the hardware divide and its scaler held.",
+          "entry_contracts": "Each of the 246 routines in lm_llge_routines (src/lm_llge.c, generated by tools/interp_compile.py lm-llge and checked with --check): the file's entries LUNLAND, ?GUIDSUB, GUILDEN, PITFALL, DESCBITS, P63DISPS -2, INTPRETX, ROOTPSRS, FASTCHNG, RODTASK, STARTP66, STARTP67, P65START, STARTP64 and REDESMON, DISPEXIT +3 (VHORCOMP's TC BANKCALL return from bank 32), every point another file returns to, every word nothing in the file reaches (resume_orphans) and every word after a DANZIG (resume_keys; a positive NEWJOB stops at CHANG2 and the Executive resumes there). Basic routines run under their bank's FB and EBANK; interpretive ones at NEWOPS with LOC at the routine and FIXLOC a VAC area.",
+          "index_domains": "Pinned to the values flight gives them: WCHPHASE and WCHPHOLD hold a phase, -1 to 2 (INDEX WCHPHASE/WCHPHOLD into the phase tables); WCHVERT (also NGUIDSUB) is +10 (STARTP67's CAF TEN), 2, 1, +0 (P66), -1 or -2 (P65START's CS TWO); NIGNLOOP is 0 to 40 (IGNALG sets 40, DDUMCALC counts it down); X1 is -TARGTDEX as INTPRETX, its only writer, sets it. Cases entering CGCALC to EXGSUB hold WCHPHOLD 0 to 2, or (a third of them, the IGNALG pass: P63 sets WCHPHASE -1 and AFCCLEND copies it) WCHPHOLD and WCHPHASE both -1; cases entering EXBRAK to P63DISPS and 1406P00 to FASTCHNG hold WCHPHOLD 0 to 2: DISPEXIT's INDEX WCHPHOLD with WCHPHOLD -1 loops DISPEXIT-WHATEXIT for ever on the AGC too, and flight never reaches DISPEXIT with it (IGNALG's EXTLOGIC goes to EXGSUB; BURNBABY sets both to 0 at ignition). Interpretive routines run with PUSHLOC (0166) within the VAC below 32D, vac+0 to vac+036 (even), the file's own pushdown, so a push never reaches X1 (SERVOUT and FINDVAC give vac+0, and the file pushes only DP and vector words). The resume points take the MODE and PUSHLOC the orders before them leave: vector MODE before the NORMUNITs at CGCALC +24, +26 and +29 and EXNORM +4; MODE 0 and an empty pushdown (PUSHLOC vac+0) at QUADGUID +32 and QUADGUID; PUSHLOC vac+0 at TTF/8CL +26 and +28, with WCHPHASE -1 to 1 at +26. ROOTPSRS is entered as TTF/8CL's TC leaves it: A = TABLTTFL (TABLTTF +3), L = N-1 (1 or 2), Q = 31,3113 and WCHPHASE -1 to 1; its loop points (ROOTPSRS +17 and +19, DERCLOOP +3, ROOTLOOP +6, +13, +15 and +20) hold the power-table and derivative-table pointers ROOTPSRS sets (ROOTPS_STATES in tools/interp_specs.py).",
+          "interrupt_context": "PITFALL (RUPT10) and RODTASK (a WAITLIST task) run in interrupt context, so the spec sets any_fixloc and any_newjob for the whole file: every basic routine that never names FIXLOC (46 of the 84, job routines such as LUNLAND, STARTP66 and FASTCHNG among them) takes any FIXLOC and NEWJOB -0 and checks its entry with sane_nv. Flight builds skip the entry checks' whole-image scan (trusted_image).",
+          "hardware_side_effects": "READ CHAN30 (GUILDEN's STERN) and RAND/READ CHAN31 (STABL?, RATESTOP, PITFALL, REDESMON) read the latched inputs; WOR CHAN13 in STARTP64 and RESETRPT sets channel 13 bits in agc_hardware, compared with yaAGC (which keeps bits 043777) after every case. Driving the device from channel 13 is the flight I/O adapter's job."
+        },
+        "external_continuations": [
+          "Outside basic routines: ALARM, BANKCALL, CHECKMM, DMPNSUB, DOWNFLAG, UPFLAG, FINDVAC, NOVAC, WAITLIST, LOW7+2K, NEWMODEX, PHASCHNG, POODOO, POSTJUMP, BANKJUMP, POWRSERS, SHORTMP, THROTTLE, TWIDDLE, USPRCADR, VARDELAY, and TCF ENDOFJOB, GOTOPOOH, RESUME and TASKOVER",
+          "DANZIG to CHANG2 with NEWJOB positive (Lane A Executive; the resume keys re-enter the file)",
+          "RTB LOADTIME (native: src/rtb_angles.c) and RTB NORMUNIT (native: src/lm_normunit.c with rtb_vector's NORM front and rtb_unit's UNIT phases)",
+          "NEWOPS with LOC outside the file (interpretive returns to the SERVICER and the P63-P67 callers) and the interpreter bodies' POODOO1/ALARM1 exits",
+          "The SERVICER's AVEGEXIT call into LUNLAND and the RUPT10/WAITLIST scheduling that enter PITFALL and RODTASK; integrated C64 application acceptance"
+        ],
+        "evidence": {
+          "source_to_native_map": {
+            "path": "evidence/lm-llge/lm-llge-source-map.json",
+            "sha256": "361589e1fba9ae2bed8399139bd0ebde42f2e16c128f42de09d35337d6a0bb52"
+          },
+          "independent_assembly_comparison": {
+            "path": "evidence/lm-llge/lm-llge-proof.json",
+            "sha256": "496746cac5626c73b2e3b73b60feae33ae414a2c9093d0d8b0748583d48f2fb7"
+          },
+          "host_and_sanitizer_results": {
+            "path": "evidence/lm-llge/lm-llge-host.log",
+            "sha256": "4b8d7e485b3e8d7d19a50ff49af6089a6c4bdd573a21ca5d7e161e38f47d3ecc"
+          },
+          "c64_execution_results": {
+            "path": "evidence/lm-llge/lm-llge-vice.log",
+            "sha256": "1cb4e7fd5b49fc967a6e55a70b673b8db278f34dfda44f334d3a37daff69c385",
+            "vice_targets": {
+              "vice-lm-llge": 379
+            }
+          },
+          "c64_branch_outcomes": {
+            "path": "evidence/lm-llge/lm-llge-c64-cover.json",
+            "sha256": "f5d803a739226d3282d5ff821d1bd764b1769aecfbe30d3447bc51d589fbdce5"
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-lm-llge.md",
+            "sha256": "ce4ea75ca752ba55b5b43d155ecac46216a454cd4f73a0edcd889e5111dcfc57"
+          }
+        }
+      }
     },
     {
       "path": "Luminary099/MAIN.agc",

@@ -337,6 +337,26 @@ A_PM0 = [0] * 8 + [0o177777] * 8 + [v for k in range(1, 0o40000, 0o777) for v in
 NVSUB_RETURNS = [0o2120, 0o2155, 0o2200, 0o2242, 0o2327, 0o2430, 0o2502, 0o2545, 0o2560, 0o2563, 0o2570,
                  0o2602, 0o2615, 0o2747, 0o2764, 0o3143, 0o3202, 0o3737]
 
+
+def _llge_axis(base, offs):
+    """Vectors along one axis, 1/2 or 1/4 of either sign, the other
+    components +0 or -0, as erasable states at base+offs (each a DP)."""
+    out = []
+    for axis in range(3):
+        for hi, lo, rest in ((0o20000, 0, 0), (0o57777, 0o77777, 0o77777), (0o10000, 0, 0o77777), (0o67777, 0o77777, 0)):
+            d = {}
+            for k, off in enumerate(offs):
+                name = base + ('+%d' % off if off else '')
+                d[name] = hi if k == axis else rest
+                d[base + '+%d' % (off + 1)] = lo if k == axis else rest
+            out.append(d)
+    return out
+
+
+LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
+LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
+
+
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
     'lm-aotmark': {
@@ -3005,6 +3025,11 @@ SPECS = {
         # CONTABRT's RESUME ends an interrupt: in_interrupt (yaAGC's InIsr)
         # in each case and digest.
         'in_isr': True,
+        # R10,R11 is a Waitlist task: its T3RUPT interrupts whatever job runs,
+        # a NOVAC job's FIXLOC (0110) or DUMMYJOB's NEWJOB -0 among them. Its
+        # basic routines never name FIXLOC or NEWJOB, so they take any.
+        'any_fixloc': True,
+        'any_newjob': True,
         # ABRTJASK's INDEX Q; CAF MODE70: Q is -0 (P70) or 2 (P71).
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
@@ -3022,6 +3047,7 @@ SPECS = {
         'freeze_stride': 32,
     },
     'lm-llge': {
+        'c64_cuts': True,
         'missions': ('lm',),
         'file': {'lm': 'LUNAR_LANDING_GUIDANCE_EQUATIONS.agc'},
         'base': {'lm': 'lm_llge'},
@@ -3030,7 +3056,8 @@ SPECS = {
         # PITFALL (RUPT10), DESCBITS (AOTMARK's CADR), P63DISPS -2 (the
         # display restart), INTPRETX and ROOTPSRS (subroutines).
         'entries': ['LUNLAND', '?GUIDSUB', 'GUILDEN', 'PITFALL', 'DESCBITS', 'P63DISPS-2', 'INTPRETX', 'ROOTPSRS',
-                    'FASTCHNG', 'RODTASK', 'STARTP66', 'STARTP67', 'P65START', 'STARTP64', 'REDESMON'],
+                    'FASTCHNG', 'RODTASK', 'STARTP66', 'STARTP67', 'P65START', 'STARTP64', 'REDESMON',
+                    'DISPEXIT+3'],  # VHORCOMP's TC BANKCALL, CADR DISPEXIT +3 (from bank 32)
         'externals': {'PHASCHNG': 'auto', 'BANKCALL': 'auto', 'POSTJUMP': 1, 'CHECKMM': 1, 'NEWMODEX': 'auto',
                       'DOWNFLAG': 'auto', 'UPFLAG': 'auto', 'ENDOFJOB': None, 'TASKOVER': None, 'ALARM': 'auto',
                       'POODOO': None, 'THROTTLE': 'auto', 'WAITLIST': 'auto', 'NOVAC': 'auto', 'FINDVAC': 'auto',
@@ -3056,12 +3083,13 @@ SPECS = {
                        # PUSHLOC below 32D (the file's own pushdown words), so
                        # a push never reaches X1.
                        '0166': ['vac+%o' % n for n in range(0, 0o40, 2)],
-                       # WCHVERT (P67 positive, P66 +0, P65 negative), which
-                       # is also NGUIDSUB (passes left: 2 to 0).
-                       'WCHVERT': [2, 1, 0, 0o77776],
-                       # NIGNLOOP, the ignition loops left (THE_LUNAR_LANDING
-                       # counts it down from 40).
-                       'NIGNLOOP': [0, 1, 0o50]},
+                       # WCHVERT: +10 at STARTP67 (CAF TEN), +0 at P66, -2 at
+                       # P65START (CS TWO); it is also NGUIDSUB (passes left:
+                       # 2 to 0; CCS of +0 stores nothing, so it stays +0).
+                       'WCHVERT': [0o12, 2, 1, 0, 0o77776, 0o77775],
+                       # NIGNLOOP, the ignition loops left: IGNALG sets 40 and
+                       # DDUMCALC (THE_LUNAR_LANDING) counts it down to 0.
+                       'NIGNLOOP': list(range(0o51))},
         # QUADGUID sets MODE to 0 before its TC INTPRETX; the resume LOCs
         # before a NORMUNIT with no load of their own are in vector mode.
         # RGVGCALC resets PUSHLOC to FIXLOC, and TTF/8CL pushes nothing, so
@@ -3102,22 +3130,45 @@ SPECS = {
                            'src/guidance_product.c'],
         'edge_cases': True,
         'c64_rows': 'cover',
-        # Routines whose whole runs reach more code than one C64 program
-        # holds stay host-checked; the proof lists the arcs only they take.
-        'c64_cover_partial': True,
+        # Arcs only runs too long for one C64 program take get truncated
+        # rows (tests/interp_cut.h).
         # INDEX WCHPHASE with WCHPHASE -1: the end-around carry the C64
         # build needs (unsigned is 16 bits there).
         'index_carry16': True,
-        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 lands on
-        # WHATEXIT's TCF EXNORM, which loops back to DISPEXIT for ever.  The
-        # program only runs IGNALG (-1) with FLUNDISP set, so DISPEXIT never
-        # gets there; cases on the paths into it keep WCHPHOLD on 0..2.
-        'range_states': (('CGCALC', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
+        # DISPEXIT's INDEX WCHPHOLD / TCF WHATDISP with WCHPHOLD = -1 and
+        # WCHPHASE 0 or more lands on WHATEXIT's TCF EXNORM, which loops back
+        # to DISPEXIT for ever. Flight never gets there with WCHPHOLD -1:
+        # during IGNALG P63 sets WCHPHASE -1 and AFCCLEND copies it to
+        # WCHPHOLD, and EXTLOGIC then goes to EXGSUB, never to EXBRAK and
+        # DISPEXIT; BURNBABY sets both to 0 at ignition. So cases from
+        # CGCALC to EXGSUB hold WCHPHOLD 0..2 or (a third of them, the IGNALG
+        # pass) both -1, and cases from EXBRAK on, which reach DISPEXIT,
+        # WCHPHOLD 0..2.
+        # Rare inputs whose arcs only long runs took (C64 rows, #161): TREDES
+        # counted down to 0 at EXNORM+11's CA TREDES / BZF RED-OVER, and
+        # vectors along an axis (1/2 or 1/4, the others +-0: the unit
+        # divide leaves no remainder) for RTB NORMUNIT at EXNORM+4 (in
+        # MPAC) and VLOAD UNIT LAND at EXTLOGIC-21.
+        'joint_states': {'EXNORM+11': [{}, {}, {}, {'TREDES': 0}],
+                         'EXNORM+4': [{}, {}] + LLGE_AXIS_MPAC,
+                         'EXTLOGIC-21': [{}, {}] + LLGE_AXIS_LAND},
+        'range_states': (('CGCALC', 'EXBRAK', {'WCHPHOLD': [0, 1, 2],
+                                               '*': [{}, {}, {'WCHPHOLD': 0o77776, 'WCHPHASE': 0o77776}]}),
+                         ('EXBRAK', 'P63DISPS', {'WCHPHOLD': [0, 1, 2]}),
                          ('1406P00', 'FASTCHNG', {'WCHPHOLD': [0, 1, 2]})),
-        # READ CHAN30 (STERN) and RAND/READ CHAN31: latched inputs.
+        # READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 (STARTP64,
+        # RESETRPT) on the shared channel model (agc_channel_ops.h).
         'channel_inputs': True,
-        'c64_flags': ['-DIRC_INPUTS'],
-        'partial': {'lm': 'WOR CHAN13 (STARTP64) waits for an output-channel model'},
+        'c64_flags': ['-DIRC_INPUTS', '-DIRC_CHANNELS', '-DIRC_LM_HW'],
+        'channels': 'all',
+        'io_channels': 'auto',
+        'image_w': True,
+        # (Flight builds skip the entry checks' whole-image scan.)
+        'trusted_image': True,
+        # PITFALL (RUPT10) and RODTASK (a WAITLIST task) run in interrupt
+        # context: a NOVAC FIXLOC or NEWJOB -0 is normal there.
+        'any_fixloc': True,
+        'any_newjob': True,
         'target': 'tests/lm_llge_target.c',
         'freeze_stride': 32,
         'cover_stride': 8,
@@ -3585,6 +3636,7 @@ SPECS = {
         'freeze_stride': 256,
     },
     'cm-p34-p35': {
+        'trusted_image': True,
         'c64_cuts': True,
         'index_carry16': True,
         'image_w': True,
@@ -3601,19 +3653,16 @@ SPECS = {
                     'S34/35.4', 'S34/35.5', 'LOMAT', 'INTINT', 'VN1645', 'KILCLOCK', 'N45PROC',
                     'CLUPDATE', 'DISPLAYE', 'P3XORP7X', 'INITVEL', 'MIDGIM', 'GET+MGA',
                     'MIDGIM1', 'GET.LVC', 'SELECTMU', 'PERIAPO1', 'PERIAPO', 'PRECSET', 'LEMSTORE',
-                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK'],
+                    'CSMSTORE', 'VECSHIFT', 'SHIFTR1', 'R36', 'LREGCHK',
+                    'VNPOOH'],  # (P30_P37, P32-P33 and P34-P35 call it: TC VNPOOH)
         'externals': {'BANKCALL': 'auto', 'ALARM': 'auto', 'AVFLAGA': 'auto', 'AVFLAGP': 'auto',
                       'P20FLGON': 'auto', 'UPFLAG': 'auto', 'DOWNFLAG': 'auto', 'PHASCHNG': 'auto',
                       'COMPTGO': 'auto', 'POSTJUMP': 1, 'GOTOPOOH': None, 'ENDOFJOB': None,
                       'ENDEXT': None, 'ENDMARK': None,
                       'VNPOOH': 0},
-        # VNPOOH switches FBANK in basic code (XCH FBANK), which the compiled
-        # basic code does not model yet: its 15 words stay with the original.
-        'outside': {'VNPOOH': 15},
         'noreturn': ['POSTJUMP'],
         'returns': {'GOFLASH': 3, 'GOFLASHR': 4},
         'resume_orphans': True,
-        'partial': {'cm': 'VNPOOH (P30SUBS, fixed-fixed) switches FBANK with XCH FBANK and TS FBANK, which the compiled basic code does not model yet'},
         # SGNAGREE (RT8_OP_CODES' TPAGREE) has no native routine yet: the
         # RTB ends the routine there. DPMODE is src/rtb_modes.c.
         'rtb': {'LOADTIME': {'cm': 'rtb_angles(s,io,RTB_CM,RTB_LOAD_TIME)'}, 'SGNAGREE': None,
@@ -3623,7 +3672,16 @@ SPECS = {
         # SETMUER reads MUTABLE +4,1 and -2,1 with X1 -2 (earth) or -10
         # (moon), as SELECTMU's AXC,1 sets it.
         'fixed_index': {'MUTABLE': [2, 10]},
-        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+        # VNPOOH's way back (VNBANK-1 on proceed, VNBANK+1 after a
+        # recycle): TS FBANK puts TBASE5 back in FB and TC RTRN runs RTRN,
+        # the caller's Q. They hold one of this file's calls (bank 35):
+        # RTRN (E4,1767 as the routine names it, 1767 under the case's EB,
+        # so each EB's word).
+        'states': {'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   **{lab: {'01063': [0o72000],
+                            **{'0%o' % (eb * 0o400 + 0o367): [0o2006, 0o2072, 0o2150, 0o2756, 0o2777]
+                               for eb in range(8)}}
+                      for lab in ('VNBANK-1', 'VNBANK+1')}},
         'target': 'tests/cm_p34_p35_target.c',
         'edge_cases': True,
         'resume_keys': True,
