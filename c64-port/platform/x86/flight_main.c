@@ -8,10 +8,10 @@
  *   x86-flight-<m> ROPE.bin [CS [KEYS]]
  *
  * Runs CS centiseconds of AGC time (default 1000). KEYS (e.g. V37E12E) are
- * DSKY keys (platform/x86/flight_scenario.h). Environment:
+ * DSKY keys, @CS timing them. Scenario inputs FLIGHT_CH30-33, FLIGHT_POKE,
+ * FLIGHT_LOAD, FLIGHT_GOJAM and FLIGHT_DOWNRUPT: platform/x86/
+ * flight_scenario.h. Environment:
  *   X86_SPEED     AGC time per wall time: 1 real time (default), 0 flat out
- *   FLIGHT_CH30, FLIGHT_CH31   input channels 30 and 31 at start (octal)
- *   FLIGHT_POKE   CS:ADDR=VALUE,... erasable words set on AGC time (octal)
  *   X86_REPORT    a JSON report: points the interpreter core ran (and why),
  *                 basic points no routine holds, steps, clock
  *   X86_SAMPLES   each centisecond's erasable memory at the first idle
@@ -44,12 +44,12 @@ static void report(FILE *f,const fd_state *st,unsigned long cs,double wall){unsi
   fd_table_status(i)=='c'?"complete":fd_table_status(i)=='u'?"uncertified":"shared",st->uses[i]);
  fprintf(f,"\n ]\n}\n");}
 
-int main(int argc,char **argv){static fd_state st;fd_ran ran;fs_inputs in;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,next=1,periods=0;
+int main(int argc,char **argv){static fd_state st;static fs_inputs in;fd_ran ran;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,next=1,periods=0;
  double speed=getenv("X86_SPEED")?atof(getenv("X86_SPEED")):1.0,t0,wall;
  FILE *samples=getenv("X86_SAMPLES")?fopen(getenv("X86_SAMPLES"),"w"):0;
  if(argc<2||!apollo_rope_load(MISSION,argv[1])){fprintf(stderr,"usage: x86-flight ROPE.bin [CS [KEYS]]\n");return 2;}
- fs_parse(&in,argc>3?argv[3]:"",getenv("FLIGHT_POKE"));
- fd_init(&st,X86_INTERP_MODE,fs_channel("FLIGHT_CH30",037777u),fs_channel("FLIGHT_CH31",077777u));
+ if(!fs_parse(&in,argc>3?argv[3]:""))return 2;
+ fs_start(&st,X86_INTERP_MODE);
  t0=now_s();
  while(fd_centiseconds(&st)<cs){
   fd_boundary(&st);

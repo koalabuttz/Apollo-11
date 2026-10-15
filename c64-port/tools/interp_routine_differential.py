@@ -548,7 +548,10 @@ def case(mi, point, n, rng):
         if shape == 3:
             counter_edges(E, rng)
     held = pinned = set()
-    ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items()]
+    ranged = [kv for lo, hi, st in mi.range_states if lo <= point < hi for kv in st.items() if kv[0] != '*']
+    # (A range's '*': a list of dicts of values that only mean something
+    # together, one chosen per case after the range's own choices; {} keeps them.)
+    ranged_joint = [st['*'] for lo, hi, st in mi.range_states if lo <= point < hi and '*' in st]
     for k, choices in (list(mi.all_states.items()) + ranged + list(mi.flow.get(point, {}).items())
                        + list(mi.states.get(point, {}).items())):
         a = state_address(mi, k, vac)
@@ -564,6 +567,9 @@ def case(mi, point, n, rng):
             lab, off = v.split('+')
             v = mi.L.word(mi.L.labels[lab] + int(off))
         E[a] = v
+    for js in ranged_joint:
+        for k, v in rng.choice(js).items():
+            E[state_address(mi, k, vac)] = v & 0o77777
     # Joint states: values that only mean something together (TM a little
     # past TIME2/TIME1), one set per case; '*' sets go to half of every
     # routine's cases.
