@@ -41,6 +41,7 @@ Steps, per mission:
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import collections
+import fcntl
 import functools
 import hashlib
 import json
@@ -794,7 +795,7 @@ def input_digest(a):
 def output_digests(since):
     return {f.relative_to(ROOT / OUT).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest()
             for f in sorted((ROOT / OUT).rglob('*'))
-            if f.is_file() and not f.name.startswith('.stamp-') and f.stat().st_mtime >= since}
+            if f.is_file() and not f.name.startswith(('.stamp-', '.lock')) and f.stat().st_mtime >= since}
 
 
 def up_to_date(stamp, digest):
@@ -825,6 +826,11 @@ def main():
     p.add_argument('--force', action='store_true', help='build even when the last build is up to date')
     a = p.parse_args()
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
+    # One build at a time in the tree: ci_run runs flight-store targets in
+    # parallel, and two builds rewriting build/flight-store/keys at once fail
+    # ("Text file busy"). The one that waits then finds the stamp current.
+    lock = open(ROOT / OUT / '.lock', 'w')
+    fcntl.flock(lock, fcntl.LOCK_EX)
     stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
                           + ('-host' if a.host_only else ''))
     digest = input_digest(a)

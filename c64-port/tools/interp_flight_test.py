@@ -266,7 +266,17 @@ def run(m, a, exe):
         if a.only:
             lo, hi = (int(x) for x in a.only.split(':'))
             batches = [batches[0][lo:hi]]
-    parts = [boot(m, a, exe, cases, k) for k, cases in enumerate(batches)]
+    if a.part:
+        # (--part K/N: the boots k with k % N == K - 1, so N CI targets each
+        # run a share; the batches, and so each boot's cases, stay the same)
+        K, N = (int(x) for x in a.part.split('/'))
+        batches = [(k, c) for k, c in enumerate(batches) if k % N == K - 1]
+    else:
+        batches = list(enumerate(batches))
+    if not batches:
+        print(f'{m}: no boot in part {a.part}, nothing to run')
+        return None
+    parts = [boot(m, a, exe, cases, k) for k, cases in batches]
     rows = [r for p in parts for r in p['rows']]
     report = dict(mission=m, ok=all(p['ok'] for p in parts), cases=sum(p['cases'] for p in parts),
                   ran=sum(p['ran'] for p in parts), c64_failures=sum(p['c64_failures'] for p in parts),
@@ -280,7 +290,7 @@ def run(m, a, exe):
 
 
 def suffix(a):
-    return '-flowed' if a.flowed else '-p63' if a.p63 else ''
+    return ('-flowed' if a.flowed else '-p63' if a.p63 else '') + (f'-part{a.part.split("/")[0]}' if a.part else '')
 
 
 def boot(m, a, exe, cases, k):
@@ -336,6 +346,8 @@ def main():
                    help='with --p63: the cases, evenly thinned from every first arrival (default 1000)')
     p.add_argument('--flowed-states', type=int, default=128,
                    help='with --flowed: the states of each routine yaAGC runs from (default 128)')
+    p.add_argument('--part', help='K/N (with --flowed or --p63): run only the boots k with k %% N == K - 1, '
+                   'for N CI targets (interp-flight-flowed-vice-K); no --evidence')
     p.add_argument('--cycles', type=int, default=3_000_000_000)
     p.add_argument('--timeout', type=int, default=1800)
     p.add_argument('--evidence', type=pathlib.Path,
@@ -344,6 +356,9 @@ def main():
     a = p.parse_args()
     global OUT
     OUT = (a.out or OUT).resolve()
+    if a.part and (a.evidence or not (a.flowed or a.p63) or not re.fullmatch(r'[1-9]\d*/[1-9]\d*', a.part)
+                   or int(a.part.split('/')[0]) > int(a.part.split('/')[1])):
+        raise SystemExit('--part K/N (1 <= K <= N) needs --flowed or --p63 and no --evidence')
     if a.cases > 250:
         raise SystemExit('--cases: at most 250 (the results fill $c010-$cbff)')
     OUT.mkdir(parents=True, exist_ok=True)

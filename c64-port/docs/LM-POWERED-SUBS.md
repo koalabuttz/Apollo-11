@@ -6,8 +6,8 @@ This milestone covers Luminary099 POWERED_FLIGHT_SUBROUTINES.agc, the whole file
 - **Bank 23 (23,3537-3766).** CDUTRIG, CD\*TR\*G, CDUTRIGS and CD\*TR\*GS (sines and cosines of the CDU angles through CDULOGIC, COSINE and SINE), QUICTRIG (SPSIN and SPCOS), the interface routines CDU\*SMNB, TRG\*SMNB, CDU\*NBSM, TRG\*NBSM, \*SMNB\* and \*NBSM\*, and AX\*SR\*T (the axis rotation with DMPSUB). Luminary has no NBSM.
 - **Bank 10 (10,2030-2212).** CALCSMSC and FLESHPOT. FLESHPOT builds the stable-member-to-navigation-base matrix at the ECADR in A (XNB from CALCSMSC, XNBPIP from SERVICER), under that EBANK, with DMP and DMPSUB. Its middle row calls the interpreter's VXV from basic code: `DCA Z`, `AD FOUR`, `DXCH LOC`, EDOP BIT8, `TCF VXV`. The interpreter then resumes the basic code at LOC.
 
-`tools/interp_compile.py lm-powered-subs` (spec in `tools/interp_specs.py`, `'basic': 'full'`, `resume_keys`) compiles the file into `src/lm_powered_subs.c`, 45 routines:
-- `lm_powered_subs_interpretive`: each interpretive entry at NEWOPS, and the returns after its TC INTPRET. No order pair here can end in DANZIG with a job waiting, so the file has no CHANG2 resume keys.
+`tools/interp_compile.py lm-powered-subs` (spec in `tools/interp_specs.py`, `'basic': 'full'`, `resume_keys`) compiles the file into `src/lm_powered_subs.c`, 48 routines:
+- `lm_powered_subs_interpretive`: each interpretive entry at NEWOPS, and the returns after its TC INTPRET. No order pair here can end in DANZIG with a job waiting, so the file has no CHANG2 resume keys. CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words (23,3567, 3575, 3605) are routines too, keyed at DANZIG (`usprcadr_exits`): USPRCADR leaves LOC there and BIT8 in EDOP, and the interpreter returns through DANZIG, whose CCS EDOP runs EXIT into the next word. The program puts the DANZIG marker first among its interpretive tables (`tests/lm_powered_subs_target.c`).
 - `lm_powered_subs_basic`: QUICTRIG, AX\*SR\*T, FLESHPOT and FLESHPOT -1 (CALCSMSC's BANKCALL), the words after each EXIT, and the returns after BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF, DMP, DMPSUB and VXV (10,2174).
 
 The transfers out of the file are BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF, DMP, DMPSUB, VXV and SWRETURN, plus the callers' returns. The run stops there, at Z.
@@ -34,8 +34,8 @@ Hashes: `evidence/lm-powered-subs/SHA256.json`.
 - **Executed-instruction closure.** `make lm-powered-subs-closure` (`tools/oracle_trace` with `AGC_READ_WORDS`, then `tools/interp_executed_closure.py`). Result (`evidence/lm-powered-subs/lm-powered-subs-closure.json`):
   - 237 of the 238 basic instructions executed, and all 14 interpretive words read by the interpreter;
   - the one left, 23,3757 (TSTPOINT's TC RTNSAVER for +0), cannot be reached. AX\*SR\*T enters with ±3, and DIM of +1 gives -0, so `CCS DEXDEX` never sees +0.
-- **Independent assembly comparison.** `make lm-powered-subs-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 45 routines, 23,040 in all, and every one equals the native run (`evidence/lm-powered-subs/lm-powered-subs-proof.json`). It compares Z, all 2,048 erasable words and the interrupt-enable state.
-- **Host and sanitizer results.** `make test-lm-powered-subs sanitize-lm-powered-subs`: the 1,440 frozen cases, 0 failures.
-- **C64 execution results.** `make vice-lm-powered-subs`: 67 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (521 gcov branches, and 410 of 410 trace edges). 67 checks, 0 failures.
+- **Independent assembly comparison.** `make lm-powered-subs-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 48 routines, 24,576 in all, and every one equals the native run (`evidence/lm-powered-subs/lm-powered-subs-proof.json`). It compares Z, all 2,048 erasable words and the interrupt-enable state.
+- **Host and sanitizer results.** `make test-lm-powered-subs sanitize-lm-powered-subs`: the 1,537 frozen cases, 0 failures.
+- **C64 execution results.** `make vice-lm-powered-subs`: 70 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (544 gcov branches, and 427 of 427 trace edges). 70 checks, 0 failures.
 
 The older hand translations (`src/lm_powered_*.c`, `src/lm_fleshpot*.c`, `src/guidance_rotation.c`, `src/guidance_throttle_service.c`) stay for their existing callers. This milestone does not change them.
