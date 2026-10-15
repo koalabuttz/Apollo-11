@@ -436,16 +436,27 @@ static enum exec_status routine(const agc_native_program *p,apollo_overlay_state
 #define B32(a) (uint16_t)(032u*1024u+((a)-02000u))
 #define R31(a) {B31(a),routine}
 #define R32(a) {B32(a),routine}
+/* Flight builds also key the basic word each EXIT returns to: there the
+ * native interpreter runs the interpretive code and its EXIT hands the word
+ * to the flight program as a basic key (tools/flight_exit_returns.py). The
+ * host build runs on across EXIT in one call and keys none of them. */
+#ifdef AGC_FLIGHT_INTERPRETER
+#define X31(a) R31(a),
+#define X32(a) R32(a),
+#else
+#define X31(a)
+#define X32(a)
+#endif
 static const agc_routine_entry basic_entries[]={
 #if LLD_G1
- R31(02144),R31(02146),R31(02151),R31(02153),R31(02203),R31(02204),R31(02205),
+ R31(02144),R31(02146),R31(02151),R31(02153),X31(02200)R31(02203),R31(02204),R31(02205),X31(02214)
  R32(02776),R32(03000),R32(03002),
 #endif
 #if LLD_G2
  R32(03102),
 #endif
 #if LLD_G1
- R32(03204),R32(03207),R32(03210),R32(03230),R32(03233),
+ X32(03202)R32(03204),R32(03207),R32(03210),X32(03223)R32(03230),R32(03233),
  R32(03235),R32(03245),R32(03246),R32(03247),R32(03251),
 #endif
 };
