@@ -533,7 +533,10 @@ static void miss(const char *name,const agc_word *before,agc_word sb,const agc_w
  * rk_fixed_word): the rope word at every point where it stops between
  * routines, the keys of every table it can resolve
  * (tools/resident_boundary_words.py with the store's resolver records). */
-static agc_site_operand boundary[8192];
+/* Sized for every table key before duplicates go (CM has over 10,000): a
+ * full array would drop the last tables and FETCH and DANZIG, and the
+ * native side would hold every interrupt at an interpretive order. */
+static agc_site_operand boundary[16384];
 static uint16_t nboundary;
 static int by_key(const void *a,const void *b){return (int)((const agc_site_operand *)a)->physical-(int)((const agc_site_operand *)b)->physical;}
 /* Interrupts take the word at Z: at a basic routine Z is its key, at an
@@ -541,7 +544,9 @@ static int by_key(const void *a,const void *b){return (int)((const agc_site_oper
  * LOC's), so those two words are boundary words too. */
 static void boundary_build(void){unsigned i,j;
  for(i=0;i<=TABLES;++i)for(j=0;j<(i<TABLES?tables[i].t->count:2u);++j){uint16_t k=i<TABLES?tables[i].t->entries[j].physical:j?DANZIG:FETCH;agc_word w=0;
-  if(k<APOLLO_ROPE_WORDS&&nboundary<sizeof boundary/sizeof boundary[0]&&apollo_rope_read(MISSION,k,&w)){boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
+  if(k<APOLLO_ROPE_WORDS&&apollo_rope_read(MISSION,k,&w)){
+   if(nboundary==sizeof boundary/sizeof boundary[0]){fprintf(stderr,"boundary words: more than %u keys\n",(unsigned)nboundary);exit(2);}
+   boundary[nboundary].physical=k;boundary[nboundary++].word=w;}}
  qsort(boundary,nboundary,sizeof boundary[0],by_key);
  for(i=j=0;i<nboundary;++i)if(!j||boundary[j-1].physical!=boundary[i].physical)boundary[j++]=boundary[i];
  nboundary=(uint16_t)j;}
