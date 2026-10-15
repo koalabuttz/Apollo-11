@@ -124,16 +124,30 @@ def build_image(modules, resolver, mission, services, tail=b''):
             raise ValueError(f'resolver record {r} names no valid continuation')
     resolver = sorted(resolver, key=lambda r: (r['bank'], r['loc']))
     index_page = 1
-    resolver_page = index_page + INDEX_ENTRIES * INDEX_RECORD // 256
+    # The direct index holds ids 0 to the highest one's, in blocks of 256
+    # records (16 pages: the resident bounds an id by its high byte); its
+    # length is resolver_page - index_page.
+    resolver_page = index_page + (max(ids) // 256 + 1) * 16
     resolver_pages = -(-len(resolver) * RESOLVER_RECORD // 256)
     page = resolver_page + resolver_pages
     placed = []
-    for m in sorted(modules, key=lambda m: m['id']):
+    # In id order. One DMA loads a module, and the REU's address counter
+    # wraps inside a 512 KB bank (17xx REC; VICE too): never let a module
+    # cross one. Before skipping to the next bank, fill the gap with the
+    # largest modules still to place that fit it.
+    waiting = sorted(modules, key=lambda m: m['id'])
+    while waiting:
+        m = waiting.pop(0)
         size = -(-m['bytes'] // 256)
-        # One DMA loads a module, and the REU's address counter wraps inside
-        # a 512 KB bank (17xx REC; VICE too): never let a module cross one.
         if page // BANK_PAGES != (page + size - 1) // BANK_PAGES:
-            page = (page // BANK_PAGES + 1) * BANK_PAGES
+            edge = (page // BANK_PAGES + 1) * BANK_PAGES
+            for f in sorted(waiting, key=lambda f: (-f['bytes'], f['id'])):
+                fs = -(-f['bytes'] // 256)
+                if page + fs <= edge:
+                    placed.append(dict(f, page=page))
+                    page += fs
+                    waiting.remove(f)
+            page = edge
         placed.append(dict(m, page=page))
         page += size
     tail_pages = -(-len(tail) // 256)
