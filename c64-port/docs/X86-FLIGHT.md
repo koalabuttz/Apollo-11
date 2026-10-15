@@ -15,13 +15,16 @@ Lane B, for David's second product target (roadmap, 2026-10-13): a native x86_64
 x86-flight-lm ROPE.bin [CS [KEYS]]
 ```
 
-It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), pressing the DSKY KEYS (for example `V37E12E`) one every half second from 2 s. Environment:
+It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), pressing the DSKY KEYS (for example `V37E12E`) one every half second from 2 s. `@CS` in KEYS moves the next key and the ones after it to that centisecond or later (`V37E63E@9000P` presses PRO at 90 s). Environment:
 
 | Variable | Effect |
 |---|---|
 | `X86_SPEED` | AGC time per wall time. 1 is real time (the default), 0 runs flat out. |
-| `FLIGHT_CH30`, `FLIGHT_CH31` | Input channels 30 and 31 at start, in octal (`036377`, `057777`: IMU operate, PGNCS control, AUTO, so the LM DAP runs). |
+| `FLIGHT_CH30` to `FLIGHT_CH33` | Input channels 30-33 at start, in octal (`FLIGHT_CH30=036377 FLIGHT_CH31=057777`: IMU operate, PGNCS control, AUTO, so the LM DAP runs). |
 | `FLIGHT_POKE` | `CS:ADDR=VALUE,...`: erasable words set on AGC time, in octal. |
+| `FLIGHT_LOAD` | `CS:FILE,...`: the same from files of octal `ADDR VALUE` lines, a scenario's erasable load (`tools/flight_scenarios/`). |
+| `FLIGHT_GOJAM` | `CS[,CS...]`: a hardware restart (yaAGC's GOJAM: Q = Z, Z = 04000, interrupts enabled and cleared, output channels zeroed), then the program's own restart code. |
+| `FLIGHT_DOWNRUPT` | `1`: a DOWNRUPT every 20 ms of AGC time, so the downtelemetry program runs. |
 | `X86_REPORT` | A JSON report: the points the interpreter core ran and why (no table, or the table refused), basic points no routine holds, the tables used with their certification, and the clock. |
 | `X86_SAMPLES` | Erasable memory at the first idle pass through ADVAN in each centisecond. |
 
@@ -40,7 +43,7 @@ A table's kind (basic, keyed by Z; or interpretive, keyed by LOC under BANKSET) 
 3. **Routine.** Two direct-mapped indexes (basic and interpretive, by physical key) give the first table in resolution order that holds the point. The routine runs with its table's io record (`flight_io_enter`, `flight_io_leave`).
 4. **Fallback.** For an interpretive point no table holds, or one whose routine refuses (its effects undone), one interpreter core slot runs from that point. Each such point is counted for the report. A basic point no routine holds stops the program: there is no bridge.
 
-`platform/x86/flight_scenario.h` holds the scenario inputs (keys, pokes, the sample point), which the program and its lockstep check share.
+`platform/x86/flight_scenario.h` holds the scenario inputs (keys, pokes and loads, restarts, DOWNRUPT, the sample point), with `tools/flight_host_run.c`'s meanings, and the program and its lockstep check share it. Pokes, restarts and keys are applied in that order at the first idle pass through ADVAN at or after their time.
 
 ## The AGC clock
 
@@ -50,17 +53,21 @@ The costs come from `docs/flight-routine-mct.json`: for each routine point, the 
 
 ## Acceptance: lockstep against yaAGC
 
-`make x86-flight-check` (`tools/x86_flight_check.py`) builds both modes and the lockstep check `tools/x86_flight_lockstep.c`. That check is GPL, host only, and links yaAGC. It runs each scenario on the program's own step. Every routine and every core slot is checked: yaAGC, with its clock frozen (`AgcFrozenClock`, as under scaled time in docs/FLIGHT-STORE.md), runs from the state the routine started in until it reaches the routine's continuation with the same 2,048 erasable words (Z aside), I/O channels and interrupt state. The clock periods and interrupt entries are the program's own `rk_timer_tick` and `rk_rupt_take`, which `make test-resident-rupt` checks against yaAGC. So a run with no mismatch is one yaAGC run whose clock ran on the x86 program's schedule. The check fails on any mismatch, any basic point no routine holds, or a run that stops early.
+`make x86-flight-check` (`tools/x86_flight_check.py`) builds both modes and the lockstep check `tools/x86_flight_lockstep.c`. That check is GPL, host only, and links yaAGC. It runs each scenario on the program's own step. Every routine and every core slot is checked: yaAGC, with its clock frozen (`AgcFrozenClock`, as under scaled time in docs/FLIGHT-STORE.md), runs from the state the routine started in until it reaches the routine's continuation with the same 2,048 erasable words (Z aside), I/O channels and interrupt state. The clock periods and interrupt entries are the program's own `rk_timer_tick` and `rk_rupt_take`, which `make test-resident-rupt` checks against yaAGC. So a run with no mismatch is one yaAGC run whose clock ran on the x86 program's schedule. The I/O channels compared include the downlink words (channels 34 and 35), which carry the downtelemetry list under `FLIGHT_DOWNRUPT`. The check fails on any mismatch, any basic point no routine holds, or a run that stops early.
 
-On base 7262c653 with this change:
+On base a66d9642 with this change:
 
 | Scenario | Routines and core slots checked (compiled / core) | yaAGC did not match | Points the core ran (compiled / core) |
 |---|---|---|---|
 | LM P00, 4000 cs | 258,393 / 258,393 | 0 | 0 / 0 |
 | CM P00, 4000 cs | 261,359 / 261,359 | 0 | 0 / 0 |
 | LM DAP hold, 3000 cs | 177,143 / 177,143 | 0 | 0 / 0 |
-| CM V37E00E, 3000 cs | 193,758 / 195,199 | 0 | 4 / 108 |
-| CM V37E06E, 3000 cs | 195,381 / 195,385 | 0 | 2 / 4 |
+| CM V37E00E, 3000 cs | 193,732 / 195,199 | 0 | 0 / 108 |
+| CM V37E06E, 3000 cs | 195,380 / 195,385 | 0 | 0 / 4 |
+| LM P00 with DOWNRUPT, 4000 cs | 257,778 / 257,778 | 0 | 0 / 0 |
+| CM P00 with DOWNRUPT, 4000 cs | 259,514 / 259,514 | 0 | 0 / 0 |
+| LM P00, GOJAM at 20 s, DOWNRUPT, 4000 cs | 257,551 / 257,551 | 0 | 0 / 0 |
+| CM V37E06E at 25 s, GOJAM at 35 s, DOWNRUPT, 4000 cs | 258,590 / 258,595 | 0 | 0 / 4 |
 
 Flat out, 40 s of AGC time takes about 0.05 s of host time.
 
@@ -70,6 +77,5 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 Points the scenarios reach that no compiled routine holds:
 
-- LM `V37E12E` and `V37E63E` stop at 5.00 s: `lm_integration_init_basic` refuses INTSTALL+1 (13,3415), a basic point with no bridge. That is the Certificate fixes lane's file.
-- CM INTEGRATION_INITIALIZATION: INTSTALL and GOBAC+1 are refused, and PTOACSM+1 and DT/2COMP+4 have no table. The core runs them.
-- The uncompiled interpretive code by file is listed in the design note. The largest parts are LM and CM P20-P25, LM ASCENT_GUIDANCE and LM STABLE_ORBIT.
+- LM `V37E12E`, `V37E63E` and the P63 descent of `tools/flight_host_differential.py` stop at their first CLRADMOD (5 s and 25 s): `lm_p20_p25_basic` refuses CLRADMOD (03,2011) under a FIXLOC that is not a VAC area, which the P20-P25 certificate's domain left out. Lane B's next P20-P25 refreeze accepts any FIXLOC there (`any_fixloc`). Past that, the P63 descent reaches COMP (03,3670, INTERPRETER.agc's basic code) at 28 s, which no table holds yet.
+- The uncompiled interpretive code by file is listed in the design note.
