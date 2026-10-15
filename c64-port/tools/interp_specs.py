@@ -770,6 +770,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # The CM powered-flight subroutines run every burn pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'cm': 'cm_powered_subs'},
         'symbol': {'cm': 'cm_powered_subs'},
@@ -970,6 +973,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P21 ground track runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
         'base': {'lm': 'lm_ground_track'},
         'symbol': {'lm': 'lm_ground_track'},
@@ -1023,6 +1029,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # Lambert aimpoint guidance runs every LM powered-flight pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'LAMBERT_AIMPOINT_GUIDANCE.agc'},
         'base': {'lm': 'lm_lambert_aim'},
         'symbol': {'lm': 'lm_lambert_aim'},
@@ -1040,6 +1049,9 @@ SPECS = {
     'lm-p30-file': {
         'resume_keys': True,
         'missions': ('lm',),
+        # P30/P37 targeting runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P30,P37.agc'},
         'source_path': {'lm': 'P30_P37.agc'},
         'base': {'lm': 'lm_p30_file'},
@@ -1133,6 +1145,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P76 target delta-V runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P76.agc'},
         'base': {'lm': 'lm_p76_file'},
         'symbol': {'lm': 'lm_p76_file'},
@@ -2616,6 +2631,9 @@ SPECS = {
     },
     'attitude-maneuver': {
         'missions': ('lm', 'cm'),
+        # KALCMANU runs every attitude maneuver: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
         'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
         'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
@@ -4240,6 +4258,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # AOSTASK runs as a flight task: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},
