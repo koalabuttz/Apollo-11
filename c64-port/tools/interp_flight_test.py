@@ -348,7 +348,9 @@ def main():
                    help='with --flowed: the states of each routine yaAGC runs from (default 128)')
     p.add_argument('--part', help='K/N (with --flowed or --p63): run only the boots k with k %% N == K - 1, '
                    'for N CI targets (interp-flight-flowed-vice-K); no --evidence')
-    p.add_argument('--cycles', type=int, default=3_000_000_000)
+    # With Pinball in the store a P63 boot of 240 cases reaches 3.0e9
+    # cycles (5 boots measured 0.78e9 to 3.0e9).
+    p.add_argument('--cycles', type=int, default=6_000_000_000)
     p.add_argument('--timeout', type=int, default=1800)
     p.add_argument('--evidence', type=pathlib.Path,
                    help='write the summary and rows here (evidence/interpreter/interp-flight-vice.json)')
