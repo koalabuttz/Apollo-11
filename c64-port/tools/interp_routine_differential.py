@@ -1607,13 +1607,25 @@ def cover_check(spec_id, spec, missions, cases, path, record):
                 else:
                     trunc['failed'].append('%d: %s' % (t['row'], 'oracle refuses the cut' if r_[1] != '0' else 'differs'))
         out['truncated_rows'] = trunc
+    # Segment rows ('c64_segments', in the proof) come last, after every
+    # truncated row the freeze made: each runs its case to the resume LOC.
+    segs = (json.load(open(proof)).get('c64_segments') or {}).get('rows', []) \
+        if out.get('cases_match') and os.path.exists(proof) else []
+    if segs and rows:
+        at = max(rows) + 1 - len(segs)
+        for k, sg in enumerate(segs):
+            cm = next(n for n, mi in enumerate(missions) if mi.m == sg['mission'])
+            ext.extend([None] * (at + k + 1 - len(ext)))
+            ext[at + k] = dict(cases[sg['case']], stop=loc_of(missions[cm], sg['to']), src=sg['case'])
+        out['segment_rows'] = len(segs)
     CUT_ROWS_CASES[:] = ext
     beyond = [i for i in rows if i >= len(ext) or ext[i] is None] + trunc['failed']
     if not out.get('cases_match') or beyond or not rows:
         out.update(verified=False, reason='the record does not list its C64 rows (refreeze to record them)'
                    if not rows else 'truncated rows do not rebuild: %s' % trunc['failed'] if trunc['failed'] else 'neither the record nor its proof pins the frozen cases (cases_sha256); '
                    'refreeze to record it' if out.get('cases_match') is None else
-                   'the regenerated cases are not the frozen ones')
+                   'the regenerated cases are not the frozen ones' if not out['cases_match'] else
+                   'C64 rows past the cases that no truncated or segment row rebuilds: %s' % beyond[:8])
         print(json.dumps(out))
         return 1
     if spec.get('cover'):

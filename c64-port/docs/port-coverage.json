@@ -3320,7 +3320,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, EB from the listing's EBANK=), the output channels 5, 6 and 11-14 in the program's agc_channels_hw and channel words and the input channels 30-33 at any values, the superbank as the run's, TIME2/TIME1, the CDUs and the counters across their range, FIXLOC a VAC area and PUSHLOC within it (any FIXLOC, and NEWJOB -0 as DUMMYJOB leaves it, at the basic routines that neither index through FIXLOC nor enter the interpreter: VHFREAD is a WAITLIST task and RENDISP2 and ENDR57's ENDMARK are NOVAC jobs; any_fixloc, any_newjob), otherwise NEWJOB +0 or positive (a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG or a CALL is a resume routine entered with the original program's state there, resume_flow), MODE, OVFIND and the index registers as the code reaching each point leaves them (index_states, flow_states), S22LOC, MARKDATA and MARKSTAT naming a mark slot, STARCODE a catalog code, BESTI a multiple of 6 up to 228, S22's TIX loops with S1 6 and X1 a multiple of 6 up to 36, 9DWTO6DW's pushdown counters DP-word indexes (J and I near the W-matrix pass's end, J never 0 inside it), AUTOCK's DTHETASM 0-2 in its CDU loop, RENDISP7's TEMPOR1 -1 or +1, R61's INDEX MPAC 0 or 1, and any values of the other erasables. Runs take up to 40,000 routines.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank, EB from the listing's EBANK=), channels 011, 013, 031 and 033 (the ones the file uses, io_channels auto) at any values in the program's channel words and agc_channels_hw, the superbank as the run's, TIME2/TIME1, the CDUs and the counters across their range, FIXLOC a VAC area and PUSHLOC within it (any FIXLOC, and NEWJOB -0 as DUMMYJOB leaves it, at the basic routines that neither index through FIXLOC nor enter the interpreter: VHFREAD is the RADAR RUPT handler and RENDISP2 and ENDR57's ENDMARK are NOVAC jobs; any_fixloc, any_newjob), otherwise NEWJOB +0 or positive (a DANZIG that finds a job waiting goes to CHANG2, and every word after a DANZIG or a CALL is a resume routine entered with the original program's state there, resume_flow), MODE, OVFIND and the index registers as the code reaching each point leaves them (index_states, flow_states), S22LOC and MARKSTAT naming a mark slot and MARKDATA a mark slot or a mark VAC area, STARCODE any word (crew-keyed in octal through N70) and a catalog code 1-37 from P23.17 to P23.176, BESTI 0 or a multiple of 6 up to 228, S22's TIX loops with S1 6 and X1 0 or a multiple of 6 up to 36, 9DWTO6DW's pushdown counters DP-word indexes (in the W-matrix pass J and I 58, 56, 54, 4, 2 or 0 and N 0-30 in steps of 6, J 0 only up to the pass's exit test), AUTOCK's DTHETASM 0-2 in its CDU loop, RENDISP7's TEMPOR1 -1 or +1, or +0 with a job waiting, R61's INDEX MPAC 0 or 1, and any values of the other erasables. Runs take up to 40,000 routines.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "BANKCALL, IBNKCALL, SWCALL, SWRETURN and POSTJUMP with their inline CADRs",
@@ -3338,22 +3338,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-proof.json",
-            "sha256": "88a940c78f80dd1d368bdeeb9c61e5d79ed63e93bfcc585c4efa8209811c95d5"
+            "sha256": "4656e2341ca38ccb4ac78dd4ec4f74a0ad8e8087387a08a8dd1aa79c1d7d3f0f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-host.log",
-            "sha256": "55fb92151eb525cf1a526a6565ff5186205cf38786aca46850e3d88ab0e05456"
+            "sha256": "e0650b5d795fb579ba10a74669405b6a06c55b4243ff8384ff40a17b709eaf6d"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-vice.log",
-            "sha256": "1de0a05172a3f17fa8a19567a683da9a4a3367779ac5f3cd3f2dde007aa1668f",
+            "sha256": "6ec9a2e532ca012340f50b0221abdc7d5f436d9b1ccb8253a5a53f3e42d154dd",
             "vice_targets": {
-              "vice-cm-p20-p25": 1459
+              "vice-cm-p20-p25": 1454
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-c64-cover.json",
-            "sha256": "1ee81d760d65f4e653b8fc5ae889f65af0f25dbb0513113dc5204cc393bdf9d1"
+            "sha256": "9fef9894355bc4e7d0c051e04de61c555d683a68e8b29e8ad79c2e9bb07d7ac2"
           }
         }
       }
