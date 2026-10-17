@@ -79,6 +79,10 @@ static const agc_routine_entry lm_entries[9]={
  {FF(04000u),lm_goprog},{FF(04010u),lm_t5},{FF(04020u),lm_vector},{FF(04024u),lm_vector},{FF(04030u),lm_vector},
  {FF(04034u),lm_vector},{FF(04040u),lm_vector},{FF(04044u),lm_vector},{FF(04050u),lm_vector}};
 const agc_routine_table lm_lead_in_routines={lm_entries,9};
+/* The same entries for the flight store's LM idle module and T4RUPT pack
+ * (tools/flight_store_build.py), so an interrupt taken while either is
+ * loaded starts there with no load. */
+const agc_routine_table lm_lead_in_hot_routines = {lm_entries, 9};
 static const agc_routine_entry cm_entries[15]={
  {FF(04000u),cm_goprog},{FF(04004u),cm_t6},{FF(04010u),cm_t5},{FF(04020u),cm_vector},{FF(04024u),cm_vector},{FF(04030u),cm_vector},
  {FF(04034u),cm_vector},{FF(04040u),cm_vector},{FF(04044u),cm_vector},{FF(04050u),cm_vector},{FF(04065u),cm_t5},

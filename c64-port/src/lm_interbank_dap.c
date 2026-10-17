@@ -73,3 +73,5 @@ static const agc_routine_entry entries[2] = {{AT(04674), run}, {AT(04707), run}}
                                pj[1] = {{AT(04635), postjump}};
 const agc_routine_table lm_interbank_dap_hot_routines = {entries, 2},
                         lm_interbank_postjump_hot_routines = {pj, 1};
+/* POSTJUMP for the T4RUPT pack, which carries the idle loop. */
+const agc_routine_table lm_interbank_postjump_t4_hot_routines = {pj, 1};

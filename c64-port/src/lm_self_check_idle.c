@@ -13,4 +13,5 @@ const agc_site_operand lm_self_check_idle_sites[1]={{36573u,003214}};
 #define SC_D 2u
 #define SC_POSTJUMP 04635u
 #define SC_IDLE_TABLE lm_self_check_idle_routines
+#define SC_IDLE_HOT_TABLE lm_self_check_idle_hot_routines
 #include "self_check_body.inc"
