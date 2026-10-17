@@ -656,6 +656,21 @@ port) runs one mission:
    -0.021, +0.012 and -0.019 degrees, the drift taken out; V50N25 00014,
    V34 and V37E00E end it in P00. The keys y and j are the Y MARK
    (bit 4) and MARK REJECT (bit 5).
+   `cm-p23`: cislunar midcourse navigation at 24:30 GET, one star 2 /
+   earth near-horizon measurement. cm_p23.py writes cm-p23.load (the CSM
+   180,000 km out on a two-body ellipse from TLI in the launch plane, the
+   CMC's state vector 76 km off the true one, the launch REFSMMAT, the
+   shaft axis held on the horizon toward the star, the sun and moon pads,
+   WMIDPOS, WMIDVEL and HORIZALT) and two optics loads: cm-p23-cal.load,
+   the star line 0.011 degrees from the landmark line for R57's
+   calibration mark, and cm-p23-mark.load, the star on the horizon as the
+   true trajectory sees it at the mark. V37E23E, star 02 and horizon code
+   00110 on N70, ENTER on V50N25 (no auto maneuver), R57 (V59, MARK,
+   TRUNBIAS 4 counts), R52 and one R53 mark, then POINTAXS integrates the
+   state to the mark time, INCORP1 shows about 20 km on V06N49 (its
+   measured-minus-estimated angle agrees with cm_p23.py's 0.0084 degrees
+   to the trunnion's resolution, and the update moves the state toward the
+   true one), and proceed incorporates it; P00.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
