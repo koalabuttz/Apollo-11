@@ -51,12 +51,14 @@ SECTIONS {
      * (resident_flight.h): flight modules link these addresses. */
     .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
     .rk_flight 0x6fdc : { KEEP(*(.rk_flight)) } >services
+    .rk_restart_lamp 0x6ff4 : { KEEP(*(.rk_restart_lamp)) } >services
 }
 ASSERT(__rk_services_end<=0x6fb8,"the service table overlaps rk_dilation")
 ASSERT(rk_dilation==0x6fb8 && SIZEOF(.rk_dilation)==4,"rk_dilation is not at RK_DILATION")
 ASSERT(ov2_irq_count==0x6fbc && SIZEOF(.rk_irq_count)==2,"ov2_irq_count is not at RK_IRQ_COUNT")
 ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1e,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
 ASSERT(rk_flight==0x6fdc && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO")
+ASSERT(rk_restart_lamp==0x6ff4 && SIZEOF(.rk_restart_lamp)==1,"rk_restart_lamp is not at RK_RESTART_LAMP")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
 OUTPUT_FORMAT { SHORT(0x0801) FULL(ram) FULL(services) FULL(image) TRIM(boot) }

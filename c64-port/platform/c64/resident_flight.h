@@ -203,6 +203,12 @@ extern rk_module_env rk_env;
  * between its two bytes can tear one read. */
 #define RK_IRQ_COUNT 0x6fbcu
 extern flight_io rk_flight;
+/* The DSKY RESTART lamp, the hardware flip-flop GOJAM sets (rk_gojam) and
+ * ERROR RESET's WRITE 77 clears: nonzero while lit. At RK_RESTART_LAMP,
+ * above rk_flight, so the Pinball modules read and write it there (Lane C:
+ * their restart_light). */
+#define RK_RESTART_LAMP 0x6ff4u
+extern uint8_t rk_restart_lamp;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66
 #else
@@ -213,7 +219,7 @@ extern flight_io rk_flight;
 #define RK_BOOT_SCRATCH 0xc100u
 /* The soft stack's last byte above the pinned module (slot class 3, up to
  * $CBFF): boot writes the canary, and a step that finds it changed returns
- * EXEC_INVALID_ACTION before it runs anything. */
+ * EXEC_OUT_OF_SCOPE (a stop, not a restart: rk_gojam) before it runs anything. */
 #define RK_STACK_CANARY 0xcc00u
 #define RK_STACK_CANARY_VALUE 0xa5u
 
@@ -256,6 +262,10 @@ uint8_t rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes);
  * ran, otherwise the routine's status, the module's rk_env.status, or
  * EXEC_UNMAPPED for a point no module resolves. */
 enum exec_status rk_resident_step(uint16_t stop_physical);
+/* The hardware restart (GOJAM), at a step boundary (resident_flight_main.c
+ * takes it where the AGC's TC trap would). 0, or nonzero when the GOJAM
+ * module did not run. */
+uint8_t rk_gojam(void);
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
 enum exec_status rk_direct(uint16_t stop_physical);
