@@ -54,7 +54,7 @@ certified ones, so a program swaps them in place:
 |---|---|---|
 | `lm_kernel_routines` | `lm_exec_routines` | NOVAC, FINDVAC, TWIDDLE, WAITLIST, LONGCALL; LNGCALL2, LONGCYCL, LONGRTRN, MUCHTIME+4, GETCADR |
 | `lm_kernel_job_routines` | `lm_exec_job_routines` | SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB |
-| `lm_kernel_task_routines` | `lm_exec_task_routines` | 04014 (T3RUPT), FIXDELAY, VARDELAY, TASKOVER |
+| `lm_kernel_task_routines` | `lm_exec_task_routines` | 04014 (T3RUPT), DLY2 -1 (DELAYJOB's `TCF DLY2 -1`), FIXDELAY, VARDELAY, TASKOVER |
 | `lm_kernel_idle_routines` | `lm_exec_idle_routines` | NUCHANG2, DUMMYJOB, DUMMYJOB+2, ADVAN; SUPDXCHZ, SUPDXCHZ+1, SVCT3, SVCT3+015, SVCT3X+2 |
 | `cm_kernel_routines` | `cm_exec_routines` | the LM services and tasks, in one table |
 | `cm_kernel_job_routines` | `cm_exec_job_routines` | as LM |

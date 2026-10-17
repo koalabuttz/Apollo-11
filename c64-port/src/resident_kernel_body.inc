@@ -185,6 +185,7 @@ static enum exec_status kernel(const agc_native_program *p,apollo_overlay_state 
  case K_SUPDXCHZ:goto SUPDXCHZ;
  case K_SUPDXCHZ+1u:goto SUPDXCHZ1;
  case K_TWIDDLE:goto TWIDDLE;
+ case K_DLY2-1u:TS(K_WAITADR);goto DLY2;             /* DELAYJOB's TCF DLY2 -1: TS WAITADR */
  case K_WAITLIST:goto WAITLIST;
  case K_FIXDELAY:goto FIXDELAY;
  case K_VARDELAY:goto VARDELAY;
@@ -489,8 +490,11 @@ WTLST5:
  if(c<=2u)ADF(1u);
  TC(K_WTABORT+4u);i=8u;
 WTLST2:
- /* CAF 0 at Q: the OCT k after the TC (k = i). */
- TS(K_WAITTEMP);k_caf8(i);TS(Q_);
+ /* CAF 0 at Q: the OCT k after the TC (k = i). A positive overflow in
+  * TS WAITTEMP skips the INDEX Q, so CAF 0 reads A, the +1 the TS left:
+  * the new task goes in first (A is a CCS magnitude, never negative). */
+ if(!TS(K_WAITTEMP))k_caf8(i);
+ TS(Q_);
  CAF(1u);AD(K_WAITTEMP);ADS(K_LST1-1u+W[2]);CS(K_WAITTEMP);
 WTLST4:
  /* INDEX Q; TCF WTLST4 (or Q = 0): XCH LST1 +Q...+7, CA WAITADR,
