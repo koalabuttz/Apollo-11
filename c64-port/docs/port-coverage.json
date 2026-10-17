@@ -13810,6 +13810,8 @@
         {
           "native_files": [
             "src/lm_trim_gimbal.c",
+            "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
