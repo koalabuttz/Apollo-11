@@ -1001,6 +1001,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
         'base': {'cm': 'cm_ground_track'},
         'symbol': {'cm': 'cm_ground_track'},
@@ -1259,6 +1262,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'P76.agc'},
         'base': {'cm': 'cm_p76_file'},
         'symbol': {'cm': 'cm_p76_file'},
