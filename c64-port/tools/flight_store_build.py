@@ -320,7 +320,7 @@ SHARED_OPS = ('ca caf cs csf ad adf maskf ts xch lxch ads dxch ccs tc dcaf bzf b
 # RK_IRQ_COUNT), not copies of their own. Compiled routines reach the
 # channels in rk_hardware by name (tools/interp_compile.py AGC_CHANNELS_HW).
 CHANNELS = {m: ['-DAGC_CHANNELS_HW=rk_hardware',
-                '-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc']
+                '-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdd,--defsym=ov2_irq_count=0x6fbc']
             for m in ('lm', 'cm')}
 
 
