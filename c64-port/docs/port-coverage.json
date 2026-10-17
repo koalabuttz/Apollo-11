@@ -2506,8 +2506,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/interpreter-367.md",
-            "sha256": "96e09cb3e140e4a641baa36cb4a71d488fdfbd36509860b9f4b5282b9cd4aaa0"
+            "path": "docs/audits/rev2-interpreter-517.md",
+            "sha256": "eb6083472ac9bd5abdf7464923f6f140280fcde2943f87a67318cbac2a5c704b"
           }
         }
       }
@@ -9570,8 +9570,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/interpreter-367.md",
-            "sha256": "96e09cb3e140e4a641baa36cb4a71d488fdfbd36509860b9f4b5282b9cd4aaa0"
+            "path": "docs/audits/rev2-interpreter-517.md",
+            "sha256": "eb6083472ac9bd5abdf7464923f6f140280fcde2943f87a67318cbac2a5c704b"
           }
         }
       }
