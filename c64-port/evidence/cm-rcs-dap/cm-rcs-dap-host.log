@@ -1,8 +1,8 @@
 $ make test-cm-rcs-dap sanitize-cm-rcs-dap
-cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_rcs_dap.c tests/cm_rcs_dap_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_rcs_dap.c -o build/test-cm-rcs-dap
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_rcs_dap.c src/agc_fast_ops.c src/agc_fast_window.c tests/cm_rcs_dap_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_rcs_dap.c -o build/test-cm-rcs-dap
 ./build/test-cm-rcs-dap
 cm-rcs-dap: 136 checks, 0 failures
-cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_rcs_dap.c tests/cm_rcs_dap_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_rcs_dap.c -o build/test-cm-rcs-dap-sanitize
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_rcs_dap.c src/agc_fast_ops.c src/agc_fast_window.c tests/cm_rcs_dap_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_rcs_dap.c -o build/test-cm-rcs-dap-sanitize
 ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-rcs-dap-sanitize
 cm-rcs-dap: 136 checks, 0 failures
 exit 0

@@ -4943,6 +4943,8 @@
         {
           "native_files": [
             "src/cm_rcs_dap.c",
+            "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
@@ -4976,22 +4978,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523"
+            "sha256": "ca263017b17d3131973407e96fce88c57e3131df8caf045ac0af798e96c6f5df"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7"
+            "sha256": "e496946cac2bbd6321a72395aa3153d97ab1e602274e0a8fe795d0a213d1d952"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "1ae45cf89dda18f9b76c2e4232a38f01bebe4f8242391681e271ad0fced56e2c",
+            "sha256": "c86d17d13f1bc329f499a388c72eca2ceb5bfb2b533c24615b5791e5b6279a54",
             "vice_targets": {
-              "vice-cm-rcs-dap": 43
+              "vice-cm-rcs-dap": 45
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523"
+            "sha256": "ca263017b17d3131973407e96fce88c57e3131df8caf045ac0af798e96c6f5df"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g515.md",
