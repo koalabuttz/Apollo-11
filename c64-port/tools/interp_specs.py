@@ -2436,8 +2436,8 @@ SPECS = {
                       'TASKOVER': None, 'BAILOUT': None, 'ENDMARK': None},
         'noreturn': ['SWCALL', 'SWRETURN', 'DANZIG', 'POSTJUMP'],
         'resume_orphans': True,
-        # VHFREAD is a WAITLIST task (it leaves through TASKOVER, GOODEND or
-        # BADEND) and RENDISP2 and ENDR57's ENDMARK NOVAC jobs: the basic
+        # VHFREAD is the RADAR RUPT handler (it leaves through TASKOVER,
+        # GOODEND or BADEND) and RENDISP2 and ENDR57's ENDMARK NOVAC jobs: the basic
         # routines they reach run under any FIXLOC, and with NEWJOB -0
         # while DUMMYJOB idles (steward rule for interrupt-context specs).
         'any_fixloc': True,
@@ -2455,14 +2455,22 @@ SPECS = {
         'ebank': 'listing',
         # S22LOC points at one of the five 7-word mark sets in SVMRKDAT
         # (ECADR 03537, stepped by SEVEN).
-        # MARKDATA holds VTEMP -2 (ECADR 01224) or an S22LOC; MARKSTAT a
-        # mark VAC area.
+        # MARKDATA holds VTEMP -2 (ECADR 01224), an S22LOC or (P23.60's
+        # MASK LOW10 of MARKSTAT) a mark VAC area; MARKSTAT a mark VAC area.
         'all_states': {'cm': {'S22LOC': [0o3537 + 7 * k for k in range(5)],
-                              'MARKDATA': [0o1224] + [0o3537 + 7 * k for k in range(5)],
+                              'MARKDATA': ([0o1224] + [0o3537 + 7 * k for k in range(5)]
+                                           + [0o401 + 0o54 * k for k in range(5)]),
                               'MARKSTAT': [0o401 + 0o54 * k for k in range(5)],
-                              # (star codes 1-37 and the planets 38-40 in bits 1-6)
-                              'STARCODE': [c + 0o100 * h for c in range(41) for h in (0, 1, 0o177)],
-                              'BESTI': list(range(6, 229, 6))}},
+                              # The crew keys STARCODE in octal through N70
+                              # (P23.06's V05N70), so any word: codes 0-40
+                              # with high bits, -0 to -40, and the ends of
+                              # both signs. P23.16 checks it (BZF P23.176,
+                              # BZMF R23.10, 37 and below).
+                              'STARCODE': ([c + 0o100 * h for c in range(41) for h in (0, 1, 0o177)]
+                                           + [0o77777 - c for c in range(41)]
+                                           + [0o20000, 0o37777, 0o40000, 0o57777]),
+                              # (SSP BESTI 0 before P23.17 sets it)
+                              'BESTI': list(range(0, 229, 6))}},
         # LOWMEMRY's VLOAD* CATLOG,1: the star catalog, X1 -BESTI.
         'indexed_fixed': {'CATLOG': (-228, 0)},
         # 9DWTO6DW's counters live in the pushdown list: XTMP1 (6D, ROWDOT's
@@ -2470,21 +2478,23 @@ SPECS = {
         # a DP-word index (even, J and I to 58, N in steps of 6), with the
         # pushdown pointer past them.
         'range_states': [('9DWTO6DW', 'ROWDOT3+2', {
-            'vac+006': [0o377 >> k for k in range(9)], 'vac+010': list(range(0, 42, 2)),
+            'vac+006': [0o377 >> k for k in range(9)], 'vac+010': list(range(0, 44, 2)),
             'vac+012': list(range(0, 60, 2)), 'vac+014': list(range(0, 60, 6)),
             'vac+016': list(range(0, 60, 2)),
             # (PUSHLOC: 18D after the three cleared vectors, 20D inside ROWDOT)
             '0166': ['vac+022', 'vac+024']}),
-            # The W-matrix pass (9DWI=JA on) visits J 58..28, 2, 0 with N
-            # 3(58 - J) and I counting down from J: J, I near the loop's end
-            # (28 takes the I=26 and J=26 resets) keep each run short. J
-            # is 0 only on the way out (J=J-1 then 9DWI=JA's exit test);
-            # inside the loops J 0 would step past it forever.
-            ('9DWI=JA', '9DWEXITX', {'vac+012': [0, 2, 28], 'vac+014': [90, 96, 102],
-                                     'vac+016': [2, 28]}),
+            # The W-matrix pass (9DWI=JA on) visits J 58, 56, 54, then (the
+            # J=52 test, 9DW26D is 52 B-14) 4, 2 and 0, with N 0-30 in
+            # steps of 6 and I counting down from J the same way. J is 0
+            # only on the way out (J=J-1, then 9DWI=JA's exit test after
+            # 9DWAAB): past that test J 0 would step past it forever.
+            ('9DWI=JA', 'TST2I=0', {'vac+012': [0, 2, 4, 54, 56, 58], 'vac+014': list(range(0, 31, 6)),
+                                    'vac+016': [0, 2, 4, 54, 56, 58]}),
+            ('TST2I=0', '9DWEXITX', {'vac+012': [0, 2, 4, 54, 56, 58], 'vac+014': list(range(0, 31, 6)),
+                                     'vac+016': [2, 4, 54, 56, 58]}),
             # S22's TIX loops: SSP S1 6 (30,2523) before them, X1 a multiple
-            # of 6 up to the 36 of S22NXTWI's AXT,1.
-            ('S22NXTU', 'S22W76X', {'vac+046': list(range(6, 37, 6)), 'vac+050': [6]}),
+            # of 6 up to the 36 of S22NXTWI's AXT,1 (0 after CALL S2231X13).
+            ('S22NXTU', 'S22W76X', {'vac+046': list(range(0, 37, 6)), 'vac+050': [6]}),
             # AUTOCK's angle check loop: DTHETASM counts the three CDUs 2, 1,
             # 0 (CDULOOP's INDEX DTHETASM; CA CDUX) up to STKTEST.
             ('CDULOOP', 'STKTEST', {'DTHETASM': [0, 1, 2]})],
@@ -2494,10 +2504,17 @@ SPECS = {
         'states': {'cm': dict({'LOWMEMRY': {'vac+046': list(range(6, 223, 6))},
                                # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
                                '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
-                               # RENDISP7 waits on TEMPOR1 (+0 loops until the
-                               # display job sets it -1 or +1).
+                               # RENDISP7 waits on TEMPOR1: the display job
+                               # sets it -1 or +1 (+0, the waiting state, in
+                               # joint_states).
                                **{'RENDISP7+%d' % n: {'TEMPOR1': [0o77776, 1]} for n in range(4)}},
-                              **{'P23.17%+d' % n: {'STARCODE': list(range(1, 38))} for n in range(-1, 14)})},
+                              # (P23.17 up to P23.176, which BZF P23.176 also
+                              # enters with STARCODE +-0)
+                              **{'P23.17%+d' % n: {'STARCODE': list(range(1, 38))} for n in range(-1, 13)})},
+        # RENDISP7 sets TEMPOR1 +0 and loops on SLOAD BZE TEMPOR1 until the
+        # V06N49 display job answers: +0 with a job waiting (NEWJOB
+        # positive), so the loop-back's DANZIG goes to CHANG2.
+        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(1, 4)}},
         # Loop and mid-sequence points start from the registers the file's
         # own runs reach them with (the W-matrix and mark-data loops).
         'flow_states': True,
