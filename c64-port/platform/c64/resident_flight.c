@@ -31,6 +31,7 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
  * image stash it in the REU (include/flight_undo.h), not at this pointer. */
 __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
                                                                         (apollo_overlay_state *)1};
+__attribute__((used, section(".rk_restart_lamp"))) uint8_t rk_restart_lamp;
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
@@ -318,6 +319,21 @@ __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2
     st=apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
     return st;
 }
+/* The hardware restart (docs/FLIGHT-RESTART.md, Entry contract), at a
+ * step boundary: the GOJAM module's change to the image and rk_hardware,
+ * every interrupt request dropped, the RESTART lamp lit, the killed jobs'
+ * seams gone. The pinned
+ * module, classes 2-4, the AGC clock and the superbank stay. The next step
+ * runs the rope's GOJAM code from 04000. */
+__attribute__((noinline)) uint8_t rk_gojam(void)
+{
+    apollo_ov2_restart_keep_pinned(&rk_runtime); /* a latched fault refuses the module */
+    if (rk_run_module((apollo_ov2_cont){RK_MODULE_GOJAM, 0}) != APOLLO_OV2_OK) return 1u;
+    rk_pending = 0;
+    rk_restart_lamp = 1u;
+    apollo_ov2_restart_keep_pinned(&rk_runtime);
+    return 0u;
+}
 /* The resolver's canonical bank (docs/OVERLAY_ABI_V2.md): the physical
  * bank in FB form. Fixed-fixed 04000-07777 is bank 2 or 3 whatever FB and
  * the superbank hold; banked, FB alone, plus 0100 for banks 040-043 (FB
@@ -390,7 +406,8 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     enum exec_status status;
     uint16_t loc;
     /* The soft stack ran into the pinned module below it. */
-    if(*(volatile uint8_t *)RK_STACK_CANARY!=RK_STACK_CANARY_VALUE) return EXEC_INVALID_ACTION;
+    if (*(volatile uint8_t *)RK_STACK_CANARY != RK_STACK_CANARY_VALUE)
+        return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
     RK_PROF(0);
     rk_rupts();
     RK_PROF(1);
