@@ -198,6 +198,16 @@ int main(int argc,char **argv) {
     assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD)); /* still inside: resolver/modules */
     reset_ram(); reu[16]=1; reu[17]=0;
     assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
+    /* The index runs from its page to the resolver: ids up to the highest
+     * module's (0x0f01 here: 16 blocks = 256 pages) in blocks of 16 pages. */
+    reset_ram(); assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
+    assert(store.resolver_page-store.index_page==256u && store.index_blocks==16u);
+    reu[12]=reu[10]; reu[13]=reu[11];                     /* no index */
+    assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
+    reset_ram(); reu[12]=(uint8_t)(reu[10]+16u); reu[13]=1;  /* 17 blocks */
+    assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
+    reset_ram(); reu[12]=(uint8_t)(reu[12]-1u);           /* not whole blocks */
+    assert(!apollo_reu_store_open(&store,0,LM,SERVICES,RECORD));
 
     /* Boot verification over the packed image, then each corruption class. */
     boot(0); assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_OK);
@@ -215,6 +225,12 @@ int main(int argc,char **argv) {
     boot(0); reu[256u+0x0200u*16u+3u]=1;                 /* stray absent record */
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
     boot(0); reu[256u+0x0101u*16u+10u]=7;                /* unknown slot class */
+    assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
+    /* Payload outside the image or over the resolver: verify rejects it
+     * itself, since a verified store's lookups skip this check. */
+    boot(0); reu[256u+0x0101u*16u+2u]=0xff; reu[256u+0x0101u*16u+3u]=0xff;
+    assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
+    boot(0); reu[256u+0x0101u*16u+2u]=(uint8_t)store.index_page; reu[256u+0x0101u*16u+3u]=0;
     assert(apollo_reu_store_verify(&store,ram+0xc000)==APOLLO_OV2_BAD_DIRECTORY);
     boot(0); {                                            /* resolver order */
         unsigned long r=(unsigned long)store.resolver_page*256ul;

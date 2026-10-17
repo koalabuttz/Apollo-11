@@ -42,14 +42,14 @@
  "c64_coverage": {
   "host_labels": 487,
   "c64_labels": 487,
-  "host_edges": 518,
-  "c64_edges": 518,
+  "host_edges": 538,
+  "c64_edges": 538,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 306,
-  "c64_taken": 306,
+  "host_taken": 324,
+  "c64_taken": 324,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [

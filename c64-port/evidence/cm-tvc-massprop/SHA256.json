@@ -4,8 +4,8 @@
   "release": "evidence-cm-tvc-massprop",
   "files": {
     "cm-tvc-massprop-differential.log": {
-      "sha256": "c69ce1ff3743a3b088ba178166b2463c71dc761a4313fefc7c76201db95b6089",
-      "bytes": 4656,
+      "sha256": "3596bf3a8d12b4ae1da9b74a13cbbae387df6f4573e7c5cf4f7391ad902514cb",
+      "bytes": 4663,
       "store": "tree"
     },
     "cm-tvc-massprop-host.log": {
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-tvc-massprop-proof.json": {
-      "sha256": "d00b58d2ab8c214f83d83c157831a4a98b8b0fb568269de3ec4be135877d7b6e",
-      "bytes": 9700,
+      "sha256": "d9e3034fd08dd20ea201e477cf252758cb0460be4f19da28e45419c2a8024e45",
+      "bytes": 9701,
       "store": "tree"
     },
     "cm-tvc-massprop-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-tvc-massprop-vice.log": {
-      "sha256": "d199abd0f331ad4506688ab778b907df73559077139dc59cb8cc13737a6cdecc",
+      "sha256": "8ce58d0ffbeef580e35daa2f7294c85f4dd31d871f0d02270eabb956995b7058",
       "bytes": 521,
       "store": "tree"
     }

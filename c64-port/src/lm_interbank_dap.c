@@ -35,6 +35,41 @@ static enum exec_status run(const agc_native_program *p,apollo_overlay_state *s,
  W[073]=W[4];NORM(0);NORM(1);
  W[4]=(agc_word)(t&076000u);W[6]=(agc_word)(W[4]|(W[3]>>8));return EXEC_OK;
 }
+/* POSTJUMP (Z 04635), for the self-check idle loop's CHECKNJ: the CADR at Q
+ * goes to FB and Z, its low ten bits to Q; A passes through, L through
+ * BUF2's normalisation. Same results as lm_interbank_routines' POSTJUMP in
+ * the state it accepts (the guard above, and Q a TC caller's). */
+static enum exec_status postjump(const agc_native_program *p, apollo_overlay_state *s, void *v)
+{
+    const p66_bias_io *io = v;
+    const agc_site_operand *o;
+    uint16_t n, at;
+    agc_word q, t;
+    if (W[7] || (W[3] & ~03400u) || (W[4] & ~076000u) || W[6] != (W[4] | (W[3] >> 8)) ||
+        (io->superbank & ~0160u) || io->interrupt_enabled > 1u)
+        return EXEC_OUT_OF_SCOPE;
+    q = W[2];
+    if (q < 0100u || q > 07775u) return EXEC_OUT_OF_SCOPE;
+    if (q < 01400u)
+        t = W[q];
+    else if (q < 02000u) {
+        if (W[3] + (q & 0377u) < 0100u) return EXEC_OUT_OF_SCOPE;
+        t = W[W[3] + (q & 0377u)];
+    } else {
+        at = agc_fixed_physical(q, W[4], io->superbank);
+        for (o = p->operands, n = p->operand_count; n && o->physical != at; --n, ++o) {
+        }
+        if (!n || (t = o->word) > AGC_MASK) return EXEC_OUT_OF_SCOPE;
+    }
+    NORM(1);
+    W[4] = (agc_word)(t & 076000u);
+    W[6] = (agc_word)(W[4] | (W[3] >> 8));
+    W[2] = (agc_word)(t & 01777u);
+    W[5] = (agc_word)(02000u + W[2]);
+    return EXEC_OK;
+}
 #define AT(z) (uint16_t)(2048u+((z)-04000u))
-static const agc_routine_entry entries[2]={{AT(04674),run},{AT(04707),run}};
-const agc_routine_table lm_interbank_dap_hot_routines={entries,2};
+static const agc_routine_entry entries[2] = {{AT(04674), run}, {AT(04707), run}},
+                               pj[1] = {{AT(04635), postjump}};
+const agc_routine_table lm_interbank_dap_hot_routines = {entries, 2},
+                        lm_interbank_postjump_hot_routines = {pj, 1};

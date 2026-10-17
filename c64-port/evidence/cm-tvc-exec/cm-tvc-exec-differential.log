@@ -12,3 +12,4 @@ PASS: 3072 cm-tvc-exec cases equal the original programs (12 routines)
   CM 16,3121 : 05324 x256
   CM 16,3132 CNTRCOPY: 05324 x256
 froze 96 vectors to tests/cm_tvc_exec_vectors.h
+exit 0
