@@ -272,7 +272,7 @@ static int guarded_ok(const apollo_overlay_state *pre, unsigned m, const apollo_
 
 int main(int argc, char **argv)
 {
-    static unsigned hung, c, m, slots, refused, bad, shown, unreal;
+    static unsigned hung, c, m, slots, refused, bad, shown, unreal, rtb;
     static apollo_overlay_state pre;
     static FILE *dump;
     unsigned cases = argc > 3 ? (unsigned)strtoul(argv[3], 0, 0) : 2000u, seed = argc > 4 ? (unsigned)strtoul(argv[4], 0, 0) : 1u;
@@ -323,6 +323,18 @@ int main(int argc, char **argv)
                 fprintf(stderr, "slot %u Z %05o LOC %05o word %05o EDOP %03o MODE %05o\n", slot, a.words[5], a.words[0164], w, a.words[023], a.words[0163]);
             }
             memset(&ca, 0, sizeof ca); ca.interrupt_enabled = 1; cb = ca;
+            /* RTB's return: a case's first slot, one in four, has the
+             * verification interpreter enter at DANZIG and the core at BHIZ
+             * +1 under bank 01 (its TCF DANZIG, then DANZIG); DANZIG's TS
+             * BBANK sets FB for both. */
+            if (!dump && slot == 0u && rnd(4) == 0u) {
+                a.words[5] = m ? 06030u : 06061u;
+                b = a;
+                b.words[5] = m ? 02500u : 02453u;
+                b.words[4] = 02000u;
+                b.words[6] = (agc_word)(02000u | (b.words[3] >> 8));
+                ++rtb;
+            }
             pre = a;
             if (m) { sa = cm_interp_runtime(0, &a, &ca); recording = 1; nrec = 0; sb = cm_interp_core(0, &b, &cb); recording = 0; }
             else {
@@ -370,6 +382,7 @@ int main(int argc, char **argv)
     }
     arm(0);
     if (dump) fclose(dump);
-    printf("%u cases, %u slots compared, %u refused, %u abandoned, %u left the frame, %u differ\n", cases, slots, refused, hung, unreal, bad);
+    printf("%u cases, %u slots compared, %u refused, %u abandoned, %u left the frame, %u differ (%u entered at RTB's return)\n",
+           cases, slots, refused, hung, unreal, bad, rtb);
     return bad ? 1 : 0;
 }
