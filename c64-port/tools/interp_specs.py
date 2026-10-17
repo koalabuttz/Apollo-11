@@ -770,6 +770,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # The CM powered-flight subroutines run every burn pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'cm': 'POWERED_FLIGHT_SUBROUTINES.agc'},
         'base': {'cm': 'cm_powered_subs'},
         'symbol': {'cm': 'cm_powered_subs'},
@@ -970,6 +973,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P21 ground track runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
         'base': {'lm': 'lm_ground_track'},
         'symbol': {'lm': 'lm_ground_track'},
@@ -1023,6 +1029,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # Lambert aimpoint guidance runs every LM powered-flight pass: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'LAMBERT_AIMPOINT_GUIDANCE.agc'},
         'base': {'lm': 'lm_lambert_aim'},
         'symbol': {'lm': 'lm_lambert_aim'},
@@ -1040,6 +1049,9 @@ SPECS = {
     'lm-p30-file': {
         'resume_keys': True,
         'missions': ('lm',),
+        # P30/P37 targeting runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P30,P37.agc'},
         'source_path': {'lm': 'P30_P37.agc'},
         'base': {'lm': 'lm_p30_file'},
@@ -1133,6 +1145,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('lm',),
+        # P76 target delta-V runs as a flight job: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'P76.agc'},
         'base': {'lm': 'lm_p76_file'},
         'symbol': {'lm': 'lm_p76_file'},
@@ -1500,6 +1515,10 @@ SPECS = {
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
     # LUNVEL and SOLPOS are routine keys of the transfer ABI).
     'cm-ephemeris': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1673,6 +1692,11 @@ SPECS = {
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
     'cm-stable-orbit': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1780,6 +1804,11 @@ SPECS = {
         'trusted_image': True,
     },
     'cm-p40-p47': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         # GOPERF1/GOFLASH returns and other words only the display or a
         # restart enters (terminate, proceed, enter after a BANKCALL).
         'resume_orphans': True,
@@ -1882,6 +1911,11 @@ SPECS = {
     # Lane G: Comanche055 TVCMASSPROP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-massprop': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1921,6 +1955,11 @@ SPECS = {
     # Lane G: Comanche055 TVCEXECUTIVE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-exec': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1947,6 +1986,11 @@ SPECS = {
     # Lane G: Comanche055 TVCRESTARTS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-restarts': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -1977,6 +2021,11 @@ SPECS = {
     # Lane G: Comanche055 TVCSTROKETEST, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-stroke': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2013,6 +2062,9 @@ SPECS = {
     # Lane G: Comanche055 TVCINITIALIZE, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-init': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2068,6 +2120,11 @@ SPECS = {
     # Lane G: Comanche055 TVCROLLDAP, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-roll': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2097,6 +2154,11 @@ SPECS = {
     # Lane G: Comanche055 TVCDAPS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-tvc-daps': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2167,6 +2229,11 @@ SPECS = {
     # Lane G: Comanche055 AUTOMATIC_MANEUVERS, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-auto-man': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2200,6 +2267,11 @@ SPECS = {
     # Lane G: Comanche055 JET_SELECTION_LOGIC, the whole file (basic and interpretive)
     # as routines at its original addresses.
     'cm-jet-select': {
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
+        'image_w': True,
+        'index_carry16': True,
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
@@ -2559,6 +2631,9 @@ SPECS = {
     },
     'attitude-maneuver': {
         'missions': ('lm', 'cm'),
+        # KALCMANU runs every attitude maneuver: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'ATTITUDE_MANEUVER_ROUTINE.agc', 'cm': 'ANGLFIND.agc'},
         'base': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
         'symbol': {'lm': 'lm_attitude_maneuver', 'cm': 'cm_attitude_maneuver'},
@@ -4183,6 +4258,9 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('lm',),
+        # AOSTASK runs as a flight task: no whole-image scan
+        # in flight (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         'file': {'lm': 'AOSTASK_AND_AOSJOB.agc'},
         'base': {'lm': 'lm_aostask'},
         'symbol': {'lm': 'lm_aostask'},

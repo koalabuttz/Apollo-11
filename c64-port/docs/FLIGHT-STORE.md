@@ -136,6 +136,21 @@ P00 140,000 to 84,000, CM P00 110,000 to 72,000, CM entry 240,000 to
 128,000; `flight_downlink_check.py --vice` matches yaAGC on all 300
 DOWNRUPTs, one resident step each.
 
+The LM idle loop's own module (`lm_self_check_idle`, 0x010A) carries only
+POSTJUMP, the one interbank routine the loop calls (CHECKNJ's TC
+POSTJUMP): `lm_interbank_postjump_hot_routines` in `src/lm_interbank_dap.c`,
+checked against `lm_interbank_routines` by `tests/test_lm_interbank_dap.c`.
+The module drops from 10,287 B to 2,392 B. Every interrupt taken from idle
+reloads it, so in VICE the LM DAP hold goes from 10.52x to 9.82x real time
+and firing from 10.73x to 10.04x, with the same job loads (hold, firing, and
+the P63 descent-thrust scenario: 1/21/6/16 per T3/T4/T5/background before
+and after). The host flight run lists the hot table before
+`lm_interbank_routines` (`CO_LOCATE_HOT`). Its swap model does not model
+RIDE tables, so it now counts the DAP's IBNKCALL (which rides the excursion
+on the C64) as a swap: `lm-p00-idle` reads 77.2 loads a second, up from
+57.2, and the non-work scaled rows shift. The work rows and their 0
+mismatches are unchanged; the C64 counts are the ones to go by.
+
 The device record `include/flight_io.h` covers every lane's io kind. Two
 new kinds, `FLIGHT_IO_LM_CHANNEL` and `FLIGHT_IO_CM_CHANNEL`, carry the
 mission record followed by `agc_input_channels` (channels 3, 4, 30-33);
@@ -333,9 +348,21 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `lm_channel_io`, and a pack holding it would run every step through the
   transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
   31 K cycles instead of 16 K).
+- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+  entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
+  Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
+  entries were spread over all of the full table's chunks, so a pass loaded
+  about 5 of them. CM pins no class-4 home, so this pack is `ALONE`: it links
+  its own runtime. Its routines share the file's step bodies, so the 26
+  are over one job slot by 2 KB; a stand-alone pack over its slot splits
+  into consecutive chunks that each take as many entries as fit
+  (`split_pack`, a binary search on each chunk's end), here two. On
+  4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
+  20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
+  to 465 K cycles.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
-class-4 home. Each links once on its own before `pin_pair`; the home then
+class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
 keeps global (`--undefined`) those of a pack's functions it links anyway,
 and the pack takes every function the home holds as a global
 (`--defsym`). A function only a pack uses stays in the pack. The resolver

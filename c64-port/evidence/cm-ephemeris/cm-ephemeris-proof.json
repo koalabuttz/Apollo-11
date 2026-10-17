@@ -67,8 +67,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 558,
-  "c64_taken": 558,
+  "host_taken": 569,
+  "c64_taken": 569,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -219,8 +219,8 @@
  "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 8192,
- "host_branch_arcs": 584,
+ "host_branch_arcs": 598,
  "c64_rows": 38,
- "c64_branch_arcs": 584,
+ "c64_branch_arcs": 598,
  "host_branches_missing_on_c64": []
 }

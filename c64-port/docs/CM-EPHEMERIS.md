@@ -58,4 +58,8 @@ Hashes: `evidence/cm-ephemeris/SHA256.json`; all files are in the tree.
 - **Source map.** `cm-ephemeris-source-map.json` lists all 71 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
 - **Independent assembly comparison.** `make cm-ephemeris-differential` runs 256 states per routine (8,192 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-ephemeris-proof.json` (`cm-ephemeris-differential.log` is the run). One case in 32 is frozen in `tests/cm_ephemeris_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-ephemeris sanitize-cm-ephemeris` runs the 256 frozen cases (`cm-ephemeris-host.log`).
-- **C64 execution results.** `make vice-cm-ephemeris` runs 2 diagnostic programs with 38 cases (`cm-ephemeris-vice.log`, which starts with each PRG's SHA-256). The C64 rows are chosen (tools/c64_row_cover.py) so the C64 runs take every branch outcome the 8,192 differential cases take, checked with gcov -b over gcc -O0 `--coverage` builds of every linked source: 558 of 558 (`c64_gcov_branches` in the proof).
+- **C64 execution results.** `make vice-cm-ephemeris` runs 2 diagnostic programs with 38 cases (`cm-ephemeris-vice.log`, which starts with each PRG's SHA-256). The C64 rows are chosen (tools/c64_row_cover.py) so the C64 runs take every branch outcome the 8,192 differential cases take, checked with gcov -b over gcc -O0 `--coverage` builds of every linked source: 569 of 569 (`c64_gcov_branches` in the proof).
+
+## Flight build
+
+The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.

@@ -522,16 +522,24 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # Tables also packed into another module, so the routines they hold run there
 # without a module swap (docs/FLIGHT-STORE.md). The background self-check loop
 # leaves SMODECHK through TC POSTJUMP; the interbank tables ride with it,
-# and with the LM idle loop's own module (CM pins its idle loop), so an idle
-# pass loads nothing (that module's runs are the work clock's idle,
-# RK_MCT_IDLE: the interbank routines run there only from the idle loop).
+# and POSTJUMP alone (src/lm_interbank_dap.c, not the 8.6 K table)
+# with the LM idle loop's own module (CM pins its idle loop), so an idle
+# pass loads nothing and its reload after an interrupt is ~2.4 K (that
+# module's runs are the work clock's idle, RK_MCT_IDLE: POSTJUMP runs there
+# only from the idle loop).
 # The DOWNRUPT vector and RESUME ride with the down-telemetry tables
 # (src/lm_dntm_rupt.c, src/cm_dntm_rupt.c), so one module run takes a whole
 # DOWNRUPT, which runs inhibited, from the vector to the resumed Z; the
 # vector's wrapper record goes to that module (DOWNRUPT_HOST).
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_routines'],
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_postjump_hot_routines'],
                     'lm_downtelemetry': ['lm_dntm_rupt_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+# A hot table CO_LOCATE packs, and the full table whose keys it shares: the
+# host flight run lists it just before that table, with the full table's
+# module, sites and weight, so a call from the module carrying it runs there
+# without a swap, as on the C64 (rk_direct), and any other caller swaps in
+# the full table's module.
+CO_LOCATE_HOT = {'lm_interbank_postjump_hot_routines': 'lm_interbank_routines'}
 # The module that takes the DOWNRUPT vector (04040) from the lead-in wrapper:
 # the down-telemetry file's, when it links with the DOWNRUPT ends.
 DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),
@@ -581,7 +589,7 @@ def host_pins(m, packed):
 def pack_report(packs):
     """The report's "packs": each job-slot pack (PACKS) with its tables, the
     ride ones and whether it linked."""
-    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'],
+    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'] or [p['chunk'][0]],
                  ride=[t for t in p['basic'] if t in RIDE], ok=bool(p.get('ok'))) for p in packs]
 
 
@@ -593,7 +601,7 @@ def pack_tables(packs):
 def host_packs(m, packed):
     """The packs a host-only build models: the last full build's report when
     its packs are still PACKS', else PACKS as configured (only beside a
-    class-4 pin, as the store packs them)."""
+    class-4 pin, as the store packs them, but for the ALONE ones)."""
     want = sorted((n, sorted(t for t in ts if t in packed)) for n, ts, _ in PACKS[m] if any(t in packed for t in ts))
     try:
         packs = json.loads((ROOT / OUT / 'report.json').read_text())[m]['packs']
@@ -602,7 +610,7 @@ def host_packs(m, packed):
     except (OSError, KeyError, ValueError):
         pass
     if 4 not in host_pins(m, packed).values():
-        return {}
+        want = [(n, ts) for n, ts in want if n in ALONE]
     return pack_tables([dict(name=n, tables=ts, ride=[t for t in ts if t in RIDE], ok=True) for n, ts in want])
 
 
@@ -628,13 +636,31 @@ RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines'}
 # out: it takes lm_channel_io, which would put the pack's every step on the
 # transfer engine instead of rk_direct.
 T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines'], 'cm': []}
+# The CM entry DAP pass (T5RUPT) reaches 26 of cm_entry_dap_basic's 138
+# routines, spread over all of its chunks, so a pass loaded about 5 of them
+# (lane-g/cm-entry-profile-80342904.md): its hot subset in one module makes
+# it about 1. CM pins no class-4 home, so the pack links its own runtime
+# (ALONE).
+ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
-PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6)] for m in ('lm', 'cm')}
+PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
+             ('cm_entry', ENTRYPACK[m], 0x07F7)] for m in ('lm', 'cm')}
+# Packs that link the runtime themselves, as any job-slot module does, so
+# they are packed with no class-4 home; the others take it from the home
+# (pin_pair) and are packed only beside it.
+ALONE = {'cm_entry'}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
+# A hot subset's full table where it is not <file>_routines: a generated
+# file names its full table <file>_basic (tools/basic_compile.py).
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic'}
+
+
 def hot_full(t):
+    if t in HOT_FULL:
+        return HOT_FULL[t]
     return t[:-len('_hot_routines')] + '_routines' if t.endswith('_hot_routines') else None
 # The compact interpreter (Interpreter lane, platform/c64/interp_module.c):
 # module $0A01 in the job slot, its cold bodies module $0A02 at $D000 (slot
@@ -926,8 +952,11 @@ def main():
         for host, ts in CO_LOCATE[m].items():
             for t in ts:
                 also[t].append(host)
+        hot_of = {t: f for t, f in CO_LOCATE_HOT.items() if t in also and f in packed}
+        order = [x for f in order for x in [t for t, g in hot_of.items() if g == f] + [f]]
 
         def site_stem(t):
+            t = hot_of.get(t, t)
             if t in RIDE_SITES and RIDE_SITES[t] in tables:
                 return tables[RIDE_SITES[t]]
             return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
@@ -957,6 +986,7 @@ def main():
             first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
 
             def slot_of(t):
+                t = hot_of.get(t, t)
                 if t in pins:
                     return pins[t]
                 if t in packs:
@@ -966,6 +996,7 @@ def main():
                 return 0 if task_out else lane_slot(packed[t], m, owners, place)[1]
 
             def module_of_table(t):
+                t = hot_of.get(t, t)
                 if t in pins:
                     return 'pin-' + SLOT_NAME[pins[t]]
                 if t in packs:
@@ -978,14 +1009,15 @@ def main():
                 'operand set, its size, other modules holding the table, '
                 'fixed_data (0 boundary words, 1 self-check, 2 rope), work clock MCT per routine. */\n'
                 + ''.join(f'FLIGHT_TABLE({t}, {int(interpretive_table(t))}, '
-                          f'FLIGHT_IO_{io_kind(m, tables[t])}, '
+                          f'FLIGHT_IO_{io_kind(m, tables[f])}, '
                           f'"{module_of_table(t)}", '
                           f'{slot_of(t)}, '
                           f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
-                          f'"{" ".join(also[t])}", '
-                          f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(t)), 1) if t not in RESIDENT[m] else 0}, '
-                          f'{host_mct(m, t)}u)\n'
-                          for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables))
+                          f'"{" ".join(dict.fromkeys(also[t] + also[f]))}", '
+                          f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
+                          f'{host_mct(m, f)}u)\n'
+                          for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
+                          for f in [hot_of.get(t, t)]))
         write_host(host_pins(m, packed), host_packs(m, packed))
         if a.host_only:
             continue
@@ -1085,6 +1117,27 @@ def main():
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
+        def split_pack(pack, t):
+            """A stand-alone pack's one table over the job slot, as consecutive
+            chunks that each fit, each as long as fits (binary search on its
+            end, as split_greedy): the pass then loads one per chunk it
+            crosses. Ids follow the pack's."""
+            out, lo, n = [], 0, len(keys[t])
+            while lo < n:
+                good, bad = lo, n + 1
+                while bad - good > 1:
+                    mid = (good + bad) // 2
+                    r = link(dict(pack, basic=[], chunk=(t, lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
+                    if r['ok']:
+                        good = mid
+                    else:
+                        bad = mid
+                if good == lo:
+                    return [pack]  # one routine over the slot: the pack stays whole (and fails)
+                out.append(dict(pack, id=pack['id'] + len(out), basic=[], chunk=(t, lo, good),
+                                prg_name=f"{pack['prg_name']}-{len(out)}"))
+                lo = good
+            return out
         # The packs (excursion, T4RUPT) link once on their own first, so
         # pin_pair knows the names they link: those the class-4 home links
         # anyway stay global there (--undefined), and the packs take them
@@ -1106,12 +1159,15 @@ def main():
                                   if k >> 10 in banks})
             pack = dict(stem=stems[0], lane=lane, slot=0, id=ident, basic=pts,
                         interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
-                        sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name)
+                        sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name, alone=name in ALONE)
             (ROOT / OUT / m / f'{name}.prg.map').unlink(missing_ok=True)
-            link(dict(pack))
+            res = link(dict(pack))[2]
             exc_ask |= {n for n in map_symbols(ROOT / OUT / m / f'{name}.prg.map')
                         if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in pts}
-            packs.append(pack)
+            if name in ALONE and len(pts) == 1 and not res['ok'] and res.get('overflow'):
+                packs += split_pack(pack, pts[0])
+            else:
+                packs.append(pack)
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class
@@ -1234,8 +1290,11 @@ def main():
                     mod.update(slot=0, task_pinned_out=True)
         home = next((p for p in pinned if p['packed'] and p['slot'] == 'pinned_task'), None)
         if not home:
-            packs = []
+            packs = [p for p in packs if p.get('alone')]
         for pack in packs:
+            if not home:
+                modules.append(pack)
+                continue
             # Every function it links that the home holds as a global is the
             # home's (--defsym from the home's map), as for class 3.
             nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
@@ -1372,10 +1431,11 @@ def main():
         # tables' (hot_full), so the same routines run.
         for pack in packs:
             if pack.get('ok'):
-                for t in pack['basic']:
+                c = pack.get('chunk')
+                for t in pack['basic'] or [c[0]]:
                     if t in RIDE:
                         continue
-                    for k in keys[t]:
+                    for k in keys[t][c[1]:c[2]] if c else keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
         write_host(packed_pins(pinned), pack_tables(pack_report(packs)))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
