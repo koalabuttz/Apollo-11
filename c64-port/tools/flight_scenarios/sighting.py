@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Sighting helpers for the P52 flight scenarios (lm_p52.py; CM P52 can
-use them too): AGC word and CDU angle conversions, the rope listing's star
-catalog, and the stable member to navigation base matrix of the gimbal
-angles (inner Y, middle Z, outer X) and its inverse."""
+"""Sighting helpers for the flight scenarios (lm_p52.py, lm_p57.py; CM
+P52 can use them too): AGC word and CDU angle conversions, the rope
+listing's star catalog, the stable member to navigation base matrix of the
+gimbal angles (inner Y, middle Z, outer X) and its inverse, and the LM
+AOT's optic axis (OANB) and reticle (SURFSTAR run backward)."""
 import math
 import re
 
@@ -85,3 +86,37 @@ def rotation(u, v):
 def unit(v):
     n = math.sqrt(sum(x * x for x in v))
     return [x / n for x in v]
+
+
+def dot(a, b):
+    return sum(x * y for x, y in zip(a, b))
+
+
+def cross(a, b):
+    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+
+
+def optic_axis(az, el):
+    """OANB: the AOT optic axis and the X and Y mark plane vectors (NB)
+    for detent azimuth az and elevation el (radians)."""
+    oa = [math.sin(el), math.cos(el) * math.sin(az), math.cos(el) * math.cos(az)]
+    uyp = [0.0, math.cos(az), -math.sin(az)]
+    return oa, unit(cross(uyp, oa)), uyp
+
+
+def reticle(s_nb, az, el, az_ref):
+    """The cursor and spiral angles and the angle off the optic axis
+    (radians) of a star (NB unit vector) seen in the detent at az, el:
+    SURFSTAR run backward. OPTAXIS turns the mark planes by the detent's
+    apparent field rotation az_ref - az (az_ref: AOTAZ+1, the forward
+    detent)."""
+    oa, uxp, uyp = optic_axis(az, el)
+    c, s = math.cos(az_ref - az), math.sin(az_ref - az)
+    xp = [c * uxp[i] + s * uyp[i] for i in range(3)]
+    yp = [c * uyp[i] - s * uxp[i] for i in range(3)]
+    sep = math.acos(max(-1.0, min(1.0, dot(s_nb, oa))))
+    d = dot(s_nb, oa)
+    upp = unit([s_nb[i] - d * oa[i] for i in range(3)])
+    cursor = cross(oa, upp)             # the cursor line: cos(Y) yp - sin(Y) xp
+    yrot = math.atan2(-dot(cursor, xp), dot(cursor, yp)) % (2 * math.pi)
+    return yrot, (yrot + 12 * sep) % (2 * math.pi), sep
