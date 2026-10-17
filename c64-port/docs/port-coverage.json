@@ -991,7 +991,7 @@
               "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
               "vice-lanec-di-transfer": 55,
-              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-cm": 10,
               "vice-lanec-di-transfer-c64m": 111
             }
           },
@@ -7738,7 +7738,7 @@
               "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
               "vice-lanec-di-transfer": 55,
-              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-cm": 10,
               "vice-lanec-di-transfer-c64m": 111
             }
           },
