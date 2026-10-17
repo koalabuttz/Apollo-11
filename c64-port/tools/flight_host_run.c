@@ -79,6 +79,8 @@
 #include "flight_gojam.h"
 /* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
 #include "flight_downlink.h"
+/* FLIGHT_RR (tools/flight_radar.h): the rendezvous radar and attitude model. */
+#include "flight_radar.h"
 #if RK_LM
 #define MISSION 0u
 #define FETCH LM_INTERPRETER_FETCH
@@ -621,6 +623,13 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
 static const char *snap_path;
+/* FLIGHT_WATCH=ADDR[,ADDR...] (octal): at each native sample point, print
+ * the words that changed since the last one (a diagnostic, e.g. MODREG,
+ * the verb and noun, FAILREG). */
+static void watch(const agc_word *w){static agc_word last[64];static unsigned addr[64],n;static int parsed;unsigned i;
+ if(!parsed){const char *t=getenv("FLIGHT_WATCH");char *e;parsed=1;
+  while(t&&*t&&n<64u){addr[n]=(unsigned)strtoul(t,&e,8);if(e==t||addr[n]>=2048u)break;last[n]=(agc_word)~0u;++n;t=*e==','?e+1:e;}}
+ for(i=0;i<n;++i)if(w[addr[i]]!=last[i]){printf("watch %lu cs: %04o %05o\n",now(w),addr[i],(unsigned)w[addr[i]]);last[i]=w[addr[i]];}}
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
@@ -644,6 +653,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  pokes_sort();
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
+ if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
+ if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
 #endif
@@ -726,6 +737,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
+   {int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(r)pending|=RK_RUPT_BIT(RK_RUPT_RADAR);}
+   watch(s.words);
    aero_due(now(s.words),&aero_nat,s.words);
    chan_due(now(s.words),&cnat,&hw,&io);
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
