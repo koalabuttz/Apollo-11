@@ -320,7 +320,7 @@ SHARED_OPS = ('ca caf cs csf ad adf maskf ts xch lxch ads dxch ccs tc dcaf bzf b
 # RK_IRQ_COUNT), not copies of their own. Compiled routines reach the
 # channels in rk_hardware by name (tools/interp_compile.py AGC_CHANNELS_HW).
 CHANNELS = {m: ['-DAGC_CHANNELS_HW=rk_hardware',
-                '-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdc,--defsym=ov2_irq_count=0x6fbc']
+                '-Wl,--defsym=rk_hardware=0x6fbe,--defsym=rk_flight=0x6fdd,--defsym=ov2_irq_count=0x6fbc']
             for m in ('lm', 'cm')}
 
 
@@ -698,15 +698,17 @@ def hot_full(t):
 # The resolver sends the interpreter's fixed entry points (logical Z, include/
 # interp_runtime_tables.h) to $0A01; a table or the resident that holds one
 # of them keeps it. CHANG2 is left out: the Executive's job switch, where the
-# interpreter hands back.
+# interpreter hands back. RTB_RETURN is BHIZ +1 (TCF DANZIG) in bank 01,
+# as (FB, Z): where an RTB routine's return lands after a basic table's
+# SWRETURN.
 INTERP_MODULE = 0x0A01
 INTERP_POINTS = {
     'lm': {'NEWOPS': 0o6070, 'DANZIG': 0o6061, 'NOIBNKSW': 0o6063, 'DIRADRES': 0o6106, 'DODLOAD': 0o6460,
            'DODLOADX': 0o6144, 'DOVLOAD': 0o6463, 'DOVLOADX': 0o6466, 'B15BITADR': 0o6252, 'GOTO': 0o6646,
-           'SWRETURN': 0o4631, 'INTPRET': 0o6037},
+           'SWRETURN': 0o4631, 'INTPRET': 0o6037, 'RTB_RETURN': (0o2000, 0o2453)},
     'cm': {'NEWOPS': 0o6037, 'DANZIG': 0o6030, 'NOIBNKSW': 0o6032, 'DIRADRES': 0o6055, 'DODLOAD': 0o6427,
            'DODLOADX': 0o6113, 'DOVLOAD': 0o6432, 'DOVLOADX': 0o6435, 'B15BITADR': 0o6221, 'GOTO': 0o6615,
-           'SWRETURN': 0o4675, 'INTPRET': 0o6006}}
+           'SWRETURN': 0o4675, 'INTPRET': 0o6006, 'RTB_RETURN': (0o2000, 0o2500)}}
 
 
 # Files whose step machines stop at NEWOPS under -DAGC_FLIGHT_INTERPRETER
@@ -1571,7 +1573,7 @@ def main():
                 if ('b', k) in resident_keys}
         interp_records, interp_kept = [], {}
         for name, z in INTERP_POINTS[m].items():
-            bank = 0o6000 if z >= 0o6000 else 0o4000
+            bank, z = z if isinstance(z, tuple) else (0o6000 if z >= 0o6000 else 0o4000, z)
             physical = (bank >> 10) * 1024 + (z & 0o1777)
             if not interp_prgs or (bank, z) in taken or physical in held:
                 interp_kept[name] = 'resident' if physical in held else 'table' if (bank, z) in taken else 'unlinked'

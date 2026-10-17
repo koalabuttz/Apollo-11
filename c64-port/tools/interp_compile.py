@@ -2064,9 +2064,11 @@ class Compiler:
             # through include/agc_fast_redirect.h, so an operand in the EB 6
             # window passes a one-byte offset to a noinline afw_* helper and a
             # plain cell its address to afo_* (Lane F's DAP spill pattern);
-            # -DAFR_GENERIC builds it on agc_image_ops alone.
-            if self.spec.get('basic') != 'full' or self.spec.get('basic_split') or self.spec.get('basic_parts'):
-                raise CompileError("'fast_window' needs 'basic': 'full' in one function")
+            # -DAFR_GENERIC builds it on agc_image_ops alone. Every basic
+            # routine's entry binds the image before it calls its part
+            # function ('basic_parts'), so parts need no bind of their own.
+            if self.spec.get('basic') != 'full' or self.spec.get('basic_split'):
+                raise CompileError("'fast_window' needs 'basic': 'full'")
             c.append('#define AFR_EBN %d' % self.spec['ebank'])
             c.append('#include "agc_fast_redirect.h"')
             c.append('#define W AFR_S(s)->words')

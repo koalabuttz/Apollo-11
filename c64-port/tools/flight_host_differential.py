@@ -14,7 +14,7 @@ yaAGC under that schedule.
 
   flight_host_differential.py [--host-cc CC] [--skip-index]
 """
-import argparse, json, os, re, resource, subprocess, sys
+import argparse, json, os, re, resource, subprocess, sys, threading
 from pathlib import Path
 
 # lm-p63-nassp's host run overflows the default 8 MB stack: raise the soft
@@ -172,6 +172,13 @@ SCALED = [(m, cs, keys, env, sched, tag)
           for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'), ('W', 'work'))]
 
 
+def _tmp(path):
+    """A per-process name next to path. Several c64 jobs in one shard build
+    these files in parallel; each writes its own temp file and renames it in
+    place, so a link never reads another job's half-written object."""
+    return path.with_name(f'{path.name}.{os.getpid()}.{threading.get_ident()}.tmp')
+
+
 def frozen_engine(cc):
     """build/agc_engine_hardware_dv.c with AgcFrozenClock: when set, the
     scaler (and with it every counter timer and the cycles they take) and
@@ -207,8 +214,12 @@ def frozen_engine(cc):
     src = src.replace(head, head + 'int AgcFrozenClock;\n')
     OUT.mkdir(parents=True, exist_ok=True)
     c, o = OUT / 'agc_engine_scaled.c', OUT / 'agc_engine_scaled.o'
-    c.write_text(src)
-    subprocess.run([cc, '-O2', f'-I{YAAGC}', '-c', str(c), '-o', str(o)], cwd=ROOT, check=True)
+    tc = _tmp(c)
+    tc.write_text(src)
+    os.replace(tc, c)
+    to = _tmp(o)
+    subprocess.run([cc, '-O2', f'-I{YAAGC}', '-c', str(c), '-o', str(to)], cwd=ROOT, check=True)
+    os.replace(to, o)
     return o
 
 
@@ -218,10 +229,12 @@ def build(cc, m, engine):
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
-                    '-c', 'tools/flight_host_run.c', '-o', str(obj)], cwd=ROOT, check=True)
+                    '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
+    os.replace(_tmp(obj), obj)
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, str(engine), str(YAAGC / 'agc_engine_init.o'),
-                    str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
+                    str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(_tmp(exe))], cwd=ROOT, check=True)
+    os.replace(_tmp(exe), exe)
     return exe
 
 

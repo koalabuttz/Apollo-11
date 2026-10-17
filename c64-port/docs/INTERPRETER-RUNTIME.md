@@ -114,6 +114,12 @@ module, so each one enters from the AGC's own state there, as yaAGC has it:
 
 - NEWOPS, DANZIG, NOIBNKSW, GOTO and INTPRET need nothing beyond the
   interpretive registers.
+- RTB's return, BHIZ +1 (01,2453 LM, 01,2500 CM; its word is TCF DANZIG),
+  is the one entry in a switched bank, so the module takes it only with FB
+  at bank 01. An RTB routine's TC Q goes to SWRETURN, and a basic table's
+  SWRETURN leaves Z there (BUF2's saved return). Before this entry, the
+  LM P63 window from 90000 cs stopped there on the C64 once P20-P25 was in
+  the store.
 - DODLOAD, DOVLOAD, DODLOAD* and DOVLOAD* set CYR themselves.
 - DIRADRES takes the INDJUMP index from CYR (20000 + index, as DODLOAD,
   DOVLOAD or ADDRESS left it), and 15BITADR takes the MISCJUMP index and
