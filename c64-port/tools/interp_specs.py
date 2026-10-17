@@ -3321,6 +3321,9 @@ SPECS = {
                       'POODOO': None, 'THROTTLE': 'auto', 'WAITLIST': 'auto', 'NOVAC': 'auto', 'FINDVAC': 'auto',
                       'BANKJUMP': None, 'RESUME': None, 'SHORTMP': 'auto', 'USPRCADR': 'auto', 'DMPNSUB': 'auto', 'POWRSERS': 'auto', 'TWIDDLE': 'auto', 'VARDELAY': 'auto', 'LOW7+2K': 'auto'},
         'noreturn': ['POSTJUMP'],
+        # The CADR words after TC USPRCADR (ROOTPSRS's and ROOTLOOP's ABS
+        # and DDV/BDDV): DANZIG with EXIT pending returns there.
+        'usprcadr_exits': True,
         'resume_keys': True,
         'resume_orphans': True,
         # A resume LOC starts in the MODE, PUSHLOC and index registers the
@@ -3363,8 +3366,12 @@ SPECS = {
                    # ROOTPSRS's returns run in IGNALG to APPRQUAD (WHATALM).
                    'TTF/8CL+26': {'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']},
                    'TTF/8CL+28': {'0166': ['vac+0']}, 'QUADGUID': {'0166': ['vac+0']},
-                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+19', 'DERCLOOP+3', 'ROOTLOOP+6',
-                                                 'ROOTLOOP+13', 'ROOTLOOP+15', 'ROOTLOOP+20')}},
+                   # (ROOTPSRS+18, ROOTLOOP+14 and ROOTLOOP+19: the CADR words
+                   # after TC USPRCADR, where ABS's or DDV's DANZIG runs the
+                   # EXIT USPRCADR left in EDOP.)
+                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+18', 'ROOTPSRS+19', 'DERCLOOP+3',
+                                                 'ROOTLOOP+6', 'ROOTLOOP+13', 'ROOTLOOP+14', 'ROOTLOOP+15',
+                                                 'ROOTLOOP+19', 'ROOTLOOP+20')}},
         # VHORCOMP's BANKCALL of DISPEXIT +3 ends the job (ENDOFJOB).
         'returns': {'DISPEXIT +3': 0},
         # ROOTPSRS returns through INDEX RETROOT; TCF 2 (two words past
@@ -3417,7 +3424,7 @@ SPECS = {
         # READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 (STARTP64,
         # RESETRPT) on the shared channel model (agc_channel_ops.h).
         'channel_inputs': True,
-        'c64_flags': ['-DIRC_INPUTS', '-DIRC_CHANNELS', '-DIRC_LM_HW'],
+        'c64_flags': ['-DIRC_INPUTS', '-DIRC_CHANNELS', '-DIRC_LM_HW', '-DAGC_TRANSFER_DANZIG_MARKER'],
         'channels': 'all',
         'io_channels': 'auto',
         'image_w': True,

@@ -4,33 +4,33 @@
   "release": "evidence-lm-llge",
   "files": {
     "lm-llge-c64-cover.json": {
-      "sha256": "f5d803a739226d3282d5ff821d1bd764b1769aecfbe30d3447bc51d589fbdce5",
-      "bytes": 21412,
+      "sha256": "6e69fa1fd650b1d0f36ed2bccd3572d02871da88b19460fdfa761b37ad1fc652",
+      "bytes": 19728,
       "store": "tree"
     },
     "lm-llge-differential.log": {
-      "sha256": "71e10a3880298f95274c348f36f6672033d40392002e4da3ebf4f771e9e0608a",
-      "bytes": 13859,
+      "sha256": "0f8aac7e7da5157ed3fd926ce985e823637326b955addc71ee405735c7fc7431",
+      "bytes": 14119,
       "store": "tree"
     },
     "lm-llge-host.log": {
-      "sha256": "4b8d7e485b3e8d7d19a50ff49af6089a6c4bdd573a21ca5d7e161e38f47d3ecc",
+      "sha256": "6cc08c008c7b17d2e324803b762bb8849aef9968a5e1cfadfd451b21b80af740",
       "bytes": 95,
       "store": "tree"
     },
     "lm-llge-proof.json": {
-      "sha256": "496746cac5626c73b2e3b73b60feae33ae414a2c9093d0d8b0748583d48f2fb7",
-      "bytes": 31959,
+      "sha256": "af6b918ba8aeab5d0069ae76fea0d479f4f7046d08e66850f06e995ffe4af226",
+      "bytes": 32694,
       "store": "tree"
     },
     "lm-llge-source-map.json": {
-      "sha256": "361589e1fba9ae2bed8399139bd0ebde42f2e16c128f42de09d35337d6a0bb52",
+      "sha256": "51054b05630949e97d7b9bbeb7a7213c4b6fd7f0c6598f528509c67cfcf0f28c",
       "bytes": 136597,
       "store": "tree"
     },
     "lm-llge-vice.log": {
-      "sha256": "1cb4e7fd5b49fc967a6e55a70b673b8db278f34dfda44f334d3a37daff69c385",
-      "bytes": 6405,
+      "sha256": "6aaa5449e47d06fce039b5e57229e57d5e60b66546a07503b4f59bbb25b60075",
+      "bytes": 6962,
       "store": "tree"
     }
   }
