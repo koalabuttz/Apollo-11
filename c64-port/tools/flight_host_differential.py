@@ -89,10 +89,30 @@ P52 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '13500:tools/flight_scenarios/cm-p52-star2.load'}
 P52_KEYS = ('@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E'
             '@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E')
+# lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
+# load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
+# Base facing west 13 degrees left, the landing REFSMMAT, the platform
+# drifted from it) and the CDUs as the moon turns the LM at each mark.
+# V37E57E, proceed on V04N06 (option 3, REFSMMAT), technique 2 (two
+# stars: V22E2E on V05N06), proceed; the stored-attitude initial pass;
+# for each star R59's V01N70 (star code 12 Rigel, then 03 Navi: V21E),
+# proceed on V06N79 (R59 finds detents 6 and 4), on V01N71 and on V54,
+# X MARK (x: channel 16 bit 3, KEYRUPT2), and the reticle's cursor and
+# spiral angles loaded on the flashing V06N79 (V21E, V22E), proceed;
+# proceed on N05 (0.00) and on N93 (-0.021, +0.012, -0.019 degrees: the
+# drift taken out); ENTER on V50N25 00014, V34 on N89 (the crew rejected
+# the landing site update) and P00.
+P57 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,'
+                      '29900:tools/flight_scenarios/lm-p57-star2.load'}
+P57_KEYS = ('@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000'
+            'V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21'
+            'E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
+          ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
