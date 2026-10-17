@@ -197,7 +197,8 @@ class Mission:
         self.return_words = [int(k, 8) for k in spec.get('return_words', [])]
         # Native entries other files reach from a left-hand RTB: with EDOP
         # set (the pair's right order) the run ends at their TC DANZIG.
-        self.native_entries = set(self.cp.label_phys(k) for k in spec.get('native_entries', {}))
+        self.native_entries = set(self.cp.label_phys(k) for k, calls in spec.get('native_entries', {}).items()
+                                  if m in calls)
         self.danzig = L.labels['DANZIG']
         self.resume_states = {self.point_of(k): v for k, v in spec.get('resume_states', {}).items()}
         # flow_range_states: (FROM, TO, states) for the flowed cases

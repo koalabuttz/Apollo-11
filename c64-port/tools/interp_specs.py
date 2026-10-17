@@ -591,13 +591,22 @@ SPECS = {
         # Comanche's TC SHORTMP (LOG, SXTLOGIC) runs natively in place.
         'native_ranges': {'SXTLOGIC': [5, 'geometry_rtb']},
         'native_calls': {'SHORTMP': {'cm': 'geometry_shortmp(s)'}},
+        # The C64 flight store leaves this file's interpretive code to the
+        # interpreter, whose RTB SXTLOGIC lands on the basic word itself: a
+        # routine of its own, run by geometry_rtb.
+        'native_entries': {'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'}},
         # CALCSXA and SXTANG keep their caller's return CADR in 28D (ITA 28D)
         # and leave through GOTO 28D: a CADR outside the file. X1 and X2
         # name what the next indexed operand reads (SXTNB's 5,1 and 3,1).
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
+        # SXTLOGIC as the native entry: its one caller is SXTNB's RTB PUSH,
+        # so DANZIG finds LOC at the RTB's operand word (23,2004), BANKSET
+        # bank 23 and PUSH (0171) in EDOP.
         'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              SXTLOGIC={'0164': [0o2004], '0165': [0o46000 | e for e in range(8)], '0115': [0],
+                                        '0023': [0o171]},
                               # EARROT1-OVERADAY: OVFIND as the interpreter
                               # sets it (TS of an overflowed A: +-1), +0 in
                               # three cases of five. EARROT2's BOVB counts

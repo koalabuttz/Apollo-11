@@ -502,6 +502,15 @@ static enum exec_status r46026(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 30) & 1
+/* 23,2027 SXTLOGIC (native entry SXTLOGIC) */
+static enum exec_status r46027(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
+ if(geometry_rtb(s,io)!=RTB_OK)return EXEC_OUT_OF_SCOPE;
+ if(W[023])return EXEC_OK; /* TC DANZIG, a right order in EDOP */
+ (void)next(s);return EXEC_OK; /* SXTLOGIC, DANZIG */
+}
+#endif
+#if (CM_GEOMETRY_KEEP0 >> 31) & 1
 /* 23,2034 CALCSXA (entry CALCSXA) */
 static enum exec_status r46034(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -515,7 +524,7 @@ static enum exec_status r46034(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2037 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 31) & 1
+#if (CM_GEOMETRY_KEEP0 >> 32) & 1
 /* 23,2037  (CHANG2 resume) */
 static enum exec_status r46037(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -527,7 +536,7 @@ static enum exec_status r46037(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 32) & 1
+#if (CM_GEOMETRY_KEEP0 >> 33) & 1
 /* 23,2041  (CALL return) */
 static enum exec_status r46041(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -541,7 +550,7 @@ static enum exec_status r46041(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2043 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 33) & 1
+#if (CM_GEOMETRY_KEEP0 >> 34) & 1
 /* 23,2043  (CHANG2 resume) */
 static enum exec_status r46043(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -553,7 +562,7 @@ static enum exec_status r46043(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2045 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 34) & 1
+#if (CM_GEOMETRY_KEEP0 >> 35) & 1
 /* 23,2045  (CHANG2 resume) */
 static enum exec_status r46045(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -565,7 +574,7 @@ static enum exec_status r46045(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2047 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 35) & 1
+#if (CM_GEOMETRY_KEEP0 >> 36) & 1
 /* 23,2047  (CHANG2 resume) */
 static enum exec_status r46047(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -577,7 +586,7 @@ static enum exec_status r46047(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2051 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 36) & 1
+#if (CM_GEOMETRY_KEEP0 >> 37) & 1
 /* 23,2051  (CHANG2 resume) */
 static enum exec_status r46051(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -589,7 +598,7 @@ static enum exec_status r46051(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 37) & 1
+#if (CM_GEOMETRY_KEEP0 >> 38) & 1
 /* 23,2053 SXTANG (entry SXTANG) */
 static enum exec_status r46053(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -604,7 +613,7 @@ static enum exec_status r46053(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2056 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 38) & 1
+#if (CM_GEOMETRY_KEEP0 >> 39) & 1
 /* 23,2056  (CHANG2 resume) */
 static enum exec_status r46056(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -618,7 +627,7 @@ static enum exec_status r46056(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2061 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 39) & 1
+#if (CM_GEOMETRY_KEEP0 >> 40) & 1
 /* 23,2061  (CHANG2 resume) */
 static enum exec_status r46061(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -630,7 +639,7 @@ static enum exec_status r46061(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2062 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 40) & 1
+#if (CM_GEOMETRY_KEEP0 >> 41) & 1
 /* 23,2062  (CHANG2 resume) */
 static enum exec_status r46062(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -642,7 +651,7 @@ static enum exec_status r46062(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2064 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 41) & 1
+#if (CM_GEOMETRY_KEEP0 >> 42) & 1
 /* 23,2064  (CHANG2 resume) */
 static enum exec_status r46064(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -656,7 +665,7 @@ static enum exec_status r46064(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2066 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 42) & 1
+#if (CM_GEOMETRY_KEEP0 >> 43) & 1
 /* 23,2066  (CHANG2 resume) */
 static enum exec_status r46066(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -668,7 +677,7 @@ static enum exec_status r46066(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2070 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 43) & 1
+#if (CM_GEOMETRY_KEEP0 >> 44) & 1
 /* 23,2070  (CHANG2 resume) */
 static enum exec_status r46070(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -682,7 +691,7 @@ static enum exec_status r46070(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2072 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 44) & 1
+#if (CM_GEOMETRY_KEEP0 >> 45) & 1
 /* 23,2072  (CHANG2 resume) */
 static enum exec_status r46072(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -693,7 +702,7 @@ static enum exec_status r46072(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2073 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 45) & 1
+#if (CM_GEOMETRY_KEEP0 >> 46) & 1
 /* 23,2073  (CHANG2 resume) */
 static enum exec_status r46073(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -709,7 +718,7 @@ static enum exec_status r46073(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2076 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 46) & 1
+#if (CM_GEOMETRY_KEEP0 >> 47) & 1
 /* 23,2076 SXTANG1 (CHANG2 resume) */
 static enum exec_status r46076(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -723,7 +732,7 @@ static enum exec_status r46076(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2101 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 47) & 1
+#if (CM_GEOMETRY_KEEP0 >> 48) & 1
 /* 23,2101  (CHANG2 resume) */
 static enum exec_status r46101(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -739,7 +748,7 @@ static enum exec_status r46101(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2103 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 48) & 1
+#if (CM_GEOMETRY_KEEP0 >> 49) & 1
 /* 23,2103  (BOV target) */
 static enum exec_status r46103(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -757,7 +766,7 @@ static enum exec_status r46103(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2105 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 49) & 1
+#if (CM_GEOMETRY_KEEP0 >> 50) & 1
 /* 23,2105  (CHANG2 resume) */
 static enum exec_status r46105(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -768,7 +777,7 @@ static enum exec_status r46105(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2106 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 50) & 1
+#if (CM_GEOMETRY_KEEP0 >> 51) & 1
 /* 23,2106  (CHANG2 resume) */
 static enum exec_status r46106(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -782,7 +791,7 @@ static enum exec_status r46106(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2110 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 51) & 1
+#if (CM_GEOMETRY_KEEP0 >> 52) & 1
 /* 23,2110  (CHANG2 resume) */
 static enum exec_status r46110(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -794,7 +803,7 @@ static enum exec_status r46110(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2112 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 52) & 1
+#if (CM_GEOMETRY_KEEP0 >> 53) & 1
 /* 23,2112  (CHANG2 resume) */
 static enum exec_status r46112(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -806,7 +815,7 @@ static enum exec_status r46112(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2114 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 53) & 1
+#if (CM_GEOMETRY_KEEP0 >> 54) & 1
 /* 23,2114  (CHANG2 resume) */
 static enum exec_status r46114(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -818,7 +827,7 @@ static enum exec_status r46114(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 54) & 1
+#if (CM_GEOMETRY_KEEP0 >> 55) & 1
 /* 23,2116  (STCALL return) */
 static enum exec_status r46116(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -831,7 +840,7 @@ static enum exec_status r46116(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2120 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 55) & 1
+#if (CM_GEOMETRY_KEEP0 >> 56) & 1
 /* 23,2120  (CHANG2 resume) */
 static enum exec_status r46120(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -843,7 +852,7 @@ static enum exec_status r46120(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2122 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 56) & 1
+#if (CM_GEOMETRY_KEEP0 >> 57) & 1
 /* 23,2122  (CHANG2 resume) */
 static enum exec_status r46122(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -859,7 +868,7 @@ static enum exec_status r46122(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2124 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 57) & 1
+#if (CM_GEOMETRY_KEEP0 >> 58) & 1
 /* 23,2124  (BOV target) */
 static enum exec_status r46124(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -873,7 +882,7 @@ static enum exec_status r46124(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2126 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 58) & 1
+#if (CM_GEOMETRY_KEEP0 >> 59) & 1
 /* 23,2126  (CHANG2 resume) */
 static enum exec_status r46126(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -885,7 +894,7 @@ static enum exec_status r46126(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2127 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 59) & 1
+#if (CM_GEOMETRY_KEEP1 >> 0) & 1
 /* 23,2127  (CHANG2 resume) */
 static enum exec_status r46127(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -903,7 +912,7 @@ static enum exec_status r46127(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2131 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 0) & 1
+#if (CM_GEOMETRY_KEEP1 >> 1) & 1
 /* 23,2131  (CHANG2 resume) */
 static enum exec_status r46131(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -921,7 +930,7 @@ static enum exec_status r46131(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2134 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 1) & 1
+#if (CM_GEOMETRY_KEEP1 >> 2) & 1
 /* 23,2134  (CHANG2 resume) */
 static enum exec_status r46134(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -934,7 +943,7 @@ static enum exec_status r46134(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2136 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 2) & 1
+#if (CM_GEOMETRY_KEEP1 >> 3) & 1
 /* 23,2136  (CHANG2 resume) */
 static enum exec_status r46136(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -945,7 +954,7 @@ static enum exec_status r46136(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2137 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 3) & 1
+#if (CM_GEOMETRY_KEEP1 >> 4) & 1
 /* 23,2137  (CHANG2 resume) */
 static enum exec_status r46137(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -956,7 +965,7 @@ static enum exec_status r46137(apollo_overlay_state *s,p66_bias_io *io){
  (void)ai_ca(s,0165);(void)ai_ts(s,4);ai_caf(s,000034);(void)ai_ts(s,0117);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 4) & 1
+#if (CM_GEOMETRY_KEEP1 >> 5) & 1
 /* 23,2142 SXTALARM (BMN target) */
 static enum exec_status r46142(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -967,7 +976,7 @@ static enum exec_status r46142(apollo_overlay_state *s,p66_bias_io *io){
  (void)ai_ca(s,0165);(void)ai_ts(s,4);ai_caf(s,000034);(void)ai_ts(s,0117);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 5) & 1
+#if (CM_GEOMETRY_KEEP1 >> 6) & 1
 /* 23,2145 ZNB=S1 (BOV target) */
 static enum exec_status r46145(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -979,7 +988,7 @@ static enum exec_status r46145(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2147 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 6) & 1
+#if (CM_GEOMETRY_KEEP1 >> 7) & 1
 /* 23,2147  (CHANG2 resume) */
 static enum exec_status r46147(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -991,7 +1000,7 @@ static enum exec_status r46147(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2151 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 7) & 1
+#if (CM_GEOMETRY_KEEP1 >> 8) & 1
 /* 23,2151  (CHANG2 resume) */
 static enum exec_status r46151(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1002,7 +1011,7 @@ static enum exec_status r46151(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2152 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 8) & 1
+#if (CM_GEOMETRY_KEEP1 >> 9) & 1
 /* 23,2152  (CHANG2 resume) */
 static enum exec_status r46152(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1013,7 +1022,7 @@ static enum exec_status r46152(apollo_overlay_state *s,p66_bias_io *io){
  (void)ai_ca(s,0165);(void)ai_ts(s,4);ai_caf(s,000034);(void)ai_ts(s,0117);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 9) & 1
+#if (CM_GEOMETRY_KEEP1 >> 10) & 1
 /* 23,2155 LOG (entry LOG) */
 static enum exec_status r46155(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1027,7 +1036,7 @@ static enum exec_status r46155(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2160 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 10) & 1
+#if (CM_GEOMETRY_KEEP1 >> 11) & 1
 /* 23,2160  (CHANG2 resume) */
 static enum exec_status r46160(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1037,7 +1046,7 @@ static enum exec_status r46160(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 11) & 1
+#if (CM_GEOMETRY_KEEP1 >> 12) & 1
 /* 23,2161  (after EXIT) */
 static enum exec_status r46161(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1046,7 +1055,7 @@ static enum exec_status r46161(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=07171;return EXEC_OK; /* POLY */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 12) & 1
+#if (CM_GEOMETRY_KEEP1 >> 13) & 1
 /* 23,2173  (return from POLY) */
 static enum exec_status r46173(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1083,7 +1092,7 @@ static enum exec_status r46173(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 13) & 1
+#if (CM_GEOMETRY_KEEP1 >> 14) & 1
 /* 23,2210  (after TC INTPRET) */
 static enum exec_status r46210(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1093,7 +1102,7 @@ static enum exec_status r46210(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 14) & 1
+#if (CM_GEOMETRY_KEEP1 >> 15) & 1
 /* 23,2215 EARROT1 (entry EARROT1) */
 static enum exec_status r46215(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1107,7 +1116,7 @@ static enum exec_status r46215(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2220 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 15) & 1
+#if (CM_GEOMETRY_KEEP1 >> 16) & 1
 /* 23,2220  (CHANG2 resume) */
 static enum exec_status r46220(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1118,7 +1127,7 @@ static enum exec_status r46220(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2221 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 16) & 1
+#if (CM_GEOMETRY_KEEP1 >> 17) & 1
 /* 23,2221  (CHANG2 resume) */
 static enum exec_status r46221(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1130,7 +1139,7 @@ static enum exec_status r46221(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2223 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 17) & 1
+#if (CM_GEOMETRY_KEEP1 >> 18) & 1
 /* 23,2223  (CHANG2 resume) */
 static enum exec_status r46223(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1142,7 +1151,7 @@ static enum exec_status r46223(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2225 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 18) & 1
+#if (CM_GEOMETRY_KEEP1 >> 19) & 1
 /* 23,2225 EARROT2 (entry EARROT2) */
 static enum exec_status r46225(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1161,7 +1170,7 @@ static enum exec_status r46225(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2230 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 19) & 1
+#if (CM_GEOMETRY_KEEP1 >> 20) & 1
 /* 23,2230  (CHANG2 resume) */
 static enum exec_status r46230(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1179,7 +1188,7 @@ static enum exec_status r46230(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2232 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 20) & 1
+#if (CM_GEOMETRY_KEEP1 >> 21) & 1
 /* 23,2232  (CHANG2 resume) */
 static enum exec_status r46232(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1193,7 +1202,7 @@ static enum exec_status r46232(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2234 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 21) & 1
+#if (CM_GEOMETRY_KEEP1 >> 22) & 1
 /* 23,2234  (CHANG2 resume) */
 static enum exec_status r46234(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1207,7 +1216,7 @@ static enum exec_status r46234(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2236 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 22) & 1
+#if (CM_GEOMETRY_KEEP1 >> 23) & 1
 /* 23,2236  (CHANG2 resume) */
 static enum exec_status r46236(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1221,7 +1230,7 @@ static enum exec_status r46236(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2240 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 23) & 1
+#if (CM_GEOMETRY_KEEP1 >> 24) & 1
 /* 23,2240  (CHANG2 resume) */
 static enum exec_status r46240(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1235,7 +1244,7 @@ static enum exec_status r46240(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2241 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 24) & 1
+#if (CM_GEOMETRY_KEEP1 >> 25) & 1
 /* 23,2241  (CHANG2 resume) */
 static enum exec_status r46241(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1249,7 +1258,7 @@ static enum exec_status r46241(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2243 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 25) & 1
+#if (CM_GEOMETRY_KEEP1 >> 26) & 1
 /* 23,2243  (CHANG2 resume) */
 static enum exec_status r46243(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1260,7 +1269,7 @@ static enum exec_status r46243(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2244 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 26) & 1
+#if (CM_GEOMETRY_KEEP1 >> 27) & 1
 /* 23,2244  (CHANG2 resume) */
 static enum exec_status r46244(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1270,7 +1279,7 @@ static enum exec_status r46244(apollo_overlay_state *s,p66_bias_io *io){
  cmi_unary(s,003274);cmi_rvq(s);return EXEC_OK;
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 27) & 1
+#if (CM_GEOMETRY_KEEP1 >> 28) & 1
 /* 23,2245 OVERADAY (BOV target) */
 static enum exec_status r46245(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1284,7 +1293,7 @@ static enum exec_status r46245(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2250 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 28) & 1
+#if (CM_GEOMETRY_KEEP1 >> 29) & 1
 /* 23,2250  (CHANG2 resume) */
 static enum exec_status r46250(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1296,7 +1305,7 @@ static enum exec_status r46250(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2252 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 29) & 1
+#if (CM_GEOMETRY_KEEP1 >> 30) & 1
 /* 23,2252  (CHANG2 resume) */
 static enum exec_status r46252(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1307,7 +1316,7 @@ static enum exec_status r46252(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 23,2253 */
 }
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 30) & 1
+#if (CM_GEOMETRY_KEEP1 >> 31) & 1
 /* 23,2253  (CHANG2 resume) */
 static enum exec_status r46253(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,046000u))return EXEC_OUT_OF_SCOPE;
@@ -1418,186 +1427,189 @@ WRAP(r46025)
 WRAP(r46026)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 30) & 1
-WRAP(r46034)
+WRAP(r46027)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 31) & 1
-WRAP(r46037)
+WRAP(r46034)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 32) & 1
-WRAP(r46041)
+WRAP(r46037)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 33) & 1
-WRAP(r46043)
+WRAP(r46041)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 34) & 1
-WRAP(r46045)
+WRAP(r46043)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 35) & 1
-WRAP(r46047)
+WRAP(r46045)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 36) & 1
-WRAP(r46051)
+WRAP(r46047)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 37) & 1
-WRAP(r46053)
+WRAP(r46051)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 38) & 1
-WRAP(r46056)
+WRAP(r46053)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 39) & 1
-WRAP(r46061)
+WRAP(r46056)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 40) & 1
-WRAP(r46062)
+WRAP(r46061)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 41) & 1
-WRAP(r46064)
+WRAP(r46062)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 42) & 1
-WRAP(r46066)
+WRAP(r46064)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 43) & 1
-WRAP(r46070)
+WRAP(r46066)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 44) & 1
-WRAP(r46072)
+WRAP(r46070)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 45) & 1
-WRAP(r46073)
+WRAP(r46072)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 46) & 1
-WRAP(r46076)
+WRAP(r46073)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 47) & 1
-WRAP(r46101)
+WRAP(r46076)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 48) & 1
-WRAP(r46103)
+WRAP(r46101)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 49) & 1
-WRAP(r46105)
+WRAP(r46103)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 50) & 1
-WRAP(r46106)
+WRAP(r46105)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 51) & 1
-WRAP(r46110)
+WRAP(r46106)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 52) & 1
-WRAP(r46112)
+WRAP(r46110)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 53) & 1
-WRAP(r46114)
+WRAP(r46112)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 54) & 1
-WRAP(r46116)
+WRAP(r46114)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 55) & 1
-WRAP(r46120)
+WRAP(r46116)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 56) & 1
-WRAP(r46122)
+WRAP(r46120)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 57) & 1
-WRAP(r46124)
+WRAP(r46122)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 58) & 1
-WRAP(r46126)
+WRAP(r46124)
 #endif
 #if (CM_GEOMETRY_KEEP0 >> 59) & 1
-WRAP(r46127)
+WRAP(r46126)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 0) & 1
-WRAP(r46131)
+WRAP(r46127)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 1) & 1
-WRAP(r46134)
+WRAP(r46131)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 2) & 1
-WRAP(r46136)
+WRAP(r46134)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 3) & 1
-WRAP(r46137)
+WRAP(r46136)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 4) & 1
-WRAP(r46142)
+WRAP(r46137)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 5) & 1
-WRAP(r46145)
+WRAP(r46142)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 6) & 1
-WRAP(r46147)
+WRAP(r46145)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 7) & 1
-WRAP(r46151)
+WRAP(r46147)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 8) & 1
-WRAP(r46152)
+WRAP(r46151)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 9) & 1
-WRAP(r46155)
+WRAP(r46152)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 10) & 1
-WRAP(r46160)
+WRAP(r46155)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 11) & 1
-WRAP(r46161)
+WRAP(r46160)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 12) & 1
-WRAP(r46173)
+WRAP(r46161)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 13) & 1
-WRAP(r46210)
+WRAP(r46173)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 14) & 1
-WRAP(r46215)
+WRAP(r46210)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 15) & 1
-WRAP(r46220)
+WRAP(r46215)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 16) & 1
-WRAP(r46221)
+WRAP(r46220)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 17) & 1
-WRAP(r46223)
+WRAP(r46221)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 18) & 1
-WRAP(r46225)
+WRAP(r46223)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 19) & 1
-WRAP(r46230)
+WRAP(r46225)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 20) & 1
-WRAP(r46232)
+WRAP(r46230)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 21) & 1
-WRAP(r46234)
+WRAP(r46232)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 22) & 1
-WRAP(r46236)
+WRAP(r46234)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 23) & 1
-WRAP(r46240)
+WRAP(r46236)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 24) & 1
-WRAP(r46241)
+WRAP(r46240)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 25) & 1
-WRAP(r46243)
+WRAP(r46241)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 26) & 1
-WRAP(r46244)
+WRAP(r46243)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 27) & 1
-WRAP(r46245)
+WRAP(r46244)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 28) & 1
-WRAP(r46250)
+WRAP(r46245)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 29) & 1
-WRAP(r46252)
+WRAP(r46250)
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 30) & 1
+WRAP(r46252)
+#endif
+#if (CM_GEOMETRY_KEEP1 >> 31) & 1
 WRAP(r46253)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -1692,191 +1704,194 @@ static const agc_routine_entry interpretive_entries[]={
 #if (CM_GEOMETRY_KEEP0 >> 29) & 1
  {19478,r46026_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 30) & 1
+#if (CM_GEOMETRY_KEEP0 >> 31) & 1
  {19484,r46034_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 31) & 1
+#if (CM_GEOMETRY_KEEP0 >> 32) & 1
  {19487,r46037_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 32) & 1
+#if (CM_GEOMETRY_KEEP0 >> 33) & 1
  {19489,r46041_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 33) & 1
+#if (CM_GEOMETRY_KEEP0 >> 34) & 1
  {19491,r46043_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 34) & 1
+#if (CM_GEOMETRY_KEEP0 >> 35) & 1
  {19493,r46045_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 35) & 1
+#if (CM_GEOMETRY_KEEP0 >> 36) & 1
  {19495,r46047_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 36) & 1
+#if (CM_GEOMETRY_KEEP0 >> 37) & 1
  {19497,r46051_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 37) & 1
+#if (CM_GEOMETRY_KEEP0 >> 38) & 1
  {19499,r46053_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 38) & 1
+#if (CM_GEOMETRY_KEEP0 >> 39) & 1
  {19502,r46056_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 39) & 1
+#if (CM_GEOMETRY_KEEP0 >> 40) & 1
  {19505,r46061_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 40) & 1
+#if (CM_GEOMETRY_KEEP0 >> 41) & 1
  {19506,r46062_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 41) & 1
+#if (CM_GEOMETRY_KEEP0 >> 42) & 1
  {19508,r46064_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 42) & 1
+#if (CM_GEOMETRY_KEEP0 >> 43) & 1
  {19510,r46066_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 43) & 1
+#if (CM_GEOMETRY_KEEP0 >> 44) & 1
  {19512,r46070_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 44) & 1
+#if (CM_GEOMETRY_KEEP0 >> 45) & 1
  {19514,r46072_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 45) & 1
+#if (CM_GEOMETRY_KEEP0 >> 46) & 1
  {19515,r46073_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 46) & 1
+#if (CM_GEOMETRY_KEEP0 >> 47) & 1
  {19518,r46076_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 47) & 1
+#if (CM_GEOMETRY_KEEP0 >> 48) & 1
  {19521,r46101_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 48) & 1
+#if (CM_GEOMETRY_KEEP0 >> 49) & 1
  {19523,r46103_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 49) & 1
+#if (CM_GEOMETRY_KEEP0 >> 50) & 1
  {19525,r46105_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 50) & 1
+#if (CM_GEOMETRY_KEEP0 >> 51) & 1
  {19526,r46106_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 51) & 1
+#if (CM_GEOMETRY_KEEP0 >> 52) & 1
  {19528,r46110_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 52) & 1
+#if (CM_GEOMETRY_KEEP0 >> 53) & 1
  {19530,r46112_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 53) & 1
+#if (CM_GEOMETRY_KEEP0 >> 54) & 1
  {19532,r46114_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 54) & 1
+#if (CM_GEOMETRY_KEEP0 >> 55) & 1
  {19534,r46116_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 55) & 1
+#if (CM_GEOMETRY_KEEP0 >> 56) & 1
  {19536,r46120_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 56) & 1
+#if (CM_GEOMETRY_KEEP0 >> 57) & 1
  {19538,r46122_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 57) & 1
+#if (CM_GEOMETRY_KEEP0 >> 58) & 1
  {19540,r46124_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 58) & 1
+#if (CM_GEOMETRY_KEEP0 >> 59) & 1
  {19542,r46126_abi},
 #endif
-#if (CM_GEOMETRY_KEEP0 >> 59) & 1
+#if (CM_GEOMETRY_KEEP1 >> 0) & 1
  {19543,r46127_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 0) & 1
+#if (CM_GEOMETRY_KEEP1 >> 1) & 1
  {19545,r46131_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 1) & 1
+#if (CM_GEOMETRY_KEEP1 >> 2) & 1
  {19548,r46134_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 2) & 1
+#if (CM_GEOMETRY_KEEP1 >> 3) & 1
  {19550,r46136_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 3) & 1
+#if (CM_GEOMETRY_KEEP1 >> 4) & 1
  {19551,r46137_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 4) & 1
+#if (CM_GEOMETRY_KEEP1 >> 5) & 1
  {19554,r46142_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 5) & 1
+#if (CM_GEOMETRY_KEEP1 >> 6) & 1
  {19557,r46145_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 6) & 1
+#if (CM_GEOMETRY_KEEP1 >> 7) & 1
  {19559,r46147_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 7) & 1
+#if (CM_GEOMETRY_KEEP1 >> 8) & 1
  {19561,r46151_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 8) & 1
+#if (CM_GEOMETRY_KEEP1 >> 9) & 1
  {19562,r46152_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 9) & 1
+#if (CM_GEOMETRY_KEEP1 >> 10) & 1
  {19565,r46155_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 10) & 1
+#if (CM_GEOMETRY_KEEP1 >> 11) & 1
  {19568,r46160_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 13) & 1
+#if (CM_GEOMETRY_KEEP1 >> 14) & 1
  {19592,r46210_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 14) & 1
+#if (CM_GEOMETRY_KEEP1 >> 15) & 1
  {19597,r46215_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 15) & 1
+#if (CM_GEOMETRY_KEEP1 >> 16) & 1
  {19600,r46220_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 16) & 1
+#if (CM_GEOMETRY_KEEP1 >> 17) & 1
  {19601,r46221_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 17) & 1
+#if (CM_GEOMETRY_KEEP1 >> 18) & 1
  {19603,r46223_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 18) & 1
+#if (CM_GEOMETRY_KEEP1 >> 19) & 1
  {19605,r46225_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 19) & 1
+#if (CM_GEOMETRY_KEEP1 >> 20) & 1
  {19608,r46230_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 20) & 1
+#if (CM_GEOMETRY_KEEP1 >> 21) & 1
  {19610,r46232_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 21) & 1
+#if (CM_GEOMETRY_KEEP1 >> 22) & 1
  {19612,r46234_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 22) & 1
+#if (CM_GEOMETRY_KEEP1 >> 23) & 1
  {19614,r46236_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 23) & 1
+#if (CM_GEOMETRY_KEEP1 >> 24) & 1
  {19616,r46240_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 24) & 1
+#if (CM_GEOMETRY_KEEP1 >> 25) & 1
  {19617,r46241_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 25) & 1
+#if (CM_GEOMETRY_KEEP1 >> 26) & 1
  {19619,r46243_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 26) & 1
+#if (CM_GEOMETRY_KEEP1 >> 27) & 1
  {19620,r46244_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 27) & 1
+#if (CM_GEOMETRY_KEEP1 >> 28) & 1
  {19621,r46245_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 28) & 1
+#if (CM_GEOMETRY_KEEP1 >> 29) & 1
  {19624,r46250_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 29) & 1
+#if (CM_GEOMETRY_KEEP1 >> 30) & 1
  {19626,r46252_abi},
 #endif
-#if (CM_GEOMETRY_KEEP1 >> 30) & 1
+#if (CM_GEOMETRY_KEEP1 >> 31) & 1
  {19627,r46253_abi},
 #endif
  {0xffffu,0}
 };
 const agc_routine_table cm_geometry_interpretive={interpretive_entries,(uint16_t)(sizeof interpretive_entries/sizeof interpretive_entries[0]-1u)};
 static const agc_routine_entry basic_entries[]={
-#if (CM_GEOMETRY_KEEP1 >> 11) & 1
- {19569,r46161_abi},
+#if (CM_GEOMETRY_KEEP0 >> 30) & 1
+ {19479,r46027_abi},
 #endif
 #if (CM_GEOMETRY_KEEP1 >> 12) & 1
+ {19569,r46161_abi},
+#endif
+#if (CM_GEOMETRY_KEEP1 >> 13) & 1
  {19579,r46173_abi},
 #endif
  {0xffffu,0}
@@ -1913,6 +1928,7 @@ const cm_geometry_point cm_geometry_points[CM_GEOMETRY_POINTS]={
  {19475,1},
  {19477,1},
  {19478,1},
+ {19479,0},
  {19484,1},
  {19487,1},
  {19489,1},
