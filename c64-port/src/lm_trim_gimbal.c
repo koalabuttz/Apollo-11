@@ -8,7 +8,17 @@
  * original's do, including the ones no admitted input reaches. */
 #include "lm_trim_gimbal.h"
 #include "agc_image_ops.h"
-#define W s->words
+/* Every instruction runs on the one canonical image through
+ * include/agc_fast_redirect.h: a plain-cell operand under this file's
+ * EBANK 6 goes to the fast helper (include/agc_fast_ops.h), any other
+ * operand to a one-argument wrapper of the agc_image_ops helper; both have
+ * its effects. -DLM_TG_GENERIC builds the same source on agc_image_ops alone. */
+#ifdef LM_TG_GENERIC
+#define AFR_GENERIC
+#endif
+#define AFR_EBN (LM_TG_EB >> 8)
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* Branch coverage hook for the host test (empty in flight builds). */
 #ifdef LM_TG_COUNT_PATHS
 extern unsigned lm_tg_paths[];
@@ -101,7 +111,11 @@ extern unsigned lm_tg_paths[];
 #define BGIM 07400u
 
 static int tc_word(agc_register w){return w>=02000u&&w<=07777u;}
-static int entry(const agc_image *s,const void *io,agc_word fb){return s&&io&&(W[4]&076000u)==fb&&W[3]==LM_TG_EB;}
+static int entry(const agc_image *s, const void *io, agc_word fb)
+{
+    AFR_BIND(s);
+    return s && io && (W[4] & 076000u) == fb && W[3] == LM_TG_EB;
+}
 static agc_word oc(agc_register a){return (agc_word)((a&037777u)|((a>>1)&040000u));}
 /* The signed value of an erasable word, and of the 16-bit A. */
 static int sv(const agc_image *s,unsigned k){agc_word v=ai_word(s,k);return v&040000u?-(int)(~v&037777u):(int)v;}

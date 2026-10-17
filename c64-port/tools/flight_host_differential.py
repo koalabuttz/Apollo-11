@@ -67,6 +67,22 @@ P63_KEYS = '@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E'
 NASSP = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
          'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_ENGINE': '15100'}
 NASSP_KEYS = '@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E'
+# lm-p52-realign: P52 option 3 (REFSMMAT) fine align from the same
+# Apollo 11 core (NASSP, 102:25 GET), on stars 18 (Regulus) and 20
+# (Gienah) in the forward AOT detent, the pair the core's own last P52
+# sighted (BESTI 108, BESTJ 120). V37E52E, option 3 (V22E3E) and proceed
+# on V04N06, ENTER on V50N25 00015 (no star pick), proceed on V01N70; for
+# each star ENTER on V50N18 (no auto maneuver) with the attitude that puts
+# it on the detent's optic axis held (FLIGHT_POKE of CDUX-CDUZ,
+# tools/flight_scenarios/lm_p52.py), proceed on V01N71, a Y and an X mark
+# (channel 16, KEYRUPT2) and proceed on V54N71; proceed on the star angle
+# difference (V06N05, 0.00) and the torquing angles (V06N93, a few
+# thousandths of a degree), ENTER on V50N25 00014; P52 ends in V37.
+LM_P52 = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
+          'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_POKE': '3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717'}
+LM_P52_KEYS = ('@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E'
+               '@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E')
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
@@ -89,6 +105,25 @@ P52 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '13500:tools/flight_scenarios/cm-p52-star2.load'}
 P52_KEYS = ('@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E'
             '@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E')
+# cm-p23: cislunar midcourse navigation in translunar coast (24:30 GET),
+# the load at 20 s (tools/flight_scenarios/cm_p23.py: the CSM 180,000 km
+# out on a two-body TLI ellipse, the CMC's state vector 76 km off it, the
+# shaft axis on the earth's near horizon toward star 2, the W matrix and
+# horizon altitude pads). Optics to CMC at 40 s; V37E23E; V25 on V05N70
+# loads star 02, no landmark, earth near horizon (00110), proceed; ENTER
+# on V50N25 00202 (no auto maneuver: the attitude is held); R57's V59:
+# the switch to MANUAL, the star line on the landmark line (the cal load:
+# trunnion 0.011 degrees, the bias), MARK, proceed on V06N87; R52 with
+# the switch on CMC; MANUAL again, the star on the horizon (the mark
+# load: the trunnion the true trajectory gives), MARK; proceed on V50N25
+# 00016 and V05N71; INCORP1 shows the update on V06N49 (about 20 km in
+# position); proceed incorporates it, then P00.
+P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,'
+                      '16500:tools/flight_scenarios/cm-p23-mark.load'}
+P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
+            '@20500V33E@25000V33E@27000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
 # load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
 # Base facing west 13 degrees left, the landing REFSMMAT, the platform
@@ -112,8 +147,10 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
+          ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
+          ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]
@@ -229,7 +266,9 @@ def main():
                    loads_by_point=loads)
         summary.append(row)
         print(f"{name}: {row['equal']}/{row['samples']} samples equal, {len(row['routine_mismatches'])} routines "
-              f"yaAGC did not match, {len(holes)} unregistered or refused points, "
+              f"yaAGC did not match, {len(holes)} unregistered or refused points"
+              + (f" ({sum(h['core_start'] for h in holes)} core-start artifacts)" if any(h['core_start'] for h in holes) else '')
+              + ", "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
     for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)

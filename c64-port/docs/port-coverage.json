@@ -13212,15 +13212,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-proof.json",
-            "sha256": "8fa084befdf3d6947a69122937ebe8fde36440d90c53501fbff1c7cd42251c89"
+            "sha256": "dca460b134a727f987eb565e6ab5c3d8f79caddedeb029dd81a294ca47b2ee5a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-host.log",
-            "sha256": "da36f02bb3063f3dad3db7ef77bdaf2bb55d5b2185805807379b6cca624f04eb"
+            "sha256": "b190aafa68f7273da514bd127e76e0fc305eb28f468bb734f3ec03ed34ca652b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-vice.log",
-            "sha256": "a906660015684a5402c1b955f9fab1e5e454f47c8491a125f85747fe7b5a6c73",
+            "sha256": "1b187ecf0eae819ef32e877b5c9a490fed5f41232d47bda36aeef9df9c6019cb",
             "vice_targets": {
               "vice-lm-stable-orbit": 122
             }
@@ -13231,7 +13231,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-stable-orbit/lm-stable-orbit-c64-cover.json",
-            "sha256": "24c44da16577f113f668c2486de583ecd61d8585e97735dc5b28fcb1e08a426a"
+            "sha256": "f10fecc7c57284d42df1e264dffd87af83e1e032f86da4fb1543537e163bb961"
           }
         }
       }
@@ -13813,6 +13813,8 @@
         {
           "native_files": [
             "src/lm_trim_gimbal.c",
+            "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
@@ -13833,7 +13835,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-source-map.json",
-            "sha256": "1b40d806b7b9f2713ba95812a16240ad34884fcf14806ab3588f5477f1fe501e"
+            "sha256": "e7cc9781ab1b5fbff2dc473410290335b31f503a4ac56371d45e7a6137c684ed"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-proof.json",
@@ -13845,18 +13847,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-vice.log",
-            "sha256": "a45b1a7796b802b19dbabe1dd7f6944875bcd075491c3bf732ea7d3a59f456ac",
+            "sha256": "f94a155560e5bace443b2ee0468aed5693e3c799f261954115ec15714116ae17",
             "vice_targets": {
               "vice-lm-trim-gimbal": 256
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-211.md",
-            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
+            "path": "docs/audits/rev2-lm-trim-gimbal-570.md",
+            "sha256": "e4f8419122bae6b6c15134123c22b1981161754f479f4c8098063a9ada57ac54"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json",
-            "sha256": "70f403d49e7e379e0b1c7564587b33806330e8250418210c9e97a4cfe76efd79"
+            "sha256": "da7a7dd750c9c401e18e4273534cee7dabf84afe851b46905dbf8e959a05326f"
           }
         }
       }
