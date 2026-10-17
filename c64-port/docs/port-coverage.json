@@ -10300,8 +10300,8 @@
             "sha256": "37cbe611d4cc39c94840fe51988d7bca0d3bc60badfc0092b8c5098e1e9c0503"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-lm-llge.md",
-            "sha256": "ce4ea75ca752ba55b5b43d155ecac46216a454cd4f73a0edcd889e5111dcfc57"
+            "path": "docs/audits/rev2-lm-llge-563.md",
+            "sha256": "ac24d8c590d6a08741f2c44b216c8f1ef53126f3875480ca49380cd3ec8fee87"
           }
         }
       }
