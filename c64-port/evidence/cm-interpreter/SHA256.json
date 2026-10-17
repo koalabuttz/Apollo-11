@@ -4,33 +4,33 @@
   "release": "evidence-cm-interpreter",
   "files": {
     "cm-interpreter-closure.json": {
-      "sha256": "5498b72a88b4c4ee837aec329d4759c174d05e6509a2d9f08dabd16d74a47e5f",
-      "bytes": 174470,
-      "store": "tree"
+      "sha256": "01ac7805e97157a794ee9fc6db57919b5c3862fad76eb5938749f5c9c5b2fbab",
+      "bytes": 324866,
+      "store": "release"
     },
     "cm-interpreter-differential.log": {
-      "sha256": "e58be3bff6d8b1fce9dac6f1192e6ae2d85a284641d58cdc34d313af7783933b",
-      "bytes": 1124,
+      "sha256": "174f8aa86434ae24f02c52cdeb20a146aea08d9bb9d0e4c51da886f47c9914cc",
+      "bytes": 101343,
       "store": "tree"
     },
     "cm-interpreter-host.log": {
-      "sha256": "6ef5c61acad4447061efba225e9298db9da64fadef7d84223f7be0cbbb116ac6",
-      "bytes": 1039,
+      "sha256": "bd2e0f3fecc6d90b8dea297ae08ff0b5ceed010362be99c3fa5b42ac7b65a792",
+      "bytes": 1047,
       "store": "tree"
     },
     "cm-interpreter-proof.json": {
-      "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722",
-      "bytes": 71941,
+      "sha256": "afd3a7d454aac12fa2d1958b4901abef53f7a873f245bafb43500a82ba2c10d8",
+      "bytes": 154350,
       "store": "tree"
     },
     "cm-interpreter-source-map.json": {
-      "sha256": "40818c5eccb11cb3c9a54fb98d9b19a1bb6011925a02fc4c728f4a1862e934ef",
-      "bytes": 251589,
-      "store": "tree"
+      "sha256": "54d751c16d6c7951e00a50feec5481f0cef1d9d1159d663d22bb5719e07a7a91",
+      "bytes": 325238,
+      "store": "release"
     },
     "cm-interpreter-vice.log": {
-      "sha256": "f3fb5fd443db4e7614bde1590442bbc7a143c04796c03d91a73b8bab1b73b513",
-      "bytes": 955,
+      "sha256": "50189a8247319d2a151ca03a137cc9d1390afee29e7fe7dea587778de1e646bc",
+      "bytes": 2616,
       "store": "tree"
     }
   }

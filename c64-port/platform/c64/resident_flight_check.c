@@ -297,7 +297,8 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
   * a test-only depth; this store has no pinned module), so the check sets
   * it again before the steps. */
  *(volatile uint8_t *)RK_STACK_CANARY=(uint8_t)~RK_STACK_CANARY_VALUE;
- expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_INVALID_ACTION&&image->words[5]==RK_PROBE_LOC,17);
+ expect(rk_resident_step(AGC_TRANSFER_NONE) == EXEC_OUT_OF_SCOPE && image->words[5] == RK_PROBE_LOC,
+        17);
  *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
  expect(rk_resident_step(AGC_TRANSFER_NONE)==EXEC_OK&&image->words[5]==RK_PROBE_Z,6);
  /* At fixed-fixed the resolver key is the canonical bank, whatever FB and
@@ -308,6 +309,15 @@ int main(void){apollo_overlay_state *image=(apollo_overlay_state *)(uintptr_t)AP
  /* SPSIN through the resident's table: sin 0 is 0, and Z returns to Q. */
  image->words[0]=0;image->words[1]=0;image->words[2]=RK_SP_RETURN;image->words[4]=RK_PROBE_FB;image->words[5]=RK_SPSIN;image->words[7]=0;
  expect(rk_resident_step(agc_fixed_physical(RK_SP_RETURN,RK_PROBE_FB,0))==EXEC_OK&&image->words[5]==RK_SP_RETURN&&image->words[0]==0u&&image->words[2]==3u,9);
+ /* The TC trap's restart (rk_gojam, resident_flight_main.c): Q takes Z,
+  * Z goes to 04000, every interrupt request is dropped and the RESTART
+  * lamp lights. */
+ image->words[4] = RK_PROBE_FB;
+ image->words[5] = RK_PROBE_LOC;
+ rk_pending = RK_RUPT_BIT(RK_RUPT_T3);
+ expect(rk_gojam() == 0u && image->words[5] == 04000u && image->words[2] == RK_PROBE_LOC &&
+            rk_pending == 0u,
+        18);
  /* Interrupts kept arriving through the resident vector. */
  expect(ov2_irq_count!=irq&&*(volatile uint8_t *)1==0x35,7);
  irq=ov2_irq_count;mail[6]=(uint8_t)irq;mail[7]=(uint8_t)(irq>>8);

@@ -3,7 +3,7 @@
   "native_file": "src/lm_llge.c",
   "words": 991,
   "untranslated_words": 0,
-  "routines": 246,
+  "routines": 249,
   "map": [
    {
     "address": "31,2420",
@@ -6214,43 +6214,43 @@
     "address": "31,3624",
     "word": "00006",
     "source": "ROOTLOOP EXTEND ",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3625",
     "word": "30127",
     "source": " DCA ROOTPS",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3626",
     "word": "52155",
     "source": " DXCH MPAC",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3627",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3630",
     "word": "30162",
     "source": " DCA MPAC       +5",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3631",
     "word": "07215",
     "source": " TC POWRSERS",
-    "routine": "31,3610",
-    "function": "r63610"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3632",
@@ -6514,197 +6514,197 @@
     "address": "31,3677",
     "word": "51351",
     "source": "INTPRETX INDEX WCHPHASE",
-    "routine": "31,3053",
-    "function": "r63053"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3700",
     "word": "42452",
     "source": " CS TARGTDEX",
-    "routine": "31,3053",
-    "function": "r63053"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3701",
     "word": "50120",
     "source": " INDEX FIXLOC",
-    "routine": "31,3053",
-    "function": "r63053"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3702",
     "word": "54046",
     "source": " TS X1",
-    "routine": "31,3053",
-    "function": "r63053"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3703",
     "word": "16037",
     "source": " TCF INTPRET",
-    "routine": "31,3053",
-    "function": "r63053"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3704",
     "word": "31642",
     "source": "TDISPSET CA TTF/8",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3705",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3706",
     "word": "74750",
     "source": " MP TSCALINV",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3707",
     "word": "53476",
     "source": " DXCH TTFDISP",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3710",
     "word": "35014",
     "source": " CA EBANK5",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3711",
     "word": "54003",
     "source": " TS EBANK",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3712",
     "word": "31470",
     "source": " CA TCGFAPPR",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3713",
     "word": "24006",
     "source": " INCR BBANK",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3714",
     "word": "24006",
     "source": " INCR BBANK",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3715",
     "word": "61642",
     "source": " AD TTF/8",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3716",
     "word": "00006",
     "source": " EXTEND ",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3717",
     "word": "73751",
     "source": " MP TREDESCL",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3720",
     "word": "63747",
     "source": " AD -DEC103",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3721",
     "word": "64735",
     "source": " AD NEGMAX",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3722",
     "word": "54001",
     "source": " TS L",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3723",
     "word": "40001",
     "source": " CS L",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3724",
     "word": "60001",
     "source": " AD L",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3725",
     "word": "63750",
     "source": " AD +DEC99",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3726",
     "word": "64733",
     "source": " AD POSMAX",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3727",
     "word": "55666",
     "source": " TS TREDES",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3730",
     "word": "41666",
     "source": " CS TREDES",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3731",
     "word": "27666",
     "source": " ADS TREDES",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3732",
     "word": "00002",
     "source": " TC Q",
-    "routine": "31,2661",
-    "function": "r62661"
+    "routine": "31,3650",
+    "function": "r63650"
    },
    {
     "address": "31,3733",
