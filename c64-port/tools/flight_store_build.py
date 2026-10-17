@@ -1575,6 +1575,13 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
+        # A class-4 module holds the task slot's $E000 from boot: a task-slot
+        # load would overwrite it, and overlay_v2.c load() does not check
+        # (#426), so the store must carry none.
+        if any(mod['slot'] == 4 for mod in store['modules']):
+            task = [f'0x{mod["id"]:04x}' for mod in store['modules'] if mod['slot'] == 1]
+            if task:
+                raise SystemExit(f'{m}: task-slot modules {", ".join(task)} in a store with a class-4 module')
         link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
                         {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])}
                         | {k for ps in parts.values() for p in ps for v in p.values() for k in v},
