@@ -42,7 +42,8 @@
  * land every D * 10 ms of it, and at
  * each native boundary at most LAG of them become rk_timer_tick periods
  * (TIME1-TIME6 and the scalers), the rest dropped (rk_rupts); the IMU CDU
- * drive, timed by yaAGC's cycle counter, stops with it. Bridged code
+ * drive, timed by yaAGC's cycle counter, stops with it, as do the optics
+ * and gyro drives (no C64 resident has them). Bridged code
  * gets the same periods between its instructions. Every routine must then
  * match yaAGC run from the same state with the clock frozen, the clock
  * counters included, so the run is one yaAGC run under the same tick
@@ -51,6 +52,9 @@
  * routine spends its table's weight (host.inc, from docs/flight-routine-mct.json), bridged code its
  * own machine cycles, and every 853 1/3 MCT of that is one tick, none
  * dropped; every routine must still match yaAGC under that schedule.
+ * FLIGHT_CHAN=CS:CH=VALUE,...: an input channel set at a time (below);
+ * keys M and J are the CM's MARK and MARK REJECT buttons.
+ *
  * FLIGHT_GOJAM=CS[,CS...]: a hardware restart at the first sample point at
  * or after each CS, on both sides (tools/flight_gojam.h).
  * FLIGHT_SNAPSHOT=CS,PATH: at the first native sample point at or after
@@ -240,7 +244,24 @@ static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;
  keyc[n]=0;keys=keyc;}
 static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(agc_word)(c-'0');}
-static int key_due(unsigned long t,unsigned *pressed){if(!keys[*pressed]||t<keyt[*pressed])return -1;return (int)keycode(keys[(*pressed)++]);}
+/* M and J are the CM's MARK and MARK REJECT buttons (CM P52): channel 16
+ * bit 6 or bit 7 and a KEYRUPT2 request, which MARKRUPT takes. key_due
+ * returns them as MARK_KEY | the channel 16 bits. */
+#define MARK_KEY 0x100
+static int key_due(unsigned long t,unsigned *pressed){char c;if(!keys[*pressed]||t<keyt[*pressed])return -1;c=keys[(*pressed)++];
+ return c=='M'?MARK_KEY|040:c=='J'?MARK_KEY|0100:(int)keycode(c);}
+/* FLIGHT_CHAN=CS:CH=VALUE,... (octal channel and value): an input channel
+ * (16, 30-33) set at the first sample point at or after CS, on both sides:
+ * a switch the crew moves (CM P52: the optics mode switch, channel 33 bits
+ * 4 and 5, from CMC to MANUAL and back). */
+enum { CHANS=64 };
+static struct { unsigned long cs; unsigned ch,value; } chans[CHANS];
+static unsigned nchans;
+static int chans_parse(const char *t){while(t&&*t){unsigned long cs;unsigned c,v;int n=0;
+  if(sscanf(t,"%lu:%o=%o%n",&cs,&c,&v,&n)<3||!n||nchans>=CHANS||(c!=016u&&(c<030u||c>033u)))return 0;
+  if(nchans&&cs<chans[nchans-1].cs)return 0;
+  chans[nchans].cs=cs;chans[nchans].ch=c;chans[nchans++].value=v&077777u;t+=n;if(*t==',')++t;}
+ return 1;}
 
 /* FLIGHT_CH30, FLIGHT_CH31 (octal): the input channels at start, on both
  * sides (e.g. FLIGHT_CH30=036377 FLIGHT_CH31=057777: IMU operate, PGNCS
@@ -287,6 +308,13 @@ static int load_parse(const char *t){while(t&&*t){unsigned long cs;int n=0;char 
    pokes[npokes].cs=cs;pokes[npokes].addr=a;pokes[npokes++].value=v&077777u;}
   fclose(f);}
  return 1;}
+/* The channel changes due at time t, once each side (done counts them):
+ * into yaAGC (hw 0) or the native channels. */
+static void chan_due(unsigned long t,unsigned *done,agc_hardware *hw,flight_io *io){
+ while(*done<nchans&&t>=chans[*done].cs){unsigned c=chans[*done].ch;agc_word v=(agc_word)chans[*done].value;++*done;
+  if(!hw)m.InputChannel[c]=(int16_t)v;
+  else if(c==016u)io->channel16=v;
+  else *(c==030u?&hw->channel30:c==031u?&hw->channel31:c==032u?&hw->channel32:&hw->channel33)=v;}}
 /* poke_due takes them in time order. */
 static void pokes_sort(void){unsigned i,j;for(i=1;i<npokes;++i)for(j=i;j>0&&pokes[j-1].cs>pokes[j].cs;--j){unsigned long c=pokes[j].cs;unsigned a=pokes[j].addr,v=pokes[j].value;
   pokes[j]=pokes[j-1];pokes[j-1].cs=c;pokes[j-1].addr=a;pokes[j-1].value=v;}}
@@ -581,7 +609,7 @@ static const char *snap_path;
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
- unsigned i,j,kref=0,knat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
+ unsigned i,j,kref=0,knat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
@@ -591,6 +619,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_CH32"))chan32=strtoul(getenv("FLIGHT_CH32"),0,8)&077777u;
  if(getenv("FLIGHT_CH33"))chan33=strtoul(getenv("FLIGHT_CH33"),0,8)&077777u;
  pokes_parse(getenv("FLIGHT_POKE"));
+ if(!chans_parse(getenv("FLIGHT_CHAN"))){fprintf(stderr,"FLIGHT_CHAN=CS:CH=VALUE,... (channel 16 or 30-33, in time order)\n");return 2;}
  if(getenv("FLIGHT_SNAPSHOT")){static char path_buf[512];
   if(sscanf(getenv("FLIGHT_SNAPSHOT"),"%lu,%511s",&snap_cs,path_buf)!=2){fprintf(stderr,"FLIGHT_SNAPSHOT=CS,PATH\n");return 2;}
   snap_path=path_buf;}
@@ -631,10 +660,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
     aero_due(now(w),&aero_ref,0);
+    chan_due(now(w),&cref,0,0);
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
-    else if((k=key_due(now(w),&kref))>=0){m.InputChannel[015]=(int16_t)k;
-     if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_KEY1);m.InIsr=1;}
-     else m.InterruptRequests[RK_RUPT_KEY1]=1;}}}
+    else if((k=key_due(now(w),&kref))>=0){unsigned r=k&MARK_KEY?RK_RUPT_KEY2:RK_RUPT_KEY1;m.InputChannel[k&MARK_KEY?016:015]=(int16_t)(k&0377);
+     if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*r);m.InIsr=1;}
+     else m.InterruptRequests[r]=1;}}}
   /* FLIGHT_NATIVE_LATENCY: the reference takes interrupts only where some
    * table holds the point, as the native side does (a diagnostic). */
   if(latency&&requests()){agc_routine call;int8_t held[1+NUM_INTERRUPT_TYPES];
@@ -682,8 +712,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
    aero_due(now(s.words),&aero_nat,s.words);
+   chan_due(now(s.words),&cnat,&hw,&io);
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
-   else if((k=key_due(now(s.words),&knat))>=0){hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
+   else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
+    else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
    if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
   {agc_word brupt=s.words[017];
