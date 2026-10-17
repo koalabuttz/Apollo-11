@@ -244,14 +244,20 @@ restart.
   stops there, as would any major-mode display. The LLGE (`lm_llge`) and
   P12 (`lm_p12`) do not fit either. So P63 and P12 cannot resume on the C64
   until those modules fit.
-- **No GOJAM source on the C64 yet.** The module (0x01E5) and
-  `apollo_ov2_restart_keep_pinned` are in place (see above). What is
-  missing is the resident hook that follows the entry contract, and a
-  trigger for each alarm, for example `TC VERB69` to itself (V69), ADVAN or
-  NEWJOB not reached for 0.64 s (night watchman), or an interrupt held for
-  too long (rupt lock). That is the Resident-kernel lane's code.
-  `flight-gojam-vice` calls the module and the restart from the check
-  program instead.
+- **The TC trap is the C64's one GOJAM source.** The resident's main
+  (`platform/c64/resident_flight_main.c`) follows the entry contract
+  (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends
+  where the TC trap would fire. That is a TCF to itself, which a compiled
+  routine refuses with `EXEC_INVALID_ACTION` (`tools/basic_compile.py`), or a
+  TC to itself, a step that leaves Z and FB as they were with Q = Z + 1 (V69's
+  `TC VERB69`). The AGC traps after a few ms of TC-only execution; the
+  resident restarts after one such step. The night watchman (NEWJOB not
+  tested for 0.64 s) and the rupt lock (an interrupt held too long) are not
+  modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
+  so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
+  the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF4),
+  the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
+  `restart_light` reads and writes it there (Lane C).
 - **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.
   `platform/x86/flight_scenario.h` is Lane B's.
 

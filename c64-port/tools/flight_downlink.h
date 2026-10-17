@@ -13,10 +13,12 @@
  *   lockstep spans (whose requests become the native side's) and bridged
  *   code. yaAGC's own DOWNRUPT model (20 ms after both channels are written,
  *   CpuWriteIO's Downlink and DownruptTime) is switched off.
- * - Scaled time (frozen clock): each rk_timer_tick period adds 32 counts,
- *   so every second period requests RK_RUPT_DOWN, natively and in the
- *   periods bridged code gets (ref_tick).
- * Both are wrappers, agc_engine() and rk_timer_tick() below, so the harness
+ * - Scaled time (frozen clock): each rk_timer_tick period adds 32 counts
+ *   (each rk_timer_phase step 8, 8 or 16), so every second period
+ *   requests RK_RUPT_DOWN, natively and in the periods bridged code gets
+ *   (ref_tick).
+ * They are wrappers, agc_engine(), rk_timer_tick() and rk_timer_phase()
+ * below, so the harness
  * keeps its calls; with FLIGHT_DOWNRUPT unset they do nothing more.
  *
  * Streams, each word with its channel, its AGC time (TIME2:TIME1 cs), its
@@ -79,6 +81,9 @@ static int dl_crossed(unsigned a,unsigned b){return ((a&037777u)>>6)!=((b&037777
 static void flight_dl_tick(apollo_overlay_state *s,agc_hardware *h,uint16_t *p){agc_word c=h->channel4;
  (rk_timer_tick)(s,h,p);
  if(dl_on&&dl_crossed(c,h->channel4))*p|=RK_RUPT_BIT(RK_RUPT_DOWN);}
+static void flight_dl_phase(apollo_overlay_state *s,agc_hardware *h,uint16_t *p,uint8_t phase){agc_word c=h->channel4;
+ (rk_timer_phase)(s,h,p,phase);
+ if(dl_on&&dl_crossed(c,h->channel4))*p|=RK_RUPT_BIT(RK_RUPT_DOWN);}
 static void dl_yaagc(agc_t *s,uint8_t ch){dl_word w;
  w.cs=((unsigned long)(s->Erasable[0][024]&037777)<<14)|(unsigned long)(s->Erasable[0][025]&037777);
  w.frame=dl_frame((unsigned)s->InputChannel[3],(unsigned)s->InputChannel[4]);
@@ -94,6 +99,7 @@ static int flight_dl_engine(agc_t *s){int r;int16_t c;
  if(dl_crossed((unsigned)c,(unsigned)s->InputChannel[4])){s->InterruptRequests[8]=1;if(!dl_native)++dl_ref_requests;}
  return r;}
 #define rk_timer_tick(s,h,p) flight_dl_tick(s,h,p)
+#define rk_timer_phase(s,h,p,q) flight_dl_phase(s,h,p,q)
 #define agc_engine(s) flight_dl_engine(s)
 
 /* Hooks in flight_host_run.c's main. */

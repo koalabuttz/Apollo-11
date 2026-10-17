@@ -36,8 +36,24 @@ static unsigned long taskover_superbank(uint16_t *checks){unsigned long failures
  }
  return failures;}
 
-int main(void){uint16_t n,checks=0;unsigned long failures=0;
+/* The thin resident kernel's DLY2 -1 (kinds 2 and 3) on every case the
+ * certified routines take reaches the same frozen digest. Returns failures. */
+extern int wle_kernel;
+static unsigned long kernel_dly2(uint16_t *checks,unsigned *taken){unsigned long failures=0;uint16_t n;
+ for(n=0;n<wle_cases();++n){static apollo_overlay_state s;static wle_io_storage io;agc_hardware hw;uint8_t k=wle_kind(n);uint32_t d;
+  if(k!=2u&&k!=3u)continue;
+  wle_kernel=0;
+  if(!wle_run(&s,&io,&hw,n))continue;
+  wle_kernel=1;d=wle_digest(&s,n);wle_kernel=0;
+  ++*taken;++*checks;
+  if(d!=wle_frozen_digest(n)){++failures;printf("FAIL: kernel DLY2 -1 case %u (%s base %04x): digest %08lx, want %08lx\n",(unsigned)n,
+   k==2u?"LM":"CM",(unsigned)wle_case_base_of(n),(unsigned long)d,(unsigned long)wle_frozen_digest(n));}}
+ return failures;}
+
+int main(void){uint16_t n,checks=0;unsigned long failures=0;unsigned taken=0;
  for(n=0;n<wle_cases();++n)failures+=wle_check(n,&checks);
+ failures+=kernel_dly2(&checks,&taken);
+ printf("waitlist-entries: resident kernel DLY2 -1 on %u cases the certified routines take\n",taken);
  failures+=taskover_superbank(&checks);
  printf("waitlist-entries: %u cases; %u checks, %lu failures\n",(unsigned)wle_cases(),(unsigned)checks,failures);
  return failures!=0;}

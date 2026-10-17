@@ -56,16 +56,21 @@ WLE_SRC = src/lm_exec_jobs.c \
 WLE_HDR = include/agc_transfer.h include/lm_exec_routines.h include/cm_exec_routines.h include/lm_t6rupt_routines.h \
 	include/service_transfer.h tests/waitlist_entries_cases.h tests/waitlist_entries_check.h tests/waitlist_entries_vectors.h tests/waitlist_entries_c64_rows.h
 WLE_FLAGS = -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
+# Host test only: the thin resident kernel's DLY2 -1 (src/{lm,cm}_kernel.c)
+# runs every kind 2 and 3 case the certified routines take, to the same
+# frozen digest.
+WLE_KERNEL_SRC = src/lm_kernel.c src/cm_kernel.c
+WLE_KERNEL_HDR = include/resident_kernel.h src/resident_kernel_body.inc src/lm_kernel_labels.inc src/cm_kernel_labels.inc
 .PHONY: test-waitlist-entries sanitize-waitlist-entries c64-waitlist-entries vice-waitlist-entries waitlist-entries-differential
 all: build/test-waitlist-entries
 test: test-waitlist-entries
 sanitize: sanitize-waitlist-entries
-build/test-waitlist-entries: $(WLE_SRC) tests/test_waitlist_entries.c $(WLE_HDR) | build
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(WLE_FLAGS) $(WLE_SRC) tests/test_waitlist_entries.c -o $@
+build/test-waitlist-entries: $(WLE_SRC) $(WLE_KERNEL_SRC) tests/test_waitlist_entries.c $(WLE_HDR) $(WLE_KERNEL_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(WLE_FLAGS) -DWLE_KERNEL $(WLE_SRC) $(WLE_KERNEL_SRC) tests/test_waitlist_entries.c -o $@
 test-waitlist-entries: build/test-waitlist-entries
 	./build/test-waitlist-entries
 sanitize-waitlist-entries: | build
-	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(WLE_FLAGS) -fsanitize=address,undefined $(WLE_SRC) tests/test_waitlist_entries.c -o build/test-waitlist-entries-sanitize
+	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(WLE_FLAGS) -DWLE_KERNEL -fsanitize=address,undefined $(WLE_SRC) $(WLE_KERNEL_SRC) tests/test_waitlist_entries.c -o build/test-waitlist-entries-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-waitlist-entries-sanitize
 # Host-only oracle run (needs deps/virtualagc and both rope builds).
 waitlist-entries-differential:

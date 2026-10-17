@@ -14,7 +14,7 @@ yaAGC under that schedule.
 
   flight_host_differential.py [--host-cc CC] [--skip-index]
 """
-import argparse, json, os, re, resource, subprocess, sys
+import argparse, json, os, re, resource, subprocess, sys, threading
 from pathlib import Path
 
 # lm-p63-nassp's host run overflows the default 8 MB stack: raise the soft
@@ -67,13 +67,90 @@ P63_KEYS = '@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E'
 NASSP = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
          'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_ENGINE': '15100'}
 NASSP_KEYS = '@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E'
+# lm-p52-realign: P52 option 3 (REFSMMAT) fine align from the same
+# Apollo 11 core (NASSP, 102:25 GET), on stars 18 (Regulus) and 20
+# (Gienah) in the forward AOT detent, the pair the core's own last P52
+# sighted (BESTI 108, BESTJ 120). V37E52E, option 3 (V22E3E) and proceed
+# on V04N06, ENTER on V50N25 00015 (no star pick), proceed on V01N70; for
+# each star ENTER on V50N18 (no auto maneuver) with the attitude that puts
+# it on the detent's optic axis held (FLIGHT_POKE of CDUX-CDUZ,
+# tools/flight_scenarios/lm_p52.py), proceed on V01N71, a Y and an X mark
+# (channel 16, KEYRUPT2) and proceed on V54N71; proceed on the star angle
+# difference (V06N05, 0.00) and the torquing angles (V06N93, a few
+# thousandths of a degree), ENTER on V50N25 00014; P52 ends in V37.
+LM_P52 = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
+          'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_POKE': '3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717'}
+LM_P52_KEYS = ('@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E'
+               '@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E')
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
+# cm-p52: Apollo 11's first realignment in earth orbit (00:44 GET), the
+# load at 20 s (tools/flight_scenarios/cm_p52.py: the launch REFSMMAT, the
+# platform drifted from it, the CSM held between stars 30 and 37). The IMU
+# operating, the optics switch at ZERO OPTICS, then CMC at 40 s
+# (FLIGHT_CHAN: channel 33 bits 5 and 4); V37E52E, option 3 (V22E3E on
+# V04N06), proceed; proceed on V50N25 00015 (PICAPAR picks 30 and 37);
+# proceed on V01N70 (R52 drives the optics); for each star the crew turns
+# the switch to MANUAL, puts the star on the reticle (the star loads: the
+# CDUS and CDUT the drifted platform gives) and presses MARK (M: channel
+# 16 bit 6, KEYRUPT2), proceeds on V50N25 00016 and V01N71 and turns the
+# switch back to CMC for the next star; proceed on N05 (star angle
+# difference 0.00) and on N93 (torquing angles -0.012, +0.022, -0.010
+# degrees: the drift taken out), ENTER on V50N25 00014 and P00.
+P52 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,'
+                      '13500:tools/flight_scenarios/cm-p52-star2.load'}
+P52_KEYS = ('@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E'
+            '@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E')
+# cm-p23: cislunar midcourse navigation in translunar coast (24:30 GET),
+# the load at 20 s (tools/flight_scenarios/cm_p23.py: the CSM 180,000 km
+# out on a two-body TLI ellipse, the CMC's state vector 76 km off it, the
+# shaft axis on the earth's near horizon toward star 2, the W matrix and
+# horizon altitude pads). Optics to CMC at 40 s; V37E23E; V25 on V05N70
+# loads star 02, no landmark, earth near horizon (00110), proceed; ENTER
+# on V50N25 00202 (no auto maneuver: the attitude is held); R57's V59:
+# the switch to MANUAL, the star line on the landmark line (the cal load:
+# trunnion 0.011 degrees, the bias), MARK, proceed on V06N87; R52 with
+# the switch on CMC; MANUAL again, the star on the horizon (the mark
+# load: the trunnion the true trajectory gives), MARK; proceed on V50N25
+# 00016 and V05N71; INCORP1 shows the update on V06N49 (about 20 km in
+# position); proceed incorporates it, then P00.
+P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,'
+                      '16500:tools/flight_scenarios/cm-p23-mark.load'}
+P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
+            '@20500V33E@25000V33E@27000V37E00E')
+# lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
+# load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
+# Base facing west 13 degrees left, the landing REFSMMAT, the platform
+# drifted from it) and the CDUs as the moon turns the LM at each mark.
+# V37E57E, proceed on V04N06 (option 3, REFSMMAT), technique 2 (two
+# stars: V22E2E on V05N06), proceed; the stored-attitude initial pass;
+# for each star R59's V01N70 (star code 12 Rigel, then 03 Navi: V21E),
+# proceed on V06N79 (R59 finds detents 6 and 4), on V01N71 and on V54,
+# X MARK (x: channel 16 bit 3, KEYRUPT2), and the reticle's cursor and
+# spiral angles loaded on the flashing V06N79 (V21E, V22E), proceed;
+# proceed on N05 (0.00) and on N93 (-0.021, +0.012, -0.019 degrees: the
+# drift taken out); ENTER on V50N25 00014, V34 on N89 (the crew rejected
+# the landing site update) and P00.
+P57 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,'
+                      '29900:tools/flight_scenarios/lm-p57-star2.load'}
+P57_KEYS = ('@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000'
+            'V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21'
+            'E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
+          ('cm-p52', 'cm', 20000, P52_KEYS, P52),
+          ('cm-p23', 'cm', 30000, P23_KEYS, P23),
+          ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
+          ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]
@@ -95,6 +172,13 @@ SCALED = [(m, cs, keys, env, sched, tag)
           for sched, tag in (('1,1,2', 'x1'), ('1.7,2,2', 'x0.5'), ('4,1,2,1', 'overrun'), ('W', 'work'))]
 
 
+def _tmp(path):
+    """A per-process name next to path. Several c64 jobs in one shard build
+    these files in parallel; each writes its own temp file and renames it in
+    place, so a link never reads another job's half-written object."""
+    return path.with_name(f'{path.name}.{os.getpid()}.{threading.get_ident()}.tmp')
+
+
 def frozen_engine(cc):
     """build/agc_engine_hardware_dv.c with AgcFrozenClock: when set, the
     scaler (and with it every counter timer and the cycles they take) and
@@ -109,13 +193,33 @@ def frozen_engine(cc):
     burst = '  if (i != 0 && (State->CycleCounter - ImuCduCount) >= IMUCDU_BURST_CYCLES)'
     assert src.count(burst) == 1
     src = src.replace(burst, burst.replace('if (', 'if (!AgcFrozenClock && ', 1))
+    # yaAGC's optics drive dumps RegOPTX and RegOPTY (036 and 035) while
+    # channel 14 bit 11 or 12 is set and zeroes them: those are the
+    # sextant's CDU counters CDUS and CDUT, not the drive counters CDUSCMD
+    # and CDUTCMD (054, 053), so after a coarse optics drive yaAGC loses
+    # the angles the crew marks on (CM P52). No C64 resident drives the
+    # optics: under the frozen clock it stops with the IMU drive.
+    optics = '  if (State->Erasable[0][RegOPT'
+    assert src.count(optics) == 2
+    src = src.replace(optics, '  if (!AgcFrozenClock && State->Erasable[0][RegOPT')
+    # yaAGC's gyro drive takes GYROCMD (047) whole and zeroes it the
+    # instruction after channel 14 bit 10 comes on; no C64 resident drives
+    # the gyros (P52's torquing times itself on WAITLIST): under the frozen
+    # clock the drive stops too.
+    gyro = '  if (0 != (State->InputChannel[014] & 01000))\n    if (0 != State->Erasable[0][RegGYROCTR])'
+    assert src.count(gyro) == 1
+    src = src.replace(gyro, gyro.replace('if (0 != (', 'if (!AgcFrozenClock && 0 != (', 1))
     head = '#include "agc_engine.h"\n'
     assert src.count(head) == 1
     src = src.replace(head, head + 'int AgcFrozenClock;\n')
     OUT.mkdir(parents=True, exist_ok=True)
     c, o = OUT / 'agc_engine_scaled.c', OUT / 'agc_engine_scaled.o'
-    c.write_text(src)
-    subprocess.run([cc, '-O2', f'-I{YAAGC}', '-c', str(c), '-o', str(o)], cwd=ROOT, check=True)
+    tc = _tmp(c)
+    tc.write_text(src)
+    os.replace(tc, c)
+    to = _tmp(o)
+    subprocess.run([cc, '-O2', f'-I{YAAGC}', '-c', str(c), '-o', str(to)], cwd=ROOT, check=True)
+    os.replace(to, o)
     return o
 
 
@@ -125,10 +229,12 @@ def build(cc, m, engine):
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
-                    '-c', 'tools/flight_host_run.c', '-o', str(obj)], cwd=ROOT, check=True)
+                    '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
+    os.replace(_tmp(obj), obj)
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, str(engine), str(YAAGC / 'agc_engine_init.o'),
-                    str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
+                    str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(_tmp(exe))], cwd=ROOT, check=True)
+    os.replace(_tmp(exe), exe)
     return exe
 
 
@@ -173,7 +279,9 @@ def main():
                    loads_by_point=loads)
         summary.append(row)
         print(f"{name}: {row['equal']}/{row['samples']} samples equal, {len(row['routine_mismatches'])} routines "
-              f"yaAGC did not match, {len(holes)} unregistered or refused points, "
+              f"yaAGC did not match, {len(holes)} unregistered or refused points"
+              + (f" ({sum(h['core_start'] for h in holes)} core-start artifacts)" if any(h['core_start'] for h in holes) else '')
+              + ", "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
     for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)

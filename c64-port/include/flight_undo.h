@@ -13,9 +13,16 @@
 #include "overlay_runtime.h"
 #if defined(__mos__) && (defined(RK_LM) || defined(RK_CM))
 #include "overlay_reu.h"
-/* $1F2000-$1F2FFF: above the CM rope image, below the VICE records at
- * $1F8000, free on both missions (docs/FLIGHT-STORE.md). */
-#define FLIGHT_UNDO_REU 0x1F2000ul
+/* $1F2000-$1F2FFF: above the CM rope image, below the load check's scratch
+ * at $1F8000, free on both missions (docs/FLIGHT-STORE.md). The store build
+ * (tools/flight_store_build.py add_rope) checks that each rope image ends at
+ * or below FLIGHT_UNDO_REU and that the area is unused. */
+#define FLIGHT_UNDO_REU   0x1F2000ul
+#define FLIGHT_UNDO_BYTES 0x1000ul
+#define FLIGHT_UNDO_LIMIT 0x1F8000ul
+_Static_assert(sizeof(apollo_overlay_state) <= FLIGHT_UNDO_BYTES, "undo image over its REU area");
+_Static_assert(FLIGHT_UNDO_REU + FLIGHT_UNDO_BYTES <= FLIGHT_UNDO_LIMIT,
+               "undo area reaches the load check scratch");
 #define FLIGHT_UNDO_SAVE(io, s)                                                                    \
     ((void)(io),                                                                                   \
      (void)apollo_reu_transfer(APOLLO_REU_STASH, (s), FLIGHT_UNDO_REU, (uint16_t)sizeof *(s)))

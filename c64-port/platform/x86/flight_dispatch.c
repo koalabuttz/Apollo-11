@@ -88,7 +88,8 @@ void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_r
  st->p.hardware=&st->hw;st->p.fixed_data=rope_data;
  st->io.undo=&st->undo;st->io.interrupt_enabled=1;st->s.words[5]=04000u;
  st->hw.channel30=ch30;st->hw.channel31=ch31;st->hw.channel32=st->hw.channel33=077777u;
- st->next_period=85333.0/100.0;}
+ st->next_period = 85333.0 / 400.0;
+}
 
 static int interpreting(const fd_state *st){uint16_t z=agc_fixed_physical((agc_word)(st->s.words[5]&07777u),st->s.words[4],st->io.superbank);
  agc_word edop=(agc_word)(st->s.words[AGC_EDOP]&077777u);
@@ -98,12 +99,25 @@ uint16_t fd_point(const fd_state *st,int *interp){const agc_word *w=st->s.words;
  return z<02000u?agc_erasable_point(z,w[3]):agc_fixed_physical(z,w[4],st->io.superbank);}
 unsigned long fd_centiseconds(const fd_state *st){return ((unsigned long)(st->s.words[024]&037777u)<<14)|(st->s.words[025]&037777u);}
 
-uint8_t fd_boundary(fd_state *st){
- while(st->mct>=st->next_period){agc_word c=st->hw.channel4;
-  rk_timer_tick(&st->s,&st->hw,&st->pending);++st->periods;st->next_period+=85333.0/100.0;
-  if(st->downrupt&&((c&037777u)>>6)!=((st->hw.channel4&037777u)>>6))st->pending|=RK_RUPT_BIT(RK_RUPT_DOWN);}
- st->p.fixed_data=rope_data;st->p.operands=0;st->p.operand_count=0;
- return rk_rupt_take(&st->p,&st->s,st->io.superbank,st->io.interrupt_enabled,&st->pending);}
+uint8_t fd_boundary(fd_state *st)
+{
+    uint8_t got;
+    st->p.fixed_data = rope_data;
+    st->p.operands = 0;
+    st->p.operand_count = 0;
+    while (!(got = rk_rupt_take(&st->p, &st->s, st->io.superbank, st->io.interrupt_enabled,
+                                &st->pending)) &&
+           st->mct >= st->next_period) {
+        agc_word c = st->hw.channel4;
+        rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
+        if (st->phase == RK_PHASE_T5) ++st->periods;
+        st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
+        st->next_period += st->phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
+        if (st->downrupt && ((c & 037777u) >> 6) != ((st->hw.channel4 & 037777u) >> 6))
+            st->pending |= RK_RUPT_BIT(RK_RUPT_DOWN);
+    }
+    return got;
+}
 
 static void gap(fd_state *st,uint16_t key,uint8_t interp,uint8_t refused,const char *by,int arrival){unsigned i;
  for(i=0;i<st->ngaps;++i)if(st->gaps[i].key==key&&st->gaps[i].interp==interp&&st->gaps[i].by==by){st->gaps[i].arrivals+=(unsigned)arrival;++st->gaps[i].slots;return;}

@@ -108,14 +108,18 @@ int main(int argc,char **argv){unsigned mission,i;uint32_t n,h;const char *show=
  for(n=0;n<RR_TIMER_CASES;++n){agc_word t[6],ch13;int16_t r[6];uint16_t req=0;
   rr_timer_input(n,t,&ch13);for(i=0;i<6u;++i)r[i]=(int16_t)t[i];
   machine=baseline;
-  /* agc_engine's scaler order over SCALER1 0-037: TIME5 at 000, TIME4 at
-   * 010, TIME1/TIME2 and TIME3 at 020, TIME6 on every odd count. */
-  for(i=0;i<32u;++i){
-   if(i==020u){if(CounterPINC(&r[1]))CounterPINC(&r[0]);if(CounterPINC(&r[2]))req|=1u<<3;}
-   if(i==000u&&CounterPINC(&r[4]))req|=1u<<2;
-   if(i==010u&&CounterPINC(&r[3]))req|=1u<<4;
-   if((ch13&040000u)&&(i&1u)&&CounterDINC(&machine,0,&r[5])){req|=1u<<1;ch13&=037777u;}}
-  h=2166136261u;for(i=0;i<6u;++i)h=rr_mix(h,(uint16_t)((unsigned)r[i]&077777u));
+  /* agc_engine's scaler order over SCALER1 001-040 (040 is the next
+   * period's 000): TIME4 at 010, TIME1/TIME2 and TIME3 at 020, TIME5 at
+   * 000, TIME6 on every odd count. The requests after 010 and 020 too, so
+   * the digest holds the order rk_timer_phase raises them in. */
+  h=2166136261u;
+  for(i=1;i<=32u;++i){unsigned c=i&037u;
+   if(c==020u){if(CounterPINC(&r[1]))CounterPINC(&r[0]);if(CounterPINC(&r[2]))req|=1u<<3;}
+   if(c==000u&&CounterPINC(&r[4]))req|=1u<<2;
+   if(c==010u&&CounterPINC(&r[3]))req|=1u<<4;
+   if((ch13&040000u)&&(c&1u)&&CounterDINC(&machine,0,&r[5])){req|=1u<<1;ch13&=037777u;}
+   if(c==010u||c==020u)h=rr_mix(h,req);}
+  for(i=0;i<6u;++i)h=rr_mix(h,(uint16_t)((unsigned)r[i]&077777u));
   h=rr_mix(h,req);h=rr_mix(h,ch13);
   printf("T %u %08x\n",(unsigned)n,(unsigned)h);}
  return 0;

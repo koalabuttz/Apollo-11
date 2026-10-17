@@ -8,9 +8,11 @@ uint8_t apollo_ov2_services_compatible(uint16_t module,uint16_t resident) {
 static uint16_t run_slot_address(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_ADDRESS : APOLLO_OV2_JOB_ADDRESS;
 }
+#if !defined(APOLLO_OV2_STORE_VERIFIED) || defined(RK_STEP_PROFILE)
 static uint16_t run_slot_bytes(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES : APOLLO_OV2_JOB_BYTES;
 }
+#endif
 uint16_t apollo_ov2_slot_address(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK || slot==APOLLO_OV2_SLOT_PINNED_TASK ? APOLLO_OV2_TASK_ADDRESS :
            slot==APOLLO_OV2_SLOT_FIXED ? APOLLO_OV2_FIXED_ADDRESS :
@@ -64,6 +66,31 @@ static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     return APOLLO_OV2_OK;
 #endif
 }
+#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+/* A verified store (apollo_reu_store_verify at open checked every present
+ * entry's directory fields, header rules and checksum, and the runtime's
+ * verify flag is 0): one fetch of the whole module, and only the id is
+ * checked, that the directory entry and the bytes fetched agree. */
+static enum apollo_ov2_status load(apollo_ov2_runtime *r, const apollo_ov2_dirent *d)
+{
+    uint8_t *slot = r->slot[d->slot]; /* the caller refused slot classes 2 to 4 */
+    uint16_t bss_offset, bss_bytes;
+    if (!slot) return APOLLO_OV2_BAD_DIRECTORY;
+    /* From here the slot is being overwritten: it is invalid until done. */
+    r->loaded[d->slot] = 0;
+    if (!r->store.fetch(r->store.user, d, 0, slot, d->bytes)) return APOLLO_OV2_IO_ERROR;
+    if (check_header(r, d, slot)) return APOLLO_OV2_BAD_HEADER;
+    bss_offset = (uint16_t)(le16(slot + APOLLO_OV2_H_BSS) - run_slot_address(d->slot));
+    bss_bytes = le16(slot + APOLLO_OV2_H_BSS_BYTES);
+    while (bss_bytes) {
+        slot[bss_offset++] = 0;
+        --bss_bytes;
+    }
+    r->loaded[d->slot] = d->id;
+    r->selectors[d->slot] = d->selectors;
+    return APOLLO_OV2_OK;
+}
+#else
 static enum apollo_ov2_status load(apollo_ov2_runtime *r,const apollo_ov2_dirent *d) {
     uint8_t *slot=r->slot[d->slot],*header=r->header;   /* the caller refused slot classes 2 to 4 */
     uint16_t i,bss_offset,bss_bytes,crc=0xffffu;
@@ -88,6 +115,7 @@ static enum apollo_ov2_status load(apollo_ov2_runtime *r,const apollo_ov2_dirent
     r->loaded[d->slot]=d->id; r->selectors[d->slot]=d->selectors;
     return APOLLO_OV2_OK;
 }
+#endif
 static enum apollo_ov2_status fail(apollo_ov2_runtime *r,enum apollo_ov2_status status) {
     r->fault=(uint8_t)status; r->busy=0; return status;
 }

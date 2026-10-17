@@ -517,6 +517,15 @@ def resident_modules(cc, host_cc, m, resolver, library, pin_task=False):
     return prgs
 
 
+def flight_undo_area():
+    """The REU range the five undo modules stash their entry image in
+    (include/flight_undo.h FLIGHT_UNDO_REU, FLIGHT_UNDO_BYTES)."""
+    text = (ROOT / 'include/flight_undo.h').read_text()
+    base, size = (int(re.search(rf'#define {name}\s+(0x[0-9A-Fa-f]+)ul', text).group(1), 16)
+                  for name in ('FLIGHT_UNDO_REU', 'FLIGHT_UNDO_BYTES'))
+    return base, base + size
+
+
 def add_rope(m):
     """Put the mission's rope image where include/rope_image.h reads it on the
     C64 (the top of a 2 MB REU, above the store), for the modules whose
@@ -529,7 +538,14 @@ def add_rope(m):
     if len(image) > base and any(image[base:]):
         raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
     image += bytes(2 * 1024 * 1024 - len(image))
-    for k, w in enumerate(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin')):
+    words = list(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin'))
+    undo, undo_end = flight_undo_area()
+    if base + 2 * len(words) > undo or undo_end > len(image) - SCRATCH_BYTES:
+        raise SystemExit(f'{m}: the rope image ({base:#x}-{base + 2 * len(words):#x}), the flight undo area '
+                         f'({undo:#x}-{undo_end:#x}) and the load check scratch ({len(image) - SCRATCH_BYTES:#x}) overlap')
+    if any(image[undo:undo_end]):
+        raise SystemExit(f'{m}: the store reaches the flight undo area at {undo:#x}')
+    for k, w in enumerate(words):
         image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
     reu.write_bytes(image)
     manifest = ROOT / OUT / f'{m}-manifest.json'
@@ -733,15 +749,17 @@ def hot_full(t):
 # The resolver sends the interpreter's fixed entry points (logical Z, include/
 # interp_runtime_tables.h) to $0A01; a table or the resident that holds one
 # of them keeps it. CHANG2 is left out: the Executive's job switch, where the
-# interpreter hands back.
+# interpreter hands back. RTB_RETURN is BHIZ +1 (TCF DANZIG) in bank 01,
+# as (FB, Z): where an RTB routine's return lands after a basic table's
+# SWRETURN.
 INTERP_MODULE = 0x0A01
 INTERP_POINTS = {
     'lm': {'NEWOPS': 0o6070, 'DANZIG': 0o6061, 'NOIBNKSW': 0o6063, 'DIRADRES': 0o6106, 'DODLOAD': 0o6460,
            'DODLOADX': 0o6144, 'DOVLOAD': 0o6463, 'DOVLOADX': 0o6466, 'B15BITADR': 0o6252, 'GOTO': 0o6646,
-           'SWRETURN': 0o4631, 'INTPRET': 0o6037},
+           'SWRETURN': 0o4631, 'INTPRET': 0o6037, 'RTB_RETURN': (0o2000, 0o2453)},
     'cm': {'NEWOPS': 0o6037, 'DANZIG': 0o6030, 'NOIBNKSW': 0o6032, 'DIRADRES': 0o6055, 'DODLOAD': 0o6427,
            'DODLOADX': 0o6113, 'DOVLOAD': 0o6432, 'DOVLOADX': 0o6435, 'B15BITADR': 0o6221, 'GOTO': 0o6615,
-           'SWRETURN': 0o4675, 'INTPRET': 0o6006}}
+           'SWRETURN': 0o4675, 'INTPRET': 0o6006, 'RTB_RETURN': (0o2000, 0o2500)}}
 
 
 # Files whose step machines stop at NEWOPS under -DAGC_FLIGHT_INTERPRETER
@@ -778,10 +796,10 @@ def interpretive_table(t):
 # does not key.
 FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
                        'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)],
-                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
+                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
                        'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
-                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)],
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)],
                        'cm_imu_calibration': [['-DCM_IMU_CALIBRATION_FLIGHT_PART=%d' % j] for j in (1, 2, 3)]}}
 
 
@@ -1613,7 +1631,7 @@ def main():
                 if ('b', k) in resident_keys}
         interp_records, interp_kept = [], {}
         for name, z in INTERP_POINTS[m].items():
-            bank = 0o6000 if z >= 0o6000 else 0o4000
+            bank, z = z if isinstance(z, tuple) else (0o6000 if z >= 0o6000 else 0o4000, z)
             physical = (bank >> 10) * 1024 + (z & 0o1777)
             if not interp_prgs or (bank, z) in taken or physical in held:
                 interp_kept[name] = 'resident' if physical in held else 'table' if (bank, z) in taken else 'unlinked'
@@ -1640,6 +1658,13 @@ def main():
               f'{rope:#x} ({rope - image:+d} bytes left)')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
+        # A class-4 module holds the task slot's $E000 from boot: a task-slot
+        # load would overwrite it, and overlay_v2.c load() does not check
+        # (#426), so the store must carry none.
+        if any(mod['slot'] == 4 for mod in store['modules']):
+            task = [f'0x{mod["id"]:04x}' for mod in store['modules'] if mod['slot'] == 1]
+            if task:
+                raise SystemExit(f'{m}: task-slot modules {", ".join(task)} in a store with a class-4 module')
         link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
                         {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])}
                         | {k for ps in parts.values() for p in ps for v in p.values() for k in v},

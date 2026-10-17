@@ -86,7 +86,7 @@ module's 7.8 KB.
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$CBFF` | Slot class 3: pinned modules. Boot loads the store's class-3 module once by plain DMA, verifies it, zeroes its BSS and runs its main once to build its tables; from then on the resident only calls its routines directly (`rk_direct`, before the job and task slots). No resolver record names it, and a run never loads it. Before boot finishes, `$C100..$C1FF` is the store-verify scratch; test programs without a pinned module use the page for mailboxes | 3,072 |
-| `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_INVALID_ACTION`) | 1,024 |
+| `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_OUT_OF_SCOPE`: a stop, not the TC trap's restart) | 1,024 |
 | `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
 | `$E000..$FFF9` | Task slot, or slot class 4: the pinned task region. A store with a class-4 module keeps this RAM for it: boot loads it once by plain DMA, verifies it and zeroes its BSS, and runs no main (the class-3 module's table list names its tables, so it is only called directly). Such a store has no task-slot module (the flight resident's null module 0x01E0, which only the load check calls, stays out of it too; the boundary-word table it once carried now ends the store image, `overlay_v2_pack.py --tail`): every task module links for the job slot, and a task run evicts the job module between steps. No resolver record names the class-4 module, and a run never loads it | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
@@ -179,7 +179,12 @@ of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
 module's header and CRC16-CCITT and the resolver's order and targets. Per-load
 CRC is off in the REU build, because a bitwise CRC costs about 250 cycles per
 byte (four seconds for a full slot). A disk-backed store keeps per-load
-verification on.
+verification on. A verified store (`APOLLO_OV2_STORE_VERIFIED`, the flight
+resident; profile builds excepted) loads a module with one DMA straight into
+its slot and checks only its id: the boot verify already checked the
+directory fields, the header rules and the checksum, so the separate header
+fetch, its compare and the per-load CRC code are not linked (about 600 B of
+resident, and about 3,200 cycles less per load).
 
 ### Disk layout
 
