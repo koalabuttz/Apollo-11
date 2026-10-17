@@ -105,6 +105,25 @@ P52 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '13500:tools/flight_scenarios/cm-p52-star2.load'}
 P52_KEYS = ('@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E'
             '@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E')
+# cm-p23: cislunar midcourse navigation in translunar coast (24:30 GET),
+# the load at 20 s (tools/flight_scenarios/cm_p23.py: the CSM 180,000 km
+# out on a two-body TLI ellipse, the CMC's state vector 76 km off it, the
+# shaft axis on the earth's near horizon toward star 2, the W matrix and
+# horizon altitude pads). Optics to CMC at 40 s; V37E23E; V25 on V05N70
+# loads star 02, no landmark, earth near horizon (00110), proceed; ENTER
+# on V50N25 00202 (no auto maneuver: the attitude is held); R57's V59:
+# the switch to MANUAL, the star line on the landmark line (the cal load:
+# trunnion 0.011 degrees, the bias), MARK, proceed on V06N87; R52 with
+# the switch on CMC; MANUAL again, the star on the horizon (the mark
+# load: the trunnion the true trajectory gives), MARK; proceed on V50N25
+# 00016 and V05N71; INCORP1 shows the update on V06N49 (about 20 km in
+# position); proceed incorporates it, then P00.
+P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,'
+                      '16500:tools/flight_scenarios/cm-p23-mark.load'}
+P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
+            '@20500V33E@25000V33E@27000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
 # load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
 # Base facing west 13 degrees left, the landing REFSMMAT, the platform
@@ -128,6 +147,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
+          ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
