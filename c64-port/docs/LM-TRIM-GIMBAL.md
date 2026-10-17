@@ -70,6 +70,21 @@ the program has none. The tests' program reads `gts_ca_fixed`
 `make test-lm-trim-gimbal`. (The table was in the routine itself until
 the flight store: 6 KB of it kept GTS's module over the 16 KB job slot.)
 
+The calls are routed at compile time through `include/agc_fast_redirect.h`,
+as in the other DAP files (`docs/LM-TJET-LAW.md`). An operand that is a plain
+erasable cell under EBANK6 goes to the `agc_fast_ops` helper of the same name
+(`include/agc_fast_ops.h`, or `include/agc_fast_window.h` for the EBANK6
+window). Any other operand, such as `INDEX QRCNTR` cells, central registers and
+SR, goes to a one-argument wrapper of the `agc_image_ops` helper
+(`include/agc_image_thin.h`). Both have the `agc_image_ops` effect
+(`tools/agc_fast_ops_differential.py`, `make test-agc-fast-ops`). Every check
+below runs this form, and `-DLM_TG_GENERIC` builds the same source on
+`agc_image_ops` alone. On the fixed flight image one GTS call (both axes, to
+the DTCB to CLOSEOUT) takes about 97K 6502 cycles instead of 191K. That is the
+mos-sim mean of the first 64 GTS cases at `-Oz`. In the LM P63 descent window
+in VICE, GTS ran 7 times at 192K and was the costliest routine
+(lane-e/lm-p63-profile-dap.md in the project files).
+
 ## Verification
 
 `tests/lm_trim_gimbal_cases.c` builds 16,384 cases, 4,096 per entry. Each

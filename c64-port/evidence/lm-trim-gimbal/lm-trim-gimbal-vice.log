@@ -1,3 +1,3 @@
-lm-trim-gimbal.prg sha256 e1f79589f9c6a23a61daafbfea5f703e69fcb37816518e6ebda2f8aa0b49b4d3 heap_start $beac
-lm-trim-gimbal: 256 C64 rows (16 cover every entry, outcome, the 77 counted paths and the 324 edges of every linked source the host takes)
+lm-trim-gimbal.prg sha256 cb94a740a77ae8afac94f5ccb97189584e0b1589cd9e7dc7a8995c6f879f702f heap_start $afeb
+lm-trim-gimbal: 256 C64 rows (18 cover every entry, outcome, the 77 counted paths and the 378 edges of every linked source the host takes)
 PASS: VICE PAL lm-trim-gimbal.prg: 256 checks, 0 failures
