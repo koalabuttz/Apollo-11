@@ -640,6 +640,22 @@ port) runs one mission:
    and V37E00E end it in P00. Two yaAGC hardware models stop under the
    frozen clock for it (section 10): the optics drive, which zeroes CDUS
    and CDUT, and the gyro drive, which empties GYROCMD.
+   `lm-p57`: the lunar-surface alignment at 103:40 GET, about 55 minutes
+   after Apollo 11 landed at 0.674 N, 23.473 E, on Rigel (12) and Navi (3).
+   There is no core this late, so lm_p57.py builds one: lm-p57.load (the
+   landing REFSMMAT, the platform drifted 0.021, -0.014 and 0.017 degrees
+   from it, the LM on the surface yawed 13 degrees left of the approach
+   azimuth, SURFFLAG and LMOONFLG set, RLS, GSAV, TEPHEM and the AOT detent
+   pads) and lm-p57-star1.load and lm-p57-star2.load, the CDUs at each
+   mark, since the moon turns the LM under the platform. V37E57E, option 3,
+   technique 2 (two stars), V21 star codes; R59 picks detents 6 and 4
+   itself and its cursor and spiral angles for Rigel agree with
+   lm_p57.py's to 0.002 degrees. Each mark is the key x (channel 16 bit 3,
+   the AOT X MARK, and KEYRUPT2), then V21/V22 load the cursor and spiral
+   lm_p57.py computed; SURFSTAR, then N05 shows 0.00 and N93 shows
+   -0.021, +0.012 and -0.019 degrees, the drift taken out; V50N25 00014,
+   V34 and V37E00E end it in P00. The keys y and j are the Y MARK
+   (bit 4) and MARK REJECT (bit 5).
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
