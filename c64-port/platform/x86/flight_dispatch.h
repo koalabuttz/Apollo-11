@@ -43,8 +43,10 @@ typedef struct {
     uint8_t downrupt;
     /* The virtual AGC clock, in machine cycles (85,333 1/3 a second): each
      * routine adds its cost (fd_cost); every 853 1/3 is one clock period,
-     * run at the next boundary. */
-    double mct, next_period;
+     * in three steps (rk_timer_phase: 2.5, 2.5 and 5 ms), run at the next
+     * boundary. */
+    double mct, next_period; /* next_period: the end of the next clock step */
+    uint8_t phase;           /* that step (rk_timer_phase) */
     unsigned long periods, steps, slots;
     fd_gap gaps[FD_GAPS];
     unsigned ngaps;
@@ -61,8 +63,10 @@ extern const unsigned fd_table_count;
 /* Cold start at GOJAM (Z 04000, interrupts enabled, input channels 30-33 as
  * given, everything else zero). The rope must be loaded (apollo_rope_load). */
 void fd_init(fd_state *st, uint8_t mode, agc_word ch30, agc_word ch31);
-/* The clock periods due (rk_timer_tick each), then rk_rupt_take; returns
- * the interrupt it took (0 for none). */
+/* The clock steps due (rk_timer_phase each), with rk_rupt_take before
+ * each, as the flight resident's rk_rupts: a request that can be taken is
+ * taken before the later steps raise theirs. Returns the interrupt it took
+ * (0 for none). */
 uint8_t fd_boundary(fd_state *st);
 /* One routine (or one interpreter slot) from the point the state is at.
  * EXEC_UNMAPPED: a basic point with no routine (the program stops). */

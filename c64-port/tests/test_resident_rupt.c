@@ -6,7 +6,8 @@
  * digest per block of RR_BLOCK cases) recorded.
  * Entry: which request agc_engine takes before the instruction at Z and,
  * when it takes one, Z, ZRUPT, BRUPT, the requests left and InIsr. Timers:
- * one 10 ms period of TIME1-TIME6, the requests it raises and channel 13.
+ * one 10 ms period of TIME1-TIME6 in its three steps, the requests raised
+ * after each and channel 13.
  * The word at Z comes from the unmodified rope
  * (evidence/fixed-data-<m>-original.rope.bin) through program->fixed_data.
  * Other vectors (tests/resident_vector_cases.h): the run through the
@@ -103,9 +104,14 @@ int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-d
   ++checks;}
  for(n=0;n<RR_TIMER_CASES;++n){static apollo_overlay_state s;agc_word t[6];agc_hardware hw={0};uint16_t pending=0;
   rr_timer_input(n,t,&hw.channel13);for(i=0;i<6u;++i)s.words[024u+i]=t[i];
-  rk_timer_tick(&s,&hw,&pending);
+  h=RR_BASIS;
+  /* The period's three steps, with the requests after the first two. */
+  rk_timer_phase(&s,&hw,&pending,RK_PHASE_T4);h=rr_mix(h,pending);
+  rk_timer_phase(&s,&hw,&pending,RK_PHASE_T3);h=rr_mix(h,pending);
+  rk_timer_phase(&s,&hw,&pending,RK_PHASE_T5);
   for(i=1;i<=10u;++i)if(pending>>i&1u)++raised[i];
-  h=RR_BASIS;for(i=0;i<6u;++i)h=rr_mix(h,s.words[024u+i]);h=rr_mix(h,pending);h=rr_mix(h,hw.channel13);
+  for(i=0;i<6u;++i)h=rr_mix(h,s.words[024u+i]);
+  h=rr_mix(h,pending);h=rr_mix(h,hw.channel13);
   block=rr_fold(block,h);
   if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.timer[n/RR_BLOCK]){++failures;fprintf(stderr,"timer cases %u-%u differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n);}block=RR_BASIS;}}
  printf("%s: resident-rupt %s: %u entry cases (%u taken; not taken: %u nothing pending, %u in an interrupt, %u inhibited, %u overflow in A, %u RELINT/INHINT/EXTEND at Z), "

@@ -9,6 +9,12 @@
 #include "lm_t6rupt_routines.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"
+#ifdef WLE_KERNEL
+#include "resident_kernel.h"
+/* Set: kinds 2 and 3 run DLY2 -1 in the thin resident kernel's service
+ * table (src/{lm,cm}_kernel.c) in place of the certified exec routines. */
+int wle_kernel;
+#endif
 /* WLE_ONLY=k (the C64 programs) builds only kind k's generator and tables. */
 #ifdef WLE_ONLY
 #define HAS(k) (WLE_ONLY==(k))
@@ -147,10 +153,18 @@ unsigned wle_run_base(apollo_overlay_state *s,void *io,agc_hardware *hw,uint8_t 
   case 1:t[0]=cm_exec_routines;p.basic_count=1;p.operands=cm_exec_site_table(&p.operand_count);break;
 #endif
 #if HAS(2)
-  case 2:t[0]=lm_service_routines;t[1]=lm_exec_task_routines;p.basic_count=2;p.operands=lm_service_site_table(&p.operand_count);break;
+  case 2:t[0]=lm_service_routines;t[1]=lm_exec_task_routines;p.basic_count=2;p.operands=lm_service_site_table(&p.operand_count);
+#ifdef WLE_KERNEL
+   if(wle_kernel)t[1]=lm_kernel_task_routines;
+#endif
+   break;
 #endif
 #if HAS(3)
-  case 3:t[0]=WLE_CM_SERVICE;t[1]=WLE_CM_EXEC;p.basic_count=2;p.operands=cm_service_site_table(&p.operand_count);break;
+  case 3:t[0]=WLE_CM_SERVICE;t[1]=WLE_CM_EXEC;p.basic_count=2;p.operands=cm_service_site_table(&p.operand_count);
+#ifdef WLE_KERNEL
+   if(wle_kernel)t[1]=cm_kernel_routines;
+#endif
+   break;
 #endif
 #if HAS(4)
   case 4:t[0]=lm_t6rupt_routines;p.basic_count=1;break;

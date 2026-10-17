@@ -109,16 +109,24 @@ ASan/UBSan.
 `src/resident_rupt.c` (`include/resident_rupt.h`) does what yaAGC's
 `agc_engine.c` does for the timers and the interrupt entry:
 
-- `rk_timer_tick` is one 10 ms scaler period. TIME1 counts, and its
-  overflow counts TIME2. TIME3, TIME4 and TIME5 count, and an overflow
-  requests T3RUPT, T4RUPT or T5RUPT. The scalers count AGC time with
-  them: SCALER1 (channel 4) by 32, as it counts 3,200 times a second, and
-  SCALER2 (channel 3) on its overflow. Before scaled time the C64 never
-  advanced them at all. While channel 13 bit 15 is set, TIME6
-  takes its sixteen 1/1600 s DINCs. +1 and -1 step to -0 through the one's
-  complement adder, and a DINC of ±0 requests T6RUPT and clears the bit.
-  T6RUPT therefore lands at the end of the 10 ms period, not at its 0.625
-  ms step.
+- `rk_timer_phase` is one of the three steps of a 10 ms scaler period,
+  at the SCALER1 counts where yaAGC steps each counter, and
+  `rk_timer_tick` is all three:
+  - 2.5 ms (SCALER1 010): TIME4 counts, and its overflow requests T4RUPT.
+  - 5 ms (020): TIME1 counts, and its overflow counts TIME2. Then TIME3
+    counts, and its overflow requests T3RUPT.
+  - 10 ms (040, the next period's 000): TIME5 counts, and its overflow
+    requests T5RUPT.
+
+  So when TIME4 and TIME3 overflow in one period, T4RUPT is requested
+  first, as on the AGC, though T3RUPT outranks it (#511). The scalers
+  count AGC time with them: SCALER1 (channel 4) by 8, 8 and 16, as it
+  counts 3,200 times a second, and SCALER2 (channel 3) on its overflow.
+  Before scaled time the C64 never advanced them at all. While channel 13
+  bit 15 is set, TIME6 takes its 1/1600 s DINCs, 4, 4 and 8. +1 and -1
+  step to -0 through the one's complement adder, and a DINC of ±0
+  requests T6RUPT and clears the bit. T6RUPT therefore lands at the end of
+  the step, not at its 0.625 ms DINC.
 - `rk_rupt_take` vectors the highest pending request when no interrupt is
   in progress, interrupts are enabled, A holds no overflow and the word at
   Z is not RELINT, INHINT or EXTEND. It sets ZRUPT = Z + 1, BRUPT = the word
@@ -126,12 +134,14 @@ ASan/UBSan.
   EB from 01400), or from fixed memory through `program->fixed_data`. A
   fixed word it cannot read takes nothing, and the request stays pending.
 
-The step calls both through `rk_rupts`. That consumes the ticks due
-since the last step, then tries the entry. Under the work clock (the
-flight default, below) a tick is due when the work the resident ran
-reaches the next 10 ms period; under the CIA wall clock (`RK_WALL_CLOCK=1`)
-it is one per CIA1 interrupt counted by `overlay_v2_irq.S`, at most
-`RK_TICK_LAG` of them (scaled time, below). T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
+The step calls both through `rk_rupts`. Under the work clock (the flight
+default, below) that takes each step due since the last, a step being due
+when the work the resident ran reaches it, and tries the entry before
+each: once it takes a request, the later steps wait for the next
+boundary, so their requests come after it. Under the CIA wall clock
+(`RK_WALL_CLOCK=1`) it consumes one whole period per CIA1 interrupt
+counted by `overlay_v2_irq.S`, at most `RK_TICK_LAG` of them (scaled time,
+below), then tries the entry. T3RUPT then runs entirely in the kernel: the 04014 lead-in, T3RUPT,
 each task due and TASKOVER, to RESUME.
 
 ### Scaled time
@@ -231,10 +241,13 @@ dispatch take wall time the AGC never spends, so the cap drops most ticks
 instead a work clock: AGC time advances by the work the resident ran.
 
 - Every routine is charged a calibrated MCT weight. `rk_work` counts the
-  MCT since the last tick, and one tick is 853⅓ MCT (periods 854, 853,
-  853, `RK_TICK_MCT(phase)`), taken at the next routine boundary. Nothing
-  is dropped, and module loads, IRQs and dispatch are not counted, so the
-  same state and inputs always give the same tick schedule.
+  MCT since the last clock step, and one tick is 853⅓ MCT in three steps
+  at 2.5, 5 and 10 ms (`RK_PHASE_MCT(phase)`, nine steps over three
+  periods: 214, 213, 427, 213, 213, 427, 213, 214, 426, so the periods
+  still end every 854, 853 and 853 MCT), each taken at the next routine
+  boundary. Nothing is dropped, and module loads, IRQs and dispatch are
+  not counted, so the same state and inputs always give the same tick
+  schedule.
 - Weights are per module, one byte (`FS_MCT`, 4-255): the module's total
   MCT over its total runs, from Lane B's shared calibration
   `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
@@ -244,9 +257,12 @@ instead a work clock: AGC time advances by the work the resident ran.
   `rk_module_env.scale`, and a module reports its routine count in
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it
-  hands back, so a tick is never more than one routine late.
+  hands back, so a clock step is never more than one routine late.
 - The self-check idle tables (`*_self_check_idle_routines`) carry weight
-  0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick. Without it
+  0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick, unless a
+  step on the way raises a request that is taken, which ends the idle
+  there (the rest is dropped, as the AGC leaves its idle loop for the
+  interrupt). Without it
   the AGC background fills each second with about 85,000 MCT of
   self-check, and the LM DAP hold ran at 221x real time. The LM idle
   module also packs the interbank tables (`CO_LOCATE` in
