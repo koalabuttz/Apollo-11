@@ -9,8 +9,8 @@
       "store": "tree"
     },
     "geometry-differential.log": {
-      "sha256": "e2198997c1ee33c2a8b8a27ec74bc142632da22f79c9daf8afb0545490878132",
-      "bytes": 5896,
+      "sha256": "437610e2553f37cab074aba153f375824873827005273cc050835a58331404b3",
+      "bytes": 5897,
       "store": "release"
     },
     "geometry-host.log": {
@@ -19,7 +19,7 @@
       "store": "release"
     },
     "geometry-proof.json": {
-      "sha256": "da5658e7b6afefaba8db732ffcfb9fe5e1969b9ab9a85d1e0d254f169c72a73b",
+      "sha256": "35d06ed3f53bdee6e04c90283c592e207c9ef78ea60a3e64aa042fbcc3a971df",
       "bytes": 12572,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "release"
     },
     "geometry-vice.log": {
-      "sha256": "bcadc5b60155432dde6fedb772abc8e1f70d35f756cc5d360e62bdce4d16d78f",
+      "sha256": "5a3926c75f534fe2b239c4170fbbf49e52d68ac4ac0492ad2ef1420ee6dc2ed6",
       "bytes": 1888,
       "store": "release"
     }

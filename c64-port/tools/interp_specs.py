@@ -603,9 +603,10 @@ SPECS = {
         # and SXTLOGIC's RTB run in DP mode.
         # SXTLOGIC as the native entry: its one caller is SXTNB's RTB PUSH,
         # so DANZIG finds LOC at the RTB's operand word (23,2004), BANKSET
-        # bank 23 and PUSH (0171) in EDOP.
+        # bank 23 (INTBIT15 040000, as NEWOPS leaves it for that bank) and
+        # PUSH (0171) in EDOP.
         'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
-                              SXTLOGIC={'0164': [0o2004], '0165': [0o46000 | e for e in range(8)], '0115': [0],
+                              SXTLOGIC={'0164': [0o2004], '0165': [0o46000 | e for e in range(8)], '0115': [0o40000],
                                         '0023': [0o171]},
                               # EARROT1-OVERADAY: OVFIND as the interpreter
                               # sets it (TS of an overflowed A: +-1), +0 in
