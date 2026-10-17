@@ -32,7 +32,7 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
 /* Further entries after those two are counter cells yaAGC's device models
  * empty (OPTX/OPTY under channel 14's drive bits): words the file never
  * addresses, so the run leaves them as the case set them. */
-struct stops{unsigned newops,nr,first[16],last[16],n,ext[64],nf,from_file[64],any,intpret,nd,device[8];};
+struct stops{unsigned newops,nr,first[64],last[64],n,ext[64],nf,from_file[64],any,intpret,nd,device[8];};
 static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nr;++i)if(p>=t->first[i]&&p<=t->last[i])return 0;return 1;}
 /* Physical fixed address of Z (0xfffe when Z is erasable; 0xffff is no stop). */
 static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;if(bank>=030u&&(machine.OutputChannel7&0100))bank+=8u;
@@ -99,7 +99,7 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
  if(rd32(f)!=0x32435249ul){fprintf(stderr,"bad case file\n");return 2;}
- for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>16u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
+ for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>64u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
   st[m].n=rd16(f);if(st[m].n>64u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);
   st[m].nf=rd16(f);if(st[m].nf>64u)return 2;for(i=0;i<st[m].nf;++i)st[m].from_file[i]=rd16(f);
   st[m].any=0;st[m].nd=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){unsigned j;st[m].any=1;st[m].intpret=st[m].from_file[i+1];

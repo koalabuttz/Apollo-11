@@ -903,19 +903,35 @@ SPECS = {
         # Q+2 (NEG) and TCQ (NEG +1): other files name them as Q+2 and TCQ,
         # which '@external' reads as register Q.
         # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
-        'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
-        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
-        # flight store chunked it into 13, each with the whole basic_run
-        # (docs/FLIGHT-PARTS.md).
-        'flight_parts': [0o3 * 1024 + 0o1000],
+        # UNIT+16 (SQRTSUB's return in UNIT) and SQRTSUB: UNIT's own entry
+        # states almost always overflow in VSQSUB, so these two carry the
+        # states that reach the root and the divides after it.
+        'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16', 'UNIT+16', 'SQRTSUB', 'OVERFLOW',
+                    # DVNORM's INDEX DVNORMCT; TC MAXTEST and UNIT's INDEX MPTEMP;
+                    # TCF MAXTEST -1 land in the DDOUBL chain before MAXTEST, or
+                    # (UNIT's large shift, SRDDV) at -21D.
+                    *['MAXTEST-%d' % k for k in range(1, 15)], 'MAXTEST-21'],
+        # Three C64 flight modules, cut at COSINE (00,3517) and fixed-fixed
+        # 07000: as one table the flight store chunked it into 13, each with
+        # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
+        # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
+        # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
+        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
                    'NEWMODE', 'TLOAD', 'TMODE', 'VMODE', 'DDV/BDDV', 'BUFZERO', 'SGNDVOVF', 'DVOVF', 'UNIT', 'SMALL2',
                    'LARGE', 'LARGE3', 'LARGE2', 'SMALL', 'UNITDV', 'UMPAC-', 'UMPAC+', 'ABS', 'COSINE', 'PRESINE',
-                   'SINE', 'SN1', 'VXV'],
+                   'SINE', 'SN1', 'VXV', 'OVF+', 'BUF-', 'BUF+', 'BUFPOS', 'BUFNEG', 'FINALDV', 'DSQSUB',
+                   'VSQSUB', 'SQRTSUB', 'ENDVXV', 'OVERFLWZ', 'OVERFLWY', 'VROTATEX', 'COMP', 'MPAC-', 'MPAC+', 'SQRTNEG', 'ZEROANS',
+                   'SMPAC+', 'FIXROOT', 'ENDDOT', 'DCOMP', 'DVNORM', 'SQRTABRT', 'SRTEST',
+                   'OVERFLOW', 'BUFNORM', 'SQRTNORM', 'SETOVF2', 'MAXTEST', 'BIASHI', 'GENDDV',
+                   '+DOWN', '-UP', 'ENDMAXDV', 'MAXDV', '-21D', '-1/2+2', 'ARGHI', 'TCQBNK00', 'ARGLO',
+                   'NORMTEST', 'SQRTNM2', 'SETOVF', 'LBUF2'],
         # The rest (dispatch, order bodies, DANZIG) is the compact core's.
         'inside_core': {'lm': 'src/lm_interp_core.c', 'cm': 'src/cm_interp_core.c'},
+        # SQRTABRT's alarm 1302 (POODOO1 in LM, POODOO in CM) never returns.
+        'noreturn': ('POODOO1', 'POODOO'),
         # NEG's INDEX Q; TC 2 is its last word (TC Q's skip never runs on).
         'fall_out': True,
         # INTRSM: LXCH BBANK, then TCF INTPRET +3 (fixed-fixed).
@@ -938,10 +954,25 @@ SPECS = {
         # After SQRTSUB, UNITDV returns to UNIT only on a zero component
         # (+0 high word, +-0 low): zero vectors in three of five cases, so
         # the UNITDV returns and the exit through VROTATEX run.
-        'joint_states': {'UNIT+16': [{}, {}, {'%o' % a: 0 for a in range(0o122, 0o130)},
+        'joint_states': {
+            # SQRTSUB's MPAC -1 (CCS leaves +0 for SQRTNEG) with MPAC +1 -0:
+            # the last exit of SQRTNEG's CCS MPAC +1 (TCF FIXROOT).
+            # And the largest argument (37777 37777): its root's DAS MPAC
+            # stays below 1, so the overflow exit (CAF POSMAX) is unreached.
+            'SQRTSUB': [{}, {}, {}, {'154': 0o77776, '155': 0o77777}, {}, {'154': 0o37777, '155': 0o37777}],
+            # DXCH MPAC then MAXTEST's CCS MAXDVSW +0: majors equal after the
+            # normalization, MAXDV's +2 (POSMAX quotient).
+            'MAXTEST-1': [{}, {'0': 0o20000, '130': 0o20000, '140': 0}],
+            'UNIT+16': [{}, {}, {'%o' % a: 0 for a in range(0o122, 0o130)},
                                      {'%o' % a: (0 if a % 2 == 0 else 0o77777) for a in range(0o122, 0o130)},
                                      {'%o' % a: (0o77777 if a == 0o123 else 0) for a in range(0o122, 0o130)}]},
         'states': {
+            # OVERFLOW: A the overflow (+1 or -1) of the sum just stored, L
+            # the component's offset (0 DP, 1, 3 or 5 from OVERFLWY/Z's
+            # XCH L).
+            'OVERFLOW': {'0': [1, 0o177776], '1': [0, 1, 3, 5]},
+            # MAXTEST's CCS MAXDVSW: 0 (the majors may be equal) or -1.
+            **{'MAXTEST-%d' % k: {'140': [0, 0o77776]} for k in range(1, 15)},
             # POWRSERS: A the coefficient table (erasable, ROOTPSRS's; not
             # 01400 up, which EBANK 0 puts over the central registers), L
             # N-1 (the callers' DCA MPAC +3 / +5).

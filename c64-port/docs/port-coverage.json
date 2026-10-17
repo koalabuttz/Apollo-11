@@ -43,7 +43,7 @@
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
-          "scope": "Native104-module C64 disk STARTP66\u2192guidance\u2192deferred mode/display jobs\u2192END/idle; keyboard bodies, recurrence and complete flight program still pending.",
+          "scope": "Native104-module C64 disk STARTP66→guidance→deferred mode/display jobs→END/idle; keyboard bodies, recurrence and complete flight program still pending.",
           "reviewed_entire_program": false
         },
         {
@@ -2454,7 +2454,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c, included by src/cm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures; interp-core-differential: the core against yaAGC on every compiled milestone's cases, 74,424 cases, 14 differ, all outside the contract below (measurement-inc's CM FAZB1 STOREs with WIXA and X1 far outside flight values), and 632 cases of lm-interpreter and cm-interpreter's own routines, 0 differ). Core contract: LOC starts an interpretive order (a GOTO or a Q that names an operand word of the file is refused, #224); indexed and push-down erasable addresses stay inside erasable (the core wraps them through the 10-bit erasable field where the AGC reads fixed memory or writes elsewhere; every flight path keeps them inside, docs/INTERPRETER-RUNTIME.md). (2) The basic subroutines other files call are generated routines (spec cm-interpreter, 'inside' segments BRANCH through VXV), canonical 2048-word image, entered at their original addresses and checked at entry by basic_sane() (FB the routine's bank, or any FB and SUPERBNK for fixed-fixed entries, so bank-00 routines need FB 0; EB, FB and BB coherent; interrupt enable 0 or 1; SUPERBNK bits only; on host and diagnostic builds every image word in 15 bits) or, at interpretive points, sane() (also NEWJOB, the VAC area one of the five): fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28. A run stops at Z where flow leaves the generated segments for the core's words (DANZIG, NEWOPS, ENDVXV, the OVERFLOW entries, SQRTSUB, DSQSUB, VSQSUB, VROTATEX, MAXTEST). Hot subroutines (static TC sites across the rope; the steward's per-pass list): TPAGREE (15), DMP (15), POLY (10), SHORTMP (8), BRANCH (7), ALSIGNAG (4), DMPSUB (4), MPACVBUF (3).",
+        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c, included by src/cm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures; interp-core-differential: the core against yaAGC on every compiled milestone's cases, 74,424 cases, 14 differ, all outside the contract below (measurement-inc's CM FAZB1 STOREs with WIXA and X1 far outside flight values), and 632 cases of lm-interpreter and cm-interpreter's own routines, 0 differ). Core contract: LOC starts an interpretive order (a GOTO or a Q that names an operand word of the file is refused, #224); indexed and push-down erasable addresses stay inside erasable (the core wraps them through the 10-bit erasable field where the AGC reads fixed memory or writes elsewhere; every flight path keeps them inside, docs/INTERPRETER-RUNTIME.md). (2) The basic subroutines other files call are generated routines (spec cm-interpreter, 'inside' segments BRANCH through VXV and every INTERPRETER segment their flow reaches: DDV's normalization and divide (OVF+, BUF-, BUF+, MPAC-, MPAC+, -1/2+2, LBUF2, BUFNORM, DVNORM, BUFPOS, BUFNEG, -21D, MAXTEST, GENDDV, the MAXDV paths, FINALDV), the squares and roots (DSQSUB, VSQSUB, SQRTSUB through ARGHI, ARGLO, NORMTEST and FIXROOT), ENDDOT, ENDVXV, SETOVF, OVERFLOW and its entries, VROTATEX, COMP and DCOMP), canonical 2048-word image, entered at their original addresses and checked at entry by basic_sane() (FB the routine's bank, or any FB and SUPERBNK for fixed-fixed entries, so bank-00 routines need FB 0; EB, FB and BB coherent; interrupt enable 0 or 1; SUPERBNK bits only; on host and diagnostic builds every image word in 15 bits) or, at interpretive points, sane() (also NEWJOB, the VAC area one of the five): fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28, SQRTSUB from any MPAC, OVERFLOW with A the overflow (+1 or -1) and L 0, 1, 3 or 5, and the DDOUBL chain before MAXTEST (MAXTEST-1 to -14 and -21, the targets of DVNORM's INDEX DVNORMCT; TC MAXTEST and UNIT's INDEX MPTEMP; TCF MAXTEST -1) with MAXDVSW 0 or -1. A run stops at Z only where flow leaves the generated segments for the core's words (DANZIG, NEWOPS) or at SQRTABRT's alarm 1302 (POODOO, which does not return): no compiled routine stops inside INTERPRETER's own basic code. Hot subroutines (static TC sites across the rope; the steward's per-pass list): TPAGREE (15), DMP (15), POLY (10), SHORTMP (8), BRANCH (7), ALSIGNAG (4), DMPSUB (4), MPACVBUF (3).",
         "external_continuations": [
           "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
           "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
@@ -2462,30 +2462,30 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-interpreter/cm-interpreter-source-map.json",
-            "sha256": "40818c5eccb11cb3c9a54fb98d9b19a1bb6011925a02fc4c728f4a1862e934ef"
+            "sha256": "54d751c16d6c7951e00a50feec5481f0cef1d9d1159d663d22bb5719e07a7a91"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-interpreter/cm-interpreter-proof.json",
-            "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722"
+            "sha256": "afd3a7d454aac12fa2d1958b4901abef53f7a873f245bafb43500a82ba2c10d8"
           },
           "executed_instruction_closure": {
             "path": "evidence/cm-interpreter/cm-interpreter-closure.json",
-            "sha256": "5498b72a88b4c4ee837aec329d4759c174d05e6509a2d9f08dabd16d74a47e5f"
+            "sha256": "01ac7805e97157a794ee9fc6db57919b5c3862fad76eb5938749f5c9c5b2fbab"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-interpreter/cm-interpreter-host.log",
-            "sha256": "6ef5c61acad4447061efba225e9298db9da64fadef7d84223f7be0cbbb116ac6"
+            "sha256": "bd2e0f3fecc6d90b8dea297ae08ff0b5ceed010362be99c3fa5b42ac7b65a792"
           },
           "c64_execution_results": {
             "path": "evidence/cm-interpreter/cm-interpreter-vice.log",
-            "sha256": "f3fb5fd443db4e7614bde1590442bbc7a143c04796c03d91a73b8bab1b73b513",
+            "sha256": "50189a8247319d2a151ca03a137cc9d1390afee29e7fe7dea587778de1e646bc",
             "vice_targets": {
-              "vice-cm-interpreter": 67
+              "vice-cm-interpreter": 101
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-interpreter/cm-interpreter-proof.json",
-            "sha256": "16eeaaf5983766d234facfff45db2cacf0586630f557ca9be3b408f79e441722"
+            "sha256": "afd3a7d454aac12fa2d1958b4901abef53f7a873f245bafb43500a82ba2c10d8"
           },
           "interpreter_core": {
             "flight": {
@@ -9518,7 +9518,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures; interp-core-differential: the core against yaAGC on every compiled milestone's cases, 74,424 cases, 14 differ, all outside the contract below (measurement-inc's CM FAZB1 STOREs with WIXA and X1 far outside flight values), and 632 cases of lm-interpreter and cm-interpreter's own routines, 0 differ). Core contract: LOC starts an interpretive order (a GOTO or a Q that names an operand word of the file is refused, #224); indexed and push-down erasable addresses stay inside erasable (the core wraps them through the 10-bit erasable field where the AGC reads fixed memory or writes elsewhere; every flight path keeps them inside, docs/INTERPRETER-RUNTIME.md). (2) The basic subroutines other files call are generated routines (spec lm-interpreter, 'inside' segments BRANCH through VXV), canonical 2048-word image, entered at their original addresses and checked at entry by basic_sane() (FB the routine's bank, or any FB and SUPERBNK for fixed-fixed entries, so bank-00 routines need FB 0; EB, FB and BB coherent; interrupt enable 0 or 1; SUPERBNK bits only; on host and diagnostic builds every image word in 15 bits) or, at interpretive points, sane() (also NEWJOB, the VAC area one of the five): fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28. A run stops at Z where flow leaves the generated segments for the core's words (DANZIG, NEWOPS, ENDVXV, the OVERFLOW entries, SQRTSUB, DSQSUB, VSQSUB, VROTATEX, MAXTEST). Hot subroutines (static TC sites across the rope; the steward's per-pass list): DMP (21 TC sites), TPAGREE (19), SHORTMP (10), BRANCH (10), POLY (7), DMPSUB (7), ALSIGNAG (5), MPACVBUF (4).",
+        "supported_domain": "Two parts. (1) The compact interpreter core (src/lm_interp_core.c; the $0A01 job slot and $0A02 $D000 extension on the C64) runs every interpretive word of the file from the rope image: its evidence is evidence/interpreter (interp-flight-vice: yaAGC P00 from Fresh Start, 240/240 interpreter arrivals through the flight resident in VICE; interp-core-fuzz: 100,000 cases against the verification interpreter, 0 differ; vice-interp-core: the flight build's slot records on a PAL C64, 181 checks, 0 failures; interp-core-differential: the core against yaAGC on every compiled milestone's cases, 74,424 cases, 14 differ, all outside the contract below (measurement-inc's CM FAZB1 STOREs with WIXA and X1 far outside flight values), and 632 cases of lm-interpreter and cm-interpreter's own routines, 0 differ). Core contract: LOC starts an interpretive order (a GOTO or a Q that names an operand word of the file is refused, #224); indexed and push-down erasable addresses stay inside erasable (the core wraps them through the 10-bit erasable field where the AGC reads fixed memory or writes elsewhere; every flight path keeps them inside, docs/INTERPRETER-RUNTIME.md). (2) The basic subroutines other files call are generated routines (spec lm-interpreter, 'inside' segments BRANCH through VXV and every INTERPRETER segment their flow reaches: DDV's normalization and divide (OVF+, BUF-, BUF+, MPAC-, MPAC+, -1/2+2, LBUF2, BUFNORM, DVNORM, BUFPOS, BUFNEG, -21D, MAXTEST, GENDDV, the MAXDV paths, FINALDV), the squares and roots (DSQSUB, VSQSUB, SQRTSUB through ARGHI, ARGLO, NORMTEST and FIXROOT), ENDDOT, ENDVXV, SETOVF, OVERFLOW and its entries, VROTATEX, COMP and DCOMP), canonical 2048-word image, entered at their original addresses and checked at entry by basic_sane() (FB the routine's bank, or any FB and SUPERBNK for fixed-fixed entries, so bank-00 routines need FB 0; EB, FB and BB coherent; interrupt enable 0 or 1; SUPERBNK bits only; on host and diagnostic builds every image word in 15 bits) or, at interpretive points, sane() (also NEWJOB, the VAC area one of the five): fixed-fixed entries under any FB and SUPERBNK, DMP and POLY returning to the mission's real TC sites (their ADRES and coefficient words read from the rope image), ADDRWD a VAC-relative or unswitched erasable operand, POWRSERS with A a coefficient table and L 0-5, the return after SQRTSUB with MPTEMP 0-28, SQRTSUB from any MPAC, OVERFLOW with A the overflow (+1 or -1) and L 0, 1, 3 or 5, and the DDOUBL chain before MAXTEST (MAXTEST-1 to -14 and -21, the targets of DVNORM's INDEX DVNORMCT; TC MAXTEST and UNIT's INDEX MPTEMP; TCF MAXTEST -1) with MAXDVSW 0 or -1. A run stops at Z only where flow leaves the generated segments for the core's words (DANZIG, NEWOPS) or at SQRTABRT's alarm 1302 (POODOO1, which does not return): no compiled routine stops inside INTERPRETER's own basic code. Hot subroutines (static TC sites across the rope; the steward's per-pass list): DMP (21 TC sites), TPAGREE (19), SHORTMP (10), BRANCH (10), POLY (7), DMPSUB (7), ALSIGNAG (5), MPACVBUF (4).",
         "external_continuations": [
           "The interpreter core: DANZIG, NEWOPS and the order bodies the generated code stops at, at Z",
           "The caller's return through Q (DMP and POLY past their inline words, BRANCH to Q, Q+1 or Q+2)"
@@ -9526,30 +9526,30 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-interpreter/lm-interpreter-source-map.json",
-            "sha256": "0d67bd3a833164bb2b811ac1aa2cb6fd97214a182870e2fbe6db713b8a706861"
+            "sha256": "062265fe660a6315995d8993f06672dad0b9ce81971f4de61a235297e7f9956c"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
-            "sha256": "d7b0c8a6894cbf626772b090fa1458fecaf1fa4abc9a428184551a2d077ff6f3"
+            "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-interpreter/lm-interpreter-closure.json",
-            "sha256": "df48cdbb61d4ec5d557596bb6b00f9b6353e58bc7bb3f9b948cbf4db95cc7572"
+            "sha256": "0caa2b641a1b74649816acb27b0af8e9fac95319ed3481a861d37361093a2705"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-interpreter/lm-interpreter-host.log",
-            "sha256": "6becbbcc7c845242728b5523a2b53c34095b5ceffd1f24746330e50a56bd7a81"
+            "sha256": "0d0f7bfe27d5e4e74759de87701c8258c2d97164442cd43791f2d191ff4f698f"
           },
           "c64_execution_results": {
             "path": "evidence/lm-interpreter/lm-interpreter-vice.log",
-            "sha256": "6eeade396ca30937d55cfbb61bdfaf48950dcc4a07968a1b67eb886ab92c73df",
+            "sha256": "3cb5d4d542401890b2f4dc07aca06d6ca4f420f66e0ea45b1aec33d6e5172a72",
             "vice_targets": {
-              "vice-lm-interpreter": 71
+              "vice-lm-interpreter": 105
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-interpreter/lm-interpreter-proof.json",
-            "sha256": "d7b0c8a6894cbf626772b090fa1458fecaf1fa4abc9a428184551a2d077ff6f3"
+            "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f"
           },
           "interpreter_core": {
             "flight": {
