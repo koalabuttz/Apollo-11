@@ -4,13 +4,13 @@
   "release": "evidence-lm-p20-p25",
   "files": {
     "lm-p20-p25-c64-cover.json": {
-      "sha256": "c6165b2b213bb5081893df0bc55b7858fa2ef743ce3d31f7118de1cf2ce49cd6",
-      "bytes": 13937,
+      "sha256": "9279fadf9d2464e14d233294571e5c4e288e9b028878a341174b7470bf6704c6",
+      "bytes": 13965,
       "store": "tree"
     },
     "lm-p20-p25-differential.log": {
-      "sha256": "fb08ecd4d836518ef7f4b8ee26c945bdc59a93886074cdf028f1775fb45520df",
-      "bytes": 55848,
+      "sha256": "503d626c81943ff71bba4f35f94c7199bfc22bb72219bfa2c9bbbe9b6e72e799",
+      "bytes": 56007,
       "store": "release"
     },
     "lm-p20-p25-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "lm-p20-p25-proof.json": {
-      "sha256": "64432a78b795ef2cfbdde9d2b37e53da8ee2afc9612859c4a0f696b51072a408",
-      "bytes": 106530,
+      "sha256": "28740025a28ccc72f86b5133277bc3d8ed4955fdcbf39bed33e1427aeb7ae616",
+      "bytes": 107101,
       "store": "tree"
     },
     "lm-p20-p25-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "release"
     },
     "lm-p20-p25-vice.log": {
-      "sha256": "eaba9ae6f3a36164441a39ca60b892d766bd88b72883ff0e2f534dcd8fa0a60c",
-      "bytes": 4059,
+      "sha256": "bc7d7340b13040adb26b8a904586af03811e81d23872659a1b9b9e9f6e27dcd6",
+      "bytes": 4210,
       "store": "release"
     }
   }

@@ -4492,7 +4492,12 @@ SPECS = {
                    # (RROUT's loop index, 1 then 0, at MAGSUB's returns into
                    # RROUTLIM and SETRRCTR: INDEX ITEMP2 picks LASTYCMD or
                    # LASTXCMD)
-                   'RROUT2+6': {'ITEMP2': [0, 1]}, 'SETRRCTR': {'ITEMP2': [0, 1]},
+                   # (and ITEMP1, the command TANG it limits: past 384 either
+                   # way at RROUTLIM's MAGSUB +1 return, within it at SETRRCTR;
+                   # reviewer 1, #545)
+                   'RROUT2+6': {'ITEMP2': [0, 1],
+                                'ITEMP1': [0o601, 0o77176, 0o1000, 0o76777, 0o37777, 0o40000, 'any']},
+                   'SETRRCTR': {'ITEMP2': [0, 1], 'ITEMP1': [0, 1, 0o600, 0o77177, 0o77776, 'any']},
                    **{k: {'0046': [0o70716, 0o77776, 0o60000, 0o40001, 0o37776, 0o33000, 0o30000, 'any']} for k in ('VELCHK', 'LRHEIGHT')},
                    # (SPSIN's and SPCOS's A at their other returns, as at
                    # 32,2662: TS and MP only)
@@ -4534,6 +4539,17 @@ SPECS = {
                              + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
         'channel_inputs': True,
         'resume_flow': True,
+        # Flowed CHANG2 resumes whose arms the program's own runs rarely
+        # take, half the cases each ('flow' keeps the reached value;
+        # reviewer 1, #545): R22LEM96's BZE (24,2606) with MPAC 0, the N49
+        # display not yet answered, so BZE -3 reads N49FLAG again;
+        # LRS22.1's DSU BMN (32,2522) with the angle between the boresights
+        # below THREEDEG in MODE DP, the good-data exit to NORMEXIT; V67's
+        # BOV (30,2032) with OVFIND clear, the RMS values in range.
+        'resume_states': {'24,2606': {'0154': [0, 'flow'], '0155': [0, 'flow']},
+                          '32,2522': {'0154': [0, 1, 0o100, 0o207, 'flow', 'flow'], '0155': [0, 0o12345, 'flow'],
+                                      '0163': [0, 'flow']},
+                          '30,2032': {'0121': [0, 'flow']}},
         'edge_cases': True,
         'counters': True,
         'c64_rows': 'cover',
