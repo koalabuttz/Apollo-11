@@ -418,8 +418,15 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         RK_PROF(4);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,limit,&steps);
         /* Not this module's point, or its table refuses the entry: the next
-         * slot, then the resolver, may hold the point another way. */
-        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) { RK_PROF(5); continue; }
+         * slot, then the resolver, may hold the point another way. The
+         * transfer engine counts a refused call as a step, so a table
+         * refusing its first call (a compact copy that takes only its own
+         * callers: POSTJUMP beside the CM idle loop) also moves on. */
+        if ((!steps && (status == EXEC_UNMAPPED || status == EXEC_OUT_OF_SCOPE)) ||
+            (steps == 1u && limit != 1u && status == EXEC_OUT_OF_SCOPE)) {
+            RK_PROF(5);
+            continue;
+        }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
         rk_charge(steps,t->mct);

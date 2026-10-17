@@ -45,8 +45,8 @@ static enum exec_status postjump(const agc_native_program *p, apollo_overlay_sta
     const agc_site_operand *o;
     uint16_t n, at;
     agc_word q, t;
-    if (W[7] || (W[3] & ~03400u) || (W[4] & ~076000u) || W[6] != (W[4] | (W[3] >> 8)) ||
-        (io->superbank & ~0160u) || io->interrupt_enabled > 1u)
+    if (W[5] != 04635u || W[7] || (W[3] & ~03400u) || (W[4] & ~076000u) ||
+        W[6] != (W[4] | (W[3] >> 8)) || (io->superbank & ~0160u) || io->interrupt_enabled > 1u)
         return EXEC_OUT_OF_SCOPE;
     q = W[2];
     if (q < 0100u || q > 07775u) return EXEC_OUT_OF_SCOPE;
