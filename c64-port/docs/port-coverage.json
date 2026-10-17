@@ -7075,7 +7075,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it; basic routines that never name FIXLOC with any FIXLOC (CHANGEVB runs under NOVAC, and MARKRUPT and MKRELEAS can interrupt it); NEWJOB +0 or positive. The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image entered at any of the file's 122 routines with the FB, EB 7 and superbank its callers leave; basic entries with Q a return address, interpretive entries at NEWOPS with LOC a registered resume word, FIXLOC a VAC area and PUSHLOC within it; basic routines that never name FIXLOC with any FIXLOC (CHANGEVB runs under NOVAC, and MARKRUPT and MKRELEAS can interrupt it); NEWJOB +0 or positive, and for those basic routines also -0 (DUMMYJOB idling, when the mark interrupts can arrive). The erasables the file indexes or dispatches on hold values the flight program gives them: VAC1USE-VAC5USE 0 (busy) or their own address (free); MARKSTAT 0 or a VAC area +1 in the low 9 bits under flag bits 10-14, nonzero past MARKRUPT's busy check; MARKCNTR 0-5; AOTCODE a detent 0-7 in bits 7-9; MKDEX the mark verb index 0-3 in flight or a mark slot (area +1 +6n) on the surface (FLAGWRD8 bit 8); in the star-vector code X1 minus a slot, XYMARK a VAC area and PUSHLOC shallow; MKVACFND's A a free area's address -1. Any values of the other erasables the file reads (MPAC, the pushdown list, CDUs, TIME1/TIME2, channels 016, 030-033). NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "Basic: ALARM, BAILOUT1, BANKCALL (GOMARKF, GOMARK4 and the other display CADRs), ENDMARK, FINDVAC, GOTOPOOH, IBNKCALL, NOVAC, POODOO, POSTJUMP (DESCBITS), RESUME and WAITLIST, with their inline words",
           "Interpretive CALL and STCALL to TRG*NBSM",
@@ -7089,17 +7089,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-aotmark/lm-aotmark-proof.json",
-            "sha256": "29735a22fb30232426a969b6d5c56b4951197c0314bfda38f2965e68f557d9f9"
+            "sha256": "531f9e8ac5529bbf1438ef1a4ff59598fb831da5d34cffc878d0d221a3544525"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-host.log",
-            "sha256": "309943eff0f8e5b466db8594ab29bd85d51826c2c7416c717c57f3b5d743cf64"
+            "sha256": "2ed6d4f308ead9faf85e9f8c19b80beff0499350b8ebb96003c2cecf8ff7711b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-aotmark/lm-aotmark-vice.log",
-            "sha256": "6a7089237204181a7c77ad822e33abf9b12c6ee6bef5ef6458fd4a29b6dab249",
+            "sha256": "e0142e7d17a29a61cc70c1404202aba62e072d5aa10b486ef2749609e78efdb0",
             "vice_targets": {
-              "vice-lm-aotmark": 302
+              "vice-lm-aotmark": 332
             }
           },
           "independent_review": {
@@ -7108,7 +7108,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-aotmark/lm-aotmark-c64-cover.json",
-            "sha256": "e85e834133a6e594b65ae6ae47010a2901b248e5d54564f181b49c9b16d34978"
+            "sha256": "d1a93ab461542a23f61c8782c71afae2b5af4fd4b4b5e5fd4f3e433fcf17c523"
           }
         }
       }

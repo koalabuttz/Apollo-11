@@ -392,6 +392,10 @@ SPECS = {
         # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
         # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
         'any_fixloc': True,
+        # MARKRUPT and MKRELEAS also interrupt DUMMYJOB, which idles with
+        # NEWJOB -0 (Lane D1b's LM P52 scenario reaches them there).
+        'any_newjob': True,
+        'trusted_image': True,
         'joint_states': {
                          # AOTMARK's entry with no marks in progress (MARKSTAT
                          # +0) in half the cases: the VAC area search and
