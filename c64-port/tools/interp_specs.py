@@ -3292,6 +3292,9 @@ SPECS = {
     },
     'lm-p70-p71': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'P70-P71.agc'},
         'base': {'lm': 'lm_p70_p71'},
         'symbol': {'lm': 'lm_p70_p71'},
