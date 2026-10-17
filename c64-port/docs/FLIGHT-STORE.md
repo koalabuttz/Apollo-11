@@ -621,6 +621,25 @@ port) runs one mission:
    the keys are those of `lm-p63-descent`. The LLGE flies the braking
    phase to P64 at about 1,118 s after the core (on yaAGC alone too); with
    no landing radar model, alarms 511 and 522 recur every 2 s.
+   `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
+   about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
+   used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
+   100 nmi orbit in the launch plane, held still with the sextant's shaft
+   axis between the two stars, the platform drifted 0.012, -0.021 and
+   0.009 degrees from REFSMMAT, TEPHEM for the 13:32 UTC liftoff, the sun
+   and moon pads) and cm-p52-star1.load and cm-p52-star2.load, the CDUS
+   and CDUT that put each star on the reticle as the drifted platform sees
+   it. The optics switch starts at ZERO OPTICS and goes to CMC at 40 s;
+   `FLIGHT_CHAN` turns it to MANUAL and back for each mark, and the key M
+   is the MARK button (channel 16 bit 6 and KEYRUPT2). V37E52E, option 3,
+   PICAPAR picks stars 30 and 37 itself, R52 computes the optics angles
+   (its shaft angles agree with cm_p52.py's to 2 counts, its trunnion
+   angles to 11, the drift), R53 takes one mark per star, N05 shows a
+   star angle difference of 0.00 and N93 torquing angles of -0.012,
+   +0.022 and -0.010 degrees, the drift taken out; ENTER on V50N25 00014
+   and V37E00E end it in P00. Two yaAGC hardware models stop under the
+   frozen clock for it (section 10): the optics drive, which zeroes CDUS
+   and CDUT, and the gyro drive, which empties GYROCMD.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -655,7 +674,10 @@ port) runs one mission:
    `tools/flight_host_differential.py` builds a local engine variant whose
    `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
    cycles their counts take) and the IMU CDU drive, which bursts on
-   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   yaAGC's cycle counter, and with them the optics and gyro drives, which
+   no C64 resident models (yaAGC's optics drive takes the sextant's CDU
+   counters CDUS and CDUT, 036 and 035, for the drive counters CDUSCMD and
+   CDUTCMD and zeroes them; its gyro drive empties GYROCMD at once); unset, the variant is the unchanged engine. The
    AGC clock then runs only as the flight resident runs it: a modeled C64
    wall clock advances by each span's AGC machine cycles times K, plus
    20 ms for each module swap (the VICE load cost; `FLIGHT_SWAP_MCT`
