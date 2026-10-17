@@ -812,8 +812,8 @@
             "sha256": "b54ba82d641563d7d4ca4bcb360a5fc7682024c80bfefb6b1ebc1cf5439e71dd"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-1014b.md",
-            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
+            "path": "docs/audits/rev2-geometry-585.md",
+            "sha256": "9ff917fd2743c9188f44b606e5a1ecccd34f30cb3ea3bd5ea80021592785f227"
           }
         }
       }
@@ -10086,8 +10086,8 @@
             "sha256": "b54ba82d641563d7d4ca4bcb360a5fc7682024c80bfefb6b1ebc1cf5439e71dd"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-1014b.md",
-            "sha256": "1baf6b57db95b39f51a777df6b140ad8daa7e66af2ccbee20e4197cb4f8db3aa"
+            "path": "docs/audits/rev2-geometry-585.md",
+            "sha256": "9ff917fd2743c9188f44b606e5a1ecccd34f30cb3ea3bd5ea80021592785f227"
           }
         },
         "precheck_notes": [
