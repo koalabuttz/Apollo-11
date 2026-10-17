@@ -788,16 +788,20 @@ SPECS = {
         # Every caller's entry, and the interface routines no other file
         # calls (CD*TR*G, TRG*SMNB, CDU*NBSM).
         'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM'],
+        # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
+        # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT), as in
+        # lm-powered-subs (CM P52 on the C64 stopped at all three).
+        'usprcadr_exits': True,
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them.
         # CD*TR*GS's loop (after CDULOGIC, COSINE, SINE): TEM3 the angle
         # offset (4, 2, 0), TEM2 its caller's return (CDUTRIG, CD*TR*G,
         # CDU*SMNB, TRG*SMNB, CDU*NBSM and TRG*NBSM, or a TC from outside the
-        # file).
+        # file); the same at the CADR words DANZIG resumes before them.
         'states': dict(
             {p: {'143': [0, 2, 4], '142': [0o3501, 0o3505, 0o3623, 0o3626, 0o3636, 0o3641, 0o5000]}
-             for p in ('23,3530', '23,3536', '23,3546')},
+             for p in ('23,3527', '23,3530', '23,3535', '23,3536', '23,3545', '23,3546')},
             # QUICTRIG's loop (after SPSIN, SPCOS): ITEMP2 the offset, ITEMP1
             # the caller's return (BANKCALL or an RTB, outside the file).
             # A, the sine or cosine, across its range and +-0 in about a fifth
@@ -829,6 +833,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'target': 'tests/cm_powered_subs_target.c',
+        # (The DANZIG marker the usprcadr_exits resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane A: Luminary099 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
     # SMNB/NBSM, AX*SR*T, CALCSMSC), basic and interpretive.
