@@ -84,11 +84,16 @@ took 32 modules of about 15.8 KB, because each one linked the whole
 
 ## Luminary099 and Comanche055 INTERPRETER
 
-`'basic': 'full'` with `'fixed_fixed_any_fb'`, cut at fixed-fixed `07000`:
-part 1 is bank 00 and `06000`-`06777`, part 2 is `07000` up. Chunked by
-routine, `lm_interpreter_basic` took 13 modules (212 KB) on the LM store
-with Lane C's chunk packing, each with its own `basic_run` of about 10.7 KB.
-As parts it is two modules, 12,745 and 10,465 bytes on LM. The flight
+`'basic': 'full'` with `'fixed_fixed_any_fb'`, cut at COSINE (00,3517) and
+fixed-fixed `07000`: part 1 is bank 00 up to SQRTSUB's end (DDV, UNIT and
+the square roots together), part 2 is COSINE to the end of bank 00 and
+`06000`-`06777`, part 3 is `07000` up. Chunked by routine,
+`lm_interpreter_basic` took 13 modules (212 KB) on the LM store with Lane C's
+chunk packing, each with its own `basic_run` of about 10.7 KB. With two parts
+(cut at `07000` only) it was 12,745 and 10,465 bytes on LM; once the
+interpreter's internal exits (COMP, BUFPOS, DSQSUB, ENDVXV, DDV's and
+SQRTSUB's paths) were compiled, bank 00 outgrew one part. The three parts
+are 14,958, 10,175 and 15,214 bytes on LM, 13,271, 10,453 and 11,518 on CM. The flight
 parts check needs the rope image the spec's target loads (DMP, POLY and
 the others read their callers' words from it); `tools/flight_parts_check.py`
 loads it whenever the spec's own target does.

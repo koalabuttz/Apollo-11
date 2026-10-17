@@ -12,7 +12,7 @@ extern const agc_routine_table cm_powered_subs_interpretive,cm_powered_subs_basi
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_powered_subs_point;
-#define CM_POWERED_SUBS_POINTS 47u
+#define CM_POWERED_SUBS_POINTS 50u
 #define CM_POWERED_SUBS_CADR_WORDS 1u
 #define CM_POWERED_SUBS_EXTERNALS 6u
 #define CM_POWERED_SUBS_FIRST 20287u

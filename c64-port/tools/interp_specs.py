@@ -326,6 +326,10 @@ AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in ran
 ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 1],
                  '0117': [0o1565, 0o1563, 0o1561], '0141': [0o147, 0o145, 0o143], '0132': [0o3113],
                  'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']}
+# At the ROOTLOOP points POWRSERS has run: it leaves its own return in
+# POLYRET (= DERPTR) and its coefficient pointer in POLISH (= PWRPTR), and
+# only DERCLOOP reads them as PWRPTR and DERPTR. So they are not pinned there.
+ROOTLOOP_STATES = {k: v for k, v in ROOTPS_STATES.items() if k not in ('0117', '0141')}
 
 # A as a sine or cosine across its range, +-0 in about a fifth of the
 # cases (16-bit -0).
@@ -392,6 +396,10 @@ SPECS = {
         # Basic routines that never name FIXLOC run under any FIXLOC: CHANGEVB
         # is a NOVAC job (FIXLOC 0110) that MARKRUPT and MKRELEAS interrupt.
         'any_fixloc': True,
+        # MARKRUPT and MKRELEAS also interrupt DUMMYJOB, which idles with
+        # NEWJOB -0 (Lane D1b's LM P52 scenario reaches them there).
+        'any_newjob': True,
+        'trusted_image': True,
         'joint_states': {
                          # AOTMARK's entry with no marks in progress (MARKSTAT
                          # +0) in half the cases: the VAC area search and
@@ -780,16 +788,20 @@ SPECS = {
         # Every caller's entry, and the interface routines no other file
         # calls (CD*TR*G, TRG*SMNB, CDU*NBSM).
         'entries': ['@external', 'CD*TR*G', 'TRG*SMNB', 'CDU*NBSM'],
+        # CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words: the
+        # interpreter's DANZIG resumes LOC there with EDOP BIT8 (EXIT), as in
+        # lm-powered-subs (CM P52 on the C64 stopped at all three).
+        'usprcadr_exits': True,
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them.
         # CD*TR*GS's loop (after CDULOGIC, COSINE, SINE): TEM3 the angle
         # offset (4, 2, 0), TEM2 its caller's return (CDUTRIG, CD*TR*G,
         # CDU*SMNB, TRG*SMNB, CDU*NBSM and TRG*NBSM, or a TC from outside the
-        # file).
+        # file); the same at the CADR words DANZIG resumes before them.
         'states': dict(
             {p: {'143': [0, 2, 4], '142': [0o3501, 0o3505, 0o3623, 0o3626, 0o3636, 0o3641, 0o5000]}
-             for p in ('23,3530', '23,3536', '23,3546')},
+             for p in ('23,3527', '23,3530', '23,3535', '23,3536', '23,3545', '23,3546')},
             # QUICTRIG's loop (after SPSIN, SPCOS): ITEMP2 the offset, ITEMP1
             # the caller's return (BANKCALL or an RTB, outside the file).
             # A, the sine or cosine, across its range and +-0 in about a fifth
@@ -821,6 +833,9 @@ SPECS = {
         'index_carry16': True,
         'image_w': True,
         'target': 'tests/cm_powered_subs_target.c',
+        # (The DANZIG marker the usprcadr_exits resolve through, as the
+        # tools/mk build has it.)
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane A: Luminary099 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
     # SMNB/NBSM, AX*SR*T, CALCSMSC), basic and interpretive.
@@ -903,19 +918,35 @@ SPECS = {
         # Q+2 (NEG) and TCQ (NEG +1): other files name them as Q+2 and TCQ,
         # which '@external' reads as register Q.
         # SN1+16: where POLY returns past SN1's coefficients (Q+2N+4).
-        'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16'],
-        # Two C64 flight modules, cut at fixed-fixed 07000: as one table the
-        # flight store chunked it into 13, each with the whole basic_run
-        # (docs/FLIGHT-PARTS.md).
-        'flight_parts': [0o3 * 1024 + 0o1000],
+        # UNIT+16 (SQRTSUB's return in UNIT) and SQRTSUB: UNIT's own entry
+        # states almost always overflow in VSQSUB, so these two carry the
+        # states that reach the root and the divides after it.
+        'entries': ['@external', 'NEG', 'NEG+1', 'SN1+16', 'UNIT+16', 'SQRTSUB', 'OVERFLOW',
+                    # DVNORM's INDEX DVNORMCT; TC MAXTEST and UNIT's INDEX MPTEMP;
+                    # TCF MAXTEST -1 land in the DDOUBL chain before MAXTEST, or
+                    # (UNIT's large shift, SRDDV) at -21D.
+                    *['MAXTEST-%d' % k for k in range(1, 15)], 'MAXTEST-21'],
+        # Three C64 flight modules, cut at COSINE (00,3517) and fixed-fixed
+        # 07000: as one table the flight store chunked it into 13, each with
+        # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
+        # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
+        # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
+        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
                    'NEWMODE', 'TLOAD', 'TMODE', 'VMODE', 'DDV/BDDV', 'BUFZERO', 'SGNDVOVF', 'DVOVF', 'UNIT', 'SMALL2',
                    'LARGE', 'LARGE3', 'LARGE2', 'SMALL', 'UNITDV', 'UMPAC-', 'UMPAC+', 'ABS', 'COSINE', 'PRESINE',
-                   'SINE', 'SN1', 'VXV'],
+                   'SINE', 'SN1', 'VXV', 'OVF+', 'BUF-', 'BUF+', 'BUFPOS', 'BUFNEG', 'FINALDV', 'DSQSUB',
+                   'VSQSUB', 'SQRTSUB', 'ENDVXV', 'OVERFLWZ', 'OVERFLWY', 'VROTATEX', 'COMP', 'MPAC-', 'MPAC+', 'SQRTNEG', 'ZEROANS',
+                   'SMPAC+', 'FIXROOT', 'ENDDOT', 'DCOMP', 'DVNORM', 'SQRTABRT', 'SRTEST',
+                   'OVERFLOW', 'BUFNORM', 'SQRTNORM', 'SETOVF2', 'MAXTEST', 'BIASHI', 'GENDDV',
+                   '+DOWN', '-UP', 'ENDMAXDV', 'MAXDV', '-21D', '-1/2+2', 'ARGHI', 'TCQBNK00', 'ARGLO',
+                   'NORMTEST', 'SQRTNM2', 'SETOVF', 'LBUF2'],
         # The rest (dispatch, order bodies, DANZIG) is the compact core's.
         'inside_core': {'lm': 'src/lm_interp_core.c', 'cm': 'src/cm_interp_core.c'},
+        # SQRTABRT's alarm 1302 (POODOO1 in LM, POODOO in CM) never returns.
+        'noreturn': ('POODOO1', 'POODOO'),
         # NEG's INDEX Q; TC 2 is its last word (TC Q's skip never runs on).
         'fall_out': True,
         # INTRSM: LXCH BBANK, then TCF INTPRET +3 (fixed-fixed).
@@ -938,10 +969,25 @@ SPECS = {
         # After SQRTSUB, UNITDV returns to UNIT only on a zero component
         # (+0 high word, +-0 low): zero vectors in three of five cases, so
         # the UNITDV returns and the exit through VROTATEX run.
-        'joint_states': {'UNIT+16': [{}, {}, {'%o' % a: 0 for a in range(0o122, 0o130)},
+        'joint_states': {
+            # SQRTSUB's MPAC -1 (CCS leaves +0 for SQRTNEG) with MPAC +1 -0:
+            # the last exit of SQRTNEG's CCS MPAC +1 (TCF FIXROOT).
+            # And the largest argument (37777 37777): its root's DAS MPAC
+            # stays below 1, so the overflow exit (CAF POSMAX) is unreached.
+            'SQRTSUB': [{}, {}, {}, {'154': 0o77776, '155': 0o77777}, {}, {'154': 0o37777, '155': 0o37777}],
+            # DXCH MPAC then MAXTEST's CCS MAXDVSW +0: majors equal after the
+            # normalization, MAXDV's +2 (POSMAX quotient).
+            'MAXTEST-1': [{}, {'0': 0o20000, '130': 0o20000, '140': 0}],
+            'UNIT+16': [{}, {}, {'%o' % a: 0 for a in range(0o122, 0o130)},
                                      {'%o' % a: (0 if a % 2 == 0 else 0o77777) for a in range(0o122, 0o130)},
                                      {'%o' % a: (0o77777 if a == 0o123 else 0) for a in range(0o122, 0o130)}]},
         'states': {
+            # OVERFLOW: A the overflow (+1 or -1) of the sum just stored, L
+            # the component's offset (0 DP, 1, 3 or 5 from OVERFLWY/Z's
+            # XCH L).
+            'OVERFLOW': {'0': [1, 0o177776], '1': [0, 1, 3, 5]},
+            # MAXTEST's CCS MAXDVSW: 0 (the majors may be equal) or -1.
+            **{'MAXTEST-%d' % k: {'140': [0, 0o77776]} for k in range(1, 15)},
             # POWRSERS: A the coefficient table (erasable, ROOTPSRS's; not
             # 01400 up, which EBANK 0 puts over the central registers), L
             # N-1 (the callers' DCA MPAC +3 / +5).
@@ -1001,6 +1047,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'GROUND_TRACKING_DETERMINATION_PROGRAM_-_P21.agc'},
         'base': {'cm': 'cm_ground_track'},
         'symbol': {'cm': 'cm_ground_track'},
@@ -1259,6 +1308,9 @@ SPECS = {
         # resume key.
         'resume_keys': True,
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'P76.agc'},
         'base': {'cm': 'cm_p76_file'},
         'symbol': {'cm': 'cm_p76_file'},
@@ -3284,6 +3336,9 @@ SPECS = {
                       'POODOO': None, 'THROTTLE': 'auto', 'WAITLIST': 'auto', 'NOVAC': 'auto', 'FINDVAC': 'auto',
                       'BANKJUMP': None, 'RESUME': None, 'SHORTMP': 'auto', 'USPRCADR': 'auto', 'DMPNSUB': 'auto', 'POWRSERS': 'auto', 'TWIDDLE': 'auto', 'VARDELAY': 'auto', 'LOW7+2K': 'auto'},
         'noreturn': ['POSTJUMP'],
+        # The CADR words after TC USPRCADR (ROOTPSRS's and ROOTLOOP's ABS
+        # and DDV/BDDV): DANZIG with EXIT pending returns there.
+        'usprcadr_exits': True,
         'resume_keys': True,
         'resume_orphans': True,
         # A resume LOC starts in the MODE, PUSHLOC and index registers the
@@ -3326,8 +3381,12 @@ SPECS = {
                    # ROOTPSRS's returns run in IGNALG to APPRQUAD (WHATALM).
                    'TTF/8CL+26': {'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']},
                    'TTF/8CL+28': {'0166': ['vac+0']}, 'QUADGUID': {'0166': ['vac+0']},
-                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+19', 'DERCLOOP+3', 'ROOTLOOP+6',
-                                                 'ROOTLOOP+13', 'ROOTLOOP+15', 'ROOTLOOP+20')}},
+                   # (ROOTPSRS+18, ROOTLOOP+14 and ROOTLOOP+19: the CADR words
+                   # after TC USPRCADR, where ABS's or DDV's DANZIG runs the
+                   # EXIT USPRCADR left in EDOP.)
+                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+18', 'ROOTPSRS+19', 'DERCLOOP+3')},
+                   **{k: ROOTLOOP_STATES for k in ('ROOTLOOP+6', 'ROOTLOOP+13', 'ROOTLOOP+14', 'ROOTLOOP+15',
+                                                   'ROOTLOOP+19', 'ROOTLOOP+20')}},
         # VHORCOMP's BANKCALL of DISPEXIT +3 ends the job (ENDOFJOB).
         'returns': {'DISPEXIT +3': 0},
         # ROOTPSRS returns through INDEX RETROOT; TCF 2 (two words past
@@ -3380,7 +3439,7 @@ SPECS = {
         # READ CHAN30 (STERN), RAND/READ CHAN31 and WOR CHAN13 (STARTP64,
         # RESETRPT) on the shared channel model (agc_channel_ops.h).
         'channel_inputs': True,
-        'c64_flags': ['-DIRC_INPUTS', '-DIRC_CHANNELS', '-DIRC_LM_HW'],
+        'c64_flags': ['-DIRC_INPUTS', '-DIRC_CHANNELS', '-DIRC_LM_HW', '-DAGC_TRANSFER_DANZIG_MARKER'],
         'channels': 'all',
         'io_channels': 'auto',
         'image_w': True,

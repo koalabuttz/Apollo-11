@@ -4,33 +4,33 @@
   "release": "evidence-lm-interpreter",
   "files": {
     "lm-interpreter-closure.json": {
-      "sha256": "df48cdbb61d4ec5d557596bb6b00f9b6353e58bc7bb3f9b948cbf4db95cc7572",
-      "bytes": 174486,
-      "store": "tree"
+      "sha256": "0caa2b641a1b74649816acb27b0af8e9fac95319ed3481a861d37361093a2705",
+      "bytes": 322770,
+      "store": "release"
     },
     "lm-interpreter-differential.log": {
-      "sha256": "9708014c637c5872b238eae7feb0ae9fba01958d3e9480c32ed6c5d53ceda427",
-      "bytes": 1351,
+      "sha256": "f109ab99e9a26674e10fc5621ceaa113cacc8153439c64e92e6d1df47cf35338",
+      "bytes": 118524,
       "store": "tree"
     },
     "lm-interpreter-host.log": {
-      "sha256": "6becbbcc7c845242728b5523a2b53c34095b5ceffd1f24746330e50a56bd7a81",
-      "bytes": 1039,
+      "sha256": "0d0f7bfe27d5e4e74759de87701c8258c2d97164442cd43791f2d191ff4f698f",
+      "bytes": 1047,
       "store": "tree"
     },
     "lm-interpreter-proof.json": {
-      "sha256": "d7b0c8a6894cbf626772b090fa1458fecaf1fa4abc9a428184551a2d077ff6f3",
-      "bytes": 96769,
+      "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f",
+      "bytes": 179913,
       "store": "tree"
     },
     "lm-interpreter-source-map.json": {
-      "sha256": "0d67bd3a833164bb2b811ac1aa2cb6fd97214a182870e2fbe6db713b8a706861",
-      "bytes": 251353,
-      "store": "tree"
+      "sha256": "062265fe660a6315995d8993f06672dad0b9ce81971f4de61a235297e7f9956c",
+      "bytes": 323790,
+      "store": "release"
     },
     "lm-interpreter-vice.log": {
-      "sha256": "6eeade396ca30937d55cfbb61bdfaf48950dcc4a07968a1b67eb886ab92c73df",
-      "bytes": 1783,
+      "sha256": "3cb5d4d542401890b2f4dc07aca06d6ca4f420f66e0ea45b1aec33d6e5172a72",
+      "bytes": 3441,
       "store": "tree"
     }
   }

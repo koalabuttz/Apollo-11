@@ -65,7 +65,7 @@ The 2 MB REU, by address:
 | 0x1c0000-0x1d1fff | LM rope image (LM store only) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
 | 0x1e0000-0x1f1fff | CM rope image (CM store only) |
-| 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`) |
+| 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`; the build checks that the rope image ends at or below it and that it is unused) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
 The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
@@ -621,6 +621,41 @@ port) runs one mission:
    the keys are those of `lm-p63-descent`. The LLGE flies the braking
    phase to P64 at about 1,118 s after the core (on yaAGC alone too); with
    no landing radar model, alarms 511 and 522 recur every 2 s.
+   `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
+   about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
+   used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
+   100 nmi orbit in the launch plane, held still with the sextant's shaft
+   axis between the two stars, the platform drifted 0.012, -0.021 and
+   0.009 degrees from REFSMMAT, TEPHEM for the 13:32 UTC liftoff, the sun
+   and moon pads) and cm-p52-star1.load and cm-p52-star2.load, the CDUS
+   and CDUT that put each star on the reticle as the drifted platform sees
+   it. The optics switch starts at ZERO OPTICS and goes to CMC at 40 s;
+   `FLIGHT_CHAN` turns it to MANUAL and back for each mark, and the key M
+   is the MARK button (channel 16 bit 6 and KEYRUPT2). V37E52E, option 3,
+   PICAPAR picks stars 30 and 37 itself, R52 computes the optics angles
+   (its shaft angles agree with cm_p52.py's to 2 counts, its trunnion
+   angles to 11, the drift), R53 takes one mark per star, N05 shows a
+   star angle difference of 0.00 and N93 torquing angles of -0.012,
+   +0.022 and -0.010 degrees, the drift taken out; ENTER on V50N25 00014
+   and V37E00E end it in P00. Two yaAGC hardware models stop under the
+   frozen clock for it (section 10): the optics drive, which zeroes CDUS
+   and CDUT, and the gyro drive, which empties GYROCMD.
+   `lm-p57`: the lunar-surface alignment at 103:40 GET, about 55 minutes
+   after Apollo 11 landed at 0.674 N, 23.473 E, on Rigel (12) and Navi (3).
+   There is no core this late, so lm_p57.py builds one: lm-p57.load (the
+   landing REFSMMAT, the platform drifted 0.021, -0.014 and 0.017 degrees
+   from it, the LM on the surface yawed 13 degrees left of the approach
+   azimuth, SURFFLAG and LMOONFLG set, RLS, GSAV, TEPHEM and the AOT detent
+   pads) and lm-p57-star1.load and lm-p57-star2.load, the CDUs at each
+   mark, since the moon turns the LM under the platform. V37E57E, option 3,
+   technique 2 (two stars), V21 star codes; R59 picks detents 6 and 4
+   itself and its cursor and spiral angles for Rigel agree with
+   lm_p57.py's to 0.002 degrees. Each mark is the key x (channel 16 bit 3,
+   the AOT X MARK, and KEYRUPT2), then V21/V22 load the cursor and spiral
+   lm_p57.py computed; SURFSTAR, then N05 shows 0.00 and N93 shows
+   -0.021, +0.012 and -0.019 degrees, the drift taken out; V50N25 00014,
+   V34 and V37E00E end it in P00. The keys y and j are the Y MARK
+   (bit 4) and MARK REJECT (bit 5).
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -655,15 +690,20 @@ port) runs one mission:
    `tools/flight_host_differential.py` builds a local engine variant whose
    `AgcFrozenClock` stops the scaler loop (TIME1-TIME6, the scalers and the
    cycles their counts take) and the IMU CDU drive, which bursts on
-   yaAGC's cycle counter; unset, the variant is the unchanged engine. The
+   yaAGC's cycle counter, and with them the optics and gyro drives, which
+   no C64 resident models (yaAGC's optics drive takes the sextant's CDU
+   counters CDUS and CDUT, 036 and 035, for the drive counters CDUSCMD and
+   CDUTCMD and zeroes them; its gyro drive empties GYROCMD at once); unset, the variant is the unchanged engine. The
    AGC clock then runs only as the flight resident runs it: a modeled C64
    wall clock advances by each span's AGC machine cycles times K, plus
    20 ms for each module swap (the VICE load cost; `FLIGHT_SWAP_MCT`
    sets it in AGC machine cycles, 1,707 by default), each optionally
    jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
    D × 10 ms of it, and at each native boundary at most LAG of them become
-   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
-   code takes its periods between instructions. Lockstep then compares the
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does under the
+   CIA wall clock (`FLIGHT_SCALED=W` runs the work clock's
+   `rk_timer_phase` steps instead, each after any request that can be
+   taken); bridged code takes its periods between instructions. Lockstep then compares the
    clock counters too and adopts nothing from yaAGC, so every routine must
    match yaAGC run from the same state under the same periods, and the
    run as a whole is one yaAGC run under that tick schedule. No

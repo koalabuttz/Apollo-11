@@ -31,6 +31,13 @@ the original ropes:
 | CM DLY2 -1, from DELAYJOB | 114 | 100 |
 | LM NOQBRSM +1 | 128 | 128 |
 
+The host test also runs every DLY2 -1 case the certified routines take
+through the thin resident kernel's DLY2 -1 (`lm_kernel_task_routines`,
+`cm_kernel_routines`; docs/RESIDENT-KERNEL.md) in place of the Executive
+table, to the same frozen digest: 252 cases. One of them (a random image
+whose WTLST5 sum overflows) found the kernel's WTLST2 ignoring the overflow
+skip of `TS WAITTEMP`; it now puts the task first, as the AGC does.
+
 The T3RUPT cases are the lm-exec-jobs and cm-exec-services dispatch-vector
 inputs entered at the body. The DLY2 -1 cases are the service-transfer DELAYJOB
 inputs, run with the service and Executive tables together, so the run goes

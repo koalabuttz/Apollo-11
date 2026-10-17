@@ -37,7 +37,7 @@ FILES = {'lm_servicer': ('SERVICER.agc',),
          'lm_burn_baby': ('BURN,_BABY,_BURN_--_MASTER_IGNITION_ROUTINE.agc',),
          'lm_imu_performance': ('IMU_PERFORMANCE_TEST_2.agc', 'IMU_PERFORMANCE_TESTS_4.agc')}
 # Files whose basic tables key their EXIT returns (checked).
-OPT_IN = {'lm_servicer', 'lm_imu_performance'}
+OPT_IN = {'lm_servicer', 'lm_imu_performance', 'lm_ags_init', 'lm_lunar_landing'}
 # Interpretive orders without an operand word: a pair "X EXIT" with one of
 # these resumes at the next word.
 UNARY = set('ABVAL ABS ARCCOS ARCSIN COS DCOMP DSQ PUSH ROUND RVQ SIN SQRT STADR UNIT VCOMP VDEF VSQ'.split())

@@ -17,13 +17,16 @@ static const agc_routine_entry services[10]={
 static const agc_routine_entry jobs[8]={
  {FF(K_SPVACIN),kernel},{FF(K_SPVAC),kernel},{FF(K_CHANG1),kernel},{FF(K_CHANG2),kernel},
  {FF(K_JOBSLEEP),kernel},{FF(K_JOBWAKE),kernel},{FF(K_PRIOCHNG),kernel},{FF(K_ENDOFJOB),kernel}};
-static const agc_routine_entry tasks[4]={
- {FF(04014u),kernel},{FF(K_FIXDELAY),kernel},{FF(K_VARDELAY),kernel},{FF(K_TASKOVER),kernel}};
+static const agc_routine_entry tasks[5] = {{FF(04014u), kernel},
+                                           {FF(K_DLY2 - 1u), kernel},
+                                           {FF(K_FIXDELAY), kernel},
+                                           {FF(K_VARDELAY), kernel},
+                                           {FF(K_TASKOVER), kernel}};
 static const agc_routine_entry idle[9]={
  {B1(K_NUCHANG2),kernel},{B1(K_DUMMYJOB),kernel},{B1(K_DUMMYJOB+2u),kernel},{B1(K_ADVAN),kernel},
  {FF(K_SUPDXCHZ),kernel},{FF(K_SUPDXCHZ+1u),kernel},
  {FF(K_SVCT3),kernel},{FF(K_SVCT3+015u),kernel},{FF(K_SVCT3X+2u),kernel}};
 const agc_routine_table lm_kernel_routines={services,10};
 const agc_routine_table lm_kernel_job_routines={jobs,8};
-const agc_routine_table lm_kernel_task_routines={tasks,4};
+const agc_routine_table lm_kernel_task_routines = {tasks, 5};
 const agc_routine_table lm_kernel_idle_routines={idle,9};

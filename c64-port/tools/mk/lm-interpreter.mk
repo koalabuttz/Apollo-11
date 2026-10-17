@@ -33,7 +33,7 @@ lm-interpreter-closure:
 	rm -f build/lm-interpreter-executed.txt build/lm-interpreter-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
 	PATH=$(CURDIR)/tools/oracle_trace:$$PATH AGC_EXECUTED_WORDS=$(CURDIR)/build/lm-interpreter-executed.txt AGC_READ_WORDS=$(CURDIR)/build/lm-interpreter-read.txt $(MAKE) --no-print-directory lm-interpreter-differential
 	rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
-	python3 tools/interp_executed_closure.py lm-interpreter --unreached '03,3255=POLY counts POLYCNT down to +0 and returns there, so CCS POLYCNT never takes its negative exit into DPAGREE (no other code enters DPAGREE in Luminary099)' '03,3256=as 03,3255: reached only through DPAGREE'
+	python3 tools/interp_executed_closure.py lm-interpreter --unreached '03,3255=POLY counts POLYCNT down to +0 and returns there, so CCS POLYCNT never takes its negative exit into DPAGREE (no other code enters DPAGREE in Luminary099)' '03,3256=as 03,3255: reached only through DPAGREE' '00,3452=SQRTSUB'"'"'s DAS MPAC overflows only for a root of 1 or more; its largest argument (MPAC 37777 37777, a joint state of the differential) gives a root below 1, so CAF POSMAX never runs'
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/lm-interpreter.groups

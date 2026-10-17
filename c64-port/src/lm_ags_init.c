@@ -320,14 +320,25 @@ static enum exec_status run(apollo_overlay_state *s,void *v){
 static enum exec_status routine(const agc_native_program *p,apollo_overlay_state *s,void *io){(void)p;return run(s,io);}
 #define B32(a) (uint16_t)(032u*1024u+((a)-02000u))
 #define RT(a) {B32(a),routine}
-static const agc_routine_entry basic_entries[AGS_BASIC_ROUTINES]={
- RT(02005),RT(02013),RT(02025),RT(02026),RT(02027),RT(02046),RT(02077),RT(02114),RT(02117),RT(02121),
- RT(02122),RT(02124),RT(02127),RT(02130),RT(02131)};
+/* Flight builds also key the basic word each EXIT returns to: there the
+ * native interpreter runs the interpretive code and its EXIT hands the word
+ * to the flight program as a basic key (tools/flight_exit_returns.py). The
+ * host build runs on across EXIT in one call and keys neither. */
+#ifdef AGC_FLIGHT_INTERPRETER
+#define XT(a) RT(a),
+#define AGS_FLIGHT_KEYS (AGS_BASIC_ROUTINES+2u)
+#else
+#define XT(a)
+#define AGS_FLIGHT_KEYS AGS_BASIC_ROUTINES
+#endif
+static const agc_routine_entry basic_entries[AGS_FLIGHT_KEYS]={
+ RT(02005),RT(02013),RT(02025),RT(02026),RT(02027),XT(02043)RT(02046),XT(02072)RT(02077),RT(02114),RT(02117),
+ RT(02121),RT(02122),RT(02124),RT(02127),RT(02130),RT(02131)};
 static const agc_routine_entry interp_entries[AGS_INTERPRETIVE_ROUTINES]={
  RT(02037),RT(02041),RT(02047),RT(02051),RT(02053),RT(02055),RT(02057),RT(02061),RT(02063),RT(02065),
  RT(02070),RT(02071),RT(02132),RT(02135),RT(02137),RT(02142),RT(02144),RT(02146),RT(02151),RT(02153),
  RT(02156),RT(02160),RT(02163),RT(02166)};
-const agc_routine_table lm_ags_init_routines={basic_entries,AGS_BASIC_ROUTINES};
+const agc_routine_table lm_ags_init_routines={basic_entries,AGS_FLIGHT_KEYS};
 const agc_routine_table lm_ags_init_interpretive={interp_entries,AGS_INTERPRETIVE_ROUTINES};
 const uint16_t ags_routine_keys[AGS_ROUTINES]={
  B32(02005),B32(02013),B32(02025),B32(02026),B32(02027),B32(02046),B32(02077),B32(02114),B32(02117),B32(02121),

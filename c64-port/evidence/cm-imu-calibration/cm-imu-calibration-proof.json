@@ -763,7 +763,7 @@
   {
    "mission": "cm",
    "keep": "0xffe000003004000100000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 13,
+   "cases": 14,
    "case_ids": [
     166608,
     166524,
@@ -777,15 +777,15 @@
     168972,
     169472,
     169508,
-    170092
+    170092,
+    170520
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x1ffe00000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 13,
+   "keep": "0x1ffc00000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "cases": 12,
    "case_ids": [
-    170520,
     171028,
     172000,
     172308,
@@ -821,8 +821,8 @@
  "c64_coverage": {
   "host_labels": 554,
   "c64_labels": 554,
-  "host_edges": 3762,
-  "c64_edges": 3762,
+  "host_edges": 3761,
+  "c64_edges": 3761,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
@@ -875,9 +875,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 2153,
-  "edges_host_vectors": 2153,
-  "edges_c64": 2151,
+  "edges_all_cases": 2152,
+  "edges_host_vectors": 2152,
+  "edges_c64": 2150,
   "edges_not_on_c64": [
    "src/agc_fast_ops.c:39",
    "src/lm_interp_orders.c:617"

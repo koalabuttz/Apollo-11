@@ -70,9 +70,49 @@ NASSP_KEYS = '@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E'
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
+# cm-p52: Apollo 11's first realignment in earth orbit (00:44 GET), the
+# load at 20 s (tools/flight_scenarios/cm_p52.py: the launch REFSMMAT, the
+# platform drifted from it, the CSM held between stars 30 and 37). The IMU
+# operating, the optics switch at ZERO OPTICS, then CMC at 40 s
+# (FLIGHT_CHAN: channel 33 bits 5 and 4); V37E52E, option 3 (V22E3E on
+# V04N06), proceed; proceed on V50N25 00015 (PICAPAR picks 30 and 37);
+# proceed on V01N70 (R52 drives the optics); for each star the crew turns
+# the switch to MANUAL, puts the star on the reticle (the star loads: the
+# CDUS and CDUT the drifted platform gives) and presses MARK (M: channel
+# 16 bit 6, KEYRUPT2), proceeds on V50N25 00016 and V01N71 and turns the
+# switch back to CMC for the next star; proceed on N05 (star angle
+# difference 0.00) and on N93 (torquing angles -0.012, +0.022, -0.010
+# degrees: the drift taken out), ENTER on V50N25 00014 and P00.
+P52 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,'
+                      '13500:tools/flight_scenarios/cm-p52-star2.load'}
+P52_KEYS = ('@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E'
+            '@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E')
+# lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
+# load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
+# Base facing west 13 degrees left, the landing REFSMMAT, the platform
+# drifted from it) and the CDUs as the moon turns the LM at each mark.
+# V37E57E, proceed on V04N06 (option 3, REFSMMAT), technique 2 (two
+# stars: V22E2E on V05N06), proceed; the stored-attitude initial pass;
+# for each star R59's V01N70 (star code 12 Rigel, then 03 Navi: V21E),
+# proceed on V06N79 (R59 finds detents 6 and 4), on V01N71 and on V54,
+# X MARK (x: channel 16 bit 3, KEYRUPT2), and the reticle's cursor and
+# spiral angles loaded on the flashing V06N79 (V21E, V22E), proceed;
+# proceed on N05 (0.00) and on N93 (-0.021, +0.012, -0.019 degrees: the
+# drift taken out); ENTER on V50N25 00014, V34 on N89 (the crew rejected
+# the landing site update) and P00.
+P57 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,'
+                      '29900:tools/flight_scenarios/lm-p57-star2.load'}
+P57_KEYS = ('@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000'
+            'V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21'
+            'E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
+          ('cm-p52', 'cm', 20000, P52_KEYS, P52),
+          ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
@@ -109,6 +149,22 @@ def frozen_engine(cc):
     burst = '  if (i != 0 && (State->CycleCounter - ImuCduCount) >= IMUCDU_BURST_CYCLES)'
     assert src.count(burst) == 1
     src = src.replace(burst, burst.replace('if (', 'if (!AgcFrozenClock && ', 1))
+    # yaAGC's optics drive dumps RegOPTX and RegOPTY (036 and 035) while
+    # channel 14 bit 11 or 12 is set and zeroes them: those are the
+    # sextant's CDU counters CDUS and CDUT, not the drive counters CDUSCMD
+    # and CDUTCMD (054, 053), so after a coarse optics drive yaAGC loses
+    # the angles the crew marks on (CM P52). No C64 resident drives the
+    # optics: under the frozen clock it stops with the IMU drive.
+    optics = '  if (State->Erasable[0][RegOPT'
+    assert src.count(optics) == 2
+    src = src.replace(optics, '  if (!AgcFrozenClock && State->Erasable[0][RegOPT')
+    # yaAGC's gyro drive takes GYROCMD (047) whole and zeroes it the
+    # instruction after channel 14 bit 10 comes on; no C64 resident drives
+    # the gyros (P52's torquing times itself on WAITLIST): under the frozen
+    # clock the drive stops too.
+    gyro = '  if (0 != (State->InputChannel[014] & 01000))\n    if (0 != State->Erasable[0][RegGYROCTR])'
+    assert src.count(gyro) == 1
+    src = src.replace(gyro, gyro.replace('if (0 != (', 'if (!AgcFrozenClock && 0 != (', 1))
     head = '#include "agc_engine.h"\n'
     assert src.count(head) == 1
     src = src.replace(head, head + 'int AgcFrozenClock;\n')
