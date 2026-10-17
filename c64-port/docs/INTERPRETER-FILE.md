@@ -63,7 +63,7 @@ Hashes: `evidence/lm-interpreter/SHA256.json`, `evidence/cm-interpreter/SHA256.j
   - LM: 28,148 cases, all equal.
   - CM: 25,592 cases, all equal.
   - It compares Z, all 2,048 erasable words and the interrupt-enable state.
-  - Of the cases, LM refuses 13 and CM refuses 8 (a GOTO to an operand word of the file, as #224).
+  - Of the cases, LM refuses 12 and CM refuses 8 (a GOTO to an operand word of the file, as #224).
 - **Executed-instruction closure** (`<m>-interpreter-closure.json`, `make <m>-interpreter-closure`). Every compiled instruction runs in the oracle:
   - LM: 769 of 772. Two are DPAGREE's words (03,3255-3256). POLY counts POLYCNT down to +0 and returns there, so `CCS POLYCNT` never takes its negative exit into DPAGREE, and no other Luminary099 code enters DPAGREE. The third is SQRTSUB's overflow exit (00,3452 `CAF POSMAX`, below).
   - CM: 658 of 659. The one left is SQRTSUB's overflow exit (00,3451). `DAS MPAC` overflows only for a root of 1 or more, and SQRTSUB's largest argument (37777 37777, one of its states) gives a root below 1.
