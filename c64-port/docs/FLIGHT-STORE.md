@@ -54,17 +54,19 @@ per source) for the harness. A module's `fixed_data` is the resident's
 runs, and `lm_trim_gimbal` (GTS reads an indexed CA through `fixed_data`)
 reads every rope word from the mission rope image the store carries
 (`FS_ROPE_DATA`, `platform/c64/rope_image_reu.c`). The builder writes that
-image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
-LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
+image into `<m>.reu` at the rope base (`tools/flight_store_build.py`
+`FLIGHT_ROPE_BASE`, 0x1e0000 for either mission: a flight store carries one
+rope, `include/rope_image.h` under `RK_LM` or `RK_CM`) and pads the store to
+2 MB. Builds that carry both ropes (`tools/rope_image_pack.py` `BASES`) keep
+the LM's at 0x1c0000.
 
 The 2 MB REU, by address:
 
 | REU range | Use |
 | --- | --- |
-| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1c0000 |
-| 0x1c0000-0x1d1fff | LM rope image (LM store only) |
+| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1df000 (`REU_LIMIT`) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
-| 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1e0000-0x1f1fff | The mission's rope image |
 | 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`; the build checks that the rope image ends at or below it and that it is unused) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 

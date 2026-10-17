@@ -43,7 +43,9 @@ OUT = ROOT / 'build/module-test'
 WORDS, CHANNELS = 2048, 0o100
 RECORD = WORDS * 2 + CHANNELS * 2 + 8 + 8
 HEADER = 16
-ROPE = {'lm': 0x1c0000, 'cm': 0x1e0000}   # tools/flight_store_build.py add_rope
+# The case blob's end: the Pinball trampoline save below the mission's rope
+# (tools/flight_store_build.py REU_LIMIT).
+ROPE = {'lm': 0x1df000, 'cm': 0x1df000}
 NONE = 0xffff
 IO_DEFINE = {'LM_DNTM': 'MT_IO_LM_DNTM', 'CM_DNTM': 'MT_IO_CM_DNTM'}
 
