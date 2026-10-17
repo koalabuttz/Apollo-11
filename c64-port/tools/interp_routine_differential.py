@@ -575,11 +575,17 @@ def case(mi, point, n, rng):
     ranged_joint = [st['*'] for lo, hi, st in mi.range_states if lo <= point < hi and '*' in st]
     for k, choices in (list(mi.all_states.items()) + ranged + list(mi.flow.get(point, {}).items())
                        + list(mi.states.get(point, {}).items())):
-        a = state_address(mi, k, vac)
-        pinned.add(a)
+        # ('E:<addr>': the switched word at 01400-01777 under the case's
+        # EBANK, the word the code reads whatever the bank.)
+        a = (eb << 8) + int(k[2:], 8) - 0o1400 if k.startswith('E:') else state_address(mi, k, vac)
         if isinstance(choices, dict):
             choices = choices[mi.m]
         v = rng.choice(choices)
+        if v == 'any':
+            # (The case's own value: a choice that makes an edge value
+            # common without narrowing the rest.)
+            continue
+        pinned.add(a)
         if v == 'outside':
             v = mi.outside(rng)
         elif isinstance(v, str) and v.startswith('vac+'):
