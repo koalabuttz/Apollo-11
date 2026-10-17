@@ -616,11 +616,34 @@ port) runs one mission:
    points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
    `lm-p63-nassp`: Apollo 11's own P63 state, the NASSP core
    tools/scenarios/luminary099-p63-ignition.core (102:25 GET), with AUTO,
-   the LR antenna in position 2 (`FLIGHT_CH33=036673`; position 1, as the
-   core has it, gives alarm 523 at high gate) and `FLIGHT_ENGINE=15100`;
+   the LR antenna in position 1 as the core has it (`FLIGHT_CH33=036733`)
+   and moving to position 2 5 s after LRPOS2 commands it at high gate
+   (`FLIGHT_LR_POS2=500`), and `FLIGHT_ENGINE=15100`;
    the keys are those of `lm-p63-descent`. The LLGE flies the braking
-   phase to P64 at about 1,118 s after the core (on yaAGC alone too); with
-   no landing radar model, alarms 511 and 522 recur every 2 s.
+   phase to P64 at about 1,118 s after the core (on yaAGC alone too). The
+   radar reads end (the resident's radar cycle requests RADARUPT, as
+   yaAGC does), with no data good, so no LR update is taken.
+   `lm-landing-ascent-nassp`: `lm-p63-nassp` on to the surface and back to
+   orbit. `FLIGHT_ENGINE_LAG=0.2`: the throttle command reaches the engine
+   as pulses at 3,200 a second and the thrust lags them 0.2 s, and the
+   PIPAs count at every native routine boundary (THROTTLE's FWEIGHT
+   assumes all three; without them P66's throttle commands alternate and
+   grow). At 1,225 s (about 140 m, 4.5 m/s down) the crew goes to attitude
+   hold (channel 31 bit 13) and clicks the rate-of-descent switch (key M,
+   channel 16 bit 6), so P66 starts and holds the sink rate; ten more clicks
+   bring it to 0.8 m/s, and the crew tilts the LM to null the 34 m/s over
+   the surface by 1,280 s (`FLIGHT_PILOT=8`: the thrust axis tilts against
+   the LLGE's surface velocity, V plus DELVS, at most 15 degrees).
+   Touchdown at 1,344 s (`FLIGHT_TOUCHDOWN`: contact stops the LM, and the
+   PIPAs get the surface's reaction, GM/r^2 up along RN, so the navigation
+   holds still). V37E68E: P68 stores RLS and flashes V06N43; PRO (channel
+   32 bit 14): GOTOPOOH; V37E00E: P00 on the surface. V37E12E: P12, TIG
+   102:53:00 on the AGC clock loaded on V06N33 (the flight's was 124:22),
+   proceed on V06N76 and on V99; the ascent engine (`FLIGHT_ASCENT=4888`,
+   15,569 N, no throttle) burns about 7 min 15 s to orbit insertion at
+   1,679 m/s, about 18 km up. On the host every native routine matches
+   yaAGC; the unregistered points are the 3 self-check ones and Pinball's
+   RELDSP1 (02,2502, 1 arrival).
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
