@@ -179,7 +179,12 @@ of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
 module's header and CRC16-CCITT and the resolver's order and targets. Per-load
 CRC is off in the REU build, because a bitwise CRC costs about 250 cycles per
 byte (four seconds for a full slot). A disk-backed store keeps per-load
-verification on.
+verification on. A verified store (`APOLLO_OV2_STORE_VERIFIED`, the flight
+resident; profile builds excepted) loads a module with one DMA straight into
+its slot and checks only its id: the boot verify already checked the
+directory fields, the header rules and the checksum, so the separate header
+fetch, its compare and the per-load CRC code are not linked (about 600 B of
+resident, and about 3,200 cycles less per load).
 
 ### Disk layout
 
