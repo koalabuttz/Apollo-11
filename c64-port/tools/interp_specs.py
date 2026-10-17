@@ -2241,6 +2241,10 @@ SPECS = {
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every RCS DAP pass runs these routines: the EB 6 window fast
+        # forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
