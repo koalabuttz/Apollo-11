@@ -452,6 +452,15 @@ def resident_modules(cc, host_cc, m, resolver, library, pin_task=False):
     return prgs
 
 
+def flight_undo_area():
+    """The REU range the five undo modules stash their entry image in
+    (include/flight_undo.h FLIGHT_UNDO_REU, FLIGHT_UNDO_BYTES)."""
+    text = (ROOT / 'include/flight_undo.h').read_text()
+    base, size = (int(re.search(rf'#define {name}\s+(0x[0-9A-Fa-f]+)ul', text).group(1), 16)
+                  for name in ('FLIGHT_UNDO_REU', 'FLIGHT_UNDO_BYTES'))
+    return base, base + size
+
+
 def add_rope(m):
     """Put the mission's rope image where include/rope_image.h reads it on the
     C64 (the top of a 2 MB REU, above the store), for the modules whose
@@ -464,7 +473,14 @@ def add_rope(m):
     if len(image) > base and any(image[base:]):
         raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
     image += bytes(2 * 1024 * 1024 - len(image))
-    for k, w in enumerate(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin')):
+    words = list(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin'))
+    undo, undo_end = flight_undo_area()
+    if base + 2 * len(words) > undo or undo_end > len(image) - SCRATCH_BYTES:
+        raise SystemExit(f'{m}: the rope image ({base:#x}-{base + 2 * len(words):#x}), the flight undo area '
+                         f'({undo:#x}-{undo_end:#x}) and the load check scratch ({len(image) - SCRATCH_BYTES:#x}) overlap')
+    if any(image[undo:undo_end]):
+        raise SystemExit(f'{m}: the store reaches the flight undo area at {undo:#x}')
+    for k, w in enumerate(words):
         image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
     reu.write_bytes(image)
     manifest = ROOT / OUT / f'{m}-manifest.json'
