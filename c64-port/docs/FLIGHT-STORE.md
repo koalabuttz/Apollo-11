@@ -673,6 +673,33 @@ port) runs one mission:
    DOWNRUPT, so yaAGC runs it to the idle loop before the native side
    starts: entering DOWNTELEMETRY's continuation with the dump's Q (00336)
    gives no state a flight reaches.
+   `lm-p52-realign`: a P52 option 3 (REFSMMAT) fine align from the same
+   core, on the pair its own last P52 sighted, stars 18 (Regulus) and 20
+   (Gienah) in the forward AOT detent (BESTI 108, BESTJ 120, STARCODE
+   0224). The keys run V37E52E, option 3 (V22E3E) and proceed on V04N06,
+   ENTER on V50N25 00015 (no star pick: R52 offers BESTI, then BESTJ),
+   proceed on V01N70, ENTER on V50N18 (no auto maneuver: with no rotation
+   model KALCMANU would never finish), proceed on V01N71, a Y and an X
+   mark and proceed on V54N71, for each star; then proceed on the star
+   angle difference (V06N05) and the torquing angles (V06N93), and ENTER
+   on V50N25 00014. The AOT marks are the keys `y` and `x`: channel 16
+   bits 4 and 3 and a KEYRUPT2 request (as `M` and `J` are the CM's). For each
+   sighting `FLIGHT_POKE` sets CDUX-CDUZ to the attitude that puts the
+   star on the detent's optic axis (tools/flight_scenarios/lm_p52.py: the
+   smallest rotation from the core's attitude, which is already star 20's
+   to a count). So V06N05 shows 0.00 and V06N93 a few thousandths of a
+   degree, and R55 torques the gyros (GYROCMD keeps its count on both
+   sides: the frozen clock stops yaAGC's gyro drive, and the C64 has
+   none). On base 30af9747 the native run (10,000 cs, scaled
+   x1) takes 528,365 routines, none that yaAGC did not match, and ends
+   in V37 after P52; the only points left unregistered are the
+   self-check's SMODECHK and CHECKNJ, which the core's mid-idle-loop start
+   reaches. On the C64 (flight_scenario_vice.py windows from host
+   snapshots) the R52, R60, OPTAXIS, R54 and R55 work runs at 9.8 to 11.5
+   times real time, and the AOT marks run; the windows from the marks on
+   stop at PINBALL's NVMONOPT (unmapped in the store until #425).
+   tools/flight_scenarios/sighting.py holds the conversions, catalog and
+   gimbal matrices lm_p52.py uses.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
