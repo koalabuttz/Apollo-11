@@ -48,16 +48,31 @@ __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 #ifdef RK_WORK_CLOCK
 uint16_t rk_work;
 uint8_t rk_tick_phase;
+const uint16_t rk_phase_mct[9] = {214u, 213u, 427u, 213u, 213u, 427u, 213u, 214u, 426u};
+/* From each step's start to its period's end. */
+static const uint16_t rk_phase_rest[9] = {854u, 640u, 427u, 853u, 640u, 427u, 853u, 640u, 426u};
+const uint8_t rk_phase_step[9] = {RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3,
+                                  RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5};
+/* Set by the idle loop's charge, cleared by rk_rupts. */
+static uint8_t rk_idle;
 __attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
-/* The MCT left before the next tick (at least 1: rk_rupts drained the
- * whole periods at the step's start). */
-__attribute__((noinline)) static uint16_t rk_budget(void) { return (uint16_t)(RK_TICK_MCT(rk_tick_phase)-rk_work); }
+/* The MCT left before the next step (at least 1: rk_rupts drained the
+ * whole steps at the step's start). */
+__attribute__((noinline)) static uint16_t rk_budget(void)
+{
+    return (uint16_t)(RK_PHASE_MCT(rk_tick_phase) - rk_work);
+}
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
- * the idle loop (RK_MCT_IDLE), the rest of the tick. */
+ * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
+ * drops if an interrupt request ends the idle first. */
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
-    if(mct==RK_MCT_IDLE) { rk_work=RK_TICK_MCT(rk_tick_phase); return; }
+    if (mct == RK_MCT_IDLE) {
+        rk_work = rk_phase_rest[rk_tick_phase];
+        rk_idle = 1;
+        return;
+    }
     do w+=n; while(--mct);
     rk_work=w;
 }
@@ -260,21 +275,37 @@ static inline void rk_realtime_cap(void)
     // clang-format on
 }
 #endif
-/* The AGC clock, one rk_timer_tick per CIA1 interrupt since the last step
- * up to RK_TICK_LAG (the rest dropped into rk_dilation), then the highest
- * pending interrupt if it can be taken at this boundary.
+/* The AGC clock, then the highest pending interrupt if it can be taken at
+ * this boundary. The work clock steps the timers (rk_timer_phase) for each
+ * whole step of work since the last, but takes a request that can be taken
+ * before each, so the later steps' requests wait for it (T4RUPT before
+ * T3RUPT when both come due in one period, as on the AGC); the idle loop's
+ * rest of the period goes when one is taken. The wall clock runs one rk_timer_tick per
+ * CIA1 interrupt since the last step up to RK_TICK_LAG (the rest dropped
+ * into rk_dilation).
  * The count is read with interrupts held off (and their flag restored: the
  * checks step with it set) so one between its two bytes cannot tear it.
  * Out of line, so the size report counts it with the timers. */
 __attribute__((noinline)) static void rk_rupts(void) {
 #ifdef RK_WORK_CLOCK
-    /* Work clock: one period per RK_TICK_WORK of work since the last. */
-    while(rk_work>=RK_TICK_MCT(rk_tick_phase)) {
-        rk_realtime_cap();
-        rk_work-=RK_TICK_MCT(rk_tick_phase);
-        rk_tick_phase=rk_tick_phase==2u ? 0u : (uint8_t)(rk_tick_phase+1u);
-        rk_timer_tick(IMAGE,&rk_hardware,&rk_pending);
+    uint8_t got;
+    for (;;) {
+        uint8_t p = rk_tick_phase, t = rk_phase_step[p];
+        got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
+                           &rk_pending);
+        if (got || rk_work < RK_PHASE_MCT(p)) break;
+        if (t == RK_PHASE_T5) rk_realtime_cap();
+        rk_work -= RK_PHASE_MCT(p);
+        rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
+        rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
     }
+    if (got && rk_idle) rk_work = 0;
+    rk_idle = 0;
+#ifdef RK_RUPT_TRACE
+    /* The DAP pass check (platform/c64/dap_pass_check.c): which request
+     * this step took, if any. */
+    rk_rupt_last = got;
+#endif
 #else
     uint16_t now;
     uint8_t take=RK_TICK_LAG;
@@ -285,13 +316,11 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
         else ++rk_dilation;
     }
-#endif
 #ifdef RK_RUPT_TRACE
-    /* The DAP pass check (platform/c64/dap_pass_check.c): which request
-     * this step took, if any. */
     rk_rupt_last=
 #endif
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
+#endif
 }
 
 /* One kernel routine, or EXEC_UNMAPPED where there is none. The step

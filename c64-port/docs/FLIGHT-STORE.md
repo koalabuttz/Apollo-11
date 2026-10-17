@@ -684,8 +684,10 @@ port) runs one mission:
    sets it in AGC machine cycles, 1,707 by default), each optionally
    jittered from 1/4 to 4 times by SEED. A CIA1 interrupt lands every
    D × 10 ms of it, and at each native boundary at most LAG of them become
-   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does; bridged
-   code takes its periods between instructions. Lockstep then compares the
+   `rk_timer_tick` periods, the rest dropped, as `rk_rupts` does under the
+   CIA wall clock (`FLIGHT_SCALED=W` runs the work clock's
+   `rk_timer_phase` steps instead, each after any request that can be
+   taken); bridged code takes its periods between instructions. Lockstep then compares the
    clock counters too and adopts nothing from yaAGC, so every routine must
    match yaAGC run from the same state under the same periods, and the
    run as a whole is one yaAGC run under that tick schedule. No

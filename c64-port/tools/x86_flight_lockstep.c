@@ -10,7 +10,7 @@
  * state the routine started in until it reaches the routine's continuation
  * with the same 2048 erasable words (Z aside), the I/O channels and the
  * interrupt state. The clock periods and interrupts are the native step's
- * (rk_timer_tick and rk_rupt_take, both checked against yaAGC by
+ * (rk_timer_phase and rk_rupt_take, both checked against yaAGC by
  * make test-resident-rupt), so a run with no miss is one yaAGC run whose
  * clock ran on the x86 program's schedule. A basic point no routine holds
  * fails the run (the x86 program has no bridge); interpretive points the

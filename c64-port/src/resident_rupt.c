@@ -12,23 +12,41 @@ static uint8_t pinc(agc_word *w) {
     return 0;
 }
 
-void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending) {
-    uint8_t i;
+void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending, uint8_t phase)
+{
+    /* Each step's counter and the request its overflow raises. */
+    static const uint8_t counter[3] = {027u, 026u, 030u};
+    static const uint8_t request[3] = {RK_RUPT_BIT(RK_RUPT_T4), RK_RUPT_BIT(RK_RUPT_T3),
+                                       RK_RUPT_BIT(RK_RUPT_T5)};
+    uint8_t i, n;
     agc_word *w=s->words;
-    if(pinc(&w[030])) *pending|=RK_RUPT_BIT(RK_RUPT_T5);
-    if(pinc(&w[027])) *pending|=RK_RUPT_BIT(RK_RUPT_T4);
-    if(pinc(&w[025])) pinc(&w[024]);
-    if(pinc(&w[026])) *pending|=RK_RUPT_BIT(RK_RUPT_T3);
-    /* The scalers (channels 4 and 3) count AGC time too: 32 SCALER1
-     * counts per period, SCALER2 on its overflow. */
-    if(!(hw->channel4=(agc_word)((hw->channel4+32u)&037777u))) hw->channel3=(agc_word)((hw->channel3+1u)&037777u);
-    /* yaAGC CounterDINC: toward zero by one through the one's complement
-     * adder, so +1 and -1 both step to -0; at +0 or -0 the ZOUT. */
-    for(i=0;i<16u && (hw->channel13&040000u);++i) {
-        agc_word v=w[031];
-        if(v==0u||v==AGC_MASK){*pending|=RK_RUPT_BIT(RK_RUPT_T6);hw->channel13&=037777u;}
-        else w[031]=(agc_word)(v==1u?AGC_MASK:(v&AGC_SIGN)?v+1u:v-1u);
+    agc_word v;
+    if (phase == RK_PHASE_T3 && pinc(&w[025])) pinc(&w[024]);
+    if (pinc(&w[counter[phase]])) *pending |= request[phase];
+    /* The scalers (channels 4 and 3) count AGC time too: SCALER1 8 counts
+     * to each of the first two steps, 16 to the last, SCALER2 on its
+     * overflow. */
+    n = phase == RK_PHASE_T5 ? 16u : 8u;
+    v = (agc_word)(hw->channel4 + n);
+    if (v & 040000u) hw->channel3 = (agc_word)((hw->channel3 + 1u) & 037777u);
+    hw->channel4 = (agc_word)(v & 037777u);
+    /* yaAGC CounterDINC on every odd SCALER1 count, half the counts: toward
+     * zero by one through the one's complement adder, so +1 and -1 both
+     * step to -0; at +0 or -0 the ZOUT. */
+    for (i = 0, n >>= 1; i < n && (hw->channel13 & 040000u); ++i) {
+        agc_word t = w[031];
+        if (t == 0u || t == AGC_MASK) {
+            *pending |= RK_RUPT_BIT(RK_RUPT_T6);
+            hw->channel13 &= 037777u;
+        } else
+            w[031] = (agc_word)(t == 1u ? AGC_MASK : (t & AGC_SIGN) ? t + 1u : t - 1u);
     }
+}
+
+void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending)
+{
+    uint8_t p;
+    for (p = RK_PHASE_T4; p <= RK_PHASE_T5; ++p) rk_timer_phase(s, hw, pending, p);
 }
 
 static uint8_t word_at(const agc_native_program *p, const apollo_overlay_state *s, agc_word superbank,

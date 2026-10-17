@@ -51,7 +51,9 @@
  * FLIGHT_SCALED=W: the work clock instead (resident_flight.h): each native
  * routine spends its table's weight (host.inc, from docs/flight-routine-mct.json), bridged code its
  * own machine cycles, and every 853 1/3 MCT of that is one tick, none
- * dropped; every routine must still match yaAGC under that schedule.
+ * dropped, in three steps (rk_timer_phase) with a request that can be
+ * taken taken before each, as rk_rupts does; every routine must still
+ * match yaAGC under that schedule.
  * FLIGHT_CHAN=CS:CH=VALUE,...: an input channel set at a time (below);
  * keys M and J are the CM's MARK and MARK REJECT buttons.
  *
@@ -147,13 +149,24 @@ static int work;
 static double jitter(void){if(!seed)return 1.0;
  seed^=seed<<13;seed^=seed>>7;seed^=seed<<17;return 0.25*pow(16.0,(double)(seed%10000ul)/9999.0);}
 static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
-/* The work clock's idle loop (weight 0, RK_MCT_IDLE): the rest of the tick,
- * so the next boundary takes it (tick k falls at ceil(k*2560/3)). */
-static void idle_tick(void){unsigned long k=(unsigned long)wall*3ul/2560ul+1ul;wall=(double)((k*2560ul+2ul)/3ul);}
+/* The work clock's steps (resident_flight.h rk_phase_mct): step j (from 0)
+ * ends at step_at(j) MCT and steps TIME4, TIME1/TIME3 or TIME5 (j % 3, the
+ * rk_timer_phase step); consumed counts the steps taken. */
+static const unsigned step_end[9]={214u,427u,854u,1067u,1280u,1707u,1920u,2134u,2560u};
+static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j%9ul]);}
+/* The work clock's idle loop (weight 0, RK_MCT_IDLE): to the end of the
+ * period, which the boundary drops if it takes a request first. */
+static int idling;
+static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
-static unsigned due(void){unsigned long now=work?(unsigned long)wall*3ul/2560ul:(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
+static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
  for(;consumed<now;++consumed){if(n<lag){++n;++taken;}else ++dropped;}
+ return n;}
+/* The work clock's steps due, for bridged code (yaAGC takes their
+ * requests between its instructions). */
+static unsigned due_steps(void){unsigned n=0;
+ for(;step_at(consumed)<=wall;++consumed,++n)if(consumed%3ul==2ul)++taken;
  return n;}
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
 static unsigned long chan30=037777u,chan31=077777u,chan32=077777u,chan33=077777u;
@@ -446,12 +459,13 @@ static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsign
 static const agc_word *view(void){static agc_word v[2048];static const unsigned short at[]={3,4,5,AGC_EDOP,NEWJOB,0164,0165};unsigned i;
  for(i=0;i<sizeof at/sizeof at[0];++i)v[at[i]]=mword(at[i]);
  return v;}
-/* One clock period (rk_timer_tick) on yaAGC's state, for bridged code. */
-static void ref_tick(void){static apollo_overlay_state t;agc_hardware h;uint16_t p=0;unsigned i;
+/* One clock period (rk_timer_tick), or with step >= 0 one work-clock step
+ * (rk_timer_phase), on yaAGC's state, for bridged code. */
+static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint16_t p=0;unsigned i;
  for(i=024u;i<=031u;++i)t.words[i]=mword(i);
  memset(&h,0,sizeof h);h.channel13=(agc_word)(m.InputChannel[013]&077777);
  h.channel3=(agc_word)(m.InputChannel[3]&077777);h.channel4=(agc_word)(m.InputChannel[4]&077777);
- rk_timer_tick(&t,&h,&p);
+ if(step<0)rk_timer_tick(&t,&h,&p);else rk_timer_phase(&t,&h,&p,(uint8_t)step);
  for(i=024u;i<=031u;++i)*cell(i)=(int16_t)t.words[i];
  m.InputChannel[013]=(int16_t)h.channel13;m.InputChannel[3]=(int16_t)h.channel3;m.InputChannel[4]=(int16_t)h.channel4;
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)if(p&RK_RUPT_BIT(i))m.InterruptRequests[i]=1;}
@@ -472,7 +486,7 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
  for(n=0;n<limit;++n){
   if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr))break;}
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
-   if(quiet()){for(k=due();k;--k)ref_tick();}
+   if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j)ref_tick((int)(j%3ul));}else for(k=due();k;--k)ref_tick(-1);}
    continue;}
   if(agc_engine(&m))return -1;}
  if(n==limit)return -1;
@@ -717,9 +731,16 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
    if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
-  if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
-  {agc_word brupt=s.words[017];
-   if(rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending)){
+  {agc_word brupt=s.words[017];uint8_t got;
+   if(scaled&&work){
+    /* rk_rupts: a request that can be taken before each step due. */
+    while(!(got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending))&&step_at(consumed)<=wall){
+     rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul)++taken;}
+    if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
+    idling=0;}
+   else{if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
+    got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
+   if(got){
     /* At a RESUME point the instruction to run is BRUPT, not the word at
      * Z; rk_rupt_take saves the word at Z. */
     if(substitute&&brupt!=s.words[017]&&++lost_brupt==1ul)printf("interrupt at a RESUME point replaced BRUPT %05o with %05o at %lu cs\n",(unsigned)brupt,(unsigned)s.words[017],now(s.words));
@@ -773,7 +794,7 @@ x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
   MISSION?"CM":"LM",steps,locked,bridged,samples,samples-diffs,diffs);
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
-  slow,divisor,lag,seed,consumed,taken,dropped,now(s.words));
+  slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
