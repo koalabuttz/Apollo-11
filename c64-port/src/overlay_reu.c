@@ -46,27 +46,37 @@ uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     if(!read_bytes(base+APOLLO_REU_INDEX_RECORD,h,APOLLO_REU_INDEX_RECORD)) return 0;
     s->pages=le16(h);
     for(i=2;i<APOLLO_REU_INDEX_RECORD;++i) if(h[i]) return 0;
-    /* Header page, index (4096 records = 256 pages), then resolver, then
-     * modules: every region must lie inside the image. */
-    if(s->index_page<1u || (uint32_t)s->index_page+256u>s->pages ||
-       s->resolver_page<s->index_page+256u ||
+    /* Header page, index (the pages up to the resolver: blocks of 256
+     * records = 16 pages, 1 to 16 blocks), then resolver, then modules:
+     * every region must lie inside the image. */
+    if(s->index_page<1u || s->resolver_page<=s->index_page ||
+       (uint16_t)(s->resolver_page-s->index_page)>256u ||
+       ((s->resolver_page-s->index_page)&15u) ||
        (uint32_t)s->resolver_page*256u+(uint32_t)s->resolver_count*APOLLO_REU_RESOLVER_RECORD>
        (uint32_t)s->pages*256u)
         return 0;
+    s->index_blocks=(uint8_t)((s->resolver_page-s->index_page)>>4);
     return 1;
+}
+static uint8_t payload_inside(const apollo_reu_store *s,const apollo_ov2_dirent *d) {
+    return d->page>=s->resolver_page &&
+        (uint32_t)d->page*256u+d->bytes<=(uint32_t)s->pages*256u;
 }
 static uint8_t lookup(void *user,uint16_t id,apollo_ov2_dirent *d) {
     apollo_reu_store *s=(apollo_reu_store *)user;
     const uint8_t *r=s->record;
-    if(!id || id>=APOLLO_REU_INDEX_ENTRIES) return 0;
+    if(!id || (uint8_t)(id>>8)>=s->index_blocks) return 0;
     if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
         s->record,APOLLO_REU_INDEX_RECORD)) return 0;
     d->id=le16(r); d->page=le16(r+2); d->bytes=le16(r+4); d->crc16=le16(r+6);
     d->selectors=le16(r+8); d->slot=r[10]; d->flags=r[11];
     if(!(d->flags & APOLLO_OV2_DIRENT_PRESENT) || d->id!=id) return 0;
-    /* Payload must lie inside the image, after the resolver. */
-    if(d->page<s->resolver_page || (uint32_t)d->page*256u+d->bytes>(uint32_t)s->pages*256u)
-        return 0;
+#if !defined(APOLLO_OV2_STORE_VERIFIED) || defined(RK_STEP_PROFILE)
+    /* Payload must lie inside the image, after the resolver. A verified
+     * store (APOLLO_OV2_STORE_VERIFIED) had this checked for every present
+     * record when it opened (apollo_reu_store_verify). */
+    if(!payload_inside(s,d)) return 0;
+#endif
     return 1;
 }
 static uint8_t fetch(void *user,const apollo_ov2_dirent *d,uint16_t offset,uint8_t *dest,uint16_t count) {
@@ -100,7 +110,7 @@ static uint16_t invoke(void *user,uint8_t *slot,apollo_ov2_frame *frame,uint16_t
 uint8_t apollo_reu_store_fixed(apollo_reu_store *s,
     uint8_t (*load)(void *,uint32_t,const apollo_ov2_dirent *),void *user) {
     uint16_t id;
-    for(id=1;id<APOLLO_REU_INDEX_ENTRIES;++id) {
+    for(id=1;id<(uint16_t)(s->index_blocks<<8);++id) {
         apollo_ov2_dirent d;
         if(lookup(s,id,&d) && d.slot>=APOLLO_OV2_SLOT_FIXED &&
            !load(user,page_address(s,d.page),&d)) return 0;
@@ -117,7 +127,7 @@ apollo_ov2_store apollo_reu_store_backend(apollo_reu_store *s,
 enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buffer) {
     uint16_t id,count=0,i;
     uint32_t previous=0;
-    for(id=1;id<APOLLO_REU_INDEX_ENTRIES;++id) {
+    for(id=1;id<(uint16_t)(s->index_blocks<<8);++id) {
         apollo_ov2_dirent d;
         uint16_t offset,crc=0xffffu;
         if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
@@ -126,7 +136,8 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             for(i=0;i<APOLLO_REU_INDEX_RECORD;++i) if(s->record[i]) return APOLLO_OV2_BAD_DIRECTORY;
             continue;
         }
-        if(!lookup(s,id,&d) || d.slot>APOLLO_OV2_SLOT_PINNED_TASK || d.selectors==0 ||
+        if(!lookup(s,id,&d) || !payload_inside(s,&d) ||
+           d.slot>APOLLO_OV2_SLOT_PINNED_TASK || d.selectors==0 ||
            APOLLO_OV2_LANE(id)==0 || d.bytes<=APOLLO_OV2_HEADER_BYTES ||
            d.bytes>apollo_ov2_slot_bytes(d.slot) || d.flags!=APOLLO_OV2_DIRENT_PRESENT ||
            s->record[12] || s->record[13] || s->record[14] || s->record[15])

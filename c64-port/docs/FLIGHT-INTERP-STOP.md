@@ -47,8 +47,8 @@ a `-DAGC_FLIGHT_INTERPRETER` build (`flight_keys`).
 | File | EXIT returns | Keyed |
 |---|---|---|
 | `lm_servicer` | 18 | yes (15 added, flight only) |
-| `lm_ags_init` | 2 | not yet |
-| `lm_lunar_landing` | 4 | not yet |
+| `lm_ags_init` | 2 | yes (2 added, flight only) |
+| `lm_lunar_landing` | 4 | yes (4 added, flight only) |
 | `lm_imu_performance` | 8 (1 already a key) | yes (7 added, flight only) |
 | `lm_burn_baby` | 0 | nothing to key |
 

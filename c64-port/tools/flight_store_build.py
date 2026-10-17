@@ -452,6 +452,15 @@ def resident_modules(cc, host_cc, m, resolver, library, pin_task=False):
     return prgs
 
 
+def flight_undo_area():
+    """The REU range the five undo modules stash their entry image in
+    (include/flight_undo.h FLIGHT_UNDO_REU, FLIGHT_UNDO_BYTES)."""
+    text = (ROOT / 'include/flight_undo.h').read_text()
+    base, size = (int(re.search(rf'#define {name}\s+(0x[0-9A-Fa-f]+)ul', text).group(1), 16)
+                  for name in ('FLIGHT_UNDO_REU', 'FLIGHT_UNDO_BYTES'))
+    return base, base + size
+
+
 def add_rope(m):
     """Put the mission's rope image where include/rope_image.h reads it on the
     C64 (the top of a 2 MB REU, above the store), for the modules whose
@@ -464,7 +473,14 @@ def add_rope(m):
     if len(image) > base and any(image[base:]):
         raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
     image += bytes(2 * 1024 * 1024 - len(image))
-    for k, w in enumerate(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin')):
+    words = list(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin'))
+    undo, undo_end = flight_undo_area()
+    if base + 2 * len(words) > undo or undo_end > len(image) - SCRATCH_BYTES:
+        raise SystemExit(f'{m}: the rope image ({base:#x}-{base + 2 * len(words):#x}), the flight undo area '
+                         f'({undo:#x}-{undo_end:#x}) and the load check scratch ({len(image) - SCRATCH_BYTES:#x}) overlap')
+    if any(image[undo:undo_end]):
+        raise SystemExit(f'{m}: the store reaches the flight undo area at {undo:#x}')
+    for k, w in enumerate(words):
         image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
     reu.write_bytes(image)
     manifest = ROOT / OUT / f'{m}-manifest.json'
@@ -589,7 +605,7 @@ def host_pins(m, packed):
 def pack_report(packs):
     """The report's "packs": each job-slot pack (PACKS) with its tables, the
     ride ones and whether it linked."""
-    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'],
+    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'] or [p['chunk'][0]],
                  ride=[t for t in p['basic'] if t in RIDE], ok=bool(p.get('ok'))) for p in packs]
 
 
@@ -601,7 +617,7 @@ def pack_tables(packs):
 def host_packs(m, packed):
     """The packs a host-only build models: the last full build's report when
     its packs are still PACKS', else PACKS as configured (only beside a
-    class-4 pin, as the store packs them)."""
+    class-4 pin, as the store packs them, but for the ALONE ones)."""
     want = sorted((n, sorted(t for t in ts if t in packed)) for n, ts, _ in PACKS[m] if any(t in packed for t in ts))
     try:
         packs = json.loads((ROOT / OUT / 'report.json').read_text())[m]['packs']
@@ -610,7 +626,7 @@ def host_packs(m, packed):
     except (OSError, KeyError, ValueError):
         pass
     if 4 not in host_pins(m, packed).values():
-        return {}
+        want = [(n, ts) for n, ts in want if n in ALONE]
     return pack_tables([dict(name=n, tables=ts, ride=[t for t in ts if t in RIDE], ok=True) for n, ts in want])
 
 
@@ -636,13 +652,31 @@ RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines'}
 # out: it takes lm_channel_io, which would put the pack's every step on the
 # transfer engine instead of rk_direct.
 T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines'], 'cm': []}
+# The CM entry DAP pass (T5RUPT) reaches 26 of cm_entry_dap_basic's 138
+# routines, spread over all of its chunks, so a pass loaded about 5 of them
+# (lane-g/cm-entry-profile-80342904.md): its hot subset in one module makes
+# it about 1. CM pins no class-4 home, so the pack links its own runtime
+# (ALONE).
+ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
-PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6)] for m in ('lm', 'cm')}
+PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
+             ('cm_entry', ENTRYPACK[m], 0x07F7)] for m in ('lm', 'cm')}
+# Packs that link the runtime themselves, as any job-slot module does, so
+# they are packed with no class-4 home; the others take it from the home
+# (pin_pair) and are packed only beside it.
+ALONE = {'cm_entry'}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
+# A hot subset's full table where it is not <file>_routines: a generated
+# file names its full table <file>_basic (tools/basic_compile.py).
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic'}
+
+
 def hot_full(t):
+    if t in HOT_FULL:
+        return HOT_FULL[t]
     return t[:-len('_hot_routines')] + '_routines' if t.endswith('_hot_routines') else None
 # The compact interpreter (Interpreter lane, platform/c64/interp_module.c):
 # module $0A01 in the job slot, its cold bodies module $0A02 at $D000 (slot
@@ -695,10 +729,10 @@ def interpretive_table(t):
 # does not key.
 FLIGHT_PARTS = {'lm': {'lm_servicer': [['-DLMSV_FLIGHT_PART=1'], ['-DLMSV_FLIGHT_PART=2']],
                        'lm_aostask': [['-DLM_AOSTASK_FLIGHT_PART=%d' % j] for j in range(1, 4)],
-                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)]},
+                       'lm_interpreter': [['-DLM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)]},
                 'cm': {'cm_p40_p47': [['-DCM_P40_P47_FLIGHT_PART=%d' % j] for j in range(1, 7)],
                        'cm_extended_verbs_file': [['-DCM_EXTENDED_VERBS_FILE_FLIGHT_PART=%d' % j] for j in (1, 2)],
-                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in (1, 2)],
+                       'cm_interpreter': [['-DCM_INTERPRETER_FLIGHT_PART=%d' % j] for j in range(1, 4)],
                        'cm_imu_calibration': [['-DCM_IMU_CALIBRATION_FLIGHT_PART=%d' % j] for j in (1, 2, 3)]}}
 
 
@@ -1099,6 +1133,27 @@ def main():
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
+        def split_pack(pack, t):
+            """A stand-alone pack's one table over the job slot, as consecutive
+            chunks that each fit, each as long as fits (binary search on its
+            end, as split_greedy): the pass then loads one per chunk it
+            crosses. Ids follow the pack's."""
+            out, lo, n = [], 0, len(keys[t])
+            while lo < n:
+                good, bad = lo, n + 1
+                while bad - good > 1:
+                    mid = (good + bad) // 2
+                    r = link(dict(pack, basic=[], chunk=(t, lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
+                    if r['ok']:
+                        good = mid
+                    else:
+                        bad = mid
+                if good == lo:
+                    return [pack]  # one routine over the slot: the pack stays whole (and fails)
+                out.append(dict(pack, id=pack['id'] + len(out), basic=[], chunk=(t, lo, good),
+                                prg_name=f"{pack['prg_name']}-{len(out)}"))
+                lo = good
+            return out
         # The packs (excursion, T4RUPT) link once on their own first, so
         # pin_pair knows the names they link: those the class-4 home links
         # anyway stay global there (--undefined), and the packs take them
@@ -1120,12 +1175,15 @@ def main():
                                   if k >> 10 in banks})
             pack = dict(stem=stems[0], lane=lane, slot=0, id=ident, basic=pts,
                         interp=[], also=[], sites=sites, io=module_io(m, stems), excursion=True,
-                        sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name)
+                        sources=c64_sources(index, *stems, 'agc_transfer'), prg_name=name, alone=name in ALONE)
             (ROOT / OUT / m / f'{name}.prg.map').unlink(missing_ok=True)
-            link(dict(pack))
+            res = link(dict(pack))[2]
             exc_ask |= {n for n in map_symbols(ROOT / OUT / m / f'{name}.prg.map')
                         if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in pts}
-            packs.append(pack)
+            if name in ALONE and len(pts) == 1 and not res['ok'] and res.get('overflow'):
+                packs += split_pack(pack, pts[0])
+            else:
+                packs.append(pack)
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class
@@ -1248,8 +1306,11 @@ def main():
                     mod.update(slot=0, task_pinned_out=True)
         home = next((p for p in pinned if p['packed'] and p['slot'] == 'pinned_task'), None)
         if not home:
-            packs = []
+            packs = [p for p in packs if p.get('alone')]
         for pack in packs:
+            if not home:
+                modules.append(pack)
+                continue
             # Every function it links that the home holds as a global is the
             # home's (--defsym from the home's map), as for class 3.
             nm = subprocess.run([str(NM), str(ROOT / home['prg']) + '.elf'], capture_output=True,
@@ -1386,10 +1447,11 @@ def main():
         # tables' (hot_full), so the same routines run.
         for pack in packs:
             if pack.get('ok'):
-                for t in pack['basic']:
+                c = pack.get('chunk')
+                for t in pack['basic'] or [c[0]]:
                     if t in RIDE:
                         continue
-                    for k in keys[t]:
+                    for k in keys[t][c[1]:c[2]] if c else keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
         write_host(packed_pins(pinned), pack_tables(pack_report(packs)))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
@@ -1513,6 +1575,13 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
+        # A class-4 module holds the task slot's $E000 from boot: a task-slot
+        # load would overwrite it, and overlay_v2.c load() does not check
+        # (#426), so the store must carry none.
+        if any(mod['slot'] == 4 for mod in store['modules']):
+            task = [f'0x{mod["id"]:04x}' for mod in store['modules'] if mod['slot'] == 1]
+            if task:
+                raise SystemExit(f'{m}: task-slot modules {", ".join(task)} in a store with a class-4 module')
         link_load_check(a.cc, m, resolver + wrappers, [mod for mod, _, res in linked if res['ok']],
                         {k for t in packed for k in keys[t]} | {k for t in RESIDENT[m] for k in keys.get(t, [])}
                         | {k for ps in parts.values() for p in ps for v in p.values() for k in v},

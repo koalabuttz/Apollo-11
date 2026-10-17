@@ -86,7 +86,7 @@ module's 7.8 KB.
 | `$7000..$7FFF` | Canonical 2,048-word AGC erasable image (unchanged from ABI 1) | 4,096 |
 | `$8000..$BFFF` | Job slot | 16,384 |
 | `$C000..$CBFF` | Slot class 3: pinned modules. Boot loads the store's class-3 module once by plain DMA, verifies it, zeroes its BSS and runs its main once to build its tables; from then on the resident only calls its routines directly (`rk_direct`, before the job and task slots). No resolver record names it, and a run never loads it. Before boot finishes, `$C100..$C1FF` is the store-verify scratch; test programs without a pinned module use the page for mailboxes | 3,072 |
-| `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_INVALID_ACTION`) | 1,024 |
+| `$CC00..$CFFF` | LLVM-MOS software stack. Budget, counting the interpreter's frames on top of a resident step's: LM 302 + 325 + 200 margin = 827 bytes (CM 174 + 345 + 200 = 719), measured with the load check's watermark and the interpreter lane's. `$CC00` holds a canary boot writes; a resident step that finds it changed refuses to run (`EXEC_OUT_OF_SCOPE`: a stop, not the TC trap's restart) | 1,024 |
 | `$D000..$DFFF` | I/O; REU controller at `$DF00`. The RAM under it holds the interpreter extension (slot class 2), reached with I/O banked out; every IRQ entry saves `$01`, sets `$35` and restores it (#267) | 4,096 |
 | `$E000..$FFF9` | Task slot, or slot class 4: the pinned task region. A store with a class-4 module keeps this RAM for it: boot loads it once by plain DMA, verifies it and zeroes its BSS, and runs no main (the class-3 module's table list names its tables, so it is only called directly). Such a store has no task-slot module (the flight resident's null module 0x01E0, which only the load check calls, stays out of it too; the boundary-word table it once carried now ends the store image, `overlay_v2_pack.py --tail`): every task module links for the job slot, and a task run evicts the job module between steps. No resolver record names the class-4 module, and a run never loads it | 8,186 |
 | `$FFFA..$FFFF` | RAM NMI/RESET/IRQ vectors, resident-owned | 6 |
@@ -170,9 +170,9 @@ stores are separate, so the same id can name different modules in each.
 | Region | Content |
 |---|---|
 | Page 0 | `NREU`, format 1, mission, service version, module count, index page, resolver page, resolver count, total pages |
-| Pages 1..256 | Direct index: 4,096 records of 16 bytes, at `id * 16`: id, page, bytes, CRC16, selectors, slot, flags |
+| Pages 1 up to the resolver | Direct index: 16-byte records at `id * 16` for ids 0 to the highest module's, in blocks of 256 records (16 pages; 1 to 16 blocks, at most 4,096 records): id, page, bytes, CRC16, selectors, slot, flags. Its length is `resolver page - index page`; a lookup bounds an id by its high byte. A verified store (`APOLLO_OV2_STORE_VERIFIED`) checks each record's payload range once, in `apollo_reu_store_verify`, not on every lookup |
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
-| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx), so the packer starts a module that would cross on the next bank |
+| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx). Modules go in id order; one that would cross starts on the next bank, after the packer fills the gap before the edge with the largest modules still to place that fit it |
 
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present

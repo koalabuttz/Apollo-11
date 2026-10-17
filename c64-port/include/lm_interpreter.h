@@ -11,11 +11,11 @@ extern const agc_routine_table lm_interpreter_interpretive,lm_interpreter_basic;
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} lm_interpreter_point;
-#define LM_INTERPRETER_POINTS 42u
+#define LM_INTERPRETER_POINTS 55u
 #define LM_INTERPRETER_CADR_WORDS 1u
-#define LM_INTERPRETER_EXTERNALS 16u
+#define LM_INTERPRETER_EXTERNALS 3u
 #define LM_INTERPRETER_FIRST 235u
-#define LM_INTERPRETER_LAST 3961u
+#define LM_INTERPRETER_LAST 4039u
 extern const lm_interpreter_point lm_interpreter_points[LM_INTERPRETER_POINTS];
 extern const agc_word lm_interpreter_cadr_words[LM_INTERPRETER_CADR_WORDS];
 extern const agc_word lm_interpreter_externals[LM_INTERPRETER_EXTERNALS];

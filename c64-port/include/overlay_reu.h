@@ -43,6 +43,7 @@ uint8_t apollo_reu_transfer(uint8_t command,void *c64,uint32_t reu,uint16_t leng
 typedef struct {
     uint32_t base;
     uint16_t services,index_page,resolver_page,resolver_count,module_count,pages;
+    uint8_t index_blocks;   /* index length in blocks of 256 records (16 pages) */
     uint8_t mission;
     uint8_t *record;   /* 16-byte DMA buffer in C64 RAM */
     uint16_t (*invoke)(void *,uint8_t *,apollo_ov2_frame *,uint16_t);

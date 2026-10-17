@@ -50,15 +50,22 @@ _Static_assert(RK_TICK_LAG>=1u && RK_TICK_LAG<=255u,"a step takes 1 to 255 ticks
  * not by wall time: each routine adds its module's weight, the yaAGC
  * machine cycles (MCT) one of its routines takes on average (tools/
  * flight_mct.py calibrates them on the host lockstep, docs/flight-mct.json),
- * and every 853 1/3 MCT is one rk_timer_tick (10 ms of AGC time). Module
- * loads, the step's dispatch and the C64's interrupts cost nothing, so the
- * same state and inputs give the same tick schedule at any C64 speed.
- * rk_work counts the MCT since the last tick; the periods are 854, 853 and
- * 853 MCT in turn (rk_tick_phase), so tick k falls at the first whole MCT
- * at or past k * 853 1/3 (2,560 every three). */
+ * and every 853 1/3 MCT is one 10 ms period of AGC time, in three steps
+ * (rk_timer_phase, include/resident_rupt.h): TIME4 at 2.5 ms, TIME1 and
+ * TIME3 at 5 ms, TIME5 at 10 ms. Module loads, the step's dispatch and the
+ * C64's interrupts cost nothing, so the same state and inputs give the same
+ * schedule at any C64 speed. rk_work counts the MCT since the last step;
+ * the step lengths (rk_phase_mct, rk_tick_phase 0-8 over three periods,
+ * 2,560 MCT) put each step at the first whole MCT at or past its time: 214,
+ * 213, 427, then 213, 213, 427, then 213, 214, 426, so the periods still
+ * end every 854, 853 and 853 MCT. */
 #ifndef RK_WALL_CLOCK
 #define RK_WORK_CLOCK 1
-#define RK_TICK_MCT(phase) (853u+((phase)==0u))
+/* Each step's MCT, and which step of its period it is (RK_PHASE_T4,
+ * RK_PHASE_T3 or RK_PHASE_T5). */
+extern const uint16_t rk_phase_mct[9];
+extern const uint8_t rk_phase_step[9];
+#define RK_PHASE_MCT(phase) (rk_phase_mct[phase])
 /* The real-time cap's forgiven lag, in 10 ms periods (rk_rupts). */
 #ifndef RK_CAP_LAG
 #define RK_CAP_LAG 16
@@ -203,6 +210,12 @@ extern rk_module_env rk_env;
  * between its two bytes can tear one read. */
 #define RK_IRQ_COUNT 0x6fbcu
 extern flight_io rk_flight;
+/* The DSKY RESTART lamp, the hardware flip-flop GOJAM sets (rk_gojam) and
+ * ERROR RESET's WRITE 77 clears: nonzero while lit. At RK_RESTART_LAMP,
+ * above rk_flight, so the Pinball modules read and write it there (Lane C:
+ * their restart_light). */
+#define RK_RESTART_LAMP 0x6ff4u
+extern uint8_t rk_restart_lamp;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66
 #else
@@ -213,7 +226,7 @@ extern flight_io rk_flight;
 #define RK_BOOT_SCRATCH 0xc100u
 /* The soft stack's last byte above the pinned module (slot class 3, up to
  * $CBFF): boot writes the canary, and a step that finds it changed returns
- * EXEC_INVALID_ACTION before it runs anything. */
+ * EXEC_OUT_OF_SCOPE (a stop, not a restart: rk_gojam) before it runs anything. */
 #define RK_STACK_CANARY 0xcc00u
 #define RK_STACK_CANARY_VALUE 0xa5u
 
@@ -256,6 +269,10 @@ uint8_t rk_hidden_dma(uint8_t command,void *c64,uint32_t reu,uint16_t bytes);
  * ran, otherwise the routine's status, the module's rk_env.status, or
  * EXEC_UNMAPPED for a point no module resolves. */
 enum exec_status rk_resident_step(uint16_t stop_physical);
+/* The hardware restart (GOJAM), at a step boundary (resident_flight_main.c
+ * takes it where the AGC's TC trap would). 0, or nonzero when the GOJAM
+ * module did not run. */
+uint8_t rk_gojam(void);
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
 enum exec_status rk_direct(uint16_t stop_physical);
