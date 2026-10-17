@@ -258,11 +258,12 @@ static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;
 static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(agc_word)(c-'0');}
 /* M and J are the CM's MARK and MARK REJECT buttons (CM P52): channel 16
- * bit 6 or bit 7 and a KEYRUPT2 request, which MARKRUPT takes. key_due
- * returns them as MARK_KEY | the channel 16 bits. */
+ * bit 6 or bit 7 and a KEYRUPT2 request, which MARKRUPT takes; x, y and
+ * j are the LM's X MARK, Y MARK and MARK REJECT (channel 16 bits 3, 4
+ * and 5, LM P57). key_due returns them as MARK_KEY | the channel 16 bits. */
 #define MARK_KEY 0x100
 static int key_due(unsigned long t,unsigned *pressed){char c;if(!keys[*pressed]||t<keyt[*pressed])return -1;c=keys[(*pressed)++];
- return c=='M'?MARK_KEY|040:c=='J'?MARK_KEY|0100:(int)keycode(c);}
+ return c=='M'?MARK_KEY|040:c=='J'?MARK_KEY|0100:c=='x'?MARK_KEY|04:c=='y'?MARK_KEY|010:c=='j'?MARK_KEY|020:(int)keycode(c);}
 /* FLIGHT_CHAN=CS:CH=VALUE,... (octal channel and value): an input channel
  * (16, 30-33) set at the first sample point at or after CS, on both sides:
  * a switch the crew moves (CM P52: the optics mode switch, channel 33 bits
