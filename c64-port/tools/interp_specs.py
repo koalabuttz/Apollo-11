@@ -4281,6 +4281,9 @@ SPECS = {
     },
     'lm-stable-orbit': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
         'source_path': {'lm': 'STABLE_ORBIT.agc'},
         'base': {'lm': 'lm_stable_orbit'},
