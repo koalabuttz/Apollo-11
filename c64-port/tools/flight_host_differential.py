@@ -209,7 +209,9 @@ def main():
                    loads_by_point=loads)
         summary.append(row)
         print(f"{name}: {row['equal']}/{row['samples']} samples equal, {len(row['routine_mismatches'])} routines "
-              f"yaAGC did not match, {len(holes)} unregistered or refused points, "
+              f"yaAGC did not match, {len(holes)} unregistered or refused points"
+              + (f" ({sum(h['core_start'] for h in holes)} core-start artifacts)" if any(h['core_start'] for h in holes) else '')
+              + ", "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
     for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
