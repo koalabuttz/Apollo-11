@@ -630,6 +630,14 @@ static void watch(const agc_word *w){static agc_word last[64];static unsigned ad
  if(!parsed){const char *t=getenv("FLIGHT_WATCH");char *e;parsed=1;
   while(t&&*t&&n<64u){addr[n]=(unsigned)strtoul(t,&e,8);if(e==t||addr[n]>=2048u)break;last[n]=(agc_word)~0u;++n;t=*e==','?e+1:e;}}
  for(i=0;i<n;++i)if(w[addr[i]]!=last[i]){printf("watch %lu cs: %04o %05o\n",now(w),addr[i],(unsigned)w[addr[i]]);last[i]=w[addr[i]];}}
+/* FLIGHT_BUSY_SAMPLE=CS (scaled runs only, which compare no samples): also
+ * take a sample point at a job's step boundary when none has come for CS
+ * centiseconds, so keys, radar data and pokes still reach a job that busy
+ * waits for the crew (LM R22's V06N49 loop, SLOAD N49FLAG; BZE -3). */
+static unsigned long busy_last;
+static int busy_due(int scaled,const agc_word *w,int isr){static unsigned long every;static int parsed;
+ if(!parsed){parsed=1;if(getenv("FLIGHT_BUSY_SAMPLE"))every=strtoul(getenv("FLIGHT_BUSY_SAMPLE"),0,0);}
+ return scaled&&every&&!isr&&now(w)-busy_last>=every;}
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
@@ -726,7 +734,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
  for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
-  if(!pending&&(scaled||(hw.channel4&020u))&&at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt)){int k;
+  if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
     if((j=differs(s.words,ref[next]))!=0u&&++diffs<=(getenv("FLIGHT_SHOW")?strtoul(getenv("FLIGHT_SHOW"),0,0):20ul)){
      printf("%lu cs (native routine %lu):",next,steps);
@@ -761,6 +769,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     substitute=0;}}
   e=holder(s.words,io.superbank,&call);
   if(e&&*e->module)module_load(e,s.words,io.superbank);
+  if(getenv("FLIGHT_WATCH_STEP"))watch(s.words);
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;

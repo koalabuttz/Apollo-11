@@ -98,7 +98,11 @@ NMI = 1852.0
 # The P63 scenario's frame: P up through the site at landing, Q downrange.
 land = [-1270721.0, 1087493.0, 463124.0]
 P = unit(land)
-Q = unit(cross([0, 0, 1.0], P))
+# Q along P x Z: the orbits run retrograde about the reference Z axis, as
+# Apollo's lunar orbits did. INITVEL (P34-35_P74-75.agc, INITVEL3) picks
+# Lambert's sense from the sign of the orbit normal's Z for the moon, so a
+# posigrade orbit made P34 solve TPI the long way round (3,215 m/s).
+Q = unit(cross(P, [0, 0, 1.0]))
 
 
 def circular(radius, angle):
@@ -138,12 +142,23 @@ flag(124)               # LMOONFLG
 flag(123)               # CMOONFLG
 flag(40)                # AVFLAG: the LM is the active vehicle (P34)
 
-# R22's W matrix and update limits (Apollo 11's pad values: 10,000 ft and
-# 10 ft/s, 15 mrad on each RR axis; N49 above 2,000 ft or 2 ft/s).
-out[addr('WRENDPOS')] = sp(3.048 / 2**7)
+# R22's W matrix, measurement variances and update limits (10,000 ft and
+# 10 ft/s, 15 mrad on each RR bias; N49 above 2,000 ft or 2 ft/s). Scales
+# from the code, not the erasable comments: WRENDPOS SR 5 gives W's B-19 m
+# (FT99999), so integer metres; WRENDVEL is W's velocity scale (VELOCITY4,
+# m/cs); WSHAFT and WTRUN are W's bias scale (V67: internal B+5 rad).
+# RANGEVAR and RATEVAR are relative variances times 2^12 (DMP into the
+# B-40 m^2 and B-4 (m/cs)^2 VARIANCE); RVARMIN is 4 x m^2 and VVARMIN
+# 2^26 x (m/cs)^2. Left zero (the P63 core's values) they make the filter
+# gain blow up, so every mark asks V06N49.
+out[addr('WRENDPOS')] = sp(3048.0 / 2**14)
 out[addr('WRENDVEL')] = sp(0.03048)
-out[addr('WSHAFT')] = sp(0.015)
-out[addr('WTRUN')] = sp(0.015)
+out[addr('WSHAFT')] = sp(0.015 * 2**5)
+out[addr('WTRUN')] = sp(0.015 * 2**5)
+put('RANGEVAR', dp(0.001**2 * 2**12))     # 0.1 % range
+put('RATEVAR', dp(0.005**2 * 2**12))      # 0.5 % range rate
+out[addr('RVARMIN')] = 4 * 20**2          # 20 m
+out[addr('VVARMIN')] = int(round((0.3 * CS)**2 * 2**26))   # 0.3 m/s
 out[addr('RMAX')] = sp(609.6 / 2**19)
 out[addr('VMAX')] = sp(0.6096 * CS / 2**7)
 out[addr('LEMMASS')] = 2800 // 4         # kg, B16: the ascent stage
@@ -167,9 +182,10 @@ T_TPI = T_LOAD + t
 # P34's pad: TIG of TPI (the estimate P34 iterates on), elevation 26.6
 # degrees and 130 degrees of transfer.
 put('TIG', dp(T_TPI / 2**28))
+put('TTPI', dp(T_TPI / 2**28))   # what P34's V06N37 shows and PRO takes
 put('ELEV', dp(26.6 / 360))
 put('CENTANG', dp(130.0 / 360))
-out[addr('NN')] = 0
+put('NN', [0, 0])
 
 out_path = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'tools/flight_scenarios/lm-rendezvous.load'
 with open(out_path, 'w') as f:
