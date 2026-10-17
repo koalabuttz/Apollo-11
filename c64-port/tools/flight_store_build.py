@@ -399,9 +399,13 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
         + (f'#define FS_HAS_INTERP 1\n#define FS_DANZIG agc_{m}_danzig_marker\n' if interp else '')
         + '#include "flight_table_module.c"\n')
     # Interpretive groups register the mission's DANZIG marker, which
-    # agc_transfer.c defines on the C64 only when asked to.
+    # agc_transfer.c defines on the C64 only when asked to. A module with its
+    # own site table (FS_SITES) reads operands only from it, never from the
+    # resident's address tables, so it leaves out their rope read
+    # (AGC_SITES_ROPE, include/agc_transfer.h).
     cmd = [cc, *COMMON, *MISSION[m], '-DAGC_FLIGHT_INTERPRETER', *defines,
            *(['-DAGC_TRANSFER_DANZIG_MARKER'] if interp else []),
+           *(['-UAGC_SITES_ROPE'] if sites else []),
            '-mllvm', '-inline-threshold=-50',
            '-ffunction-sections', '-fdata-sections', '-nostdlib', '-Lplatform/c64', f'-L{OUT}',
            '-T', f'platform/c64/overlay_v2_slot_{SLOT_NAME[slot]}.ld',

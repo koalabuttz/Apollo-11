@@ -105,7 +105,13 @@ dispatch) is complete only when:
 2. every transfer it performs ends in the trampoline or the Executive registry,
    never in a bare address handed back to an unspecified caller;
 3. every inline operand it consumes comes from a compiled site table or the
-   erasable image, not from the rope;
+   erasable image, not from the rope. (One storage form only: to save resident
+   RAM, the C64 flight build keeps the Executive's tables, `lm_exec_sites` and
+   `cm_exec_sites`, as their compiled site addresses and reads the word at a
+   listed site from the REU rope image. The list still decides which sites
+   exist, and tools/agc_sites_generate.py checks that each listed word is
+   the rope's. Every other build, the host checks included, uses the compiled
+   words; see include/agc_transfer.h AGC_SITES_ROPE.)
 4. its evidence includes a round trip through the trampoline into a native
    callee and back, compared with the composition of the file's certified
    steps, on the host and on the C64.

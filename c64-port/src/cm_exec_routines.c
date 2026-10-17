@@ -14,7 +14,16 @@
 #define LONGEXIT CM_EXEC_LONGEXIT
 #define BB_LST1 02003u  /* BBCON LNGCALL2/LONGCYCL/GETCADR: bank 01, EBANK LST1 */
 
+#ifdef AGC_SITES_ROPE
+/* Addresses only (agc_transfer.h AGC_SITES_ROPE). */
+const agc_site_operand *cm_exec_site_table(uint16_t *count)
+{
+    if (count) *count = (uint16_t)(CM_EXEC_SITES_COUNT | AGC_SITES_ADDRESSES | AGC_SITES_CM_ROPE);
+    return (const agc_site_operand *)(const void *)cm_exec_sites_physical;
+}
+#else
 const agc_site_operand *cm_exec_site_table(uint16_t *count){if(count)*count=CM_EXEC_SITES_COUNT;return cm_exec_sites;}
+#endif
 
 /* The inline 2CADR (or ADRES) at Q. */
 static int operands(const agc_native_program *p,const apollo_overlay_state *s,const cm_native_io *io,unsigned words,exec_address *a){
