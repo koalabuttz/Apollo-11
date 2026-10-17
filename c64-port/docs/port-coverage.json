@@ -13853,8 +13853,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-f-211.md",
-            "sha256": "a5b3b526595ff2404c78eaf07a5f8e4df11e6e95eb5c243cde813d7ba15900c9"
+            "path": "docs/audits/rev2-lm-trim-gimbal-570.md",
+            "sha256": "e4f8419122bae6b6c15134123c22b1981161754f479f4c8098063a9ada57ac54"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-trim-gimbal/lm-trim-gimbal-c64-cover.json",
