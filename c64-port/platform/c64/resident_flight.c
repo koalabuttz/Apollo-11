@@ -422,8 +422,8 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
          * transfer engine counts a refused call as a step, so a table
          * refusing its first call (a compact copy that takes only its own
          * callers: POSTJUMP beside the CM idle loop) also moves on. */
-        if ((!steps && (status == EXEC_UNMAPPED || status == EXEC_OUT_OF_SCOPE)) ||
-            (steps == 1u && limit != 1u && status == EXEC_OUT_OF_SCOPE)) {
+        if (status == EXEC_OUT_OF_SCOPE ? steps <= 1u && steps < limit
+                                        : status == EXEC_UNMAPPED && !steps) {
             RK_PROF(5);
             continue;
         }
