@@ -326,6 +326,10 @@ AOT_SLOTS = [a + 6 * n for a in (0o401, 0o455, 0o531, 0o605, 0o661) for n in ran
 ROOTPS_STATES = {'0157': [0o1565], '0160': [1, 2], '0161': [0o147], '0162': [0, 1],
                  '0117': [0o1565, 0o1563, 0o1561], '0141': [0o147, 0o145, 0o143], '0132': [0o3113],
                  'WCHPHASE': [0o77776, 0, 1], '0166': ['vac+0']}
+# At the ROOTLOOP points POWRSERS has run: it leaves its own return in
+# POLYRET (= DERPTR) and its coefficient pointer in POLISH (= PWRPTR), and
+# only DERCLOOP reads them as PWRPTR and DERPTR. So they are not pinned there.
+ROOTLOOP_STATES = {k: v for k, v in ROOTPS_STATES.items() if k not in ('0117', '0141')}
 
 # A as a sine or cosine across its range, +-0 in about a fifth of the
 # cases (16-bit -0).
@@ -3373,9 +3377,9 @@ SPECS = {
                    # (ROOTPSRS+18, ROOTLOOP+14 and ROOTLOOP+19: the CADR words
                    # after TC USPRCADR, where ABS's or DDV's DANZIG runs the
                    # EXIT USPRCADR left in EDOP.)
-                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+18', 'ROOTPSRS+19', 'DERCLOOP+3',
-                                                 'ROOTLOOP+6', 'ROOTLOOP+13', 'ROOTLOOP+14', 'ROOTLOOP+15',
-                                                 'ROOTLOOP+19', 'ROOTLOOP+20')}},
+                   **{k: ROOTPS_STATES for k in ('ROOTPSRS+17', 'ROOTPSRS+18', 'ROOTPSRS+19', 'DERCLOOP+3')},
+                   **{k: ROOTLOOP_STATES for k in ('ROOTLOOP+6', 'ROOTLOOP+13', 'ROOTLOOP+14', 'ROOTLOOP+15',
+                                                   'ROOTLOOP+19', 'ROOTLOOP+20')}},
         # VHORCOMP's BANKCALL of DISPEXIT +3 ends the job (ENDOFJOB).
         'returns': {'DISPEXIT +3': 0},
         # ROOTPSRS returns through INDEX RETROOT; TCF 2 (two words past
