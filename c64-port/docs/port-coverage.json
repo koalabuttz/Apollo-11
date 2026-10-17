@@ -2299,7 +2299,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
-          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (454 LM, 364 CM sites, TC and its alias TCR).",
           "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
         },
@@ -2312,21 +2312,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
+            "sha256": "40365e3f9a403b1ea32ac976da552d850533b7bd2002c78bd86bbff5f59177c6"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
+            "sha256": "488cce55220a448151201791efae1e8be409263958a26827e96f3c15e759f3b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
+            "sha256": "4933353decfc90e8b1a3e239475930f3821f059cfb0ebb19bad685d9cd2afe1f"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
+            "sha256": "26e342997feefa08d5afd24ce6471971abae6709ddb062b83479e41fbcb5bfba",
             "vice_targets": {
-              "vice-interbank-oracle": 722
+              "vice-interbank-oracle": 729
             }
           },
           "independent_review": {
@@ -2335,7 +2335,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
+            "sha256": "d4421a898b559f7ce145c03cc7fd6135da8393b85b97266becbf9306009deecd"
           }
         }
       }
@@ -9358,7 +9358,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
-          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (454 LM, 364 CM sites, TC and its alias TCR).",
           "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
         },
@@ -9371,21 +9371,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
+            "sha256": "40365e3f9a403b1ea32ac976da552d850533b7bd2002c78bd86bbff5f59177c6"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
+            "sha256": "488cce55220a448151201791efae1e8be409263958a26827e96f3c15e759f3b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
+            "sha256": "4933353decfc90e8b1a3e239475930f3821f059cfb0ebb19bad685d9cd2afe1f"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
+            "sha256": "26e342997feefa08d5afd24ce6471971abae6709ddb062b83479e41fbcb5bfba",
             "vice_targets": {
-              "vice-interbank-oracle": 722
+              "vice-interbank-oracle": 729
             }
           },
           "independent_review": {
@@ -9394,7 +9394,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
+            "sha256": "d4421a898b559f7ce145c03cc7fd6135da8393b85b97266becbf9306009deecd"
           }
         }
       }
