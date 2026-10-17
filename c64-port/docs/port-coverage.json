@@ -643,8 +643,8 @@
             "sha256": "cd6a62351d3567ec313b3e07eb99eb551d512d94fc330b627e241d9eb46309ab"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g527.md",
-            "sha256": "ebc6421f899358c08cc9472cb90d212acad056914fbc69b1f019e0533f524a82"
+            "path": "docs/audits/rev2-cm-entry-dap-586.md",
+            "sha256": "1b1628a6bc2dcfafe1435fcf16f5a631f9362a3d5deda755b4ba66a7e003ab8d"
           }
         }
       }
