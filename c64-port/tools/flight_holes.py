@@ -12,6 +12,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MISSION = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 HOLE = re.compile(r'^\s+(basic |interp) (\d\d),(\d{4}) .*: (\d+) arrivals, (\d+) instructions(?:, refused by (\S+))?', re.M)
+# Points a scenario bridges only because its core snapshot starts mid-way
+# through code, not port gaps: the NASSP LM cores (lm-p63-nassp, lm-p52)
+# start inside the self-check idle loop with its state half set, so the
+# host bridges the loop's first pass (1 arrival each). From a real start
+# the loop runs native (milestone self-check). Steward's ruling for P63,
+# /mnt/project-files/flight-scenarios/lm-p52-stops.md.
+CORE_START = {('lm', '43,3303'), ('lm', '43,3332'), ('lm', '43,3334')}
 
 
 def listing(mission):
@@ -76,7 +83,7 @@ def describe(h, words, owners, m):
     where = f'{label[0]}+{key[1] - label[1]:o}' if label and key[1] != label[1] else (label[0] if label else '?')
     return dict(kind=kind.strip(), point=f'{bank},{offset}', label=where, file=name,
                 lane=owners.get(f'{MISSION[m]}/{name}', '?'), arrivals=int(arrivals),
-                instructions=int(instructions), refused_by=refused)
+                instructions=int(instructions), refused_by=refused, core_start=(m, f'{bank},{offset}') in CORE_START)
 
 
 def main():
@@ -87,7 +94,8 @@ def main():
         if h:
             d = describe(h, words, owners, m)
             print(f"{d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals "
-                  f"{d['instructions']:>7} instructions" + (f"  refused by {d['refused_by']}" if d['refused_by'] else ''))
+                  f"{d['instructions']:>7} instructions" + (f"  refused by {d['refused_by']}" if d['refused_by'] else '')
+                  + ('  core-start artifact, not a port gap' if d['core_start'] else ''))
 
 
 if __name__ == '__main__':
