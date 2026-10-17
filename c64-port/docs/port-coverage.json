@@ -10652,7 +10652,7 @@
       "sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f",
       "bytes": 121255,
       "lines": 5182,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -10669,7 +10669,7 @@
           "verification": "docs/LM-P20-P25.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -10684,7 +10684,6 @@
           "CHANG1 and DANZIG at the file's DANZIGs (NEWJOB +0: the job goes on at NEWOPS), TCDANZIG at the BOVB of 24,3315 (native, src/lm_integration_moves.c), and TCF Q+1 returns",
           "The interpreter and Executive continuations NORMUNX1 (RTB), SWRETURN, ISWRETRN, ENDEXT, SUPDXCHZ, TMODE and NOR29NOW"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-source-map.json",
@@ -10704,6 +10703,10 @@
             "vice_targets": {
               "vice-lm-p20-p25": 1224
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/lm-p20-p25.md",
+            "sha256": "3b25670e88a8d76f5e6ea82861784ad1446c2cec425534ab2e8465706e97547c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
