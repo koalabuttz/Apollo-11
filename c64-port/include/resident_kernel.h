@@ -14,8 +14,8 @@
  *                                                   WAITLIST LONGCALL chain
  *   lm_kernel_job_routines   lm_exec_job_routines   SPVAC CHANG1/2 JOBSLEEP
  *                                                   JOBWAKE PRIOCHNG ENDOFJOB
- *   lm_kernel_task_routines  lm_exec_task_routines  T3RUPT FIXDELAY VARDELAY
- *                                                   TASKOVER
+ *   lm_kernel_task_routines  lm_exec_task_routines  T3RUPT DLY2 -1 FIXDELAY
+ *                                                   VARDELAY TASKOVER
  *   lm_kernel_idle_routines  lm_exec_idle_routines  DUMMYJOB ADVAN NUCHANG2
  *                                                   SUPDXCHZ SVCT3
  * Comanche055 (io is cm_native_io, with channel 11; InIsr in
