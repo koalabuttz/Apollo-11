@@ -7,7 +7,8 @@ certificates.
   python3 tools/lanec/wholefile_pin.py OUTDIR
 
 It reads every assembled word of the file from the pinned listings and runs
-the Lane C Pinball suites (pin-keys, pin-gaps and the 92 pw-* suites of lanec-pw)
+the Lane C Pinball suites (pin-keys, pin-gaps, the pw-* suites of lanec-pw whose
+module some Pinball routine still tries, and the pin-head-* suites)
 through the oracle with LANEC_TRACE. Each word gets exactly one owner:
   - an instruction word started by the unchanged original program in Virtual
     AGC under a suite's cases belongs to that suite's milestone (pin-keys
@@ -37,15 +38,32 @@ wholefile.FILE = FILE = 'PINBALL_GAME_BUTTONS_AND_LIGHTS.agc'
 DATA = wholefile.DATA | {'BBCON', '2FCADR', 'FCADR', 'BBCON*', 'DEC*', '2DEC*'}
 
 
+def flight_runs():
+    """The pw-* runs some Pinball routine tries (src/lanec_pin_routines.inc's
+    try-lists and the keypress modules): the others no longer run in the
+    program (routines.py pin `dropped` and heads, docs/LANEC-PIN-HEADS.md)."""
+    text = '\n'.join(line for line in (ROOT / 'src/lanec_pin_routines.inc').read_text().splitlines()
+                     if line.startswith('static const dispatch try'))
+    text += '\n'.join(p.read_text() for p in sorted((ROOT / 'src').glob('lanec_pin_keys*.c')))
+    return set(re.findall(r'lanec_pw_[a-z0-9_]+_run', text))
+
+
 def suites():
     """(suite, milestone, native) in ownership priority order."""
     rows = [('pin-keys', 'lanec-pin-keys', 'src/lanec_pin_keys.c'), ('pin-gaps', 'lanec-pin-gaps', 'src/lanec_pin_gaps.c')]
+    runs = flight_runs()
     for path in sorted((ROOT / 'tests').glob('lanec_pw_*_cases.c')):
         text = path.read_text()
         name = re.search(r'"(pw-[a-z0-9-]+)"', text).group(1)
         mod = re.search(r'\((src/[a-z0-9_]+\.c)', text)
         run = re.search(r'lanec_pw_[a-z0-9_]+_run', text)
-        rows.append((name, 'lanec-pw', f'{mod.group(1) if mod else "src/lanec_pw_runs.c"} via {run.group(0)}'))
+        if run.group(0) in runs:
+            rows.append((name, 'lanec-pw', f'{mod.group(1) if mod else "src/lanec_pw_runs.c"} via {run.group(0)}'))
+    # the head families: Pinball's words from a point to its next call, where a
+    # dropped module ran on through other routines
+    for path in sorted((ROOT / 'src').glob('lanec_pin_head_*.c')):
+        h = path.stem[len('lanec_pin_head_'):]
+        rows.append((f'pin-head-{h}', 'lanec-pin-heads', f'src/{path.name} via lanec_pin_head_{h}_run'))
     # the key labels' cases run the earlier key modules, which own those words first
     return rows + [('pin-key-labels', 'lanec-pin-keys', 'src/lanec_pin_keys.c')]
 

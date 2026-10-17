@@ -89,7 +89,7 @@ static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #define FS_KEY_SPAN 0xffu
 #endif
 #ifdef RK_WORK_CLOCK
-#define FS_LIMIT rk_module_limit(e->budget,FS_MCT)
+#define FS_LIMIT limit
 #else
 #define FS_LIMIT RK_MODULE_STEPS
 #endif
@@ -194,6 +194,10 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  return APOLLO_OV2_DONE;
 #else
  rk_module_program(&p,t);
+#ifdef RK_WORK_CLOCK
+ /* Once, in a local: each expansion inlines the loop. */
+ const uint16_t limit=rk_module_limit(e->budget,FS_MCT);
+#endif
 #ifdef FS_IO_KIND
  {
   static flight_io_buffer b;   /* static: absolute addressing is smaller than the soft stack */
@@ -226,7 +230,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  e->status=rk_module_status(status,steps,FS_LIMIT);
 #ifdef RK_WORK_CLOCK
- e->work=FS_MCT==RK_MCT_IDLE ? e->budget : (uint16_t)(steps*FS_MCT);
+ if(FS_MCT==RK_MCT_IDLE) e->work=e->budget;
+ else {   /* by adding (the asm as in rk_module_limit): no __mulhi3 */
+  uint16_t w=0;
+  while(steps--) { w+=FS_MCT; __asm__("" : "+r"(w)); }
+  e->work=w;
+ }
 #endif
  return APOLLO_OV2_DONE;
 #endif

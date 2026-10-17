@@ -219,18 +219,41 @@ static const agc_site_operand *lm_operands(void)
     return lm_sites;
 }
 
-static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
+/* Every Pinball routine from the current point until the point is stop
+ * (physical, AGC_TRANSFER_NONE - 1 for none) or a routine stops; also the
+ * case generators' way to bring a state to a point (pin-head-*). */
+enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission, uint16_t stop,
+                                     uint16_t max_steps, uint16_t *steps);
+enum exec_status lanec_pin_chain(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission, uint16_t stop,
+                                 uint16_t *steps)
+{
+    return lanec_pin_chain_max(s, io, mission, stop, 64u, steps);
+}
+
+/* The trampoline, or for one routine (tools/lanec/native.c --flight) that
+ * routine's own status, as the C64 module-test harness calls it. */
+static enum exec_status chain(const agc_native_program *p, apollo_overlay_state *s, void *io, const agc_word *superbank,
+                              uint16_t stop, uint16_t max_steps, uint16_t *steps)
+{
+    agc_routine call;
+    if (max_steps != 1u) return agc_transfer_run(p, s, io, superbank, stop, max_steps, steps);
+    call = agc_transfer_resolve(p, s, *superbank);
+    *steps = call ? 1u : 0u;
+    return call ? call(p, s, io) : EXEC_UNMAPPED;
+}
+
+/* At most max_steps routines. */
+enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission, uint16_t stop,
+                                     uint16_t max_steps, uint16_t *steps)
 {
     static agc_routine_table tables[10];
     static agc_native_program program;
     static agc_hardware hardware;
     static lm_dntm_io lm;
     static cm_dntm_io cm;
-    static apollo_overlay_state entry;
-    static lanec_io entry_io;
     enum exec_status status;
-    uint16_t steps = 0, count;
-    entry = *s; entry_io = *io;
+    uint16_t count;
+    *steps = 0;
     memset(&program, 0, sizeof program);
     memset(&hardware, 0, sizeof hardware);
     program.basic = tables;
@@ -247,7 +270,7 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
         lm.channel12 = io->channel[012]; lm.channel13 = io->channel[013]; lm.channel14 = io->channel[014];
-        status = agc_transfer_run(&program, s, &lm, &lm.control.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        status = chain(&program, s, &lm, &lm.control.superbank, stop, max_steps, steps);
         io->superbank = lm.control.superbank; io->interrupt_enabled = lm.control.interrupt_enabled;
         io->channel[011] = hardware.channel11;
         io->channel[012] = lm.channel12; io->channel[013] = lm.channel13; io->channel[014] = lm.channel14;
@@ -262,12 +285,23 @@ static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_m
         cm.io.channel11 = io->channel[011]; cm.io.channel12 = io->channel[012];
         cm.io.channel13 = io->channel[013]; cm.io.channel14 = io->channel[014];
         cm.io.main_keys = io->channel[015]; cm.io.navigation_keys = io->channel[016];
-        status = agc_transfer_run(&program, s, &cm, &cm.io.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
+        status = chain(&program, s, &cm, &cm.io.superbank, stop, max_steps, steps);
         io->superbank = cm.io.superbank; io->interrupt_enabled = cm.io.interrupt_enabled;
         io->channel[011] = cm.io.channel11; io->channel[012] = cm.io.channel12;
         io->channel[013] = cm.io.channel13; io->channel[014] = cm.io.channel14;
         io->channel[015] = cm.io.main_keys; io->channel[016] = cm.io.navigation_keys;
     }
+    return status;
+}
+
+static enum lanec_status run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
+{
+    static apollo_overlay_state entry;
+    static lanec_io entry_io;
+    enum exec_status status;
+    uint16_t steps;
+    entry = *s; entry_io = *io;
+    status = lanec_pin_chain(s, io, mission, (uint16_t)(AGC_TRANSFER_NONE - 1u), &steps);
     /* at least the INTER-BANK entry and a Pinball routine ran (from a site),
      * or the routine the case enters (from an entry). A chain that reaches a
      * routine refusing its state (an input outside that routine's domain)
