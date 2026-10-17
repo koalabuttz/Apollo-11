@@ -348,9 +348,21 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `lm_channel_io`, and a pack holding it would run every step through the
   transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
   31 K cycles instead of 16 K).
+- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+  entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
+  Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
+  entries were spread over all of the full table's chunks, so a pass loaded
+  about 5 of them. CM pins no class-4 home, so this pack is `ALONE`: it links
+  its own runtime. Its routines share the file's step bodies, so the 26
+  are over one job slot by 2 KB; a stand-alone pack over its slot splits
+  into consecutive chunks that each take as many entries as fit
+  (`split_pack`, a binary search on each chunk's end), here two. On
+  4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
+  20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
+  to 465 K cycles.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
-class-4 home. Each links once on its own before `pin_pair`; the home then
+class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
 keeps global (`--undefined`) those of a pack's functions it links anyway,
 and the pack takes every function the home holds as a global
 (`--defsym`). A function only a pack uses stays in the pack. The resolver
