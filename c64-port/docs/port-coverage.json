@@ -587,6 +587,8 @@
         {
           "native_files": [
             "src/cm_entry_dap.c",
+            "src/agc_fast_ops.c",
+            "src/agc_fast_window.c",
             "src/agc_image_ops.c",
             "src/agc_hardware_divide.c",
             "src/agc_transfer.c"
@@ -623,22 +625,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "cc8ec910f02afb5c4acc58b9eda7187f0336f84ebd6488d4f265bf18451ad0f4"
+            "sha256": "cd6a62351d3567ec313b3e07eb99eb551d512d94fc330b627e241d9eb46309ab"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
-            "sha256": "ac1b2d80eac99254975b4b13d88803c519ec2a6520b148255a338f9862ed32de"
+            "sha256": "57a5c3cff039815cf383efd584e3386aedf481ee734fb41fdc3af444704855de"
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "b4a5ebb5f66eedd3927f33d175fe108f33f560342d0d9f788df3ebde96a82c5b",
+            "sha256": "a1e0f0b7a9eb200fb71efc1570cacc84601192ad1df12a1d9420f524b3527535",
             "vice_targets": {
-              "vice-cm-entry-dap": 79
+              "vice-cm-entry-dap": 82
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "cc8ec910f02afb5c4acc58b9eda7187f0336f84ebd6488d4f265bf18451ad0f4"
+            "sha256": "cd6a62351d3567ec313b3e07eb99eb551d512d94fc330b627e241d9eb46309ab"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g527.md",

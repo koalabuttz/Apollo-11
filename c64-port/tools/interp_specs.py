@@ -2327,9 +2327,6 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
-        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
-        # flight (docs/INTERP-COMPILE.md).
-        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -2386,6 +2383,10 @@ SPECS = {
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every pass runs these routines (6% of the CM entry window): the
+        # EB 6 window fast forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
         # entry window (cm-entry from 17000 cs, per-routine profile,
         # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
