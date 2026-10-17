@@ -4636,9 +4636,14 @@ SPECS = {
         'counters': True,
         'c64_rows': 'cover',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
         'resume_keys': True,
         'resume_orphans': True,
+        # R61LEM1's RTB CALL READCDUD and LSR22.3's RTB PUSH NORMUNX1:
+        # READCDUD and NORMUNX1 return through TC DANZIG with CALL or PUSH in
+        # EDOP and LOC at the RTB's operand word (23,2150 and 26,3351), so
+        # each operand word is a routine of its own (D2's LM rendezvous run).
+        'pending_danzig': True,
         # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
         # job: the basic routines they reach (CLRADMOD and the RR/LR
         # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule
