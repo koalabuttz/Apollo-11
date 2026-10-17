@@ -170,9 +170,9 @@ stores are separate, so the same id can name different modules in each.
 | Region | Content |
 |---|---|
 | Page 0 | `NREU`, format 1, mission, service version, module count, index page, resolver page, resolver count, total pages |
-| Pages 1..256 | Direct index: 4,096 records of 16 bytes, at `id * 16`: id, page, bytes, CRC16, selectors, slot, flags |
+| Pages 1 up to the resolver | Direct index: 16-byte records at `id * 16` for ids 0 to the highest module's, in blocks of 256 records (16 pages; 1 to 16 blocks, at most 4,096 records): id, page, bytes, CRC16, selectors, slot, flags. Its length is `resolver page - index page`; a lookup bounds an id by its high byte. A verified store (`APOLLO_OV2_STORE_VERIFIED`) checks each record's payload range once, in `apollo_reu_store_verify`, not on every lookup |
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
-| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx), so the packer starts a module that would cross on the next bank |
+| Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx). Modules go in id order; one that would cross starts on the next bank, after the packer fills the gap before the edge with the largest modules still to place that fit it |
 
 Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
 of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
