@@ -3639,6 +3639,9 @@ SPECS = {
     },
     'cm-r31': {
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'R31.agc'},
         'base': {'cm': 'cm_r31'},
         'symbol': {'cm': 'cm_r31'},
@@ -3711,6 +3714,9 @@ SPECS = {
     'cm-tpi-search': {
         'c64_cuts': True,
         'missions': ('cm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'cm': 'TPI_SEARCH.agc'},
         'base': {'cm': 'cm_tpi_search'},
         'symbol': {'cm': 'cm_tpi_search'},

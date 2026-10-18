@@ -15,65 +15,200 @@
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0x1f800000201e000000ffff",
-   "cases": 20
+   "keep": "0x1f800000201e0000003fff",
+   "cases": 18,
+   "case_ids": [
+    28,
+    516,
+    1024,
+    1060,
+    1148,
+    1540,
+    2048,
+    2568,
+    3072,
+    3084,
+    3760,
+    4140,
+    4636,
+    5260,
+    5672,
+    6288,
+    6420,
+    6656
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0xe000000000000003ff8000",
-   "cases": 18
+   "keep": "0xe000000000000007ffe000",
+   "cases": 21,
+   "case_ids": [
+    6811,
+    7228,
+    7760,
+    7792,
+    8308,
+    8368,
+    8332,
+    8334,
+    8320,
+    8476,
+    8832,
+    9240,
+    9828,
+    10308,
+    10752,
+    11379,
+    11776,
+    12300,
+    12320,
+    12816,
+    13460
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x19ffc000000",
-   "cases": 3
+   "keep": "0x6001fffc000100",
+   "cases": 3,
+   "case_ids": [
+    13687,
+    13388,
+    13844
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x19ff8000000",
-   "cases": 3
+   "keep": "0x1f8c000020019ff8000100",
+   "cases": 5,
+   "case_ids": [
+    13947,
+    14372,
+    14888,
+    15189,
+    15480
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x6001fff0000100",
-   "cases": 1
+   "keep": "0x800000003fff80000000",
+   "cases": 17,
+   "case_ids": [
+    15936,
+    16404,
+    16896,
+    16947,
+    17692,
+    17940,
+    18456,
+    19004,
+    19524,
+    19996,
+    20492,
+    21164,
+    21236,
+    21600,
+    22048,
+    22544,
+    23204
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x1e0000000",
-   "cases": 4
+   "keep": "0x1fac00003fe000001ff800",
+   "cases": 12,
+   "case_ids": [
+    23152,
+    23560,
+    23831,
+    24080,
+    24576,
+    24604,
+    25088,
+    25840,
+    25620,
+    26180,
+    26668,
+    27184
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x1f8c000023ffff00000100",
-   "cases": 18
+   "keep": "0xbfffffc0000000000800",
+   "cases": 30,
+   "case_ids": [
+    27660,
+    28188,
+    28344,
+    28680,
+    29340,
+    29812,
+    29836,
+    30224,
+    30728,
+    30740,
+    31272,
+    31756,
+    31816,
+    32400,
+    32852,
+    33336,
+    33796,
+    33828,
+    34372,
+    34896,
+    35360,
+    35980,
+    36504,
+    36372,
+    36872,
+    37480,
+    38076,
+    38424,
+    38932,
+    39432
+   ]
   },
   {
    "mission": "cm",
-   "keep": "0x7c000001ff800",
-   "cases": 5
-  },
-  {
-   "mission": "cm",
-   "keep": "0x1faffffffc000000000800",
-   "cases": 30
-  },
-  {
-   "mission": "cm",
-   "keep": "0x8e0000000000001ff800",
-   "cases": 3
-  },
-  {
-   "mission": "cm",
-   "keep": "0xf00800000000001ff800",
-   "cases": 4
-  },
-  {
-   "mission": "cm",
-   "keep": "0x1ff00000000000003c00000",
-   "cases": 9
+   "keep": "0x1ffc0000000000003dff800",
+   "cases": 11,
+   "case_ids": [
+    39943,
+    40536,
+    40968,
+    41472,
+    42028,
+    42680,
+    43008,
+    43520,
+    44056,
+    44552,
+    45075
+   ]
   }
  ],
+ "c64_gcov_branches": {
+  "host_taken": 867,
+  "c64_taken": 867,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_r31.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_r31_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
  "stops": {
   "CM 31,2000 R31CALL": {
    "05147": 512
@@ -438,7 +573,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 45568,
- "host_branch_arcs": 860,
- "c64_rows": 118,
- "c64_branch_arcs": 860
+ "host_branch_arcs": 896,
+ "c64_rows": 117,
+ "c64_branch_arcs": 896,
+ "host_branches_missing_on_c64": []
 }
