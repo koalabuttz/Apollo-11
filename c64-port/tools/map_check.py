@@ -40,6 +40,11 @@ def main():
     parser.add_argument('maps', nargs='*')
     args = parser.parse_args()
     maps = args.maps or sorted(glob.glob('build/**/*.map', recursive=True))
+    if not maps:
+        # A CI shard whose share of the affected targets is empty builds
+        # nothing: no map is not a changed map format.
+        print('map-check: no link maps (nothing built)')
+        return 0
     checked, over = 0, []
     for path in maps:
         heap = check(path)
