@@ -1573,6 +1573,38 @@ SPECS = {
         # (No 'fast_window': the file sets no EBANK= of its own, so there is
         # no one window to bind; its erasables run under the caller's.)
     },
+    # Lane E: Luminary099 TIME_OF_FREE_FALL as routines of the
+    # control-transfer ABI for the LM flight store (R30's V82 and the
+    # ascent and rendezvous programs reach it through the interpreter).
+    # The file's certificate stays with the hand-written lm_time_free_fall.c
+    # (Lane B); this is the compiled form, as cm-time-free-fall is for CM.
+    'lm-tff-abi': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'TIME_OF_FREE_FALL.agc'},
+        'base': {'lm': 'lm_tff_abi'},
+        'symbol': {'lm': 'lm_tff_abi'},
+        'basic': 'full',
+        # TFFXTEST's RTB DMP T(X): T(X)'s TC DANZIG comes back with DMP in
+        # EDOP and LOC at the T(X) word.
+        'pending_danzig': True,
+        # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively.
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/lm_integration_moves.c'],
+        # TFFCONIC (STORE TFF/RTMU) has no caller in Luminary099 (CM's
+        # P61-P67 calls its own); an entry of its own, so every word compiles.
+        'entries': ['@external', 'TFFCONIC'],
+        'target': 'tests/lm_tff_abi_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
+        # (No 'fast_window': the file sets no EBANK= of its own.)
+    },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
     # LUNVEL and SOLPOS are routine keys of the transfer ABI).
@@ -3632,6 +3664,13 @@ SPECS = {
         'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
                                                        'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
                    'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
+        # V82CALL's TC INTPRET, BON and EXIT and V82GOFF's option display run
+        # in the NOVAC job V82 starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6) -
+        # LOC(QPRET)) until V82GOFLP's FINDVAC; TICKTEST runs as a
+        # WAITLIST task (any FIXLOC, NEWJOB -0 while DUMMYJOB idles).
+        'novac': ['V82CALL', 'V82CALL+1', 'V82GOFF'],
+        'any_fixloc': True,
+        'any_newjob': True,
         'target': 'tests/r30_target.c',
         # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
         'edge_cases': True,

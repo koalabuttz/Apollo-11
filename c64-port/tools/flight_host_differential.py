@@ -180,6 +180,21 @@ P57 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737'
 P57_KEYS = ('@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000'
             'V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21'
             'E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E')
+# lm-doi-nassp: Apollo 11's descent orbit insertion from the same core
+# (NASSP, 102:25:51 GET), with DOI backed out (tools/flight_scenarios/
+# lm_doi.py: the LM on the 113.8 x 117.5 km pre-DOI orbit, DOI at TIG
+# 102:34:00) and the descent engine model. V37E30E: P30 with TIG and
+# 76.4 ft/s retrograde (N81) loaded, PRO on N42 (61.4 x 8.1 nmi); V37E40E:
+# the crew's maneuver to the burn attitude (FLIGHT_POKE: CDUX-Z and
+# CDUXD-ZD at R60's N18 angles), ENTER on V50N18, PRO on V99N40; the DPS
+# at 10% (no throttle-up) burns 75 s to cutoff (VG 1.1 ft/s); PRO on
+# V16N40 and N85, V37E00E; V82 (this vehicle): 61.4 x 8.8 nmi, V34E.
+DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
+       'FLIGHT_LOAD': '100:tools/flight_scenarios/lm-doi.load',
+       'FLIGHT_POKE': '7000:032=77776,7000:033=60216,7000:034=74211,7000:3235=77776,7000:3236=60216,7000:3237=74211'}
+del DOI['FLIGHT_LR_POS2']
+DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
+            '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -190,6 +205,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
+          ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]

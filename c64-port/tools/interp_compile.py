@@ -1853,7 +1853,12 @@ class Compiler:
             return phys in self.full_nv
         return (self.any_fixloc and self.starts[phys][0] == 'b'
                 and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
-                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys]))
+                # (Under 'any_newjob', not a routine whose own CCS NEWJOB
+                # refuses -0, its fourth skip being data: R30's return from
+                # FINDVAC, which only a job runs.)
+                and not (self.any_newjob and any('switch(ai_ccs(s,00067u))' in st and 'default:return EXEC_OUT_OF_SCOPE' in st
+                                                 for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction

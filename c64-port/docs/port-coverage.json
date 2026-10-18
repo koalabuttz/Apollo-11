@@ -4657,7 +4657,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive (or -0, the idle DUMMYJOB's value, at a basic routine that does not test NEWJOB itself, such as TICKTEST), FIXLOC a VAC area (or NOVAC's 0110 at V82CALL, V82CALL +1 and V82GOFF, which run in V82's NOVAC job; any FIXLOC at a basic routine that never names it, such as TICKTEST, a WAITLIST task), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
           "FINDVAC and NOVAC with their inline 2CADRs, WAITLIST with its inline 2CADR (Executive and Waitlist)",
           "BANKCALL with its inline CADR (DELAYJOB)",
@@ -4673,7 +4673,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "61ed22ffa53e3f08ef7f2ddb32b4ccbf6e112acdcf73a9560c7b68d8ab054705"
+            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -4681,14 +4681,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "0daaee13785d7dfc0c6ab6a070ce679ae02cf24d98f761bd8df1007ad015d1d0",
+            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
             "vice_targets": {
-              "vice-r30": 259
+              "vice-r30": 262
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
+            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-e532.md",
@@ -12084,7 +12084,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive (or -0, the idle DUMMYJOB's value, at a basic routine that does not test NEWJOB itself, such as TICKTEST), FIXLOC a VAC area (or NOVAC's 0110 at V82CALL, V82CALL +1 and V82GOFF, which run in V82's NOVAC job; any FIXLOC at a basic routine that never names it, such as TICKTEST, a WAITLIST task), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py r30 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
           "FINDVAC and NOVAC with their inline 2CADRs, WAITLIST with its inline 2CADR (Executive and Waitlist)",
           "BANKCALL with its inline CADR (DELAYJOB)",
@@ -12100,7 +12100,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "61ed22ffa53e3f08ef7f2ddb32b4ccbf6e112acdcf73a9560c7b68d8ab054705"
+            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
@@ -12108,14 +12108,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "0daaee13785d7dfc0c6ab6a070ce679ae02cf24d98f761bd8df1007ad015d1d0",
+            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
             "vice_targets": {
-              "vice-r30": 259
+              "vice-r30": 262
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "9c478a2521e12eefab34ec7cb7f2ec8edfca153b30f092adb990db5b7f390dd9"
+            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-e532.md",
