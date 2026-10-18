@@ -66,7 +66,7 @@ Two Luminary099 and three Comanche055 instruction words are unreachable:
 
 `tools/lanec/wholefile_pin.py` (`make test-lanec-pin-cert`) rebuilds both
 maps from the pinned listings and the unchanged original files. It runs
-`pin-gaps`, the nine `pin-head-*` suites, the keypress modules and the
+`pin-gaps`, the ten `pin-head-*` suites, the keypress modules and the
 `pw-*` suites whose module still runs at some Pinball point (76; the
 composites the heads replace or `dropped` removes stay host tests) through
 the oracle with `LANEC_TRACE` and fails unless:
@@ -93,18 +93,18 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
   `lanec-pin-cm-source-map.json`. They give every word's original line,
   address, assembled word, owner, native module, transfer-ABI routine and
   how the oracle covered it.
-- Independent assembly comparison: `lanec-pin-comparison.json`: 90
-  suites (`pin-gaps`, the nine `pin-head-*` suites, the 76 `pw-*` suites,
+- Independent assembly comparison: `lanec-pin-comparison.json`: 91
+  suites (`pin-gaps`, the ten `pin-head-*` suites, the 76 `pw-*` suites,
   `pin-transfer`, `pin-transfer-c64`, `pin-decdsp3` and `pin-refuse`),
-  148,252 cases, zero differing and 4,406 refused with the image and I/O
+  149,340 cases, zero differing and 4,608 refused with the image and I/O
   unchanged.
 - Host and sanitizer results: `lanec-pin-checks.log`. It has the strict and
   ASan/UBSan runs of every suite and the whole-file map run.
 - C64 execution results: `lanec-pin-c64-results.json`, with every PRG's
   hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw-1` to `-5` (86
-  programs, 925 checks), `vice-lanec-pin-transfer-1` to `-4` (93 programs,
-  292 checks) and
-  `vice-lanec-pin-flight` (81 checks: the frozen rows of the nine
+  programs, 926 checks), `vice-lanec-pin-transfer-1` to `-4` (89 programs,
+  254 checks) and
+  `vice-lanec-pin-flight` (95 checks: the frozen rows of the ten
   `pin-head-*` suites and `pw-fixed-display`, both missions, run one
   routine per case through the Pinball flight modules loaded from the REU
   store, `docs/MODULE-TEST.md`), all on a VICE PAL C64 with no failures.
@@ -112,7 +112,7 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
   record --pool`). For each suite it lists the host cases' branch arcs over
   every linked source and the frozen C64 rows. Every host arc is taken by
   some C64 program's rows, with three groups listed apart:
-  - the 152 `pin-transfer-c64` rows of the 22 programs that do not fit
+  - the 119 `pin-transfer-c64` rows of the 37 programs that do not fit
     below $C000 do not count (`c64_rows_not_run`); the DI round trips
     (`di-transfer-c64`) are pooled in, since they run the same INTER-BANK
     routines on the C64;

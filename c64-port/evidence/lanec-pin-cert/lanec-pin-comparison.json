@@ -568,13 +568,13 @@
    "suite": "pw-load-store",
    "cases": 1024,
    "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "2226e6d95e99bae6545f4ea857855bf2faea677ee8f75bd7784471552333dab2",
-   "oracle_sha256": "2226e6d95e99bae6545f4ea857855bf2faea677ee8f75bd7784471552333dab2",
-   "oracle_crc_sha256": "5fe4192ff9b093886b8e19f780c0c453dfe920adc9bc82157bee6c8390b5839a",
+   "refused_unchanged": 23,
+   "native_sha256": "4b709a6fc10a9cc3bebfe873d6ca4aba72d03c88519b9c872459c0a71642253c",
+   "oracle_sha256": "91ad1fc2762341aff21c56d73b1b76bc88f147f6d25cc4d6478df49c8add99de",
+   "oracle_crc_sha256": "eb04bbae686697141ff9012ba3b131f7ba0a70d0704354bf061237bb695e05c8",
    "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
+    "CM": 502,
+    "LM": 499
    }
   },
   "pw-machine-cadr": {
@@ -1071,13 +1071,26 @@
    "suite": "pin-head-proceed",
    "cases": 960,
    "differing": 0,
-   "refused_unchanged": 63,
-   "native_sha256": "09438eb840e0667e203147d1fde728ed8fdd6e5969431519c304d2767607220b",
-   "oracle_sha256": "94ad3181270d3dfb5503120232cbb2861179d40361fc0f047e4cb00d71adca3a",
-   "oracle_crc_sha256": "f53403502f9a06651915dc3b0774a90c556ed730810a31fefd274cab4330d7a7",
+   "refused_unchanged": 13,
+   "native_sha256": "cf34b337b6fb4612af5ee459d01cce224b9bd7cc7b19e2c3b2ae26a1bb63522b",
+   "oracle_sha256": "028d9edb8c7a3560f1002cb56c4041f4c998e45e22bca820a94186d6a900e4af",
+   "oracle_crc_sha256": "a144f83ff60eeb8c6646a2caec41e37cf791e753c97f1c0889de5f5c308d9c47",
    "accepted_cases_by_mission": {
-    "CM": 465,
-    "LM": 432
+    "CM": 472,
+    "LM": 475
+   }
+  },
+  "pin-head-release": {
+   "suite": "pin-head-release",
+   "cases": 1024,
+   "differing": 0,
+   "refused_unchanged": 24,
+   "native_sha256": "c41f29ec35de8a88751db1cc4d16e65c59c6c4e6d9e1a631995fb3b4d407eaac",
+   "oracle_sha256": "b554ebe2c3e162880e5edd68e605ff1d03c044a628d1ab553032fc937fbae1c9",
+   "oracle_crc_sha256": "4f7c5ee3a595e6a521f52a10e1e147de0e3f6b3b9a04de8f1acfc8c3b5ea9565",
+   "accepted_cases_by_mission": {
+    "CM": 500,
+    "LM": 500
    }
   },
   "pin-head-request": {
@@ -1108,50 +1121,50 @@
   },
   "pin-transfer": {
    "suite": "pin-transfer",
-   "cases": 2276,
+   "cases": 2308,
    "differing": 0,
-   "refused_unchanged": 940,
-   "native_sha256": "9b77c0dbe606783400f2f155216078323219c01686260e56c73f717e76f536cb",
-   "oracle_sha256": "2e47cba07fecabd38b04795fa3ec477290ff42878f263f4d5b2bc5fe5fc68673",
-   "oracle_crc_sha256": "87f2ae638e1570c00fbed1e66d27286f2bf30f72a98e592a9cb438b3865f5a9a",
+   "refused_unchanged": 1015,
+   "native_sha256": "f18b260651c1df8f753cc7df804d9ed439ee8df2a361bc3016d347f78a23adfb",
+   "oracle_sha256": "5aaae195b5811286b8f87aea5234a513171aa23ceb3040daad51db2d0ee16c14",
+   "oracle_crc_sha256": "642b1e618d8f053c91bc7822a067112a6ff084bb008e8e386b1845149aa69b6a",
    "accepted_cases_by_mission": {
-    "CM": 634,
-    "LM": 702
+    "CM": 617,
+    "LM": 676
    }
   },
   "pin-transfer-c64": {
    "suite": "pin-transfer-c64",
-   "cases": 2268,
+   "cases": 2300,
    "differing": 0,
-   "refused_unchanged": 1430,
-   "native_sha256": "ff6d6529ffebeda756871221578a0a3716f61e93acb24355290a7ac218f066d6",
-   "oracle_sha256": "39bb07eea537b993ff3bd75135fc279d7ef24e963bfabc550b601a7ff05f0a45",
-   "oracle_crc_sha256": "7d468dc6228d47cb275de4ec8fe8045f80395b902d399bdea248d11f13b436dd",
+   "refused_unchanged": 1533,
+   "native_sha256": "e915ab7355a8293d73dfd659f90ed3f3971e931c579e4ab85e1afe4194b2dda2",
+   "oracle_sha256": "ed82865eb6387e4e86ed9351d05b2d6c140c41582a5f3866c5748697423c87c3",
+   "oracle_crc_sha256": "ad2dbe5a9036d3e27ed4c35196d215bb5e3d25f5a726f2c538a40bfd84bb7250",
    "accepted_cases_by_mission": {
-    "CM": 405,
-    "LM": 433
+    "CM": 375,
+    "LM": 392
    }
   },
   "pin-decdsp3": {
    "suite": "pin-decdsp3",
    "cases": 768,
    "differing": 0,
-   "refused_unchanged": 114,
-   "native_sha256": "4e9f32fa2630da8a12ac5c99231749201eaaf2643728bf380f239cb1a9c22198",
-   "oracle_sha256": "09b7d18c945b2dee39dffeb0cc8a586ce3f446424a3e71164d58d32be3b45434",
-   "oracle_crc_sha256": "b34fd749073f0e8ae7077ba6b195c131d91da10f6f0cf899d33901044732d954",
+   "refused_unchanged": 141,
+   "native_sha256": "ed0dccb68ec0e7e8a4a1f4bf790580ae50d786b83a13bbaad8903624d74d59da",
+   "oracle_sha256": "7bd9feb09de476b78a7c2c4aa7d6cfe4055721558dffa00e5056e38cf525c315",
+   "oracle_crc_sha256": "4a2ca50793ecda5408ef7b12e9be8fc63ee03d373df0edc582bd0b773795d4a2",
    "accepted_cases_by_mission": {
-    "CM": 654
+    "CM": 627
    }
   },
   "pin-refuse": {
    "suite": "pin-refuse",
    "cases": 1530,
    "refused_unchanged": 1530,
-   "native_sha256": "5a9e3a451b4f6ecceb682c66aafd42b3908155cfede25ff3eb1adea0e2a0ef79"
+   "native_sha256": "ef24058ff29650b94f218fc37e4d34c6e74668ab0611e626d7ca6db85d72330a"
   }
  },
- "total_cases": 148252,
+ "total_cases": 149340,
  "total_differing": 0,
- "total_refused_unchanged": 4406
+ "total_refused_unchanged": 4608
 }
