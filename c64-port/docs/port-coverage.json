@@ -489,22 +489,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "3a8465af8a5926f5df1eac84a3493e49e29673d7f74f6948ebb7fb3501201312"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
-            "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38"
+            "sha256": "a26a9c41ff33eb9bfaf410b97943f3ab7be94f335fb0640a4cf949def0d27c94"
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "2acdca50347651786c3a2c38065bef9abe9b593381e57e6c03735893f1b54c1a",
+            "sha256": "4d7bda59ba06932dc2870f52849daaf9af20a2fb993988d2b886cb7208cddb94",
             "vice_targets": {
-              "vice-cm-auto-man": 24
+              "vice-cm-auto-man": 28
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "3a8465af8a5926f5df1eac84a3493e49e29673d7f74f6948ebb7fb3501201312"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -2664,22 +2664,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "b1927af983a4aa8f0c4afed13924dd551a1951727dea10255369bf8acf5c192b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
-            "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5"
+            "sha256": "0c8d5f21137de0bd7bcee19d074cbf2087ee3e608dc210b0fa64ce856dc7945f"
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "628715dde4705fab777264c2a40f4cedd3a12b8af9edf3e6dd6f857d17871658",
+            "sha256": "bdd2818170c8f35b5ef384658a6670340416b16f997a629bb5339dcb2372baf0",
             "vice_targets": {
-              "vice-cm-jet-select": 27
+              "vice-cm-jet-select": 24
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "b1927af983a4aa8f0c4afed13924dd551a1951727dea10255369bf8acf5c192b"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -4989,22 +4989,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "50527ff2d5b67396a8b9c56e42100ed335d37a1db1dfca67cbd9b405968ffe8e"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "e496946cac2bbd6321a72395aa3153d97ab1e602274e0a8fe795d0a213d1d952"
+            "sha256": "0dffd05d67129b267f258486909fef3b9a29eb9413efb22db26df420dc24584b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "3263a33d466a0cf6f1e684113c3cc1ea3b94e49c4cdb307a3e16de2d20df098a",
+            "sha256": "38f84778ff6f98d28ea9aee376c425109a178a4e2c8faa1189dcc49f2ddacbcd",
             "vice_targets": {
-              "vice-cm-rcs-dap": 45
+              "vice-cm-rcs-dap": 50
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "50527ff2d5b67396a8b9c56e42100ed335d37a1db1dfca67cbd9b405968ffe8e"
           },
           "independent_review": {
             "path": "docs/audits/rev2-fast-window-eb-599.md",
