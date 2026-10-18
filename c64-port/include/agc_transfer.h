@@ -184,8 +184,16 @@ enum exec_status agc_transfer_run(const agc_native_program *, apollo_overlay_sta
  * agc_transfer_run would work out at entry (agc_transfer_point of s for p),
  * when that is not an interpretive point (Z not at the interpreter fetch or
  * a pending DANZIG), which a caller that already has it passes on.
- * AGC_TRANSFER_NONE works it out. */
+ * AGC_TRANSFER_NONE works it out. On the C64 it is compiled only with
+ * -DAGC_TRANSFER_RUN_AT (the flight resident, tools/resident_flight_build.py
+ * RESIDENT_DEFINES), so other programs keep agc_transfer_run as one
+ * function; host builds always have it. */
+#if !defined(__mos__) && !defined(AGC_TRANSFER_RUN_AT)
+#define AGC_TRANSFER_RUN_AT 1
+#endif
+#ifdef AGC_TRANSFER_RUN_AT
 enum exec_status agc_transfer_run_at(const agc_native_program *, apollo_overlay_state *, void *io,
                                      const agc_word *superbank, uint16_t stop_physical,
                                      uint16_t max_steps, uint16_t *steps, uint16_t first);
+#endif
 #endif
