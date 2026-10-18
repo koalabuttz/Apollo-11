@@ -213,6 +213,22 @@ CM_P20 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '0777
           'FLIGHT_RR': '2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320',
           'FLIGHT_BUSY_SAMPLE': '100'}
 CM_P20_KEYS = '@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E'
+# lm-rendezvous: the LM's side (tools/flight_scenarios/lm_rendezvous.py:
+# the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1 degrees
+# behind, both retrograde about reference Z as Apollo's were, the AGC's
+# state vectors on the true orbits). FLIGHT_RR's LM side holds the
+# attitude, points the RR at the CSM and answers range and range-rate
+# reads. V37E20E (P20: R61, the V50N18 maneuver: PRO, then ENTER on the
+# final V50N18), PRO on R21's V50N72 lock-on; R22 marks every 61 s (6 by
+# 340 s, no V06N49). V37E34E at 290 s (P34): PRO on N37 (TTPI), N55 and
+# N45; P34 solves TPI for 26.6 degrees elevation (N58: 7.4 m/s), PRO on
+# N37, N58 and N81, ending on N59.
+LM_RDZ = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077775', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-rendezvous.load',
+          'FLIGHT_RR': CM_P20['FLIGHT_RR'],   # the same two orbits (lm_rendezvous.py prints it)
+          'FLIGHT_BUSY_SAMPLE': '50'}
+LM_RDZ_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E'
+               '@37500V33E@37800V33E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -221,6 +237,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
+          ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
