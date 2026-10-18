@@ -404,8 +404,15 @@ static long ones(agc_word v){return (v&040000u)?-(long)((~v)&037777u):(long)v;}
  * engine is on after touchdown and an engine-off there, the LM lifts off
  * on the ascent engine: 15,569 N (3,500 lbf) along the X axis at 3,050 m/s
  * exhaust velocity, no throttle; with the engine off after that the PIPAs
- * stay still. */
-static unsigned long touchdown_cs;
+ * stay still.
+ * FLIGHT_STAGE=CS: an abort stage at CS (P71: the crew's ABORT STAGE, set
+ * on channel 30 bit 4 with FLIGHT_CHAN). The descent stage separates in
+ * flight: from CS the engine is the ascent engine of FLIGHT_ASCENT, as at
+ * liftoff, on or off as ENGONFLG says.
+ * In P70 (MODREG 70) the descent engine goes to full thrust: THROTUP
+ * writes BIT13 to THRUST directly, more than FMAXPOS, with no PSEUDO55 or
+ * TTHROT change. */
+static unsigned long touchdown_cs,stage_cs;
 static double ascent_kg;
 static double eng_dp(const agc_word *w,unsigned a,int scale){
  return ((double)ones(eword(w,a))*16384.0+(double)ones(eword(w,a+1u)))*ldexp(1.0,scale-28);}
@@ -452,10 +459,12 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
  if(touchdown_cs&&t>=touchdown_cs&&!e->lifted){int on=(eword(w,FLAGWRD5)&ENGONBIT)!=0;if(!on)e->stopped=1;
   if(!(ascent_kg&&e->stopped&&on)){surface_due(t,e,w);return;}
   e->lifted=1;e->on=0;e->kg=ascent_kg;}
+ if(stage_cs&&t>=stage_cs&&!e->lifted){e->lifted=1;e->kg=ascent_kg;}
  if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
  for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CDUXD+k);else *cell(CDUX+k)=(int16_t)eword(w,CDUXD+k);}
  if(pilot_tau&&!e->lifted&&eword(w,01011)==0102u&&(!touchdown_cs||t<touchdown_cs))pilot(w);
  if(!e->on){e->on=1;e->t=t;e->tthrot=eword(w,TTHROT);if(!e->kg){e->kg=engine_kg;e->bits=e->cmd=e->ramp=373.0;}return;}
+ if(!e->lifted&&eword(w,01011)==0106u){e->cmd=3467.0;if(!engine_lag)e->bits=e->cmd;}
  if(!e->lifted&&eword(w,TTHROT)!=e->tthrot){e->tthrot=eword(w,TTHROT);e->cmd+=(double)ones(eword(w,PSEUDO55));
   e->cmd=e->cmd<373.0?373.0:e->cmd>3467.0?3467.0:e->cmd;if(!engine_lag)e->bits=e->cmd;}
  dt=(double)(t-e->t)*0.01;e->t=t;f=e->lifted?15569.0:e->bits*12.53;a=f/e->kg;e->kg-=f/(e->lifted?3050.0:2955.9)*dt;
@@ -871,6 +880,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_TOUCHDOWN"))touchdown_cs=strtoul(getenv("FLIGHT_TOUCHDOWN"),0,10);
  if(getenv("FLIGHT_PILOT"))pilot_tau=strtod(getenv("FLIGHT_PILOT"),0);
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
+ if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
+ if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}

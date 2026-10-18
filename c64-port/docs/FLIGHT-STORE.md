@@ -687,6 +687,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
+   crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
+   28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
+   bit of the core's channel 30 (036351; the rest of it, PGNCS mode and
+   the IMU, must stay as it is): bit 1, ABORT, for P70, or bit 4, ABORT
+   STAGE, for P71. R10,R11 reads it on its next pass and starts the
+   program, which restarts through ENEMA into the abort guidance. P70
+   keeps the descent engine (THROTUP's BIT13 THRUST command takes it to
+   full thrust, which the engine model gives in MODREG 70) and cuts off at
+   about 1,408 s: 1,667 m/s, 18.3 km up, climbing 9 m/s. P71 stages
+   (`FLIGHT_STAGE`: from the abort the engine is the ascent engine of
+   `FLIGHT_ASCENT=4888`) and cuts off at about 1,579 s: 1,678 m/s, 18.3 km,
+   climbing 7 m/s. The flight store resolves P70-P71's basic keys to
+   lm_p70_p71_file, the file's whole-file certificate, before the older
+   lm_p70_p71 tables (flight_store_build.py `rank`), since lm_p70_p71
+   refuses THROTUP's WOR CHAN14. On the host every native routine matches
+   yaAGC in both; the unregistered points are the 3 self-check ones and
+   Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
