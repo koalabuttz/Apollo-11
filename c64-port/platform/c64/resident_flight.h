@@ -227,7 +227,7 @@ extern uint8_t rk_restart_lamp;
 #else
 #define RK_IO_BASE FLIGHT_IO_CM_NATIVE
 #endif
-/* 768 bytes of boot scratch for apollo_reu_store_verify, $C100-$C3FF
+/* 770 bytes of boot scratch for apollo_reu_store_verify, $C100-$C401
  * (before the pinned module loads over it). */
 #define RK_BOOT_SCRATCH 0xc100u
 /* The soft stack's last byte above the pinned module (slot class 3, up to

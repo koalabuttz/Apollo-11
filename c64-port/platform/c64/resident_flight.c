@@ -28,13 +28,11 @@ uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
-#if RK_CM
-/* The CM input channels 30-33 at the values yaAGC starts with
- * (tools/flight_host_run.c). */
+/* The input channels 30-33 at the values yaAGC starts with
+ * (tools/flight_host_run.c): every switch and discrete off (their bits are
+ * 1 for off), so a boot from GOJAM (resident_flight_main.c) sees no radar
+ * power, mode switch or abort. A run from a snapshot sets them. */
 __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel30=037777u,.channel31=077777u,.channel32=077777u,.channel33=077777u};
-#else
-__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
-#endif
 /* undo: a non-null marker only. The modules whose io record takes an undo
  * image stash it in the REU (include/flight_undo.h), not at this pointer. */
 __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =

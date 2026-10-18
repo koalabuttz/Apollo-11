@@ -12,7 +12,7 @@
 # .stamp-<missions>; --force rebuilds). None gates `test`: they measure the whole
 # program while lanes are still filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
-.PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice
+.PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice flight-disk flight-disk-vice
 flight-store: | build
 	python3 tools/flight_store_build.py
 # flight-store-lm: the LM store alone, half the build, for checks that boot
@@ -23,3 +23,11 @@ flight-host-differential: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_host_differential.py
 flight-store-vice: flight-store
 	python3 tools/flight_vice_load.py
+# flight-disk: the 1581 disk sets that boot each store on a stock C64 with
+# a 2 MB REU (docs/RUN-ON-C64.md), in build/flight-disk/. flight-disk-vice
+# boots them in VICE from the disks alone (true drive emulation, the REU
+# starting zero) and times the load (build/flight-disk/vice.json).
+flight-disk: flight-store
+	python3 tools/flight_disk.py
+flight-disk-vice: flight-store
+	python3 tools/flight_disk.py --vice
