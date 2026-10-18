@@ -343,11 +343,17 @@ def main():
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
     holes = host_holes(exe, a.scenario, a.snap_cs + a.cs, tag)
-    print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(holes)} points, each a stop on the C64')
+    # A core-start point (tools/flight_holes.py CORE_START) is bridged only
+    # because the scenario's core starts mid-way through code, before any
+    # C64 window: not a stop on the C64.
+    stops = [d for d in holes if not d['core_start']]
+    print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(stops)} points, each a stop on the C64'
+          + (f' (and {len(holes) - len(stops)} core-start points, not stops)' if len(stops) < len(holes) else ''))
     for d in holes:
         print(f"  {d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals"
-              + (f"  refused by {d['refused_by']}" if d['refused_by'] else ''))
-    if holes and a.stop_on_holes:
+              + (f"  refused by {d['refused_by']}" if d['refused_by'] else '')
+              + ('  core-start artifact, not a C64 stop' if d['core_start'] else ''))
+    if stops and a.stop_on_holes:
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
     if a.replay and a.keys:

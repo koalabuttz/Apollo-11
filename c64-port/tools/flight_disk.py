@@ -38,6 +38,7 @@ import os
 import pathlib
 import re
 import socket
+import struct
 import subprocess
 import sys
 import time
@@ -49,7 +50,12 @@ from resident_flight_build import COMMON, FLIGHT_MAIN, MISSION, resident_sources
 STORE = ROOT / 'build/flight-store'
 OUT = ROOT / 'build/flight-disk'
 PAL_HZ = 985248
-TITLE = {'lm': 'APOLLO 11 LM: LUMINARY 99', 'cm': 'APOLLO 11 CM: COMANCHE 55'}
+TITLE = {'lm': 'APOLLO 11 LM: LUMINARY 99', 'cm': 'APOLLO 11 CM: COMANCHE 55',
+         'test': 'APOLLO 11 HARDWARE CHECK: LM P63'}
+# The hardware check set, "test" (docs/RUN-ON-C64.md, Checking real
+# hardware): this LM window (scenario, AGC centisecond, length) as
+# tools/flight_scenario_vice.py --replay runs it, on the LM store.
+CHECK = ('lm-p63-descent-thrust', 17500, 200)
 # 1581: 80 tracks of 40 sectors; track 40 holds the header, the BAM and the
 # directory.
 TRACKS, SECTORS, DIR_TRACK = 80, 40, 40
@@ -93,12 +99,102 @@ def link_resident(cc, m):
     prg = out.read_bytes()
     sys_at = re.search(rb'\x9e\s*(\d+)\x00', prg[:32])
     assert prg[:2] == b'\x01\x08' and sys_at, out
-    syms = {mt[2]: int(mt[1], 16) for mt in re.finditer(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+(\w+)$',
-                                                       pathlib.Path(f'{out}.map').read_text(), re.M)}
+    syms = map_symbols(out)
     main = syms['main'] - 0x0801 + 2
     # main starts with JSR rk_boot: the VICE run stops after it.
     assert prg[main] == 0x20 and int.from_bytes(prg[main + 1:main + 3], 'little') == syms['rk_boot'], 'main does not start with rk_boot'
     return prg[2:], int(sys_at[1]), syms['main'] + 3, (syms['rk_dsky_queue'], syms['rk_hardware'])
+
+
+def map_symbols(prg):
+    """A link's symbols from its lld map."""
+    return {mt[2]: int(mt[1], 16) for mt in re.finditer(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+(\w+)$',
+                                                        pathlib.Path(f'{prg}.map').read_text(), re.M)}
+
+
+def check_crc(words, cs):
+    """CRC-16/CCITT of an end state, as platform/c64/dap_pass_check.c
+    hw_crc: the erasable words from 020 up but 070-073 (a PIPA's -0 as +0),
+    then the centiseconds."""
+    c = 0xffff
+
+    def byte(c, b):
+        c ^= b << 8
+        for _ in range(8):
+            c = ((c << 1) ^ 0x1021 if c & 0x8000 else c << 1) & 0xffff
+        return c
+    for i in range(0o20, 2048):
+        if 0o70 <= i <= 0o73:
+            continue
+        w = 0 if 0o37 <= i <= 0o41 and words[i] == 0o77777 else words[i]
+        c = byte(byte(c, w & 0xff), w >> 8)
+    return byte(byte(c, cs & 0xff), cs >> 8)
+
+
+def link_check(a):
+    """The check program (platform/c64/dap_pass_check.c DP_HW_CHECK): the
+    host run's snapshot at CHECK's start and its inputs over the window in
+    the LM store's spare REU bytes. Linked twice: first to run in VICE
+    (as tools/flight_scenario_vice.py does) for the end state's CRC, then
+    with that CRC to match. Returns the PRG, its SYS address, where
+    rk_boot returns to, the two CRCs (VICE's and the host run's), dp_done's
+    address, and the REU image to load."""
+    import dap_pass_vice as dp
+    import flight_host_differential as fhd
+    import flight_scenario_vice as fsv
+    scen, snap_cs, cs = CHECK
+    m, host_cc = 'lm', os.environ.get('CC', 'cc')
+    run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m, '--host-cc', host_cc])
+    exe = fhd.build(host_cc, m, fhd.frozen_engine(host_cc))
+    dp.WORK.mkdir(parents=True, exist_ok=True)
+    tag = f'check-{scen}-{snap_cs}'
+    header = fsv.snapshot(exe, scen, snap_cs, tag, cs, cs)
+    snap_at = int(re.search(r'^snapshot at (\d+) cs', (dp.WORK / f'{tag}-host.log').read_text(), re.M)[1])
+    rows = pathlib.Path(f'{header}.replay').read_bytes()
+    host_end = pathlib.Path(f'{header}.end').read_bytes()
+    n_states = len(host_end) // fsv.STATE
+    end_cs, words = fsv.states(host_end, n_states)[-1]
+    host = check_crc(words, end_cs)
+    image = bytearray((STORE / f'{m}.reu').read_bytes())
+    manifest = json.loads((STORE / f'{m}-manifest.json').read_text())
+    at = fsv.replay_place(manifest, m, image, 2 * len(rows) + n_states * fsv.C64_STATE + 256)
+    end_at = (at + 2 * len(rows) + 0xff) & ~0xff
+    # The check's boot code while the window runs (at most the 16 KB boot
+    # region, resident_flight.ld), below the rows.
+    save_at = at - 0x4000
+    assert save_at > 0 and not any(image[save_at:at]), f'no 16 KB of zeros below 0x{at:x} in the LM store'
+    n_c64 = len(fsv.c64_rows(rows, m, 0, 0)) // fsv.ROW.size
+    busy = {x[0]: x for x in fhd.FLIGHT}[scen][4].get('FLIGHT_BUSY_SAMPLE')
+    defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u', f'-DDP_REPLAY_CS={cs}u',
+               f'-DDP_EVERY={cs}u', f'-DDP_END=0x{end_at:x}ul', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+               '-DDP_HW_CHECK', f'-DDP_HW_SAVE=0x{save_at:x}ul', f'-DDP_HW_HOST=0x{host:04x}u', f'-DDP_HW_WINDOW="LM P63 FROM {snap_at} CS"']
+
+    def link(expect):
+        prg = dp.link(a.cc, tag, header, cs + 500, len(image) - dp.SCRATCH_BYTES, m=m,
+                      defines=[*defines, f'-DDP_HW_EXPECT=0x{expect:04x}u'])
+        syms = map_symbols(prg)
+        patch = fsv.c64_rows(rows, m, syms['rk_device'], syms['rk_pending'])
+        image[at:at + len(patch)] = patch
+        return prg, syms
+    prg, syms = link(0)
+    vice_args = argparse.Namespace(vice=a.vice_bin, rom_dir=a.rom_dir, data_dir=a.data_dir, cycles=6_000_000_000,
+                                   timeout=a.timeout, profile=False)
+    r = dp.vice(vice_args, tag, prg, any(mod['slot'] == 3 for mod in manifest['modules']), m,
+                [(0, bytes(image))])
+    mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
+    if r.get('status') != 0 or not mail[0x34]:
+        sys.exit(f"FAIL: the check window did not run to its end in VICE: {r.get('error') or r.get('status')}")
+    expect = mail[0x36] | mail[0x37] << 8
+    prg, syms = link(expect)
+    data = prg.read_bytes()
+    sys_at = re.search(rb'\x9e\s*(\d+)\x00', data[:32])
+    assert data[:2] == b'\x01\x08' and sys_at, prg
+    main = syms['main'] - 0x0801 + 2
+    calls_boot = data[main] == 0x20 and int.from_bytes(data[main + 1:main + 3], 'little') == syms['rk_boot']
+    print(f'test: {scen} from {snap_at} cs, {cs} cs, {n_c64} input rows: VICE ends it in CRC {expect:04x}, '
+          f'the host run in {host:04x}')
+    return (data[2:], int(sys_at[1]), syms['main'] + 3 if calls_boot else None, (expect, host), syms['dp_done'],
+            bytes(image))
 
 
 def link_loader(cc, m, code, syms, disks):
@@ -332,9 +428,15 @@ SEQ, PRG = 1, 2
 
 
 def build(a, m, code, syms):
-    image = (STORE / f'{m}.reu').read_bytes()
-    assert len(image) == 2 << 20, f'{m}.reu is not 2 MB'
-    res, sys_at, boot_return, (dsky_queue, hardware) = link_resident(a.cc, m)
+    extra = {}
+    if m == 'test':
+        res, sys_at, boot_return, (expect, host), done, image = link_check(a)
+        extra = dict(check_expect=f'{expect:04x}', check_host=f'{host:04x}', done=done)
+        dsky_queue = hardware = None
+    else:
+        image = (STORE / f'{m}.reu').read_bytes()
+        res, sys_at, boot_return, (dsky_queue, hardware) = link_resident(a.cc, m)
+    assert len(image) == 2 << 20, f'the {m} REU image is not 2 MB'
     # Stage the resident at the top of the REU, in bytes the store leaves 0
     # (the hand-off zeroes them again).
     res_at = (len(image) - len(res)) & ~0xff
@@ -359,7 +461,7 @@ def build(a, m, code, syms):
         disks = len(datas)
     paths = []
     for d, data in enumerate(datas, 1):
-        disk = disk_type(f'APOLLO 11 {m.upper()} {d}/{len(datas)}', m.upper())
+        disk = disk_type(f'APOLLO 11 {m.upper()} {d}/{len(datas)}', m.upper()[:2])
         nblocks = -(-len(data) // 254)
         idb = b'APOLLO11' + bytes([ord(m[0].upper()), d, len(datas), *blocks[1]])
         if d == 1:
@@ -372,7 +474,7 @@ def build(a, m, code, syms):
     loaded = sum(len(x) for _, x in recs)
     info = dict(mission=m, disks=[p.name for p in paths], loader_bytes=len(loader) - 2,
                 resident_bytes=len(res), resident_start=sys_at, boot_return=boot_return, dsky_queue=dsky_queue, hardware=hardware, resident_staged=f'0x{res_at:06x}',
-                bytes_loaded=loaded, data_bytes=[len(x) for x in datas])
+                bytes_loaded=loaded, data_bytes=[len(x) for x in datas], **extra)
     print(f"{m}: {len(paths)} disks, {loaded} bytes to the REU, loader {info['loader_bytes']} bytes, "
           f"resident {len(res)} bytes (SYS {sys_at})")
     return info
@@ -511,10 +613,36 @@ def xtest_keys(keys, wait):
     x11.XCloseDisplay(dpy)
 
 
-def screen_text(mem):
-    """The DSKY's 17 rows of screen codes as text."""
+def screen_text(mem, rows=17):
+    """Rows of screen codes as text (the DSKY's 17)."""
     ch = lambda c: chr(c + 64) if 1 <= c <= 26 else chr(c) if 32 <= c < 64 else '.'  # noqa: E731
-    return [''.join(ch(c) for c in mem[r * 40:r * 40 + 40]).rstrip() for r in range(17)]
+    return [''.join(ch(c) for c in mem[r * 40:r * 40 + 40]).rstrip() for r in range(rows)]
+
+
+def check_run(mon, info, result):
+    """The check program's run, to dp_done: its report from the screen and
+    the mailbox (platform/c64/dap_pass_check.c DP_HW_CHECK)."""
+    if info['boot_return']:
+        mon.cmd(f"break {info['boot_return']:04x}")
+        mon.cmd('sw reset')
+        mon.go()
+        mon.wait_stop()
+        result['boot_s'] = round(mon.stopwatch() / PAL_HZ, 1)
+        mon.cmd('del')
+    mon.cmd(f"break {info['done']:04x}")
+    mon.cmd('sw reset')
+    mon.go()
+    mon.wait_stop()
+    result['run_s'] = round(mon.stopwatch() / PAL_HZ, 1)
+    box = mon.mem(0xc000, 0xc03f)
+    cycles, _, steps, start_cs, end_cs = struct.unpack_from('<3I2H', box, 0x10)
+    agc = (end_cs - start_cs) & 0x3fff
+    crc = box[0x36] | box[0x37] << 8
+    result.update(check_crc=f'{crc:04x}', check_expect=info['check_expect'], check_pass=bool(box[0x38]),
+                  window_cs=agc, window_steps=steps, window_x=round(cycles / (agc * PAL_HZ / 100), 2) if agc else None,
+                  screen=screen_text(mon.mem(0x0400, 0x0400 + 999), 25))
+    result['ok'] = bool(box[0x38])
+    return result
 
 
 def vice(a, m, info):
@@ -587,6 +715,8 @@ def vice(a, m, info):
         mon.wait_stop()
         result['handoff_cycles'] = mon.stopwatch()
         mon.cmd('del')
+        if m == 'test':
+            return check_run(mon, info, result)
         # rk_boot: main's first instruction calls it; A holds its result
         # (0, or which check failed) after.
         mon.cmd(f"break {info['boot_return']:04x}")
@@ -669,7 +799,8 @@ def main():
     global STORE
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
-    p.add_argument('--missions', default='lm,cm')
+    p.add_argument('--missions', default='lm,cm,test',
+                   help='the sets: lm, cm and test (the hardware check)')
     p.add_argument('--drive', choices=sorted(DISK), default='1581',
                    help='the disk drive: D81 sets with the fast loader, or D64 sets read with the KERNAL')
     p.add_argument('--vice', action='store_true', help='boot each set in VICE (true drive emulation)')
