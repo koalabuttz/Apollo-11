@@ -661,6 +661,22 @@ port) runs one mission:
    1,679 m/s, about 18 km up. On the host every native routine matches
    yaAGC; the unregistered points are the 3 self-check ones and Pinball's
    RELDSP1 (02,2502, 1 arrival).
+   `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
+   lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
+   descent orbit) back to that orbit's apolune and undoes the burn there
+   (76.4 ft/s along the velocity), so the LM starts on the 114 x 117 km
+   pre-DOI orbit with DOI at TIG 102:34:00 (lm-doi.load). V37E30E: P30 with
+   TIG and -76.4 ft/s in N81 loaded; N42 shows 61.4 x 8.1 nmi. V37E40E:
+   `FLIGHT_POKE` puts the CDUs and the DAP's desired CDUs at R60's N18
+   angles (the crew's maneuver) and ENTER skips the auto maneuver; PRO on
+   V99N40 at TIG - 5 s. The descent engine model stays at 10% (no
+   throttle-up), so the burn is 75 s, not the flight's 30 s; cutoff leaves
+   VG 1.1 ft/s and N85 1.0 ft/s. PRO through V16N40 and N85, V37E00E, then
+   V82 (this vehicle): 61.4 x 8.8 nmi. `FLIGHT_DSKY=1` prints the DSKY at
+   each change, which is how the key times were found. On the host every
+   native routine matches yaAGC; the unregistered points are the 3
+   self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
+   sites (#587).
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a

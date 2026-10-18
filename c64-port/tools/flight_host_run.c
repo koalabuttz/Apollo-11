@@ -295,6 +295,19 @@ static int chans_parse(const char *t){while(t&&*t){unsigned long cs;unsigned c,v
 enum { POKES=4096 };
 static struct { unsigned long cs; unsigned addr,value; } pokes[POKES];
 static unsigned npokes;
+
+/* FLIGHT_DSKY=1: print the native DSKY (DSPTAB, the relay words) at each
+ * sample point where it changed: major mode, verb, noun and R1-R3. For
+ * finding a scenario's displays and key times. */
+static char dsky_dig(unsigned c){
+ switch(c){case 0:return ' ';case 21:return '0';case 3:return '1';case 25:return '2';case 27:return '3';case 15:return '4';case 30:return '5';case 28:return '6';case 19:return '7';case 29:return '8';case 31:return '9';}return '?';}
+static void dsky_trace(unsigned long t,const agc_word *w){static char last[64];char b[64],d[24];unsigned k,sg[8]={0};
+ for(k=0;k<11u;++k){unsigned v=w[01023u+k];if(v&040000u)v=(~v)&077777u;d[2*k+1]=dsky_dig(v&037u);d[2*k]=dsky_dig((v>>5)&037u);if(k<8u)sg[k]=(v>>10)&1u;}
+ snprintf(b,sizeof b,"P%c%c V%c%c N%c%c R1 %c%c%c%c%c%c R2 %c%c%c%c%c%c R3 %c%c%c%c%c%c",d[20],d[21],d[18],d[19],d[16],d[17],
+  sg[6]?'+':sg[5]?'-':' ',d[15],d[12],d[13],d[10],d[11],
+  sg[4]?'+':sg[3]?'-':' ',d[8],d[9],d[6],d[7],d[4],
+  sg[1]?'+':sg[0]?'-':' ',d[5],d[2],d[3],d[0],d[1]);
+ if(strcmp(b,last)){strcpy(last,b);printf("DSKY %lu cs: %s\n",t,b);}}
 /* FLIGHT_SNAPSHOT (above). Fields by name, so the layouts need not match. */
 static void snapshot(const char *path,const apollo_overlay_state *s,const flight_io *io,const agc_hardware *hw){
  FILE *f=fopen(path,"w");unsigned i;
@@ -850,6 +863,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
    sps_due(now(s.words),&sps_nat,s.words);
+   if(getenv("FLIGHT_DSKY"))dsky_trace(now(s.words),s.words);
    aero_due(now(s.words),&aero_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
    chan_due(now(s.words),&cnat,&hw,&io);
