@@ -1578,6 +1578,13 @@ SPECS = {
         'cell_pairs': [('E7,1724', 'E7,1725',
                         [(h, l) for h in range(1, 0o40000, 0o1001) for l in range(0, 0o100000, 0o1001)]
                         + [(h, l) for h in (0, 0o77777) for l in range(1, 0o40000, 0o401)])],
+        # (#659) A coast pass with no sensed acceleration: DELV +-0 (no PIPA
+        # counts) where GETUNITV loads it, the zero |DELV| at the DMP, and
+        # the zero product at SL1 BZE, so the pass takes SETMIND.
+        'joint_states': {
+            'GETUNITV+13': [{}] * 2 + [{f'DELV+{i}': v for i in range(6)} for v in (0, 0o77777)],
+            'GETUNITV+15': [{}] * 2 + [{f'MPAC+{i}': v for i in range(6)} for v in (0, 0o77777)],
+            'GETUNITV+17': [{}] * 2 + [{'MPAC': h, 'MPAC+1': l} for h, l in ((0, 0), (0o77777, 0o77777))]},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
@@ -1819,6 +1826,33 @@ SPECS = {
                    # INTWAKUQ holds INTWAKEU's caller's Q (QXCH), a fixed
                    # return (TC INTWAKEU at 27,3703) that TC INTWAKUQ runs.
                    '27,2745': {'0330': [0o3704]}},
+        # (#659) Flight states the flowed cases never reach, each as one
+        # joint choice beside the flowed state ('flow'):
+        # TESTLOOP's DSU* RME,2 with RC under the 800 km limit (an Earth
+        # parking orbit, RCV about 6.6E6 m at B-29: MIDFLAG stays clear);
+        # P00HCHK with DT/2 under DT/2MIN (TET at TDEC, the normal end) or
+        # MODREG 0 (P00 integration) and its 4 DT test negative (INTEXIT);
+        # MID2 with TDEC - TET under 3 cs (MIDTOAV2 caught up); INTWAKEU with
+        # UPSVFLAG 0 (not a state-vector uplink) or +-2 (lunar sphere).
+        'flow_range_states': [
+            ('13,3315', '13,3316', {'*': ['flow', {'1534': 0o311, '1535': 0, '1536': 0, '1537': 0, '1540': 0, '1541': 0},
+                                         {'1534': 0, '1535': 0, '1536': 0o77466, '1537': 0o77777, '1540': 0o100, '1541': 0}]}),
+            ('13,3321', '13,3322', {'*': ['flow', {'154': 0o311, '155': 0}, {'154': 0o200, '155': 0o1234}]}),
+            ('13,3377', '13,3400', {'*': ['flow', {'2313': 0, '2314': 1}, {'2313': 0o77777, '2314': 0o77775},
+                                         {'2313': 0, '2314': 0o4000, '1011': 0}, {'2313': 0o77777, '2314': 0o73777, '1011': 0}]}),
+            ('13,3401', '13,3402', {'*': ['flow', {'154': 0, '155': 1}, {'154': 0, '155': 0}]}),
+            ('13,3404', '13,3405', {'*': ['flow', {'1011': 0}, {'1011': 0}]}),
+            ('13,3433', '13,3434', {'*': ['flow', {'154': 0o77777, '155': 0o77760}, {'154': 0o77776, '155': 0}]}),
+            ('13,3652', '13,3653', {'*': ['flow', {'1100': 0o100, '1101': 0o1234, '1516': 0o100, '1517': 0o1234},
+                                         {'1100': 0o100, '1101': 0o1235, '1516': 0o100, '1517': 0o1233}]}),
+            ('13,3657', '13,3660', {'*': ['flow', {'154': 0o77777, '155': 0o77776}, {'154': 0o77777, '155': 0o77777}]}),
+            ('27,2675', '27,2676', {'*': ['flow', {'1501': 0}, {'1501': 0o77777}, {'1501': 2}, {'1501': 0o77775}]}),
+            ('27,2706', '27,2707', {'*': ['flow', {'1501': 2}, {'1501': 0o77775}]}),
+            ('27,2710', '27,2711', {'*': ['flow', {'154': 2, '155': 0}, {'154': 2, '155': 0}]})],
+        'joint_states': dict({lab: [{}] * 4 + [{'1501': v} for v in (0, 0o77777, 2, 0o77775)]
+                              for lab in ('INTWAKEU', 'INTWAKEU+4')},
+                             **{'INTWAKEU+13': [{}, {'1501': 2}, {'1501': 0o77775}],
+                                'INTWAKEU+15': [{}, {'154': 2, '155': 0}]}),
         # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
         # land on interpretive words, never run as basic code.
         # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
@@ -1934,7 +1968,12 @@ SPECS = {
         'joint_states': {'GETX': [{'CSTH': c, 'CSTH+1': cl, 'SNTH': sn, 'SNTH+1': sl}
                                   for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
                                   for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
-                                 + [{}] * 9},
+                                 + [{}] * 9,
+                         # LAMBERT's SLOAD BZE VTARGTAG (12,3544): a quarter
+                         # of its cases with VTARGTAG +0, so the BZE to
+                         # TARGETV is taken as for a caller that asks for
+                         # the target velocity.
+                         'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}]},
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,
@@ -2601,6 +2640,21 @@ SPECS = {
         # DOBRATE?: INDEX A (CS CM/FLAGS MASK THREE), TC +1 reaches the
         # next four words.
         'index_targets': {'15,2471': 3},
+        # (#659) Roll phase-plane points near the origin, as entry steering
+        # leaves them close to the target: after ATTRATES's SPSIN (15,2724),
+        # past 0.05 g (CMDAPMOD -1) with JETAG set so the pass calls CM/RCS,
+        # roll at 0, shortest path, cos alpha 1, and the roll command and
+        # rate (PREL, ROLLC) that reach each arm: the rate past the desired
+        # drift (OVRLINE's CCS Q > 0, drift at V), the X intercept exactly at
+        # XS (VDT/180 +0 at GETOFF, BZF TOFFOVFL) and just past it (TON2
+        # under 2 cs, TON2TEST's BZMF TIMETST5).
+        'joint_states': {'ATTRATES+31': [{}] * 14 + [
+            {'ROLL/180': 0, 'PHIDOT': 0, 'ROLLC': rc, 'PREL': pr, 'CALFA': 0o37777, 'JETAG': 1, 'CM/FLAGS': 0o14}
+            for pr, rc in ((0o24, 0o100), (0o24, 0o104), (0o24, 0o110),
+                           (0o74, 0o22), (0o106, 0o71), (0o120, 0o146), (0o77657, 0o77631), (0o77671, 0o77706),
+                           (0o106, 0o45), (0o106, 0o63), (0o120, 0o122), (0o120, 0o134),
+                           # a far roll command at speed: XD/360 overflows at MAXVTEST's TS
+                           (0o400, 0o37000), (0o77377, 0o40777))]},
         'target': 'tests/cm_entry_dap_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
