@@ -173,6 +173,21 @@ static double jit_lo=0.25,jit_span=16.0;
 static double jitter(void){if(!seed)return 1.0;
  seed^=seed<<13;seed^=seed>>7;seed^=seed<<17;return jit_lo*pow(jit_span,(double)(seed%10000ul)/9999.0);}
 static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
+/* FLIGHT_STEAL=T0-T1:N[,T0-T1:N...] (centiseconds; N MCT): counter cycles
+ * the program loses, as Apollo 11's RR CDU counts took about 13% of the
+ * LGC in P63/P64 (the 1201/1202 alarms). From the first clock period at or
+ * after T0 to the last before T1, each period (each work-clock T5 step)
+ * also spends N MCT that no routine runs in, so the Executive's jobs get
+ * less time; the counted cells themselves are left alone. */
+static unsigned nsteal;static unsigned long steal_t[8][3],steal_cs;
+static int steal_parse(const char *t){
+ while(t&&*t){int n=0;
+  if(nsteal>=8u||sscanf(t,"%lu-%lu:%lu%n",&steal_t[nsteal][0],&steal_t[nsteal][1],&steal_t[nsteal][2],&n)<3||!n
+     ||steal_t[nsteal][1]<=steal_t[nsteal][0])return 0;
+  ++nsteal;t+=n;if(*t==',')++t;else if(*t)return 0;}
+ return 1;}
+static void steal(void){unsigned i;
+ for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;return;}}
 /* The work clock's steps (resident_flight.h rk_phase_mct): step j (from 0)
  * ends at step_at(j) MCT and steps TIME4, TIME1/TIME3 or TIME5 (j % 3, the
  * rk_timer_phase step); consumed counts the steps taken. */
@@ -812,7 +827,7 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
  for(n=0;n<limit;++n){
   if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr))break;}
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
-   if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j)ref_tick((int)(j%3ul));}else for(k=due();k;--k)ref_tick(-1);}
+   if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));if(j%3ul==2ul)steal();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
   if(agc_engine(&m))return -1;}
  if(n==limit)return -1;
@@ -978,6 +993,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
  if(!uplink_parse(getenv("FLIGHT_UPLINK"))){fprintf(stderr,"FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...] (#OCTAL a raw word)\n");return 2;}
+ if(!steal_parse(getenv("FLIGHT_STEAL"))){fprintf(stderr,"FLIGHT_STEAL=T0-T1:MCT[,T0-T1:MCT...]\n");return 2;}
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
  if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
@@ -1102,6 +1118,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
  for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
+  steal_cs=now(s.words);
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
     if((j=differs(s.words,ref[next]))!=0u&&++diffs<=(getenv("FLIGHT_SHOW")?strtoul(getenv("FLIGHT_SHOW"),0,0):20ul)){
@@ -1146,10 +1163,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
     while(!(got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending))&&step_at(consumed)<=wall){
-     rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul)++taken;}
+     rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul){++taken;steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
     idling=0;}
-   else{if(scaled){unsigned k;for(k=due();k;--k)rk_timer_tick(&s,&hw,&pending);}
+   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
    /* The PIPAs count as the clock runs, not only at sample points: P66
     * reads them a few centiseconds after SERVICER, often with no idle pass

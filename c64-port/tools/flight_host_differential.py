@@ -331,6 +331,24 @@ LR_DROP = {**NASSP, 'FLIGHT_LR': '1', 'FLIGHT_LR_DROP': '80000-90000'}
 # out, FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET at 65 s
 # unlocks it and V37E00E takes P00.
 UPLINK = {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_UPLINK': '2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E'}
+# Executive overload (the 1201/1202 alarms). Apollo 11's RR CDU counts
+# stole counter cycles from the LGC in P63; FLIGHT_STEAL spends N MCT a
+# centisecond that no routine runs in, so the jobs get less time.
+# FLIGHT_BUSY_SAMPLE gives the keys and the DSKY trace their sample points.
+# lm-p63-overload: lm-p63-descent-thrust with V16N68 at 180 s and 420 MCT a
+# centisecond stolen from 185 s to 240 s. This synthetic P63 runs lighter
+# than the flight's (no landing radar reads), so the steal that overloads it
+# is larger than the flight's 13% or so. SERVICER falls behind: alarm 1201
+# (no VAC areas, FINDVAC) at 196 s, then 1202 (no core sets, NOVAC) at
+# 210 s, each a BAILOUT that restarts through the phase tables (6
+# restarts). V06N63 comes back after each one; the V16N68 monitor does not,
+# as in the flight. With the steal gone, P63 updates N63 every 2 s again and
+# flies on.
+# cm-entry-overload: cm-entry with 600 MCT a centisecond stolen from 210 s
+# to 270 s, over P64 and P67: alarm 1201 three times, 6 restarts, and the
+# entry still reaches P67.
+OVERLOAD_LM = {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_STEAL': '18500-24000:420', 'FLIGHT_BUSY_SAMPLE': '50'}
+OVERLOAD_CM = {**ENTRY, 'FLIGHT_STEAL': '21000-27000:600', 'FLIGHT_BUSY_SAMPLE': '50'}
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -356,7 +374,9 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
-          ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]
+          ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
+          ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
+          ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM)]
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured
