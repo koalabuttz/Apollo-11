@@ -14,6 +14,15 @@ build/test-cm-jet-select: $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c $(CM_J
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c -o $@
 test-cm-jet-select: build/test-cm-jet-select
 	./build/test-cm-jet-select
+# The hot table (spec hot_points, the flight store's docked RCS DAP packs)
+# calls the full table's functions for its keys.
+.PHONY: test-cm-jet-select-hot
+all: build/test-cm-jet-select-hot
+test: test-cm-jet-select-hot
+build/test-cm-jet-select-hot: $(CM_JET_SELECT_SRC) tests/test_cm_jet_select_hot.c $(CM_JET_SELECT_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_JET_SELECT_SRC) tests/test_cm_jet_select_hot.c -o $@
+test-cm-jet-select-hot: build/test-cm-jet-select-hot
+	./build/test-cm-jet-select-hot
 sanitize-cm-jet-select: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CM_JET_SELECT_SRC) tests/test_cm_jet_select.c -o build/test-cm-jet-select-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-jet-select-sanitize

@@ -2442,6 +2442,30 @@ static const agc_routine_entry basic_entries[]={
  {0xffffu,0}
 };
 const agc_routine_table cm_auto_man_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
+/* The basic routines one pass reaches (the spec's hot_points): the
+ * flight store packs them in one module, so a pass loads it once. */
+static const agc_routine_entry hot_entries[]={
+#if (CM_AUTO_MAN_KEEP0 >> 0) & 1
+ {18088,r43250_abi},
+#endif
+#if (CM_AUTO_MAN_KEEP0 >> 7) & 1
+ {18209,r43441_abi},
+#endif
+#if (CM_AUTO_MAN_KEEP0 >> 8) & 1
+ {18213,r43445_abi},
+#endif
+#if (CM_AUTO_MAN_KEEP0 >> 9) & 1
+ {18227,r43463_abi},
+#endif
+#if (CM_AUTO_MAN_KEEP0 >> 30) & 1
+ {18372,r43704_abi},
+#endif
+#if (CM_AUTO_MAN_KEEP0 >> 37) & 1
+ {18415,r43757_abi},
+#endif
+ {0xffffu,0}
+};
+const agc_routine_table cm_auto_man_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};
 const cm_auto_man_point cm_auto_man_points[CM_AUTO_MAN_POINTS]={
  {18088,0},
  {18116,0},
