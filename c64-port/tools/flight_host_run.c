@@ -869,8 +869,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(getenv("FLIGHT_WATCH_STEP"))watch(s.words);
   /* A radar read starts at any routine boundary and the resident's cycle
    * ends it nine TIME5 counts on, often before the next sample point: the
-   * model answers it at the boundary where channel 13 bit 4 comes on. */
-  if(rr_on&&(hw.channel13&010u)&&!rr_nat.active){int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);}
+   * model answers it at the boundary where channel 13 bit 4 comes on. A
+   * read ends when bit 4 drops, often between sample points too; the next
+   * read (LM R22's range after range rate) must find the model ready. */
+  if(rr_on&&!(hw.channel13&010u))rr_nat.active=0;
+  else if(rr_on&&!rr_nat.active){int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);}
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;
