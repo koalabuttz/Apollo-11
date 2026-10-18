@@ -9,17 +9,17 @@
       "store": "tree"
     },
     "cm-extended-verbs-file-differential.log": {
-      "sha256": "b7a3b5ead04a0e8b4645515ed867e0439177fb775d0d55f06a2423d9d5849816",
-      "bytes": 6929,
+      "sha256": "47378d2097446986c732e315ae54124cd72249908a2e1ef9e8d2686a38247ea1",
+      "bytes": 6941,
       "store": "tree"
     },
     "cm-extended-verbs-file-host.log": {
-      "sha256": "59bb49953ec54b228ea50f85f5d0f18c17f936cfd48d18f959dd2927c3e65300",
-      "bytes": 1202,
+      "sha256": "c6f895d4026d6ca3882e56f731edb29b7873db83f29353217ac716132ded35d6",
+      "bytes": 1195,
       "store": "release"
     },
     "cm-extended-verbs-file-proof.json": {
-      "sha256": "c2fbbf6350bca3d6517c5c74ca421a02b08921945252efae719f1b29c0ab0cd7",
+      "sha256": "e9b400afcf26d7339035577452bf2f975cb19c8e85e28208aaf7df75184b7ff1",
       "bytes": 16025,
       "store": "tree"
     },
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-extended-verbs-file-vice.log": {
-      "sha256": "2b4d62899b1887a7396032a17ac0e6308bf797146cd6ed569953f72eadb1e55e",
-      "bytes": 6653,
+      "sha256": "199e58c54b2a486ba2eedc9cf66ccd00e5b5df7f788ae08bfdee6a5482114e22",
+      "bytes": 6842,
       "store": "release"
     }
   }
