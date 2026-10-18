@@ -180,11 +180,21 @@ def link_check(a):
     prg, syms = link(0)
     vice_args = argparse.Namespace(vice=a.vice_bin, rom_dir=a.rom_dir, data_dir=a.data_dir, cycles=6_000_000_000,
                                    timeout=a.timeout, profile=False)
+    # The run's REU regions (tools/reu_layout.py), with the boot stash below
+    # the rows: VICE logs any DMA outside them, and every byte the run
+    # changed must lie in a writable one.
+    import reu_layout
+    regions = reu_layout.layout(m, manifest, (at, end_at, reu_layout.free_top(m, manifest)),
+                                extra=[('check stash', save_at, at, True)])
     r = dp.vice(vice_args, tag, prg, any(mod['slot'] == 3 for mod in manifest['modules']), m,
-                [(0, bytes(image))])
+                [(0, bytes(image))], [reu_layout.dma_trace(regions)])
     mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
     if r.get('status') != 0 or not mail[0x34]:
         sys.exit(f"FAIL: the check window did not run to its end in VICE: {r.get('error') or r.get('status')}")
+    bounds = reu_layout.report(m, regions, image, (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes(), 'test')
+    misses = reu_layout.dma_misses((dp.WORK / f'vice-{tag}' / 'monitor.log').read_text())
+    if not bounds['ok'] or misses:
+        sys.exit(f'FAIL: the check program used the REU outside its layout ({misses} DMAs outside)')
     expect = mail[0x36] | mail[0x37] << 8
     prg, syms = link(expect)
     data = prg.read_bytes()
@@ -881,6 +891,12 @@ def main():
             print(json.dumps(info['vice'], indent=1))
             if a.p00 and m != 'test':
                 boot_evidence(a, m, info)
+            # CI keeps build/ci-logs (port-ci.yml): the disks it booted, so a
+            # run's artifact holds images ready to write (docs/RUN-ON-C64.md).
+            logs = ROOT / 'build/ci-logs'
+            if logs.is_dir() and info['vice'].get('ok'):
+                for d in info['disks']:
+                    shutil.copy(OUT / d, logs / d)
         report.append(info)
     (OUT / ('vice.json' if a.vice else 'disks.json')).write_text(json.dumps(report, indent=1) + '\n')
     return 0 if all(r.get('vice', {}).get('ok', True) for r in report) else 1
