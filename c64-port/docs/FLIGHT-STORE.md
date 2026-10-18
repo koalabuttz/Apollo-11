@@ -872,7 +872,15 @@ port) runs one mission:
    the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
-   interrupt; a refused or untranslated point stops it.
+   interrupt; a refused or untranslated point stops it. With `--keys` it
+   presses the scenario's DSKY keys that fall in the window, at the
+   centiseconds the host run presses them (channel 15 and KEYRUPT1, or a
+   mark's channel 16 bits and KEYRUPT2; on the CM also rk_device's
+   main_keys and navigation_keys, which each store module on a CM record
+   writes back to those channels). Without it the window presses none.
+   Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
+   radar model) are not replayed. `--watch 1011,...` prints up to five
+   erasable words as the window ends (1011 is Comanche's MODREG).
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
