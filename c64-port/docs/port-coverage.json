@@ -6121,22 +6121,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6"
+            "sha256": "7b18a4cee2a807fe630c5275595d566258624a989f07412afb8f74aeef20844f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
-            "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d"
+            "sha256": "b38f4a21def550c4278a7d7a3e394cbf3e6221c2cfcc549eba62671a640a9a67"
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
+            "sha256": "2dfb3794cc6d659f72f2531fcedacc421f6e01c4f3f1a184c34c246a0da01aea",
             "vice_targets": {
-              "vice-cm-tpi-search": 248
+              "vice-cm-tpi-search": 249
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
+            "sha256": "d544b5b1f42442dfa0595dfb965cf69f7c033815cdbf8bcf940343edc3b36ae3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-r31-tpi-630.md",
