@@ -1228,6 +1228,9 @@ SPECS = {
     'lm-r31-file': {
         'resume_keys': True,
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'R31.agc'},
         'base': {'lm': 'lm_r31_file'},
         'symbol': {'lm': 'lm_r31_file'},

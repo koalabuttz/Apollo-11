@@ -12198,22 +12198,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r31-file/lm-r31-file-proof.json",
-            "sha256": "33417b2506314b8f8f6691c52d0656a41b86aba97417fb060a534e7de488ddcb"
+            "sha256": "9114b2e3ca9f5516e6ded791013adcf8834bc3d7b71c980fcea7748ff60d7eae"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r31-file/lm-r31-file-host.log",
-            "sha256": "fd3b63235e8bf36d3516c8aa6618c9c927d5fdfc80b039f2d3a99edf91d7960a"
+            "sha256": "0df947d75aa37e441b6c49a91c8af2c6c1aea13667f04ffba11f4231d97dacce"
           },
           "c64_execution_results": {
             "path": "evidence/lm-r31-file/lm-r31-file-vice.log",
-            "sha256": "1708a5bb233d5852a3dea2a63a3aa6d395fbd0457270de2ce564070ce25c01f8",
+            "sha256": "e5acd114b5613ebb0572e15c118b7e6a62ce45d2bd4f4b3b5f74334cb7099642",
             "vice_targets": {
               "vice-lm-r31-file": 139
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r31-file/lm-r31-file-c64-cover.json",
-            "sha256": "66fc8aef998de36cd1b30055a30fe39339b0291b8c7503c9d42f54a01529a6bb"
+            "sha256": "d5fdcce7ed97f6bee8b406d54b44574b5349e23aa60cf2b401ebdce2fb245d8a"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-r31-file/lm-r31-file-closure.json",
