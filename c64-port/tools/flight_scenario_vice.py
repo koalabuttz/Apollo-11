@@ -209,10 +209,29 @@ def states(data, n):
 SCHEDULE_SKIP = {'cm': dict(words={0o776: 'DSPCNT', 0o1302: 'DSRUPTSW'}, sent=range(0o1023, 0o1037), cs=1)}
 
 
-def replay_compare(h, c, skip=None, skipped=None):
+TIMERS = {0o24: 'TIME2', 0o25: 'TIME1', 0o26: 'TIME3', 0o27: 'TIME4', 0o30: 'TIME5', 0o31: 'TIME6'}
+# TEMPORARY: at a sample point in the same centisecond the host and the C64
+# can sit in different thirds of it (the work clock steps TIME4, TIME1/TIME3
+# and TIME5 in turn), so TIME5 can be a count apart while TIME1 agrees: the
+# jobs before it took a different work time (the interpretive charge,
+# Interpreter #650; the CM idle charge, RK #663). Skipped, and said so,
+# until those land.
+TIME5_PHASE = 'TIME5 a count apart (a third of a centisecond)'
+
+
+def replay_compare(h, c, skip=None, skipped=None, apart=False):
     """The differences between a host state and the C64's: (name, host,
-    C64) for each compared erasable word, then each output channel."""
+    C64) for each compared erasable word, the timers, then each output
+    channel. apart: the states are a skipped centisecond apart, so the
+    timers are not compared."""
     out = []
+    for i, name in TIMERS.items():
+        if apart or h[i] == c[i]:
+            continue
+        if i == 0o30 and h[0o25] == c[0o25] and (h[i] - c[i]) % 0o40000 in (1, 0o37777):
+            skipped.add(TIME5_PHASE)
+        else:
+            out.append((name, h[i], c[i]))
     for i in range(2048):
         if not compared(i) or h[i] == c[i] or (0o37 <= i <= 0o41 and {h[i], c[i]} == {0, 0o77777}):
             continue  # a PIPA's -0 and +0 are the same count
@@ -376,8 +395,9 @@ def main():
         skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
         pairs = list(zip(host_s, c64_s))
         for k, ((hc, hw), (cc, cw)) in enumerate(pairs):
-            diff = replay_compare(hw, cw, skip, skipped)
-            if hc != cc and skip and abs(hc - cc) <= skip['cs']:
+            apart = hc != cc and skip and abs(hc - cc) <= skip['cs']
+            diff = replay_compare(hw, cw, skip, skipped, apart)
+            if apart:
                 # A tick apart, an interrupt's temporaries can differ
                 # too; such a checkpoint is skipped, the window's end is not.
                 if diff and k < len(pairs) - 1:
@@ -391,7 +411,7 @@ def main():
                 break
             matched.append(hc)
         if skipped:
-            print(f"{a.scenario}: skipped (temporary, SCHEDULE_SKIP): {', '.join(sorted(skipped))}")
+            print(f"{a.scenario}: skipped (temporary, SCHEDULE_SKIP / TIME5_PHASE): {', '.join(sorted(skipped))}")
         r.update(replay_matched_cs=matched, replay_differences=len(diff), replay_differ_at_cs=at_cs,
                  replay_skipped=sorted(skipped),
                  replay_first=[dict(at=x, host=f'{h:05o}', c64=f'{c:05o}') for x, h, c in diff[:32]])
