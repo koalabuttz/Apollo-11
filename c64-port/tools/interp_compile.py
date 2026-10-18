@@ -291,6 +291,22 @@ class Compiler:
     def name(self, phys):
         return self.L.label_at(phys) or ''
 
+    def eb_line(self):
+        """Spec 'fast_window': the window forms take an operand in 01400-01776
+        as a cell of EBANK AFR_EBN, so an entry under another EB refuses."""
+        if not self.spec.get('fast_window'):
+            return []
+        return [' if(W[3]!=0%ou)return 0; /* fast_window: EB as AFR_EBN */' % (self.spec['ebank'] << 8)]
+
+    def sets_eb(self, phys):
+        """A basic routine whose first words are CA <fixed constant>, TS
+        EBANK sets EB before it touches erasable memory, so it may be
+        entered under any EB (CM/DAPON, CM/DAPIC)."""
+        # (The assembled words: CA K, K in fixed memory, is 03KKKK with K
+        # 02000 or above; TS EBANK is 054003.)
+        a, b = self.word(phys), self.word(phys + 1)
+        return a is not None and (a & 0o70000) == 0o30000 and (a & 0o7777) >= 0o2000 and b == 0o54003
+
     def where(self, phys):
         return '%02o,%04o' % (phys // 1024, 0o2000 + phys % 1024)
 
@@ -1837,7 +1853,12 @@ class Compiler:
             return phys in self.full_nv
         return (self.any_fixloc and self.starts[phys][0] == 'b'
                 and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
-                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys]))
+                # (Under 'any_newjob', not a routine whose own CCS NEWJOB
+                # refuses -0, its fourth skip being data: R30's return from
+                # FINDVAC, which only a job runs.)
+                and not (self.any_newjob and any('switch(ai_ccs(s,00067u))' in st and 'default:return EXEC_OUT_OF_SCOPE' in st
+                                                 for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -2203,6 +2224,7 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+        c.extend(self.eb_line())
         # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
         # as STATEINT's INTSTALL runs under it.)
         c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
@@ -2219,6 +2241,7 @@ class Compiler:
                 nj = '(%s&&W[067]!=077777u)' % nj
             c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+            c.extend(self.eb_line())
             c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
@@ -2306,6 +2329,7 @@ class Compiler:
             c.extend(self.basic.emit(sym))
             c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
             c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
+            bs0 = len(c)
             c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const %s *io,agc_word fb){' % self.basic.io)
             c.append(' unsigned i;')
             if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
@@ -2321,9 +2345,26 @@ class Compiler:
             else:
                 c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
                 c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
+            eb_at = len(c)
+            c.extend(self.eb_line())
             c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
+            self.eb_free = sorted(p for p in self.blocks if self.starts[p][0] == 'b' and self.spec.get('fast_window')
+                                  and self.sets_eb(p))
+            # Spec 'any_eb_entries': basic routines that touch only unswitched
+            # erasable cells, entered under any EB (FINETIME from P06).
+            for lab in self.spec.get('any_eb_entries', ()):
+                q = self.label_phys(lab)
+                if q not in self.blocks or self.starts[q][0] != 'b':
+                    raise CompileError('any_eb_entries: %s is not a basic routine of the file' % lab)
+                self.eb_free = sorted(set(self.eb_free) | {q})
+            if self.eb_free:
+                # The same for the routines that set EB first (sets_eb).
+                c.append('/* The same under any EB, for a routine that sets EB before it')
+                c.append(' * touches erasable memory. */')
+                body = c[bs0:eb_at] + c[eb_at + 1:]
+                c.extend([body[0].replace('basic_sane(', 'basic_sane_any_eb(')] + body[1:])
             c.append('')
         self.erasable_ents = []
         if self.basic:
@@ -2394,10 +2435,11 @@ class Compiler:
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb
                 if self.spec.get('fixed_fixed_any_fb') and bank in (2, 3):
                     sfb = '0177777u'
+                bsn = 'basic_sane_any_eb' if phys in getattr(self, 'eb_free', ()) else 'basic_sane'
                 if self.basic.io == 'p66_bias_io':
                     # Luminary: the record, then (lm_channel_io) the inputs;
                     # channel orders reach the program's agc_hardware.
-                    c.append(' if(!s||!v||!basic_sane(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
+                    c.append(' if(!s||!v||!%s(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (bsn, sfb))
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((lm_channel_io *)v)->in;')
                     c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
@@ -2405,8 +2447,8 @@ class Compiler:
                 else:
                     if self.uses_hw:
                         c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;')
-                    c.append(' %sif(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (
-                        '' if self.uses_hw else '(void)p;', sfb))
+                    c.append(' %sif(!s||!v||!%s(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (
+                        '' if self.uses_hw else '(void)p;', bsn, sfb))
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
                     c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))

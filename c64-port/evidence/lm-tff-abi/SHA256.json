@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-tff-abi",
+  "release": "evidence-lm-tff-abi",
+  "files": {
+    "lm-tff-abi-differential.log": {
+      "sha256": "86498f4d322c2b5c90dd831a0f2d7533fd04c5588e65c7507dec21caaffea7c8",
+      "bytes": 5453,
+      "store": "tree"
+    },
+    "lm-tff-abi-host.log": {
+      "sha256": "46866ab5f4f56a3b81f7d3d82c486ae48c2c382bc37bbba68956c2c172f78c85",
+      "bytes": 1042,
+      "store": "tree"
+    },
+    "lm-tff-abi-proof.json": {
+      "sha256": "6a9ef36d01cc770f2bef5eaa86930f3d37c38bb13a77ce4b48b678a95de65255",
+      "bytes": 13892,
+      "store": "tree"
+    },
+    "lm-tff-abi-source-map.json": {
+      "sha256": "4c52af9e5eb064eac3c87bc037974960007a3f638f62dcaa4917d378102a4db2",
+      "bytes": 36814,
+      "store": "tree"
+    },
+    "lm-tff-abi-vice.log": {
+      "sha256": "c8a7f76c62901212f910a9349e4516e210508dabc374998cd33f078eb14b0967",
+      "bytes": 3117,
+      "store": "tree"
+    }
+  }
+}
