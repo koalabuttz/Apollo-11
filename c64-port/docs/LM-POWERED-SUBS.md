@@ -36,8 +36,8 @@ Hashes: `evidence/lm-powered-subs/SHA256.json`.
 - **Executed-instruction closure.** `make lm-powered-subs-closure` (`tools/oracle_trace` with `AGC_READ_WORDS`, then `tools/interp_executed_closure.py`). Result (`evidence/lm-powered-subs/lm-powered-subs-closure.json`):
   - 237 of the 238 basic instructions executed, and all 14 interpretive words read by the interpreter;
   - the one left, 23,3757 (TSTPOINT's TC RTNSAVER for +0), cannot be reached. AX\*SR\*T enters with ±3, and DIM of +1 gives -0, so `CCS DEXDEX` never sees +0.
-- **Independent assembly comparison.** `make lm-powered-subs-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 49 routines, 25,088 in all, and every one equals the native run (`evidence/lm-powered-subs/lm-powered-subs-proof.json`). It compares Z, all 2,048 erasable words and the interrupt-enable state.
-- **Host and sanitizer results.** `make test-lm-powered-subs sanitize-lm-powered-subs`: the 1,569 frozen cases, 0 failures.
-- **C64 execution results.** `make vice-lm-powered-subs`: 71 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (547 gcov branches, and 873 of 873 trace edges and comparison outcomes). 71 checks, 0 failures.
+- **Independent assembly comparison.** `make lm-powered-subs-differential`: the unmodified Luminary099 rope in yaAGC, 512 cases at each of the 39 routines, 19,968 in all, and every one equals the native run (`evidence/lm-powered-subs/lm-powered-subs-proof.json`). It compares Z, all 2,048 erasable words and the interrupt-enable state.
+- **Host and sanitizer results.** `make test-lm-powered-subs sanitize-lm-powered-subs`: the 1,248 frozen cases, 0 failures.
+- **C64 execution results.** `make vice-lm-powered-subs`: 51 cases that the differential picks by edge coverage. They take every branch outcome the host cases take (527 gcov branches, and 861 of 861 trace edges and comparison outcomes). 51 checks, 0 failures.
 
 The older hand translations (`src/lm_powered_*.c`, `src/lm_fleshpot*.c`, `src/guidance_rotation.c`, `src/guidance_throttle_service.c`) stay for their existing callers. This milestone does not change them.
