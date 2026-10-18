@@ -446,6 +446,15 @@ def c64_mct(m, to_interp, modules):
     runs it (link_module). host.inc carries these, so the host's work clock
     (FLIGHT_SCALED) charges what the C64 does."""
     out = {t: mct_weight(m, None, interp=True) for t in to_interp}
+    # A pack's own tables (not its ride ones) resolve to the pack before
+    # their files' modules, so the pack's FS_MCT is what the C64 charges
+    # them (RATELOOP's lm_kalman_basic in the excursion, the radar step in
+    # the T4RUPT pack), not their own module's.
+    for mod in modules:
+        if mod.get('excursion'):
+            for t in mod.get('basic') or []:
+                if t not in RIDE and not idle_table(t):
+                    out.setdefault(t, mct_weight(m, [x for x in mod['basic'] if x not in LEAD_INS and not idle_table(x)]))
     for mod in modules:
         weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
         rupt = [t for t in weighed if not idle_table(t)]

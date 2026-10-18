@@ -126,6 +126,16 @@ def c64_weights(m):
     if not report:
         sys.exit(f'FAIL: no flight store report for {m} (rebuild: tools/flight_store_build.py --missions {m} --force)')
     out = {t: mct_weight(m, None, interp=True) for t in report['left_to_interpreter']}
+    # A pack's own tables resolve to the pack first, so they take its
+    # weight, not their file module's (flight_store_build.py c64_mct).
+    packs = {int(p['id'], 16): p for p in report.get('packs', []) if p.get('ok')}
+    for mod in report['module_list']:
+        if mod['id'] in packs:
+            rupt = [t for t in mod.get('basic') or [] if not fsb.idle_table(t)]
+            own = [t for t in rupt if t not in fsb.LEAD_INS] or rupt
+            for t in rupt:
+                if t not in packs[mod['id']]['ride'] and own:
+                    out.setdefault(t, mct_weight(m, own))
     for mod in report['module_list']:
         weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
         rupt = [t for t in weighed if not fsb.idle_table(t)]
