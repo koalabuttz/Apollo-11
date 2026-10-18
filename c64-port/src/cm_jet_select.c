@@ -4279,6 +4279,75 @@ static const agc_routine_entry basic_entries[]={
  {0xffffu,0}
 };
 const agc_routine_table cm_jet_select_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
+/* The basic routines one pass reaches (the spec's hot_points): the
+ * flight store packs them in one module, so a pass loads it once. */
+static const agc_routine_entry hot_entries[]={
+#if (CM_JET_SELECT_KEEP0 >> 0) & 1
+ {15722,r36552_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 1) & 1
+ {15801,r36671_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 6) & 1
+ {15910,r37046_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 12) & 1
+ {15954,r37122_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 13) & 1
+ {15988,r37164_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 14) & 1
+ {16024,r37230_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 22) & 1
+ {16060,r37274_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 29) & 1
+ {16122,r37372_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 45) & 1
+ {16206,r37516_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 50) & 1
+ {16222,r37536_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 51) & 1
+ {16236,r37554_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 52) & 1
+ {16240,r37560_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 53) & 1
+ {16241,r37561_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 55) & 1
+ {16255,r37577_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 57) & 1
+ {16259,r37603_abi},
+#endif
+#if (CM_JET_SELECT_KEEP0 >> 58) & 1
+ {16271,r37617_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 2) & 1
+ {16300,r37654_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 3) & 1
+ {16307,r37663_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 4) & 1
+ {16310,r37666_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 6) & 1
+ {16315,r37673_abi},
+#endif
+#if (CM_JET_SELECT_KEEP1 >> 11) & 1
+ {16331,r37713_abi},
+#endif
+ {0xffffu,0}
+};
+const agc_routine_table cm_jet_select_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};
 const cm_jet_select_point cm_jet_select_points[CM_JET_SELECT_POINTS]={
  {15722,0},
  {15801,0},

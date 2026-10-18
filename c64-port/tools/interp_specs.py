@@ -201,6 +201,22 @@ def v67_loop():
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
 
 
+def v67_nochange():
+    """V67's V6N99PRO (31,2030 TCF V6N99PRO): N99LOOP sums WWPOS..+5 minus
+    WWPOS+6..+11 (the W-matrix RMS values against their saved copies); a
+    sum of 0 is the crew's PRO with no new values, BZF V06N9933 past
+    UPFLAG V67FLAG (reviewer 1, #603). Equal copies, copies whose
+    differences cancel, one copy off by one; half the cases keep their
+    own values."""
+    # (WWPOS is E4,1600: CS WWPOS reads it through the case's EBANK.)
+    w = ['E:%o' % (0o1600 + n) for n in range(12)]
+    vals = [0o1234, 0o20000, 0o37777, 0, 0o4567, 0o77]
+    same = dict(zip(w, vals + vals))
+    cancel = dict(same, **{w[6]: vals[0] + 1, w[7]: vals[1] - 1})
+    off = dict(same, **{w[11]: vals[5] + 1})
+    return [same, cancel, off, {}, {}, {}]
+
+
 def ddv_majors_joint(num=('0154', '0155'), den=('ALPHAM', 'ALPHAM+1'), his=(0o1, 0o1234, 0o17777, 0o30000)):
     """A DDV (or BDDV) with the divisor den's major part equal to or one
     above the dividend num's (lm_interp_orders.c's near-equal-majors steps
@@ -941,7 +957,15 @@ SPECS = {
         # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
         # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
         # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
-        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
+        # LM: a part map (docs/FLIGHT-PARTS.md) keeps the basic subroutines
+        # a P63 background pass calls back and forth in one part: VECAGREE
+        # and UNIT's start (00,3000) with ENDDOT, TPAGREE, DMP (03,3100),
+        # VXV, MPACVBUF, ALSIGNAG (03,3400) and BRANCH's tail (03,2700).
+        # Cut at 0o100-word lines, so the sizes stay under one job slot.
+        **({'flight_parts': [0o1000, 0o1100, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
+                             0o3 * 1024 + 0o1100, 0o3 * 1024 + 0o1300, 0o3 * 1024 + 0o1400, 0o3 * 1024 + 0o1600],
+            'flight_part_map': [1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
+           {'flight_parts': [0o1517, 0o3 * 1024 + 0o1000]}),
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
@@ -2305,6 +2329,12 @@ SPECS = {
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_rcs_dap'},
         'symbol': {'cm': 'cm_rcs_dap'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
+        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,2122', '21,2216', '21,2221', '21,2236', '21,2311', '21,2317', '21,2360', '21,2411',
+                       '21,2417', '21,2471', '21,2661', '21,3160'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2349,6 +2379,11 @@ SPECS = {
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_man pack (one per DAP file), so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,3250', '21,3441', '21,3445', '21,3463', '21,3704', '21,3757'),
         'basic': 'full',
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
@@ -2387,6 +2422,13 @@ SPECS = {
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_jet pack (one per DAP file), so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('17,2552', '17,2671', '17,3046', '17,3122', '17,3164', '17,3230', '17,3274', '17,3372',
+                       '17,3516', '17,3536', '17,3554', '17,3560', '17,3561', '17,3577', '17,3603', '17,3617',
+                       '17,3654', '17,3663', '17,3666', '17,3673', '17,3713'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -4706,7 +4748,8 @@ SPECS = {
         # steps from 54 by S1 = 6.
         'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
                              + [('NXPOSVEL+%d' % n, v67_loop()) for n in range(4)]
-                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
+                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]
+                             + [('V6N99PRO-2', v67_nochange())]),
         'channel_inputs': True,
         'resume_flow': True,
         # Flowed CHANG2 resumes whose arms the program's own runs rarely
@@ -4724,9 +4767,23 @@ SPECS = {
         'counters': True,
         'c64_rows': 'cover',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
         'resume_keys': True,
         'resume_orphans': True,
+        # R61LEM1's RTB CALL READCDUD and LSR22.3's RTB PUSH NORMUNX1:
+        # READCDUD and NORMUNX1 return through TC DANZIG with CALL or PUSH in
+        # EDOP and LOC at the RTB's operand word (23,2150 and 26,3351), so
+        # each operand word is a routine of its own (D2's LM rendezvous run).
+        'pending_danzig': True,
+        # RRLIMCHK and RRLIMNB return through INDEX L; TC L to caller +2 /
+        # +3: a case's Q leaves room for those words outside the file
+        # (auditor, #603).
+        'index_returns': True,
+        # DODES's passes reach NOTP20's CCS LOSCOUNT (after INHINT, CS
+        # RADMODES and RROUT's writes) with the count 0 to 3, as R21LEM2
+        # sets it and DODESEND counts it down: -0 would run KILLTASK's CADR
+        # DESLOOP +2 as an instruction (auditor #508; reviewer 1, #603).
+        'range_states': [('DODES', 'DODESEND', {'E:1456': [0, 1, 2, 3]})],
         # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
         # job: the basic routines they reach (CLRADMOD and the RR/LR
         # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule

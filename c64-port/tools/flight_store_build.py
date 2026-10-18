@@ -16,8 +16,8 @@ Steps, per mission:
    interrupt bodies its wrappers run) and the certified Executive tables the
    thin kernel replaces are not packed. A key two packed tables both hold is
    a collision: the resolver sends it to the table of the file
-   docs/port-coverage.json lists first for that AGC file (else the first by
-   name), and the report lists every collision for its lanes.
+   docs/port-coverage.json lists first for that AGC file (a whole-file
+   *_file table before an older one, else the first by name), and the report lists every collision for its lanes.
 4. Modules. One module per source file that defines packed tables: the
    generic wrapper platform/c64/flight_table_module.c around that file's
    tables, linked with the file's link closure (every src/*.c that defines
@@ -360,6 +360,17 @@ def source_owners():
             for i, nf in enumerate(c.get('native_files', [])):
                 owners[Path(nf).stem].append((f['path'], i))
     return owners
+
+
+def rank(t, packed, owners):
+    """Resolution preference of a packed table: the file docs/port-coverage.json
+    lists first for its AGC file, then by name, except that a whole-file
+    table (stem *_file, the file's later certificate) goes just before its
+    older twin of the same name (LM P70-P71: lm_p70_p71 cannot write
+    channel 14, which THROTUP does)."""
+    twin = t.replace('_file_', '_', 1)
+    name = (twin, 0) if packed[t].endswith('_file') and twin in packed else (t, 1)
+    return (min((i for _, i in owners.get(packed[t], [])), default=99), name)
 
 
 def placements():
@@ -762,20 +773,32 @@ T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lea
 # it about 1. CM pins no class-4 home, so the pack links its own runtime
 # (ALONE).
 ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
+# The CM docked RCS DAP pass (T5RUPT) reaches 12 routines of
+# cm_rcs_dap_basic, 21 of cm_jet_select_basic, 6 of cm_auto_man_basic and
+# MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
+# task slot and run chunked in the job slot beside the others, so a pass
+# loaded about 7 modules. Each file's hot subset is its own pack (one table
+# per pack, so one too big for the slot splits in key order), KALCMANU's
+# beside MYSUBS, which its callers in the pass share.
+RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines']}
+JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
+MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines', 'cm_mysubs_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
-             ('cm_entry', ENTRYPACK[m], 0x07F7)] for m in ('lm', 'cm')}
+             ('cm_entry', ENTRYPACK[m], 0x07F7), ('cm_rcs', RCSPACK[m], 0x07F8),
+             ('cm_jet', JETPACK[m], 0x07FA), ('cm_man', MANPACK[m], 0x07FC)] for m in ('lm', 'cm')}
 # Packs that link the runtime themselves, as any job-slot module does, so
 # they are packed with no class-4 home; the others take it from the home
 # (pin_pair) and are packed only beside it.
-ALONE = {'cm_entry'}
+ALONE = {'cm_entry', 'cm_rcs', 'cm_jet', 'cm_man'}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
 # A hot subset's full table where it is not <file>_routines: a generated
 # file names its full table <file>_basic (tools/basic_compile.py).
-HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic',
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic', 'cm_rcs_dap_hot_routines': 'cm_rcs_dap_basic',
+            'cm_jet_select_hot_routines': 'cm_jet_select_basic', 'cm_auto_man_hot_routines': 'cm_auto_man_basic',
             'lm_interbank_postjump_t4_hot_routines': 'lm_interbank_routines'}
 # Tables that run only from the self-check idle loop: a module carrying them
 # beside others runs them as the work clock's idle outside an interrupt
@@ -1091,7 +1114,7 @@ def main():
         parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
                                                            if o == stem and not interpretive_table(t)))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
-        for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
+        for t in sorted(packed, key=lambda t: rank(t, packed, owners)):
             if hot_full(t):
                 continue
             kind = 'i' if interpretive_table(t) else 'b'
@@ -1101,7 +1124,7 @@ def main():
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
         order = list(dict.fromkeys(RESIDENT[m] + sorted(
-            (t for t in packed if not hot_full(t)), key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
+            (t for t in packed if not hot_full(t)), key=lambda t: rank(t, packed, owners))))
         check_site_includers()
         also = collections.defaultdict(list)
         for host, ts in CO_LOCATE[m].items():
@@ -1308,6 +1331,9 @@ def main():
             pts = [t for t in pts if t in packed]
             if not pts:
                 continue
+            # A split pack takes the ids after its own: the next pack starts
+            # past them, so ids never collide.
+            ident = max([ident] + [p['id'] + 1 for p in packs])
             stems = list(dict.fromkeys(packed[t] for t in pts))
             lane = lane_slot(stems[0], m, owners, place)[0]
             sites = {}
@@ -1329,6 +1355,9 @@ def main():
                 packs += split_pack(pack, pts[0])
             else:
                 packs.append(pack)
+        # Pack ids stay in lane F's byte: 0x0800 on is lane G's.
+        if any(p['id'] > 0x07FF for p in packs):
+            raise SystemExit(f"{m}: pack ids {[hex(p['id']) for p in packs]} run past 0x07FF")
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class

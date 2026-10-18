@@ -105,6 +105,16 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
+# lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
+# aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
+# bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
+# throttles the descent engine to full and flies the abort guidance to
+# insertion. P71: ABORT STAGE (channel 30 bit 4); the descent stage
+# separates (FLIGHT_STAGE) and P71 flies the ascent engine (FLIGHT_ASCENT:
+# the 4,888 kg ascent stage) to insertion.
+ABORT = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2'}
+ABORT_P70 = {**ABORT, 'FLIGHT_CHAN': '115000:030=036350'}
+ABORT_P71 = {**ABORT, 'FLIGHT_CHAN': '115000:030=036341', 'FLIGHT_STAGE': '115000', 'FLIGHT_ASCENT': '4888'}
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
@@ -274,6 +284,22 @@ P22 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '15100:tools/flight_scenarios/cm-p22-mark2.load'}
 P22_KEYS = ('@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200M@15600V33E@16200V33E'
             '@16800V33E@18500V33E@20300V33E@21500V37E00E')
+# cm-tei: Apollo 11's transearth injection (TIG 135:23:42 GET), the load
+# at 20 s (tools/flight_scenarios/cm_tei.py, set up as cm_p40.py: the CSM
+# alone in a circular 60 nmi lunar orbit on the far side, the SPS pads,
+# the platform with X along the DV, the CDUs at the ignition attitude,
+# RLS for the altitude displays). G&N AUTO; V37E30E, the TEI-1 pad keyed:
+# V25 on V06N33 (TIG 300 s on the CMC clock), V25 on V06N81 (+3283.6
+# ft/s), proceed on N81, N42 (9999.9 x 60.0 nmi) and V16N45; V37E40E,
+# proceed and ENTER on V50N18, proceed on V50N25 00204; proceed on V99N40
+# at TIG-5; FLIGHT_SPS (16,400 kg) burns about 154 s to cutoff (N40 VG 6.1
+# ft/s); proceed on V16N40 and V16N85, V37E00E; V82: V16N44 9999.9 x 60.0
+# nmi, then V34E.
+TEI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SPS': '16400', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
+TEI_KEYS = ('@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E'
+            '@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E'
+            '@50000V37E00E@51000V82E@53000V33E@55000V34E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -283,6 +309,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p11', 'cm', 90000, P11_KEYS, P11),
           ('cm-tli', 'cm', 70000, TLI_KEYS, TLI),
           ('cm-p22', 'cm', 23000, P22_KEYS, P22),
+          ('cm-tei', 'cm', 56000, TEI_KEYS, TEI),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
@@ -290,6 +317,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
+          ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
+          ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]

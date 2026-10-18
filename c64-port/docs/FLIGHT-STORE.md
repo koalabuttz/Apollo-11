@@ -366,7 +366,7 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   starts there, with no load. These are ride tables (`RIDE`): the resolver
   still sends their keys to their own modules. With them the pack is
   10,459 bytes.
-- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+- The *CM entry pack* (`ENTRYPACK`, from module $07F7) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
   entries were spread over all of the full table's chunks, so a pass loaded
@@ -378,6 +378,19 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
   20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
   to 465 K cycles.
+- The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
+  pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
+  burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
+  and `cm_auto_man_hot_routines` (6, with SMALLMP and DPADD from
+  `cm_mysubs_routines`). They are `ALONE` like the entry pack, one pack per
+  file: one pack of all three is far over the job slot, and only a
+  one-table pack splits. The RCS and jet-select packs split into two
+  chunks each. A pack's keys resolve to the pack first, so those hot keys
+  load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
+  Pack ids follow on: a pack starts after the ids the one before it split
+  into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
+  (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
+  to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
@@ -687,6 +700,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
+   crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
+   28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
+   bit of the core's channel 30 (036351; the rest of it, PGNCS mode and
+   the IMU, must stay as it is): bit 1, ABORT, for P70, or bit 4, ABORT
+   STAGE, for P71. R10,R11 reads it on its next pass and starts the
+   program, which restarts through ENEMA into the abort guidance. P70
+   keeps the descent engine (THROTUP's BIT13 THRUST command takes it to
+   full thrust, which the engine model gives in MODREG 70) and cuts off at
+   about 1,408 s: 1,667 m/s, 18.3 km up, climbing 9 m/s. P71 stages
+   (`FLIGHT_STAGE`: from the abort the engine is the ascent engine of
+   `FLIGHT_ASCENT=4888`) and cuts off at about 1,579 s: 1,678 m/s, 18.3 km,
+   climbing 7 m/s. The flight store resolves P70-P71's basic keys to
+   lm_p70_p71_file, the file's whole-file certificate, before the older
+   lm_p70_p71 tables (flight_store_build.py `rank`), since lm_p70_p71
+   refuses THROTUP's WOR CHAN14. On the host every native routine matches
+   yaAGC in both; the unregistered points are the 3 self-check ones and
+   Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -867,6 +898,20 @@ port) runs one mission:
    solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
    V37E00E. On the host every native routine matches yaAGC; the
    unregistered points are Pinball's VBPROC +3 to +5.
+   `cm-tei`: Apollo 11's transearth injection at 135:23:42 GET, the SPS
+   burn on the far side that left lunar orbit. cm_tei.py sets it up as
+   cm_p40.py does LOI-1 (the same TVC and SPS pads, `FLIGHT_SPS`): the
+   CSM alone (16,400 kg) in a circular 60 nmi lunar orbit, the platform
+   with X along the DV, the CDUs at the ignition attitude R60 asks for,
+   RLS for the altitude displays, and TEPHEM so the CMC clock's 300 s is
+   TIG. The TEI-1 pad is keyed: V37E30E, V25 on V06N33 (TIG 300 s on the
+   CMC clock), V25 on V06N81 (+3283.6 ft/s), proceed on N81, N42 (9999.9
+   x 60.0 nmi) and V16N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 and on V99N40 at TIG-5. The SPS burns about 154 s to
+   cutoff (N40 VG 6.1 ft/s); proceed on V16N40 and N85, V37E00E; V82 shows
+   V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
+   matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
+   RELDSP1.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -883,18 +928,22 @@ port) runs one mission:
    erasable words as the window ends (1011 is Comanche's MODREG).
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
-   snapshot through the window on the C64's work clock and writes every
-   input its models and schedules give the AGC there (the engine, SPS and
-   aero models' PIPA counts, keys, FLIGHT_CHAN, pokes, the radar model) as
-   8-byte rows, which go into the zeros below the rope in the run's REU
-   image, outside the store and the resident. The C64 applies each row at
-   the first step at or after its time where the host took it (a sample
-   point, or any step boundary for the engine lag and radar reads). At the
-   first sample point `--cs` in, both sides write their erasable words and
-   output channels (5, 6, 11-14, 34, 35, the superbank); the run fails on
-   any difference, printing the first address, skipping what the host
-   differential skips (the central registers, RUPTREG1-4, the clock
-   counters). So a window that "ran with no stops" now also has to match
+   snapshot through the window on the C64's work clock, charging each
+   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
+   of the module that runs it, the interpreter's per routine for the tables
+   left to it), and writes every input its models and schedules give the
+   AGC there (the engine, SPS and aero models' PIPA counts, keys,
+   FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go into the
+   zeros below the rope in the run's REU image, outside the store and the
+   resident. The C64 applies each row at the first step at or after its
+   time where the host took it (a sample point, or any step boundary for
+   the engine lag and radar reads). At the first sample point `--cs` in
+   (and with `--replay-every N` at the first one at or after every N cs
+   before), both sides write their erasable words and output channels (5,
+   6, 11-14, 34, 35, the superbank; on the CM both C64 copies of 11-14);
+   the run fails on any difference, printing the first one, skipping what
+   the host differential skips (the central registers, RUPTREG1-4, the
+   clock counters). So a window that ran with no stops also has to match
    the host.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
