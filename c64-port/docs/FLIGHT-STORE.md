@@ -731,6 +731,11 @@ port) runs one mission:
    CDUs follow the RCS DAP's CDUXD-ZD until ignition and hold from then
    on (the TVC DAP reuses those cells). The burn runs about 372 s to
    cutoff with VG 0.8 m/s; proceed on V16N40 and V16N85, then P00.
+   The docked RCS DAP's attitude filter calls MYSUBS's SMALLMP (TC
+   SMALLMP, 21,2042), which no earlier scenario reached:
+   src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
+   (src/cm_mysubs.c) and their TC Q in the flight store as
+   `cm_mysubs_routines`.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
