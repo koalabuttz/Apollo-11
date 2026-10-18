@@ -19,7 +19,7 @@
   "tests/interp_cut.c": "36fac6031b7eabe2514dc10aa78125b19d3f9f84e21e67f2b599bbc1e5135948",
   "tests/cm_p37_p70_target.c": "55907eb1bc3138a3f7b15e4dee32494cc1805773ad617af62eaf3d0dff288ed1"
  },
- "host_cases": 19867,
+ "host_cases": 19835,
  "host_case_stride": 16,
  "c64_rows": [
   0,
@@ -596,17 +596,18 @@
   250624,
   251024,
   251504,
-  252016,
-  252720,
+  252000,
+  252528,
+  252800,
   252928,
-  253488,
+  253456,
   254048,
-  254576,
-  255296,
-  255936,
+  254464,
+  255136,
+  255792,
+  255865,
   256096,
-  256688,
-  257232,
+  256944,
   257280,
   257696,
   258064,
@@ -668,7 +669,6 @@
   282675,
   282688,
   283152,
-  283271,
   283704,
   284080,
   284336,
@@ -721,8 +721,8 @@
   305153,
   305154
  ],
- "host_branch_arcs": 2497,
- "c64_branch_arcs": 2497,
+ "host_branch_arcs": 2498,
+ "c64_branch_arcs": 2498,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -757,8 +757,8 @@
    0
   ],
   "src/cm_p37_p70.c": [
-   1760,
-   1760
+   1761,
+   1761
   ],
   "src/lm_interp_orders.c": [
    0,
@@ -802,7 +802,7 @@
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 2486,
+ "all_cases_branch_arcs": 2487,
  "all_cases_branches_missing_on_c64": [],
  "truncated_rows": [
   {

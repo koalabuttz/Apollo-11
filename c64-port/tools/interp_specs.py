@@ -4184,8 +4184,11 @@ SPECS = {
         # RTE373's conic convergence, GETERAD's radius (MPAC) plus E3RTE
         # within EPC2RTE of RCON, so BMN RTE374; PREC175's first precision
         # pass, NN1A = 10RTE, so BZE PREC207; and the crew's RCS option on
-        # V04N06, OPTION2 = 2, so BZE P37Q.
+        # V04N06, OPTION2 = 2, so BZE P37Q. RTE375 keeps the conic
+        # iteration's first pass (NN1A = M9RTEB28, so RTE380's BZE RTE385),
+        # which those cases otherwise leave to chance.
         'joint_states': {'RTE373+6': [{'MPAC': 0, 'MPAC+1': 0, 'RCON': 3, 'RCON+1': 0o27040}, {}],
+                         'RTE375': [{'NN1A': 0o77777, 'NN1A+1': 0o77766}, {}],
                          'PREC175': [{'NN1A': 0, 'NN1A+1': 0o12}, {}],
                          'P37N+8': [{'OPTION2': 2}, {}]},
         'target': 'tests/cm_p37_p70_target.c',
