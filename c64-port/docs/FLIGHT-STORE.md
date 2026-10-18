@@ -1082,10 +1082,16 @@ port) runs one mission:
    600 s and `FLIGHT_LR_DROP` from 880 s to 950 s: R12's range reads fail
    (RADMODES LR range fail) until the slant range comes inside
    50,000 ft at 816 s (about 38,000 ft up), pass, fail in the window and
-   pass again from 952 s. `lm-landing-lr-nassp` is
-   lm-landing-ascent-nassp with `FLIGHT_LR=60000:150` and V57E at 660 s:
-   DELTAH starts near -126 m and the updates take it to about 0 by
-   950 s; the landing and ascent run as without it, with no alarms.
+   pass again from 952 s. `lm-p63-lr-update` is lm-p63-nassp with
+   `FLIGHT_LR=60000:150` (the surface 150 m above the landing site) and
+   V57E at 660 s: from 816 s R12's altitude updates take HCALC from about
+   186 m above the true height to about 77 m by 955 s (with no bias it
+   runs 40-60 m above, a sample's lag). It ends at 960 s, before the
+   velocity reads: on the host SERVICER reaches READV 6 cs after
+   READACCS, so the velocity read starts while the altitude read is
+   still running, HMEAS 0 is stored and the update moves HCALC about
+   1,200 m. That is a timing question for the interpretive charge, not
+   the radar (replay-mismatches.md).
    `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
    key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
    word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is

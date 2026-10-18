@@ -186,7 +186,7 @@ static void lrm_due(unsigned long t,unsigned long touchdown,agc_word *w,const ag
   if(!hi)d*=(double)lr_ones(w[LR_SKALSKAL])/16384.0;
   c=slant/LR_HSCAL-d;
   if(hi)c/=5.0;
-  if(getenv("FLIGHT_LR_TRACE"))printf("LR %lu cs: range %.1f m slant, %.1f m up (%s scale)\n",t,slant,alt,hi?"high":"low");}
+  if(getenv("FLIGHT_LR_TRACE"))printf("LR %lu cs: range %.1f m slant, %.1f m up, LGC HCALC %.1f m (%s scale)\n",t,slant,alt,lr_dp(w,LR_HCALC,24),hi?"high":"low");}
  else{static const double scale[3]={-.644*LR_FT,1.212*LR_FT,.8668*LR_FT};
   double vb=vr[0]*b[sel][0]+vr[1]*b[sel][1]+vr[2]*b[sel][2];
   c=12288.0+vb/scale[sel];

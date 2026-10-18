@@ -105,13 +105,17 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
-# lm-landing-lr-nassp: lm-landing-ascent-nassp with the landing radar
-# (FLIGHT_LR=60000:150, the surface 150 m above the LGC's landing site)
-# and V57E at 660 s (LR updates permitted): DELTAH starts near -126 m and
-# R12's updates take it to about 0 by 950 s; the landing, P12 and orbit
-# insertion run as without it, with no alarms.
-LANDING_LR = {**LANDING, 'FLIGHT_LR': '60000:150'}
-LANDING_LR_KEYS = LANDING_KEYS.replace('@122700M', '@66000V57E@122700M')
+# lm-p63-lr-update: lm-p63-nassp with the landing radar from 600 s, the
+# surface 150 m above the LGC's landing site (FLIGHT_LR=60000:150), and
+# V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
+# take HCALC from about 186 m above the true height to about 77 m by
+# 955 s (HCALC lags the truth by 40-60 m here, a sample apart, with no
+# bias). It stops at 960 s, before the velocity reads: on the host the
+# LR velocity read then starts while an altitude read is still running
+# (SERVICER reaches READV 6 cs after READACCS), HMEAS 0 is stored and
+# the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
+LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
+LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
 # bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
@@ -353,11 +357,11 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-rendezvous-rr-dropout', 'lm', 40000, LM_RDZ_RR_DROP_KEYS, LM_RDZ_RR_DROP),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
+          ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
-          ('lm-landing-lr-nassp', 'lm', 215000, LANDING_LR_KEYS, LANDING_LR),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
