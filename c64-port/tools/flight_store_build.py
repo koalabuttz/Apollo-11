@@ -988,9 +988,10 @@ def interp_modules(cc, m, library):
 # Modules whose fixed_data is not the resident's boundary words: self-check's
 # own hook (include/self_check.h), or 'rope', every rope word from the REU
 # image (include/rope_image.h; LM TRIM_GIMBAL's GTS reads DOSHIFT's indexed
-# CA operands through it).
+# CA operands through it, and SUPDACAL in the interbank routines reads any
+# fixed word: V27 N02's fixed memory display).
 FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data',
-              'lm_trim_gimbal': 'rope'}
+              'lm_trim_gimbal': 'rope', 'lm_interbank_routines': 'rope', 'cm_interbank_routines': 'rope'}
 FIXED_KIND = {None: 0, 'rope': 2}
 # Where the resident's own tables read their inline operands: the thin
 # kernel's program holds the Executive's site table.
