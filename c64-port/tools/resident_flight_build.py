@@ -62,7 +62,9 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
 COMMON += [f'-D{k}={os.environ[k]}u' for k in ('RK_TICK_LAG', 'RK_TIME_DIVISOR') if os.environ.get(k)]
 # The work clock is the default; RK_WALL_CLOCK=1 builds the CIA wall clock.
 COMMON += ['-DRK_WALL_CLOCK=1'] if os.environ.get('RK_WALL_CLOCK') else []
-MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
+# RK_DEVICE_CH13: the CM's timers take channel 13 from rk_device
+# (src/resident_rupt.c), the record its tables write it in.
+MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1', '-DRK_DEVICE_CH13=1']}
 
 
 @functools.lru_cache(maxsize=None)
