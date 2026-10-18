@@ -905,6 +905,71 @@
 #define LANEC_LM_ENTER 02002u /* ENTER F 41 */
 #define LANEC_LM_ENTER_BANK 041u
 #define LANEC_LM_ELRCODE1_WORD 022u /* ELRCODE1 */
+#define LANEC_LM_ABCLOAD 02616u /* ABCLOAD F 41 */
+#define LANEC_LM_ABCLOAD_BANK 041u
+#define LANEC_LM_ABLOAD 02703u /* ABLOAD F 41 */
+#define LANEC_LM_ABLOAD_BANK 041u
+#define LANEC_LM_ALOAD 02732u /* ALOAD F 41 */
+#define LANEC_LM_ALOAD_BANK 041u
+#define LANEC_LM_BLOAD 02743u /* BLOAD F 41 */
+#define LANEC_LM_BLOAD_BANK 041u
+#define LANEC_LM_CLOAD 02760u /* CLOAD F 41 */
+#define LANEC_LM_CLOAD_BANK 041u
+#define LANEC_LM_COMPTEST 02424u /* COMPTEST F 41 */
+#define LANEC_LM_COMPTEST_BANK 041u
+#define LANEC_LM_NOUNTEST 02460u /* NOUNTEST F 41 */
+#define LANEC_LM_NOUNTEST_BANK 041u
+#define LANEC_LM_UPDATVB 02340u /* UPDATVB F 41 */
+#define LANEC_LM_UPDATVB_BANK 041u
+#define LANEC_LM_REQDATX 02303u /* REQDATX F 41 */
+#define LANEC_LM_REQDATX_BANK 041u
+#define LANEC_LM_REQDATY 02305u /* REQDATY F 41 */
+#define LANEC_LM_REQDATY_BANK 041u
+#define LANEC_LM_REQDATZ 02307u /* REQDATZ F 41 */
+#define LANEC_LM_REQDATZ_BANK 041u
+#define LANEC_LM_CLPASS 01015u /* CLPASS E fixed-fixed/unswitched */
+#define LANEC_LM_DECBRNCH 01000u /* DECBRNCH E fixed-fixed/unswitched */
+#define LANEC_LM_LOADSTAT 01014u /* LOADSTAT E fixed-fixed/unswitched */
+#define LANEC_LM_RELDSP 04457u /* RELDSP F fixed-fixed/unswitched */
+#define LANEC_LM_RECALTST 03547u /* RECALTST F 40 */
+#define LANEC_LM_RECALTST_BANK 040u
+#define LANEC_LM_VD1 04360u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_LM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
+#define LANEC_LM_VBTSTLTS_BANK 041u
+#define LANEC_LM_TSTLTS1 03631u /* TSTLTS1 F 41 */
+#define LANEC_LM_TSTLTS1_BANK 041u
+#define LANEC_LM_TSTLTS2 03662u /* TSTLTS2 F 41 */
+#define LANEC_LM_TSTLTS2_BANK 041u
+#define LANEC_LM_IMODES33 01303u /* IMODES33 E fixed-fixed/unswitched */
+#define LANEC_LM_IMODES30 01302u /* IMODES30 E fixed-fixed/unswitched */
+#define LANEC_LM_DSPTAB 01023u /* DSPTAB E fixed-fixed/unswitched */
+#define LANEC_LM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
+#define LANEC_LM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
+#define LANEC_LM_VBRQEXEC 03466u /* VBRQEXEC F 41 */
+#define LANEC_LM_VBRQEXEC_BANK 041u
+#define LANEC_LM_VBRQWAIT 03512u /* VBRQWAIT F 41 */
+#define LANEC_LM_VBRQWAIT_BANK 041u
+#define LANEC_LM_SETVAC 03510u /* SETVAC F 41 */
+#define LANEC_LM_SETVAC_BANK 041u
+#define LANEC_LM_REQEX1 03473u /* REQEX1 F 41 */
+#define LANEC_LM_REQEX1_BANK 041u
+#define LANEC_LM_VBPROC 03442u /* VBPROC F 40 */
+#define LANEC_LM_VBPROC_BANK 040u
+#define LANEC_LM_VBTERM 03450u /* VBTERM F 40 */
+#define LANEC_LM_VBTERM_BANK 040u
+#define LANEC_LM_PROCKEY 03452u /* PROCKEY F 40 */
+#define LANEC_LM_PROCKEY_BANK 040u
+#define LANEC_LM_VBRESEQ 03457u /* VBRESEQ F 40 */
+#define LANEC_LM_VBRESEQ_BANK 040u
+#define LANEC_LM_REQRET 01013u /* REQRET E fixed-fixed/unswitched */
+#define LANEC_LM_KILMONON 04204u /* KILMONON F fixed-fixed/unswitched */
+#define LANEC_LM_RECAL1 03552u /* RECAL1 F 40 */
+#define LANEC_LM_RECAL1_BANK 040u
+#define LANEC_LM_NVTEMP 0123u /* NVTEMP E fixed-fixed/unswitched */
+#define LANEC_LM_MONSAVE1 01021u /* MONSAVE1 E fixed-fixed/unswitched */
+#define LANEC_LM_MONSAVE2 01022u /* MONSAVE2 E fixed-fixed/unswitched */
+#define LANEC_LM_NVQTEM 01037u /* NVQTEM E fixed-fixed/unswitched */
+#define LANEC_LM_NVSUBCOM 04170u /* NVSUBCOM F fixed-fixed/unswitched */
 #define LANEC_LM_DECOUNT 0117u /* DECOUNT E fixed-fixed/unswitched */
 #define LANEC_LM_DSPDCPUT 02537u /* DSPDCPUT F 41 */
 #define LANEC_LM_DSPDCPUT_BANK 041u
@@ -1750,6 +1815,73 @@
 #define LANEC_CM_DP1OUTSF_BANK 040u
 #define LANEC_CM_DP2OUTSF 02621u /* DP2OUTSF F 40 */
 #define LANEC_CM_DP2OUTSF_BANK 040u
+#define LANEC_CM_ABCLOAD 02616u /* ABCLOAD F 41 */
+#define LANEC_CM_ABCLOAD_BANK 041u
+#define LANEC_CM_ABLOAD 02703u /* ABLOAD F 41 */
+#define LANEC_CM_ABLOAD_BANK 041u
+#define LANEC_CM_ALOAD 02732u /* ALOAD F 41 */
+#define LANEC_CM_ALOAD_BANK 041u
+#define LANEC_CM_BLOAD 02743u /* BLOAD F 41 */
+#define LANEC_CM_BLOAD_BANK 041u
+#define LANEC_CM_CLOAD 02760u /* CLOAD F 41 */
+#define LANEC_CM_CLOAD_BANK 041u
+#define LANEC_CM_COMPTEST 02424u /* COMPTEST F 41 */
+#define LANEC_CM_COMPTEST_BANK 041u
+#define LANEC_CM_NOUNTEST 02460u /* NOUNTEST F 41 */
+#define LANEC_CM_NOUNTEST_BANK 041u
+#define LANEC_CM_UPDATVB 02340u /* UPDATVB F 41 */
+#define LANEC_CM_UPDATVB_BANK 041u
+#define LANEC_CM_REQDATX 02303u /* REQDATX F 41 */
+#define LANEC_CM_REQDATX_BANK 041u
+#define LANEC_CM_REQDATY 02305u /* REQDATY F 41 */
+#define LANEC_CM_REQDATY_BANK 041u
+#define LANEC_CM_REQDATZ 02307u /* REQDATZ F 41 */
+#define LANEC_CM_REQDATZ_BANK 041u
+#define LANEC_CM_CLPASS 01015u /* CLPASS E fixed-fixed/unswitched */
+#define LANEC_CM_DECBRNCH 01000u /* DECBRNCH E fixed-fixed/unswitched */
+#define LANEC_CM_LOADSTAT 01014u /* LOADSTAT E fixed-fixed/unswitched */
+#define LANEC_CM_RELDSP 04473u /* RELDSP F fixed-fixed/unswitched */
+#define LANEC_CM_RECALTST 03454u /* RECALTST F 40 */
+#define LANEC_CM_RECALTST_BANK 040u
+#define LANEC_CM_VD1 04374u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_CM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
+#define LANEC_CM_VBTSTLTS_BANK 041u
+#define LANEC_CM_TSTLTS1 03633u /* TSTLTS1 F 41 */
+#define LANEC_CM_TSTLTS1_BANK 041u
+#define LANEC_CM_TSTLTS2 03662u /* TSTLTS2 F 41 */
+#define LANEC_CM_TSTLTS2_BANK 041u
+#define LANEC_CM_IMODES33 01321u /* IMODES33 E fixed-fixed/unswitched */
+#define LANEC_CM_IMODES30 01320u /* IMODES30 E fixed-fixed/unswitched */
+#define LANEC_CM_DSPTAB 01023u /* DSPTAB E fixed-fixed/unswitched */
+#define LANEC_CM_ERCNT 0117u /* ERCNT E fixed-fixed/unswitched */
+#define LANEC_CM_NOUT 01016u /* NOUT E fixed-fixed/unswitched */
+#define LANEC_CM_OPTMODES 01331u /* OPTMODES E fixed-fixed/unswitched */
+#define LANEC_CM_VBRQEXEC 03466u /* VBRQEXEC F 41 */
+#define LANEC_CM_VBRQEXEC_BANK 041u
+#define LANEC_CM_VBRQWAIT 03512u /* VBRQWAIT F 41 */
+#define LANEC_CM_VBRQWAIT_BANK 041u
+#define LANEC_CM_DSPTEM1 01045u /* DSPTEM1 E fixed-fixed/unswitched */
+#define LANEC_CM_SETVAC 03510u /* SETVAC F 41 */
+#define LANEC_CM_SETVAC_BANK 041u
+#define LANEC_CM_REQEX1 03473u /* REQEX1 F 41 */
+#define LANEC_CM_REQEX1_BANK 041u
+#define LANEC_CM_VBPROC 03347u /* VBPROC F 40 */
+#define LANEC_CM_VBPROC_BANK 040u
+#define LANEC_CM_VBTERM 03355u /* VBTERM F 40 */
+#define LANEC_CM_VBTERM_BANK 040u
+#define LANEC_CM_PROCKEY 03357u /* PROCKEY F 40 */
+#define LANEC_CM_PROCKEY_BANK 040u
+#define LANEC_CM_VBRESEQ 03364u /* VBRESEQ F 40 */
+#define LANEC_CM_VBRESEQ_BANK 040u
+#define LANEC_CM_REQRET 01013u /* REQRET E fixed-fixed/unswitched */
+#define LANEC_CM_KILMONON 04220u /* KILMONON F fixed-fixed/unswitched */
+#define LANEC_CM_RECAL1 03457u /* RECAL1 F 40 */
+#define LANEC_CM_RECAL1_BANK 040u
+#define LANEC_CM_NVTEMP 0123u /* NVTEMP E fixed-fixed/unswitched */
+#define LANEC_CM_MONSAVE1 01021u /* MONSAVE1 E fixed-fixed/unswitched */
+#define LANEC_CM_MONSAVE2 01022u /* MONSAVE2 E fixed-fixed/unswitched */
+#define LANEC_CM_NVQTEM 01037u /* NVQTEM E fixed-fixed/unswitched */
+#define LANEC_CM_NVSUBCOM 04204u /* NVSUBCOM F fixed-fixed/unswitched */
 #define LANEC_CM_DSPDCPUT 02537u /* DSPDCPUT F 41 */
 #define LANEC_CM_DSPDCPUT_BANK 041u
 #define LANEC_CM_DP3OUTSF 02623u /* DP3OUTSF F 40 */
