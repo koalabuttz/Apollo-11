@@ -1196,6 +1196,10 @@ SPECS = {
             {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o420},
             {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0},
             {'155': 0o2615, 'FLAGWRD0': 0, 'FLAGWRD1': 0o20}]},
+        # V87 (SETVHFLG), V88 (RESETVHF) and V56 (TRACKTRM's INTSTALL call)
+        # enter the interpreter in the NOVAC job CHARIN started for the verb
+        # (FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET)), not a VAC area.
+        'novac': ['SETVHFLG+1', 'RESETVHF+1', 'TRACKTRM+23'],
         'index_targets': {'43,2001': 59},
         'target': 'tests/cm_extended_verbs_file_target.c',
     },
