@@ -4369,32 +4369,32 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
+            "sha256": "2d576e54bee69b642724fdb73ab8ea72601a4c81f993765412091ba96c5b05c3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
+            "sha256": "e667772423fb7e98f971d4ede094935d4c3cbf0b8e4c3b862588d262caceb04c"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
+            "sha256": "754460df9dfa8bb2fcf2df446566815e7173b42488c106199398e0afaf038966",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
-              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-3": 168,
               "vice-lanec-pw-4": 186,
               "vice-lanec-pw-5": 104,
-              "vice-lanec-pin-transfer-1": 79,
-              "vice-lanec-pin-transfer-2": 92,
-              "vice-lanec-pin-transfer-3": 71,
-              "vice-lanec-pin-transfer-4": 50,
-              "vice-lanec-pin-flight": 81
+              "vice-lanec-pin-transfer-1": 78,
+              "vice-lanec-pin-transfer-2": 78,
+              "vice-lanec-pin-transfer-3": 52,
+              "vice-lanec-pin-transfer-4": 46,
+              "vice-lanec-pin-flight": 95
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62"
+            "sha256": "b0c19e62362f6b5dfed66e2cc18561af9c9a33d517eba1317d2ec089215eb506"
           }
         }
       }
@@ -11738,32 +11738,32 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
+            "sha256": "2d576e54bee69b642724fdb73ab8ea72601a4c81f993765412091ba96c5b05c3"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
+            "sha256": "e667772423fb7e98f971d4ede094935d4c3cbf0b8e4c3b862588d262caceb04c"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
+            "sha256": "754460df9dfa8bb2fcf2df446566815e7173b42488c106199398e0afaf038966",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
-              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-3": 168,
               "vice-lanec-pw-4": 186,
               "vice-lanec-pw-5": 104,
-              "vice-lanec-pin-transfer-1": 79,
-              "vice-lanec-pin-transfer-2": 92,
-              "vice-lanec-pin-transfer-3": 71,
-              "vice-lanec-pin-transfer-4": 50,
-              "vice-lanec-pin-flight": 81
+              "vice-lanec-pin-transfer-1": 78,
+              "vice-lanec-pin-transfer-2": 78,
+              "vice-lanec-pin-transfer-3": 52,
+              "vice-lanec-pin-transfer-4": 46,
+              "vice-lanec-pin-flight": 95
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62"
+            "sha256": "b0c19e62362f6b5dfed66e2cc18561af9c9a33d517eba1317d2ec089215eb506"
           }
         }
       }

@@ -111,19 +111,19 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
 - C64 branch outcomes: `lanec-pin-c64-cover.json` (`tools/lanec/cover.py
   record --pool`). For each suite it lists the host cases' branch arcs over
   every linked source and the frozen C64 rows. Every host arc is taken by
-  some C64 program's rows, with three groups listed apart:
+  some C64 program's rows, with these groups listed apart:
   - the 119 `pin-transfer-c64` rows of the 37 programs that do not fit
     below $C000 do not count (`c64_rows_not_run`); the DI round trips
-    (`di-transfer-c64`) are pooled in, since they run the same INTER-BANK
-    routines on the C64;
-  - seven `pw-*` suites whose module does not fit a program with the
-    harness: their modules run on the C64 in their own milestones' programs
-    (`legacy_c64_programs`, `host_branches_on_c64_only_in_legacy_programs`);
-  - the four arcs of the INTER-BANK routines' SUPDACAL path
-    (`host_branches_not_on_c64`): it reads the fixed-memory rope, and its
-    only Pinball caller, DSPFMEM (verb 27), is in the fixed-display
-    module, whose transfer program with the rope does not fit. That path is
-    checked on the host only.
+    (`di-transfer-c64`) and the keypress pair (`pin-keys`,
+    `pin-key-labels`, every case run on the C64 by
+    `module-test-lanec-pin-keys`) are pooled in, since they run the same
+    routines in the same build;
+  - five arcs on four lines of the transfer harness itself
+    (`host_only_lines`, `host_branches_not_on_c64`): the pin-head scan
+    cache in `tests/lanec_pin_head.c` and the range test in
+    `tests/lanec_pin_transfer_cases.c`. Only rows of programs that pass
+    $C000 take them. They are test code, not port code; the rows run in
+    the flight store instead.
 
 The supported domain and the external continuations are written into the
 certificates themselves.
@@ -138,9 +138,9 @@ but the keypress pair, whose evidence is `module-test-lanec-pin-keys`):
       --wholefile tools/lanec/wholefile_pin.py \
       --c64 pin-gaps=lanec-pin-gaps $(for n in 1 2 3 4 5; do echo pw=lanec-pw-$n; done) \
       $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done) pin-flight=lanec-pin-flight
-    python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-transfer-c64 \
-      di-transfer-c64 --pool --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
-      --host-only 'src/lm_interbank_routines.c:9=<reason>' --host-only 'src/cm_interbank_routines.c:9=<reason>'
+    python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-keys pin-key-labels \
+      pin-transfer-c64 di-transfer-c64 --pool --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
+      --host-only 'tests/lanec_pin_head.c:28=<reason>' (and :30, tests/lanec_pin_transfer_cases.c:122 and :128)
 
 The C64 runs take about 70 minutes, `vice-lanec-pin-flight` builds the
 flight store first (`tools/flight_store_build.py`), and the record traces
