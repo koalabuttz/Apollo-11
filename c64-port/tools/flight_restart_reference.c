@@ -7,7 +7,8 @@
  * interrupt taken (every request dropped, as the C64 runs the burst with
  * CIA1 interrupts off), from the native state tools/flight_host_run.c wrote
  * where FLIGHT_GOJAM restarted the AGC (RS_SNAP, FLIGHT_SNAPSHOT's header),
- * until it is idle at ADVAN, or, given STOP (octal Z FB SUPERBANK), until
+ * until it is idle at ADVAN with NEWJOB -0 (DUMMYJOB's; DUMMYJOB +2 reaches
+ * ADVAN with NEWJOB +0, a job ready to run), or, given STOP (octal Z FB SUPERBANK), until
  * its first arrival there at an instruction boundary. Writes the 2,048
  * erasable words (A, L and Q at 16 bits) and its summary to OUT.
  *
@@ -60,7 +61,7 @@ int main(int argc,char **argv){
  for(n=0;n<limit;++n){
   if(n&&quiet()&&!m.InIsr){unsigned zz=word(5)&07777u,ff=word(4);
    if(stop?(zz==z&&(zz<02000u||zz>=04000u||((ff^fb)&076000u)==0u)&&(unsigned)(m.OutputChannel7&0160)==sb)
-          :(zz==ADVAN&&((ff>>10)&037u)==1u)){at=1;break;}}
+          :(zz==ADVAN&&((ff>>10)&037u)==1u&&word(067)==077777u)){at=1;break;}}
   if(agc_engine(&m))return 2;
   memset(m.InterruptRequests,0,sizeof m.InterruptRequests);}
  if(!(f=fopen(argv[2],"wb"))){perror(argv[2]);return 2;}

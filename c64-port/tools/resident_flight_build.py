@@ -22,6 +22,7 @@ job slot.
 """
 import argparse
 import functools
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -43,8 +44,16 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
           # (RTB right-hand order) through the mission's marker table.
           '-DAGC_TRANSFER_DANZIG_MARKER',
           # rk_boot verifies the whole store (apollo_reu_store_verify), so a
-          # module load checks only the header's id (src/overlay_v2.c).
-          '-DAPOLLO_OV2_STORE_VERIFIED']
+          # module load checks only the header's id (src/overlay_v2.c). Valid
+          # only where apollo_ov2_init gets verify=0 after a successful
+          # apollo_reu_store_verify, as rk_boot does: a build that skips that
+          # check must not define it.
+          '-DAPOLLO_OV2_STORE_VERIFIED',
+          # The Executive's site tables are addresses only, the words read
+          # from the REU rope image (include/agc_transfer.h): every image the
+          # resident or a flight module runs with carries the rope
+          # (flight_store_build.py add_rope, rope_check_image below).
+          '-DAGC_SITES_ROPE']
 # Scaled time (docs/RESIDENT-FLIGHT.md), with RK_WALL_CLOCK: RK_TICK_LAG, the clock ticks one
 # step may catch up before the rest are dropped (default 2), and
 # RK_TIME_DIVISOR, AGC time at 1/n of wall time (default 1; the nightly
@@ -372,7 +381,29 @@ def build_modules(cc, m, cases, library):
     tail.write_bytes(tail_bytes((ROOT / f'platform/c64/resident_boundary_words_{m}.h').read_text()))
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(CHECK_SERVICES),
          '--resolver', resolver, '--tail', tail, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
+    rope_check_image(m)
     return prgs
+
+
+def rope_check_image(m):
+    """The check's store image padded to 2 MB with the mission's rope at its
+    REU base (include/rope_image.h), as flight_store_build.py add_rope places
+    it in the flight store: the resident reads the Executive's inline operand
+    words there (AGC_SITES_ROPE)."""
+    from rope_image_pack import BASES, physical_words
+    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    reu = ROOT / OUT / f'{m}.reu'
+    image = bytearray(reu.read_bytes())
+    if len(image) > base:
+        raise SystemExit(f'{m}: the check store reaches the rope image at {base:#x}')
+    image += bytes(2 * 1024 * 1024 - len(image))
+    for k, w in enumerate(physical_words(ROOT / f'evidence/fixed-data-{m}-original.rope.bin')):
+        image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
+    reu.write_bytes(image)
+    manifest = ROOT / OUT / f'{m}-manifest.json'
+    data = json.loads(manifest.read_text())
+    data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
+    manifest.write_text(json.dumps(data, indent=1) + '\n')
 
 
 def make_cases(m):

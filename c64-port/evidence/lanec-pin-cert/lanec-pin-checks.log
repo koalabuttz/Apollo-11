@@ -30,24 +30,14 @@ pw-cm-charin-nv strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/E
 pw-cm-charin-nv sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-decimal-pair strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-decimal-pair sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-dynamic-display strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-dynamic-display sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-formatter strict: PASS: 1536 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-formatter sanitize: PASS: 1536 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-minutes-seconds strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-minutes-seconds sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-normal-display strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-normal-display sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-nv85 strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-cm-nv85 sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-pinball strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-cm-pinball sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-consumer strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-consumer sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-general strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-general sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-scale strict: PASS: 4096 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-scale sanitize: PASS: 4096 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-general strict: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-general sanitize: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-decimal-load strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-decimal-load sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-decimal-raw strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
@@ -56,8 +46,6 @@ pw-decimal-row strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB
 pw-decimal-row sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-decimal-select strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-decimal-select sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-time-consumer strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-decimal-time-consumer sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-display-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-display-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-enter strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
@@ -92,28 +80,18 @@ pw-input-time strict: PASS: 1026 complete states (2048 erasable words, A/L/Q/EB/
 pw-input-time sanitize: PASS: 1026 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-jam-control strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-jam-control sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-lamp-lifecycle strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-lamp-lifecycle sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lamp-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lamp-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lamp-test strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lamp-test sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lm-pinball-busy strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-lm-pinball-busy sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-complete strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-complete sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-control strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-control sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-request strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-load-request sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-load-store strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-load-store sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-machine-cadr strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-machine-cadr sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-major-request strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-major-request sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-minutes-output strict: PASS: 1032 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-minutes-output sanitize: PASS: 1032 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-mixed-noun strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-mixed-noun sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-mode-admit strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
@@ -122,28 +100,22 @@ pw-mode-job strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB
 pw-mode-job sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-monitor strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-monitor sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-monitor-consumer strict: PASS: 256 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-monitor-consumer sanitize: PASS: 256 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-monitor-paste strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-monitor-paste sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-noun-check strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-noun-check sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-admission strict: PASS: 1029 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-admission sanitize: PASS: 1029 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-admission strict: PASS: 1031 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-admission sanitize: PASS: 1031 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-blank strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-blank sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-busy strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-busy sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-consumer strict: PASS: 1792 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-consumer sanitize: PASS: 1792 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-continuation strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-continuation sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-key strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-key sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-return strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-return sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-update strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-nv-update sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-update-general strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-nv-update-general sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-octal-consumer strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
@@ -154,12 +126,8 @@ pw-octal-verb strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/
 pw-octal-verb sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-operator-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-operator-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-operator-request strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-operator-request sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-operator-response strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-operator-response sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-operator-schedule strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-operator-schedule sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-pinball strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-pinball sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-read-pair strict: PASS: 1017 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 7 out-of-domain cases refused with the state unchanged
@@ -168,8 +136,8 @@ pw-request-control strict: PASS: 1024 complete states (2048 erasable words, A/L/
 pw-request-control sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-response-recall strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-response-recall sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-scalar-output strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pw-scalar-output sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-scalar-output strict: PASS: 2049 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-scalar-output sanitize: PASS: 2049 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-scale strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-scale sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-sign-output strict: PASS: 1011 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
@@ -184,14 +152,35 @@ pw-two-integer strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB
 pw-two-integer sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-verb-dispatch strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
 pw-verb-dispatch sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
-pin-transfer strict: PASS: 1232 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 864 out-of-domain cases refused with the state unchanged
-pin-transfer sanitize: PASS: 1232 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 864 out-of-domain cases refused with the state unchanged
-pin-transfer-c64 strict: PASS: 927 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1161 out-of-domain cases refused with the state unchanged
-pin-transfer-c64 sanitize: PASS: 927 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1161 out-of-domain cases refused with the state unchanged
+pin-head-decount strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-decount sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-dpout strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-dpout sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-lamp strict: PASS: 570 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 6 out-of-domain cases refused with the state unchanged
+pin-head-lamp sanitize: PASS: 570 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 6 out-of-domain cases refused with the state unchanged
+pin-head-load strict: PASS: 1344 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-load sanitize: PASS: 1344 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-minsec strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-minsec sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-nvsub strict: PASS: 768 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-nvsub sanitize: PASS: 768 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-proceed strict: PASS: 897 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 63 out-of-domain cases refused with the state unchanged
+pin-head-proceed sanitize: PASS: 897 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 63 out-of-domain cases refused with the state unchanged
+pin-head-request strict: PASS: 512 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-request sanitize: PASS: 512 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-twoint strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-twoint sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-transfer strict: PASS: 1336 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 940 out-of-domain cases refused with the state unchanged
+pin-transfer sanitize: PASS: 1336 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 940 out-of-domain cases refused with the state unchanged
+pin-transfer-c64 strict: PASS: 838 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1430 out-of-domain cases refused with the state unchanged
+pin-transfer-c64 sanitize: PASS: 838 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1430 out-of-domain cases refused with the state unchanged
+pin-decdsp3 strict: PASS: 654 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 114 out-of-domain cases refused with the state unchanged
+pin-decdsp3 sanitize: PASS: 654 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 114 out-of-domain cases refused with the state unchanged
 pin-refuse strict: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
 pin-refuse sanitize: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
-PASS LM Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2378 assembled words; 2101 executed, 65 call arguments, 199 constants, 11 instructions read as data, 2 unreachable; owners {'constants': 210, 'lanec-pin-gaps': 107, 'lanec-pw': 2061}
-PASS CM Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2379 assembled words; 2098 executed, 65 call arguments, 202 constants, 11 instructions read as data, 3 unreachable; owners {'constants': 213, 'lanec-pin-gaps': 108, 'lanec-pw': 2058}
+PASS LM Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2378 assembled words; 2101 executed, 65 call arguments, 199 constants, 11 instructions read as data, 2 unreachable; owners {'constants': 210, 'lanec-pin-gaps': 107, 'lanec-pin-heads': 110, 'lanec-pin-keys': 49, 'lanec-pw': 1902}
+PASS CM Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2379 assembled words; 2098 executed, 65 call arguments, 202 constants, 11 instructions read as data, 3 unreachable; owners {'constants': 213, 'lanec-pin-gaps': 108, 'lanec-pin-heads': 110, 'lanec-pin-keys': 45, 'lanec-pw': 1903}
 pin-gaps C64: PASS: VICE PAL lanec-pin-gaps.prg: 50 checks, 0 failures
-pw C64: PASS: VICE PAL lanec-pw: 85 programs, 917 checks, 0 failures
-pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer: 108 programs, 575 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw: 86 programs, 925 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer: 93 programs, 292 checks, 0 failures
+pin-flight C64: PASS: VICE PAL lanec-pin-flight: the frozen C64 rows of 10 suites through the Pinball flight modules

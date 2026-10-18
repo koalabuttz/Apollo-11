@@ -47,12 +47,21 @@ typedef struct {
 #define DP_TOP 0xcb80u
 #define PROFILE ((dp_segment *)DP_TOP)
 typedef struct { uint32_t cycles; uint16_t calls; } __attribute__((packed)) dp_segment;
-static dp_segment prof[DP_SEGMENTS];
-static uint32_t prof_last;
+/* The counts live in the cassette buffer ($033C-$03FB, unused here), not
+ * in the resident's RAM, which the flight build has no room to spare. */
+#define prof      ((dp_segment *)0x033cu)
+#define prof_last (*(uint32_t *)(0x033cu + DP_SEGMENTS * sizeof(dp_segment)))
 #else
 #define DP_TOP 0xcc00u
 #endif
-#define DP_MAX ((DP_TOP-0xc040u)/sizeof(dp_record))
+/* Records go to the REU scratch (DP_SCRATCH_BYTES, tools/dap_pass_vice.py
+ * reads them back from the REU image VICE writes on exit); the first
+ * DP_KEEP are also copied below DP_TOP for the memory dump. */
+#ifndef DP_SCRATCH_BYTES
+#define DP_SCRATCH_BYTES 32768ul
+#endif
+#define DP_MAX  (DP_SCRATCH_BYTES / sizeof(dp_record))
+#define DP_KEEP ((DP_TOP - 0xc040u) / sizeof(dp_record))
 #define RECORDS ((dp_record *)0xc040)
 #define SUMMARY ((dp_summary *)0xc010)
 /* The REU scratch: the store file's unused tail (tools/dap_pass_vice.py). */
@@ -78,6 +87,9 @@ static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
 
 static void BOOT load_snapshot(void){
  memcpy(IMAGE->words,snap_words,sizeof snap_words);
+#ifdef RK_STEP_PROFILE
+ memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
+#endif
  SNAP_IO(rk_device)
  SNAP_HW(rk_hardware)
  SNAP_FLIGHT(rk_flight)
@@ -146,10 +158,11 @@ int main(void){
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
  sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];sum.superbank=rk_device.superbank;
- apollo_reu_transfer(APOLLO_REU_FETCH,RECORDS,DP_SCRATCH,sum.records*sizeof r);
+ apollo_reu_transfer(APOLLO_REU_FETCH, RECORDS, DP_SCRATCH,
+                     (sum.records < DP_KEEP ? sum.records : DP_KEEP) * sizeof r);
  *SUMMARY=sum;
 #ifdef RK_STEP_PROFILE
- memcpy(PROFILE,prof,sizeof prof);
+ memcpy(PROFILE, prof, DP_SEGMENTS * sizeof(dp_segment));
 #endif
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);

@@ -14,18 +14,23 @@ Every labelled entry, every return into the file from a callee outside it,
 every BANKCALL return point and every word the file reaches through
 POSTJUMP or BANKJUMP (GOVNUPDT, UPDAT1 +2, DSPOCTIN, OCTBACK; registered by
 `lanec-pin-gaps`) is a routine of the native control-transfer
-ABI (`docs/NATIVE_TRANSFER_ABI.md`): 273 Luminary099 routines in
-`lanec_pin_lm_routines` and 268 Comanche055 routines in
-`lanec_pin_cm_routines` (`src/lanec_pin_routines.inc`), generated and
+ABI (`docs/NATIVE_TRANSFER_ABI.md`): 280 Luminary099 routines in
+`lanec_pin_lm_routines` and 279 Comanche055 routines in
+`lanec_pin_cm_routines` (`src/lanec_pin_routines.inc`), and 13 per mission
+at CHARIN and its key labels in the keypress tables
+(`docs/LANEC-PIN-KEYS.md`), generated and
 checked against the listings by `tools/lanec/routines.py pin`. The
 internal subroutines it lists are reached only by a TC inside the file and
 are compiled into their callers. Each routine runs the earlier Pinball
-modules that claim its point. See `docs/LANEC-PIN-TRANSFER.md` (milestone
-`lanec-pin-transfer`): 2,096 round trips from the genuine external callers
-and from every routine's own entry give 1,232 complete states identical to
-the original and 864 chains refused unchanged; `pin-refuse` refuses all
+modules that claim its point, with the head families
+(`docs/LANEC-PIN-HEADS.md`) in place of the composite modules at the points
+they claim. See `docs/LANEC-PIN-TRANSFER.md` (milestone
+`lanec-pin-transfer`): 2,276 round trips from the genuine external callers
+and from every routine's own entry give 1,336 complete states identical to
+the original and 940 chains refused unchanged; `pin-refuse` refuses all
 1,530 entry states with a broken register contract unchanged; and on the C64
-one program per module and mission runs the round trips in VICE.
+one program per module and mission runs the round trips in VICE, and the
+Pinball flight modules run the rest from the REU store.
 
 ## What it claims
 
@@ -34,7 +39,9 @@ Every assembled word of each file has exactly one owner:
 | Words (LM / CM) | Owner | Native code |
 |---|---|---|
 | 107 / 108 | `lanec-pin-gaps`: DSP2DEC/END2DEC, NVSUBB, LOADLV1, DSPDCWD1, GOVNUPDT, DSPOCTIN, the octal display's WDAGAIN/OCTBACK loop and the other words no earlier module carried | `src/lanec_pin_gaps.c` |
-| 2,061 / 2,058 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
+| 110 / 110 | `lanec-pin-heads`: the head families, each run by its `pin-head-*` suite | `src/lanec_pin_head_*.c` |
+| 49 / 45 | `lanec-pin-keys`: CHARIN and the key labels | `src/lanec_pin_keys*.c` |
+| 1,902 / 1,903 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
 | 210 / 213 | constants | compiled `symbols.txt` WORD rows or literals |
 
 Both module counts include each call's inline arguments (65 words per
@@ -59,8 +66,10 @@ Two Luminary099 and three Comanche055 instruction words are unreachable:
 
 `tools/lanec/wholefile_pin.py` (`make test-lanec-pin-cert`) rebuilds both
 maps from the pinned listings and the unchanged original files. It runs
-`pin-gaps` and the 92 `pw-*` suites through the oracle with `LANEC_TRACE`
-and fails unless:
+`pin-gaps`, the nine `pin-head-*` suites, the keypress modules and the
+`pw-*` suites whose module still runs at some Pinball point (76; the
+composites the heads replace or `dropped` removes stay host tests) through
+the oracle with `LANEC_TRACE` and fails unless:
 
 - every word has exactly one owner;
 - every instruction word but the constants and the unreachable ones was
@@ -72,8 +81,9 @@ and fails unless:
 - the constant and unreachable instruction words match the listing.
 
 The earlier modules overlap, so a word executed under several suites is
-given to the first that runs it (`pin-gaps`, then the `pw-*` suites in name
-order); every suite that runs it reproduces the original there.
+given to the first that runs it (`pin-gaps`, then the heads, the keypress
+modules and the `pw-*` suites in name order); every suite that runs it
+reproduces the original there.
 
 ## Evidence
 
@@ -83,16 +93,21 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
   `lanec-pin-cm-source-map.json`. They give every word's original line,
   address, assembled word, owner, native module, transfer-ABI routine and
   how the oracle covered it.
-- Independent assembly comparison: `lanec-pin-comparison.json`: 96
-  suites (`pin-gaps`, the 92 `pw-*` suites, `pin-transfer`,
-  `pin-transfer-c64` and `pin-refuse`), 128,625 cases, zero differing and
-  3,878 refused with the image and I/O unchanged.
+- Independent assembly comparison: `lanec-pin-comparison.json`: 90
+  suites (`pin-gaps`, the nine `pin-head-*` suites, the 76 `pw-*` suites,
+  `pin-transfer`, `pin-transfer-c64`, `pin-decdsp3` and `pin-refuse`),
+  148,252 cases, zero differing and 4,406 refused with the image and I/O
+  unchanged.
 - Host and sanitizer results: `lanec-pin-checks.log`. It has the strict and
   ASan/UBSan runs of every suite and the whole-file map run.
 - C64 execution results: `lanec-pin-c64-results.json`, with every PRG's
-  hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw` (85 programs,
-  917 checks) and `vice-lanec-pin-transfer` (108 programs, 575 checks), all
-  on a VICE PAL C64 with no failures.
+  hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw-1` to `-5` (86
+  programs, 925 checks), `vice-lanec-pin-transfer-1` to `-4` (93 programs,
+  292 checks) and
+  `vice-lanec-pin-flight` (81 checks: the frozen rows of the nine
+  `pin-head-*` suites and `pw-fixed-display`, both missions, run one
+  routine per case through the Pinball flight modules loaded from the REU
+  store, `docs/MODULE-TEST.md`), all on a VICE PAL C64 with no failures.
 - C64 branch outcomes: `lanec-pin-c64-cover.json` (`tools/lanec/cover.py
   record --pool`). For each suite it lists the host cases' branch arcs over
   every linked source and the frozen C64 rows. Every host arc is taken by
@@ -113,18 +128,21 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
 The supported domain and the external continuations are written into the
 certificates themselves.
 
-Regenerate the evidence with:
+Regenerate the evidence with (the suites of `tools/lanec/wholefile_pin.py`
+but the keypress pair, whose evidence is `module-test-lanec-pin-keys`):
 
-    S="pin-gaps $(sed -n 's/.*"\(pw-[a-z0-9-]*\)".*/\1/p' tests/lanec_pw_*_cases.c | sort -u | tr '\n' ' ')"
+    S=$(python3 -c "import sys; sys.path.insert(0, 'tools/lanec'); import wholefile_pin as w; \
+      print(' '.join(s[0] for s in w.SUITES if not s[0].startswith('pin-key')))")
     python3 tools/lanec/cert_evidence.py lanec-pin evidence/lanec-pin-cert $S pin-transfer pin-transfer-c64 \
-      --refusals $S pin-transfer pin-transfer-c64 --refusals-only pin-refuse \
+      pin-decdsp3 --refusals $S pin-transfer pin-transfer-c64 pin-decdsp3 --refusals-only pin-refuse \
       --wholefile tools/lanec/wholefile_pin.py \
-      --c64 pin-gaps=lanec-pin-gaps pw=lanec-pw pin-transfer-c64=lanec-pin-transfer
+      --c64 pin-gaps=lanec-pin-gaps $(for n in 1 2 3 4 5; do echo pw=lanec-pw-$n; done) \
+      $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done) pin-flight=lanec-pin-flight
     python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-transfer-c64 \
       di-transfer-c64 --pool --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
-      --legacy pw-fixed-display=vice-legacy-dsky-fixed-display --legacy pw-cm-dynamic-display=vice-legacy-cm-dyndisp \
-      --legacy pw-monitor-consumer=vice-legacy-dsky-monitor-consumer \
-      --legacy pw-cm-normal-display=vice-legacy-cm-normal-display \
-      --legacy pw-lamp-lifecycle=vice-legacy-dsky-lamp-lifecycle --legacy pw-cm-nv85=vice-legacy-cm-nv85 \
-      --legacy pw-decimal-time-consumer=vice-legacy-dsky-decimal-time-consumer \
       --host-only 'src/lm_interbank_routines.c:9=<reason>' --host-only 'src/cm_interbank_routines.c:9=<reason>'
+
+The C64 runs take about 70 minutes, `vice-lanec-pin-flight` builds the
+flight store first (`tools/flight_store_build.py`), and the record traces
+every host case of every suite (about two hours; it keeps each suite's arcs
+in `build/lanec-cover` and resumes from them).

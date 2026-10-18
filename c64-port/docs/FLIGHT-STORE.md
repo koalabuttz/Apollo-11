@@ -215,16 +215,26 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. Files in `GREEDY_SPLIT`
-(`tools/flight_store_build.py`) split greedily instead: each chunk takes
-as many consecutive routines as fit, found by binary search on its end.
-The CM entry DAP is one: a pass runs its table front to back, so fewer and
-larger chunks mean fewer loads per pass. A chunk holds only its own file's sources
-and operand sites; a table co-located into another module is never
-chunked. Chunks that fit are kept even when others do not; a single
+each as large as fits: `pack_chunks` grows a chunk 1, 2, 4, ... routines
+until one does not fit, then cuts the gap with a batch of parallel trial
+links, so the chunks are the same on every build (`make test-flight-chunks`
+checks it against a brute-force greedy packing). Files in `GREEDY_SPLIT`
+(the CM entry DAP) find the same chunks by binary search on each chunk's
+end: a pass runs that table front to back, so fewer and larger chunks mean
+fewer loads per pass. A chunk holds only its own
+file's sources and operand sites; a table co-located into another module is
+never chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
-(`one routine over its slot`, with its `routine_key`), and a file of more
-than 64 KB is `too big to split`. Before #211-era step-machine splits and
+(`one routine over its slot`, with its `routine_key`), and a file more than
+64 KB over its slot is `too big to split` unless `SPLIT_ANY` names it (Lane
+C's Pinball routines, whose try-lists each fit). A stem in `CHUNK_ORDER`
+packs its routines in its own order instead of by key, and each chunk is
+then a set of entries (`FS_PICK`): Pinball's (`lanec_pin_order`) are grouped
+by the modules their try-lists run, so a chunk links few of them (on LM this
+took the store image from 2.11 to 1.85 MB). The build prints, per
+mission, the chunk count, their mean fill and the store image against the
+rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
+`rope_base`). Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
 
@@ -752,6 +762,33 @@ port) runs one mission:
    src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
    (src/cm_mysubs.c) and their TC Q in the flight store as
    `cm_mysubs_routines`.
+   `cm-p11`: Apollo 11's launch, 16 July 1969 13:32:00 UT, from the pad
+   to earth orbit insertion. cm_p11.py writes cm-p11.load, the pad loads
+   P01, P02 and P11 read: launch complex 39A (LATITUDE, PADLONG), the
+   72.058 degree flight azimuth (LAUNCHAZ) and the vehicle's 90 degrees on
+   the pad (AZIMUTH), TEPHEM so that the clock at liftoff is the launch
+   time, and the attitude error polynomial (zero: the FDAI holds the
+   liftoff attitude). PGNCSALT, UNITW and AZO are illustrative; no listing
+   gives the flight's values. Two harness models (tools/flight_host_run.c,
+   CM) stand in for the launch vehicle: `FLIGHT_IMU=1`, the gimbals (zero
+   while channel 12 bit 5 is on; the coarse align drives the CDUs to
+   THETAD), and `FLIGHT_SATURN=CS`, liftoff at that time (channel 30 bit 5
+   goes active) and the boost's specific force in PIPAX-Z: the S-IC (35.1
+   MN, inboard cutoff at 135 s, cutoff at 162 s), the S-II to 548 s and
+   the S-IVB to 823 s, along a pitch program in the launch plane from
+   vertical at 12 s to 93 degrees. cm_p11.py integrates the same boost
+   and prints the trajectory: insertion at 142 x 218 km and 7,786 m/s
+   (the flight's was 183 x 186 km). V37E01E at 20 s: P01 turns the IMU
+   on, zeros and coarse aligns it, then P02's gyrocompass loop; liftoff at
+   100 s: P11 zeros the clock, sets up REFSMMAT from LAUNCHAZ and shows
+   V06N62 (inertial speed, climb rate, altitude) every 2 s; at insertion
+   25,555 ft/s and 102 nmi. V82 in P11 shows V16N44, apogee 115.8 and
+   perigee 81.5 nmi; proceed, then V37E00E: P00. Times after liftoff,
+   keys, the run's length and flight_scenario_vice.py's `--snap-cs` alike,
+   count from the zeroed clock (a `--snap-cs` under 10000 is on the pad,
+   in P02). On the
+   host every native routine matches yaAGC; the unregistered point is
+   Pinball's RELDSP1 (02,2516, 1 arrival, on V82).
    `cm-p20`: the CSM's side of the LM rendezvous, P20 tracking the LM with
    SXT marks and VHF ranging. cm_p20.py writes cm-p20.load from the orbits
    of lm_rendezvous.py (Lane D2's LM P20/P34 scenario): the CSM in a 60 nmi
@@ -777,6 +814,24 @@ port) runs one mission:
    routines, none that yaAGC did not match. The one refused point is
    V87's interpretive SET (EXTENDED_VERBS.agc SETVHFLG +1, 43,3024),
    which cm_extended_verbs_file_interpretive does not hold.
+   `lm-rendezvous`: the LM's side, P20 with rendezvous radar tracking and
+   then P34 TPI targeting. lm_rendezvous.py writes lm-rendezvous.load:
+   the same two orbits, the AGC's state vectors on them, R22's pads and
+   P34's TTPI and ELEV. R22's variances (RANGEVAR, RATEVAR, RVARMIN,
+   VVARMIN) are loaded: left zero, the gain blows up and every mark asks
+   V06N49. WRENDPOS is integer metres (SR 5 into W's B-19). P34's N37
+   shows TTPI, not TIG. The orbits have to be retrograde: for the moon
+   INITVEL takes Lambert's direction from the sign of the orbit normal's
+   Z, so a posigrade pair solves TPI the long way round (3,215 m/s).
+   `FLIGHT_RR`'s LM side points the RR at the CSM and answers range and
+   range-rate reads. The keys run V37E20E, proceed and ENTER on R61's
+   V50N18, and proceed on R21's V50N72 lock-on. R22 then marks every 61 s
+   (6 marks by 340 s, no N49). V37E34E comes at 290 s: proceed on N37,
+   N55 and N45. P34 solves TPI for 26.6 degrees elevation (N58: 7.4 m/s;
+   an independent Lambert solve gives 7.5). Proceed on N37, N58 and N81,
+   ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
+   job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
+   takes 1,273,194 routines, none that yaAGC did not match.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

@@ -15,17 +15,19 @@
     "tests/interbank_oracle_check.c"
   ],
   "defines": [],
-  "host_cases": 2146,
-  "host_branch_arcs": 501,
-  "c64_rows": 720,
-  "stride_rows": 716,
-  "cover_rows": 4,
+  "host_cases": 2162,
+  "host_branch_arcs": 504,
+  "c64_rows": 727,
+  "stride_rows": 721,
+  "cover_rows": 6,
   "cover_cases": [
-    992,
-    1259,
-    1298,
-    1790
+    17,
+    832,
+    1079,
+    1141,
+    1402,
+    1414
   ],
-  "c64_branch_arcs": 501,
+  "c64_branch_arcs": 504,
   "host_branches_missing_on_c64": []
 }

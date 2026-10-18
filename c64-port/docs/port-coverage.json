@@ -993,7 +993,7 @@
               "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
               "vice-lanec-di-transfer": 55,
-              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-cm": 10,
               "vice-lanec-di-transfer-c64m": 111
             }
           },
@@ -2301,7 +2301,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
-          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (454 LM, 364 CM sites, TC and its alias TCR).",
           "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
         },
@@ -2314,21 +2314,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
+            "sha256": "40365e3f9a403b1ea32ac976da552d850533b7bd2002c78bd86bbff5f59177c6"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
+            "sha256": "488cce55220a448151201791efae1e8be409263958a26827e96f3c15e759f3b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
+            "sha256": "4933353decfc90e8b1a3e239475930f3821f059cfb0ebb19bad685d9cd2afe1f"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
+            "sha256": "26e342997feefa08d5afd24ce6471971abae6709ddb062b83479e41fbcb5bfba",
             "vice_targets": {
-              "vice-interbank-oracle": 722
+              "vice-interbank-oracle": 729
             }
           },
           "independent_review": {
@@ -2337,7 +2337,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
+            "sha256": "d4421a898b559f7ce145c03cc7fd6135da8393b85b97266becbf9306009deecd"
           }
         }
       }
@@ -4349,8 +4349,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04140-04525) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 280 routines: 267 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-decdsp3: 111 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 292 routines: 279 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 940 refused chains; pin-decdsp3: 114 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 76 pw-* suites: 20, the nine pin-head-* suites: 69 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,430 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight, docs/MODULE-TEST.md).",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank. Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -4362,23 +4362,31 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "dbcc6b3c2b4e57ef1c9fb0a0ae92c28e935fff2d05b01fae2a84bf234deaa57a"
+            "sha256": "f14c9628add04c727c352940a1311de9e5d218cf16e2f707dd25e91f05cd4350"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "015968053548dc9f074f3a49588307234d015d90ccae309646ffdb9a8da03115"
+            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "cba0cd163e3ba92bdf23ee52dbdd862a47d1a6c246fc131d2b6635936ff67208"
+            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "9b189cb059d49e7e60e9f496c75a0196b379b911a9d44ea2d9aa894d8dc047a6",
+            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
-              "vice-lanec-pw": 917,
-              "vice-lanec-pin-transfer": 575
+              "vice-lanec-pw-1": 140,
+              "vice-lanec-pw-2": 328,
+              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-4": 186,
+              "vice-lanec-pw-5": 104,
+              "vice-lanec-pin-transfer-1": 79,
+              "vice-lanec-pin-transfer-2": 92,
+              "vice-lanec-pin-transfer-3": 71,
+              "vice-lanec-pin-transfer-4": 50,
+              "vice-lanec-pin-flight": 81
             }
           },
           "c64_branch_outcomes": {
@@ -7742,7 +7750,7 @@
               "vice-lanec-di-idle": 43,
               "vice-lanec-di-nvdsp": 32,
               "vice-lanec-di-transfer": 55,
-              "vice-lanec-di-transfer-cm": 9,
+              "vice-lanec-di-transfer-cm": 10,
               "vice-lanec-di-transfer-c64m": 111
             }
           },
@@ -9290,15 +9298,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "2c2bc5883407a6bc153a7534e00e5dffceba0f9bd2054d71e6ecc92d55b224c6"
+            "sha256": "57cc3ec16b89d9a03314aef76c803e05a0ea20fbeb4603078fc2b6a35ce310fa"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "8a11fcb8ac87c45509f15a6788f35f3c62a7f1eb05a1cc209952c5ff65a2bd6c"
+            "sha256": "73d9f9fbb1af3ecbb27666b74992613b9654b52761af5f80c449e1a1500c312b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "d424916272d52862d3bb3742a76200976388667f92ffcace8a9cf2a2b351a8ae",
+            "sha256": "da4e227ad51c4e0710deb84b21bc6594a11319d027d0f89a1d22a9fe124ee5d4",
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
@@ -9309,7 +9317,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
-            "sha256": "9ac7e0b0121fda20f1c5ae3e65e7d703c3f76e29e3c319b139ea2b4700bcbad8"
+            "sha256": "c8ad465089be1c138b3de933be560e8f3313c95fbe7753e025a2996f1a9550de"
           }
         }
       }
@@ -9362,7 +9370,7 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; SUPERBNK and the interrupt-enable bit in the mission I/O block.",
-          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (448 LM, 354 CM sites).",
+          "entry_contracts": "All 14 entries (BANKCALL, SWCALL, SWCALL -1, SWRETURN, POSTJUMP, BANKJUMP, QJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR, SUPERSW) registered at their original addresses and reached through agc_transfer_run; the inline CADRs of every genuine BANKCALL/IBNKCALL/POSTJUMP/USPRCADR call site are compiled operands (454 LM, 364 CM sites, TC and its alias TCR).",
           "index_domains": "Q, L and the CADRs as each routine reads them: A sign-extended 16-bit; return addresses and CADRs that address fixed or erasable memory as the original does; SUPDACAL reads the rope through the program's fixed-data reader. Inputs outside a routine's domain return EXEC_OUT_OF_SCOPE before any change.",
           "hardware_side_effects": "None beyond FB/BB/SUPERBNK, which the routines set exactly as the original."
         },
@@ -9375,21 +9383,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/interbank-oracle/interbank-oracle-source-map.json",
-            "sha256": "80e508beb7e4d8fb94aadc0aae34aa2a2a74606925fbfc96c0a59d1033969a25"
+            "sha256": "40365e3f9a403b1ea32ac976da552d850533b7bd2002c78bd86bbff5f59177c6"
           },
           "independent_assembly_comparison": {
             "path": "evidence/interbank-oracle/interbank-oracle-proof.json",
-            "sha256": "835596447562c77a4793279cb857d0fbe29854edd086bc461724729baa7b9400"
+            "sha256": "488cce55220a448151201791efae1e8be409263958a26827e96f3c15e759f3b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-host.log",
-            "sha256": "8b17541b4e30ec52ef5e0e34f0cea68f98d0eb0ccfb09dc54956c87f63b0996b"
+            "sha256": "4933353decfc90e8b1a3e239475930f3821f059cfb0ebb19bad685d9cd2afe1f"
           },
           "c64_execution_results": {
             "path": "evidence/interbank-oracle/interbank-oracle-vice.log",
-            "sha256": "b200f553fbca4ba9e3f0093fb39d404e33e3fdf8cdaef869707b6bc8ad370ae6",
+            "sha256": "26e342997feefa08d5afd24ce6471971abae6709ddb062b83479e41fbcb5bfba",
             "vice_targets": {
-              "vice-interbank-oracle": 722
+              "vice-interbank-oracle": 729
             }
           },
           "independent_review": {
@@ -9398,7 +9406,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/interbank-oracle/interbank-oracle-c64-cover.json",
-            "sha256": "184879a17a954fce5251888a5b57b5b604ed22a5be2639d2f7c16b9d7119d9ca"
+            "sha256": "d4421a898b559f7ce145c03cc7fd6135da8393b85b97266becbf9306009deecd"
           }
         }
       }
@@ -10483,11 +10491,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
-            "sha256": "8f6a8e34257c5bb4ccd624c67043f46a99ee6c3c6930d3441a2d3f57f02cd1c6"
+            "sha256": "ac794e709e94ac765287470aecc1548a799d26c8f62dc0232eea9c7e6a187cbd"
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "c8b38271e75ff24181ddd64bac544d6e5655438d7152d34f5100472ce1056f87",
+            "sha256": "a860138912a419ede6732a408d146201c1381a429cad0c403936397261a8ecc9",
             "vice_targets": {
               "vice-lm-orbital-integration": 400
             }
@@ -10498,7 +10506,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "77053d326bfef22d04fd248b2647323b6bc72c20290a72b62cd97745c64f9d53"
+            "sha256": "70882124851ab021c512721ba93f281ce1eb682a3e56b564f5f928a167f360f4"
           }
         }
       }
@@ -11710,8 +11718,8 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04124-04511) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 281 routines: 268 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 856 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 93 pw-* suites: 20 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,179 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains.",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 293 routines: 280 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 940 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 76 pw-* suites: 20, the nine pin-head-* suites: 69 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,430 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight, docs/MODULE-TEST.md).",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank, and READ of channel 33 (LRPOSOUT: the landing radar antenna position, bits 7-6). Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -11723,23 +11731,31 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "601c505786d072d0e67b800d00333d38df3b35b8ba446a0507d9a69fc751f8b9"
+            "sha256": "b73a761a874ed44b812a47a816f2122d1f85bfe9f5c77f51f94a24743b8491e4"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "015968053548dc9f074f3a49588307234d015d90ccae309646ffdb9a8da03115"
+            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "cba0cd163e3ba92bdf23ee52dbdd862a47d1a6c246fc131d2b6635936ff67208"
+            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "9b189cb059d49e7e60e9f496c75a0196b379b911a9d44ea2d9aa894d8dc047a6",
+            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
-              "vice-lanec-pw": 917,
-              "vice-lanec-pin-transfer": 575
+              "vice-lanec-pw-1": 140,
+              "vice-lanec-pw-2": 328,
+              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-4": 186,
+              "vice-lanec-pw-5": 104,
+              "vice-lanec-pin-transfer-1": 79,
+              "vice-lanec-pin-transfer-2": 92,
+              "vice-lanec-pin-transfer-3": 71,
+              "vice-lanec-pin-transfer-4": 50,
+              "vice-lanec-pin-flight": 81
             }
           },
           "c64_branch_outcomes": {
