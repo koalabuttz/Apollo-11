@@ -47,6 +47,7 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  unsigned i,vac=W[0120];
  if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+ if(W[3]!=03000u)return 0; /* fast_window: EB as AFR_EBN */
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
@@ -4805,6 +4806,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
  unsigned i;
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+ if(W[3]!=03000u)return 0; /* fast_window: EB as AFR_EBN */
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
 #else
@@ -4812,6 +4814,21 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #endif
  return 1;
 }
+/* The same under any EB, for a routine that sets EB before it
+ * touches erasable memory. */
+static MAYBE_UNUSED uint8_t basic_sane_any_eb(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){
+ unsigned i;
+ if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
+ return 1;
+}
+/* The same under any EB, for a routine that sets EB before it
+ * touches erasable memory. */
 
 /* CM_ENTRY_DAP_KEEP<n> bit i (i = 60n+bit, the order of cm_entry_dap_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
@@ -5909,7 +5926,7 @@ static enum exec_status r33736_abi(const agc_native_program *p,apollo_overlay_st
 static enum exec_status r41612_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
- if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane_any_eb(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_10(s,(cm_native_io *)v,17290u);
 }
 #endif
@@ -5999,7 +6016,7 @@ static enum exec_status r41653_abi(const agc_native_program *p,apollo_overlay_st
 static enum exec_status r41672_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
- if(!s||!v||!basic_sane(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
+ if(!s||!v||!basic_sane_any_eb(s,(cm_native_io *)v,040000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_11(s,(cm_native_io *)v,17338u);
 }
 #endif
