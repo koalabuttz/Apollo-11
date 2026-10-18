@@ -711,6 +711,31 @@ port) runs one mission:
    measured-minus-estimated angle agrees with cm_p23.py's 0.0084 degrees
    to the trunnion's resolution, and the update moves the state toward the
    true one), and proceed incorporates it; P00.
+   `cm-p40`: an SPS burn with LOI-1 (75:49:50 GET) as the reference
+   case. cm_p40.py writes cm-p40.load: the docked CSM+LM (43,900 kg) on
+   a hyperbola retrograde to the moon's orbit, 2,060 km out at the load,
+   pericynthion on the far side half a burn after TIG (300 s); the
+   external DV (V06N81) 889 m/s against the TIG velocity; the SPS pads
+   S40.13 needs for a finite burn (WEIGHT/G, EK1VAL-EK3VAL, FANG, EMDOT;
+   without them P40 treats the burn as impulsive and cuts off early); the
+   TVC DAP data (N46, N47); a platform with X along the DV; and the CDUs
+   at the ignition attitude S40.1 gives (the DV turned back by half the
+   burn arc, about 18.5 degrees of inner gimbal with the bell biases), so
+   R60's maneuver is nil. G&N AUTO (channel 31). V37E30E and proceed on
+   N33, N81, N42 and N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 (the gimbal test), proceed on V99N40 at TIG-5. The
+   harness's FLIGHT_SPS (tools/flight_host_run.c, CM) is the engine:
+   from ENGONFLG it thrusts 91,188 N along the bell (body X turned by
+   P40's PBIAS and YBIAS) and burns mass at 3,080 m/s exhaust velocity,
+   counting the velocity into PIPAX-Z; with no attitude dynamics the
+   CDUs follow the RCS DAP's CDUXD-ZD until ignition and hold from then
+   on (the TVC DAP reuses those cells). The burn runs about 372 s to
+   cutoff with VG 0.8 m/s; proceed on V16N40 and V16N85, then P00.
+   The docked RCS DAP's attitude filter calls MYSUBS's SMALLMP (TC
+   SMALLMP, 21,2042), which no earlier scenario reached:
+   src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
+   (src/cm_mysubs.c) and their TC Q in the flight store as
+   `cm_mysubs_routines`.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
