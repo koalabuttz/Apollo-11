@@ -18,10 +18,6 @@ or tools/flight_store_build.py --host-only) in scaled time
 (FLIGHT_SCALED=1,1,2) and fails on any Pinball point it reports as
 refused or unregistered, or any native routine yaAGC did not match. A C64
 sweep reuses cases() and compares the C64 run with the host's.
-
-Known non-Pinball bridge: V27 (fixed memory display) reaches SUPDACAL in the
-INTER-BANK routines, which get only the resident boundary words as fixed
-data on the host run; that point is bridged, not a Pinball refusal.
 """
 import argparse, concurrent.futures, os, pathlib, re, subprocess, sys
 
