@@ -2828,6 +2828,9 @@ SPECS = {
         # (-DIRC_INPUTS: the input-latch code its VICE PRGs were built with)
         'c64_flags': ['-DIRC_INPUTS'],
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'GIMBAL_LOCK_AVOIDANCE.agc', 'cm': 'GIMBAL_LOCK_AVOIDANCE.agc'},
         'base': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
         'symbol': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
@@ -3062,6 +3065,9 @@ SPECS = {
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'S-BAND_ANTENNA_FOR_LM.agc', 'cm': 'S-BAND_ANTENNA_FOR_CM.agc'},
         'base': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
         'symbol': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
@@ -3879,6 +3885,9 @@ SPECS = {
     },
     'lat-long': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'LATITUDE_LONGITUDE_SUBROUTINES.agc', 'cm': 'LATITUDE_LONGITUDE_SUBROUTINES.agc'},
         'base': {'lm': 'lm_lat_long', 'cm': 'cm_lat_long'},
         'symbol': {'lm': 'lm_lat_long', 'cm': 'cm_lat_long'},
