@@ -472,6 +472,11 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     own = [t for t in rupt if t not in LEAD_INS] or rupt
     head += f'#define FS_MCT {mct_weight(m, own) if own else 0}u\n'
     if rupt and len(rupt) < len(weighed):
+        # rk_direct honours the idle flag on the LM only (resident_flight.c):
+        # a CM module packing the idle loop with other tables would charge
+        # its passes as work, not idle (the #592 CM idle regression).
+        if m != 'lm':
+            sys.exit(f'{m}: {prg.name} packs the idle loop with {rupt}: list them in IDLE_ONLY')
         head += '#define FS_IDLE 1\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
@@ -785,7 +790,8 @@ HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic',
 # Tables that run only from the self-check idle loop: a module carrying them
 # beside others runs them as the work clock's idle outside an interrupt
 # (FS_IDLE) and weighs the others' MCT inside one.
-IDLE_ONLY = {'lm_interbank_postjump_hot_routines', 'lm_interbank_postjump_t4_hot_routines'}
+IDLE_ONLY = {'lm_interbank_postjump_hot_routines', 'lm_interbank_postjump_t4_hot_routines',
+             'cm_interbank_postjump_hot_routines'}
 LEAD_INS = {'lm_lead_in_hot_routines'}
 
 

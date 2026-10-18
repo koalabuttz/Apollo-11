@@ -1,6 +1,6 @@
-# make cm-extended-verbs-file-closure at 4c52206043bddc8bc5eb000c36fbcfe2162d09bb
+# make cm-extended-verbs-file-closure at 4914f596819939bc71addecc5ca9bc4d19e7a45c
 rm -f build/cm-extended-verbs-file-executed.txt build/cm-extended-verbs-file-read.txt build/interp-routine-reference build/interp-routine-reference-flight-device
-PATH=/tmp/x/alarm/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/tmp/x/alarm/c64-port/build/cm-extended-verbs-file-executed.txt AGC_READ_WORDS=/tmp/x/alarm/c64-port/build/cm-extended-verbs-file-read.txt make --no-print-directory cm-extended-verbs-file-differential
+PATH=/home/claude/wt4/c64-port/tools/oracle_trace:$PATH AGC_EXECUTED_WORDS=/home/claude/wt4/c64-port/build/cm-extended-verbs-file-executed.txt AGC_READ_WORDS=/home/claude/wt4/c64-port/build/cm-extended-verbs-file-read.txt make --no-print-directory cm-extended-verbs-file-differential
 python3 tools/interp_routine_differential.py cm-extended-verbs-file --cases 512 --freeze
 PASS: 93184 cm-extended-verbs-file cases equal the original programs (182 routines)
   CM 42,2000 DAPDISP1: 05210 x512
@@ -137,12 +137,12 @@ PASS: 93184 cm-extended-verbs-file cases equal the original programs (182 routin
   CM 43,2754 : 05217 x512
   CM 43,2757 : 05560 x512
   CM 43,2761 : 04701 x512
-  CM 43,2763 : 04170 x146, 04400 x366
+  CM 43,2763 : 04170 x145, 04400 x367
   CM 43,2773 SDISPLAY: 04662 x512
   CM 43,3002 : 05534 x512
   CM 43,3003 : 03635 x512
   CM 43,3004 : 04662 x512
-  CM 43,3011 ENDSUMS: 03340 x152, 03524 x360
+  CM 43,3011 ENDSUMS: 03340 x151, 03524 x361
   CM 43,3015 SETPRFLG: 05546 x512
   CM 43,3017 : 04701 x512
   CM 43,3022 : 04701 x512
@@ -154,8 +154,8 @@ PASS: 93184 cm-extended-verbs-file cases equal the original programs (182 routin
   CM 43,3040 : 05217 x512
   CM 43,3041 ATTACHIT: 06037 x512
   CM 43,3042 : 06037 x512
-  CM 43,3044 : 05170 x70, 05606 x442
-  CM 43,3050 : 05170 x113, 05606 x399
+  CM 43,3044 : 05170 x86, 05606 x426
+  CM 43,3050 : 05170 x109, 05606 x403
   CM 43,3052 : 05606 x512
   CM 43,3053 : 05606 x512
   CM 43,3057 TACHEXIT: 06037 x512
@@ -168,8 +168,8 @@ PASS: 93184 cm-extended-verbs-file cases equal the original programs (182 routin
   CM 43,3106 : 05217 x512
   CM 43,3107 LMTOCM: 06037 x512
   CM 43,3110 : 06037 x512
-  CM 43,3112 : 05170 x54, 05606 x458
-  CM 43,3116 : 05170 x122, 05606 x390
+  CM 43,3112 : 05170 x55, 05606 x457
+  CM 43,3116 : 05170 x116, 05606 x396
   CM 43,3120 : 05606 x512
   CM 43,3121 : 05606 x512
   CM 43,3125 : 06037 x512
@@ -185,7 +185,7 @@ PASS: 93184 cm-extended-verbs-file cases equal the original programs (182 routin
   CM 43,3206 : 05217 x512
   CM 43,3211 : 04701 x512
   CM 43,3214 : 04701 x512
-froze 5865 vectors to tests/cm_extended_verbs_file_vectors.h
+froze 5864 vectors to tests/cm_extended_verbs_file_vectors.h
 git diff --exit-code -- tests/cm_extended_verbs_file_vectors.h tests/cm_extended_verbs_file_c64_vectors.h tools/mk/cm-extended-verbs-file.groups
 rm -f build/interp-routine-reference build/interp-routine-reference-flight-device
 python3 tools/interp_executed_closure.py cm-extended-verbs-file
