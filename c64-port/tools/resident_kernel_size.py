@@ -44,6 +44,8 @@ def main(argv):
     report = {}
     for opt in ('Oz', 'Os'):
         base, _ = link('empty', opt, ['-DRK_EMPTY=1', '-DRK_LM=1'], [])
+        # Without RK_DEVICE_CH13 (tools/resident_flight_build.py MISSION): the CM
+        # timers here use rk_hardware.channel13; this build runs no timer check.
         for m, defines in (('lm', ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY']), ('cm', ['-DRK_CM=1'])):
             total, sizes = link(m, opt, defines, [f'src/{m}_kernel.c', *COMMON])
             shared = sum(sizes.get(s, 0) for s in SHARED)

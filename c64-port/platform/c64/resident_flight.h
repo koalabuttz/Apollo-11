@@ -246,8 +246,10 @@ extern rk_io rk_device;
 extern agc_hardware rk_hardware;
 /* The channel 13 the timers read (src/resident_rupt.c CH13): on the CM
  * rk_device's, the copy its tables write (T6START, the radar routines);
- * rk_hardware.channel13 is only the copy a CM_* kind module leaves. */
-#if RK_CM
+ * rk_hardware.channel13 is only the copy a CM_* kind module leaves. Keyed
+ * on the same flag as the timers, so a harness can't write one copy while
+ * the timers read the other. */
+#if RK_DEVICE_CH13
 #define RK_TIMER_CH13 rk_device.channel13
 #else
 #define RK_TIMER_CH13 rk_hardware.channel13
