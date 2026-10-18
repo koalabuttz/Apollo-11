@@ -27,6 +27,8 @@ static agc_word *ic_image;
  * calls bank I/O out ($01 = $34). */
 #if defined(__mos__) && AGC_FIXED_IMAGE && INTERP_EXTENSION
 #define XT __attribute__((section(".interp_ext")))
+/* Their constant tables (a section of their own: data). */
+#define XTR __attribute__((section(".interp_ext_ro")))
 /* Around every order-table call (a table body reads the rope only through
  * fixed_indexed, which banks I/O back in); the resident's IRQ entry saves $01
  * and banks I/O in. */
@@ -38,12 +40,21 @@ static uint8_t xt_mem;
 #define RD_OUT (*(volatile uint8_t *)1 = rd_mem)
 #else
 #define XT
+#define XTR
 #define XT_IN ((void)0)
 #define XT_OUT ((void)0)
 #define RD_IN ((void)0)
 #define RD_OUT ((void)0)
 #endif
-static p66_bias_io *io;
+/* The caller's I/O record: the interpreter reads and writes only its
+ * superbank and interrupt_enabled. */
+#ifdef INTERP_COMANCHE
+#include "cm_native_image.h"
+typedef cm_native_io interp_io;
+#else
+typedef p66_bias_io interp_io;
+#endif
+static interp_io *io;
 static NI const agc_word *kop(void);
 
 typedef apollo_overlay_state agc_image;
@@ -1776,7 +1787,8 @@ static NI XT void lmi_poly(const agc_word *table){
 }
 /* ---- SINE/COSINE (bank 0) ---------------------------------------------- */
 /* SN1's POLY table (DEC 3 and the five 2DEC coefficients at 00,3560). */
-static const agc_word sin_poly[11]={3,014441,037325,053250,060764,012146,021276,075466,071471,0236,032757};
+static const agc_word sin_poly[11] XTR = {3,      014441, 037325, 053250, 060764, 012146,
+                                          021276, 075466, 071471, 0236,   032757};
 #define NEG1_2_AT IF_(04734u,05000u)
 /* SINE 00,3530 to DANZIG: (1/2)SIN(2 PI MPAC) by Hastings' polynomial. */
 static NI XT void sine(void){
@@ -1825,8 +1837,9 @@ static NI XT uint8_t lmi_cos(void){
 #define ACOSSHR_RET 03720u
 #endif
 /* ACOS3's POLY table (DEC 6 and the eight 2DEC coefficients at 00,3656). */
-static const agc_word acos_poly[17]={6,013240,023630,074721,047775,02440,020237,075067,070742,
- 03436,026756,074037,057640,03046,07143,076654,042244};
+static const agc_word acos_poly[17] XTR = {6,      013240, 023630, 074721, 047775, 02440,
+                                           020237, 075067, 070742, 03436,  026756, 074037,
+                                           057640, 03046,  07143,  076654, 042244};
 /* ASINEX: PI/2 - ARCCOS(X); LDANZIG TCF DANZIG. */
 static NI void asinex(void){DCS(rMPAC);ADF(QUARTER);DXCH(rMPAC);danzig();}
 /* TC ESCAPE (`ret` the address after it): run the TCF this routine stored
@@ -2291,6 +2304,24 @@ static NI void ccs_edop(void)
     (void)ccs15((agc_word)(W[023] & 077777u));
     W[023] = (agc_word)((W[023] >> 7) & 0177u);
 }
+/* The flight module's work clock (platform/c64/interp_module.c): each word
+ * NEWOPS fetches adds its yaAGC MCT (include/interp_word_mct.h) to
+ * lm_interp_core_mct, which the module zeroes at the step's start (and,
+ * with INTERP_WORD_CHARGE, the host's tools/interp_flight_replay.c checks
+ * against yaAGC's words). */
+#if (defined(__mos__) && AGC_FIXED_IMAGE) || defined(INTERP_WORD_CHARGE)
+#include "interp_word_mct.h"
+uint16_t lm_interp_core_mct;
+static NI void work(uint8_t at)
+{
+    lm_interp_core_mct += (uint16_t)interp_word_units[at] << 2;
+}
+#define WORK_STORE(code)      work(INTERP_WORD_STORE_KIND(code))
+#define WORK_PAIR(left, edop) (work(INTERP_WORD_BASE_AT), work((uint8_t)((left) + 1u)), work(edop))
+#else
+#define WORK_STORE(code)      ((void)0)
+#define WORK_PAIR(left, edop) ((void)0)
+#endif
 static uint8_t point(void)
 {
     uint8_t k;
@@ -2307,9 +2338,16 @@ static NI enum exec_status run(void)
         switch (point()) {
         case P_NEWOPS:
             if (!code_word(0u)) return EXEC_OUT_OF_SCOPE;
-            if (!(cw & 040000u)) { lmi_store_code(cw); break; }
+            if (!(cw & 040000u)) {
+                WORK_STORE(cw);
+                lmi_store_code(cw);
+                break;
+            }
             lmi_newops(cw);
-            r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
+            idx = (uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u);
+            WORK_PAIR(idx, (uint8_t)W[rEDOP]);
+            r = order(idx);
+            break;
         case P_DANZIG: danzig_bb(); /* fall through */
         case P_NOIBNKSW:
             /* CCS EDOP: positive, its right-hand order (TCF OPJUMP); +0,
@@ -2393,31 +2431,14 @@ static NI uint8_t bind(apollo_overlay_state *s)
     return s != 0;
 #endif
 }
-#ifdef INTERP_COMANCHE
-#include "cm_native_image.h"
-static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_state *s, void *v)
-{
-    cm_native_io *cio = v;
-    static p66_bias_io l;
-    enum exec_status st;
-    (void)p;
-    if (!bind(s) || !cio) return EXEC_OUT_OF_SCOPE;
-    l.superbank = cio->superbank; l.interrupt_enabled = cio->interrupt_enabled;
-    io = &l;
-    if (!sane()) return EXEC_OUT_OF_SCOPE;
-    st = run();
-    cio->superbank = l.superbank; cio->interrupt_enabled = l.interrupt_enabled;
-    return st;
-}
-#else
 static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_state *s, void *v)
 {
     (void)p;
+    if (!v) return EXEC_OUT_OF_SCOPE;
     io = v;
-    if (!bind(s) || !io || !sane()) return EXEC_OUT_OF_SCOPE;
+    if (!bind(s) || !sane()) return EXEC_OUT_OF_SCOPE;
     return run();
 }
-#endif
 const agc_routine lm_interp_core = entry;
 #define PH(z) (uint16_t)((z) >= 04000u ? 2048u + (z) - 04000u : (z) - 02000u)
 /* Sorted by physical: bank 01's RTB return first. */

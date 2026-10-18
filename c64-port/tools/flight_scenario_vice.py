@@ -118,17 +118,17 @@ C64_STATE = 2 + 2 * 2048 + (RK_RESTART_LAMP - RK_HARDWARE) + 32
 def c64_weights(m):
     """Each table's work clock weight as the C64 flight store charges it
     (tools/flight_store_build.py link_module FS_MCT, resident_flight_build.py
-    RK_INTERP_MCT), for the host's replay (FLIGHT_REPLAY_MCT): the
-    interpreter's per routine for a table left to the interpreter module,
+    INTERP_PER_WORD), for the host's replay (FLIGHT_REPLAY_MCT): per word
+    (include/interp_word_mct.h) for a table left to the interpreter module,
     else the weight of the first module that runs it. Tables only the
     resident runs keep the host's weight, which is the resident's."""
     import flight_store_build as fsb
-    from resident_flight_build import mct_weight
+    from resident_flight_build import INTERP_PER_WORD, mct_weight
     own = dp.OUT / f'report-{m}.json'
     report = json.loads(own.read_text()) if own.exists() else json.loads((dp.OUT / 'report.json').read_text()).get(m)
     if not report:
         sys.exit(f'FAIL: no flight store report for {m} (rebuild: tools/flight_store_build.py --missions {m} --force)')
-    out = {t: mct_weight(m, None, interp=True) for t in report['left_to_interpreter']}
+    out = {t: INTERP_PER_WORD for t in report['left_to_interpreter']}
     # A pack's own tables resolve to the pack first, so they take its
     # weight, not their file module's (flight_store_build.py c64_mct).
     packs = {int(p['id'], 16): p for p in report.get('packs', []) if p.get('ok')}

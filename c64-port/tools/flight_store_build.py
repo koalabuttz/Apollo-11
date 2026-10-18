@@ -55,7 +55,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import interp_specs  # noqa: E402
 from overlay_runtime_library import prepare  # noqa: E402
-from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, mct_weight,  # noqa: E402
+from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, INTERP_PER_WORD, INTERP_PLUS_WORDS, mct_weight,  # noqa: E402
                                    resident_sources, wrapper_records)
 from resident_boundary_words import header_text, tail_bytes  # noqa: E402
 
@@ -491,12 +491,12 @@ def host_mct(m, t):
 
 def c64_mct(m, to_interp, modules):
     """{table: work clock weight} as the C64 store charges it: the
-    interpreter's per word (RK_INTERP_MCT) for a table left to the
+    interpreter's per word (INTERP_PER_WORD) for a table left to the
     interpreter module, 0 for the self-check idle tables (FS_IDLE, or a
     module of idle tables only), else the FS_MCT of the first module that
     runs it (link_module). host.inc carries these, so the host's work clock
     (FLIGHT_SCALED) charges what the C64 does."""
-    out = {t: mct_weight(m, None, interp=True) for t in to_interp}
+    out = {t: INTERP_PER_WORD for t in to_interp}
     # A pack's own tables (not its ride ones) resolve to the pack before
     # their files' modules, so the pack's FS_MCT is what the C64 charges
     # them (RATELOOP's lm_kalman_basic in the excursion, the radar step in
@@ -1267,14 +1267,18 @@ def main():
             only while its pack is loaded (slot 5: the host skips it
             otherwise). weights: {table: MCT} as the C64 store charges it
             (c64_mct), once its modules are linked; a host-only build, and
-            a table no module runs, keeps host_mct (the interpreter's per
-            word for a table left to it)."""
+            a table no module runs, keeps host_mct (INTERP_PER_WORD for
+            a table left to the interpreter); a FLIGHT_INTERP_STOP file's
+            basic table adds INTERP_PLUS_WORDS."""
             task_out = 4 in pins.values()
 
             def mct(t, f):
                 if weights is not None and t in weights:
-                    return weights[t]
-                return mct_weight(m, None, interp=True) if f in to_interp else host_mct(m, PIN_HOT.get(f, f))
+                    w = weights[t]
+                else:
+                    w = INTERP_PER_WORD if f in to_interp else host_mct(m, PIN_HOT.get(f, f))
+                stops = packed.get(f) in FLIGHT_INTERP_STOP[m] and not interpretive_table(f)
+                return w | INTERP_PLUS_WORDS if stops and w not in (0, INTERP_PER_WORD) else w
             pin_order = [t for t in pins if t in tables]
             ahead = [t for t in packs if t in tables and (packs[t][1] or hot_full(t))]
             first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
