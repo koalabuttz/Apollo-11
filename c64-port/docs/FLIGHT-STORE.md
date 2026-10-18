@@ -752,6 +752,31 @@ port) runs one mission:
    src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
    (src/cm_mysubs.c) and their TC Q in the flight store as
    `cm_mysubs_routines`.
+   `cm-p20`: the CSM's side of the LM rendezvous, P20 tracking the LM with
+   SXT marks and VHF ranging. cm_p20.py writes cm-p20.load from the orbits
+   of lm_rendezvous.py (Lane D2's LM P20/P34 scenario): the CSM in a 60 nmi
+   circular lunar orbit, the LM 15 nmi below it and 2.1 degrees behind,
+   both retrograde about the reference Z axis as Apollo's were; REFSMMAT
+   the LM's local vertical; the CMC's LM state 1.8 km too far along the
+   line of sight; R22's pads (WRENDPOS, WRENDVEL, RVAR, RMAX, VMAX); the
+   CSM at R61's preferred tracking attitude. `FLIGHT_RR`'s CM side
+   (tools/flight_radar.h) holds the CDUs on the DAP's desired angles
+   (CDUXD-ZD; Comanche keeps them two words apart), points the SXT at the
+   LM, and puts the range in RNRAD when a VHF read starts (channel 13
+   bit 4; the resident timer ends the cycle with RADARUPT). The keys run V37E20E, V87E (VHF ranging
+   allowed), V57E and MARK, proceeding on V51 (TRKMKCNT 1: the mark goes
+   into the LM state and the W matrix). R22's first VHF range, at about
+   125 s, shows V06N49, the 1.8 km. Proceed takes it (VHFCNT 1). The
+   next, at about 185 s, shows N49 again for a 4 ft/s velocity change,
+   and proceed takes that too (VHFCNT 2). R22 waits on N49 in a loop
+   (RENDISP7), so the AGC never idles. `FLIGHT_BUSY_SAMPLE=100` gives the
+   keys their sample points: a key every second, so each CHARIN job runs
+   before the next key comes. On a busy stretch with all four keys at
+   once, V87 arrived as V77 and cleared PRFTRKAT.
+   On base 1a0ba510 the native run (25,000 cs, scaled x1) takes 651,427
+   routines, none that yaAGC did not match. The one refused point is
+   V87's interpretive SET (EXTENDED_VERBS.agc SETVHFLG +1, 43,3024),
+   which cm_extended_verbs_file_interpretive does not hold.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

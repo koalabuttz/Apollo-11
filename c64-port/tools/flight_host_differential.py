@@ -195,6 +195,24 @@ DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
 del DOI['FLIGHT_LR_POS2']
 DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
             '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# cm-p20: the CSM's side of the LM rendezvous (tools/flight_scenarios/
+# cm_p20.py: the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1
+# degrees behind, the CMC's LM state 1.8 km too far along the line of
+# sight; the CSM at R61's tracking attitude). FLIGHT_RR's CM side
+# (tools/flight_radar.h) holds the attitude on CDUXD-ZD, points the SXT
+# at the LM and answers VHF range reads. The IMU operating, CMC mode
+# (channels 31 and 33, FLIGHT_CHAN at 40 s); V37E20E (P20: R61's tracking
+# attitude, R22 running), V87E (VHF ranging allowed), V57E (R21's V51)
+# and MARK, proceed on V51 (the SXT mark goes into the LM state: TRKMKCNT
+# 1); R22's first VHF range (about 125 s) shows V06N49 (the 1.8 km), proceed:
+# VHFCNT 1, and the second (about 185 s, a 4 ft/s velocity change) again,
+# proceed. R22 waits on N49 in a loop (RENDISP7), so the AGC does not idle:
+# FLIGHT_BUSY_SAMPLE gives the keys their sample points.
+CM_P20 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_CHAN': '4000:033=077757', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p20.load',
+          'FLIGHT_RR': '2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320',
+          'FLIGHT_BUSY_SAMPLE': '100'}
+CM_P20_KEYS = '@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -202,6 +220,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
+          ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
