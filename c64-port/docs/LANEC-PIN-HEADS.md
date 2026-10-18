@@ -51,7 +51,7 @@ missions) covers the heads where they join the rest of Pinball.
 | load | load_request, load_complete | ABCLOAD, ABLOAD, ALOAD, BLOAD, CLOAD calls and returns (bank 41); LOADLV, LOADLV +5 |
 | lamp | lamp_lifecycle | VBTSTLTS (CM: and its BANKCALL return), TSTLTS1, TSTLTS2, TSTLTS3 (bank 41) |
 | request | operator_request, operator_schedule | VBRQEXEC, VBRQWAIT (bank 41) |
-| proceed | load_control | VBPROC, VBTERM, PROCKEY, VBRESEQ, RECALTST (bank 40) |
+| proceed | load_control | VBPROC, VBPROC +3..+5, VBTERM, PROCKEY, VBRESEQ, RECALTST (bank 40) |
 | nvsub | nv_admission, nv_consumer | NVSUB, NVMONOPT (fixed-fixed) |
 
 Dropped: nv_update (nv_update_general accepts its states), decimal

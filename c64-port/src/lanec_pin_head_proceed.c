@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Pinball proceed and terminate (bank 40), Luminary099 and Comanche055:
- * VBPROC (CAF ONE, TS LOADSTAT, TC KILMONON), VBTERM (CS ONE,
+ * VBPROC (CAF ONE, TS LOADSTAT, TC KILMONON) and its returns (TC RELDSP,
+ * TC FLASHOFF, TC RECALTST at VBPROC +3, +4, +5), VBTERM (CS ONE,
  * TC VBPROC +1), PROCKEY (CAF ZERO, TS REQRET, CS VD1, TS DSPCOUNT,
  * TC VBPROC), VBRESEQ (CS ZERO, TC VBPROC +1) and RECALTST (CCS CADRSTOR,
  * TC RECAL1, TC ENDOFJOB, or on into RECAL1; CADRSTOR -0, which holds no
@@ -29,6 +30,12 @@ enum lanec_status lanec_pin_head_proceed_run(apollo_overlay_state *s, lanec_io *
         lanec_ev_ca(s, 1u);
         (void)lanec_ts(s, LANEC_LM_LOADSTAT);
         lanec_tc(s, S(m, KILMONON), (uint16_t)(z + 3u));
+    } else if (z == proc + 3u) {                         /* TC RELDSP */
+        lanec_tc(s, S(m, RELDSP), (uint16_t)(z + 1u));
+    } else if (z == proc + 4u) {                         /* TC FLASHOFF */
+        lanec_tc(s, S(m, FLASHOFF), (uint16_t)(z + 1u));
+    } else if (z == proc + 5u) {                         /* TC RECALTST */
+        lanec_tc(s, recal, (uint16_t)(z + 1u));
     } else if (z == proc + 6u || z == proc + 015u) {    /* CS ONE / CS ZERO, TC VBPROC +1 */
         w[LANEC_A] = z == proc + 6u ? 0177776u : 0177777u;
         lanec_tc(s, (uint16_t)(proc + 1u), (uint16_t)(z + 2u));
