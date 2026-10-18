@@ -10315,8 +10315,8 @@
             "sha256": "d8ca325b1812651d839ebff061b26a383560f268c5276cd199643ae3ec82ef69"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-lm-llge-563.md",
-            "sha256": "ac24d8c590d6a08741f2c44b216c8f1ef53126f3875480ca49380cd3ec8fee87"
+            "path": "docs/audits/rev2-lm-llge-667.md",
+            "sha256": "6f8241b9044ae5daab7bbc578b080d0e6d956d14aa4b968c65376db8a1d30a7e"
           }
         }
       }
