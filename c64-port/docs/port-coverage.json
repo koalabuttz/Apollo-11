@@ -4365,7 +4365,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "5e735dbf96792b3221612dcd5dcd71d15bace60a104e0832dc9f96b298c78b13"
+            "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -11734,7 +11734,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "2dab7411425e2a3496cb58713450ade7621d020f1a72f74489140c39946e5eb4"
+            "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
