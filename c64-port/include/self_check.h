@@ -31,6 +31,7 @@
 #define SELF_CHECK_MAIN_ROUTINES 12u
 extern const agc_routine_table lm_self_check_routines, cm_self_check_routines;
 extern const agc_routine_table lm_self_check_idle_routines, cm_self_check_idle_routines;
+extern const agc_routine_table lm_self_check_idle_hot_routines;
 /* The idle table's one inline operand (CHECKNJ's CADR ADVAN). */
 extern const agc_site_operand lm_self_check_idle_sites[1], cm_self_check_idle_sites[1];
 /* The file's entry addresses (bank 43) as callers reach them, both tables'

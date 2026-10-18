@@ -348,6 +348,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `lm_channel_io`, and a pack holding it would run every step through the
   transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
   31 K cycles instead of 16 K).
+  The idle loop rides in it too (`lm_self_check_idle_hot_routines`, and
+  POSTJUMP as `lm_interbank_postjump_t4_hot_routines`, the same entries as
+  the idle module's), with the interrupt lead-ins
+  (`lm_lead_in_hot_routines`, the resident wrapper $01E1's entries). The
+  idle loop then runs on after a T4RUPT taken in it, and the next interrupt
+  starts there, with no load. These are ride tables (`RIDE`): the resolver
+  still sends their keys to their own modules. With them the pack is
+  10,459 bytes.
 - The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
@@ -379,8 +387,17 @@ as the resident never runs it, and it only keeps its tables linked. Both
 link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
 also stops inlining. On LM, class 4 is 8,121
 of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
-class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
-without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 (`cm_self_check_idle_routines`), so those routines run without
+loading a module, with POSTJUMP beside it (`cm_interbank_postjump_hot_routines`
+in `src/cm_interbank_postjump.c`, checked against `cm_interbank_routines`
+by `make test-cm-interbank-postjump`; `PIN_HOT`). The idle loop's CHECKNJ
+calls POSTJUMP every pass, and before, each call loaded the interbank
+module, which also evicted the module the interrupted job runs in. The
+pinned copy runs only with the pinned module's operands (the idle file's
+one POSTJUMP site), so another caller's POSTJUMP is refused there and falls
+to the resolver, which loads `cm_interbank_routines` as before; the host
+run (`tools/flight_host_run.c`) gives a point a pinned table refuses to the
+next holder in the same way; on LM that loop is an ordinary job-slot module, as
 class 3 is kept for the DAP. The load check runs one of the class-3 set's
 points through the module that packs the same table and through `rk_direct`
 with only the pinned module present, compares them, checks the class-4
@@ -644,6 +661,22 @@ port) runs one mission:
    1,679 m/s, about 18 km up. On the host every native routine matches
    yaAGC; the unregistered points are the 3 self-check ones and Pinball's
    RELDSP1 (02,2502, 1 arrival).
+   `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
+   lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
+   descent orbit) back to that orbit's apolune and undoes the burn there
+   (76.4 ft/s along the velocity), so the LM starts on the 114 x 117 km
+   pre-DOI orbit with DOI at TIG 102:34:00 (lm-doi.load). V37E30E: P30 with
+   TIG and -76.4 ft/s in N81 loaded; N42 shows 61.4 x 8.1 nmi. V37E40E:
+   `FLIGHT_POKE` puts the CDUs and the DAP's desired CDUs at R60's N18
+   angles (the crew's maneuver) and ENTER skips the auto maneuver; PRO on
+   V99N40 at TIG - 5 s. The descent engine model stays at 10% (no
+   throttle-up), so the burn is 75 s, not the flight's 30 s; cutoff leaves
+   VG 1.1 ft/s and N85 1.0 ft/s. PRO through V16N40 and N85, V37E00E, then
+   V82 (this vehicle): 61.4 x 8.8 nmi. `FLIGHT_DSKY=1` prints the DSKY at
+   each change, which is how the key times were found. On the host every
+   native routine matches yaAGC; the unregistered points are the 3
+   self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
+   sites (#587).
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -694,6 +727,31 @@ port) runs one mission:
    measured-minus-estimated angle agrees with cm_p23.py's 0.0084 degrees
    to the trunnion's resolution, and the update moves the state toward the
    true one), and proceed incorporates it; P00.
+   `cm-p40`: an SPS burn with LOI-1 (75:49:50 GET) as the reference
+   case. cm_p40.py writes cm-p40.load: the docked CSM+LM (43,900 kg) on
+   a hyperbola retrograde to the moon's orbit, 2,060 km out at the load,
+   pericynthion on the far side half a burn after TIG (300 s); the
+   external DV (V06N81) 889 m/s against the TIG velocity; the SPS pads
+   S40.13 needs for a finite burn (WEIGHT/G, EK1VAL-EK3VAL, FANG, EMDOT;
+   without them P40 treats the burn as impulsive and cuts off early); the
+   TVC DAP data (N46, N47); a platform with X along the DV; and the CDUs
+   at the ignition attitude S40.1 gives (the DV turned back by half the
+   burn arc, about 18.5 degrees of inner gimbal with the bell biases), so
+   R60's maneuver is nil. G&N AUTO (channel 31). V37E30E and proceed on
+   N33, N81, N42 and N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 (the gimbal test), proceed on V99N40 at TIG-5. The
+   harness's FLIGHT_SPS (tools/flight_host_run.c, CM) is the engine:
+   from ENGONFLG it thrusts 91,188 N along the bell (body X turned by
+   P40's PBIAS and YBIAS) and burns mass at 3,080 m/s exhaust velocity,
+   counting the velocity into PIPAX-Z; with no attitude dynamics the
+   CDUs follow the RCS DAP's CDUXD-ZD until ignition and hold from then
+   on (the TVC DAP reuses those cells). The burn runs about 372 s to
+   cutoff with VG 0.8 m/s; proceed on V16N40 and V16N85, then P00.
+   The docked RCS DAP's attitude filter calls MYSUBS's SMALLMP (TC
+   SMALLMP, 21,2042), which no earlier scenario reached:
+   src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
+   (src/cm_mysubs.c) and their TC Q in the flight store as
+   `cm_mysubs_routines`.
    `cm-p20`: the CSM's side of the LM rendezvous, P20 tracking the LM with
    SXT marks and VHF ranging. cm_p20.py writes cm-p20.load from the orbits
    of lm_rendezvous.py (Lane D2's LM P20/P34 scenario): the CSM in a 60 nmi

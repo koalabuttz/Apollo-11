@@ -267,6 +267,15 @@ instead a work clock: AGC time advances by the work the resident ran.
   self-check, and the LM DAP hold ran at 221x real time. The LM idle
   module also packs the interbank tables (`CO_LOCATE` in
   `tools/flight_store_build.py`), so an idle pass loads nothing.
+  It packs the interrupt lead-ins as well, so an interrupt taken in the
+  idle loop starts there instead of loading the wrapper $01E1, and the
+  T4RUPT pack carries the idle loop (docs/FLIGHT-STORE.md). A module that
+  holds the idle loop beside interrupt code is built with `FS_IDLE`
+  (`rk_module_tables.idle`): outside an interrupt its runs are idle,
+  inside one they weigh its other tables' MCT (the lead-ins count only
+  where no other table does: `LEAD_INS`). On the P63 descent-thrust window
+  from 17500 cs (30 cs) this took 17.27x to 16.09x real time, with module
+  switches 57 to 31 and lead-in loads 15 to 0 (+17 B LM resident).
 
 Measured in VICE (LM, 100 AGC cs from the cs 3000 snapshot,
 `tools/dap_pass_vice.py`): the DAP hold runs at 16.7x real time and

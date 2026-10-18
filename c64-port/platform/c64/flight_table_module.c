@@ -89,7 +89,14 @@ static agc_routine_table interpretive[1 FS_INTERP(FS_COUNT)];
 #define FS_KEY_SPAN 0xffu
 #endif
 #ifdef RK_WORK_CLOCK
+#ifdef FS_IDLE
+/* A module carrying the self-check idle loop beside interrupt code: its
+ * run outside an interrupt is the work clock's idle (resident_flight.h). */
+#define FS_IDLE_NOW (!rk_hardware.in_interrupt)
+#define FS_LIMIT    rk_module_limit(e->budget, FS_IDLE_NOW ? RK_MCT_IDLE : FS_MCT)
+#else
 #define FS_LIMIT rk_module_limit(e->budget,FS_MCT)
+#endif
 #else
 #define FS_LIMIT RK_MODULE_STEPS
 #endif
@@ -178,6 +185,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
   t->basic=basic;t->basic_count=(uint8_t)(sizeof basic/sizeof basic[0]);
   t->mct = FS_MCT;
+#ifdef FS_IDLE
+  t->idle = 1;
+#endif
   t->lo = FS_KEY_LO;
   t->span = FS_KEY_SPAN;
 #ifdef FS_IO_KIND
@@ -226,7 +236,12 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #endif
  e->status=rk_module_status(status,steps,FS_LIMIT);
 #ifdef RK_WORK_CLOCK
+#ifdef FS_IDLE
+ /* The idle loop outside an interrupt, the lead-ins and T4RUPT inside one. */
+ e->work = FS_IDLE_NOW ? e->budget : (uint16_t)(steps * FS_MCT);
+#else
  e->work=FS_MCT==RK_MCT_IDLE ? e->budget : (uint16_t)(steps*FS_MCT);
+#endif
 #endif
  return APOLLO_OV2_DONE;
 #endif

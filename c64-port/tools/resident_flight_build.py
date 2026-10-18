@@ -86,9 +86,9 @@ def mct_weight(m, tables, interp=False):
     their basic keys (interp: their interpretive keys; tables None: every
     table's). Tables with no calibrated run take the mission's mean; no
     calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
-    0 marks the background self-check loop (any *_self_check_idle_routines
+    0 marks the background self-check loop (any *_self_check_idle(_hot)_routines
     table): idle, whose run takes the rest of the tick (RK_MCT_IDLE)."""
-    if tables and any(t.endswith('_self_check_idle_routines') for t in tables):
+    if tables and any(t.endswith(('_self_check_idle_routines', '_self_check_idle_hot_routines')) for t in tables):
         return 0
     keys = _mct_data().get(m, {})
     named = {k.split()[0] for k in keys}

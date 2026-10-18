@@ -392,7 +392,13 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     # The work clock's weight (resident_flight.h): its tables' calibrated
     # MCT per routine.
     head += f'#define FS_KEY_LO {key_range[0]}u\n#define FS_KEY_SPAN {key_range[1] - key_range[0]}u\n'
-    head += f'#define FS_MCT {mct_weight(m, [chunk[0]] if chunk else list(basic) + list(interp))}u\n'
+    weighed = [chunk[0]] if chunk else list(basic) + list(interp)
+    rupt = [t for t in weighed if not idle_table(t)]
+    # The lead-ins riding in a pack keep the pack's own weight.
+    own = [t for t in rupt if t not in LEAD_INS] or rupt
+    head += f'#define FS_MCT {mct_weight(m, own) if own else 0}u\n'
+    if rupt and len(rupt) < len(weighed):
+        head += '#define FS_IDLE 1\n'
     wrapper.write_text(
         head + f'#define FS_BASIC(X) {" ".join(f"X({t})" for t in basic)}\n'
         f'#define FS_INTERP(X) {" ".join(f"X({t})" for t in interp)}\n'
@@ -547,9 +553,14 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # (src/lm_dntm_rupt.c, src/cm_dntm_rupt.c), so one module run takes a whole
 # DOWNRUPT, which runs inhibited, from the vector to the resumed Z; the
 # vector's wrapper record goes to that module (DOWNRUPT_HOST).
-CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_postjump_hot_routines'],
+# The LM idle module also carries the interrupt lead-ins (src/rupt_lead_ins.c),
+# so an interrupt taken in the idle loop starts there, not in the resident's
+# wrapper module 0x01E1; outside an interrupt its runs are idle (FS_IDLE).
+CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'],
+                    'lm_self_check_idle': ['lm_interbank_postjump_hot_routines', 'lm_lead_in_hot_routines'],
                     'lm_downtelemetry': ['lm_dntm_rupt_routines']},
-             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_self_check_idle': ['cm_interbank_postjump_hot_routines'],
+                    'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
 # A hot table CO_LOCATE packs, and the full table whose keys it shares: the
 # host flight run lists it just before that table, with the full table's
 # module, sites and weight, so a call from the module carrying it runs there
@@ -578,7 +589,20 @@ DOWNRUPT_VECTOR = 2048 + 0o40   # physical 04040
 # hot entries and the table list naming both. P-AXIS, Q,R-AXIS and RATELOOP
 # run from the excursion.
 PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dapidler_hot_routines']},
-       'cm': {3: ['cm_self_check_idle_routines']}}
+       'cm': {3: ['cm_self_check_idle_routines', 'cm_interbank_postjump_hot_routines']}}
+# A hot table pinned beside another pinned table, for that table's callers:
+# CM's POSTJUMP alone (src/cm_interbank_postjump.c) beside the self-check
+# idle loop, whose CHECKNJ calls it every idle pass. Before, each idle pass
+# loaded the interbank module, which also evicted the module the
+# interrupted job runs in. On the C64 it runs with the pinned module's
+# operands (the idle file's one POSTJUMP site), so any other caller's
+# POSTJUMP is refused there and falls to the resolver, which loads
+# cm_interbank_routines as before (rk_direct). The host run takes that
+# table's operands and work-clock weight (idle) for it, and lets the next
+# holder take a point a pinned table refuses. CO_LOCATE packs it in the idle
+# loop's job-slot module too, so that module (the load check's reference for
+# the pinned set) runs the same steps.
+PIN_HOT = {'cm_interbank_postjump_hot_routines': 'cm_self_check_idle_routines'}
 def packed_pins(pinned):
     """{table: slot class} for the pinned sets that went into the store (the
     report's "pinned", packed): their own tables, not the home's that a
@@ -641,17 +665,23 @@ EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_ka
 # Tables a pack carries for rk_direct only: the DAP pass calls them while
 # the pack is loaded, but other callers keep loading their own (smaller)
 # modules, so the resolver does not send their keys to the pack.
-RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines'}
+RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines', 'lm_lead_in_hot_routines',
+        'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines'}
 # A ride table whose operands are another file's sites (IBNKCALL's CADR is
 # its caller's word, compiled into lm_interbank_routines' site list): the
 # pack takes that file's sites in the banks its own tables' keys are in.
-RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines'}
+RIDE_SITES = {'lm_interbank_dap_hot_routines': 'lm_interbank_routines',
+              'lm_interbank_postjump_t4_hot_routines': 'lm_interbank_routines'}
 # T4RUPT the same way: its core (the resident's wrapper 0x01E2 holds the
 # whole table too) and the radar step in one job-slot module, so a radar
 # T4RUPT loads one module, not two (steward/cpu-budget.md). RCSMON stays
 # out: it takes lm_channel_io, which would put the pack's every step on the
 # transfer engine instead of rk_direct.
-T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines'], 'cm': []}
+# The idle loop (with POSTJUMP) and the lead-ins ride along, so the loop
+# runs on after a T4RUPT taken in it, and the next interrupt starts, with no
+# load (FS_IDLE: the loop is idle outside an interrupt).
+T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lead_in_hot_routines',
+                 'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines'], 'cm': []}
 # The CM entry DAP pass (T5RUPT) reaches 26 of cm_entry_dap_basic's 138
 # routines, spread over all of its chunks, so a pass loaded about 5 of them
 # (lane-g/cm-entry-profile-80342904.md): its hot subset in one module makes
@@ -671,7 +701,17 @@ ALONE = {'cm_entry'}
 # keys and routines.
 # A hot subset's full table where it is not <file>_routines: a generated
 # file names its full table <file>_basic (tools/basic_compile.py).
-HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic'}
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic',
+            'lm_interbank_postjump_t4_hot_routines': 'lm_interbank_routines'}
+# Tables that run only from the self-check idle loop: a module carrying them
+# beside others runs them as the work clock's idle outside an interrupt
+# (FS_IDLE) and weighs the others' MCT inside one.
+IDLE_ONLY = {'lm_interbank_postjump_hot_routines', 'lm_interbank_postjump_t4_hot_routines'}
+LEAD_INS = {'lm_lead_in_hot_routines'}
+
+
+def idle_table(t):
+    return t.endswith(('_self_check_idle_routines', '_self_check_idle_hot_routines')) or t in IDLE_ONLY
 
 
 def hot_full(t):
@@ -883,6 +923,26 @@ def up_to_date(stamp, digest):
     return True
 
 
+def covering_stamp(a, stamp, digest):
+    """A current stamp of this build, or of a wider one: a full lm,cm build
+    writes everything a --missions lm or a --host-only build would, from the
+    same inputs. Without this, CI shards that run flight-store, flight-store-lm
+    and --host-only targets rebuild the store (half an hour with Pinball) once
+    per variant, and each rebuild makes the wider stamp stale again."""
+    if up_to_date(stamp, digest):
+        return stamp
+    want = set(a.missions.split(','))
+    for wider in ((False, 'lm,cm'), (False, a.missions), (a.host_only, 'lm,cm')):
+        host_only, missions = wider
+        if (host_only, missions) == (a.host_only, a.missions) or not want <= set(missions.split(',')):
+            continue
+        other = argparse.Namespace(**{**vars(a), 'missions': missions, 'host_only': host_only})
+        path = ROOT / OUT / ('.stamp-' + missions.replace(',', '-') + ('-host' if host_only else ''))
+        if up_to_date(path, input_digest(other)):
+            return path
+    return None
+
+
 UNPLACED = 'docs/flight-store-unplaced.json'
 
 
@@ -924,9 +984,11 @@ def main():
     stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
                           + ('-host' if a.host_only else ''))
     digest = input_digest(a)
-    if not a.force and up_to_date(stamp, digest):
-        print(f'{OUT}: up to date ({stamp.name}; --force rebuilds)')
-        return 0
+    if not a.force:
+        current = covering_stamp(a, stamp, digest)
+        if current:
+            print(f'{OUT}: up to date ({current.name}; --force rebuilds)')
+            return 0
     stamp.unlink(missing_ok=True)
     started = time.time() - 2
     index, objects = host_index(a.host_cc, a.jobs)
@@ -974,7 +1036,7 @@ def main():
         order = [x for f in order for x in [t for t, g in hot_of.items() if g == f] + [f]]
 
         def site_stem(t):
-            t = hot_of.get(t, t)
+            t = PIN_HOT.get(t, hot_of.get(t, t))
             if t in RIDE_SITES and RIDE_SITES[t] in tables:
                 return tables[RIDE_SITES[t]]
             return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
@@ -1033,7 +1095,7 @@ def main():
                           f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
                           f'"{" ".join(dict.fromkeys(also[t] + also[f]))}", '
                           f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
-                          f'{host_mct(m, f)}u)\n'
+                          f'{host_mct(m, PIN_HOT.get(f, f))}u)\n'
                           for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
                           for f in [hot_of.get(t, t)]))
         write_host(host_pins(m, packed), host_packs(m, packed))

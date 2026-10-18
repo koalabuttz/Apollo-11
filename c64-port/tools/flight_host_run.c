@@ -226,10 +226,13 @@ static uint16_t point(const agc_word *w,agc_word sb,int *in){*in=interpreting(w,
 static const char *in_slot[2];
 /* A ride table (slot 5, flight_store_build.py RIDE) holds its keys only
  * while its pack is loaded in the job slot. */
-static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){int in;unsigned i;uint16_t key=point(w,sb,&in);
- for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
+/* after: the holder that refused (a pinned table: the next one may take
+ * the point, as rk_direct moves on when a slot runs no step), or 0. */
+static const entry *holder_after(const agc_word *w,agc_word sb,agc_routine *call,const entry *after){int in;unsigned i;uint16_t key=point(w,sb,&in);
+ for(i=after?(unsigned)(after-tables)+1u:0u;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
                          &&(*call=find(tables[i].t,key)))return &tables[i];
  return 0;}
+static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){return holder_after(w,sb,call,0);}
 static void where(const agc_word *w,agc_word sb,const char *what){int in;uint16_t k=point(w,sb,&in);
  printf("%s: %s Z %05o FB %05o EB %05o superbank %03o (key %u = %02o,%04o) Q %05o LOC %05o BANKSET %05o\n",what,
   in?"interpretive":"basic",(unsigned)w[5],(unsigned)w[4],(unsigned)w[3],(unsigned)sb,(unsigned)k,k/1024u,k%1024u+02000u,
@@ -294,6 +297,19 @@ static int chans_parse(const char *t){while(t&&*t){unsigned long cs;unsigned c,v
 enum { POKES=4096 };
 static struct { unsigned long cs; unsigned addr,value; } pokes[POKES];
 static unsigned npokes;
+
+/* FLIGHT_DSKY=1: print the native DSKY (DSPTAB, the relay words) at each
+ * sample point where it changed: major mode, verb, noun and R1-R3. For
+ * finding a scenario's displays and key times. */
+static char dsky_dig(unsigned c){
+ switch(c){case 0:return ' ';case 21:return '0';case 3:return '1';case 25:return '2';case 27:return '3';case 15:return '4';case 30:return '5';case 28:return '6';case 19:return '7';case 29:return '8';case 31:return '9';}return '?';}
+static void dsky_trace(unsigned long t,const agc_word *w){static char last[64];char b[64],d[24];unsigned k,sg[8]={0};
+ for(k=0;k<11u;++k){unsigned v=w[01023u+k];if(v&040000u)v=(~v)&077777u;d[2*k+1]=dsky_dig(v&037u);d[2*k]=dsky_dig((v>>5)&037u);if(k<8u)sg[k]=(v>>10)&1u;}
+ snprintf(b,sizeof b,"P%c%c V%c%c N%c%c R1 %c%c%c%c%c%c R2 %c%c%c%c%c%c R3 %c%c%c%c%c%c",d[20],d[21],d[18],d[19],d[16],d[17],
+  sg[6]?'+':sg[5]?'-':' ',d[15],d[12],d[13],d[10],d[11],
+  sg[4]?'+':sg[3]?'-':' ',d[8],d[9],d[6],d[7],d[4],
+  sg[1]?'+':sg[0]?'-':' ',d[5],d[2],d[3],d[0],d[1]);
+ if(strcmp(b,last)){strcpy(last,b);printf("DSKY %lu cs: %s\n",t,b);}}
 /* FLIGHT_SNAPSHOT (above). Fields by name, so the layouts need not match. */
 static void snapshot(const char *path,const apollo_overlay_state *s,const flight_io *io,const agc_hardware *hw){
  FILE *f=fopen(path,"w");unsigned i;
@@ -449,6 +465,34 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
  ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0);mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0);
  dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
  for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0;n=(long)e->carry[k];e->carry[k]-=(double)n;
+  v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
+  v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
+  if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
+
+/* FLIGHT_SPS=KG (CM): the service propulsion engine, the same on both
+ * sides, so P40 sees its burn. From the first sample point with ENGONFLG
+ * set (FLAGWRD5 bit 7) it thrusts 91,188 N along the engine bell, body X
+ * turned by the mechanical biases P40 assumes (PBIAS -2.15, YBIAS +0.95
+ * degrees; small angles: CDUY less 2.15 and CDUZ plus 0.95 degrees in the
+ * FLIGHT_ENGINE direction), burning KG kilograms down at 3,080 m/s, and each sample
+ * point adds the velocity since the last one to PIPAX-Z (5.85 cm/s a
+ * count), carrying the fraction. No attitude dynamics: each sample point
+ * sets CDUX-Z to the RCS DAP's desired angles CDUXD-ZD (perfect attitude
+ * control, so P40's R60 maneuver ends) until the engine first lights;
+ * from then on the TVC DAP reuses those cells as temporaries, so the
+ * attitude holds at ignition for the rest of the run. */
+static double sps_kg;
+enum { CM_CDUXD=03246 };
+static struct sps { int on,lit; unsigned long t; double kg,carry[3]; } sps_ref,sps_nat;
+static void sps_due(unsigned long t,struct sps *e,agc_word *w){double a,dt,ig,mg,dir[3];unsigned k;
+ if(!sps_kg)return;
+ if(!e->lit)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CM_CDUXD+2u*k);else *cell(CDUX+k)=(int16_t)eword(w,CM_CDUXD+2u*k);}
+ if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
+ if(!e->on){e->on=e->lit=1;e->t=t;if(!e->kg)e->kg=sps_kg;return;}
+ dt=(double)(t-e->t)*0.01;e->t=t;a=91188.0/e->kg;e->kg-=91188.0/3080.0*dt;
+ ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0)-0.0375245789;mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0)+0.0165806279;
+ dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0/5.85;n=(long)e->carry[k];e->carry[k]-=(double)n;
   v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
   if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
@@ -754,6 +798,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
+ if(getenv("FLIGHT_SPS"))sps_kg=strtod(getenv("FLIGHT_SPS"),0);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
 #endif
@@ -784,6 +829,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
+    sps_due(now(w),&sps_ref,0);
     aero_due(now(w),&aero_ref,0);
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
@@ -837,6 +883,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
+   sps_due(now(s.words),&sps_nat,s.words);
+   if(getenv("FLIGHT_DSKY"))dsky_trace(now(s.words),s.words);
    {int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(r)pending|=RK_RUPT_BIT(RK_RUPT_RADAR);}
    watch(s.words);
    aero_due(now(s.words),&aero_nat,s.words);
@@ -877,15 +925,22 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;
-   before=s;p.operands=e->sites;p.operand_count=e->nsites;
-   /* The module's fixed_data (flight_store_build.py FIXED_DATA): the
-    * resident's boundary words, self-check's rope hook, or every rope word. */
+   before=s;
+   for(;;){const entry *next_e;
+    p.operands=e->sites;p.operand_count=e->nsites;
+    /* The module's fixed_data (flight_store_build.py FIXED_DATA): the
+     * resident's boundary words, self-check's rope hook, or every rope word. */
 #if RK_LM
-   p.fixed_data=e->fixed==1u?lm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
+    p.fixed_data=e->fixed==1u?lm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #else
-   p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
+    p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #endif
-x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+    x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+    /* A pinned table that refuses the point (slot 3 or 4) leaves it to the
+     * next holder, as rk_direct does on the C64 (a slot that runs no step). */
+    if(st==EXEC_OK||e->slot<3u||e->slot>4u||!(next_e=holder_after(before.words,io0.superbank,&call,e)))break;
+    s=before;io=io0;hw=hw0;e=next_e;names[t]=e->name;
+    if(*e->module)module_load(e,s.words,io.superbank);}
    if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;int interp;(void)point(before.words,io0.superbank,&interp);
     n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);
     /* Again with the scalers yaAGC read (scaler_latch). */
