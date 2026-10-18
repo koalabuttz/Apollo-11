@@ -406,9 +406,12 @@ static void rp_diff(unsigned long t,unsigned where,const agc_word *w,const agc_h
  if(!rp_out)return;
  for(i=0;i<2048u;++i)if(w[i]!=rp_w[i]){
   long d=ones(w[i])-ones(rp_w[i]);
-  /* A PIPA turning -0 into +0 counts nothing: setting it would wipe the
-   * C64's counts READACCS has not read yet. */
-  if(i>=037u&&i<=041u){if(d)rp_row(t,1u,where,i,(unsigned)(d&0xffff));}
+  /* A PIPA is a count, not a set: setting it would wipe the C64's counts
+   * READACCS has not read yet. A PIPA turning -0 into +0 (the models store
+   * 0 as +0) is a count of 0, which turns the C64's -0 into +0 the same
+   * way and leaves any other value as it is; without it READACCS reads
+   * +0 on the host and -0 on the C64 (TEMY -0 against +0). */
+  if(i>=037u&&i<=041u)rp_row(t,1u,where,i,(unsigned)(d&0xffff));
   else rp_row(t,0u,where,i,w[i]);}
 #define C(x,n) if(hw->x!=rp_hw.x)rp_row(t,2u,where,n,hw->x);
  C(channel30,030u)C(channel31,031u)C(channel32,032u)C(channel33,033u)C(channel15,015u)C(channel12,012u)C(channel13,013u)C(channel14,014u)
