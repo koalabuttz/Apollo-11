@@ -78,6 +78,8 @@ def snapshot(exe, name, cs, tag, replay=0, every=0):
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
                 'channel 35', 'superbank']
 ROW = struct.Struct('<HBBHH')
+# A snapshot more than this far past --snap-cs is reported as slid.
+SLIDE_CS = 100
 
 
 def compared(i):
@@ -319,6 +321,8 @@ def main():
     p.add_argument('--replay-every', type=int, default=0,
                    help='with --replay, also compare at the first sample point at or after every N cs, '
                    'to find when the C64 leaves the host')
+    p.add_argument('--strict-start', action='store_true',
+                   help=f'fail when the snapshot slides more than {SLIDE_CS} cs past --snap-cs')
     p.add_argument('--watch', default='', help='up to five erasable words (octal addresses, comma separated) '
                    'printed as the window ends, e.g. 1011 for Comanche MODREG')
     a = p.parse_args()
@@ -350,6 +354,15 @@ def main():
         sys.exit('--replay replays the keys itself; leave out --keys')
     every = a.replay_every if 0 < a.replay_every < a.cs else a.cs
     header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every)
+    # The snapshot waits for a point with no interrupt pending, so inside a
+    # long interpretive job it can start well after --snap-cs (CM 9000 ->
+    # 9952), and the window then covers other code than asked for.
+    snap_at = int(re.search(r'^snapshot at (\d+) cs', (dp.WORK / f'{tag}-host.log').read_text(), re.M)[1])
+    slid = snap_at - a.snap_cs
+    print(f'{a.scenario}: snapshot at {snap_at} cs (asked {a.snap_cs}, '
+          + (f'slid {slid} cs: the window starts late)' if slid > SLIDE_CS else f'+{slid} cs)'))
+    if slid > SLIDE_CS and a.strict_start:
+        sys.exit(f'FAIL: {a.scenario}: the snapshot slid {slid} cs past {a.snap_cs} (--strict-start)')
     keys, defines, patch, end_at = None, [], [], None
     if a.replay:
         rows = pathlib.Path(f'{header}.replay').read_bytes()
@@ -373,10 +386,8 @@ def main():
               f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
               f'{kinds.get(3, 0)} interrupt requests)')
     if a.keys:
-        log = (dp.WORK / f'{tag}-host.log').read_text()
-        snap_at = int(re.search(r'^snapshot at (\d+) cs', log, re.M)[1])
         keys, pressed = window_keys(tag, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
-        print(f'{a.scenario}: snapshot at {snap_at} cs; {len(pressed)} keys pressed on the C64 at '
+        print(f'{a.scenario}: {len(pressed)} keys pressed on the C64 at '
               + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
     prg = dp.link(a.cc, tag, header, a.cs + 500 if a.replay else a.cs, scratch, os.environ.get('FSV_STEPS') == '1',
                   m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
@@ -433,7 +444,8 @@ def main():
                   "in the host's state")
     if a.profile:
         r['profile'] = dp.profile(tag)
-    r.update(scenario=a.scenario, snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
+    r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=a.cs,
+             host_holes=holes)
     # Status 0 means no step refused; it does not mean the window ran to its
     # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
     # reports status 0). A window that stops short of --cs without a refusal
