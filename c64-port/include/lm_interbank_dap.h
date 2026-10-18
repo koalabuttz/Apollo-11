@@ -13,4 +13,5 @@ extern const agc_routine_table lm_interbank_dap_hot_routines;
 /* POSTJUMP (04635) alone, the same way, for the self-check idle module
  * (CO_LOCATE), which then carries it instead of all of lm_interbank. */
 extern const agc_routine_table lm_interbank_postjump_hot_routines;
+extern const agc_routine_table lm_interbank_postjump_t4_hot_routines;
 #endif

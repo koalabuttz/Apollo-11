@@ -410,7 +410,11 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
-        uint16_t limit=rk_limit(t->mct);
+        uint8_t mct = t->mct;
+#if RK_LM /* only the LM store packs the idle loop beside interrupt code */
+        if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
+#endif
+        uint16_t limit = rk_limit(mct);
 #else
         const uint16_t limit=RK_MODULE_STEPS;
 #endif
@@ -429,7 +433,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
-        rk_charge(steps,t->mct);
+        rk_charge(steps, mct);
 #endif
         return rk_module_status(status,steps,limit);
     }

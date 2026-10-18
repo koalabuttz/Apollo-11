@@ -348,6 +348,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `lm_channel_io`, and a pack holding it would run every step through the
   transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
   31 K cycles instead of 16 K).
+  The idle loop rides in it too (`lm_self_check_idle_hot_routines`, and
+  POSTJUMP as `lm_interbank_postjump_t4_hot_routines`, the same entries as
+  the idle module's), with the interrupt lead-ins
+  (`lm_lead_in_hot_routines`, the resident wrapper $01E1's entries). The
+  idle loop then runs on after a T4RUPT taken in it, and the next interrupt
+  starts there, with no load. These are ride tables (`RIDE`): the resolver
+  still sends their keys to their own modules. With them the pack is
+  10,459 bytes.
 - The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those

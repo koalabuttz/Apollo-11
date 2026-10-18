@@ -30,5 +30,6 @@
  * superbank and interrupt_enabled are used. A 2CADR outside fixed memory
  * (02000-07777) has no producer and is refused unchanged. */
 extern const agc_routine_table lm_lead_in_routines;
+extern const agc_routine_table lm_lead_in_hot_routines;
 extern const agc_routine_table cm_lead_in_routines;
 #endif
