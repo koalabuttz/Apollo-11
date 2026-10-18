@@ -7166,22 +7166,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
+            "sha256": "70991c131aad15f9267e4c28775d12f0d7de5b06960863fdf6638f0a47e49a20"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
+            "sha256": "60f721c06794d130fa5277a344e37e02d848a8e14fe0b1556097253c346c4eb4"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
+            "sha256": "3108a4426bfbaa19ded75433ba28986f3cee384e35fdb2527db9e668630eaa74",
             "vice_targets": {
-              "vice-lm-ascent": 250
+              "vice-lm-ascent": 251
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
+            "sha256": "e2b9c2c7362ae2e8e05a770abed9a063a4d0418e8fdac8089d26b460cda877af"
           },
           "independent_review": {
             "path": "docs/audits/rev2-lm-ascent.md",

@@ -28,7 +28,7 @@ RTB LOADTIME is native (`src/rtb_angles.c`). The interpretive orders are the com
 
 ## States
 
-The cases start from random erasable states. The spec pins no erasable values: every routine is compared from any values of the words it reads. A quarter of the cases put edge values (`edge_cases`) into MPAC, the top of the pushdown list and every operand the file names.
+The cases start from random erasable states. Every routine is compared from any values of the words it reads. The one pin: at ENGOFF's `CCS MPAC +1` (14,2364), most cases have a time to cutoff of exactly 0 cs, the one-bit ENGOFFDT case, so the +0 arm is compared (`states`). A quarter of the cases put edge values (`edge_cases`) into MPAC, the top of the pushdown list and every operand the file names.
 
 ## Evidence
 
@@ -37,4 +37,4 @@ Hashes: `evidence/lm-ascent/SHA256.json`. Bulk files are assets of the `evidence
 - **Source map.** `lm-ascent-source-map.json` lists every emitted word with its routine: 531 words, none untranslated.
 - **Independent assembly comparison.** `make lm-ascent-differential`: 512 states per routine (107,008 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Each run goes from the routine's entry state to the file's boundary (`boundary` in `lm-ascent-proof.json`).
 - **Host and sanitizer results.** `make test-lm-ascent sanitize-lm-ascent` runs the 3,344 frozen cases (every 32nd).
-- **C64 execution results.** `make vice-lm-ascent` runs 29 diagnostics with 250 cases. 10 of them are runs cut short where the oracle stops too (spec `c64_cuts`, `tests/interp_cut.h`). They cover the arcs that only runs too long for one diagnostic take. Together the cases take every gcov branch arc the host cases take (1,728 in `lm-ascent-c64-cover.json`). The diagnostics build without inlining. The log gives each PRG's sha256.
+- **C64 execution results.** `make vice-lm-ascent` runs 29 diagnostics with 251 cases. 21 of them are runs cut short where the oracle stops too (spec `c64_cuts`, `tests/interp_cut.h`). They cover the arcs that only runs too long for one diagnostic take. Together the cases take every gcov branch arc the host cases take (1,734 in `lm-ascent-c64-cover.json`). The diagnostics build without inlining. The log gives each PRG's sha256.
