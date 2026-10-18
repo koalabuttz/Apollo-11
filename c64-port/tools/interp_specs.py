@@ -1901,6 +1901,10 @@ SPECS = {
         # Flight builds skip the entry checks' scan of the whole image
         # (about 121K cycles a routine on the C64).
         'trusted_image': True,
+        # P47BODY's interpretive block runs in the NOVAC job TIGON starts
+        # (FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET)); the CM TLI
+        # flight scenario reaches it.
+        'novac': ['P47BODY+1', 'P47BODY+3', 'P47BODY+4', 'P47BODY+5'],
         'image_w': True,
         'index_carry16': True,
         # GOPERF1/GOFLASH returns and other words only the display or a
