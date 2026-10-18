@@ -61,11 +61,12 @@ P63_KEYS = '@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E'
 # conditions at 470 s about 1 nm from the target).
 # lm-p63-nassp: Apollo 11's own P63 state (FLIGHT_CORE, the NASSP core of
 # tools/scenarios/luminary099-p63-ignition.core, 102:25 GET) with AUTO, the
-# LR antenna in position 2 and the descent engine model: V37E63E, proceed
-# on the TIG display, ENTER through R51 and R60, proceed on V99N62; the LLGE
-# flies the braking phase to P64 at about 1,118 s (yaAGC alone the same).
+# LR antenna in position 1 (moving to position 2 5 s after LRPOS2 commands
+# it, FLIGHT_LR_POS2) and the descent engine model: V37E63E, proceed on the
+# TIG display, ENTER through R51 and R60, proceed on V99N62; the LLGE flies
+# the braking phase to P64 at about 1,118 s (yaAGC alone the same).
 NASSP = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGHT_CH31': '057777',
-         'FLIGHT_CH33': '036673', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_ENGINE': '15100'}
+         'FLIGHT_CH33': '036733', 'FLIGHT_LR_POS2': '500', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_ENGINE': '15100'}
 NASSP_KEYS = '@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E'
 # lm-p52-realign: P52 option 3 (REFSMMAT) fine align from the same
 # Apollo 11 core (NASSP, 102:25 GET), on stars 18 (Regulus) and 20
@@ -83,6 +84,27 @@ LM_P52 = {'FLIGHT_CORE': 'tools/scenarios/luminary099-p63-ignition.core', 'FLIGH
           'FLIGHT_POKE': '3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717'}
 LM_P52_KEYS = ('@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E'
                '@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E')
+# lm-landing-ascent-nassp: lm-p63-nassp on to the surface and back to orbit.
+# FLIGHT_ENGINE_LAG: the throttle pulses at 3,200 a second and the thrust
+# lags them 0.2 s (P66's loop needs both). P64 at about 1,118 s; at 1,225 s
+# (about 140 m, 4.5 m/s down) the crew goes to attitude hold (channel 31
+# bit 13 cleared) and clicks the ROD switch (M: channel 16 bit 6, +1 ft/s a
+# click), so P66 starts and holds the sink rate; six clicks at 1,230 s and
+# four at 1,250 s slow it to 0.8 m/s, and the crew tilts the LM to null the
+# 34 m/s over the surface (FLIGHT_PILOT, 8 s) by 1,280 s. Touchdown at
+# 1,344 s (FLIGHT_TOUCHDOWN: contact stops the LM, the surface holds it),
+# AUTO again at 1,349 s. V37E68E at 1,360 s: P68 stores RLS and flashes
+# V06N43; PRO (channel 32 bit 14) at 1,410 s, GOTOPOOH; V37E00E at
+# 1,420 s: P00 on the surface. V37E12E at 1,480 s: P12 flashes V06N33 and
+# the crew loads TIG 102:53:00 on the AGC clock (V25E; the flight's was
+# 124:22) and proceeds, proceeds on V06N76, and on V99 at TIG - 5 s; the
+# ascent engine (FLIGHT_ASCENT, 4,888 kg at liftoff) burns about 7 min
+# 15 s to orbit insertion: 1,679 m/s, about 18 km up, climbing 6 m/s.
+LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOUCHDOWN': '134400',
+           'FLIGHT_ASCENT': '4888',
+           'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
+LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
+                '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
@@ -124,6 +146,21 @@ P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '16500:tools/flight_scenarios/cm-p23-mark.load'}
 P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
             '@20500V33E@25000V33E@27000V37E00E')
+# cm-p40: Apollo 11's LOI-1 (75:49:50 GET), the load at 20 s
+# (tools/flight_scenarios/cm_p40.py: the docked CSM+LM on its approach
+# hyperbola 2,060 km from the moon, TIG at 300 s, the external DV 889 m/s
+# retrograde, the SPS pads, the platform with X along the DV and the CDUs
+# at the ignition attitude S40.1 gives). G&N AUTO (channel 31); V37E30E,
+# proceed on V06N33 (TIG), V06N81 (DV), V06N42 (apocynthion and
+# pericynthion) and V16N45; V37E40E, proceed on V50N18 (R60's maneuver is
+# nil), ENTER on V50N18 (end R60), proceed on V50N25 00204 (the gimbal
+# test); average G at TIG-30, proceed on V99N40 at TIG-5; FLIGHT_SPS (the
+# 43,900 kg stack) burns about 372 s to cutoff (VG under 1 m/s); proceed
+# on V16N40 and V16N85, then P00.
+P40 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SPS': '43900', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
+P40_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+            '@29600V33E@69000V33E@70500V33E@72000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
 # load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
 # Base facing west 13 degrees left, the landing REFSMMAT, the platform
@@ -148,9 +185,11 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
+          ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
+          ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]

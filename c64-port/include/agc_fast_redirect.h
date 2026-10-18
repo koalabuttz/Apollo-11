@@ -58,5 +58,8 @@
 #else
 #define AFR_S(s) (s)
 #define AFR_BIND(s) ((void)0)
+#ifndef AFO_FIX
+#define AFO_FIX(s) ((void)(s))
+#endif
 #endif
 #endif

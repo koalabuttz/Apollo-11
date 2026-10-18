@@ -2,7 +2,7 @@
  "milestone": "cm-imu-calibration",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/cm_imu_calibration.c": "39af701f42be07809d0fe50abc88ed2e03a6bd61e60b0acdeeac37391d7c8c9d",
+  "src/cm_imu_calibration.c": "0afcc4ae0482559e8f478059b1924772ecb216922d6e84e478281f02284190f1",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
   "src/agc_fast_ops.c": "d7cd4ed7fc378b6ab9ed4fcd4bc6a873a5d0620bd4f3fa61e671cf9be708a666",
   "src/agc_fast_window.c": "02006a02a983b6ddfced79b496d59d820dd09d04cdae6b436425241a54d42ec0",
@@ -491,8 +491,8 @@
   176641,
   176642
  ],
- "host_branch_arcs": 2024,
- "c64_branch_arcs": 2024,
+ "host_branch_arcs": 2040,
+ "c64_branch_arcs": 2040,
  "arcs_by_source_host_c64": {
   "src/agc_fast_ops.c": [
    42,
@@ -523,8 +523,8 @@
    6
   ],
   "src/cm_imu_calibration.c": [
-   1369,
-   1369
+   1385,
+   1385
   ],
   "src/cm_interp_orders.c": [
    0,
@@ -572,7 +572,7 @@
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 2013,
+ "all_cases_branch_arcs": 2029,
  "all_cases_branches_missing_on_c64": [],
  "truncated_rows": [
   {

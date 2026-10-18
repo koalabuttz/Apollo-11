@@ -255,7 +255,7 @@ restart.
   tested for 0.64 s) and the rupt lock (an interrupt held too long) are not
   modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
-  the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF4),
+  the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
   `restart_light` reads and writes it there (Lane C).
 - **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.

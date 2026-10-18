@@ -123,6 +123,29 @@ static void gap(fd_state *st,uint16_t key,uint8_t interp,uint8_t refused,const c
  for(i=0;i<st->ngaps;++i)if(st->gaps[i].key==key&&st->gaps[i].interp==interp&&st->gaps[i].by==by){st->gaps[i].arrivals+=(unsigned)arrival;++st->gaps[i].slots;return;}
  if(st->ngaps<FD_GAPS){fd_gap *g=&st->gaps[st->ngaps++];g->key=key;g->interp=interp;g->refused=refused;g->by=by;g->arrivals=1;g->slots=1;}}
 
+/* The next table after index i (resolution order) that holds key, as fd_init
+ * admits tables, or 0: a compact copy pinned on the C64 (PIN_HOT in
+ * tools/flight_store_build.py) refuses other callers' points there, and the
+ * resident moves on to the table that takes them. */
+static unsigned next_holder(const fd_state *st, unsigned i, uint8_t interp, uint16_t key,
+                            agc_routine *call)
+{
+    unsigned j;
+    for (++i; i < fd_table_count; ++i) {
+        const fd_table *e = &fd_tables[i];
+        if (e->interp != interp || (e->interp && st->mode == FD_INTERP_CORE)) continue;
+#if X86_CERTIFIED_ONLY
+        if (fd_table_status(i) == 'u') continue;
+#endif
+        for (j = 0; j < e->t->count; ++j)
+            if (e->t->entries[j].physical == key) {
+                *call = e->t->entries[j].call;
+                return i + 1u;
+            }
+    }
+    return 0;
+}
+
 static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind kind){flight_io_buffer b;void *x;enum exec_status r;
  x=flight_io_enter(kind,&st->io,&st->hw,&b);r=call(&st->p,&st->s,x);flight_io_leave(kind,&st->io,&st->hw,&b);
  return r;}
@@ -134,6 +157,22 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
   st->p.operands=e->sites;st->p.operand_count=e->nsites;
   st->p.fixed_data=e->fixed==1u?SELF_CHECK_ROPE:rope_data;
   ran->table=e;ran->status=run(st,call_at[in][key],e->io);
+  {
+      unsigned n = t;
+      agc_routine c;
+      while (ran->status != EXEC_OK && !in && (n = next_holder(st, n - 1u, 0, key, &c)) != 0) {
+          st->s = before;
+          st->io = io0;
+          st->hw = hw0;
+          e = &fd_tables[n - 1u];
+          t = (uint16_t)n;
+          st->p.operands = e->sites;
+          st->p.operand_count = e->nsites;
+          st->p.fixed_data = e->fixed == 1u ? SELF_CHECK_ROPE : rope_data;
+          ran->table = e;
+          ran->status = run(st, c, e->io);
+      }
+  }
   if(ran->status==EXEC_OK){ran->mct=cost(key,(uint8_t)in);st->mct+=ran->mct;core_in=2;if(t-1u<256u)++st->uses[t-1u];return EXEC_OK;}
   /* A refusal: undo it; an interpretive point goes to the core. */
   st->s=before;st->io=io0;st->hw=hw0;
