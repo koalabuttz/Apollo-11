@@ -214,8 +214,8 @@ def replay_compare(h, c, skip=None, skipped=None):
     C64) for each compared erasable word, then each output channel."""
     out = []
     for i in range(2048):
-        if not compared(i) or h[i] == c[i]:
-            continue
+        if not compared(i) or h[i] == c[i] or (0o37 <= i <= 0o41 and {h[i], c[i]} == {0, 0o77777}):
+            continue  # a PIPA's -0 and +0 are the same count
         if skip and i in skip['words']:
             skipped.add(skip['words'][i])
         elif skip and i in skip['sent'] and h[i] == (~c[i] & 0o77777):
