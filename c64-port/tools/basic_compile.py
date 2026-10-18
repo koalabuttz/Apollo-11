@@ -1204,7 +1204,14 @@ class Basic:
         import bisect
         cuts = sorted(self.spec['flight_parts'])
         self.flight_cuts = cuts
-        part = lambda p: bisect.bisect_right(cuts, p)
+        # 'flight_part_map' (optional): the part (1-based) of each range
+        # between the cuts, so one part can hold ranges that are not next to
+        # each other; without it range j is part j.
+        pmap = self.spec.get('flight_part_map') or list(range(1, len(cuts) + 2))
+        if len(pmap) != len(cuts) + 1 or sorted(set(pmap)) != list(range(1, max(pmap) + 1)):
+            raise BasicError('flight_part_map needs a part for each of the %d ranges' % (len(cuts) + 1))
+        self.flight_map = pmap
+        part = lambda p: pmap[bisect.bisect_right(cuts, p)]
         extra = set()
         for k, body in self.nodes.items():
             for x in body or ():
@@ -1224,17 +1231,24 @@ class Basic:
         words = sorted({k[0] for k in self.nodes})
         bounds = [0] + cuts + [0o200000]
         c = ['/* Flight parts (spec \'flight_parts\', docs/FLIGHT-PARTS.md): %s_FLIGHT_PART=j' % S,
-             ' * builds part j of %d for the C64 flight store, the basic words between' % (len(cuts) + 1),
+             ' * builds part j of %d for the C64 flight store, the basic words between' % max(pmap),
              ' * its cuts (%s_OUT: the others); a run that reaches another part\'s word stops there' % S,
              ' * when it is a key (%s_leave), and is refused otherwise. */' % S.lower(),
              '#ifdef %s_FLIGHT_PART' % S]
-        for j in range(len(cuts) + 1):
-            lo, hi = bounds[j], bounds[j + 1]
+        for j in range(max(pmap)):
+            spans = [(bounds[i], bounds[i + 1]) for i in range(len(pmap)) if pmap[i] == j + 1]
             mask = 0
             for w in words:
-                if lo <= w < hi:
+                if any(lo <= w < hi for lo, hi in spans):
                     mask |= 1 << (w // 1024)
-            out = ' || '.join(t for t in ('(at)<%uu' % lo if j else '', '(at)>=%uu' % hi if j < len(cuts) else '') if t)
+            if len(spans) == 1:
+                lo, hi = spans[0]
+                out = ' || '.join(t for t in ('(at)<%uu' % lo if lo else '', '(at)>=%uu' % hi if hi < bounds[-1] else '')
+                                  if t)
+            else:
+                out = '!(%s)' % '||'.join('(%s)' % '&&'.join(t for t in ('(at)>=%uu' % lo if lo else '',
+                                                                        '(at)<%uu' % hi if hi < bounds[-1] else '') if t)
+                                          for lo, hi in spans)
             c += ['#%s %s_FLIGHT_PART==%d' % ('if' if j == 0 else 'elif', S, j + 1),
                   '#define %s_BANKS 0x%xull' % (S, mask), '#define %s_OUT(at) (%s)' % (S, out)]
         c += ['#else', '#error %s_FLIGHT_PART names no part' % S, '#endif',
