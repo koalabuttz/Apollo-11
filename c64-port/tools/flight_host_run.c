@@ -454,6 +454,34 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
   if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
 
+/* FLIGHT_SPS=KG (CM): the service propulsion engine, the same on both
+ * sides, so P40 sees its burn. From the first sample point with ENGONFLG
+ * set (FLAGWRD5 bit 7) it thrusts 91,188 N along the engine bell, body X
+ * turned by the mechanical biases P40 assumes (PBIAS -2.15, YBIAS +0.95
+ * degrees; small angles: CDUY less 2.15 and CDUZ plus 0.95 degrees in the
+ * FLIGHT_ENGINE direction), burning KG kilograms down at 3,080 m/s, and each sample
+ * point adds the velocity since the last one to PIPAX-Z (5.85 cm/s a
+ * count), carrying the fraction. No attitude dynamics: each sample point
+ * sets CDUX-Z to the RCS DAP's desired angles CDUXD-ZD (perfect attitude
+ * control, so P40's R60 maneuver ends) until the engine first lights;
+ * from then on the TVC DAP reuses those cells as temporaries, so the
+ * attitude holds at ignition for the rest of the run. */
+static double sps_kg;
+enum { CM_CDUXD=03246 };
+static struct sps { int on,lit; unsigned long t; double kg,carry[3]; } sps_ref,sps_nat;
+static void sps_due(unsigned long t,struct sps *e,agc_word *w){double a,dt,ig,mg,dir[3];unsigned k;
+ if(!sps_kg)return;
+ if(!e->lit)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CM_CDUXD+2u*k);else *cell(CDUX+k)=(int16_t)eword(w,CM_CDUXD+2u*k);}
+ if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
+ if(!e->on){e->on=e->lit=1;e->t=t;if(!e->kg)e->kg=sps_kg;return;}
+ dt=(double)(t-e->t)*0.01;e->t=t;a=91188.0/e->kg;e->kg-=91188.0/3080.0*dt;
+ ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0)-0.0375245789;mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0)+0.0165806279;
+ dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0/5.85;n=(long)e->carry[k];e->carry[k]-=(double)n;
+  v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
+  v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
+  if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
+
 /* FLIGHT_AERO=B (CM): drag and lift on a capsule of ballistic coefficient
  * B kg/m^2 and L/D 0.3, the same on both sides, so the entry programs see
  * the atmosphere. While SERVICER runs (AVEGFLAG) and the CM is below
@@ -738,6 +766,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
+ if(getenv("FLIGHT_SPS"))sps_kg=strtod(getenv("FLIGHT_SPS"),0);
 #endif
  core_path=getenv("FLIGHT_CORE");
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
@@ -766,6 +795,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
+    sps_due(now(w),&sps_ref,0);
     aero_due(now(w),&aero_ref,0);
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
@@ -819,6 +849,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
+   sps_due(now(s.words),&sps_nat,s.words);
    aero_due(now(s.words),&aero_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
    chan_due(now(s.words),&cnat,&hw,&io);
