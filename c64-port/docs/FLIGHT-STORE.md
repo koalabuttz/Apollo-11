@@ -986,6 +986,25 @@ port) runs one mission:
    Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
    radar model) are not replayed. `--watch 1011,...` prints up to five
    erasable words as the window ends (1011 is Comanche's MODREG).
+   Every run then checks its REU writes (tools/reu_layout.py): each byte
+   that differs between the image the run started from and the one VICE
+   writes back must lie in a region declared writable. The regions come
+   from their sources: the store (0 to its image bytes) and the rope
+   (`rope_reu_base`, 2 bytes a word) are read only; the Pinball save
+   (src/lanec_pin_trampoline.c LANEC_PIN_REU_SAVE, 4 KB), the undo area
+   (include/flight_undo.h) and the scratch (the last 32 KB) are writable;
+   with `--replay` the rows are read only and the states after them
+   writable. A write outside fails the run (`reu_bounds` in its JSON), and
+   the store build fails when two regions overlap. A write of the bytes
+   already there is not seen by that diff; the run's DMA trace covers it,
+   and every read. A VICE monitor checkpoint on the command register
+   ($DF01, `trace`, so it logs without stopping) computes each DMA's REU
+   range from the controller's registers and logs it when it is not inside
+   one span of declared regions; any logged DMA fails the run
+   (`dma_outside`). VICE evaluates the condition itself, so an in-bounds
+   run costs nothing. `--reu-check-drop REGION` leaves a region out, as a
+   test of the check: with the scratch left out, an LM P63 window logs 48
+   DMAs (the step records) and fails; with every region, it logs none.
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
    snapshot through the window on the C64's work clock, charging each
@@ -993,9 +1012,11 @@ port) runs one mission:
    of the module that runs it, the interpreter's per routine for the tables
    left to it), and writes every input its models and schedules give the
    AGC there (the engine, SPS and aero models' PIPA counts, keys,
-   FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go into the
-   zeros below the rope in the run's REU image, outside the store and the
-   resident. The C64 applies each row at the first step at or after its
+   FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go at the
+   top of the zeros between the store and the Pinball trampoline save
+   (0x1df000), outside the store and the resident (before this they sat
+   just below the rope, and the C64's states ran into the save, which
+   every Pinball routine stashes 4 KB to). The C64 applies each row at the first step at or after its
    time where the host took it (a sample point, or any step boundary for
    the engine lag and radar reads). At the first sample point `--cs` in
    (and with `--replay-every N` at the first one at or after every N cs
