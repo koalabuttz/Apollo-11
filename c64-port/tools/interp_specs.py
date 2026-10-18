@@ -201,6 +201,22 @@ def v67_loop():
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
 
 
+def v67_nochange():
+    """V67's V6N99PRO (31,2030 TCF V6N99PRO): N99LOOP sums WWPOS..+5 minus
+    WWPOS+6..+11 (the W-matrix RMS values against their saved copies); a
+    sum of 0 is the crew's PRO with no new values, BZF V06N9933 past
+    UPFLAG V67FLAG (reviewer 1, #603). Equal copies, copies whose
+    differences cancel, one copy off by one; half the cases keep their
+    own values."""
+    # (WWPOS is E4,1600: CS WWPOS reads it through the case's EBANK.)
+    w = ['E:%o' % (0o1600 + n) for n in range(12)]
+    vals = [0o1234, 0o20000, 0o37777, 0, 0o4567, 0o77]
+    same = dict(zip(w, vals + vals))
+    cancel = dict(same, **{w[6]: vals[0] + 1, w[7]: vals[1] - 1})
+    off = dict(same, **{w[11]: vals[5] + 1})
+    return [same, cancel, off, {}, {}, {}]
+
+
 def ddv_majors_joint(num=('0154', '0155'), den=('ALPHAM', 'ALPHAM+1'), his=(0o1, 0o1234, 0o17777, 0o30000)):
     """A DDV (or BDDV) with the divisor den's major part equal to or one
     above the dividend num's (lm_interp_orders.c's near-equal-majors steps
@@ -4637,7 +4653,8 @@ SPECS = {
         # steps from 54 by S1 = 6.
         'joint_states': dict([('ADDPOS+%d' % n, v67_loop()) for n in range(20)]
                              + [('NXPOSVEL+%d' % n, v67_loop()) for n in range(4)]
-                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]),
+                             + [('R22LEM96+%d' % n, n49_wait()) for n in (9, 10, 12)]
+                             + [('V6N99PRO-2', v67_nochange())]),
         'channel_inputs': True,
         'resume_flow': True,
         # Flowed CHANG2 resumes whose arms the program's own runs rarely
@@ -4663,6 +4680,15 @@ SPECS = {
         # EDOP and LOC at the RTB's operand word (23,2150 and 26,3351), so
         # each operand word is a routine of its own (D2's LM rendezvous run).
         'pending_danzig': True,
+        # RRLIMCHK and RRLIMNB return through INDEX L; TC L to caller +2 /
+        # +3: a case's Q leaves room for those words outside the file
+        # (auditor, #603).
+        'index_returns': True,
+        # DODES's passes reach NOTP20's CCS LOSCOUNT (after INHINT, CS
+        # RADMODES and RROUT's writes) with the count 0 to 3, as R21LEM2
+        # sets it and DODESEND counts it down: -0 would run KILLTASK's CADR
+        # DESLOOP +2 as an instruction (auditor #508; reviewer 1, #603).
+        'range_states': [('DODES', 'DODESEND', {'E:1456': [0, 1, 2, 3]})],
         # REMODE, BEGDES and RGOODEND are WAITLIST tasks and R29RDJOB a NOVAC
         # job: the basic routines they reach (CLRADMOD and the RR/LR
         # routines) run under any FIXLOC, and with NEWJOB -0 (steward rule
