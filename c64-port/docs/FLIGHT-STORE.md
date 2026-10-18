@@ -865,6 +865,16 @@ port) runs one mission:
    ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
    job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
    takes 1,273,194 routines, none that yaAGC did not match.
+   On the C64 (`flight_scenario_vice.py --keys`), one gap shows only
+   there. CONIC_SUBROUTINES' CHECKCTR (12,2644) is KEPLOOP's and LAMBERT's
+   RTB target. On the host it runs only inside lm_conic_compiled's routines
+   (a native range), so no host run reaches it as a basic point. On the C64
+   the interpreter module runs those orders, and P34's TPI recycle stopped
+   there. `lm_conic_checkctr_routines` is its basic table: the same
+   lm_conic_checkctr body, leaving Z at DANZIG for the interpreter's pending
+   BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
+   run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
+   7.38 m/s as on the host.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
