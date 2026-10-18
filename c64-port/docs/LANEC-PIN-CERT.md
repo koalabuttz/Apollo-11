@@ -62,6 +62,59 @@ Two Luminary099 and three Comanche055 instruction words are unreachable:
   most 34 octal, and `AD OCT34BAR` (-34) gives a negative sum or -0, so
   `CCS A` never takes the positive branch to it.
 
+## Flight domain
+
+The inputs a flight brings to Pinball are the verb and noun codes and the
+addresses the noun tables give. Both ropes' tables (NNADTAB, IDADDTAB,
+NNTYPTAB in bank 42, read from `evidence/fixed-data-*-original.rope.bin`)
+give these addresses:
+
+| | LM | CM |
+|---|---|---|
+| nouns with an address | 79 | 86 |
+| address words (normal nouns' first word, mixed nouns' components) | 166 | 184 |
+| lowest | 013 (N65, SAMPTIME) | 013 (N65) |
+| other addresses below 0100 | 024 (N36, TIME2), 032 (N20, CDUX), 035-037 (N21, N72) | 024 (N36), 032 (N20), 035-037 (N21, N91) |
+| words in 016-023 | none | none |
+| past 01777 (as NOUNADD) | N13 (TCDH, 01776, three components): 02000-02001 | none |
+
+So every noun reads unswitched erasable from 013 up or one switched bank
+through NOUNADD 01400-01777, and only the LM's noun 13 runs on into fixed
+memory: FB 31 under superbank 4 is bank 41, whose first words are
+`TC NVSUB1` and `TC LOADLV1` (03544, 02775) in both missions. DECDSP, the
+octal verbs and the loads take all of it natively. A host sweep through the
+flight store (`flight-host-run-lm`/`-cm`, scaled time) of V01-V06, V11-V17
+and V21-V25 on every noun of both missions, V32-V37, V82, V83 and V16 N36
+followed by V32 runs every Pinball point natively with no refusal but the
+cases below.
+
+The guards that stay are argued here:
+
+- **Operator-entered machine addresses (N01-N03, and N15 incrementing
+  NOUNADD) in 0-07.** These are A, L, Q, EB, FB, Z, BB and the zero
+  register. A display of one shows Pinball's own working registers at the
+  read, which is not a flight quantity, and no noun names them. N15 from the
+  NOUNADD a fresh start leaves (01401, EB 0) reads 1-3. Refused.
+- **016-023 for the octal verbs, 017-023 for the decimal displays and the
+  loads.** BANKRUPT and BRUPT (016-017) are rewritten by every interrupt;
+  CYR, SR, CYL and EDOP (020-023) are edited on every access, so a read
+  rewrites them. No noun names them. DECDSP models the editing on its read;
+  the others refuse.
+- **Logical addresses past 01777** other than N13's two words: fixed memory,
+  which no noun reaches and a load cannot write. Refused.
+- **2INTOUT negative values.** The nouns it shows are TREDES (clamped to
+  0-99), LOOKANGL (an arcsine in degrees) and on the CM VHFCNT and TRKMKCNT
+  (counters): never negative in flight. Values past 99 are shown modulo 100
+  natively, as DSPDECVN does.
+- **ALMCYCLE with superbank 0-3.** ALMCYCLE (fixed-fixed 04145 / 04161) is
+  called only from Pinball code in banks 40-43, which runs only under
+  superbank 4 or higher.
+
+Two native files are in no try-list: `src/dsky_decimal_consumer.c` and
+`src/dsky_operator_schedule.c`. Their `pw-*` suites still compare them with
+the original, but no Pinball point's try-list runs them, and the
+certificate claims nothing for them.
+
 ## How it is checked
 
 `tools/lanec/wholefile_pin.py` (`make test-lanec-pin-cert`) rebuilds both
