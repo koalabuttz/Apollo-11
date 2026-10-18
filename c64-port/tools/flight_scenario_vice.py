@@ -40,10 +40,10 @@ import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
 
 
-def snapshot(exe, name, cs):
+def snapshot(exe, name, cs, tag):
     scen = {s[0]: s for s in fhd.FLIGHT}[name]
     _, m, _, keys, env = scen
-    header = dp.WORK / f'{name}-snap.h'
+    header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
     # The host takes the snapshot at the first point at or after cs with no
     # interrupt pending (a long job, such as PICAPAR, can hold one off for
@@ -51,9 +51,9 @@ def snapshot(exe, name, cs):
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}'},
                        capture_output=True, text=True)
-    (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)
+    (dp.WORK / f'{tag}-host.log').write_text(r.stdout + r.stderr)
     if not header.exists():
-        sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{name}-host.log)')
+        sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{tag}-host.log)')
     return header
 
 
@@ -95,12 +95,12 @@ def window_keys(name, scen_keys, snap_at, cs):
     return header, keys
 
 
-def host_holes(exe, name, cs):
+def host_holes(exe, name, cs, tag):
     """The points the host run to cs bridges, as flight_holes.describe dicts."""
     _, m, _, keys, env = {s[0]: s for s in fhd.FLIGHT}[name]
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2'}, capture_output=True, text=True)
-    (dp.WORK / f'{name}-holes.log').write_text(r.stdout + r.stderr)
+    (dp.WORK / f'{tag}-holes.log').write_text(r.stdout + r.stderr)
     words, owners = flight_holes.listing(flight_holes.MISSION[m]), flight_holes.lanes()
     return [flight_holes.describe(h, words, owners, m) for h in flight_holes.HOLE.finditer(r.stdout)]
 
@@ -128,6 +128,9 @@ def main():
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
+    # Each window's files (snapshot, PRG, VICE directory, result) carry its
+    # start, so windows of one scenario can run side by side.
+    tag = f'{a.scenario}-{a.snap_cs}'
     subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', a.host_cc],
                    cwd=ROOT, check=True)
     subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m,
@@ -139,7 +142,7 @@ def main():
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
-    holes = host_holes(exe, a.scenario, a.snap_cs + a.cs)
+    holes = host_holes(exe, a.scenario, a.snap_cs + a.cs, tag)
     print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(holes)} points, each a stop on the C64')
     for d in holes:
         print(f"  {d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals"
@@ -147,20 +150,20 @@ def main():
     if holes and a.stop_on_holes:
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
-    header = snapshot(exe, a.scenario, a.snap_cs)
+    header = snapshot(exe, a.scenario, a.snap_cs, tag)
     keys = None
     if a.keys:
-        log = (dp.WORK / f'{a.scenario}-host.log').read_text()
+        log = (dp.WORK / f'{tag}-host.log').read_text()
         snap_at = int(re.search(r'^snapshot at (\d+) cs', log, re.M)[1])
-        keys, pressed = window_keys(a.scenario, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
+        keys, pressed = window_keys(tag, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
         print(f'{a.scenario}: snapshot at {snap_at} cs; {len(pressed)} keys pressed on the C64 at '
               + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
-    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile, keys,
+    prg = dp.link(a.cc, tag, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile, keys,
                   [w for w in a.watch.split(',') if w][:5])
-    r = dp.vice(a, a.scenario, prg, pinned, m)
+    r = dp.vice(a, tag, prg, pinned, m)
     if a.profile:
-        r['profile'] = dp.profile(a.scenario)
-    r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
+        r['profile'] = dp.profile(tag)
+    r.update(scenario=a.scenario, snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
     # Status 0 means no step refused; it does not mean the window ran to its
     # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
     # reports status 0). A window that stops short of --cs without a refusal
@@ -169,6 +172,7 @@ def main():
         r.update(ok=False, short=True)
         print(f"FAIL: {a.scenario}: status 0 but the window ended after {r['agc_cs']} of {a.cs} cs")
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
+    (dp.WORK / f'{tag}.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z
         # (dap_pass_check.c DP_STEPS); fixed-fixed Z as bank 02 or 03.
