@@ -70,6 +70,7 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  unsigned i,vac=W[0120];
  if(W[7]||W[067]>037777u||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+ if(W[3]!=02400u)return 0; /* fast_window: EB as AFR_EBN */
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
@@ -3651,6 +3652,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
  uint8_t any=fb==0177777u;if(any)fb=W[4];
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(!any&&fb>=060000u&&(io->superbank&0100u)))return 0;
+ if(W[3]!=02400u)return 0; /* fast_window: EB as AFR_EBN */
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
 #else
@@ -3658,6 +3660,23 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #endif
  return 1;
 }
+/* The same under any EB, for a routine that sets EB before it
+ * touches erasable memory. */
+static MAYBE_UNUSED uint8_t basic_sane_any_eb(const apollo_overlay_state *s,const cm_native_io *io,agc_word fb){
+ unsigned i;
+ /* fb 0177777: a fixed-fixed entry, under any FB and SUPERBNK */
+ uint8_t any=fb==0177777u;if(any)fb=W[4];
+ if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
+ if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(!any&&fb>=060000u&&(io->superbank&0100u)))return 0;
+#if !RK_FIXED_IMAGE
+ for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
+#else
+ (void)i;
+#endif
+ return 1;
+}
+/* The same under any EB, for a routine that sets EB before it
+ * touches erasable memory. */
 
 /* CM_IMU_CALIBRATION_KEEP<n> bit i (i = 60n+bit, the order of cm_imu_calibration_points) keeps routine i;
  * a build that defines them keeps only a group (the C64 diagnostics). */
@@ -3683,7 +3702,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 /* 02,2553 FINETIME (entry FINETIME) */
 static enum exec_status r4553_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  AFR_BIND(s);AFO_FIX(s);
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
+ (void)p;if(!s||!v||!basic_sane_any_eb(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
  agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
  return basic_run(s,(cm_native_io *)v,2411u);
 }
@@ -3692,7 +3711,7 @@ static enum exec_status r4553_abi(const agc_native_program *p,apollo_overlay_sta
 /* 02,2554  (idle point) */
 static enum exec_status r4554_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  AFR_BIND(s);AFO_FIX(s);
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
+ (void)p;if(!s||!v||!basic_sane_any_eb(s,(cm_native_io *)v,0177777u))return EXEC_OUT_OF_SCOPE;
  agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
  return basic_run(s,(cm_native_io *)v,2412u);
 }
@@ -5745,7 +5764,7 @@ static enum exec_status r67033(apollo_overlay_state *s,p66_bias_io *io){
 /* 33,3034  (after EXIT) */
 static enum exec_status r67034_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  AFR_BIND(s);AFO_FIX(s);
- (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
+ (void)p;if(!s||!v||!basic_sane_any_eb(s,(cm_native_io *)v,066000u))return EXEC_OUT_OF_SCOPE;
  agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */
  return basic_run(s,(cm_native_io *)v,28188u);
 }

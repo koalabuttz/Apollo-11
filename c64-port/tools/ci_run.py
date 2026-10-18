@@ -459,7 +459,8 @@ def count_shards(targets, most, weights_path):
         return 1
     default = median_weight(targets, weights)
     total = sum(weights.get(t, default) for t in targets)
-    return max(1, min(most, -(-int(total) // RUNNER_SECONDS)))
+    # Never more runners than targets: an empty shard has nothing to build.
+    return max(1, min(most, len(targets), -(-int(total) // RUNNER_SECONDS)))
 
 
 def shard_targets(targets, k, n, weights_path):

@@ -215,16 +215,26 @@ Interpretive modules wait on the interpreter decision
 A basic-only module over its slot is split into chunks of consecutive
 routines (`platform/c64/flight_table_module.c` `FS_CHUNK`: entries copied
 field by field by constant index, so LTO links only the chunk's routines),
-halving until each chunk fits. Files in `GREEDY_SPLIT`
-(`tools/flight_store_build.py`) split greedily instead: each chunk takes
-as many consecutive routines as fit, found by binary search on its end.
-The CM entry DAP is one: a pass runs its table front to back, so fewer and
-larger chunks mean fewer loads per pass. A chunk holds only its own file's sources
-and operand sites; a table co-located into another module is never
-chunked. Chunks that fit are kept even when others do not; a single
+each as large as fits: `pack_chunks` grows a chunk 1, 2, 4, ... routines
+until one does not fit, then cuts the gap with a batch of parallel trial
+links, so the chunks are the same on every build (`make test-flight-chunks`
+checks it against a brute-force greedy packing). Files in `GREEDY_SPLIT`
+(the CM entry DAP) find the same chunks by binary search on each chunk's
+end: a pass runs that table front to back, so fewer and larger chunks mean
+fewer loads per pass. A chunk holds only its own
+file's sources and operand sites; a table co-located into another module is
+never chunked. Chunks that fit are kept even when others do not; a single
 routine still over its slot is reported as a failed entry
-(`one routine over its slot`, with its `routine_key`), and a file of more
-than 64 KB is `too big to split`. Before #211-era step-machine splits and
+(`one routine over its slot`, with its `routine_key`), and a file more than
+64 KB over its slot is `too big to split` unless `SPLIT_ANY` names it (Lane
+C's Pinball routines, whose try-lists each fit). A stem in `CHUNK_ORDER`
+packs its routines in its own order instead of by key, and each chunk is
+then a set of entries (`FS_PICK`): Pinball's (`lanec_pin_order`) are grouped
+by the modules their try-lists run, so a chunk links few of them (on LM this
+took the store image from 2.11 to 1.85 MB). The build prints, per
+mission, the chunk count, their mean fill and the store image against the
+rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
+`rope_base`). Before #211-era step-machine splits and
 Lane F's fix to the entry copy (a whole-struct copy kept every routine
 linked), chunking gained nothing; now it does.
 
@@ -348,6 +358,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `lm_channel_io`, and a pack holding it would run every step through the
   transfer engine instead of `rk_direct` (measured: radar T4RUPT steps cost
   31 K cycles instead of 16 K).
+  The idle loop rides in it too (`lm_self_check_idle_hot_routines`, and
+  POSTJUMP as `lm_interbank_postjump_t4_hot_routines`, the same entries as
+  the idle module's), with the interrupt lead-ins
+  (`lm_lead_in_hot_routines`, the resident wrapper $01E1's entries). The
+  idle loop then runs on after a T4RUPT taken in it, and the next interrupt
+  starts there, with no load. These are ride tables (`RIDE`): the resolver
+  still sends their keys to their own modules. With them the pack is
+  10,459 bytes.
 - The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
@@ -379,8 +397,17 @@ as the resident never runs it, and it only keeps its tables linked. Both
 link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
 also stops inlining. On LM, class 4 is 8,121
 of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
-class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
-without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 (`cm_self_check_idle_routines`), so those routines run without
+loading a module, with POSTJUMP beside it (`cm_interbank_postjump_hot_routines`
+in `src/cm_interbank_postjump.c`, checked against `cm_interbank_routines`
+by `make test-cm-interbank-postjump`; `PIN_HOT`). The idle loop's CHECKNJ
+calls POSTJUMP every pass, and before, each call loaded the interbank
+module, which also evicted the module the interrupted job runs in. The
+pinned copy runs only with the pinned module's operands (the idle file's
+one POSTJUMP site), so another caller's POSTJUMP is refused there and falls
+to the resolver, which loads `cm_interbank_routines` as before; the host
+run (`tools/flight_host_run.c`) gives a point a pinned table refuses to the
+next holder in the same way; on LM that loop is an ordinary job-slot module, as
 class 3 is kept for the DAP. The load check runs one of the class-3 set's
 points through the module that packs the same table and through `rk_direct`
 with only the pinned module present, compares them, checks the class-4
@@ -616,11 +643,50 @@ port) runs one mission:
    points (POLY, SLOAD2, NEWMODE, TPAGREE, TFFXTEST and P61-P67 returns).
    `lm-p63-nassp`: Apollo 11's own P63 state, the NASSP core
    tools/scenarios/luminary099-p63-ignition.core (102:25 GET), with AUTO,
-   the LR antenna in position 2 (`FLIGHT_CH33=036673`; position 1, as the
-   core has it, gives alarm 523 at high gate) and `FLIGHT_ENGINE=15100`;
+   the LR antenna in position 1 as the core has it (`FLIGHT_CH33=036733`)
+   and moving to position 2 5 s after LRPOS2 commands it at high gate
+   (`FLIGHT_LR_POS2=500`), and `FLIGHT_ENGINE=15100`;
    the keys are those of `lm-p63-descent`. The LLGE flies the braking
-   phase to P64 at about 1,118 s after the core (on yaAGC alone too); with
-   no landing radar model, alarms 511 and 522 recur every 2 s.
+   phase to P64 at about 1,118 s after the core (on yaAGC alone too). The
+   radar reads end (the resident's radar cycle requests RADARUPT, as
+   yaAGC does), with no data good, so no LR update is taken.
+   `lm-landing-ascent-nassp`: `lm-p63-nassp` on to the surface and back to
+   orbit. `FLIGHT_ENGINE_LAG=0.2`: the throttle command reaches the engine
+   as pulses at 3,200 a second and the thrust lags them 0.2 s, and the
+   PIPAs count at every native routine boundary (THROTTLE's FWEIGHT
+   assumes all three; without them P66's throttle commands alternate and
+   grow). At 1,225 s (about 140 m, 4.5 m/s down) the crew goes to attitude
+   hold (channel 31 bit 13) and clicks the rate-of-descent switch (key M,
+   channel 16 bit 6), so P66 starts and holds the sink rate; ten more clicks
+   bring it to 0.8 m/s, and the crew tilts the LM to null the 34 m/s over
+   the surface by 1,280 s (`FLIGHT_PILOT=8`: the thrust axis tilts against
+   the LLGE's surface velocity, V plus DELVS, at most 15 degrees).
+   Touchdown at 1,344 s (`FLIGHT_TOUCHDOWN`: contact stops the LM, and the
+   PIPAs get the surface's reaction, GM/r^2 up along RN, so the navigation
+   holds still). V37E68E: P68 stores RLS and flashes V06N43; PRO (channel
+   32 bit 14): GOTOPOOH; V37E00E: P00 on the surface. V37E12E: P12, TIG
+   102:53:00 on the AGC clock loaded on V06N33 (the flight's was 124:22),
+   proceed on V06N76 and on V99; the ascent engine (`FLIGHT_ASCENT=4888`,
+   15,569 N, no throttle) burns about 7 min 15 s to orbit insertion at
+   1,679 m/s, about 18 km up. On the host every native routine matches
+   yaAGC; the unregistered points are the 3 self-check ones and Pinball's
+   RELDSP1 (02,2502, 1 arrival).
+   `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
+   lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
+   descent orbit) back to that orbit's apolune and undoes the burn there
+   (76.4 ft/s along the velocity), so the LM starts on the 114 x 117 km
+   pre-DOI orbit with DOI at TIG 102:34:00 (lm-doi.load). V37E30E: P30 with
+   TIG and -76.4 ft/s in N81 loaded; N42 shows 61.4 x 8.1 nmi. V37E40E:
+   `FLIGHT_POKE` puts the CDUs and the DAP's desired CDUs at R60's N18
+   angles (the crew's maneuver) and ENTER skips the auto maneuver; PRO on
+   V99N40 at TIG - 5 s. The descent engine model stays at 10% (no
+   throttle-up), so the burn is 75 s, not the flight's 30 s; cutoff leaves
+   VG 1.1 ft/s and N85 1.0 ft/s. PRO through V16N40 and N85, V37E00E, then
+   V82 (this vehicle): 61.4 x 8.8 nmi. `FLIGHT_DSKY=1` prints the DSKY at
+   each change, which is how the key times were found. On the host every
+   native routine matches yaAGC; the unregistered points are the 3
+   self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
+   sites (#587).
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -640,6 +706,132 @@ port) runs one mission:
    and V37E00E end it in P00. Two yaAGC hardware models stop under the
    frozen clock for it (section 10): the optics drive, which zeroes CDUS
    and CDUT, and the gyro drive, which empties GYROCMD.
+   `lm-p57`: the lunar-surface alignment at 103:40 GET, about 55 minutes
+   after Apollo 11 landed at 0.674 N, 23.473 E, on Rigel (12) and Navi (3).
+   There is no core this late, so lm_p57.py builds one: lm-p57.load (the
+   landing REFSMMAT, the platform drifted 0.021, -0.014 and 0.017 degrees
+   from it, the LM on the surface yawed 13 degrees left of the approach
+   azimuth, SURFFLAG and LMOONFLG set, RLS, GSAV, TEPHEM and the AOT detent
+   pads) and lm-p57-star1.load and lm-p57-star2.load, the CDUs at each
+   mark, since the moon turns the LM under the platform. V37E57E, option 3,
+   technique 2 (two stars), V21 star codes; R59 picks detents 6 and 4
+   itself and its cursor and spiral angles for Rigel agree with
+   lm_p57.py's to 0.002 degrees. Each mark is the key x (channel 16 bit 3,
+   the AOT X MARK, and KEYRUPT2), then V21/V22 load the cursor and spiral
+   lm_p57.py computed; SURFSTAR, then N05 shows 0.00 and N93 shows
+   -0.021, +0.012 and -0.019 degrees, the drift taken out; V50N25 00014,
+   V34 and V37E00E end it in P00. The keys y and j are the Y MARK
+   (bit 4) and MARK REJECT (bit 5).
+   `cm-p23`: cislunar midcourse navigation at 24:30 GET, one star 2 /
+   earth near-horizon measurement. cm_p23.py writes cm-p23.load (the CSM
+   180,000 km out on a two-body ellipse from TLI in the launch plane, the
+   CMC's state vector 76 km off the true one, the launch REFSMMAT, the
+   shaft axis held on the horizon toward the star, the sun and moon pads,
+   WMIDPOS, WMIDVEL and HORIZALT) and two optics loads: cm-p23-cal.load,
+   the star line 0.011 degrees from the landmark line for R57's
+   calibration mark, and cm-p23-mark.load, the star on the horizon as the
+   true trajectory sees it at the mark. V37E23E, star 02 and horizon code
+   00110 on N70, ENTER on V50N25 (no auto maneuver), R57 (V59, MARK,
+   TRUNBIAS 4 counts), R52 and one R53 mark, then POINTAXS integrates the
+   state to the mark time, INCORP1 shows about 20 km on V06N49 (its
+   measured-minus-estimated angle agrees with cm_p23.py's 0.0084 degrees
+   to the trunnion's resolution, and the update moves the state toward the
+   true one), and proceed incorporates it; P00.
+   `cm-p40`: an SPS burn with LOI-1 (75:49:50 GET) as the reference
+   case. cm_p40.py writes cm-p40.load: the docked CSM+LM (43,900 kg) on
+   a hyperbola retrograde to the moon's orbit, 2,060 km out at the load,
+   pericynthion on the far side half a burn after TIG (300 s); the
+   external DV (V06N81) 889 m/s against the TIG velocity; the SPS pads
+   S40.13 needs for a finite burn (WEIGHT/G, EK1VAL-EK3VAL, FANG, EMDOT;
+   without them P40 treats the burn as impulsive and cuts off early); the
+   TVC DAP data (N46, N47); a platform with X along the DV; and the CDUs
+   at the ignition attitude S40.1 gives (the DV turned back by half the
+   burn arc, about 18.5 degrees of inner gimbal with the bell biases), so
+   R60's maneuver is nil. G&N AUTO (channel 31). V37E30E and proceed on
+   N33, N81, N42 and N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 (the gimbal test), proceed on V99N40 at TIG-5. The
+   harness's FLIGHT_SPS (tools/flight_host_run.c, CM) is the engine:
+   from ENGONFLG it thrusts 91,188 N along the bell (body X turned by
+   P40's PBIAS and YBIAS) and burns mass at 3,080 m/s exhaust velocity,
+   counting the velocity into PIPAX-Z; with no attitude dynamics the
+   CDUs follow the RCS DAP's CDUXD-ZD until ignition and hold from then
+   on (the TVC DAP reuses those cells). The burn runs about 372 s to
+   cutoff with VG 0.8 m/s; proceed on V16N40 and V16N85, then P00.
+   The docked RCS DAP's attitude filter calls MYSUBS's SMALLMP (TC
+   SMALLMP, 21,2042), which no earlier scenario reached:
+   src/cm_mysubs_routines.c puts the certified SMALLMP and DPADD bodies
+   (src/cm_mysubs.c) and their TC Q in the flight store as
+   `cm_mysubs_routines`.
+   `cm-p11`: Apollo 11's launch, 16 July 1969 13:32:00 UT, from the pad
+   to earth orbit insertion. cm_p11.py writes cm-p11.load, the pad loads
+   P01, P02 and P11 read: launch complex 39A (LATITUDE, PADLONG), the
+   72.058 degree flight azimuth (LAUNCHAZ) and the vehicle's 90 degrees on
+   the pad (AZIMUTH), TEPHEM so that the clock at liftoff is the launch
+   time, and the attitude error polynomial (zero: the FDAI holds the
+   liftoff attitude). PGNCSALT, UNITW and AZO are illustrative; no listing
+   gives the flight's values. Two harness models (tools/flight_host_run.c,
+   CM) stand in for the launch vehicle: `FLIGHT_IMU=1`, the gimbals (zero
+   while channel 12 bit 5 is on; the coarse align drives the CDUs to
+   THETAD), and `FLIGHT_SATURN=CS`, liftoff at that time (channel 30 bit 5
+   goes active) and the boost's specific force in PIPAX-Z: the S-IC (35.1
+   MN, inboard cutoff at 135 s, cutoff at 162 s), the S-II to 548 s and
+   the S-IVB to 823 s, along a pitch program in the launch plane from
+   vertical at 12 s to 93 degrees. cm_p11.py integrates the same boost
+   and prints the trajectory: insertion at 142 x 218 km and 7,786 m/s
+   (the flight's was 183 x 186 km). V37E01E at 20 s: P01 turns the IMU
+   on, zeros and coarse aligns it, then P02's gyrocompass loop; liftoff at
+   100 s: P11 zeros the clock, sets up REFSMMAT from LAUNCHAZ and shows
+   V06N62 (inertial speed, climb rate, altitude) every 2 s; at insertion
+   25,555 ft/s and 102 nmi. V82 in P11 shows V16N44, apogee 115.8 and
+   perigee 81.5 nmi; proceed, then V37E00E: P00. Times after liftoff,
+   keys, the run's length and flight_scenario_vice.py's `--snap-cs` alike,
+   count from the zeroed clock (a `--snap-cs` under 10000 is on the pad,
+   in P02). On the
+   host every native routine matches yaAGC; the unregistered point is
+   Pinball's RELDSP1 (02,2516, 1 arrival, on V82).
+   `cm-p20`: the CSM's side of the LM rendezvous, P20 tracking the LM with
+   SXT marks and VHF ranging. cm_p20.py writes cm-p20.load from the orbits
+   of lm_rendezvous.py (Lane D2's LM P20/P34 scenario): the CSM in a 60 nmi
+   circular lunar orbit, the LM 15 nmi below it and 2.1 degrees behind,
+   both retrograde about the reference Z axis as Apollo's were; REFSMMAT
+   the LM's local vertical; the CMC's LM state 1.8 km too far along the
+   line of sight; R22's pads (WRENDPOS, WRENDVEL, RVAR, RMAX, VMAX); the
+   CSM at R61's preferred tracking attitude. `FLIGHT_RR`'s CM side
+   (tools/flight_radar.h) holds the CDUs on the DAP's desired angles
+   (CDUXD-ZD; Comanche keeps them two words apart), points the SXT at the
+   LM, and puts the range in RNRAD when a VHF read starts (channel 13
+   bit 4; the resident timer ends the cycle with RADARUPT). The keys run V37E20E, V87E (VHF ranging
+   allowed), V57E and MARK, proceeding on V51 (TRKMKCNT 1: the mark goes
+   into the LM state and the W matrix). R22's first VHF range, at about
+   125 s, shows V06N49, the 1.8 km. Proceed takes it (VHFCNT 1). The
+   next, at about 185 s, shows N49 again for a 4 ft/s velocity change,
+   and proceed takes that too (VHFCNT 2). R22 waits on N49 in a loop
+   (RENDISP7), so the AGC never idles. `FLIGHT_BUSY_SAMPLE=100` gives the
+   keys their sample points: a key every second, so each CHARIN job runs
+   before the next key comes. On a busy stretch with all four keys at
+   once, V87 arrived as V77 and cleared PRFTRKAT.
+   On base 1a0ba510 the native run (25,000 cs, scaled x1) takes 651,427
+   routines, none that yaAGC did not match. The one refused point is
+   V87's interpretive SET (EXTENDED_VERBS.agc SETVHFLG +1, 43,3024),
+   which cm_extended_verbs_file_interpretive does not hold.
+   `lm-rendezvous`: the LM's side, P20 with rendezvous radar tracking and
+   then P34 TPI targeting. lm_rendezvous.py writes lm-rendezvous.load:
+   the same two orbits, the AGC's state vectors on them, R22's pads and
+   P34's TTPI and ELEV. R22's variances (RANGEVAR, RATEVAR, RVARMIN,
+   VVARMIN) are loaded: left zero, the gain blows up and every mark asks
+   V06N49. WRENDPOS is integer metres (SR 5 into W's B-19). P34's N37
+   shows TTPI, not TIG. The orbits have to be retrograde: for the moon
+   INITVEL takes Lambert's direction from the sign of the orbit normal's
+   Z, so a posigrade pair solves TPI the long way round (3,215 m/s).
+   `FLIGHT_RR`'s LM side points the RR at the CSM and answers range and
+   range-rate reads. The keys run V37E20E, proceed and ENTER on R61's
+   V50N18, and proceed on R21's V50N72 lock-on. R22 then marks every 61 s
+   (6 marks by 340 s, no N49). V37E34E comes at 290 s: proceed on N37,
+   N55 and N45. P34 solves TPI for 26.6 degrees elevation (N58: 7.4 m/s;
+   an independent Lambert solve gives 7.5). Proceed on N37, N58 and N81,
+   ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
+   job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
+   takes 1,273,194 routines, none that yaAGC did not match.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -657,6 +849,33 @@ port) runs one mission:
    DOWNRUPT, so yaAGC runs it to the idle loop before the native side
    starts: entering DOWNTELEMETRY's continuation with the dump's Q (00336)
    gives no state a flight reaches.
+   `lm-p52-realign`: a P52 option 3 (REFSMMAT) fine align from the same
+   core, on the pair its own last P52 sighted, stars 18 (Regulus) and 20
+   (Gienah) in the forward AOT detent (BESTI 108, BESTJ 120, STARCODE
+   0224). The keys run V37E52E, option 3 (V22E3E) and proceed on V04N06,
+   ENTER on V50N25 00015 (no star pick: R52 offers BESTI, then BESTJ),
+   proceed on V01N70, ENTER on V50N18 (no auto maneuver: with no rotation
+   model KALCMANU would never finish), proceed on V01N71, a Y and an X
+   mark and proceed on V54N71, for each star; then proceed on the star
+   angle difference (V06N05) and the torquing angles (V06N93), and ENTER
+   on V50N25 00014. The AOT marks are the keys `y` and `x`: channel 16
+   bits 4 and 3 and a KEYRUPT2 request (as `M` and `J` are the CM's). For each
+   sighting `FLIGHT_POKE` sets CDUX-CDUZ to the attitude that puts the
+   star on the detent's optic axis (tools/flight_scenarios/lm_p52.py: the
+   smallest rotation from the core's attitude, which is already star 20's
+   to a count). So V06N05 shows 0.00 and V06N93 a few thousandths of a
+   degree, and R55 torques the gyros (GYROCMD keeps its count on both
+   sides: the frozen clock stops yaAGC's gyro drive, and the C64 has
+   none). On base 30af9747 the native run (10,000 cs, scaled
+   x1) takes 528,365 routines, none that yaAGC did not match, and ends
+   in V37 after P52; the only points left unregistered are the
+   self-check's SMODECHK and CHECKNJ, which the core's mid-idle-loop start
+   reaches. On the C64 (flight_scenario_vice.py windows from host
+   snapshots) the R52, R60, OPTAXIS, R54 and R55 work runs at 9.8 to 11.5
+   times real time, and the AOT marks run; the windows from the marks on
+   stop at PINBALL's NVMONOPT (unmapped in the store until #425).
+   tools/flight_scenarios/sighting.py holds the conversions, catalog and
+   gimbal matrices lm_p52.py uses.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map

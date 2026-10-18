@@ -25,7 +25,8 @@ static enum exec_status run(const agc_native_program *p,apollo_overlay_state *s,
   else if(q<02000u){if(W[3]+(q&0377u)<0100u)return EXEC_OUT_OF_SCOPE;t=W[W[3]+(q&0377u)];}
   else{ /* The caller's CADR: a short scan of the module's few sites. */
    at=agc_fixed_physical(q,W[4],io->superbank);
-   for(o=p->operands,n=p->operand_count;n&&o->physical!=at;--n,++o){}
+   for (o = p->operands, n = AGC_SITES_PAIRS(p->operand_count); n && o->physical != at; --n, ++o) {
+   }
    if(!n||(t=o->word)>AGC_MASK)return EXEC_OUT_OF_SCOPE;}
   W[072]=(agc_word)(q+1u);W[2]=04707u;W[5]=(agc_word)(02000u+(t&01777u));
  }else{
@@ -45,8 +46,8 @@ static enum exec_status postjump(const agc_native_program *p, apollo_overlay_sta
     const agc_site_operand *o;
     uint16_t n, at;
     agc_word q, t;
-    if (W[7] || (W[3] & ~03400u) || (W[4] & ~076000u) || W[6] != (W[4] | (W[3] >> 8)) ||
-        (io->superbank & ~0160u) || io->interrupt_enabled > 1u)
+    if (W[5] != 04635u || W[7] || (W[3] & ~03400u) || (W[4] & ~076000u) ||
+        W[6] != (W[4] | (W[3] >> 8)) || (io->superbank & ~0160u) || io->interrupt_enabled > 1u)
         return EXEC_OUT_OF_SCOPE;
     q = W[2];
     if (q < 0100u || q > 07775u) return EXEC_OUT_OF_SCOPE;
@@ -57,7 +58,8 @@ static enum exec_status postjump(const agc_native_program *p, apollo_overlay_sta
         t = W[W[3] + (q & 0377u)];
     } else {
         at = agc_fixed_physical(q, W[4], io->superbank);
-        for (o = p->operands, n = p->operand_count; n && o->physical != at; --n, ++o) {
+        for (o = p->operands, n = AGC_SITES_PAIRS(p->operand_count); n && o->physical != at;
+             --n, ++o) {
         }
         if (!n || (t = o->word) > AGC_MASK) return EXEC_OUT_OF_SCOPE;
     }
@@ -73,3 +75,5 @@ static const agc_routine_entry entries[2] = {{AT(04674), run}, {AT(04707), run}}
                                pj[1] = {{AT(04635), postjump}};
 const agc_routine_table lm_interbank_dap_hot_routines = {entries, 2},
                         lm_interbank_postjump_hot_routines = {pj, 1};
+/* POSTJUMP for the T4RUPT pack, which carries the idle loop. */
+const agc_routine_table lm_interbank_postjump_t4_hot_routines = {pj, 1};

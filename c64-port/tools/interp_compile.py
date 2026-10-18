@@ -291,6 +291,22 @@ class Compiler:
     def name(self, phys):
         return self.L.label_at(phys) or ''
 
+    def eb_line(self):
+        """Spec 'fast_window': the window forms take an operand in 01400-01776
+        as a cell of EBANK AFR_EBN, so an entry under another EB refuses."""
+        if not self.spec.get('fast_window'):
+            return []
+        return [' if(W[3]!=0%ou)return 0; /* fast_window: EB as AFR_EBN */' % (self.spec['ebank'] << 8)]
+
+    def sets_eb(self, phys):
+        """A basic routine whose first words are CA <fixed constant>, TS
+        EBANK sets EB before it touches erasable memory, so it may be
+        entered under any EB (CM/DAPON, CM/DAPIC)."""
+        # (The assembled words: CA K, K in fixed memory, is 03KKKK with K
+        # 02000 or above; TS EBANK is 054003.)
+        a, b = self.word(phys), self.word(phys + 1)
+        return a is not None and (a & 0o70000) == 0o30000 and (a & 0o7777) >= 0o2000 and b == 0o54003
+
     def where(self, phys):
         return '%02o,%04o' % (phys // 1024, 0o2000 + phys % 1024)
 
@@ -452,6 +468,8 @@ class Compiler:
         # files reach directly: 'native_entries' {label: {mission: C call
         # returning RTB_OK}}, registered as routines of their own.
         for lab, calls in self.spec.get('native_entries', {}).items():
+            if self.m not in calls:
+                continue
             phys = self.label_phys(lab)
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
@@ -1214,7 +1232,7 @@ class Compiler:
              'static const agc_routine_entry hot_entries[]={']
         for phys in sorted(keys):
             c.append(guard(index[phys]))
-            c.append(' {%u,%s_abi},' % (phys, basic[phys][2]))
+            c.append(' {%u,%s%s},' % (phys, basic[phys][2], '' if self.spec.get('direct_abi') else '_abi'))
             c.append('#endif')
         c += [' {0xffffu,0}', '};',
               'const agc_routine_table %s_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};' % sym]
@@ -1824,9 +1842,23 @@ class Compiler:
         00120u, which does not match) and does not enter the interpreter
         (TC INTPRET). The NEWJOB test matches the native DANZIG's W[067] and
         ai_ccs(s,067), not a routine's own CCS NEWJOB (00067u)."""
+        if self.spec.get('basic_key_stops'):
+            # ('basic_key_stops') As the whole flow from the key decides it,
+            # stops included: a routine that goes on at another key never
+            # accepts a FIXLOC or NEWJOB that key's routine refuses.
+            if getattr(self, 'full_nv', None) is None:
+                cp = Compiler({k: v for k, v in self.spec.items() if k != 'basic_key_stops'}, self.m)
+                cp.decode()
+                self.full_nv = {p for p in cp.blocks if cp.novac(p)}
+            return phys in self.full_nv
         return (self.any_fixloc and self.starts[phys][0] == 'b'
                 and not any(re.search(r'\b0120u?\b|intpret\(', st) for st in self.blocks[phys])
-                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys])))
+                and not (self.any_newjob and any(re.search(r'\b067u?\b', st) for st in self.blocks[phys]))
+                # (Under 'any_newjob', not a routine whose own CCS NEWJOB
+                # refuses -0, its fourth skip being data: R30's return from
+                # FINDVAC, which only a job runs.)
+                and not (self.any_newjob and any('switch(ai_ccs(s,00067u))' in st and 'default:return EXEC_OUT_OF_SCOPE' in st
+                                                 for st in self.blocks[phys])))
 
     def basic_block(self, start):
         """C statements for the basic routine at start: every instruction
@@ -1847,6 +1879,14 @@ class Compiler:
                 raise CompileError('basic flow runs into interpretive %s' % self.where(p))
             if p != start and p in self.idle:
                 units[p] = (['W[5]=0%04o;return EXEC_IDLE; /* idle point */' % self.logical_of(p)], [])
+                self.unit_words = range(p, p)
+                continue
+            if p != start and self.spec.get('basic_key_stops') and p in self.starts and self.starts[p][0] == 'b':
+                # ('basic_key_stops') Another basic routine's key: the run goes
+                # on there through the transfer engine, so each word's code is
+                # in one routine rather than in every routine that reaches it
+                # (the C64 flight store packs the file's basic table).
+                units[p] = (['W[5]=0%04o;return EXEC_OK; /* on to %s */' % (self.logical_of(p), self.where(p))], [])
                 self.unit_words = range(p, p)
                 continue
             st, succ = self.basic_unit(p, bank)
@@ -2047,9 +2087,11 @@ class Compiler:
             # through include/agc_fast_redirect.h, so an operand in the EB 6
             # window passes a one-byte offset to a noinline afw_* helper and a
             # plain cell its address to afo_* (Lane F's DAP spill pattern);
-            # -DAFR_GENERIC builds it on agc_image_ops alone.
-            if self.spec.get('basic') != 'full' or self.spec.get('basic_split') or self.spec.get('basic_parts'):
-                raise CompileError("'fast_window' needs 'basic': 'full' in one function")
+            # -DAFR_GENERIC builds it on agc_image_ops alone. Every basic
+            # routine's entry binds the image before it calls its part
+            # function ('basic_parts'), so parts need no bind of their own.
+            if self.spec.get('basic') != 'full' or self.spec.get('basic_split'):
+                raise CompileError("'fast_window' needs 'basic': 'full'")
             c.append('#define AFR_EBN %d' % self.spec['ebank'])
             c.append('#include "agc_fast_redirect.h"')
             c.append('#define W AFR_S(s)->words')
@@ -2182,6 +2224,7 @@ class Compiler:
         c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;'
                  % ('W[067]>037777u' if self.rk else 'W[067]'))
         c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+        c.extend(self.eb_line())
         # ('novac': a NOVAC job's FIXLOC, LOC(MPAC +6) - LOC(QPRET) = 0110,
         # as STATEINT's INTSTALL runs under it.)
         c.append(' if(vac!=0110u&&(vac<0401u||vac>0661u||(vac-0401u)%054u))return 0;' if self.spec.get('novac') else
@@ -2198,6 +2241,7 @@ class Compiler:
                 nj = '(%s&&W[067]!=077777u)' % nj
             c.append(' if(W[7]||%s||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;' % nj)
             c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;')
+            c.extend(self.eb_line())
             c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
@@ -2285,6 +2329,7 @@ class Compiler:
             c.extend(self.basic.emit(sym))
             c.append('/* A basic routine: FB its bank (banks 30-37 with SUPERBNK clear), coherent')
             c.append(' * banks, ordinary words (A, L and Q may hold 16 bits), latches in range. */')
+            bs0 = len(c)
             c.append('static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const %s *io,agc_word fb){' % self.basic.io)
             c.append(' unsigned i;')
             if any(p // 1024 >= 0o40 for p in self.blocks if self.starts[p][0] == 'b'):
@@ -2300,9 +2345,26 @@ class Compiler:
             else:
                 c.append(' if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;')
                 c.append(' if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;')
+            eb_at = len(c)
+            c.extend(self.eb_line())
             c.extend(self.image_scan())
             c.append(' return 1;')
             c.append('}')
+            self.eb_free = sorted(p for p in self.blocks if self.starts[p][0] == 'b' and self.spec.get('fast_window')
+                                  and self.sets_eb(p))
+            # Spec 'any_eb_entries': basic routines that touch only unswitched
+            # erasable cells, entered under any EB (FINETIME from P06).
+            for lab in self.spec.get('any_eb_entries', ()):
+                q = self.label_phys(lab)
+                if q not in self.blocks or self.starts[q][0] != 'b':
+                    raise CompileError('any_eb_entries: %s is not a basic routine of the file' % lab)
+                self.eb_free = sorted(set(self.eb_free) | {q})
+            if self.eb_free:
+                # The same for the routines that set EB first (sets_eb).
+                c.append('/* The same under any EB, for a routine that sets EB before it')
+                c.append(' * touches erasable memory. */')
+                body = c[bs0:eb_at] + c[eb_at + 1:]
+                c.extend([body[0].replace('basic_sane(', 'basic_sane_any_eb(')] + body[1:])
             c.append('')
         self.erasable_ents = []
         if self.basic:
@@ -2319,6 +2381,36 @@ class Compiler:
             c.append('#endif')
         def guard(i):
             return '#if (%s%d >> %d) & 1' % (keep, i // 60, i % 60)
+        # 'direct_abi': the routines take the transfer ABI themselves, so the
+        # tables hold them with no per-routine wrapper (a C64 flight module
+        # then links one shared entry check instead of one wrapper a key).
+        direct = bool(s.get('direct_abi'))
+        if direct:
+            assert self.m == 'lm' and not self.basic and not s.get('fast_window')
+            # The entry checks take the routine's arguments, so a routine's
+            # first call both enters and checks (v is the record:
+            # lm_channel_io starts with it).
+            c.append('/* Every routine\'s entry: the record and the inputs. */')
+            c.append('static uint8_t entered(const agc_native_program *p,apollo_overlay_state *s,void *v){')
+            c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
+            c.append(' if(!s||!v)return 0;')
+            if self.uses_channels:
+                c.append(' agc_channels_in=&((lm_channel_io *)v)->in;')
+            c.append(' return 1;')
+            c.append('}')
+            have = '\n'.join(c)
+            for chk in ('sane', 'sane_nv'):
+                if ' uint8_t %s(' % chk not in have:
+                    continue
+                c.append('static MAYBE_UNUSED uint8_t e_%s(const agc_native_program *p,apollo_overlay_state *s,void *v){' % chk)
+                c.append(' return entered(p,s,v)&&%s(s,v);' % chk)
+                c.append('}')
+            for chk in ('at_basic', 'at_basic_nv', 'at_newops', 'at_danzig'):
+                if ' uint8_t %s(' % chk not in have:
+                    continue
+                c.append('static MAYBE_UNUSED uint8_t e_%s(const agc_native_program *p,apollo_overlay_state *s,void *v,agc_word fb){' % chk)
+                c.append(' return entered(p,s,v)&&%s(s,v,fb);' % chk)
+                c.append('}')
         for i, phys in enumerate(sorted(self.blocks)):
             kind, why = self.starts[phys]
             lab = self.name(phys)
@@ -2343,10 +2435,11 @@ class Compiler:
                 sfb = 's->words[4]' if why == 'part key' and bank in (2, 3) else '0%05ou' % bfb
                 if self.spec.get('fixed_fixed_any_fb') and bank in (2, 3):
                     sfb = '0177777u'
+                bsn = 'basic_sane_any_eb' if phys in getattr(self, 'eb_free', ()) else 'basic_sane'
                 if self.basic.io == 'p66_bias_io':
                     # Luminary: the record, then (lm_channel_io) the inputs;
                     # channel orders reach the program's agc_hardware.
-                    c.append(' if(!s||!v||!basic_sane(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % sfb)
+                    c.append(' if(!s||!v||!%s(s,(p66_bias_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (bsn, sfb))
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((lm_channel_io *)v)->in;')
                     c.append(' %s' % ('(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
@@ -2354,18 +2447,24 @@ class Compiler:
                 else:
                     if self.uses_hw:
                         c.append(' if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;')
-                    c.append(' %sif(!s||!v||!basic_sane(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (
-                        '' if self.uses_hw else '(void)p;', sfb))
+                    c.append(' %sif(!s||!v||!%s(s,(cm_native_io *)v,%s))return EXEC_OUT_OF_SCOPE;' % (
+                        '' if self.uses_hw else '(void)p;', bsn, sfb))
                     if self.uses_channels:
                         c.append(' agc_channels_in=&((cm_channel_io *)v)->in; /* cm_channel_io: the record, then the inputs */')
                     c.append(' return %s(s,(cm_native_io *)v,%uu);' % (self.basic.run_name(phys // 1024, phys), phys))
                 c.append('}')
                 c.append('#endif')
                 continue
-            c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
+            if direct:
+                c.append('static enum exec_status %s(const agc_native_program *p,apollo_overlay_state *s,void *v){' % fn)
+                if any(re.search(r'\bio\b', st) for st in self.blocks[phys]):
+                    c.append(' p66_bias_io *io=v;')
+            else:
+                c.append('static enum exec_status %s(apollo_overlay_state *s,p66_bias_io *io){' % fn)
             nv = '_nv' if self.novac(phys) else ''
+            e, args = ('e_', 'p,s,v') if direct else ('', 's,io')
             if kind == 'b' and phys // 1024 in (2, 3):
-                c.append(' if(!sane%s(s,io))return EXEC_OUT_OF_SCOPE;' % nv)
+                c.append(' if(!%ssane%s(%s))return EXEC_OUT_OF_SCOPE;' % (e, nv, args))
             else:
                 if kind != 'i':
                     chk = 'at_basic' + nv
@@ -2376,9 +2475,9 @@ class Compiler:
                 if any('goto top;' in st for st in self.blocks[phys]):
                     c.append(' uint16_t loops=0;')
                     c.append(' top:')
-                    c.append(' if(!%s(s,io,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                    c.append(' if(!%s%s(%s,0%05ou))return loops?EXEC_OK:EXEC_OUT_OF_SCOPE;' % (e, chk, args, fb))
                 else:
-                    c.append(' if(!%s(s,io,0%05ou))return EXEC_OUT_OF_SCOPE;' % (chk, fb))
+                    c.append(' if(!%s%s(%s,0%05ou))return EXEC_OUT_OF_SCOPE;' % (e, chk, args, fb))
             body = self.blocks[phys]
             if any(self.SB_MARK in st for st in body):
                 c.insert(len(c) - (2 if any('goto top;' in st for st in body) else 0),
@@ -2391,9 +2490,11 @@ class Compiler:
         c.append('')
         # Wrappers: the mission's io record. A fast_window file binds the
         # image at every entry, interpretive ones too (W is AFO_S's words).
-        wrapped = any(not (r[1] == 'b' and self.basic) for r in routines)
+        wrapped = not direct and any(not (r[1] == 'b' and self.basic) for r in routines)
         bind = 'AFR_BIND(s);AFO_FIX(s);' if self.spec.get('fast_window') and wrapped else ''
-        if self.m == 'lm' and self.uses_channels:
+        if direct:
+            pass
+        elif self.m == 'lm' and self.uses_channels:
             c.append('/* The routines take lm_channel_io: the mission record, then the inputs. */')
             c.append('#define WRAP(f) static enum exec_status f##_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){%s%sif(!s||!v)return EXEC_OUT_OF_SCOPE;agc_channels_in=&((lm_channel_io *)v)->in;return f(s,&((lm_channel_io *)v)->io);}' % (
                 bind, '(void)AGC_CH_HW_SET(p);' if self.uses_hw else '(void)p;'))
@@ -2417,7 +2518,7 @@ class Compiler:
                 bind, 'if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;' if self.cm_channels and self.uses_hw else '(void)p;'))
         index = {r[0]: i for i, r in enumerate(routines)}
         for i, (phys, kind, fn, lab, why) in enumerate(routines):
-            if kind == 'b' and self.basic:
+            if kind == 'b' and self.basic or direct:
                 continue
             c.append(guard(i))
             c.append('WRAP(%s)' % fn)
@@ -2434,7 +2535,7 @@ class Compiler:
             c.append('static const agc_routine_entry %s_entries[]={' % tab)
             for phys, kind, fn, lab, why in rs:
                 c.append(guard(index[phys]))
-                c.append(' {%u,%s_abi},' % (phys, fn))
+                c.append(' {%u,%s%s},' % (phys, fn, '' if direct else '_abi'))
                 c.append('#endif')
             if kind == 'b' and self.basic:
                 for key, fn in self.erasable_ents:

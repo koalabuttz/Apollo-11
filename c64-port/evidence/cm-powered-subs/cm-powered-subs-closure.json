@@ -1,7 +1,7 @@
 {
   "milestone": "cm-powered-subs",
   "tool": "tools/interp_executed_closure.py",
-  "source_map_sha256": "15a5f917ba391ba99ab227be48be6cc3caeccdc501e9d91329626756a174b226",
+  "source_map_sha256": "1109f938f371d1801b8714c6f628c4ef4528cefddfe2335cf831822143d4416b",
   "oracle": "yaAGC (tools/oracle_trace) in the milestone's differential",
   "files": {
     "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc": {
@@ -11,6 +11,7 @@
       "executed": 131,
       "interpreted": 47,
       "unreached": 1,
+      "core": 0,
       "map": [
         {
           "address": "23,3477",

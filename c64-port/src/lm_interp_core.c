@@ -251,6 +251,11 @@ static NI agc_register add16(agc_register a, agc_register b){
 }
 static NI agc_register sx(agc_word v){return (agc_register)((v&077777u)|(((unsigned)v<<1)&0100000u));}
 static NI agc_word oc(agc_register v){return (agc_word)((v&037777u)|((v>>1)&040000u));}
+/* CYR's editing: a word written there reads back cycled right one place. */
+static NI agc_word cyr(agc_word v)
+{
+    return (agc_word)((v >> 1) | ((v & 1u) << 14));
+}
 /* +1, -1 (16-bit) or +0 for an accumulator-style value. */
 static NI agc_register ovf(agc_register v){
  switch(v&0140000u){case 040000u:return 1u;case 0100000u:return 0177776u;default:return 0u;}
@@ -294,7 +299,7 @@ static NI void ai_put(unsigned a,agc_word v){
  case 4:W[4]=(agc_word)(v&076000u);W[6]=(agc_word)((W[4]&076000u)|(W[3]>>8));return;
  case 6:W[4]=(agc_word)(v&076000u);W[3]=(agc_word)((v&7u)<<8);W[6]=(agc_word)(W[4]|(v&7u));return;
  case 7:return;
- case 020:W[020]=(agc_word)((v>>1)|((v&1u)<<14));return;
+ case 020: W[020] = cyr(v); return;
  case 021:W[021]=(agc_word)((v>>1)|(v&040000u));return;
  case 022:W[022]=(agc_word)((((unsigned)v<<1)|((unsigned)v>>14))&077777u);return;
  case 023:W[023]=(agc_word)((v>>7)&0177u);return;
@@ -580,8 +585,13 @@ static NI void ai_tc(agc_word r){W[2]=(agc_word)(r&077777u);endi();}
 #define DEC45 055u
 
 static NI void opjump(void){
- /* OPJUMP TS CYR; CCS CYR. */
- (void)ai_ts(020);(void)ai_ccs(020);
+    /* OPJUMP TS CYR; CCS CYR, in place: TS writes A's 15 bits cycled (its
+     * overflow A is CCS's to replace), CCS reads them, writes back cycled
+     * again, and puts its result in A. */
+    agc_word v = cyr(oc(W[0]));
+    (void)ccs15(v);
+    W[020] = cyr(v);
+    endi();
 }
 static void lmi_newops(agc_word pair){
  /* NEWOPS INDEX LOC, CA 0; CCS A (negative pair); TS EDOP; MASK LOW7.
@@ -2242,12 +2252,52 @@ static const agc_word points[] = {
     IRT_NEWOPS, IRT_DANZIG, IRT_NOIBNKSW, IRT_DODLOAD, IRT_DOVLOAD, IRT_DIRADRES, IRT_DODLOADX, IRT_DOVLOADX,
     IRT_B15BITADR, IRT_GOTO, IRT_SWRETURN, IRT_INTPRET
 };
-enum { P_NEWOPS, P_DANZIG, P_NOIBNKSW, P_DODLOAD, P_DOVLOAD, P_DIRADRES, P_DODLOADX, P_DOVLOADX, P_B15BITADR,
-       P_GOTO, P_SWRETURN, P_INTPRET, P_OUTSIDE };
+/* RTB's return, BHIZ +1 (01,2453 LM, 01,2500 CM): TC SWCALL -1 saved Q
+ * +1 in BUF2, and the routine's TC Q reaches it through SWRETURN, which
+ * leaves Z there when a basic table runs SWRETURN. Its word is TCF DANZIG.
+ * Not one of points[]: it is in bank 01, so FB must say so too. */
+#define RTB_RETURN IF_(02453u, 02500u)
+enum {
+    P_NEWOPS,
+    P_DANZIG,
+    P_NOIBNKSW,
+    P_DODLOAD,
+    P_DOVLOAD,
+    P_DIRADRES,
+    P_DODLOADX,
+    P_DOVLOADX,
+    P_B15BITADR,
+    P_GOTO,
+    P_SWRETURN,
+    P_INTPRET,
+    P_RTB_RETURN,
+    P_OUTSIDE
+};
+/* DANZIG CA BANKSET; TS BBANK, in place (A holds BANKSET's 15 bits
+ * sign-extended, so TS cannot overflow; BBANK writes FB and EB). L's
+ * ending (endi) is left to the CCS that follows: nothing reads L between. */
+static inline void danzig_bb(void)
+{
+    agc_word v = (agc_word)(W[rBANKSET] & 077777u);
+    W[0] = sx(v);
+    W[4] = (agc_word)(v & 076000u);
+    W[3] = (agc_word)((v & 7u) << 8);
+    W[6] = (agc_word)(W[4] | (v & 7u));
+}
+/* CCS EDOP, in place: EDOP's editing makes the word written back read as
+ * its bits 8-14. L's ending as above, by OPJUMP or CCS NEWJOB. */
+static NI void ccs_edop(void)
+{
+    (void)ccs15((agc_word)(W[023] & 077777u));
+    W[023] = (agc_word)((W[023] >> 7) & 0177u);
+}
 static uint8_t point(void)
 {
     uint8_t k;
-    for (k = 0; k < P_OUTSIDE && points[k] != W[5]; ++k) {}
+    for (k = 0; k < P_RTB_RETURN && points[k] != W[5]; ++k) {
+    }
+    if (k == P_RTB_RETURN && (W[5] != RTB_RETURN || ((uint8_t)(W[4] >> 8) & 0174u) != 04u))
+        k = P_OUTSIDE;
     return k;
 }
 static NI enum exec_status run(void)
@@ -2260,14 +2310,21 @@ static NI enum exec_status run(void)
             if (!(cw & 040000u)) { lmi_store_code(cw); break; }
             lmi_newops(cw);
             r = order((uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u)); break;
-        case P_DANZIG: ai_ca(rBANKSET); (void)ai_ts(6);   /* DANZIG CA BANKSET, TS BBANK */
-            /* fall through */
+        case P_DANZIG: danzig_bb(); /* fall through */
         case P_NOIBNKSW:
             /* CCS EDOP: positive, its right-hand order (TCF OPJUMP); +0,
              * CCS NEWJOB: positive, CHANG2 (the job switch); +0, INCR LOC
              * and NEWOPS. */
-            if (W[rEDOP]) { uint8_t c = (uint8_t)(W[rEDOP] - 1u); (void)ai_ccs(rEDOP); opjump(); r = order(c); break; }
-            (void)ai_ccs(rEDOP); (void)ai_ccs(rNEWJOB);
+            if (W[rEDOP]) {
+                uint8_t c = (uint8_t)(W[rEDOP] - 1u);
+                ccs_edop();
+                opjump();
+                r = order(c);
+                break;
+            }
+            ccs_edop();
+            (void)ccs15((agc_word)(W[rNEWJOB] & 077777u));
+            endi();
             if (W[rNEWJOB]) { W[5] = IRT_CHANG2; return EXEC_OK; }
             ai_incr(rLOC); W[5] = IRT_NEWOPS; return EXEC_OK;
         case P_DODLOAD: lmi_dodload(); break;
@@ -2301,6 +2358,7 @@ static NI enum exec_status run(void)
         case P_GOTO: lmi_goto_any(); return EXEC_OK;
         case P_SWRETURN: lmi_swreturn(); break;
         case P_INTPRET: lmi_intpret(); return EXEC_OK;
+        case P_RTB_RETURN: danzig(); break;                /* TCF DANZIG */
         default: return guard ? EXEC_OK : EXEC_UNMAPPED;   /* outside the interpreter */
         }
     }
@@ -2362,8 +2420,10 @@ static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_sta
 #endif
 const agc_routine lm_interp_core = entry;
 #define PH(z) (uint16_t)((z) >= 04000u ? 2048u + (z) - 04000u : (z) - 02000u)
-static const agc_routine_entry basic[3] = {
-    { PH(IRT_SWRETURN), entry }, { PH(IRT_INTPRET), entry }, { PH(IRT_DANZIG), entry }
-};
-const agc_routine_table lm_interp_core_basic = { basic, 3u };
+/* Sorted by physical: bank 01's RTB return first. */
+static const agc_routine_entry basic[4] = {{1024u + (RTB_RETURN & 01777u), entry},
+                                           {PH(IRT_SWRETURN), entry},
+                                           {PH(IRT_INTPRET), entry},
+                                           {PH(IRT_DANZIG), entry}};
+const agc_routine_table lm_interp_core_basic = {basic, 4u};
 #undef W

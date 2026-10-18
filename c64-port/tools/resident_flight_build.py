@@ -22,6 +22,7 @@ job slot.
 """
 import argparse
 import functools
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -43,8 +44,16 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
           # (RTB right-hand order) through the mission's marker table.
           '-DAGC_TRANSFER_DANZIG_MARKER',
           # rk_boot verifies the whole store (apollo_reu_store_verify), so a
-          # module load checks only the header's id (src/overlay_v2.c).
-          '-DAPOLLO_OV2_STORE_VERIFIED']
+          # module load checks only the header's id (src/overlay_v2.c). Valid
+          # only where apollo_ov2_init gets verify=0 after a successful
+          # apollo_reu_store_verify, as rk_boot does: a build that skips that
+          # check must not define it.
+          '-DAPOLLO_OV2_STORE_VERIFIED',
+          # The Executive's site tables are addresses only, the words read
+          # from the REU rope image (include/agc_transfer.h): every image the
+          # resident or a flight module runs with carries the rope
+          # (flight_store_build.py add_rope, rope_check_image below).
+          '-DAGC_SITES_ROPE']
 # Scaled time (docs/RESIDENT-FLIGHT.md), with RK_WALL_CLOCK: RK_TICK_LAG, the clock ticks one
 # step may catch up before the rest are dropped (default 2), and
 # RK_TIME_DIVISOR, AGC time at 1/n of wall time (default 1; the nightly
@@ -86,9 +95,9 @@ def mct_weight(m, tables, interp=False):
     their basic keys (interp: their interpretive keys; tables None: every
     table's). Tables with no calibrated run take the mission's mean; no
     calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
-    0 marks the background self-check loop (any *_self_check_idle_routines
+    0 marks the background self-check loop (any *_self_check_idle(_hot)_routines
     table): idle, whose run takes the rest of the tick (RK_MCT_IDLE)."""
-    if tables and any(t.endswith('_self_check_idle_routines') for t in tables):
+    if tables and any(t.endswith(('_self_check_idle_routines', '_self_check_idle_hot_routines')) for t in tables):
         return 0
     keys = _mct_data().get(m, {})
     named = {k.split()[0] for k in keys}
@@ -119,7 +128,8 @@ for _m in MISSION:
 COMPONENTS = {
     'lm': [
         ('kernel', ['src/lm_kernel.c', 'src/agc_image_ops.c']),
-        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c']),
+        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c',
+                                                              'platform/c64/agc_find.S']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
         ('single-precision subroutines', ['src/sp_routines.c', 'src/lm_single_trig.c']),
@@ -131,7 +141,8 @@ COMPONENTS = {
     ],
     'cm': [
         ('kernel', ['src/cm_kernel.c', 'src/agc_image_ops.c']),
-        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c']),
+        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c',
+                                                              'platform/c64/agc_find.S']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
         ('single-precision subroutines', ['src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c']),
@@ -219,8 +230,14 @@ def run(cmd):
     subprocess.run([str(c) for c in cmd], cwd=ROOT, check=True)
 
 
+# The resident's find() is platform/c64/agc_find.S (agc_transfer.c
+# AGC_TRANSFER_FIND_ASM): defined with the resident's sources rather than in
+# COMMON, as the flight modules keep agc_transfer.c's C find.
+RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM']
+
+
 def resident_sources(m):
-    return [s for _, files in COMPONENTS[m] for s in files]
+    return [*RESIDENT_DEFINES, *(s for _, files in COMPONENTS[m] for s in files)]
 
 
 # The flight check: one program per RK_PART (each part's test code must fit
@@ -300,7 +317,7 @@ def measure(cc, m, prg):
     # resident_flight.c keeps the trampoline, the module runner and the
     # clock and interrupt entry out of line under these names; count each
     # with its component.
-    owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline'}))
+    owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline', 'agc_find'}))
     owners.insert(0, ('ABI 2 runtime and REU store', {'rk_run_module'}))
     owners.insert(0, ('AGC timers and interrupt entry', {'rk_rupts'}))
     text = Path(f'{prg}.map').read_text()
@@ -364,7 +381,29 @@ def build_modules(cc, m, cases, library):
     tail.write_bytes(tail_bytes((ROOT / f'platform/c64/resident_boundary_words_{m}.h').read_text()))
     run([sys.executable, 'tools/overlay_v2_pack.py', *prgs, '--mission', m.upper(), '--services', hex(CHECK_SERVICES),
          '--resolver', resolver, '--tail', tail, '--output', OUT / f'{m}.reu', '--manifest', OUT / f'{m}-manifest.json'])
+    rope_check_image(m)
     return prgs
+
+
+def rope_check_image(m):
+    """The check's store image padded to 2 MB with the mission's rope at its
+    REU base (include/rope_image.h), as flight_store_build.py add_rope places
+    it in the flight store: the resident reads the Executive's inline operand
+    words there (AGC_SITES_ROPE)."""
+    from rope_image_pack import BASES, physical_words
+    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    reu = ROOT / OUT / f'{m}.reu'
+    image = bytearray(reu.read_bytes())
+    if len(image) > base:
+        raise SystemExit(f'{m}: the check store reaches the rope image at {base:#x}')
+    image += bytes(2 * 1024 * 1024 - len(image))
+    for k, w in enumerate(physical_words(ROOT / f'evidence/fixed-data-{m}-original.rope.bin')):
+        image[base + 2 * k:base + 2 * k + 2] = w.to_bytes(2, 'little')
+    reu.write_bytes(image)
+    manifest = ROOT / OUT / f'{m}-manifest.json'
+    data = json.loads(manifest.read_text())
+    data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
+    manifest.write_text(json.dumps(data, indent=1) + '\n')
 
 
 def make_cases(m):

@@ -137,6 +137,10 @@ typedef struct {
      * it the highest key's is (FS_KEY_LO, FS_KEY_SPAN): 0 and 0xff when the
      * module has interpretive tables (any point). */
     uint8_t lo, span;
+    /* Nonzero when the module carries the self-check idle loop beside
+     * interrupt code (FS_IDLE): outside an interrupt its run is the work
+     * clock's idle (RK_MCT_IDLE), inside one it weighs mct. */
+    uint8_t idle;
 } rk_module_tables;
 /* Built, and the resident may call the routines straight from the slot
  * (rk_direct); or built, but the tables take an io record other than rk_io
@@ -167,11 +171,13 @@ extern const rk_module_tables *rk_pinned;
  * boundary after it, for a run of weight mct each (by subtraction: at
  * most 214 passes, and no division on the 6502). */
 static inline uint16_t rk_module_limit(uint16_t budget,uint8_t mct) {
-    uint16_t n=1u;
+    uint8_t n=1u;   /* at most 215 */
     if(mct==RK_MCT_IDLE) return 4u;   /* one pass: SELFCHK, POSTJUMP, back to ADVAN */
     /* A tick's budget is at most 854 and a weight at least 4
      * (tools/resident_flight_build.py mct_weight): under RK_MODULE_STEPS. */
-    while(budget>=mct) { budget-=mct; ++n; }
+    /* The empty asm keeps LLVM from folding the loop into a division,
+     * which links __udivhi3 (196 bytes) into every flight module. */
+    while(budget>=mct) { budget-=mct; ++n; __asm__("" : "+r"(budget)); }
     return n;
 }
 /* A module's run, as the step reports it: an unmapped point after at least
@@ -199,7 +205,7 @@ extern rk_module_env rk_env;
  * latches, ...), for the modules whose tables take another io record. Its
  * superbank and interrupt_enabled are copies, refreshed from rk_device
  * around each such run. At RK_FLIGHT_IO. */
-#define RK_FLIGHT_IO 0x6fdcu
+#define RK_FLIGHT_IO 0x6fddu
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */
 #define RK_HARDWARE 0x6fbeu
@@ -214,7 +220,7 @@ extern flight_io rk_flight;
  * ERROR RESET's WRITE 77 clears: nonzero while lit. At RK_RESTART_LAMP,
  * above rk_flight, so the Pinball modules read and write it there (Lane C:
  * their restart_light). */
-#define RK_RESTART_LAMP 0x6ff4u
+#define RK_RESTART_LAMP 0x6ff5u
 extern uint8_t rk_restart_lamp;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66

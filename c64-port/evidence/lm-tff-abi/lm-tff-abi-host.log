@@ -1,0 +1,8 @@
+$ make test-lm-tff-abi sanitize-lm-tff-abi
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_tff_abi.c tests/lm_tff_abi_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_integration_moves.c tests/interp_case.c tests/test_lm_tff_abi.c -o build/test-lm-tff-abi
+./build/test-lm-tff-abi
+lm-tff-abi: 984 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_tff_abi.c tests/lm_tff_abi_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/lm_integration_moves.c tests/interp_case.c tests/test_lm_tff_abi.c -o build/test-lm-tff-abi-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-tff-abi-sanitize
+lm-tff-abi: 984 checks, 0 failures
+exit 0

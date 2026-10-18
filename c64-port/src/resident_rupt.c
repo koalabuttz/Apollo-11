@@ -12,6 +12,30 @@ static uint8_t pinc(agc_word *w) {
     return 0;
 }
 
+/* The radar cycle (yaAGC): TIME5's step counts the radar gate while
+ * channel 13 bit 4 (radar activity) is set, and after the ninth count the
+ * cycle ends before the next TIME5 step (yaAGC: at SCALER1 036, 0.6 ms
+ * before it), resetting bit 4 and requesting RADARUPT. Here it ends at the
+ * TIME3 step between, the last step before 036: a RADARUPT that sets bit 4
+ * again (P20-P25's NOEND/RESAMPLE) has it set for that next TIME5 count, as
+ * on yaAGC, so each resample takes nine TIME5 steps, not ten. RNRAD keeps
+ * its value (the flight program's radar data comes in through its io). */
+static __attribute__((noinline)) void radar(agc_hardware *hw, uint16_t *pending, uint8_t phase)
+{
+    uint8_t n = hw->radar_gate;
+    if (phase == RK_PHASE_T3) {
+        if (n != 9u) return;
+        n = 0;
+        /* Low byte of channel 13, high byte of the requests (RADARUPT is
+         * bit 9): both targets are little-endian, and a byte access is half
+         * the 6502 code. */
+        *(uint8_t *)&hw->channel13 &= (uint8_t)~010u;
+        ((uint8_t *)pending)[1] |= (uint8_t)(RK_RUPT_BIT(RK_RUPT_RADAR) >> 8);
+    } else if (*(uint8_t *)&hw->channel13 & 010u)
+        ++n;
+    hw->radar_gate = n;
+}
+
 void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending, uint8_t phase)
 {
     /* Each step's counter and the request its overflow raises. */
@@ -21,6 +45,7 @@ void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending
     uint8_t i, n;
     agc_word *w=s->words;
     agc_word v;
+    if (phase != RK_PHASE_T4) radar(hw, pending, phase);
     if (phase == RK_PHASE_T3 && pinc(&w[025])) pinc(&w[024]);
     if (pinc(&w[counter[phase]])) *pending |= request[phase];
     /* The scalers (channels 4 and 3) count AGC time too: SCALER1 8 counts

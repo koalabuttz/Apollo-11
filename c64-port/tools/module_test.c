@@ -221,8 +221,9 @@ int main(void)
     uint8_t head[MT_HEADER];
     uint16_t i, count, status;
     uint32_t at;
+    expect(rk_boot() == 0, 1);   /* it DMAs a pinned module (slot class 3) to $C000 */
     for (i = 1; i < 0x10u; ++i) mail[i] = 0;
-    expect(rk_boot() == 0, 1);
+    if (failures) mail[5] = 1;
     if (!failures) {
         __asm__ volatile("sei");
         fetch(head, MT_CASES, MT_HEADER);

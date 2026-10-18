@@ -2,7 +2,7 @@
  "milestone": "lm-orbital-integration",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_orbital_integration.c": "25c1225de61438a5aae6fdf1e3cce69e66be893193975ea053045d09bb347a10",
+  "src/lm_orbital_integration.c": "d6fea16ab346e56c6037896bcb3bd6c0f706b8551533247dc32d489185aff4eb",
   "src/lm_integration_moves.c": "363cdb80fd3678c5e1dfdda9f0ba9b03d1ab97e4eff6ca23fd8bcab3996b8b3b",
   "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
@@ -10,11 +10,11 @@
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_transfer.c": "7b64043c28b11f2f06bc38b5fc8071babca8e1c8175b846245f68789b4af5b64",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
-  "tests/interp_cut.c": "54cc6844ec54f333929e309da1410895ef2ae85113fbc4d498cb733f58b79821",
+  "tests/interp_cut.c": "36fac6031b7eabe2514dc10aa78125b19d3f9f84e21e67f2b599bbc1e5135948",
   "tests/lm_orbital_integration_target.c": "abc7bf671f23d4b2adf4d788b96a0fea66aa20c0a39a6ab8e90f2dc5a282744b"
  },
  "host_cases": 45193,

@@ -256,15 +256,21 @@ restart.
 - **The TC trap is the C64's one GOJAM source.** The resident's main
   (`platform/c64/resident_flight_main.c`) follows the entry contract
   (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends
-  where the TC trap would fire. That is a TCF to itself, which a compiled
-  routine refuses with `EXEC_INVALID_ACTION` (`tools/basic_compile.py`), or a
-  TC to itself, a step that leaves Z and FB as they were with Q = Z + 1 (V69's
-  `TC VERB69`). The AGC traps after a few ms of TC-only execution; the
+  where the TC trap would fire: a TC to itself, a step that leaves Z and FB
+  as they were with Q = Z + 1 (V69's `TC VERB69`). A refusal
+  (`EXEC_INVALID_ACTION`) stops the run instead (#607). Compiled routines
+  refuse for points they do not cover, and that must stop, not restart.
+  The one compiled TCF to itself (`tools/basic_compile.py` TCF +0:
+  Comanche055 TVCEXECUTIVE 16,2763, marked NOT USED) refuses from its
+  routine's entry, with Z not at the trap and the routine's earlier writes
+  kept, so a GOJAM there would save the wrong Q in RSBBQ. If a reachable one
+  appears, the compiler should leave Z at the trap and return a status of
+  its own. The AGC traps after a few ms of TC-only execution; the
   resident restarts after one such step. The night watchman (NEWJOB not
   tested for 0.64 s) and the rupt lock (an interrupt held too long) are not
   modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
-  the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF4),
+  the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
   `restart_light` reads and writes it there (Lane C).
 - **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.

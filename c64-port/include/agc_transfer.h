@@ -11,7 +11,10 @@
  *
  * Inline operands (the word after a `TC`, read through Q) are the caller's
  * compiled constants: agc_site_operand tables generated from the original
- * source by tools/agc_sites_generate.py. Nothing here reads the original rope.
+ * source by tools/agc_sites_generate.py. Nothing here reads the original rope,
+ * except that a C64 flight build keeps the Executive's site tables as
+ * addresses only and reads each word from the rope image (AGC_SITES_ROPE,
+ * below).
  *
  * Registries are static, sorted by physical address, unique and resident. */
 #include <stdbool.h>
@@ -48,6 +51,23 @@ uint16_t agc_erasable_point(agc_word logical, agc_word eb);
 typedef struct { uint16_t physical; agc_word word; } agc_site_operand;
 bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
                      uint16_t physical, agc_word *word);
+/* AGC_SITES_ROPE (the C64 flight resident and every flight module,
+ * tools/resident_flight_build.py COMMON): a count with AGC_SITES_ADDRESSES
+ * set names a table of addresses only, the sites' sorted uint16_t physical
+ * words, and agc_site_lookup reads the word at a hit from the REU rope image
+ * (include/rope_image.h; Comanche055's with AGC_SITES_CM_ROPE set, else
+ * Luminary099's). That is the word the generated table holds in every other
+ * build: tools/agc_sites_generate.py checks each one against the rope. The
+ * resident's Executive site tables take this form (lm_exec_site_table). A
+ * scan of a table in place reads AGC_SITES_PAIRS(count) entries: none for an
+ * address table. */
+#define AGC_SITES_ADDRESSES UINT16_C(0x8000)
+#define AGC_SITES_CM_ROPE   UINT16_C(0x4000)
+#ifdef AGC_SITES_ROPE
+#define AGC_SITES_PAIRS(count) ((uint16_t)(((count) & AGC_SITES_ADDRESSES) ? 0u : (count)))
+#else
+#define AGC_SITES_PAIRS(count) (count)
+#endif
 
 /* CPU state a routine may need beyond the erasable image and the mission's
  * device record: output channel 11 (the Executive's idle loop turns off COMP
@@ -63,8 +83,17 @@ bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
  * returns, output channels the last word written; channel 13 holds what the
  * CPU can write (043777: the trap-reset bits never stay set). One layout for
  * every lane: new channels are appended here by the ABI owner. Zero-initialize
- * with `agc_hardware hw = {0};`, never a partial positional list. */
-typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14, channel30, channel33, channel31, channel3, channel4; } agc_hardware;
+ * with `agc_hardware hw = {0};`, never a partial positional list.
+ * radar_gate is the radar gate counter (yaAGC RadarGateCounter): the TIME5
+ * steps counted while channel 13 bit 4 (radar activity) is set, which ends
+ * the radar cycle at nine (resident_rupt.c rk_timer_phase). */
+typedef struct {
+    agc_word channel11;
+    uint16_t in_interrupt;
+    agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14,
+        channel30, channel33, channel31, channel3, channel4;
+    uint8_t radar_gate;
+} agc_hardware;
 
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,
