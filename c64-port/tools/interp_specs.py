@@ -4148,6 +4148,11 @@ SPECS = {
         'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
+        # Those returns land past the call: P370GOF and P37GFRB1 proceed to
+        # the call +2 (TC SPRTEX recycles to +1), P370GOFR recycles to +3
+        # and proceeds to +4 (TC RTENCKEX is +1). Keys of their own, as
+        # RTEVN's CAF V6N60RTE after the N39 display (36,3017).
+        'in_file_returns': {'P370GOF': [1], 'P37GFRB1': [1], 'P370GOFR': [2, 3]},
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
         'ebank': 7,
         # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small

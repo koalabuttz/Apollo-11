@@ -899,6 +899,19 @@ port) runs one mission:
    V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
    matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
    RELDSP1.
+   `cm-p37`: return to earth targeting on the transearth coast, about
+   150 h GET, as the crew ran P37 for midcourse and abort pads. cm_p37.py
+   loads the CSM inbound 240,000 km from the earth on an ellipse from the
+   moon's distance with a natural -6.5 degree entry (outside the moon's
+   sphere, so CMOONFLG clear), the platform in local vertical axes.
+   V37E37E: V25 on V06N33 (TIG 1 h on the CMC clock), V22 and V23 on
+   V06N60 (100 ft/s, -6.50 degrees; with zeros the conic iteration stops
+   on alarm 00605), proceed. The conic solution shows V06N61 (20.52 N,
+   36.79 W), N39 (31:07:43), N60 (36,054 ft/s, -6.50) and N81; the
+   precision solution (about 170 s) shows 20.57 N, 37.51 W, 31:11:05 and
+   36,060 ft/s, then V04N06 (SPS), the biased V06N33 and V16N45. V37E00E;
+   V82 shows V16N44 9999.9 x 22.4 nmi, then V34E. On the host every native
+   routine matches yaAGC.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

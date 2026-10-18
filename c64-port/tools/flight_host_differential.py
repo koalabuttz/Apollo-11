@@ -300,6 +300,20 @@ TEI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767'
 TEI_KEYS = ('@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E'
             '@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E'
             '@50000V37E00E@51000V82E@53000V33E@55000V34E')
+# cm-p37: return to earth targeting on the transearth coast (about 150 h
+# GET), the load at 20 s (tools/flight_scenarios/cm_p37.py: the CSM inbound
+# 240,000 km from the earth on an ellipse from the moon's distance with a
+# natural -6.5 degree entry, outside the moon's sphere, the platform in
+# local vertical axes). V37E37E: V25 on V06N33 (TIG 1 h on the CMC clock),
+# V22 and V23 on V06N60 (100 ft/s, -6.50 degrees), proceed; the conic
+# solution (V06N61, N39, N60, N81), proceed through it; the precision
+# solution (about 170 s), proceed through the same displays, V04N06 (SPS),
+# the biased V06N33 and V16N45; V37E00E; V82 (V16N44), then V34E.
+P37 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p37.load'}
+P37_KEYS = ('@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E@7600V23E-00650E@8200V33E'
+            '@11000V33E@12000V33E@13000V33E@14000V33E@38000V33E@39000V33E@40000V33E@41000V33E@42000V33E'
+            '@43000V33E@44000V33E@45000V37E00E@46000V82E@47500V33E@49500V34E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -310,6 +324,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-tli', 'cm', 70000, TLI_KEYS, TLI),
           ('cm-p22', 'cm', 23000, P22_KEYS, P22),
           ('cm-tei', 'cm', 56000, TEI_KEYS, TEI),
+          ('cm-p37', 'cm', 51000, P37_KEYS, P37),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
