@@ -21,10 +21,11 @@
  *   and the IMU CDUs (SM to NB: inner Y, middle Z, outer X).
  * - Data good: channel 33 bit 4 is low (good) while the tracker is on and
  *   the CSM is within 400 nautical miles, high otherwise.
- * - A read: once channel 13 bit 4 (activity) has been on 9 cs (yaAGC's
- *   radar gate, 9 TIME5 periods), RNRAD takes the reading the select bits
- *   name (1 range, high scale: channel 33 bit 3 stays high; 2 range rate,
- *   biased 17000), the activity bit drops and RADARUPT is requested. */
+ * - A read: when channel 13 bit 4 (activity) comes on, RNRAD takes the
+ *   reading the select bits name (1 range, high scale: channel 33 bit 3
+ *   stays high; 2 range rate, biased 17000). The radar cycle (the bit
+ *   reset and RADARUPT nine TIME5 counts later, yaAGC's radar gate) is the
+ *   resident timer's (rk_timer_phase), so *radarupt stays unset. */
 #ifndef FLIGHT_RADAR_H
 #define FLIGHT_RADAR_H
 #include <math.h>
@@ -85,13 +86,15 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
   w[RR_CDUT]=rr_angle(asin(-nb[1]));w[RR_CDUS]=rr_angle(atan2(nb[0],nb[2]));}
  if((*ch12&020000u)&&range<400.0*1852.0)*ch33&=(agc_word)~010u;else *ch33|=010u;
  *ch33|=04u;
+ /* The read's data is in RNRAD from its start; the radar cycle itself
+  * (channel 13 bit 4 reset and RADARUPT nine TIME5 counts on) is the
+  * resident timer's, rk_timer_phase, as yaAGC's. */
+ (void)radarupt;
  if(!(*ch13&010u)){e->active=0;return;}
- if(!e->active){e->active=1;e->since=t;}
- if(t<e->since+9u)return;
- e->active=0;
+ if(e->active)return;
+ e->active=1;
  if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/(2.859024*8.0))&077777u;
- else if((*ch13&7u)==2u)w[RR_RNRAD]=(agc_word)(17000l-lround(rdot/0.19135344))&077777u;
- *ch13&=(agc_word)~010u;*radarupt=1;}
+ else if((*ch13&7u)==2u)w[RR_RNRAD]=(agc_word)(17000l-lround(rdot/0.19135344))&077777u;}
 #else
 /* The CM side (Comanche P20, tools/flight_scenarios/cm_p20.py): the VHF
  * ranging link to the LM and the crew's sextant.
@@ -102,10 +105,10 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  *   outer X), NB1 the shaft axis 32.523 degrees from NB Z toward NB X,
  *   shaft angle atan2(NB1 y, NB1 x), trunnion acos(NB1 z) less SXTLOGIC's
  *   19.775 degree bias, CDUT four counts to one.
- * - A read: RANGERD sets channel 13 bits 1 and 4 (OCT11); 9 cs later
- *   RNRAD takes the range in 0.01 nautical miles (CONVRNGE, 15 bits
- *   unsigned), channel 33 bit 2 is low (data good), the activity bit drops
- *   and RADARUPT (VHFREAD) is requested. */
+ * - A read: RANGERD sets channel 13 bits 1 and 4 (OCT11); RNRAD takes the
+ *   range in 0.01 nautical miles (CONVRNGE, 15 bits unsigned) and channel
+ *   33 bit 2 is low (data good); the resident timer ends the cycle and
+ *   requests RADARUPT (VHFREAD), as on the LM side. */
 enum { VHF_CDUXD=03246, VHF_REFSMMAT=01735 };
 static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_word *ch13,const agc_word *ch14,agc_word *ch33,int *radarupt){
  double l[6],c[6],rel[6],sm[3],range,ig,mg,og,x1,y1,z1,x2,y2,nb[3],sa=0.567635,o1,o3,tn;unsigned k,j;
@@ -124,11 +127,11 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  tn=acos(o3<-1.0?-1.0:o3>1.0?1.0:o3)-19.775*3.141592653589793/180.0;
  w[RR_CDUS]=rr_angle(atan2(nb[1],o1));w[RR_CDUT]=rr_angle(4.0*tn);
  *ch33&=(agc_word)~02u;
+ /* As the LM side: RNRAD from the read's start, the cycle the resident's. */
+ (void)radarupt;
  if(!(*ch13&010u)){e->active=0;return;}
- if(!e->active){e->active=1;e->since=t;}
- if(t<e->since+9u)return;
- e->active=0;
- if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/18.52)&077777u;
- *ch13&=(agc_word)~010u;*radarupt=1;}
+ if(e->active)return;
+ e->active=1;
+ if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/18.52)&077777u;}
 #endif
 #endif
