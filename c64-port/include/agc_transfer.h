@@ -63,8 +63,17 @@ bool agc_site_lookup(const agc_site_operand *table, uint16_t count,
  * returns, output channels the last word written; channel 13 holds what the
  * CPU can write (043777: the trap-reset bits never stay set). One layout for
  * every lane: new channels are appended here by the ABI owner. Zero-initialize
- * with `agc_hardware hw = {0};`, never a partial positional list. */
-typedef struct { agc_word channel11; uint16_t in_interrupt; agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14, channel30, channel33, channel31, channel3, channel4; } agc_hardware;
+ * with `agc_hardware hw = {0};`, never a partial positional list.
+ * radar_gate is the radar gate counter (yaAGC RadarGateCounter): the TIME5
+ * steps counted while channel 13 bit 4 (radar activity) is set, which ends
+ * the radar cycle at nine (resident_rupt.c rk_timer_phase). */
+typedef struct {
+    agc_word channel11;
+    uint16_t in_interrupt;
+    agc_word channel5, channel6, channel13, channel15, channel10, channel32, channel12, channel14,
+        channel30, channel33, channel31, channel3, channel4;
+    uint8_t radar_gate;
+} agc_hardware;
 
 /* A native routine entered at its original address. It runs with the flight
  * image in its entry state, performs its translated body, and leaves Z (and FB,

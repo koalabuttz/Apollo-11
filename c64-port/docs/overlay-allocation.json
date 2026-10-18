@@ -2011,7 +2011,7 @@
     {
      "path": "Comanche055/RESTARTS_ROUTINE.agc",
      "lane": "A",
-     "placement": "job",
+     "placement": "task",
      "estimated_words": 197,
      "estimated_native_bytes": {
       "low": 3152,

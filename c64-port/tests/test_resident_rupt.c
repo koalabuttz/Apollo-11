@@ -114,6 +114,19 @@ int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-d
   h=rr_mix(h,pending);h=rr_mix(h,hw.channel13);
   block=rr_fold(block,h);
   if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.timer[n/RR_BLOCK]){++failures;fprintf(stderr,"timer cases %u-%u differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n);}block=RR_BASIS;}}
+ /* The radar cycle (yaAGC agc_engine.c RadarGateCounter): with channel 13
+  * bit 4 set, the gate counts TIME5's steps; RADARUPT and bit 4's reset
+  * come before the TIME5 step after the ninth count, so in the tenth
+  * period; a reset bit 4 holds the count. */
+ {static apollo_overlay_state s;agc_hardware hw={0};uint16_t pending;unsigned period,p,at=0;
+  hw.channel13=040010u;
+  for(period=1;period<=12u;++period){
+   if(period==4u)hw.channel13&=(agc_word)~010u;   /* held for periods 4-5 */
+   if(period==6u)hw.channel13|=010u;
+   for(p=RK_PHASE_T4;p<=RK_PHASE_T5;++p){pending=0;rk_timer_phase(&s,&hw,&pending,(uint8_t)p);
+    if(pending&RK_RUPT_BIT(RK_RUPT_RADAR)){if(at||p!=RK_PHASE_T5)at=99u;else at=period;}}}
+  ++checks;
+  if(at!=12u||(hw.channel13&010u)||hw.radar_gate){++failures;fprintf(stderr,"radar cycle: RADARUPT in period %u, channel 13 %o, gate %u\n",at,(unsigned)hw.channel13,(unsigned)hw.radar_gate);}}
  printf("%s: resident-rupt %s: %u entry cases (%u taken; not taken: %u nothing pending, %u in an interrupt, %u inhibited, %u overflow in A, %u RELINT/INHINT/EXTEND at Z), "
         "%u T3RUPT cases (%u to RESUME, %u kernel routines), %u other-vector cases (%u to RESUME, %u to a point no table holds, %u refused, %u not taken, %u runaway; %u routines), %u timer periods (T6 %u, T5 %u, T3 %u, T4 %u raised); %u checks, %u failures\n",
         failures?"FAIL":"PASS",NAME,(unsigned)RR_ENTRY_CASES,taken,why[0],why[1],why[2],why[3],why[4],(unsigned)RR_T3_CASES,t3_done,(unsigned)t3_steps,

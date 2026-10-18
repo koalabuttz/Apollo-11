@@ -42,10 +42,10 @@ def snapshot(exe, name, cs):
     _, m, _, keys, env = scen
     header = dp.WORK / f'{name}-snap.h'
     header.unlink(missing_ok=True)
-    # The snapshot is taken at the first sample point at or after CS; a job
-    # that keeps the AGC from idling (FLIGHT_BUSY_SAMPLE) can put it a second
-    # or more later.
-    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 300), keys], cwd=ROOT,
+    # The host takes the snapshot at the first point at or after cs with no
+    # interrupt pending (a long job, such as PICAPAR, can hold one off for
+    # over 100 cs), then stops; running to cs + 1000 leaves room for that.
+    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}'},
                        capture_output=True, text=True)
     (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)

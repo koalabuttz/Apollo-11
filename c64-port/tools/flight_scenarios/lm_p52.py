@@ -22,7 +22,7 @@ angles (the outer, inner and middle gimbals, CDUX, CDUY and CDUZ).
 import math
 from pathlib import Path
 
-from sighting import catalog, cdu_angle, cdu_word, dp, gimbals, mm, mv, rotation, smnb, unit
+from sighting import catalog, cdu_angle, cdu_word, dp, gimbals, mm, mv, optic_axis, rotation, smnb, unit
 
 ROOT = Path(__file__).resolve().parents[2]
 LST = ROOT / 'build/fixed-data/Luminary099/assembly.lst'
@@ -38,7 +38,7 @@ def main():
     E = [int(w, 8) for w in words[512:512 + 2048]]
     refs = [[dp(E[REFSMMAT + 6 * r + 2 * c], E[REFSMMAT + 6 * r + 2 * c + 1], 1) for c in range(3)] for r in range(3)]
     az, el = cdu_angle(E[AOTAZ + DETENT - 1]), cdu_angle(E[AOTEL + DETENT - 1])
-    oa = [math.sin(el), math.cos(el) * math.sin(az), math.cos(el) * math.cos(az)]
+    oa = optic_axis(az, el)[0]
     cat = catalog(LST)
     att = smnb(cdu_angle(E[0o32]), cdu_angle(E[0o33]), cdu_angle(E[0o34]))
     print('core CDUX %05o CDUY %05o CDUZ %05o; detent %d optic axis NB %s'

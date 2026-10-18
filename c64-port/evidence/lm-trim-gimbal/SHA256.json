@@ -4,8 +4,8 @@
   "release": "evidence-lm-trim-gimbal",
   "files": {
     "lm-trim-gimbal-c64-cover.json": {
-      "sha256": "70f403d49e7e379e0b1c7564587b33806330e8250418210c9e97a4cfe76efd79",
-      "bytes": 23290,
+      "sha256": "da7a7dd750c9c401e18e4273534cee7dabf84afe851b46905dbf8e959a05326f",
+      "bytes": 28967,
       "store": "tree"
     },
     "lm-trim-gimbal-host.log": {
@@ -19,12 +19,12 @@
       "store": "tree"
     },
     "lm-trim-gimbal-source-map.json": {
-      "sha256": "1b40d806b7b9f2713ba95812a16240ad34884fcf14806ab3588f5477f1fe501e",
+      "sha256": "e7cc9781ab1b5fbff2dc473410290335b31f503a4ac56371d45e7a6137c684ed",
       "bytes": 73409,
       "store": "tree"
     },
     "lm-trim-gimbal-vice.log": {
-      "sha256": "a45b1a7796b802b19dbabe1dd7f6944875bcd075491c3bf732ea7d3a59f456ac",
+      "sha256": "f94a155560e5bace443b2ee0468aed5693e3c799f261954115ec15714116ae17",
       "bytes": 305,
       "store": "tree"
     }

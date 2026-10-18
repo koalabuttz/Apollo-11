@@ -591,13 +591,23 @@ SPECS = {
         # Comanche's TC SHORTMP (LOG, SXTLOGIC) runs natively in place.
         'native_ranges': {'SXTLOGIC': [5, 'geometry_rtb']},
         'native_calls': {'SHORTMP': {'cm': 'geometry_shortmp(s)'}},
+        # The C64 flight store leaves this file's interpretive code to the
+        # interpreter, whose RTB SXTLOGIC lands on the basic word itself: a
+        # routine of its own, run by geometry_rtb.
+        'native_entries': {'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'}},
         # CALCSXA and SXTANG keep their caller's return CADR in 28D (ITA 28D)
         # and leave through GOTO 28D: a CADR outside the file. X1 and X2
         # name what the next indexed operand reads (SXTNB's 5,1 and 3,1).
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
+        # SXTLOGIC as the native entry: its one caller is SXTNB's RTB PUSH,
+        # so DANZIG finds LOC at the RTB's operand word (23,2004), BANKSET
+        # bank 23 (INTBIT15 040000, as NEWOPS leaves it for that bank) and
+        # PUSH (0171) in EDOP.
         'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              SXTLOGIC={'0164': [0o2004], '0165': [0o46000 | e for e in range(8)], '0115': [0o40000],
+                                        '0023': [0o171]},
                               # EARROT1-OVERADAY: OVFIND as the interpreter
                               # sets it (TS of an overflowed A: +-1), +0 in
                               # three cases of five. EARROT2's BOVB counts
@@ -2241,6 +2251,10 @@ SPECS = {
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every RCS DAP pass runs these routines: the EB 6 window fast
+        # forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
@@ -2327,9 +2341,6 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
-        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
-        # flight (docs/INTERP-COMPILE.md).
-        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -2386,6 +2397,10 @@ SPECS = {
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every pass runs these routines (6% of the CM entry window): the
+        # EB 6 window fast forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
         # entry window (cm-entry from 17000 cs, per-routine profile,
         # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
@@ -4298,6 +4313,9 @@ SPECS = {
     },
     'lm-stable-orbit': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
         'source_path': {'lm': 'STABLE_ORBIT.agc'},
         'base': {'lm': 'lm_stable_orbit'},
