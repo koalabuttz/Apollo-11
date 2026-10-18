@@ -195,6 +195,21 @@ DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
 del DOI['FLIGHT_LR_POS2']
 DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
             '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# cm-p11: Apollo 11's launch (16 July 1969 13:32 UT), the pad load at 1 s
+# (tools/flight_scenarios/cm_p11.py: launch complex 39A, the 72.058
+# degree flight azimuth, TEPHEM for a 100 s liftoff). The IMU model
+# (FLIGHT_IMU) zeros and coarse aligns the gimbals; V37E01E: P01 turns
+# the IMU on and aligns it, then the gyrocompass loop P02; liftoff at
+# 100 s (FLIGHT_SATURN: channel 30 bit 5) and P11, which zeros the clock
+# and shows V06N62 (inertial speed, climb rate, altitude) every 2 s
+# through the S-IC, S-II and S-IVB burns (the PIPAs the boost model
+# gives) to orbit insertion, 25,555 ft/s and 102 nmi; V82 in P11:
+# V16N44, 115.8 x 81.5 nmi; proceed, then P00. Pinball RELDSP1 (02,2516,
+# Lane C) is the one point the host bridges. Key times after liftoff
+# count from the zeroed clock, and so does the run's length.
+P11 = {'FLIGHT_CH30': '037377', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1', 'FLIGHT_SATURN': '10000',
+       'FLIGHT_LOAD': '100:tools/flight_scenarios/cm-p11.load'}
+P11_KEYS = '@2000V37E01E@84000V82E@86000V33E@88000V37E00E'
 # cm-p20: the CSM's side of the LM rendezvous (tools/flight_scenarios/
 # cm_p20.py: the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1
 # degrees behind, the CMC's LM state 1.8 km too far along the line of
@@ -235,6 +250,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
+          ('cm-p11', 'cm', 90000, P11_KEYS, P11),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
