@@ -1408,6 +1408,13 @@ def main():
     loops = {i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '9'}
     if loops:
         print('both sides loop (erasable CADR cycle): %d cases' % len(loops))
+    # (And a loop each side ends at its own cap: counted and listed, then
+    # left out as above; #664.)
+    capped = step_cap_loops(rows_r, rows_n, x4_runner(a.spec, spec, missions, cases, path))
+    if capped:
+        report_step_cap_loops(missions, cases, capped)
+        loops |= capped
+    if loops:
         keep = [i for i in range(len(cases)) if i not in loops]
         cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
         write_cases(path, missions, cases)
@@ -1510,17 +1517,60 @@ def place(z, fb, sb):
     return None
 
 
+def step_cap_loops(rows_r, rows_n, rerun_x4):
+    """Cases both sides loop on past their caps: the oracle at its cycle
+    limit (kind 9) and the native runner at its step limit (kind 2) with the
+    same row again when rerun with 4x the steps, i.e. the native state no
+    longer changes (PERIODCH with a +0 period, #664). Any difference in the
+    rerun row keeps the case a mismatch. rerun_x4(indexes) returns the
+    rerun's rows for those cases, in order."""
+    cand = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '2']
+    if not cand:
+        return set()
+    return {i for i, z in zip(cand, rerun_x4(cand)) if z[1:] == rows_n[i][1:]}
+
+
+def x4_runner(spec_id, spec, missions, cases, path):
+    """step_cap_loops' rerun: the native runner built with 4x max_steps (the
+    runner's 16-bit cap at most) on just those cases."""
+    def rerun(idx):
+        ms = min(4 * spec.get('max_steps', 200), 0xffff)
+        nat4 = build(spec_id, dict(spec, max_steps=ms), tag='-x4')[1]
+        sub = path + '.x4'
+        write_cases(sub, missions, [cases[i] for i in idx])
+        rows = run([nat4, sub])
+        os.remove(sub)
+        return rows
+    return rerun
+
+
+def report_step_cap_loops(missions, cases, capped, show=5):
+    print('both sides loop (oracle cycle cap, native step cap, native state unchanged at 4x the steps): %d cases'
+          % len(capped))
+    for i in sorted(capped)[:show]:
+        c = cases[i]
+        print('  case %d %s %s' % (i, missions[c['cm']].m, missions[c['cm']].cp.where(c['point'])))
+
+
 def frozen_only(missions, cases, ref, nat, path):
     """The cases the freeze kept: the main run's loop and refusal filters,
     with the oracle run only on the cases the native runner loops on. Writes
     the kept cases to path and returns them."""
     rows_n = run([nat, path])
     nine = [i for i, y in enumerate(rows_n) if y[1] == '9']
+    # (The step-cap loops, step_cap_loops: native kind 2 rows unchanged at
+    # 4x the steps, then the oracle's kind 9 on those.)
+    two = [i for i, y in enumerate(rows_n) if y[1] == '2']
+    if two:
+        spec_id = os.path.basename(nat).rsplit('-native', 1)[0]
+        same = x4_runner(spec_id, interp_specs.SPECS[spec_id], missions, cases, path)(two)
+        two = [i for i, z in zip(two, same) if z[1:] == rows_n[i][1:]]
     loops = set()
-    if nine:
+    if nine or two:
         sub = path + '.loops'
-        write_cases(sub, missions, [cases[i] for i in nine])
-        loops = {i for i, x in zip(nine, run([ref, *ROPES, sub])) if x[1] == '9'}
+        ii = nine + two
+        write_cases(sub, missions, [cases[i] for i in ii])
+        loops = {i for i, x in zip(ii, run([ref, *ROPES, sub])) if x[1] == '9'}
         os.remove(sub)
     if loops:
         cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]

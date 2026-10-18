@@ -143,6 +143,9 @@ jobs:
       - name: Certificate arms are triaged
         working-directory: c64-port
         run: python3 tools/cert_arms.py check
+      - name: Differential step-cap loop classification
+        working-directory: c64-port
+        run: python3 tools/interp_loops_test.py
       - name: Coverage audit
         working-directory: c64-port
         run: |
