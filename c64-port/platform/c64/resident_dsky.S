@@ -24,7 +24,7 @@
 #define lamps      $e0              /* 2: the lamp bytes as drawn */
 #define now        $e2              /* 2 */
 #define tail       $e4              /* the queue's next to take */
-#define hold       $e5              /* idle passes left after PRO */
+#define hold       $e5              /* PRO is down */
 #define drawn_at   $e6
 #define dark       $e7
 #define blank      $e8
@@ -36,6 +36,9 @@
 #define scan_count $ee
 #define last_key   $ef
 #define rk_dsky_head $f0            /* the queue's next to fill */
+#define held_at    $f1              /* TIME1's low byte when PRO went down */
+#define TIME1      $702a            /* the image's word 025, low byte */
+#define PRO_CS     100              /* PRO stays down 1 s of AGC time */
 
 .section .dsky.text,"ax",@progbits
 /* The CIA1 interrupt's entry, going on to ov2_irq_entry. Every fourth
@@ -93,13 +96,18 @@ rk_dsky_irq:
 
 /* From the idle loop: the next key, then the display if 5 interrupts (50
  * ms) have gone by since the last look. A key waits while KEYRUPT1 is
- * still pending; after PRO, 255 idle passes go by before the next. */
+ * still pending. PRO stays down for 1 s of AGC time (TIME1), so T4RUPT,
+ * which looks at it every 120 ms, sees it however fast the C64 runs. */
 .globl rk_dsky_idle
 rk_dsky_idle:
     lda hold
     beq 1f
+    lda TIME1
+    sec
+    sbc held_at
+    cmp #PRO_CS
+    bcc look
     dec hold
-    bne look
 1:  ldx tail
     cpx rk_dsky_head
     beq look
@@ -114,12 +122,13 @@ rk_dsky_idle:
     lda CHANNEL32
     cpy #PRO
     bne 2f
-    and #$bf            /* PRO down: channel 32 bit 14 low */
+    and #$df            /* PRO down: channel 32 bit 14 (020000) low */
     sta CHANNEL32
-    lda #255
-    sta hold
+    lda TIME1
+    sta held_at
+    inc hold
     bne look
-2:  ora #$40
+2:  ora #$20
     sta CHANNEL32
     tya
     beq look            /* a release */
@@ -295,7 +304,8 @@ draw:
 2:  rts
 
 /* R1-R3's signs: + for the plus word's bit 11, - for the minus word's. X
- * kept. */
+ * kept. With the tables, in the screen's last rows: $0200-$03FF is full. */
+.section .dsky.rodata.code,"ax",@progbits
 draw_signs:
     stx save_x
     ldx #6

@@ -96,7 +96,7 @@ def link_resident(cc, m):
     main = syms['main'] - 0x0801 + 2
     # main starts with JSR rk_boot: the VICE run stops after it.
     assert prg[main] == 0x20 and int.from_bytes(prg[main + 1:main + 3], 'little') == syms['rk_boot'], 'main does not start with rk_boot'
-    return prg[2:], int(sys_at[1]), syms['main'] + 3, syms['rk_dsky_queue']
+    return prg[2:], int(sys_at[1]), syms['main'] + 3, (syms['rk_dsky_queue'], syms['rk_hardware'])
 
 
 def link_loader(cc, m, code, syms, disks):
@@ -232,7 +232,7 @@ SEQ, PRG = 1, 2
 def build(a, m, code, syms):
     image = (STORE / f'{m}.reu').read_bytes()
     assert len(image) == 2 << 20, f'{m}.reu is not 2 MB'
-    res, sys_at, boot_return, dsky_queue = link_resident(a.cc, m)
+    res, sys_at, boot_return, (dsky_queue, hardware) = link_resident(a.cc, m)
     # Stage the resident at the top of the REU, in bytes the store leaves 0
     # (the hand-off zeroes them again).
     res_at = (len(image) - len(res)) & ~0xff
@@ -268,7 +268,7 @@ def build(a, m, code, syms):
         paths.append(path)
     loaded = sum(len(x) for _, x in recs)
     info = dict(mission=m, disks=[p.name for p in paths], loader_bytes=len(loader) - 2,
-                resident_bytes=len(res), resident_start=sys_at, boot_return=boot_return, dsky_queue=dsky_queue, resident_staged=f'0x{res_at:06x}',
+                resident_bytes=len(res), resident_start=sys_at, boot_return=boot_return, dsky_queue=dsky_queue, hardware=hardware, resident_staged=f'0x{res_at:06x}',
                 bytes_loaded=loaded, data_bytes=[len(x) for x in datas])
     print(f"{m}: {len(paths)} disks, {loaded} bytes to the REU, loader {info['loader_bytes']} bytes, "
           f"resident {len(res)} bytes (SYS {sys_at})")
@@ -376,6 +376,8 @@ class Monitor:
 # The DSKY's key queue (platform/c64/resident_dsky.S): its head in zero
 # page, and the channel 15 codes of the keys it takes (P is PRO).
 DSKY_HEAD = 0xf0
+# IMODES33 (build/fixed-data/*/assembly.lst): T4RUPT's copy of channel 32 bit 14
+IMODES33 = dict(lm=0o1303, cm=0o1321)
 DSKY_KEYS = {**{str(d): d or 0o20 for d in range(10)}, 'V': 0o21, 'N': 0o37, '+': 0o32, '-': 0o33, 'E': 0o34,
              'C': 0o36, 'R': 0o22, 'K': 0o31, 'P': 0x40}
 
@@ -515,6 +517,12 @@ def vice(a, m, info):
                 time.sleep(a.key_wait)
                 mon.cmd('r')  # the first answer after go() can be the stale prompt
                 result.setdefault('key_pcs', []).append(re.search(r'\.;([0-9a-f]{4})', mon.cmd('r'))[1])
+                # channel 32's high byte (PRO holds bit 14, 0x20, low for 1 s
+                # of AGC time), and IMODES33, where T4RUPT keeps the bit it saw
+                ch32 = mon.mem(info['hardware'] + 15, info['hardware'] + 15)[0]
+                result.setdefault('key_ch32', []).append(f'{ch32:02x}')
+                im = mon.mem(0x7000 + 2 * IMODES33[m], 0x7000 + 2 * IMODES33[m] + 1)
+                result.setdefault('key_imodes33', []).append(f'{im[0] | im[1] << 8:05o}')
         if a.screenshot:
             mon.go()
             time.sleep(a.settle)

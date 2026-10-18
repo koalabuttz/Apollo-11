@@ -144,7 +144,7 @@ The keys:
 | `C` or DEL | CLR |
 | `R` | RSET |
 | `K` | KEY REL |
-| `P` (hold it) | PRO |
+| `P` | PRO (held down for 1 s of AGC time) |
 
 So `V37` RETURN `00` RETURN selects P00, and `V35` RETURN runs the lights
 test. One key at a time: the C64 sees a key 25 times a second and passes

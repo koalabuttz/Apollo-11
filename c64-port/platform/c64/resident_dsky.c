@@ -4,7 +4,7 @@
  * booted from disk (resident_flight_main.c). It costs the resident no
  * bytes. Its code runs from $0200-$03FF, its tables and state sit in the
  * screen's last rows ($06A8-$07E7, drawn in the background colour, so
- * they do not show) and its scratch in zero page $E0-$F0: nothing else
+ * they do not show) and its scratch in zero page $E0-$F1: nothing else
  * uses them in flight. They load with
  * the boot-only code, and rk_dsky_install (boot-only too) copies them.
  *
@@ -25,8 +25,8 @@
  * keyboard 25 times a second and queues each change of key. The idle loop
  * takes them one at a time: a DSKY key goes to channel 15 with KEYRUPT1
  * (on the CM to rk_device's copy too, which the CM modules write back over
- * channel 15), and PRO clears channel 32's bit 14, for 255 idle passes
- * (more than two T4RUPT periods). */
+ * channel 15), and PRO clears channel 32's bit 14 for 1 s of AGC time
+ * (T4RUPT looks at it every 120 ms). */
 #include "resident_flight.h"
 #include <string.h>
 
