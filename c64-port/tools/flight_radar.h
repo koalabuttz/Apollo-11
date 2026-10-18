@@ -63,6 +63,7 @@ static double rr_dp(const agc_word *w,unsigned a,int scale){
 static double rr_cdu(agc_word v){return (double)(v&077777u)*(6.283185307179586/32768.0);}
 static agc_word rr_angle(double a){long c=lround(a/6.283185307179586*32768.0);return (agc_word)((unsigned long)c&077777ul);}
 
+#if RK_LM
 /* One sample point at time t: w the erasable image, the channels, and the
  * interrupt requests (*radarupt set to request RADARUPT). */
 static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_word *ch13,const agc_word *ch14,agc_word *ch33,int *radarupt){
@@ -91,4 +92,43 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/(2.859024*8.0))&077777u;
  else if((*ch13&7u)==2u)w[RR_RNRAD]=(agc_word)(17000l-lround(rdot/0.19135344))&077777u;
  *ch13&=(agc_word)~010u;*radarupt=1;}
+#else
+/* The CM side (Comanche P20, tools/flight_scenarios/cm_p20.py): the VHF
+ * ranging link to the LM and the crew's sextant.
+ * - Attitude: CDUX-Z take the DAP's desired angles CDUXD-ZD, as on the LM
+ *   (Comanche's are two words apart).
+ * - Optics: CDUS and CDUT hold the true line of sight to the LM (the crew
+ *   keeps it on the sextant's reticle): NB from SM (inner Y, middle Z,
+ *   outer X), NB1 the shaft axis 32.523 degrees from NB Z toward NB X,
+ *   shaft angle atan2(NB1 y, NB1 x), trunnion acos(NB1 z) less SXTLOGIC's
+ *   19.775 degree bias, CDUT four counts to one.
+ * - A read: RANGERD sets channel 13 bits 1 and 4 (OCT11); 9 cs later
+ *   RNRAD takes the range in 0.01 nautical miles (CONVRNGE, 15 bits
+ *   unsigned), channel 33 bit 2 is low (data good), the activity bit drops
+ *   and RADARUPT (VHFREAD) is requested. */
+enum { VHF_CDUXD=03246, VHF_REFSMMAT=01735 };
+static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_word *ch13,const agc_word *ch14,agc_word *ch33,int *radarupt){
+ double l[6],c[6],rel[6],sm[3],range,ig,mg,og,x1,y1,z1,x2,y2,nb[3],sa=0.567635,o1,o3,tn;unsigned k,j;
+ (void)ch12;(void)ch14;
+ if(!rr_on)return;
+ for(k=0;k<3u;++k)w[RR_CDUX+k]=w[VHF_CDUXD+2u*k];
+ rr_kepler(rr_lm,((double)t-(double)rr_t0)*0.01,l);rr_kepler(rr_csm,((double)t-(double)rr_t0)*0.01,c);
+ for(k=0;k<6u;++k)rel[k]=l[k]-c[k];
+ range=sqrt(rel[0]*rel[0]+rel[1]*rel[1]+rel[2]*rel[2]);
+ for(j=0;j<3u;++j){sm[j]=0.0;for(k=0;k<3u;++k)sm[j]+=rr_dp(w,VHF_REFSMMAT+6u*j+2u*k,1)*rel[k]/range;}
+ ig=rr_cdu(w[RR_CDUX+1u]);mg=rr_cdu(w[RR_CDUX+2u]);og=rr_cdu(w[RR_CDUX]);
+ x1=sm[0]*cos(ig)-sm[2]*sin(ig);z1=sm[0]*sin(ig)+sm[2]*cos(ig);y1=sm[1];
+ x2=x1*cos(mg)+y1*sin(mg);y2=-x1*sin(mg)+y1*cos(mg);
+ nb[0]=x2;nb[1]=y2*cos(og)+z1*sin(og);nb[2]=-y2*sin(og)+z1*cos(og);
+ o1=nb[0]*cos(sa)-nb[2]*sin(sa);o3=nb[0]*sin(sa)+nb[2]*cos(sa);
+ tn=acos(o3<-1.0?-1.0:o3>1.0?1.0:o3)-19.775*3.141592653589793/180.0;
+ w[RR_CDUS]=rr_angle(atan2(nb[1],o1));w[RR_CDUT]=rr_angle(4.0*tn);
+ *ch33&=(agc_word)~02u;
+ if(!(*ch13&010u)){e->active=0;return;}
+ if(!e->active){e->active=1;e->since=t;}
+ if(t<e->since+9u)return;
+ e->active=0;
+ if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/18.52)&077777u;
+ *ch13&=(agc_word)~010u;*radarupt=1;}
+#endif
 #endif

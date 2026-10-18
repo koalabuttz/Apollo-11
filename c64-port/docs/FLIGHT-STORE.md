@@ -656,6 +656,27 @@ port) runs one mission:
    -0.021, +0.012 and -0.019 degrees, the drift taken out; V50N25 00014,
    V34 and V37E00E end it in P00. The keys y and j are the Y MARK
    (bit 4) and MARK REJECT (bit 5).
+   `cm-p20`: the CSM's side of the LM rendezvous, P20 tracking the LM with
+   SXT marks and VHF ranging. cm_p20.py writes cm-p20.load from the orbits
+   of lm_rendezvous.py (Lane D2's LM P20/P34 scenario): the CSM in a 60 nmi
+   circular lunar orbit, the LM 15 nmi below it and 2.1 degrees behind,
+   both retrograde about the reference Z axis as Apollo's were; REFSMMAT
+   the LM's local vertical; the CMC's LM state 1.8 km too far along the
+   line of sight; R22's pads (WRENDPOS, WRENDVEL, RVAR, RMAX, VMAX); the
+   CSM at R61's preferred tracking attitude. `FLIGHT_RR`'s CM side
+   (tools/flight_radar.h) holds the CDUs on the DAP's desired angles
+   (CDUXD-ZD; Comanche keeps them two words apart), points the SXT at the
+   LM, and answers each VHF range read (channel 13 bit 4) with RNRAD
+   9 cs later and a RADAR RUPT. The keys run V37E20E, V87E (VHF ranging
+   allowed), V57E and MARK, proceeding on V51 (TRKMKCNT 1: the mark goes
+   into the LM state and the W matrix). R22's first VHF range, at about
+   125 s, shows V06N49, the 1.8 km. Proceed takes it (VHFCNT 1). The
+   next, at about 185 s, shows N49 again for a 4 ft/s velocity change,
+   and proceed takes that too (VHFCNT 2). R22 waits on N49 in a loop
+   (RENDISP7), so the AGC never idles. `FLIGHT_BUSY_SAMPLE=100` gives the
+   keys their sample points: a key every second, so each CHARIN job runs
+   before the next key comes. On a busy stretch with all four keys at
+   once, V87 arrived as V77 and cleared PRFTRKAT.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
