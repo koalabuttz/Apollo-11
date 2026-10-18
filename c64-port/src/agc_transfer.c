@@ -152,6 +152,22 @@ uint16_t agc_transfer_next(const agc_native_program *p, const apollo_overlay_sta
     if (point != stop) *call = resolve_at(p, point, in);
     return point;
 }
+static const uint8_t page_bit[8] = {1u, 2u, 4u, 8u, 16u, 32u, 64u, 128u};
+uint16_t agc_transfer_next_paged(const agc_native_program *p, const apollo_overlay_state *s,
+                                 agc_word superbank, uint16_t stop, agc_routine *call,
+                                 const uint8_t pages[8])
+{
+    uint16_t point;
+    uint8_t k;
+    bool in;
+    *call = 0;
+    if (!p || !s) return AGC_TRANSFER_NONE;
+    point = transfer_point(p, s, superbank, &in);
+    k = (uint8_t)(point >> 8);
+    if (point != stop && (pages[(k >> 3) & 7u] & page_bit[k & 7u]))
+        *call = resolve_at(p, point, in);
+    return point;
+}
 agc_routine agc_transfer_resolve(const agc_native_program *p, const apollo_overlay_state *s,
                                  agc_word superbank)
 {

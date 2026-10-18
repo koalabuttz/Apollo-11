@@ -101,8 +101,9 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
 - Host and sanitizer results: `lanec-pin-checks.log`. It has the strict and
   ASan/UBSan runs of every suite and the whole-file map run.
 - C64 execution results: `lanec-pin-c64-results.json`, with every PRG's
-  hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw` (86 programs,
-  925 checks), `vice-lanec-pin-transfer` (93 programs, 292 checks) and
+  hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw-1` to `-5` (86
+  programs, 925 checks), `vice-lanec-pin-transfer-1` to `-4` (93 programs,
+  292 checks) and
   `vice-lanec-pin-flight` (81 checks: the frozen rows of the nine
   `pin-head-*` suites and `pw-fixed-display`, both missions, run one
   routine per case through the Pinball flight modules loaded from the REU
@@ -135,7 +136,8 @@ but the keypress pair, whose evidence is `module-test-lanec-pin-keys`):
     python3 tools/lanec/cert_evidence.py lanec-pin evidence/lanec-pin-cert $S pin-transfer pin-transfer-c64 \
       pin-decdsp3 --refusals $S pin-transfer pin-transfer-c64 pin-decdsp3 --refusals-only pin-refuse \
       --wholefile tools/lanec/wholefile_pin.py \
-      --c64 pin-gaps=lanec-pin-gaps pw=lanec-pw pin-transfer-c64=lanec-pin-transfer pin-flight=lanec-pin-flight
+      --c64 pin-gaps=lanec-pin-gaps $(for n in 1 2 3 4 5; do echo pw=lanec-pw-$n; done) \
+      $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done) pin-flight=lanec-pin-flight
     python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-transfer-c64 \
       di-transfer-c64 --pool --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
       --host-only 'src/lm_interbank_routines.c:9=<reason>' --host-only 'src/cm_interbank_routines.c:9=<reason>'

@@ -227,8 +227,8 @@ extern uint8_t rk_restart_lamp;
 #else
 #define RK_IO_BASE FLIGHT_IO_CM_NATIVE
 #endif
-/* 256 bytes of boot scratch for apollo_reu_store_verify (before the
- * pinned module loads over it). */
+/* 768 bytes of boot scratch for apollo_reu_store_verify, $C100-$C3FF
+ * (before the pinned module loads over it). */
 #define RK_BOOT_SCRATCH 0xc100u
 /* The soft stack's last byte above the pinned module (slot class 3, up to
  * $CBFF): boot writes the canary, and a step that finds it changed returns

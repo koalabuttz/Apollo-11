@@ -43,9 +43,9 @@ Hashes: `evidence/lanec-pw/SHA256.json`.
 - Host and sanitizer results: `make test-lanec-pw sanitize-lanec-pw`
   (`lanec-pw-sanitize.txt`). CI runs them as `test-lanec-pw-1` to `-5` and
   `sanitize-lanec-pw-1` to `-4`, each a run of consecutive suites.
-- C64 execution: `make vice-lanec-pw` builds one program per suite with
-  the frozen rows `tools/lanec/cover.py pick` chose to take every host
-  branch arc (`tests/lanec_pw_*_c64.h`) and runs them on a VICE PAL C64:
+- C64 execution: `make lanec-pw-vice` (CI: `vice-lanec-pw-1` to `-5`)
+  builds one program per suite with the frozen rows `tools/lanec/cover.py
+  pick` chose to take every host branch arc (`tests/lanec_pw_*_c64.h`) and runs them on a VICE PAL C64:
   85 programs, 917 checks, zero failures (`lanec-pw-vice.txt`). Seven
   suites' modules do not fit a program with the harness below $C000
   (`LANEC_PW_C64_TOO_BIG` in `tools/mk/lanec-pw.mk`); their modules run on

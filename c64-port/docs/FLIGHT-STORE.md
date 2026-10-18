@@ -832,6 +832,41 @@ port) runs one mission:
    ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
    job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
    takes 1,273,194 routines, none that yaAGC did not match.
+   `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
+   second burn, as the CMC monitored it in P47. cm_tli.py writes
+   cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
+   nmi parking orbit, the launch REFSMMAT with the platform on it, TEPHEM,
+   the sun and moon, and the CDUs with body X along the burn. It also
+   prints the burn's direction in stable-member axes for `FLIGHT_SIVB=CS,
+   UX,UY,UZ` (tools/flight_host_run.c, CM): from CS, 0.9 MN on 140 t less
+   215 kg/s for 347 s, inertially fixed along the orbit's velocity half a
+   burn after TIG, into PIPAX-Z. Its own integration of the burn gives
+   cutoff at 300 km and 10,861 m/s, C3 -1.4 km2/s2 (the flight's was
+   10,834 m/s). V37E47E: P47 starts average-G and counts the velocity on
+   V16N83 (body X passes 9999.9 ft/s and the display wraps: 3,166 m/s in
+   all); proceed (P47 ends in GOTOPOOH, which flashes V37), V37E00E; V82
+   in P00 shows V16N44 with apogee 9999.9 nmi (the display's limit) and
+   perigee 101.6 nmi. P47BODY's interpretive block runs in the NOVAC job
+   TIGON starts, so the cm-p40-p47 spec admits FIXLOC 0110 there
+   (`novac`). On the host every native routine matches yaAGC; the
+   unregistered point is Pinball's RELDSP1.
+   `cm-p22`: lunar-orbit navigation on a known landmark, as Collins
+   tracked landmark 130 before the landing (synthetic, about 98 h GET).
+   cm_p22.py writes cm-p22.load: the CSM in a 60 nmi retrograde orbit
+   passing over the landmark (1.20 N, 23.70 E, 1,500 m below the CMC's
+   lunar radius) in the CMC's own moon frame (MOONMX with the rope's
+   constants), the CMC's state 1.4 km off the true orbit, REFSMMAT and
+   platform local vertical, the sextant's shaft axis on the landmark at
+   mid-pass, and the W matrix pads. The mark loads put CDUS and CDUT where
+   the true orbit sees the landmark at each MARK. N89 holds half the
+   longitude (LLASRDA doubles it into LONG). V37E22E, proceed on V06N45;
+   V22E10000E on V05N70 (landmark known, so N89), proceed; proceed on
+   V06N89; R52 drives the optics on V06N92; the optics switch to MANUAL
+   (FLIGHT_CHAN), MARK at 132 s and 152 s, proceed on V51; proceed on
+   V05N71 and V06N89; V06N49 shows 0.6 nmi, proceed; the landmark
+   solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
+   V37E00E. On the host every native routine matches yaAGC; the
+   unregistered points are Pinball's VBPROC +3 to +5.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

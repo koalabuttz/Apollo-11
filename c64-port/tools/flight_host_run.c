@@ -64,7 +64,10 @@
  * centisecond CS (after that point's pokes), write the native state (the
  * erasable image, the superbank, the interrupt enable, agc_hardware and the
  * flight_io channels) as a C header for the C64 DAP pass check
- * (platform/c64/dap_pass_check.c), and stop.
+ * (platform/c64/dap_pass_check.c), and stop. It waits for a point with no
+ * interrupt pending, unless FLIGHT_SNAPSHOT_PENDING is set: then it takes the
+ * first point, the one FLIGHT_GOJAM would restart at (the requests pending
+ * there are not in the header; the GOJAM clears them).
  *   flight-host-run ROPE.bin [CS [KEYS]]   (build with -DRK_LM=1 or -DRK_CM=1,
  *   FLIGHT_HOST_TABLES and FLIGHT_HOST_SITES naming the generated files) */
 #include <math.h>
@@ -570,6 +573,10 @@ static void imu_due(agc_word *w,agc_hardware *hw){agc_word c12=hw?hw->channel12:
  * and gravity that puts the vehicle in a 142 x 218 km orbit at 823 s
  * (tools/flight_scenarios/cm_p11.py prints the trajectory). No attitude
  * model: the CDUs stay at the liftoff angles. */
+/* Velocity f (m/s, stable-member axes) into PIPAX-Z at 5.85 cm/s a
+ * count, carrying the fraction. */
+static void pipa_carry(double *carry,const double f[3],agc_word *w){unsigned k;
+ for(k=0;k<3u;++k){long n;carry[k]+=f[k]*100.0/5.85;n=(long)carry[k];carry[k]-=(double)n;pipa_add(w,k,n);}}
 static unsigned long saturn_lo;
 static struct saturn { int lo; unsigned long t,lo_cs; double carry[3]; } sat_ref,sat_nat;
 static double saturn_acc(double t){
@@ -585,7 +592,7 @@ static double saturn_pitch(double t){double d;
  if(t<12.0)d=0.0;else if(t<161.6)d=52.2*(t-12.0)/149.6;else if(t<400.0)d=52.2+29.0*(t-161.6)/238.4;
  else if(t<700.0)d=81.2+12.1*(t-400.0)/300.0;else d=93.3;
  return d*(3.141592653589793/180.0);}
-static void saturn_due(unsigned long t,struct saturn *e,agc_word *w,agc_hardware *hw){double f[3]={0.0,0.0,0.0},u;unsigned long c;unsigned k;
+static void saturn_due(unsigned long t,struct saturn *e,agc_word *w,agc_hardware *hw){double f[3]={0.0,0.0,0.0};unsigned long c;
  if(!saturn_lo)return;
  if(!e->lo){if(t<saturn_lo)return;e->lo=1;e->t=e->lo_cs=t;
   if(hw)hw->channel30=(agc_word)(hw->channel30&~020u);else m.InputChannel[030]=(int16_t)(m.InputChannel[030]&~020);return;}
@@ -596,7 +603,24 @@ static void saturn_due(unsigned long t,struct saturn *e,agc_word *w,agc_hardware
  for(c=e->t;c<t;++c){double tl=((double)(c-e->lo_cs)+0.5)*0.01,a=saturn_acc(tl)*0.01,th=saturn_pitch(tl);
   f[0]+=a*sin(th);f[2]-=a*cos(th);}
  e->t=t;
- for(k=0;k<3u;++k){long n;u=f[k]*100.0/5.85;e->carry[k]+=u;n=(long)e->carry[k];e->carry[k]-=(double)n;pipa_add(w,k,n);}}
+ pipa_carry(e->carry,f,w);}
+/* FLIGHT_SIVB=CS,UX,UY,UZ (CM): the S-IVB's second burn, translunar
+ * injection, from CS on the AGC clock: 0.9 MN on 140 t less 215 kg/s for
+ * 347 s (about 3,190 m/s), along the unit vector (UX,UY,UZ) in
+ * stable-member axes (an inertially fixed attitude; the CSM rides on the
+ * S-IVB, so the CDUs stay put). Specific force into PIPAX-Z as for
+ * FLIGHT_SATURN. tools/flight_scenarios/cm_tli.py gives the vector. */
+static unsigned long sivb_tig;
+static double sivb_u[3];
+static struct sivb { unsigned long t; double carry[3]; } sivb_ref,sivb_nat;
+static void sivb_due(unsigned long t,struct sivb *e,agc_word *w){double f[3]={0.0,0.0,0.0};unsigned long c;unsigned k;
+ if(!sivb_tig)return;
+ for(c=e->t>sivb_tig?e->t:sivb_tig;c<t;++c){double tl=((double)(c-sivb_tig)+0.5)*0.01,a;
+  if(tl>=347.0)break;
+  a=0.9e6/(140e3-215.0*tl)*0.01;
+  for(k=0;k<3u;++k)f[k]+=a*sivb_u[k];}
+ e->t=t;
+ pipa_carry(e->carry,f,w);}
 
 /* FLIGHT_PATH=FROM,TO: print every registered point each side passes
  * between those centiseconds (a diagnostic for aligning the two runs). */
@@ -807,6 +831,7 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
+static int snap_any;
 static const char *snap_path;
 /* FLIGHT_WATCH=ADDR[,ADDR...] (octal): at each native sample point, print
  * the words that changed since the last one (a diagnostic, e.g. MODREG,
@@ -838,6 +863,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  pokes_parse(getenv("FLIGHT_POKE"));
  if(!chans_parse(getenv("FLIGHT_CHAN"))){fprintf(stderr,"FLIGHT_CHAN=CS:CH=VALUE,... (channel 16 or 30-33, in time order)\n");return 2;}
  if(getenv("FLIGHT_SNAPSHOT")){static char path_buf[512];
+  snap_any=getenv("FLIGHT_SNAPSHOT_PENDING")!=0;
   if(sscanf(getenv("FLIGHT_SNAPSHOT"),"%lu,%511s",&snap_cs,path_buf)!=2){fprintf(stderr,"FLIGHT_SNAPSHOT=CS,PATH\n");return 2;}
   snap_path=path_buf;}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
@@ -860,6 +886,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_SATURN"))saturn_lo=strtoul(getenv("FLIGHT_SATURN"),0,10);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
+ if(getenv("FLIGHT_SIVB")&&sscanf(getenv("FLIGHT_SIVB"),"%lu,%lf,%lf,%lf",&sivb_tig,&sivb_u[0],&sivb_u[1],&sivb_u[2])!=4){fprintf(stderr,"FLIGHT_SIVB=CS,UX,UY,UZ\n");return 2;}
 #endif
  core_path=getenv("FLIGHT_CORE");
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
@@ -892,6 +919,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     aero_due(now(w),&aero_ref,0);
     imu_due(0,0);
     saturn_due(now(w),&sat_ref,0,0);
+    sivb_due(now(w),&sivb_ref,0);
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
@@ -951,12 +979,13 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    aero_due(now(s.words),&aero_nat,s.words);
    imu_due(s.words,&hw);
    saturn_due(now(s.words),&sat_nat,s.words,&hw);
+   sivb_due(now(s.words),&sivb_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
    chan_due(now(s.words),&cnat,&hw,&io);
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
-   if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
+   if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */

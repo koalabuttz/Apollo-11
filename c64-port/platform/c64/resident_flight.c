@@ -110,6 +110,10 @@ static agc_routine_table basic[5];
 #else
 static agc_routine_table basic[4];
 #endif
+/* The pages (high bytes, mod 64) that hold a key of the kernel's basic
+ * tables (rk_boot; rk_program has no interpretive tables): a point in any
+ * other page, most of a flight's points, skips the kernel's search. */
+static uint8_t kernel_pages[8];
 agc_native_program rk_program={basic,sizeof basic/sizeof basic[0],0,0,0,0,AGC_TRANSFER_NONE,0,0,rk_fixed_word,0,
                                &rk_hardware};
 
@@ -192,6 +196,16 @@ uint8_t BOOT rk_boot(void) {
     basic[3]=cm_sp_routines;
     rk_program.operands=cm_exec_site_table(&rk_program.operand_count);
 #endif
+    {
+        uint8_t t;
+        uint16_t i;
+        for (t = 0; t < sizeof basic / sizeof basic[0]; ++t)
+            for (i = 0; i < basic[t].count; ++i) {
+                uint8_t k = (uint8_t)(basic[t].entries[i].physical >> 8), bit = 1u, j;
+                for (j = k & 7u; j; --j) bit = (uint8_t)(bit << 1); /* no shift helper */
+                kernel_pages[(k >> 3) & 7u] |= bit;
+            }
+    }
 #ifndef RK_NO_DIRECT
     module_program=rk_program;
 #endif
@@ -365,8 +379,8 @@ __attribute__((noinline)) static void rk_rupts(void) {
  * (tools/resident_flight_build.py) count them as their own components. */
 __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_physical) {
     agc_routine call;
-    if (agc_transfer_next(&rk_program, IMAGE, rk_device.superbank, stop_physical, &call) ==
-        stop_physical)
+    if (agc_transfer_next_paged(&rk_program, IMAGE, rk_device.superbank, stop_physical, &call,
+                                kernel_pages) == stop_physical)
         return EXEC_OK;
     if(!call) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK

@@ -1196,6 +1196,10 @@ SPECS = {
             {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0o420},
             {'155': 0o2615, 'FLAGWRD0': 0o100, 'FLAGWRD1': 0},
             {'155': 0o2615, 'FLAGWRD0': 0, 'FLAGWRD1': 0o20}]},
+        # V87 (SETVHFLG), V88 (RESETVHF) and V56 (TRACKTRM's INTSTALL call)
+        # enter the interpreter in the NOVAC job CHARIN started for the verb
+        # (FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET)), not a VAC area.
+        'novac': ['SETVHFLG+1', 'RESETVHF+1', 'TRACKTRM+23'],
         'index_targets': {'43,2001': 59},
         'target': 'tests/cm_extended_verbs_file_target.c',
     },
@@ -1228,6 +1232,9 @@ SPECS = {
     'lm-r31-file': {
         'resume_keys': True,
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'R31.agc'},
         'base': {'lm': 'lm_r31_file'},
         'symbol': {'lm': 'lm_r31_file'},
@@ -1901,6 +1908,10 @@ SPECS = {
         # Flight builds skip the entry checks' scan of the whole image
         # (about 121K cycles a routine on the C64).
         'trusted_image': True,
+        # P47BODY's interpretive block runs in the NOVAC job TIGON starts
+        # (FIXLOC 0110, NOVAC's LOC(MPAC+6) - LOC(QPRET)); the CM TLI
+        # flight scenario reaches it.
+        'novac': ['P47BODY+1', 'P47BODY+3', 'P47BODY+4', 'P47BODY+5'],
         'image_w': True,
         'index_carry16': True,
         # GOPERF1/GOFLASH returns and other words only the display or a
@@ -2628,7 +2639,14 @@ SPECS = {
         # RENDISP7 sets TEMPOR1 +0 and loops on SLOAD BZE TEMPOR1 until the
         # V06N49 display job answers: +0 with a job waiting (NEWJOB
         # positive), so the loop-back's DANZIG goes to CHANG2.
-        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(1, 4)}},
+        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(4)}},
+        # The same state at SLOAD BZE (34,3302, CHANG2's resume LOC after the
+        # loop-back): the flowed cases there come from runs whose display job
+        # has answered, so a third of them get TEMPOR1 +0 with a job waiting
+        # (review #543: the BZE-taken arc).
+        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]})]},
+        # Flight builds skip the entry checks' erasable scan (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         # Loop and mid-sequence points start from the registers the file's
         # own runs reach them with (the W-matrix and mark-data loops).
         'flow_states': True,

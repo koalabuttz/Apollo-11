@@ -23,4 +23,4 @@ sanitize-lanec-pin-transfer: build/lanec-native-sanitize build/lanec-oracle tool
 	ASAN_OPTIONS=detect_leaks=0 python3 tools/lanec/diff.py pin-decdsp3 --refusals --native build/lanec-native-sanitize
 # The C64 round trips (pin-transfer-c64, one program per module) are built
 # by tools/mk/lanec-pw.mk, which comes after every pw-* suite's makefile:
-# c64-lanec-pin-transfer, vice-lanec-pin-transfer.
+# lanec-pin-transfer-c64, lanec-pin-transfer-vice (CI: c64-/vice-lanec-pin-transfer-<n>).

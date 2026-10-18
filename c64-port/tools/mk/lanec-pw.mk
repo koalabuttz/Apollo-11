@@ -48,10 +48,10 @@ build/lanec-$(1).prg: $$(LANEC_PW_C64_SRC) tests/lanec_$(subst -,_,$(1))_cases.c
 	python3 -c "import re,sys;m=open('$$@.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else '$$@: code and BSS reach the mailbox page: '+hex(e))" || { rm -f $$@; exit 1; }
 endef
 $(foreach s,$(filter-out $(LANEC_PW_C64_TOO_BIG),$(LANEC_PW_SUITES)),$(eval $(call LANEC_PW_C64_RULE,$(s))))
-.PHONY: c64-lanec-pw vice-lanec-pw
-c64-lanec-pw: $(LANEC_PW_PRGS)
-vice-lanec-pw: $(LANEC_PW_PRGS)
-	python3 tools/lanec/vice_many.py lanec-pw $(LANEC_PW_PRGS)
+# Five parts on CI (tools/mk/_ci-split.mk): c64-/vice-lanec-pw-<n>;
+# lanec-pw-c64 and lanec-pw-vice build and run them all.
+lanec_vice_many = python3 tools/lanec/vice_many.py $(1) $(2)
+$(eval $(call CI_SPLIT_RULE,lanec-pw,$(LANEC_PW_PRGS),5,lanec_vice_many))
 # The Pinball round trips on the C64 (milestone lanec-pin-transfer). Every
 # module does not fit one program, so one program per module and mission
 # that has frozen rows of pin-transfer-c64 (tests/lanec_pin_transfer_c64_rows.h,
@@ -88,7 +88,5 @@ build/lanec-pin-transfer-$(1).prg: $$(sort $$(LANEC_PIN_C64_SRC) tests/lanec_$(2
 	python3 -c "import re,sys;m=open('$$@.map').read();e=max(int(x,16) for x in re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+[0-9a-f]+\s+\d+\s+__heap_start',m,re.M));sys.exit(0 if e<=0xc000 else '$$@: code and BSS reach the mailbox page: '+hex(e))" || { rm -f $$@; exit 1; }
 endef
 $(foreach m,$(LANEC_PIN_C64_MODULES),$(eval $(call LANEC_PIN_C64_RULE,$(m),$(patsubst %_lm,%,$(patsubst %_cm,%,$(m))))))
-.PHONY: c64-lanec-pin-transfer vice-lanec-pin-transfer
-c64-lanec-pin-transfer: $(LANEC_PIN_C64_PRGS)
-vice-lanec-pin-transfer: $(LANEC_PIN_C64_PRGS)
-	python3 tools/lanec/vice_many.py lanec-pin-transfer $(LANEC_PIN_C64_PRGS)
+# Four parts on CI (tools/mk/_ci-split.mk): c64-/vice-lanec-pin-transfer-<n>.
+$(eval $(call CI_SPLIT_RULE,lanec-pin-transfer,$(LANEC_PIN_C64_PRGS),4,lanec_vice_many))
