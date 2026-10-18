@@ -49,6 +49,16 @@ int main(void){agc_native_program p={&TABLE,1,0,0,0,0,AGC_TRANSFER_NONE,0,0,0,0,
   image=before;image.words[2]=01777u;before=image;
   if(!call||call(&p,&image,0)!=EXEC_OUT_OF_SCOPE||memcmp(&image,&before,sizeof image))++fail;
  }
+#if !RK_LM
+ /* The CM entry pack's ride copy holds the same two entries. */
+ {
+     const agc_routine_table *h = &cm_sp_hot_routines, *f = &cm_sp_routines;
+     uint16_t i;
+     if (h->count != f->count) ++fail;
+     for (i = 0; i < h->count && i < f->count; ++i)
+         if (h->entries[i].physical != f->entries[i].physical || h->entries[i].call != f->entries[i].call) ++fail;
+ }
+#endif
  printf("%s: sp-routines %s: %u full-return states and %u refusals; %u checks, %u failures\n",fail?"FAIL":"PASS",MISSION,checks/2u,checks/2u,checks,fail);
  return fail!=0u;
 }

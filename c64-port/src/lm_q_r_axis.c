@@ -839,3 +839,8 @@ static const agc_routine_entry hot_entries[12]={
  {P17(LM_QR_WRITEPRET),writepret},{P17(LM_QR_NOROTATRET),norotatret},{P17(LM_QR_LOOPER),looper_e},
  {P17(LM_QR_DOSKIP),doskip_e},{P17(LM_QR_NOTMINRET),notminret}};
 const agc_routine_table lm_q_r_axis_hot_routines={hot_entries,12};
+/* CLOSEOUT, which GTS reaches by DTCB: the trim gimbal file's module
+ * carries it (tools/flight_store_build.py CO_LOCATE), so a pass that runs
+ * GTS closes out with no module load. */
+static const agc_routine_entry tg_entries[1] = {{P17(LM_QR_CLOSEOUT), closeout}};
+const agc_routine_table lm_q_r_axis_tg_hot_routines = {tg_entries, 1};

@@ -373,6 +373,18 @@ def _llge_axis(base, offs):
     return out
 
 
+# ROOTLOOP's convergence test (#660): |DX| (MPAC, MPAC +1) and DXCRIT
+# with |DX| - DXCRIT's high word +0 or -0 and its low word of either sign
+# or +-0. (ABS of a value whose high word is +0 and low word negative
+# gives high -0, low positive: DXCRIT (-0, 5) is the criterion of a tiny
+# negative PRECROOT x ROOTPS, and |DX| - DXCRIT is then high +0. A
+# mixed-sign DXCRIT (1, -20000) equals |DX| (0, 20000): DAS's low sum
+# overflows to +0 with a carry, high -0, so TESTLODX takes its +0 arm.)
+LLGE_CONVERGE = [{'0154': mh, '0155': ml, '0124': ch, '0125': cl}
+                 for mh, ml, ch, cl in ((0, 5, 0, 3), (0, 3, 0, 5), (0, 5, 0, 5), (1, 2, 1, 5), (1, 5, 1, 2),
+                                        (1, 0, 1, 0), (0, 0o20000, 0, 0o17777), (0, 0, 0, 0), (0, 7, 0o77777, 0o77770),
+                                        (0, 0o12, 0, 0o12), (0, 3, 0o77777, 5), (0, 0, 0o77777, 2),
+                                        (0, 0o20000, 1, 0o57777))]
 LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
@@ -890,6 +902,15 @@ SPECS = {
         # EDOP, so VXV's DANZIG runs EXIT into FLESHPOT+93 (D1's host sweep
         # on 84d550f5, LM P63).
         'edop_exits': ['FLESHPOT+92'],
+        # AX*SR*T's and FLESHPOT's TC DMP and TC DMPSUB run the INTERPRETER's
+        # subroutines in place (src/lm_dmpsub.c), not by a hand-off to the
+        # interpreter's module: AX*SR*T's loop called DMPSUB about 70 times
+        # in 300 cs of the P66 window, a module load each way
+        # (docs/LM-FLIGHT-LOAD-PROFILE.md).
+        'native_calls': {'DMP': {'lm': 'lm_dmp(s,{adres})'}, 'DMPSUB': {'lm': 'lm_dmpsub(s)'}},
+        'native_call_words': {'lm': [['DMP', 'DMPSUB2+7']]},
+        'includes': ['rtb_angles.h', 'lm_dmpsub.h'],
+        'native_sources': ['src/lm_dmpsub.c'],
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
@@ -903,20 +924,21 @@ SPECS = {
             # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
             # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
             **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
-            # AX*SR*T's loop: DEXDEX +-3 to +-1, DEX1 and DEX2 offsets, BUF
-            # the component index, RTNSAVER C*MM*N2's return or outside.
-            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
-                   '130': [0, 1], '145': [0o3656, 0o5000]} for p in ('23,3723', '23,3741')},
             # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
-            # (16 bits, 177774), Q a return.
-            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
-            # FLESHPOT after DMP, DMPSUB and VXV (and VXV's DANZIG at the TCF
-        # VXV word): TEM1 the matrix's switched
-            # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
-            # caller's EBANK.
+            # (16 bits, 177774), Q a return outside the file. With DMPSUB run
+            # in place, a case runs the whole loop to TC RTNSAVER; C*MM*N2's
+            # cases cover its in-file return (03656).
+            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o5000]}},
+            # FLESHPOT itself: A the matrix's ECADR (XNBECADR's XNB from
+            # CALCSMSC, XNBPIPAD's XNBPIP from SERVICER). With DMP and DMPSUB
+            # run in place, its run goes on through the matrix stores.
+            **{'FLESHPOT': {'0': [0o2664, 0o2145]}},
+            # FLESHPOT after VXV (and VXV's DANZIG at the TCF VXV word): TEM1
+            # the matrix's switched address (XNB from CALCSMSC, XNBPIP from
+            # SERVICER), TEM2 the caller's EBANK. (DMP and DMPSUB run in
+            # place, so the words after them are no longer resume points.)
             **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
-               for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
-                         '10,2173', '10,2174')}),
+               for p in ('10,2173', '10,2174')}),
         'edge_values': True,
         'seed_counters': True,
         'cover': True,
@@ -2546,15 +2568,17 @@ SPECS = {
         # EB 6 window fast forms (include/agc_fast_redirect.h).
         'fast_window': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
-        # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
+        # The 27 basic routines one entry DAP pass (T5RUPT) reaches in the CM
         # entry window (cm-entry from 17000 cs, per-routine profile,
         # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
         # the flight store's entry pack, so a pass loads one module rather
-        # than about five chunks of the whole table.
+        # than about five chunks of the whole table. ATTRATES+66 (15,2753)
+        # runs every pass from about 21000 cs on: without it each pass
+        # swapped the job slot to a full-table chunk and back.
         'hot_points': ('15,2434', '15,2507', '15,2522', '15,2536', '15,2540', '15,2543', '15,2551',
                        '15,2607', '15,2651', '15,2665', '15,2676', '15,2700', '15,2712', '15,2724',
-                       '15,2730', '15,2734', '15,2741', '15,2770', '15,3006', '15,3037', '15,3112',
-                       '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
+                       '15,2730', '15,2734', '15,2741', '15,2753', '15,2770', '15,3006', '15,3037',
+                       '15,3112', '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
         'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -3217,7 +3241,11 @@ SPECS = {
         'base': {'cm': 'cm_imu_calibration'},
         'symbol': {'cm': 'cm_imu_calibration'},
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
-        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT'],
+        # WTLISTNT+2: SLEEPIE's TC ENDOFJOB, where SETGWLST returns (TC
+        # MPAC, its QXCH'd Q) after the TWIDDLE at the end of every compass
+        # or drift iteration; a case from WTLISTNT stops at that boundary.
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT',
+                    'WTLISTNT+2'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
         'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
@@ -3265,6 +3293,13 @@ SPECS = {
         'ebank': 5,
         # CHECKG1 spins until a PIPA pulse moves PIPAX, FINETIME +1 while
         # LOSCALAR reads 37777 (the scalers are latched for a run).
+        # FINETIME's re-read (02,2563-2565, RXOR LOSCALAR's BZF falling
+        # through) runs only when SCALER1 ticks between its two READs. A
+        # native run sees the scalers latched: the cases latch them on both
+        # sides, and in flight the resident advances channels 3 and 4 only
+        # between steps (rk_timer_phase), as it lands T6RUPT at a step's
+        # end. So the two READs agree and the BZF always branches; the
+        # re-read is the hardware race this timing model does not have.
         'idle': ['CHECKG1', 'FINETIME+1'],
         # FINETIME reads the scalers and CHKCOMED channel 30 (liftoff).
         'channel_inputs': True,
@@ -3573,7 +3608,15 @@ SPECS = {
         # before a NORMUNIT with no load of their own are in vector mode.
         # RGVGCALC resets PUSHLOC to FIXLOC, and TTF/8CL pushes nothing, so
         # QUADGUID's interpretive code starts with an empty pushdown list.
-        'states': {'QUADGUID+32': {'0163': [0], '0166': ['vac+0']}, 'CGCALC+24': {'0163': [0o77776]},
+        # P67NOW? +2 (CHECKMM's not-P67 return, on to STABL?): with the mode
+        # switch in ATT HOLD (channel 31 bit 13 clear) a P66 pass has
+        # MODREG 66 and goes on to RESTART? (RODFLAG set: VERTGUID; clear
+        # after a restart: STRTP66A); in P64/P65 before the first ROD click
+        # RODCOUNT is +0 (GUILDRET). FLPASS0 is +0 on the first pass after
+        # each phase switch (CCS FLPASS0 to NEWPHASE). (#660)
+        'states': {'P67NOW?+2': {'MODREG': [0o102, 0o102, 'any'], 'RODCOUNT': [0, 0, 'any']},
+                   'GUILDRET+6': {'FLPASS0': [0, 0, 'any']},
+                   'QUADGUID+32': {'0163': [0], '0166': ['vac+0']}, 'CGCALC+24': {'0163': [0o77776]},
                    'CGCALC+26': {'0163': [0o77776]}, 'CGCALC+29': {'0163': [0o77776]},
                    'EXNORM+4': {'0163': [0o77776]},
                    # ROOTPSRS takes TABLTTFL (TABLTTF +3) in A and N-1 in L;
@@ -3632,7 +3675,16 @@ SPECS = {
         # vectors along an axis (1/2 or 1/4, the others +-0: the unit
         # divide leaves no remainder) for RTB NORMUNIT at EXNORM+4 (in
         # MPAC) and VLOAD UNIT LAND at EXTLOGIC-21.
-        'joint_states': {'EXNORM+11': [{}, {}, {}, {'TREDES': 0}],
+        # DERCLOOP +3 (DMPNSUB's return): the loop's own PWRCNT with the
+        # PWRPTR and DERPTR it walks to (TABLTTF +3 and DERTABL's 0147
+        # down by 2 a pass), so PWRCNT +0 ends the loop (#660). ROOTLOOP
+        # +19/+20 (ABS's EXIT): |DX| in MPAC near DXCRIT, so the high word
+        # of |DX| - DXCRIT is +-0 and TESTLODX tests the low word, as when
+        # the Newton iteration converges (#660).
+        'joint_states': {'DERCLOOP+3': [{}, {}, {}] + [{'0140': n, '0117': 0o1561 + 2 * n, '0141': 0o143 + 2 * n}
+                                                       for n in (0, 0, 1, 2)],
+                         **{k: [{}, {}] + LLGE_CONVERGE for k in ('ROOTLOOP+19', 'ROOTLOOP+20')},
+                         'EXNORM+11': [{}, {}, {}, {'TREDES': 0}],
                          'EXNORM+4': [{}, {}] + LLGE_AXIS_MPAC,
                          'EXTLOGIC-21': [{}, {}] + LLGE_AXIS_LAND},
         'range_states': (('CGCALC', 'EXBRAK', {'WCHPHOLD': [0, 1, 2],

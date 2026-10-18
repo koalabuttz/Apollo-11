@@ -72,7 +72,7 @@ uint16_t rk_budget(void);
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
     if (mct == RK_MCT_IDLE) {
-        rk_work = rk_phase_rest[rk_tick_phase];
+        rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
         return;
     }
@@ -250,6 +250,9 @@ uint8_t BOOT rk_boot(void) {
         rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]=0;
     }
     *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
+#ifdef RK_DSKY
+    rk_dsky_install(); /* before the first module load reuses the boot-only code */
+#endif
     return 0;
 }
 
@@ -447,6 +450,12 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * point reaches), for rk_direct's range checks. Static: absolute addressing
  * is smaller than the soft stack. */
 static uint8_t rk_point_hi;
+#ifdef AGC_TRANSFER_FIND_ASM
+/* platform/c64/agc_find.S, the transfer engine's find (agc_transfer.c). */
+agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
+#endif
+/* POSTJUMP's point (Z 04701, fixed-fixed). */
+#define RK_CM_POSTJUMP (uint16_t)(2048u + (04701u - 04000u))
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uint16_t point)
 {
     uint8_t i;
@@ -476,6 +485,17 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             RK_PROF(5);
             continue;
         }
+#ifdef AGC_TRANSFER_FIND_ASM
+        /* A module without interpretive tables runs from the step's point
+         * (rk_point) first: if its basic tables do not hold it, the run
+         * would take no step, so one find passes the slot over before the
+         * run's setup (rk_limit, rk_module_program). */
+        if (!t->interpretive_count && point != AGC_TRANSFER_NONE &&
+            !agc_find(t->basic, t->basic_count, point)) {
+            RK_PROF(5);
+            continue;
+        }
+#endif
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint8_t mct = t->mct;
@@ -494,9 +514,18 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             point != agc_transfer_point(&module_program, IMAGE, rk_device.superbank))
             return EXEC_INVALID_ACTION;
 #endif
-        status = agc_transfer_run_at(&module_program, IMAGE, &rk_device, &rk_device.superbank,
-                                     stop_physical, limit, &steps,
-                                     t->interpretive_count ? AGC_TRANSFER_NONE : point);
+        uint16_t stop = stop_physical;
+#if defined(RK_WORK_CLOCK) && !RK_LM
+        /* The CM idle loop's run ends at POSTJUMP (Z 04701), as on the host,
+         * which takes it as a step of its own (tools/flight_host_run.c): an
+         * interrupt that ends the pass's idle returns there, and POSTJUMP
+         * idles again, rather than to ADVAN. */
+        if (mct == RK_MCT_IDLE && stop == AGC_TRANSFER_NONE && IMAGE->words[5] != 04701u)
+            stop = RK_CM_POSTJUMP;
+#endif
+        status =
+            agc_transfer_run_at(&module_program, IMAGE, &rk_device, &rk_device.superbank, stop,
+                                limit, &steps, t->interpretive_count ? AGC_TRANSFER_NONE : point);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. The
          * transfer engine counts a refused call as a step, so a table
@@ -609,9 +638,12 @@ __attribute__((noinline)) static enum exec_status rk_memo_run(uint16_t stop_phys
         for (i = 0; i < sizeof rk_memo.in; ++i)
             if (rk_memo.in[i] != rk_memo_now[i]) goto run;
         for (i = 0; i < RK_MEMO_WORDS; ++i) *rk_memo_at[i] = ((const agc_word *)rk_memo.out)[i];
-        if (rk_memo.idle)
+        if (rk_memo.idle) {
             rk_charge(0u, RK_MCT_IDLE);
-        else
+#ifdef RK_DSKY
+            rk_dsky_idle();
+#endif
+        } else
             rk_work += rk_memo.work;
         return EXEC_OK;
     }

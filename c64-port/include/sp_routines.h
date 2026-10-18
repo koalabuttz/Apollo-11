@@ -11,4 +11,6 @@
  * with RK_LM=1 or RK_CM=1. */
 #include "agc_transfer.h"
 extern const agc_routine_table lm_sp_routines,cm_sp_routines;
+/* cm_sp_routines' entries again, for the CM entry pack (RIDE). */
+extern const agc_routine_table cm_sp_hot_routines;
 #endif

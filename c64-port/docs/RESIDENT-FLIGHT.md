@@ -127,6 +127,13 @@ ASan/UBSan.
   step to -0 through the one's complement adder, and a DINC of ±0
   requests T6RUPT and clears the bit. T6RUPT therefore lands at the end of
   the step, not at its 0.625 ms DINC.
+
+  On the CM the timers read and clear channel 13 in `rk_device`
+  (`cm_native_io`, build flag `RK_DEVICE_CH13`), the record the CM tables
+  write it in (T6START's WOR, the radar routines).
+  `rk_hardware.channel13` is only the copy a module on another CM io kind
+  leaves behind. While the CM timers read that copy, T6 did not start on
+  the C64 CM (0 T6RUPTs in 300 cs of CM P40 from 70660 cs; 30 since).
 - `rk_rupt_take` vectors the highest pending request when no interrupt is
   in progress, interrupts are enabled, A holds no overflow and the word at
   Z is not RELINT, INHINT or EXTEND. It sets ZRUPT = Z + 1, BRUPT = the word
@@ -253,7 +260,12 @@ instead a work clock: AGC time advances by the work the resident ran.
   `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
   `tools/resident_flight_build.py` and `tools/flight_store_build.py`
   compute them. The resident's weight leaves out the Executive idle table
-  (LM 35, CM 73). The interrupt wrappers report their weight in
+  (LM 35, CM 73). The compact interpreter charges `RK_INTERP_MCT` per
+  interpretive word it runs: yaAGC's mean MCT per word in the
+  interpreter's banks over the CM entry and LM P63 scenarios
+  (`docs/flight-interp-mct.json`, `tools/interp_word_mct.py`; CM 237, LM
+  264 capped at 255). The host's interpretive tables with no calibrated
+  runs get the same mean. The interrupt wrappers report their weight in
   `rk_module_env.scale`, and a module reports its routine count in
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it
@@ -312,7 +324,14 @@ checks that CIA1 counted three more periods.
 Between interrupts the AGC spends most of its time in two steps of the
 idle loop: the self-check pass from SELFRET's return (CCS SMODE, CHECKNJ,
 POSTJUMP to ADVAN, at 43,3304 LM / 43,3306 CM) and ADVAN with no job ready
-(01,3214 LM / 01,3231 CM), which returns through SELFRET to the pass. Each
+(01,3214 LM / 01,3231 CM), which returns through SELFRET to the pass.
+On the CM the pass's run stops at POSTJUMP (Z 04701), which runs as a step
+of its own, as on the host (`tools/flight_host_run.c` takes each routine as
+a step): an interrupt that ends the pass's idle returns to POSTJUMP, which
+idles again, not to ADVAN. Chaining the pass through POSTJUMP put the C64
+one step ahead after such an interrupt (cm-entry 29000+400 under
+`flight_scenario_vice.py --replay --replay-exact` left the host at its
+first checkpoint; with the stop it matches there). Each
 costs a module run (and after a DAP excursion, a reload of the idle
 module), yet each is a pure function of a few words. With NEWJOB -0, SMODE
 +0, FB at the step's bank and outside an interrupt, each reads only its key

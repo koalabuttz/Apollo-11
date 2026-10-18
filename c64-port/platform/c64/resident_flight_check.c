@@ -130,7 +130,9 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
      (uint8_t)(ov2_irq_count - 9u); /* nine periods of lag owed: the cap lets all nine through */
  rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
  image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
- image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
+ image->words[030] = 037777u;
+ image->words[031] = 1u;
+ RK_TIMER_CH13 = 040000u;
  image->words[025] = 0;
  image->words[026] = 037777u;
  image->words[027] = 037777u;
@@ -140,7 +142,7 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
             rk_pending == RK_RUPT_BIT(RK_RUPT_T4) && image->words[015] == 0101u &&
             image->words[025] == 0u && image->words[026] == 037777u &&
             image->words[030] == 037777u && rk_work == 3u * 2560u - 214u && rk_tick_phase == 1u &&
-            rk_dilation == d && !(rk_hardware.channel13 & 040000u) && rk_hardware.channel4 == 0u &&
+            rk_dilation == d && !(RK_TIMER_CH13 & 040000u) && rk_hardware.channel4 == 0u &&
             rk_hardware.channel3 == 0u,
         18);
  rk_hardware.in_interrupt = 0;
@@ -158,7 +160,9 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
             rk_work == 3u * 2560u - 214u - 213u && rk_tick_phase == 2u &&
             rk_hardware.channel4 == 8u,
         21);
- rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
+ rk_pending = 0;
+ rk_hardware.in_interrupt = 0;
+ RK_TIMER_CH13 = 0;
  __asm__ volatile("cli");
 }
 #else
@@ -184,15 +188,21 @@ static void lag_check(apollo_overlay_state *image){uint32_t d;uint16_t t6=agc_fi
  rk_ticks=(uint16_t)(ov2_irq_count-RK_TICK_LAG-7u);d=rk_dilation;
  rk_pending=0;rk_hardware.in_interrupt=0;rk_device.interrupt_enabled=1;rk_device.superbank=0;
  image->words[0]=0;image->words[5]=0100u;image->words[0100]=030000u;   /* Z erasable, CA 0: not RELINT/INHINT/EXTEND */
- image->words[030]=037777u;image->words[031]=1u;rk_hardware.channel13=040000u;
+ image->words[030] = 037777u;
+ image->words[031] = 1u;
+ RK_TIMER_CH13 = 040000u;
  image->words[025]=0;image->words[026]=0;image->words[027]=0;
  rk_hardware.channel4=037740u;rk_hardware.channel3=037777u;   /* SCALER1 overflows in the first period, and SCALER2 with it */
- expect(rk_resident_step(t6)==EXEC_OK&&image->words[5]==04004u&&rk_hardware.in_interrupt&&
-        rk_pending==RK_RUPT_BIT(RK_RUPT_T5)&&image->words[015]==0101u&&
-        image->words[025]==RK_TICK_LAG&&image->words[026]==RK_TICK_LAG&&
-        rk_dilation-d==7u&&rk_ticks==ov2_irq_count&&!(rk_hardware.channel13&040000u)&&
-        rk_hardware.channel4==(uint16_t)(32u*RK_TICK_LAG-32u)&&rk_hardware.channel3==0u,18);
- rk_pending=0;rk_hardware.in_interrupt=0;rk_hardware.channel13=0;
+ expect(rk_resident_step(t6) == EXEC_OK && image->words[5] == 04004u && rk_hardware.in_interrupt &&
+            rk_pending == RK_RUPT_BIT(RK_RUPT_T5) && image->words[015] == 0101u &&
+            image->words[025] == RK_TICK_LAG && image->words[026] == RK_TICK_LAG &&
+            rk_dilation - d == 7u && rk_ticks == ov2_irq_count && !(RK_TIMER_CH13 & 040000u) &&
+            rk_hardware.channel4 == (uint16_t)(32u * RK_TICK_LAG - 32u) &&
+            rk_hardware.channel3 == 0u,
+        18);
+ rk_pending = 0;
+ rk_hardware.in_interrupt = 0;
+ RK_TIMER_CH13 = 0;
  __asm__ volatile("cli");
 }
 #endif

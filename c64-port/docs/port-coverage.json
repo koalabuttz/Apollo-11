@@ -633,7 +633,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "1447134c8b8969ed3a8c4ac0eaa1be687643029d0a25231558f1578b51c6e98f",
+            "sha256": "8d388df3d4b0d6834ceeb15a1bbed58889fdb7bae5aa701a104649b556598b5f",
             "vice_targets": {
               "vice-cm-entry-dap": 83
             }
@@ -1876,7 +1876,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON; other EBs are refused, except at FINETIME, FINETIME +1 and the routines that set EB first, which take any EB) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON; other EBs are refused, except at FINETIME, FINETIME +1 and the routines that set EB first, which take any EB) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run (so FINETIME's two READ LOSCALARs agree, its RXOR gives +0 and the BZF always branches: the re-read after it is the hardware race with a SCALER1 tick between the reads, which a run with latched scalers never has; in flight the C64 resident advances channels 3 and 4 only between steps), and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; BANKCALL GOFLASH returns to L+1 (terminate), L+2 (proceed) or L+3 (recycle), IMUSTALL and OPTSTALL to L+1 (bad) or L+2 (good), each a registered routine; POSTJUMP",
           "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
@@ -1889,21 +1889,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
-            "sha256": "3571d3a2870b93e2a7153fe2ac813a2de7b890e3c9d33f24422a293ef4cf110f"
+            "sha256": "f7a11342d7961e70a73cc9cca2f5a9c57dc87ac915a2b5d0e8a4fad43057291a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "1ed5fb1017b2ea4893bcc1e98de5ac3cffb2a6f7b0dfb8464aeb49b852d311af"
+            "sha256": "8c1e91d4dfbcfa2425d768f0ebab2671e5b5fd46c6d9127f04d3ad92594a26fa"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "a9ff9470c5a1e63e14436208f60e69b907af6b4f5c77140342a9079b5cfba91b"
+            "sha256": "807439b052b90814197cd226e82c01ee676236549ef8e0eb218bb500dce6d876"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "3a2fe94ea31b017dffb5f262611df3fbb151a48a8b3669f707e86c974bd4d638",
+            "sha256": "0a4e46db7b648b859e4d8a5bf5aad95037d6561dfc5d71f5920054c8ee8a1168",
             "vice_targets": {
-              "vice-cm-imu-calibration": 468
+              "vice-cm-imu-calibration": 466
             }
           },
           "independent_review": {
@@ -1912,7 +1912,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "53248a97db754b52fecf059b9d29f3c3ea458bc2c76763ce88c66324627a092a"
+            "sha256": "b1ef844231751635fae2bc2d2a16d27feafb2ca1366bd04b747f63ff9671feb3"
           }
         }
       }
@@ -10297,7 +10297,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-llge/lm-llge-proof.json",
-            "sha256": "ed1efd87fca8e7c65e53534d92be475b59c2f94040e48629cb80bff1f4e0c90b"
+            "sha256": "8fb1f9991a75024dd2d779aef20623f9ad62d62ecec96359ed41930df453fc43"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-llge/lm-llge-host.log",
@@ -10305,18 +10305,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-llge/lm-llge-vice.log",
-            "sha256": "53e9f7c452ad831b2baadf07b5a8311e64722278272c9ca9cb0d3237ce75f41a",
+            "sha256": "765555d5245e9555b320b626e2635ef262809cd6427f80547db54c8d7f35fb1d",
             "vice_targets": {
-              "vice-lm-llge": 384
+              "vice-lm-llge": 397
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-llge/lm-llge-c64-cover.json",
-            "sha256": "37cbe611d4cc39c94840fe51988d7bca0d3bc60badfc0092b8c5098e1e9c0503"
+            "sha256": "d8ca325b1812651d839ebff061b26a383560f268c5276cd199643ae3ec82ef69"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-lm-llge-563.md",
-            "sha256": "ac24d8c590d6a08741f2c44b216c8f1ef53126f3875480ca49380cd3ec8fee87"
+            "path": "docs/audits/rev2-lm-llge-667.md",
+            "sha256": "6f8241b9044ae5daab7bbc578b080d0e6d956d14aa4b968c65376db8a1d30a7e"
           }
         }
       }
@@ -11909,7 +11909,9 @@
         {
           "native_files": [
             "src/lm_powered_subs.c",
-            "include/lm_powered_subs.h"
+            "include/lm_powered_subs.h",
+            "src/lm_dmpsub.c",
+            "include/lm_dmpsub.h"
           ],
           "scope": "The whole file: CDUTRIG, CD*TR*G, CDUTRIGS, CD*TR*GS, QUICTRIG, the SMNB/NBSM interface routines, AX*SR*T, CALCSMSC and FLESHPOT, basic and interpretive (lm_powered_subs_basic, lm_powered_subs_interpretive), and the SINSLOC, INDEXI and XNBECADR constants.",
           "verification": "docs/LM-POWERED-SUBS.md"
@@ -11951,14 +11953,14 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*; and at DANZIG with LOC there and EDOP 1 (USPRCADR's BIT8, the interpreter's EXIT; at_exit, at_danzig without its INTBIT15 test since EXIT decodes no address and INTBIT15 is still the caller's, with the DANZIG marker first among the program's interpretive tables): 23,3567, 3575, 3605, CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words, with TEM3 and TEM2 as at the returns after them; and 10,2173, FLESHPOT's TCF VXV word (its DXCH LOC leaves LOC there and its TS EDOP BIT8, so VXV's DANZIG runs EXIT into 10,2174), with TEM1 and TEM2 as at 10,2174. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT, its returns after DMP and DMPSUB (10,2052, 2066, 2076, 2106, 2113, 2122, 2133, 2142) and after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T; 3723, 3741 (after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*; and at DANZIG with LOC there and EDOP 1 (USPRCADR's BIT8, the interpreter's EXIT; at_exit, at_danzig without its INTBIT15 test since EXIT decodes no address and INTBIT15 is still the caller's, with the DANZIG marker first among the program's interpretive tables): 23,3567, 3575, 3605, CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words, with TEM3 and TEM2 as at the returns after them; and 10,2173, FLESHPOT's TCF VXV word (its DXCH LOC leaves LOC there and its TS EDOP BIT8, so VXV's DANZIG runs EXIT into 10,2174), with TEM1 and TEM2 as at 10,2174. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT (A the ECADR of XNB or XNBPIP), its return after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T. The INTERPRETER's DMP and DMPSUB (07103-07135), which AX*SR*T and FLESHPOT call, run in place (src/lm_dmpsub.c, instruction for instruction, TC Q leaving Q 3) on an erasable operand pair (ADDRWD 010-01776, unmasked; anything else EXEC_OUT_OF_SCOPE before any change), so their returns are not entries; the differential's oracle runs on through those words (native_call_words) to the next stop. Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; TEM2 and ITEMP1 a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3 and Q a return outside the file; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
           "unreached": "23,3757 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; the cases that reach TSTPOINT all take the -0 exit, in yaAGC and natively. The oracle executed the other 237 basic instructions and read all 14 interpretive words (evidence/lm-powered-subs/lm-powered-subs-closure.json).",
           "data_validity": "SINSLOC (ADRES SINCDU), XNBECADR (ECADR XNB) and INDEXI (4, 2, 0, 4) are read as the original constants: SINSLOC and XNBECADR by CA/CAF, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
         },
         "external_continuations": [
           "CDULOGIC, COSINE and SINE through USPRCADR, which return through DANZIG to this file's routines at the CADR words, then its registered return points",
           "SPSIN and SPCOS (QUICTRIG)",
-          "MPACVBUF, DMP and DMPSUB (AX*SR*T, FLESHPOT), and VXV (FLESHPOT), which returns through DANZIG to this file's routine at the TCF VXV word, then 10,2174",
+          "MPACVBUF (the SMNB/NBSM interface routines), and VXV (FLESHPOT), which returns through DANZIG to this file's routine at the TCF VXV word, then 10,2174",
           "BANKCALL and SWRETURN (CALCSMSC, FLESHPOT)",
           "The interpreter (INTPRET, NEWOPS) and the callers' returns (TC TEM2, TC A, TC RTNSAVER, RVQ)",
           "Integrated C64 application acceptance"
@@ -11966,21 +11968,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-source-map.json",
-            "sha256": "d7f973cc30cfb53fae28094e986056e71b05ad25cb1f84e8c25789afd676fba8"
+            "sha256": "235342231b589397d19773075709a42ffdfddaa29e829023be7394c296bd04b8"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "beba9a7ebf9b082d828797faa00198174cce2d1bff9876bcd920c9eefa31af30"
+            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-host.log",
-            "sha256": "1d4f2e476792e85fadbf453abb5988a47a42b59cb74fbd31055e7e4763c3426d"
+            "sha256": "9c31040430e778487c4d02bbb22fbe6af05d907466e9c5d0f5a5ba59e4618b02"
           },
           "c64_execution_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-vice.log",
-            "sha256": "872ebecf42bbb68a6b94a756824b0fe25ae24416c0c625f180f3892f46e68b49",
+            "sha256": "6f78d3d911de3b55d51d187801b1a6e15808dc1716906c567d7f9e29c53e248b",
             "vice_targets": {
-              "vice-lm-powered-subs": 71
+              "vice-lm-powered-subs": 51
             }
           },
           "independent_review": {
@@ -11989,11 +11991,11 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "beba9a7ebf9b082d828797faa00198174cce2d1bff9876bcd920c9eefa31af30"
+            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-closure.json",
-            "sha256": "9e2289d1551e768a22ff8f91a3824d14e66e17e5191795851a47707a61965fc0"
+            "sha256": "3c478315293631523d5c1309509d415c410840fd566b78d7b1f1780a06f68cc0"
           }
         }
       }

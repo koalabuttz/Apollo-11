@@ -2,7 +2,7 @@
 # Milestone lm-powered-subs (lane A): the Luminary099 POWERED_FLIGHT_SUBROUTINES routines compiled by
 # tools/interp_compile.py and tools/basic_compile.py into native routines of
 # the control-transfer ABI.
-LM_POWERED_SUBS_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
+LM_POWERED_SUBS_COMMON = src/lm_dmpsub.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
 LM_POWERED_SUBS_SRC = src/lm_powered_subs.c tests/lm_powered_subs_target.c $(LM_POWERED_SUBS_COMMON)
 LM_POWERED_SUBS_HDR = include/lm_powered_subs.h tests/interp_case.h tests/lm_powered_subs_vectors.h tests/lm_powered_subs_c64_vectors.h
 LM_POWERED_SUBS_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_TRANSFER_DANZIG_MARKER
@@ -36,7 +36,7 @@ lm-powered-subs-closure:
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/lm-powered-subs.groups
 LM_POWERED_SUBS_C64_PRGS = $(foreach g,$(LM_POWERED_SUBS_GROUPS),build/lm-powered-subs-$(g).prg)
-LM_POWERED_SUBS_C64_SRC = src/lm_powered_subs.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/lm_powered_subs_target.c
+LM_POWERED_SUBS_C64_SRC = src/lm_powered_subs.c src/lm_dmpsub.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/lm_powered_subs_target.c
 c64-lm-powered-subs: $(LM_POWERED_SUBS_C64_PRGS)
 build/lm-powered-subs-%.prg: $(LM_POWERED_SUBS_SRC) platform/c64/lm_powered_subs_diagnostic.c tools/mk/lm-powered-subs.groups $(LM_POWERED_SUBS_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(LM_POWERED_SUBS_MOS_FLAGS) $(LM_POWERED_SUBS_GROUP_FLAGS_$*) -Wl,-Map,build/lm-powered-subs-$*.map $(LM_POWERED_SUBS_C64_SRC) platform/c64/lm_powered_subs_diagnostic.c -o $@
