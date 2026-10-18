@@ -292,6 +292,26 @@ static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0
 #define MARK_KEY 0x100
 static int key_due(unsigned long t,unsigned *pressed){char c;if(!keys[*pressed]||t<keyt[*pressed])return -1;c=keys[(*pressed)++];
  return c=='M'?MARK_KEY|040:c=='J'?MARK_KEY|0100:c=='x'?MARK_KEY|04:c=='y'?MARK_KEY|010:c=='j'?MARK_KEY|020:(int)keycode(c);}
+/* FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]: the ground's uplink. From the first
+ * sample point at or after CS, each key (the DSKY key letters, R for ERROR
+ * RESET) reaches INLINK (045) as UPRUPT's triple-redundant word (the code,
+ * its complement, the code: KEYRUPT_UPRUPT.agc UPRPT1) with an UPRUPT
+ * request, UPLINK_GAP centiseconds apart, on both sides. #OCTAL sends that
+ * raw word instead: one that fails UPTEST locks the uplink out (UPLOCKFL,
+ * FLAGWRD7 bit 4) until an ERROR RESET. */
+#define UPLINK_GAP 20ul
+static agc_word upw[KEYS];static unsigned long upt[KEYS];static unsigned nup;
+static int uplink_parse(const char *t){
+ while(t&&*t){unsigned long at;char *e;
+  at=strtoul(t,&e,10);if(e==t||*e!=':')return 0;t=e+1;
+  while(*t&&*t!=';'){agc_word k;
+   if(nup>=KEYS)return 0;
+   if(*t=='#'){unsigned long v=strtoul(t+1,&e,8);if(e==t+1)return 0;upw[nup]=(agc_word)(v&077777ul);t=e;}
+   else{k=keycode(*t++);upw[nup]=(agc_word)((k<<10)|((~k&037u)<<5)|k);}
+   upt[nup++]=at;at+=UPLINK_GAP;}
+  if(*t==';')++t;}
+ return 1;}
+static int uplink_due(unsigned long t,unsigned *sent){if(*sent>=nup||t<upt[*sent])return -1;return (int)upw[(*sent)++];}
 /* FLIGHT_CHAN=CS:CH=VALUE,... (octal channel and value): an input channel
  * (16, 30-33) set at the first sample point at or after CS, on both sides:
  * a switch the crew moves (CM P52: the optics mode switch, channel 33 bits
@@ -950,10 +970,11 @@ static void word_step(unsigned long cs){int isr=m.InIsr;uint64_t c=m.CycleCounte
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
- unsigned i,j,kref=0,knat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
+ unsigned i,j,kref=0,knat=0,uref=0,unat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
+ if(!uplink_parse(getenv("FLIGHT_UPLINK"))){fprintf(stderr,"FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...] (#OCTAL a raw word)\n");return 2;}
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
  if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
@@ -984,8 +1005,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
+ if(getenv("FLIGHT_LR"))lr_model=atoi(getenv("FLIGHT_LR"));
+ if(!drops_parse(&lr_drops,getenv("FLIGHT_LR_DROP"))){fprintf(stderr,"FLIGHT_LR_DROP=T0-T1[,T0-T1...]\n");return 2;}
+ if(lr_model&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_LR needs FLIGHT_SCALED\n");return 2;}
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
+ if(!drops_parse(&rr_drops,getenv("FLIGHT_RR_DROP"))){fprintf(stderr,"FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");return 2;}
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
  if(getenv("FLIGHT_SPS"))sps_kg=strtod(getenv("FLIGHT_SPS"),0);
@@ -993,6 +1018,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_SATURN"))saturn_lo=strtoul(getenv("FLIGHT_SATURN"),0,10);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
+ if(!drops_parse(&rr_drops,getenv("FLIGHT_RR_DROP"))){fprintf(stderr,"FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");return 2;}
  if(getenv("FLIGHT_SIVB")&&sscanf(getenv("FLIGHT_SIVB"),"%lu,%lf,%lf,%lf",&sivb_tig,&sivb_u[0],&sivb_u[1],&sivb_u[2])!=4){fprintf(stderr,"FLIGHT_SIVB=CS,UX,UY,UZ\n");return 2;}
 #endif
  core_path=getenv("FLIGHT_CORE");
@@ -1032,7 +1058,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
     else if((k=key_due(now(w),&kref))>=0){unsigned r=k&MARK_KEY?RK_RUPT_KEY2:RK_RUPT_KEY1;m.InputChannel[k&MARK_KEY?016:015]=(int16_t)(k&0377);
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*r);m.InIsr=1;}
-     else m.InterruptRequests[r]=1;}}}
+     else m.InterruptRequests[r]=1;}
+    else if((k=uplink_due(now(w),&uref))>=0){*cell(045)=(int16_t)k;
+     if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_UP);m.InIsr=1;}
+     else m.InterruptRequests[RK_RUPT_UP]=1;}}}
   /* FLIGHT_NATIVE_LATENCY: the reference takes interrupts only where some
    * table holds the point, as the native side does (a diagnostic). */
   if(latency&&requests()){agc_routine call;int8_t held[1+NUM_INTERRUPT_TYPES];
@@ -1095,11 +1124,15 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    saturn_due(now(s.words),&sat_nat,s.words,&hw);
    sivb_due(now(s.words),&sivb_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
+#if RK_LM
+   lr_model_due(now(s.words),&lr_nat_read,s.words,&hw.channel13,&hw.channel33);
+#endif
    chan_due(now(s.words),&cnat,&hw,&io);
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
+   else if((k=uplink_due(now(s.words),&unat))>=0){s.words[045]=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_UP);}
    if(rp_out&&!snap_path)rp_diff(now(s.words),0u,s.words,&hw,io.channel16,pending);
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
@@ -1140,6 +1173,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * read (LM R22's range after range rate) must find the model ready. */
   if(rr_on&&!(hw.channel13&010u))rr_nat.active=0;
   else if(rr_on&&!rr_nat.active){int r=0;if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);}
+#if RK_LM
+  if(lr_model&&!(hw.channel13&010u))lr_nat_read.active=0;
+  else if(lr_model&&!lr_nat_read.active){if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);lr_model_due(now(s.words),&lr_nat_read,s.words,&hw.channel13,&hw.channel33);if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);}
+#endif
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;

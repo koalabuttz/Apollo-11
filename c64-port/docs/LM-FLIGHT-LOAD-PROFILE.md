@@ -62,3 +62,24 @@ A pack needs both sides in one module, and the compiled code on each side
 is too big to share a slot, so the cuts that fit are running a small callee
 in place (DMP/DMPSUB) or carrying a small hot table beside its caller (the
 trim gimbal).
+
+## Pinball display chains in their own chunks
+
+Same method, on base d39f68d6 against the same tree with `LANEC_PIN_GROUPS`
+(tools/flight_store_build.py):
+
+| Window | loads before | loads after | change | time before | time after | change |
+|---|---|---|---|---|---|---|
+| P63, 90000 cs | 538 | 530 | -1.5% | 19.47x (500 cs) | 19.32x | -0.8% |
+| P66, 123000 cs | 840 | 816 | -2.9% | 24.44x (300 cs) | 24.08x | -1.5% |
+
+A display row still loads three modules: DSPDCEND's run stops at DSPDECWD
+(its composite is 8.8 KB, too big for the row chunk), then SWRETURN (the
+interbank module), then DSPDCEND +2. PUTADD +5 and ENDRQDAT +1 stay outside
+the monitor chain's chunk, which they would put 1.1 KB over the slot.
+
+With `--replay` (300 cs, checkpoints every 50 cs, base ab630038), the P63
+window from 17500 cs and the P66 window from 123000 cs give the same results
+with these chunks as without: the same checkpoints match, and the same words
+differ with the same values.
+
