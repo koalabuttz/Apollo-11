@@ -85,8 +85,9 @@ tick schedule.
 
 ## On the C64 store (`make flight-restart-vice`)
 
-`platform/c64/restart_check.c` boots the flight resident on
-`build/flight-store/lm.reu`. It loads the native state from just after the
+`platform/c64/restart_check.c` boots the flight resident on the mission's
+store (`build/flight-store/lm.reu` or `cm.reu`). Idle is ADVAN (Luminary
+01,3214, Comanche 01,3231) with NEWJOB -0, as DUMMYJOB leaves it. It loads the native state from just after the
 GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 
 1. **Burst.** With CIA1 interrupts off, the resident runs to the next idle
@@ -99,8 +100,10 @@ GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 
 | Scenario | Burst | Image against yaAGC | Resume |
 |---|---|---|---|
-| `lm-p63-descent-restart` | 23 resident steps: GOPROG through the group 2 and 5 restarts and ENDRSTRT, to DSPMMJB (40,3534), EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) | 23 steps in about 40 cs, then stops at DSPMMJB |
-| `lm-dap-hold-restart` | 11 resident steps, to DSPMMJB, EXEC_UNMAPPED | 2,048 / 2,048 words equal (yaAGC: 859 instructions) | 11 steps in 19 cs, then stops at DSPMMJB |
+| `lm-p63-descent-restart` | 24 resident steps: GOPROG through the group 2 and 5 restarts, ENDRSTRT and the display job, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) | 409 steps over 50 cs, then stops at R12LITES (25,3607; `lm_p20_p25` does not fit yet) |
+| `lm-dap-hold-restart` | 12 resident steps, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 938 instructions) | 911 steps over 200 cs, no stop |
+| `cm-entry-restart` | 37 resident steps: GOPROG, the group 1, 5 and 6 restarts and the jobs they start, to idle at ADVAN (01,3231) | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) | 3,037 steps over 200 cs, no stop |
+| `cm-p52-restart` | 81 resident steps: GOPROG, the group 4 restart (phase 00502, N93 gyro torquing) and its jobs, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) | 3,375 steps over 200 cs, no stop |
 
 ## The GOJAM on the C64 (`make flight-gojam-vice`)
 
@@ -228,8 +231,16 @@ unchanged.
 
 | Scenario | GOJAM module on the C64 against the post-GOJAM snapshot | Burst after `apollo_ov2_restart_keep_pinned` | Image against yaAGC |
 |---|---|---|---|
-| `lm-p63-descent-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 23 resident steps, to DSPMMJB (40,3534), EXEC_UNMAPPED. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 1,372 instructions) |
-| `lm-dap-hold-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 11 resident steps, to DSPMMJB, EXEC_UNMAPPED. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 859 instructions) |
+| `lm-p63-descent-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 24 resident steps, to idle at ADVAN. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) |
+| `lm-dap-hold-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03214, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 12 resident steps, to idle at ADVAN. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 938 instructions) |
+| `cm-entry-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03231, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 37 resident steps, to idle at ADVAN. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) |
+| `cm-p52-restart` | `APOLLO_OV2_OK`, `EXEC_OK`. Q 03231, Z 04000. 2,048 / 2,048 words, 28 / 28 device fields | 81 resident steps, to idle at ADVAN. No cached run slot, no fault | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) |
+
+The `-pre` snapshot is taken with `FLIGHT_SNAPSHOT_PENDING`, at the first
+sample point at the GOJAM time even with an interrupt pending, because that
+is where `FLIGHT_GOJAM` restarts. Without it, the snapshot waits for the
+interrupt to run, so in `cm-p52-restart` it came one interrupt later than the
+GOJAM and 20 words differed.
 
 These are the same bursts as in `flight-restart-vice`, which starts from
 the host's post-GOJAM state. So applying the GOJAM on the C64 gives the same
@@ -237,13 +248,11 @@ restart.
 
 ## Gaps
 
-- **DSPMMJB is not in the C64 store.** GOPROG3 always calls MMDSPLAY, so
-  after any restart the first job the Executive runs is Pinball's DSPMMJB.
-  The store has no record for it, because `lanec_pin_routines` is too big
-  to split (`report.json`: an overflow of 236,641 bytes). The C64 resume
-  stops there, as would any major-mode display. The LLGE (`lm_llge`) and
-  P12 (`lm_p12`) do not fit either. So P63 and P12 cannot resume on the C64
-  until those modules fit.
+- **P63 cannot resume on the C64 yet.** Since Lane C's Pinball split
+  (#425), DSPMMJB and the display jobs are in the store, so every burst
+  above runs to idle and the DAP hold and both CM restarts resume for 200 cs
+  without a stop. The P63 resume stops at R12LITES (P20-P25,
+  `lm_p20_p25`), which does not fit in the store yet.
 - **The TC trap is the C64's one GOJAM source.** The resident's main
   (`platform/c64/resident_flight_main.c`) follows the entry contract
   (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends

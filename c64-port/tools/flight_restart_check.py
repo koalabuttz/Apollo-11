@@ -58,14 +58,17 @@ PAL_HZ = 985248
 # LLGE flying. lm-dap-hold-restart: the DAP holding attitude, restarted at
 # 20 s, under the overrun schedule (four times slower, each span's cost
 # jittered). cm-entry-restart: cm-entry restarted at 250 s, in P64, ending
-# in P67 as without it. lm-p00-restart, cm-p00-restart: P00 idle restarted
+# in P67 as without it. cm-p52-restart: cm-p52 restarted at 171 s, in N93
+# gyro torquing with group 4 active (phase 00502), ending in P00 as without
+# it. lm-p00-restart, cm-p00-restart: P00 idle restarted
 # at 25 s, unscaled, sampled against a free-running yaAGC.
 _P63 = next(x for x in fhd.FLIGHT if x[0] == 'lm-p63-descent-restart')
 RESTARTS = [
     (_P63[0], _P63[1], _P63[2], _P63[3], {k: v for k, v in _P63[4].items() if k != 'FLIGHT_GOJAM'},
      int(_P63[4]['FLIGHT_GOJAM']), '1,1,2', True),
     ('lm-dap-hold-restart', 'lm', 3000, '', fhd.DAP, 2000, '4,1,2,1', True),
-    ('cm-entry-restart', 'cm', 32000, fhd.ENTRY_KEYS, fhd.ENTRY, 25000, '1,1,2', False),
+    ('cm-entry-restart', 'cm', 32000, fhd.ENTRY_KEYS, fhd.ENTRY, 25000, '1,1,2', True),
+    ('cm-p52-restart', 'cm', 20000, fhd.P52_KEYS, fhd.P52, 17100, '1,1,2', True),
     ('lm-p00-restart', 'lm', 4000, '', {}, 2500, None, False),
     ('cm-p00-restart', 'cm', 4000, '', {}, 2500, None, False),
 ]
@@ -137,7 +140,10 @@ def host(exe, scenario, words, lanes):
     r = run(exe[m], m, cs, keys, jam, name)
     got = parse(r.stdout, m, words[m], lanes)
     sym = symbols(m)
-    pre_path = snapshot(exe[m], m, at, keys, env, f'{name}-pre')
+    # At the point the GOJAM restarts at, even with an interrupt pending
+    # there (the GOJAM clears it), so the C64's GOJAM module starts where
+    # the host's did.
+    pre_path = snapshot(exe[m], m, at, keys, {**env, 'FLIGHT_SNAPSHOT_PENDING': '1'}, f'{name}-pre')
     pre = snap_words(pre_path)
     post = snapshot(exe[m], m, at, keys, jam, f'{name}-gojam')
     end = snap_words(snapshot(exe[m], m, cs, keys, jam, f'{name}-end'))

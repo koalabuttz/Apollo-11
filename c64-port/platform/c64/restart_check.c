@@ -45,8 +45,14 @@
 #ifndef RS_MAX
 #define RS_MAX 200000ul
 #endif
-/* ADVAN (01,3214), the idle loop's sample point (tools/flight_host_run.c). */
-#define RS_IDLE (1024u + (03214u - 02000u))
+/* ADVAN, the idle loop's sample point (tools/flight_host_run.c): 01,3214 in
+ * Luminary, 01,3231 in Comanche. */
+#if RK_LM
+#define RS_ADVAN 03214u
+#else
+#define RS_ADVAN 03231u
+#endif
+#define RS_IDLE (1024u + (RS_ADVAN - 02000u))
 #define IMAGE   ((apollo_overlay_state *)APOLLO_SHARED_ADDRESS)
 typedef struct {
     uint32_t steps;
@@ -174,7 +180,7 @@ int main(void)
         if (st != EXEC_OK) break;
         /* Idle: ADVAN with NEWJOB -0, as DUMMYJOB leaves it. ENDRSTRT enters at
          * DUMMYJOB +2 with NEWJOB +0: a job is ready, so not yet idle. */
-        if ((IMAGE->words[5] & 07777u) == 03214u && ((IMAGE->words[4] >> 10) & 037u) == 1u &&
+        if ((IMAGE->words[5] & 07777u) == RS_ADVAN && ((IMAGE->words[4] >> 10) & 037u) == 1u &&
             IMAGE->words[067] == 077777u && !rk_hardware.in_interrupt) {
             idle = 1;
             break;

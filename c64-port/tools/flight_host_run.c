@@ -64,7 +64,10 @@
  * centisecond CS (after that point's pokes), write the native state (the
  * erasable image, the superbank, the interrupt enable, agc_hardware and the
  * flight_io channels) as a C header for the C64 DAP pass check
- * (platform/c64/dap_pass_check.c), and stop.
+ * (platform/c64/dap_pass_check.c), and stop. It waits for a point with no
+ * interrupt pending, unless FLIGHT_SNAPSHOT_PENDING is set: then it takes the
+ * first point, the one FLIGHT_GOJAM would restart at (the requests pending
+ * there are not in the header; the GOJAM clears them).
  *   flight-host-run ROPE.bin [CS [KEYS]]   (build with -DRK_LM=1 or -DRK_CM=1,
  *   FLIGHT_HOST_TABLES and FLIGHT_HOST_SITES naming the generated files) */
 #include <math.h>
@@ -828,6 +831,7 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
  if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
+static int snap_any;
 static const char *snap_path;
 /* FLIGHT_WATCH=ADDR[,ADDR...] (octal): at each native sample point, print
  * the words that changed since the last one (a diagnostic, e.g. MODREG,
@@ -859,6 +863,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  pokes_parse(getenv("FLIGHT_POKE"));
  if(!chans_parse(getenv("FLIGHT_CHAN"))){fprintf(stderr,"FLIGHT_CHAN=CS:CH=VALUE,... (channel 16 or 30-33, in time order)\n");return 2;}
  if(getenv("FLIGHT_SNAPSHOT")){static char path_buf[512];
+  snap_any=getenv("FLIGHT_SNAPSHOT_PENDING")!=0;
   if(sscanf(getenv("FLIGHT_SNAPSHOT"),"%lu,%511s",&snap_cs,path_buf)!=2){fprintf(stderr,"FLIGHT_SNAPSHOT=CS,PATH\n");return 2;}
   snap_path=path_buf;}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
@@ -980,7 +985,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
-   if(snap_path&&now(s.words)>=snap_cs&&!pending){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
+   if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));return 0;}}
   {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
