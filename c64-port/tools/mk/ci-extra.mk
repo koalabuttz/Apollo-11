@@ -25,7 +25,8 @@ ci-watch-flight-store: $(wildcard src/*.c src/*.inc) tools/flight_store_build.py
   tools/interp_specs.py $(wildcard tools/lanec/*) docs/flight-store-unplaced.json
 # flight-disk-vice boots both stores from their disks alone (docs/RUN-ON-C64.md):
 # the loader, the drive code, the resident's boot and its store check; and
-# the hardware check disk's window, which must end in the host run's state.
+# the hardware check disk's window, which must end in the state VICE's own run of
+# it gave (its CRC is built into the disk).
 ci-watch-flight-disk-vice: tools/flight_disk.py platform/c64/flight_disk_drive.s platform/c64/flight_disk_rx.s \
   platform/c64/flight_disk_loader.c platform/c64/flight_disk_unz.s tools/fdz.c platform/c64/resident_flight_main.c \
   src/overlay_reu.c include/overlay_reu.h platform/c64/dap_pass_check.c tools/flight_scenario_vice.py \
