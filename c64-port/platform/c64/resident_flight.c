@@ -4,6 +4,14 @@
 #include "resident_flight.h"
 #include "sp_routines.h"
 #include "resident_rupt.h"
+#ifdef AGC_SITES_ROPE
+#include "rope_image.h"
+#endif
+#if RK_LM
+#define RK_ROPE_REU APOLLO_ROPE_REU_LM
+#else
+#define RK_ROPE_REU APOLLO_ROPE_REU_CM
+#endif
 #if RK_LM
 #include "lm_exec_routines.h"
 #else
@@ -182,6 +190,25 @@ uint8_t BOOT rk_boot(void) {
 #endif
     if(!apollo_reu_store_open(&rk_store,0,RK_MISSION,RK_SERVICES_VERSION,record)) return 1;
     if(apollo_reu_store_verify(&rk_store,(uint8_t *)RK_BOOT_SCRATCH)!=APOLLO_OV2_OK) return 2;
+#ifdef AGC_SITES_ROPE
+    /* The Executive's site words come from the REU rope image
+     * (include/agc_transfer.h AGC_SITES_ROPE), which the store check above
+     * does not cover: every listed site must read, and the words must sum
+     * to what tools/agc_sites_generate.py compiled. */
+    {
+        const uint16_t *a = (const uint16_t *)(const void *)rk_program.operands;
+        uint16_t i, sum = 0, w;
+        for (i = 0; i < (uint16_t)(rk_program.operand_count & 037777u); ++i) {
+            if (!rk_dma(APOLLO_REU_FETCH, &w, RK_ROPE_REU + 2u * (uint32_t)a[i], 2u)) return 5;
+            sum = (uint16_t)(sum + (w & 077777u));
+        }
+#if RK_LM
+        if (sum != lm_exec_site_sum()) return 5;
+#else
+        if (sum != cm_exec_site_sum()) return 5;
+#endif
+    }
+#endif
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
         (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);

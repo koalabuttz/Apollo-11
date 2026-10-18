@@ -34,7 +34,8 @@ static enum exec_status postjump(const agc_native_program *p, apollo_overlay_sta
     } else {
         /* The caller's CADR: a short scan of the program's few sites. */
         at = agc_fixed_physical(q, W[4], io->superbank);
-        for (o = p->operands, n = p->operand_count; n && o->physical != at; --n, ++o) {
+        for (o = p->operands, n = AGC_SITES_PAIRS(p->operand_count); n && o->physical != at;
+             --n, ++o) {
         }
         if (!n || (t = o->word) > AGC_MASK) return EXEC_OUT_OF_SCOPE;
     }

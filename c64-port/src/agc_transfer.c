@@ -21,8 +21,59 @@ bool agc_resume_exact(const agc_native_program *p,const apollo_overlay_state *s,
  else w=s->words[z<01400u?z:((eb>>8)&7u)*0400u+(z-01400u)];
  return ((w^s->words[017])&077777u)==0u;
 }
+#ifdef AGC_SITES_ROPE
+#include "overlay_reu.h"
+#include "rope_image.h"
+/* The rope word at a site, by one 2-byte REU fetch with the registers set
+ * directly (as platform/c64/resident_flight.c boundary_fetch does). The
+ * image holds two bytes per physical word from APOLLO_ROPE_REU_LM or
+ * APOLLO_ROPE_REU_CM, so the REU bank is the base's plus bit 15 of the
+ * address. */
+static agc_word rope_cell; /* DMA target */
+static bool rope_word(uint16_t physical, uint16_t count, agc_word *word)
+{
+    volatile uint8_t *reu = (volatile uint8_t *)0xdf00u;
+    (void)reu[APOLLO_REU_STATUS];
+    reu[APOLLO_REU_ADDR_CONTROL] = 0;
+    reu[APOLLO_REU_C64_LO] = (uint8_t)(uintptr_t)&rope_cell;
+    reu[APOLLO_REU_C64_HI] = (uint8_t)((uintptr_t)&rope_cell >> 8);
+    reu[APOLLO_REU_REU_LO] = (uint8_t)(physical << 1);
+    reu[APOLLO_REU_REU_HI] = (uint8_t)(physical >> 7);
+    /* APOLLO_ROPE_REU_LM's bank, two more for Comanche055 (AGC_SITES_CM_ROPE is bit 14). */
+    reu[APOLLO_REU_REU_BANK] = (uint8_t)((uint8_t)(APOLLO_ROPE_REU_LM >> 16) +
+                                         ((uint8_t)(count >> 13) & 2u) + (uint8_t)(physical >> 15));
+    reu[APOLLO_REU_LEN_LO] = 2u;
+    reu[APOLLO_REU_LEN_HI] = 0;
+    reu[APOLLO_REU_COMMAND] = APOLLO_REU_FETCH;
+    if ((reu[APOLLO_REU_STATUS] & (APOLLO_REU_STATUS_END | APOLLO_REU_STATUS_FAULT)) !=
+        APOLLO_REU_STATUS_END)
+        return false;
+    *word = (agc_word)(rope_cell & 077777u);
+    return true;
+}
+_Static_assert((APOLLO_ROPE_REU_LM & 0xffffu) == 0u &&
+                   APOLLO_ROPE_REU_CM - APOLLO_ROPE_REU_LM == 0x20000u &&
+                   AGC_SITES_CM_ROPE == 0x4000u,
+               "rope_word's bank sum");
+#endif
 bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,agc_word *word){uint16_t lo=0,hi=count,mid;
  if(!t||!word)return false;
+#ifdef AGC_SITES_ROPE
+ /* An address table: the search reads RAM, and only a hit reads the rope. */
+ if (count & AGC_SITES_ADDRESSES) {
+     const uint16_t *a = (const uint16_t *)(const void *)t;
+     hi = (uint16_t)(count & 037777u);
+     while (lo < hi) {
+         mid = (uint16_t)(lo + (hi - lo) / 2u);
+         if (a[mid] == physical) return rope_word(physical, count, word);
+         if (a[mid] < physical)
+             lo = (uint16_t)(mid + 1u);
+         else
+             hi = mid;
+     }
+     return false;
+ }
+#endif
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t[mid].physical==physical){*word=t[mid].word;return true;}if(t[mid].physical<physical)lo=(uint16_t)(mid+1u);else hi=mid;}
  return false;
 }
