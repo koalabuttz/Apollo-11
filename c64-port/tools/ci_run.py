@@ -417,7 +417,8 @@ WEIGHTS = ROOT / 'tools/ci_target_seconds.json'
 
 def covered_by_vice(targets):
     """c64-<x> targets whose vice-<x> is also listed and does all their work:
-    no recipe of their own, and every prerequisite (the PRGs) also one of
+    a prerequisite of vice-<x> (its make runs c64-<x>'s recipe), or no
+    recipe of their own and every prerequisite (the PRGs) also one of
     vice-<x>'s. Run as a separate make process beside vice-<x>, they only
     build the same PRGs again, and the two can race writing them."""
     listed, rules = set(targets), ci_rules()
@@ -426,7 +427,7 @@ def covered_by_vice(targets):
         vice = 'vice-' + target[len('c64-'):]
         if target.startswith('c64-') and vice in listed and target in rules and vice in rules:
             prereqs, recipe = rules[target]
-            if not recipe.strip() and set(prereqs) <= set(rules[vice][0]):
+            if target in rules[vice][0] or (not recipe.strip() and set(prereqs) <= set(rules[vice][0])):
                 covered.add(target)
     return covered
 

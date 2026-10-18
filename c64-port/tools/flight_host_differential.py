@@ -105,6 +105,16 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
+# lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
+# aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
+# bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
+# throttles the descent engine to full and flies the abort guidance to
+# insertion. P71: ABORT STAGE (channel 30 bit 4); the descent stage
+# separates (FLIGHT_STAGE) and P71 flies the ascent engine (FLIGHT_ASCENT:
+# the 4,888 kg ascent stage) to insertion.
+ABORT = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2'}
+ABORT_P70 = {**ABORT, 'FLIGHT_CHAN': '115000:030=036350'}
+ABORT_P71 = {**ABORT, 'FLIGHT_CHAN': '115000:030=036341', 'FLIGHT_STAGE': '115000', 'FLIGHT_ASCENT': '4888'}
 ENTRY = {'FLIGHT_CH30': '037377', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-entry.load',
          'FLIGHT_SWAP_MCT': '0', 'FLIGHT_AERO': '355'}
 ENTRY_KEYS = '@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E'
@@ -290,6 +300,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
+          ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
+          ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]
