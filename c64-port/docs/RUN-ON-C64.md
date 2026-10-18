@@ -62,7 +62,9 @@ The loader then:
 The flight resident then verifies the whole store in the REU (each module's
 header and CRC, the resolver, the rope's site words) and starts the AGC as
 switching it on would: the hardware restart (GOJAM) runs the rope's
-power-on code, which ends in a fresh start (MODREG -0, no program).
+power-on code, which ends in a fresh start (MODREG -0, no program). As on
+the AGC after power-up, the RESTART lamp is then lit until the crew presses
+RSET: that is not a fault.
 
 ### How long it takes (PAL, VICE true drive emulation)
 
