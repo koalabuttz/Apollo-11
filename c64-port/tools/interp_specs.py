@@ -1918,11 +1918,31 @@ SPECS = {
                              '02311': [0, 0o77777], '02312': [1, 0o40, 0o77, 0o77700, 0o77776],
                              '0163': [0o77776 if a in (0o2047, 0o2051, 0o2054, 0o2060, 0o2066) else 0],
                              **({'0154': [0o100, 0o1000, 0o10000]} if a == 0o2131 else {}),
-                             # R1 (33D) above 1/64 up to DDV R1 (12,2077),
-                             # as an orbit's radius is: a smaller one
-                             # overflows ALPHA, the period comes out 0 and
-                             # PERIODCH loops for good (#553).
-                             **({'vac+041': [0o1000, 0o4000, 0o20000, 0o37777]} if a <= 0o2077 else {}),
+                             # R1 (32D) an orbit's radius up to DDV R1
+                             # (12,2077), high word from Earth parking orbit
+                             # (0o310 at 2^29 m) and lunar orbit (0o340 at
+                             # 2^27 m) out to the Moon's distance and sphere
+                             # of influence: a random tiny R1 overflows ALPHA,
+                             # the period comes out 0 and PERIODCH loops for
+                             # good (#553; reviewer 1, #664).
+                             **({'vac+040': [0o310, 0o340, 0o2000, 0o17571, 0o26706]} if a <= 0o2077 else {}),
+                             # C2 = RV.V/MU - 1 (B+6, MPAC at its STORE
+                             # KEPC2 and BDSU) from -1/2 (apoapsis) to 3
+                             # (hyperbolic), and (1/64 - C2/64)/2 at DDV R1:
+                             # a random one (near -1 or past it) makes
+                             # ALPHA an orbit far below R1/2, a period of a
+                             # few centiseconds and PERIODCH loops for
+                             # thousands of passes (reviewer 1, #664).
+                             **({'0154': [0o77577, 0o77700, 0, 0o200, 0o400, 0o1400]} if a in (0o2074, 0o2075) else {}),
+                             **({'0154': [0o77577, 0o77700, 1, 0o100, 0o200, 0o300]} if a == 0o2077 else {}),
+                             # The hyperbolic arm (DDV ALPHA, SQRT; 12,2105,
+                             # 12,2110) with ALPHA negative, as BPL 1REV sends
+                             # it there, and MPAC = -50SC/ALPHA positive; and
+                             # XMAX positive from SQRT on (12,2110-12,2122):
+                             # a +0 XMAX with a positive ALPHA gives a period
+                             # of 0 and PERIODCH never ends (#664).
+                             **({'vac+010': [0o70000, 0o76000, 0o77700]} if a in (0o2105, 0o2110) else {}),
+                             **({'0154': [0o100, 0o1000, 0o10000]} if a in (0o2110, 0o2114, 0o2116, 0o2117, 0o2122) else {}),
                              **({'vac+0': [0o100, 0o1000, 0o10000]} if a >= 0o2133 else {})}
                for a in [0o2042, *range(0o2045, 0o2143)]},
             '04,3650': {'0163': [0]},
@@ -1963,6 +1983,12 @@ SPECS = {
                                   for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
                                   for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
                                  + [{}] * 9,
+                        # (BPL 1REV, 12,2102: MPAC is the ALPHA just
+                        # stored, so the arm it picks reads the same ALPHA;
+                        # #664)
+                        '1REV-8': [{'0154': h, '0155': l, 'vac+010': h, 'vac+011': l}
+                                   for h, l in ((0o13755, 0o1234), (0o100, 0), (0o77000, 0o70000), (0o70000, 0o54321))]
+                                  + [{}] * 4,
                         # 1REV's SQRT (12,2112) on the edge arguments
                         # SQRTSUB branches on: MPAC and MPAC +1 +0 with MPAC
                         # +2 positive, and MPAC -1 with MPAC +1 positive,

@@ -674,7 +674,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH TAU. is small and the period positive so PERIODCH ends as in flight. Other conic erasables take any value. Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH, KEPLERN's own entry (12,2042) included, TAU.'s high word is +-0 (|TAU.| < 163.84 s; flight's time since rectification can be longer, a narrowing for the case length) and the period positive, so PERIODCH ends as in flight. Up to KEPLERN's DDV R1 (12,2077), R1 is an orbit's radius: its high word is one of 0310 (Earth parking orbit, 2^29 m), 0340 (lunar orbit, 2^27 m), 02000, 017571 (the Moon's sphere of influence) or 026706 (the Moon's distance), and C2 (KEPC2, RV.V/MU - 1) is a flight value from -1/2 to 3 where MPAC holds it (12,2074, 12,2075; at DDV R1, 12,2077, MPAC is the matching (1/64 - C2/64)/2) (#553, #664: a random tiny R1 or C2 near or past -1 makes ALPHA an orbit far below R1/2, and PERIODCH runs thousands of passes). On KEPLERN's hyperbolic arm (12,2105, 12,2110) ALPHA is negative, as BPL 1REV sends it there, and at BPL 1REV (12,2102) MPAC and ALPHA are the same value, as STORE ALPHA leaves them; from the SQRT to the period's DMP (12,2110-12,2122) XMAX in MPAC is positive (a +0 XMAX with a positive ALPHA gives a period of 0 and PERIODCH never ends; #664). PUSHLOC is vac+0 to vac+12 from NEWSTATE to TIMETHET, as COMMNOUT and DELTIME's loop leave it for NEWSTATE's pushes, and vac+2 at GETX's DDV (12,3016) in DP mode. EDOP is +0 from CHECKCTR to NEWSTATE: CHECKCTR's TC DANZIG is the RTB target of BPL RTB, and the BHIZ that follows RTB CHECKCTR is the key 12,2306 below. VTARGTAG is 0 in half the cases at LAMBERT's SLOAD BZE VTARGTAG (12,3544), as S40.9 steering's NUMIT 0 leaves it, so LAMBERT goes on to TARGETV (#659). Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
         "external_continuations": [
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
           "DANZIG (outside basic routine)",
@@ -691,7 +691,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "ae2e1b0777096987a3059cecba1a89ad14d3750a6f2184ed9969f6c42d66f370"
+            "sha256": "badd50964acd57820755a83a0186ef5bfee3ada24df0542beac69c607884a12a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-conics/cm-conics-host.log",
@@ -699,16 +699,16 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-conics/cm-conics-vice.log",
-            "sha256": "c19eb5a5fb8e938f1222dbc51c2b865fe52474ba8af0658775b1a1e63edd5a95",
+            "sha256": "484b8cea235a67a1908b91c36e1bef0aedd0359e1f93e3bd4f44585604ebbd61",
             "vice_targets": {
-              "vice-cm-conics-1": 318,
-              "vice-cm-conics-2": 128,
-              "vice-cm-conics-3": 175
+              "vice-cm-conics-1": 323,
+              "vice-cm-conics-2": 171,
+              "vice-cm-conics-3": 129
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "ae2e1b0777096987a3059cecba1a89ad14d3750a6f2184ed9969f6c42d66f370"
+            "sha256": "badd50964acd57820755a83a0186ef5bfee3ada24df0542beac69c607884a12a"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-b506.md",

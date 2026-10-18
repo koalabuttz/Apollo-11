@@ -2,57 +2,57 @@ PASS: VICE PAL cm-conics-1.prg: 25 checks, 0 failures
 PRG sha256: 65ba61561e09b8056f7dfb683f5e1f2244d088f87b534496324e4905ed1c7f6b cm-conics-1.prg
 PASS: VICE PAL cm-conics-2.prg: 41 checks, 0 failures
 PRG sha256: 918b955d473badf2812e7ddab1907f0f8bd66a20de07dd779d3fc4c92c633105 cm-conics-2.prg
-PASS: VICE PAL cm-conics-3.prg: 29 checks, 0 failures
-PRG sha256: 8cc6198c43304a7896046d0aff8ec315d75da51ec135427e8ada8e536004dbc0 cm-conics-3.prg
-PASS: VICE PAL cm-conics-4.prg: 41 checks, 0 failures
-PRG sha256: 93b21f8a13b85793f4740a8d61d3bd9a075d4baeafd878ce8a5fe5c55c3389e2 cm-conics-4.prg
-PASS: VICE PAL cm-conics-5.prg: 25 checks, 0 failures
-PRG sha256: cfb8d62009d9272c6f10c8eaf271ec3389900814fd2061e81a1304e680367a4c cm-conics-5.prg
-PASS: VICE PAL cm-conics-6.prg: 52 checks, 0 failures
-PRG sha256: 193638c7efc7c99367e72c0c22845397593239dce5745f36338f17e0893d021e cm-conics-6.prg
-PASS: VICE PAL cm-conics-7.prg: 39 checks, 0 failures
-PRG sha256: 61a742f69e8523d74b8b5fbf1ea85ef9522a34575fc2e779b15d28b2caf7b9f9 cm-conics-7.prg
-PASS: VICE PAL cm-conics-8.prg: 54 checks, 0 failures
-PRG sha256: 473a26bebb8344feaf4967c41c2a2108cc0799dbc49b35e64d333e741c242f63 cm-conics-8.prg
-PASS: VICE PAL cm-conics-9.prg: 11 checks, 0 failures
-PRG sha256: 2455ce38c62108879df24888ddd2c4189e93e9abe7d694650d4266e5f381fa3e cm-conics-9.prg
-PASS: VICE PAL cm-conics-10.prg: 1 checks, 0 failures
-PRG sha256: 09a11fa57d169d0e3021684893205dca1f7e3fd6a08ad92dde684e67bd84df98 cm-conics-10.prg
-PASS: VICE PAL cm-conics-11.prg: 3 checks, 0 failures
-PRG sha256: 1c5ff9ef848a10b938e2475c5c14b095410f4772c21809ecd20c5b232a4e122d cm-conics-11.prg
-PASS: VICE PAL cm-conics-12.prg: 10 checks, 0 failures
-PRG sha256: 38957a0c1a4ae8eaf404dcda0c67aa7068761eb9eb68a528fc90eed7fe004ab0 cm-conics-12.prg
-PASS: VICE PAL cm-conics-13.prg: 14 checks, 0 failures
-PRG sha256: 23a7b518a38306f06b40c6a88fcd2424ddb3eb0a3bab4371247e12532006dcb1 cm-conics-13.prg
-PASS: VICE PAL cm-conics-14.prg: 54 checks, 0 failures
-PRG sha256: df964e04c8b60b406849cc0f48b2116516097bc799118c9ba6a87bbec9144876 cm-conics-14.prg
-PASS: VICE PAL cm-conics-15.prg: 26 checks, 0 failures
-PRG sha256: 59273c137170adcf23331a6982ff633f6e32a939b3f6812d03c66bae4e07ad1e cm-conics-15.prg
-PASS: VICE PAL cm-conics-16.prg: 1 checks, 0 failures
-PRG sha256: 60504ffc8979cc1b0b76e77178486beb022b46299d3f56179e38b0831f8d53d6 cm-conics-16.prg
-PASS: VICE PAL cm-conics-17.prg: 4 checks, 0 failures
-PRG sha256: eba245b074e94757f323674582873c322a44e19ba0e19671f4697cec1adeb05c cm-conics-17.prg
-PASS: VICE PAL cm-conics-18.prg: 4 checks, 0 failures
-PRG sha256: a433198fa873b95798b545ab7d94dd194559b101bcf05fbc8ac9ab1ec1372fca cm-conics-18.prg
-PASS: VICE PAL cm-conics-19.prg: 8 checks, 0 failures
-PRG sha256: 53ba5997d17dd088cbf29976a462b393e9ca0a4a93fbe5a80bc8dbc985fcde60 cm-conics-19.prg
-PASS: VICE PAL cm-conics-20.prg: 4 checks, 0 failures
-PRG sha256: 4533cf6adf9815b7153dfee5dc00d1740d3bf8ab5ce112e13e3c10ae29d41889 cm-conics-20.prg
-PASS: VICE PAL cm-conics-21.prg: 15 checks, 0 failures
-PRG sha256: 6aac416340065aab05068b7f3bc716060b8489d515cba901824bf9dd81b27c2c cm-conics-21.prg
-PASS: VICE PAL cm-conics-22.prg: 36 checks, 0 failures
-PRG sha256: e839e9a3ec5edb8f218e969d159da966161306e94844618c7565a1b3016f694d cm-conics-22.prg
-PASS: VICE PAL cm-conics-23.prg: 46 checks, 0 failures
-PRG sha256: 35624b7306a69ed20adea60c2c618c7ff6634f856ee0b7063e066fe966e01a68 cm-conics-23.prg
-PASS: VICE PAL cm-conics-24.prg: 5 checks, 0 failures
-PRG sha256: d558799a8aa1a801fd44ab0b721c29eb758eda2d4bacb6acf01bb0d0f61d1a13 cm-conics-24.prg
-PASS: VICE PAL cm-conics-25.prg: 3 checks, 0 failures
-PRG sha256: 4822b903b43d3900872082d4add5b936ae9be249a7ee4abe24b8a9d1a7c16c1c cm-conics-25.prg
-PASS: VICE PAL cm-conics-26.prg: 5 checks, 0 failures
-PRG sha256: 69a37c319a3c95f587631e76dff738eac228f48272189a73acf129301b36ec24 cm-conics-26.prg
-PASS: VICE PAL cm-conics-27.prg: 4 checks, 0 failures
-PRG sha256: 1f0085faca78bd927ffb7b0ddce735b4bd10e88c9c003741df7ad4c63c80dfb9 cm-conics-27.prg
-PASS: VICE PAL cm-conics-28.prg: 36 checks, 0 failures
-PRG sha256: ee8167ab173c5fb4dff93715d2f5390f6b8b3e92c6545b28a646778d91e84a0b cm-conics-28.prg
+PASS: VICE PAL cm-conics-3.prg: 20 checks, 0 failures
+PRG sha256: cf46ec9976fc8b837ecd27b0506dc6eea21ef6588798889508b5a4025fb3ffc0 cm-conics-3.prg
+PASS: VICE PAL cm-conics-4.prg: 55 checks, 0 failures
+PRG sha256: 09c0e6a827c52fc9e27a06f589d42df2b3fd9b49424e9da0381cb438220b7e10 cm-conics-4.prg
+PASS: VICE PAL cm-conics-5.prg: 34 checks, 0 failures
+PRG sha256: 9ab5993bb03ac59c6ee64ed2685cb479f6c8ecc79603582445fffec9a8c722c8 cm-conics-5.prg
+PASS: VICE PAL cm-conics-6.prg: 55 checks, 0 failures
+PRG sha256: 880b1113b235eb21d8d1483b847aeeb44fc4bad59840dcee1702aa1815a23a5b cm-conics-6.prg
+PASS: VICE PAL cm-conics-7.prg: 67 checks, 0 failures
+PRG sha256: 5bc0e9455184a2d7873a30fd322daa41c6704aff314509872bdd7917e7a0d928 cm-conics-7.prg
+PASS: VICE PAL cm-conics-8.prg: 23 checks, 0 failures
+PRG sha256: 6be667b1eaba51c95d8c25f214e1732ea7c67ebcd1f401631992caf0e5df4662 cm-conics-8.prg
+PASS: VICE PAL cm-conics-9.prg: 1 checks, 0 failures
+PRG sha256: 09a11fa57d169d0e3021684893205dca1f7e3fd6a08ad92dde684e67bd84df98 cm-conics-9.prg
+PASS: VICE PAL cm-conics-10.prg: 2 checks, 0 failures
+PRG sha256: 36e4fc3e09e323da2230493a823f9e12bfab2b1347142092d5ef008fc60e5018 cm-conics-10.prg
+PASS: VICE PAL cm-conics-11.prg: 9 checks, 0 failures
+PRG sha256: 0b8a171786c0175db8ced1106b06fa19ce58c787fbeea79a323f79a89827893c cm-conics-11.prg
+PASS: VICE PAL cm-conics-12.prg: 13 checks, 0 failures
+PRG sha256: 318ec84e3ecb537e30599fcdad177e4d7c825320a6cfc86ff77c030d4be4b74e cm-conics-12.prg
+PASS: VICE PAL cm-conics-13.prg: 51 checks, 0 failures
+PRG sha256: 560f9e83e40fdfd111804cb9ee42016765f54a670ea2a1d9cf6a0cc215c816b8 cm-conics-13.prg
+PASS: VICE PAL cm-conics-14.prg: 32 checks, 0 failures
+PRG sha256: 7496d2e463e71b410b7aa14c3950bdfe17e4a80146b9fbee70a26f7c11b0f771 cm-conics-14.prg
+PASS: VICE PAL cm-conics-15.prg: 1 checks, 0 failures
+PRG sha256: 8f8abbb4a3984a5506fd330014e9e148dc6c0f8e9f7baf551e919083a81ac29b cm-conics-15.prg
+PASS: VICE PAL cm-conics-16.prg: 4 checks, 0 failures
+PRG sha256: 60015e9dacf62fd50a88742de08c8b0776828eea63c60f938f270183c4b2bfff cm-conics-16.prg
+PASS: VICE PAL cm-conics-17.prg: 2 checks, 0 failures
+PRG sha256: f826da58bf8eaaa38d1a2d58da9920bc544b8368f54c54f946f6696bf34139b3 cm-conics-17.prg
+PASS: VICE PAL cm-conics-18.prg: 10 checks, 0 failures
+PRG sha256: 3d7c2c25d4b6496c446de0dee3e40716066b9e074e7704790eea1f535db6f76d cm-conics-18.prg
+PASS: VICE PAL cm-conics-19.prg: 2 checks, 0 failures
+PRG sha256: 167f13f76e951501567e153652e04090d55378828e5051123cccdb2f0c9af890 cm-conics-19.prg
+PASS: VICE PAL cm-conics-20.prg: 47 checks, 0 failures
+PRG sha256: 46c77aca34f6ba36a81f73153c61f6fbdb45997606837236eb307a7ea6484720 cm-conics-20.prg
+PASS: VICE PAL cm-conics-21.prg: 39 checks, 0 failures
+PRG sha256: 93e15239c7cf625a262c0e6bc2668cc33f7835c1054867b5ba00e97a1cf2efe8 cm-conics-21.prg
+PASS: VICE PAL cm-conics-22.prg: 17 checks, 0 failures
+PRG sha256: ef568fb01c2caecfee088ee379ae6df8fa799672d93a76b756598adadf2251b0 cm-conics-22.prg
+PASS: VICE PAL cm-conics-23.prg: 3 checks, 0 failures
+PRG sha256: 585e93b672b95cd5aae0a745b213d7068292684c12321326159ac584019bcebf cm-conics-23.prg
+PASS: VICE PAL cm-conics-24.prg: 4 checks, 0 failures
+PRG sha256: 61f4ad8379b7614117bacebccbc93170c04cb2dc83bf3d257b0e412eb17885af cm-conics-24.prg
+PASS: VICE PAL cm-conics-25.prg: 1 checks, 0 failures
+PRG sha256: b2fea3d0e9dec6f6d97ecec8d3764610e057d9527c9ca1079298f76685954d17 cm-conics-25.prg
+PASS: VICE PAL cm-conics-26.prg: 4 checks, 0 failures
+PRG sha256: 268bbc883293fb0cdaf0eda1a77dd0b2f49ac5a5de897cf657d04959bea0004f cm-conics-26.prg
+PASS: VICE PAL cm-conics-27.prg: 35 checks, 0 failures
+PRG sha256: 55bb162ab850a2ef5a4f880200e33f12c5935209df315458d22717e30831baf0 cm-conics-27.prg
+PASS: VICE PAL cm-conics-28.prg: 1 checks, 0 failures
+PRG sha256: bd30c988e651348bf215c5d1a86f7552b4da4f0cd2383389ec6fe76c79a17360 cm-conics-28.prg
 PASS: VICE PAL cm-conics-29.prg: 25 checks, 0 failures
-PRG sha256: f43dde3a520c085b7ccc565ad32bd0519137f6a02d11b3aa78cee5265ff4b5eb cm-conics-29.prg
+PRG sha256: 9114329315348e268ecb3a5d4ebd8d5585f6f48edf216564a0e06bfc7b626cca cm-conics-29.prg
