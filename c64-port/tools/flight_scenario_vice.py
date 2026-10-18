@@ -44,6 +44,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import dap_pass_vice as dp  # noqa: E402
 import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
+import reu_layout  # noqa: E402
 
 
 def snapshot(exe, name, cs, tag, replay=0, every=0):
@@ -90,10 +91,10 @@ def compared(i):
 
 def replay_place(manifest, m, image, size):
     """An REU address for size bytes of replay rows and end state: the top
-    of the zeros below the rope (the flight store's spare), which the run
-    must not touch."""
-    top = manifest.get('rope_reu_base') or manifest.get('rope_base') or {'lm': 0x1c0000, 'cm': 0x1e0000}[m]
-    top = int(top, 0) if isinstance(top, str) else top
+    of the zeros between the store and the next declared region (the
+    Pinball trampoline save below the rope, tools/reu_layout.py), which the
+    run must not touch."""
+    top = reu_layout.free_top(m, manifest)
     at = (top - size) & ~0xff
     if at < 0 or any(image[at:top]):
         sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
@@ -128,6 +129,16 @@ def c64_weights(m):
     if not report:
         sys.exit(f'FAIL: no flight store report for {m} (rebuild: tools/flight_store_build.py --missions {m} --force)')
     out = {t: mct_weight(m, None, interp=True) for t in report['left_to_interpreter']}
+    # A pack's own tables resolve to the pack first, so they take its
+    # weight, not their file module's (flight_store_build.py c64_mct).
+    packs = {int(p['id'], 16): p for p in report.get('packs', []) if p.get('ok')}
+    for mod in report['module_list']:
+        if mod['id'] in packs:
+            rupt = [t for t in mod.get('basic') or [] if not fsb.idle_table(t)]
+            own = [t for t in rupt if t not in fsb.LEAD_INS] or rupt
+            for t in rupt:
+                if t not in packs[mod['id']]['ride'] and own:
+                    out.setdefault(t, mct_weight(m, own))
     for mod in report['module_list']:
         weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
         rupt = [t for t in weighed if not fsb.idle_table(t)]
@@ -302,6 +313,8 @@ def main():
     p.add_argument('--snap-cs', type=int, default=17500, help='AGC centisecond the C64 run starts from')
     p.add_argument('--cs', type=int, default=200, help='AGC centiseconds to run on the C64')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
+    p.add_argument('--reu-check-drop', default='', metavar='REGION',
+                   help="leave a declared REU region out of the bound check (e.g. scratch): the check's own test")
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
     p.add_argument('--data-dir', type=pathlib.Path,
@@ -343,11 +356,17 @@ def main():
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
     holes = host_holes(exe, a.scenario, a.snap_cs + a.cs, tag)
-    print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(holes)} points, each a stop on the C64')
+    # A core-start point (tools/flight_holes.py CORE_START) is bridged only
+    # because the scenario's core starts mid-way through code, before any
+    # C64 window: not a stop on the C64.
+    stops = [d for d in holes if not d['core_start']]
+    print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(stops)} points, each a stop on the C64'
+          + (f' (and {len(holes) - len(stops)} core-start points, not stops)' if len(stops) < len(holes) else ''))
     for d in holes:
         print(f"  {d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals"
-              + (f"  refused by {d['refused_by']}" if d['refused_by'] else ''))
-    if holes and a.stop_on_holes:
+              + (f"  refused by {d['refused_by']}" if d['refused_by'] else '')
+              + ('  core-start artifact, not a C64 stop' if d['core_start'] else ''))
+    if stops and a.stop_on_holes:
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
     if a.replay and a.keys:
@@ -394,7 +413,29 @@ def main():
     if a.replay:
         # rk_device's address comes from the link.
         patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
-    r = dp.vice(a, tag, prg, pinned, m, patch)
+    # The run's declared REU regions (tools/reu_layout.py): VICE logs every
+    # DMA, read or write, that is not inside one of them, and afterwards every
+    # changed byte must lie in a writable one (not the store, the rope or the
+    # replay rows). --reu-check-drop leaves a region out (the check's own test).
+    regions = [x for x in reu_layout.layout(
+        m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None)
+        if x[0] != a.reu_check_drop]
+    r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)])
+    after = dp.WORK / f'vice-{tag}' / 'image.reu'
+    if r.get('status') is not None and after.exists():
+        before = bytearray(reu)
+        for at_, data in patch:
+            before[at_:at_ + len(data)] = data
+        bounds = reu_layout.report(m, regions, before, after.read_bytes(), a.scenario)
+        bounds['dma_outside'] = reu_layout.dma_misses((dp.WORK / f'vice-{tag}' / 'monitor.log').read_text())
+        if bounds['dma_outside']:
+            bounds['ok'] = False
+            print(f"FAIL: {a.scenario}: {bounds['dma_outside']} DMAs outside the {m} REU layout")
+        else:
+            print(f'{a.scenario}: every DMA inside the {m} REU layout')
+        r['reu_bounds'] = bounds
+        if not bounds['ok']:
+            r['ok'] = False
     if a.replay and r.get('status') is not None:
         mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
         applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)

@@ -625,7 +625,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
+            "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -633,18 +633,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "8d388df3d4b0d6834ceeb15a1bbed58889fdb7bae5aa701a104649b556598b5f",
+            "sha256": "4e960888d3f73b6d2aff3ed0846caedb98e805448e0e0e2c18d7278c1b855e69",
             "vice_targets": {
-              "vice-cm-entry-dap": 83
+              "vice-cm-entry-dap": 85
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
+            "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-fast-window-eb-599.md",
-            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -691,28 +691,28 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c3f86b736e07bd6448c7c9170ed9ed16ff7f5ba0f59a94ec35c0ad05e375c518"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-conics/cm-conics-host.log",
-            "sha256": "3426c64a361fc3930d7120a83c1617bf2e1b9985cdd21a391f146ff0811623e0"
+            "sha256": "9e1f82a8fcbfd397d16c18877a3bb265b50d978d8c0a8f4a9e254b38bce3e9fc"
           },
           "c64_execution_results": {
             "path": "evidence/cm-conics/cm-conics-vice.log",
-            "sha256": "6401f0d1eced75e447a1643994c075bc72a139a8174712b671a499a239a364a9",
+            "sha256": "07790f5898e3417e0366236d3314d1be765b87eda37eb88cb41d3b2be06a46fd",
             "vice_targets": {
               "vice-cm-conics-1": 317,
               "vice-cm-conics-2": 122,
-              "vice-cm-conics-3": 181
+              "vice-cm-conics-3": 182
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c3f86b736e07bd6448c7c9170ed9ed16ff7f5ba0f59a94ec35c0ad05e375c518"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-b506.md",
-            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -2215,7 +2215,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
+            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-host.log",
@@ -2223,18 +2223,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
-            "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
+            "sha256": "8e987379f2e37c8965a02a8baf9f06a1491492262e9e3e829688700b85f45385",
             "vice_targets": {
-              "vice-cm-integration-init": 331
+              "vice-cm-integration-init": 336
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
+            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g457.md",
-            "sha256": "855ea754164cb909e04174a2fc369563aa4eb6ac09aa16e6457801c48d94b083"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -5074,7 +5074,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "676754fa0aac185a2d8730ff206765a5a4cc816640f4afe51522c5def09bd423"
+            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-reentry/cm-reentry-host.log",
@@ -5082,18 +5082,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-reentry/cm-reentry-vice.log",
-            "sha256": "5feeebbbb446534ed7b9fbb0df84770c9282f67dd1776a26a0b1a48b2c302eec",
+            "sha256": "878445ef472325eda7287dd1900172e5277a22d317f3a06966a102eef7f09c21",
             "vice_targets": {
-              "vice-cm-reentry": 543
+              "vice-cm-reentry": 544
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "676754fa0aac185a2d8730ff206765a5a4cc816640f4afe51522c5def09bd423"
+            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-reentry.md",
-            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }

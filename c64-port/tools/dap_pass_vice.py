@@ -68,19 +68,22 @@ def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys
     return out
 
 
-def vice(a, name, prg, pinned, m='lm', patch=()):
+def vice(a, name, prg, pinned, m='lm', patch=(), monitor=()):
     """patch: (REU address, bytes) written into the run's REU image copy
-    (flight_scenario_vice.py --replay: the input rows)."""
+    (flight_scenario_vice.py --replay: the input rows). monitor: more
+    monitor commands before the run starts, after the $C000 watch (which
+    stays checkpoint 1), such as flight_scenario_vice.py's REU trace."""
     rom = a.rom_dir.resolve()
     work = WORK / f'vice-{name}'
     work.mkdir(parents=True, exist_ok=True)
     sys_at = re.search(rb'\x9e\s*(\d+)\x00', prg.read_bytes()[:32])
     dump = work / 'results.bin'
     dump.unlink(missing_ok=True)
+    (work / 'monitor.log').unlink(missing_ok=True)
     commands = work / 'vice.mon'
     # Boot's DMA of the class-3 module to $C000 is the first store there.
     commands.write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
-                        + f'g {int(sys_at[1]):04x}\nbsave "{dump}" 0 c000 cbff\nquit\n')
+                        + ''.join(f'{c}\n' for c in monitor) + f'g {int(sys_at[1]):04x}\nbsave "{dump}" 0 c000 cbff\nquit\n')
     reu = work / 'image.reu'
     image = bytearray((OUT / f'{m}.reu').read_bytes())
     for at, data in patch:

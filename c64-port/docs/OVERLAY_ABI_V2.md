@@ -175,8 +175,11 @@ stores are separate, so the same id can name different modules in each.
 | Resolver | Records of 8 bytes, sorted by (bank, location): historical bank word, location, module, selector |
 | Modules | Each image starts on a page boundary and never crosses a 512 KB REU bank: one DMA wraps inside its bank (VICE and real 17xx). Modules go in id order; one that would cross starts on the next bank, after the packer fills the gap before the edge with the largest modules still to place that fit it |
 
-Lookup is one 16-byte DMA. A historical-continuation lookup is a binary search
-of 8-byte DMAs. At boot, `apollo_reu_store_verify` checks every present
+Lookup is one 16-byte DMA. A historical-continuation lookup checks a
+32-entry cache of recently resolved records, then binary-searches 8-byte
+DMAs over the records of its own bank only: `apollo_reu_store_open` finds
+where each bank's records start (by the key's bits above bit 9, the FB
+bank; higher keys share the last group). At boot, `apollo_reu_store_verify` checks every present
 module's header and CRC16-CCITT and the resolver's order and targets. Per-load
 CRC is off in the REU build, because a bitwise CRC costs about 250 cycles per
 byte (four seconds for a full slot). A disk-backed store keeps per-load

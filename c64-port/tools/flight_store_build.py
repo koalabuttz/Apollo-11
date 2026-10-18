@@ -96,26 +96,73 @@ SPLIT_ANY = {'lanec_pin_routines'} | {base for spec in interp_specs.SPECS.values
                                       for base in spec['base'].values()}
 
 
-def lanec_pin_order(table, n):
-    """Pinball's routines grouped by the modules their try-lists run
-    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
-    with the same modules sit together, and address order is kept within a
-    group. A chunk is then a set of entries (FS_PICK), not a key range."""
+# Pinball display chains that each run as one chunk (physical keys): the
+# per-row loop DSPDCPUT, DP1OUTSF, DP3OUTSF, DSPDCEND, DSPDCEND +2; the
+# monitor chain NVMONOPT, KILMONON, NVSUBCOM, NVSUB1, NVSUB2 +9, +11,
+# NVSUBEND and VERBFAN; and ENTPAS0 with MIXNOUN. A monitor display walks
+# them in turn, about 20 points, one load each when they sit in different
+# chunks (docs/LM-FLIGHT-LOAD-PROFILE.md). Each group links under the slot.
+LANEC_PIN_GROUPS = {
+    'lanec_pin_lm_routines': [[34143, 33224, 33231, 34166, 34168],
+                              [2157, 2180, 2168, 34660, 34690, 34692, 2178, 33883],
+                              [33821, 33937]],
+    'lanec_pin_cm_routines': [[34143, 33164, 33171, 34166, 34168],
+                              [2169, 2192, 2180, 34660, 34690, 34692, 2190, 33883],
+                              [33821, 33937]]}
+
+
+def lanec_pin_entries(table, n):
+    """The table's entries in src/lanec_pin_routines.inc: (physical, try-list modules)."""
     inc = (ROOT / 'src/lanec_pin_routines.inc').read_text()
     tries = {k: tuple(sorted(v.replace(' ', '').split(',')[:-1]))
              for k, v in re.findall(r'static const dispatch (try\d+)\[\d+\] = \{ (.*?) \};', inc)}
     body = inc.split(f'agc_routine_entry {table[len("lanec_pin_"):-len("_routines")]}_entries[')[1].split('};')[0]
-    calls = re.findall(r'\{ \d+u, (try\d+)_(?:lm|cm) \}', body)
+    calls = re.findall(r'\{ (\d+)u, (try\d+)_(?:lm|cm) \}', body)
     if len(calls) != n:
         raise SystemExit(f'{table}: {len(calls)} entries in src/lanec_pin_routines.inc, {n} keys')
-    return sorted(range(n), key=lambda i: (tries[calls[i]], i))
+    return [(int(k), tries[t]) for k, t in calls]
+
+
+def lanec_pin_group(table, n):
+    """Each entry's LANEC_PIN_GROUPS group index (len(groups) for the rest)."""
+    groups = LANEC_PIN_GROUPS.get(table, [])
+    of = {k: g for g, ks in enumerate(groups) for k in ks}
+    ents = lanec_pin_entries(table, n)
+    if not set(of) <= {k for k, _ in ents}:
+        raise SystemExit(f'{table}: LANEC_PIN_GROUPS names keys the table lacks: {sorted(set(of) - {k for k, _ in ents})}')
+    return [of.get(k, len(groups)) for k, _ in ents]
+
+
+def lanec_pin_order(table, n):
+    """Pinball's routines grouped by the modules their try-lists run
+    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
+    with the same modules sit together, and address order is kept within a
+    group. LANEC_PIN_GROUPS come first, each in its own chunk (see
+    lanec_pin_breaks). A chunk is then a set of entries (FS_PICK), not a
+    key range."""
+    ents, grp = lanec_pin_entries(table, n), lanec_pin_group(table, n)
+    return sorted(range(n), key=lambda i: (grp[i], ents[i][1], i))
+
+
+def lanec_pin_breaks(table, n):
+    """Positions in lanec_pin_order that no chunk crosses: the end of each
+    LANEC_PIN_GROUPS group."""
+    grp = lanec_pin_group(table, n)
+    ends, at = [], 0
+    for g in range(len(LANEC_PIN_GROUPS.get(table, []))):
+        at += grp.count(g)
+        ends.append(at)
+    return ends
 
 
 # Chunk order per stem: (table, entries) -> the entries' order for packing.
 CHUNK_ORDER = {'lanec_pin_routines': lanec_pin_order}
+# Chunk breaks per stem: (table, entries) -> positions in the chunk order
+# that a chunk does not cross.
+CHUNK_BREAKS = {'lanec_pin_routines': lanec_pin_breaks}
 
 
-def pack_chunks(n, fits, probes):
+def pack_chunks(n, fits, probes, breaks=()):
     """Greedy packing of routines 0..n-1 into chunks of consecutive routines.
 
     Each chunk starts where the last one ended and takes the most routines
@@ -128,15 +175,19 @@ def pack_chunks(n, fits, probes):
     failing end. The chunks depend only on the link results: the same
     inputs give the same chunks in the same order.
 
+    No chunk crosses a position in breaks: a chunk that reaches one ends
+    there.
+
     Returns (kept, over): kept the (start, end) chunks that fit, over the
     (start, overflow) of routines over the slot alone; None on a link error."""
     kept, over, start = [], [], 0
     while start < n:
-        lo, hi, alone = start, n + 1, None      # [start, lo) fits; [start, hi) does not
+        end = min([b for b in breaks if b > start] + [n])
+        lo, hi, alone = start, end + 1, None    # [start, lo) fits; [start, hi) does not
         while hi - lo > 1:
-            if hi == n + 1:                     # gallop until an end fails
+            if hi == end + 1:                   # gallop until an end fails
                 base = lo - start
-                ends = {min(n, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
+                ends = {min(end, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
             else:
                 ends = {lo + (hi - lo) * (i + 1) // (probes + 1) for i in range(probes)}
             ends = sorted(e for e in ends if lo < e < hi) or [lo + 1]
@@ -446,6 +497,15 @@ def c64_mct(m, to_interp, modules):
     runs it (link_module). host.inc carries these, so the host's work clock
     (FLIGHT_SCALED) charges what the C64 does."""
     out = {t: mct_weight(m, None, interp=True) for t in to_interp}
+    # A pack's own tables (not its ride ones) resolve to the pack before
+    # their files' modules, so the pack's FS_MCT is what the C64 charges
+    # them (RATELOOP's lm_kalman_basic in the excursion, the radar step in
+    # the T4RUPT pack), not their own module's.
+    for mod in modules:
+        if mod.get('excursion'):
+            for t in mod.get('basic') or []:
+                if t not in RIDE and not idle_table(t):
+                    out.setdefault(t, mct_weight(m, [x for x in mod['basic'] if x not in LEAD_INS and not idle_table(x)]))
     for mod in modules:
         weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
         rupt = [t for t in weighed if not idle_table(t)]
@@ -605,6 +665,9 @@ def add_rope(m):
     data = json.loads(manifest.read_text())
     data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
     manifest.write_text(json.dumps(data, indent=1) + '\n')
+    # The declared runtime regions (tools/reu_layout.py) must not overlap.
+    import reu_layout
+    reu_layout.layout(m, data)
 
 
 SCRATCH_BYTES = 32768
@@ -785,7 +848,7 @@ EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_ka
 # the pack is loaded, but other callers keep loading their own (smaller)
 # modules, so the resolver does not send their keys to the pack.
 RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines', 'lm_lead_in_hot_routines',
-        'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines'}
+        'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines', 'cm_sp_hot_routines'}
 # A ride table whose operands are another file's sites (IBNKCALL's CADR is
 # its caller's word, compiled into lm_interbank_routines' site list): the
 # pack takes that file's sites in the banks its own tables' keys are in.
@@ -806,7 +869,10 @@ T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lea
 # (lane-g/cm-entry-profile-80342904.md): its hot subset in one module makes
 # it about 1. CM pins no class-4 home, so the pack links its own runtime
 # (ALONE).
-ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
+# SPSIN and SPCOS ride along (cm_sp_hot_routines, the resident's two
+# entries): a pass calls them 7 times, and in the pack its run carries on
+# through each call instead of ending for a resident step and starting again.
+ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines', 'cm_sp_hot_routines']}
 # The CM docked RCS DAP pass (T5RUPT) reaches 12 routines of
 # cm_rcs_dap_basic, 21 of cm_jet_select_basic, 6 of cm_auto_man_basic and
 # MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
@@ -818,6 +884,13 @@ ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
 RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines', 'cm_mysubs_routines']}
 JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
 MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines']}
+# A split pack starts a new chunk at these keys (bank << 10 | offset in
+# the bank), so the routines a pass runs back to back share one chunk. CM
+# JETPACK: T6START (17,3617) and the T6 program chain after it (17,3654 to
+# 17,3713) run in each T6RUPT; split greedily the first chunk ended at
+# 17,3663, so a T6RUPT loaded jet-0 and jet-1 by turns (173 job loads in
+# 29 T6RUPTs of cm-p40's window from 70660 cs; 29 with the cut).
+SPLIT_BEFORE = {'cm_jet': [0o17 << 10 | 0o1617]}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
@@ -1352,8 +1425,12 @@ def main():
             as split_greedy): the pass then loads one per chunk it crosses.
             One table splits by FS_CHUNK; several split their entries in key
             order (FS_PICK), so a small table's keys go to the chunk with
-            the keys beside them. Ids follow the pack's."""
+            the keys beside them. A chunk also ends before a SPLIT_BEFORE
+            key. Ids follow the pack's."""
             entries = sorted(((t, i) for t in pts for i in range(len(keys[t]))), key=lambda e: keys[e[0]][e[1]])
+            cuts = sorted({j for c in SPLIT_BEFORE.get(pack['prg_name'], ())
+                           for j in range(1, len(entries)) if keys[entries[j - 1][0]][entries[j - 1][1]] < c
+                           <= keys[entries[j][0]][entries[j][1]]})
 
             def part(lo, hi):
                 if len(pts) == 1:
@@ -1361,7 +1438,7 @@ def main():
                 return dict(basic=[], pick=entries[lo:hi])
             out, lo, n = [], 0, len(entries)
             while lo < n:
-                good, bad = lo, n + 1
+                good, bad = lo, min([j for j in cuts if j > lo] + [n]) + 1
                 while bad - good > 1:
                     mid = (good + bad) // 2
                     r = link(dict(pack, **part(lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
@@ -1612,9 +1689,12 @@ def main():
                     with ThreadPoolExecutor(a.jobs) as pool:
                         got = list(pool.map(lambda e: trial((t, start, e), mod), ends))
                     return [True if r['ok'] or r.get('empty') else r.get('overflow') or None for r in got]
+                breaks = ()
                 if mod['stem'] in CHUNK_ORDER:
                     chunk_order[t] = CHUNK_ORDER[mod['stem']](t, len(keys[t]))
-                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs))
+                if mod['stem'] in CHUNK_BREAKS:
+                    breaks = CHUNK_BREAKS[mod['stem']](t, len(keys[t]))
+                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs), breaks)
                 if got is None:
                     return None
                 kept += [(t, i, j) for i, j in got[0]]

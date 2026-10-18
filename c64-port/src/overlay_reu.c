@@ -37,6 +37,13 @@ static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
 #define APOLLO_REU_RESOLVE_CACHE 32u
 #endif
 static uint8_t cache[APOLLO_REU_RESOLVE_CACHE * APOLLO_REU_RESOLVER_RECORD];
+/* Where each bank's records start: fence[f] is the first record whose key
+ * has bank bits (bank >> 10) of f or more. A flight key's bits are its FB
+ * bank, 0-037 (the superbank flag 0100 is below them); any higher key goes
+ * in the last group. Open finds them by search, so a cache miss searches
+ * only its own bank's records. */
+#define APOLLO_REU_FENCES 32u
+static uint16_t fence[APOLLO_REU_FENCES + 2u];
 uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record) {
     uint8_t *h=record,i;
@@ -64,6 +71,24 @@ uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
             (uint32_t)s->pages * 256u)
         return 0;
     s->index_blocks=(uint8_t)((s->resolver_page-s->index_page)>>4);
+    {
+        uint32_t r = page_address(s, s->resolver_page);
+        uint16_t low = 0;
+        for (i = 0; i <= APOLLO_REU_FENCES; ++i) {
+            uint16_t high = s->resolver_count;
+            while (low < high) {
+                uint16_t middle = (uint16_t)(low + (uint16_t)((high - low) >> 1));
+                if (!read_bytes(r + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), h, 2u))
+                    return 0;
+                if ((uint8_t)(le16(h) >> 10) < i)
+                    low = (uint16_t)(middle + 1u);
+                else
+                    high = middle;
+            }
+            fence[i] = low;
+        }
+        fence[APOLLO_REU_FENCES + 1u] = s->resolver_count;
+    }
     return 1;
 }
 static uint8_t payload_inside(const apollo_reu_store *s,const apollo_ov2_dirent *d) {
@@ -125,8 +150,10 @@ static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *ou
         /* Records are sorted by (bank, loc), 8 bytes each, fewer than 8192,
          * so a record's offset in the resolver fits 16 bits. */
         probe_base = page_address(s, s->resolver_page);
-        probe_low = 0;
-        probe_high = s->resolver_count;
+        uint8_t f = (uint8_t)(bank >> 8);
+        const uint16_t *g = fence + (f & 0x80u ? APOLLO_REU_FENCES : (uint8_t)(f >> 2));
+        probe_low = g[0];
+        probe_high = g[1];
         for (;;) {
             uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1)), b;
             if (probe_low >= probe_high ||
