@@ -614,8 +614,10 @@ def case(mi, point, n, rng):
                 # return (TC RTRN under the FB it restores) leaves the file.
                 jstop = v
                 continue
-            # (Its own set: 'held' is 'pinned', which the counters read.)
-            a = state_address(mi, k, vac)
+            # (Its own set: 'held' is 'pinned', which the counters read.
+            # 'E:<addr>' is the switched word under the case's EBANK, as in
+            # 'states'.)
+            a = (eb << 8) + int(k[2:], 8) - 0o1400 if k.startswith('E:') else state_address(mi, k, vac)
             jpinned.add(a)
             E[a] = v & 0o77777
     if mi.cp.novac(point) and rng.random() < 0.5:
