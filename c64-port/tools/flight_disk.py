@@ -37,6 +37,7 @@ import json
 import os
 import pathlib
 import re
+import shutil
 import socket
 import struct
 import subprocess
@@ -778,6 +779,14 @@ def vice(a, m, info):
             result['fb'], result['z'] = f'{f[0] | f[1] << 8:05o}', f'{f[2] | f[3] << 8:05o}'
             mon.cmd(f'screenshot "{shot}" 2')
             result['screenshot'] = str(shot)
+        if a.p00:
+            # RSET, V37 ENTR 00 ENTR: the AGC in P00 (MODREG 0), with PROG
+            # 00 on the DSKY's screen (docs/RUN-ON-C64.md, The DSKY).
+            prog = next((row for i, row in enumerate(result['screen'][:-1])
+                         if 'PROG' in row and 'VERB' in row), None)
+            digits = result['screen'][result['screen'].index(prog) + 1] if prog else ''
+            result['p00'] = result['modreg'] == '00000' and digits[prog.index('PROG'):].strip() == '00'
+            result['ok'] = result['ok'] and result['p00']
     finally:
         try:
             mon.cmd('quit')
@@ -795,6 +804,41 @@ def vice(a, m, info):
     return result
 
 
+P00_KEYS = 'RV37E00E'
+
+
+def sha256(path):
+    return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+
+
+def boot_evidence(a, m, info):
+    """build/flight-disk/boot-<m>.json, for the bootable_c64_application
+    acceptance item: the commit, the SHA-256 of each file the boot used
+    (the disks, the loader and resident PRGs, the REU store) and of the
+    VICE log and the screen's text after the keys, with the verdict."""
+    r = info['vice']
+    head = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True, cwd=ROOT).stdout.strip()
+    dirty = bool(subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], capture_output=True,
+                                text=True, cwd=ROOT).stdout.strip())
+    files = [OUT / d for d in info['disks']] + [OUT / f'{m}-loader.prg', OUT / f'{m}-resident.prg', STORE / f'{m}.reu']
+    ev = dict(mission=m, commit=head, dirty=dirty, drive=a.drive, keys=a.keys, ok=r['ok'], p00=r.get('p00'),
+              boot_status=r.get('boot_status'), modreg=r.get('modreg'), failreg=r.get('failreg'),
+              load_s=r.get('load_s'), boot_s=r.get('boot_s'),
+              sha256={f"{f.parent.name}/{f.name}": sha256(f) for f in files if f.exists()},
+              vice_log_sha256=sha256(OUT / f'vice-{m}' / 'vice.log'),
+              screen_sha256=hashlib.sha256('\n'.join(r.get('screen', [])).encode()).hexdigest(),
+              screen=r.get('screen'))
+    out = OUT / f'boot-{m}.json'
+    out.write_text(json.dumps(ev, indent=1) + '\n')
+    # CI keeps build/ci-logs (port-ci.yml): the evidence and the log it hashes.
+    logs = ROOT / 'build/ci-logs'
+    if logs.is_dir():
+        shutil.copy(out, logs / f'flight-disk-boot-{m}.json')
+        shutil.copy(OUT / f'vice-{m}' / 'vice.log', logs / f'flight-disk-boot-{m}-vice.log')
+    print(f"{m}: {'P00 reached' if ev['p00'] else 'P00 NOT reached'} from the disk at {head[:9]}"
+          f"{' (dirty tree)' if dirty else ''}; log sha256 {ev['vice_log_sha256'][:16]}; {out}")
+
+
 def main():
     global STORE
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -810,6 +854,9 @@ def main():
     p.add_argument('--key-wait', dest='key_wait', type=float, default=1.0, help='seconds of VICE run after each key')
     p.add_argument('--settle', type=float, default=2.0, help='seconds of VICE run before the screenshot')
     p.add_argument('--screenshot', action='store_true', help="save the DSKY's screen after the boot (and keys)")
+    p.add_argument('--p00', action='store_true',
+                   help='after the boot type RSET V37E00E, require P00 (MODREG 0, PROG 00 on the screen) and write '
+                        'build/flight-disk/boot-<m>.json: the commit and the SHA-256 of the disks, PRGs and VICE log')
     p.add_argument('--slow', action='store_true',
                    help='the VICE run without true drive emulation: the loader falls back to the KERNAL')
     p.add_argument('--vice-bin', dest='vice_bin', default=os.environ.get('VICE', 'x64sc'))
@@ -820,6 +867,8 @@ def main():
     p.add_argument('--timeout', type=int, default=3600)
     p.add_argument('--store', type=pathlib.Path, default=STORE, help='the flight store build (make flight-store)')
     a = p.parse_args()
+    if a.p00:
+        a.keys, a.screenshot = a.keys or P00_KEYS, True
     STORE = a.store.resolve()
     a.vice = a.vice_bin if a.vice else None
     OUT.mkdir(parents=True, exist_ok=True)
@@ -830,6 +879,8 @@ def main():
         if a.vice:
             info['vice'] = vice(a, m, info)
             print(json.dumps(info['vice'], indent=1))
+            if a.p00 and m != 'test':
+                boot_evidence(a, m, info)
         report.append(info)
     (OUT / ('vice.json' if a.vice else 'disks.json')).write_text(json.dumps(report, indent=1) + '\n')
     return 0 if all(r.get('vice', {}).get('ok', True) for r in report) else 1

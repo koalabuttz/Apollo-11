@@ -176,6 +176,14 @@ them on VICE's window instead, so they go through the C64's own keyboard
 scan as typed keys would: `R`, then `V37E00E` on the LM clears RESTART and
 PROG and reaches P00, and `V35E` on the CM runs the lights test.
 
+CI boots both mission disks this way in `make flight-disk-vice`
+(`tools/flight_disk.py --vice --p00`): after the boot it types `R` and
+`V37E00E` into the key queue and fails unless the AGC is in P00 (MODREG 0,
+`00` under PROG on the screen). Each run writes
+`build/flight-disk/boot-lm.json` and `boot-cm.json`: the commit, the
+SHA-256 of the disks, the loader and resident PRGs, the REU store and the
+VICE log, and the screen's text. CI keeps them with its logs.
+
 The DSKY costs the flight resident no memory and the AGC no time: its code
 runs from $0200-$03FF and its tables sit in the screen's last eight rows,
 in the background colour; it draws from the AGC's idle loop, only what
