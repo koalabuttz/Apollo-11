@@ -549,7 +549,8 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # vector's wrapper record goes to that module (DOWNRUPT_HOST).
 CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'], 'lm_self_check_idle': ['lm_interbank_postjump_hot_routines'],
                     'lm_downtelemetry': ['lm_dntm_rupt_routines']},
-             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+             'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_self_check_idle': ['cm_interbank_postjump_hot_routines'],
+                    'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
 # A hot table CO_LOCATE packs, and the full table whose keys it shares: the
 # host flight run lists it just before that table, with the full table's
 # module, sites and weight, so a call from the module carrying it runs there
@@ -578,7 +579,20 @@ DOWNRUPT_VECTOR = 2048 + 0o40   # physical 04040
 # hot entries and the table list naming both. P-AXIS, Q,R-AXIS and RATELOOP
 # run from the excursion.
 PIN = {'lm': {4: ['lm_tjet_law_routines', 'lm_t6rupt_hot_routines'], 3: ['lm_dapidler_hot_routines']},
-       'cm': {3: ['cm_self_check_idle_routines']}}
+       'cm': {3: ['cm_self_check_idle_routines', 'cm_interbank_postjump_hot_routines']}}
+# A hot table pinned beside another pinned table, for that table's callers:
+# CM's POSTJUMP alone (src/cm_interbank_postjump.c) beside the self-check
+# idle loop, whose CHECKNJ calls it every idle pass. Before, each idle pass
+# loaded the interbank module, which also evicted the module the
+# interrupted job runs in. On the C64 it runs with the pinned module's
+# operands (the idle file's one POSTJUMP site), so any other caller's
+# POSTJUMP is refused there and falls to the resolver, which loads
+# cm_interbank_routines as before (rk_direct). The host run takes that
+# table's operands and work-clock weight (idle) for it, and lets the next
+# holder take a point a pinned table refuses. CO_LOCATE packs it in the idle
+# loop's job-slot module too, so that module (the load check's reference for
+# the pinned set) runs the same steps.
+PIN_HOT = {'cm_interbank_postjump_hot_routines': 'cm_self_check_idle_routines'}
 def packed_pins(pinned):
     """{table: slot class} for the pinned sets that went into the store (the
     report's "pinned", packed): their own tables, not the home's that a
@@ -996,7 +1010,7 @@ def main():
         order = [x for f in order for x in [t for t, g in hot_of.items() if g == f] + [f]]
 
         def site_stem(t):
-            t = hot_of.get(t, t)
+            t = PIN_HOT.get(t, hot_of.get(t, t))
             if t in RIDE_SITES and RIDE_SITES[t] in tables:
                 return tables[RIDE_SITES[t]]
             return RESIDENT_SITES[m] if t in RESIDENT[m] else tables[t]
@@ -1055,7 +1069,7 @@ def main():
                           f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
                           f'"{" ".join(dict.fromkeys(also[t] + also[f]))}", '
                           f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
-                          f'{host_mct(m, f)}u)\n'
+                          f'{host_mct(m, PIN_HOT.get(f, f))}u)\n'
                           for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
                           for f in [hot_of.get(t, t)]))
         write_host(host_pins(m, packed), host_packs(m, packed))

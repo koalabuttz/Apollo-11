@@ -224,10 +224,13 @@ static uint16_t point(const agc_word *w,agc_word sb,int *in){*in=interpreting(w,
 static const char *in_slot[2];
 /* A ride table (slot 5, flight_store_build.py RIDE) holds its keys only
  * while its pack is loaded in the job slot. */
-static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){int in;unsigned i;uint16_t key=point(w,sb,&in);
- for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
+/* after: the holder that refused (a pinned table: the next one may take
+ * the point, as rk_direct moves on when a slot runs no step), or 0. */
+static const entry *holder_after(const agc_word *w,agc_word sb,agc_routine *call,const entry *after){int in;unsigned i;uint16_t key=point(w,sb,&in);
+ for(i=after?(unsigned)(after-tables)+1u:0u;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
                          &&(*call=find(tables[i].t,key)))return &tables[i];
  return 0;}
+static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){return holder_after(w,sb,call,0);}
 static void where(const agc_word *w,agc_word sb,const char *what){int in;uint16_t k=point(w,sb,&in);
  printf("%s: %s Z %05o FB %05o EB %05o superbank %03o (key %u = %02o,%04o) Q %05o LOC %05o BANKSET %05o\n",what,
   in?"interpretive":"basic",(unsigned)w[5],(unsigned)w[4],(unsigned)w[3],(unsigned)sb,(unsigned)k,k/1024u,k%1024u+02000u,
@@ -846,15 +849,22 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;
-   before=s;p.operands=e->sites;p.operand_count=e->nsites;
-   /* The module's fixed_data (flight_store_build.py FIXED_DATA): the
-    * resident's boundary words, self-check's rope hook, or every rope word. */
+   before=s;
+   for(;;){const entry *next_e;
+    p.operands=e->sites;p.operand_count=e->nsites;
+    /* The module's fixed_data (flight_store_build.py FIXED_DATA): the
+     * resident's boundary words, self-check's rope hook, or every rope word. */
 #if RK_LM
-   p.fixed_data=e->fixed==1u?lm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
+    p.fixed_data=e->fixed==1u?lm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #else
-   p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
+    p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #endif
-x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+    x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
+    /* A pinned table that refuses the point (slot 3 or 4) leaves it to the
+     * next holder, as rk_direct does on the C64 (a slot that runs no step). */
+    if(st==EXEC_OK||e->slot<3u||e->slot>4u||!(next_e=holder_after(before.words,io0.superbank,&call,e)))break;
+    s=before;io=io0;hw=hw0;e=next_e;names[t]=e->name;
+    if(*e->module)module_load(e,s.words,io.superbank);}
    if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;int interp;(void)point(before.words,io0.superbank,&interp);
     n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);
     /* Again with the scalers yaAGC read (scaler_latch). */

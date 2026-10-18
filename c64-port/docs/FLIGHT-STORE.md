@@ -379,8 +379,17 @@ as the resident never runs it, and it only keeps its tables linked. Both
 link with `-Wl,-mllvm,-inline-threshold=-50` (`PIN_LTO`), so the LTO step
 also stops inlining. On LM, class 4 is 8,121
 of 8,186 bytes and class 3 is 2,910 of 3,072. CM pins the background self-check idle loop in
-class 3 (`cm_self_check_idle_routines`, 1,920 bytes), so those routines run
-without loading a module; on LM that loop is an ordinary job-slot module, as
+class 3 (`cm_self_check_idle_routines`), so those routines run without
+loading a module, with POSTJUMP beside it (`cm_interbank_postjump_hot_routines`
+in `src/cm_interbank_postjump.c`, checked against `cm_interbank_routines`
+by `make test-cm-interbank-postjump`; `PIN_HOT`). The idle loop's CHECKNJ
+calls POSTJUMP every pass, and before, each call loaded the interbank
+module, which also evicted the module the interrupted job runs in. The
+pinned copy runs only with the pinned module's operands (the idle file's
+one POSTJUMP site), so another caller's POSTJUMP is refused there and falls
+to the resolver, which loads `cm_interbank_routines` as before; the host
+run (`tools/flight_host_run.c`) gives a point a pinned table refuses to the
+next holder in the same way; on LM that loop is an ordinary job-slot module, as
 class 3 is kept for the DAP. The load check runs one of the class-3 set's
 points through the module that packs the same table and through `rk_direct`
 with only the pinned module present, compares them, checks the class-4
