@@ -4251,6 +4251,9 @@ SPECS = {
     },
     'measurement-inc': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'MEASUREMENT_INCORPORATION.agc', 'cm': 'MEASUREMENT_INCORPORATION.agc'},
         'base': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
         'symbol': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
