@@ -38,7 +38,7 @@ def main():
     spec = interp_specs.SPECS[a.spec]
     (m,) = spec['missions']
     sym, base = spec['symbol'][m], spec['base'][m]
-    S, n = sym.upper(), len(spec['flight_parts']) + 1
+    S, n = sym.upper(), max(spec.get('flight_part_map') or [len(spec['flight_parts']) + 1])
     # The differential writes the cases and the whole build's runner, and
     # checks the whole build against the original program.
     subprocess.run([sys.executable, 'tools/interp_routine_differential.py', a.spec, '--cases', str(a.cases)],
