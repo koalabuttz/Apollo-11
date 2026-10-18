@@ -10297,7 +10297,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-llge/lm-llge-proof.json",
-            "sha256": "ed1efd87fca8e7c65e53534d92be475b59c2f94040e48629cb80bff1f4e0c90b"
+            "sha256": "8fb1f9991a75024dd2d779aef20623f9ad62d62ecec96359ed41930df453fc43"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-llge/lm-llge-host.log",
@@ -10305,14 +10305,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-llge/lm-llge-vice.log",
-            "sha256": "53e9f7c452ad831b2baadf07b5a8311e64722278272c9ca9cb0d3237ce75f41a",
+            "sha256": "765555d5245e9555b320b626e2635ef262809cd6427f80547db54c8d7f35fb1d",
             "vice_targets": {
-              "vice-lm-llge": 384
+              "vice-lm-llge": 397
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-llge/lm-llge-c64-cover.json",
-            "sha256": "37cbe611d4cc39c94840fe51988d7bca0d3bc60badfc0092b8c5098e1e9c0503"
+            "sha256": "d8ca325b1812651d839ebff061b26a383560f268c5276cd199643ae3ec82ef69"
           },
           "independent_review": {
             "path": "docs/audits/rev2-lm-llge-563.md",

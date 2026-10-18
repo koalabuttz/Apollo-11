@@ -373,6 +373,18 @@ def _llge_axis(base, offs):
     return out
 
 
+# ROOTLOOP's convergence test (#660): |DX| (MPAC, MPAC +1) and DXCRIT
+# with |DX| - DXCRIT's high word +0 or -0 and its low word of either sign
+# or +-0. (ABS of a value whose high word is +0 and low word negative
+# gives high -0, low positive: DXCRIT (-0, 5) is the criterion of a tiny
+# negative PRECROOT x ROOTPS, and |DX| - DXCRIT is then high +0. A
+# mixed-sign DXCRIT (1, -20000) equals |DX| (0, 20000): DAS's low sum
+# overflows to +0 with a carry, high -0, so TESTLODX takes its +0 arm.)
+LLGE_CONVERGE = [{'0154': mh, '0155': ml, '0124': ch, '0125': cl}
+                 for mh, ml, ch, cl in ((0, 5, 0, 3), (0, 3, 0, 5), (0, 5, 0, 5), (1, 2, 1, 5), (1, 5, 1, 2),
+                                        (1, 0, 1, 0), (0, 0o20000, 0, 0o17777), (0, 0, 0, 0), (0, 7, 0o77777, 0o77770),
+                                        (0, 0o12, 0, 0o12), (0, 3, 0o77777, 5), (0, 0, 0o77777, 2),
+                                        (0, 0o20000, 1, 0o57777))]
 LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
@@ -3585,7 +3597,15 @@ SPECS = {
         # before a NORMUNIT with no load of their own are in vector mode.
         # RGVGCALC resets PUSHLOC to FIXLOC, and TTF/8CL pushes nothing, so
         # QUADGUID's interpretive code starts with an empty pushdown list.
-        'states': {'QUADGUID+32': {'0163': [0], '0166': ['vac+0']}, 'CGCALC+24': {'0163': [0o77776]},
+        # P67NOW? +2 (CHECKMM's not-P67 return, on to STABL?): with the mode
+        # switch in ATT HOLD (channel 31 bit 13 clear) a P66 pass has
+        # MODREG 66 and goes on to RESTART? (RODFLAG set: VERTGUID; clear
+        # after a restart: STRTP66A); in P64/P65 before the first ROD click
+        # RODCOUNT is +0 (GUILDRET). FLPASS0 is +0 on the first pass after
+        # each phase switch (CCS FLPASS0 to NEWPHASE). (#660)
+        'states': {'P67NOW?+2': {'MODREG': [0o102, 0o102, 'any'], 'RODCOUNT': [0, 0, 'any']},
+                   'GUILDRET+6': {'FLPASS0': [0, 0, 'any']},
+                   'QUADGUID+32': {'0163': [0], '0166': ['vac+0']}, 'CGCALC+24': {'0163': [0o77776]},
                    'CGCALC+26': {'0163': [0o77776]}, 'CGCALC+29': {'0163': [0o77776]},
                    'EXNORM+4': {'0163': [0o77776]},
                    # ROOTPSRS takes TABLTTFL (TABLTTF +3) in A and N-1 in L;
@@ -3644,7 +3664,16 @@ SPECS = {
         # vectors along an axis (1/2 or 1/4, the others +-0: the unit
         # divide leaves no remainder) for RTB NORMUNIT at EXNORM+4 (in
         # MPAC) and VLOAD UNIT LAND at EXTLOGIC-21.
-        'joint_states': {'EXNORM+11': [{}, {}, {}, {'TREDES': 0}],
+        # DERCLOOP +3 (DMPNSUB's return): the loop's own PWRCNT with the
+        # PWRPTR and DERPTR it walks to (TABLTTF +3 and DERTABL's 0147
+        # down by 2 a pass), so PWRCNT +0 ends the loop (#660). ROOTLOOP
+        # +19/+20 (ABS's EXIT): |DX| in MPAC near DXCRIT, so the high word
+        # of |DX| - DXCRIT is +-0 and TESTLODX tests the low word, as when
+        # the Newton iteration converges (#660).
+        'joint_states': {'DERCLOOP+3': [{}, {}, {}] + [{'0140': n, '0117': 0o1561 + 2 * n, '0141': 0o143 + 2 * n}
+                                                       for n in (0, 0, 1, 2)],
+                         **{k: [{}, {}] + LLGE_CONVERGE for k in ('ROOTLOOP+19', 'ROOTLOOP+20')},
+                         'EXNORM+11': [{}, {}, {}, {'TREDES': 0}],
                          'EXNORM+4': [{}, {}] + LLGE_AXIS_MPAC,
                          'EXTLOGIC-21': [{}, {}] + LLGE_AXIS_LAND},
         'range_states': (('CGCALC', 'EXBRAK', {'WCHPHOLD': [0, 1, 2],
