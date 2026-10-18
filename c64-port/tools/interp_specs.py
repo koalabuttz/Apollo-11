@@ -386,6 +386,10 @@ LLGE_CONVERGE = [{'0154': mh, '0155': ml, '0124': ch, '0125': cl}
                                         (0, 0o12, 0, 0o12), (0, 3, 0o77777, 5), (0, 0, 0o77777, 2),
                                         (0, 0o20000, 1, 0o57777))]
 LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
+# lm-p34-p35's N81 Delta V words (#661): +0, small, mixed signs and
+# 37777/40000, as GDT/2 and DELVLVC hold them when the crew PROs N81 unchanged.
+P3435_DV = [(0, 0, 0, 0, 0, 0), (0o12345, 0o54321, 1, 0o77776, 0o37777, 0o40000),
+            (0o77777, 0, 0o200, 0o77577, 0o1000, 0o76777)]
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
 
@@ -4451,8 +4455,27 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_modes.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
         'fixed_index': {'MUTABLE': [2, 10]},
+        # R36's PROCEED return (04,2665, TCF +2 to DXCH DSPTEMX): a crew PRO
+        # without keying a time leaves DSPTEMX and DSPTEMX +1 (01051-01052)
+        # as R36 preloaded them, +0, so BZF LREGCHK and BZF ENTTIM2 use the
+        # present time (LOADTIME). Two thirds +0 each, so cases also key a
+        # time in one word only.
         'states': {'INTLOOP+7': {'0154': [0], '0155': [0]},  # (BZE after its CALL: MPAC zero)
-                   'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+                   'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   '04,2665': {'01051': [0, 0, 'any'], '01052': [0, 0, 'any']}},
+        # N81's PRO return (35,3542 TC +2; 35,3544 CA EBANK7): the crew PROs
+        # without changing the Delta V, so GDT/2 (01236-01243) equals
+        # DELVLVC (E7,1433-1440), NTARGCHK's sum is +-0 and BZF +3 skips the
+        # UPFLAG NTARGFLG. After INTEGRVS (11,2200): ITCTR (E7,1616) one
+        # below NUMIT (VTARGTAG, E5,1701), so the iteration's SLOAD X2 is +0
+        # and BHIZ ends the precision-offset loop at INITVEL6. Half the
+        # cases keep their own values.
+        'joint_states': {p: [{}, {}, {}] + [dict({'%o' % (0o1236 + k): v for k, v in enumerate(dv)},
+                                                 **{'%o' % (0o3433 + k): v for k, v in enumerate(dv)})
+                                            for dv in P3435_DV]
+                         for p in ('35,3542', '35,3544')} | {
+                         '11,2200': [{}, {}, {}, {'3616': 0, '2701': 1}, {'3616': 1, '2701': 2},
+                                     {'3616': 3, '2701': 4}]},
         # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},

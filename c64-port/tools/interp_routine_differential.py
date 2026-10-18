@@ -160,7 +160,7 @@ class Mission:
         if js and set(js) <= {'lm', 'cm'}:
             js = js.get(m, {})
             self.joint_any = js.get('*', [])
-        self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
+        self.joint = {self.point_of(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         # 'q_callers' [LABEL, ...]: the routine reads words after its call
         # (DMP's ADRES, POLY's coefficients), so each case returns to one of
