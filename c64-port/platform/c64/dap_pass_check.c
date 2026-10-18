@@ -133,14 +133,14 @@ int main(void){
    if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task)r.task_loads|=2;
    job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];
    close_record(s1-s0,st);
-   if(st!=EXEC_OK||(uint16_t)(agc_cs()-sum.start_cs)>=DP_CS)break;
+   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
    continue;}
 #endif
   if(rk_rupt_last){if(r.steps)close_record(s0-t,EXEC_OK),t=s0;r.request=rk_rupt_last;}
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
-  if(st!=EXEC_OK||(uint16_t)(agc_cs()-sum.start_cs)>=DP_CS){close_record(s1-t,st);break;}
+  if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
  sum.cycles=now();
  __asm__ volatile("sei");

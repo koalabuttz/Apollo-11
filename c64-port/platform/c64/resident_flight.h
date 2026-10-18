@@ -137,6 +137,10 @@ typedef struct {
      * it the highest key's is (FS_KEY_LO, FS_KEY_SPAN): 0 and 0xff when the
      * module has interpretive tables (any point). */
     uint8_t lo, span;
+    /* Nonzero when the module carries the self-check idle loop beside
+     * interrupt code (FS_IDLE): outside an interrupt its run is the work
+     * clock's idle (RK_MCT_IDLE), inside one it weighs mct. */
+    uint8_t idle;
 } rk_module_tables;
 /* Built, and the resident may call the routines straight from the slot
  * (rk_direct); or built, but the tables take an io record other than rk_io

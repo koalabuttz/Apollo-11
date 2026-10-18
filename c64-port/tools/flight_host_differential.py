@@ -146,6 +146,21 @@ P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '16500:tools/flight_scenarios/cm-p23-mark.load'}
 P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
             '@20500V33E@25000V33E@27000V37E00E')
+# cm-p40: Apollo 11's LOI-1 (75:49:50 GET), the load at 20 s
+# (tools/flight_scenarios/cm_p40.py: the docked CSM+LM on its approach
+# hyperbola 2,060 km from the moon, TIG at 300 s, the external DV 889 m/s
+# retrograde, the SPS pads, the platform with X along the DV and the CDUs
+# at the ignition attitude S40.1 gives). G&N AUTO (channel 31); V37E30E,
+# proceed on V06N33 (TIG), V06N81 (DV), V06N42 (apocynthion and
+# pericynthion) and V16N45; V37E40E, proceed on V50N18 (R60's maneuver is
+# nil), ENTER on V50N18 (end R60), proceed on V50N25 00204 (the gimbal
+# test); average G at TIG-30, proceed on V99N40 at TIG-5; FLIGHT_SPS (the
+# 43,900 kg stack) burns about 372 s to cutoff (VG under 1 m/s); proceed
+# on V16N40 and V16N85, then P00.
+P40 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SPS': '43900', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
+P40_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+            '@29600V33E@69000V33E@70500V33E@72000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
 # load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
 # Base facing west 13 degrees left, the landing REFSMMAT, the platform
@@ -170,6 +185,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
+          ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),

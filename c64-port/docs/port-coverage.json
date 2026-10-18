@@ -601,7 +601,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CMDAPMOD +1, +0, -0 or -1 and SW/NDX alternating the needles (+1 to +13) with the telemetry index (-13 to -1) in steps of three. YJETCODE, P/RJCODE, LIMITS and HALFPR are read at -1 to +1. 2D/SDZ's TC Q with Q = 3 (after CCS JETAG -0) runs RELINT and then the word in EB as TC 3000, as the AGC does; this needs EB = E6.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=; other EBs are refused, except at CM/DAPON and CM/DAPIC, which set EB themselves), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. CMDAPMOD +1, +0, -0 or -1 and SW/NDX alternating the needles (+1 to +13) with the telemetry index (-13 to -1) in steps of three. YJETCODE, P/RJCODE, LIMITS and HALFPR are read at -1 to +1. 2D/SDZ's TC Q with Q = 3 (after CCS JETAG -0) runs RELINT and then the word in EB as TC 3000, as the AGC does; this needs EB = E6.",
         "external_continuations": [
           "2434 (outside basic routine)",
           "2PHSCHNG (outside basic routine)",
@@ -625,7 +625,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "cd6a62351d3567ec313b3e07eb99eb551d512d94fc330b627e241d9eb46309ab"
+            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -633,18 +633,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "a1e0f0b7a9eb200fb71efc1570cacc84601192ad1df12a1d9420f524b3527535",
+            "sha256": "1447134c8b8969ed3a8c4ac0eaa1be687643029d0a25231558f1578b51c6e98f",
             "vice_targets": {
-              "vice-cm-entry-dap": 82
+              "vice-cm-entry-dap": 83
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "cd6a62351d3567ec313b3e07eb99eb551d512d94fc330b627e241d9eb46309ab"
+            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g527.md",
-            "sha256": "ebc6421f899358c08cc9472cb90d212acad056914fbc69b1f019e0533f524a82"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           }
         }
       }
@@ -1876,7 +1876,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON; other EBs are refused, except at FINETIME, FINETIME +1 and the routines that set EB first, which take any EB) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; BANKCALL GOFLASH returns to L+1 (terminate), L+2 (proceed) or L+3 (recycle), IMUSTALL and OPTSTALL to L+1 (bad) or L+2 (good), each a registered routine; POSTJUMP",
           "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
@@ -1893,7 +1893,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "84c2ae373190b8146323aed50be5a76e85a4f2f95ecb171be791aa0d59c9b7f4"
+            "sha256": "1ed5fb1017b2ea4893bcc1e98de5ac3cffb2a6f7b0dfb8464aeb49b852d311af"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
@@ -1901,18 +1901,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "0fbb69daa293a3cea6410ff47df0483696f6386227f5d0be184629a43d0ac21b",
+            "sha256": "3a2fe94ea31b017dffb5f262611df3fbb151a48a8b3669f707e86c974bd4d638",
             "vice_targets": {
               "vice-cm-imu-calibration": 468
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "aec944bd27b8e4f08a65cb141844b3303ff530f973d192804f3406a9d445b336"
+            "sha256": "53248a97db754b52fecf059b9d29f3c3ea458bc2c76763ce88c66324627a092a"
           }
         }
       }
@@ -4958,7 +4958,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 11 (the Kalman initialisation count, CAF ELEVEN at 21,2571), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +11, DACLIMIT at -1 to +1, FREETAU at 0 to 3.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=; other EBs are refused), entered with Z at any of the file's routines (FB of the routine's bank), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. SPNDX 0-2 and DPNDX 0, 2, 4 (the axis loops), ATTKALMN from -3 (JETSLECT's translation gains) to 11 (the Kalman initialisation count, CAF ELEVEN at 21,2571), and RMANNDX/PMANNDX/YMANNDX 0-3 as STICKCHK leaves them. GAIN1/GAIN2 are read at -3 to +11, DACLIMIT at -1 to +1, FREETAU at 0 to 3.",
         "external_continuations": [
           "AHFNOROT (outside basic routine)",
           "BIT4 (outside basic routine)",
@@ -4979,7 +4979,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "ca263017b17d3131973407e96fce88c57e3131df8caf045ac0af798e96c6f5df"
+            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
@@ -4987,18 +4987,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "c86d17d13f1bc329f499a388c72eca2ceb5bfb2b533c24615b5791e5b6279a54",
+            "sha256": "d07013292f345df69e002b9153ff591616b3a3352b7ff71be4ef1bd203e5d502",
             "vice_targets": {
               "vice-cm-rcs-dap": 45
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "ca263017b17d3131973407e96fce88c57e3131df8caf045ac0af798e96c6f5df"
+            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g515.md",
-            "sha256": "ecbefda843d8a324330de32bdd3427eed6d29b0948868f9ccd1c7483a2fcfe26"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           }
         }
       }

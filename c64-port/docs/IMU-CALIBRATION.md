@@ -25,7 +25,7 @@ The file's erasables are in E5 (`EBANK= POSITON`). Destinations outside the file
 RTB LOADTIME, 1STO2S and CDULOGIC are native (`src/rtb_angles.c`).
 
 Spec keys for the C64 flight store (`docs/INTERP-COMPILE.md`):
-- `trusted_image` and `fast_window`: the routines run on the E5 window's one-byte cell helpers (`src/agc_fast_window.c`, `src/agc_fast_ops.c`), and every entry binds the image they run on, interpretive entries included.
+- `trusted_image` and `fast_window`: the routines run on the E5 window's one-byte cell helpers (`src/agc_fast_window.c`, `src/agc_fast_ops.c`), and every entry binds the image they run on, interpretive entries included. As those helpers read 01400-01776 as E5 cells, every entry refuses another EB, except the routines that set EB first (`CA` <constant>, `TS EBANK`) and FINETIME and FINETIME +1 (`any_eb_entries`: P06's standby code calls FINETIME +1 under its own EB, and FINETIME touches only unswitched cells).
 - No `any_fixloc` or `any_newjob`: whole-file basic entries check the image with `basic_sane`, which tests neither FIXLOC nor NEWJOB, and the interpretive entries run in jobs (P07, P03, the alignment filter), never in an interrupt task, so they keep `sane()`'s FIXLOC in a VAC area and NEWJOB +0 or positive.
 - `switched_tc`: TC QPLACE and TC QPLACES run the word stored in the E5 cell through EB with Q at the TC +1, as the original does.
 - `fixed_index` for ALKLP's `DLOAD* ALSK +1,1`, `fixed_fixed_any_fb` for FINETIME (bank 02), `interp_not_basic` for TARGDRVE's skip onto its CALL.
