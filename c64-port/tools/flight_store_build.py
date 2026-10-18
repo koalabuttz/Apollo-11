@@ -1355,6 +1355,9 @@ def main():
                 packs += split_pack(pack, pts[0])
             else:
                 packs.append(pack)
+        # Pack ids stay in lane F's byte: 0x0800 on is lane G's.
+        if any(p['id'] > 0x07FF for p in packs):
+            raise SystemExit(f"{m}: pack ids {[hex(p['id']) for p in packs]} run past 0x07FF")
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* cm_jet_select_hot_routines against cm_jet_select_basic: the hot table (the
- * spec's 26 hot_points, the flight store's entry pack) holds each of its
+ * spec's 21 hot_points, the flight store's cm_jet pack) holds each of its
  * keys once, in key order, and calls the same function the full table calls
  * for that key, so a pass runs the same routine through either table. */
 #include <stdio.h>

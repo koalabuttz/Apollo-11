@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* cm_rcs_dap_hot_routines against cm_rcs_dap_basic: the hot table (the
- * spec's 26 hot_points, the flight store's entry pack) holds each of its
+ * spec's 12 hot_points, the flight store's cm_rcs pack) holds each of its
  * keys once, in key order, and calls the same function the full table calls
  * for that key, so a pass runs the same routine through either table. */
 #include <stdio.h>

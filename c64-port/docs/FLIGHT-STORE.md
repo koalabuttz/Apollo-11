@@ -385,8 +385,10 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   `cm_mysubs_routines`). They are `ALONE` like the entry pack, one pack per
   file: one pack of all three is far over the job slot, and only a
   one-table pack splits. The RCS and jet-select packs split into two
-  chunks each. Pack ids follow on: a pack starts after the ids the one
-  before it split into. On 8d547e12 the cm-p40 window from 70660 cs
+  chunks each. A pack's keys resolve to the pack first, so those hot keys
+  load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
+  Pack ids follow on: a pack starts after the ids the one before it split
+  into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
   (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
   to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
 
