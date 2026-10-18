@@ -643,7 +643,11 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
 # wrapper module 0x01E1; outside an interrupt its runs are idle (FS_IDLE).
 CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'],
                     'lm_self_check_idle': ['lm_interbank_postjump_hot_routines', 'lm_lead_in_hot_routines'],
-                    'lm_downtelemetry': ['lm_dntm_rupt_routines']},
+                    'lm_downtelemetry': ['lm_dntm_rupt_routines'],
+                    # A powered-flight DAP pass runs GTS or ACDT+C12 here, then
+                    # CLOSEOUT or PAXFILT +4: with those beside them, the pass
+                    # loads one module, not two (pin-split/p66-profile.md).
+                    'lm_trim_gimbal': ['lm_p_axis_tg_hot_routines', 'lm_q_r_axis_tg_hot_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_self_check_idle': ['cm_interbank_postjump_hot_routines'],
                     'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
 # A hot table CO_LOCATE packs, and the full table whose keys it shares: the
@@ -651,7 +655,9 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'],
 # module, sites and weight, so a call from the module carrying it runs there
 # without a swap, as on the C64 (rk_direct), and any other caller swaps in
 # the full table's module.
-CO_LOCATE_HOT = {'lm_interbank_postjump_hot_routines': 'lm_interbank_routines'}
+CO_LOCATE_HOT = {'lm_interbank_postjump_hot_routines': 'lm_interbank_routines',
+                 'lm_p_axis_tg_hot_routines': 'lm_p_axis_routines',
+                 'lm_q_r_axis_tg_hot_routines': 'lm_q_r_axis_routines'}
 # The module that takes the DOWNRUPT vector (04040) from the lead-in wrapper:
 # the down-telemetry file's, when it links with the DOWNRUPT ends.
 DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),

@@ -113,6 +113,12 @@ class Mission:
         # it draws no cases of its own.
         self.case_points = [p for p in self.points if self.cp.starts[p] != ('b', 'part key')]
         self.externals = sorted(set(self.cp.externals))
+        # Spec 'native_call_words' {mission: [[first label, last label]]}:
+        # the words of the outside subroutines the file runs in place
+        # ('native_calls'), which the original runs on through as the file's
+        # own, up to their return.
+        self.oracle_ranges = list(self.cp.ranges) + [
+            [self.cp.label_phys(a), self.cp.label_phys(b)] for a, b in spec.get('native_call_words', {}).get(m, [])]
         if self.cp.basic:
             # Whole-file basic code (tools/basic_compile.py): any transfer
             # from the file to a fixed address outside it but INTPRET stops.
@@ -821,6 +827,7 @@ class Absent:
         self.points = self.case_points = []
         self.body_exits = []
         self.externals = []
+        self.oracle_ranges = []
 
 
 class Edits:
@@ -843,8 +850,8 @@ def write_cases(path, missions, cases):
     with open(path, 'wb') as f:
         f.write(struct.pack('<I', 0x32435249))
         for mi in missions:
-            f.write(struct.pack('<2H', mi.newops, len(mi.cp.ranges)))
-            for a, b in mi.cp.ranges:
+            f.write(struct.pack('<2H', mi.newops, len(mi.oracle_ranges)))
+            for a, b in mi.oracle_ranges:
                 f.write(struct.pack('<2H', a, b))
             for ex in (mi.body_exits, mi.externals):
                 f.write(struct.pack('<H', len(ex)))

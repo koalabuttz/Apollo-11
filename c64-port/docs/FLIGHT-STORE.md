@@ -115,6 +115,13 @@ would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
 cut module loads from about 4,200 a second to the rates below. It only
 fits once self-check and the interbank routines shrink (fit, above).
+The LM trim gimbal module also carries PAXFILT +4 and CLOSEOUT (one-entry
+hot tables of the P- and Q,R-axis files, `CO_LOCATE_HOT`): a powered-flight
+DAP pass that runs ACDT+C12 or GTS goes on to them there, instead of
+loading the axis file's module. With POWERED_FLIGHT_SUBROUTINES' DMP and
+DMPSUB run in place (docs/INTERP-COMPILE.md `native_calls`), the P63 window
+from 90000 cs went from 640 to 566 job-slot loads in 300 cs and the P66
+window from 123000 cs from 937 to 855 (pin-split/p66-profile.md).
 
 A DOWNRUPT runs in one resident step. It used to take three: the lead-in
 wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,
