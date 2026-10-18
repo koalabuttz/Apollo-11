@@ -14,6 +14,15 @@ build/test-cm-rcs-dap: $(CM_RCS_DAP_SRC) tests/test_cm_rcs_dap.c $(CM_RCS_DAP_HD
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_RCS_DAP_SRC) tests/test_cm_rcs_dap.c -o $@
 test-cm-rcs-dap: build/test-cm-rcs-dap
 	./build/test-cm-rcs-dap
+# The hot table (spec hot_points, the flight store's docked RCS DAP packs)
+# calls the full table's functions for its keys.
+.PHONY: test-cm-rcs-dap-hot
+all: build/test-cm-rcs-dap-hot
+test: test-cm-rcs-dap-hot
+build/test-cm-rcs-dap-hot: $(CM_RCS_DAP_SRC) tests/test_cm_rcs_dap_hot.c $(CM_RCS_DAP_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_RCS_DAP_SRC) tests/test_cm_rcs_dap_hot.c -o $@
+test-cm-rcs-dap-hot: build/test-cm-rcs-dap-hot
+	./build/test-cm-rcs-dap-hot
 sanitize-cm-rcs-dap: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CM_RCS_DAP_SRC) tests/test_cm_rcs_dap.c -o build/test-cm-rcs-dap-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-rcs-dap-sanitize

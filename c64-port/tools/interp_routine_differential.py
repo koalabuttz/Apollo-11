@@ -113,6 +113,12 @@ class Mission:
         # it draws no cases of its own.
         self.case_points = [p for p in self.points if self.cp.starts[p] != ('b', 'part key')]
         self.externals = sorted(set(self.cp.externals))
+        # Spec 'native_call_words' {mission: [[first label, last label]]}:
+        # the words of the outside subroutines the file runs in place
+        # ('native_calls'). The oracle runs on through them, neither in nor
+        # out of the file (tools/interp_routine_reference.c through()).
+        self.through = [[self.cp.label_phys(a), self.cp.label_phys(b)]
+                        for a, b in spec.get('native_call_words', {}).get(m, [])]
         if self.cp.basic:
             # Whole-file basic code (tools/basic_compile.py): any transfer
             # from the file to a fixed address outside it but INTPRET stops.
@@ -154,7 +160,7 @@ class Mission:
         if js and set(js) <= {'lm', 'cm'}:
             js = js.get(m, {})
             self.joint_any = js.get('*', [])
-        self.joint = {self.cp.label_phys(k): v for k, v in js.items() if k != '*'}
+        self.joint = {self.point_of(k): v for k, v in js.items() if k != '*'}
         self.esyms = erasable_symbols(os.path.join(R, IL.LISTINGS[m]))
         # 'q_callers' [LABEL, ...]: the routine reads words after its call
         # (DMP's ADRES, POLY's coefficients), so each case returns to one of
@@ -675,6 +681,8 @@ def case(mi, point, n, rng):
     # mask of the bits a case may set): a channel edit each, so the run and
     # the digest cover them (tests/interp_case.h).
     for k, mask in sorted(mi.io_channels.items()):
+        if 0x8000 | k in pinned or 0x8000 | k in jpinned:
+            continue    # a state's channel value (key '1000<ch>', octal 0100000 + channel)
         E[0x8000 | k] = rng.getrandbits(15) & mask if rng.random() < 0.75 else rng.choice([0, mask])
     if mi.cp.spec.get('in_isr'):
         # 'in_isr': the program's in_interrupt (yaAGC's InIsr) 0 or 1 at the
@@ -821,6 +829,7 @@ class Absent:
         self.points = self.case_points = []
         self.body_exits = []
         self.externals = []
+        self.through = []
 
 
 class Edits:
@@ -841,7 +850,10 @@ class Edits:
 
 def write_cases(path, missions, cases):
     with open(path, 'wb') as f:
-        f.write(struct.pack('<I', 0x32435249))
+        # (IRC3 adds each mission's native-call pass-through ranges; a file
+        # with none stays IRC2, so other milestones keep their case sha.)
+        through = any(mi.through for mi in missions)
+        f.write(struct.pack('<I', 0x33435249 if through else 0x32435249))
         for mi in missions:
             f.write(struct.pack('<2H', mi.newops, len(mi.cp.ranges)))
             for a, b in mi.cp.ranges:
@@ -849,6 +861,10 @@ def write_cases(path, missions, cases):
             for ex in (mi.body_exits, mi.externals):
                 f.write(struct.pack('<H', len(ex)))
                 f.write(struct.pack('<%dH' % len(ex), *ex))
+            if through:
+                f.write(struct.pack('<H', len(mi.through)))
+                for a, b in mi.through:
+                    f.write(struct.pack('<2H', a, b))
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']

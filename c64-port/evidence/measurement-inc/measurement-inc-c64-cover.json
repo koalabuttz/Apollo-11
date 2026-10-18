@@ -2,22 +2,22 @@
  "milestone": "measurement-inc",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_measurement_inc.c": "510a1c1ec85fcd234e0c1b19082f8f68a2a96b8e12ffe5c224a656e631cf93f2",
-  "src/cm_measurement_inc.c": "4f72cce3a696df5daf79f0993332db4aabdf9c8b61c06eaa599f4e8b071dcbbb",
+  "src/lm_measurement_inc.c": "cb0d233d7fbb62cbb48905753032410c844d60b06b6f23fe3af6186c2bd46783",
+  "src/cm_measurement_inc.c": "9af386c41f812cf60ea5e196738dd9b4ed64cfc97929155bec745ef877341675",
   "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
   "src/rtb_modes.c": "bb835df8040065ae335be32e1322f2cdc8cac4d3509985a3885c090522ef6cfb",
   "src/lm_integration_moves.c": "363cdb80fd3678c5e1dfdda9f0ba9b03d1ab97e4eff6ca23fd8bcab3996b8b3b",
   "src/cm_integration_moves.c": "c120ef067ae0e5672259c16d30a85897173c66fb69d870e659832d995025ded9",
   "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
-  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
+  "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_transfer.c": "1f5292eefdaebdc070119bb9986fb45845c86de64344216bedb249b2bb7d1227",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "a5bf4f4bdda9311dd537d88fbfb1c0d56521ee1ea516fc1f5430c7722ac62153",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
   "tests/measurement_inc_target.c": "35b87b0725359a393ddea07c8af5761c21de41dae1f126bf771168a4f1149b39"
  },
  "host_cases": 163840,
@@ -378,8 +378,8 @@
   162831,
   163343
  ],
- "host_branch_arcs": 2251,
- "c64_branch_arcs": 2251,
+ "host_branch_arcs": 2256,
+ "c64_branch_arcs": 2256,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    20,
@@ -458,8 +458,8 @@
    17
   ],
   "tests/interp_case.c": [
-   39,
-   39
+   44,
+   44
   ],
   "tests/measurement_inc_target.c": [
    2,

@@ -41,6 +41,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from resident_flight_build import PROBES  # noqa: E402
 PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
+# Without RK_DEVICE_CH13 (tools/resident_flight_build.py MISSION): the CM
+# timers here use rk_hardware.channel13; this build runs no timer check.
 FLAGS = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
 EXTRA = {
     'lm': ['src/lm_kernel.c', 'src/sp_routines.c', 'src/lm_single_trig.c', 'src/lm_t6rupt.c'],

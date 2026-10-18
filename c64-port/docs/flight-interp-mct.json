@@ -1,0 +1,18 @@
+{
+ "cm": {
+  "mct": 6831455,
+  "mean": 237,
+  "scenarios": [
+   "cm-entry"
+  ],
+  "words": 28874
+ },
+ "lm": {
+  "mct": 4521840,
+  "mean": 264,
+  "scenarios": [
+   "lm-p63-descent-thrust"
+  ],
+  "words": 17142
+ }
+}

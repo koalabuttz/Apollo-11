@@ -325,6 +325,32 @@ int main(int argc,char **argv) {
         reu[r+6u]^=1u;
     }
 
+    /* Bank groups (the resolver's fences): a resolver over many banks, with
+     * fixed-fixed and superbank keys and keys above FB 037, resolves every
+     * record and misses keys it does not hold. The next boot restores the
+     * store. */
+    {
+        static const uint16_t banks[]={0x0000u,0x0400u,0x0800u,0x0c00u,0x2000u,0x6000u,0x6040u,
+                                       0x7c00u,0x7c40u,0x8000u,0xfc00u};
+        unsigned long r=(unsigned long)store.resolver_page*256ul;
+        uint16_t n=0,i,k; apollo_ov2_cont at; apollo_ov2_store b;
+        for(i=0;i<sizeof banks/sizeof banks[0];++i) for(k=0;k<=i*7u;++k,++n) {
+            uint8_t *q=reu+r+n*8ul; uint16_t loc=(uint16_t)(02000u+k*3u);
+            q[0]=(uint8_t)banks[i]; q[1]=(uint8_t)(banks[i]>>8); q[2]=(uint8_t)loc; q[3]=(uint8_t)(loc>>8);
+            q[4]=(uint8_t)(i+1u); q[5]=0; q[6]=(uint8_t)k; q[7]=0;
+        }
+        reu[14]=(uint8_t)n; reu[15]=(uint8_t)(n>>8);
+        assert(apollo_reu_store_open(&store,0,LM,SERVICES,RECORD) && store.resolver_count==n);
+        b=apollo_reu_store_backend(&store,body,0);
+        for(i=0;i<sizeof banks/sizeof banks[0];++i) for(k=0;k<=i*7u;++k) {
+            uint16_t loc=(uint16_t)(02000u+k*3u);
+            assert(b.resolve(b.user,banks[i],loc,&at) && at.module==i+1u && at.selector==k);
+            assert(!b.resolve(b.user,banks[i],(uint16_t)(loc+1u),&at));
+            assert(!b.resolve(b.user,(uint16_t)(banks[i]+0x0100u),loc,&at));
+        }
+        assert(!b.resolve(b.user,0x1000u,02000u,&at) && !b.resolve(b.user,0xf800u,02000u,&at));
+    }
+
     /* Historical continuation: resolver hit and miss. */
     boot(1); value=4;
     assert(run(0,0x0101,3,&value,&action,&resume)==APOLLO_OV2_OK);

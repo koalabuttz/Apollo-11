@@ -54,17 +54,19 @@ per source) for the harness. A module's `fixed_data` is the resident's
 runs, and `lm_trim_gimbal` (GTS reads an indexed CA through `fixed_data`)
 reads every rope word from the mission rope image the store carries
 (`FS_ROPE_DATA`, `platform/c64/rope_image_reu.c`). The builder writes that
-image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
-LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
+image into `<m>.reu` at the rope base (`tools/flight_store_build.py`
+`FLIGHT_ROPE_BASE`, 0x1e0000 for either mission: a flight store carries one
+rope, `include/rope_image.h` under `RK_LM` or `RK_CM`) and pads the store to
+2 MB. Builds that carry both ropes (`tools/rope_image_pack.py` `BASES`) keep
+the LM's at 0x1c0000.
 
 The 2 MB REU, by address:
 
 | REU range | Use |
 | --- | --- |
-| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1c0000 |
-| 0x1c0000-0x1d1fff | LM rope image (LM store only) |
+| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1df000 (`REU_LIMIT`) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
-| 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1e0000-0x1f1fff | The mission's rope image |
 | 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`; the build checks that the rope image ends at or below it and that it is unused) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
@@ -115,6 +117,13 @@ would otherwise swap all the time: the interbank routines (POSTJUMP,
 BANKCALL, ...) ride in `<m>_self_check`, whose idle loop calls them, which
 cut module loads from about 4,200 a second to the rates below. It only
 fits once self-check and the interbank routines shrink (fit, above).
+The LM trim gimbal module also carries PAXFILT +4 and CLOSEOUT (one-entry
+hot tables of the P- and Q,R-axis files, `CO_LOCATE_HOT`): a powered-flight
+DAP pass that runs ACDT+C12 or GTS goes on to them there, instead of
+loading the axis file's module. With POWERED_FLIGHT_SUBROUTINES' DMP and
+DMPSUB run in place (docs/INTERP-COMPILE.md `native_calls`), the P63 window
+from 90000 cs went from 640 to 566 job-slot loads in 300 cs and the P66
+window from 123000 cs from 937 to 855 (docs/LM-FLIGHT-LOAD-PROFILE.md).
 
 A DOWNRUPT runs in one resident step. It used to take three: the lead-in
 wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,
@@ -231,7 +240,14 @@ C's Pinball routines, whose try-lists each fit). A stem in `CHUNK_ORDER`
 packs its routines in its own order instead of by key, and each chunk is
 then a set of entries (`FS_PICK`): Pinball's (`lanec_pin_order`) are grouped
 by the modules their try-lists run, so a chunk links few of them (on LM this
-took the store image from 2.11 to 1.85 MB). The build prints, per
+took the store image from 2.11 to 1.85 MB). `LANEC_PIN_GROUPS` puts three
+display chains first, each in a chunk of its own (`CHUNK_BREAKS`: no chunk
+crosses a group's end): the per-row loop DSPDCPUT, DP1OUTSF, DP3OUTSF,
+DSPDCEND, DSPDCEND +2; the monitor chain NVMONOPT through NVSUBEND and
+VERBFAN; and ENTPAS0 with MIXNOUN. A monitor display walks these about 20
+points in turn, so with them together the LM P66 window from 123000 cs makes
+2.9% fewer job-slot loads (840 to 816 in 300 cs) and runs 1.5% faster
+(docs/LM-FLIGHT-LOAD-PROFILE.md). The build prints, per
 mission, the chunk count, their mean fill and the store image against the
 rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
 `rope_base`). Before #211-era step-machine splits and
@@ -366,7 +382,7 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   starts there, with no load. These are ride tables (`RIDE`): the resolver
   still sends their keys to their own modules. With them the pack is
   10,459 bytes.
-- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+- The *CM entry pack* (`ENTRYPACK`, from module $07F7) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
   entries were spread over all of the full table's chunks, so a pass loaded
@@ -377,7 +393,49 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   (`split_pack`, a binary search on each chunk's end), here two. On
   4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
   20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
-  to 465 K cycles.
+  to 465 K cycles. ATTRATES+66 (15,2753) joined it later (27 entries, Lane
+  A2): from about 21000 cs every pass ran it from a full-table chunk between
+  two pack routines, two job-slot swaps a pass. On c6bcf271 the 500 cs
+  windows from 21000, 25000, 33000 and 41000 cs went 4.1-4.2% faster
+  (16.06x to 15.40x from 33000); the window from 17000 cs, before that
+  point is reached, is unchanged. SPSIN and SPCOS ride in it too
+  (`cm_sp_hot_routines`, the resident's `cm_sp_routines` entries; `RIDE`):
+  a pass calls them 7 times, and each call used to end the pack's module
+  run, run the resident's copy as a step of its own and start the run again
+  at the return. With them in the pack the run carries on through each
+  call. On d39f68d6 the windows from 17000 and 33000 cs (500 cs) went from
+  14.388x to 13.753x (−4.4%) and 14.675x to 14.053x (−4.2%). The pack is
+  one 14,890-byte module, still charged 13 MCT a step; the resident is
+  unchanged (gc-sections drops the unused copy).
+- The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
+  pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
+  burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
+  and `cm_auto_man_hot_routines` (6). SMALLMP and DPADD
+  (`cm_mysubs_routines`) ride in the RCS pack, since the RCS pass calls
+  them every pass. They are `ALONE` like the entry pack: one pack of all
+  three files is far over the job slot. A one-table pack splits into
+  consecutive chunks (`FS_CHUNK`), and a pack of several tables into
+  consecutive runs of its entries in key order (`FS_PICK`). The RCS and jet-select packs split into two
+  chunks each. A pack's keys resolve to the pack first, so those hot keys
+  load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
+  Pack ids follow on: a pack starts after the ids the one before it split
+  into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
+  (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
+  to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
+  Moving SMALLMP into the RCS pack (on a8203cc4 with T6 running, #649)
+  took that window from 18.83x to 14.60x, with T5RUPT job loads 364 to 176
+  and its mean cost 365,047 to 283,208 cycles. Steps fell from 1,722 to
+  1,015 since more of a pass runs inside one module. The T5 pass count
+  also moved (90 to 86): the work clock charges a module's steps at that
+  module's MCT, so the two runs are not step-for-step the same 300 cs.
+  The jet-select pack then split inside the T6 program (T6START and the
+  chain after it, 17,3617 to 17,3713), so each T6RUPT loaded its two
+  chunks by turns. `SPLIT_BEFORE` starts a chunk at a given key: the jet
+  pack's second chunk now begins at T6START and holds the whole T6 chain.
+  On a090a136 (cm-p40 from 70660 cs with `--replay`, 308 cs) that took
+  T6RUPT from 173 job loads to 29 (one a pass) and its mean cost from
+  253,509 to 90,897 cycles, and the window from 11.79x to 10.22x real
+  time; every other interrupt's counts are unchanged.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
@@ -850,6 +908,16 @@ port) runs one mission:
    ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
    job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
    takes 1,273,194 routines, none that yaAGC did not match.
+   On the C64 (`flight_scenario_vice.py --keys`), one gap shows only
+   there. CONIC_SUBROUTINES' CHECKCTR (12,2644) is KEPLOOP's and LAMBERT's
+   RTB target. On the host it runs only inside lm_conic_compiled's routines
+   (a native range), so no host run reaches it as a basic point. On the C64
+   the interpreter module runs those orders, and P34's TPI recycle stopped
+   there. `lm_conic_checkctr_routines` is its basic table: the same
+   lm_conic_checkctr body, leaving Z at DANZIG for the interpreter's pending
+   BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
+   run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
+   7.38 m/s as on the host.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
@@ -916,8 +984,13 @@ port) runs one mission:
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
-   for `--cs` centiseconds with cycles, steps and module loads per AGC
-   interrupt; a refused or untranslated point stops it. With `--keys` it
+   for `--cs` centiseconds. The host takes the snapshot at the first point
+   at or after `--snap-cs` with no interrupt pending, so inside a long
+   interpretive job it can start late (a CM window asked at 9000 cs began
+   at 9952). The run prints where the snapshot was taken, and says `slid`
+   when that is more than 100 cs late (`snap_at` and `snap_slid` in its
+   JSON); `--strict-start` fails such a window instead. The run records
+   cycles, steps and module loads per AGC interrupt; a refused or untranslated point stops it. With `--keys` it
    presses the scenario's DSKY keys that fall in the window, at the
    centiseconds the host run presses them (channel 15 and KEYRUPT1, or a
    mark's channel 16 bits and KEYRUPT2; on the CM also rk_device's
@@ -926,6 +999,57 @@ port) runs one mission:
    Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
    radar model) are not replayed. `--watch 1011,...` prints up to five
    erasable words as the window ends (1011 is Comanche's MODREG).
+   Every run then checks its REU writes (tools/reu_layout.py): each byte
+   that differs between the image the run started from and the one VICE
+   writes back must lie in a region declared writable. The regions come
+   from their sources: the store (0 to its image bytes) and the rope
+   (`rope_reu_base`, 2 bytes a word) are read only; the Pinball save
+   (src/lanec_pin_trampoline.c LANEC_PIN_REU_SAVE, 4 KB), the undo area
+   (include/flight_undo.h) and the scratch (the last 32 KB) are writable;
+   with `--replay` the rows are read only and the states after them
+   writable. A write outside fails the run (`reu_bounds` in its JSON), and
+   the store build fails when two regions overlap. A write of the bytes
+   already there is not seen by that diff; the run's DMA trace covers it,
+   and every read. A VICE monitor checkpoint on the command register
+   ($DF01, `trace`, so it logs without stopping) computes each DMA's REU
+   range from the controller's registers and logs it when it is not inside
+   one span of declared regions; any logged DMA fails the run
+   (`dma_outside`). VICE evaluates the condition itself, so an in-bounds
+   run costs nothing. `--reu-check-drop REGION` leaves a region out, as a
+   test of the check: with the scratch left out, an LM P63 window logs 48
+   DMAs (the step records) and fails; with every region, it logs none.
+   `--replay` replays everything instead and checks the result: the host
+   run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
+   snapshot through the window on the C64's work clock, charging each
+   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
+   of the module that runs it, the interpreter's per routine for the tables
+   left to it), and writes every input its models and schedules give the
+   AGC there (the engine, SPS and aero models' PIPA counts, keys,
+   FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go at the
+   top of the zeros between the store and the Pinball trampoline save
+   (0x1df000), outside the store and the resident (before this they sat
+   just below the rope, and the C64's states ran into the save, which
+   every Pinball routine stashes 4 KB to). The C64 applies each row at the first step at or after its
+   time where the host took it (a sample point, or any step boundary for
+   the engine lag and radar reads). At the first sample point `--cs` in
+   (and with `--replay-every N` at the first one at or after every N cs
+   before), both sides write their erasable words and output channels (5,
+   6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
+   the base tables run on);
+   the run fails on any difference, printing the first one, skipping what
+   the host differential skips (the central registers and RUPTREG1-4;
+   unlike it, the timers are compared). So a window that ran with no stops also has to match
+   the host. Until the CM idle pass is charged as idle on the C64 (it is
+   module work there when a job ends into it, idle on the host), CM windows
+   skip what that tick moves: DSPCNT, DSRUPTSW, DSPTAB's sent bit and
+   the clock of checkpoints a centisecond apart, and the whole of such a
+   checkpoint when other words differ too, unless it ends the window
+   (`SCHEDULE_SKIP`; the run prints
+   `skipped:` when it uses it; `--replay-exact` turns it off). The timers
+   TIME1-TIME6 are compared too. Until the work charges agree (Interpreter
+   #650, RK #663), both missions skip a TIME5 one count apart when TIME1
+   agrees: the two sides sampled in different thirds of the centisecond
+   (`TIME5_PHASE`, printed when used). LM windows skip nothing else.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
@@ -964,6 +1088,36 @@ port) runs one mission:
    stop at PINBALL's NVMONOPT (unmapped in the store until #425).
    tools/flight_scenarios/sighting.py holds the conversions, catalog and
    gimbal matrices lm_p52.py uses.
+   Off-nominal inputs: four scenarios repeat a nominal one with one
+   input gone wrong. `FLIGHT_RR_DROP=T0-T1[,...]` holds the radar's data
+   good high (not good) over those centiseconds whatever the tracker
+   does (tools/flight_radar.h: channel 33 bit 4 on the LM, bit 2 on the
+   CM); the reads still answer. `lm-rendezvous-rr-dropout` drops it from
+   195 s to 210 s, over R22's third mark: the read fails (alarm 521,
+   RADMODES data fail), R22 drops the lock and R21 flashes V50N72 again;
+   proceed at 215 s, the RR locks on and the marks go on, one fewer, and
+   P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
+   from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
+   so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
+   incorporate on their own. `FLIGHT_LR=1` is the LM landing radar's
+   altitude beam, agreeing with the LGC's own navigation: data good
+   (channel 33 bit 5) in position 1 or 2 below 50,000 ft, and an LR
+   range read gives the slant range HCALC, HBEAMNB, XNBPIP and UNIT/R/
+   imply (high scale, 5.395 ft a count, no Doppler term: DELTAH stays
+   within 300 ft, and with no V57 nothing is updated); velocity is not
+   modelled, so channel 33 bit 8 stays not good. `lm-p63-lr-dropout` is
+   lm-p63-nassp with it and `FLIGHT_LR_DROP` from 800 s to 900 s: R12
+   reads altitude from 35,000 ft, its reads fail in the window (RADMODES
+   LR range fail) and it measures again from 906 s.
+   `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
+   key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
+   word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is
+   ERROR RESET. `lm-uplink-reject` in P00: V71 (P27 flashes V21N01), 25
+   components (octal, over the limit of 20 OHWELL1 checks, so V21N01
+   again), V34 (P27 ends); a garbled word (#00001) at 50 s locks the
+   uplink out (FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET
+   at 65 s unlocks it and V37E00E takes P00. On the host every native
+   routine of the four matches yaAGC.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
@@ -1000,9 +1154,13 @@ port) runs one mission:
    run as a whole is one yaAGC run under that tick schedule. No
    free-running reference runs, and no samples are compared.
    `FLIGHT_SCALED=W` replays the work clock instead (docs/RESIDENT-FLIGHT.md,
-   The work clock): each native routine advances the clock by its
-   module's MCT weight (as the flight build computes it from
-   docs/flight-routine-mct.json), a self-check idle routine moves it to
+   The work clock): each native routine advances the clock by the
+   weight the C64 store charges it (host.inc, `c64_mct` in
+   tools/flight_store_build.py once the modules link): its module's
+   FS_MCT from docs/flight-routine-mct.json, or for a table left to the
+   compact interpreter RK_INTERP_MCT, yaAGC's mean per interpretive word
+   (docs/flight-interp-mct.json). A host-only build has no modules and
+   charges each table its own weight. A self-check idle routine moves it to
    the next tick, module swaps cost nothing, and no tick is dropped.
 
 `tools/flight_holes.py` names the file, label and owning lane of every

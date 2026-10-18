@@ -189,7 +189,9 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
  direct_state(m);
  apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
- timer_start();b=rk_direct(AGC_TRANSFER_NONE);t=(uint16_t)timer_stop();
+ timer_start();
+ b = rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE);
+ t = (uint16_t)timer_stop();
  ok=!*main_cycles||(a==b&&image_sum()==sum);expect(ok,6);
  if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
@@ -216,20 +218,33 @@ static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_
  a=rk_env.status;
  /* A direct-only twin only built its tables: the reference run goes
   * through them, without the pinned module. */
- if(a==EXEC_UNMAPPED){direct_state(&p);rk_pinned=0;a=rk_direct(AGC_TRANSFER_NONE);rk_pinned=pin;}
+ if (a == EXEC_UNMAPPED) {
+     direct_state(&p);
+     rk_pinned = 0;
+     a = rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE);
+     rk_pinned = pin;
+ }
  sum=image_sum();
  for(i=0;i<APOLLO_OV2_SLOTS;++i)rk_runtime.loaded[i]=0;
  direct_state(&p);
- expect(rk_pinned&&rk_direct(AGC_TRANSFER_NONE)==a&&image_sum()==sum,11);
+ expect(rk_pinned && rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE) == a && image_sum() == sum,
+        11);
  rk_pinned=0;
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;}
 #endif
 
 /* Soft-stack watermark: free stack below the timings is filled before the
- * module runs and scanned after; $c3f6 gets the peak depth below $D000. */
+ * module runs and scanned after; $c3f6 gets the peak depth below $D000.
+ * Not inlined: the fill runs up to its own frame, which must lie below
+ * main's (inlined into main, it filled main's own frame slots below its
+ * local, such as the pointer apollo_ov2_run writes the run's value
+ * through, and that write then landed at $5A5A). */
 #define FL_STACK_FLOOR ((volatile uint8_t *)(0xc400u+FL_MODULES*sizeof(fl_timing)))
-static void stack_fill(void){volatile uint8_t here,*p=FL_STACK_FLOOR;
- while(p<&here-16)*p++=0x5a;}
+__attribute__((noinline)) static void stack_fill(void)
+{
+    volatile uint8_t here, *p = FL_STACK_FLOOR;
+    while (p < &here - 16) *p++ = 0x5a;
+}
 static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
     expect(*p == 0x5a, 13); /* no fill left at the floor: the stack ran into the timings */
     while (*p == 0x5a) ++p;

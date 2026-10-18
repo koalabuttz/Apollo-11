@@ -62,7 +62,9 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
 COMMON += [f'-D{k}={os.environ[k]}u' for k in ('RK_TICK_LAG', 'RK_TIME_DIVISOR') if os.environ.get(k)]
 # The work clock is the default; RK_WALL_CLOCK=1 builds the CIA wall clock.
 COMMON += ['-DRK_WALL_CLOCK=1'] if os.environ.get('RK_WALL_CLOCK') else []
-MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
+# RK_DEVICE_CH13: the CM's timers take channel 13 from rk_device
+# (src/resident_rupt.c), the record its tables write it in.
+MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1', '-DRK_DEVICE_CH13=1']}
 
 
 @functools.lru_cache(maxsize=None)
@@ -88,13 +90,28 @@ def _calibrated(table, named):
     return full if full in named else re.sub(r'_[a-z0-9]+_hot_', '_', table)
 
 
+def _word_mct(m):
+    """docs/flight-interp-mct.json (tools/interp_word_mct.py): the yaAGC
+    MCT an interpretive word spends in the interpreter, on average over the
+    flight scenarios; None without it."""
+    path = Path(__file__).resolve().parents[1] / 'docs/flight-interp-mct.json'
+    if not path.exists():
+        return None
+    return json.loads(path.read_text()).get(m, {}).get('mean') or None
+
+
 def mct_weight(m, tables, interp=False):
     """The work clock's weight for a module running these tables
     (platform/c64/resident_flight.h): the mean yaAGC MCT per routine run
     over the calibration (docs/flight-routine-mct.json), of
-    their basic keys (interp: their interpretive keys; tables None: every
-    table's). Tables with no calibrated run take the mission's mean; no
-    calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
+    their basic keys (interp: their interpretive keys). Tables with no
+    calibrated run take the mission's mean; no calibration at all, 24.
+    Interpretive routines are one word each, and the interpreter's own
+    weight (tables None, interp: RK_INTERP_MCT, per word it runs) and an
+    interpretive table with no calibrated run take the mean per word
+    (docs/flight-interp-mct.json) where it is measured: the routine
+    calibration's scenarios run few interpretive words, and the mission's
+    mean is the basic routines'. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
     0 marks the background self-check loop (any *_self_check_idle(_hot)_routines
     table): idle, whose run takes the rest of the tick (RK_MCT_IDLE)."""
     if tables and any(t.endswith(('_self_check_idle_routines', '_self_check_idle_hot_routines')) for t in tables):
@@ -104,6 +121,9 @@ def mct_weight(m, tables, interp=False):
     mine = [v for k, v in keys.items()
             if (tables is None or k.split()[0] in {_calibrated(t, named) for t in tables})
             and k.split()[1] == str(int(interp))]
+    word = _word_mct(m) if interp else None
+    if word and (tables is None or not sum(v['n'] for v in mine)):
+        return min(255, max(4, word))
     pool = mine if sum(v['n'] for v in mine) else list(keys.values())
     n = sum(v['n'] for v in pool)
     return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24
@@ -232,8 +252,10 @@ def run(cmd):
 
 # The resident's find() is platform/c64/agc_find.S (agc_transfer.c
 # AGC_TRANSFER_FIND_ASM): defined with the resident's sources rather than in
-# COMMON, as the flight modules keep agc_transfer.c's C find.
-RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM']
+# COMMON, as the flight modules keep agc_transfer.c's C find. So is
+# agc_transfer_run_at (AGC_TRANSFER_RUN_AT, include/agc_transfer.h), which
+# rk_direct calls: other programs keep the smaller agc_transfer_run alone.
+RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM', '-DAGC_TRANSFER_RUN_AT']
 
 
 def resident_sources(m):
@@ -264,6 +286,11 @@ def check_services():
     run([sys.executable, 'tools/overlay_v2_services.py', '--spec', CHECKS / 'services.json', '--out-dir', CHECKS])
 
 
+# The flight program's resident (resident_flight_main.c) with its DSKY,
+# which runs from $0200 and costs no resident bytes.
+FLIGHT_MAIN = ['platform/c64/resident_flight_main.c', 'platform/c64/resident_dsky.c', 'platform/c64/resident_dsky.S']
+
+
 def link_resident(cc, m, name, sources, defines=(), services=OUT):
     out = OUT / f'{m}-{name}.prg'
     run([cc, *COMMON, *MISSION[m], *defines, '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
@@ -275,7 +302,7 @@ def defined_symbols(cc, m, source):
     """Names a source defines (functions and objects, static included)."""
     obj = OUT / 'symbols' / (source.replace('/', '_') + f'.{m}.o')
     obj.parent.mkdir(parents=True, exist_ok=True)
-    run([cc, *[f for f in COMMON if f != '-mlto-zp=0'], *MISSION[m], '-c', source, '-o', obj])
+    run([cc, *[f for f in COMMON if f != '-mlto-zp=0'], *MISSION[m], *RESIDENT_DEFINES, '-c', source, '-o', obj])
     nm = Path(cc).parent / 'llvm-nm'
     names = set()
     for line in subprocess.run([str(nm), str(obj)], cwd=ROOT, check=True, capture_output=True,
@@ -387,11 +414,11 @@ def build_modules(cc, m, cases, library):
 
 def rope_check_image(m):
     """The check's store image padded to 2 MB with the mission's rope at its
-    REU base (include/rope_image.h), as flight_store_build.py add_rope places
-    it in the flight store: the resident reads the Executive's inline operand
-    words there (AGC_SITES_ROPE)."""
-    from rope_image_pack import BASES, physical_words
-    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    flight base (FLIGHT_ROPE_BASE, include/rope_image.h), as
+    flight_store_build.py add_rope places it in the flight store: the resident
+    reads the Executive's inline operand words there (AGC_SITES_ROPE)."""
+    from flight_store_build import FLIGHT_ROPE_BASE as base
+    from rope_image_pack import physical_words
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
     if len(image) > base:
@@ -429,7 +456,7 @@ def main():
             link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
                           ['-DRK_RUNS_ONLY', '-DRK_NO_DIRECT', f'-DRK_PART={part}', f'-DRK_SERVICES_VERSION={CHECK_SERVICES:#06x}u'],
                           CHECKS)
-        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', ['platform/c64/resident_flight_main.c']))
+        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', FLIGHT_MAIN, ['-DRK_DSKY=1']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:
         print(json.dumps(report, indent=1))

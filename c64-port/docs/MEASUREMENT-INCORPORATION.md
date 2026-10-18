@@ -28,4 +28,6 @@ Hashes: `evidence/measurement-inc/SHA256.json`. Bulk files are assets of the `ev
 - **Independent assembly comparison.** `make measurement-inc-differential` runs 512 states per routine (163,840 cases). All equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Every 64th case is frozen in `tests/measurement_inc_vectors.h`.
 - **Host and sanitizer results.** `make test-measurement-inc sanitize-measurement-inc` runs the frozen cases (`measurement-inc-host.log`).
 - **C64 execution results.** `make vice-measurement-inc` runs 18 diagnostics with 354 cases (`measurement-inc-vice.log`).
-- **C64 branch outcomes.** `measurement-inc-c64-cover.json`: 354 C64 rows take all 2,251 branch outcomes the 163,840 host cases take.
+- **C64 branch outcomes.** `measurement-inc-c64-cover.json`: 354 C64 rows take all 2,256 branch outcomes the 163,840 host cases take.
+
+The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.

@@ -9,14 +9,14 @@
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
   "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "1f5292eefdaebdc070119bb9986fb45845c86de64344216bedb249b2bb7d1227",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
   "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
   "tests/interp_cut.c": "36fac6031b7eabe2514dc10aa78125b19d3f9f84e21e67f2b599bbc1e5135948",
   "tests/cm_tpi_search_target.c": "a97fa17816c8fb90e5812c8a9c3bad7ac3d855de0e05839fc548ec0dc1fa70fa"
  },
- "host_cases": 13200,
+ "host_cases": 13208,
  "host_case_stride": 8,
  "c64_rows": [
   88,
@@ -88,9 +88,10 @@
   24592,
   25088,
   25624,
+  26120,
   26144,
-  26624,
-  27152,
+  26640,
+  27272,
   27672,
   28168,
   28784,
@@ -268,8 +269,8 @@
   100984,
   101392
  ],
- "host_branch_arcs": 1301,
- "c64_branch_arcs": 1301,
+ "host_branch_arcs": 1303,
+ "c64_branch_arcs": 1303,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -284,8 +285,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   47,
-   47
+   48,
+   48
   ],
   "src/agc_word.c": [
    3,
@@ -300,8 +301,8 @@
    0
   ],
   "src/cm_tpi_search.c": [
-   617,
-   617
+   618,
+   618
   ],
   "src/lm_interp_orders.c": [
    0,
@@ -337,6 +338,6 @@
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 1301,
+ "all_cases_branch_arcs": 1303,
  "all_cases_branches_missing_on_c64": []
 }

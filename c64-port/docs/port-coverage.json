@@ -489,22 +489,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
-            "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38"
+            "sha256": "a26a9c41ff33eb9bfaf410b97943f3ab7be94f335fb0640a4cf949def0d27c94"
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "b22f4b9dc45c3b1ed0422eb23f04561cf83992736879b6d707246208a7851fde",
+            "sha256": "1155eecacb7b46ea16847bafe5edc06a25a72b875417bdb4da0e2bd3ec867071",
             "vice_targets": {
-              "vice-cm-auto-man": 24
+              "vice-cm-auto-man": 30
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -625,7 +625,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
+            "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-host.log",
@@ -633,18 +633,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-vice.log",
-            "sha256": "1447134c8b8969ed3a8c4ac0eaa1be687643029d0a25231558f1578b51c6e98f",
+            "sha256": "4e960888d3f73b6d2aff3ed0846caedb98e805448e0e0e2c18d7278c1b855e69",
             "vice_targets": {
-              "vice-cm-entry-dap": 83
+              "vice-cm-entry-dap": 85
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-entry-dap/cm-entry-dap-proof.json",
-            "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
+            "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-fast-window-eb-599.md",
-            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -691,28 +691,28 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c3f86b736e07bd6448c7c9170ed9ed16ff7f5ba0f59a94ec35c0ad05e375c518"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-conics/cm-conics-host.log",
-            "sha256": "3426c64a361fc3930d7120a83c1617bf2e1b9985cdd21a391f146ff0811623e0"
+            "sha256": "9e1f82a8fcbfd397d16c18877a3bb265b50d978d8c0a8f4a9e254b38bce3e9fc"
           },
           "c64_execution_results": {
             "path": "evidence/cm-conics/cm-conics-vice.log",
-            "sha256": "6401f0d1eced75e447a1643994c075bc72a139a8174712b671a499a239a364a9",
+            "sha256": "07790f5898e3417e0366236d3314d1be765b87eda37eb88cb41d3b2be06a46fd",
             "vice_targets": {
               "vice-cm-conics-1": 317,
               "vice-cm-conics-2": 122,
-              "vice-cm-conics-3": 181
+              "vice-cm-conics-3": 182
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c3f86b736e07bd6448c7c9170ed9ed16ff7f5ba0f59a94ec35c0ad05e375c518"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-b506.md",
-            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -1744,26 +1744,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
+            "sha256": "5ccbc17ef6d1da4e491af56079c053556bf23ff44aff64cf90b9fcfb12255cb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
+            "sha256": "185a232af2b372ebb3d993ddee820f1f75c8fa4996fdfac0a06ee346e8f49f42"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
+            "sha256": "e5dc8c0825782256a9f74c12ec7017f26022ba3fd49d4751d691bd985d4705e1",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
-            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
+            "sha256": "792e1d82ec13bc5bf070cdb21f08c0f2e3a2bca3074c7651958ef5578b9d0951"
           }
         }
       }
@@ -1876,7 +1876,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON; other EBs are refused, except at FINETIME, FINETIME +1 and the routines that set EB first, which take any EB) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run, and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
+        "supported_domain": "Canonical 2048-word image under EB 5 (EBANK= POSITON; other EBs are refused, except at FINETIME, FINETIME +1 and the routines that set EB first, which take any EB) and the file's FB, entered at NEWOPS with LOC at any of its interpretive routines (every word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, the input channels 3, 4 and 030-033 latched for the run (so FINETIME's two READ LOSCALARs agree, its RXOR gives +0 and the BZF always branches: the re-read after it is the hardware race with a SCALER1 tick between the reads, which a run with latched scalers never has; in flight the C64 resident advances channels 3 and 4 only between steps), and the states the file's own code leaves: POSITON 0-7, PIPINDEX 0-2, RESULTCT 0-5, NDXCTR 0 or 1, RUN 0 or 2, PREMTRXC 0-2, GEOCOMP1 0 or 1, TORQNDX +0, 1 or POSMAX, LGYRO free or busy, ALX1S 0-144 by 12, CMPX1 +-1, TARG1/2 0 or 6, MODREG 0-3, 07 or -7 (CHKCOMED tests only for 07, the IMU performance test), saved returns at the file's call sites, MARKSTAT's VAC area's word 52 (QPRET of the marking job RETARG1 tests) +0, -0, 1 or 2, SUPERBNK 020, 040 or 060 when the file's FB is below 040, and the ALFLT, compass and TAR1 loops' own index registers, steps and pushdown pointer; any values of the other erasables the file reads. NEWJOB positive is a job switch: a DANZIG that finds it goes to CHANG2 and the run stops there, at a registered resume LOC, as in the original; those cases are compared, not refused.",
         "external_continuations": [
           "BANKCALL, TWIDDLE, PRIOCHNG, 2PHSCHNG, PHASCHNG, NEWPHASE, CHANG1, CHECKMM, DOWNFLAG, FINDVAC, JOBWAKE, LONGCALL, NEWMODEA, NEWMODEX and ALARM with their inline words; BANKCALL GOFLASH returns to L+1 (terminate), L+2 (proceed) or L+3 (recycle), IMUSTALL and OPTSTALL to L+1 (bad) or L+2 (good), each a registered routine; POSTJUMP",
           "ENDEXT, POODOO, ENDMARK, ENDOFJOB, JOBSLEEP and TASKOVER (no return)",
@@ -1889,21 +1889,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-source-map.json",
-            "sha256": "3571d3a2870b93e2a7153fe2ac813a2de7b890e3c9d33f24422a293ef4cf110f"
+            "sha256": "f7a11342d7961e70a73cc9cca2f5a9c57dc87ac915a2b5d0e8a4fad43057291a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-proof.json",
-            "sha256": "1ed5fb1017b2ea4893bcc1e98de5ac3cffb2a6f7b0dfb8464aeb49b852d311af"
+            "sha256": "8c1e91d4dfbcfa2425d768f0ebab2671e5b5fd46c6d9127f04d3ad92594a26fa"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-host.log",
-            "sha256": "a9ff9470c5a1e63e14436208f60e69b907af6b4f5c77140342a9079b5cfba91b"
+            "sha256": "807439b052b90814197cd226e82c01ee676236549ef8e0eb218bb500dce6d876"
           },
           "c64_execution_results": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-vice.log",
-            "sha256": "3a2fe94ea31b017dffb5f262611df3fbb151a48a8b3669f707e86c974bd4d638",
+            "sha256": "0a4e46db7b648b859e4d8a5bf5aad95037d6561dfc5d71f5920054c8ee8a1168",
             "vice_targets": {
-              "vice-cm-imu-calibration": 468
+              "vice-cm-imu-calibration": 466
             }
           },
           "independent_review": {
@@ -1912,7 +1912,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
-            "sha256": "53248a97db754b52fecf059b9d29f3c3ea458bc2c76763ce88c66324627a092a"
+            "sha256": "b1ef844231751635fae2bc2d2a16d27feafb2ca1366bd04b747f63ff9671feb3"
           }
         }
       }
@@ -2215,7 +2215,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
+            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-host.log",
@@ -2223,18 +2223,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
-            "sha256": "bb85aaed1f10720ad326632ba423e3681d32b0c539bd2aab6634ec8232cc1257",
+            "sha256": "8e987379f2e37c8965a02a8baf9f06a1491492262e9e3e829688700b85f45385",
             "vice_targets": {
-              "vice-cm-integration-init": 331
+              "vice-cm-integration-init": 336
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "8d9edbb947bfd5c9cd612955ce7fcf2560e3f9d9c176a3d394d9e285ba542157"
+            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g457.md",
-            "sha256": "855ea754164cb909e04174a2fc369563aa4eb6ac09aa16e6457801c48d94b083"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -2664,22 +2664,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
-            "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5"
+            "sha256": "0c8d5f21137de0bd7bcee19d074cbf2087ee3e608dc210b0fa64ce856dc7945f"
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "cb8dfe04dd5ded9d7e2bc38e2f81357fac3417409d38f9005df9d2dc911e9f9b",
+            "sha256": "a91315fd947ce32025deaba5ffa440719b4858bfc74f8f5663b54faeb096606c",
             "vice_targets": {
               "vice-cm-jet-select": 27
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -2870,26 +2870,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
+            "sha256": "463970bc2b9ef1f2ca02158cc4306b0aa5d1b0b00cd0367097a7ea6ddc65a476"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
-            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+            "sha256": "8f6ff803ef8af9a98a8b29ff05ee09a309c4eb2b50df212055c93e2663d941c5"
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
+            "sha256": "b4280a1eef9c93b2c2e33346cee27568aafe702c7f30b065a25ba7ca9e6913a4",
             "vice_targets": {
-              "vice-lat-long": 197
+              "vice-lat-long": 196
             }
           },
           "independent_review": {
-            "path": "docs/audits/a2-204.md",
-            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
+            "sha256": "4839caecc813699d1e1eef5c5153e89edef2bbc4440c683ca888e9204349dc0d"
           }
         }
       }
@@ -3097,26 +3097,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
+            "sha256": "19f38ba30e47812ac0c3d90325c81f980329a5ea3ee9d1e6e3129b6e3fb694b1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
+            "sha256": "22d9f5856ef62a4ec271a82b4f864f1197d177f1b07b266032ac956a5264c5be"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
+            "sha256": "94c90ab64835dc918f00ff4740040b503fafa505c4eb230a5455f5921ebe12e7",
             "vice_targets": {
               "vice-measurement-inc": 354
             }
           },
           "independent_review": {
-            "path": "docs/audits/measurement-inc.md",
-            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
+            "sha256": "60a80ada594d16db82adaaf61488a5699adb77fdb828cb9b2ac2afd2a13bc2a1"
           }
         }
       }
@@ -3404,22 +3404,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "49a5c728a7e7cee1d66f996ce0e9abf247ab713e650cf88dabf52491b8087a61"
+            "sha256": "22db90399badd2da201a16a097fe852015cede78e9bd13868f937ebc77323220"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
-            "sha256": "d94d58f4965377a71b23e05871f4786aed335bbb8902d4fa5dd6449bb451243b"
+            "sha256": "7d8e9e2fa887da0d520d18be43d372257aae1580cdd94381bc082a77432d42c4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "c0e35390f13fbe8316c0beb01b8941e225a5dc52dcf3f088189eeac7c93565f8",
+            "sha256": "32bc062553d8b4f07bd91a74b8c8e4af58469588caa5ee99afc6e9f57afc71f1",
             "vice_targets": {
-              "vice-cm-p30-p37": 179
+              "vice-cm-p30-p37": 180
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "fe8aa46d64631d0949a95d7aa5291b6ba1586cc381ebca18e9f1d8272cf18081"
+            "sha256": "4bbe36704917a4cb3f927e432713364e9d7ed9736554da7665ec0aa5ec9f1eaf"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-p30-p33.md",
@@ -3693,22 +3693,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
-            "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0"
+            "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-host.log",
-            "sha256": "c758e9c801458d92d4f5ab86da1b4cd7da70b226d5cb450d795c8ef75dbc8d00"
+            "sha256": "e4720bdeaa15df573fb40bc7f22d79399f4e2dd2f03e868b51153393b18ef8e4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-vice.log",
-            "sha256": "0a23210104f1a2c992e4a1a2bba0c292b90d487c3090dea64eeebf3425421637",
+            "sha256": "77de36e0a969cf12744fece94d557b7fc5d32c5b0895b1c60f13a3dc43ee7ca0",
             "vice_targets": {
-              "vice-cm-p40-p47": 645
+              "vice-cm-p40-p47": 646
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
-            "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0"
+            "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-p40-p47-616.md",
@@ -4365,7 +4365,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "5e735dbf96792b3221612dcd5dcd71d15bace60a104e0832dc9f96b298c78b13"
+            "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -4684,22 +4684,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
+            "sha256": "4b9afb310d7db6e0f519e155b9e66bb5c329e2d3d9f5b0a541a2f00f84f00d58"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
-            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+            "sha256": "5a0a1bb60d1a168fe4f495013b52206c14a8a4ba188a6449ffba7465543c69f9"
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
+            "sha256": "25cc6f8b94ff0fdc4ed88ed2bb8192ddb94d7147c2ca4534c13bd67bb3cb0e88",
             "vice_targets": {
-              "vice-r30": 262
+              "vice-r30": 264
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
+            "sha256": "b735b8f9623208151915c9f7e508a5c6f015001d4e07e985db97e178cd85fcf3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-r30-604.md",
@@ -4813,22 +4813,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r60-r62/r60-r62-proof.json",
-            "sha256": "f631e21d264086407ee958f1dbfa141334919354f07caa0637bdf260cb85259d"
+            "sha256": "f4fdbe53cc44261cc78840ac0a2f8264e4c283a32f4f9c9b07c6149f2cb5bac1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r60-r62/r60-r62-host.log",
-            "sha256": "9c5c381f1c9ed303fb1bbd2f3dc448b91edf64471f9fe4ad2d524f0fbb702832"
+            "sha256": "d4938517e561194cc0ad33a42d6dd877917e94cc37b60e18a5a00845b5f241ef"
           },
           "c64_execution_results": {
             "path": "evidence/r60-r62/r60-r62-vice.log",
-            "sha256": "d24171840099274b938f5fe951bb12547d25c101c6e98282a2f0fedc4024b604",
+            "sha256": "43fd44134607cec9697b48ca68aea21a97ada88022fe8c3986e8e0c410e49f5b",
             "vice_targets": {
-              "vice-r60-r62": 268
+              "vice-r60-r62": 270
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
-            "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
+            "sha256": "6d1f6d06c91e1b3998c3cec369d4011b3728d5df9e61ebb7ab536ca1b15caf21"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-reentry.md",
@@ -4989,22 +4989,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "6d508eb63397782fabc5f4172871d961eb3b1a3bc114fb04f0046bac073abcb7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "e496946cac2bbd6321a72395aa3153d97ab1e602274e0a8fe795d0a213d1d952"
+            "sha256": "0dffd05d67129b267f258486909fef3b9a29eb9413efb22db26df420dc24584b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "d07013292f345df69e002b9153ff591616b3a3352b7ff71be4ef1bd203e5d502",
+            "sha256": "14c85ef03044e154ba41d9cca58e83a6cf1803bf956b07ae0620449e06b49eff",
             "vice_targets": {
-              "vice-cm-rcs-dap": 45
+              "vice-cm-rcs-dap": 50
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "6d508eb63397782fabc5f4172871d961eb3b1a3bc114fb04f0046bac073abcb7"
           },
           "independent_review": {
             "path": "docs/audits/rev2-fast-window-eb-599.md",
@@ -5074,7 +5074,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "676754fa0aac185a2d8730ff206765a5a4cc816640f4afe51522c5def09bd423"
+            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-reentry/cm-reentry-host.log",
@@ -5082,18 +5082,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-reentry/cm-reentry-vice.log",
-            "sha256": "5feeebbbb446534ed7b9fbb0df84770c9282f67dd1776a26a0b1a48b2c302eec",
+            "sha256": "878445ef472325eda7287dd1900172e5277a22d317f3a06966a102eef7f09c21",
             "vice_targets": {
-              "vice-cm-reentry": 543
+              "vice-cm-reentry": 544
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "676754fa0aac185a2d8730ff206765a5a4cc816640f4afe51522c5def09bd423"
+            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-reentry.md",
-            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -5394,26 +5394,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
+            "sha256": "758519d6b7b132457c6ad56496059bb98202049afa284cdfae0201e1f9c87e86"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
+            "sha256": "355b0f5132a0f4a90cd055b13747e02016f6dc09f44931eb20f79e45f780b36d"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
+            "sha256": "b8d2a49ff94ff39b0bd6b13f6c00de2173e88214997714edb22ae0e4d409a78f",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
+            "sha256": "8d9d732fa59895db7eb719938c83ec83c5c6cb2ac9df88e49eb1f8b8fa77a477"
           }
         }
       }
@@ -6121,22 +6121,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6"
+            "sha256": "7b18a4cee2a807fe630c5275595d566258624a989f07412afb8f74aeef20844f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
-            "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d"
+            "sha256": "b38f4a21def550c4278a7d7a3e394cbf3e6221c2cfcc549eba62671a640a9a67"
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
+            "sha256": "2dfb3794cc6d659f72f2531fcedacc421f6e01c4f3f1a184c34c246a0da01aea",
             "vice_targets": {
-              "vice-cm-tpi-search": 248
+              "vice-cm-tpi-search": 249
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
+            "sha256": "d544b5b1f42442dfa0595dfb965cf69f7c033815cdbf8bcf940343edc3b36ae3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-r31-tpi-630.md",
@@ -7166,22 +7166,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
+            "sha256": "70991c131aad15f9267e4c28775d12f0d7de5b06960863fdf6638f0a47e49a20"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
+            "sha256": "60f721c06794d130fa5277a344e37e02d848a8e14fe0b1556097253c346c4eb4"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
+            "sha256": "3108a4426bfbaa19ded75433ba28986f3cee384e35fdb2527db9e668630eaa74",
             "vice_targets": {
-              "vice-lm-ascent": 250
+              "vice-lm-ascent": 251
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
+            "sha256": "e2b9c2c7362ae2e8e05a770abed9a063a4d0418e8fdac8089d26b460cda877af"
           },
           "independent_review": {
             "path": "docs/audits/rev2-lm-ascent.md",
@@ -8741,15 +8741,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
+            "sha256": "5ccbc17ef6d1da4e491af56079c053556bf23ff44aff64cf90b9fcfb12255cb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
+            "sha256": "185a232af2b372ebb3d993ddee820f1f75c8fa4996fdfac0a06ee346e8f49f42"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
+            "sha256": "e5dc8c0825782256a9f74c12ec7017f26022ba3fd49d4751d691bd985d4705e1",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -8760,7 +8760,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
-            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
+            "sha256": "792e1d82ec13bc5bf070cdb21f08c0f2e3a2bca3074c7651958ef5578b9d0951"
           }
         }
       }
@@ -10015,17 +10015,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
+            "sha256": "463970bc2b9ef1f2ca02158cc4306b0aa5d1b0b00cd0367097a7ea6ddc65a476"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
-            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+            "sha256": "8f6ff803ef8af9a98a8b29ff05ee09a309c4eb2b50df212055c93e2663d941c5"
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
+            "sha256": "b4280a1eef9c93b2c2e33346cee27568aafe702c7f30b065a25ba7ca9e6913a4",
             "vice_targets": {
-              "vice-lat-long": 197
+              "vice-lat-long": 196
             }
           },
           "independent_review": {
@@ -10034,7 +10034,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
+            "sha256": "4839caecc813699d1e1eef5c5153e89edef2bbc4440c683ca888e9204349dc0d"
           }
         }
       }
@@ -10297,7 +10297,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-llge/lm-llge-proof.json",
-            "sha256": "ed1efd87fca8e7c65e53534d92be475b59c2f94040e48629cb80bff1f4e0c90b"
+            "sha256": "8fb1f9991a75024dd2d779aef20623f9ad62d62ecec96359ed41930df453fc43"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-llge/lm-llge-host.log",
@@ -10305,18 +10305,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-llge/lm-llge-vice.log",
-            "sha256": "53e9f7c452ad831b2baadf07b5a8311e64722278272c9ca9cb0d3237ce75f41a",
+            "sha256": "765555d5245e9555b320b626e2635ef262809cd6427f80547db54c8d7f35fb1d",
             "vice_targets": {
-              "vice-lm-llge": 384
+              "vice-lm-llge": 397
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-llge/lm-llge-c64-cover.json",
-            "sha256": "37cbe611d4cc39c94840fe51988d7bca0d3bc60badfc0092b8c5098e1e9c0503"
+            "sha256": "d8ca325b1812651d839ebff061b26a383560f268c5276cd199643ae3ec82ef69"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-lm-llge-563.md",
-            "sha256": "ac24d8c590d6a08741f2c44b216c8f1ef53126f3875480ca49380cd3ec8fee87"
+            "path": "docs/audits/rev2-lm-llge-667.md",
+            "sha256": "6f8241b9044ae5daab7bbc578b080d0e6d956d14aa4b968c65376db8a1d30a7e"
           }
         }
       }
@@ -10425,15 +10425,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
+            "sha256": "19f38ba30e47812ac0c3d90325c81f980329a5ea3ee9d1e6e3129b6e3fb694b1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
+            "sha256": "22d9f5856ef62a4ec271a82b4f864f1197d177f1b07b266032ac956a5264c5be"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
+            "sha256": "94c90ab64835dc918f00ff4740040b503fafa505c4eb230a5455f5921ebe12e7",
             "vice_targets": {
               "vice-measurement-inc": 354
             }
@@ -10444,7 +10444,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
+            "sha256": "60a80ada594d16db82adaaf61488a5699adb77fdb828cb9b2ac2afd2a13bc2a1"
           }
         }
       }
@@ -10976,7 +10976,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Twenty-five C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; six of them (resumed_at 35,3077, 35,3127, 35,3145 or 35,3156) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,3145, the ACOS abort) runs from there to the end of the case.",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Twenty-four C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; five of them (resumed_at 35,3077 or 35,3156) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
         "external_continuations": [
           "BANKCALL with its inline CADR (DELAYJOB, GOFLASH, GOMARKF)",
           "PHASCHNG with its inline phase words (restart groups)",
@@ -10994,7 +10994,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-proof.json",
-            "sha256": "c6ba270d62116c02b095e5736b41262df0ed87f33808e3bc6baa2a76874e0d80"
+            "sha256": "8e04298b3103e971d5c698fb44af9f72157655e1241486e372afe3cf0860830d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-host.log",
@@ -11002,18 +11002,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-vice.log",
-            "sha256": "1e87b8825c7e2aad4a3e2363f679110200a6c0fc21f3dc9444021ac714d8be0b",
+            "sha256": "73d3a63334b666dd0467e520aa737520e59da13bcc41f566b1cda43e16db32ce",
             "vice_targets": {
-              "vice-lm-p34-p35": 597
+              "vice-lm-p34-p35": 604
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
-            "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+            "sha256": "2f5d65190d0341bd29d68bb1f43b94a4b7951de5c3f5e96c9ae6ce195476b42f"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-419.md",
-            "sha256": "ee81946d5922215c3b908d6d661b05f031179407a653cac32e9ba9ba7f7ec6a8"
+            "path": "docs/audits/rev2-lm-p34-p35-688.md",
+            "sha256": "8e29613111f0f76d1c2ef4e71aaf6dd954cea10e2f660ae617836109b9aaa31c"
           }
         }
       }
@@ -11069,22 +11069,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-proof.json",
-            "sha256": "71695db2b8067381f9906a4bb78ec9da51ee8717248f14992032eb9e14355e4e"
+            "sha256": "c7b9e20fcc6392919d672419241d6858945ee778c5baf3718c2812191e00de92"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-host.log",
-            "sha256": "7c999ba816ac9dbc4a8ff6c27302c963ff0fc93567a332eb3dc500bd3a9581e7"
+            "sha256": "d227efa43f93498479c180a93da279fcea9a198b3900b8c639eddb13befa7b24"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-vice.log",
-            "sha256": "806cf7b88230cce6f5d032b8ec0441d247aad7039ba9a7ae0da3b2ce5f6d8dfe",
+            "sha256": "bce287095e0179b9d55799e617abc73acbdd1672a6513d09567bf5e06b7541c4",
             "vice_targets": {
-              "vice-lm-p40-p47": 468
+              "vice-lm-p40-p47": 471
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
-            "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+            "sha256": "6d1c2d74433ac3a89449f680449caba21f6c56b10f87a34d8fa079ae911f295d"
           },
           "independent_review": {
             "path": "docs/audits/lane-a2-410.md",
@@ -11734,7 +11734,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "2dab7411425e2a3496cb58713450ade7621d020f1a72f74489140c39946e5eb4"
+            "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -11909,7 +11909,9 @@
         {
           "native_files": [
             "src/lm_powered_subs.c",
-            "include/lm_powered_subs.h"
+            "include/lm_powered_subs.h",
+            "src/lm_dmpsub.c",
+            "include/lm_dmpsub.h"
           ],
           "scope": "The whole file: CDUTRIG, CD*TR*G, CDUTRIGS, CD*TR*GS, QUICTRIG, the SMNB/NBSM interface routines, AX*SR*T, CALCSMSC and FLESHPOT, basic and interpretive (lm_powered_subs_basic, lm_powered_subs_interpretive), and the SINSLOC, INDEXI and XNBECADR constants.",
           "verification": "docs/LM-POWERED-SUBS.md"
@@ -11951,14 +11953,14 @@
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
-          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*; and at DANZIG with LOC there and EDOP 1 (USPRCADR's BIT8, the interpreter's EXIT; at_exit, at_danzig without its INTBIT15 test since EXIT decodes no address and INTBIT15 is still the caller's, with the DANZIG marker first among the program's interpretive tables): 23,3567, 3575, 3605, CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words, with TEM3 and TEM2 as at the returns after them; and 10,2173, FLESHPOT's TCF VXV word (its DXCH LOC leaves LOC there and its TS EDOP BIT8, so VXV's DANZIG runs EXIT into 10,2174), with TEM1 and TEM2 as at 10,2174. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT, its returns after DMP and DMPSUB (10,2052, 2066, 2076, 2106, 2113, 2122, 2133, 2142) and after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T; 3723, 3741 (after DMPSUB). Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; DEXDEX +-1 to +-3, DEX1/DEX2 offsets, BUF 0 or 1; TEM2, ITEMP1 and RTNSAVER a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
+          "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*; and at DANZIG with LOC there and EDOP 1 (USPRCADR's BIT8, the interpreter's EXIT; at_exit, at_danzig without its INTBIT15 test since EXIT decodes no address and INTBIT15 is still the caller's, with the DANZIG marker first among the program's interpretive tables): 23,3567, 3575, 3605, CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words, with TEM3 and TEM2 as at the returns after them; and 10,2173, FLESHPOT's TCF VXV word (its DXCH LOC leaves LOC there and its TS EDOP BIT8, so VXV's DANZIG runs EXIT into 10,2174), with TEM1 and TEM2 as at 10,2174. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT (A the ECADR of XNB or XNBPIP), its return after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T. The INTERPRETER's DMP and DMPSUB (07103-07135), which AX*SR*T and FLESHPOT call, run in place (src/lm_dmpsub.c, instruction for instruction, TC Q leaving Q 3) on an erasable operand pair (ADDRWD 010-01776, unmasked; anything else EXEC_OUT_OF_SCOPE before any change), so their returns are not entries; the differential's oracle runs on through those words (native_call_words) to the next stop. Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; TEM2 and ITEMP1 a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3 and Q a return outside the file; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
           "unreached": "23,3757 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; the cases that reach TSTPOINT all take the -0 exit, in yaAGC and natively. The oracle executed the other 237 basic instructions and read all 14 interpretive words (evidence/lm-powered-subs/lm-powered-subs-closure.json).",
           "data_validity": "SINSLOC (ADRES SINCDU), XNBECADR (ECADR XNB) and INDEXI (4, 2, 0, 4) are read as the original constants: SINSLOC and XNBECADR by CA/CAF, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
         },
         "external_continuations": [
           "CDULOGIC, COSINE and SINE through USPRCADR, which return through DANZIG to this file's routines at the CADR words, then its registered return points",
           "SPSIN and SPCOS (QUICTRIG)",
-          "MPACVBUF, DMP and DMPSUB (AX*SR*T, FLESHPOT), and VXV (FLESHPOT), which returns through DANZIG to this file's routine at the TCF VXV word, then 10,2174",
+          "MPACVBUF (the SMNB/NBSM interface routines), and VXV (FLESHPOT), which returns through DANZIG to this file's routine at the TCF VXV word, then 10,2174",
           "BANKCALL and SWRETURN (CALCSMSC, FLESHPOT)",
           "The interpreter (INTPRET, NEWOPS) and the callers' returns (TC TEM2, TC A, TC RTNSAVER, RVQ)",
           "Integrated C64 application acceptance"
@@ -11966,21 +11968,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-source-map.json",
-            "sha256": "d7f973cc30cfb53fae28094e986056e71b05ad25cb1f84e8c25789afd676fba8"
+            "sha256": "235342231b589397d19773075709a42ffdfddaa29e829023be7394c296bd04b8"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "beba9a7ebf9b082d828797faa00198174cce2d1bff9876bcd920c9eefa31af30"
+            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-host.log",
-            "sha256": "1d4f2e476792e85fadbf453abb5988a47a42b59cb74fbd31055e7e4763c3426d"
+            "sha256": "9c31040430e778487c4d02bbb22fbe6af05d907466e9c5d0f5a5ba59e4618b02"
           },
           "c64_execution_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-vice.log",
-            "sha256": "872ebecf42bbb68a6b94a756824b0fe25ae24416c0c625f180f3892f46e68b49",
+            "sha256": "6f78d3d911de3b55d51d187801b1a6e15808dc1716906c567d7f9e29c53e248b",
             "vice_targets": {
-              "vice-lm-powered-subs": 71
+              "vice-lm-powered-subs": 51
             }
           },
           "independent_review": {
@@ -11989,11 +11991,11 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "beba9a7ebf9b082d828797faa00198174cce2d1bff9876bcd920c9eefa31af30"
+            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-closure.json",
-            "sha256": "9e2289d1551e768a22ff8f91a3824d14e66e17e5191795851a47707a61965fc0"
+            "sha256": "3c478315293631523d5c1309509d415c410840fd566b78d7b1f1780a06f68cc0"
           }
         }
       }
@@ -12119,22 +12121,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
+            "sha256": "4b9afb310d7db6e0f519e155b9e66bb5c329e2d3d9f5b0a541a2f00f84f00d58"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
-            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+            "sha256": "5a0a1bb60d1a168fe4f495013b52206c14a8a4ba188a6449ffba7465543c69f9"
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
+            "sha256": "25cc6f8b94ff0fdc4ed88ed2bb8192ddb94d7147c2ca4534c13bd67bb3cb0e88",
             "vice_targets": {
-              "vice-r30": 262
+              "vice-r30": 264
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
+            "sha256": "b735b8f9623208151915c9f7e508a5c6f015001d4e07e985db97e178cd85fcf3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-r30-604.md",
@@ -12184,7 +12186,7 @@
           "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 82 in all. Basic (lm_r31_file_basic, 14): 40,3674 R31CALL, 3700 DSPDELAY (after FINDVAC), 3702 (after FIXDELAY), 3712 (after NOVAC); 37,3113 DISPN5X, 3116 (GOMARKF terminate), 3117 (proceed), 3120 (loaded), 3121 V83CALL, 3155 REV83, 3316 and 3344 (after EXIT), 3330 and 3346 (after PRIOCHNG). Interpretive (lm_r31_file_interpretive, 68, at NEWOPS with LOC there): after TC INTPRET 37,3132, 3166, 3331, 3347, 3371, 3404; the STCALL returns 3136, 3147, 3172, 3217, 3375; the CALL returns 3263, 3365; the GOTO and switch targets 3144 DOCMBASE, 3205, 3211 OTHCONIC, 3236, 3240 COMPDISP, 3363 GETRVN2; the BPL target 3315; and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3134, 3140, 3142, 3145, 3151, 3153, 3154, 3170, 3175, 3177, 3201, 3207, 3213, 3215, 3222 OTHINT, 3223, 3226, 3230, 3232, 3243, 3246, 3250, 3252, 3254, 3255, 3257, 3261, 3265, 3267, 3271, 3274, 3277, 3300, 3303, 3304, 3306, 3311, 3314, 3334, 3336, 3340, 3343, 3352, 3354, 3355, 3357, 3361, 3373; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 37 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, as sb_ok reads FB 37 without the superbank bit): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 37 (SUPERBNK bit 7 clear) or, for the bank 40 entries, FB 30 with SUPERBNK 0100; an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restriction (spec states): at 37,3243 (RTB NORMUNX1) MODE is the vector mode 77776 that the VSU before it leaves; rtb_unit refuses other modes. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
           "unreached": "None. The oracle executed all 53 basic instructions and the interpreter read all 143 interpretive words (evidence/lm-r31-file/lm-r31-file-closure.json).",
           "data_validity": "2CADR V83CALL and 2CADR DISPN5X (read by FINDVAC and NOVAC), DEC 100 (read by FIXDELAY), CADR GOMARKF (read by BANKCALL) and V16N54 (VN 1654, read by CAF) are read as the original constants. 37,3335 (VN, STOVL RONE's operand) is an interpretive operand the closure tool lists as data; the interpreter reads it.",
-          "c64_branch_outcomes_note": "The C64 rows take every gcov branch outcome the host cases take (evidence/lm-r31-file/lm-r31-file-c64-cover.json: 1,291 of 1,291, none missing). One of them, the fall-through of GETRVN's BOFF MUNFLAG pair at 37,3347 with MUNFLAG set and no job waiting (src/lm_r31_file.c:1246-1247), is only taken by runs that go on through COMPDISP to CALL CDU*NBSM, too big for one C64 program (proof c64_too_big_cases, host only); the C64 takes it with a truncated row (c64_cuts, group 22): that case run to NEWOPS with LOC at 37,3352, where the yaAGC oracle stops too, its digest the oracle's full state there. See docs/LM-R31-FILE.md."
+          "c64_branch_outcomes_note": "The C64 rows take every gcov branch outcome the host cases take (evidence/lm-r31-file/lm-r31-file-c64-cover.json: 1,291 of 1,291, none missing). One of them, the fall-through of GETRVN's BOFF MUNFLAG pair at 37,3347 with MUNFLAG set and no job waiting (src/lm_r31_file.c:1254-1255), is only taken by runs that go on through COMPDISP to CALL CDU*NBSM, too big for one C64 program (proof c64_too_big_cases, host only); the C64 takes it with a truncated row (c64_cuts, group 22): that case run to NEWOPS with LOC at 37,3352, where the yaAGC oracle stops too, its digest the oracle's full state there. See docs/LM-R31-FILE.md."
         },
         "external_continuations": [
           "FINDVAC, FIXDELAY, NOVAC and BANKCALL GOMARKF, which return to this file's registered return points; PRIOCHNG likewise",
@@ -12269,22 +12271,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r60-r62/r60-r62-proof.json",
-            "sha256": "f631e21d264086407ee958f1dbfa141334919354f07caa0637bdf260cb85259d"
+            "sha256": "f4fdbe53cc44261cc78840ac0a2f8264e4c283a32f4f9c9b07c6149f2cb5bac1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r60-r62/r60-r62-host.log",
-            "sha256": "9c5c381f1c9ed303fb1bbd2f3dc448b91edf64471f9fe4ad2d524f0fbb702832"
+            "sha256": "d4938517e561194cc0ad33a42d6dd877917e94cc37b60e18a5a00845b5f241ef"
           },
           "c64_execution_results": {
             "path": "evidence/r60-r62/r60-r62-vice.log",
-            "sha256": "d24171840099274b938f5fe951bb12547d25c101c6e98282a2f0fedc4024b604",
+            "sha256": "43fd44134607cec9697b48ca68aea21a97ada88022fe8c3986e8e0c410e49f5b",
             "vice_targets": {
-              "vice-r60-r62": 268
+              "vice-r60-r62": 270
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
-            "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
+            "sha256": "6d1f6d06c91e1b3998c3cec369d4011b3728d5df9e61ebb7ab536ca1b15caf21"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-reentry.md",
@@ -12337,22 +12339,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r63/lm-r63-proof.json",
-            "sha256": "6c0e45d323b3787c2d60df05db6e5aa962b8a8d61059dd729866b2c344eecfbe"
+            "sha256": "0e52f321fc5ca21114ae051c560f317508c1ee103edb7a53d25f1c5495de8760"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r63/lm-r63-host.log",
-            "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0"
+            "sha256": "eb89982f47a1d08733af237fcd0af3fe98e3a5753663bc234d9a3f18e45fd087"
           },
           "c64_execution_results": {
             "path": "evidence/lm-r63/lm-r63-vice.log",
-            "sha256": "58eb7b5b66187efec36fe0f66db5c2c0e92485d197a7c546736efec69eac2457",
+            "sha256": "bcfd3d859b1d27219888428971c6cb5c85e91d71b409775f035206f7370533e1",
             "vice_targets": {
               "vice-lm-r63": 35
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r63/lm-r63-c64-cover.json",
-            "sha256": "03a2e4bcf69dc7fba2a396f495a011f5fc62205d0e9ffd3d71b586bf7c25791d"
+            "sha256": "5257743eb9204e577288b8698dee77f3090066c3742960438dfc34cd74400a84"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-1014b.md",
@@ -12841,15 +12843,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
+            "sha256": "758519d6b7b132457c6ad56496059bb98202049afa284cdfae0201e1f9c87e86"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
+            "sha256": "355b0f5132a0f4a90cd055b13747e02016f6dc09f44931eb20f79e45f780b36d"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
+            "sha256": "b8d2a49ff94ff39b0bd6b13f6c00de2173e88214997714edb22ae0e4d409a78f",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -12860,7 +12862,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
+            "sha256": "8d9d732fa59895db7eb719938c83ec83c5c6cb2ac9df88e49eb1f8b8fa77a477"
           }
         }
       }

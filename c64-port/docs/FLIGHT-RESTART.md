@@ -100,10 +100,10 @@ GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 
 | Scenario | Burst | Image against yaAGC | Resume |
 |---|---|---|---|
-| `lm-p63-descent-restart` | 24 resident steps: GOPROG through the group 2 and 5 restarts, ENDRSTRT and the display job, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) | 409 steps over 50 cs, then stops at R12LITES (25,3607; `lm_p20_p25` does not fit yet) |
+| `lm-p63-descent-restart` | 24 resident steps: GOPROG through the group 2 and 5 restarts, ENDRSTRT and the display job, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) | 1,441 steps over 200 cs, no stop |
 | `lm-dap-hold-restart` | 12 resident steps, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 938 instructions) | 911 steps over 200 cs, no stop |
-| `cm-entry-restart` | 37 resident steps: GOPROG, the group 1, 5 and 6 restarts and the jobs they start, to idle at ADVAN (01,3231) | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) | 3,037 steps over 200 cs, no stop |
-| `cm-p52-restart` | 81 resident steps: GOPROG, the group 4 restart (phase 00502, N93 gyro torquing) and its jobs, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) | 3,375 steps over 200 cs, no stop |
+| `cm-entry-restart` | 37 resident steps: GOPROG, the group 1, 5 and 6 restarts and the jobs they start, to idle at ADVAN (01,3231) | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) | 1,351 steps over 200 cs, no stop |
+| `cm-p52-restart` | 81 resident steps: GOPROG, the group 4 restart (phase 00502, N93 gyro torquing) and its jobs, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) | 676 steps over 200 cs, no stop |
 
 ## The GOJAM on the C64 (`make flight-gojam-vice`)
 
@@ -248,11 +248,13 @@ restart.
 
 ## Gaps
 
-- **P63 cannot resume on the C64 yet.** Since Lane C's Pinball split
-  (#425), DSPMMJB and the display jobs are in the store, so every burst
-  above runs to idle and the DAP hold and both CM restarts resume for 200 cs
-  without a stop. The P63 resume stops at R12LITES (P20-P25,
-  `lm_p20_p25`), which does not fit in the store yet.
+- **Every resume runs its 200 cs.** Since Lane C's Pinball split (#425),
+  DSPMMJB and the display jobs are in the store, so every burst above runs
+  to idle. Since the LM store fit (#625), P20-P25 (`lm_p20_p25`) is in the
+  store too, so the P63 resume runs on past R12LITES, where it used to stop
+  after 409 steps. The step counts above are from base 3384c02b; the whole
+  LM P63 restart window (`--scenario lm-p63-descent-restart --snap-cs 19950
+  --cs 1050`) runs to its end there with no stop (20.7x real time).
 - **The TC trap is the C64's one GOJAM source.** The resident's main
   (`platform/c64/resident_flight_main.c`) follows the entry contract
   (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends

@@ -37,6 +37,13 @@ static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
 #define APOLLO_REU_RESOLVE_CACHE 32u
 #endif
 static uint8_t cache[APOLLO_REU_RESOLVE_CACHE * APOLLO_REU_RESOLVER_RECORD];
+/* Where each bank's records start: fence[f] is the first record whose key
+ * has bank bits (bank >> 10) of f or more. A flight key's bits are its FB
+ * bank, 0-037 (the superbank flag 0100 is below them); any higher key goes
+ * in the last group. Open finds them by search, so a cache miss searches
+ * only its own bank's records. */
+#define APOLLO_REU_FENCES 32u
+static uint16_t fence[APOLLO_REU_FENCES + 2u];
 uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record) {
     uint8_t *h=record,i;
@@ -64,6 +71,24 @@ uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
             (uint32_t)s->pages * 256u)
         return 0;
     s->index_blocks=(uint8_t)((s->resolver_page-s->index_page)>>4);
+    {
+        uint32_t r = page_address(s, s->resolver_page);
+        uint16_t low = 0;
+        for (i = 0; i <= APOLLO_REU_FENCES; ++i) {
+            uint16_t high = s->resolver_count;
+            while (low < high) {
+                uint16_t middle = (uint16_t)(low + (uint16_t)((high - low) >> 1));
+                if (!read_bytes(r + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), h, 2u))
+                    return 0;
+                if ((uint8_t)(le16(h) >> 10) < i)
+                    low = (uint16_t)(middle + 1u);
+                else
+                    high = middle;
+            }
+            fence[i] = low;
+        }
+        fence[APOLLO_REU_FENCES + 1u] = s->resolver_count;
+    }
     return 1;
 }
 static uint8_t payload_inside(const apollo_reu_store *s,const apollo_ov2_dirent *d) {
@@ -125,8 +150,10 @@ static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *ou
         /* Records are sorted by (bank, loc), 8 bytes each, fewer than 8192,
          * so a record's offset in the resolver fits 16 bits. */
         probe_base = page_address(s, s->resolver_page);
-        probe_low = 0;
-        probe_high = s->resolver_count;
+        uint8_t f = (uint8_t)(bank >> 8);
+        const uint16_t *g = fence + (f & 0x80u ? APOLLO_REU_FENCES : (uint8_t)(f >> 2));
+        probe_low = g[0];
+        probe_high = g[1];
         for (;;) {
             uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1)), b;
             if (probe_low >= probe_high ||
@@ -179,6 +206,11 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
      * lookups a byte instead of eight shifts. The whole store passes through
      * here at boot, so this is most of the boot's time. */
     uint8_t *crc_high = buffer + 256, *crc_low = buffer + 512;
+    /* The CRC at buffer+768: in memory at a fixed
+     * address (the resident's buffer is), not on the soft stack, where
+     * every byte of the loop below reloads them (about 60 cycles a byte
+     * instead of 47: a minute of the C64's boot). */
+    volatile uint8_t *crc_hi = buffer + 768, *crc_lo = buffer + 769;
     for (i = 0; i < 256u; ++i) {
         uint16_t t = apollo_overlay_crc16(0, (uint8_t)i);
         crc_high[i] = (uint8_t)(t >> 8);
@@ -187,7 +219,6 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
     for(id=1;id<(uint16_t)(s->index_blocks<<8);++id) {
         apollo_ov2_dirent d;
         uint16_t offset;
-        uint8_t high = 0xffu, low = 0xffu;
         if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
             s->record,APOLLO_REU_INDEX_RECORD)) return APOLLO_OV2_IO_ERROR;
         if(!(s->record[11] & APOLLO_OV2_DIRENT_PRESENT)) {
@@ -200,6 +231,7 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
            d.bytes>apollo_ov2_slot_bytes(d.slot) || d.flags!=APOLLO_OV2_DIRENT_PRESENT ||
            s->record[12] || s->record[13] || s->record[14] || s->record[15])
             return APOLLO_OV2_BAD_DIRECTORY;
+        *crc_hi = *crc_lo = 0xffu;
         for(offset=0;offset<d.bytes;) {
             uint16_t chunk=(uint16_t)(d.bytes-offset);
             if(chunk>256u) chunk=256u;
@@ -231,15 +263,16 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             {
                 /* chunk is 1 to 256: an 8-bit count (0 for 256) */
                 uint8_t j = 0;
+                const uint8_t end = (uint8_t)chunk;
                 do {
-                    uint8_t x = (uint8_t)(high ^ buffer[j]);
-                    high = (uint8_t)(low ^ crc_high[x]);
-                    low = crc_low[x];
-                } while (++j != (uint8_t)chunk);
+                    uint8_t x = (uint8_t)(*crc_hi ^ buffer[j]);
+                    *crc_hi = (uint8_t)(*crc_lo ^ crc_high[x]);
+                    *crc_lo = crc_low[x];
+                } while (++j != end);
             }
             offset=(uint16_t)(offset+chunk);
         }
-        if ((uint16_t)((uint16_t)high << 8 | low) != d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
+        if ((uint16_t)((uint16_t)*crc_hi << 8 | *crc_lo) != d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
         ++count;
     }
     if(count!=s->module_count) return APOLLO_OV2_BAD_DIRECTORY;

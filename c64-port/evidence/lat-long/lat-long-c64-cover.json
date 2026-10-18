@@ -2,18 +2,18 @@
  "milestone": "lat-long",
  "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
  "linked_sources": {
-  "src/lm_lat_long.c": "6d0c9d4c1faf7c84ab46350bac415d64667e33906bebb2369a46435fffe04746",
-  "src/cm_lat_long.c": "9044f87be5787447422afa7b537d78aee961441827eda20e887e753aac49cd5c",
-  "src/lm_interp_orders.c": "e2996e140562d04d289224de90ada55f9fc328bb11bf899394619b3c27f5a71a",
-  "src/lm_interp_steps.c": "8e18e209bd817408cdd593efe43e09d8f7530ddf4f55e0c9983c22e31122ca56",
-  "src/cm_interp_orders.c": "07c8d96cecda5557cd2d57b6e4b272a67105c06a631647310af3fae0271cc321",
+  "src/lm_lat_long.c": "1eb2b6e3a6a0ce3cd9a97ce2bb5e57542bf9c4ba4f04235b54e30735897769bd",
+  "src/cm_lat_long.c": "6f5a558c8c87b5bd41744ab0af5df61b700d334e3a91c8bf558fadb4ab3a2414",
+  "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
+  "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "1f5292eefdaebdc070119bb9986fb45845c86de64344216bedb249b2bb7d1227",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "73c1349b72b60f5b5d5ecc56b1189fc7e4934fc67496ed627c4ac7fe9ac284d3",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
   "tests/lat_long_target.c": "baf7d247ee3f880f7f3122c87c737b67a538c44cbaf6359f5e9fa7e7a73e9a1b"
  },
  "host_cases": 38400,
@@ -61,14 +61,14 @@
   7192,
   7447,
   7488,
-  7683,
-  7900,
+  7712,
+  7851,
   8036,
   8228,
   8452,
   8704,
   8960,
-  8976,
+  9124,
   9288,
   9371,
   9584,
@@ -77,8 +77,8 @@
   10344,
   10524,
   10784,
-  10815,
-  10888,
+  10847,
+  10884,
   11044,
   11268,
   11532,
@@ -88,12 +88,11 @@
   12340,
   12548,
   12575,
+  12803,
   12820,
-  12928,
-  12975,
   13084,
+  13175,
   13207,
-  13236,
   13380,
   13800,
   14040,
@@ -217,8 +216,8 @@
   37980,
   38148
  ],
- "host_branch_arcs": 1601,
- "c64_branch_arcs": 1601,
+ "host_branch_arcs": 1621,
+ "c64_branch_arcs": 1621,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -233,8 +232,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   43,
-   43
+   46,
+   46
   ],
   "src/agc_word.c": [
    3,
@@ -257,12 +256,12 @@
    0
   ],
   "src/lm_interp_orders.c@runner-cm_interp_orders": [
-   315,
-   315
+   317,
+   317
   ],
   "src/lm_interp_orders.c@runner-lm_interp_orders": [
-   315,
-   315
+   317,
+   317
   ],
   "src/lm_interp_steps.c": [
    0,
@@ -281,16 +280,16 @@
    394
   ],
   "tests/interp_case.c": [
-   34,
-   34
+   44,
+   44
   ],
   "tests/lat_long_target.c": [
    2,
    2
   ],
   "tools/interp_routine_native.c": [
-   26,
-   26
+   29,
+   29
   ]
  },
  "host_branches_missing_on_c64": []

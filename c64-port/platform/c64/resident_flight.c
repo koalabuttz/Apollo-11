@@ -28,13 +28,11 @@ uint16_t c64_ov2_invoke(void *,uint8_t *,apollo_ov2_frame *,uint16_t);
 apollo_reu_store rk_store;
 apollo_ov2_runtime rk_runtime;
 rk_io rk_device;
-#if RK_CM
-/* The CM input channels 30-33 at the values yaAGC starts with
- * (tools/flight_host_run.c). */
+/* The input channels 30-33 at the values yaAGC starts with
+ * (tools/flight_host_run.c): every switch and discrete off (their bits are
+ * 1 for off), so a boot from GOJAM (resident_flight_main.c) sees no radar
+ * power, mode switch or abort. A run from a snapshot sets them. */
 __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel30=037777u,.channel31=077777u,.channel32=077777u,.channel33=077777u};
-#else
-__attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware;
-#endif
 /* undo: a non-null marker only. The modules whose io record takes an undo
  * image stash it in the REU (include/flight_undo.h), not at this pointer. */
 __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
@@ -74,7 +72,7 @@ uint16_t rk_budget(void);
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
     if (mct == RK_MCT_IDLE) {
-        rk_work = rk_phase_rest[rk_tick_phase];
+        rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
         return;
     }
@@ -252,6 +250,9 @@ uint8_t BOOT rk_boot(void) {
         rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]=0;
     }
     *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
+#ifdef RK_DSKY
+    rk_dsky_install(); /* before the first module load reuses the boot-only code */
+#endif
     return 0;
 }
 
@@ -380,12 +381,27 @@ __attribute__((noinline)) static void rk_rupts(void) {
  * caller, so LTO would inline them into the step; keeping them out of line
  * costs a call each and lets the size report
  * (tools/resident_flight_build.py) count them as their own components. */
+#ifndef RK_NO_DIRECT
+/* The step's transfer point, as rk_trampoline found it when the kernel has
+ * no routine there (else AGC_TRANSFER_NONE), for rk_step_run to hand to
+ * rk_direct. Every program the resident runs has rk_program's
+ * interpreter_fetch, loc and bankset (rk_module_program copies only
+ * tables), so the point is the same for the kernel and every module without
+ * interpretive tables (a DANZIG marker there can make it LOC's). Static:
+ * absolute addressing is smaller than the soft stack. */
+static uint16_t rk_point;
+#endif
 __attribute__((noinline)) static enum exec_status rk_trampoline(uint16_t stop_physical) {
     agc_routine call;
-    if (agc_transfer_next_paged(&rk_program, IMAGE, rk_device.superbank, stop_physical, &call,
-                                kernel_pages) == stop_physical)
-        return EXEC_OK;
-    if(!call) return EXEC_UNMAPPED;
+    uint16_t point = agc_transfer_next_paged(&rk_program, IMAGE, rk_device.superbank, stop_physical,
+                                             &call, kernel_pages);
+    if (point == stop_physical) return EXEC_OK;
+    if (!call) {
+#ifndef RK_NO_DIRECT
+        rk_point = point;
+#endif
+        return EXEC_UNMAPPED;
+    }
 #ifdef RK_WORK_CLOCK
     rk_charge(RK_RESIDENT_MCT,1u);
 #endif
@@ -430,13 +446,23 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * Where two packed tables hold a key, the loaded one runs it. */
 #ifndef RK_NO_DIRECT
 /* The high byte of the step's fixed point (Z under FB), or 0xff when Z is
- * erasable, for rk_direct's range checks. Static: absolute addressing is
- * smaller than the soft stack. */
+ * erasable (its point is AGC_TRANSFER_ERASABLE_BASE or above, which no fixed
+ * point reaches), for rk_direct's range checks. Static: absolute addressing
+ * is smaller than the soft stack. */
 static uint8_t rk_point_hi;
-__attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
+#ifdef AGC_TRANSFER_FIND_ASM
+/* platform/c64/agc_find.S, the transfer engine's find (agc_transfer.c). */
+agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
+#endif
+/* POSTJUMP's point (Z 04701, fixed-fixed). */
+#define RK_CM_POSTJUMP (uint16_t)(2048u + (04701u - 04000u))
+__attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uint16_t point)
+{
     uint8_t i;
-    rk_point_hi =
-        (uint8_t)(agc_fixed_physical(IMAGE->words[5], IMAGE->words[4], rk_device.superbank) >> 8);
+    if (point == AGC_TRANSFER_NONE)
+        point = agc_transfer_point(&rk_program, IMAGE, rk_device.superbank);
+    rk_point_hi = (uint8_t)(point >> 8);
+    if (rk_point_hi >= (uint8_t)(AGC_TRANSFER_ERASABLE_BASE >> 8)) rk_point_hi = 0xffu;
     /* The pinned module (slot class 3) first, then the job and task slots. */
     for(i=0;i<=APOLLO_OV2_SLOTS;++i) {
         const rk_module_tables *t=rk_pinned;
@@ -459,6 +485,17 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
             RK_PROF(5);
             continue;
         }
+#ifdef AGC_TRANSFER_FIND_ASM
+        /* A module without interpretive tables runs from the step's point
+         * (rk_point) first: if its basic tables do not hold it, the run
+         * would take no step, so one find passes the slot over before the
+         * run's setup (rk_limit, rk_module_program). */
+        if (!t->interpretive_count && point != AGC_TRANSFER_NONE &&
+            !agc_find(t->basic, t->basic_count, point)) {
+            RK_PROF(5);
+            continue;
+        }
+#endif
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint8_t mct = t->mct;
@@ -471,7 +508,24 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
 #endif
         rk_module_program(&module_program,t);
         RK_PROF(4);
-        status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,limit,&steps);
+#ifdef RK_POINT_CHECK
+        /* Check builds: the point carried over is the module program's own. */
+        if (point != AGC_TRANSFER_NONE && !t->interpretive_count &&
+            point != agc_transfer_point(&module_program, IMAGE, rk_device.superbank))
+            return EXEC_INVALID_ACTION;
+#endif
+        uint16_t stop = stop_physical;
+#if defined(RK_WORK_CLOCK) && !RK_LM
+        /* The CM idle loop's run ends at POSTJUMP (Z 04701), as on the host,
+         * which takes it as a step of its own (tools/flight_host_run.c): an
+         * interrupt that ends the pass's idle returns there, and POSTJUMP
+         * idles again, rather than to ADVAN. */
+        if (mct == RK_MCT_IDLE && stop == AGC_TRANSFER_NONE && IMAGE->words[5] != 04701u)
+            stop = RK_CM_POSTJUMP;
+#endif
+        status =
+            agc_transfer_run_at(&module_program, IMAGE, &rk_device, &rk_device.superbank, stop,
+                                limit, &steps, t->interpretive_count ? AGC_TRANSFER_NONE : point);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. The
          * transfer engine counts a refused call as a step, so a table
@@ -480,6 +534,8 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         if (status == EXEC_OUT_OF_SCOPE ? steps <= 1u && steps < limit
                                         : status == EXEC_UNMAPPED && !steps) {
             RK_PROF(5);
+            /* A refused call ran: the next slot works its point out again. */
+            if (steps) point = AGC_TRANSFER_NONE;
             continue;
         }
         RK_PROF(6);
@@ -499,11 +555,14 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
+#ifndef RK_NO_DIRECT
+    rk_point = AGC_TRANSFER_NONE;
+#endif
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) { RK_PROF(2); return status; }
     RK_PROF(3);
 #ifndef RK_NO_DIRECT
-    status=rk_direct(stop_physical);
+    status = rk_direct(stop_physical, rk_point);
     if(status!=EXEC_UNMAPPED) return status;
     RK_PROF(7);
 #endif
@@ -522,7 +581,7 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
 #ifndef RK_NO_DIRECT
     /* A direct-only module's main only builds its tables: the point runs
      * through them in this step. */
-    if(rk_env.status==EXEC_UNMAPPED) return rk_direct(stop_physical);
+    if (rk_env.status == EXEC_UNMAPPED) return rk_direct(stop_physical, AGC_TRANSFER_NONE);
 #endif
     return rk_env.status;
 }
@@ -579,9 +638,12 @@ __attribute__((noinline)) static enum exec_status rk_memo_run(uint16_t stop_phys
         for (i = 0; i < sizeof rk_memo.in; ++i)
             if (rk_memo.in[i] != rk_memo_now[i]) goto run;
         for (i = 0; i < RK_MEMO_WORDS; ++i) *rk_memo_at[i] = ((const agc_word *)rk_memo.out)[i];
-        if (rk_memo.idle)
+        if (rk_memo.idle) {
             rk_charge(0u, RK_MCT_IDLE);
-        else
+#ifdef RK_DSKY
+            rk_dsky_idle();
+#endif
+        } else
             rk_work += rk_memo.work;
         return EXEC_OK;
     }

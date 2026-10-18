@@ -314,6 +314,38 @@ P37 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
 P37_KEYS = ('@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E@7600V23E-00650E@8200V33E'
             '@11000V33E@12000V33E@13000V33E@14000V33E@38000V33E@39000V33E@40000V33E@41000V33E@42000V33E'
             '@43000V33E@44000V33E@45000V37E00E@46000V82E@47500V33E@49500V34E')
+
+# Off-nominal radar and uplink inputs (docs/FLIGHT-STORE.md, Flight
+# scenarios), each a nominal scenario with one input gone wrong.
+# lm-rendezvous-rr-dropout: lm-rendezvous with the RR data good lost from
+# 195 s to 210 s (FLIGHT_RR_DROP), over R22's third mark: the read fails
+# (alarm 521, RADMODES data fail), R22 drops the lock and R21 flashes
+# V50N72 again at 212 s; PRO at 215 s, the RR locks on and the marks go
+# on (4 by 340 s, one fewer); P34 solves TPI and ends on N59 as before.
+LM_RDZ_RR_DROP = {**LM_RDZ, 'FLIGHT_RR_DROP': '19500-21000'}
+LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
+# cm-p20-vhf-dropout: cm-p20 with the VHF data good lost from 180 s to
+# 190 s, over R22's second range: VHFREAD takes BADEND, so no N49 and no
+# mark (VHFCNT 3 by 320 s, one fewer); the next ranges incorporate on
+# their own.
+CM_P20_VHF_DROP = {**CM_P20, 'FLIGHT_RR_DROP': '18000-19000'}
+CM_P20_VHF_DROP_KEYS = CM_P20_KEYS.replace('@20000V33E', '')
+# lm-p63-lr-dropout: lm-p63-nassp with the landing radar's altitude beam
+# (FLIGHT_LR: the slant range the LGC's own altitude and attitude give,
+# good below 50,000 ft) and its range data good lost from 800 s to 900 s
+# (FLIGHT_LR_DROP). R12 reads it from 35,000 ft (HMEAS, DELTAH within
+# 300 ft; no V57, so no update); in the dropout the reads fail (RADMODES
+# LR range fail, no altitude measured), and R12 measures again from
+# 906 s. (A dropout from 850 s to 950 s also gives alarm 1210 at high
+# gate: R12's read and the antenna's move to position 2 meet.)
+LR_DROP = {**NASSP, 'FLIGHT_LR': '1', 'FLIGHT_LR_DROP': '80000-90000'}
+# lm-uplink-reject: the ground's uplink (FLIGHT_UPLINK) in P00, rejected
+# by the V71 checks: V71 (P27 flashes V21N01), 25 components (octal: 21,
+# over OHWELL1's limit of 20, so V21N01 again), V34 (P27 ends); a garbled
+# word at 50 s (UPRUPT's triple-redundancy test fails: the uplink locks
+# out, FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET at 65 s
+# unlocks it and V37E00E takes P00.
+UPLINK = {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_UPLINK': '2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E'}
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -328,6 +360,10 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
+          ('lm-rendezvous-rr-dropout', 'lm', 40000, LM_RDZ_RR_DROP_KEYS, LM_RDZ_RR_DROP),
+          ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
+          ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
+          ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),

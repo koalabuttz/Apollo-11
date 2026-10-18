@@ -32,7 +32,12 @@ static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned 
 /* Further entries after those two are counter cells yaAGC's device models
  * empty (OPTX/OPTY under channel 14's drive bits): words the file never
  * addresses, so the run leaves them as the case set them. */
-struct stops{unsigned newops,nr,first[64],last[64],n,ext[64],nf,from_file[64],any,intpret,nd,device[8];};
+struct stops{unsigned newops,nr,first[64],last[64],n,ext[64],nf,from_file[64],any,intpret,nd,device[8],nt,tfirst[8],tlast[8];};
+/* Through words (spec 'native_call_words'): an outside subroutine the
+ * file's code runs in place. Z there is neither in nor out of the file: no
+ * stop, and the run's in-file state stays what it was before the call (an
+ * interpretive LOC there is still outside). */
+static unsigned in_through(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nt;++i)if(p>=t->tfirst[i]&&p<=t->tlast[i])return 1;return 0;}
 static unsigned outside(const struct stops *t,unsigned p){unsigned i;for(i=0;i<t->nr;++i)if(p>=t->first[i]&&p<=t->last[i])return 0;return 1;}
 /* Physical fixed address of Z (0xfffe when Z is erasable; 0xffff is no stop). */
 static unsigned z_physical(unsigned z){unsigned bank=(get(4)>>10)&037u;if(bank>=030u&&(machine.OutputChannel7&0100))bank+=8u;
@@ -88,7 +93,7 @@ static void qw_hook(unsigned pc){unsigned zp=z_physical(pc),endz,q,insw;const ch
  snprintf(k,sizeof k,"%s %s %+d%s: %s (Q bit 16 %s bit 15; Q %s)",insw?"inside SWITCH":"after SWITCH",t==2?"write":"read",insw?(int)zp-(int)qw_tsq:0,qw_frontier?" past the case's stop":"",nm,((q>>15)&1u)==((q>>14)&1u)?"=":"!=",(q>>14)&1u?"negative":"positive");
  if(!insw&&t!=2&&((q>>14)&1u)&&strcmp(nm,"TC Q")&&strcmp(nm,"QXCH")){char k2[160];snprintf(k2,sizeof k2,"   at %02o,%04o (SWITCH TS Q at %02o,%04o) %s",zp/1024u,(zp%1024u)+((zp/1024u==2u||zp/1024u==3u)?(zp/1024u)*02000u:02000u),qw_tsq/1024u,(qw_tsq%1024u)+02000u,nm);qw_count(k2);}
  qw_count(k);if(!insw)qw_watch=0;}
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned irc3;unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
   if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
@@ -98,12 +103,13 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
  dump=argc>4&&!strcmp(argv[4],"dump");qw_on=getenv("IRC_QWATCH")!=0;InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
- if(rd32(f)!=0x32435249ul){fprintf(stderr,"bad case file\n");return 2;}
+ {unsigned long mg=rd32(f);if(mg!=0x32435249ul&&mg!=0x33435249ul){fprintf(stderr,"bad case file\n");return 2;}irc3=mg==0x33435249ul;}
  for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>64u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
   st[m].n=rd16(f);if(st[m].n>64u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);
   st[m].nf=rd16(f);if(st[m].nf>64u)return 2;for(i=0;i<st[m].nf;++i)st[m].from_file[i]=rd16(f);
   st[m].any=0;st[m].nd=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){unsigned j;st[m].any=1;st[m].intpret=st[m].from_file[i+1];
-   for(j=i+2;j<st[m].nf&&st[m].nd<8u;++j)st[m].device[st[m].nd++]=st[m].from_file[j];break;}}
+   for(j=i+2;j<st[m].nf&&st[m].nd<8u;++j)st[m].device[st[m].nd++]=st[m].from_file[j];break;}
+  st[m].nt=irc3?rd16(f):0u;if(st[m].nt>8u)return 2;for(i=0;i<st[m].nt;++i){st[m].tfirst[i]=rd16(f);st[m].tlast[i]=rd16(f);}}
  count=(unsigned)rd32(f);
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1,was_in=0,cut=0,atcut=0;const struct stops *t;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);stop=rd16(f);c.nedits=(uint16_t)rd16(f);
@@ -157,13 +163,13 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
     if(rtbn){if(pend==0&&rtbin&&zp==pendz)pend=1;rtbin=0;if(!was_in)for(i=0;i<rtbn;++i)if(zp==rtbk[i])rtbin=1;}
     /* The file's own transfers out (and the case's return) stop only when
      * the file made them; the interpreter's exits stop from anywhere. */
-    if(prev_in&&!pend){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp))){stopped=1;break;}for(i=0;i<t->nf&&t->from_file[i]!=0xffffu;++i)if(zp==t->from_file[i]){stopped=1;break;}
+    if(prev_in&&!pend){if(zp==stop||(stop!=0xffffu&&zp>stop&&zp<=stop+4u&&outside(t,zp)&&!in_through(t,zp))){stopped=1;break;}for(i=0;i<t->nf&&t->from_file[i]!=0xffffu;++i)if(zp==t->from_file[i]){stopped=1;break;}
 }
     /* (any: only once Z has been in the file's own words.) */
-    if(!pend&&t->any&&was_in&&zp<0xfffeu&&zp!=t->intpret&&outside(t,zp))stopped=1;
-    if(zp<0xfffeu)was_in=!outside(t,zp);
+    if(!pend&&t->any&&was_in&&zp<0xfffeu&&zp!=t->intpret&&outside(t,zp)&&!in_through(t,zp))stopped=1;
+    if(zp<0xfffeu&&!in_through(t,zp))was_in=!outside(t,zp);
     if(!pend)for(i=0;i<t->n;++i)if(zp==t->ext[i]||(pc<02000u&&t->ext[i]==(0xc000u|pc))){stopped=1;break;}
-    if(zp!=0xfffeu)prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
+    if(zp!=0xfffeu&&!in_through(t,zp))prev_in=!outside(t,zp); /* (TC Q runs the word in Q: still from the file) */
     }
     if(stopped)break;
    }

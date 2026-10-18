@@ -34,7 +34,7 @@
   {
    "mission": "lm",
    "keep": "0xfdffffff80001fffc0",
-   "cases": 13,
+   "cases": 12,
    "case_ids": [
     1752,
     2012,
@@ -47,15 +47,15 @@
     2887,
     2891,
     3180,
-    3332,
-    3411
+    3332
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x7ff00ffc007ffffc000",
-   "cases": 19,
+   "keep": "0x7bf0cffc007ffffe000",
+   "cases": 18,
    "case_ids": [
+    3411,
     3750,
     3936,
     4116,
@@ -72,23 +72,23 @@
     6700,
     7132,
     7192,
-    7488,
-    7447,
-    7900
+    7488
    ]
   },
   {
    "mission": "lm",
-   "keep": "0xf0e0ffffffc0000000",
-   "cases": 28,
+   "keep": "0xf000ffffffe0000000",
+   "cases": 27,
    "case_ids": [
-    7683,
+    7447,
+    7851,
+    7712,
     8036,
     8228,
     8452,
     8704,
     8960,
-    8976,
+    9124,
     9288,
     9371,
     9584,
@@ -97,8 +97,8 @@
     10344,
     10524,
     10784,
-    10888,
-    10815,
+    10884,
+    10847,
     11044,
     11268,
     11532,
@@ -106,20 +106,19 @@
     12060,
     12340,
     12299,
-    12548,
-    12575,
-    12820,
-    12928
+    12548
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x7fffffc000000000000",
-   "cases": 27,
+   "keep": "0x7fffffe000000000000",
+   "cases": 29,
    "case_ids": [
-    12975,
+    12575,
+    12820,
+    12803,
     13084,
-    13236,
+    13175,
     13207,
     13380,
     13800,
@@ -275,8 +274,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1575,
-  "c64_taken": 1575,
+  "host_taken": 1592,
+  "c64_taken": 1592,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -892,8 +891,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 38400,
- "host_branch_arcs": 1601,
- "c64_rows": 197,
- "c64_branch_arcs": 1601,
+ "host_branch_arcs": 1621,
+ "c64_rows": 196,
+ "c64_branch_arcs": 1621,
  "host_branches_missing_on_c64": []
 }
