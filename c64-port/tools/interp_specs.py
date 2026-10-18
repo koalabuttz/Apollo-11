@@ -2356,8 +2356,8 @@ SPECS = {
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
         # The basic routines one docked RCS DAP pass (T5RUPT) reaches
-        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
-        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_man pack (one per DAP file), so a
         # pass loads one module rather than about eight chunks.
         'hot_points': ('21,3250', '21,3441', '21,3445', '21,3463', '21,3704', '21,3757'),
         'basic': 'full',
@@ -2399,8 +2399,8 @@ SPECS = {
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
         # The basic routines one docked RCS DAP pass (T5RUPT) reaches
-        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
-        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_jet pack (one per DAP file), so a
         # pass loads one module rather than about eight chunks.
         'hot_points': ('17,2552', '17,2671', '17,3046', '17,3122', '17,3164', '17,3230', '17,3274', '17,3372',
                        '17,3516', '17,3536', '17,3554', '17,3560', '17,3561', '17,3577', '17,3603', '17,3617',
