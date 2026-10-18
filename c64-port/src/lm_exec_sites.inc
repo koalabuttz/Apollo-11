@@ -34,6 +34,7 @@ static const uint16_t lm_exec_sites_physical[284]={
  36337u,36338u,36344u,36345u,36350u,36351u,36369u,36370u,36408u,36409u,
  36452u,36453u,36494u,36495u,
 };
+#define LM_EXEC_SITES_WORD_SUM 0x6428u /* the listed words summed mod 65536: rk_boot checks the rope image against it */
 #endif
 #if !defined(AGC_SITES_ROPE) || defined(AGC_SITES_CALLEES) /* tests read the words too */
 static const agc_site_operand lm_exec_sites[284]={

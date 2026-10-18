@@ -110,8 +110,12 @@ dispatch) is complete only when:
    `cm_exec_sites`, as their compiled site addresses and reads the word at a
    listed site from the REU rope image. The list still decides which sites
    exist, and tools/agc_sites_generate.py checks that each listed word is
-   the rope's. Every other build, the host checks included, uses the compiled
-   words; see include/agc_transfer.h AGC_SITES_ROPE.)
+   the rope's. This relies on the REU rope image being checked at boot: the
+   store check (STORE_VERIFIED) does not cover the rope, so rk_boot reads every
+   listed site and refuses to start unless the words sum to the generator's
+   value. A build without that check keeps the full words. Every other build,
+   the host checks included, uses the compiled words; see
+   include/agc_transfer.h AGC_SITES_ROPE.)
 4. its evidence includes a round trip through the trampoline into a native
    callee and back, compared with the composition of the file's certified
    steps, on the host and on the C64.

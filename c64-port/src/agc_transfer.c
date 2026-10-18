@@ -51,7 +51,9 @@ static bool rope_word(uint16_t physical, uint16_t count, agc_word *word)
     *word = (agc_word)(rope_cell & 077777u);
     return true;
 }
-_Static_assert(APOLLO_ROPE_REU_CM - APOLLO_ROPE_REU_LM == 0x20000u && AGC_SITES_CM_ROPE == 0x4000u,
+_Static_assert((APOLLO_ROPE_REU_LM & 0xffffu) == 0u &&
+                   APOLLO_ROPE_REU_CM - APOLLO_ROPE_REU_LM == 0x20000u &&
+                   AGC_SITES_CM_ROPE == 0x4000u,
                "rope_word's bank sum");
 #endif
 bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,agc_word *word){uint16_t lo=0,hi=count,mid;

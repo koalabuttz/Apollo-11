@@ -21,6 +21,11 @@ const agc_site_operand *cm_exec_site_table(uint16_t *count)
     if (count) *count = (uint16_t)(CM_EXEC_SITES_COUNT | AGC_SITES_ADDRESSES | AGC_SITES_CM_ROPE);
     return (const agc_site_operand *)(const void *)cm_exec_sites_physical;
 }
+/* Boot-only (rk_boot): the sum its rope check expects. */
+__attribute__((section(".boot.text"))) uint16_t cm_exec_site_sum(void)
+{
+    return CM_EXEC_SITES_WORD_SUM;
+}
 #else
 const agc_site_operand *cm_exec_site_table(uint16_t *count){if(count)*count=CM_EXEC_SITES_COUNT;return cm_exec_sites;}
 #endif

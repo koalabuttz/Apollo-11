@@ -90,7 +90,8 @@ def changed_certificates(base, errors, remote=False):
 # flight_host_run.c and the C64 flight store do. agc_transfer.c, in a C64
 # flight build only (AGC_SITES_ROPE), reads the Executive's inline operands
 # at their sites, the same words tools/agc_sites_generate.py checks against
-# the rope, to keep the resident's site tables as addresses only.
+# the rope, to keep the resident's site tables as addresses only; the flight
+# resident's boot (platform/c64/resident_flight.c) checks those words' sum.
 ROPE_IMAGE_USERS = {'src/lm_interpreter.c', 'src/cm_interpreter.c',
                     'tests/lm_interpreter_target.c', 'tests/cm_interpreter_target.c',
                     'src/lm_interp_runtime.c', 'src/lm_interp_core.c', 'tools/interp_core_fuzz.c', 'tools/interp_core_cycles.c',
@@ -101,7 +102,7 @@ ROPE_IMAGE_USERS = {'src/lm_interpreter.c', 'src/cm_interpreter.c',
                     'tools/flight_host_run.c', 'platform/c64/flight_table_module.c',
                     'tests/main_manifest_check.c', 'tests/test_main_manifest.c',
                     'platform/x86/flight_dispatch.c', 'platform/x86/flight_main.c', 'tools/x86_flight_lockstep.c',
-                    'src/agc_transfer.c'}
+                    'src/agc_transfer.c', 'platform/c64/resident_flight.c'}
 
 
 def rope_image_includes(errors):

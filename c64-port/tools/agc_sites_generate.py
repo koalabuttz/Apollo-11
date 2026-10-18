@@ -198,6 +198,8 @@ def render(name, mission, symbol, rows, rope_sha):
         for i in range(0, len(rows), 10):
             out.append(' ' + ','.join(f"{r['physical']}u" for r in rows[i:i + 10]) + ',')
         out.append('};')
+        out.append(f'#define {symbol.upper()}_WORD_SUM 0x{sum(r["word"] for r in rows) & 0xffff:04x}u '
+                   '/* the listed words summed mod 65536: rk_boot checks the rope image against it */')
         out.append('#endif')
         out.append('#if !defined(AGC_SITES_ROPE) || defined(AGC_SITES_CALLEES) /* tests read the words too */')
     out.append(f'static const agc_site_operand {symbol}[{len(rows)}]={{')
