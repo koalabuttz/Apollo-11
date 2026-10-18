@@ -61,15 +61,12 @@ const uint16_t rk_phase_mct[9] = {214u, 213u, 427u, 213u, 213u, 427u, 213u, 214u
 static const uint16_t rk_phase_rest[9] = {854u, 640u, 427u, 853u, 640u, 427u, 853u, 640u, 426u};
 const uint8_t rk_phase_step[9] = {RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3,
                                   RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5};
-/* Set by the idle loop's charge, cleared by rk_rupts. */
-static uint8_t rk_idle;
+/* Set by the idle loop's charge, cleared by rk_rupts (platform/c64/rk_clock.S). */
+uint8_t rk_idle;
 __attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
 /* The MCT left before the next step (at least 1: rk_rupts drained the
- * whole steps at the step's start). */
-__attribute__((noinline)) static uint16_t rk_budget(void)
-{
-    return (uint16_t)(RK_PHASE_MCT(rk_tick_phase) - rk_work);
-}
+ * whole steps at the step's start), in platform/c64/rk_clock.S. */
+uint16_t rk_budget(void);
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
@@ -85,8 +82,9 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     rk_work=w;
 }
 #ifndef RK_NO_DIRECT
-/* The routines a slot module's run may chain (rk_module_limit). */
-__attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_module_limit(rk_budget(),mct); }
+/* The routines a slot module's run may chain: rk_module_limit(rk_budget(),
+ * mct), in platform/c64/rk_clock.S. */
+uint16_t rk_limit(uint8_t mct);
 #endif
 #endif
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
@@ -320,8 +318,11 @@ static inline void rk_realtime_cap(void)
  * The count is read with interrupts held off (and their flag restored: the
  * checks step with it set) so one between its two bytes cannot tear it.
  * Out of line, so the size report counts it with the timers. */
-__attribute__((noinline)) static void rk_rupts(void) {
 #ifdef RK_WORK_CLOCK
+/* rk_rupts (platform/c64/rk_clock.S) comes here when a timer step is due
+ * or a request is pending. */
+void rk_rupts(void);
+__attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
@@ -340,7 +341,9 @@ __attribute__((noinline)) static void rk_rupts(void) {
      * this step took, if any. */
     rk_rupt_last = got;
 #endif
+}
 #else
+__attribute__((noinline)) static void rk_rupts(void) {
     uint16_t now;
     uint8_t take=RK_TICK_LAG;
     __asm__ volatile("php\n\tsei" ::: "memory");
@@ -354,8 +357,8 @@ __attribute__((noinline)) static void rk_rupts(void) {
     rk_rupt_last=
 #endif
     rk_rupt_take(&rk_program,IMAGE,rk_device.superbank,rk_device.interrupt_enabled,&rk_pending);
-#endif
 }
+#endif
 
 /* One kernel routine, or EXEC_UNMAPPED where there is none. The step
  * returns after each routine so that a pending interrupt is taken at the

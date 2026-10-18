@@ -136,7 +136,7 @@ COMPONENTS = {
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
-        ('resident state and step', ['platform/c64/resident_flight.c']),
+        ('resident state and step', ['platform/c64/resident_flight.c', 'platform/c64/rk_clock.S']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
     'cm': [
@@ -149,7 +149,7 @@ COMPONENTS = {
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
-        ('resident state and step', ['platform/c64/resident_flight.c']),
+        ('resident state and step', ['platform/c64/resident_flight.c', 'platform/c64/rk_clock.S']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
 }
