@@ -29,10 +29,15 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
   * tick, so the step takes it at the next boundary (RK_INTERP_MCT per
   * slot). */
  uint16_t w=0;
- do{
+ for(;;){
   status=IM_CORE(e->program,f->state,e->io);
+  /* A call that ends anything but OK ran no interpretive word: the point is
+   * outside the interpreter (after EXIT, RTB or CHANG2), or the core refused
+   * it and another holder runs it. Only words run are charged. */
+  if(status!=EXEC_OK)break;
   w+=RK_INTERP_MCT;
- }while(status==EXEC_OK&&++n<IM_SLOTS&&w<e->budget);
+  if(++n>=IM_SLOTS||w>=e->budget)break;
+ }
  e->work=w;
 #elif defined(RK_IRQ_COUNT)
  /* Back to the step once an IRQ tick lands, so the resident takes the
