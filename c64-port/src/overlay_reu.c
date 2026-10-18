@@ -71,7 +71,7 @@ static uint8_t lookup(void *user,uint16_t id,apollo_ov2_dirent *d) {
     d->id=le16(r); d->page=le16(r+2); d->bytes=le16(r+4); d->crc16=le16(r+6);
     d->selectors=le16(r+8); d->slot=r[10]; d->flags=r[11];
     if(!(d->flags & APOLLO_OV2_DIRENT_PRESENT) || d->id!=id) return 0;
-#if !defined(APOLLO_OV2_STORE_VERIFIED) || defined(RK_STEP_PROFILE)
+#ifndef APOLLO_OV2_STORE_VERIFIED
     /* Payload must lie inside the image, after the resolver. A verified
      * store (APOLLO_OV2_STORE_VERIFIED) had this checked for every present
      * record when it opened (apollo_reu_store_verify). */
