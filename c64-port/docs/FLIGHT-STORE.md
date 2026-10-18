@@ -240,7 +240,14 @@ C's Pinball routines, whose try-lists each fit). A stem in `CHUNK_ORDER`
 packs its routines in its own order instead of by key, and each chunk is
 then a set of entries (`FS_PICK`): Pinball's (`lanec_pin_order`) are grouped
 by the modules their try-lists run, so a chunk links few of them (on LM this
-took the store image from 2.11 to 1.85 MB). The build prints, per
+took the store image from 2.11 to 1.85 MB). `LANEC_PIN_GROUPS` puts three
+display chains first, each in a chunk of its own (`CHUNK_BREAKS`: no chunk
+crosses a group's end): the per-row loop DSPDCPUT, DP1OUTSF, DP3OUTSF,
+DSPDCEND, DSPDCEND +2; the monitor chain NVMONOPT through NVSUBEND and
+VERBFAN; and ENTPAS0 with MIXNOUN. A monitor display walks these about 20
+points in turn, so with them together the LM P66 window from 123000 cs makes
+2.9% fewer job-slot loads (840 to 816 in 300 cs) and runs 1.5% faster
+(docs/LM-FLIGHT-LOAD-PROFILE.md). The build prints, per
 mission, the chunk count, their mean fill and the store image against the
 rope image above it (`report.json`: `chunks`, `chunk_fill`, `image_bytes`,
 `rope_base`). Before #211-era step-machine splits and
@@ -421,6 +428,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   1,015 since more of a pass runs inside one module. The T5 pass count
   also moved (90 to 86): the work clock charges a module's steps at that
   module's MCT, so the two runs are not step-for-step the same 300 cs.
+  The jet-select pack then split inside the T6 program (T6START and the
+  chain after it, 17,3617 to 17,3713), so each T6RUPT loaded its two
+  chunks by turns. `SPLIT_BEFORE` starts a chunk at a given key: the jet
+  pack's second chunk now begins at T6START and holds the whole T6 chain.
+  On a090a136 (cm-p40 from 70660 cs with `--replay`, 308 cs) that took
+  T6RUPT from 173 job loads to 29 (one a pass) and its mean cost from
+  253,509 to 90,897 cycles, and the window from 11.79x to 10.22x real
+  time; every other interrupt's counts are unchanged.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
