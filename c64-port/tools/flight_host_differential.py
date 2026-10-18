@@ -146,6 +146,21 @@ P23 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '16500:tools/flight_scenarios/cm-p23-mark.load'}
 P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E'
             '@20500V33E@25000V33E@27000V37E00E')
+# cm-p40: Apollo 11's LOI-1 (75:49:50 GET), the load at 20 s
+# (tools/flight_scenarios/cm_p40.py: the docked CSM+LM on its approach
+# hyperbola 2,060 km from the moon, TIG at 300 s, the external DV 889 m/s
+# retrograde, the SPS pads, the platform with X along the DV and the CDUs
+# at the ignition attitude S40.1 gives). G&N AUTO (channel 31); V37E30E,
+# proceed on V06N33 (TIG), V06N81 (DV), V06N42 (apocynthion and
+# pericynthion) and V16N45; V37E40E, proceed on V50N18 (R60's maneuver is
+# nil), ENTER on V50N18 (end R60), proceed on V50N25 00204 (the gimbal
+# test); average G at TIG-30, proceed on V99N40 at TIG-5; FLIGHT_SPS (the
+# 43,900 kg stack) burns about 372 s to cutoff (VG under 1 m/s); proceed
+# on V16N40 and V16N85, then P00.
+P40 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SPS': '43900', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
+P40_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+            '@29600V33E@69000V33E@70500V33E@72000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
 # load at 20 s (tools/flight_scenarios/lm_p57.py: the LM at Tranquility
 # Base facing west 13 degrees left, the landing REFSMMAT, the platform
@@ -165,15 +180,51 @@ P57 = {'FLIGHT_CH30': '036357', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077737'
 P57_KEYS = ('@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000'
             'V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21'
             'E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E')
+# lm-doi-nassp: Apollo 11's descent orbit insertion from the same core
+# (NASSP, 102:25:51 GET), with DOI backed out (tools/flight_scenarios/
+# lm_doi.py: the LM on the 113.8 x 117.5 km pre-DOI orbit, DOI at TIG
+# 102:34:00) and the descent engine model. V37E30E: P30 with TIG and
+# 76.4 ft/s retrograde (N81) loaded, PRO on N42 (61.4 x 8.1 nmi); V37E40E:
+# the crew's maneuver to the burn attitude (FLIGHT_POKE: CDUX-Z and
+# CDUXD-ZD at R60's N18 angles), ENTER on V50N18, PRO on V99N40; the DPS
+# at 10% (no throttle-up) burns 75 s to cutoff (VG 1.1 ft/s); PRO on
+# V16N40 and N85, V37E00E; V82 (this vehicle): 61.4 x 8.8 nmi, V34E.
+DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
+       'FLIGHT_LOAD': '100:tools/flight_scenarios/lm-doi.load',
+       'FLIGHT_POKE': '7000:032=77776,7000:033=60216,7000:034=74211,7000:3235=77776,7000:3236=60216,7000:3237=74211'}
+del DOI['FLIGHT_LR_POS2']
+DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
+            '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# cm-p20: the CSM's side of the LM rendezvous (tools/flight_scenarios/
+# cm_p20.py: the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1
+# degrees behind, the CMC's LM state 1.8 km too far along the line of
+# sight; the CSM at R61's tracking attitude). FLIGHT_RR's CM side
+# (tools/flight_radar.h) holds the attitude on CDUXD-ZD, points the SXT
+# at the LM and answers VHF range reads. The IMU operating, CMC mode
+# (channels 31 and 33, FLIGHT_CHAN at 40 s); V37E20E (P20: R61's tracking
+# attitude, R22 running), V87E (VHF ranging allowed), V57E (R21's V51)
+# and MARK, proceed on V51 (the SXT mark goes into the LM state: TRKMKCNT
+# 1); R22's first VHF range (about 125 s) shows V06N49 (the 1.8 km), proceed:
+# VHFCNT 1, and the second (about 185 s, a 4 ft/s velocity change) again,
+# proceed. R22 waits on N49 in a loop (RENDISP7), so the AGC does not idle:
+# FLIGHT_BUSY_SAMPLE gives the keys their sample points.
+CM_P20 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_CHAN': '4000:033=077757', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p20.load',
+          'FLIGHT_RR': '2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320',
+          'FLIGHT_BUSY_SAMPLE': '100'}
+CM_P20_KEYS = '@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
+          ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
+          ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
+          ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'})]

@@ -25,18 +25,24 @@ static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
     return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,dest,reu,count) &
         (APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))==APOLLO_REU_STATUS_END);
 }
-/* A resolver record for each of four point classes (two loc bits). The
- * search reads its probes into the point's entry, so an entry always holds
- * a real record, and the next lookup of that point skips the search. Open
- * fills them with a key no record has (bank 0xFFFF). The cache is valid
- * only because resolver records are read-only once the store is open:
- * restart and GOJAM keep it, and only a reopen clears it. */
-static uint8_t cache[4][APOLLO_REU_RESOLVER_RECORD];
+/* Recently resolved points, a record each, direct-mapped by
+ * (loc, bank): the search reads its probes into the point's entry, so an
+ * entry always holds a real record, and the next lookup of that point skips
+ * the search. Open fills them with a key no record has (bank 0xFFFF). The
+ * cache is valid only because resolver records are read-only once the
+ * store is open: restart and GOJAM keep it, and only a reopen clears it.
+ * 32 entries hold most of a flight phase's resolved points (CM entry
+ * 17000-19000 cs: 80 points, 80% of lookups hit; 4 entries hit 29%). */
+#ifndef APOLLO_REU_RESOLVE_CACHE
+#define APOLLO_REU_RESOLVE_CACHE 32u
+#endif
+static uint8_t cache[APOLLO_REU_RESOLVE_CACHE * APOLLO_REU_RESOLVER_RECORD];
 uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record) {
     uint8_t *h=record,i;
     s->base=base; s->record=record;
-    for (i = 0; i < 4; ++i) cache[i][0] = cache[i][1] = 0xFFu;
+    for (i = 0; i < APOLLO_REU_RESOLVE_CACHE; ++i)
+        cache[i * APOLLO_REU_RESOLVER_RECORD] = cache[i * APOLLO_REU_RESOLVER_RECORD + 1u] = 0xFFu;
     if(!read_bytes(base,h,APOLLO_REU_INDEX_RECORD)) return 0;
     if(h[0]!='N' || h[1]!='R' || h[2]!='E' || h[3]!='U' || h[4]!=APOLLO_REU_FORMAT ||
        h[5]!=mission || le16(h+6)!=services) return 0;
@@ -49,11 +55,13 @@ uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     /* Header page, index (the pages up to the resolver: blocks of 256
      * records = 16 pages, 1 to 16 blocks), then resolver, then modules:
      * every region must lie inside the image. */
-    if(s->index_page<1u || s->resolver_page<=s->index_page ||
-       (uint16_t)(s->resolver_page-s->index_page)>256u ||
-       ((s->resolver_page-s->index_page)&15u) ||
-       (uint32_t)s->resolver_page*256u+(uint32_t)s->resolver_count*APOLLO_REU_RESOLVER_RECORD>
-       (uint32_t)s->pages*256u)
+    if (s->index_page < 1u || s->resolver_page <= s->index_page ||
+        s->resolver_count >= 8192u || /* resolve(): offsets fit 16 bits */
+        (uint16_t)(s->resolver_page - s->index_page) > 256u ||
+        ((s->resolver_page - s->index_page) & 15u) ||
+        (uint32_t)s->resolver_page * 256u +
+                (uint32_t)s->resolver_count * APOLLO_REU_RESOLVER_RECORD >
+            (uint32_t)s->pages * 256u)
         return 0;
     s->index_blocks=(uint8_t)((s->resolver_page-s->index_page)>>4);
     return 1;
@@ -71,7 +79,7 @@ static uint8_t lookup(void *user,uint16_t id,apollo_ov2_dirent *d) {
     d->id=le16(r); d->page=le16(r+2); d->bytes=le16(r+4); d->crc16=le16(r+6);
     d->selectors=le16(r+8); d->slot=r[10]; d->flags=r[11];
     if(!(d->flags & APOLLO_OV2_DIRENT_PRESENT) || d->id!=id) return 0;
-#if !defined(APOLLO_OV2_STORE_VERIFIED) || defined(RK_STEP_PROFILE)
+#ifndef APOLLO_OV2_STORE_VERIFIED
     /* Payload must lie inside the image, after the resolver. A verified
      * store (APOLLO_OV2_STORE_VERIFIED) had this checked for every present
      * record when it opened (apollo_reu_store_verify). */
@@ -84,20 +92,39 @@ static uint8_t fetch(void *user,const apollo_ov2_dirent *d,uint16_t offset,uint8
     if(!count || (uint32_t)offset+count>d->bytes) return 0;
     return read_bytes(page_address(s,d->page)+offset,dest,count);
 }
+/* resolve's search state. Static: absolute addressing is smaller than the
+ * soft stack. */
+static uint32_t probe_base;
+static uint16_t probe_low, probe_high;
 static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *out) {
     apollo_reu_store *s=(apollo_reu_store *)user;
-    uint16_t low=0,high=s->resolver_count;
-    uint32_t key=((uint32_t)bank<<16)|loc;
-    uint8_t *e = cache[(uint8_t)(loc ^ (loc >> 2)) & 3u];
-    uint32_t probe = ((uint32_t)le16(e) << 16) | le16(e + 2);
-    while (probe != key) {
-        uint16_t middle=(uint16_t)(low+(uint16_t)((high-low)>>1));
-        if (low >= high || !read_bytes(page_address(s, s->resolver_page) +
-                                           (uint32_t)middle * APOLLO_REU_RESOLVER_RECORD,
-                                       e, APOLLO_REU_RESOLVER_RECORD))
-            return 0;
-        probe = ((uint32_t)le16(e) << 16) | le16(e + 2);
-        if(probe<key) low=(uint16_t)(middle+1u); else high=middle;
+    uint8_t *e = cache + (uint8_t)(((uint8_t)loc ^ (uint8_t)(loc >> 4) ^ (uint8_t)(bank >> 10)) &
+                                   (APOLLO_REU_RESOLVE_CACHE - 1u)) *
+                             APOLLO_REU_RESOLVER_RECORD;
+    if (le16(e) != bank || le16(e + 2) != loc) {
+        /* Records are sorted by (bank, loc), 8 bytes each, fewer than 8192,
+         * so a record's offset in the resolver fits 16 bits. */
+        probe_base = page_address(s, s->resolver_page);
+        probe_low = 0;
+        probe_high = s->resolver_count;
+        for (;;) {
+            uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1)), b;
+            if (probe_low >= probe_high ||
+                !read_bytes(probe_base + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), e,
+                            APOLLO_REU_RESOLVER_RECORD))
+                return 0;
+            b = le16(e);
+            if (b == bank) {
+                uint16_t l = le16(e + 2);
+                if (l == loc) break;
+                b = (uint16_t)(l < loc);
+            } else
+                b = (uint16_t)(b < bank);
+            if (b)
+                probe_low = (uint16_t)(middle + 1u);
+            else
+                probe_high = middle;
+        }
     }
     out->module = le16(e + 4);
     out->selector = le16(e + 6);

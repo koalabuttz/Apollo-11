@@ -1,11 +1,11 @@
 PRG sha256 (clang version 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-b18d09cc99947ac1b13af8e414c31260e14aefa4a761982106b8a9ad95ad064c  build/cm-rcs-dap-1.prg
-05ad11103ab036ec7fdcd31aebcce6117222a991e2ff3d3b8e3c564b039c06cb  build/cm-rcs-dap-2.prg
+c99fa92956b02e283f3f36446d65b47da91202f0eb7d65d44cde47fa83dfe67f  build/cm-rcs-dap-1.prg
+416dbe75e84b9bb8ca7cccbdf069fd6878b24ec69c625ef5787a1cf2996e4a3d  build/cm-rcs-dap-2.prg
 
 $ make vice-cm-rcs-dap
 for p in build/cm-rcs-dap-1.prg build/cm-rcs-dap-2.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
 PASS: VICE PAL cm-rcs-dap-1.prg: 24 checks, 0 failures
-PRG sha256: b18d09cc99947ac1b13af8e414c31260e14aefa4a761982106b8a9ad95ad064c cm-rcs-dap-1.prg
+PRG sha256: c99fa92956b02e283f3f36446d65b47da91202f0eb7d65d44cde47fa83dfe67f cm-rcs-dap-1.prg
 PASS: VICE PAL cm-rcs-dap-2.prg: 21 checks, 0 failures
-PRG sha256: 05ad11103ab036ec7fdcd31aebcce6117222a991e2ff3d3b8e3c564b039c06cb cm-rcs-dap-2.prg
+PRG sha256: 416dbe75e84b9bb8ca7cccbdf069fd6878b24ec69c625ef5787a1cf2996e4a3d cm-rcs-dap-2.prg
 exit 0
