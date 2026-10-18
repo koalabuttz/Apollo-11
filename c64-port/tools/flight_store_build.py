@@ -53,6 +53,7 @@ import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import interp_specs  # noqa: E402
 from overlay_runtime_library import prepare  # noqa: E402
 from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, mct_weight,  # noqa: E402
                                    resident_sources, wrapper_records)
@@ -62,7 +63,12 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
 NM = ROOT / 'deps/llvm-mos/bin/llvm-nm'
 PIN_LTO = ['-Wl,-mllvm,-inline-threshold=-50']
-REU_LIMIT = 0x1c0000          # tools/overlay_allocation.py REU_STORE_LIMIT
+# A flight store carries one mission's rope, at FLIGHT_ROPE_BASE whichever
+# the mission (include/rope_image.h under RK_LM or RK_CM; RK's flight-only
+# rope move), so the store may run up to Lane C's Pinball trampoline save
+# at 0x1df000 (src/lanec_pin_trampoline.c LANEC_PIN_REU_SAVE).
+FLIGHT_ROPE_BASE = 0x1e0000
+REU_LIMIT = 0x1df000
 SLOT_BYTES = {0: 0x4000, 1: 0x1FFA}
 LANE_BYTE = {'A': 0x01, 'B': 0x02, 'C': 0x03, 'D1': 0x04, 'D2': 0x05, 'E': 0x06, 'F': 0x07, 'G': 0x08, 'H': 0x09}
 LANE_LIMIT = {'A': 0xDF}       # lane A 0xE0-0xFF: the resident's and the flight check's modules
@@ -82,9 +88,12 @@ ERASABLE_BASE = 40960
 # Modules over their slot by more than this are not split (a split needs
 # about two trial links per routine), except the stems in SPLIT_ANY: their
 # routines are known to fit one by one (Lane C's Pinball try-lists,
-# docs/LANEC-PIN-HEADS.md), so any overflow is split.
+# docs/LANEC-PIN-HEADS.md; a compiled file whose spec stops each basic
+# routine at the next key, tools/interp_compile.py 'basic_key_stops'), so
+# any overflow is split.
 SPLIT_LIMIT = 65536
-SPLIT_ANY = {'lanec_pin_routines'}
+SPLIT_ANY = {'lanec_pin_routines'} | {base for spec in interp_specs.SPECS.values() if spec.get('basic_key_stops')
+                                      for base in spec['base'].values()}
 
 
 def lanec_pin_order(table, n):
@@ -554,15 +563,16 @@ def flight_undo_area():
 
 def add_rope(m):
     """Put the mission's rope image where include/rope_image.h reads it on the
-    C64 (the top of a 2 MB REU, above the store), for the modules whose
-    fixed_data reads the rope (self-check, FIXED_DATA 'rope')."""
-    from rope_image_pack import BASES, physical_words
+    C64 (FLIGHT_ROPE_BASE near the top of a 2 MB REU, above the store), for
+    the modules whose fixed_data reads the rope (self-check, FIXED_DATA
+    'rope')."""
+    from rope_image_pack import physical_words
     program = {'lm': 'Luminary099', 'cm': 'Comanche055'}[m]
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
-    base = BASES[program]
-    if len(image) > base and any(image[base:]):
-        raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
+    base = FLIGHT_ROPE_BASE
+    if len(image) > REU_LIMIT and any(image[REU_LIMIT:]):
+        raise SystemExit(f'{m}: the store ({len(image):#x} bytes) reaches the Pinball trampoline save at {REU_LIMIT:#x}')
     image += bytes(2 * 1024 * 1024 - len(image))
     words = list(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin'))
     undo, undo_end = flight_undo_area()
@@ -1756,13 +1766,12 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         # Chunks and the store against the rope image above it, printed
         # before add_rope so an overflow shows its size.
-        from rope_image_pack import BASES
         chunked = [mod for mod in modules if mod.get('chunk_of') is not None and mod.get('ok')]
         fill = sum(mod['bytes'] for mod in chunked) / sum(SLOT_BYTES[mod['slot']] for mod in chunked) if chunked else 0
         image = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())['image_bytes']
-        rope = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+        rope = FLIGHT_ROPE_BASE
         print(f'{m}: {len(chunked)} chunks, mean fill {fill:.0%}; store image {image} bytes, rope image at '
-              f'{rope:#x} ({rope - image:+d} bytes left)')
+              f'{rope:#x} ({REU_LIMIT - image:+d} bytes left below the Pinball trampoline save)')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         # A class-4 module holds the task slot's $E000 from boot: a task-slot

@@ -76,8 +76,9 @@ FLOW_TAGS = {'lm_lunar_landing': 'LLD', 'lm_servicer': 'LMSV', 'lm_burn_baby': '
              'lm_imu_performance': 'IPT'}
 # REU: the case image at IF_REF and the stream from IF_STREAM = IF_REF +
 # 0x1000, above the store (the first 4 KB page past its last byte) and below
-# the mission's rope image (include/rope_image.h).
-ROPE_AT = {'lm': 0x1c0000, 'cm': 0x1e0000}
+# the Pinball trampoline save below the mission's rope image
+# (tools/flight_store_build.py REU_LIMIT).
+ROPE_AT = {'lm': 0x1df000, 'cm': 0x1df000}
 
 
 @functools.cache

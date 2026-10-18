@@ -19,7 +19,14 @@
 #include <stdbool.h>
 #include "agc_word.h"
 #define APOLLO_ROPE_WORDS (36u*1024u)
+/* A flight store (one mission, built with RK_LM or RK_CM) carries its rope at
+ * 0x1e0000 whichever the mission (tools/flight_store_build.py
+ * FLIGHT_ROPE_BASE); builds with both ropes keep the LM's at 0x1c0000. */
+#if defined(RK_LM) && RK_LM && !(defined(RK_CM) && RK_CM)
+#define APOLLO_ROPE_REU_LM UINT32_C(0x1e0000)
+#else
 #define APOLLO_ROPE_REU_LM UINT32_C(0x1c0000)
+#endif
 #define APOLLO_ROPE_REU_CM UINT32_C(0x1e0000)
 /* mission 0 Luminary099, 1 Comanche055; physical bank*1024+offset (fixed-fixed
  * banks 2 and 3 as themselves). False when no image is loaded or the address
