@@ -410,7 +410,11 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         }
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
-        uint16_t limit=rk_limit(t->mct);
+        uint8_t mct = t->mct;
+#if RK_LM /* only the LM store packs the idle loop beside interrupt code */
+        if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
+#endif
+        uint16_t limit = rk_limit(mct);
 #else
         const uint16_t limit=RK_MODULE_STEPS;
 #endif
@@ -418,11 +422,18 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
         RK_PROF(4);
         status=agc_transfer_run(&module_program,IMAGE,&rk_device,&rk_device.superbank,stop_physical,limit,&steps);
         /* Not this module's point, or its table refuses the entry: the next
-         * slot, then the resolver, may hold the point another way. */
-        if(!steps && (status==EXEC_UNMAPPED || status==EXEC_OUT_OF_SCOPE)) { RK_PROF(5); continue; }
+         * slot, then the resolver, may hold the point another way. The
+         * transfer engine counts a refused call as a step, so a table
+         * refusing its first call (a compact copy that takes only its own
+         * callers: POSTJUMP beside the CM idle loop) also moves on. */
+        if (status == EXEC_OUT_OF_SCOPE ? steps <= 1u && steps < limit
+                                        : status == EXEC_UNMAPPED && !steps) {
+            RK_PROF(5);
+            continue;
+        }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
-        rk_charge(steps,t->mct);
+        rk_charge(steps, mct);
 #endif
         return rk_module_status(status,steps,limit);
     }

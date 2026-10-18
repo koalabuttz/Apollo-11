@@ -96,6 +96,11 @@ SC_ENTRY(3306) SC_ENTRY(3340)
 #define P43(z) (uint16_t)(043u*1024u+(K(z)-02000u))
 static const agc_routine_entry entries[SELF_CHECK_IDLE_ROUTINES]={{P43(03306u),e3306},{P43(03340u),e3340}};
 const agc_routine_table SC_IDLE_TABLE={entries,SELF_CHECK_IDLE_ROUTINES};
+#ifdef SC_IDLE_HOT_TABLE
+/* The same entries for the T4RUPT pack (tools/flight_store_build.py
+ * T4PACK), so the loop runs on there after a T4RUPT with no reload. */
+const agc_routine_table SC_IDLE_HOT_TABLE={entries,SELF_CHECK_IDLE_ROUTINES};
+#endif
 #else
 static __attribute__((noinline)) void sc_caf(agc_word k){ai_caf(sc_s,k);}
 static __attribute__((noinline)) uint8_t sc_ts(unsigned a){return ai_ts(sc_s,a);}

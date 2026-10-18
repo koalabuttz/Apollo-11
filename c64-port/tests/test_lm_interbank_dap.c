@@ -32,7 +32,9 @@ static void state(apollo_overlay_state *s,p66_bias_io *io,uint16_t z,uint16_t n)
  if(rnd()%8u)s->words[072]=(uint16_t)(0100u+rnd()%07700u);
  /* Now and then break one condition. */
  switch(rnd()%24u){case 0:s->words[7]=1;break;case 1:s->words[6]^=1;break;case 2:io->superbank=1;break;
-  case 3:io->interrupt_enabled=2;break;case 4:s->words[3]=0100;break;case 5:s->words[2]=07776u;break;default:break;}
+  case 3:io->interrupt_enabled=2;break;case 4:s->words[3]=0100;break;case 5:s->words[2]=07776u;break;
+  /* Z aliased in the switchable window: FB bank 2, Z 02000 lower (same key). */
+  case 6:s->words[5]=(uint16_t)(z-02000u);s->words[4]=04000u;s->words[6]=(uint16_t)(s->words[4]|(s->words[3]>>8));break;default:break;}
 }
 int main(void){agc_native_program p;apollo_overlay_state a,b;p66_bias_io ia,ib;uint32_t n,checks=0,fails=0,ok=0;uint16_t i,e;
  static const uint16_t z[3]={04674u,04707u,04635u};

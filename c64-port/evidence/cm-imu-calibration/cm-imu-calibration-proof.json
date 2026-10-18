@@ -499,7 +499,7 @@
   {
    "mission": "cm",
    "keep": "0x7fffffffe00000000000000000000000000000000000000",
-   "cases": 39,
+   "cases": 38,
    "case_ids": [
     78392,
     78900,
@@ -538,15 +538,15 @@
     92672,
     93356,
     93712,
-    94284,
-    94720
+    94284
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x7fc0000000000000000000000000000000000000000008000",
-   "cases": 9,
+   "keep": "0x7fe0000000000000000000000000000000000000000008000",
+   "cases": 10,
    "case_ids": [
+    94720,
     95708,
     95856,
     96632,
@@ -763,7 +763,7 @@
   {
    "mission": "cm",
    "keep": "0xffe000003004000100000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 14,
+   "cases": 13,
    "case_ids": [
     166608,
     166524,
@@ -777,15 +777,15 @@
     168972,
     169472,
     169508,
-    170092,
-    170520
+    170092
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x1ffc00000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-   "cases": 12,
+   "keep": "0x1ffe00000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "cases": 13,
    "case_ids": [
+    170520,
     171028,
     172000,
     172308,
@@ -821,14 +821,14 @@
  "c64_coverage": {
   "host_labels": 554,
   "c64_labels": 554,
-  "host_edges": 3761,
-  "c64_edges": 3761,
+  "host_edges": 3785,
+  "c64_edges": 3785,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 1984,
-  "c64_taken": 1994,
+  "host_taken": 2000,
+  "c64_taken": 2010,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -875,9 +875,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 2152,
-  "edges_host_vectors": 2152,
-  "edges_c64": 2150,
+  "edges_all_cases": 2157,
+  "edges_host_vectors": 2157,
+  "edges_c64": 2155,
   "edges_not_on_c64": [
    "src/agc_fast_ops.c:39",
    "src/lm_interp_orders.c:617"

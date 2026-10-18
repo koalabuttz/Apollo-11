@@ -34,6 +34,8 @@ set them as they read at each X MARK (the harness does not drive them).
 import math, re, sys
 from pathlib import Path
 
+from sighting import cross, dot, gimbals as sm_gimbals, mm, mv, reticle as aot_reticle, rx, ry, rz, smnb, unit
+
 ROOT = Path(__file__).resolve().parents[2]
 LST = ROOT / 'build/fixed-data/Luminary099/assembly.lst'
 SYMS = {}
@@ -75,39 +77,8 @@ def cdu(deg):
     return int(round(deg / 360.0 * 2**15)) % 2**15
 
 
-def cross(a, b):
-    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
-
-
-def dot(a, b):
-    return sum(x * y for x, y in zip(a, b))
-
-
-def unit(a):
-    n = math.sqrt(dot(a, a))
-    return [c / n for c in a]
-
-
-def mxv(m, v):
-    return [dot(r, v) for r in m]
-
-
-def mxm(a, b):
-    return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
-
-
 def tr(m):
     return [list(r) for r in zip(*m)]
-
-
-def rot(axis, deg):
-    """Frame rotation (passive) about axis 0, 1 or 2."""
-    c, s = math.cos(math.radians(deg)), math.sin(math.radians(deg))
-    i, j = [(1, 2), (2, 0), (0, 1)][axis]
-    m = [[1.0 if r == k else 0.0 for k in range(3)] for r in range(3)]
-    m[i][i] = m[j][j] = c
-    m[i][j], m[j][i] = s, -s
-    return m
 
 
 def lin(*terms):
@@ -194,7 +165,7 @@ def heading(get, az):
 up0, fwd0 = heading(LAND_GET, APPROACH_AZ)
 REFSMMAT = [up0, cross(fwd0, up0), fwd0]
 assert abs(dot(REFSMMAT[1], cross(REFSMMAT[2], REFSMMAT[0])) - 1) < 1e-12
-SM = mxm(mxm(mxm(rot(2, DRIFT[2]), rot(1, DRIFT[1])), rot(0, DRIFT[0])), REFSMMAT)
+SM = mm(mm(mm(rz(math.radians(DRIFT[2])), ry(math.radians(DRIFT[1]))), rx(math.radians(DRIFT[0]))), REFSMMAT)
 
 
 def body(get):
@@ -207,39 +178,18 @@ def body(get):
 def gimbals(nb_ref, sm_ref):
     """CDU angles (outer X, inner Y, middle Z, degrees) with NB from SM =
     Rx(o) Rz(m) Ry(i) (*SMNB*)."""
-    m = mxm(nb_ref, tr(sm_ref))
-    mg = math.degrees(math.asin(max(-1, min(1, m[0][1]))))
-    ig = math.degrees(math.atan2(-m[0][2], m[0][0]))
-    og = math.degrees(math.atan2(-m[2][1], m[1][1]))
-    chk = mxm(mxm(rot(0, og), rot(2, mg)), rot(1, ig))
-    assert max(abs(chk[i][j] - m[i][j]) for i in range(3) for j in range(3)) < 1e-9
-    return og, ig, mg
-
-
-def optic_axis(az, el):
-    """OANB: the optic axis and the X and Y mark plane vectors (NB)."""
-    a, e = math.radians(az), math.radians(el)
-    oa = [math.sin(e), math.cos(e) * math.sin(a), math.cos(e) * math.cos(a)]
-    uyp = [0.0, math.cos(a), -math.sin(a)]
-    uxp = unit(cross(uyp, oa))
-    return oa, uxp, uyp
+    m = mm(nb_ref, tr(sm_ref))
+    o, i, z = sm_gimbals(m)
+    chk = smnb(o, i, z)
+    assert max(abs(chk[r][c] - m[r][c]) for r in range(3) for c in range(3)) < 1e-9
+    return math.degrees(o), math.degrees(i), math.degrees(z)
 
 
 def reticle(s_nb, det):
-    """The cursor and spiral angles (degrees) of a star (NB unit vector)
-    in detent `det`: SURFSTAR run backward. OPTAXIS turns the mark planes
-    by the detent's apparent field rotation AOTAZ+1 - az."""
-    az = AOT_AZ[det - 1]
-    oa, uxp, uyp = optic_axis(az, AOT_EL)
-    r = math.radians(AOT_AZ[1] - az)
-    xp = lin((math.cos(r), uxp), (math.sin(r), uyp))
-    yp = lin((math.cos(r), uyp), (-math.sin(r), uxp))
-    sep = math.degrees(math.acos(max(-1, min(1, dot(s_nb, oa)))))
-    upp = unit(lin((1, s_nb), (-dot(s_nb, oa), oa)))
-    l = cross(oa, upp)                  # the cursor line: cos(Y) yp - sin(Y) xp
-    yrot = math.degrees(math.atan2(-dot(l, xp), dot(l, yp))) % 360
-    srot = (yrot + 12 * sep) % 360
-    return yrot, srot, sep
+    """The cursor and spiral angles and the angle off the optic axis
+    (degrees) of a star (NB unit vector) in detent `det`."""
+    r = aot_reticle(s_nb, math.radians(AOT_AZ[det - 1]), math.radians(AOT_EL), math.radians(AOT_AZ[1]))
+    return tuple(math.degrees(x) for x in r)
 
 
 # The load: state at T_LOAD.
@@ -258,7 +208,7 @@ RLS_MF = [1735470.0 * c for c in (math.cos(math.radians(SITE_LAT)) * math.cos(ma
                                   math.sin(math.radians(SITE_LAT)))]
 vec('RLS', RLS_MF, 27)
 NB = body(LOAD_GET)
-vec('GSAV', mxv(NB, up_s), 1)           # unit gravity (up) in NB, from an earlier gravity sighting
+vec('GSAV', mv(NB, up_s), 1)           # unit gravity (up) in NB, from an earlier gravity sighting
 og, ig, mg = gimbals(NB, SM)
 put('CDUX', [cdu(og)]); put('CDUY', [cdu(ig)]); put('CDUZ', [cdu(mg)])
 
@@ -273,7 +223,7 @@ mark_cdus = []
 for k, ((code, det), mark) in enumerate(zip(STARS, MARK_CS), 1):
     get = LOAD_GET + (mark - T_LOAD) / 100
     nb = body(get)
-    s_nb = mxv(nb, unit(star(code)))
+    s_nb = mv(nb, unit(star(code)))
     y, s, sep = reticle(s_nb, det)
     mark_cdus.append(gimbals(nb, SM))   # the moon has turned the LM since the load
     print('star %02o detent %d: off axis %.2f deg; cursor %.2f spiral %.2f' % (code, det, sep, y, s))

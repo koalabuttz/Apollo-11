@@ -42,7 +42,10 @@ def snapshot(exe, name, cs):
     _, m, _, keys, env = scen
     header = dp.WORK / f'{name}-snap.h'
     header.unlink(missing_ok=True)
-    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1), keys], cwd=ROOT,
+    # The host takes the snapshot at the first point at or after cs with no
+    # interrupt pending (a long job, such as PICAPAR, can hold one off for
+    # over 100 cs), then stops; running to cs + 1000 leaves room for that.
+    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}'},
                        capture_output=True, text=True)
     (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)
@@ -105,6 +108,13 @@ def main():
     if a.profile:
         r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
+    # Status 0 means no step refused; it does not mean the window ran to its
+    # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
+    # reports status 0). A window that stops short of --cs without a refusal
+    # fails, so a "no stop" result always covers the whole window.
+    if r.get('status') == 0 and r.get('agc_cs') is not None and r['agc_cs'] < a.cs:
+        r.update(ok=False, short=True)
+        print(f"FAIL: {a.scenario}: status 0 but the window ended after {r['agc_cs']} of {a.cs} cs")
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z

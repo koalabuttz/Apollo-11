@@ -9,13 +9,13 @@
       "store": "tree"
     },
     "cm-rcs-dap-host.log": {
-      "sha256": "71f85f6251a3c06d079e9ce5b6208ebb8992fca90479f39e72e1f35ae51b46f7",
-      "bytes": 988,
+      "sha256": "e496946cac2bbd6321a72395aa3153d97ab1e602274e0a8fe795d0a213d1d952",
+      "bytes": 1070,
       "store": "tree"
     },
     "cm-rcs-dap-proof.json": {
-      "sha256": "141ae8cfe0bacee1bbd883fcef5eb62df9847ad9e7c294b553aa18c3c3968523",
-      "bytes": 24325,
+      "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75",
+      "bytes": 24399,
       "store": "tree"
     },
     "cm-rcs-dap-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-rcs-dap-vice.log": {
-      "sha256": "1ae45cf89dda18f9b76c2e4232a38f01bebe4f8242391681e271ad0fced56e2c",
-      "bytes": 758,
+      "sha256": "d07013292f345df69e002b9153ff591616b3a3352b7ff71be4ef1bd203e5d502",
+      "bytes": 763,
       "store": "tree"
     }
   }

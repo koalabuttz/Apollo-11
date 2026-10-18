@@ -3,8 +3,8 @@
 # tools/interp_compile.py and tools/basic_compile.py into native routines of
 # the control-transfer ABI.
 CM_ENTRY_DAP_COMMON = src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c
-CM_ENTRY_DAP_SRC = src/cm_entry_dap.c tests/cm_entry_dap_target.c $(CM_ENTRY_DAP_COMMON)
-CM_ENTRY_DAP_HDR = include/cm_entry_dap.h tests/interp_case.h tests/cm_entry_dap_vectors.h tests/cm_entry_dap_c64_vectors.h
+CM_ENTRY_DAP_SRC = src/cm_entry_dap.c src/agc_fast_ops.c src/agc_fast_window.c tests/cm_entry_dap_target.c $(CM_ENTRY_DAP_COMMON)
+CM_ENTRY_DAP_HDR = include/cm_entry_dap.h include/agc_fast_ops.h include/agc_fast_window.h include/agc_image_thin.h include/agc_fast_redirect.h tests/interp_case.h tests/cm_entry_dap_vectors.h tests/cm_entry_dap_c64_vectors.h
 CM_ENTRY_DAP_MOS_FLAGS = -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw
 .PHONY: test-cm-entry-dap sanitize-cm-entry-dap c64-cm-entry-dap vice-cm-entry-dap cm-entry-dap-differential
 all: build/test-cm-entry-dap
@@ -35,7 +35,7 @@ cm-entry-dap-differential:
 # the vectors; the image sits under the KERNAL ROM, the code below $c000).
 include tools/mk/cm-entry-dap.groups
 CM_ENTRY_DAP_C64_PRGS = $(foreach g,$(CM_ENTRY_DAP_GROUPS),build/cm-entry-dap-$(g).prg)
-CM_ENTRY_DAP_C64_SRC = src/cm_entry_dap.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_entry_dap_target.c
+CM_ENTRY_DAP_C64_SRC = src/cm_entry_dap.c src/agc_fast_ops.c src/agc_fast_window.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_entry_dap_target.c
 c64-cm-entry-dap: $(CM_ENTRY_DAP_C64_PRGS)
 build/cm-entry-dap-%.prg: $(CM_ENTRY_DAP_SRC) platform/c64/cm_entry_dap_diagnostic.c tools/mk/cm-entry-dap.groups $(CM_ENTRY_DAP_HDR) | build
 	$(MOS_CC) $(CPPFLAGS) $(CM_ENTRY_DAP_MOS_FLAGS) $(CM_ENTRY_DAP_GROUP_FLAGS_$*) -Wl,-Map,build/cm-entry-dap-$*.map $(CM_ENTRY_DAP_C64_SRC) platform/c64/cm_entry_dap_diagnostic.c -o $@

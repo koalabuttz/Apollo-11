@@ -8,7 +8,9 @@
 #include "cm_interp.h"
 #include "agc_image_ops.h"
 #include "agc_channel_ops.h"
-#include "agc_image_w.h"
+#define AFR_EBN 6
+#include "agc_fast_redirect.h"
+#define W AFR_S(s)->words
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
 #define MAYBE_UNUSED __attribute__((unused))
@@ -45,6 +47,7 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
  unsigned i,vac=W[0120];
  if(W[7]||W[067]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u))return 0;
+ if(W[3]!=03000u)return 0; /* fast_window: EB as AFR_EBN */
  if(vac<0401u||vac>0661u||(vac-0401u)%054u)return 0;
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
@@ -3404,6 +3407,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
  unsigned i;
  if(W[4]!=fb||W[7]||W[3]>03400u||(W[3]&0377u)||W[6]!=(agc_word)((W[4]&076000u)|(W[3]>>8)))return 0;
  if(io->interrupt_enabled>1u||(io->superbank&~0160u)||(fb>=060000u&&(io->superbank&0100u)))return 0;
+ if(W[3]!=03000u)return 0; /* fast_window: EB as AFR_EBN */
 #if !RK_FIXED_IMAGE
  for(i=3;i<2048u;++i)if(W[i]>AGC_MASK)return 0;
 #else
@@ -3423,6 +3427,7 @@ static MAYBE_UNUSED uint8_t basic_sane(const apollo_overlay_state *s,const cm_na
 #if (CM_RCS_DAP_KEEP0 >> 0) & 1
 /* 21,2105 REDORCS (entry REDORCS (FRESH_START_AND_RESTART.agc 2CADR REDORCS)) */
 static enum exec_status r42105_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_0(s,(cm_native_io *)v,17477u);
@@ -3431,6 +3436,7 @@ static enum exec_status r42105_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 1) & 1
 /* 21,2122 RCSATT (entry RCSATT (FRESH_START_AND_RESTART.agc 2CADR RCSATT)) */
 static enum exec_status r42122_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_0(s,(cm_native_io *)v,17490u);
@@ -3439,6 +3445,7 @@ static enum exec_status r42122_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 2) & 1
 /* 21,2154  (part key) */
 static enum exec_status r42154_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_0(s,(cm_native_io *)v,17516u);
@@ -3447,6 +3454,7 @@ static enum exec_status r42154_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 3) & 1
 /* 21,2216 DRHOLOOP (part key) */
 static enum exec_status r42216_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_0(s,(cm_native_io *)v,17550u);
@@ -3455,6 +3463,7 @@ static enum exec_status r42216_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 4) & 1
 /* 21,2221  (part key) */
 static enum exec_status r42221_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_1(s,(cm_native_io *)v,17553u);
@@ -3463,6 +3472,7 @@ static enum exec_status r42221_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 5) & 1
 /* 21,2222  (part key) */
 static enum exec_status r42222_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_1(s,(cm_native_io *)v,17554u);
@@ -3471,6 +3481,7 @@ static enum exec_status r42222_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 6) & 1
 /* 21,2226  (part key) */
 static enum exec_status r42226_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_1(s,(cm_native_io *)v,17558u);
@@ -3479,6 +3490,7 @@ static enum exec_status r42226_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 7) & 1
 /* 21,2236  (return from SMALLMP) */
 static enum exec_status r42236_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_1(s,(cm_native_io *)v,17566u);
@@ -3487,6 +3499,7 @@ static enum exec_status r42236_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 8) & 1
 /* 21,2311 ADOTLOOP (part key) */
 static enum exec_status r42311_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_1(s,(cm_native_io *)v,17609u);
@@ -3495,6 +3508,7 @@ static enum exec_status r42311_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 9) & 1
 /* 21,2317  (part key) */
 static enum exec_status r42317_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_2(s,(cm_native_io *)v,17615u);
@@ -3503,6 +3517,7 @@ static enum exec_status r42317_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 10) & 1
 /* 21,2324  (part key) */
 static enum exec_status r42324_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_2(s,(cm_native_io *)v,17620u);
@@ -3511,6 +3526,7 @@ static enum exec_status r42324_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 11) & 1
 /* 21,2350 KMATRIX (part key) */
 static enum exec_status r42350_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_2(s,(cm_native_io *)v,17640u);
@@ -3519,6 +3535,7 @@ static enum exec_status r42350_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 12) & 1
 /* 21,2360  (return from NOVAC) */
 static enum exec_status r42360_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_2(s,(cm_native_io *)v,17648u);
@@ -3527,6 +3544,7 @@ static enum exec_status r42360_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 13) & 1
 /* 21,2366 DELOOP (part key) */
 static enum exec_status r42366_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_2(s,(cm_native_io *)v,17654u);
@@ -3535,6 +3553,7 @@ static enum exec_status r42366_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 14) & 1
 /* 21,2374  (part key) */
 static enum exec_status r42374_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17660u);
@@ -3543,6 +3562,7 @@ static enum exec_status r42374_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 15) & 1
 /* 21,2400  (part key) */
 static enum exec_status r42400_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17664u);
@@ -3551,6 +3571,7 @@ static enum exec_status r42400_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 16) & 1
 /* 21,2401  (return from DPADD) */
 static enum exec_status r42401_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17665u);
@@ -3559,6 +3580,7 @@ static enum exec_status r42401_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 17) & 1
 /* 21,2407  (part key) */
 static enum exec_status r42407_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17671u);
@@ -3567,6 +3589,7 @@ static enum exec_status r42407_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 18) & 1
 /* 21,2411 DACNDLS (part key) */
 static enum exec_status r42411_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17673u);
@@ -3575,6 +3598,7 @@ static enum exec_status r42411_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 19) & 1
 /* 21,2417 KRESUME1 (part key) */
 static enum exec_status r42417_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17679u);
@@ -3583,6 +3607,7 @@ static enum exec_status r42417_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 20) & 1
 /* 21,2420 NEEDLER (entry NEEDLER (P11.agc CADR NEEDLER)) */
 static enum exec_status r42420_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17680u);
@@ -3591,6 +3616,7 @@ static enum exec_status r42420_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 21) & 1
 /* 21,2425  (part key) */
 static enum exec_status r42425_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17685u);
@@ -3599,6 +3625,7 @@ static enum exec_status r42425_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 22) & 1
 /* 21,2443 NEEDLE11 (entry NEEDLE11 (EXTENDED_VERBS.agc CADR NEEDLE11)) */
 static enum exec_status r42443_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17699u);
@@ -3607,6 +3634,7 @@ static enum exec_status r42443_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 23) & 1
 /* 21,2462 NEEDLER2 (entry NEEDLER2 (EXTENDED_VERBS.agc CADR NEEDLER2)) */
 static enum exec_status r42462_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_3(s,(cm_native_io *)v,17714u);
@@ -3615,6 +3643,7 @@ static enum exec_status r42462_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 24) & 1
 /* 21,2465  (part key) */
 static enum exec_status r42465_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17717u);
@@ -3623,6 +3652,7 @@ static enum exec_status r42465_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 25) & 1
 /* 21,2466  (part key) */
 static enum exec_status r42466_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17718u);
@@ -3631,6 +3661,7 @@ static enum exec_status r42466_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 26) & 1
 /* 21,2471 NEEDLES3 (part key) */
 static enum exec_status r42471_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17721u);
@@ -3639,6 +3670,7 @@ static enum exec_status r42471_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 27) & 1
 /* 21,2474  (part key) */
 static enum exec_status r42474_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17724u);
@@ -3647,6 +3679,7 @@ static enum exec_status r42474_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 28) & 1
 /* 21,2476 NEEDLES (entry NEEDLES (EXTENDED_VERBS.agc CADR NEEDLES)) */
 static enum exec_status r42476_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17726u);
@@ -3655,6 +3688,7 @@ static enum exec_status r42476_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 29) & 1
 /* 21,2477 DACLOOP (part key) */
 static enum exec_status r42477_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17727u);
@@ -3663,6 +3697,7 @@ static enum exec_status r42477_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 30) & 1
 /* 21,2505  (part key) */
 static enum exec_status r42505_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17733u);
@@ -3671,6 +3706,7 @@ static enum exec_status r42505_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 31) & 1
 /* 21,2533  (return from BIT4) */
 static enum exec_status r42533_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17755u);
@@ -3679,6 +3715,7 @@ static enum exec_status r42533_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 32) & 1
 /* 21,2534 REINIT (entry REINIT (AUTOMATIC_MANEUVERS.agc TCF REINIT)) */
 static enum exec_status r42534_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17756u);
@@ -3687,6 +3724,7 @@ static enum exec_status r42534_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 33) & 1
 /* 21,2544 FRESHDAP (part key) */
 static enum exec_status r42544_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_4(s,(cm_native_io *)v,17764u);
@@ -3695,6 +3733,7 @@ static enum exec_status r42544_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 34) & 1
 /* 21,2546 REDAP (part key) */
 static enum exec_status r42546_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17766u);
@@ -3703,6 +3742,7 @@ static enum exec_status r42546_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 35) & 1
 /* 21,2550  (return from IBNKCALL) */
 static enum exec_status r42550_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17768u);
@@ -3711,6 +3751,7 @@ static enum exec_status r42550_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 36) & 1
 /* 21,2552  (return from IBNKCALL) */
 static enum exec_status r42552_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17770u);
@@ -3719,6 +3760,7 @@ static enum exec_status r42552_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 37) & 1
 /* 21,2562  (part key) */
 static enum exec_status r42562_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17778u);
@@ -3727,6 +3769,7 @@ static enum exec_status r42562_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 38) & 1
 /* 21,2563  (part key) */
 static enum exec_status r42563_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17779u);
@@ -3735,6 +3778,7 @@ static enum exec_status r42563_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 39) & 1
 /* 21,2603  (part key) */
 static enum exec_status r42603_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17795u);
@@ -3743,6 +3787,7 @@ static enum exec_status r42603_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 40) & 1
 /* 21,2616  (return from NOVAC) */
 static enum exec_status r42616_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17806u);
@@ -3751,6 +3796,7 @@ static enum exec_status r42616_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 41) & 1
 /* 21,2632 ZEROJET (entry ZEROJET (P11.agc CADR ZEROJET)) */
 static enum exec_status r42632_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_5(s,(cm_native_io *)v,17818u);
@@ -3759,6 +3805,7 @@ static enum exec_status r42632_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 42) & 1
 /* 21,2660  (part key) */
 static enum exec_status r42660_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17840u);
@@ -3767,6 +3814,7 @@ static enum exec_status r42660_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 43) & 1
 /* 21,2661 T5PHASE2 (part key) */
 static enum exec_status r42661_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17841u);
@@ -3775,6 +3823,7 @@ static enum exec_status r42661_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 44) & 1
 /* 21,2674  (part key) */
 static enum exec_status r42674_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17852u);
@@ -3783,6 +3832,7 @@ static enum exec_status r42674_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 45) & 1
 /* 21,2675 NOHIAUTO (part key) */
 static enum exec_status r42675_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17853u);
@@ -3791,6 +3841,7 @@ static enum exec_status r42675_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 46) & 1
 /* 21,2722  (part key) */
 static enum exec_status r42722_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17874u);
@@ -3799,6 +3850,7 @@ static enum exec_status r42722_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 47) & 1
 /* 21,2724 NOCHANGE (part key) */
 static enum exec_status r42724_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17876u);
@@ -3807,6 +3859,7 @@ static enum exec_status r42724_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 48) & 1
 /* 21,2732  (part key) */
 static enum exec_status r42732_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_6(s,(cm_native_io *)v,17882u);
@@ -3815,6 +3868,7 @@ static enum exec_status r42732_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 49) & 1
 /* 21,2755 SETWBODY (part key) */
 static enum exec_status r42755_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17901u);
@@ -3823,6 +3877,7 @@ static enum exec_status r42755_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 50) & 1
 /* 21,2757  (part key) */
 static enum exec_status r42757_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17903u);
@@ -3831,6 +3886,7 @@ static enum exec_status r42757_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 51) & 1
 /* 21,2760  (part key) */
 static enum exec_status r42760_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17904u);
@@ -3839,6 +3895,7 @@ static enum exec_status r42760_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 52) & 1
 /* 21,2761  (part key) */
 static enum exec_status r42761_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17905u);
@@ -3847,6 +3904,7 @@ static enum exec_status r42761_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 53) & 1
 /* 21,2772  (part key) */
 static enum exec_status r42772_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17914u);
@@ -3855,6 +3913,7 @@ static enum exec_status r42772_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 54) & 1
 /* 21,3000 ZEROER (part key) */
 static enum exec_status r43000_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17920u);
@@ -3863,6 +3922,7 @@ static enum exec_status r43000_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 55) & 1
 /* 21,3005 NORATE (part key) */
 static enum exec_status r43005_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17925u);
@@ -3871,6 +3931,7 @@ static enum exec_status r43005_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 56) & 1
 /* 21,3015 MERUPDAT (part key) */
 static enum exec_status r43015_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_7(s,(cm_native_io *)v,17933u);
@@ -3879,6 +3940,7 @@ static enum exec_status r43015_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 57) & 1
 /* 21,3023 SPNDXCHK (part key) */
 static enum exec_status r43023_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,17939u);
@@ -3887,6 +3949,7 @@ static enum exec_status r43023_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 58) & 1
 /* 21,3025  (part key) */
 static enum exec_status r43025_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,17941u);
@@ -3895,6 +3958,7 @@ static enum exec_status r43025_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP0 >> 59) & 1
 /* 21,3051 FREEFUNC (part key) */
 static enum exec_status r43051_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,17961u);
@@ -3903,6 +3967,7 @@ static enum exec_status r43051_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 0) & 1
 /* 21,3067 T6PROGM (entry T6PROGM (AUTOMATIC_MANEUVERS.agc TCF T6PROGM)) */
 static enum exec_status r43067_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,17975u);
@@ -3911,6 +3976,7 @@ static enum exec_status r43067_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 1) & 1
 /* 21,3130 STICKCHK (entry STICKCHK (P11.agc CADR STICKCHK)) */
 static enum exec_status r43130_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,18008u);
@@ -3919,6 +3985,7 @@ static enum exec_status r43130_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 2) & 1
 /* 21,3146 KALUPDT (part key) */
 static enum exec_status r43146_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_8(s,(cm_native_io *)v,18022u);
@@ -3927,6 +3994,7 @@ static enum exec_status r43146_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 3) & 1
 /* 21,3156  (part key) */
 static enum exec_status r43156_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18030u);
@@ -3935,6 +4003,7 @@ static enum exec_status r43156_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 4) & 1
 /* 21,3160 FDAIDSP2 (part key) */
 static enum exec_status r43160_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18032u);
@@ -3943,6 +4012,7 @@ static enum exec_status r43160_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 5) & 1
 /* 21,3171  (part key) */
 static enum exec_status r43171_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18041u);
@@ -3951,6 +4021,7 @@ static enum exec_status r43171_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 6) & 1
 /* 21,3175 FDAITOTL (part key) */
 static enum exec_status r43175_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18045u);
@@ -3959,6 +4030,7 @@ static enum exec_status r43175_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 7) & 1
 /* 21,3203  (part key) */
 static enum exec_status r43203_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18051u);
@@ -3967,6 +4039,7 @@ static enum exec_status r43203_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 8) & 1
 /* 21,3205 GETAKS (part key) */
 static enum exec_status r43205_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18053u);
@@ -3975,6 +4048,7 @@ static enum exec_status r43205_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 9) & 1
 /* 21,3233  (part key) */
 static enum exec_status r43233_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18075u);
@@ -3983,6 +4057,7 @@ static enum exec_status r43233_abi(const agc_native_program *p,apollo_overlay_st
 #if (CM_RCS_DAP_KEEP1 >> 10) & 1
 /* 21,3243 WRTN17 (part key) */
 static enum exec_status r43243_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
+ AFR_BIND(s);AFO_FIX(s);
  if(!AGC_CH_HW_SET(p))return EXEC_OUT_OF_SCOPE;
  if(!s||!v||!basic_sane(s,(cm_native_io *)v,042000u))return EXEC_OUT_OF_SCOPE;
  return basic_part_9(s,(cm_native_io *)v,18083u);

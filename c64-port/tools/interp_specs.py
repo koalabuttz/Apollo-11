@@ -591,13 +591,23 @@ SPECS = {
         # Comanche's TC SHORTMP (LOG, SXTLOGIC) runs natively in place.
         'native_ranges': {'SXTLOGIC': [5, 'geometry_rtb']},
         'native_calls': {'SHORTMP': {'cm': 'geometry_shortmp(s)'}},
+        # The C64 flight store leaves this file's interpretive code to the
+        # interpreter, whose RTB SXTLOGIC lands on the basic word itself: a
+        # routine of its own, run by geometry_rtb.
+        'native_entries': {'SXTLOGIC': {'cm': 'geometry_rtb(s,io)'}},
         # CALCSXA and SXTANG keep their caller's return CADR in 28D (ITA 28D)
         # and leave through GOTO 28D: a CADR outside the file. X1 and X2
         # name what the next indexed operand reads (SXTNB's 5,1 and 3,1).
         'all_states': {'lm': {}, 'cm': {'vac+034': ['outside']}},
         # The DP stores of SAC and PAC (after RTB CDULOGIC, 1STO2S or a DLOAD)
         # and SXTLOGIC's RTB run in DP mode.
+        # SXTLOGIC as the native entry: its one caller is SXTNB's RTB PUSH,
+        # so DANZIG finds LOC at the RTB's operand word (23,2004), BANKSET
+        # bank 23 (INTBIT15 040000, as NEWOPS leaves it for that bank) and
+        # PUSH (0171) in EDOP.
         'states': {'cm': dict({lab: {'0163': [0]} for lab in ('23,2003', '23,2005', '23,2006', '23,2120', '23,2136', '23,2147', '23,2151')},
+                              SXTLOGIC={'0164': [0o2004], '0165': [0o46000 | e for e in range(8)], '0115': [0o40000],
+                                        '0023': [0o171]},
                               # EARROT1-OVERADAY: OVFIND as the interpreter
                               # sets it (TS of an overflowed A: +-1), +0 in
                               # three cases of five. EARROT2's BOVB counts
@@ -1563,6 +1573,38 @@ SPECS = {
         # (No 'fast_window': the file sets no EBANK= of its own, so there is
         # no one window to bind; its erasables run under the caller's.)
     },
+    # Lane E: Luminary099 TIME_OF_FREE_FALL as routines of the
+    # control-transfer ABI for the LM flight store (R30's V82 and the
+    # ascent and rendezvous programs reach it through the interpreter).
+    # The file's certificate stays with the hand-written lm_time_free_fall.c
+    # (Lane B); this is the compiled form, as cm-time-free-fall is for CM.
+    'lm-tff-abi': {
+        'rope_fallback': True,
+        'resume_keys': True,
+        'seed_counters': True,
+        'missions': ('lm',),
+        'file': {'lm': 'TIME_OF_FREE_FALL.agc'},
+        'base': {'lm': 'lm_tff_abi'},
+        'symbol': {'lm': 'lm_tff_abi'},
+        'basic': 'full',
+        # TFFXTEST's RTB DMP T(X): T(X)'s TC DANZIG comes back with DMP in
+        # EDOP and LOC at the T(X) word.
+        'pending_danzig': True,
+        # BOVB's TCDANZIG (ENDT(X), this file's TC DANZIG) runs natively.
+        'rtb': {'TCDANZIG': {'lm': 'lm_integration_tcdanzig(s)'}, 'ENDT(X)': {'lm': 'lm_integration_tcdanzig(s)'}},
+        'includes': ['rtb_angles.h', 'lm_integration_moves.h'],
+        'native_sources': ['src/lm_integration_moves.c'],
+        # TFFCONIC (STORE TFF/RTMU) has no caller in Luminary099 (CM's
+        # P61-P67 calls its own); an entry of its own, so every word compiles.
+        'entries': ['@external', 'TFFCONIC'],
+        'target': 'tests/lm_tff_abi_target.c',
+        'freeze_stride': 32,
+        'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
+        'index_carry16': True,
+        'image_w': True,
+        'trusted_image': True,
+        # (No 'fast_window': the file sets no EBANK= of its own.)
+    },
     # Lane G: Comanche055 LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES, the whole
     # file as routines at its original addresses (issue #58: LSPOS, LUNPOS,
     # LUNVEL and SOLPOS are routine keys of the transfer ABI).
@@ -2241,6 +2283,10 @@ SPECS = {
         # Part functions for the flight store's 8 KB task slot; each
         # hand-off is a routine step, so a DAP pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every RCS DAP pass runs these routines: the EB 6 window fast
+        # forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         'max_steps': 2000,
         'rope_fallback': True,
         'seed_counters': True,
@@ -2327,9 +2373,6 @@ SPECS = {
         'rope_fallback': True,
         'seed_counters': True,
         'missions': ('cm',),
-        # Jet selection runs every CM RCS DAP pass: no whole-image scan in
-        # flight (docs/INTERP-COMPILE.md).
-        'trusted_image': True,
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
@@ -2386,6 +2429,10 @@ SPECS = {
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
         'basic_parts': {'budget': 6000},
+        # Every pass runs these routines (6% of the CM entry window): the
+        # EB 6 window fast forms (include/agc_fast_redirect.h).
+        'fast_window': True,
+        'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
         # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
         # entry window (cm-entry from 17000 cs, per-routine profile,
         # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
@@ -3068,6 +3115,10 @@ SPECS = {
         'basic': 'full',
         'fast_window': True,
         'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # P06's standby code (PRESTAND/POSTAND) calls FINETIME +1 under its
+        # own EB; FINETIME (bank 02) touches only unswitched cells, so both
+        # words run under any EB (the other entries come in under E5).
+        'any_eb_entries': ['FINETIME', 'FINETIME+1'],
         # SPECSTS's FINDVAC 2CADR ALFLT (BBCON 66065) runs the ALFLT filter
         # under SUPERBNK 060: the FB 30-37 guard tests only the superbank
         # bit, at the routine's entry, and the cases draw 020-060.
@@ -3620,6 +3671,13 @@ SPECS = {
         'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
                                                        'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
                    'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
+        # V82CALL's TC INTPRET, BON and EXIT and V82GOFF's option display run
+        # in the NOVAC job V82 starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6) -
+        # LOC(QPRET)) until V82GOFLP's FINDVAC; TICKTEST runs as a
+        # WAITLIST task (any FIXLOC, NEWJOB -0 while DUMMYJOB idles).
+        'novac': ['V82CALL', 'V82CALL+1', 'V82GOFF'],
+        'any_fixloc': True,
+        'any_newjob': True,
         'target': 'tests/r30_target.c',
         # Every 128th case keeps the vectors under the 1 MB fast-checkout limit.
         'edge_cases': True,
@@ -4305,6 +4363,9 @@ SPECS = {
     },
     'lm-stable-orbit': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'STABLE_ORBIT_-_P38-P39.agc'},
         'source_path': {'lm': 'STABLE_ORBIT.agc'},
         'base': {'lm': 'lm_stable_orbit'},
