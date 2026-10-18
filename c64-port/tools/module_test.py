@@ -35,7 +35,7 @@ import zlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from flight_store_build import io_kind  # noqa: E402
+from flight_store_build import BASE_IO, io_kind  # noqa: E402
 from resident_flight_build import COMMON, MISSION, resident_sources  # noqa: E402
 
 STORE = ROOT / 'build/flight-store'
@@ -175,7 +175,10 @@ def main():
     ids = [i for s in stems for i in by_stem[s]]
     if len(ids) > 255:
         sys.exit(f'FAIL: {m}: {len(ids)} modules under test; tools/module_test.c counts them in a byte')
-    kinds = {io_kind(m, s) for s in stems}
+    # A base-kind module (P66 / CM_NATIVE: the INTER-BANK routines) takes the
+    # prefix of a DNTM record (lm_dntm_io opens with its p66_bias_io,
+    # cm_dntm_io with its cm_native_io), so it runs on the same device.
+    kinds = {io_kind(m, s) for s in stems} - ({BASE_IO[m]} if len({io_kind(m, s) for s in stems}) > 1 else set())
     if len(kinds) != 1 or next(iter(kinds)) not in IO_DEFINE:
         sys.exit(f'FAIL: {m}: the modules take {sorted(kinds)}; tools/module_test.c carries {sorted(IO_DEFINE)}')
     states, oracle, native = rows(a.states, 2), rows(a.oracle), rows(a.native)
