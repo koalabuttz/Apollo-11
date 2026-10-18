@@ -366,7 +366,7 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   starts there, with no load. These are ride tables (`RIDE`): the resolver
   still sends their keys to their own modules. With them the pack is
   10,459 bytes.
-- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+- The *CM entry pack* (`ENTRYPACK`, from module $07F7) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
   entries were spread over all of the full table's chunks, so a pass loaded
@@ -378,6 +378,19 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
   20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
   to 465 K cycles.
+- The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
+  pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
+  burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
+  and `cm_auto_man_hot_routines` (6, with SMALLMP and DPADD from
+  `cm_mysubs_routines`). They are `ALONE` like the entry pack, one pack per
+  file: one pack of all three is far over the job slot, and only a
+  one-table pack splits. The RCS and jet-select packs split into two
+  chunks each. A pack's keys resolve to the pack first, so those hot keys
+  load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
+  Pack ids follow on: a pack starts after the ids the one before it split
+  into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
+  (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
+  to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
