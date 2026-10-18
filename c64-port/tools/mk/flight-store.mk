@@ -9,12 +9,15 @@
 # boots on the store in VICE, resolves every record and times each module's
 # load (build/flight-store/vice-load.json). flight_store_build.py skips the
 # build when its inputs and last outputs are unchanged (build/flight-store/
-# .stamp-<missions>; --force rebuilds). None gates `test`: they measure the whole
-# program while lanes are still filling it in. Need the listings
+# .stamp-<missions>; --force rebuilds). tools/native_range_keys.py then checks
+# that every native_ranges return point has a key in its mission's store.
+# None gates `test`: they measure the whole program while lanes are still
+# filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
 .PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice flight-disk flight-disk-vice
 flight-store: | build
 	python3 tools/flight_store_build.py
+	python3 tools/native_range_keys.py
 # flight-store-lm: the LM store alone, half the build, for checks that boot
 # only lm.reu (the LM interp-flight-*-vice targets).
 flight-store-lm: | build
