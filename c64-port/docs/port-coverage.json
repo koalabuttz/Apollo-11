@@ -10665,7 +10665,7 @@
             "src/agc_transfer.c",
             "include/agc_channel_ops.h"
           ],
-          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 1,026 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG; basic routines stop at the file's next basic key; the table holds the routines directly, direct_abi), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
+          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 1,028 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG; basic routines stop at the file's next basic key; the table holds the routines directly, direct_abi), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
           "verification": "docs/LM-P20-P25.md"
         }
       ],
@@ -10687,21 +10687,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-source-map.json",
-            "sha256": "f538657e3888fd60dd425e644352caf26fea16aac799719a77197017912c13d0"
+            "sha256": "77b462a8489e3e582a28c43be9784f245662c6425d8bf32eb54f2681ebd2672a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
-            "sha256": "28740025a28ccc72f86b5133277bc3d8ed4955fdcbf39bed33e1427aeb7ae616"
+            "sha256": "12de12eba6843287acf18d82997cf7df82e5f4295e1594c7c534fedc5b8585ba"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
-            "sha256": "53074aa541873caf701f19576233417c92846b3d81460e44d4e422d88da47ef5"
+            "sha256": "1dc8fed697cbdee337e9f918dd522602df132f1eaf5030013b403716dbed0ce6"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
-            "sha256": "bc7d7340b13040adb26b8a904586af03811e81d23872659a1b9b9e9f6e27dcd6",
+            "sha256": "0774aa541214657d33e8baa16454b8c581b8a8e085879a4198bf3c4de688625d",
             "vice_targets": {
-              "vice-lm-p20-p25": 1224
+              "vice-lm-p20-p25": 1228
             }
           },
           "independent_review": {
@@ -10710,7 +10710,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
-            "sha256": "9279fadf9d2464e14d233294571e5c4e288e9b028878a341174b7470bf6704c6"
+            "sha256": "f70478457124c39d131a4dd71bec58c9e8635f7931f2462a664a98d997589671"
           }
         }
       }
