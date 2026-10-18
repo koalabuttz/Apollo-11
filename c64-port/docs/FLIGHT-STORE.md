@@ -1021,7 +1021,8 @@ port) runs one mission:
      `tools/flight_host_differential.py`) and yaAGC run the same rope,
      load, keys, channels and device models. At every sample point the
      erasable words are compared, all 2048 but three groups. The central
-     registers (0-017) hold the interrupted step's working values. The
+     registers and the interrupt save registers ARUPT-BRUPT (0-017) hold
+     the interrupted step's working values. The
      clock counters (024-031) are left out because the two clocks are
      driven differently (FLIGHT_TIMERS compares them). RUPTREG1-4
      (070-073) hold only what the last interrupt left. A scoreboard row
@@ -1033,7 +1034,12 @@ port) runs one mission:
      TIME1-TIME6 (both sides run one work clock here), plus output channels
      5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
      equal. Anything else is a difference, apart from the temporary skips
-     above, which are named in every result that uses them.
+     above, which are named in every result that uses them. Output channel
+     10 (the DSKY relay words) is not compared: it is a strobe the AGC
+     writes once per relay word, not a latch, so the display is checked
+     through DSPTAB in erasable instead.
+   So the chain gives C64 = yaAGC only on the first check's scope. The
+   timers and the output channels are checked C64 = host only.
    A window "matches host" when its `--replay` log has no FAIL line. It
    "matches exactly" when the log also has no `skipped` line.
 
