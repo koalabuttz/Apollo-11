@@ -3338,22 +3338,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-proof.json",
-            "sha256": "4656e2341ca38ccb4ac78dd4ec4f74a0ad8e8087387a08a8dd1aa79c1d7d3f0f"
+            "sha256": "2a4c4e1ad406b502dbce038b4a14b82db5bad4343000958f8f2b7f322ee368bb"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-host.log",
-            "sha256": "e0650b5d795fb579ba10a74669405b6a06c55b4243ff8384ff40a17b709eaf6d"
+            "sha256": "c6e55fe473338976680ac1fc7feb61127ee83b5441a4f87e7cc487c7201515c0"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-vice.log",
-            "sha256": "6ec9a2e532ca012340f50b0221abdc7d5f436d9b1ccb8253a5a53f3e42d154dd",
+            "sha256": "e5a432002677c4f962d931a546a5efd622e1de93285045b37653de37e1e5b2e5",
             "vice_targets": {
-              "vice-cm-p20-p25": 1454
+              "vice-cm-p20-p25": 1462
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-c64-cover.json",
-            "sha256": "9fef9894355bc4e7d0c051e04de61c555d683a68e8b29e8ad79c2e9bb07d7ac2"
+            "sha256": "562c294d2ea137f698d044066ad60bd081ae0e24ba9135190ce5a5f79b8ec9a0"
           }
         }
       }
