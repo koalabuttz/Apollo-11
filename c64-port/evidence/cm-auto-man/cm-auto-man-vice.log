@@ -1,8 +1,8 @@
 PRG sha256 (clang version 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-eec7fe84f9d5055611bc37f3503b928c3dcb1094a648bd6a18f3d9befa3a3c48  build/cm-auto-man-1.prg
+89d72427a21ff98ae1681d20c320c6488f5889ab4e001976680674bc4364d11e  build/cm-auto-man-1.prg
 
 $ make vice-cm-auto-man
 for p in build/cm-auto-man-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-auto-man-1.prg: 24 checks, 0 failures
-PRG sha256: eec7fe84f9d5055611bc37f3503b928c3dcb1094a648bd6a18f3d9befa3a3c48 cm-auto-man-1.prg
+PASS: VICE PAL cm-auto-man-1.prg: 30 checks, 0 failures
+PRG sha256: 89d72427a21ff98ae1681d20c320c6488f5889ab4e001976680674bc4364d11e cm-auto-man-1.prg
 exit 0

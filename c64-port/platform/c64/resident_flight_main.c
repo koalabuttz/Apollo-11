@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: MIT */
-/* The ABI 2 flight resident's entry: boot, then resident steps until the
+/* The ABI 2 flight resident's entry: boot, the hardware restart (GOJAM:
+ * the rope's power-on code from 04000, as the AGC starts when it is
+ * switched on; with an image of zeros it ends in a fresh start), then
+ * resident steps until the
  * program reaches a point that neither the kernel nor the module store
  * resolves. Where the AGC's TC trap would restart it, the resident does
  * too (rk_gojam): a TC to itself (V69's TC VERB69), a step that leaves Z
@@ -15,7 +18,7 @@ int main(void)
     agc_word *const w = ((apollo_overlay_state *)APOLLO_SHARED_ADDRESS)->words;
     enum exec_status s;
     agc_word z, fb;
-    if (!rk_boot())
+    if (!rk_boot() && !rk_gojam())
         for (;;) {
             z = w[5];
             fb = w[4];

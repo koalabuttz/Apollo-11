@@ -5,7 +5,12 @@ static int dsky_caller_entry(uint16_t pc){static const uint16_t entries[]={02632
 static uint16_t dsky_caller_address(const uint16_t *w,uint16_t k){uint16_t a=(uint16_t)(w[0145]+k);return a<01400u ? a : (uint16_t)(w[3]+(a&0377u));}
 static int dsky_caller_domain(const apollo_overlay_state *s,const dsky_lamp_io *io){const uint16_t *w;uint16_t address,k;int e;if(!s||!io)return 0;w=s->words;e=dsky_caller_entry(w[5]);if(e<0||w[7]||w[3]>03400u||(w[3]&0377u)||w[4]!=062000u||w[6]!=(uint16_t)(062000u|(w[3]>>8))||io->control.superbank<0100u||io->control.superbank>0160u||(io->control.superbank&017u)||io->control.interrupt_enabled>1u||io->restart_light>1u)return 0;
  if(e<5)return w[01002]<=99u||w[01002]==077777u;
- if(e>=5&&e<=12){k=(uint16_t)(e==6||e==9||e==11 ? 1u : e==7||e==12 ? 2u : 0u);address=dsky_caller_address(w,k);if(agc_overflow(w[0])||w[0145]+k>01777u||address<01100u||address>03777u)return 0;}
+ if (e >= 5 && e <= 12) {
+     k = (uint16_t)(e == 6 || e == 9 || e == 11 ? 1u : e == 7 || e == 12 ? 2u : 0u);
+     address = dsky_caller_address(w, k);
+     if (agc_overflow(w[0]) || w[0145] + k > 01777u || address < 0100u || address > 03777u)
+         return 0;
+ }
  if(e==13||(e==7&&w[01002]==7u))return (w[01003]&03777u)>=0100u;
  if(e==14){address=dsky_caller_address(w,0);return w[0145]<=01777u&&address>=0100u&&address<=03777u;}
  return 1;
