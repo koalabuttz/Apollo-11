@@ -8,8 +8,10 @@
 #include "dsky_nv_admission_cases.h"
 
 #define CASES 1024u
-/* past the domain: NVSUB1 with NVTEMP +0 and -0 (TC GODSPALM) */
-static const uint16_t extra[] = { 1, 2049, 4096, 4097, 5121 };
+/* past the domain: NVSUB1 with NVTEMP +0 and -0 (TC GODSPALM); then NVSUB1
+ * with noun +0 (NVTEMP 01400: verb 3 alone, CA MPAC +4 / TC UPDATVB -1),
+ * LM and CM */
+static const uint16_t extra[] = { 1, 2049, 4096, 4097, 5121, 2057, 6153 };
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
     p66_bias_io p;

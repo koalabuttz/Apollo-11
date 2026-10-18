@@ -80,8 +80,73 @@ REPLACED = {'lm': ['lm_exec_routines', 'lm_exec_job_routines', 'lm_exec_task_rou
             'cm': ['cm_exec_routines', 'cm_exec_job_routines', 'cm_exec_idle_routines']}
 ERASABLE_BASE = 40960
 # Modules over their slot by more than this are not split (a split needs
-# about two trial links per routine).
+# about two trial links per routine), except the stems in SPLIT_ANY: their
+# routines are known to fit one by one (Lane C's Pinball try-lists,
+# docs/LANEC-PIN-HEADS.md), so any overflow is split.
 SPLIT_LIMIT = 65536
+SPLIT_ANY = {'lanec_pin_routines'}
+
+
+def lanec_pin_order(table, n):
+    """Pinball's routines grouped by the modules their try-lists run
+    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
+    with the same modules sit together, and address order is kept within a
+    group. A chunk is then a set of entries (FS_PICK), not a key range."""
+    inc = (ROOT / 'src/lanec_pin_routines.inc').read_text()
+    tries = {k: tuple(sorted(v.replace(' ', '').split(',')[:-1]))
+             for k, v in re.findall(r'static const dispatch (try\d+)\[\d+\] = \{ (.*?) \};', inc)}
+    body = inc.split(f'agc_routine_entry {table[len("lanec_pin_"):-len("_routines")]}_entries[')[1].split('};')[0]
+    calls = re.findall(r'\{ \d+u, (try\d+)_(?:lm|cm) \}', body)
+    if len(calls) != n:
+        raise SystemExit(f'{table}: {len(calls)} entries in src/lanec_pin_routines.inc, {n} keys')
+    return sorted(range(n), key=lambda i: (tries[calls[i]], i))
+
+
+# Chunk order per stem: (table, entries) -> the entries' order for packing.
+CHUNK_ORDER = {'lanec_pin_routines': lanec_pin_order}
+
+
+def pack_chunks(n, fits, probes):
+    """Greedy packing of routines 0..n-1 into chunks of consecutive routines.
+
+    Each chunk starts where the last one ended and takes the most routines
+    that still fit. fits(start, ends) links the chunks [start, end) for a
+    list of ends (one batch, linked in parallel) and returns a result per
+    end: True, the overflow in bytes, or None for a link error. The search
+    gallops (1, 2, 4, ... routines) until a chunk does not fit, then cuts
+    the gap with up to `probes` ends per batch. A chunk that fits only past
+    one that does not is not taken, so the cut is always below the first
+    failing end. The chunks depend only on the link results: the same
+    inputs give the same chunks in the same order.
+
+    Returns (kept, over): kept the (start, end) chunks that fit, over the
+    (start, overflow) of routines over the slot alone; None on a link error."""
+    kept, over, start = [], [], 0
+    while start < n:
+        lo, hi, alone = start, n + 1, None      # [start, lo) fits; [start, hi) does not
+        while hi - lo > 1:
+            if hi == n + 1:                     # gallop until an end fails
+                base = lo - start
+                ends = {min(n, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
+            else:
+                ends = {lo + (hi - lo) * (i + 1) // (probes + 1) for i in range(probes)}
+            ends = sorted(e for e in ends if lo < e < hi) or [lo + 1]
+            got = fits(start, ends)
+            if any(r is None for r in got):
+                return None
+            for e, r in zip(ends, got):
+                if r is not True and e < hi:
+                    hi = e
+                    if e == start + 1:
+                        alone = r
+            lo = max([lo] + [e for e, r in zip(ends, got) if r is True and e < hi])
+        if lo == start:
+            over.append((start, alone))
+            start += 1
+        else:
+            kept.append((start, lo))
+            start = lo
+    return kept, over
 # The io record each source's tables take (include/flight_io.h), where it is
 # not the mission's base record (LM p66_bias_io, CM cm_native_io).
 IO_KIND = {
@@ -1157,17 +1222,23 @@ def main():
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)
 
+        # A table chunked in CHUNK_ORDER: chunk (t, lo, hi) holds entries
+        # chunk_order[t][lo:hi]; otherwise entries lo..hi-1.
+        chunk_order = {}
+
+        def chunk_entries(c):
+            return sorted(chunk_order[c[0]][c[1]:c[2]]) if c[0] in chunk_order else range(c[1], c[2])
+
         def pick_of(mod):
             """The module's live entries in key order, or None when it links
             every entry of its tables (FS_BASIC or FS_CHUNK as before)."""
             if mod.get('defines') or mod.get('excursion') or mod['interp']:
                 return None
             if mod.get('chunk'):
-                t, lo, hi = mod['chunk']
-                spans = [(t, range(lo, hi))]
+                spans = [(mod['chunk'][0], chunk_entries(mod['chunk']))]
             else:
                 spans = [(t, range(len(keys[t]))) for t in mod['basic']]
-            if not any(t in live and t not in mod['also'] for t, _ in spans):
+            if not any(t in live and t not in mod['also'] or t in chunk_order for t, _ in spans):
                 return None
             return sorted(((t, i) for t, r in spans for i in r
                            if t in mod['also'] or t not in live or i in live[t]), key=lambda e: keys[e[0]][e[1]])
@@ -1393,12 +1464,13 @@ def main():
         with ThreadPoolExecutor(a.jobs) as pool:
             linked = list(pool.map(link, modules))
         # A basic-only module over its slot is split into chunks of
-        # consecutive routines, halving until each chunk fits. Splitting stops
-        # (the module stays whole and failed) when a chunk of one routine
-        # does not fit: its routines share one body (a file-wide step
-        # machine) that every chunk links. Modules over SPLIT_LIMIT are not
-        # tried. Trial links use a scratch id; kept chunks are relinked with
-        # their own. Interpretive modules wait on the interpreter decision.
+        # consecutive routines, each as large as fits (pack_chunks). A
+        # routine over its slot alone stays unplaced and is reported; a
+        # module whose routines all are stays whole and failed: its routines
+        # share one body (a file-wide step machine) that every chunk links.
+        # Modules over SPLIT_LIMIT are not tried unless SPLIT_ANY names them.
+        # Trial links use a scratch id; kept chunks are relinked with their
+        # own. Interpretive modules wait on the interpreter decision.
         chunks = []
 
         def own(mod):
@@ -1408,7 +1480,7 @@ def main():
 
         def trial(c, mod):
             return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
-                             prg_name=f'trial-{c[0]}-{c[1]}'))[2]
+                             prg_name=f'trial-{c[0]}-{c[1]}-{c[2]}'))[2]
 
         def split_greedy(mod):
             """As split, but each chunk takes as many consecutive routines as fit
@@ -1443,27 +1515,27 @@ def main():
             if mod['stem'] in GREEDY_SPLIT[m]:
                 return split_greedy(mod)
             # Co-located tables stay whole in their own module.
-            todo, kept, over = [(t, 0, len(keys[t])) for t in mod['basic'] if t not in mod['also']], [], []
-            while todo:
-                with ThreadPoolExecutor(a.jobs) as pool:
-                    results = list(pool.map(lambda c: trial(c, mod), todo))
-                nxt = []
-                for c, r in zip(todo, results):
-                    if r['ok'] or r.get('empty'):
-                        kept.append(c)
-                    elif not r.get('overflow'):
-                        return None
-                    elif c[2] - c[1] == 1:
-                        over.append((c, r['overflow']))
-                    else:
-                        half = (c[1] + c[2]) // 2
-                        nxt += [(c[0], c[1], half), (c[0], half, c[2])]
-                todo = nxt
+            kept, over = [], []
+            for t in mod['basic']:
+                if t in mod['also']:
+                    continue
+
+                def fits(start, ends):
+                    with ThreadPoolExecutor(a.jobs) as pool:
+                        got = list(pool.map(lambda e: trial((t, start, e), mod), ends))
+                    return [True if r['ok'] or r.get('empty') else r.get('overflow') or None for r in got]
+                if mod['stem'] in CHUNK_ORDER:
+                    chunk_order[t] = CHUNK_ORDER[mod['stem']](t, len(keys[t]))
+                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs))
+                if got is None:
+                    return None
+                kept += [(t, i, j) for i, j in got[0]]
+                over += [((t, i, i + 1), overflow) for i, overflow in got[1]]
             return (kept, over) if kept else None
         for mod, prg, res in linked:
             if res['ok'] or not res.get('overflow') or mod['interp'] or mod.get('defines') or mod.get('excursion'):
                 continue
-            if res['overflow'] > SPLIT_LIMIT:
+            if res['overflow'] > SPLIT_LIMIT and mod['stem'] not in SPLIT_ANY:
                 mod['chunking'] = 'too big to split'
                 continue
             got = split(mod)
@@ -1496,8 +1568,8 @@ def main():
             mod['prg'] = str(prg)
             if res['ok']:
                 if mod.get('chunk'):
-                    t, first, last = mod['chunk']
-                    for i in range(first, last):
+                    t = mod['chunk'][0]
+                    for i in chunk_entries(mod['chunk']):
                         if t not in live or i in live[t]:
                             module_of[(t, keys[t][i])] = mod['id']
                     continue
@@ -1641,6 +1713,15 @@ def main():
                    cwd=ROOT, capture_output=True, text=True)
         if pack.returncode:
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
+        # Chunks and the store against the rope image above it, printed
+        # before add_rope so an overflow shows its size.
+        from rope_image_pack import BASES
+        chunked = [mod for mod in modules if mod.get('chunk_of') is not None and mod.get('ok')]
+        fill = sum(mod['bytes'] for mod in chunked) / sum(SLOT_BYTES[mod['slot']] for mod in chunked) if chunked else 0
+        image = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())['image_bytes']
+        rope = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+        print(f'{m}: {len(chunked)} chunks, mean fill {fill:.0%}; store image {image} bytes, rope image at '
+              f'{rope:#x} ({rope - image:+d} bytes left)')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         # A class-4 module holds the task slot's $E000 from boot: a task-slot
@@ -1656,7 +1737,7 @@ def main():
                         pin_check)
         failed = [dict(stem=mod['stem'], id=f'0x{mod["id"]:04x}', slot=mod['slot'], overflow=mod.get('overflow'),
                        error=mod.get('error'), chunking=mod.get('chunking'), chunk=mod.get('chunk'),
-                       routine_key=keys[mod['chunk'][0]][mod['chunk'][1]]
+                       routine_key=keys[mod['chunk'][0]][chunk_entries(mod['chunk'])[0]]
                        if mod.get('chunk') and mod['chunk'][2] - mod['chunk'][1] == 1 else None)
                   for mod in modules if not mod['ok']]
         report[m] = dict(
@@ -1669,7 +1750,8 @@ def main():
             left_to_interpreter=sorted(to_interp), resolver_records=len(resolver),
             basic_interpretive_same_address=len(clash),
             collisions=[dict(tables=list(k), keys=v) for k, v in collisions.most_common()],
-            modules=len(modules), modules_linked=len(good), failed=failed, boot_modules=[p.name for p in boot],
+            modules=len(modules), modules_linked=len(good), failed=failed,
+            chunks=len(chunked), chunk_fill=round(fill, 3), image_bytes=image, rope_base=rope, boot_modules=[p.name for p in boot],
             pinned=pinned, packs=pack_report(packs),
             interpreter=dict(interp, records=len(interp_records), points_kept_elsewhere=interp_kept),
             store_bytes=store.get('store_bytes') or store.get('image_bytes'), pack=pack.stdout.strip(),

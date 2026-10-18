@@ -172,8 +172,10 @@ int main(void)
         st = rk_resident_step(RS_IDLE);
         ++sum.steps;
         if (st != EXEC_OK) break;
+        /* Idle: ADVAN with NEWJOB -0, as DUMMYJOB leaves it. ENDRSTRT enters at
+         * DUMMYJOB +2 with NEWJOB +0: a job is ready, so not yet idle. */
         if ((IMAGE->words[5] & 07777u) == 03214u && ((IMAGE->words[4] >> 10) & 037u) == 1u &&
-            !rk_hardware.in_interrupt) {
+            IMAGE->words[067] == 077777u && !rk_hardware.in_interrupt) {
             idle = 1;
             break;
         }

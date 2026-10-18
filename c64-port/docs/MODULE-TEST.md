@@ -65,5 +65,19 @@ all. The keypress routines run through the Pinball trampoline, which takes a
 TC it ends at in a register or return cell; `--tc-cells` names those cells
 so the host row is advanced the same way.
 
+A stem the store builder split into chunks (`lanec_pin_routines`: one
+Pinball try-list per chunk, docs/FLIGHT-STORE.md) is named once; every chunk
+is under test. A store whose pinned class-3 module is copied to `$c000` at
+boot (the DAP pins) overwrites the mailbox page: the runner clears it after
+`rk_boot`, and VICE ignores that copy's first write.
+
+`vice-lanec-pin-flight` (`tools/mk/lanec-pin-heads.mk`) runs the frozen C64
+rows of the nine `pin-head-*` suites and `pw-fixed-display` (whose rows
+read the rope, which only the store carries) in both missions with
+`--limit 1 --flight-rows`. The expected rows come from
+`tools/lanec/native.c --flight SUITE`: the try-list registered at the case's
+entry, run once on the host. Where the suite's own module refuses a state,
+the next module of that try-list runs it, here as in flight.
+
 A suite whose modules take another io kind needs that device record added
 to `tools/module_test.c`, mapping the case's channels in and out.

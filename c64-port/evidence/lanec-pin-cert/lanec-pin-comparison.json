@@ -204,19 +204,6 @@
     "CM": 1024
    }
   },
-  "pw-cm-dynamic-display": {
-   "suite": "pw-cm-dynamic-display",
-   "cases": 2048,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "290059bd0d7329fa4aa8a9f1afb6a33f02b4afb98362a4cd4a75a737a37d8945",
-   "oracle_sha256": "290059bd0d7329fa4aa8a9f1afb6a33f02b4afb98362a4cd4a75a737a37d8945",
-   "oracle_crc_sha256": "43f25f9026172756336d90c3c27ca8d49575b02ccd7f5cf64528e2d640d5bff9",
-   "accepted_cases_by_mission": {
-    "CM": 1658,
-    "CMI": 390
-   }
-  },
   "pw-cm-formatter": {
    "suite": "pw-cm-formatter",
    "cases": 1536,
@@ -227,42 +214,6 @@
    "oracle_crc_sha256": "a597c93a9786a108f606c15289ab6a534954a591240dac42e5585bf6a958cbb5",
    "accepted_cases_by_mission": {
     "CM": 1536
-   }
-  },
-  "pw-cm-minutes-seconds": {
-   "suite": "pw-cm-minutes-seconds",
-   "cases": 2048,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "dda920c0e57e8f48ae9c7a1b6abcc2fb1cad96234e4d2467ccd9aca5e8ed4611",
-   "oracle_sha256": "dda920c0e57e8f48ae9c7a1b6abcc2fb1cad96234e4d2467ccd9aca5e8ed4611",
-   "oracle_crc_sha256": "bcdce8c2a696df4b4764fbd49ef3c5cc36ed470935fbdb24f5846ed74d49efef",
-   "accepted_cases_by_mission": {
-    "CM": 2048
-   }
-  },
-  "pw-cm-normal-display": {
-   "suite": "pw-cm-normal-display",
-   "cases": 2048,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "0d4f11d24433bdff3b63143d2f35c3e6465787ce7d5a63d1a153ed2937bebe7d",
-   "oracle_sha256": "0d4f11d24433bdff3b63143d2f35c3e6465787ce7d5a63d1a153ed2937bebe7d",
-   "oracle_crc_sha256": "b169aa208e7168354778012e9775d7dd28a98d387f7c6729800c206461892ab9",
-   "accepted_cases_by_mission": {
-    "CM": 2048
-   }
-  },
-  "pw-cm-nv85": {
-   "suite": "pw-cm-nv85",
-   "cases": 2048,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "7fcdae812093d0692f5db6c81163f41d49cb88738b178f850f7eb2831a4bc25e",
-   "oracle_sha256": "7fcdae812093d0692f5db6c81163f41d49cb88738b178f850f7eb2831a4bc25e",
-   "oracle_crc_sha256": "eb0510b9bf8482935d2918c8f48460b8e076df4cf00ae93dbd03de6c3120e1e8",
-   "accepted_cases_by_mission": {
-    "CM": 2048
    }
   },
   "pw-cm-pinball": {
@@ -277,42 +228,29 @@
     "CM": 1024
    }
   },
-  "pw-decimal": {
-   "suite": "pw-decimal",
-   "cases": 1024,
+  "pw-cm-scale": {
+   "suite": "pw-cm-scale",
+   "cases": 4096,
    "differing": 0,
    "refused_unchanged": 0,
-   "native_sha256": "7ba3708240a37588dd06097f12cbd68199f2ce1746ff8f488322ea69b91c9db1",
-   "oracle_sha256": "7ba3708240a37588dd06097f12cbd68199f2ce1746ff8f488322ea69b91c9db1",
-   "oracle_crc_sha256": "2baaa59a2bf6b0916a2a21f614ff302448294dc7f7dcc45966ca03e7a2e2e643",
+   "native_sha256": "4d3ecfb5b9873c1aca7cc53380b589a52b2a870112d726a571f42c00c3bfc1f6",
+   "oracle_sha256": "4d3ecfb5b9873c1aca7cc53380b589a52b2a870112d726a571f42c00c3bfc1f6",
+   "oracle_crc_sha256": "6d91370af01a554ba58321434451dfbbd1edfed9f618422c9fc07f7cfe9ff1c7",
    "accepted_cases_by_mission": {
-    "LM": 1024
-   }
-  },
-  "pw-decimal-consumer": {
-   "suite": "pw-decimal-consumer",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "a41aa1b8bf90e72797b96c135be3348347d9c79a6b0c0f28e91d2d36199e5468",
-   "oracle_sha256": "a41aa1b8bf90e72797b96c135be3348347d9c79a6b0c0f28e91d2d36199e5468",
-   "oracle_crc_sha256": "a9eaf395f7e45372b22386744fb27cc978439c5a2b7235cb572aa16f2f9c6907",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
+    "CM": 4096
    }
   },
   "pw-decimal-general": {
    "suite": "pw-decimal-general",
-   "cases": 2048,
+   "cases": 2056,
    "differing": 0,
    "refused_unchanged": 0,
-   "native_sha256": "c306e1fab1a15b46ae3bd288061ddbdd624d99b6a223757eb46b9f5791770344",
-   "oracle_sha256": "c306e1fab1a15b46ae3bd288061ddbdd624d99b6a223757eb46b9f5791770344",
-   "oracle_crc_sha256": "79e79fb09c22406810fbf9681e8bd0512710b24e7c2b1d4123b442177043fc22",
+   "native_sha256": "ddcb5127b9611f5daa3844c535ce4df1da7d5c4f39b5a4af2b5cde0abe8d8b47",
+   "oracle_sha256": "ddcb5127b9611f5daa3844c535ce4df1da7d5c4f39b5a4af2b5cde0abe8d8b47",
+   "oracle_crc_sha256": "3957c305fc004a535a4448934245ff97215488984aef2150ea23f4ec83319784",
    "accepted_cases_by_mission": {
     "CM": 1024,
-    "LM": 1024
+    "LM": 1032
    }
   },
   "pw-decimal-load": {
@@ -365,19 +303,6 @@
    "accepted_cases_by_mission": {
     "CM": 512,
     "LM": 512
-   }
-  },
-  "pw-decimal-time-consumer": {
-   "suite": "pw-decimal-time-consumer",
-   "cases": 2048,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "fe325c85263de2a6846a2fc6240a867fd4f2c1c350b3fb9e272e7ce82cbdf64d",
-   "oracle_sha256": "fe325c85263de2a6846a2fc6240a867fd4f2c1c350b3fb9e272e7ce82cbdf64d",
-   "oracle_crc_sha256": "eac995b47b41d6ab83b15474270e3cc8ee2d33c1bc326c7fb9daac5c328be1cd",
-   "accepted_cases_by_mission": {
-    "CM": 1024,
-    "LM": 1024
    }
   },
   "pw-display-release": {
@@ -601,19 +526,6 @@
     "LM": 512
    }
   },
-  "pw-lamp-lifecycle": {
-   "suite": "pw-lamp-lifecycle",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "b456bf310a6761b6f693031171f62a3ab655fa3110083b2963e4595d07576d12",
-   "oracle_sha256": "b456bf310a6761b6f693031171f62a3ab655fa3110083b2963e4595d07576d12",
-   "oracle_crc_sha256": "4154b92d7aa4652c0eda0e1d3e10eef86e94f48c6a2eccf00f2ac71c01f6989f",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
   "pw-lamp-release": {
    "suite": "pw-lamp-release",
    "cases": 1024,
@@ -650,45 +562,6 @@
    "oracle_crc_sha256": "0e811ba2388307ecce0e92f6bc4f319465387bed68cb5e350ed004f208176388",
    "accepted_cases_by_mission": {
     "LM": 1024
-   }
-  },
-  "pw-load-complete": {
-   "suite": "pw-load-complete",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "36e8ed5b06ccc4aab95e945b5e468262484e30dc277832459bce22f81c9ee899",
-   "oracle_sha256": "36e8ed5b06ccc4aab95e945b5e468262484e30dc277832459bce22f81c9ee899",
-   "oracle_crc_sha256": "99ea2e4464c861715c7d49e1241d977d755b50611f60005bff17c4934298eef2",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
-  "pw-load-control": {
-   "suite": "pw-load-control",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "f06cc6fe3c8a90a288c12a649e0624b30caa68d0343f056ea3b67f4121f0d4cf",
-   "oracle_sha256": "f06cc6fe3c8a90a288c12a649e0624b30caa68d0343f056ea3b67f4121f0d4cf",
-   "oracle_crc_sha256": "dc8054526353dd06c340d3d718fe1d4b0862dfc07214c2da167ee4e75e9803e2",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
-  "pw-load-request": {
-   "suite": "pw-load-request",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "24a323d8aa6e10cd931f51c009b64c9f5d6184e43abfb5442211d40d305207e0",
-   "oracle_sha256": "24a323d8aa6e10cd931f51c009b64c9f5d6184e43abfb5442211d40d305207e0",
-   "oracle_crc_sha256": "3dcd3106805b19b3b47878e817f8b44722e3a5a2a3ab284fc5797ae16cf3c899",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
    }
   },
   "pw-load-store": {
@@ -728,19 +601,6 @@
    "accepted_cases_by_mission": {
     "CM": 512,
     "LM": 512
-   }
-  },
-  "pw-minutes-output": {
-   "suite": "pw-minutes-output",
-   "cases": 1032,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "4afee13e4833a916cd91f05420b2095fefd454fcedc49f8c808deefc289e3a89",
-   "oracle_sha256": "4afee13e4833a916cd91f05420b2095fefd454fcedc49f8c808deefc289e3a89",
-   "oracle_crc_sha256": "2de038a6c94f6043df4395154885f90b0e57af5019292290d70ce4748913f9b2",
-   "accepted_cases_by_mission": {
-    "CM": 516,
-    "LM": 516
    }
   },
   "pw-mixed-noun": {
@@ -795,19 +655,6 @@
     "LM": 1024
    }
   },
-  "pw-monitor-consumer": {
-   "suite": "pw-monitor-consumer",
-   "cases": 256,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "6a83577a43e5c21abf186cdba9af1692f066684e331c5b636f715602325a38a3",
-   "oracle_sha256": "6a83577a43e5c21abf186cdba9af1692f066684e331c5b636f715602325a38a3",
-   "oracle_crc_sha256": "fa910bec93f3abe7778fa1779a340a4baf8a09433163a333594d147f8039296a",
-   "accepted_cases_by_mission": {
-    "CM": 128,
-    "LM": 128
-   }
-  },
   "pw-monitor-paste": {
    "suite": "pw-monitor-paste",
    "cases": 1024,
@@ -836,15 +683,15 @@
   },
   "pw-nv-admission": {
    "suite": "pw-nv-admission",
-   "cases": 1029,
+   "cases": 1031,
    "differing": 0,
    "refused_unchanged": 0,
-   "native_sha256": "7abb418b332e2a1346b50a45af6343b16eb61b92d7b50aaff537f60ad66d7060",
-   "oracle_sha256": "7abb418b332e2a1346b50a45af6343b16eb61b92d7b50aaff537f60ad66d7060",
-   "oracle_crc_sha256": "fdc6484a564201c462f869c9de3a59b9ada02a9e6c4351048bbf57eef05af9ee",
+   "native_sha256": "5bbab8591aa53c5cba5d52189ee4ab934bd163825322fc0e5d0f0d6e97b2f1d7",
+   "oracle_sha256": "5bbab8591aa53c5cba5d52189ee4ab934bd163825322fc0e5d0f0d6e97b2f1d7",
+   "oracle_crc_sha256": "d706fcb9205fd8e37b64edcf6bc0570f279267736a81ecba8fa1c6bbde2deb4a",
    "accepted_cases_by_mission": {
-    "CM": 515,
-    "LM": 514
+    "CM": 516,
+    "LM": 515
    }
   },
   "pw-nv-blank": {
@@ -871,19 +718,6 @@
    "accepted_cases_by_mission": {
     "CM": 512,
     "LM": 512
-   }
-  },
-  "pw-nv-consumer": {
-   "suite": "pw-nv-consumer",
-   "cases": 1792,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "c852688c622c349d454e281f8fbbe2963cc92af1dfa69e18b6cf6387a66bd15f",
-   "oracle_sha256": "c852688c622c349d454e281f8fbbe2963cc92af1dfa69e18b6cf6387a66bd15f",
-   "oracle_crc_sha256": "daf93e519bbf07ba629aa24c0cde17991a55a1bd675449722cf724c05fda4d6c",
-   "accepted_cases_by_mission": {
-    "CM": 896,
-    "LM": 896
    }
   },
   "pw-nv-continuation": {
@@ -919,19 +753,6 @@
    "native_sha256": "dc7e03b6ffa12a5fefd2f7cf246d3a5214d05c0d202766d3639f9d2c2470d958",
    "oracle_sha256": "dc7e03b6ffa12a5fefd2f7cf246d3a5214d05c0d202766d3639f9d2c2470d958",
    "oracle_crc_sha256": "c055b34eb563e7f1d34217e935d94fbdf9f064e5be95eeb4899c79f22649850a",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
-  "pw-nv-update": {
-   "suite": "pw-nv-update",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "bd54a358b0cddcd6ef113e03e3dd70ecf2082b492c2eebd4a4fec915197c165d",
-   "oracle_sha256": "bd54a358b0cddcd6ef113e03e3dd70ecf2082b492c2eebd4a4fec915197c165d",
-   "oracle_crc_sha256": "20f74750cc5a4db2d70a7956cd39c2422b939d5d88b48cfef86c94f3dfe7a141",
    "accepted_cases_by_mission": {
     "CM": 512,
     "LM": 512
@@ -1002,19 +823,6 @@
     "LM": 512
    }
   },
-  "pw-operator-request": {
-   "suite": "pw-operator-request",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "614d47ccc3df681ab45aa724688df4ac0a151b1b8197ffa4b56dff01c8362efc",
-   "oracle_sha256": "614d47ccc3df681ab45aa724688df4ac0a151b1b8197ffa4b56dff01c8362efc",
-   "oracle_crc_sha256": "b8df01b5a6fc8cc37797b234d7664df696529ae3d2874410ae77d055a6764e50",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
   "pw-operator-response": {
    "suite": "pw-operator-response",
    "cases": 1024,
@@ -1023,19 +831,6 @@
    "native_sha256": "bae3692faa9a79e2287109d44521858d0ba75358a425d3ed655263fae1fb9162",
    "oracle_sha256": "bae3692faa9a79e2287109d44521858d0ba75358a425d3ed655263fae1fb9162",
    "oracle_crc_sha256": "db65b67be070b5fe4f36714435f579d2d19ad5d5d2f5f79683e76ee93ad2570b",
-   "accepted_cases_by_mission": {
-    "CM": 512,
-    "LM": 512
-   }
-  },
-  "pw-operator-schedule": {
-   "suite": "pw-operator-schedule",
-   "cases": 1024,
-   "differing": 0,
-   "refused_unchanged": 0,
-   "native_sha256": "2c1f57348ab731c0bbc82cd8e36d1dd17fccb04a905488720ce5d1fb8437ad0f",
-   "oracle_sha256": "2c1f57348ab731c0bbc82cd8e36d1dd17fccb04a905488720ce5d1fb8437ad0f",
-   "oracle_crc_sha256": "af5b4c390f9db8879d3bdc90fc2f5ad2d4d53a29ec5927936524a1118104c092",
    "accepted_cases_by_mission": {
     "CM": 512,
     "LM": 512
@@ -1094,14 +889,14 @@
   },
   "pw-scalar-output": {
    "suite": "pw-scalar-output",
-   "cases": 2048,
+   "cases": 2049,
    "differing": 0,
    "refused_unchanged": 0,
-   "native_sha256": "dc0e82c5b0bd038fa443891a52a571d90df23f9aa2e4c5b9bb946bb03a0fa316",
-   "oracle_sha256": "dc0e82c5b0bd038fa443891a52a571d90df23f9aa2e4c5b9bb946bb03a0fa316",
-   "oracle_crc_sha256": "67776bee13bdb43421c2f86d113c9ab657308663a6401d55a25e3bf43e4df57c",
+   "native_sha256": "21704ea03c9919e7b23e735eef4fa674315a9c75f44dbe2594addbd1b76de342",
+   "oracle_sha256": "21704ea03c9919e7b23e735eef4fa674315a9c75f44dbe2594addbd1b76de342",
+   "oracle_crc_sha256": "0f239d6f747fa12c7e3a0ac0424436f3a7bad298cfd435a733dd991fd5eeac54",
    "accepted_cases_by_mission": {
-    "CM": 1024,
+    "CM": 1025,
     "LM": 1024
    }
   },
@@ -1194,40 +989,169 @@
     "LM": 512
    }
   },
+  "pin-head-decount": {
+   "suite": "pin-head-decount",
+   "cases": 8192,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "6e1bd8d5e3c71ea716d96c0a51529362cb955dfa74a7f828cb823346409db649",
+   "oracle_sha256": "6e1bd8d5e3c71ea716d96c0a51529362cb955dfa74a7f828cb823346409db649",
+   "oracle_crc_sha256": "c69193aa2429dc33bbce4ac211d5c3b3687e16bd6106895f643d9d04651cbce9",
+   "accepted_cases_by_mission": {
+    "CM": 5460,
+    "LM": 2732
+   }
+  },
+  "pin-head-dpout": {
+   "suite": "pin-head-dpout",
+   "cases": 8192,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "3e26ba30fdb321913d660bf55c40bc56ea43b29c5e3ab3560f63b4be18e70d46",
+   "oracle_sha256": "3e26ba30fdb321913d660bf55c40bc56ea43b29c5e3ab3560f63b4be18e70d46",
+   "oracle_crc_sha256": "4d868af0f45e49e42011997dbb3e1bca34cefdbadbbda234b606f6938e2e9f0b",
+   "accepted_cases_by_mission": {
+    "CM": 6144,
+    "LM": 2048
+   }
+  },
+  "pin-head-lamp": {
+   "suite": "pin-head-lamp",
+   "cases": 576,
+   "differing": 0,
+   "refused_unchanged": 6,
+   "native_sha256": "c3e3d5e23d2427ccd43f61ddc06ad2a2d5341568ab51e3500d05a4c1320323f9",
+   "oracle_sha256": "578b92448d90235335e7b7d1b76fa0b51172bf2e36862f1178738f64604f850f",
+   "oracle_crc_sha256": "f09ab277a973622ae2e62b7c240229f8f43806e10b2dab3a4f8f6e1ff1821442",
+   "accepted_cases_by_mission": {
+    "CM": 317,
+    "LM": 253
+   }
+  },
+  "pin-head-load": {
+   "suite": "pin-head-load",
+   "cases": 1344,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "abb6831a43f31486f8a09035f30628883f959cf5ed4d9ffb0aa743b221dbe0ab",
+   "oracle_sha256": "abb6831a43f31486f8a09035f30628883f959cf5ed4d9ffb0aa743b221dbe0ab",
+   "oracle_crc_sha256": "5226edf2fc13ae219d8e247b37df13d57ea39f84e5079669c9e18f205191a44c",
+   "accepted_cases_by_mission": {
+    "CM": 672,
+    "LM": 672
+   }
+  },
+  "pin-head-minsec": {
+   "suite": "pin-head-minsec",
+   "cases": 8192,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "def91efea0b27394a5c8be4f5776a73b44d464751aad9c00cdeca46471cf0a38",
+   "oracle_sha256": "def91efea0b27394a5c8be4f5776a73b44d464751aad9c00cdeca46471cf0a38",
+   "oracle_crc_sha256": "696c2fd463b964448cd92198ea3d98fadf4e22a97b8c896e7493d0ecaa06e09f",
+   "accepted_cases_by_mission": {
+    "CM": 6459,
+    "LM": 1733
+   }
+  },
+  "pin-head-nvsub": {
+   "suite": "pin-head-nvsub",
+   "cases": 768,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "bd386fe83639e8bfa6136682be16564c0379b0536d48e07ccc66dddec5095d8b",
+   "oracle_sha256": "bd386fe83639e8bfa6136682be16564c0379b0536d48e07ccc66dddec5095d8b",
+   "oracle_crc_sha256": "6ff010bebe3de8fccca0b31688d5aa6d3d4c56989a1444039a476e34f1cdd9dd",
+   "accepted_cases_by_mission": {
+    "CM": 384,
+    "LM": 384
+   }
+  },
+  "pin-head-proceed": {
+   "suite": "pin-head-proceed",
+   "cases": 960,
+   "differing": 0,
+   "refused_unchanged": 63,
+   "native_sha256": "09438eb840e0667e203147d1fde728ed8fdd6e5969431519c304d2767607220b",
+   "oracle_sha256": "94ad3181270d3dfb5503120232cbb2861179d40361fc0f047e4cb00d71adca3a",
+   "oracle_crc_sha256": "f53403502f9a06651915dc3b0774a90c556ed730810a31fefd274cab4330d7a7",
+   "accepted_cases_by_mission": {
+    "CM": 465,
+    "LM": 432
+   }
+  },
+  "pin-head-request": {
+   "suite": "pin-head-request",
+   "cases": 512,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "7002dce064cbb77de944c90a3db32d3fbaa2b0a06a5e3585ec59e0ead019a11e",
+   "oracle_sha256": "7002dce064cbb77de944c90a3db32d3fbaa2b0a06a5e3585ec59e0ead019a11e",
+   "oracle_crc_sha256": "33465412a0bd6c4ec72410601a878629a46b61e61ed3fd629efc6496a3273d02",
+   "accepted_cases_by_mission": {
+    "CM": 256,
+    "LM": 256
+   }
+  },
+  "pin-head-twoint": {
+   "suite": "pin-head-twoint",
+   "cases": 8192,
+   "differing": 0,
+   "refused_unchanged": 0,
+   "native_sha256": "124336b838c3ac8e86ea04a04b90eee02a3a11d7fb2692bc8f0dffadcea2d517",
+   "oracle_sha256": "124336b838c3ac8e86ea04a04b90eee02a3a11d7fb2692bc8f0dffadcea2d517",
+   "oracle_crc_sha256": "d42f34b22885510aaa1f863fc7c53f72d1f04457ab46530dc1742d4861929784",
+   "accepted_cases_by_mission": {
+    "CM": 4076,
+    "LM": 4116
+   }
+  },
   "pin-transfer": {
    "suite": "pin-transfer",
-   "cases": 2096,
+   "cases": 2276,
    "differing": 0,
-   "refused_unchanged": 864,
-   "native_sha256": "3552f420bd33d44ecefd3abc475d8b2ac7060aea8c798286c1ab6506d5c0386d",
-   "oracle_sha256": "600da84f3d32bbe9d2b0ebcbd97c3331cf8c33dc11ad7c16db0027b7ec8dc3b6",
-   "oracle_crc_sha256": "6575b3840b4cd1d71fadf5b01515ebd4d535437246b2bb654ca44ecd3fd30cc5",
+   "refused_unchanged": 940,
+   "native_sha256": "9b77c0dbe606783400f2f155216078323219c01686260e56c73f717e76f536cb",
+   "oracle_sha256": "2e47cba07fecabd38b04795fa3ec477290ff42878f263f4d5b2bc5fe5fc68673",
+   "oracle_crc_sha256": "87f2ae638e1570c00fbed1e66d27286f2bf30f72a98e592a9cb438b3865f5a9a",
    "accepted_cases_by_mission": {
-    "CM": 564,
-    "LM": 668
+    "CM": 634,
+    "LM": 702
    }
   },
   "pin-transfer-c64": {
    "suite": "pin-transfer-c64",
-   "cases": 2088,
+   "cases": 2268,
    "differing": 0,
-   "refused_unchanged": 1161,
-   "native_sha256": "a9abdd8c33402b4450102a4945240d7a21cc1bd912fe55f32fe755b2ceb9885a",
-   "oracle_sha256": "5922a542f28c38a4b9d6cd2fe476cff4672c908c77a82f53f34342db7c892dc5",
-   "oracle_crc_sha256": "577c234d9e3618d90c124c9e815f3bb93b16cce99cd6f468c660beecbb9de7a6",
+   "refused_unchanged": 1430,
+   "native_sha256": "ff6d6529ffebeda756871221578a0a3716f61e93acb24355290a7ac218f066d6",
+   "oracle_sha256": "39bb07eea537b993ff3bd75135fc279d7ef24e963bfabc550b601a7ff05f0a45",
+   "oracle_crc_sha256": "7d468dc6228d47cb275de4ec8fe8045f80395b902d399bdea248d11f13b436dd",
    "accepted_cases_by_mission": {
-    "CM": 422,
-    "LM": 505
+    "CM": 405,
+    "LM": 433
+   }
+  },
+  "pin-decdsp3": {
+   "suite": "pin-decdsp3",
+   "cases": 768,
+   "differing": 0,
+   "refused_unchanged": 114,
+   "native_sha256": "4e9f32fa2630da8a12ac5c99231749201eaaf2643728bf380f239cb1a9c22198",
+   "oracle_sha256": "09b7d18c945b2dee39dffeb0cc8a586ce3f446424a3e71164d58d32be3b45434",
+   "oracle_crc_sha256": "b34fd749073f0e8ae7077ba6b195c131d91da10f6f0cf899d33901044732d954",
+   "accepted_cases_by_mission": {
+    "CM": 654
    }
   },
   "pin-refuse": {
    "suite": "pin-refuse",
    "cases": 1530,
    "refused_unchanged": 1530,
-   "native_sha256": "cb5e183f026e9e3f8b4b665abef9bd6020320721c4ee89fbf4979c96e589a0a1"
+   "native_sha256": "5a9e3a451b4f6ecceb682c66aafd42b3908155cfede25ff3eb1adea0e2a0ef79"
   }
  },
- "total_cases": 128625,
+ "total_cases": 148252,
  "total_differing": 0,
- "total_refused_unchanged": 3878
+ "total_refused_unchanged": 4406
 }

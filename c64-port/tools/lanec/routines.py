@@ -67,7 +67,26 @@ FAMILIES = {
                 # callees that never return to the word after the call
                 no_return=('CCSHOLE', 'POODOO', 'ENDOFJOB', 'ALMCYCLE', 'BLANKSUB', 'ENTEXIT', 'JOBSLEEP'),
                 # labels whose name other files use only as an interpretive opcode
-                opcodes=('CLEAR',)),
+                opcodes=('CLEAR',),
+                # head families (src/lanec_pin_head_<h>.c, suite pin-head-<h>): at every point
+                # a head claims, it takes the place of the modules named here, which ran on
+                # through other routines in one C call (docs/LANEC-PIN-HEADS.md)
+                heads={'load': ('load_request', 'load_complete'), 'lamp': ('lamp_lifecycle',),
+                       'request': ('operator_request', 'operator_schedule'),
+                       'proceed': ('load_control',),
+                       'nvsub': ('nv_admission', 'nv_consumer'),
+                       # the display heads (docs/LANEC-PIN-HEADS-DISPLAY.md)
+                       'decount': ('decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85'),
+                       'dpout': ('decimal_consumer', 'decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display',
+                                 'cm_nv85'),
+                       'twoint': ('decimal_time_consumer', 'cm_normal_display'),
+                       'minsec': ('decimal_time_consumer', 'cm_normal_display', 'minutes_output', 'cm_minutes_seconds')},
+                # modules no routine tries (the rest of the try-list and the heads accept
+                # their states; their suites stay as host tests of the composite);
+                # MISSION:module drops it from that mission's lists only
+                dropped=('nv_update', 'decimal', 'CM:decimal_general', 'decimal_consumer', 'decimal_time_consumer',
+                         'monitor_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85', 'minutes_output',
+                         'cm_minutes_seconds')),
 }
 
 
@@ -79,7 +98,8 @@ def suites(fam, cfg):
         p.read_text() for p in (ROOT / 'tests').glob('lanec_pw_*_cases.c')))))
     return [(n.replace('-', '_'), f'pw-{n}', f'lanec_pw_{n.replace("-", "_")}_run') for n in names] + \
         [('gaps', 'pin-gaps', 'lanec_pin_gaps_dispatch'), ('keys', 'pin-keys', 'lanec_pin_keys_dispatch'),
-         ('key_labels', 'pin-key-labels', 'lanec_pin_keys_dispatch')]
+         ('key_labels', 'pin-key-labels', 'lanec_pin_keys_dispatch')] + \
+        [(f'head_{h}', f'pin-head-{h.replace("_", "-")}', f'lanec_pin_head_{h}_run') for h in cfg.get('heads', {})]
 
 
 def physical(bank, z):
@@ -105,6 +125,7 @@ def main():
     # mission -> kind ('' basic, 'I' interpretive) -> physical -> (module, bank, z)
     points = {m: {'': {}, 'I': {}} for m in ('LM', 'CM')}
     accepted = {'LM': {}, 'CM': {}}
+    accepted_by = {}
     own, outside, exits, swret = {}, {}, {}, {}
     # the site tables name the repository file (older ones the listing's include name)
     listing = (cfg['file'][:-4], wholefile.LISTING.get(cfg['file'], cfg['file'])[:-4])
@@ -138,14 +159,44 @@ def main():
                     continue
                 if mod not in got:
                     got.append(mod)
-                if not kind and got[0] == mod:
-                    accepted[mission].setdefault(key, []).append(int(n))
+                if not kind:
+                    accepted_by.setdefault((mission, key, mod), []).append(int(n))
                 continue
             if points[mission][kind].setdefault(key, (mod, bank, z))[0] != mod:
                 sys.exit(f'FAIL: {mission} {bank:o},{z:04o} is claimed by {fam}-{points[mission][kind][key][0]} '
                          f'and {fam}-{mod}')
             if not kind:
                 accepted[mission].setdefault(key, []).append(int(n))
+    if multi:
+        # a head takes the place of the modules it replaces, where those came first
+        for h, replaced in cfg.get('heads', {}).items():
+            for mission in points:
+                for kind in points[mission]:
+                    for key, (got, bank, z) in points[mission][kind].items():
+                        if f'head_{h}' not in got:
+                            continue
+                        at = [got.index(x) for x in replaced if x in got]
+                        rest = [x for x in got if x not in replaced and x != f'head_{h}']
+                        got[:] = rest[:min(at)] + [f'head_{h}'] + rest[min(at):] if at else rest + [f'head_{h}']
+        # dropped: composites no routine tries any more (their suites stay as host
+        # tests); every point they claimed needs another module or a head
+        for mission in points:
+            drop = {d.split(':')[-1] for d in cfg.get('dropped', ()) if ':' not in d or d.startswith(mission + ':')}
+            for kind in points[mission]:
+                for key, (got, bank, z) in points[mission][kind].items():
+                    if drop & set(got):
+                        got[:] = [x for x in got if x not in drop]
+                        if not got:
+                            sys.exit(f'FAIL: {mission} {bank:02o},{z:04o}: only dropped modules claim it')
+        for mission in points:
+            for key, (got, bank, z) in points[mission][''].items():
+                if (mission, key, got[0]) in accepted_by:
+                    accepted[mission][key] = accepted_by[(mission, key, got[0])]
+        left = sorted(f'{mission} {bank:02o},{z:04o} {x}' for h, replaced in cfg.get('heads', {}).items()
+                      for mission in points for kind in points[mission]
+                      for got, bank, z in points[mission][kind].values() for x in got if x in replaced)
+        if left:
+            print(f'{len(left)} points still run a module a head replaces: {", ".join(left)}')
     for mission, where in sorted(outside.items()):
         print(f'{mission}: {len(where)} entry points outside {cfg["file"]} (other files\' code) not registered')
     if multi:

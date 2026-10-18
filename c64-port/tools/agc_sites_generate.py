@@ -139,7 +139,8 @@ def sites(mission, callees):
     rows = list(listing_lines(listing))
     result = []
     for index, (path, line, address, words, label, op, operands) in enumerate(rows):
-        if op != 'TC' or len(words) != 1 or words[0] not in targets:
+        # TCR is TC's alias (yaYUL emits the same word).
+        if op not in ('TC', 'TCR') or len(words) != 1 or words[0] not in targets:
             continue
         if label in CONSTANT_WORDS:
             continue
