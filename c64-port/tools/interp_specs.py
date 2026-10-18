@@ -957,7 +957,15 @@ SPECS = {
         # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
         # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
         # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
-        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
+        # LM: a part map (docs/FLIGHT-PARTS.md) keeps the basic subroutines
+        # a P63 background pass calls back and forth in one part: VECAGREE
+        # and UNIT's start (00,3000) with ENDDOT, TPAGREE, DMP (03,3100),
+        # VXV, MPACVBUF, ALSIGNAG (03,3400) and BRANCH's tail (03,2700).
+        # Cut at 0o100-word lines, so the sizes stay under one job slot.
+        **({'flight_parts': [0o1000, 0o1100, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
+                             0o3 * 1024 + 0o1100, 0o3 * 1024 + 0o1300, 0o3 * 1024 + 0o1400, 0o3 * 1024 + 0o1600],
+            'flight_part_map': [1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
+           {'flight_parts': [0o1517, 0o3 * 1024 + 0o1000]}),
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',

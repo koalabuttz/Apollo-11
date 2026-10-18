@@ -98,6 +98,31 @@ parts check needs the rope image the spec's target loads (DMP, POLY and
 the others read their callers' words from it); `tools/flight_parts_check.py`
 loads it whenever the spec's own target does.
 
+On the LM the cuts are now a part map (`'flight_part_map'`, below): an LM
+P63 background pass called the basic subroutines back and forth between
+parts 1 and 3. VECAGREE and UNIT's start (00,3000-3077) called ALSIGNAG,
+MPACVBUF, ENDDOT and 03,3420, and SGNAGREE's TPAGREE went through BRANCH's
+tail. Part 2 now holds 00,3000-3077, 03,2700-2777 (BRANCH's tail),
+03,3100-3277 (DMP to TPAGREE) and 03,3400-3577 (VXV to ALSIGNAG). Part 1 is
+the rest of bank 00, and part 3 the rest of bank 03. The parts are 15,378,
+13,597 and 9,428 bytes. Same store (#625's head), part map against the
+cuts above:
+
+| Window | Cuts | Part map |
+|---|---|---|
+| `lm-p63-nassp`, 90000 cs, 500 cs | 21.581x, 784 background job loads | 21.032x, 736 |
+| `lm-landing-ascent-nassp`, 123000 cs, 300 cs | 26.864x, 759 | 26.666x, 738 |
+
+Larger hot parts (with more of UNIT, or VSQSUB and SQRTSUB) were slower:
+they moved the bounce to other words. Most of the remaining interpreter
+loads are calls from other files (FLESHPOT to DMP, SGNAGREE to TPAGREE,
+R12LITES to BRANCH), which no cut of this file removes.
+
+`'flight_part_map'` gives the part (1-based) of each range between the
+cuts, one entry per range. Without it range j is part j. With it, a part's
+`<SYM>_OUT` and `<SYM>_BANKS` cover all its ranges, and the part keys are
+the words a goto reaches from another part, as before.
+
 ## Comanche055 IMU_CALIBRATION_AND_ALIGNMENT
 
 `'basic': 'full'`, cut at bank 33 `02400` and `03000`. As one module it
