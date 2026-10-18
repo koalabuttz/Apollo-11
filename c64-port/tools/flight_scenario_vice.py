@@ -51,7 +51,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0):
     the window and writes its inputs (-snap.h.replay) and its end state
     (-snap.h.end, and every `every` cs before), tools/flight_host_run.c
     FLIGHT_REPLAY."""
-    scen = {s[0]: s for s in fhd.FLIGHT}[name]
+    scen = fhd.scenario(name)
     _, m, _, keys, env = scen
     header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
@@ -286,7 +286,7 @@ def window_keys(name, scen_keys, snap_at, cs):
 
 def host_holes(exe, name, cs, tag):
     """The points the host run to cs bridges, as flight_holes.describe dicts."""
-    _, m, _, keys, env = {s[0]: s for s in fhd.FLIGHT}[name]
+    _, m, _, keys, env = fhd.scenario(name)
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2'}, capture_output=True, text=True)
     (dp.WORK / f'{tag}-holes.log').write_text(r.stdout + r.stderr)
@@ -327,7 +327,7 @@ def main():
                    'printed as the window ends, e.g. 1011 for Comanche MODREG')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
-    m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
+    m = fhd.scenario(a.scenario)[1]
     # Each window's files (snapshot, PRG, VICE directory, result) carry its
     # start, so windows of one scenario can run side by side.
     tag = f'{a.scenario}-{a.snap_cs}'
@@ -372,7 +372,7 @@ def main():
         # CM channel rows can take two C64 rows each.
         at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + 256)
         end_at = (at + 2 * len(rows) + 0xff) & ~0xff
-        busy = {s[0]: s for s in fhd.FLIGHT}[a.scenario][4].get('FLIGHT_BUSY_SAMPLE')
+        busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
         # The window ends at the C64's first sample point a.cs in; DP_CS
         # stops it later if none comes.
         # The C64's rows (their count does not depend on rk_device's address).
@@ -386,7 +386,7 @@ def main():
               f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
               f'{kinds.get(3, 0)} interrupt requests)')
     if a.keys:
-        keys, pressed = window_keys(tag, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
+        keys, pressed = window_keys(tag, fhd.scenario(a.scenario)[3], snap_at, a.cs)
         print(f'{a.scenario}: {len(pressed)} keys pressed on the C64 at '
               + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
     prg = dp.link(a.cc, tag, header, a.cs + 500 if a.replay else a.cs, scratch, os.environ.get('FSV_STEPS') == '1',
