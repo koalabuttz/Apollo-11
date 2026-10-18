@@ -21,4 +21,8 @@ SP_TABLE(lm_sp_routines,05032u,LM_TRIG)
 #include "cm_single_return.h"
 #define CM_TRIG(s,c) (cm_single_trig((s),(c))!=CM_TRIG_OK||cm_single_return(s)!=CM_TRIG_OK)
 SP_TABLE(cm_sp_routines,05074u,CM_TRIG)
+/* The same two entries for the CM entry pack (a ride table in
+ * tools/flight_store_build.py): an entry DAP pass calls SPSIN/SPCOS 7 times,
+ * and with them in the pack its module run carries on through each call. */
+const agc_routine_table cm_sp_hot_routines = {cm_sp_routines_entries, 2};
 #endif

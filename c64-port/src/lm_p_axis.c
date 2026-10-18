@@ -909,3 +909,8 @@ static const agc_routine_entry hot_entries[14]={
  {P16(LM_PA_CHKVISFZ),chkvisfz_e},{P16(LM_PA_TSNEXTP),tsnextp},{P16(LM_PA_DETENTCK),detentck_e},
  {P16(LM_PA_JETSOFFRET),jetsoffret},{P16(LM_PA_PURGENCY),purgency},{P16(LM_PA_TJETRET),tjetret}};
 const agc_routine_table lm_p_axis_hot_routines={hot_entries,14};
+/* PAXFILT +4, where ACDT+C12 returns: the trim gimbal file's module carries
+ * it (tools/flight_store_build.py CO_LOCATE), so a powered-flight DAP pass
+ * that runs ACDT+C12 goes on to PAXFILT with no module load. */
+static const agc_routine_entry tg_entries[1] = {{P16(LM_PA_AFTERACDT), afteracdt}};
+const agc_routine_table lm_p_axis_tg_hot_routines = {tg_entries, 1};
