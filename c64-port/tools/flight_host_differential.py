@@ -122,7 +122,9 @@ LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
 # about 1 m/s. Touchdown at 1,324.8 s (FLIGHT_TOUCHDOWN: the engine
 # model's true height reaches the surface then); V37E68E at 1,340 s: P68
 # flashes V06N43, PRO at 1,378 s, V37E00E at 1,390 s: P00 on the surface.
-P65 = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_TOUCHDOWN': '132480',
+# The landing radar (FLIGHT_LR, no V57, so no updates) answers R12's reads
+# down to 10 ft, on low scale (below 2,481.7 ft) from 1,171 s.
+P65 = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_TOUCHDOWN': '132480', 'FLIGHT_LR': '60000',
        'FLIGHT_CHAN': '137800:032=057777,137900:032=077777'}
 P65_KEYS = NASSP_KEYS + '@134000V37E68E@139000V37E00E'
 # lm-p67-nassp: lm-landing-ascent-nassp to P00 on the surface, with the

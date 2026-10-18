@@ -735,6 +735,9 @@ port) runs one mission:
    where the engine model's true height (`FLIGHT_LR_TRACE`) reaches the
    surface; P68 and P00 on the surface as above. Apollo 11 never flew
    P65 (the crew took P66 at about 500 ft).
+   The landing radar runs here too (`FLIGHT_LR=60000`, no V57): R12's
+   range reads go to low scale (no /5, SKALSKAL on the Doppler term)
+   from 1,171 s and data good ends at 10 ft.
    `lm-p67-nassp`: `lm-landing-ascent-nassp` to P00 on the surface with
    the crew on manual throttle (channel 30 bit 5) from 1,240 s to
    1,244 s in P66: GUILDENSTERN starts P67, which issues no throttle
