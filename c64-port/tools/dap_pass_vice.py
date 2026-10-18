@@ -61,7 +61,7 @@ def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False):
     out = WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
         cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
-        f'-DDP_SCRATCH=0x{scratch:x}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
+        f'-DDP_SCRATCH=0x{scratch:x}ul', f'-DDP_SCRATCH_BYTES={SCRATCH_BYTES}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
         'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
@@ -89,7 +89,7 @@ def vice(a, name, prg, pinned, m='lm'):
            '-directory', f'{a.data_dir.resolve()}:{rom.parent}',
            '-initbreak', 'ready', '-moncommands', str(commands),
            '-monlogname', str(work / 'monitor.log'), '-monlog', '-limitcycles', str(a.cycles),
-           '-reu', '-reusize', str(reu.stat().st_size // 1024), '-reuimage', str(reu)]
+           '-reu', '-reusize', str(reu.stat().st_size // 1024), '-reuimage', str(reu), '-reuimagerw']
     with (work / 'vice.log').open('w') as log:
         subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, timeout=a.timeout, env=env)
     if not dump.exists():
@@ -109,8 +109,18 @@ def vice(a, name, prg, pinned, m='lm'):
         at = f'{z >> 10:02o},{0o2000 + z % 1024:04o}'
     else:
         at = f'{z:05o}'
-    records = [dict(zip(('request', 'job_loads', 'task_loads', 'status', 'steps', 'cycles'),
-                        struct.unpack_from('<4BHI', data, 0x40 + 10 * i))) for i in range(count)]
+    # Every record is in the REU scratch (the store file's last SCRATCH_BYTES),
+    # which VICE writes back to image.reu on exit (-reuimagerw); the dump
+    # holds the first ones that fit below the profile or the stack canary.
+    # lost: the scratch filled, or the image did not come back.
+    keep = min(count, ((0xb80 if getattr(a, 'profile', False) else 0xc00) - 0x40) // 10)
+    ram = [struct.unpack_from('<4BHI', data, 0x40 + 10 * i) for i in range(keep)]
+    image = reu.read_bytes()
+    scratch = len(image) - SCRATCH_BYTES
+    rows = [struct.unpack_from('<4BHI', image, scratch + 10 * i) for i in range(count)]
+    if rows[:keep] != ram:
+        rows, lost = ram, lost or count > keep
+    records = [dict(zip(('request', 'job_loads', 'task_loads', 'status', 'steps', 'cycles'), x)) for x in rows]
     for r in records:
         r['request'] = RUPTS.get(r['request'], str(r['request']))
     agc_cs = (end_cs - start_cs) & 0x3fff

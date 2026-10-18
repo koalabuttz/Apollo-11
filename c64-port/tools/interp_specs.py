@@ -2849,6 +2849,9 @@ SPECS = {
     },
     'lm-orbital-integration': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'ORBITAL_INTEGRATION.agc'},
         'base': {'lm': 'lm_orbital_integration'},
         'symbol': {'lm': 'lm_orbital_integration'},
@@ -2928,6 +2931,9 @@ SPECS = {
     },
     'lm-integration-init': {
         'missions': ('lm',),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'INTEGRATION_INITIALIZATION.agc'},
         'base': {'lm': 'lm_integration_init'},
         'symbol': {'lm': 'lm_integration_init'},

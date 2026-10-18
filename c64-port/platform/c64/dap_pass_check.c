@@ -52,7 +52,14 @@ static uint32_t prof_last;
 #else
 #define DP_TOP 0xcc00u
 #endif
-#define DP_MAX ((DP_TOP-0xc040u)/sizeof(dp_record))
+/* Records go to the REU scratch (DP_SCRATCH_BYTES, tools/dap_pass_vice.py
+ * reads them back from the REU image VICE writes on exit); the first
+ * DP_KEEP are also copied below DP_TOP for the memory dump. */
+#ifndef DP_SCRATCH_BYTES
+#define DP_SCRATCH_BYTES 32768ul
+#endif
+#define DP_MAX  (DP_SCRATCH_BYTES / sizeof(dp_record))
+#define DP_KEEP ((DP_TOP - 0xc040u) / sizeof(dp_record))
 #define RECORDS ((dp_record *)0xc040)
 #define SUMMARY ((dp_summary *)0xc010)
 /* The REU scratch: the store file's unused tail (tools/dap_pass_vice.py). */
@@ -146,7 +153,8 @@ int main(void){
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
  sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];sum.superbank=rk_device.superbank;
- apollo_reu_transfer(APOLLO_REU_FETCH,RECORDS,DP_SCRATCH,sum.records*sizeof r);
+ apollo_reu_transfer(APOLLO_REU_FETCH, RECORDS, DP_SCRATCH,
+                     (sum.records < DP_KEEP ? sum.records : DP_KEEP) * sizeof r);
  *SUMMARY=sum;
 #ifdef RK_STEP_PROFILE
  memcpy(PROFILE,prof,sizeof prof);
