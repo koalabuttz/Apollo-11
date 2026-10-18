@@ -518,15 +518,29 @@ static uint16_t BOOT hw_crc(uint16_t cs)
     c = hw_crc_byte(c, (uint8_t)cs);
     return hw_crc_byte(c, (uint8_t)(cs >> 8));
 }
-/* The window's end (interrupts off), once main has fetched the boot code
- * back: the result. */
-static void BOOT hw_result(enum exec_status st, uint16_t cs, uint8_t ended)
+static void hw_report(enum exec_status st);
+/* The result, once the boot code is back: the CRC and the verdict at
+ * $c036-$c038, the mailbox's $a5, then the report. */
+static void BOOT hw_result(enum exec_status st)
 {
-    hw_end_crc = hw_crc(cs);
-    hw_pass = st == EXEC_OK && ended && hw_end_crc == DP_HW_EXPECT;
+    hw_end_crc = hw_crc((uint16_t)(mail[0x32] | mail[0x33] << 8));
+    hw_pass = st == EXEC_OK && replay_ended && hw_end_crc == DP_HW_EXPECT;
     mail[0x36] = (uint8_t)hw_end_crc;
     mail[0x37] = (uint8_t)(hw_end_crc >> 8);
     mail[0x38] = hw_pass;
+    mail[0] = 0xa5;
+    hw_report(st);
+}
+/* The window's end (interrupts off): the boot code back from the REU (its
+ * region held module code during the window), then the result. main jumps
+ * here from inline assembly: a C call costs main some 240 bytes of RAM. */
+__attribute__((noinline, used, noreturn)) void dp_hw_end(void)
+{
+    apollo_reu_transfer(APOLLO_REU_FETCH, __rk_boot_start, DP_HW_SAVE,
+                        (uint16_t)(__rk_boot_end - __rk_boot_start));
+    hw_result((enum exec_status)sum.status);
+    for (;;) {
+    }
 }
 __attribute__((noinline)) void dp_done(void)
 {
@@ -672,13 +686,8 @@ int main(void){
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);
 #ifdef DP_HW_CHECK
- apollo_reu_transfer(APOLLO_REU_FETCH, __rk_boot_start, DP_HW_SAVE,
-                     (uint16_t)(__rk_boot_end - __rk_boot_start));
- hw_result(st, (uint16_t)(mail[0x32] | mail[0x33] << 8), replay_ended);
+ __asm__ volatile("jmp dp_hw_end");
 #endif
  mail[0]=0xa5;
-#ifdef DP_HW_CHECK
- hw_report(st);
-#endif
  for(;;){}
 }
