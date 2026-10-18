@@ -948,8 +948,13 @@ port) runs one mission:
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
-   for `--cs` centiseconds with cycles, steps and module loads per AGC
-   interrupt; a refused or untranslated point stops it. With `--keys` it
+   for `--cs` centiseconds. The host takes the snapshot at the first point
+   at or after `--snap-cs` with no interrupt pending, so inside a long
+   interpretive job it can start late (a CM window asked at 9000 cs began
+   at 9952). The run prints where the snapshot was taken, and says `slid`
+   when that is more than 100 cs late (`snap_at` and `snap_slid` in its
+   JSON); `--strict-start` fails such a window instead. The run records
+   cycles, steps and module loads per AGC interrupt; a refused or untranslated point stops it. With `--keys` it
    presses the scenario's DSKY keys that fall in the window, at the
    centiseconds the host run presses them (channel 15 and KEYRUPT1, or a
    mark's channel 16 bits and KEYRUPT2; on the CM also rk_device's
