@@ -377,7 +377,12 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   (`split_pack`, a binary search on each chunk's end), here two. On
   4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
   20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
-  to 465 K cycles.
+  to 465 K cycles. ATTRATES+66 (15,2753) joined it later (27 entries, Lane
+  A2): from about 21000 cs every pass ran it from a full-table chunk between
+  two pack routines, two job-slot swaps a pass. On c6bcf271 the 500 cs
+  windows from 21000, 25000, 33000 and 41000 cs went 4.1-4.2% faster
+  (16.06x to 15.40x from 33000); the window from 17000 cs, before that
+  point is reached, is unchanged. The pack is one 13,373-byte module.
 - The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
   pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
   burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
