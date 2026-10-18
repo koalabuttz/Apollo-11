@@ -2628,7 +2628,14 @@ SPECS = {
         # RENDISP7 sets TEMPOR1 +0 and loops on SLOAD BZE TEMPOR1 until the
         # V06N49 display job answers: +0 with a job waiting (NEWJOB
         # positive), so the loop-back's DANZIG goes to CHANG2.
-        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(1, 4)}},
+        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(4)}},
+        # The same state at SLOAD BZE (34,3302, CHANG2's resume LOC after the
+        # loop-back): the flowed cases there come from runs whose display job
+        # has answered, so a third of them get TEMPOR1 +0 with a job waiting
+        # (review #543: the BZE-taken arc).
+        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]})]},
+        # Flight builds skip the entry checks' erasable scan (docs/INTERP-COMPILE.md).
+        'trusted_image': True,
         # Loop and mid-sequence points start from the registers the file's
         # own runs reach them with (the W-matrix and mark-data loops).
         'flow_states': True,
