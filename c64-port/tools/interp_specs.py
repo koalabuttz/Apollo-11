@@ -1928,6 +1928,10 @@ SPECS = {
             '04,3650': {'0163': [0]},
             # (GETX's DDV: DP mode, the divisor at vac+0, joint_states.)
             '12,3016': {'0163': [0], '0166': ['vac+2']},
+            # (LAMBERT's SLOAD BZE VTARGTAG: S40.9 steering passes NUMIT
+            # 0, so INITVEL's VTARGTAG is 0 and LAMBERT goes on to TARGETV;
+            # reviewer 1, #659)
+            '12,3544': {'VTARGTAG': [0, 'any']},
             # STOREs into E7's last words (EPSILONL, COGA) after a DP
             # order: a vector store there would run past erasable.
             '12,3241': {'0163': [0]}, '12,3506': {'0163': [0]},
