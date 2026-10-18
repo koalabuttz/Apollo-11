@@ -6,7 +6,7 @@ static int dsky_time_entry(uint16_t pc,uint8_t cm){static const uint16_t lm[]={0
 static uint16_t dsky_time_address(const uint16_t *w){uint16_t a=w[0145];return a<01400u ? a : (uint16_t)(w[3]+(a&0377u));}
 static int dsky_time_domain(const apollo_overlay_state *s,const dsky_lamp_io *io,uint8_t cm){const uint16_t *w;uint16_t a;int e;if(!s||!io)return 0;w=s->words;e=dsky_time_entry(w[5],cm);if(e<0||w[7]||w[3]>03400u||(w[3]&0377u)||w[4]!=064000u||w[6]!=(uint16_t)(064000u|(w[3]>>8))||io->control.superbank>0160u||(io->control.superbank&017u)||!(io->control.superbank&0100u)||io->control.interrupt_enabled>1u||io->restart_light>1u)return 0;
  if(e)return w[2]>=0100u&&w[2]<=07777u;
- a=dsky_time_address(w);return w[0145]<=01776u&&a>=010u&&a<=03776u&&(a&0377u)!=0377u;
+ a=dsky_time_address(w);return w[0145]<=01776u&&a>=010u&&(a<017u||a>023u)&&a<=03776u&&(a&0377u)!=0377u;
 }
 static void dsky_time_xch(uint16_t *w,uint16_t a){uint16_t v=w[a];w[a]=agc_correct(w[0]);w[0]=agc_extend(v);}
 static void dsky_time_dxch(uint16_t *w,uint16_t a){uint16_t h=w[a],l=w[a+1u];w[a]=agc_correct(w[0]);w[a+1u]=agc_correct(w[1]);w[0]=agc_extend(h);w[1]=agc_extend(l);}

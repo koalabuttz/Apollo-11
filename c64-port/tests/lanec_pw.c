@@ -55,7 +55,7 @@ void lanec_pw_fifth_char(apollo_overlay_state *s, unsigned i)
 
 void lanec_pw_low_noun(apollo_overlay_state *s, uint32_t i)
 {
-    static const uint16_t low[8] = {024u, 010u, 026u, 030u, 032u, 046u, 060u, 0100u};
+    static const uint16_t low[8] = {024u, 010u, 026u, 020u, 032u, 022u, 060u, 0100u};
     uint16_t *w = s->words, at = low[i % 8u], from, j, k;
     if (w[0140] == 2u) {
         k = w[0117] <= 2u ? w[0117] : 0u;

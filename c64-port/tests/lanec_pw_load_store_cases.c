@@ -21,6 +21,9 @@ static void input(apollo_overlay_state *s, dsky_lamp_io *io, uint16_t n)
     w[3] = banks[(j / 16u) % 3u];
     w[6] = (uint16_t)(062000u | (w[3] >> 8));
     w[0145] = nounadd[(j / 128u) % 8u];
+    /* the machine address of V21 N01 (XREG) below 0100: counters and the
+     * editing registers */
+    if (j % 4u == 1u) w[01003] = (uint16_t)((w[01003] & ~03777u) | (010u + (j / 4u) % 070u));
 }
 
 LANEC_PW_MAKE(make, dsky_lamp_io, input, lanec_pw_lamp_out, lanec_pw_load_store_run, 16384u, CASES)

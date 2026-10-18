@@ -14,7 +14,7 @@ enum p66_bias_status dsky_decimal_load(apollo_overlay_state *s,p66_bias_io *io,e
     uint16_t *w;agc_word field,component,count,address,value;
     if(s==0||io==0||(unsigned)mission>1u)return P66_BIAS_OUT_OF_SCOPE;
     w=s->words;
-    if(w[5]!=02523u||w[4]!=062000u||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(062000u|(w[3]>>8))||w[7]!=0||io->superbank>0160u||(io->superbank&017u)||!(io->superbank&0100u)||io->interrupt_enabled>1u||(w[0140]!=1u&&w[0140]!=2u)||w[0145]<0100u||w[0145]>01777u)return P66_BIAS_OUT_OF_SCOPE;
+    if(w[5]!=02523u||w[4]!=062000u||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(062000u|(w[3]>>8))||w[7]!=0||io->superbank>0160u||(io->superbank&017u)||!(io->superbank&0100u)||io->interrupt_enabled>1u||(w[0140]!=1u&&w[0140]!=2u)||w[0145]<010u||w[0145]>01777u)return P66_BIAS_OUT_OF_SCOPE;
     field=(agc_word)((w[w[0140]==1u?0147u:0146u]&076000u)>>10);component=(agc_word)(field&3u);
     if(component>2u)return P66_BIAS_OUT_OF_SCOPE;
     w[1]=agc_extend(agc_correct(w[1]));w[022]=agc_negate(field);w[0117]=component;

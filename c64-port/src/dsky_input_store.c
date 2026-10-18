@@ -8,12 +8,12 @@ static int dsky_store_domain(const apollo_overlay_state *s,const dsky_lamp_io *i
  if(e==0){if(w[0]>2u||w[2]<0100u||w[2]>07777u||(w[0140]!=1u&&w[0140]!=2u))return 0;}else if(w[0115]<0100u||w[0115]>07777u)return 0;
  if(e==3)return 1;
  k=e==0 ? w[0] : w[0117];if(e!=1&&k>2u)return 0;
- if(e==2){address=dsky_store_address(w[0145],w[3]);return w[0145]>=0100u&&w[0145]<=01774u&&address+k>=010u&&address+k<=03775u;}
+ if(e==2){address=dsky_store_address(w[0145],w[3]);return w[0145]>=0100u&&w[0145]<=01774u&&address+k>=010u&&(address+k<017u||address+k>023u)&&address+k<=03775u;}
  mix=(uint16_t)(e==0&&w[0140]==2u);dec=w[01000];if(dec==0u&&(w[0140]!=1u&&w[0140]!=2u))return 0;
  if(dec==0u&&((w[w[0140]==1u ? 0147u : 0146u]>>10)&010u))return 1;
  code=(uint16_t)(mix ? (w[0153]>>(k*5u))&037u : (w[0147]>>5)&037u);
  if(dec!=077777u&&!(dec&&!(dec&040000u))&&code>13u)return 0;
- if(dsky_store_dp(code,cm)&&!(dec&&!(dec&040000u))&&dec!=077777u){address=mix ? (uint16_t)(w[0150u+k]&03777u) : (uint16_t)(w[01017]&03777u);if(address<010u||address>03775u||(address&0377u)<(mix ? k : 0u)||(address&0377u)>0375u)return 0;}
+ if(dsky_store_dp(code,cm)&&!(dec&&!(dec&040000u))&&dec!=077777u){address=mix ? (uint16_t)(w[0150u+k]&03777u) : (uint16_t)(w[01017]&03777u);if(address<010u||(address>=017u&&address<=023u)||address>03775u||(address&0377u)<(mix ? k : 0u)||(address&0377u)>0375u)return 0;}
  return 1;
 }
 static void dsky_store_cadr(uint16_t *w,uint16_t address,uint8_t save){if(save)w[01017]=address;w[3]=(uint16_t)(address&03400u);w[6]=(uint16_t)(062000u|(w[3]>>8));w[0]=(uint16_t)(01400u+(address&0377u));w[0145]=w[0];w[2]=3;}

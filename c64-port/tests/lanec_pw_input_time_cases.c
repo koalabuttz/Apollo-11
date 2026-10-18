@@ -10,7 +10,7 @@
 static const uint16_t extra[] = { 4640, 6676 };
 /* then the module's own states with the time in low erasable (the clock of
  * noun 36 at 024) */
-#define EXTRA (sizeof extra / sizeof extra[0])
+#define EXTRA ((uint16_t)(sizeof extra / sizeof extra[0]))
 static void input(apollo_overlay_state *s, dsky_lamp_io *p, uint16_t k)
 {
     if (k < 8192u + EXTRA) { dsky_input_time_input(s, p, k < 8192u ? k : extra[k - 8192u]); return; }

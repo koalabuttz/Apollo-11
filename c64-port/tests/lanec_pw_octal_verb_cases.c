@@ -19,9 +19,13 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     p66_bias_io p;
     enum dsky_nv_mission mission;
     uint8_t entry;
-    uint16_t k = (uint16_t)lanec_pw_spread(n, CASES, DSKY_OCTAL_VERB_CASES), ch;
+    /* past the spread: the module's own states with the noun in low erasable
+     * (V01-V05 and V11-V15 on nouns 20, 21 and 36) */
+    uint16_t k = n < CASES ? (uint16_t)lanec_pw_spread(n, CASES, DSKY_OCTAL_VERB_CASES)
+                           : (uint16_t)((n - CASES) * 127u % DSKY_OCTAL_VERB_CASES), ch;
     lanec_fill(s, io, n);
     dsky_octal_verb_input(s, &p, k, &mission, &entry);
+    if (n >= CASES && entry != 2u) lanec_pw_low_noun(s, n - CASES);
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     if (entry == 2u) {
         s->words[01017] = (uint16_t)(s->words[01017] & ~0700u);
@@ -32,4 +36,4 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
     LANEC_PW_E_STOP(m, s, io, lanec_pw_octal_verb_run);
 }
-const lanec_suite lanec_suite_pw_octal_verb = { "pw-octal-verb", CASES, make, lanec_pw_octal_verb_run };
+const lanec_suite lanec_suite_pw_octal_verb = { "pw-octal-verb", CASES + LANEC_PW_LOW_NOUN, make, lanec_pw_octal_verb_run };

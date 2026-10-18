@@ -13,7 +13,7 @@ enum p66_bias_status dsky_octal_verb_begin(apollo_overlay_state *s,p66_bias_io *
  w=s->words;verb=w[01001];channel=(uint8_t)(verb==1u&&w[0146]==077776u);
  if(!controls(w,io,mission)||verb<1u||verb>5u||w[5]!=pc[verb-1u]||(w[0140]!=1u&&w[0140]!=2u))return P66_BIAS_OUT_OF_SCOPE;
  routine=(agc_word)((w[0147]>>5)&037u);
- if(!channel&&(w[0145]<0100u||w[0145]>01775u||resolve(w,w[0145])<0100u))return P66_BIAS_OUT_OF_SCOPE;
+ if(!channel&&(w[0145]<010u||w[0145]>01775u||resolve(w,w[0145])<010u||(resolve(w,w[0145])>=016u&&resolve(w,w[0145])<=023u)))return P66_BIAS_OUT_OF_SCOPE;
  if((verb==1u||verb>=4u)&&w[0140]==1u&&!channel&&routine>13u)return P66_BIAS_OUT_OF_SCOPE;
  w[1]=agc_extend(agc_correct(w[1]));
  if(verb==5u){if(!comp_test(w,2,02355)){*route=DSKY_VERB_ALARM;return P66_BIAS_OK;}w[0132]=agc_negate(read_source(w,(agc_word)(w[0145]+2u)));}

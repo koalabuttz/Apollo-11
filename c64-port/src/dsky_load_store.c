@@ -8,11 +8,11 @@ static int dsky_caller_domain(const apollo_overlay_state *s,const dsky_lamp_io *
  if (e >= 5 && e <= 12) {
      k = (uint16_t)(e == 6 || e == 9 || e == 11 ? 1u : e == 7 || e == 12 ? 2u : 0u);
      address = dsky_caller_address(w, k);
-     if (agc_overflow(w[0]) || w[0145] + k > 01777u || address < 010u || address > 03777u)
+     if (agc_overflow(w[0]) || w[0145] + k > 01777u || address < 010u || (address >= 017u && address <= 023u) || address > 03777u)
          return 0;
  }
- if(e==13||(e==7&&w[01002]==7u))return (w[01003]&03777u)>=0100u;
- if(e==14){address=dsky_caller_address(w,0);return w[0145]<=01777u&&address>=0100u&&address<=03777u;}
+ if(e==13||(e==7&&w[01002]==7u))return (w[01003]&03777u)>=010u&&((w[01003]&03777u)<017u||(w[01003]&03777u)>023u);
+ if(e==14){address=dsky_caller_address(w,0);return w[0145]<=01777u&&address>=010u&&(address<017u||address>023u)&&address<=03777u;}
  return 1;
 }
 static void dsky_caller_component(uint16_t *w,uint16_t k,uint16_t q,enum dsky_load_store_route *route){w[0]=k;w[2]=q;w[5]=03075;*route=DSKY_LOAD_STORE_COMPONENT;}
