@@ -12,6 +12,11 @@ it continues from the snapshot as the AGC would with the PIPAs still. With
 --keys it presses the scenario's DSKY keys that fall in the window, at the
 times the host run presses them; without, it presses none. Other scheduled
 inputs (FLIGHT_CHAN, FLIGHT_POKE/LOAD, the radar model) are not replayed.
+With --replay the C64 instead gets every input the host run gives the AGC
+in the window (tools/flight_host_run.c FLIGHT_REPLAY: model PIPA counts,
+keys, channels, pokes, radar), and the run fails unless the C64 ends the
+window in the host's state (erasable words and output channels; the first
+difference is printed).
 
 First lists the points the host run to the end of the C64 window bridges
 to yaAGC (unregistered, or refused by their table), with file, label and
@@ -30,6 +35,7 @@ import json
 import os
 import pathlib
 import re
+import struct
 import subprocess
 import sys
 
@@ -40,21 +46,148 @@ import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
 
 
-def snapshot(exe, name, cs):
+def snapshot(exe, name, cs, replay=0, every=0):
+    """replay: the window's centiseconds; the host run then goes on through
+    the window and writes its inputs (-snap.h.replay) and its end state
+    (-snap.h.end, and every `every` cs before), tools/flight_host_run.c
+    FLIGHT_REPLAY."""
     scen = {s[0]: s for s in fhd.FLIGHT}[name]
     _, m, _, keys, env = scen
     header = dp.WORK / f'{name}-snap.h'
     header.unlink(missing_ok=True)
+    for x in ('.replay', '.end'):
+        pathlib.Path(f'{header}{x}').unlink(missing_ok=True)
     # The host takes the snapshot at the first point at or after cs with no
     # interrupt pending (a long job, such as PICAPAR, can hold one off for
     # over 100 cs), then stops; running to cs + 1000 leaves room for that.
-    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000), keys], cwd=ROOT,
-                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}'},
+    r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000 + replay), keys], cwd=ROOT,
+                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}',
+                            **({'FLIGHT_REPLAY': f'{replay},0,{every}', 'FLIGHT_REPLAY_MCT': str(c64_weights(m))}
+                               if replay else {})},
                        capture_output=True, text=True)
     (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)
     if not header.exists():
         sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{name}-host.log)')
+    if replay and (r.returncode or not pathlib.Path(f'{header}.end').exists()):
+        sys.exit(f'FAIL: the host run did not reach the end of the {replay} cs window (see {dp.WORK}/{name}-host.log)')
     return header
+
+
+# The output channels after the erasable words in the end state
+# (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
+END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
+                'channel 35', 'superbank']
+ROW = struct.Struct('<HBBHH')
+
+
+def compared(i):
+    """tools/flight_host_run.c compared(): not the central registers, RUPTREG1-4
+    or the clock counters (024-031, the work clock's scalers)."""
+    return i >= 0o20 and not 0o70 <= i <= 0o73 and not 0o24 <= i <= 0o31
+
+
+def replay_place(manifest, m, image, size):
+    """An REU address for size bytes of replay rows and end state: the top
+    of the zeros below the rope (the flight store's spare), which the run
+    must not touch."""
+    top = manifest.get('rope_base') or {'lm': 0x1c0000, 'cm': 0x1e0000}[m]
+    at = (top - size) & ~0xff
+    if at < 0 or any(image[at:top]):
+        sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
+    return at
+
+
+STATE = 2 * (1 + 2048 + len(END_CHANNELS))
+# The C64's devices (platform/c64/resident_flight.h): rk_hardware
+# (agc_hardware, include/agc_transfer.h) at RK_HARDWARE and rk_flight
+# (flight_io, include/flight_io.h) at RK_FLIGHT_IO, byte offsets by field;
+# rk_device is the mission's rk_io (LM p66_bias_io, CM cm_native_io).
+RK_HARDWARE, RK_FLIGHT_IO, RK_RESTART_LAMP = 0x6fbe, 0x6fdd, 0x6ff5
+HW = {0o11: 0, 0o5: 4, 0o6: 6, 0o13: 8, 0o15: 10, 0o10: 12, 0o32: 14, 0o12: 16, 0o14: 18, 0o30: 20, 0o33: 22,
+      0o31: 24, 0o3: 26, 0o4: 28}
+RADAR_GATE = 30
+FLIGHT = {'superbank': 0, 0o16: 4, 0o34: 6, 0o35: 8}
+DEVICE = {'lm': {'superbank': 0}, 'cm': {0o11: 0, 0o12: 2, 0o13: 4, 0o14: 6, 0o15: 8, 0o16: 10, 'superbank': 12}}
+C64_STATE = 2 + 2 * 2048 + (RK_RESTART_LAMP - RK_HARDWARE) + 32
+
+
+def c64_weights(m):
+    """Each table's work clock weight as the C64 flight store charges it
+    (tools/flight_store_build.py link_module FS_MCT, resident_flight_build.py
+    RK_INTERP_MCT), for the host's replay (FLIGHT_REPLAY_MCT): the
+    interpreter's per routine for a table left to the interpreter module,
+    else the weight of the first module that runs it. Tables only the
+    resident runs keep the host's weight, which is the resident's."""
+    import flight_store_build as fsb
+    from resident_flight_build import mct_weight
+    report = json.loads((dp.OUT / 'report.json').read_text())[m]
+    out = {t: mct_weight(m, None, interp=True) for t in report['left_to_interpreter']}
+    for mod in report['module_list']:
+        weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        rupt = [t for t in weighed if not fsb.idle_table(t)]
+        own = [t for t in rupt if t not in fsb.LEAD_INS] or rupt
+        for t in weighed:
+            out.setdefault(t, mct_weight(m, own) if own else 0)
+    path = dp.WORK / f'{m}-c64-mct.txt'
+    path.write_text(''.join(f'{t} {w}\n' for t, w in sorted(out.items())))
+    return path
+
+
+def map_symbol(prg, name):
+    """A symbol's address in a link's lld map."""
+    for line in pathlib.Path(f'{prg}.map').read_text().splitlines():
+        p = line.split()
+        if len(p) == 5 and p[4] == name:
+            return int(p[0], 16)
+    sys.exit(f'FAIL: no {name} in {prg}.map')
+
+
+def c64_rows(rows, m, device):
+    """The host's rows for the C64 (dap_pass_check.c DP_REPLAY): a channel
+    row (kind 2) becomes a 16-bit store (kind 2) to each C64 copy of the
+    channel, the radar gate a byte store (kind 4)."""
+    out = []
+    for cs, kind, where, addr, value in ROW.iter_unpack(rows):
+        if kind != 2:
+            out.append((cs, kind, where, addr, value))
+        elif addr == 0o377:
+            out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value))
+        else:
+            at = [RK_HARDWARE + HW[addr]] if addr in HW else [RK_FLIGHT_IO + FLIGHT[addr]] if addr in FLIGHT else []
+            at += [device + DEVICE[m][addr]] if addr in DEVICE[m] else []
+            if not at:
+                sys.exit(f'FAIL: no C64 copy of channel {addr:o} for the replay')
+            out += [(cs, 2, where, x, value) for x in at]
+    return b''.join(ROW.pack(*x) for x in out)
+
+
+def c64_states(data, n, m):
+    """The C64's states (dap_pass_check.c replay_state) in the host's
+    layout: (centiseconds, words and END_CHANNELS)."""
+    out = []
+    for i in range(n):
+        b = data[i * C64_STATE:(i + 1) * C64_STATE]
+        cs, words = struct.unpack_from('<H', b)[0], struct.unpack_from('<2048H', b, 2)
+        io, dev = 2 + 4096, 2 + 4096 + RK_RESTART_LAMP - RK_HARDWARE
+        word = lambda at: struct.unpack_from('<H', b, at)[0]  # noqa: E731
+        ch = [word(io + HW[c]) for c in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14)]
+        ch += [word(io + RK_FLIGHT_IO - RK_HARDWARE + FLIGHT[c]) for c in (0o34, 0o35)]
+        ch.append(word(dev + DEVICE[m]['superbank']))
+        out.append((cs, (*words, *ch)))
+    return out
+
+
+def states(data, n):
+    """The first n states of an end-state file: (centiseconds, words)."""
+    k = STATE // 2 - 1
+    return [(lambda v: (v[0], v[1:]))(struct.unpack_from(f'<{k + 1}H', data, i * STATE)) for i in range(n)]
+
+
+def replay_compare(h, c):
+    """The differences between a host state and the C64's: (name, host,
+    C64) for each compared erasable word, then each output channel."""
+    out = [(f'{i:04o}', h[i], c[i]) for i in range(2048) if compared(i) and h[i] != c[i]]
+    return out + [(END_CHANNELS[k], h[2048 + k], c[2048 + k]) for k in range(len(END_CHANNELS)) if h[2048 + k] != c[2048 + k]]
 
 
 # tools/flight_host_run.c's key schedule (keys_parse, keycode, key_due).
@@ -123,6 +256,13 @@ def main():
     p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
     p.add_argument('--keys', action='store_true',
                    help="press the scenario's DSKY keys that fall in the window on the C64, as the host run does")
+    p.add_argument('--replay', action='store_true',
+                   help="replay the host run's inputs in the window (PIPA counts from its engine and aero models, "
+                   'keys, channel changes, pokes) on the C64, and fail unless the C64 ends the window in the '
+                   "host's state (erasable and output channels)")
+    p.add_argument('--replay-every', type=int, default=0,
+                   help='with --replay, also compare at the first sample point at or after every N cs, '
+                   'to find when the C64 leaves the host')
     p.add_argument('--watch', default='', help='up to five erasable words (octal addresses, comma separated) '
                    'printed as the window ends, e.g. 1011 for Comanche MODREG')
     a = p.parse_args()
@@ -147,17 +287,77 @@ def main():
     if holes and a.stop_on_holes:
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
-    header = snapshot(exe, a.scenario, a.snap_cs)
-    keys = None
+    if a.replay and a.keys:
+        sys.exit('--replay replays the keys itself; leave out --keys')
+    every = a.replay_every if 0 < a.replay_every < a.cs else a.cs
+    header = snapshot(exe, a.scenario, a.snap_cs, a.cs if a.replay else 0, every)
+    keys, defines, patch, end_at = None, [], [], None
+    if a.replay:
+        rows = pathlib.Path(f'{header}.replay').read_bytes()
+        host_end = pathlib.Path(f'{header}.end').read_bytes()
+        n_states = len(host_end) // STATE
+        end_bytes = n_states * C64_STATE
+        # CM channel rows can take two C64 rows each.
+        at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + 256)
+        end_at = (at + 2 * len(rows) + 0xff) & ~0xff
+        busy = {s[0]: s for s in fhd.FLIGHT}[a.scenario][4].get('FLIGHT_BUSY_SAMPLE')
+        # The window ends at the C64's first sample point a.cs in; DP_CS
+        # stops it later if none comes.
+        # The C64's rows (their count does not depend on rk_device's address).
+        n_c64 = len(c64_rows(rows, m, 0)) // ROW.size
+        defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
+                   f'-DDP_REPLAY_CS={a.cs}u', f'-DDP_EVERY={every}u', f'-DDP_END=0x{end_at:x}ul', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
+        kinds = {}
+        for row in ROW.iter_unpack(rows):
+            kinds[row[1]] = kinds.get(row[1], 0) + 1
+        print(f'{a.scenario}: {len(rows) // ROW.size} host input rows ({n_c64} on the C64) in the window at REU 0x{at:x} '
+              f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
+              f'{kinds.get(3, 0)} interrupt requests)')
     if a.keys:
         log = (dp.WORK / f'{a.scenario}-host.log').read_text()
         snap_at = int(re.search(r'^snapshot at (\d+) cs', log, re.M)[1])
         keys, pressed = window_keys(a.scenario, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
         print(f'{a.scenario}: snapshot at {snap_at} cs; {len(pressed)} keys pressed on the C64 at '
               + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
-    prg = dp.link(a.cc, a.scenario, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile, keys,
-                  [w for w in a.watch.split(',') if w][:5])
-    r = dp.vice(a, a.scenario, prg, pinned, m)
+    prg = dp.link(a.cc, a.scenario, header, a.cs + 500 if a.replay else a.cs, scratch, os.environ.get('FSV_STEPS') == '1',
+                  m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
+    if a.replay:
+        # rk_device's address comes from the link.
+        patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device')))]
+    r = dp.vice(a, a.scenario, prg, pinned, m, patch)
+    if a.replay and r.get('status') is not None:
+        mail = (dp.WORK / f'vice-{a.scenario}' / 'results.bin').read_bytes()
+        applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
+        r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs)
+        if not ended:
+            r.update(ok=False, replay_ended=False)
+            print(f'FAIL: {a.scenario}: the C64 window did not reach a sample point {a.cs} cs in '
+                  f'({applied} of {n_c64} input rows applied, {end_cs} cs)')
+        else:
+            image = (dp.WORK / f'vice-{a.scenario}' / 'image.reu').read_bytes()
+            host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, n_states), m)
+            diff, at_cs = [], None
+            for (hc, hw), (cc, cw) in zip(host_s, c64_s):
+                diff = replay_compare(hw, cw)
+                if hc != cc:
+                    diff.insert(0, ('centiseconds', hc, cc))
+                if diff:
+                    at_cs = hc
+                    break
+            if not diff and c64_written != n_states:
+                diff = [('states written', n_states, c64_written)]
+            r.update(replay_ended=True, replay_differences=len(diff), replay_differ_at_cs=at_cs,
+                     replay_first=[dict(at=x, host=f'{h:05o}', c64=f'{c:05o}') for x, h, c in diff[:32]])
+            if diff:
+                r['ok'] = False
+                print(f'FAIL: {a.scenario}: the C64 leaves the host state '
+                      f"{f'by {at_cs} cs into the window' if at_cs is not None else 'in the window'} "
+                      f'(window end {end_cs} cs, {applied} of {n_c64} input rows): {len(diff)} differences; '
+                      f'first at {diff[0][0]} host {diff[0][1]:05o} C64 {diff[0][2]:05o}')
+                for x, h, c in diff[1:12]:
+                    print(f'  {x} host {h:05o} C64 {c:05o}')
+            else:
+                print(f"{a.scenario}: the C64 ends the window ({end_cs} cs, all {applied} input rows) in the host's state")
     if a.profile:
         r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
@@ -165,7 +365,7 @@ def main():
     # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
     # reports status 0). A window that stops short of --cs without a refusal
     # fails, so a "no stop" result always covers the whole window.
-    if r.get('status') == 0 and r.get('agc_cs') is not None and r['agc_cs'] < a.cs:
+    if not a.replay and r.get('status') == 0 and r.get('agc_cs') is not None and r['agc_cs'] < a.cs:
         r.update(ok=False, short=True)
         print(f"FAIL: {a.scenario}: status 0 but the window ended after {r['agc_cs']} of {a.cs} cs")
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')

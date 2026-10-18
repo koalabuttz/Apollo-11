@@ -57,18 +57,20 @@ def snapshot(exe, name, cs):
     return header
 
 
-def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys=None, watch=None):
+def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys=None, watch=None, defines=()):
     out = WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
         cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
         f'-DDP_SCRATCH=0x{scratch:x}ul', f'-DDP_SCRATCH_BYTES={SCRATCH_BYTES}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), *([f'-DDP_KEYS="{keys}"'] if keys else []),
-        *([f"-DDP_WATCH={','.join('0' + w for w in watch)}"] if watch else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
+        *([f"-DDP_WATCH={','.join('0' + w for w in watch)}"] if watch else []), *defines, '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
         'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
 
 
-def vice(a, name, prg, pinned, m='lm'):
+def vice(a, name, prg, pinned, m='lm', patch=()):
+    """patch: (REU address, bytes) written into the run's REU image copy
+    (flight_scenario_vice.py --replay: the input rows)."""
     rom = a.rom_dir.resolve()
     work = WORK / f'vice-{name}'
     work.mkdir(parents=True, exist_ok=True)
@@ -80,7 +82,10 @@ def vice(a, name, prg, pinned, m='lm'):
     commands.write_text(f'load "{prg}" 0\nwatch store c000\n' + ('ignore 1 1\n' if pinned else '')
                         + f'g {int(sys_at[1]):04x}\nbsave "{dump}" 0 c000 cbff\nquit\n')
     reu = work / 'image.reu'
-    reu.write_bytes((OUT / f'{m}.reu').read_bytes())
+    image = bytearray((OUT / f'{m}.reu').read_bytes())
+    for at, data in patch:
+        image[at:at + len(data)] = data
+    reu.write_bytes(image)
     env = dict(os.environ, XDG_CACHE_HOME=str(work / 'cache'), XDG_CONFIG_HOME=str(work / 'config'))
     for key in ('XDG_CACHE_HOME', 'XDG_CONFIG_HOME'):
         pathlib.Path(env[key]).mkdir(parents=True, exist_ok=True)

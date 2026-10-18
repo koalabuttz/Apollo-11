@@ -881,6 +881,21 @@ port) runs one mission:
    Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
    radar model) are not replayed. `--watch 1011,...` prints up to five
    erasable words as the window ends (1011 is Comanche's MODREG).
+   `--replay` replays everything instead and checks the result: the host
+   run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
+   snapshot through the window on the C64's work clock and writes every
+   input its models and schedules give the AGC there (the engine, SPS and
+   aero models' PIPA counts, keys, FLIGHT_CHAN, pokes, the radar model) as
+   8-byte rows, which go into the zeros below the rope in the run's REU
+   image, outside the store and the resident. The C64 applies each row at
+   the first step at or after its time where the host took it (a sample
+   point, or any step boundary for the engine lag and radar reads). At the
+   first sample point `--cs` in, both sides write their erasable words and
+   output channels (5, 6, 11-14, 34, 35, the superbank); the run fails on
+   any difference, printing the first address, skipping what the host
+   differential skips (the central registers, RUPTREG1-4, the clock
+   counters). So a window that "ran with no stops" now also has to match
+   the host.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
