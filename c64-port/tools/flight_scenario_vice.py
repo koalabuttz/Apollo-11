@@ -303,6 +303,8 @@ def main():
     p.add_argument('--snap-cs', type=int, default=17500, help='AGC centisecond the C64 run starts from')
     p.add_argument('--cs', type=int, default=200, help='AGC centiseconds to run on the C64')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
+    p.add_argument('--reu-check-drop', default='', metavar='REGION',
+                   help="leave a declared REU region out of the bound check (e.g. scratch): the check's own test")
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
     p.add_argument('--data-dir', type=pathlib.Path,
@@ -395,17 +397,26 @@ def main():
     if a.replay:
         # rk_device's address comes from the link.
         patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
-    r = dp.vice(a, tag, prg, pinned, m, patch)
-    # Every REU byte the run changed lies in a region declared writable
-    # (tools/reu_layout.py): not the store, the rope or the replay rows.
+    # The run's declared REU regions (tools/reu_layout.py): VICE logs every
+    # DMA, read or write, that is not inside one of them, and afterwards every
+    # changed byte must lie in a writable one (not the store, the rope or the
+    # replay rows). --reu-check-drop leaves a region out (the check's own test).
+    regions = [x for x in reu_layout.layout(
+        m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None)
+        if x[0] != a.reu_check_drop]
+    r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)])
     after = dp.WORK / f'vice-{tag}' / 'image.reu'
     if r.get('status') is not None and after.exists():
         before = bytearray(reu)
         for at_, data in patch:
             before[at_:at_ + len(data)] = data
-        bounds = reu_layout.report(m, reu_layout.layout(
-            m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None), before, after.read_bytes(),
-            a.scenario)
+        bounds = reu_layout.report(m, regions, before, after.read_bytes(), a.scenario)
+        bounds['dma_outside'] = reu_layout.dma_misses((dp.WORK / f'vice-{tag}' / 'monitor.log').read_text())
+        if bounds['dma_outside']:
+            bounds['ok'] = False
+            print(f"FAIL: {a.scenario}: {bounds['dma_outside']} DMAs outside the {m} REU layout")
+        else:
+            print(f'{a.scenario}: every DMA inside the {m} REU layout')
         r['reu_bounds'] = bounds
         if not bounds['ok']:
             r['ok'] = False

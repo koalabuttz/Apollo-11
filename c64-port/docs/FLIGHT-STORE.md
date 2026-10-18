@@ -981,7 +981,15 @@ port) runs one mission:
    with `--replay` the rows are read only and the states after them
    writable. A write outside fails the run (`reu_bounds` in its JSON), and
    the store build fails when two regions overlap. A write of the bytes
-   already there is not seen this way.
+   already there is not seen by that diff; the run's DMA trace covers it,
+   and every read. A VICE monitor checkpoint on the command register
+   ($DF01, `trace`, so it logs without stopping) computes each DMA's REU
+   range from the controller's registers and logs it when it is not inside
+   one span of declared regions; any logged DMA fails the run
+   (`dma_outside`). VICE evaluates the condition itself, so an in-bounds
+   run costs nothing. `--reu-check-drop REGION` leaves a region out, as a
+   test of the check: with the scratch left out, an LM P63 window logs 48
+   DMAs (the step records) and fails; with every region, it logs none.
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
    snapshot through the window on the C64's work clock, charging each

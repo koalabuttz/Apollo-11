@@ -124,6 +124,39 @@ def writes_outside(regions, before, after):
     return outside, sorted(touched)
 
 
+# Every DMA's REU range, from the controller's registers as the command is
+# written ($DF01; a $FF00-triggered DMA arms its command there too): first
+# byte S and last byte E (a length of 0, 65,536 bytes, reads as S - 1).
+# VICE 3.7's monitor gives * no precedence over + (a * b + c * d is
+# ((a * b) + c) * d), so every operation is in parentheses.
+_S = '(((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04)'
+_E = f'((({_S} + (@io:$df08 * $100)) + @io:$df07) - 1)'
+
+
+def dma_trace(regions):
+    """A VICE monitor checkpoint that logs, without stopping, every DMA
+    whose range is not inside one declared region: read or write, whether
+    or not it changes a byte. VICE evaluates the condition itself, so a
+    run in bounds costs nothing; tools/dap_pass_vice.py vice(monitor=)
+    adds it after the $C000 watch, so it is checkpoint 2."""
+    spans = []
+    for _, lo, hi, _ in sorted(regions, key=lambda r: r[1]):
+        if spans and spans[-1][1] == lo:
+            spans[-1][1] = hi        # adjacent regions: one span (a read may cross)
+        else:
+            spans.append([lo, hi])
+    terms = [f'(({_S} < ${lo:x}) || ({_E} >= ${hi:x}))' for lo, hi in spans]
+    outside = terms[0]
+    for t in terms[1:]:
+        outside = f'({outside} && {t})'
+    return f'trace store df01 if {outside}'
+
+
+def dma_misses(monitor_log, checkpoint=2):
+    """DMAs the trace logged (tools/dap_pass_vice.py's monitor.log)."""
+    return len(re.findall(rf'^#{checkpoint} \(Trace store df01\)', monitor_log, re.M))
+
+
 def report(m, regions, before, after, label=''):
     """Prints the result; returns a dict for the run's JSON."""
     outside, touched = writes_outside(regions, before, after)

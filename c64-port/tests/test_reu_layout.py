@@ -46,3 +46,11 @@ else:
     raise AssertionError('replay states over the Pinball save not refused')
 assert rl.free_top('lm', manifest) == pin[0]
 print('reu layout: ok')
+
+# The DMA trace: one span per run of adjacent regions, every operation in
+# parentheses (VICE's monitor gives * no precedence over +).
+t = rl.dma_trace([('a', 0, 0x100, False), ('b', 0x100, 0x200, True), ('c', 0x300, 0x400, True)])
+assert t.startswith('trace store df01 if ') and t.count('(') == t.count(')'), t
+assert t.count('< $') == 2 and '>= $200)' in t and '>= $400)' in t, t
+assert rl.dma_misses('#1 (Stop on store c000)\n#2 (Trace store df01)    4/$004\n#2 (Trace store df01)  8/$08\n') == 2
+print('reu dma trace: ok')
