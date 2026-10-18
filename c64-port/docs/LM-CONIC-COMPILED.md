@@ -16,7 +16,7 @@ Lane B (orbital math). Milestone `lm-conic-compiled`. How the routines are made 
 As in every compiled file, each case is a random 2,048-word image with the routine's legal entry state. This file also fixes:
 
 - X1 -2 or -10D (MUTABLE,1: Earth or Moon, as SELECTMU's `AXC,1` and INTEGRATION_INITIALIZATION's `AXT,1` leave it, so the loads at :600, :1143 and :1364 read MUTABLE +2 to +7 or +10 to +15; review #165), X2 0 to 3 and S2 1 (GETX and INVRSEQN's AXT,2 3 / SSP S2 1 loop);
-- ITERCTR (22D) 1 or 2 at BRNCHCTR, so CHECKCTR's count runs out and KEPLOOP's iteration-limit exit (`BHIZ KEPCONVG`) is taken, as after 20 passes in flight (review #165: the flight-µ cases converge sooner);
+- ITERCTR (22D) 1 or 2 at BRNCHCTR (in flight it is anything from 1 to 20 there; the cases take the low end), so CHECKCTR's count runs out and KEPLOOP's iteration-limit exit (`BHIZ KEPCONVG`) is taken, as after 20 passes in flight (review #165: the flight-µ cases converge sooner);
 - PUSHLOC 0D at GETX's entry, where its three callers CALL it. A PUSHLOC near the top of the VAC area pushes into the index registers and sends 1/WLOOP's `TIX,2` round thousands of times;
 - the registers each routine is reached with on the file's own runs (`flow_states`): PUSHLOC, MODE, X1, X2, S1 and S2 at every routine an entry reaches;
 - TAU. +0 at resumes from KEPLERN to PERIODCH, and a period of at least 10000 octal against a TAU. of a few inside PERIODCH's loop (with PUSHLOC 0D at PERIODCH and its GOTO, and 2D in between). A random TAU. over a random period loops for millions of passes.
