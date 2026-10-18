@@ -867,6 +867,20 @@ port) runs one mission:
    solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
    V37E00E. On the host every native routine matches yaAGC; the
    unregistered points are Pinball's VBPROC +3 to +5.
+   `cm-tei`: Apollo 11's transearth injection at 135:23:42 GET, the SPS
+   burn on the far side that left lunar orbit. cm_tei.py sets it up as
+   cm_p40.py does LOI-1 (the same TVC and SPS pads, `FLIGHT_SPS`): the
+   CSM alone (16,400 kg) in a circular 60 nmi lunar orbit, the platform
+   with X along the DV, the CDUs at the ignition attitude R60 asks for,
+   RLS for the altitude displays, and TEPHEM so the CMC clock's 300 s is
+   TIG. The TEI-1 pad is keyed: V37E30E, V25 on V06N33 (TIG 300 s on the
+   CMC clock), V25 on V06N81 (+3283.6 ft/s), proceed on N81, N42 (9999.9
+   x 60.0 nmi) and V16N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 and on V99N40 at TIG-5. The SPS burns about 154 s to
+   cutoff (N40 VG 6.1 ft/s); proceed on V16N40 and N85, V37E00E; V82 shows
+   V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
+   matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
+   RELDSP1.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

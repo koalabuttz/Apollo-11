@@ -274,6 +274,22 @@ P22 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
                       '15100:tools/flight_scenarios/cm-p22-mark2.load'}
 P22_KEYS = ('@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200M@15600V33E@16200V33E'
             '@16800V33E@18500V33E@20300V33E@21500V37E00E')
+# cm-tei: Apollo 11's transearth injection (TIG 135:23:42 GET), the load
+# at 20 s (tools/flight_scenarios/cm_tei.py, set up as cm_p40.py: the CSM
+# alone in a circular 60 nmi lunar orbit on the far side, the SPS pads,
+# the platform with X along the DV, the CDUs at the ignition attitude,
+# RLS for the altitude displays). G&N AUTO; V37E30E, the TEI-1 pad keyed:
+# V25 on V06N33 (TIG 300 s on the CMC clock), V25 on V06N81 (+3283.6
+# ft/s), proceed on N81, N42 (9999.9 x 60.0 nmi) and V16N45; V37E40E,
+# proceed and ENTER on V50N18, proceed on V50N25 00204; proceed on V99N40
+# at TIG-5; FLIGHT_SPS (16,400 kg) burns about 154 s to cutoff (N40 VG 6.1
+# ft/s); proceed on V16N40 and V16N85, V37E00E; V82: V16N44 9999.9 x 60.0
+# nmi, then V34E.
+TEI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SPS': '16400', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
+TEI_KEYS = ('@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E'
+            '@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E'
+            '@50000V37E00E@51000V82E@53000V33E@55000V34E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -283,6 +299,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p11', 'cm', 90000, P11_KEYS, P11),
           ('cm-tli', 'cm', 70000, TLI_KEYS, TLI),
           ('cm-p22', 'cm', 23000, P22_KEYS, P22),
+          ('cm-tei', 'cm', 56000, TEI_KEYS, TEI),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
