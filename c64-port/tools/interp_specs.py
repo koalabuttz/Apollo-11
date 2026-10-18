@@ -957,7 +957,15 @@ SPECS = {
         # the whole basic_run (docs/FLIGHT-PARTS.md); with DDV's and
         # SQRTSUB's internal exits compiled, bank 00 no longer fits one part
         # with 06000-06777. Part 1 keeps DDV, UNIT and SQRTSUB together.
-        'flight_parts': [0o1517, 0o3 * 1024 + 0o1000],
+        # LM: a part map (docs/FLIGHT-PARTS.md) keeps the basic subroutines
+        # a P63 background pass calls back and forth in one part: VECAGREE
+        # and UNIT's start (00,3000) with ENDDOT, TPAGREE, DMP (03,3100),
+        # VXV, MPACVBUF, ALSIGNAG (03,3400) and BRANCH's tail (03,2700).
+        # Cut at 0o100-word lines, so the sizes stay under one job slot.
+        **({'flight_parts': [0o1000, 0o1100, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
+                             0o3 * 1024 + 0o1100, 0o3 * 1024 + 0o1300, 0o3 * 1024 + 0o1400, 0o3 * 1024 + 0o1600],
+            'flight_part_map': [1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
+           {'flight_parts': [0o1517, 0o3 * 1024 + 0o1000]}),
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
                    'DMPNSUB', 'MPACVBUF', 'ALSIGNAG', 'UPPOS', 'UPNEG', 'VECAGREE', 'INTPRET', 'INTRSM', 'SLOAD2',
@@ -2321,6 +2329,12 @@ SPECS = {
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_rcs_dap'},
         'symbol': {'cm': 'cm_rcs_dap'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
+        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,2122', '21,2216', '21,2221', '21,2236', '21,2311', '21,2317', '21,2360', '21,2411',
+                       '21,2417', '21,2471', '21,2661', '21,3160'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2365,6 +2379,11 @@ SPECS = {
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_man pack (one per DAP file), so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,3250', '21,3441', '21,3445', '21,3463', '21,3704', '21,3757'),
         'basic': 'full',
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
@@ -2403,6 +2422,13 @@ SPECS = {
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): for the
+        # flight store's cm_jet pack (one per DAP file), so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('17,2552', '17,2671', '17,3046', '17,3122', '17,3164', '17,3230', '17,3274', '17,3372',
+                       '17,3516', '17,3536', '17,3554', '17,3560', '17,3561', '17,3577', '17,3603', '17,3617',
+                       '17,3654', '17,3663', '17,3666', '17,3673', '17,3713'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2848,6 +2874,9 @@ SPECS = {
         # (-DIRC_INPUTS: the input-latch code its VICE PRGs were built with)
         'c64_flags': ['-DIRC_INPUTS'],
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'GIMBAL_LOCK_AVOIDANCE.agc', 'cm': 'GIMBAL_LOCK_AVOIDANCE.agc'},
         'base': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
         'symbol': {'lm': 'lm_gimbal_lock', 'cm': 'cm_gimbal_lock'},
@@ -3082,6 +3111,9 @@ SPECS = {
     },
     'sband-antenna': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'S-BAND_ANTENNA_FOR_LM.agc', 'cm': 'S-BAND_ANTENNA_FOR_CM.agc'},
         'base': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
         'symbol': {'lm': 'lm_sband_antenna', 'cm': 'cm_sband_antenna'},
@@ -3899,6 +3931,9 @@ SPECS = {
     },
     'lat-long': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'LATITUDE_LONGITUDE_SUBROUTINES.agc', 'cm': 'LATITUDE_LONGITUDE_SUBROUTINES.agc'},
         'base': {'lm': 'lm_lat_long', 'cm': 'cm_lat_long'},
         'symbol': {'lm': 'lm_lat_long', 'cm': 'cm_lat_long'},
@@ -4271,6 +4306,9 @@ SPECS = {
     },
     'measurement-inc': {
         'missions': ('lm', 'cm'),
+        # Flight builds skip the entry checks' scan of the whole image
+        # (about 121K cycles a routine on the C64).
+        'trusted_image': True,
         'file': {'lm': 'MEASUREMENT_INCORPORATION.agc', 'cm': 'MEASUREMENT_INCORPORATION.agc'},
         'base': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},
         'symbol': {'lm': 'lm_measurement_inc', 'cm': 'cm_measurement_inc'},

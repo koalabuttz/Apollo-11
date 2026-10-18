@@ -2049,8 +2049,9 @@ class Compiler:
                 b, sane, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
-        for j in range(len(cuts) + 1):
-            mine = [k for k in every if bounds[j] <= k < bounds[j + 1]]
+        pmap = self.basic.flight_map
+        for j in range(max(pmap)):
+            mine = [k for k in every if pmap[bisect.bisect_right(cuts, k)] == j + 1]
             c.append('#%s %s_FLIGHT_PART==%d' % ('if' if j == 0 else 'elif', S, j + 1))
             c.append('static const agc_routine_entry basic_entries[]={')
             for i in range(0, len(mine), 6):

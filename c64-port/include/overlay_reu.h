@@ -56,8 +56,8 @@ typedef struct {
 uint8_t apollo_reu_store_open(apollo_reu_store *,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record);
 /* Boot-time integrity pass: every present module's header and CRC, and the
- * resolver's ordering. buffer is 768 bytes of C64 RAM (scratch: a chunk
- * of the store, then the CRC table). */
+ * resolver's ordering. buffer is 770 bytes of C64 RAM (scratch: a chunk
+ * of the store, the CRC table, then the CRC). */
 enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *,uint8_t *buffer);
 /* Boot-time: load(user, REU address, entry) for every slot-class-2 module
  * (fixed extension, APOLLO_OV2_SLOT_FIXED), slot-class-3 module (pinned,

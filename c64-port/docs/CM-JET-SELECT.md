@@ -109,3 +109,7 @@ Hashes: `evidence/cm-jet-select/SHA256.json`; all files are in the tree.
 ## Flight build
 
 The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.
+
+## Hot table (docked RCS DAP)
+
+The spec's `hot_points` name the 21 basic routines one docked RCS DAP pass (T5RUPT) reaches in the cm-p40 window after the burn (from 70660 cs, found with `FLIGHT_PATH`). `cm_jet_select_hot_routines` holds them, with the same wrappers as `cm_jet_select_basic`, for the flight store's `cm_jet` pack: a pass loads one small module instead of chunks of the whole table. `make test-cm-jet-select-hot` checks that each hot key calls the same function through either table.
