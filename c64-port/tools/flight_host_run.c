@@ -55,6 +55,9 @@
  * dropped, in three steps (rk_timer_phase) with a request that can be
  * taken taken before each, as rk_rupts does; every routine must still
  * match yaAGC under that schedule.
+ * FLIGHT_WORD_OUT=PATH: the reference run (yaAGC alone) writes one line per
+ * interpretive word it runs (word_out, below), for the interpreter's work
+ * clock weight (tools/interp_word_mct.py), and the run ends there.
  * FLIGHT_CHAN=CS:CH=VALUE,...: an input channel set at a time (below);
  * keys M and J are the CM's MARK and MARK REJECT buttons.
  *
@@ -653,6 +656,16 @@ static void hole(const agc_word *w,agc_word sb,unsigned long instructions,const 
  * indexed instruction there), in place of the next instruction. */
 static int substitute;
 static FILE *mct_out;
+/* FLIGHT_WORD_OUT: a word starts each time yaAGC is at the interpreter's
+ * fetch point (FETCH, NEWOPS) outside an interrupt, and ends at the next
+ * one. Its line: the centisecond it started, LOC and BANKSET then (octal),
+ * the machine cycles spent in the interpreter's banks (00 and 03) and
+ * those spent elsewhere (an RTB's routine, the basic code after EXIT, the
+ * Executive), both outside interrupts. A word whose job changed meanwhile
+ * (FIXLOC) is not written. */
+static FILE *word_out;
+static struct { int open; unsigned long cs; uint16_t loc, bankset, fixloc; uint64_t in, out; } word;
+static void word_step(unsigned long cs);
 /* Native state into yaAGC and back. */
 static const unsigned short ch[]={3,4,5,6,010,011,012,013,014,015,030,031,032,033};
 static agc_word *hwc(agc_hardware *hw,unsigned i){agc_word *c[]={&hw->channel3,&hw->channel4,&hw->channel5,&hw->channel6,&hw->channel10,
@@ -857,6 +870,14 @@ static unsigned long busy_last;
 static int busy_due(int scaled,const agc_word *w,int isr){static unsigned long every;static int parsed;
  if(!parsed){parsed=1;if(getenv("FLIGHT_BUSY_SAMPLE"))every=strtoul(getenv("FLIGHT_BUSY_SAMPLE"),0,0);}
  return scaled&&every&&!isr&&now(w)-busy_last>=every;}
+static void word_step(unsigned long cs){int isr=m.InIsr;uint64_t c=m.CycleCounter;
+ uint16_t at=agc_fixed_physical((agc_word)(*cell(5)&07777),(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);
+ if(!isr&&quiet()&&at==FETCH){uint16_t fixloc=(uint16_t)(*cell(0120)&077777);
+  if(word.open&&fixloc==word.fixloc)fprintf(word_out,"%lu %o %o %llu %llu\n",word.cs,(unsigned)word.loc,(unsigned)word.bankset,
+                                            (unsigned long long)word.in,(unsigned long long)word.out);
+  word.open=1;word.cs=cs;word.loc=(uint16_t)(*cell(0164)&077777);word.bankset=(uint16_t)(*cell(0165)&077777);word.fixloc=fixloc;word.in=word.out=0;}
+ if(agc_engine(&m)){fclose(word_out);exit(2);}
+ if(!isr&&!m.InIsr){if(at!=AGC_TRANSFER_NONE&&(at/1024u==0u||at/1024u==3u))word.in+=m.CycleCounter-c;else word.out+=m.CycleCounter-c;}}
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
@@ -865,6 +886,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
+ if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
  if(getenv("FLIGHT_CH31"))chan31=strtoul(getenv("FLIGHT_CH31"),0,8)&077777u;
  if(getenv("FLIGHT_CH32"))chan32=strtoul(getenv("FLIGHT_CH32"),0,8)&077777u;
@@ -947,7 +969,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(path_to&&quiet()){agc_routine c;const agc_word *v=view();
    if(holder(v,(agc_word)m.OutputChannel7,&c)){static agc_word w[2048];memcpy(w,v,sizeof w);w[024]=mword(024);w[025]=mword(025);
     path("REF",w,(agc_word)m.OutputChannel7,(agc_word)m.InputChannel[4],m.InIsr,"");}}
+  if(word_out){word_step(next);continue;}
   if(agc_engine(&m))return 2;}
+ if(word_out){fclose(word_out);return 0;}
  refs=scaled?cs:next-1u;
  if(refs<cs)printf("reference: only %lu of %lu centiseconds reached an idle boundary\n",refs,cs);
  /* Native. */

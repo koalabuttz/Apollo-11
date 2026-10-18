@@ -253,7 +253,12 @@ instead a work clock: AGC time advances by the work the resident ran.
   `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
   `tools/resident_flight_build.py` and `tools/flight_store_build.py`
   compute them. The resident's weight leaves out the Executive idle table
-  (LM 35, CM 73). The interrupt wrappers report their weight in
+  (LM 35, CM 73). The compact interpreter charges `RK_INTERP_MCT` per
+  interpretive word it runs: yaAGC's mean MCT per word in the
+  interpreter's banks over the CM entry and LM P63 scenarios
+  (`docs/flight-interp-mct.json`, `tools/interp_word_mct.py`; CM 237, LM
+  264 capped at 255). The host's interpretive tables with no calibrated
+  runs get the same mean. The interrupt wrappers report their weight in
   `rk_module_env.scale`, and a module reports its routine count in
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it

@@ -1002,7 +1002,9 @@ port) runs one mission:
    `FLIGHT_SCALED=W` replays the work clock instead (docs/RESIDENT-FLIGHT.md,
    The work clock): each native routine advances the clock by its
    module's MCT weight (as the flight build computes it from
-   docs/flight-routine-mct.json), a self-check idle routine moves it to
+   docs/flight-routine-mct.json; an interpretive table with no calibrated
+   runs is charged yaAGC's mean per interpretive word,
+   docs/flight-interp-mct.json), a self-check idle routine moves it to
    the next tick, module swaps cost nothing, and no tick is dropped.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
