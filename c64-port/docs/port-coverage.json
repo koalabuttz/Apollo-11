@@ -497,7 +497,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "b22f4b9dc45c3b1ed0422eb23f04561cf83992736879b6d707246208a7851fde",
+            "sha256": "2acdca50347651786c3a2c38065bef9abe9b593381e57e6c03735893f1b54c1a",
             "vice_targets": {
               "vice-cm-auto-man": 24
             }
@@ -2672,7 +2672,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "cb8dfe04dd5ded9d7e2bc38e2f81357fac3417409d38f9005df9d2dc911e9f9b",
+            "sha256": "628715dde4705fab777264c2a40f4cedd3a12b8af9edf3e6dd6f857d17871658",
             "vice_targets": {
               "vice-cm-jet-select": 27
             }
@@ -4997,7 +4997,7 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "d07013292f345df69e002b9153ff591616b3a3352b7ff71be4ef1bd203e5d502",
+            "sha256": "3263a33d466a0cf6f1e684113c3cc1ea3b94e49c4cdb307a3e16de2d20df098a",
             "vice_targets": {
               "vice-cm-rcs-dap": 45
             }

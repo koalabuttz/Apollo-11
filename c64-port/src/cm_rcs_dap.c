@@ -4292,6 +4292,48 @@ static const agc_routine_entry basic_entries[]={
  {0xffffu,0}
 };
 const agc_routine_table cm_rcs_dap_basic={basic_entries,(uint16_t)(sizeof basic_entries/sizeof basic_entries[0]-1u)};
+/* The basic routines one pass reaches (the spec's hot_points): the
+ * flight store packs them in one module, so a pass loads it once. */
+static const agc_routine_entry hot_entries[]={
+#if (CM_RCS_DAP_KEEP0 >> 1) & 1
+ {17490,r42122_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 3) & 1
+ {17550,r42216_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 4) & 1
+ {17553,r42221_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 7) & 1
+ {17566,r42236_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 8) & 1
+ {17609,r42311_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 9) & 1
+ {17615,r42317_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 12) & 1
+ {17648,r42360_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 18) & 1
+ {17673,r42411_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 19) & 1
+ {17679,r42417_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 26) & 1
+ {17721,r42471_abi},
+#endif
+#if (CM_RCS_DAP_KEEP0 >> 43) & 1
+ {17841,r42661_abi},
+#endif
+#if (CM_RCS_DAP_KEEP1 >> 4) & 1
+ {18032,r43160_abi},
+#endif
+ {0xffffu,0}
+};
+const agc_routine_table cm_rcs_dap_hot_routines={hot_entries,(uint16_t)(sizeof hot_entries/sizeof hot_entries[0]-1u)};
 const cm_rcs_dap_point cm_rcs_dap_points[CM_RCS_DAP_POINTS]={
  {17477,0},
  {17490,0},

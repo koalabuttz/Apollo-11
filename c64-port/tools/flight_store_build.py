@@ -762,20 +762,32 @@ T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lea
 # it about 1. CM pins no class-4 home, so the pack links its own runtime
 # (ALONE).
 ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
+# The CM docked RCS DAP pass (T5RUPT) reaches 12 routines of
+# cm_rcs_dap_basic, 21 of cm_jet_select_basic, 6 of cm_auto_man_basic and
+# MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
+# task slot and run chunked in the job slot beside the others, so a pass
+# loaded about 7 modules. Each file's hot subset is its own pack (one table
+# per pack, so one too big for the slot splits in key order), KALCMANU's
+# beside MYSUBS, which its callers in the pass share.
+RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines']}
+JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
+MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines', 'cm_mysubs_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
-             ('cm_entry', ENTRYPACK[m], 0x07F7)] for m in ('lm', 'cm')}
+             ('cm_entry', ENTRYPACK[m], 0x07F7), ('cm_rcs', RCSPACK[m], 0x07F8),
+             ('cm_jet', JETPACK[m], 0x07FA), ('cm_man', MANPACK[m], 0x07FC)] for m in ('lm', 'cm')}
 # Packs that link the runtime themselves, as any job-slot module does, so
 # they are packed with no class-4 home; the others take it from the home
 # (pin_pair) and are packed only beside it.
-ALONE = {'cm_entry'}
+ALONE = {'cm_entry', 'cm_rcs', 'cm_jet', 'cm_man'}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
 # A hot subset's full table where it is not <file>_routines: a generated
 # file names its full table <file>_basic (tools/basic_compile.py).
-HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic',
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic', 'cm_rcs_dap_hot_routines': 'cm_rcs_dap_basic',
+            'cm_jet_select_hot_routines': 'cm_jet_select_basic', 'cm_auto_man_hot_routines': 'cm_auto_man_basic',
             'lm_interbank_postjump_t4_hot_routines': 'lm_interbank_routines'}
 # Tables that run only from the self-check idle loop: a module carrying them
 # beside others runs them as the work clock's idle outside an interrupt
@@ -1308,6 +1320,9 @@ def main():
             pts = [t for t in pts if t in packed]
             if not pts:
                 continue
+            # A split pack takes the ids after its own: the next pack starts
+            # past them, so ids never collide.
+            ident = max([ident] + [p['id'] + 1 for p in packs])
             stems = list(dict.fromkeys(packed[t] for t in pts))
             lane = lane_slot(stems[0], m, owners, place)[0]
             sites = {}

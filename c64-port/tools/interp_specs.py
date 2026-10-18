@@ -2305,6 +2305,12 @@ SPECS = {
         'file': {'cm': 'RCS-CSM_DIGITAL_AUTOPILOT.agc'},
         'base': {'cm': 'cm_rcs_dap'},
         'symbol': {'cm': 'cm_rcs_dap'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
+        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,2122', '21,2216', '21,2221', '21,2236', '21,2311', '21,2317', '21,2360', '21,2411',
+                       '21,2417', '21,2471', '21,2661', '21,3160'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
@@ -2349,6 +2355,11 @@ SPECS = {
         'file': {'cm': 'AUTOMATIC_MANEUVERS.agc'},
         'base': {'cm': 'cm_auto_man'},
         'symbol': {'cm': 'cm_auto_man'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
+        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('21,3250', '21,3441', '21,3445', '21,3463', '21,3704', '21,3757'),
         'basic': 'full',
         # Part functions for the flight store's slots; each hand-off is a
         # routine step, so a pass runs more of them.
@@ -2387,6 +2398,13 @@ SPECS = {
         'file': {'cm': 'JET_SELECTION_LOGIC.agc'},
         'base': {'cm': 'cm_jet_select'},
         'symbol': {'cm': 'cm_jet_select'},
+        # The basic routines one docked RCS DAP pass (T5RUPT) reaches
+        # (cm-p40 after the burn, from 70660 cs, FLIGHT_PATH): with the
+        # other DAP files' hot tables, the flight store's cm_rcs pack, so a
+        # pass loads one module rather than about eight chunks.
+        'hot_points': ('17,2552', '17,2671', '17,3046', '17,3122', '17,3164', '17,3230', '17,3274', '17,3372',
+                       '17,3516', '17,3536', '17,3554', '17,3560', '17,3561', '17,3577', '17,3603', '17,3617',
+                       '17,3654', '17,3663', '17,3666', '17,3673', '17,3713'),
         'basic': 'full',
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],
