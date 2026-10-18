@@ -11,9 +11,11 @@
  *
  *   uint16_t rk_limit(uint8_t mct);
  * rk_module_limit(rk_budget(), mct): 4 for the idle weight (RK_MCT_IDLE,
- * 0), else 1 + budget / mct mod 256 (the C counts in a uint8_t), by
- * shift and subtract in 16 passes; the C's loop subtracts once per routine
- * allowed (up to 213: a budget of 854 at a weight of 4).
+ * 0), else 1 + budget / mct, by shift and subtract in 16 passes; the C's
+ * loop subtracts once per routine allowed. A weight is 0 or at least 4
+ * (tools/resident_flight_build.py mct_weight) and a budget at most 854,
+ * so the count is at most 214 and fits the low byte returned (as it
+ * fits the C's uint8_t count).
  * In: mct in A. Out: A low, X high. Uses Y, __rc4-__rc6, which a callee
  * may clobber (the LLVM-MOS calling convention).
  *
