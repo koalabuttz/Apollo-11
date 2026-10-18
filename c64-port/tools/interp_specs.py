@@ -3076,6 +3076,10 @@ SPECS = {
         'basic': 'full',
         'fast_window': True,
         'trusted_image': True, 'image_w': True, 'index_carry16': True,
+        # P06's standby code (PRESTAND/POSTAND) calls FINETIME +1 under its
+        # own EB; FINETIME (bank 02) touches only unswitched cells, so both
+        # words run under any EB (the other entries come in under E5).
+        'any_eb_entries': ['FINETIME', 'FINETIME+1'],
         # SPECSTS's FINDVAC 2CADR ALFLT (BBCON 66065) runs the ALFLT filter
         # under SUPERBNK 060: the FB 30-37 guard tests only the superbank
         # bit, at the routine's entry, and the cases draw 020-060.
