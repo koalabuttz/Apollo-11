@@ -100,10 +100,10 @@ GOJAM (the `-gojam` snapshot: Z 04000) and runs resident steps from there.
 
 | Scenario | Burst | Image against yaAGC | Resume |
 |---|---|---|---|
-| `lm-p63-descent-restart` | 24 resident steps: GOPROG through the group 2 and 5 restarts, ENDRSTRT and the display job, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) | 422 steps over 50 cs, then stops at R12LITES (25,3607; `lm_p20_p25` does not fit yet) |
-| `lm-dap-hold-restart` | 12 resident steps, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 938 instructions) | 912 steps over 200 cs, no stop |
-| `cm-entry-restart` | 37 resident steps: GOPROG, the group 1, 5 and 6 restarts and the jobs they start, to idle at ADVAN (01,3231) | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) | 1,530 steps over 200 cs, no stop |
-| `cm-p52-restart` | 81 resident steps: GOPROG, the group 4 restart (phase 00502, N93 gyro torquing) and its jobs, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) | 905 steps over 200 cs, no stop |
+| `lm-p63-descent-restart` | 24 resident steps: GOPROG through the group 2 and 5 restarts, ENDRSTRT and the display job, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 1,734 instructions) | 409 steps over 50 cs, then stops at R12LITES (25,3607; `lm_p20_p25` does not fit yet) |
+| `lm-dap-hold-restart` | 12 resident steps, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 938 instructions) | 911 steps over 200 cs, no stop |
+| `cm-entry-restart` | 37 resident steps: GOPROG, the group 1, 5 and 6 restarts and the jobs they start, to idle at ADVAN (01,3231) | 2,048 / 2,048 words equal (yaAGC: 2,647 instructions) | 3,037 steps over 200 cs, no stop |
+| `cm-p52-restart` | 81 resident steps: GOPROG, the group 4 restart (phase 00502, N93 gyro torquing) and its jobs, to idle at ADVAN | 2,048 / 2,048 words equal (yaAGC: 5,657 instructions) | 3,375 steps over 200 cs, no stop |
 
 ## The GOJAM on the C64 (`make flight-gojam-vice`)
 
