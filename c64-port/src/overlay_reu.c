@@ -70,14 +70,34 @@ static uint8_t payload_inside(const apollo_reu_store *s,const apollo_ov2_dirent 
     return d->page>=s->resolver_page &&
         (uint32_t)d->page*256u+d->bytes<=(uint32_t)s->pages*256u;
 }
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+/* An index record's first 12 bytes are the dirent's fields in order,
+ * little-endian, so a little-endian build reads them straight into it. */
+typedef char apollo_reu_dirent_is_record[sizeof(apollo_ov2_dirent) == 12u ? 1 : -1];
+#define APOLLO_REU_DIRENT_DIRECT 1
+#endif
 static uint8_t lookup(void *user,uint16_t id,apollo_ov2_dirent *d) {
     apollo_reu_store *s=(apollo_reu_store *)user;
-    const uint8_t *r=s->record;
     if(!id || (uint8_t)(id>>8)>=s->index_blocks) return 0;
-    if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
-        s->record,APOLLO_REU_INDEX_RECORD)) return 0;
-    d->id=le16(r); d->page=le16(r+2); d->bytes=le16(r+4); d->crc16=le16(r+6);
-    d->selectors=le16(r+8); d->slot=r[10]; d->flags=r[11];
+#ifdef APOLLO_REU_DIRENT_DIRECT
+    if (!read_bytes(page_address(s, s->index_page) + (uint32_t)id * APOLLO_REU_INDEX_RECORD,
+                    (uint8_t *)d, sizeof *d))
+        return 0;
+#else
+    {
+        const uint8_t *r = s->record;
+        if (!read_bytes(page_address(s, s->index_page) + (uint32_t)id * APOLLO_REU_INDEX_RECORD,
+                        s->record, APOLLO_REU_INDEX_RECORD))
+            return 0;
+        d->id = le16(r);
+        d->page = le16(r + 2);
+        d->bytes = le16(r + 4);
+        d->crc16 = le16(r + 6);
+        d->selectors = le16(r + 8);
+        d->slot = r[10];
+        d->flags = r[11];
+    }
+#endif
     if(!(d->flags & APOLLO_OV2_DIRENT_PRESENT) || d->id!=id) return 0;
 #ifndef APOLLO_OV2_STORE_VERIFIED
     /* Payload must lie inside the image, after the resolver. A verified
