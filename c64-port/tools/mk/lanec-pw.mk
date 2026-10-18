@@ -69,10 +69,10 @@ LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/lanec_pin_t
 # store (vice-lanec-pin-flight, module-test-lanec-pin-keys), and the record
 # pools those programs' arcs (--pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
 LANEC_PIN_C64_TOO_BIG = $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
-  proceed_cm proceed_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \
+  proceed_cm proceed_lm release_cm release_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \
   pin_keys_lm pw_address_request_cm pw_address_request_lm pw_fixed_display_cm pw_fixed_display_lm \
   pw_hours_output_cm pw_hours_output_lm pw_jam_control_cm \
-  pw_jam_control_lm pw_lamp_release_lm pw_operator_release_cm pw_operator_release_lm pw_operator_response_cm \
+  pw_jam_control_lm pw_lamp_release_cm pw_lamp_release_lm pw_operator_release_cm pw_operator_release_lm pw_operator_response_cm \
   pw_operator_response_lm pw_response_recall_cm pw_response_recall_lm
 LANEC_PIN_C64_MODULES := $(filter-out $(LANEC_PIN_C64_TOO_BIG),$(shell sed -n 's/^\#ifdef LANEC_PIN_C64_MOD_//p' \
   tests/lanec_pin_transfer_c64_rows.h 2>/dev/null))

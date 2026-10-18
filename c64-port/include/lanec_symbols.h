@@ -934,6 +934,10 @@
 #define LANEC_LM_RECALTST 03547u /* RECALTST F 40 */
 #define LANEC_LM_RECALTST_BANK 040u
 #define LANEC_LM_VD1 04360u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_LM_RELDSP1 04502u /* RELDSP1 F fixed-fixed/unswitched */
+#define LANEC_LM_RELDSP2 04473u /* RELDSP2 F fixed-fixed/unswitched */
+#define LANEC_LM_RELRET 0144u /* RELRET E fixed-fixed/unswitched */
+#define LANEC_LM_DSPLIST 01043u /* DSPLIST E fixed-fixed/unswitched */
 #define LANEC_LM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
 #define LANEC_LM_VBTSTLTS_BANK 041u
 #define LANEC_LM_TSTLTS1 03631u /* TSTLTS1 F 41 */
@@ -1844,6 +1848,10 @@
 #define LANEC_CM_RECALTST 03454u /* RECALTST F 40 */
 #define LANEC_CM_RECALTST_BANK 040u
 #define LANEC_CM_VD1 04374u /* VD1 F fixed-fixed/unswitched */
+#define LANEC_CM_RELDSP1 04516u /* RELDSP1 F fixed-fixed/unswitched */
+#define LANEC_CM_RELDSP2 04507u /* RELDSP2 F fixed-fixed/unswitched */
+#define LANEC_CM_RELRET 0144u /* RELRET E fixed-fixed/unswitched */
+#define LANEC_CM_DSPLIST 01043u /* DSPLIST E fixed-fixed/unswitched */
 #define LANEC_CM_VBTSTLTS 03613u /* VBTSTLTS F 41 */
 #define LANEC_CM_VBTSTLTS_BANK 041u
 #define LANEC_CM_TSTLTS1 03633u /* TSTLTS1 F 41 */
