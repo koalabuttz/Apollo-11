@@ -1,149 +1,152 @@
 PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-8486f080c51870de9b451b4883bc4bc83d58b70df813c6a2fb339e3d0c414925  build/cm-p40-p47-1.prg
-512c756b1c728fad2502a99f1960ba3ec34011e8fe33b4e0c14b05f1d0623458  build/cm-p40-p47-10.prg
-f4e5aafe738097901a6260336ee55a996d0cf05d8dec59349d670209ee125e31  build/cm-p40-p47-11.prg
-d1c782896afc034115a85208328741a4cba93bd8f51cb9e4946ed2c059e48eb6  build/cm-p40-p47-12.prg
-b8d9f199cbd06f246e876170725aa702828f97cc8f89d38473a36ffb6d288ed7  build/cm-p40-p47-13.prg
-ee2b789566236016b019f244520af4397cc4224b1bc7d0ce144a7c4eb886f918  build/cm-p40-p47-14.prg
-c6b522b787923d8733ae3db88001bcf8ada860edd94a2d81081b620b099ea642  build/cm-p40-p47-15.prg
-1d094e70a50a725756fe522ab5ea810e19cbf293b9da1a8563960b39eae7ffda  build/cm-p40-p47-16.prg
-2d9a7623fdb5c76428c2fc5249de39ac2a4b69fc8b60811f3a620aaf9b28e863  build/cm-p40-p47-17.prg
-040a8325700e76aad75c9a85137556e66af74c48e4c0e4ce7212d199cbfcd937  build/cm-p40-p47-18.prg
-efd774b084856ec6caaea5b462b5bf35adfcb6bf1a8f3d95f913b2ad6ba92986  build/cm-p40-p47-19.prg
-e47544d4a8ec78e7aa4be63bc711822a47f21df127475a0e5bb3d45a15940cac  build/cm-p40-p47-2.prg
-73e12eab725810e2cb81c36fb33e1e9c6e09fe760435366e1df5084d636f11cc  build/cm-p40-p47-20.prg
-ae1103647c5c1dc3feb4d6e9d4ad07c3fb34d67012575bc9a496893cd44ab028  build/cm-p40-p47-21.prg
-90c5d78425de5b81fb55dbb7095f1bf9d2e0ea329514dc0508a6387d0b8f18e5  build/cm-p40-p47-22.prg
-259fee4833cd94f315168fa112846e4406853d4a8e1ea4377b69ad990a711292  build/cm-p40-p47-23.prg
-f491506e084e502e348e99bdf291975a868afaaade71fac5d95981741d591ae6  build/cm-p40-p47-24.prg
-e133d6d50722b8ac1ad16d4e3386024cd5331084ab4cdb175f71c46aba714be7  build/cm-p40-p47-25.prg
-c0da73fd0638195193df38758a9753245519ddf3a50234701a007cfb71d2922d  build/cm-p40-p47-26.prg
-9c86db878caf12ca48402b6ebeb67d02ba5eea427970a8d66f77e920ff94b2a2  build/cm-p40-p47-27.prg
-77bdb8da5fbe8bed23252cf59559d0ca8d2977edde610a759a8dcd029432efc8  build/cm-p40-p47-28.prg
-52f817ecd4788ccf47e0d9230628a61bf4a0d5aa5f812e5e1e2f1afff13286dd  build/cm-p40-p47-29.prg
-b2992b4d32b85a0a10cab9ae4dd02de69a75e57268c0dc8d9dd925fd6f62df48  build/cm-p40-p47-3.prg
-05566c5ea964d4d4daf5f81b4f63672d138770c6fdfad574486111d6a8289816  build/cm-p40-p47-30.prg
-4086af25fc93393bf5527281e82546313286f91fa1be59468f46eeecba158df3  build/cm-p40-p47-31.prg
-d4a1b1e356455bb645084f381c2384118798171ddc73d248d96108a7c4a9f999  build/cm-p40-p47-32.prg
-0cc0e615ef84625afa9b108166a80a6426b4fabb80391a4cc6f9019103420ef6  build/cm-p40-p47-33.prg
-333589cbfc609fea642b61c0405a937158d6a6cbd1c913a3706ece0e136ffc8b  build/cm-p40-p47-34.prg
-0699a5098b872b48998c5f26f460aaa2e0e9b1f4edae7acbed0a3cbfc0cdae90  build/cm-p40-p47-35.prg
-156ba4758a51329b4c204b09373a407c1a2346664044375c188d23afe29473ee  build/cm-p40-p47-36.prg
-d3b9e779a676c6686ae5f78b625b881a01bd3d756f893439cb1ca5db598ba3dd  build/cm-p40-p47-37.prg
-7ab4f3d10e6623000c887e5f38975d7a31a7282f1812cd154fdbaa1d4824bf36  build/cm-p40-p47-38.prg
-0162da8d8d316221e9283dadd9dfe1b8a404219cab17081a298f24f18a197b55  build/cm-p40-p47-39.prg
-a14cfd75b694a58dd90c36e69848a3d8d849eca5b39c77c29a8e09837e156f11  build/cm-p40-p47-4.prg
-7812b5564d5d3cb5f0a9024be810dd4a8f77f57d70db72718bd46f94980064de  build/cm-p40-p47-40.prg
-f8fcc1f5b3ecbbf8f41f1ab1b9ade48d120aabcb619a9593292f8b36c3587c6e  build/cm-p40-p47-41.prg
-9863b647078959cca365f9d538e7f30908107b2aae66c3e2b8f9ee7154a79973  build/cm-p40-p47-42.prg
-adb75c459181bf3afe82a75761355fc2d994396918dea380e94a5005c2161007  build/cm-p40-p47-43.prg
-9cb91d40745d80aa3b60635455d25ae3b6492b058ef2ba818d9860a9af2bf50a  build/cm-p40-p47-44.prg
-9af45125c64e7b163b0e893a432debcaf76524eceaa96643c4e4c291a1d933bf  build/cm-p40-p47-45.prg
-b275c6ef8704e06e71802fd701a408ba5c8e75c9a86b3d3ccf5874e5186da9dd  build/cm-p40-p47-46.prg
-9665f149f2426304370600951f106cab991088355b058a1c9f689c26eb05b18c  build/cm-p40-p47-47.prg
-210b8202aa83501e5ab42abdee03025bcc09dcbd9b56b32e4a300a889f77dd79  build/cm-p40-p47-48.prg
-44d3bffe91444080b5c76c331bb85663f4cf31b756c5a0f8def907ecd48d8d3c  build/cm-p40-p47-5.prg
-7e362d87ed9fa95be981f5f8e94cca0085d210d754bfdbdd477c5e8163c5cae0  build/cm-p40-p47-6.prg
-cd5187dfeda26011e00c419a1b8db7d83c2a3db50e898fa134564d063340735c  build/cm-p40-p47-7.prg
-0c54a8be98874174786b5d0e639483864bde092c1e6b648f186d79060b724a70  build/cm-p40-p47-8.prg
-48c6ccf233bb50e4b5360c19ebc9f0318d9250f8d9d3b57035dec461a52733a9  build/cm-p40-p47-9.prg
+6680c20eceed72581c0452bf4e8a4569653110711bb1925bfba15bb77762cc9d  build/cm-p40-p47-1.prg
+9a0b88f7683d12f5b598108c269f8b3b147785419be4a65e28983dbbdd6a9f50  build/cm-p40-p47-10.prg
+f679d23d80c62f5cf912cc2f819ad13833c261a0f026c347f776076bbde7f449  build/cm-p40-p47-11.prg
+fa5b020f6ebbab8b63761d8d762ebe7a6bf2f03f4722a187f50aed1f02956047  build/cm-p40-p47-12.prg
+c8bf4558b478b35bbd3057aa619a2fb0a18601ebab7a7ee44cac1668fa0b29bb  build/cm-p40-p47-13.prg
+768bff1867ab5715b003f8a14b03e3012a263161324c81724e7227e62e88166f  build/cm-p40-p47-14.prg
+211bee6d1ca6cbf320d2b2cae6f163993550dc981e4274525b2dce13b6a807d5  build/cm-p40-p47-15.prg
+6c1a98acb508017f18581f347610a5e720dd3d0bcf744a244a47357d4f51c4cd  build/cm-p40-p47-16.prg
+abed09f23ae6815dd45226a15370713240e75c1fc39f0edd7226c427a5274a9d  build/cm-p40-p47-17.prg
+e0280711e736f4992dd90eb9e6a0eeaeb847d664bc35296d004bb085b10debe9  build/cm-p40-p47-18.prg
+198188edbf805474ef1c0ce65265afd287a5ce81675047b6e88144a4a2375e6c  build/cm-p40-p47-19.prg
+86ca49ab633bf37a40b43b26809ce61a768f58a814721d416b90474b75badb92  build/cm-p40-p47-2.prg
+6b32c56830d8d6a5a244a73bc363a66d4cd25f170b506a9a3a9bd2f1fd82a5b4  build/cm-p40-p47-20.prg
+dccc47d6dd191f8d02fbf5cd67975c97b2bbb963156094452647f53edd6af179  build/cm-p40-p47-21.prg
+e16e59d049f12dc45f572663e2255c776afa251c5716ba56f12334b938bd1bb5  build/cm-p40-p47-22.prg
+d5298e4516c49a1d88a581933cf0a29f274c1988294a9030ccffcad7d5bdb8dd  build/cm-p40-p47-23.prg
+b0344ead20d2e12015a10fd5766a222fff6b176c98d586c623dabcbe831b533b  build/cm-p40-p47-24.prg
+a676f62638e48144d78f9313e402c8a8fd16aefbf638c8a22a6cd866b50d517f  build/cm-p40-p47-25.prg
+0381208fc98e555735ca4c60f021ebe202ab8a159bcbce9c96a26f8bc380e39e  build/cm-p40-p47-26.prg
+b538bc48398286935ab48f0cd2c45e93250178ae929072393fdaba7451ffc6b9  build/cm-p40-p47-27.prg
+446a117e0689fcd35b7b87bcdce75c3369a3d41ffb679383635adf535ec99969  build/cm-p40-p47-28.prg
+a502d2d308e4e2d4abbda81c418aba7512a4b33159fc9774f60f5ef24860756d  build/cm-p40-p47-29.prg
+0c773d262a5613593d9c45956ef558f9ee656f9d6f57850bc4cb244a2e8ae614  build/cm-p40-p47-3.prg
+ee1becd559ea370aa1f782e836cc4e29af1c60c48aac575e8700efacec52e759  build/cm-p40-p47-30.prg
+436cc9b77348f5f59d4f9f5951b77d1f48ce845b5074d4eaf945ae05db4d7d18  build/cm-p40-p47-31.prg
+a33b17b5b7a72791fa69b331219d7b5b6b87b3c2cea7c3f2932e38b22b2791b1  build/cm-p40-p47-32.prg
+7ca124f02218830a0a757a3fa81d2949cec39d520b9eaf90dc92d0f0256964d4  build/cm-p40-p47-33.prg
+2b483899984c430000238b39589a9cf756791f4d5067c410bdf6605a986f0882  build/cm-p40-p47-34.prg
+28518d3db42042624684cc84155a6dd29ad66f999a9ed1e40f0ec3855bea9662  build/cm-p40-p47-35.prg
+69926eb6fd9dd690130bf95c6520cfe17314a2bf0b6d07d87fa8caa1f6e7db67  build/cm-p40-p47-36.prg
+9a25d7fd7719eb8fb9e8788df335cf47c9ec411b514b1bb02697f0922fbac7b3  build/cm-p40-p47-37.prg
+8e15801e5de9e7790e08d9a6452be019e824eb1089f19ba4724b946d6b569c57  build/cm-p40-p47-38.prg
+148b2d5aafd7e9d995c5cd0f7af85932a375890aa9a2cbaa3afcf593f742d05f  build/cm-p40-p47-39.prg
+73efcc16dab5f6144bd8dcadd8c894b0340fb135e3a9a70fb86585650a1c2862  build/cm-p40-p47-4.prg
+f5a1c437ce9c2d32c226c735b34477c85ec0400a9dc2cc4ca32b1abdb1ce7aab  build/cm-p40-p47-40.prg
+22ef172c7a56e69605adff413daea2465557fce724b1f15104bc6124a1a4c0a8  build/cm-p40-p47-41.prg
+f9f992eb93e6e3040345c262cae13dee75830062502abbe91419896ea5cfdc57  build/cm-p40-p47-42.prg
+6ad419e4de2154256aea1c7407505e9522fcf0dc0c08f5444753b6760307980d  build/cm-p40-p47-43.prg
+b501f74912af581980e036f7e1b697fd68028e9020983980dba29bc95cffd0c2  build/cm-p40-p47-44.prg
+071152aed4bf146efd98edfe496f25abc7ddaaba71d1cae151abb15c8c1f57e5  build/cm-p40-p47-45.prg
+a52be8951426ed53bc792b12d0a0f1541267056f1d05c2af758ac396cf233f48  build/cm-p40-p47-46.prg
+862931c646286cd48a8cb636d741ceb88b6095ae5230ac58d722b0f47787cf23  build/cm-p40-p47-47.prg
+88df3dad7eeb3d4e57c9a1b8e732b82c7f1cebb2d133f35fd6ca4620ab4d430e  build/cm-p40-p47-48.prg
+4d7560e454cc85de5d983bffa546b6be5484e6cbbf2cce7cde87045eef980779  build/cm-p40-p47-49.prg
+daad4021fca9f57f6d0d0b3c6b311e821bc6643d4041ddf93921fb09e81f10d1  build/cm-p40-p47-5.prg
+8f3fcbb4c43e684c01f1ddb767d2897e0eb155275bd033a50aacd6a2c2ced244  build/cm-p40-p47-6.prg
+c24e0c3abfaf2e118511f41f5b6cf419fba2e64d2bc4eb294b929be9432a351d  build/cm-p40-p47-7.prg
+29fcdeaf49c32822532a0ce4143c418eb9d3ff1255e2d64ef524222f6607b2ec  build/cm-p40-p47-8.prg
+c077b5b6d645aeb52f26db1237873b5c8647fa16645d1441272b072d2c1a29e6  build/cm-p40-p47-9.prg
 
 $ make vice-cm-p40-p47
-for p in build/cm-p40-p47-1.prg build/cm-p40-p47-2.prg build/cm-p40-p47-3.prg build/cm-p40-p47-4.prg build/cm-p40-p47-5.prg build/cm-p40-p47-6.prg build/cm-p40-p47-7.prg build/cm-p40-p47-8.prg build/cm-p40-p47-9.prg build/cm-p40-p47-10.prg build/cm-p40-p47-11.prg build/cm-p40-p47-12.prg build/cm-p40-p47-13.prg build/cm-p40-p47-14.prg build/cm-p40-p47-15.prg build/cm-p40-p47-16.prg build/cm-p40-p47-17.prg build/cm-p40-p47-18.prg build/cm-p40-p47-19.prg build/cm-p40-p47-20.prg build/cm-p40-p47-21.prg build/cm-p40-p47-22.prg build/cm-p40-p47-23.prg build/cm-p40-p47-24.prg build/cm-p40-p47-25.prg build/cm-p40-p47-26.prg build/cm-p40-p47-27.prg build/cm-p40-p47-28.prg build/cm-p40-p47-29.prg build/cm-p40-p47-30.prg build/cm-p40-p47-31.prg build/cm-p40-p47-32.prg build/cm-p40-p47-33.prg build/cm-p40-p47-34.prg build/cm-p40-p47-35.prg build/cm-p40-p47-36.prg build/cm-p40-p47-37.prg build/cm-p40-p47-38.prg build/cm-p40-p47-39.prg build/cm-p40-p47-40.prg build/cm-p40-p47-41.prg build/cm-p40-p47-42.prg build/cm-p40-p47-43.prg build/cm-p40-p47-44.prg build/cm-p40-p47-45.prg build/cm-p40-p47-46.prg build/cm-p40-p47-47.prg build/cm-p40-p47-48.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+for p in build/cm-p40-p47-1.prg build/cm-p40-p47-2.prg build/cm-p40-p47-3.prg build/cm-p40-p47-4.prg build/cm-p40-p47-5.prg build/cm-p40-p47-6.prg build/cm-p40-p47-7.prg build/cm-p40-p47-8.prg build/cm-p40-p47-9.prg build/cm-p40-p47-10.prg build/cm-p40-p47-11.prg build/cm-p40-p47-12.prg build/cm-p40-p47-13.prg build/cm-p40-p47-14.prg build/cm-p40-p47-15.prg build/cm-p40-p47-16.prg build/cm-p40-p47-17.prg build/cm-p40-p47-18.prg build/cm-p40-p47-19.prg build/cm-p40-p47-20.prg build/cm-p40-p47-21.prg build/cm-p40-p47-22.prg build/cm-p40-p47-23.prg build/cm-p40-p47-24.prg build/cm-p40-p47-25.prg build/cm-p40-p47-26.prg build/cm-p40-p47-27.prg build/cm-p40-p47-28.prg build/cm-p40-p47-29.prg build/cm-p40-p47-30.prg build/cm-p40-p47-31.prg build/cm-p40-p47-32.prg build/cm-p40-p47-33.prg build/cm-p40-p47-34.prg build/cm-p40-p47-35.prg build/cm-p40-p47-36.prg build/cm-p40-p47-37.prg build/cm-p40-p47-38.prg build/cm-p40-p47-39.prg build/cm-p40-p47-40.prg build/cm-p40-p47-41.prg build/cm-p40-p47-42.prg build/cm-p40-p47-43.prg build/cm-p40-p47-44.prg build/cm-p40-p47-45.prg build/cm-p40-p47-46.prg build/cm-p40-p47-47.prg build/cm-p40-p47-48.prg build/cm-p40-p47-49.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
 PASS: VICE PAL cm-p40-p47-1.prg: 1 checks, 0 failures
-PRG sha256: 8486f080c51870de9b451b4883bc4bc83d58b70df813c6a2fb339e3d0c414925 cm-p40-p47-1.prg
+PRG sha256: 6680c20eceed72581c0452bf4e8a4569653110711bb1925bfba15bb77762cc9d cm-p40-p47-1.prg
 PASS: VICE PAL cm-p40-p47-2.prg: 1 checks, 0 failures
-PRG sha256: e47544d4a8ec78e7aa4be63bc711822a47f21df127475a0e5bb3d45a15940cac cm-p40-p47-2.prg
+PRG sha256: 86ca49ab633bf37a40b43b26809ce61a768f58a814721d416b90474b75badb92 cm-p40-p47-2.prg
 PASS: VICE PAL cm-p40-p47-3.prg: 2 checks, 0 failures
-PRG sha256: b2992b4d32b85a0a10cab9ae4dd02de69a75e57268c0dc8d9dd925fd6f62df48 cm-p40-p47-3.prg
+PRG sha256: 0c773d262a5613593d9c45956ef558f9ee656f9d6f57850bc4cb244a2e8ae614 cm-p40-p47-3.prg
 PASS: VICE PAL cm-p40-p47-4.prg: 1 checks, 0 failures
-PRG sha256: a14cfd75b694a58dd90c36e69848a3d8d849eca5b39c77c29a8e09837e156f11 cm-p40-p47-4.prg
+PRG sha256: 73efcc16dab5f6144bd8dcadd8c894b0340fb135e3a9a70fb86585650a1c2862 cm-p40-p47-4.prg
 PASS: VICE PAL cm-p40-p47-5.prg: 1 checks, 0 failures
-PRG sha256: 44d3bffe91444080b5c76c331bb85663f4cf31b756c5a0f8def907ecd48d8d3c cm-p40-p47-5.prg
+PRG sha256: daad4021fca9f57f6d0d0b3c6b311e821bc6643d4041ddf93921fb09e81f10d1 cm-p40-p47-5.prg
 PASS: VICE PAL cm-p40-p47-6.prg: 2 checks, 0 failures
-PRG sha256: 7e362d87ed9fa95be981f5f8e94cca0085d210d754bfdbdd477c5e8163c5cae0 cm-p40-p47-6.prg
+PRG sha256: 8f3fcbb4c43e684c01f1ddb767d2897e0eb155275bd033a50aacd6a2c2ced244 cm-p40-p47-6.prg
 PASS: VICE PAL cm-p40-p47-7.prg: 1 checks, 0 failures
-PRG sha256: cd5187dfeda26011e00c419a1b8db7d83c2a3db50e898fa134564d063340735c cm-p40-p47-7.prg
+PRG sha256: c24e0c3abfaf2e118511f41f5b6cf419fba2e64d2bc4eb294b929be9432a351d cm-p40-p47-7.prg
 PASS: VICE PAL cm-p40-p47-8.prg: 4 checks, 0 failures
-PRG sha256: 0c54a8be98874174786b5d0e639483864bde092c1e6b648f186d79060b724a70 cm-p40-p47-8.prg
+PRG sha256: 29fcdeaf49c32822532a0ce4143c418eb9d3ff1255e2d64ef524222f6607b2ec cm-p40-p47-8.prg
 PASS: VICE PAL cm-p40-p47-9.prg: 2 checks, 0 failures
-PRG sha256: 48c6ccf233bb50e4b5360c19ebc9f0318d9250f8d9d3b57035dec461a52733a9 cm-p40-p47-9.prg
+PRG sha256: c077b5b6d645aeb52f26db1237873b5c8647fa16645d1441272b072d2c1a29e6 cm-p40-p47-9.prg
 PASS: VICE PAL cm-p40-p47-10.prg: 2 checks, 0 failures
-PRG sha256: 512c756b1c728fad2502a99f1960ba3ec34011e8fe33b4e0c14b05f1d0623458 cm-p40-p47-10.prg
+PRG sha256: 9a0b88f7683d12f5b598108c269f8b3b147785419be4a65e28983dbbdd6a9f50 cm-p40-p47-10.prg
 PASS: VICE PAL cm-p40-p47-11.prg: 6 checks, 0 failures
-PRG sha256: f4e5aafe738097901a6260336ee55a996d0cf05d8dec59349d670209ee125e31 cm-p40-p47-11.prg
+PRG sha256: f679d23d80c62f5cf912cc2f819ad13833c261a0f026c347f776076bbde7f449 cm-p40-p47-11.prg
 PASS: VICE PAL cm-p40-p47-12.prg: 7 checks, 0 failures
-PRG sha256: d1c782896afc034115a85208328741a4cba93bd8f51cb9e4946ed2c059e48eb6 cm-p40-p47-12.prg
+PRG sha256: fa5b020f6ebbab8b63761d8d762ebe7a6bf2f03f4722a187f50aed1f02956047 cm-p40-p47-12.prg
 PASS: VICE PAL cm-p40-p47-13.prg: 5 checks, 0 failures
-PRG sha256: b8d9f199cbd06f246e876170725aa702828f97cc8f89d38473a36ffb6d288ed7 cm-p40-p47-13.prg
-PASS: VICE PAL cm-p40-p47-14.prg: 27 checks, 0 failures
-PRG sha256: ee2b789566236016b019f244520af4397cc4224b1bc7d0ce144a7c4eb886f918 cm-p40-p47-14.prg
-PASS: VICE PAL cm-p40-p47-15.prg: 25 checks, 0 failures
-PRG sha256: c6b522b787923d8733ae3db88001bcf8ada860edd94a2d81081b620b099ea642 cm-p40-p47-15.prg
+PRG sha256: c8bf4558b478b35bbd3057aa619a2fb0a18601ebab7a7ee44cac1668fa0b29bb cm-p40-p47-13.prg
+PASS: VICE PAL cm-p40-p47-14.prg: 26 checks, 0 failures
+PRG sha256: 768bff1867ab5715b003f8a14b03e3012a263161324c81724e7227e62e88166f cm-p40-p47-14.prg
+PASS: VICE PAL cm-p40-p47-15.prg: 26 checks, 0 failures
+PRG sha256: 211bee6d1ca6cbf320d2b2cae6f163993550dc981e4274525b2dce13b6a807d5 cm-p40-p47-15.prg
 PASS: VICE PAL cm-p40-p47-16.prg: 1 checks, 0 failures
-PRG sha256: 1d094e70a50a725756fe522ab5ea810e19cbf293b9da1a8563960b39eae7ffda cm-p40-p47-16.prg
+PRG sha256: 6c1a98acb508017f18581f347610a5e720dd3d0bcf744a244a47357d4f51c4cd cm-p40-p47-16.prg
 PASS: VICE PAL cm-p40-p47-17.prg: 3 checks, 0 failures
-PRG sha256: 2d9a7623fdb5c76428c2fc5249de39ac2a4b69fc8b60811f3a620aaf9b28e863 cm-p40-p47-17.prg
+PRG sha256: abed09f23ae6815dd45226a15370713240e75c1fc39f0edd7226c427a5274a9d cm-p40-p47-17.prg
 PASS: VICE PAL cm-p40-p47-18.prg: 1 checks, 0 failures
-PRG sha256: 040a8325700e76aad75c9a85137556e66af74c48e4c0e4ce7212d199cbfcd937 cm-p40-p47-18.prg
-PASS: VICE PAL cm-p40-p47-19.prg: 5 checks, 0 failures
-PRG sha256: efd774b084856ec6caaea5b462b5bf35adfcb6bf1a8f3d95f913b2ad6ba92986 cm-p40-p47-19.prg
-PASS: VICE PAL cm-p40-p47-20.prg: 1 checks, 0 failures
-PRG sha256: 73e12eab725810e2cb81c36fb33e1e9c6e09fe760435366e1df5084d636f11cc cm-p40-p47-20.prg
-PASS: VICE PAL cm-p40-p47-21.prg: 8 checks, 0 failures
-PRG sha256: ae1103647c5c1dc3feb4d6e9d4ad07c3fb34d67012575bc9a496893cd44ab028 cm-p40-p47-21.prg
-PASS: VICE PAL cm-p40-p47-22.prg: 3 checks, 0 failures
-PRG sha256: 90c5d78425de5b81fb55dbb7095f1bf9d2e0ea329514dc0508a6387d0b8f18e5 cm-p40-p47-22.prg
-PASS: VICE PAL cm-p40-p47-23.prg: 1 checks, 0 failures
-PRG sha256: 259fee4833cd94f315168fa112846e4406853d4a8e1ea4377b69ad990a711292 cm-p40-p47-23.prg
-PASS: VICE PAL cm-p40-p47-24.prg: 5 checks, 0 failures
-PRG sha256: f491506e084e502e348e99bdf291975a868afaaade71fac5d95981741d591ae6 cm-p40-p47-24.prg
-PASS: VICE PAL cm-p40-p47-25.prg: 2 checks, 0 failures
-PRG sha256: e133d6d50722b8ac1ad16d4e3386024cd5331084ab4cdb175f71c46aba714be7 cm-p40-p47-25.prg
-PASS: VICE PAL cm-p40-p47-26.prg: 9 checks, 0 failures
-PRG sha256: c0da73fd0638195193df38758a9753245519ddf3a50234701a007cfb71d2922d cm-p40-p47-26.prg
-PASS: VICE PAL cm-p40-p47-27.prg: 25 checks, 0 failures
-PRG sha256: 9c86db878caf12ca48402b6ebeb67d02ba5eea427970a8d66f77e920ff94b2a2 cm-p40-p47-27.prg
-PASS: VICE PAL cm-p40-p47-28.prg: 14 checks, 0 failures
-PRG sha256: 77bdb8da5fbe8bed23252cf59559d0ca8d2977edde610a759a8dcd029432efc8 cm-p40-p47-28.prg
-PASS: VICE PAL cm-p40-p47-29.prg: 26 checks, 0 failures
-PRG sha256: 52f817ecd4788ccf47e0d9230628a61bf4a0d5aa5f812e5e1e2f1afff13286dd cm-p40-p47-29.prg
-PASS: VICE PAL cm-p40-p47-30.prg: 9 checks, 0 failures
-PRG sha256: 05566c5ea964d4d4daf5f81b4f63672d138770c6fdfad574486111d6a8289816 cm-p40-p47-30.prg
-PASS: VICE PAL cm-p40-p47-31.prg: 26 checks, 0 failures
-PRG sha256: 4086af25fc93393bf5527281e82546313286f91fa1be59468f46eeecba158df3 cm-p40-p47-31.prg
-PASS: VICE PAL cm-p40-p47-32.prg: 24 checks, 0 failures
-PRG sha256: d4a1b1e356455bb645084f381c2384118798171ddc73d248d96108a7c4a9f999 cm-p40-p47-32.prg
-PASS: VICE PAL cm-p40-p47-33.prg: 22 checks, 0 failures
-PRG sha256: 0cc0e615ef84625afa9b108166a80a6426b4fabb80391a4cc6f9019103420ef6 cm-p40-p47-33.prg
-PASS: VICE PAL cm-p40-p47-34.prg: 17 checks, 0 failures
-PRG sha256: 333589cbfc609fea642b61c0405a937158d6a6cbd1c913a3706ece0e136ffc8b cm-p40-p47-34.prg
+PRG sha256: e0280711e736f4992dd90eb9e6a0eeaeb847d664bc35296d004bb085b10debe9 cm-p40-p47-18.prg
+PASS: VICE PAL cm-p40-p47-19.prg: 1 checks, 0 failures
+PRG sha256: 198188edbf805474ef1c0ce65265afd287a5ce81675047b6e88144a4a2375e6c cm-p40-p47-19.prg
+PASS: VICE PAL cm-p40-p47-20.prg: 5 checks, 0 failures
+PRG sha256: 6b32c56830d8d6a5a244a73bc363a66d4cd25f170b506a9a3a9bd2f1fd82a5b4 cm-p40-p47-20.prg
+PASS: VICE PAL cm-p40-p47-21.prg: 1 checks, 0 failures
+PRG sha256: dccc47d6dd191f8d02fbf5cd67975c97b2bbb963156094452647f53edd6af179 cm-p40-p47-21.prg
+PASS: VICE PAL cm-p40-p47-22.prg: 8 checks, 0 failures
+PRG sha256: e16e59d049f12dc45f572663e2255c776afa251c5716ba56f12334b938bd1bb5 cm-p40-p47-22.prg
+PASS: VICE PAL cm-p40-p47-23.prg: 3 checks, 0 failures
+PRG sha256: d5298e4516c49a1d88a581933cf0a29f274c1988294a9030ccffcad7d5bdb8dd cm-p40-p47-23.prg
+PASS: VICE PAL cm-p40-p47-24.prg: 1 checks, 0 failures
+PRG sha256: b0344ead20d2e12015a10fd5766a222fff6b176c98d586c623dabcbe831b533b cm-p40-p47-24.prg
+PASS: VICE PAL cm-p40-p47-25.prg: 5 checks, 0 failures
+PRG sha256: a676f62638e48144d78f9313e402c8a8fd16aefbf638c8a22a6cd866b50d517f cm-p40-p47-25.prg
+PASS: VICE PAL cm-p40-p47-26.prg: 2 checks, 0 failures
+PRG sha256: 0381208fc98e555735ca4c60f021ebe202ab8a159bcbce9c96a26f8bc380e39e cm-p40-p47-26.prg
+PASS: VICE PAL cm-p40-p47-27.prg: 9 checks, 0 failures
+PRG sha256: b538bc48398286935ab48f0cd2c45e93250178ae929072393fdaba7451ffc6b9 cm-p40-p47-27.prg
+PASS: VICE PAL cm-p40-p47-28.prg: 25 checks, 0 failures
+PRG sha256: 446a117e0689fcd35b7b87bcdce75c3369a3d41ffb679383635adf535ec99969 cm-p40-p47-28.prg
+PASS: VICE PAL cm-p40-p47-29.prg: 14 checks, 0 failures
+PRG sha256: a502d2d308e4e2d4abbda81c418aba7512a4b33159fc9774f60f5ef24860756d cm-p40-p47-29.prg
+PASS: VICE PAL cm-p40-p47-30.prg: 26 checks, 0 failures
+PRG sha256: ee1becd559ea370aa1f782e836cc4e29af1c60c48aac575e8700efacec52e759 cm-p40-p47-30.prg
+PASS: VICE PAL cm-p40-p47-31.prg: 9 checks, 0 failures
+PRG sha256: 436cc9b77348f5f59d4f9f5951b77d1f48ce845b5074d4eaf945ae05db4d7d18 cm-p40-p47-31.prg
+PASS: VICE PAL cm-p40-p47-32.prg: 26 checks, 0 failures
+PRG sha256: a33b17b5b7a72791fa69b331219d7b5b6b87b3c2cea7c3f2932e38b22b2791b1 cm-p40-p47-32.prg
+PASS: VICE PAL cm-p40-p47-33.prg: 24 checks, 0 failures
+PRG sha256: 7ca124f02218830a0a757a3fa81d2949cec39d520b9eaf90dc92d0f0256964d4 cm-p40-p47-33.prg
+PASS: VICE PAL cm-p40-p47-34.prg: 22 checks, 0 failures
+PRG sha256: 2b483899984c430000238b39589a9cf756791f4d5067c410bdf6605a986f0882 cm-p40-p47-34.prg
 PASS: VICE PAL cm-p40-p47-35.prg: 17 checks, 0 failures
-PRG sha256: 0699a5098b872b48998c5f26f460aaa2e0e9b1f4edae7acbed0a3cbfc0cdae90 cm-p40-p47-35.prg
-PASS: VICE PAL cm-p40-p47-36.prg: 33 checks, 0 failures
-PRG sha256: 156ba4758a51329b4c204b09373a407c1a2346664044375c188d23afe29473ee cm-p40-p47-36.prg
-PASS: VICE PAL cm-p40-p47-37.prg: 23 checks, 0 failures
-PRG sha256: d3b9e779a676c6686ae5f78b625b881a01bd3d756f893439cb1ca5db598ba3dd cm-p40-p47-37.prg
-PASS: VICE PAL cm-p40-p47-38.prg: 32 checks, 0 failures
-PRG sha256: 7ab4f3d10e6623000c887e5f38975d7a31a7282f1812cd154fdbaa1d4824bf36 cm-p40-p47-38.prg
-PASS: VICE PAL cm-p40-p47-39.prg: 30 checks, 0 failures
-PRG sha256: 0162da8d8d316221e9283dadd9dfe1b8a404219cab17081a298f24f18a197b55 cm-p40-p47-39.prg
-PASS: VICE PAL cm-p40-p47-40.prg: 32 checks, 0 failures
-PRG sha256: 7812b5564d5d3cb5f0a9024be810dd4a8f77f57d70db72718bd46f94980064de cm-p40-p47-40.prg
-PASS: VICE PAL cm-p40-p47-41.prg: 39 checks, 0 failures
-PRG sha256: f8fcc1f5b3ecbbf8f41f1ab1b9ade48d120aabcb619a9593292f8b36c3587c6e cm-p40-p47-41.prg
-PASS: VICE PAL cm-p40-p47-42.prg: 31 checks, 0 failures
-PRG sha256: 9863b647078959cca365f9d538e7f30908107b2aae66c3e2b8f9ee7154a79973 cm-p40-p47-42.prg
-PASS: VICE PAL cm-p40-p47-43.prg: 6 checks, 0 failures
-PRG sha256: adb75c459181bf3afe82a75761355fc2d994396918dea380e94a5005c2161007 cm-p40-p47-43.prg
-PASS: VICE PAL cm-p40-p47-44.prg: 35 checks, 0 failures
-PRG sha256: 9cb91d40745d80aa3b60635455d25ae3b6492b058ef2ba818d9860a9af2bf50a cm-p40-p47-44.prg
+PRG sha256: 28518d3db42042624684cc84155a6dd29ad66f999a9ed1e40f0ec3855bea9662 cm-p40-p47-35.prg
+PASS: VICE PAL cm-p40-p47-36.prg: 17 checks, 0 failures
+PRG sha256: 69926eb6fd9dd690130bf95c6520cfe17314a2bf0b6d07d87fa8caa1f6e7db67 cm-p40-p47-36.prg
+PASS: VICE PAL cm-p40-p47-37.prg: 33 checks, 0 failures
+PRG sha256: 9a25d7fd7719eb8fb9e8788df335cf47c9ec411b514b1bb02697f0922fbac7b3 cm-p40-p47-37.prg
+PASS: VICE PAL cm-p40-p47-38.prg: 23 checks, 0 failures
+PRG sha256: 8e15801e5de9e7790e08d9a6452be019e824eb1089f19ba4724b946d6b569c57 cm-p40-p47-38.prg
+PASS: VICE PAL cm-p40-p47-39.prg: 32 checks, 0 failures
+PRG sha256: 148b2d5aafd7e9d995c5cd0f7af85932a375890aa9a2cbaa3afcf593f742d05f cm-p40-p47-39.prg
+PASS: VICE PAL cm-p40-p47-40.prg: 30 checks, 0 failures
+PRG sha256: f5a1c437ce9c2d32c226c735b34477c85ec0400a9dc2cc4ca32b1abdb1ce7aab cm-p40-p47-40.prg
+PASS: VICE PAL cm-p40-p47-41.prg: 32 checks, 0 failures
+PRG sha256: 22ef172c7a56e69605adff413daea2465557fce724b1f15104bc6124a1a4c0a8 cm-p40-p47-41.prg
+PASS: VICE PAL cm-p40-p47-42.prg: 39 checks, 0 failures
+PRG sha256: f9f992eb93e6e3040345c262cae13dee75830062502abbe91419896ea5cfdc57 cm-p40-p47-42.prg
+PASS: VICE PAL cm-p40-p47-43.prg: 31 checks, 0 failures
+PRG sha256: 6ad419e4de2154256aea1c7407505e9522fcf0dc0c08f5444753b6760307980d cm-p40-p47-43.prg
+PASS: VICE PAL cm-p40-p47-44.prg: 4 checks, 0 failures
+PRG sha256: b501f74912af581980e036f7e1b697fd68028e9020983980dba29bc95cffd0c2 cm-p40-p47-44.prg
 PASS: VICE PAL cm-p40-p47-45.prg: 33 checks, 0 failures
-PRG sha256: 9af45125c64e7b163b0e893a432debcaf76524eceaa96643c4e4c291a1d933bf cm-p40-p47-45.prg
-PASS: VICE PAL cm-p40-p47-46.prg: 14 checks, 0 failures
-PRG sha256: b275c6ef8704e06e71802fd701a408ba5c8e75c9a86b3d3ccf5874e5186da9dd cm-p40-p47-46.prg
-PASS: VICE PAL cm-p40-p47-47.prg: 14 checks, 0 failures
-PRG sha256: 9665f149f2426304370600951f106cab991088355b058a1c9f689c26eb05b18c cm-p40-p47-47.prg
-PASS: VICE PAL cm-p40-p47-48.prg: 16 checks, 0 failures
-PRG sha256: 210b8202aa83501e5ab42abdee03025bcc09dcbd9b56b32e4a300a889f77dd79 cm-p40-p47-48.prg
+PRG sha256: 071152aed4bf146efd98edfe496f25abc7ddaaba71d1cae151abb15c8c1f57e5 cm-p40-p47-45.prg
+PASS: VICE PAL cm-p40-p47-46.prg: 36 checks, 0 failures
+PRG sha256: a52be8951426ed53bc792b12d0a0f1541267056f1d05c2af758ac396cf233f48 cm-p40-p47-46.prg
+PASS: VICE PAL cm-p40-p47-47.prg: 15 checks, 0 failures
+PRG sha256: 862931c646286cd48a8cb636d741ceb88b6095ae5230ac58d722b0f47787cf23 cm-p40-p47-47.prg
+PASS: VICE PAL cm-p40-p47-48.prg: 14 checks, 0 failures
+PRG sha256: 88df3dad7eeb3d4e57c9a1b8e732b82c7f1cebb2d133f35fd6ca4620ab4d430e cm-p40-p47-48.prg
+PASS: VICE PAL cm-p40-p47-49.prg: 16 checks, 0 failures
+PRG sha256: 4d7560e454cc85de5d983bffa546b6be5484e6cbbf2cce7cde87045eef980779 cm-p40-p47-49.prg
 exit 0

@@ -270,9 +270,9 @@ PASS: 126976 cm-p40-p47 cases equal the original programs (496 routines)
   CM 24,2527 : 05606 x256
   CM 24,2533 : 04701 x256
   CM 24,2534 P47BODY: 05170 x60, 05210 x196
-  CM 24,2535 : 05170 x53, 05210 x203
-  CM 24,2537 : 05170 x62, 05210 x194
-  CM 24,2540 : 05170 x64, 05210 x192
+  CM 24,2535 : 05170 x57, 05210 x199
+  CM 24,2537 : 05170 x65, 05210 x191
+  CM 24,2540 : 05170 x58, 05210 x198
   CM 24,2541 : 05210 x256
   CM 24,2542 P47BOD: 05210 x256
   CM 24,2544 : 05412 x256
@@ -541,6 +541,15 @@ case 13509 (14457) does not fit one C64 diagnostic: host only
 case 13524 (14457) does not fit one C64 diagnostic: host only
 case 13553 (14457) does not fit one C64 diagnostic: host only
 case 13381 (14457) does not fit one C64 diagnostic: host only
+case 13379 (14457) does not fit one C64 diagnostic: host only
+case 13411 (14457) does not fit one C64 diagnostic: host only
+case 13418 (14457) does not fit one C64 diagnostic: host only
+case 13431 (14457) does not fit one C64 diagnostic: host only
+case 13462 (14457) does not fit one C64 diagnostic: host only
+case 13466 (14457) does not fit one C64 diagnostic: host only
+case 13507 (14457) does not fit one C64 diagnostic: host only
+case 13534 (14457) does not fit one C64 diagnostic: host only
+case 13555 (14457) does not fit one C64 diagnostic: host only
 case 13420 (14457) does not fit one C64 diagnostic: host only
 case 13546 (14457) does not fit one C64 diagnostic: host only
 case 13579 (14458) does not fit one C64 diagnostic: host only
@@ -880,4 +889,3 @@ case 49141 (20559) does not fit one C64 diagnostic: host only
 case 49145 (20559) does not fit one C64 diagnostic: host only
 case 49147 (20559) does not fit one C64 diagnostic: host only
 froze 992 vectors to tests/cm_p40_p47_vectors.h
-exit 0

@@ -244,6 +244,18 @@ LM_RDZ = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '0777
           'FLIGHT_BUSY_SAMPLE': '50'}
 LM_RDZ_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E'
                '@37500V33E@37800V33E')
+# cm-tli: Apollo 11's translunar injection (02:44:16 GET), the load at
+# 20 s (tools/flight_scenarios/cm_tli.py: the CSM in the 100 nmi parking
+# orbit, the launch REFSMMAT, body X along the burn, TEPHEM, the sun and
+# moon). V37E47E: P47 counts the S-IVB's velocity on V16N83; the S-IVB
+# (FLIGHT_SIVB) burns 347 s from 300 s, inertially fixed, to 10,861 m/s
+# (C3 -1.4 km2/s2; N83 X passes 9999.9 ft/s and wraps); proceed (P47's
+# GOTOPOOH flashes V37), V37E00E, then V82: V16N44 apogee 9999.9 nmi
+# (the display's limit), perigee 101.6 nmi; proceed.
+TLI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_SIVB': '30000,0.423909,-0.000000,-0.905705',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tli.load'}
+TLI_KEYS = '@3000V37E47E@66000V33E@66500V37E00E@67000V82E@69000V33E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -251,6 +263,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('cm-p11', 'cm', 90000, P11_KEYS, P11),
+          ('cm-tli', 'cm', 70000, TLI_KEYS, TLI),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),

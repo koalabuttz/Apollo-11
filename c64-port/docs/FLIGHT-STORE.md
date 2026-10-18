@@ -822,6 +822,24 @@ port) runs one mission:
    ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
    job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
    takes 1,273,194 routines, none that yaAGC did not match.
+   `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
+   second burn, as the CMC monitored it in P47. cm_tli.py writes
+   cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
+   nmi parking orbit, the launch REFSMMAT with the platform on it, TEPHEM,
+   the sun and moon, and the CDUs with body X along the burn. It also
+   prints the burn's direction in stable-member axes for `FLIGHT_SIVB=CS,
+   UX,UY,UZ` (tools/flight_host_run.c, CM): from CS, 0.9 MN on 140 t less
+   215 kg/s for 347 s, inertially fixed along the orbit's velocity half a
+   burn after TIG, into PIPAX-Z. Its own integration of the burn gives
+   cutoff at 300 km and 10,861 m/s, C3 -1.4 km2/s2 (the flight's was
+   10,834 m/s). V37E47E: P47 starts average-G and counts the velocity on
+   V16N83 (body X passes 9999.9 ft/s and the display wraps: 3,166 m/s in
+   all); proceed (P47 ends in GOTOPOOH, which flashes V37), V37E00E; V82
+   in P00 shows V16N44 with apogee 9999.9 nmi (the display's limit) and
+   perigee 101.6 nmi. P47BODY's interpretive block runs in the NOVAC job
+   TIGON starts, so the cm-p40-p47 spec admits FIXLOC 0110 there
+   (`novac`). On the host every native routine matches yaAGC; the
+   unregistered point is Pinball's RELDSP1.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
