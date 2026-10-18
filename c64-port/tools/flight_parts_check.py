@@ -71,11 +71,18 @@ def main():
                 % (n, sym, icount, 0o6070 if m == 'lm' else 0o6037, '&hw' if '&hw' in own else '0'))
         # A 'fixed_rope' spec's target loads the rope image its routines
         # read their callers' words from (as tests/<file>_target.c does).
-        rope = re.search(r'#define IRC_ROPE "([^"]+)"', own) if 'apollo_rope_load' in own else None
+        # The INTERPRETER targets name it through irc_rope_path() (next to
+        # the source): the yaYUL binary of the spec's mission, by absolute
+        # path. Without it the indexed fixed reads (CAF BIT14) refuse.
+        rope = None
+        if 'apollo_rope_load' in own:
+            lit = re.search(r'#define IRC_ROPE "([^"]+)"', own)
+            rope = lit.group(1) if lit else os.path.join(
+                R, 'build/fixed-data/%s/MAIN.agc.bin' % ('Comanche055' if m == 'cm' else 'Luminary099'))
         if rope:
             f.write('#include "rope_image.h"\nstatic int rope_loaded;\n')
         f.write('const agc_native_program *irc_program(uint8_t m){(void)m;\n%s%s return &prog;}\n' % (
-            ' if(!rope_loaded)rope_loaded=apollo_rope_load(%du,"%s")?1:-1;\n' % (int(m == 'cm'), rope.group(1))
+            ' if(!rope_loaded)rope_loaded=apollo_rope_load(%du,"%s")?1:-1;\n' % (int(m == 'cm'), rope)
             if rope else '', ''.join(' parts[%d]=%s_basic_p%d;\n' % (j - 1, sym, j) for j in range(1, n + 1))))
     runner = os.path.join(out, 'native-parts')
     subprocess.run(['cc', *IRD.FLAGS, steps, *IRD.cut_flags(spec), *objs, *spec.get('native_sources', []),
