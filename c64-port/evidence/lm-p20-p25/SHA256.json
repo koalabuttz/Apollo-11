@@ -19,7 +19,7 @@
       "store": "release"
     },
     "lm-p20-p25-proof.json": {
-      "sha256": "c8199ff721c4c8ef4ec64b5e4dc0a89fa7309e435eaa286aa89959919eb6a74b",
+      "sha256": "4bce1f88c282ac36099abae7235c7c8b0def8c0010914ef87cda130c0a0ee042",
       "bytes": 106202,
       "store": "tree"
     },
