@@ -80,7 +80,12 @@ static void BOOT timer_start(void){
  CIA2[0x0f]=0x51;
  CIA2[0x0e]=0x11;}
 static uint32_t now(void){uint8_t b0,b1,a0,a1;
- do{b1=CIA2[0x07];b0=CIA2[0x06];a1=CIA2[0x05];a0=CIA2[0x04];}while(a1!=CIA2[0x05]||b0!=CIA2[0x06]||b1!=CIA2[0x07]);
+    do {
+        b1 = CIA2[0x07];
+        b0 = CIA2[0x06];
+        a1 = CIA2[0x05];
+        a0 = CIA2[0x04];
+    } while (a1 != CIA2[0x05] || b0 != CIA2[0x06] || b1 != CIA2[0x07]);
  return ~(((uint32_t)b1<<24)|((uint32_t)b0<<16)|((uint16_t)a1<<8)|a0);}
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
