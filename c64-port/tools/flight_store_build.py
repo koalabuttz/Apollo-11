@@ -883,6 +883,26 @@ def up_to_date(stamp, digest):
     return True
 
 
+def covering_stamp(a, stamp, digest):
+    """A current stamp of this build, or of a wider one: a full lm,cm build
+    writes everything a --missions lm or a --host-only build would, from the
+    same inputs. Without this, CI shards that run flight-store, flight-store-lm
+    and --host-only targets rebuild the store (half an hour with Pinball) once
+    per variant, and each rebuild makes the wider stamp stale again."""
+    if up_to_date(stamp, digest):
+        return stamp
+    want = set(a.missions.split(','))
+    for wider in ((False, 'lm,cm'), (False, a.missions), (a.host_only, 'lm,cm')):
+        host_only, missions = wider
+        if (host_only, missions) == (a.host_only, a.missions) or not want <= set(missions.split(',')):
+            continue
+        other = argparse.Namespace(**{**vars(a), 'missions': missions, 'host_only': host_only})
+        path = ROOT / OUT / ('.stamp-' + missions.replace(',', '-') + ('-host' if host_only else ''))
+        if up_to_date(path, input_digest(other)):
+            return path
+    return None
+
+
 UNPLACED = 'docs/flight-store-unplaced.json'
 
 
@@ -924,9 +944,11 @@ def main():
     stamp = ROOT / OUT / ('.stamp-' + re.sub(r'[^a-z,]', '', a.missions).replace(',', '-')
                           + ('-host' if a.host_only else ''))
     digest = input_digest(a)
-    if not a.force and up_to_date(stamp, digest):
-        print(f'{OUT}: up to date ({stamp.name}; --force rebuilds)')
-        return 0
+    if not a.force:
+        current = covering_stamp(a, stamp, digest)
+        if current:
+            print(f'{OUT}: up to date ({current.name}; --force rebuilds)')
+            return 0
     stamp.unlink(missing_ok=True)
     started = time.time() - 2
     index, objects = host_index(a.host_cc, a.jobs)
