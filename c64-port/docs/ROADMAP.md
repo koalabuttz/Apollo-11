@@ -2062,7 +2062,7 @@ All of Comanche055 JET_SELECTION_LOGIC (629 words) is native C on the control-tr
 
 ## Translate Comanche P40-P47
 
-All of Comanche055 P40-P47 (1667 words) is native C on the control-transfer ABI, as 496 routines compiled whole-file by `tools/basic_compile.py`. All 126,976 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 992 frozen cases, and 48 C64 diagnostics pass 644 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-P40-P47.md`.
+All of Comanche055 P40-P47 (1667 words) is native C on the control-transfer ABI, as 496 routines compiled whole-file by `tools/basic_compile.py`. All 126,976 cases equal the original program in yaAGC. The strict and sanitizer host tests pass 992 frozen cases, and 49 C64 diagnostics pass 645 cases in VICE that take every branch outcome the yaAGC-compared cases take. The complete certificate is drafted for the certificate reviewer. See `docs/CM-P40-P47.md`.
 
 ## Translate Comanche RCS-CSM DIGITAL AUTOPILOT
 
