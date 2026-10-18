@@ -307,6 +307,34 @@ checks that CIA1 counted three more periods.
 `make ... RK_WALL_CLOCK=1` builds the CIA wall clock instead;
 `make vice-resident-flight-half` builds it at x0.5.
 
+### Idle memo
+
+Between interrupts the AGC spends most of its time in two steps of the
+idle loop: the self-check pass from SELFRET's return (CCS SMODE, CHECKNJ,
+POSTJUMP to ADVAN, at 43,3304 LM / 43,3306 CM) and ADVAN with no job ready
+(01,3214 LM / 01,3231 CM), which returns through SELFRET to the pass. Each
+costs a module run (and after a DAP excursion, a reload of the idle
+module), yet each is a pure function of a few words. With NEWJOB -0, SMODE
++0, FB at the step's bank and outside an interrupt, each reads only its key
+(Z, L, EB, BB, SELFRET and the superbank) and writes only its result (those
+words and A, Q, FB). `tests/test_idle_memo.c` (`make test-idle-memo`, LM and
+CM builds) checks both claims on random images: no other erasable word, io
+field or hardware field changes, no job-switch seam is called, and two runs
+that share the key end on the same result.
+
+So `rk_resident_step` (under the work clock, not in the check builds
+`RK_RUNS_ONLY`) remembers each step: the key it started on, the result it
+ended on, and the work it charged (the idle loop's rest of the period, or
+the count it added). A flight step (no stop point) that meets the gate and
+starts on the remembered key writes the result and charges the same work
+without running the step or loading anything. The two memos swap after each
+step, since the steps alternate; Z, in the key, keeps either from answering
+for the other. On the P63 descent-thrust window from 17500 cs (30 cs, base
+73b062d5 + #425) this took 16.09x to 13.86x real time with the same 168
+steps and end state; an idle step costs about 5K cycles instead of 7-16K.
+It costs about 560 B of LM and CM resident (`rk_memo_*` and the step split
+into `rk_step_run`).
+
 ### The interrupt bodies
 
 The vectors other than T3RUPT run the Kernel lane's tables unchanged, from

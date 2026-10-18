@@ -195,13 +195,65 @@ DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
 del DOI['FLIGHT_LR_POS2']
 DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
             '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# cm-p11: Apollo 11's launch (16 July 1969 13:32 UT), the pad load at 1 s
+# (tools/flight_scenarios/cm_p11.py: launch complex 39A, the 72.058
+# degree flight azimuth, TEPHEM for a 100 s liftoff). The IMU model
+# (FLIGHT_IMU) zeros and coarse aligns the gimbals; V37E01E: P01 turns
+# the IMU on and aligns it, then the gyrocompass loop P02; liftoff at
+# 100 s (FLIGHT_SATURN: channel 30 bit 5) and P11, which zeros the clock
+# and shows V06N62 (inertial speed, climb rate, altitude) every 2 s
+# through the S-IC, S-II and S-IVB burns (the PIPAs the boost model
+# gives) to orbit insertion, 25,555 ft/s and 102 nmi; V82 in P11:
+# V16N44, 115.8 x 81.5 nmi; proceed, then P00. Pinball RELDSP1 (02,2516,
+# Lane C) is the one point the host bridges. Key times after liftoff
+# count from the zeroed clock, and so does the run's length.
+P11 = {'FLIGHT_CH30': '037377', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1', 'FLIGHT_SATURN': '10000',
+       'FLIGHT_LOAD': '100:tools/flight_scenarios/cm-p11.load'}
+P11_KEYS = '@2000V37E01E@84000V82E@86000V33E@88000V37E00E'
+# cm-p20: the CSM's side of the LM rendezvous (tools/flight_scenarios/
+# cm_p20.py: the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1
+# degrees behind, the CMC's LM state 1.8 km too far along the line of
+# sight; the CSM at R61's tracking attitude). FLIGHT_RR's CM side
+# (tools/flight_radar.h) holds the attitude on CDUXD-ZD, points the SXT
+# at the LM and answers VHF range reads. The IMU operating, CMC mode
+# (channels 31 and 33, FLIGHT_CHAN at 40 s); V37E20E (P20: R61's tracking
+# attitude, R22 running), V87E (VHF ranging allowed), V57E (R21's V51)
+# and MARK, proceed on V51 (the SXT mark goes into the LM state: TRKMKCNT
+# 1); R22's first VHF range (about 125 s) shows V06N49 (the 1.8 km), proceed:
+# VHFCNT 1, and the second (about 185 s, a 4 ft/s velocity change) again,
+# proceed. R22 waits on N49 in a loop (RENDISP7), so the AGC does not idle:
+# FLIGHT_BUSY_SAMPLE gives the keys their sample points.
+CM_P20 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_CHAN': '4000:033=077757', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p20.load',
+          'FLIGHT_RR': '2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320',
+          'FLIGHT_BUSY_SAMPLE': '100'}
+CM_P20_KEYS = '@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E'
+# lm-rendezvous: the LM's side (tools/flight_scenarios/lm_rendezvous.py:
+# the CSM in a 60 nmi lunar orbit, the LM 15 nmi below and 2.1 degrees
+# behind, both retrograde about reference Z as Apollo's were, the AGC's
+# state vectors on the true orbits). FLIGHT_RR's LM side holds the
+# attitude, points the RR at the CSM and answers range and range-rate
+# reads. V37E20E (P20: R61, the V50N18 maneuver: PRO, then ENTER on the
+# final V50N18), PRO on R21's V50N72 lock-on; R22 marks every 61 s (6 by
+# 340 s, no V06N49). V37E34E at 290 s (P34): PRO on N37 (TTPI), N55 and
+# N45; P34 solves TPI for 26.6 degrees elevation (N58: 7.4 m/s), PRO on
+# N37, N58 and N81, ending on N59.
+LM_RDZ = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077775', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-rendezvous.load',
+          'FLIGHT_RR': CM_P20['FLIGHT_RR'],   # the same two orbits (lm_rendezvous.py prints it)
+          'FLIGHT_BUSY_SAMPLE': '50'}
+LM_RDZ_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E'
+               '@37500V33E@37800V33E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
           ('cm-p52', 'cm', 20000, P52_KEYS, P52),
           ('cm-p23', 'cm', 30000, P23_KEYS, P23),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
+          ('cm-p11', 'cm', 90000, P11_KEYS, P11),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
+          ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
+          ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),

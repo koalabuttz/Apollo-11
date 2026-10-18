@@ -9290,15 +9290,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-integration-init/lm-integration-init-proof.json",
-            "sha256": "2c2bc5883407a6bc153a7534e00e5dffceba0f9bd2054d71e6ecc92d55b224c6"
+            "sha256": "57cc3ec16b89d9a03314aef76c803e05a0ea20fbeb4603078fc2b6a35ce310fa"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-host.log",
-            "sha256": "8a11fcb8ac87c45509f15a6788f35f3c62a7f1eb05a1cc209952c5ff65a2bd6c"
+            "sha256": "73d9f9fbb1af3ecbb27666b74992613b9654b52761af5f80c449e1a1500c312b"
           },
           "c64_execution_results": {
             "path": "evidence/lm-integration-init/lm-integration-init-vice.log",
-            "sha256": "d424916272d52862d3bb3742a76200976388667f92ffcace8a9cf2a2b351a8ae",
+            "sha256": "da4e227ad51c4e0710deb84b21bc6594a11319d027d0f89a1d22a9fe124ee5d4",
             "vice_targets": {
               "vice-lm-integration-init": 259
             }
@@ -9309,7 +9309,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-integration-init/lm-integration-init-c64-cover.json",
-            "sha256": "9ac7e0b0121fda20f1c5ae3e65e7d703c3f76e29e3c319b139ea2b4700bcbad8"
+            "sha256": "c8ad465089be1c138b3de933be560e8f3313c95fbe7753e025a2996f1a9550de"
           }
         }
       }
@@ -10483,11 +10483,11 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-host.log",
-            "sha256": "8f6a8e34257c5bb4ccd624c67043f46a99ee6c3c6930d3441a2d3f57f02cd1c6"
+            "sha256": "ac794e709e94ac765287470aecc1548a799d26c8f62dc0232eea9c7e6a187cbd"
           },
           "c64_execution_results": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-vice.log",
-            "sha256": "c8b38271e75ff24181ddd64bac544d6e5655438d7152d34f5100472ce1056f87",
+            "sha256": "a860138912a419ede6732a408d146201c1381a429cad0c403936397261a8ecc9",
             "vice_targets": {
               "vice-lm-orbital-integration": 400
             }
@@ -10498,7 +10498,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-orbital-integration/lm-orbital-integration-c64-cover.json",
-            "sha256": "77053d326bfef22d04fd248b2647323b6bc72c20290a72b62cd97745c64f9d53"
+            "sha256": "70882124851ab021c512721ba93f281ce1eb682a3e56b564f5f928a167f360f4"
           }
         }
       }

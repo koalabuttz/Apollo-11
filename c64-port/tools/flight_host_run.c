@@ -80,6 +80,8 @@
 #include "flight_gojam.h"
 /* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
 #include "flight_downlink.h"
+/* FLIGHT_RR (tools/flight_radar.h): the rendezvous radar and attitude model. */
+#include "flight_radar.h"
 #if RK_LM
 #define MISSION 0u
 #define FETCH LM_INTERPRETER_FETCH
@@ -539,6 +541,63 @@ static void aero_due(unsigned long t,struct aero *e,agc_word *w){double r[3],v[3
   c=c<0?(long)((~(unsigned long)(-c))&077777ul):c;
   if(w)w[PIPAX+j]=(agc_word)c;else *cell(PIPAX+j)=(int16_t)c;}}
 
+/* FLIGHT_IMU=1 (CM): the IMU gimbals, for the prelaunch alignment (P01):
+ * while channel 12 bit 5 (zero the ICDUs) is set each sample point holds
+ * CDUX-Z at 0; while bits 4 and 6 (coarse align, error counters enabled)
+ * are set it sets them to the desired angles THETAD (a perfect coarse
+ * align, so COARS's 2 degree check passes). Fine align and gyro torquing
+ * move nothing: the platform stays where coarse align put it, and the
+ * gyrocompass sees level PIPAs. */
+static int imu_model;
+static void imu_due(agc_word *w,agc_hardware *hw){agc_word c12=hw?hw->channel12:(agc_word)m.InputChannel[012];unsigned k;
+ if(!imu_model)return;
+ if(c12&020u){for(k=0;k<3u;++k)eset(w,CDUX+k,0u);return;}
+ if((c12&050u)==050u)for(k=0;k<3u;++k)eset(w,CDUX+k,eword(w,THETAD+k));}
+/* FLIGHT_SATURN=CS (CM): liftoff at CS and the Saturn V's boost to earth
+ * orbit, the same on both sides. At CS channel 30 bit 5 (liftoff,
+ * active 0) goes to 0, so P02's compass loop starts P11. From then on each
+ * sample point adds the boost's specific force since the last one to
+ * PIPAX-Z (5.85 cm/s a count, carrying the fraction), in stable-member
+ * axes as the prelaunch alignment leaves them (X downrange at the launch
+ * azimuth, Z down): thrust acceleration a along the vehicle axis, pitched
+ * from the launch vertical toward downrange by THETA, f = a (sin THETA, 0,
+ * -cos THETA). a: S-IC 35.1 MN on 2,960 t less 13.0 t/s, centre engine out
+ * at 135.2 s (80%, 10.4 t/s), cutoff 161.6 s; S-II from 164.0 s, 5.1 MN on
+ * 665 t less 1.22 t/s, centre engine out at 460 s (80%, 0.98 t/s),
+ * cutoff 548 s; S-IVB from 552 s, 0.9 MN on 167 t less 0.21 t/s, cutoff
+ * at 823 s. THETA: 0 to 12 s, then linear to 52.2 degrees at 161.6 s,
+ * 81.2 at 400 s and 93.3 at 700 s, held after. With the earth's rotation
+ * and gravity that puts the vehicle in a 142 x 218 km orbit at 823 s
+ * (tools/flight_scenarios/cm_p11.py prints the trajectory). No attitude
+ * model: the CDUs stay at the liftoff angles. */
+static unsigned long saturn_lo;
+static struct saturn { int lo; unsigned long t,lo_cs; double carry[3]; } sat_ref,sat_nat;
+static double saturn_acc(double t){
+ if(t<0.0)return 0.0;
+ if(t<135.2)return 35.1e6/(2960e3-13.0e3*t);
+ if(t<161.6)return 0.8*35.1e6/(2960e3-13.0e3*135.2-10.4e3*(t-135.2));
+ if(t<164.0)return 0.0;
+ if(t<460.0)return 5.1e6/(665e3-1.22e3*(t-164.0));
+ if(t<548.0)return 4.08e6/(665e3-1.22e3*296.0-0.98e3*(t-460.0));
+ if(t<552.0||t>=823.0)return 0.0;
+ return 0.9e6/(167e3-0.21e3*(t-552.0));}
+static double saturn_pitch(double t){double d;
+ if(t<12.0)d=0.0;else if(t<161.6)d=52.2*(t-12.0)/149.6;else if(t<400.0)d=52.2+29.0*(t-161.6)/238.4;
+ else if(t<700.0)d=81.2+12.1*(t-400.0)/300.0;else d=93.3;
+ return d*(3.141592653589793/180.0);}
+static void saturn_due(unsigned long t,struct saturn *e,agc_word *w,agc_hardware *hw){double f[3]={0.0,0.0,0.0},u;unsigned long c;unsigned k;
+ if(!saturn_lo)return;
+ if(!e->lo){if(t<saturn_lo)return;e->lo=1;e->t=e->lo_cs=t;
+  if(hw)hw->channel30=(agc_word)(hw->channel30&~020u);else m.InputChannel[030]=(int16_t)(m.InputChannel[030]&~020);return;}
+ /* P11 zeroes the clock at liftoff: from the first point after that, time
+  * counts from liftoff on the AGC clock. */
+ if(t<e->t){e->lo_cs=0;e->t=0;}
+ /* The velocity since the last point, in 10 ms steps. */
+ for(c=e->t;c<t;++c){double tl=((double)(c-e->lo_cs)+0.5)*0.01,a=saturn_acc(tl)*0.01,th=saturn_pitch(tl);
+  f[0]+=a*sin(th);f[2]-=a*cos(th);}
+ e->t=t;
+ for(k=0;k<3u;++k){long n;u=f[k]*100.0/5.85;e->carry[k]+=u;n=(long)e->carry[k];e->carry[k]-=(double)n;pipa_add(w,k,n);}}
+
 /* FLIGHT_PATH=FROM,TO: print every registered point each side passes
  * between those centiseconds (a diagnostic for aligning the two runs). */
 static unsigned long path_from=1,path_to=0;
@@ -749,6 +808,21 @@ static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uin
   loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
 static const char *snap_path;
+/* FLIGHT_WATCH=ADDR[,ADDR...] (octal): at each native sample point, print
+ * the words that changed since the last one (a diagnostic, e.g. MODREG,
+ * the verb and noun, FAILREG). */
+static void watch(const agc_word *w){static agc_word last[64];static unsigned addr[64],n;static int parsed;unsigned i;
+ if(!parsed){const char *t=getenv("FLIGHT_WATCH");char *e;parsed=1;
+  while(t&&*t&&n<64u){addr[n]=(unsigned)strtoul(t,&e,8);if(e==t||addr[n]>=2048u)break;last[n]=(agc_word)~0u;++n;t=*e==','?e+1:e;}}
+ for(i=0;i<n;++i)if(w[addr[i]]!=last[i]){printf("watch %lu cs: %04o %05o\n",now(w),addr[i],(unsigned)w[addr[i]]);last[i]=w[addr[i]];}}
+/* FLIGHT_BUSY_SAMPLE=CS (scaled runs only, which compare no samples): also
+ * take a sample point at a job's step boundary when none has come for CS
+ * centiseconds, so keys, radar data and pokes still reach a job that busy
+ * waits for the crew (LM R22's V06N49 loop, SLOAD N49FLAG; BZE -3). */
+static unsigned long busy_last;
+static int busy_due(int scaled,const agc_word *w,int isr){static unsigned long every;static int parsed;
+ if(!parsed){parsed=1;if(getenv("FLIGHT_BUSY_SAMPLE"))every=strtoul(getenv("FLIGHT_BUSY_SAMPLE"),0,0);}
+ return scaled&&every&&!isr&&now(w)-busy_last>=every;}
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
@@ -777,9 +851,15 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_PILOT"))pilot_tau=strtod(getenv("FLIGHT_PILOT"),0);
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
+ if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
+ if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
  if(getenv("FLIGHT_SPS"))sps_kg=strtod(getenv("FLIGHT_SPS"),0);
+ if(getenv("FLIGHT_IMU"))imu_model=atoi(getenv("FLIGHT_IMU"));
+ if(getenv("FLIGHT_SATURN"))saturn_lo=strtoul(getenv("FLIGHT_SATURN"),0,10);
+ if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
+ if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
 #endif
  core_path=getenv("FLIGHT_CORE");
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
@@ -810,6 +890,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     engine_due(now(w),&eng_ref,0);
     sps_due(now(w),&sps_ref,0);
     aero_due(now(w),&aero_ref,0);
+    imu_due(0,0);
+    saturn_due(now(w),&sat_ref,0,0);
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
@@ -851,7 +933,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
  for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
-  if(!pending&&(scaled||(hw.channel4&020u))&&at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt)){int k;
+  if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
     if((j=differs(s.words,ref[next]))!=0u&&++diffs<=(getenv("FLIGHT_SHOW")?strtoul(getenv("FLIGHT_SHOW"),0,0):20ul)){
      printf("%lu cs (native routine %lu):",next,steps);
@@ -864,7 +946,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    engine_due(now(s.words),&eng_nat,s.words);
    sps_due(now(s.words),&sps_nat,s.words);
    if(getenv("FLIGHT_DSKY"))dsky_trace(now(s.words),s.words);
+   {int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(r)pending|=RK_RUPT_BIT(RK_RUPT_RADAR);}
+   watch(s.words);
    aero_due(now(s.words),&aero_nat,s.words);
+   imu_due(s.words,&hw);
+   saturn_due(now(s.words),&sat_nat,s.words,&hw);
    lr_due(now(s.words),&lr_nat,&hw);
    chan_due(now(s.words),&cnat,&hw,&io);
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
@@ -891,6 +977,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     substitute=0;}}
   e=holder(s.words,io.superbank,&call);
   if(e&&*e->module)module_load(e,s.words,io.superbank);
+  if(getenv("FLIGHT_WATCH_STEP"))watch(s.words);
+  /* A radar read starts at any routine boundary and the resident's cycle
+   * ends it nine TIME5 counts on, often before the next sample point: the
+   * model answers it at the boundary where channel 13 bit 4 comes on. A
+   * read ends when bit 4 drops, often between sample points too; the next
+   * read (LM R22's range after range rate) must find the model ready. */
+  if(rr_on&&!(hw.channel13&010u))rr_nat.active=0;
+  else if(rr_on&&!rr_nat.active){int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);}
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;

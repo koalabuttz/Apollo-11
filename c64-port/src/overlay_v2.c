@@ -8,7 +8,7 @@ uint8_t apollo_ov2_services_compatible(uint16_t module,uint16_t resident) {
 static uint16_t run_slot_address(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_ADDRESS : APOLLO_OV2_JOB_ADDRESS;
 }
-#if !defined(APOLLO_OV2_STORE_VERIFIED) || defined(RK_STEP_PROFILE)
+#ifndef APOLLO_OV2_STORE_VERIFIED
 static uint16_t run_slot_bytes(uint8_t slot) {
     return slot==APOLLO_OV2_SLOT_TASK ? APOLLO_OV2_TASK_BYTES : APOLLO_OV2_JOB_BYTES;
 }
@@ -40,12 +40,13 @@ static uint16_t le16(const uint8_t *bytes) {
  * of the slot is written. */
 static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     const apollo_ov2_dirent *d,const uint8_t *h) {
-#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+#ifdef APOLLO_OV2_STORE_VERIFIED
     /* The store was verified when it opened (apollo_reu_store_verify applies
      * these same rules to every module's header, and the runtime's mission
      * and services are the store's): only the id is checked, that the
      * directory entry and the bytes fetched agree. A profile build
-     * (RK_STEP_PROFILE) keeps the full rules. */
+     * (RK_STEP_PROFILE) takes this same path, so it measures the flight
+     * loader. */
     (void)r;
     return le16(h + APOLLO_OV2_H_ID) == d->id ? APOLLO_OV2_OK : APOLLO_OV2_BAD_HEADER;
 #else
@@ -66,7 +67,7 @@ static enum apollo_ov2_status check_header(const apollo_ov2_runtime *r,
     return APOLLO_OV2_OK;
 #endif
 }
-#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+#ifdef APOLLO_OV2_STORE_VERIFIED
 /* A verified store (apollo_reu_store_verify at open checked every present
  * entry's directory fields, header rules and checksum, and the runtime's
  * verify flag is 0): one fetch of the whole module, and only the id is
