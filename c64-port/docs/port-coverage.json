@@ -1490,8 +1490,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/cm-extended-verbs.md",
-            "sha256": "ea3d885d22513068f2e39563ae52966c40f132c78e020ac7c5f7b89d23e9f858"
+            "path": "docs/audits/rev2-cm-extended-verbs-623.md",
+            "sha256": "1a2f3c3620d464a8d1d29a0521060df320f8b7824bc99c3bba014f1df8fbd4d1"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
