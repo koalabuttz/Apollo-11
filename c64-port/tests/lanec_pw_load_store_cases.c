@@ -14,7 +14,7 @@
 static void input(apollo_overlay_state *s, dsky_lamp_io *io, uint16_t n)
 {
     static const uint16_t banks[3] = {0, 0400u, 01000u};
-    static const uint16_t nounadd[8] = {01500u, 01735u, 01477u, 0763u, 0100u, 077u, 01077u, 01600u};
+    static const uint16_t nounadd[8] = {01500u, 01735u, 01477u, 0763u, 01432u, 077u, 01077u, 024u};
     uint16_t j = (uint16_t)(n % 4096u), *w = s->words;
     dsky_load_store_input(s, io, (uint16_t)(n / 8192u * 4096u + j));
     if (n % 8192u < 4096u) return;

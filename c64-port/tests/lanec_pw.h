@@ -25,4 +25,12 @@ uint32_t lanec_pw_spread(uint32_t n, uint32_t cases, uint32_t domain);
 #define LANEC_PW_FIFTH_CHAR 8u
 void lanec_pw_fifth_char(apollo_overlay_state *, unsigned);
 
+/* Moves a generated noun's data to low erasable (010 up to 0102, among them
+ * the clock counters at 024 and the CDU counters at 032): the normal noun's
+ * NOUNADD (and the saved store address at 01017), or the mixed noun's
+ * current IDADDTAB component (and NOUNADD less the component), points at
+ * the copy. Choice i % 8 of the eight places. */
+#define LANEC_PW_LOW_NOUN 64u
+void lanec_pw_low_noun(apollo_overlay_state *, uint32_t i);
+
 #endif

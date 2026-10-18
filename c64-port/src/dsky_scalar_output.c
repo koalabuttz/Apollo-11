@@ -36,7 +36,7 @@ enum p66_bias_status dsky_scalar_output(apollo_overlay_state *s,p66_bias_io *io,
         if(w[0140]!=1u&&w[0140]!=2u)return P66_BIAS_OUT_OF_SCOPE;
         if(w[0140]==2u){if(w[0117]>2u)return P66_BIAS_OUT_OF_SCOPE;address=(agc_word)(w[0150u+w[0117]]&03777u);eb=(agc_word)(address>>8);}
         else {logical=w[0145];if(logical>01777u)return P66_BIAS_OUT_OF_SCOPE;address=logical<01400u?logical:(agc_word)(w[3]+(logical&0377u));}
-        if(address<01000u||address>03776u||(address&0377u)==0377u)return P66_BIAS_OUT_OF_SCOPE;
+        if(address<010u||address>03776u||(address&0377u)==0377u)return P66_BIAS_OUT_OF_SCOPE;
     }
     w[1]=agc_extend(agc_correct(w[1]));
     if(entry==DSKY_SCALAR_FRACTION){w[0144]=02654;w[1]=agc_extend(w[0155]);w[0154]=w[address];w[0155]=w[address+1u];w[0156]=0;w[0]=0;w[3]=(agc_word)(eb*0400u);}

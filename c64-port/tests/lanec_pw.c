@@ -52,3 +52,21 @@ void lanec_pw_fifth_char(apollo_overlay_state *s, unsigned i)
     w[01001u + relative] = value[i];
     if (w[01023u + count[i] / 2u] == 0) w[01023u + count[i] / 2u] = 073777;
 }
+
+void lanec_pw_low_noun(apollo_overlay_state *s, uint32_t i)
+{
+    static const uint16_t low[8] = {024u, 010u, 026u, 030u, 032u, 046u, 060u, 0100u};
+    uint16_t *w = s->words, at = low[i % 8u], from, j, k;
+    if (w[0140] == 2u) {
+        k = w[0117] <= 2u ? w[0117] : 0u;
+        from = (uint16_t)(w[0150u + k] & 03777u);
+        w[0150u + k] = (uint16_t)((w[0150u + k] & ~03777u) | at);
+        w[0145] = (uint16_t)(at - k);
+    } else {
+        from = w[0145] < 01400u ? w[0145] : (uint16_t)((w[3] & 03400u) + (w[0145] & 0377u));
+        w[0145] = at;
+        w[01017] = (uint16_t)((w[01017] & ~03777u) | at);
+    }
+    for (j = 0; j < 3u; ++j)
+        if (from + j < 2048u) w[at + j] = w[from + j];
+}

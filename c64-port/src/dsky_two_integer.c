@@ -33,7 +33,7 @@ enum p66_bias_status dsky_two_integer(apollo_overlay_state *s,p66_bias_io *io,en
   if(w[0140]==2u)address=(agc_word)(w[0150u+w[0117]]&03777u);
   else if(w[0140]==1u&&w[0145]<=01777u)address=w[0145]<01400u?w[0145]:(agc_word)(w[3]+(w[0145]&0377u));
   else return P66_BIAS_OUT_OF_SCOPE;
-  if(address<0100u||address>03776u||(address&0377u)==0377u||w[address+1u]>99u)return P66_BIAS_OUT_OF_SCOPE;
+  if(address<010u||address>03776u||(address&0377u)==0377u||w[address+1u]>99u)return P66_BIAS_OUT_OF_SCOPE;
   /* Source saves READLO caller in TEM4 before reading; low TEM4 is then
    * a return address, outside this positive two-digit input domain. */
   if(address+1u==0144u)return P66_BIAS_OUT_OF_SCOPE;
