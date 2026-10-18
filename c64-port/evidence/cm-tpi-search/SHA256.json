@@ -4,8 +4,8 @@
   "release": "evidence-cm-tpi-search",
   "files": {
     "cm-tpi-search-c64-cover.json": {
-      "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22",
-      "bytes": 4817,
+      "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e",
+      "bytes": 4841,
       "store": "tree"
     },
     "cm-tpi-search-differential.log": {
@@ -14,13 +14,13 @@
       "store": "release"
     },
     "cm-tpi-search-host.log": {
-      "sha256": "07701059d4b8f410b39d705f2e7ba70a0600832bb5a7034357571d159b61799e",
-      "bytes": 884,
+      "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d",
+      "bytes": 984,
       "store": "release"
     },
     "cm-tpi-search-proof.json": {
-      "sha256": "25c53efb28a034d83f10b3a23bb5932d5614985416b4aa49283a6072d38514d5",
-      "bytes": 14498,
+      "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6",
+      "bytes": 18172,
       "store": "tree"
     },
     "cm-tpi-search-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "cm-tpi-search-vice.log": {
-      "sha256": "ecf27bcfc4111e633256e4ab2513604b6309df5e3dc6e2be2302557d9ddb6a7f",
-      "bytes": 13904,
+      "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
+      "bytes": 13189,
       "store": "release"
     }
   }

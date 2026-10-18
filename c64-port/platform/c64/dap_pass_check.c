@@ -22,7 +22,7 @@
  * Records go to the REU scratch during the run (the class-3 module holds
  * $C000-$CBFF) and to $C040 at the end, 10 bytes each (DP_MAX at most).
  * Mailbox (tools/vice_run.py layout): $c001-2 failures, $c003-4 records,
- * $c005 the first failing step; $c010 the summary (dp_summary); $a5 at
+ * $c005 the first failing step; $c006 the DP_WATCH words; $c010 the summary (dp_summary); $a5 at
  * $c000, written last. */
 #include <stdint.h>
 #include "resident_flight.h"
@@ -70,7 +70,9 @@ extern volatile uint16_t ov2_irq_count;
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 
 /* CIA2 timer A counts cycles from $FFFF, timer B its underflows; read
- * without stopping them (B again if A wrapped between the reads). */
+ * without stopping them, again if a high byte changed under the reads (A's
+ * low byte wrapping: 256 cycles; A wrapping: B; B's low byte wrapping between
+ * its two bytes: a 2^24-cycle tear, one in a long run). */
 #define CIA2 ((volatile uint8_t *)0xdd00)
 static void BOOT timer_start(void){
  CIA2[0x0e]=0;CIA2[0x0f]=0;
@@ -78,12 +80,50 @@ static void BOOT timer_start(void){
  CIA2[0x0f]=0x51;
  CIA2[0x0e]=0x11;}
 static uint32_t now(void){uint8_t b0,b1,a0,a1;
- do{b1=CIA2[0x07];b0=CIA2[0x06];a1=CIA2[0x05];a0=CIA2[0x04];}while(b0!=CIA2[0x06]);
+    do {
+        b1 = CIA2[0x07];
+        b0 = CIA2[0x06];
+        a1 = CIA2[0x05];
+        a0 = CIA2[0x04];
+    } while (a1 != CIA2[0x05] || b0 != CIA2[0x06] || b1 != CIA2[0x07]);
  return ~(((uint32_t)b1<<24)|((uint32_t)b0<<16)|((uint16_t)a1<<8)|a0);}
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
 #endif
 static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
+#ifdef DP_KEYS
+/* The crew's DSKY keys in the window (DP_KEYS, written by
+ * tools/flight_scenario_vice.py --keys from the scenario's key string): key
+ * k is pressed at the first step at or after dp_key_cs[k] centiseconds into
+ * the window, as tools/flight_host_run.c presses it: channel 15 and a
+ * KEYRUPT1 request, or for a mark key (bit 0400) channel 16 and KEYRUPT2.
+ * The key stays in its channel until the next one, as on the host. */
+#include "resident_rupt.h"
+#include DP_KEYS
+static uint8_t key_next;
+static void press_due(uint16_t elapsed)
+{
+    uint16_t k;
+    if (key_next >= DP_NKEYS || elapsed < dp_key_cs[key_next]) return;
+    k = dp_key_code[key_next++];
+    __asm__ volatile("sei");
+    if (k & 0400u) {
+        rk_flight.channel16 = (agc_word)(k & 0377u);
+        rk_pending |= RK_RUPT_BIT(RK_RUPT_KEY2);
+    } else {
+        rk_hardware.channel15 = (agc_word)k;
+        rk_pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+    }
+#if !RK_LM
+    /* On the CM, rk_device (cm_native_io) holds the keys too: each store
+  * module on a CM record writes its main_keys and navigation_keys back to
+  * channels 15 and 16 (platform/c64/flight_table_module.c). */
+    rk_device.main_keys = rk_hardware.channel15;
+    rk_device.navigation_keys = rk_flight.channel16;
+#endif
+    __asm__ volatile("cli");
+}
+#endif
 
 static void BOOT load_snapshot(void){
  memcpy(IMAGE->words,snap_words,sizeof snap_words);
@@ -123,6 +163,9 @@ int main(void){
   uint16_t z0=IMAGE->words[5],fb0=IMAGE->words[4],sb0=rk_device.superbank;
 #endif
   rk_rupt_last=0;
+#ifdef DP_KEYS
+  press_due((uint16_t)(agc_cs() - sum.start_cs) & 037777u);
+#endif
 #ifdef RK_STEP_PROFILE
   prof_last=now();
 #endif
@@ -163,6 +206,18 @@ int main(void){
  *SUMMARY=sum;
 #ifdef RK_STEP_PROFILE
  memcpy(PROFILE, prof, DP_SEGMENTS * sizeof(dp_segment));
+#endif
+#ifdef DP_WATCH
+ /* Up to five erasable words at the end of the window (DP_WATCH: their
+  * octal addresses, comma separated), at $c006 for the dump. */
+ {
+     static const uint16_t w[] = {DP_WATCH};
+     uint8_t i;
+     for (i = 0; i < sizeof w / sizeof w[0] && i < 5u; ++i) {
+         mail[6u + 2u * i] = (uint8_t)IMAGE->words[w[i]];
+         mail[7u + 2u * i] = (uint8_t)(IMAGE->words[w[i]] >> 8);
+     }
+ }
 #endif
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);

@@ -28,4 +28,6 @@ Hashes: `evidence/cm-r31/SHA256.json`. Bulk files are assets of the `evidence-cm
 - **Source map.** `cm-r31-source-map.json` lists all 218 words with the routine that compiles each; none is untranslated.
 - **Independent assembly comparison.** `make cm-r31-differential`: 512 states per routine (22,528 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. The stops reached per routine are in `cm-r31-proof.json`. Every 32nd case is frozen in `tests/cm_r31_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-r31 sanitize-cm-r31` runs the 704 frozen cases (`cm-r31-host.log`).
-- **C64 execution results.** `make vice-cm-r31` runs seven diagnostics, one per group of routines, with 88 cases (`cm-r31-vice.log`).
+- **C64 execution results.** `make vice-cm-r31` runs eight diagnostics, one per group of routines, with 117 cases (`cm-r31-vice.log`).
+
+The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.

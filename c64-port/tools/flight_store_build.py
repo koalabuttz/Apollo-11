@@ -16,8 +16,8 @@ Steps, per mission:
    interrupt bodies its wrappers run) and the certified Executive tables the
    thin kernel replaces are not packed. A key two packed tables both hold is
    a collision: the resolver sends it to the table of the file
-   docs/port-coverage.json lists first for that AGC file (else the first by
-   name), and the report lists every collision for its lanes.
+   docs/port-coverage.json lists first for that AGC file (a whole-file
+   *_file table before an older one, else the first by name), and the report lists every collision for its lanes.
 4. Modules. One module per source file that defines packed tables: the
    generic wrapper platform/c64/flight_table_module.c around that file's
    tables, linked with the file's link closure (every src/*.c that defines
@@ -360,6 +360,17 @@ def source_owners():
             for i, nf in enumerate(c.get('native_files', [])):
                 owners[Path(nf).stem].append((f['path'], i))
     return owners
+
+
+def rank(t, packed, owners):
+    """Resolution preference of a packed table: the file docs/port-coverage.json
+    lists first for its AGC file, then by name, except that a whole-file
+    table (stem *_file, the file's later certificate) goes just before its
+    older twin of the same name (LM P70-P71: lm_p70_p71 cannot write
+    channel 14, which THROTUP does)."""
+    twin = t.replace('_file_', '_', 1)
+    name = (twin, 0) if packed[t].endswith('_file') and twin in packed else (t, 1)
+    return (min((i for _, i in owners.get(packed[t], [])), default=99), name)
 
 
 def placements():
@@ -1091,7 +1102,7 @@ def main():
         parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
                                                            if o == stem and not interpretive_table(t)))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
-        for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
+        for t in sorted(packed, key=lambda t: rank(t, packed, owners)):
             if hot_full(t):
                 continue
             kind = 'i' if interpretive_table(t) else 'b'
@@ -1101,7 +1112,7 @@ def main():
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
         order = list(dict.fromkeys(RESIDENT[m] + sorted(
-            (t for t in packed if not hot_full(t)), key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
+            (t for t in packed if not hot_full(t)), key=lambda t: rank(t, packed, owners))))
         check_site_includers()
         also = collections.defaultdict(list)
         for host, ts in CO_LOCATE[m].items():
