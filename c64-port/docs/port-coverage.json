@@ -3302,7 +3302,7 @@
       "sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
       "bytes": 71348,
       "lines": 3529,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -3318,7 +3318,7 @@
           "verification": "docs/CM-P20-P25.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
@@ -3332,7 +3332,6 @@
           "RTB LOADTIME, TPMODE and DPMODE (native, src/rtb_angles.c, src/rtb_modes.c)",
           "The interpreter exits POODOO1 and ALARM1"
         ],
-        "awaiting": "certificate reviewer",
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-source-map.json",
@@ -3352,6 +3351,10 @@
             "vice_targets": {
               "vice-cm-p20-p25": 1462
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/rev2-cm-p20-p25-617.md",
+            "sha256": "65f8e6d74ede392c36267eb4e5beb6aabbbe0638d5b2ec1d4ed1becd9966366c"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p20-p25/cm-p20-p25-c64-cover.json",
@@ -3708,8 +3711,8 @@
             "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g541.md",
-            "sha256": "d33f705402b4d114577c5c2ce994bb34e2e213898e42e7cd3ca93019ed4c1894"
+            "path": "docs/audits/rev2-cm-p40-p47-616.md",
+            "sha256": "9e2cc8ff58dd50ee90d0cf287daf522035c8e077d5030ad6b4c6d3c26704b287"
           }
         }
       }
