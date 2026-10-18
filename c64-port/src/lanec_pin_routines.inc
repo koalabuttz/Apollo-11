@@ -93,226 +93,230 @@ static enum exec_status try31_cm(const agc_native_program *p, apollo_overlay_sta
 static const dispatch try32[3] = { lanec_pin_head_proceed_run, lanec_pw_response_recall_run, 0 };
 static enum exec_status try32_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try32); }
 static enum exec_status try32_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try32); }
-static const dispatch try33[3] = { lanec_pin_head_request_run, lanec_pw_request_control_run, 0 };
+static const dispatch try33[2] = { lanec_pin_head_release_run, 0 };
 static enum exec_status try33_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try33); }
 static enum exec_status try33_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try33); }
-static const dispatch try34[2] = { lanec_pin_head_twoint_run, 0 };
+static const dispatch try34[3] = { lanec_pin_head_request_run, lanec_pw_request_control_run, 0 };
 static enum exec_status try34_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try34); }
 static enum exec_status try34_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try34); }
-static const dispatch try35[2] = { lanec_pw_hours_output_run, 0 };
+static const dispatch try35[2] = { lanec_pin_head_twoint_run, 0 };
 static enum exec_status try35_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try35); }
 static enum exec_status try35_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try35); }
-static const dispatch try36[2] = { lanec_pw_input_angle_run, 0 };
+static const dispatch try36[2] = { lanec_pw_hours_output_run, 0 };
 static enum exec_status try36_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try36); }
 static enum exec_status try36_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try36); }
-static const dispatch try37[2] = { lanec_pw_input_arithmetic_run, 0 };
+static const dispatch try37[2] = { lanec_pw_input_angle_run, 0 };
 static enum exec_status try37_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try37); }
 static enum exec_status try37_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try37); }
-static const dispatch try38[2] = { lanec_pw_input_factor_run, 0 };
+static const dispatch try38[2] = { lanec_pw_input_arithmetic_run, 0 };
 static enum exec_status try38_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try38); }
 static enum exec_status try38_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try38); }
-static const dispatch try39[2] = { lanec_pw_input_mode_run, 0 };
+static const dispatch try39[2] = { lanec_pw_input_factor_run, 0 };
 static enum exec_status try39_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try39); }
 static enum exec_status try39_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try39); }
-static const dispatch try40[2] = { lanec_pw_input_scale_run, 0 };
+static const dispatch try40[2] = { lanec_pw_input_mode_run, 0 };
 static enum exec_status try40_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try40); }
 static enum exec_status try40_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try40); }
-static const dispatch try41[2] = { lanec_pw_input_select_run, 0 };
+static const dispatch try41[2] = { lanec_pw_input_scale_run, 0 };
 static enum exec_status try41_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try41); }
 static enum exec_status try41_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try41); }
-static const dispatch try42[2] = { lanec_pw_input_store_run, 0 };
+static const dispatch try42[2] = { lanec_pw_input_select_run, 0 };
 static enum exec_status try42_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try42); }
 static enum exec_status try42_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try42); }
-static const dispatch try43[2] = { lanec_pw_input_time_run, 0 };
+static const dispatch try43[2] = { lanec_pw_input_store_run, 0 };
 static enum exec_status try43_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try43); }
 static enum exec_status try43_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try43); }
-static const dispatch try44[2] = { lanec_pw_jam_control_run, 0 };
+static const dispatch try44[2] = { lanec_pw_input_time_run, 0 };
 static enum exec_status try44_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try44); }
 static enum exec_status try44_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try44); }
-static const dispatch try47[2] = { lanec_pw_lamp_release_run, 0 };
-static enum exec_status try47_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try47); }
-static enum exec_status try47_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try47); }
-static const dispatch try48[2] = { lanec_pw_lamp_test_run, 0 };
+static const dispatch try45[2] = { lanec_pw_jam_control_run, 0 };
+static enum exec_status try45_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try45); }
+static enum exec_status try45_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try45); }
+static const dispatch try48[2] = { lanec_pw_lamp_release_run, 0 };
 static enum exec_status try48_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try48); }
 static enum exec_status try48_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try48); }
-static const dispatch try49[3] = { lanec_pw_lm_pinball_busy_run, lanec_pw_nv_busy_run, 0 };
+static const dispatch try49[2] = { lanec_pw_lamp_test_run, 0 };
 static enum exec_status try49_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try49); }
-static const dispatch try50[2] = { lanec_pw_load_store_run, 0 };
+static enum exec_status try49_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try49); }
+static const dispatch try50[3] = { lanec_pw_lm_pinball_busy_run, lanec_pw_nv_busy_run, 0 };
 static enum exec_status try50_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try50); }
-static enum exec_status try50_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try50); }
-static const dispatch try51[2] = { lanec_pw_machine_cadr_run, 0 };
+static const dispatch try51[2] = { lanec_pw_load_store_run, 0 };
 static enum exec_status try51_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try51); }
 static enum exec_status try51_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try51); }
-static const dispatch try52[2] = { lanec_pw_major_request_run, 0 };
+static const dispatch try52[2] = { lanec_pw_machine_cadr_run, 0 };
 static enum exec_status try52_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try52); }
 static enum exec_status try52_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try52); }
-static const dispatch try53[2] = { lanec_pw_mixed_noun_run, 0 };
+static const dispatch try53[2] = { lanec_pw_major_request_run, 0 };
 static enum exec_status try53_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try53); }
 static enum exec_status try53_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try53); }
-static const dispatch try54[2] = { lanec_pw_mode_admit_run, 0 };
+static const dispatch try54[2] = { lanec_pw_mixed_noun_run, 0 };
 static enum exec_status try54_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try54); }
 static enum exec_status try54_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try54); }
-static const dispatch try55[2] = { lanec_pw_mode_job_run, 0 };
+static const dispatch try55[2] = { lanec_pw_mode_admit_run, 0 };
 static enum exec_status try55_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try55); }
 static enum exec_status try55_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try55); }
-static const dispatch try56[2] = { lanec_pw_monitor_run, 0 };
+static const dispatch try56[2] = { lanec_pw_mode_job_run, 0 };
 static enum exec_status try56_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try56); }
 static enum exec_status try56_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try56); }
-static const dispatch try57[2] = { lanec_pw_monitor_paste_run, 0 };
+static const dispatch try57[2] = { lanec_pw_monitor_run, 0 };
 static enum exec_status try57_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try57); }
 static enum exec_status try57_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try57); }
-static const dispatch try58[2] = { lanec_pw_noun_check_run, 0 };
+static const dispatch try58[2] = { lanec_pw_monitor_paste_run, 0 };
 static enum exec_status try58_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try58); }
 static enum exec_status try58_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try58); }
-static const dispatch try59[2] = { lanec_pw_nv_admission_run, 0 };
+static const dispatch try59[2] = { lanec_pw_noun_check_run, 0 };
 static enum exec_status try59_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try59); }
 static enum exec_status try59_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try59); }
-static const dispatch try60[2] = { lanec_pw_nv_blank_run, 0 };
+static const dispatch try60[2] = { lanec_pw_nv_admission_run, 0 };
 static enum exec_status try60_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try60); }
 static enum exec_status try60_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try60); }
-static const dispatch try61[2] = { lanec_pw_nv_busy_run, 0 };
+static const dispatch try61[2] = { lanec_pw_nv_blank_run, 0 };
 static enum exec_status try61_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try61); }
 static enum exec_status try61_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try61); }
-static const dispatch try62[2] = { lanec_pw_nv_continuation_run, 0 };
+static const dispatch try62[2] = { lanec_pw_nv_busy_run, 0 };
 static enum exec_status try62_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try62); }
 static enum exec_status try62_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try62); }
-static const dispatch try63[2] = { lanec_pw_nv_return_run, 0 };
+static const dispatch try63[2] = { lanec_pw_nv_continuation_run, 0 };
 static enum exec_status try63_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try63); }
 static enum exec_status try63_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try63); }
-static const dispatch try64[2] = { lanec_pw_nv_update_general_run, 0 };
+static const dispatch try64[2] = { lanec_pw_nv_return_run, 0 };
 static enum exec_status try64_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try64); }
 static enum exec_status try64_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try64); }
-static const dispatch try65[3] = { lanec_pw_octal_consumer_run, lanec_pw_octal_verb_run, 0 };
+static const dispatch try65[2] = { lanec_pw_nv_update_general_run, 0 };
 static enum exec_status try65_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try65); }
 static enum exec_status try65_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try65); }
-static const dispatch try66[2] = { lanec_pw_octal_display_run, 0 };
+static const dispatch try66[3] = { lanec_pw_octal_consumer_run, lanec_pw_octal_verb_run, 0 };
 static enum exec_status try66_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try66); }
 static enum exec_status try66_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try66); }
-static const dispatch try67[2] = { lanec_pw_octal_verb_run, 0 };
+static const dispatch try67[2] = { lanec_pw_octal_display_run, 0 };
 static enum exec_status try67_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try67); }
 static enum exec_status try67_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try67); }
-static const dispatch try68[2] = { lanec_pw_operator_release_run, 0 };
+static const dispatch try68[2] = { lanec_pw_octal_verb_run, 0 };
 static enum exec_status try68_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try68); }
 static enum exec_status try68_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try68); }
-static const dispatch try69[2] = { lanec_pw_operator_response_run, 0 };
+static const dispatch try69[2] = { lanec_pw_operator_release_run, 0 };
 static enum exec_status try69_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try69); }
 static enum exec_status try69_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try69); }
-static const dispatch try70[2] = { lanec_pw_pinball_run, 0 };
+static const dispatch try70[2] = { lanec_pw_operator_response_run, 0 };
 static enum exec_status try70_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try70); }
-static const dispatch try71[2] = { lanec_pw_read_pair_run, 0 };
+static enum exec_status try70_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try70); }
+static const dispatch try71[2] = { lanec_pw_pinball_run, 0 };
 static enum exec_status try71_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try71); }
-static enum exec_status try71_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try71); }
-static const dispatch try72[2] = { lanec_pw_request_control_run, 0 };
+static const dispatch try72[2] = { lanec_pw_read_pair_run, 0 };
 static enum exec_status try72_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try72); }
 static enum exec_status try72_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try72); }
-static const dispatch try73[2] = { lanec_pw_response_recall_run, 0 };
+static const dispatch try73[2] = { lanec_pw_request_control_run, 0 };
 static enum exec_status try73_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try73); }
 static enum exec_status try73_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try73); }
-static const dispatch try74[2] = { lanec_pw_scalar_output_run, 0 };
+static const dispatch try74[2] = { lanec_pw_response_recall_run, 0 };
 static enum exec_status try74_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try74); }
 static enum exec_status try74_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try74); }
-static const dispatch try75[3] = { lanec_pw_scale_run, lanec_pin_head_dpout_run, 0 };
+static const dispatch try75[2] = { lanec_pw_scalar_output_run, 0 };
 static enum exec_status try75_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try75); }
-static const dispatch try76[2] = { lanec_pw_sign_output_run, 0 };
+static enum exec_status try75_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try75); }
+static const dispatch try76[3] = { lanec_pw_scale_run, lanec_pin_head_dpout_run, 0 };
 static enum exec_status try76_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try76); }
-static enum exec_status try76_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try76); }
-static const dispatch try77[2] = { lanec_pw_source_alarm_run, 0 };
+static const dispatch try77[2] = { lanec_pw_sign_output_run, 0 };
 static enum exec_status try77_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try77); }
 static enum exec_status try77_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try77); }
-static const dispatch try78[2] = { lanec_pw_test_noun_run, 0 };
+static const dispatch try78[2] = { lanec_pw_source_alarm_run, 0 };
 static enum exec_status try78_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try78); }
 static enum exec_status try78_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try78); }
-static const dispatch try79[2] = { lanec_pw_two_digit_run, 0 };
+static const dispatch try79[2] = { lanec_pw_test_noun_run, 0 };
 static enum exec_status try79_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try79); }
-static const dispatch try80[2] = { lanec_pw_two_integer_run, 0 };
+static enum exec_status try79_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try79); }
+static const dispatch try80[2] = { lanec_pw_two_digit_run, 0 };
 static enum exec_status try80_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try80); }
-static enum exec_status try80_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try80); }
-static const dispatch try81[2] = { lanec_pw_verb_dispatch_run, 0 };
+static const dispatch try81[2] = { lanec_pw_two_integer_run, 0 };
 static enum exec_status try81_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try81); }
 static enum exec_status try81_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try81); }
-#define LANEC_PIN_LM_ROUTINES 283u
+static const dispatch try82[2] = { lanec_pw_verb_dispatch_run, 0 };
+static enum exec_status try82_lm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return lm(p, s, v, try82); }
+static enum exec_status try82_cm(const agc_native_program *p, apollo_overlay_state *s, void *v) { return cm(p, s, v, try82); }
+#define LANEC_PIN_LM_ROUTINES 284u
 static const agc_routine_entry lm_entries[LANEC_PIN_LM_ROUTINES] = {
-    { 2132u, try57_lm },   /* FF,4124 */
+    { 2132u, try58_lm },   /* FF,4124 */
     { 2142u, try0_lm },   /* FF,4136 */
-    { 2146u, try57_lm },   /* FF,4142 */
-    { 2147u, try57_lm },   /* FF,4143 */
+    { 2146u, try58_lm },   /* FF,4142 */
+    { 2147u, try58_lm },   /* FF,4143 */
     { 2149u, try3_lm },   /* FF,4145 */
     { 2154u, try2_lm },   /* FF,4152 */
     { 2156u, try29_lm },   /* FF,4154 */
     { 2157u, try29_lm },   /* FF,4155 */
-    { 2164u, try62_lm },   /* FF,4164 */
-    { 2168u, try62_lm },   /* FF,4170 */
-    { 2178u, try63_lm },   /* FF,4202 */
-    { 2180u, try62_lm },   /* FF,4204 */
-    { 2183u, try61_lm },   /* FF,4207 */
-    { 2201u, try44_lm },   /* FF,4231 */
-    { 2211u, try44_lm },   /* FF,4243 */
+    { 2164u, try63_lm },   /* FF,4164 */
+    { 2168u, try63_lm },   /* FF,4170 */
+    { 2178u, try64_lm },   /* FF,4202 */
+    { 2180u, try63_lm },   /* FF,4204 */
+    { 2183u, try62_lm },   /* FF,4207 */
+    { 2201u, try45_lm },   /* FF,4231 */
+    { 2211u, try45_lm },   /* FF,4243 */
     { 2221u, try5_lm },   /* FF,4255 */
-    { 2258u, try41_lm },   /* FF,4322 */
-    { 2265u, try41_lm },   /* FF,4331 */
-    { 2272u, try41_lm },   /* FF,4340 */
-    { 2292u, try77_lm },   /* FF,4364 */
-    { 2296u, try77_lm },   /* FF,4370 */
-    { 2300u, try77_lm },   /* FF,4374 */
+    { 2258u, try42_lm },   /* FF,4322 */
+    { 2265u, try42_lm },   /* FF,4331 */
+    { 2272u, try42_lm },   /* FF,4340 */
+    { 2292u, try78_lm },   /* FF,4364 */
+    { 2296u, try78_lm },   /* FF,4370 */
+    { 2300u, try78_lm },   /* FF,4374 */
     { 2304u, try22_lm },   /* FF,4400 */
-    { 2308u, try37_lm },   /* FF,4404 */
+    { 2308u, try38_lm },   /* FF,4404 */
     { 2327u, try22_lm },   /* FF,4427 */
     { 2331u, try22_lm },   /* FF,4433 */
-    { 2335u, try61_lm },   /* FF,4437 */
-    { 2338u, try49_lm },   /* FF,4442 */
-    { 2341u, try61_lm },   /* FF,4445 */
+    { 2335u, try62_lm },   /* FF,4437 */
+    { 2338u, try50_lm },   /* FF,4442 */
+    { 2341u, try62_lm },   /* FF,4445 */
     { 2351u, try15_lm },   /* FF,4457 */
-    { 4510u, try54_lm },   /* 04,2636 */
-    { 4519u, try61_lm },   /* 04,2647 */
-    { 33035u, try76_lm },   /* 40,2413 */
-    { 33051u, try76_lm },   /* 40,2433 */
+    { 2370u, try33_lm },   /* FF,4502 */
+    { 4510u, try55_lm },   /* 04,2636 */
+    { 4519u, try62_lm },   /* 04,2647 */
+    { 33035u, try77_lm },   /* 40,2413 */
+    { 33051u, try77_lm },   /* 40,2433 */
     { 33104u, try0_lm },   /* 40,2520 */
     { 33109u, try19_lm },   /* 40,2525 */
     { 33117u, try19_lm },   /* 40,2535 */
     { 33118u, try19_lm },   /* 40,2536 */
     { 33120u, try19_lm },   /* 40,2540 */
-    { 33153u, try70_lm },   /* 40,2601 */
-    { 33165u, try74_lm },   /* 40,2615 */
-    { 33171u, try74_lm },   /* 40,2623 */
-    { 33173u, try36_lm },   /* 40,2625 */
-    { 33180u, try36_lm },   /* 40,2634 */
-    { 33181u, try74_lm },   /* 40,2635 */
-    { 33215u, try74_lm },   /* 40,2677 */
-    { 33220u, try74_lm },   /* 40,2704 */
-    { 33224u, try75_lm },   /* 40,2710 */
-    { 33229u, try75_lm },   /* 40,2715 */
-    { 33231u, try75_lm },   /* 40,2717 */
-    { 33242u, try80_lm },   /* 40,2732 */
-    { 33243u, try34_lm },   /* 40,2733 */
-    { 33244u, try34_lm },   /* 40,2734 */
-    { 33246u, try34_lm },   /* 40,2736 */
-    { 33253u, try34_lm },   /* 40,2745 */
-    { 33255u, try71_lm },   /* 40,2747 */
+    { 33153u, try71_lm },   /* 40,2601 */
+    { 33165u, try75_lm },   /* 40,2615 */
+    { 33171u, try75_lm },   /* 40,2623 */
+    { 33173u, try37_lm },   /* 40,2625 */
+    { 33180u, try37_lm },   /* 40,2634 */
+    { 33181u, try75_lm },   /* 40,2635 */
+    { 33215u, try75_lm },   /* 40,2677 */
+    { 33220u, try75_lm },   /* 40,2704 */
+    { 33224u, try76_lm },   /* 40,2710 */
+    { 33229u, try76_lm },   /* 40,2715 */
+    { 33231u, try76_lm },   /* 40,2717 */
+    { 33242u, try81_lm },   /* 40,2732 */
+    { 33243u, try35_lm },   /* 40,2733 */
+    { 33244u, try35_lm },   /* 40,2734 */
+    { 33246u, try35_lm },   /* 40,2736 */
+    { 33253u, try35_lm },   /* 40,2745 */
+    { 33255u, try72_lm },   /* 40,2747 */
     { 33273u, try22_lm },   /* 40,2771 */
     { 33286u, try22_lm },   /* 40,3006 */
     { 33287u, try22_lm },   /* 40,3007 */
-    { 33288u, try36_lm },   /* 40,3010 */
-    { 33297u, try36_lm },   /* 40,3021 */
-    { 33305u, try36_lm },   /* 40,3031 */
-    { 33315u, try36_lm },   /* 40,3043 */
+    { 33288u, try37_lm },   /* 40,3010 */
+    { 33297u, try37_lm },   /* 40,3021 */
+    { 33305u, try37_lm },   /* 40,3031 */
+    { 33315u, try37_lm },   /* 40,3043 */
     { 33330u, try0_lm },   /* 40,3062 */
     { 33333u, try0_lm },   /* 40,3065 */
-    { 33334u, try36_lm },   /* 40,3066 */
-    { 33336u, try36_lm },   /* 40,3070 */
-    { 33342u, try40_lm },   /* 40,3076 */
-    { 33350u, try40_lm },   /* 40,3106 */
-    { 33353u, try40_lm },   /* 40,3111 */
-    { 33356u, try40_lm },   /* 40,3114 */
-    { 33358u, try40_lm },   /* 40,3116 */
-    { 33365u, try40_lm },   /* 40,3125 */
-    { 33377u, try40_lm },   /* 40,3141 */
-    { 33382u, try40_lm },   /* 40,3146 */
-    { 33387u, try37_lm },   /* 40,3153 */
-    { 33390u, try37_lm },   /* 40,3156 */
-    { 33395u, try37_lm },   /* 40,3163 */
-    { 33397u, try37_lm },   /* 40,3165 */
-    { 33403u, try37_lm },   /* 40,3173 */
-    { 33404u, try37_lm },   /* 40,3174 */
+    { 33334u, try37_lm },   /* 40,3066 */
+    { 33336u, try37_lm },   /* 40,3070 */
+    { 33342u, try41_lm },   /* 40,3076 */
+    { 33350u, try41_lm },   /* 40,3106 */
+    { 33353u, try41_lm },   /* 40,3111 */
+    { 33356u, try41_lm },   /* 40,3114 */
+    { 33358u, try41_lm },   /* 40,3116 */
+    { 33365u, try41_lm },   /* 40,3125 */
+    { 33377u, try41_lm },   /* 40,3141 */
+    { 33382u, try41_lm },   /* 40,3146 */
+    { 33387u, try38_lm },   /* 40,3153 */
+    { 33390u, try38_lm },   /* 40,3156 */
+    { 33395u, try38_lm },   /* 40,3163 */
+    { 33397u, try38_lm },   /* 40,3165 */
+    { 33403u, try38_lm },   /* 40,3173 */
+    { 33404u, try38_lm },   /* 40,3174 */
     { 33430u, try11_lm },   /* 40,3226 */
     { 33434u, try22_lm },   /* 40,3232 */
     { 33435u, try22_lm },   /* 40,3233 */
@@ -324,72 +328,72 @@ static const agc_routine_entry lm_entries[LANEC_PIN_LM_ROUTINES] = {
     { 33475u, try22_lm },   /* 40,3303 */
     { 33476u, try22_lm },   /* 40,3304 */
     { 33477u, try22_lm },   /* 40,3305 */
-    { 33478u, try79_lm },   /* 40,3306 */
+    { 33478u, try80_lm },   /* 40,3306 */
     { 33487u, try22_lm },   /* 40,3317 */
     { 33488u, try22_lm },   /* 40,3320 */
-    { 33490u, try70_lm },   /* 40,3322 */
-    { 33540u, try70_lm },   /* 40,3404 */
+    { 33490u, try71_lm },   /* 40,3322 */
+    { 33540u, try71_lm },   /* 40,3404 */
     { 33546u, try22_lm },   /* 40,3412 */
     { 33547u, try22_lm },   /* 40,3413 */
-    { 33550u, try77_lm },   /* 40,3416 */
-    { 33552u, try77_lm },   /* 40,3420 */
+    { 33550u, try78_lm },   /* 40,3416 */
+    { 33552u, try78_lm },   /* 40,3420 */
     { 33570u, try31_lm },   /* 40,3442 */
-    { 33571u, try69_lm },   /* 40,3443 */
+    { 33571u, try70_lm },   /* 40,3443 */
     { 33573u, try30_lm },   /* 40,3445 */
     { 33574u, try30_lm },   /* 40,3446 */
     { 33575u, try30_lm },   /* 40,3447 */
     { 33576u, try31_lm },   /* 40,3450 */
     { 33578u, try31_lm },   /* 40,3452 */
     { 33583u, try31_lm },   /* 40,3457 */
-    { 33593u, try47_lm },   /* 40,3471 */
-    { 33599u, try68_lm },   /* 40,3477 */
+    { 33593u, try48_lm },   /* 40,3471 */
+    { 33599u, try69_lm },   /* 40,3477 */
     { 33605u, try4_lm },   /* 40,3505 */
-    { 33628u, try55_lm },   /* 40,3534 */
+    { 33628u, try56_lm },   /* 40,3534 */
     { 33639u, try32_lm },   /* 40,3547 */
-    { 33642u, try73_lm },   /* 40,3552 */
-    { 33651u, try73_lm },   /* 40,3563 */
-    { 33661u, try73_lm },   /* 40,3575 */
-    { 33663u, try73_lm },   /* 40,3577 */
-    { 33665u, try73_lm },   /* 40,3601 */
+    { 33642u, try74_lm },   /* 40,3552 */
+    { 33651u, try74_lm },   /* 40,3563 */
+    { 33661u, try74_lm },   /* 40,3575 */
+    { 33663u, try74_lm },   /* 40,3577 */
+    { 33665u, try74_lm },   /* 40,3601 */
     { 33792u, try22_lm },   /* 41,2000 */
     { 33793u, try22_lm },   /* 41,2001 */
     { 33794u, try16_lm },   /* 41,2002 */
     { 33821u, try17_lm },   /* 41,2035 */
-    { 33830u, try78_lm },   /* 41,2046 */
+    { 33830u, try79_lm },   /* 41,2046 */
     { 33844u, try1_lm },   /* 41,2064 */
     { 33852u, try1_lm },   /* 41,2074 */
     { 33861u, try1_lm },   /* 41,2105 */
-    { 33870u, try51_lm },   /* 41,2116 */
-    { 33872u, try51_lm },   /* 41,2120 */
-    { 33883u, try81_lm },   /* 41,2133 */
+    { 33870u, try52_lm },   /* 41,2116 */
+    { 33872u, try52_lm },   /* 41,2120 */
+    { 33883u, try82_lm },   /* 41,2133 */
     { 33891u, try18_lm },   /* 41,2143 */
-    { 33937u, try53_lm },   /* 41,2221 */
+    { 33937u, try54_lm },   /* 41,2221 */
     { 33987u, try1_lm },   /* 41,2303 */
     { 33989u, try1_lm },   /* 41,2305 */
     { 33991u, try1_lm },   /* 41,2307 */
     { 33992u, try1_lm },   /* 41,2310 */
     { 33997u, try0_lm },   /* 41,2315 */
-    { 33999u, try64_lm },   /* 41,2317 */
-    { 34000u, try64_lm },   /* 41,2320 */
-    { 34015u, try64_lm },   /* 41,2337 */
-    { 34016u, try64_lm },   /* 41,2340 */
+    { 33999u, try65_lm },   /* 41,2317 */
+    { 34000u, try65_lm },   /* 41,2320 */
+    { 34015u, try65_lm },   /* 41,2337 */
+    { 34016u, try65_lm },   /* 41,2340 */
     { 34023u, try22_lm },   /* 41,2347 */
     { 34024u, try22_lm },   /* 41,2350 */
-    { 34025u, try77_lm },   /* 41,2351 */
-    { 34027u, try65_lm },   /* 41,2353 */
-    { 34032u, try65_lm },   /* 41,2360 */
-    { 34037u, try65_lm },   /* 41,2365 */
-    { 34043u, try65_lm },   /* 41,2373 */
-    { 34048u, try65_lm },   /* 41,2400 */
-    { 34066u, try67_lm },   /* 41,2422 */
-    { 34068u, try58_lm },   /* 41,2424 */
-    { 34070u, try58_lm },   /* 41,2426 */
-    { 34079u, try58_lm },   /* 41,2437 */
-    { 34083u, try58_lm },   /* 41,2443 */
-    { 34090u, try58_lm },   /* 41,2452 */
-    { 34096u, try58_lm },   /* 41,2460 */
-    { 34116u, try67_lm },   /* 41,2504 */
-    { 34125u, try58_lm },   /* 41,2515 */
+    { 34025u, try78_lm },   /* 41,2351 */
+    { 34027u, try66_lm },   /* 41,2353 */
+    { 34032u, try66_lm },   /* 41,2360 */
+    { 34037u, try66_lm },   /* 41,2365 */
+    { 34043u, try66_lm },   /* 41,2373 */
+    { 34048u, try66_lm },   /* 41,2400 */
+    { 34066u, try68_lm },   /* 41,2422 */
+    { 34068u, try59_lm },   /* 41,2424 */
+    { 34070u, try59_lm },   /* 41,2426 */
+    { 34079u, try59_lm },   /* 41,2437 */
+    { 34083u, try59_lm },   /* 41,2443 */
+    { 34090u, try59_lm },   /* 41,2452 */
+    { 34096u, try59_lm },   /* 41,2460 */
+    { 34116u, try68_lm },   /* 41,2504 */
+    { 34125u, try59_lm },   /* 41,2515 */
     { 34131u, try12_lm },   /* 41,2523 */
     { 34143u, try14_lm },   /* 41,2537 */
     { 34166u, try13_lm },   /* 41,2566 */
@@ -402,105 +406,105 @@ static const agc_routine_entry lm_entries[LANEC_PIN_LM_ROUTINES] = {
     { 34198u, try27_lm },   /* 41,2626 */
     { 34199u, try27_lm },   /* 41,2627 */
     { 34201u, try27_lm },   /* 41,2631 */
-    { 34202u, try50_lm },   /* 41,2632 */
-    { 34209u, try50_lm },   /* 41,2641 */
-    { 34213u, try50_lm },   /* 41,2645 */
-    { 34217u, try50_lm },   /* 41,2651 */
-    { 34224u, try50_lm },   /* 41,2660 */
-    { 34236u, try50_lm },   /* 41,2674 */
-    { 34241u, try50_lm },   /* 41,2701 */
+    { 34202u, try51_lm },   /* 41,2632 */
+    { 34209u, try51_lm },   /* 41,2641 */
+    { 34213u, try51_lm },   /* 41,2645 */
+    { 34217u, try51_lm },   /* 41,2651 */
+    { 34224u, try51_lm },   /* 41,2660 */
+    { 34236u, try51_lm },   /* 41,2674 */
+    { 34241u, try51_lm },   /* 41,2701 */
     { 34243u, try27_lm },   /* 41,2703 */
     { 34245u, try27_lm },   /* 41,2705 */
     { 34246u, try27_lm },   /* 41,2706 */
     { 34248u, try27_lm },   /* 41,2710 */
     { 34249u, try27_lm },   /* 41,2711 */
     { 34251u, try27_lm },   /* 41,2713 */
-    { 34252u, try50_lm },   /* 41,2714 */
-    { 34259u, try50_lm },   /* 41,2723 */
-    { 34263u, try50_lm },   /* 41,2727 */
+    { 34252u, try51_lm },   /* 41,2714 */
+    { 34259u, try51_lm },   /* 41,2723 */
+    { 34263u, try51_lm },   /* 41,2727 */
     { 34266u, try27_lm },   /* 41,2732 */
-    { 34267u, try50_lm },   /* 41,2733 */
-    { 34272u, try50_lm },   /* 41,2740 */
+    { 34267u, try51_lm },   /* 41,2733 */
+    { 34272u, try51_lm },   /* 41,2740 */
     { 34275u, try27_lm },   /* 41,2743 */
     { 34277u, try27_lm },   /* 41,2745 */
-    { 34280u, try50_lm },   /* 41,2750 */
-    { 34285u, try50_lm },   /* 41,2755 */
+    { 34280u, try51_lm },   /* 41,2750 */
+    { 34285u, try51_lm },   /* 41,2755 */
     { 34288u, try27_lm },   /* 41,2760 */
     { 34290u, try27_lm },   /* 41,2762 */
-    { 34293u, try50_lm },   /* 41,2765 */
-    { 34298u, try50_lm },   /* 41,2772 */
+    { 34293u, try51_lm },   /* 41,2765 */
+    { 34298u, try51_lm },   /* 41,2772 */
     { 34301u, try27_lm },   /* 41,2775 */
     { 34306u, try27_lm },   /* 41,3002 */
-    { 34313u, try39_lm },   /* 41,3011 */
-    { 34325u, try41_lm },   /* 41,3025 */
-    { 34326u, try41_lm },   /* 41,3026 */
-    { 34332u, try41_lm },   /* 41,3034 */
-    { 34342u, try41_lm },   /* 41,3046 */
-    { 34343u, try41_lm },   /* 41,3047 */
-    { 34356u, try41_lm },   /* 41,3064 */
-    { 34361u, try41_lm },   /* 41,3071 */
-    { 34365u, try42_lm },   /* 41,3075 */
-    { 34392u, try42_lm },   /* 41,3130 */
-    { 34399u, try42_lm },   /* 41,3137 */
-    { 34413u, try42_lm },   /* 41,3155 */
+    { 34313u, try40_lm },   /* 41,3011 */
+    { 34325u, try42_lm },   /* 41,3025 */
+    { 34326u, try42_lm },   /* 41,3026 */
+    { 34332u, try42_lm },   /* 41,3034 */
+    { 34342u, try42_lm },   /* 41,3046 */
+    { 34343u, try42_lm },   /* 41,3047 */
+    { 34356u, try42_lm },   /* 41,3064 */
+    { 34361u, try42_lm },   /* 41,3071 */
+    { 34365u, try43_lm },   /* 41,3075 */
+    { 34392u, try43_lm },   /* 41,3130 */
+    { 34399u, try43_lm },   /* 41,3137 */
+    { 34413u, try43_lm },   /* 41,3155 */
     { 34417u, try22_lm },   /* 41,3161 */
-    { 34428u, try38_lm },   /* 41,3174 */
-    { 34438u, try38_lm },   /* 41,3206 */
-    { 34439u, try38_lm },   /* 41,3207 */
-    { 34456u, try56_lm },   /* 41,3230 */
-    { 34482u, try56_lm },   /* 41,3262 */
-    { 34483u, try56_lm },   /* 41,3263 */
-    { 34489u, try56_lm },   /* 41,3271 */
-    { 34493u, try56_lm },   /* 41,3275 */
-    { 34503u, try56_lm },   /* 41,3307 */
-    { 34507u, try56_lm },   /* 41,3313 */
-    { 34508u, try56_lm },   /* 41,3314 */
-    { 34513u, try56_lm },   /* 41,3321 */
-    { 34523u, try56_lm },   /* 41,3333 */
-    { 34537u, try56_lm },   /* 41,3351 */
+    { 34428u, try39_lm },   /* 41,3174 */
+    { 34438u, try39_lm },   /* 41,3206 */
+    { 34439u, try39_lm },   /* 41,3207 */
+    { 34456u, try57_lm },   /* 41,3230 */
+    { 34482u, try57_lm },   /* 41,3262 */
+    { 34483u, try57_lm },   /* 41,3263 */
+    { 34489u, try57_lm },   /* 41,3271 */
+    { 34493u, try57_lm },   /* 41,3275 */
+    { 34503u, try57_lm },   /* 41,3307 */
+    { 34507u, try57_lm },   /* 41,3313 */
+    { 34508u, try57_lm },   /* 41,3314 */
+    { 34513u, try57_lm },   /* 41,3321 */
+    { 34523u, try57_lm },   /* 41,3333 */
+    { 34537u, try57_lm },   /* 41,3351 */
     { 34539u, try20_lm },   /* 41,3353 */
     { 34545u, try20_lm },   /* 41,3361 */
-    { 34547u, try66_lm },   /* 41,3363 */
+    { 34547u, try67_lm },   /* 41,3363 */
     { 34569u, try22_lm },   /* 41,3411 */
-    { 34574u, try66_lm },   /* 41,3416 */
-    { 34584u, try52_lm },   /* 41,3430 */
-    { 34585u, try52_lm },   /* 41,3431 */
+    { 34574u, try67_lm },   /* 41,3416 */
+    { 34584u, try53_lm },   /* 41,3430 */
+    { 34585u, try53_lm },   /* 41,3431 */
     { 34597u, try0_lm },   /* 41,3445 */
-    { 34602u, try52_lm },   /* 41,3452 */
+    { 34602u, try53_lm },   /* 41,3452 */
     { 34610u, try0_lm },   /* 41,3462 */
-    { 34614u, try33_lm },   /* 41,3466 */
-    { 34619u, try72_lm },   /* 41,3473 */
-    { 34622u, try72_lm },   /* 41,3476 */
-    { 34623u, try72_lm },   /* 41,3477 */
-    { 34624u, try72_lm },   /* 41,3500 */
-    { 34632u, try72_lm },   /* 41,3510 */
-    { 34634u, try33_lm },   /* 41,3512 */
-    { 34637u, try72_lm },   /* 41,3515 */
-    { 34638u, try60_lm },   /* 41,3516 */
-    { 34660u, try59_lm },   /* 41,3544 */
-    { 34678u, try62_lm },   /* 41,3566 */
-    { 34680u, try62_lm },   /* 41,3570 */
-    { 34681u, try59_lm },   /* 41,3571 */
-    { 34685u, try62_lm },   /* 41,3575 */
-    { 34690u, try62_lm },   /* 41,3602 */
-    { 34692u, try62_lm },   /* 41,3604 */
-    { 34698u, try62_lm },   /* 41,3612 */
+    { 34614u, try34_lm },   /* 41,3466 */
+    { 34619u, try73_lm },   /* 41,3473 */
+    { 34622u, try73_lm },   /* 41,3476 */
+    { 34623u, try73_lm },   /* 41,3477 */
+    { 34624u, try73_lm },   /* 41,3500 */
+    { 34632u, try73_lm },   /* 41,3510 */
+    { 34634u, try34_lm },   /* 41,3512 */
+    { 34637u, try73_lm },   /* 41,3515 */
+    { 34638u, try61_lm },   /* 41,3516 */
+    { 34660u, try60_lm },   /* 41,3544 */
+    { 34678u, try63_lm },   /* 41,3566 */
+    { 34680u, try63_lm },   /* 41,3570 */
+    { 34681u, try60_lm },   /* 41,3571 */
+    { 34685u, try63_lm },   /* 41,3575 */
+    { 34690u, try63_lm },   /* 41,3602 */
+    { 34692u, try63_lm },   /* 41,3604 */
+    { 34698u, try63_lm },   /* 41,3612 */
     { 34699u, try26_lm },   /* 41,3613 */
     { 34713u, try26_lm },   /* 41,3631 */
     { 34731u, try22_lm },   /* 41,3653 */
     { 34738u, try26_lm },   /* 41,3662 */
     { 34742u, try22_lm },   /* 41,3666 */
     { 34743u, try26_lm },   /* 41,3667 */
-    { 34770u, try48_lm },   /* 41,3722 */
-    { 35480u, try35_lm },   /* 42,3230 */
+    { 34770u, try49_lm },   /* 41,3722 */
+    { 35480u, try36_lm },   /* 42,3230 */
     { 35482u, try0_lm },   /* 42,3232 */
-    { 35484u, try35_lm },   /* 42,3234 */
-    { 35488u, try35_lm },   /* 42,3240 */
-    { 35490u, try35_lm },   /* 42,3242 */
-    { 35499u, try35_lm },   /* 42,3253 */
-    { 35501u, try35_lm },   /* 42,3255 */
-    { 35508u, try35_lm },   /* 42,3264 */
-    { 35510u, try35_lm },   /* 42,3266 */
+    { 35484u, try36_lm },   /* 42,3234 */
+    { 35488u, try36_lm },   /* 42,3240 */
+    { 35490u, try36_lm },   /* 42,3242 */
+    { 35499u, try36_lm },   /* 42,3253 */
+    { 35501u, try36_lm },   /* 42,3255 */
+    { 35508u, try36_lm },   /* 42,3264 */
+    { 35510u, try36_lm },   /* 42,3266 */
     { 35523u, try28_lm },   /* 42,3303 */
     { 35525u, try0_lm },   /* 42,3305 */
     { 35555u, try28_lm },   /* 42,3343 */
@@ -509,94 +513,95 @@ static const agc_routine_entry lm_entries[LANEC_PIN_LM_ROUTINES] = {
     { 35569u, try28_lm },   /* 42,3361 */
     { 35577u, try28_lm },   /* 42,3371 */
     { 35579u, try0_lm },   /* 42,3373 */
-    { 35626u, try43_lm },   /* 42,3452 */
-    { 35683u, try43_lm },   /* 42,3543 */
-    { 35692u, try43_lm },   /* 42,3554 */
-    { 35697u, try43_lm },   /* 42,3561 */
-    { 35707u, try39_lm },   /* 42,3573 */
-    { 35715u, try39_lm },   /* 42,3603 */
+    { 35626u, try44_lm },   /* 42,3452 */
+    { 35683u, try44_lm },   /* 42,3543 */
+    { 35692u, try44_lm },   /* 42,3554 */
+    { 35697u, try44_lm },   /* 42,3561 */
+    { 35707u, try40_lm },   /* 42,3573 */
+    { 35715u, try40_lm },   /* 42,3603 */
 };
-#define LANEC_PIN_CM_ROUTINES 282u
+#define LANEC_PIN_CM_ROUTINES 283u
 static const agc_routine_entry cm_entries[LANEC_PIN_CM_ROUTINES] = {
-    { 2144u, try57_cm },   /* FF,4140 */
+    { 2144u, try58_cm },   /* FF,4140 */
     { 2154u, try0_cm },   /* FF,4152 */
-    { 2158u, try57_cm },   /* FF,4156 */
-    { 2159u, try57_cm },   /* FF,4157 */
+    { 2158u, try58_cm },   /* FF,4156 */
+    { 2159u, try58_cm },   /* FF,4157 */
     { 2161u, try3_cm },   /* FF,4161 */
     { 2166u, try2_cm },   /* FF,4166 */
     { 2168u, try29_cm },   /* FF,4170 */
     { 2169u, try29_cm },   /* FF,4171 */
-    { 2176u, try62_cm },   /* FF,4200 */
-    { 2180u, try62_cm },   /* FF,4204 */
-    { 2190u, try63_cm },   /* FF,4216 */
-    { 2192u, try62_cm },   /* FF,4220 */
-    { 2195u, try61_cm },   /* FF,4223 */
-    { 2213u, try44_cm },   /* FF,4245 */
-    { 2223u, try44_cm },   /* FF,4257 */
+    { 2176u, try63_cm },   /* FF,4200 */
+    { 2180u, try63_cm },   /* FF,4204 */
+    { 2190u, try64_cm },   /* FF,4216 */
+    { 2192u, try63_cm },   /* FF,4220 */
+    { 2195u, try62_cm },   /* FF,4223 */
+    { 2213u, try45_cm },   /* FF,4245 */
+    { 2223u, try45_cm },   /* FF,4257 */
     { 2233u, try5_cm },   /* FF,4271 */
-    { 2270u, try41_cm },   /* FF,4336 */
-    { 2277u, try41_cm },   /* FF,4345 */
-    { 2284u, try41_cm },   /* FF,4354 */
-    { 2304u, try77_cm },   /* FF,4400 */
-    { 2308u, try77_cm },   /* FF,4404 */
-    { 2312u, try77_cm },   /* FF,4410 */
+    { 2270u, try42_cm },   /* FF,4336 */
+    { 2277u, try42_cm },   /* FF,4345 */
+    { 2284u, try42_cm },   /* FF,4354 */
+    { 2304u, try78_cm },   /* FF,4400 */
+    { 2308u, try78_cm },   /* FF,4404 */
+    { 2312u, try78_cm },   /* FF,4410 */
     { 2316u, try22_cm },   /* FF,4414 */
-    { 2320u, try37_cm },   /* FF,4420 */
+    { 2320u, try38_cm },   /* FF,4420 */
     { 2339u, try22_cm },   /* FF,4443 */
     { 2343u, try22_cm },   /* FF,4447 */
-    { 2347u, try61_cm },   /* FF,4453 */
-    { 2350u, try61_cm },   /* FF,4456 */
-    { 2353u, try61_cm },   /* FF,4461 */
+    { 2347u, try62_cm },   /* FF,4453 */
+    { 2350u, try62_cm },   /* FF,4456 */
+    { 2353u, try62_cm },   /* FF,4461 */
     { 2363u, try15_cm },   /* FF,4473 */
-    { 4470u, try54_cm },   /* 04,2566 */
-    { 4479u, try61_cm },   /* 04,2577 */
-    { 32972u, try76_cm },   /* 40,2314 */
-    { 32988u, try76_cm },   /* 40,2334 */
+    { 2382u, try33_cm },   /* FF,4516 */
+    { 4470u, try55_cm },   /* 04,2566 */
+    { 4479u, try62_cm },   /* 04,2577 */
+    { 32972u, try77_cm },   /* 40,2314 */
+    { 32988u, try77_cm },   /* 40,2334 */
     { 33041u, try0_cm },   /* 40,2421 */
     { 33046u, try19_cm },   /* 40,2426 */
     { 33054u, try19_cm },   /* 40,2436 */
     { 33055u, try19_cm },   /* 40,2437 */
     { 33057u, try19_cm },   /* 40,2441 */
     { 33090u, try9_cm },   /* 40,2502 */
-    { 33102u, try74_cm },   /* 40,2516 */
-    { 33108u, try74_cm },   /* 40,2524 */
-    { 33155u, try74_cm },   /* 40,2603 */
-    { 33160u, try74_cm },   /* 40,2610 */
+    { 33102u, try75_cm },   /* 40,2516 */
+    { 33108u, try75_cm },   /* 40,2524 */
+    { 33155u, try75_cm },   /* 40,2603 */
+    { 33160u, try75_cm },   /* 40,2610 */
     { 33164u, try10_cm },   /* 40,2614 */
     { 33169u, try10_cm },   /* 40,2621 */
     { 33171u, try24_cm },   /* 40,2623 */
-    { 33182u, try80_cm },   /* 40,2636 */
-    { 33183u, try34_cm },   /* 40,2637 */
-    { 33184u, try34_cm },   /* 40,2640 */
-    { 33186u, try34_cm },   /* 40,2642 */
-    { 33193u, try34_cm },   /* 40,2651 */
-    { 33195u, try74_cm },   /* 40,2653 */
-    { 33197u, try71_cm },   /* 40,2655 */
+    { 33182u, try81_cm },   /* 40,2636 */
+    { 33183u, try35_cm },   /* 40,2637 */
+    { 33184u, try35_cm },   /* 40,2640 */
+    { 33186u, try35_cm },   /* 40,2642 */
+    { 33193u, try35_cm },   /* 40,2651 */
+    { 33195u, try75_cm },   /* 40,2653 */
+    { 33197u, try72_cm },   /* 40,2655 */
     { 33215u, try22_cm },   /* 40,2677 */
     { 33228u, try22_cm },   /* 40,2714 */
     { 33229u, try22_cm },   /* 40,2715 */
-    { 33230u, try36_cm },   /* 40,2716 */
-    { 33239u, try36_cm },   /* 40,2727 */
-    { 33247u, try36_cm },   /* 40,2737 */
-    { 33257u, try36_cm },   /* 40,2751 */
-    { 33259u, try36_cm },   /* 40,2753 */
-    { 33261u, try36_cm },   /* 40,2755 */
-    { 33270u, try40_cm },   /* 40,2766 */
-    { 33278u, try40_cm },   /* 40,2776 */
-    { 33281u, try40_cm },   /* 40,3001 */
-    { 33284u, try36_cm },   /* 40,3004 */
-    { 33289u, try36_cm },   /* 40,3011 */
-    { 33297u, try40_cm },   /* 40,3021 */
-    { 33299u, try40_cm },   /* 40,3023 */
-    { 33306u, try40_cm },   /* 40,3032 */
-    { 33318u, try40_cm },   /* 40,3046 */
-    { 33323u, try40_cm },   /* 40,3053 */
-    { 33328u, try37_cm },   /* 40,3060 */
-    { 33331u, try37_cm },   /* 40,3063 */
-    { 33336u, try37_cm },   /* 40,3070 */
-    { 33338u, try37_cm },   /* 40,3072 */
-    { 33344u, try37_cm },   /* 40,3100 */
-    { 33345u, try37_cm },   /* 40,3101 */
+    { 33230u, try37_cm },   /* 40,2716 */
+    { 33239u, try37_cm },   /* 40,2727 */
+    { 33247u, try37_cm },   /* 40,2737 */
+    { 33257u, try37_cm },   /* 40,2751 */
+    { 33259u, try37_cm },   /* 40,2753 */
+    { 33261u, try37_cm },   /* 40,2755 */
+    { 33270u, try41_cm },   /* 40,2766 */
+    { 33278u, try41_cm },   /* 40,2776 */
+    { 33281u, try41_cm },   /* 40,3001 */
+    { 33284u, try37_cm },   /* 40,3004 */
+    { 33289u, try37_cm },   /* 40,3011 */
+    { 33297u, try41_cm },   /* 40,3021 */
+    { 33299u, try41_cm },   /* 40,3023 */
+    { 33306u, try41_cm },   /* 40,3032 */
+    { 33318u, try41_cm },   /* 40,3046 */
+    { 33323u, try41_cm },   /* 40,3053 */
+    { 33328u, try38_cm },   /* 40,3060 */
+    { 33331u, try38_cm },   /* 40,3063 */
+    { 33336u, try38_cm },   /* 40,3070 */
+    { 33338u, try38_cm },   /* 40,3072 */
+    { 33344u, try38_cm },   /* 40,3100 */
+    { 33345u, try38_cm },   /* 40,3101 */
     { 33371u, try8_cm },   /* 40,3133 */
     { 33375u, try22_cm },   /* 40,3137 */
     { 33376u, try22_cm },   /* 40,3140 */
@@ -615,65 +620,65 @@ static const agc_routine_entry cm_entries[LANEC_PIN_CM_ROUTINES] = {
     { 33481u, try9_cm },   /* 40,3311 */
     { 33487u, try22_cm },   /* 40,3317 */
     { 33488u, try22_cm },   /* 40,3320 */
-    { 33491u, try77_cm },   /* 40,3323 */
-    { 33493u, try77_cm },   /* 40,3325 */
+    { 33491u, try78_cm },   /* 40,3323 */
+    { 33493u, try78_cm },   /* 40,3325 */
     { 33511u, try31_cm },   /* 40,3347 */
-    { 33512u, try69_cm },   /* 40,3350 */
+    { 33512u, try70_cm },   /* 40,3350 */
     { 33514u, try30_cm },   /* 40,3352 */
     { 33515u, try30_cm },   /* 40,3353 */
     { 33516u, try30_cm },   /* 40,3354 */
     { 33517u, try31_cm },   /* 40,3355 */
     { 33519u, try31_cm },   /* 40,3357 */
     { 33524u, try31_cm },   /* 40,3364 */
-    { 33534u, try47_cm },   /* 40,3376 */
-    { 33540u, try68_cm },   /* 40,3404 */
+    { 33534u, try48_cm },   /* 40,3376 */
+    { 33540u, try69_cm },   /* 40,3404 */
     { 33546u, try4_cm },   /* 40,3412 */
-    { 33569u, try55_cm },   /* 40,3441 */
+    { 33569u, try56_cm },   /* 40,3441 */
     { 33580u, try32_cm },   /* 40,3454 */
-    { 33583u, try73_cm },   /* 40,3457 */
-    { 33592u, try73_cm },   /* 40,3470 */
-    { 33602u, try73_cm },   /* 40,3502 */
-    { 33604u, try73_cm },   /* 40,3504 */
-    { 33606u, try73_cm },   /* 40,3506 */
+    { 33583u, try74_cm },   /* 40,3457 */
+    { 33592u, try74_cm },   /* 40,3470 */
+    { 33602u, try74_cm },   /* 40,3502 */
+    { 33604u, try74_cm },   /* 40,3504 */
+    { 33606u, try74_cm },   /* 40,3506 */
     { 33792u, try22_cm },   /* 41,2000 */
     { 33793u, try22_cm },   /* 41,2001 */
     { 33794u, try16_cm },   /* 41,2002 */
     { 33821u, try17_cm },   /* 41,2035 */
-    { 33830u, try78_cm },   /* 41,2046 */
+    { 33830u, try79_cm },   /* 41,2046 */
     { 33844u, try1_cm },   /* 41,2064 */
     { 33852u, try1_cm },   /* 41,2074 */
     { 33861u, try1_cm },   /* 41,2105 */
-    { 33870u, try51_cm },   /* 41,2116 */
-    { 33872u, try51_cm },   /* 41,2120 */
-    { 33883u, try81_cm },   /* 41,2133 */
+    { 33870u, try52_cm },   /* 41,2116 */
+    { 33872u, try52_cm },   /* 41,2120 */
+    { 33883u, try82_cm },   /* 41,2133 */
     { 33891u, try18_cm },   /* 41,2143 */
-    { 33937u, try53_cm },   /* 41,2221 */
+    { 33937u, try54_cm },   /* 41,2221 */
     { 33987u, try1_cm },   /* 41,2303 */
     { 33989u, try1_cm },   /* 41,2305 */
     { 33991u, try1_cm },   /* 41,2307 */
     { 33992u, try1_cm },   /* 41,2310 */
     { 33997u, try0_cm },   /* 41,2315 */
-    { 33999u, try64_cm },   /* 41,2317 */
-    { 34000u, try64_cm },   /* 41,2320 */
-    { 34015u, try64_cm },   /* 41,2337 */
-    { 34016u, try64_cm },   /* 41,2340 */
+    { 33999u, try65_cm },   /* 41,2317 */
+    { 34000u, try65_cm },   /* 41,2320 */
+    { 34015u, try65_cm },   /* 41,2337 */
+    { 34016u, try65_cm },   /* 41,2340 */
     { 34023u, try22_cm },   /* 41,2347 */
     { 34024u, try22_cm },   /* 41,2350 */
-    { 34025u, try77_cm },   /* 41,2351 */
-    { 34027u, try65_cm },   /* 41,2353 */
-    { 34032u, try65_cm },   /* 41,2360 */
-    { 34037u, try65_cm },   /* 41,2365 */
-    { 34043u, try65_cm },   /* 41,2373 */
-    { 34048u, try65_cm },   /* 41,2400 */
-    { 34066u, try67_cm },   /* 41,2422 */
-    { 34068u, try58_cm },   /* 41,2424 */
-    { 34070u, try58_cm },   /* 41,2426 */
-    { 34079u, try58_cm },   /* 41,2437 */
-    { 34083u, try58_cm },   /* 41,2443 */
-    { 34090u, try58_cm },   /* 41,2452 */
-    { 34096u, try58_cm },   /* 41,2460 */
-    { 34116u, try67_cm },   /* 41,2504 */
-    { 34125u, try58_cm },   /* 41,2515 */
+    { 34025u, try78_cm },   /* 41,2351 */
+    { 34027u, try66_cm },   /* 41,2353 */
+    { 34032u, try66_cm },   /* 41,2360 */
+    { 34037u, try66_cm },   /* 41,2365 */
+    { 34043u, try66_cm },   /* 41,2373 */
+    { 34048u, try66_cm },   /* 41,2400 */
+    { 34066u, try68_cm },   /* 41,2422 */
+    { 34068u, try59_cm },   /* 41,2424 */
+    { 34070u, try59_cm },   /* 41,2426 */
+    { 34079u, try59_cm },   /* 41,2437 */
+    { 34083u, try59_cm },   /* 41,2443 */
+    { 34090u, try59_cm },   /* 41,2452 */
+    { 34096u, try59_cm },   /* 41,2460 */
+    { 34116u, try68_cm },   /* 41,2504 */
+    { 34125u, try59_cm },   /* 41,2515 */
     { 34131u, try12_cm },   /* 41,2523 */
     { 34143u, try14_cm },   /* 41,2537 */
     { 34166u, try13_cm },   /* 41,2566 */
@@ -686,89 +691,89 @@ static const agc_routine_entry cm_entries[LANEC_PIN_CM_ROUTINES] = {
     { 34198u, try27_cm },   /* 41,2626 */
     { 34199u, try27_cm },   /* 41,2627 */
     { 34201u, try27_cm },   /* 41,2631 */
-    { 34202u, try50_cm },   /* 41,2632 */
-    { 34209u, try50_cm },   /* 41,2641 */
-    { 34213u, try50_cm },   /* 41,2645 */
-    { 34217u, try50_cm },   /* 41,2651 */
-    { 34224u, try50_cm },   /* 41,2660 */
-    { 34236u, try50_cm },   /* 41,2674 */
-    { 34241u, try50_cm },   /* 41,2701 */
+    { 34202u, try51_cm },   /* 41,2632 */
+    { 34209u, try51_cm },   /* 41,2641 */
+    { 34213u, try51_cm },   /* 41,2645 */
+    { 34217u, try51_cm },   /* 41,2651 */
+    { 34224u, try51_cm },   /* 41,2660 */
+    { 34236u, try51_cm },   /* 41,2674 */
+    { 34241u, try51_cm },   /* 41,2701 */
     { 34243u, try27_cm },   /* 41,2703 */
     { 34245u, try27_cm },   /* 41,2705 */
     { 34246u, try27_cm },   /* 41,2706 */
     { 34248u, try27_cm },   /* 41,2710 */
     { 34249u, try27_cm },   /* 41,2711 */
     { 34251u, try27_cm },   /* 41,2713 */
-    { 34252u, try50_cm },   /* 41,2714 */
-    { 34259u, try50_cm },   /* 41,2723 */
-    { 34263u, try50_cm },   /* 41,2727 */
+    { 34252u, try51_cm },   /* 41,2714 */
+    { 34259u, try51_cm },   /* 41,2723 */
+    { 34263u, try51_cm },   /* 41,2727 */
     { 34266u, try27_cm },   /* 41,2732 */
-    { 34267u, try50_cm },   /* 41,2733 */
-    { 34272u, try50_cm },   /* 41,2740 */
+    { 34267u, try51_cm },   /* 41,2733 */
+    { 34272u, try51_cm },   /* 41,2740 */
     { 34275u, try27_cm },   /* 41,2743 */
     { 34277u, try27_cm },   /* 41,2745 */
-    { 34280u, try50_cm },   /* 41,2750 */
-    { 34285u, try50_cm },   /* 41,2755 */
+    { 34280u, try51_cm },   /* 41,2750 */
+    { 34285u, try51_cm },   /* 41,2755 */
     { 34288u, try27_cm },   /* 41,2760 */
     { 34290u, try27_cm },   /* 41,2762 */
-    { 34293u, try50_cm },   /* 41,2765 */
-    { 34298u, try50_cm },   /* 41,2772 */
+    { 34293u, try51_cm },   /* 41,2765 */
+    { 34298u, try51_cm },   /* 41,2772 */
     { 34301u, try27_cm },   /* 41,2775 */
     { 34306u, try27_cm },   /* 41,3002 */
-    { 34313u, try39_cm },   /* 41,3011 */
-    { 34325u, try41_cm },   /* 41,3025 */
-    { 34326u, try41_cm },   /* 41,3026 */
-    { 34332u, try41_cm },   /* 41,3034 */
-    { 34342u, try41_cm },   /* 41,3046 */
-    { 34343u, try41_cm },   /* 41,3047 */
-    { 34356u, try41_cm },   /* 41,3064 */
-    { 34361u, try41_cm },   /* 41,3071 */
-    { 34365u, try42_cm },   /* 41,3075 */
-    { 34392u, try42_cm },   /* 41,3130 */
-    { 34399u, try42_cm },   /* 41,3137 */
-    { 34413u, try42_cm },   /* 41,3155 */
+    { 34313u, try40_cm },   /* 41,3011 */
+    { 34325u, try42_cm },   /* 41,3025 */
+    { 34326u, try42_cm },   /* 41,3026 */
+    { 34332u, try42_cm },   /* 41,3034 */
+    { 34342u, try42_cm },   /* 41,3046 */
+    { 34343u, try42_cm },   /* 41,3047 */
+    { 34356u, try42_cm },   /* 41,3064 */
+    { 34361u, try42_cm },   /* 41,3071 */
+    { 34365u, try43_cm },   /* 41,3075 */
+    { 34392u, try43_cm },   /* 41,3130 */
+    { 34399u, try43_cm },   /* 41,3137 */
+    { 34413u, try43_cm },   /* 41,3155 */
     { 34417u, try22_cm },   /* 41,3161 */
-    { 34428u, try38_cm },   /* 41,3174 */
-    { 34438u, try38_cm },   /* 41,3206 */
-    { 34439u, try38_cm },   /* 41,3207 */
-    { 34456u, try56_cm },   /* 41,3230 */
-    { 34482u, try56_cm },   /* 41,3262 */
-    { 34483u, try56_cm },   /* 41,3263 */
-    { 34489u, try56_cm },   /* 41,3271 */
-    { 34493u, try56_cm },   /* 41,3275 */
-    { 34503u, try56_cm },   /* 41,3307 */
-    { 34507u, try56_cm },   /* 41,3313 */
-    { 34508u, try56_cm },   /* 41,3314 */
-    { 34513u, try56_cm },   /* 41,3321 */
-    { 34523u, try56_cm },   /* 41,3333 */
-    { 34537u, try56_cm },   /* 41,3351 */
+    { 34428u, try39_cm },   /* 41,3174 */
+    { 34438u, try39_cm },   /* 41,3206 */
+    { 34439u, try39_cm },   /* 41,3207 */
+    { 34456u, try57_cm },   /* 41,3230 */
+    { 34482u, try57_cm },   /* 41,3262 */
+    { 34483u, try57_cm },   /* 41,3263 */
+    { 34489u, try57_cm },   /* 41,3271 */
+    { 34493u, try57_cm },   /* 41,3275 */
+    { 34503u, try57_cm },   /* 41,3307 */
+    { 34507u, try57_cm },   /* 41,3313 */
+    { 34508u, try57_cm },   /* 41,3314 */
+    { 34513u, try57_cm },   /* 41,3321 */
+    { 34523u, try57_cm },   /* 41,3333 */
+    { 34537u, try57_cm },   /* 41,3351 */
     { 34539u, try20_cm },   /* 41,3353 */
     { 34545u, try20_cm },   /* 41,3361 */
-    { 34547u, try66_cm },   /* 41,3363 */
+    { 34547u, try67_cm },   /* 41,3363 */
     { 34569u, try22_cm },   /* 41,3411 */
-    { 34574u, try66_cm },   /* 41,3416 */
-    { 34584u, try52_cm },   /* 41,3430 */
-    { 34585u, try52_cm },   /* 41,3431 */
+    { 34574u, try67_cm },   /* 41,3416 */
+    { 34584u, try53_cm },   /* 41,3430 */
+    { 34585u, try53_cm },   /* 41,3431 */
     { 34597u, try0_cm },   /* 41,3445 */
-    { 34602u, try52_cm },   /* 41,3452 */
+    { 34602u, try53_cm },   /* 41,3452 */
     { 34610u, try0_cm },   /* 41,3462 */
-    { 34614u, try33_cm },   /* 41,3466 */
-    { 34619u, try72_cm },   /* 41,3473 */
-    { 34622u, try72_cm },   /* 41,3476 */
-    { 34623u, try72_cm },   /* 41,3477 */
-    { 34624u, try72_cm },   /* 41,3500 */
-    { 34632u, try72_cm },   /* 41,3510 */
-    { 34634u, try33_cm },   /* 41,3512 */
-    { 34637u, try72_cm },   /* 41,3515 */
-    { 34638u, try60_cm },   /* 41,3516 */
-    { 34660u, try59_cm },   /* 41,3544 */
-    { 34678u, try62_cm },   /* 41,3566 */
-    { 34680u, try62_cm },   /* 41,3570 */
-    { 34681u, try59_cm },   /* 41,3571 */
-    { 34685u, try62_cm },   /* 41,3575 */
-    { 34690u, try62_cm },   /* 41,3602 */
-    { 34692u, try62_cm },   /* 41,3604 */
-    { 34698u, try62_cm },   /* 41,3612 */
+    { 34614u, try34_cm },   /* 41,3466 */
+    { 34619u, try73_cm },   /* 41,3473 */
+    { 34622u, try73_cm },   /* 41,3476 */
+    { 34623u, try73_cm },   /* 41,3477 */
+    { 34624u, try73_cm },   /* 41,3500 */
+    { 34632u, try73_cm },   /* 41,3510 */
+    { 34634u, try34_cm },   /* 41,3512 */
+    { 34637u, try73_cm },   /* 41,3515 */
+    { 34638u, try61_cm },   /* 41,3516 */
+    { 34660u, try60_cm },   /* 41,3544 */
+    { 34678u, try63_cm },   /* 41,3566 */
+    { 34680u, try63_cm },   /* 41,3570 */
+    { 34681u, try60_cm },   /* 41,3571 */
+    { 34685u, try63_cm },   /* 41,3575 */
+    { 34690u, try63_cm },   /* 41,3602 */
+    { 34692u, try63_cm },   /* 41,3604 */
+    { 34698u, try63_cm },   /* 41,3612 */
     { 34699u, try26_cm },   /* 41,3613 */
     { 34701u, try25_cm },   /* 41,3615 */
     { 34715u, try26_cm },   /* 41,3633 */
@@ -776,16 +781,16 @@ static const agc_routine_entry cm_entries[LANEC_PIN_CM_ROUTINES] = {
     { 34738u, try26_cm },   /* 41,3662 */
     { 34742u, try22_cm },   /* 41,3666 */
     { 34743u, try26_cm },   /* 41,3667 */
-    { 34769u, try48_cm },   /* 41,3721 */
-    { 35427u, try35_cm },   /* 42,3143 */
+    { 34769u, try49_cm },   /* 41,3721 */
+    { 35427u, try36_cm },   /* 42,3143 */
     { 35429u, try0_cm },   /* 42,3145 */
-    { 35431u, try35_cm },   /* 42,3147 */
-    { 35435u, try35_cm },   /* 42,3153 */
-    { 35437u, try35_cm },   /* 42,3155 */
-    { 35446u, try35_cm },   /* 42,3166 */
-    { 35448u, try35_cm },   /* 42,3170 */
-    { 35455u, try35_cm },   /* 42,3177 */
-    { 35457u, try35_cm },   /* 42,3201 */
+    { 35431u, try36_cm },   /* 42,3147 */
+    { 35435u, try36_cm },   /* 42,3153 */
+    { 35437u, try36_cm },   /* 42,3155 */
+    { 35446u, try36_cm },   /* 42,3166 */
+    { 35448u, try36_cm },   /* 42,3170 */
+    { 35455u, try36_cm },   /* 42,3177 */
+    { 35457u, try36_cm },   /* 42,3201 */
     { 35470u, try28_cm },   /* 42,3216 */
     { 35472u, try0_cm },   /* 42,3220 */
     { 35502u, try28_cm },   /* 42,3256 */
@@ -794,21 +799,21 @@ static const agc_routine_entry cm_entries[LANEC_PIN_CM_ROUTINES] = {
     { 35516u, try28_cm },   /* 42,3274 */
     { 35524u, try28_cm },   /* 42,3304 */
     { 35526u, try0_cm },   /* 42,3306 */
-    { 35573u, try43_cm },   /* 42,3365 */
-    { 35630u, try43_cm },   /* 42,3456 */
-    { 35639u, try43_cm },   /* 42,3467 */
-    { 35644u, try43_cm },   /* 42,3474 */
-    { 35654u, try39_cm },   /* 42,3506 */
-    { 35662u, try39_cm },   /* 42,3516 */
+    { 35573u, try44_cm },   /* 42,3365 */
+    { 35630u, try44_cm },   /* 42,3456 */
+    { 35639u, try44_cm },   /* 42,3467 */
+    { 35644u, try44_cm },   /* 42,3474 */
+    { 35654u, try40_cm },   /* 42,3506 */
+    { 35662u, try40_cm },   /* 42,3516 */
 };
 #endif
 /* the C64 round trips: every point and the index of the module that claims it first (0377: a
  * BANKCALL return point, entered through SWRETURN); lanec_pin_c64_select builds one module's table */
-#define LANEC_PIN_LM_C64_POINTS 296u
-static const lanec_pin_point c64_lm_points[LANEC_PIN_LM_C64_POINTS] = { { 2132u, 63u }, { 2142u, 255u }, { 2146u, 63u }, { 2147u, 63u }, { 2149u, 1u }, { 2154u, 1u }, { 2156u, 100u }, { 2157u, 100u }, { 2164u, 69u }, { 2168u, 69u }, { 2178u, 71u }, { 2180u, 69u }, { 2183u, 67u }, { 2201u, 46u }, { 2211u, 46u }, { 2221u, 4u }, { 2258u, 43u }, { 2265u, 43u }, { 2272u, 43u }, { 2292u, 88u }, { 2296u, 88u }, { 2300u, 88u }, { 2304u, 93u }, { 2308u, 39u }, { 2327u, 93u }, { 2331u, 93u }, { 2335u, 67u }, { 2338u, 50u }, { 2341u, 67u }, { 2351u, 30u }, { 4510u, 59u }, { 4519u, 67u }, { 32831u, 94u }, { 32879u, 95u }, { 32881u, 95u }, { 32891u, 95u }, { 32893u, 95u }, { 33004u, 95u }, { 33016u, 95u }, { 33020u, 95u }, { 33031u, 95u }, { 33035u, 87u }, { 33051u, 87u }, { 33079u, 95u }, { 33104u, 255u }, { 33109u, 34u }, { 33117u, 34u }, { 33118u, 34u }, { 33120u, 34u }, { 33153u, 81u }, { 33165u, 85u }, { 33171u, 85u }, { 33173u, 38u }, { 33180u, 38u }, { 33181u, 85u }, { 33215u, 85u }, { 33220u, 85u }, { 33224u, 86u }, { 33229u, 86u }, { 33231u, 86u }, { 33242u, 91u }, { 33243u, 103u }, { 33244u, 103u }, { 33246u, 103u }, { 33253u, 103u }, { 33255u, 82u }, { 33273u, 93u }, { 33286u, 93u }, { 33287u, 93u }, { 33288u, 38u }, { 33297u, 38u }, { 33305u, 38u }, { 33315u, 38u }, { 33330u, 255u }, { 33333u, 255u }, { 33334u, 38u }, { 33336u, 38u }, { 33342u, 42u }, { 33350u, 42u }, { 33353u, 42u }, { 33356u, 42u }, { 33358u, 42u }, { 33365u, 42u }, { 33377u, 42u }, { 33382u, 42u }, { 33387u, 39u }, { 33390u, 39u }, { 33395u, 39u }, { 33397u, 39u }, { 33403u, 39u }, { 33404u, 39u }, { 33430u, 24u }, { 33434u, 93u }, { 33435u, 93u }, { 33451u, 93u }, { 33458u, 24u }, { 33462u, 36u }, { 33467u, 93u }, { 33473u, 93u }, { 33475u, 93u }, { 33476u, 93u }, { 33477u, 93u }, { 33478u, 90u }, { 33487u, 93u }, { 33488u, 93u }, { 33490u, 81u }, { 33540u, 81u }, { 33546u, 93u }, { 33547u, 93u }, { 33550u, 88u }, { 33552u, 88u }, { 33564u, 95u }, { 33570u, 99u }, { 33571u, 79u }, { 33573u, 99u }, { 33574u, 99u }, { 33575u, 99u }, { 33576u, 99u }, { 33578u, 99u }, { 33583u, 99u }, { 33585u, 95u }, { 33593u, 48u }, { 33599u, 77u }, { 33605u, 3u }, { 33628u, 60u }, { 33639u, 99u }, { 33642u, 84u }, { 33651u, 84u }, { 33661u, 84u }, { 33663u, 84u }, { 33665u, 84u }, { 33667u, 95u }, { 33792u, 93u }, { 33793u, 93u }, { 33794u, 31u }, { 33821u, 32u }, { 33830u, 89u }, { 33844u, 0u }, { 33852u, 0u }, { 33861u, 0u }, { 33870u, 55u }, { 33872u, 55u }, { 33883u, 92u }, { 33891u, 33u }, { 33937u, 58u }, { 33987u, 0u }, { 33989u, 0u }, { 33991u, 0u }, { 33992u, 0u }, { 33997u, 255u }, { 33999u, 73u }, { 34000u, 73u }, { 34015u, 73u }, { 34016u, 73u }, { 34023u, 93u }, { 34024u, 93u }, { 34025u, 88u }, { 34027u, 74u }, { 34032u, 74u }, { 34037u, 74u }, { 34043u, 74u }, { 34048u, 74u }, { 34066u, 76u }, { 34068u, 64u }, { 34070u, 64u }, { 34079u, 64u }, { 34083u, 64u }, { 34090u, 64u }, { 34096u, 64u }, { 34116u, 76u }, { 34125u, 64u }, { 34131u, 25u }, { 34143u, 28u }, { 34166u, 27u }, { 34168u, 101u }, { 34190u, 96u }, { 34192u, 96u }, { 34193u, 96u }, { 34195u, 96u }, { 34196u, 96u }, { 34198u, 96u }, { 34199u, 96u }, { 34201u, 96u }, { 34202u, 54u }, { 34209u, 54u }, { 34213u, 54u }, { 34217u, 54u }, { 34224u, 54u }, { 34236u, 54u }, { 34241u, 54u }, { 34243u, 96u }, { 34245u, 96u }, { 34246u, 96u }, { 34248u, 96u }, { 34249u, 96u }, { 34251u, 96u }, { 34252u, 54u }, { 34259u, 54u }, { 34263u, 54u }, { 34266u, 96u }, { 34267u, 54u }, { 34272u, 54u }, { 34275u, 96u }, { 34277u, 96u }, { 34280u, 54u }, { 34285u, 54u }, { 34288u, 96u }, { 34290u, 96u }, { 34293u, 54u }, { 34298u, 54u }, { 34301u, 96u }, { 34306u, 96u }, { 34313u, 41u }, { 34325u, 43u }, { 34326u, 43u }, { 34332u, 43u }, { 34342u, 43u }, { 34343u, 43u }, { 34356u, 43u }, { 34361u, 43u }, { 34365u, 44u }, { 34392u, 44u }, { 34399u, 44u }, { 34413u, 44u }, { 34417u, 93u }, { 34428u, 40u }, { 34438u, 40u }, { 34439u, 40u }, { 34456u, 61u }, { 34482u, 61u }, { 34483u, 61u }, { 34489u, 61u }, { 34493u, 61u }, { 34503u, 61u }, { 34507u, 61u }, { 34508u, 61u }, { 34513u, 61u }, { 34523u, 61u }, { 34537u, 61u }, { 34539u, 35u }, { 34545u, 35u }, { 34547u, 75u }, { 34569u, 93u }, { 34574u, 75u }, { 34584u, 56u }, { 34585u, 56u }, { 34597u, 255u }, { 34602u, 56u }, { 34610u, 255u }, { 34614u, 98u }, { 34619u, 83u }, { 34622u, 83u }, { 34623u, 83u }, { 34624u, 83u }, { 34632u, 83u }, { 34634u, 98u }, { 34637u, 83u }, { 34638u, 66u }, { 34660u, 65u }, { 34678u, 69u }, { 34680u, 69u }, { 34681u, 65u }, { 34685u, 69u }, { 34690u, 69u }, { 34692u, 69u }, { 34698u, 69u }, { 34699u, 97u }, { 34713u, 97u }, { 34731u, 93u }, { 34738u, 97u }, { 34742u, 93u }, { 34743u, 97u }, { 34770u, 49u }, { 35480u, 37u }, { 35482u, 255u }, { 35484u, 37u }, { 35488u, 37u }, { 35490u, 37u }, { 35499u, 37u }, { 35501u, 37u }, { 35508u, 37u }, { 35510u, 37u }, { 35523u, 104u }, { 35525u, 255u }, { 35555u, 104u }, { 35559u, 104u }, { 35561u, 104u }, { 35569u, 104u }, { 35577u, 104u }, { 35579u, 255u }, { 35626u, 45u }, { 35683u, 45u }, { 35692u, 45u }, { 35697u, 45u }, { 35707u, 41u }, { 35715u, 41u } };
-#define LANEC_PIN_CM_C64_POINTS 295u
-static const lanec_pin_point c64_cm_points[LANEC_PIN_CM_C64_POINTS] = { { 2144u, 63u }, { 2154u, 255u }, { 2158u, 63u }, { 2159u, 63u }, { 2161u, 1u }, { 2166u, 1u }, { 2168u, 100u }, { 2169u, 100u }, { 2176u, 69u }, { 2180u, 69u }, { 2190u, 71u }, { 2192u, 69u }, { 2195u, 67u }, { 2213u, 46u }, { 2223u, 46u }, { 2233u, 4u }, { 2270u, 43u }, { 2277u, 43u }, { 2284u, 43u }, { 2304u, 88u }, { 2308u, 88u }, { 2312u, 88u }, { 2316u, 93u }, { 2320u, 39u }, { 2339u, 93u }, { 2343u, 93u }, { 2347u, 67u }, { 2350u, 67u }, { 2353u, 67u }, { 2363u, 30u }, { 4470u, 59u }, { 4479u, 67u }, { 32768u, 94u }, { 32816u, 95u }, { 32818u, 95u }, { 32828u, 95u }, { 32830u, 95u }, { 32941u, 95u }, { 32953u, 95u }, { 32957u, 95u }, { 32968u, 95u }, { 32972u, 87u }, { 32988u, 87u }, { 33016u, 95u }, { 33041u, 255u }, { 33046u, 34u }, { 33054u, 34u }, { 33055u, 34u }, { 33057u, 34u }, { 33090u, 20u }, { 33102u, 85u }, { 33108u, 85u }, { 33155u, 85u }, { 33160u, 85u }, { 33164u, 21u }, { 33169u, 21u }, { 33171u, 102u }, { 33182u, 91u }, { 33183u, 103u }, { 33184u, 103u }, { 33186u, 103u }, { 33193u, 103u }, { 33195u, 85u }, { 33197u, 82u }, { 33215u, 93u }, { 33228u, 93u }, { 33229u, 93u }, { 33230u, 38u }, { 33239u, 38u }, { 33247u, 38u }, { 33257u, 38u }, { 33259u, 38u }, { 33261u, 38u }, { 33270u, 42u }, { 33278u, 42u }, { 33281u, 42u }, { 33284u, 38u }, { 33289u, 38u }, { 33297u, 42u }, { 33299u, 42u }, { 33306u, 42u }, { 33318u, 42u }, { 33323u, 42u }, { 33328u, 39u }, { 33331u, 39u }, { 33336u, 39u }, { 33338u, 39u }, { 33344u, 39u }, { 33345u, 39u }, { 33371u, 16u }, { 33375u, 93u }, { 33376u, 93u }, { 33392u, 93u }, { 33399u, 16u }, { 33403u, 14u }, { 33408u, 93u }, { 33414u, 93u }, { 33416u, 93u }, { 33417u, 93u }, { 33418u, 93u }, { 33419u, 16u }, { 33428u, 93u }, { 33429u, 93u }, { 33431u, 20u }, { 33481u, 20u }, { 33487u, 93u }, { 33488u, 93u }, { 33491u, 88u }, { 33493u, 88u }, { 33505u, 95u }, { 33511u, 99u }, { 33512u, 79u }, { 33514u, 99u }, { 33515u, 99u }, { 33516u, 99u }, { 33517u, 99u }, { 33519u, 99u }, { 33524u, 99u }, { 33526u, 95u }, { 33534u, 48u }, { 33540u, 77u }, { 33546u, 3u }, { 33569u, 60u }, { 33580u, 99u }, { 33583u, 84u }, { 33592u, 84u }, { 33602u, 84u }, { 33604u, 84u }, { 33606u, 84u }, { 33608u, 95u }, { 33792u, 93u }, { 33793u, 93u }, { 33794u, 31u }, { 33821u, 32u }, { 33830u, 89u }, { 33844u, 0u }, { 33852u, 0u }, { 33861u, 0u }, { 33870u, 55u }, { 33872u, 55u }, { 33883u, 92u }, { 33891u, 33u }, { 33937u, 58u }, { 33987u, 0u }, { 33989u, 0u }, { 33991u, 0u }, { 33992u, 0u }, { 33997u, 255u }, { 33999u, 73u }, { 34000u, 73u }, { 34015u, 73u }, { 34016u, 73u }, { 34023u, 93u }, { 34024u, 93u }, { 34025u, 88u }, { 34027u, 74u }, { 34032u, 74u }, { 34037u, 74u }, { 34043u, 74u }, { 34048u, 74u }, { 34066u, 76u }, { 34068u, 64u }, { 34070u, 64u }, { 34079u, 64u }, { 34083u, 64u }, { 34090u, 64u }, { 34096u, 64u }, { 34116u, 76u }, { 34125u, 64u }, { 34131u, 25u }, { 34143u, 28u }, { 34166u, 27u }, { 34168u, 101u }, { 34190u, 96u }, { 34192u, 96u }, { 34193u, 96u }, { 34195u, 96u }, { 34196u, 96u }, { 34198u, 96u }, { 34199u, 96u }, { 34201u, 96u }, { 34202u, 54u }, { 34209u, 54u }, { 34213u, 54u }, { 34217u, 54u }, { 34224u, 54u }, { 34236u, 54u }, { 34241u, 54u }, { 34243u, 96u }, { 34245u, 96u }, { 34246u, 96u }, { 34248u, 96u }, { 34249u, 96u }, { 34251u, 96u }, { 34252u, 54u }, { 34259u, 54u }, { 34263u, 54u }, { 34266u, 96u }, { 34267u, 54u }, { 34272u, 54u }, { 34275u, 96u }, { 34277u, 96u }, { 34280u, 54u }, { 34285u, 54u }, { 34288u, 96u }, { 34290u, 96u }, { 34293u, 54u }, { 34298u, 54u }, { 34301u, 96u }, { 34306u, 96u }, { 34313u, 41u }, { 34325u, 43u }, { 34326u, 43u }, { 34332u, 43u }, { 34342u, 43u }, { 34343u, 43u }, { 34356u, 43u }, { 34361u, 43u }, { 34365u, 44u }, { 34392u, 44u }, { 34399u, 44u }, { 34413u, 44u }, { 34417u, 93u }, { 34428u, 40u }, { 34438u, 40u }, { 34439u, 40u }, { 34456u, 61u }, { 34482u, 61u }, { 34483u, 61u }, { 34489u, 61u }, { 34493u, 61u }, { 34503u, 61u }, { 34507u, 61u }, { 34508u, 61u }, { 34513u, 61u }, { 34523u, 61u }, { 34537u, 61u }, { 34539u, 35u }, { 34545u, 35u }, { 34547u, 75u }, { 34569u, 93u }, { 34574u, 75u }, { 34584u, 56u }, { 34585u, 56u }, { 34597u, 255u }, { 34602u, 56u }, { 34610u, 255u }, { 34614u, 98u }, { 34619u, 83u }, { 34622u, 83u }, { 34623u, 83u }, { 34624u, 83u }, { 34632u, 83u }, { 34634u, 98u }, { 34637u, 83u }, { 34638u, 66u }, { 34660u, 65u }, { 34678u, 69u }, { 34680u, 69u }, { 34681u, 65u }, { 34685u, 69u }, { 34690u, 69u }, { 34692u, 69u }, { 34698u, 69u }, { 34699u, 97u }, { 34701u, 97u }, { 34715u, 97u }, { 34731u, 93u }, { 34738u, 97u }, { 34742u, 93u }, { 34743u, 97u }, { 34769u, 49u }, { 35427u, 37u }, { 35429u, 255u }, { 35431u, 37u }, { 35435u, 37u }, { 35437u, 37u }, { 35446u, 37u }, { 35448u, 37u }, { 35455u, 37u }, { 35457u, 37u }, { 35470u, 104u }, { 35472u, 255u }, { 35502u, 104u }, { 35506u, 104u }, { 35508u, 104u }, { 35516u, 104u }, { 35524u, 104u }, { 35526u, 255u }, { 35573u, 45u }, { 35630u, 45u }, { 35639u, 45u }, { 35644u, 45u }, { 35654u, 41u }, { 35662u, 41u } };
+#define LANEC_PIN_LM_C64_POINTS 297u
+static const lanec_pin_point c64_lm_points[LANEC_PIN_LM_C64_POINTS] = { { 2132u, 63u }, { 2142u, 255u }, { 2146u, 63u }, { 2147u, 63u }, { 2149u, 1u }, { 2154u, 1u }, { 2156u, 100u }, { 2157u, 100u }, { 2164u, 69u }, { 2168u, 69u }, { 2178u, 71u }, { 2180u, 69u }, { 2183u, 67u }, { 2201u, 46u }, { 2211u, 46u }, { 2221u, 4u }, { 2258u, 43u }, { 2265u, 43u }, { 2272u, 43u }, { 2292u, 88u }, { 2296u, 88u }, { 2300u, 88u }, { 2304u, 93u }, { 2308u, 39u }, { 2327u, 93u }, { 2331u, 93u }, { 2335u, 67u }, { 2338u, 50u }, { 2341u, 67u }, { 2351u, 30u }, { 2370u, 101u }, { 4510u, 59u }, { 4519u, 67u }, { 32831u, 94u }, { 32879u, 95u }, { 32881u, 95u }, { 32891u, 95u }, { 32893u, 95u }, { 33004u, 95u }, { 33016u, 95u }, { 33020u, 95u }, { 33031u, 95u }, { 33035u, 87u }, { 33051u, 87u }, { 33079u, 95u }, { 33104u, 255u }, { 33109u, 34u }, { 33117u, 34u }, { 33118u, 34u }, { 33120u, 34u }, { 33153u, 81u }, { 33165u, 85u }, { 33171u, 85u }, { 33173u, 38u }, { 33180u, 38u }, { 33181u, 85u }, { 33215u, 85u }, { 33220u, 85u }, { 33224u, 86u }, { 33229u, 86u }, { 33231u, 86u }, { 33242u, 91u }, { 33243u, 104u }, { 33244u, 104u }, { 33246u, 104u }, { 33253u, 104u }, { 33255u, 82u }, { 33273u, 93u }, { 33286u, 93u }, { 33287u, 93u }, { 33288u, 38u }, { 33297u, 38u }, { 33305u, 38u }, { 33315u, 38u }, { 33330u, 255u }, { 33333u, 255u }, { 33334u, 38u }, { 33336u, 38u }, { 33342u, 42u }, { 33350u, 42u }, { 33353u, 42u }, { 33356u, 42u }, { 33358u, 42u }, { 33365u, 42u }, { 33377u, 42u }, { 33382u, 42u }, { 33387u, 39u }, { 33390u, 39u }, { 33395u, 39u }, { 33397u, 39u }, { 33403u, 39u }, { 33404u, 39u }, { 33430u, 24u }, { 33434u, 93u }, { 33435u, 93u }, { 33451u, 93u }, { 33458u, 24u }, { 33462u, 36u }, { 33467u, 93u }, { 33473u, 93u }, { 33475u, 93u }, { 33476u, 93u }, { 33477u, 93u }, { 33478u, 90u }, { 33487u, 93u }, { 33488u, 93u }, { 33490u, 81u }, { 33540u, 81u }, { 33546u, 93u }, { 33547u, 93u }, { 33550u, 88u }, { 33552u, 88u }, { 33564u, 95u }, { 33570u, 99u }, { 33571u, 79u }, { 33573u, 99u }, { 33574u, 99u }, { 33575u, 99u }, { 33576u, 99u }, { 33578u, 99u }, { 33583u, 99u }, { 33585u, 95u }, { 33593u, 48u }, { 33599u, 77u }, { 33605u, 3u }, { 33628u, 60u }, { 33639u, 99u }, { 33642u, 84u }, { 33651u, 84u }, { 33661u, 84u }, { 33663u, 84u }, { 33665u, 84u }, { 33667u, 95u }, { 33792u, 93u }, { 33793u, 93u }, { 33794u, 31u }, { 33821u, 32u }, { 33830u, 89u }, { 33844u, 0u }, { 33852u, 0u }, { 33861u, 0u }, { 33870u, 55u }, { 33872u, 55u }, { 33883u, 92u }, { 33891u, 33u }, { 33937u, 58u }, { 33987u, 0u }, { 33989u, 0u }, { 33991u, 0u }, { 33992u, 0u }, { 33997u, 255u }, { 33999u, 73u }, { 34000u, 73u }, { 34015u, 73u }, { 34016u, 73u }, { 34023u, 93u }, { 34024u, 93u }, { 34025u, 88u }, { 34027u, 74u }, { 34032u, 74u }, { 34037u, 74u }, { 34043u, 74u }, { 34048u, 74u }, { 34066u, 76u }, { 34068u, 64u }, { 34070u, 64u }, { 34079u, 64u }, { 34083u, 64u }, { 34090u, 64u }, { 34096u, 64u }, { 34116u, 76u }, { 34125u, 64u }, { 34131u, 25u }, { 34143u, 28u }, { 34166u, 27u }, { 34168u, 102u }, { 34190u, 96u }, { 34192u, 96u }, { 34193u, 96u }, { 34195u, 96u }, { 34196u, 96u }, { 34198u, 96u }, { 34199u, 96u }, { 34201u, 96u }, { 34202u, 54u }, { 34209u, 54u }, { 34213u, 54u }, { 34217u, 54u }, { 34224u, 54u }, { 34236u, 54u }, { 34241u, 54u }, { 34243u, 96u }, { 34245u, 96u }, { 34246u, 96u }, { 34248u, 96u }, { 34249u, 96u }, { 34251u, 96u }, { 34252u, 54u }, { 34259u, 54u }, { 34263u, 54u }, { 34266u, 96u }, { 34267u, 54u }, { 34272u, 54u }, { 34275u, 96u }, { 34277u, 96u }, { 34280u, 54u }, { 34285u, 54u }, { 34288u, 96u }, { 34290u, 96u }, { 34293u, 54u }, { 34298u, 54u }, { 34301u, 96u }, { 34306u, 96u }, { 34313u, 41u }, { 34325u, 43u }, { 34326u, 43u }, { 34332u, 43u }, { 34342u, 43u }, { 34343u, 43u }, { 34356u, 43u }, { 34361u, 43u }, { 34365u, 44u }, { 34392u, 44u }, { 34399u, 44u }, { 34413u, 44u }, { 34417u, 93u }, { 34428u, 40u }, { 34438u, 40u }, { 34439u, 40u }, { 34456u, 61u }, { 34482u, 61u }, { 34483u, 61u }, { 34489u, 61u }, { 34493u, 61u }, { 34503u, 61u }, { 34507u, 61u }, { 34508u, 61u }, { 34513u, 61u }, { 34523u, 61u }, { 34537u, 61u }, { 34539u, 35u }, { 34545u, 35u }, { 34547u, 75u }, { 34569u, 93u }, { 34574u, 75u }, { 34584u, 56u }, { 34585u, 56u }, { 34597u, 255u }, { 34602u, 56u }, { 34610u, 255u }, { 34614u, 98u }, { 34619u, 83u }, { 34622u, 83u }, { 34623u, 83u }, { 34624u, 83u }, { 34632u, 83u }, { 34634u, 98u }, { 34637u, 83u }, { 34638u, 66u }, { 34660u, 65u }, { 34678u, 69u }, { 34680u, 69u }, { 34681u, 65u }, { 34685u, 69u }, { 34690u, 69u }, { 34692u, 69u }, { 34698u, 69u }, { 34699u, 97u }, { 34713u, 97u }, { 34731u, 93u }, { 34738u, 97u }, { 34742u, 93u }, { 34743u, 97u }, { 34770u, 49u }, { 35480u, 37u }, { 35482u, 255u }, { 35484u, 37u }, { 35488u, 37u }, { 35490u, 37u }, { 35499u, 37u }, { 35501u, 37u }, { 35508u, 37u }, { 35510u, 37u }, { 35523u, 105u }, { 35525u, 255u }, { 35555u, 105u }, { 35559u, 105u }, { 35561u, 105u }, { 35569u, 105u }, { 35577u, 105u }, { 35579u, 255u }, { 35626u, 45u }, { 35683u, 45u }, { 35692u, 45u }, { 35697u, 45u }, { 35707u, 41u }, { 35715u, 41u } };
+#define LANEC_PIN_CM_C64_POINTS 296u
+static const lanec_pin_point c64_cm_points[LANEC_PIN_CM_C64_POINTS] = { { 2144u, 63u }, { 2154u, 255u }, { 2158u, 63u }, { 2159u, 63u }, { 2161u, 1u }, { 2166u, 1u }, { 2168u, 100u }, { 2169u, 100u }, { 2176u, 69u }, { 2180u, 69u }, { 2190u, 71u }, { 2192u, 69u }, { 2195u, 67u }, { 2213u, 46u }, { 2223u, 46u }, { 2233u, 4u }, { 2270u, 43u }, { 2277u, 43u }, { 2284u, 43u }, { 2304u, 88u }, { 2308u, 88u }, { 2312u, 88u }, { 2316u, 93u }, { 2320u, 39u }, { 2339u, 93u }, { 2343u, 93u }, { 2347u, 67u }, { 2350u, 67u }, { 2353u, 67u }, { 2363u, 30u }, { 2382u, 101u }, { 4470u, 59u }, { 4479u, 67u }, { 32768u, 94u }, { 32816u, 95u }, { 32818u, 95u }, { 32828u, 95u }, { 32830u, 95u }, { 32941u, 95u }, { 32953u, 95u }, { 32957u, 95u }, { 32968u, 95u }, { 32972u, 87u }, { 32988u, 87u }, { 33016u, 95u }, { 33041u, 255u }, { 33046u, 34u }, { 33054u, 34u }, { 33055u, 34u }, { 33057u, 34u }, { 33090u, 20u }, { 33102u, 85u }, { 33108u, 85u }, { 33155u, 85u }, { 33160u, 85u }, { 33164u, 21u }, { 33169u, 21u }, { 33171u, 103u }, { 33182u, 91u }, { 33183u, 104u }, { 33184u, 104u }, { 33186u, 104u }, { 33193u, 104u }, { 33195u, 85u }, { 33197u, 82u }, { 33215u, 93u }, { 33228u, 93u }, { 33229u, 93u }, { 33230u, 38u }, { 33239u, 38u }, { 33247u, 38u }, { 33257u, 38u }, { 33259u, 38u }, { 33261u, 38u }, { 33270u, 42u }, { 33278u, 42u }, { 33281u, 42u }, { 33284u, 38u }, { 33289u, 38u }, { 33297u, 42u }, { 33299u, 42u }, { 33306u, 42u }, { 33318u, 42u }, { 33323u, 42u }, { 33328u, 39u }, { 33331u, 39u }, { 33336u, 39u }, { 33338u, 39u }, { 33344u, 39u }, { 33345u, 39u }, { 33371u, 16u }, { 33375u, 93u }, { 33376u, 93u }, { 33392u, 93u }, { 33399u, 16u }, { 33403u, 14u }, { 33408u, 93u }, { 33414u, 93u }, { 33416u, 93u }, { 33417u, 93u }, { 33418u, 93u }, { 33419u, 16u }, { 33428u, 93u }, { 33429u, 93u }, { 33431u, 20u }, { 33481u, 20u }, { 33487u, 93u }, { 33488u, 93u }, { 33491u, 88u }, { 33493u, 88u }, { 33505u, 95u }, { 33511u, 99u }, { 33512u, 79u }, { 33514u, 99u }, { 33515u, 99u }, { 33516u, 99u }, { 33517u, 99u }, { 33519u, 99u }, { 33524u, 99u }, { 33526u, 95u }, { 33534u, 48u }, { 33540u, 77u }, { 33546u, 3u }, { 33569u, 60u }, { 33580u, 99u }, { 33583u, 84u }, { 33592u, 84u }, { 33602u, 84u }, { 33604u, 84u }, { 33606u, 84u }, { 33608u, 95u }, { 33792u, 93u }, { 33793u, 93u }, { 33794u, 31u }, { 33821u, 32u }, { 33830u, 89u }, { 33844u, 0u }, { 33852u, 0u }, { 33861u, 0u }, { 33870u, 55u }, { 33872u, 55u }, { 33883u, 92u }, { 33891u, 33u }, { 33937u, 58u }, { 33987u, 0u }, { 33989u, 0u }, { 33991u, 0u }, { 33992u, 0u }, { 33997u, 255u }, { 33999u, 73u }, { 34000u, 73u }, { 34015u, 73u }, { 34016u, 73u }, { 34023u, 93u }, { 34024u, 93u }, { 34025u, 88u }, { 34027u, 74u }, { 34032u, 74u }, { 34037u, 74u }, { 34043u, 74u }, { 34048u, 74u }, { 34066u, 76u }, { 34068u, 64u }, { 34070u, 64u }, { 34079u, 64u }, { 34083u, 64u }, { 34090u, 64u }, { 34096u, 64u }, { 34116u, 76u }, { 34125u, 64u }, { 34131u, 25u }, { 34143u, 28u }, { 34166u, 27u }, { 34168u, 102u }, { 34190u, 96u }, { 34192u, 96u }, { 34193u, 96u }, { 34195u, 96u }, { 34196u, 96u }, { 34198u, 96u }, { 34199u, 96u }, { 34201u, 96u }, { 34202u, 54u }, { 34209u, 54u }, { 34213u, 54u }, { 34217u, 54u }, { 34224u, 54u }, { 34236u, 54u }, { 34241u, 54u }, { 34243u, 96u }, { 34245u, 96u }, { 34246u, 96u }, { 34248u, 96u }, { 34249u, 96u }, { 34251u, 96u }, { 34252u, 54u }, { 34259u, 54u }, { 34263u, 54u }, { 34266u, 96u }, { 34267u, 54u }, { 34272u, 54u }, { 34275u, 96u }, { 34277u, 96u }, { 34280u, 54u }, { 34285u, 54u }, { 34288u, 96u }, { 34290u, 96u }, { 34293u, 54u }, { 34298u, 54u }, { 34301u, 96u }, { 34306u, 96u }, { 34313u, 41u }, { 34325u, 43u }, { 34326u, 43u }, { 34332u, 43u }, { 34342u, 43u }, { 34343u, 43u }, { 34356u, 43u }, { 34361u, 43u }, { 34365u, 44u }, { 34392u, 44u }, { 34399u, 44u }, { 34413u, 44u }, { 34417u, 93u }, { 34428u, 40u }, { 34438u, 40u }, { 34439u, 40u }, { 34456u, 61u }, { 34482u, 61u }, { 34483u, 61u }, { 34489u, 61u }, { 34493u, 61u }, { 34503u, 61u }, { 34507u, 61u }, { 34508u, 61u }, { 34513u, 61u }, { 34523u, 61u }, { 34537u, 61u }, { 34539u, 35u }, { 34545u, 35u }, { 34547u, 75u }, { 34569u, 93u }, { 34574u, 75u }, { 34584u, 56u }, { 34585u, 56u }, { 34597u, 255u }, { 34602u, 56u }, { 34610u, 255u }, { 34614u, 98u }, { 34619u, 83u }, { 34622u, 83u }, { 34623u, 83u }, { 34624u, 83u }, { 34632u, 83u }, { 34634u, 98u }, { 34637u, 83u }, { 34638u, 66u }, { 34660u, 65u }, { 34678u, 69u }, { 34680u, 69u }, { 34681u, 65u }, { 34685u, 69u }, { 34690u, 69u }, { 34692u, 69u }, { 34698u, 69u }, { 34699u, 97u }, { 34701u, 97u }, { 34715u, 97u }, { 34731u, 93u }, { 34738u, 97u }, { 34742u, 93u }, { 34743u, 97u }, { 34769u, 49u }, { 35427u, 37u }, { 35429u, 255u }, { 35431u, 37u }, { 35435u, 37u }, { 35437u, 37u }, { 35446u, 37u }, { 35448u, 37u }, { 35455u, 37u }, { 35457u, 37u }, { 35470u, 105u }, { 35472u, 255u }, { 35502u, 105u }, { 35506u, 105u }, { 35508u, 105u }, { 35516u, 105u }, { 35524u, 105u }, { 35526u, 255u }, { 35573u, 45u }, { 35630u, 45u }, { 35639u, 45u }, { 35644u, 45u }, { 35654u, 41u }, { 35662u, 41u } };
 #define LANEC_PIN_C64_MAX 26u
 #ifndef LANEC_PIN_C64
-static const dispatch c64_runs[105] = { lanec_pw_address_request_run, lanec_pw_alarm_cycle_run, lanec_pw_alarm_recycle_run, lanec_pw_blank_run, lanec_pw_blanksub_run, lanec_pw_charin_alarm_run, lanec_pw_charin_clear_run, lanec_pw_charin_number_run, lanec_pw_charin_nv_run, lanec_pw_charin_release_run, lanec_pw_charin_reset_run, lanec_pw_charin_sign_run, lanec_pw_cm_charin_number_run, lanec_pw_cm_charin_nv_run, lanec_pw_cm_decimal_pair_run, lanec_pw_cm_dynamic_display_run, lanec_pw_cm_formatter_run, lanec_pw_cm_minutes_seconds_run, lanec_pw_cm_normal_display_run, lanec_pw_cm_nv85_run, lanec_pw_cm_pinball_run, lanec_pw_cm_scale_run, lanec_pw_decimal_run, lanec_pw_decimal_consumer_run, lanec_pw_decimal_general_run, lanec_pw_decimal_load_run, lanec_pw_decimal_raw_run, lanec_pw_decimal_row_run, lanec_pw_decimal_select_run, lanec_pw_decimal_time_consumer_run, lanec_pw_display_release_run, lanec_pw_enter_run, lanec_pw_enter_zero_run, lanec_pw_extended_dispatch_run, lanec_pw_five_blank_run, lanec_pw_fixed_display_run, lanec_pw_fraction_pair_run, lanec_pw_hours_output_run, lanec_pw_input_angle_run, lanec_pw_input_arithmetic_run, lanec_pw_input_factor_run, lanec_pw_input_mode_run, lanec_pw_input_scale_run, lanec_pw_input_select_run, lanec_pw_input_store_run, lanec_pw_input_time_run, lanec_pw_jam_control_run, lanec_pw_lamp_lifecycle_run, lanec_pw_lamp_release_run, lanec_pw_lamp_test_run, lanec_pw_lm_pinball_busy_run, lanec_pw_load_complete_run, lanec_pw_load_control_run, lanec_pw_load_request_run, lanec_pw_load_store_run, lanec_pw_machine_cadr_run, lanec_pw_major_request_run, lanec_pw_minutes_output_run, lanec_pw_mixed_noun_run, lanec_pw_mode_admit_run, lanec_pw_mode_job_run, lanec_pw_monitor_run, lanec_pw_monitor_consumer_run, lanec_pw_monitor_paste_run, lanec_pw_noun_check_run, lanec_pw_nv_admission_run, lanec_pw_nv_blank_run, lanec_pw_nv_busy_run, lanec_pw_nv_consumer_run, lanec_pw_nv_continuation_run, lanec_pw_nv_key_run, lanec_pw_nv_return_run, lanec_pw_nv_update_run, lanec_pw_nv_update_general_run, lanec_pw_octal_consumer_run, lanec_pw_octal_display_run, lanec_pw_octal_verb_run, lanec_pw_operator_release_run, lanec_pw_operator_request_run, lanec_pw_operator_response_run, lanec_pw_operator_schedule_run, lanec_pw_pinball_run, lanec_pw_read_pair_run, lanec_pw_request_control_run, lanec_pw_response_recall_run, lanec_pw_scalar_output_run, lanec_pw_scale_run, lanec_pw_sign_output_run, lanec_pw_source_alarm_run, lanec_pw_test_noun_run, lanec_pw_two_digit_run, lanec_pw_two_integer_run, lanec_pw_verb_dispatch_run, lanec_pin_gaps_dispatch, lanec_pin_keys_dispatch, lanec_pin_keys_dispatch, lanec_pin_head_load_run, lanec_pin_head_lamp_run, lanec_pin_head_request_run, lanec_pin_head_proceed_run, lanec_pin_head_nvsub_run, lanec_pin_head_decount_run, lanec_pin_head_dpout_run, lanec_pin_head_twoint_run, lanec_pin_head_minsec_run };
+static const dispatch c64_runs[106] = { lanec_pw_address_request_run, lanec_pw_alarm_cycle_run, lanec_pw_alarm_recycle_run, lanec_pw_blank_run, lanec_pw_blanksub_run, lanec_pw_charin_alarm_run, lanec_pw_charin_clear_run, lanec_pw_charin_number_run, lanec_pw_charin_nv_run, lanec_pw_charin_release_run, lanec_pw_charin_reset_run, lanec_pw_charin_sign_run, lanec_pw_cm_charin_number_run, lanec_pw_cm_charin_nv_run, lanec_pw_cm_decimal_pair_run, lanec_pw_cm_dynamic_display_run, lanec_pw_cm_formatter_run, lanec_pw_cm_minutes_seconds_run, lanec_pw_cm_normal_display_run, lanec_pw_cm_nv85_run, lanec_pw_cm_pinball_run, lanec_pw_cm_scale_run, lanec_pw_decimal_run, lanec_pw_decimal_consumer_run, lanec_pw_decimal_general_run, lanec_pw_decimal_load_run, lanec_pw_decimal_raw_run, lanec_pw_decimal_row_run, lanec_pw_decimal_select_run, lanec_pw_decimal_time_consumer_run, lanec_pw_display_release_run, lanec_pw_enter_run, lanec_pw_enter_zero_run, lanec_pw_extended_dispatch_run, lanec_pw_five_blank_run, lanec_pw_fixed_display_run, lanec_pw_fraction_pair_run, lanec_pw_hours_output_run, lanec_pw_input_angle_run, lanec_pw_input_arithmetic_run, lanec_pw_input_factor_run, lanec_pw_input_mode_run, lanec_pw_input_scale_run, lanec_pw_input_select_run, lanec_pw_input_store_run, lanec_pw_input_time_run, lanec_pw_jam_control_run, lanec_pw_lamp_lifecycle_run, lanec_pw_lamp_release_run, lanec_pw_lamp_test_run, lanec_pw_lm_pinball_busy_run, lanec_pw_load_complete_run, lanec_pw_load_control_run, lanec_pw_load_request_run, lanec_pw_load_store_run, lanec_pw_machine_cadr_run, lanec_pw_major_request_run, lanec_pw_minutes_output_run, lanec_pw_mixed_noun_run, lanec_pw_mode_admit_run, lanec_pw_mode_job_run, lanec_pw_monitor_run, lanec_pw_monitor_consumer_run, lanec_pw_monitor_paste_run, lanec_pw_noun_check_run, lanec_pw_nv_admission_run, lanec_pw_nv_blank_run, lanec_pw_nv_busy_run, lanec_pw_nv_consumer_run, lanec_pw_nv_continuation_run, lanec_pw_nv_key_run, lanec_pw_nv_return_run, lanec_pw_nv_update_run, lanec_pw_nv_update_general_run, lanec_pw_octal_consumer_run, lanec_pw_octal_display_run, lanec_pw_octal_verb_run, lanec_pw_operator_release_run, lanec_pw_operator_request_run, lanec_pw_operator_response_run, lanec_pw_operator_schedule_run, lanec_pw_pinball_run, lanec_pw_read_pair_run, lanec_pw_request_control_run, lanec_pw_response_recall_run, lanec_pw_scalar_output_run, lanec_pw_scale_run, lanec_pw_sign_output_run, lanec_pw_source_alarm_run, lanec_pw_test_noun_run, lanec_pw_two_digit_run, lanec_pw_two_integer_run, lanec_pw_verb_dispatch_run, lanec_pin_gaps_dispatch, lanec_pin_keys_dispatch, lanec_pin_keys_dispatch, lanec_pin_head_load_run, lanec_pin_head_lamp_run, lanec_pin_head_request_run, lanec_pin_head_proceed_run, lanec_pin_head_nvsub_run, lanec_pin_head_release_run, lanec_pin_head_decount_run, lanec_pin_head_dpout_run, lanec_pin_head_twoint_run, lanec_pin_head_minsec_run };
 #endif

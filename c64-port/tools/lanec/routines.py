@@ -75,6 +75,7 @@ FAMILIES = {
                        'request': ('operator_request', 'operator_schedule'),
                        'proceed': ('load_control',),
                        'nvsub': ('nv_admission', 'nv_consumer'),
+                       'release': (),
                        # the display heads (docs/LANEC-PIN-HEADS-DISPLAY.md)
                        'decount': ('decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display', 'cm_nv85'),
                        'dpout': ('decimal_consumer', 'decimal_time_consumer', 'cm_dynamic_display', 'cm_normal_display',
