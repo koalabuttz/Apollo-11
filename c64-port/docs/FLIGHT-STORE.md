@@ -413,6 +413,14 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   1,015 since more of a pass runs inside one module. The T5 pass count
   also moved (90 to 86): the work clock charges a module's steps at that
   module's MCT, so the two runs are not step-for-step the same 300 cs.
+  The jet-select pack then split inside the T6 program (T6START and the
+  chain after it, 17,3617 to 17,3713), so each T6RUPT loaded its two
+  chunks by turns. `SPLIT_BEFORE` starts a chunk at a given key: the jet
+  pack's second chunk now begins at T6START and holds the whole T6 chain.
+  On a090a136 (cm-p40 from 70660 cs with `--replay`, 308 cs) that took
+  T6RUPT from 173 job loads to 29 (one a pass) and its mean cost from
+  253,509 to 90,897 cycles, and the window from 11.79x to 10.22x real
+  time; every other interrupt's counts are unchanged.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then

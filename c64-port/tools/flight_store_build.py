@@ -801,6 +801,13 @@ ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
 RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines', 'cm_mysubs_routines']}
 JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
 MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines']}
+# A split pack starts a new chunk at these keys (bank << 10 | offset in
+# the bank), so the routines a pass runs back to back share one chunk. CM
+# JETPACK: T6START (17,3617) and the T6 program chain after it (17,3654 to
+# 17,3713) run in each T6RUPT; split greedily the first chunk ended at
+# 17,3663, so a T6RUPT loaded jet-0 and jet-1 by turns (173 job loads in
+# 29 T6RUPTs of cm-p40's window from 70660 cs; 29 with the cut).
+SPLIT_BEFORE = {'cm_jet': [0o17 << 10 | 0o1617]}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
@@ -1327,8 +1334,12 @@ def main():
             as split_greedy): the pass then loads one per chunk it crosses.
             One table splits by FS_CHUNK; several split their entries in key
             order (FS_PICK), so a small table's keys go to the chunk with
-            the keys beside them. Ids follow the pack's."""
+            the keys beside them. A chunk also ends before a SPLIT_BEFORE
+            key. Ids follow the pack's."""
             entries = sorted(((t, i) for t in pts for i in range(len(keys[t]))), key=lambda e: keys[e[0]][e[1]])
+            cuts = sorted({j for c in SPLIT_BEFORE.get(pack['prg_name'], ())
+                           for j in range(1, len(entries)) if keys[entries[j - 1][0]][entries[j - 1][1]] < c
+                           <= keys[entries[j][0]][entries[j][1]]})
 
             def part(lo, hi):
                 if len(pts) == 1:
@@ -1336,7 +1347,7 @@ def main():
                 return dict(basic=[], pick=entries[lo:hi])
             out, lo, n = [], 0, len(entries)
             while lo < n:
-                good, bad = lo, n + 1
+                good, bad = lo, min([j for j in cuts if j > lo] + [n]) + 1
                 while bad - good > 1:
                     mid = (good + bad) // 2
                     r = link(dict(pack, **part(lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
