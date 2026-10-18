@@ -3,7 +3,17 @@
 static uint8_t controls(uint16_t *w,p66_bias_io *io,enum dsky_nv_mission mission){return(uint8_t)((unsigned)mission<2u&&w[4]==062000u&&w[3]<=03400u&&(w[3]&0377u)==0&&w[6]==(062000u|(w[3]>>8))&&w[7]==0&&io->superbank<=0160u&&(io->superbank&017u)==0&&(io->superbank&0100u)!=0&&io->interrupt_enabled<=1u);}
 static agc_word component(uint16_t *w){return(agc_word)((w[w[0140]==1u?0147u:0146u]&076000u)>>10);}
 static agc_word resolve(uint16_t *w,agc_word n){return n<01400u?n:(agc_word)(w[3]+(n&0377u));}
-static agc_word read_source(uint16_t *w,agc_word n){agc_word at=resolve(w,n),value=w[at];return value;}
+/* A noun at the top of erasable (the LM's TCDH at 01776) reads its last
+ * words from fixed memory: FB 31 with superbank 4 is bank 41, whose first
+ * words are TC NVSUB1 and TC LOADLV1 in both missions. */
+static agc_word read_source(uint16_t *w,agc_word n){if(n>=02000u)return n==02000u?03544u:02775u;return w[resolve(w,n)];}
+/* Every word the verb reads: from 010 up (0-07 are the central registers
+ * Pinball itself is using), never the editing registers 020-023 (a read
+ * rewrites them) or BANKRUPT and BRUPT (016-017, which every interrupt
+ * rewrites), and past 01777 only the two fixed words above, with the
+ * superbank Pinball runs under. */
+static uint8_t readable(uint16_t *w,p66_bias_io *io,agc_word first,agc_word count)
+{agc_word k,at;for(k=0;k<count;++k){agc_word n=(agc_word)(first+k);if(n>=02000u){if(n>02001u||io->superbank!=0100u)return 0;continue;}at=resolve(w,n);if(at<010u||(at>=016u&&at<=023u))return 0;}return 1;}
 static void row(uint16_t *w,agc_word k){static const agc_word count[3]={016,011,004};w[0122]=k;w[0777]=count[k];w[0]=agc_extend(agc_negate(w[0130u+k]));w[2]=02422;w[5]=03363;}
 static uint8_t comp_test(uint16_t *w,agc_word index,agc_word caller){agc_word code=component(w),count=(agc_word)(code&3u);w[0123]=agc_negate(index);w[1]=caller;w[022]=agc_negate(code);w[0]=agc_diminished_abs(agc_correct(agc_add_register(count,agc_extend(w[0123]))));if(count<index){w[2]=02436;w[5]=02351;return 0;}return 1;}
 enum p66_bias_status dsky_octal_verb_begin(apollo_overlay_state *s,p66_bias_io *io,enum dsky_nv_mission mission,enum dsky_octal_verb_route *route)
@@ -13,7 +23,9 @@ enum p66_bias_status dsky_octal_verb_begin(apollo_overlay_state *s,p66_bias_io *
  w=s->words;verb=w[01001];channel=(uint8_t)(verb==1u&&w[0146]==077776u);
  if(!controls(w,io,mission)||verb<1u||verb>5u||w[5]!=pc[verb-1u]||(w[0140]!=1u&&w[0140]!=2u))return P66_BIAS_OUT_OF_SCOPE;
  routine=(agc_word)((w[0147]>>5)&037u);
- if(!channel&&(w[0145]<010u||w[0145]>01775u||resolve(w,w[0145])<010u||(resolve(w,w[0145])>=016u&&resolve(w,w[0145])<=023u)))return P66_BIAS_OUT_OF_SCOPE;
+ if(!channel){uint8_t step=(uint8_t)(verb==1u&&w[0140]==1u&&(routine==4u||routine==5u||routine==7u||routine==10u||(mission==DSKY_NV_CM&&routine==13u)));
+  agc_word first=(agc_word)(w[0145]+(verb==2u||verb==3u?verb-1u:step)),count=verb==5u?3u:verb==4u?2u:1u;
+  if(w[0145]>01777u||!readable(w,io,first,count))return P66_BIAS_OUT_OF_SCOPE;}
  if((verb==1u||verb>=4u)&&w[0140]==1u&&!channel&&routine>13u)return P66_BIAS_OUT_OF_SCOPE;
  w[1]=agc_extend(agc_correct(w[1]));
  if(verb==5u){if(!comp_test(w,2,02355)){*route=DSKY_VERB_ALARM;return P66_BIAS_OK;}w[0132]=agc_negate(read_source(w,(agc_word)(w[0145]+2u)));}

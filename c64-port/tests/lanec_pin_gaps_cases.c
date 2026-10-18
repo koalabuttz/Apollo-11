@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Cases for Pinball verb 07 and CHANLOAD: both MIXBR branches, NOUNADD over
  * unswitched and switched erasable (pairs that overlap MPAC or the editing
- * registers included),
+ * registers included; a mixed noun at any NOUNADD, low and top too),
  * both return points, a channel load for every channel 0-077, DSP2DEC from
  * its entry (Q with and without overflow) and from each return, and the
  * NVSUBB/LOADLV1 lead-ins, and DSPDCWD1 from both entries and from DSPIN's
@@ -82,6 +82,8 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         lanec_enter(s, io, 040u, x);
         w[LANEC_LM_MIXBR] = entry == 3u ? 2u : 1u;
         w[LANEC_LM_NOUNADD] = nounadd(&r, v);
+        /* a mixed noun never reads NOUNADD: any value, low and top included */
+        if (entry == 3u && v % 4u == 3u) w[LANEC_LM_NOUNADD] = (uint16_t)(lanec_rand(&r) % 2u ? lanec_rand(&r) % 010u : 01777u - lanec_rand(&r) % 2u);
         range(m, 040u, x, (uint16_t)(x + 12u));
         break;
     case 4: case 5:                  /* TPAGREE returns to +13, DSP2DEC to ENDDPDEC */

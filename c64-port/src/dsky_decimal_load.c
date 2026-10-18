@@ -25,7 +25,7 @@ enum p66_bias_status dsky_decimal_load(apollo_overlay_state *s,p66_bias_io *io,e
          * 01776) reads its last words from fixed memory: FB 31 with the
          * superbank is bank 41, whose first words are TC NVSUB1 and
          * TC LOADLV1 in both missions. */
-        if(address>=02000u)value=address==02000u?03544u:02775u;
+        if(address>=02000u){if(io->superbank!=0100u)return P66_BIAS_OUT_OF_SCOPE;value=address==02000u?03544u:02775u;}
         else{if(address>=01400u)address=(agc_word)(w[3]+(address&0377u));value=source_read(w,address);}w[01003u+count]=agc_negate(value);
         if(count==0)break;
         --count;w[2]=02537;

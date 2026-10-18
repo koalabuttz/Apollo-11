@@ -85,13 +85,13 @@ enum lanec_status lanec_pin_dspdpdec(apollo_overlay_state *s, lanec_io *io, enum
     if (z == x + 13u) { lanec_tc(s, p->dsp2dec, (uint16_t)(x + 14u)); return LANEC_OK; }
     if (z == x + 14u) { lanec_tc(s, ENTEXIT, (uint16_t)(x + 15u)); return LANEC_OK; }
     k = w[NOUNADD];
-    if (z != x || (w[MIXBR] != 1u && w[MIXBR] != 2u) || k < 010u || k == 01377u || k > 01776u)
-        return LANEC_OUT_OF_SCOPE;
+    if (z != x || (w[MIXBR] != 1u && w[MIXBR] != 2u)) return LANEC_OUT_OF_SCOPE;
     if (w[MIXBR] == 2u) {                                   /* mixed noun: TC +0 indexed to TC DSPALARM */
-        lanec_tc(s, (uint16_t)(x + 3u), (uint16_t)(x + 2u));
+        lanec_tc(s, (uint16_t)(x + 3u), (uint16_t)(x + 2u));    /* (NOUNADD is not read) */
         lanec_tc(s, p->dspalarm, (uint16_t)(x + 4u));
         return LANEC_OK;
     }
+    if (k < 010u || k == 01377u || k > 01776u) return LANEC_OUT_OF_SCOPE;
     lanec_tc(s, (uint16_t)(x + 2u), (uint16_t)(x + 2u));    /* normal noun: TC +0 indexed to TC +2 */
     lanec_tc(s, (uint16_t)(x + 4u), (uint16_t)(x + 3u));
     lo = lanec_erasable(s, (uint16_t)(k + 1u));            /* DCA: L first */

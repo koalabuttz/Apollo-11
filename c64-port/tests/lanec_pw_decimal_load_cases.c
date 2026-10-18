@@ -21,6 +21,7 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         uint16_t *w = s->words, f = w[0140] == 1u ? 0147u : 0146u;
         w[0145] = (uint16_t)(01776u + (i & 1u));
         w[f] = (uint16_t)((w[f] & ~06000u) | ((1u + (i / 2u) % 2u) << 10));
+        p.superbank = 0100u;   /* Pinball's own bank 41: the fixed words it reads */
     }
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
