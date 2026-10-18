@@ -128,9 +128,16 @@ enum apollo_ov2_status apollo_ov2_run(apollo_ov2_runtime *r,uint8_t context,
     if(r->busy) return APOLLO_OV2_BUSY;
     if(r->fault) return APOLLO_OV2_FAULTED;
     if(context>=APOLLO_OV2_CONTEXTS) return APOLLO_OV2_BAD_CONTEXT;
+#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+    /* The runtime's state, store functions and header buffer are fixed at
+     * init by the one caller (rk_boot), and the verified load() never reads
+     * the header buffer: only the per-call pointers are checked. */
+    if(!value || !action || !resume) return APOLLO_OV2_BAD_DIRECTORY;
+#else
     if(!value || !action || !resume || !r->state || !r->header || !r->store.lookup || !r->store.fetch ||
        !r->store.resolve || !r->store.invoke)
         return APOLLO_OV2_BAD_DIRECTORY;
+#endif
     seams=&r->seams[context];
     r->busy=1;
     r->frame.value=*value;

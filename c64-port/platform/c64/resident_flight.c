@@ -90,7 +90,14 @@ __attribute__((noinline)) static uint16_t rk_limit(uint8_t mct) { return rk_modu
 #endif
 #endif
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
-static uint8_t record[APOLLO_REU_INDEX_RECORD],header[APOLLO_OV2_HEADER_BYTES];
+static uint8_t record[APOLLO_REU_INDEX_RECORD];
+#if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)
+/* The verified load() reads no header copy (src/overlay_v2.c). */
+#define RK_HEADER_BUFFER 0
+#else
+static uint8_t header[APOLLO_OV2_HEADER_BYTES];
+#define RK_HEADER_BUFFER header
+#endif
 /* The boundary-word table: its REU bank, its address and end (the store
  * image's tail, within one 64 KB bank) and record count. */
 static uint16_t boundary_address,boundary_end;
@@ -210,7 +217,7 @@ uint8_t BOOT rk_boot(void) {
     }
 #endif
     apollo_ov2_init(&rk_runtime,apollo_reu_store_backend(&rk_store,c64_ov2_invoke,0),
-        (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,header,IMAGE,
+        (uint8_t *)APOLLO_OV2_JOB_ADDRESS,(uint8_t *)APOLLO_OV2_TASK_ADDRESS,RK_HEADER_BUFFER,IMAGE,
         RK_MISSION,RK_SERVICES_VERSION,0);
     {
         /* The boundary-word table ends the image: its entries, then their
