@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 73216,
- "cases_sha256": "c3dc0a06ad6bc9c317b717b7f2c6fe36ce1b5ab816308053496f9ad49c041271",
- "oracle_sha256": "850bcdc44a4c113664c082441282c953b77b0fec81596815b60094044a9d9cba",
+ "cases_sha256": "abc13b2b8e446ce960a4cf71d8d91f8250e96e9fc59eb1b1d3fe7d78f5a68200",
+ "oracle_sha256": "1850a07388f366204331a919cacd229f9c337a2eae47ca31f8f731769bdaf2b2",
  "frozen_vectors": 572,
  "c64_vectors": [
   {
@@ -134,8 +134,8 @@
   },
   {
    "mission": "cm",
-   "keep": "0x17fffffffc0000000000000000",
-   "cases": 43,
+   "keep": "0x11fffffffc0000000000000000",
+   "cases": 42,
    "case_ids": [
     34149,
     34320,
@@ -147,8 +147,9 @@
     37304,
     36936,
     37560,
-    37984,
-    38480,
+    38240,
+    38232,
+    38704,
     39232,
     39624,
     39891,
@@ -166,8 +167,8 @@
     43160,
     43192,
     43608,
-    44112,
-    44880,
+    44376,
+    45024,
     44984,
     45112,
     45568,
@@ -177,16 +178,16 @@
     47632,
     48152,
     48760,
-    49168,
-    49680,
-    50176
+    49168
    ]
   },
   {
    "mission": "cm",
-   "keep": "0x7ffffffffff8300000000000000030000180",
-   "cases": 45,
+   "keep": "0x7ffffffffffe300000000000000030000180",
+   "cases": 47,
    "case_ids": [
+    49680,
+    50176,
     50736,
     51208,
     51720,
@@ -236,8 +237,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 919,
-  "c64_taken": 919,
+  "host_taken": 921,
+  "c64_taken": 921,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -1723,12 +1724,12 @@
    "05170": 136
   },
   "CM 32,2123 ": {
-   "06037": 402,
-   "05170": 110
+   "06037": 390,
+   "05170": 122
   },
   "CM 32,2126 ": {
-   "06037": 387,
-   "05170": 125
+   "06037": 383,
+   "05170": 129
   },
   "CM 32,2130 LOOPSET": {
    "06037": 385,
@@ -1771,12 +1772,12 @@
    "06037": 383
   },
   "CM 32,2161 ": {
-   "05170": 117,
-   "06037": 395
+   "05170": 109,
+   "06037": 403
   },
   "CM 32,2164 ": {
-   "05170": 129,
-   "06037": 383
+   "06037": 378,
+   "05170": 134
   },
   "CM 32,2166 TENT": {
    "06037": 512
@@ -3507,8 +3508,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 9408,
- "host_branch_arcs": 948,
- "c64_rows": 179,
- "c64_branch_arcs": 948,
+ "host_branch_arcs": 950,
+ "c64_rows": 180,
+ "c64_branch_arcs": 950,
  "host_branches_missing_on_c64": []
 }
