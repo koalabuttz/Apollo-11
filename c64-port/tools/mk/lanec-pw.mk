@@ -32,9 +32,11 @@ LANEC_PW_C64_SRC = src/agc_word.c src/lanec.c tests/lanec_case.c tests/lanec_pw.
   src/p66_% src/lanec_pin_gaps% src/lm_admission% src/lm_interbank.c src/lm_waitlist% src/lm_fixed% src/lm_pinball% src/gimbal% \
   src/matrix% src/waitlist% tests/dsky_% tests/p66_% tests/cm_%_cases.c tests/lm_busy_cases.c tests/matrix_cases.c \
   tests/throttle_bridge_cases.c tests/lanec_p66_dispatch.c,$(LANEC_SUITE_SRC)))
-# These modules do not fit one program with the harness; each runs on the C64
-# in its own milestone's program (tools/mk/legacy-vice.mk), named in the
-# Pinball certificates' vice_targets.
+# These modules do not fit one program with the harness. fixed-display runs
+# on the C64 through the Pinball flight modules loaded from the REU store
+# (vice-lanec-pin-flight, tools/mk/lanec-pin-heads.mk); the others no longer
+# run in the program (routines.py pin `dropped`, docs/LANEC-PIN-HEADS.md):
+# their suites stay as host tests and are not in the Pinball certificates.
 LANEC_PW_C64_TOO_BIG = pw-cm-dynamic-display pw-cm-normal-display pw-cm-nv85 pw-decimal-time-consumer pw-fixed-display \
   pw-lamp-lifecycle pw-monitor-consumer
 LANEC_PW_PRGS = $(foreach s,$(filter-out $(LANEC_PW_C64_TOO_BIG),$(LANEC_PW_SUITES)),build/lanec-$(s).prg)
@@ -57,16 +59,21 @@ vice-lanec-pw: $(LANEC_PW_PRGS)
 # that mission's INTER-BANK and the module's points and runs those rows.
 LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/lanec_pin_trampoline.c src/agc_transfer.c src/lm_interbank_routines.c src/lm_interbank_idle.c \
   src/lm_interbank.c src/cm_interbank_routines.c src/cm_interbank_idle.c src/cm_interbank_complete.c tests/lanec_pin_transfer_cases.c
-# These modules' programs do not fit below the mailbox page with INTER-BANK
-# and the harness (their rows' arcs are taken on the C64 by the module's own
-# pw-* program and the other round-trip programs: tools/lanec/cover.py record
-# --pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
-LANEC_PIN_C64_TOO_BIG = pw_address_request_cm pw_address_request_lm pw_cm_dynamic_display_cm pw_cm_minutes_seconds_cm \
-  pw_decimal_consumer_cm pw_decimal_consumer_lm pw_decimal_time_consumer_cm pw_decimal_time_consumer_lm \
-  pw_fixed_display_cm pw_fixed_display_lm pw_jam_control_cm pw_jam_control_lm pw_lamp_lifecycle_cm pw_lamp_lifecycle_lm \
-  pw_load_complete_cm pw_load_complete_lm pw_load_request_cm pw_load_request_lm pw_operator_release_cm \
-  pw_operator_release_lm pw_operator_response_cm pw_operator_response_lm \
-  pin_keys_cm pin_keys_lm pin_key_labels_cm pin_key_labels_lm
+# These modules' programs do not build or fit below the mailbox page with
+# INTER-BANK and the harness: the head families (their cases chain through
+# every Pinball routine), the keypress modules and eleven modules over $C000;
+# and the fixed display, whose rows read the rope (DSPFMEM), which a
+# program without the REU store does not carry.
+# Their rows do not run (tools/lanec/cover.py record --not-run); their
+# modules run on the C64 in their own pw-* programs and through the flight
+# store (vice-lanec-pin-flight, module-test-lanec-pin-keys), and the record
+# pools those programs' arcs (--pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
+LANEC_PIN_C64_TOO_BIG = $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
+  proceed_cm proceed_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \
+  pin_keys_lm pw_address_request_cm pw_address_request_lm pw_fixed_display_cm pw_fixed_display_lm \
+  pw_hours_output_cm pw_hours_output_lm pw_jam_control_cm \
+  pw_jam_control_lm pw_lamp_release_lm pw_operator_release_cm pw_operator_release_lm pw_operator_response_cm \
+  pw_operator_response_lm pw_response_recall_cm pw_response_recall_lm
 LANEC_PIN_C64_MODULES := $(filter-out $(LANEC_PIN_C64_TOO_BIG),$(shell sed -n 's/^\#ifdef LANEC_PIN_C64_MOD_//p' \
   tests/lanec_pin_transfer_c64_rows.h 2>/dev/null))
 LANEC_PIN_C64_PRGS = $(foreach m,$(LANEC_PIN_C64_MODULES),build/lanec-pin-transfer-$(m).prg)

@@ -116,17 +116,29 @@ int main(int argc,char **argv){const char *path=argc>1?argv[1]:"evidence/fixed-d
   if(n%RR_BLOCK==RR_BLOCK-1u){++checks;if(block!=VECTORS.timer[n/RR_BLOCK]){++failures;fprintf(stderr,"timer cases %u-%u differ from yaAGC\n",(unsigned)(n+1u-RR_BLOCK),(unsigned)n);}block=RR_BASIS;}}
  /* The radar cycle (yaAGC agc_engine.c RadarGateCounter): with channel 13
   * bit 4 set, the gate counts TIME5's steps; RADARUPT and bit 4's reset
-  * come before the TIME5 step after the ninth count, so in the tenth
-  * period; a reset bit 4 holds the count. */
+  * come at the TIME3 step after the ninth count (yaAGC: SCALER1 036, the
+  * next step before TIME5), so in the tenth period; a reset bit 4 holds the
+  * count. */
  {static apollo_overlay_state s;agc_hardware hw={0};uint16_t pending;unsigned period,p,at=0;
   hw.channel13=040010u;
   for(period=1;period<=12u;++period){
    if(period==4u)hw.channel13&=(agc_word)~010u;   /* held for periods 4-5 */
    if(period==6u)hw.channel13|=010u;
    for(p=RK_PHASE_T4;p<=RK_PHASE_T5;++p){pending=0;rk_timer_phase(&s,&hw,&pending,(uint8_t)p);
-    if(pending&RK_RUPT_BIT(RK_RUPT_RADAR)){if(at||p!=RK_PHASE_T5)at=99u;else at=period;}}}
+    if(pending&RK_RUPT_BIT(RK_RUPT_RADAR)){if(at||p!=RK_PHASE_T3)at=99u;else at=period;}}}
   ++checks;
   if(at!=12u||(hw.channel13&010u)||hw.radar_gate){++failures;fprintf(stderr,"radar cycle: RADARUPT in period %u, channel 13 %o, gate %u\n",at,(unsigned)hw.channel13,(unsigned)hw.radar_gate);}}
+ /* Resampling (P20-P25 NOEND/RESAMPLE: RADARUPT sets bit 4 again before
+  * it resumes): each cycle takes nine TIME5 steps, as on yaAGC, so the
+  * requests come every nine periods, at periods 10, 19, 28, 37 and 46. */
+ {static apollo_overlay_state s;agc_hardware hw={0};uint16_t pending;unsigned period,p,k=0,bad=0;
+  static const unsigned want[5]={10u,19u,28u,37u,46u};
+  hw.channel13=010u;
+  for(period=1;period<=50u;++period)
+   for(p=RK_PHASE_T4;p<=RK_PHASE_T5;++p){pending=0;rk_timer_phase(&s,&hw,&pending,(uint8_t)p);
+    if(pending&RK_RUPT_BIT(RK_RUPT_RADAR)){if(k>=5u||want[k]!=period||p!=RK_PHASE_T3)++bad;++k;hw.channel13|=010u;}}
+  ++checks;
+  if(bad||k!=5u){++failures;fprintf(stderr,"radar resample: %u requests, %u off the yaAGC periods\n",k,bad);}}
  printf("%s: resident-rupt %s: %u entry cases (%u taken; not taken: %u nothing pending, %u in an interrupt, %u inhibited, %u overflow in A, %u RELINT/INHINT/EXTEND at Z), "
         "%u T3RUPT cases (%u to RESUME, %u kernel routines), %u other-vector cases (%u to RESUME, %u to a point no table holds, %u refused, %u not taken, %u runaway; %u routines), %u timer periods (T6 %u, T5 %u, T3 %u, T4 %u raised); %u checks, %u failures\n",
         failures?"FAIL":"PASS",NAME,(unsigned)RR_ENTRY_CASES,taken,why[0],why[1],why[2],why[3],why[4],(unsigned)RR_T3_CASES,t3_done,(unsigned)t3_steps,

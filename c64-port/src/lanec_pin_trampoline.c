@@ -9,7 +9,16 @@
 #include "cm_downtelemetry.h"
 
 static lanec_io io;                 /* the trampoline runs one routine at a time */
-#ifndef LANEC_PIN_C64
+#if !defined(LANEC_PIN_C64) && defined(__mos__)
+/* A flight module keeps the state each claiming module starts from in the
+ * REU, not in its 16 KB slot: the last 4 KB below the CM rope image, above
+ * the LM one (include/rope_image.h: 36 K words, two bytes each, from
+ * 0x1c0000 to 0x1d2000), which neither rope nor the module store uses. */
+#include "overlay_reu.h"
+#define LANEC_PIN_REU_SAVE 0x1df000ul
+#define LANEC_PIN_SAVE(s) ((void)apollo_reu_transfer(APOLLO_REU_STASH, (s), LANEC_PIN_REU_SAVE, sizeof *(s)))
+#define LANEC_PIN_RESTORE(s) ((void)apollo_reu_transfer(APOLLO_REU_FETCH, (s), LANEC_PIN_REU_SAVE, sizeof *(s)))
+#elif !defined(LANEC_PIN_C64)
 static apollo_overlay_state entry;  /* the state each claiming module starts from */
 #define LANEC_PIN_SAVE(s) (entry = *(s))
 #define LANEC_PIN_RESTORE(s) (*(s) = entry)

@@ -12,7 +12,10 @@
  * branch-coverage traces, tools/lanec/cover.sh). "native --states SUITE"
  * prints each case's entry state instead, "n LM|CM" and the oracle row's
  * fields, without running it (the C64 module-test harness's cases,
- * tools/module_test.py).
+ * tools/module_test.py). "native --flight SUITE" runs each case as the C64
+ * flight store does under tools/module_test.py --limit 1: the one Pinball
+ * routine registered at its entry (the try-list there, through the transfer
+ * engine, lanec_pin_chain_max), status 1 when none accepts it.
  * A refused case (LANEC_OUT_OF_SCOPE) must leave the image and I/O exactly as
  * they were; one that does not is printed with status 2, which no oracle row
  * matches. */
@@ -23,7 +26,10 @@
 #include "lanec_case.h"
 #include "lanec_suites.h"
 #include "dsky_fixed_display.h"
+#include "agc_transfer.h"
 static apollo_overlay_state s, before;
+enum exec_status lanec_pin_chain_max(apollo_overlay_state *, lanec_io *, enum lanec_mission, uint16_t stop,
+                                     uint16_t max_steps, uint16_t *steps);
 
 /* The rope for modules that read it as data (lanec_fixed_read): the
  * missions' fixed-memory images the earlier display modules use. */
@@ -36,7 +42,8 @@ int main(int argc, char **argv)
 {
     int exits = argc == 3 && !strcmp(argv[1], "--exits");
     int states = argc == 3 && !strcmp(argv[1], "--states");
-    int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits || states;
+    int flight = argc == 3 && !strcmp(argv[1], "--flight");
+    int entries = (argc == 3 && !strcmp(argv[1], "--entries")) || exits || states || flight;
     const lanec_suite *suite = argc == 2 + entries || (!entries && argc == 3) ? lanec_find_suite(argv[1 + entries]) : 0;
     uint32_t only = !entries && argc == 3 ? (uint32_t)strtoul(argv[2], 0, 10) : UINT32_MAX;   /* SUITE CASE: that case alone */
     lanec_io io, io_before;
@@ -44,8 +51,9 @@ int main(int argc, char **argv)
     enum lanec_status status;
     uint32_t n;
     unsigned i, bank, z, interp;
+    uint16_t steps;
     lanec_fixed_read = fixed;
-    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits|--states] SUITE | native SUITE CASE\n"); return 2; }
+    if (!suite) { fprintf(stderr, "usage: native [--entries|--exits|--states|--flight] SUITE | native SUITE CASE\n"); return 2; }
     for (n = only == UINT32_MAX ? 0 : only; n < suite->count && n <= only; ++n) {
         memset(&meta, 0, sizeof meta);
         suite->make(n, &s, &io, &meta);
@@ -63,10 +71,15 @@ int main(int argc, char **argv)
                                           : (z == 06070u ? 0164u : z == 06037u ? LANEC_Q : 0u);
         if (interp) { z = s.words[interp] & 07777u; bank = lanec_current_bank(&s, &io); }
         before = s; io_before = io;
-        status = suite->run(&s, &io, meta.mission);
+        if (flight) {
+            enum exec_status e = lanec_pin_chain_max(&s, &io, meta.mission, AGC_TRANSFER_NONE, 1u, &steps);
+            status = steps == 1u && e == EXEC_OK ? LANEC_OK : LANEC_OUT_OF_SCOPE;
+            if (status != LANEC_OK) { s = before; io = io_before; }
+        } else
+            status = suite->run(&s, &io, meta.mission);
         if (status != LANEC_OK && (memcmp(&s, &before, sizeof s) || memcmp(&io, &io_before, sizeof io)))
             status = (enum lanec_status)2;
-        if (entries) {
+        if (entries && !flight) {
             if (status == LANEC_OK && !exits)
                 printf("%s%s %o %o %lu\n", meta.mission == LANEC_CM ? "CM" : "LM", interp ? "I" : "", bank, z, (unsigned long)n);
             else if (status == LANEC_OK) {
