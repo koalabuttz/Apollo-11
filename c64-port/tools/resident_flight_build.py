@@ -119,7 +119,8 @@ for _m in MISSION:
 COMPONENTS = {
     'lm': [
         ('kernel', ['src/lm_kernel.c', 'src/agc_image_ops.c']),
-        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c']),
+        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/lm_exec_routines.c',
+                                                              'platform/c64/agc_find.S']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
         ('single-precision subroutines', ['src/sp_routines.c', 'src/lm_single_trig.c']),
@@ -131,7 +132,8 @@ COMPONENTS = {
     ],
     'cm': [
         ('kernel', ['src/cm_kernel.c', 'src/agc_image_ops.c']),
-        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c']),
+        ('transfer ABI trampoline and Executive call sites', ['src/agc_transfer.c', 'src/cm_exec_routines.c',
+                                                              'platform/c64/agc_find.S']),
         ('ABI 2 runtime and REU store', ['src/overlay_v2.c', 'src/overlay_reu.c', 'src/overlay_runtime.c',
                                          'platform/c64/overlay_reu_platform.c']),
         ('single-precision subroutines', ['src/sp_routines.c', 'src/cm_quictrig.c', 'src/cm_single_return.c']),
@@ -219,8 +221,14 @@ def run(cmd):
     subprocess.run([str(c) for c in cmd], cwd=ROOT, check=True)
 
 
+# The resident's find() is platform/c64/agc_find.S (agc_transfer.c
+# AGC_TRANSFER_FIND_ASM): defined with the resident's sources rather than in
+# COMMON, as the flight modules keep agc_transfer.c's C find.
+RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM']
+
+
 def resident_sources(m):
-    return [s for _, files in COMPONENTS[m] for s in files]
+    return [*RESIDENT_DEFINES, *(s for _, files in COMPONENTS[m] for s in files)]
 
 
 # The flight check: one program per RK_PART (each part's test code must fit
@@ -300,7 +308,7 @@ def measure(cc, m, prg):
     # resident_flight.c keeps the trampoline, the module runner and the
     # clock and interrupt entry out of line under these names; count each
     # with its component.
-    owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline'}))
+    owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline', 'agc_find'}))
     owners.insert(0, ('ABI 2 runtime and REU store', {'rk_run_module'}))
     owners.insert(0, ('AGC timers and interrupt entry', {'rk_rupts'}))
     text = Path(f'{prg}.map').read_text()

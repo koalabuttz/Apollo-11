@@ -28,6 +28,13 @@ bool agc_site_lookup(const agc_site_operand *t,uint16_t count,uint16_t physical,
 }
 /* Entries are sorted by physical, so a table whose first..last range misses
  * the point is skipped without a search (most tables, for most points). */
+#ifdef AGC_TRANSFER_FIND_ASM
+/* The C64 resident's find (platform/c64/agc_find.S): the same result as the
+ * C below, which stays the reference (tools/agc_find_check.c, make
+ * c64-agc-find, compares the two in mos-sim). */
+agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
+#define find agc_find
+#else
 static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t physical){uint16_t lo,hi,mid;
  if(!tables||physical==AGC_TRANSFER_NONE)return 0;
  for(;count;--count,++tables){const agc_routine_entry *e=tables->entries;lo=0;hi=tables->count;
@@ -36,6 +43,7 @@ static agc_routine find(const agc_routine_table *tables,uint8_t count,uint16_t p
  }
  return 0;
 }
+#endif
 #ifdef AGC_TRANSFER_DANZIG_MARKER
 /* Never called: an entry at DANZIG's own address in the interpretive tables
  * marks the program as running pending right-hand orders (agc_transfer.h). */
