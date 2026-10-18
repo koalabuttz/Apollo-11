@@ -108,6 +108,13 @@ def main():
     if a.profile:
         r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
+    # Status 0 means no step refused; it does not mean the window ran to its
+    # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
+    # reports status 0). A window that stops short of --cs without a refusal
+    # fails, so a "no stop" result always covers the whole window.
+    if r.get('status') == 0 and r.get('agc_cs') is not None and r['agc_cs'] < a.cs:
+        r.update(ok=False, short=True)
+        print(f"FAIL: {a.scenario}: status 0 but the window ended after {r['agc_cs']} of {a.cs} cs")
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z
