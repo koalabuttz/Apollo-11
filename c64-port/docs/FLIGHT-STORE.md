@@ -850,6 +850,23 @@ port) runs one mission:
    TIGON starts, so the cm-p40-p47 spec admits FIXLOC 0110 there
    (`novac`). On the host every native routine matches yaAGC; the
    unregistered point is Pinball's RELDSP1.
+   `cm-p22`: lunar-orbit navigation on a known landmark, as Collins
+   tracked landmark 130 before the landing (synthetic, about 98 h GET).
+   cm_p22.py writes cm-p22.load: the CSM in a 60 nmi retrograde orbit
+   passing over the landmark (1.20 N, 23.70 E, 1,500 m below the CMC's
+   lunar radius) in the CMC's own moon frame (MOONMX with the rope's
+   constants), the CMC's state 1.4 km off the true orbit, REFSMMAT and
+   platform local vertical, the sextant's shaft axis on the landmark at
+   mid-pass, and the W matrix pads. The mark loads put CDUS and CDUT where
+   the true orbit sees the landmark at each MARK. N89 holds half the
+   longitude (LLASRDA doubles it into LONG). V37E22E, proceed on V06N45;
+   V22E10000E on V05N70 (landmark known, so N89), proceed; proceed on
+   V06N89; R52 drives the optics on V06N92; the optics switch to MANUAL
+   (FLIGHT_CHAN), MARK at 132 s and 152 s, proceed on V51; proceed on
+   V05N71 and V06N89; V06N49 shows 0.6 nmi, proceed; the landmark
+   solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
+   V37E00E. On the host every native routine matches yaAGC; the
+   unregistered points are Pinball's VBPROC +3 to +5.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE

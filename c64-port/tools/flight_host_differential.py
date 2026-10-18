@@ -256,6 +256,24 @@ TLI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
        'FLIGHT_SIVB': '30000,0.423909,-0.000000,-0.905705',
        'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tli.load'}
 TLI_KEYS = '@3000V37E47E@66000V33E@66500V37E00E@67000V82E@69000V33E'
+# cm-p22: Apollo 11's lunar-orbit landmark tracking (about 98 h GET),
+# the load at 20 s (tools/flight_scenarios/cm_p22.py: the CSM in a 60 nmi
+# retrograde lunar orbit passing over landmark 130's site, 1.20 N 23.70 E,
+# the CMC's state 1.4 km off the true orbit, REFSMMAT and platform local
+# vertical, the shaft axis on the landmark at mid-pass, the W matrix
+# pads). Optics to CMC at 40 s; V37E22E; proceed on V06N45; V22E10000E on
+# V05N70 (landmark code 1: known, so N89), proceed; proceed on V06N89
+# (1.200, half longitude 11.850, -0.81 nmi); R52 drives the optics on
+# V06N92; the switch to MANUAL, MARK at 132 s and 152 s (the mark loads:
+# the CDUS and CDUT the true orbit gives), proceed on V51; proceed on
+# V05N71 and V06N89; INCORP shows V06N49 (0.6 nmi), proceed: the
+# landmark solution on V06N89, proceed; V05N70, then V37E00E.
+P22 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '4000:033=077757,13000:033=077777',
+       'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p22.load,13100:tools/flight_scenarios/cm-p22-mark1.load,'
+                      '15100:tools/flight_scenarios/cm-p22-mark2.load'}
+P22_KEYS = ('@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200M@15600V33E@16200V33E'
+            '@16800V33E@18500V33E@20300V33E@21500V37E00E')
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -264,6 +282,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p40', 'cm', 74000, P40_KEYS, P40),
           ('cm-p11', 'cm', 90000, P11_KEYS, P11),
           ('cm-tli', 'cm', 70000, TLI_KEYS, TLI),
+          ('cm-p22', 'cm', 23000, P22_KEYS, P22),
           ('lm-p57', 'lm', 56000, P57_KEYS, P57),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
