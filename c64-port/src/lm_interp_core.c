@@ -2320,7 +2320,7 @@ static NI void work(uint8_t at)
 #define WORK_PAIR(left, edop) (work(INTERP_WORD_BASE_AT), work((uint8_t)((left) + 1u)), work(edop))
 #else
 #define WORK_STORE(code)      ((void)0)
-#define WORK_PAIR(left, edop) ((void)0)
+#define WORK_PAIR(left, edop) ((void)(left), (void)(edop))
 #endif
 static uint8_t point(void)
 {
@@ -2333,7 +2333,7 @@ static uint8_t point(void)
 }
 static NI enum exec_status run(void)
 {
-    uint8_t r = MORE, load, guard, idx;
+    uint8_t r = MORE, load, guard, idx, edop;
     for (guard = 0; guard < 16u && r == MORE; ++guard) {
         switch (point()) {
         case P_NEWOPS:
@@ -2345,8 +2345,12 @@ static NI enum exec_status run(void)
             }
             lmi_newops(cw);
             idx = (uint8_t)(((~(unsigned)cw & 077777u) - 1u) & 0177u);
-            WORK_PAIR(idx, (uint8_t)W[rEDOP]);
+            /* EDOP (the right code + 1) as NEWOPS left it, before the
+             * order runs. A refused order is not charged: the holder
+             * that runs the point next charges it. */
+            edop = (uint8_t)W[rEDOP];
             r = order(idx);
+            if (r != REFUSE) WORK_PAIR(idx, edop);
             break;
         case P_DANZIG: danzig_bb(); /* fall through */
         case P_NOIBNKSW:
@@ -2434,8 +2438,7 @@ static NI uint8_t bind(apollo_overlay_state *s)
 static NI enum exec_status entry(const agc_native_program *p, apollo_overlay_state *s, void *v)
 {
     (void)p;
-    if (!v) return EXEC_OUT_OF_SCOPE;
-    io = v;
+    io = v; /* never null: every caller passes its mission's device io */
     if (!bind(s) || !sane()) return EXEC_OUT_OF_SCOPE;
     return run();
 }
