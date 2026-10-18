@@ -222,6 +222,14 @@ def v67_small_w():
     return out
 
 
+def v67_small_after():
+    """v67_small_w's W matrices with OVFIND clear and the running sums
+    (WWPOS, WWVEL) and MPAC small: CM V67WW's state at any of its points."""
+    sums = {'OVFIND': 0, 'WWPOS': 0o1234, 'WWPOS+1': 0o4567, 'WWVEL': 0o321, 'WWVEL+1': 0o7654,
+            '0154': 0o1234, '0155': 0o4567}
+    return [dict(w, **sums) for w in v67_small_w()]
+
+
 def v67_nochange():
     """V67's V6N99PRO (31,2030 TCF V6N99PRO): N99LOOP sums WWPOS..+5 minus
     WWPOS+6..+11 (the W-matrix RMS values against their saved copies); a
@@ -2755,8 +2763,10 @@ SPECS = {
                                # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
                                '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
                                # R21CSMA after a PROCEED with no mark: MRKBUF1 keeps
-                               # R23CSM's -1, so BZF R21END (issue #658)
-                               'R21CSMA': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               # R23CSM's -1, so BZF R21END (issue #658). The cases
+                               # reach it through the two TCF R21CSMA.
+                               '37,2511': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               '37,2535': {'MRKBUF1': [0o77776, 0o77776, 'any']},
                                # V67's R3 (WWOPT, RTHETA) as the crew loads it: 1
                                # (rendezvous), 2 (orbit: BHIZ V67WORB) or 3 (midcourse)
                                'V6N99INP': {'WWOPT': [1, 2, 2, 3, 'any']},
@@ -2770,17 +2780,18 @@ SPECS = {
         # RENDISP7 sets TEMPOR1 +0 and loops on SLOAD BZE TEMPOR1 until the
         # V06N49 display job answers: +0 with a job waiting (NEWJOB
         # positive), so the loop-back's DANZIG goes to CHANG2.
-        # V67WW with an ordinary W matrix (issue #658): the 6 position and
-        # 6 velocity vectors its loop sums (W +0D..+35D, W +54D..+89D) small
-        # enough that the sums and roots do not overflow (BOV falls
-        # through to V67XXX); half the cases.
-        'joint_states': {'cm': dict({'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(4)},
-                                    V67WW=[{}, {}] + v67_small_w())},
+        'joint_states': {'cm': {'RENDISP7+%d' % n: [{}, {}, {'TEMPOR1': 0, '067': 1}] for n in range(4)}},
         # The same state at SLOAD BZE (34,3302, CHANG2's resume LOC after the
         # loop-back): the flowed cases there come from runs whose display job
         # has answered, so a third of them get TEMPOR1 +0 with a job waiting
         # (review #543: the BZE-taken arc).
-        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]})]},
+        # V67WW with an ordinary W matrix (issue #658): its points are CHANG2
+        # resume LOCs, so half their flowed cases get v67_small_w's W (the
+        # 6 position and 6 velocity vectors the loop sums small), small
+        # running sums and MPAC, and OVFIND clear, so the BOV after the
+        # roots falls through to V67XXX (the flowed X1 keeps the loop's place).
+        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]}),
+                                     ('40,3701', '40,3740', {'*': ['flow', 'flow'] + v67_small_after()})]},
         # Flight builds skip the entry checks' erasable scan (docs/INTERP-COMPILE.md).
         'trusted_image': True,
         # Loop and mid-sequence points start from the registers the file's
