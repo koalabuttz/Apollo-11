@@ -28,18 +28,30 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  /* Work clock: back to the step once the slots run reach the next AGC
   * tick, so the step takes it at the next boundary (RK_INTERP_MCT per
   * slot). */
- uint16_t w=0;
+ /* In statics, not locals: nothing then has to survive the core call in
+  * the zero page the callee may clobber (as locals they cost 75 bytes of
+  * saves and reloads). */
+ static rk_module_env *im_e;
+ static uint16_t im_w;
+ static uint8_t im_n;
+ static apollo_overlay_state *im_s;
+ im_e = e;
+ im_s = f->state;
+ im_w = 0;
+ im_n = 0;
  for (;;) {
-     status = IM_CORE(e->program, f->state, e->io);
+     status = IM_CORE(im_e->program, im_s, im_e->io);
      /* A call that ends anything but OK ran no interpretive word: the
       * point is outside the interpreter (after EXIT, RTB or CHANG2), or
       * the core refused it and another holder runs it. Only words run are
       * charged. */
      if (status != EXEC_OK) break;
-     w += RK_INTERP_MCT;
-     if (++n >= IM_SLOTS || w >= e->budget) break;
+     im_w += RK_INTERP_MCT;
+     if (++im_n >= IM_SLOTS || im_w >= im_e->budget) break;
  }
- e->work=w;
+ e = im_e;
+ e->work = im_w;
+ n = im_n;
 #elif defined(RK_IRQ_COUNT)
  /* Back to the step once an IRQ tick lands, so the resident takes the
   * AGC interrupt at the next boundary (read twice: no torn count). */
