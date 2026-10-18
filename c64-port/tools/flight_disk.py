@@ -1,25 +1,27 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Build a mission's flight disks (docs/RUN-ON-C64.md): 1581 disk images
-that boot the flight store on a stock C64 with a 2 MB REU, with no VICE
-snapshot and no REU image prepared on the host.
+"""Build a mission's flight disks (docs/RUN-ON-C64.md): 1581 (or 1541)
+disk images that boot the flight store on a stock C64 with a 2 MB REU,
+with no VICE snapshot and no REU image prepared on the host.
 
 For each mission this links the flight resident on the flight store
 (platform/c64/resident_flight_main.c, as tools/dap_pass_vice.py links its
 check) and writes
 
-  build/flight-disk/<m>-1.d81 ... <m>-<n>.d81   the disk set
+  build/flight-disk/<m>-1.d81 ... <m>-<n>.d81   the disk set (.d64, --drive 1541)
   build/flight-disk/<m>-loader.prg              the loader (also on disk 1)
   build/flight-disk/<m>-resident.prg            the resident it starts
 
 Disk 1's first file is the loader (platform/c64/flight_disk_loader.c). It
-reads every disk of the set into the REU with a 1581 fast loader
-(flight_disk_drive.s, flight_disk_rx.s): the store image and the rope
-exactly as build/flight-store/<m>.reu holds them, and the resident, staged
-in REU bytes the store leaves zero and zeroed again after the hand-off. A
-disk is 3,160 blocks of 254 bytes; the store does not fit on one.
+reads every disk of the set into the REU, with a 1581 fast loader
+(flight_disk_drive.s, flight_disk_rx.s) or the KERNAL on any other drive:
+the store image and the rope exactly as build/flight-store/<m>.reu holds
+them, and the resident, staged in REU bytes the store leaves zero and
+zeroed again after the hand-off. Each disk's data is compressed
+(tools/fdz.c, expanded by platform/c64/flight_disk_unz.s), so a
+mission takes 1 D81 or 5 D64s.
 
---vice boots the set in VICE as a stock PAL C64 would: the 1581 with true
+--vice boots the set in VICE as a stock PAL C64 would: the drive with true
 drive emulation, a 2 MB REU starting zero, LOAD"*",8,1 and RUN typed at
 the READY prompt, the next disk attached at each prompt. It times the load,
 the hand-off and the resident's boot (its store check), checks the boot
@@ -27,7 +29,7 @@ passed and the AGC then runs (TIME1 counting), compares the REU VICE writes
 back on exit with <m>.reu, and writes build/flight-disk/vice.json. Needs
 make flight-store first.
 
-  flight_disk.py [--missions lm,cm] [--vice]
+  flight_disk.py [--missions lm,cm] [--drive 1581|1541] [--vice]
 """
 import argparse
 import hashlib
@@ -113,7 +115,13 @@ def link_loader(cc, m, code, syms, disks):
         'static const unsigned char fd_drive_code[] = {' + ','.join(str(b) for b in code) + '};\n')
     out = OUT / f'{m}-loader.prg'
     run([cc, '-Os', '-std=c99', '-Wall', '-Wextra', '-Werror', '-I', gen.parent,
-         'platform/c64/flight_disk_loader.c', 'platform/c64/flight_disk_rx.s', '-o', out])
+         'platform/c64/flight_disk_loader.c', 'platform/c64/flight_disk_rx.s',
+         'platform/c64/flight_disk_unz.s', '-o', out])
+    # The loader's code and data end below the decoder's ring at $4000.
+    nm = run([tool(cc, 'llvm-nm'), f'{out}.elf'], capture_output=True, text=True).stdout
+    end = int(re.search(r'^([0-9a-f]+) \S __heap_start$', nm, re.M).group(1), 16)
+    if end > 0x4000:
+        sys.exit(f'{m} loader ends at ${end:04x}, in the ring at $4000')
     return out.read_bytes()
 
 
@@ -129,36 +137,61 @@ def ranges(image):
     return out
 
 
+def fdz(data):
+    """data compressed with tools/fdz.c (built here with the host's cc)."""
+    exe, src = OUT / 'fdz', ROOT / 'tools/fdz.c'
+    if not exe.exists() or exe.stat().st_mtime < src.stat().st_mtime:
+        run([os.environ.get('HOST_CC', 'cc'), '-O2', '-std=c99', '-Wall', '-Wextra', '-Werror', src, '-o', exe])
+    (OUT / 'fdz.in').write_bytes(data)
+    run([exe, 'c', OUT / 'fdz.in', OUT / 'fdz.out'], stderr=subprocess.DEVNULL)
+    return (OUT / 'fdz.out').read_bytes()
+
+
+# The loader's limit on a 'Z' record's ranges (flight_disk_loader.c).
+MAX_RANGES = 512
+
+
 def pack(recs, capacity_of, res_at, res_len, sys_at):
-    """recs, (REU address, bytes) pairs, as 'D' records over the disks, then
-    the 'R' record: each disk's data file (capacity_of(disk) bytes at most),
-    ending in 'E'."""
-    disks, cur = [], bytearray()
-    cap = capacity_of(1)
-
-    def flush():
-        nonlocal cur, cap
-        cur += b'E'
-        disks.append(bytes(cur))
-        cur = bytearray()
-        cap = capacity_of(len(disks) + 1)
-
+    """recs, (REU address, bytes) pairs, compressed over the disks: each
+    disk's data file (capacity_of(disk) bytes at most) is a 'Z' record (its
+    REU ranges, then their bytes as one fdz stream), then on the last disk
+    the 'R' record, and 'E'."""
+    stream = b''.join(x for _, x in recs)
+    spans, o = [], 0  # (stream offset, REU address, length)
+    for a, x in recs:
+        spans.append((o, a, len(x)))
+        o += len(x)
     tail = 1 + 1 + 3 + 2 + 2  # 'E' and the 'R' record
-    for a, data in recs:
-        off = 0
-        while off < len(data):
-            room = cap - len(cur) - 7 - tail
-            if room < 256:
-                flush()
-                continue
-            k = min(room, len(data) - off)
-            cur += b'D' + (a + off).to_bytes(3, 'little') + k.to_bytes(3, 'little') + data[off:off + k]
-            off += k
-    if cap - len(cur) < tail:
-        flush()
-    cur += b'R' + res_at.to_bytes(3, 'little') + res_len.to_bytes(2, 'little') + sys_at.to_bytes(2, 'little')
-    flush()
-    return disks
+    disks, at = [], 0
+
+    def record(n):
+        pieces = [(a + max(s, at) - s, min(s + k, at + n) - max(s, at)) for s, a, k in spans
+                  if s < at + n and s + k > at]
+        assert len(pieces) <= MAX_RANGES, len(pieces)
+        return (b'Z' + len(pieces).to_bytes(2, 'little') +
+                b''.join(r.to_bytes(3, 'little') + k.to_bytes(3, 'little') for r, k in pieces) +
+                fdz(stream[at:at + n]))
+
+    while at < len(stream):
+        cap = capacity_of(len(disks) + 1) - tail
+        n = len(stream) - at
+        z = record(n)
+        if len(z) > cap:
+            # The most bytes whose record fits, to 256.
+            lo, hi = 0, n // 256
+            while lo < hi:
+                mid = (lo + hi + 1) // 2
+                if len(record(mid * 256)) <= cap:
+                    lo = mid
+                else:
+                    hi = mid - 1
+            assert lo, 'a disk holds no data'
+            n = lo * 256
+            z = record(n)
+        at += n
+        disks.append(bytearray(z))
+    disks[-1] += b'R' + res_at.to_bytes(3, 'little') + res_len.to_bytes(2, 'little') + sys_at.to_bytes(2, 'little')
+    return [bytes(d + b'E') for d in disks]
 
 
 class D81:
@@ -226,6 +259,75 @@ class D81:
         return bytes(self.img)
 
 
+class D64:
+    """A 1541 disk image, filled in file by file: the same interface as
+    D81. Each track's blocks go in the 1541 DOS's interleave of 10, so the
+    KERNAL reads a file in a few turns of the disk rather than one a
+    block."""
+    TRACKS, DIR_TRACK, INTERLEAVE = 35, 18, 10
+
+    @staticmethod
+    def spt(t):
+        return 21 if t <= 17 else 19 if t <= 24 else 18 if t <= 30 else 17
+
+    def __init__(self, name, disk_id):
+        self.img = bytearray(sum(self.spt(t) for t in range(1, 36)) * 256)
+        self.used = {(18, 0), (18, 1)}
+        self.entries = []
+        self.name, self.id = name, disk_id
+
+    def put(self, t, s, data):
+        o = (sum(self.spt(k) for k in range(1, t)) + s) * 256
+        self.img[o:o + 256] = data.ljust(256, b'\0')
+
+    @classmethod
+    def blocks(cls):
+        out = []
+        for t in range(1, cls.TRACKS + 1):
+            if t == cls.DIR_TRACK:
+                continue
+            n, s, seen = cls.spt(t), 0, set()
+            for _ in range(n):
+                while s in seen:
+                    s = (s + 1) % n
+                seen.add(s)
+                out.append((t, s))
+                s = (s + cls.INTERLEAVE) % n
+        return out
+
+    write_file = D81.write_file
+
+    def finish(self):
+        pad = lambda s, n: s.encode('ascii')[:n].ljust(n, b'\xa0')  # noqa: E731
+        bam = bytearray(256)
+        bam[0:4] = bytes([18, 1, 0x41, 0])
+        for t in range(1, 36):
+            free = [k for k in range(self.spt(t)) if (t, k) not in self.used]
+            bam[4 * t] = len(free)
+            bam[4 * t + 1:4 * t + 4] = sum(1 << k for k in free).to_bytes(3, 'little')
+        bam[0x90:0xa0] = pad(self.name, 16)
+        bam[0xa0:0xa2] = b'\xa0\xa0'
+        bam[0xa2:0xa4] = self.id.encode('ascii')
+        bam[0xa4] = 0xa0
+        bam[0xa5:0xa7] = b'2A'
+        bam[0xa7:0xab] = b'\xa0' * 4
+        self.put(18, 0, bytes(bam))
+        assert len(self.entries) <= 8
+        d = bytearray(256)
+        d[0:2] = b'\x00\xff'
+        for i, (name, kind, (t, s), n) in enumerate(self.entries):
+            e = 32 * i
+            d[e + 2] = 0x80 | kind
+            d[e + 3], d[e + 4] = t, s
+            d[e + 5:e + 0x15] = pad(name, 16)
+            d[e + 0x1e:e + 0x20] = n.to_bytes(2, 'little')
+        self.put(18, 1, bytes(d))
+        return bytes(self.img)
+
+
+# The disk image for each drive: its class and its file name's extension.
+DISK = {'1581': (D81, 'd81'), '1541': (D64, 'd64')}
+
 SEQ, PRG = 1, 2
 
 
@@ -237,7 +339,8 @@ def build(a, m, code, syms):
     # (the hand-off zeroes them again).
     res_at = (len(image) - len(res)) & ~0xff
     assert not any(image[res_at:res_at + len(res)]), f'{m}.reu uses ${res_at:06x}: no room to stage the resident'
-    blocks = D81.blocks()
+    disk_type, ext = DISK[a.drive]
+    blocks = disk_type.blocks()
     recs = [(a0, image[a0:e]) for a0, e in ranges(image)] + [(res_at, res)]
     disks = 1
     while True:
@@ -256,14 +359,14 @@ def build(a, m, code, syms):
         disks = len(datas)
     paths = []
     for d, data in enumerate(datas, 1):
-        disk = D81(f'APOLLO 11 {m.upper()} {d}/{len(datas)}', m.upper())
+        disk = disk_type(f'APOLLO 11 {m.upper()} {d}/{len(datas)}', m.upper())
         nblocks = -(-len(data) // 254)
         idb = b'APOLLO11' + bytes([ord(m[0].upper()), d, len(datas), *blocks[1]])
         if d == 1:
             disk.write_file(f'APOLLO {m.upper()}', PRG, loader, blocks[-loader_blocks:])
         disk.write_file(f'{m.upper()} DISK {d}', SEQ, idb, blocks[:1])
         disk.write_file(f'{m.upper()} DATA {d}', SEQ, data, blocks[1:1 + nblocks])
-        path = OUT / f'{m}-{d}.d81'
+        path = OUT / f'{m}-{d}.{ext}'
         path.write_bytes(disk.finish())
         paths.append(path)
     loaded = sum(len(x) for _, x in recs)
@@ -280,21 +383,25 @@ def build(a, m, code, syms):
 # The 1581's DOS ROM, for true drive emulation: from the VICE source mirror
 # at tools/versions.json's ROM commit, as tools/setup_cloud.sh fetches the
 # C64's (kept here so the toolchain cache's key does not change).
-ROM_1581 = 'dos1581-318045-02.bin'
-ROM_1581_SHA256 = '8f689277f36be357f5f105e6e606c35c42e73c581cdeec14b58f31850dfbcfcb'
+DRIVE_ROMS = {
+    '1581': ('dos1581-318045-02.bin', '8f689277f36be357f5f105e6e606c35c42e73c581cdeec14b58f31850dfbcfcb'),
+    '1541': ('dos1541-325302-01+901229-05.bin', 'd1d45afb46fd4e2b48d93ca367b889d75654a3b7acf73044e51f6d880c09369e'),
+}
 
 
-def rom_1581(data_dir):
-    path = data_dir / 'DRIVES' / ROM_1581
+def drive_rom(data_dir, drive):
+    name, sha = DRIVE_ROMS[drive]
+    path = data_dir / 'DRIVES' / name
     if not path.exists():
         commit = json.loads((ROOT / 'tools/versions.json').read_text())['vice']['rom_commit']
         path.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(['curl', '-fsSL', '--retry', '4', '--retry-delay', '2', '-o', str(path),
-                        f'https://raw.githubusercontent.com/VICE-Team/svn-mirror/{commit}/vice/data/DRIVES/{ROM_1581}'],
+                        f'https://raw.githubusercontent.com/VICE-Team/svn-mirror/{commit}/vice/data/DRIVES/{name}'],
                        check=True)
-    if hashlib.sha256(path.read_bytes()).hexdigest() != ROM_1581_SHA256:
+    if hashlib.sha256(path.read_bytes()).hexdigest() != sha:
         path.unlink()
-        sys.exit(f'FAIL: {ROM_1581}: SHA-256 mismatch')
+        sys.exit(f'FAIL: {name}: SHA-256 mismatch')
+
 
 class Monitor:
     """VICE's remote monitor (text). A command stops the emulation; the
@@ -416,7 +523,7 @@ def vice(a, m, info):
     work.mkdir(parents=True, exist_ok=True)
     reu = work / 'image.reu'
     reu.write_bytes(bytes(2 << 20))
-    rom_1581(a.data_dir.resolve())
+    drive_rom(a.data_dir.resolve(), a.drive)
     port = 6510 + (os.getpid() % 500)
     env = dict(os.environ, XDG_CACHE_HOME=str(work / 'cache'), XDG_CONFIG_HOME=str(work / 'config'))
     for key in ('XDG_CACHE_HOME', 'XDG_CONFIG_HOME'):
@@ -428,7 +535,7 @@ def vice(a, m, info):
            # the window's shaders and keymaps (/usr/share/vice) with --xtest
            f'{a.data_dir.resolve()}:{rom.parent}' + (':/usr/share/vice:/usr/share/vice/C64' if a.xtest else ''),
            *(['+drive8truedrive', '-virtualdev8', '-iecdevice8'] if a.slow else ['-drive8truedrive', '+virtualdev8']),
-           '-drive8type', '1581', '-8', disks[0],
+           '-drive8type', a.drive, '-8', disks[0],
            '-reu', '-reusize', '2048', '-reuimage', reu, '-reuimagerw',
            '-remotemonitor', '-remotemonitoraddress', f'ip4://127.0.0.1:{port}',
            '-keybuf', 'load"*",8,1\\nrun\\n']
@@ -563,6 +670,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     p.add_argument('--missions', default='lm,cm')
+    p.add_argument('--drive', choices=sorted(DISK), default='1581',
+                   help='the disk drive: D81 sets with the fast loader, or D64 sets read with the KERNAL')
     p.add_argument('--vice', action='store_true', help='boot each set in VICE (true drive emulation)')
     p.add_argument('--keys', default='', help='DSKY keys to type after the boot (E is ENTR, P is PRO), e.g. V35E')
     p.add_argument('--xtest', action='store_true',
