@@ -42,7 +42,7 @@ import time
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from resident_flight_build import COMMON, MISSION, resident_sources  # noqa: E402
+from resident_flight_build import COMMON, FLIGHT_MAIN, MISSION, resident_sources  # noqa: E402
 
 STORE = ROOT / 'build/flight-store'
 OUT = ROOT / 'build/flight-disk'
@@ -87,7 +87,7 @@ def drive_code(cc):
 def link_resident(cc, m):
     out = OUT / f'{m}-resident.prg'
     run([cc, *COMMON, *MISSION[m], '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-         'platform/c64/resident_flight_main.c', *resident_sources(m), STORE / 'overlay_v2_services.S', '-o', out])
+         '-DRK_DSKY=1', *FLIGHT_MAIN, *resident_sources(m), STORE / 'overlay_v2_services.S', '-o', out])
     prg = out.read_bytes()
     sys_at = re.search(rb'\x9e\s*(\d+)\x00', prg[:32])
     assert prg[:2] == b'\x01\x08' and sys_at, out
@@ -96,7 +96,7 @@ def link_resident(cc, m):
     main = syms['main'] - 0x0801 + 2
     # main starts with JSR rk_boot: the VICE run stops after it.
     assert prg[main] == 0x20 and int.from_bytes(prg[main + 1:main + 3], 'little') == syms['rk_boot'], 'main does not start with rk_boot'
-    return prg[2:], int(sys_at[1]), syms['main'] + 3
+    return prg[2:], int(sys_at[1]), syms['main'] + 3, (syms['rk_dsky_queue'], syms['rk_hardware'])
 
 
 def link_loader(cc, m, code, syms, disks):
@@ -232,7 +232,7 @@ SEQ, PRG = 1, 2
 def build(a, m, code, syms):
     image = (STORE / f'{m}.reu').read_bytes()
     assert len(image) == 2 << 20, f'{m}.reu is not 2 MB'
-    res, sys_at, boot_return = link_resident(a.cc, m)
+    res, sys_at, boot_return, (dsky_queue, hardware) = link_resident(a.cc, m)
     # Stage the resident at the top of the REU, in bytes the store leaves 0
     # (the hand-off zeroes them again).
     res_at = (len(image) - len(res)) & ~0xff
@@ -268,7 +268,7 @@ def build(a, m, code, syms):
         paths.append(path)
     loaded = sum(len(x) for _, x in recs)
     info = dict(mission=m, disks=[p.name for p in paths], loader_bytes=len(loader) - 2,
-                resident_bytes=len(res), resident_start=sys_at, boot_return=boot_return, resident_staged=f'0x{res_at:06x}',
+                resident_bytes=len(res), resident_start=sys_at, boot_return=boot_return, dsky_queue=dsky_queue, hardware=hardware, resident_staged=f'0x{res_at:06x}',
                 bytes_loaded=loaded, data_bytes=[len(x) for x in datas])
     print(f"{m}: {len(paths)} disks, {loaded} bytes to the REU, loader {info['loader_bytes']} bytes, "
           f"resident {len(res)} bytes (SYS {sys_at})")
@@ -373,6 +373,43 @@ class Monitor:
         return int(re.search(r'Stopwatch:\s*(\d+)', self.cmd('sw'))[1])
 
 
+# The DSKY's key queue (platform/c64/resident_dsky.S): its head in zero
+# page, and the channel 15 codes of the keys it takes (P is PRO).
+DSKY_HEAD = 0xf0
+# IMODES33 (build/fixed-data/*/assembly.lst): T4RUPT's copy of channel 32 bit 14
+IMODES33 = dict(lm=0o1303, cm=0o1321)
+DSKY_KEYS = {**{str(d): d or 0o20 for d in range(10)}, 'V': 0o21, 'N': 0o37, '+': 0o32, '-': 0o33, 'E': 0o34,
+             'C': 0o36, 'R': 0o22, 'K': 0o31, 'P': 0x40}
+
+
+def xtest_keys(keys, wait):
+    """Type keys on VICE's window through the X server (XTEST), so the
+    C64's keyboard scan sees them: E is RETURN (ENTR), the rest as typed."""
+    import ctypes
+    x11, xtst = ctypes.CDLL('libX11.so.6'), ctypes.CDLL('libXtst.so.6')
+    x11.XOpenDisplay.restype = ctypes.c_void_p
+    x11.XStringToKeysym.restype = ctypes.c_ulong
+    dpy = ctypes.c_void_p(x11.XOpenDisplay(None))
+    assert dpy.value, 'no X display'
+    xtst.XTestFakeMotionEvent(dpy, -1, 160, 120, 0)  # over VICE's window: focus follows the pointer
+    names = {'E': b'Return', '+': b'plus', '-': b'minus'}
+    for ch in keys:
+        code = x11.XKeysymToKeycode(dpy, ctypes.c_ulong(x11.XStringToKeysym(names.get(ch, ch.lower().encode()))))
+        assert code, f'no X keycode for {ch}'
+        for down in (1, 0):
+            xtst.XTestFakeKeyEvent(dpy, code, down, 0)
+            x11.XFlush(dpy)
+            time.sleep(0.3)
+        time.sleep(wait)
+    x11.XCloseDisplay(dpy)
+
+
+def screen_text(mem):
+    """The DSKY's 17 rows of screen codes as text."""
+    ch = lambda c: chr(c + 64) if 1 <= c <= 26 else chr(c) if 32 <= c < 64 else '.'  # noqa: E731
+    return [''.join(ch(c) for c in mem[r * 40:r * 40 + 40]).rstrip() for r in range(17)]
+
+
 def vice(a, m, info):
     rom = a.rom_dir.resolve()
     work = OUT / f'vice-{m}'
@@ -385,9 +422,11 @@ def vice(a, m, info):
     for key in ('XDG_CACHE_HOME', 'XDG_CONFIG_HOME'):
         pathlib.Path(env[key]).mkdir(parents=True, exist_ok=True)
     disks = [OUT / d for d in info['disks']]
-    cmd = [a.vice, '-default', '-console', '-pal', '-warp', '+sound',
+    cmd = [a.vice, '-default', *([] if a.xtest else ['-console']), '-pal', '-warp', '+sound',
            '-kernal', rom / 'kernal-901227-03.bin', '-basic', rom / 'basic-901226-01.bin',
-           '-chargen', rom / 'chargen-901225-01.bin', '-directory', f'{a.data_dir.resolve()}:{rom.parent}',
+           '-chargen', rom / 'chargen-901225-01.bin', '-directory',
+           # the window's shaders and keymaps (/usr/share/vice) with --xtest
+           f'{a.data_dir.resolve()}:{rom.parent}' + (':/usr/share/vice:/usr/share/vice/C64' if a.xtest else ''),
            *(['+drive8truedrive', '-virtualdev8', '-iecdevice8'] if a.slow else ['-drive8truedrive', '+virtualdev8']),
            '-drive8type', '1581', '-8', disks[0],
            '-reu', '-reusize', '2048', '-reuimage', reu, '-reuimagerw',
@@ -464,6 +503,44 @@ def vice(a, m, info):
                                 modreg=f'{word(0o1011):05o}'))
         result['samples'] = samples
         result['ok'] = result['boot_status'] == 0 and len({x['time1'] for x in samples}) > 1
+        # The DSKY: keys typed through its queue, as its keyboard scan
+        # queues them (a press, then the release), then the screen.
+        if a.keys and a.xtest:
+            mon.go()
+            xtest_keys(a.keys, a.key_wait)
+            mon.cmd('r')
+        elif a.keys:
+            queue = info['dsky_queue']
+            for ch in a.keys:
+                head = mon.mem(DSKY_HEAD, DSKY_HEAD)[0]
+                mon.cmd(f'> {queue + head:04x} {DSKY_KEYS[ch]:02x}')
+                mon.cmd(f'> {queue + ((head + 1) & 7):04x} 00')
+                mon.cmd(f'> {DSKY_HEAD:04x} {(head + 2) & 7:02x}')
+                mon.go()
+                time.sleep(a.key_wait)
+                mon.cmd('r')  # the first answer after go() can be the stale prompt
+                result.setdefault('key_pcs', []).append(re.search(r'\.;([0-9a-f]{4})', mon.cmd('r'))[1])
+                # channel 32's high byte (PRO holds bit 14, 0x20, low for 1 s
+                # of AGC time), and IMODES33, where T4RUPT keeps the bit it saw
+                ch32 = mon.mem(info['hardware'] + 15, info['hardware'] + 15)[0]
+                result.setdefault('key_ch32', []).append(f'{ch32:02x}')
+                im = mon.mem(0x7000 + 2 * IMODES33[m], 0x7000 + 2 * IMODES33[m] + 1)
+                result.setdefault('key_imodes33', []).append(f'{im[0] | im[1] << 8:05o}')
+        if a.screenshot:
+            mon.go()
+            time.sleep(a.settle)
+            shot = (work / f'{m}-dsky.png').resolve()
+            mon.cmd('r')  # the first answer after go() can be the stale prompt
+            result['pc'] = re.search(r'\.;([0-9a-f]{4})', mon.cmd('r'))[1]
+            result['screen'] = screen_text(mon.mem(0x0400, 0x0400 + 679))
+            f = mon.mem(0x7000 + 2 * 0o375, 0x7000 + 2 * 0o377 + 1)
+            result['failreg'] = [f'{f[2 * i] | f[2 * i + 1] << 8:05o}' for i in range(3)]
+            f = mon.mem(0x7000 + 2 * 0o1011, 0x7000 + 2 * 0o1011 + 1)
+            result['modreg'] = f'{f[0] | f[1] << 8:05o}'
+            f = mon.mem(0x7000 + 2 * 4, 0x7000 + 2 * 5 + 1)
+            result['fb'], result['z'] = f'{f[0] | f[1] << 8:05o}', f'{f[2] | f[3] << 8:05o}'
+            mon.cmd(f'screenshot "{shot}" 2')
+            result['screenshot'] = str(shot)
     finally:
         try:
             mon.cmd('quit')
@@ -487,6 +564,12 @@ def main():
     p.add_argument('--cc', default=os.environ.get('MOS_CC', str(ROOT / 'deps/llvm-mos/bin/mos-c64-clang')))
     p.add_argument('--missions', default='lm,cm')
     p.add_argument('--vice', action='store_true', help='boot each set in VICE (true drive emulation)')
+    p.add_argument('--keys', default='', help='DSKY keys to type after the boot (E is ENTR, P is PRO), e.g. V35E')
+    p.add_argument('--xtest', action='store_true',
+                   help="type --keys on VICE's window through X (run under xvfb-run): the C64's keyboard scan sees them")
+    p.add_argument('--key-wait', dest='key_wait', type=float, default=1.0, help='seconds of VICE run after each key')
+    p.add_argument('--settle', type=float, default=2.0, help='seconds of VICE run before the screenshot')
+    p.add_argument('--screenshot', action='store_true', help="save the DSKY's screen after the boot (and keys)")
     p.add_argument('--slow', action='store_true',
                    help='the VICE run without true drive emulation: the loader falls back to the KERNAL')
     p.add_argument('--vice-bin', dest='vice_bin', default=os.environ.get('VICE', 'x64sc'))

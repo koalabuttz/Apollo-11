@@ -486,7 +486,24 @@ def host_mct(m, t):
         wrap = [i for w, i in WRAPPED.items() if t == f'{m}_{w}']
         tables = [f'{m}_{w}' for w, i in WRAPPED.items() if wrap and i == wrap[0]] or KERNEL_TABLES[m]
         return mct_weight(m, tables)
-    return mct_weight(m, [t], interp='interpret' in t)
+    return mct_weight(m, [t], interp=interpretive_table(t))
+
+
+def c64_mct(m, to_interp, modules):
+    """{table: work clock weight} as the C64 store charges it: the
+    interpreter's per word (RK_INTERP_MCT) for a table left to the
+    interpreter module, 0 for the self-check idle tables (FS_IDLE, or a
+    module of idle tables only), else the FS_MCT of the first module that
+    runs it (link_module). host.inc carries these, so the host's work clock
+    (FLIGHT_SCALED) charges what the C64 does."""
+    out = {t: mct_weight(m, None, interp=True) for t in to_interp}
+    for mod in modules:
+        weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        rupt = [t for t in weighed if not idle_table(t)]
+        own = [t for t in rupt if t not in LEAD_INS] or rupt
+        for t in weighed:
+            out.setdefault(t, 0 if idle_table(t) or not own else mct_weight(m, own))
+    return out
 
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
@@ -1215,7 +1232,7 @@ def main():
             + ''.join(f'static const agc_site_operand sites_{st}[]={{' + ','.join(
                 f'{{{k}u,0{w:o}u}}' for k, w in sorted(file_sites(a.host_cc, m, st).items()))
                       + (f'}};\n' if file_sites(a.host_cc, m, st) else '{AGC_TRANSFER_NONE,0u}};\n') for st in stems))
-        def write_host(pins, packs):
+        def write_host(pins, packs, weights=None):
             """build/flight-store/<m>-host.inc. pins: {table: slot class 3
             or 4} for the pinned sets the C64 loads at boot and runs through
             rk_direct before any module: they go right after the resident,
@@ -1226,8 +1243,16 @@ def main():
             the pack first (a hot subset ahead of its full table, the
             resident's included, as the wrappers move); a ride table runs
             only while its pack is loaded (slot 5: the host skips it
-            otherwise)."""
+            otherwise). weights: {table: MCT} as the C64 store charges it
+            (c64_mct), once its modules are linked; a host-only build, and
+            a table no module runs, keeps host_mct (the interpreter's per
+            word for a table left to it)."""
             task_out = 4 in pins.values()
+
+            def mct(t, f):
+                if weights is not None and t in weights:
+                    return weights[t]
+                return mct_weight(m, None, interp=True) if f in to_interp else host_mct(m, PIN_HOT.get(f, f))
             pin_order = [t for t in pins if t in tables]
             ahead = [t for t in packs if t in tables and (packs[t][1] or hot_full(t))]
             first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
@@ -1262,15 +1287,15 @@ def main():
                           f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, '
                           f'"{" ".join(dict.fromkeys(also[t] + also[f]))}", '
                           f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
-                          f'{host_mct(m, PIN_HOT.get(f, f))}u)\n'
+                          f'{mct(t, f)}u)\n'
                           for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
                           for f in [hot_of.get(t, t)]))
-        write_host(host_pins(m, packed), host_packs(m, packed))
-        if a.host_only:
-            continue
         to_interp = {t for t, o in packed.items()
                      if t in INTERP_ONLY[m] or (interpretive_table(t) and not t.endswith('_marker'))
                      or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
+        write_host(host_pins(m, packed), host_packs(m, packed))
+        if a.host_only:
+            continue
         # Shadowed entries: a basic table's keys that the resident or an
         # earlier linked table in resolution order (holders, less the
         # interpreter's) holds never resolve to it, so its module links only
@@ -1714,7 +1739,7 @@ def main():
                         continue
                     for k in keys[t][c[1]:c[2]] if c else keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
-        write_host(packed_pins(pinned), pack_tables(pack_report(packs)))
+        write_host(packed_pins(pinned), pack_tables(pack_report(packs)), c64_mct(m, to_interp, modules))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):
@@ -1894,6 +1919,11 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+        # Each mission's own, which a later build of the other mission (or
+        # an up-to-date one, which writes none) leaves in place
+        # (tools/flight_scenario_vice.py c64_weights).
+        for m in report:
+            (ROOT / OUT / f'report-{m}.json').write_text(json.dumps(report[m], indent=1) + '\n')
     if errors:
         raise SystemExit('\n'.join(errors))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')

@@ -5,7 +5,11 @@
  * $8000. Boot-only code (.boot.text, and the boot-only runtime functions
  * when LTO keeps them out of line) links into the job slot: the PRG loads it
  * there, it runs once from main, and the first module load overwrites it.
- * The PRG loads through the image's 4 KB (zero filled). */
+ * The PRG loads through the image's 4 KB (zero filled). The flight
+ * program's DSKY (platform/c64/resident_dsky.c) runs from $0200-$03FF,
+ * with its tables and state in the screen's last rows ($06A8-$07F7, not
+ * shown), all free in flight: it loads after the boot-only code, and boot
+ * copies it. */
 __basic_zp_start = 0x0002;
 __basic_zp_end = 0x0090;
 MEMORY {
@@ -13,6 +17,8 @@ MEMORY {
     services (rx) : ORIGIN = 0x6f00, LENGTH = 0x100
     image (rw) : ORIGIN = 0x7000, LENGTH = 0x1000
     boot (rwx) : ORIGIN = 0x8000, LENGTH = 0x4000
+    low (rwx) : ORIGIN = 0x0200, LENGTH = 0x200
+    screen_end (rw) : ORIGIN = 0x06a8, LENGTH = 0x150
 }
 __rc0 = __basic_zp_start;
 INCLUDE imag-regs.ld
@@ -37,6 +43,23 @@ SECTIONS {
         *(.text.apollo_reu_store_open .text.apollo_reu_store_verify .text.apollo_reu_store_backend .text.apollo_ov2_init)
         __rk_boot_end = .;
     } >boot
+    .dsky : {
+        __rk_dsky_start = .;
+        *(.dsky.text .dsky.text.* .dsky.data .dsky.data.*)
+        __rk_dsky_end = .;
+    } >low AT>boot
+    __rk_dsky_load = LOADADDR(.dsky);
+    .dsky_data : {
+        __rk_dsky_data_start = .;
+        *(.dsky.rodata .dsky.rodata.*)
+        __rk_dsky_data_end = .;
+    } >screen_end AT>boot
+    __rk_dsky_data_load = LOADADDR(.dsky_data);
+    .dsky_bss (NOLOAD) : {
+        __rk_dsky_bss_start = .;
+        *(.dsky.bss .dsky.bss.*)
+        __rk_dsky_bss_end = .;
+    } >screen_end
     .text : { INCLUDE text-sections.ld } >ram
     .rodata : { INCLUDE rodata-sections.ld } >ram
     .data : { INCLUDE data-sections.ld } >ram

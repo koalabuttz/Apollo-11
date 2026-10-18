@@ -244,6 +244,30 @@ extern apollo_reu_store rk_store;
 extern apollo_ov2_runtime rk_runtime;
 extern rk_io rk_device;
 extern agc_hardware rk_hardware;
+/* On the CM, rk_device (cm_native_io) is the record the flight program's
+ * routines read and write channels 11-14, the keys, the traps and the
+ * alarms in: the resident calls the base tables with it, and a module on
+ * another CM kind starts from it (flight_table_module.c). rk_hardware's
+ * channels 11-14 are only a copy, written when such a module or GOJAM
+ * leaves, so they lag a base-table write. A snapshot (tools/flight_host_run.c
+ * FLIGHT_SNAPSHOT) sets the canonical record, rk_hardware and rk_flight:
+ * a boot that loads one writes rk_device's copies from it with this. */
+static inline void rk_device_from_canonical(void)
+{
+#if RK_CM
+    rk_device.channel11 = rk_hardware.channel11;
+    rk_device.channel12 = rk_hardware.channel12;
+    rk_device.channel13 = rk_hardware.channel13;
+    rk_device.channel14 = rk_hardware.channel14;
+    rk_device.main_keys = rk_hardware.channel15;
+    rk_device.navigation_keys = rk_flight.channel16;
+    rk_device.trap31a = rk_flight.trap31a;
+    rk_device.trap31b = rk_flight.trap31b;
+    rk_device.trap32 = rk_flight.trap32;
+    rk_device.executive_alarm = rk_flight.executive_alarm;
+    rk_device.waitlist_alarm = rk_flight.waitlist_alarm;
+#endif
+}
 /* The channel 13 the timers read (src/resident_rupt.c CH13): on the CM
  * rk_device's, the copy its tables write (T6START, the radar routines);
  * rk_hardware.channel13 is only the copy a CM_* kind module leaves. Keyed
@@ -258,6 +282,11 @@ extern agc_native_program rk_program;
 /* AGC interrupt requests waiting (RK_RUPT_BIT, include/resident_rupt.h),
  * and the CIA1 interrupts the AGC clock has consumed or dropped. */
 extern uint16_t rk_pending, rk_ticks;
+/* The flight program's DSKY on the C64's screen and keyboard
+ * (platform/c64/resident_dsky.c; RK_DSKY builds): rk_dsky_install once
+ * after rk_boot, rk_dsky_idle from the idle loop. */
+void rk_dsky_install(void);
+void rk_dsky_idle(void);
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and

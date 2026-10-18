@@ -958,6 +958,36 @@ port) runs one mission:
    Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
    radar model) are not replayed. `--watch 1011,...` prints up to five
    erasable words as the window ends (1011 is Comanche's MODREG).
+   `--replay` replays everything instead and checks the result: the host
+   run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
+   snapshot through the window on the C64's work clock, charging each
+   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
+   of the module that runs it, the interpreter's per routine for the tables
+   left to it), and writes every input its models and schedules give the
+   AGC there (the engine, SPS and aero models' PIPA counts, keys,
+   FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go into the
+   zeros below the rope in the run's REU image, outside the store and the
+   resident. The C64 applies each row at the first step at or after its
+   time where the host took it (a sample point, or any step boundary for
+   the engine lag and radar reads). At the first sample point `--cs` in
+   (and with `--replay-every N` at the first one at or after every N cs
+   before), both sides write their erasable words and output channels (5,
+   6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
+   the base tables run on);
+   the run fails on any difference, printing the first one, skipping what
+   the host differential skips (the central registers and RUPTREG1-4;
+   unlike it, the timers are compared). So a window that ran with no stops also has to match
+   the host. Until the CM idle pass is charged as idle on the C64 (it is
+   module work there when a job ends into it, idle on the host), CM windows
+   skip what that tick moves: DSPCNT, DSRUPTSW, DSPTAB's sent bit and
+   the clock of checkpoints a centisecond apart, and the whole of such a
+   checkpoint when other words differ too, unless it ends the window
+   (`SCHEDULE_SKIP`; the run prints
+   `skipped:` when it uses it; `--replay-exact` turns it off). The timers
+   TIME1-TIME6 are compared too. Until the work charges agree (Interpreter
+   #650, RK #663), both missions skip a TIME5 one count apart when TIME1
+   agrees: the two sides sampled in different thirds of the centisecond
+   (`TIME5_PHASE`, printed when used). LM windows skip nothing else.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
@@ -1032,9 +1062,13 @@ port) runs one mission:
    run as a whole is one yaAGC run under that tick schedule. No
    free-running reference runs, and no samples are compared.
    `FLIGHT_SCALED=W` replays the work clock instead (docs/RESIDENT-FLIGHT.md,
-   The work clock): each native routine advances the clock by its
-   module's MCT weight (as the flight build computes it from
-   docs/flight-routine-mct.json), a self-check idle routine moves it to
+   The work clock): each native routine advances the clock by the
+   weight the C64 store charges it (host.inc, `c64_mct` in
+   tools/flight_store_build.py once the modules link): its module's
+   FS_MCT from docs/flight-routine-mct.json, or for a table left to the
+   compact interpreter RK_INTERP_MCT, yaAGC's mean per interpretive word
+   (docs/flight-interp-mct.json). A host-only build has no modules and
+   charges each table its own weight. A self-check idle routine moves it to
    the next tick, module swaps cost nothing, and no tick is dropped.
 
 `tools/flight_holes.py` names the file, label and owning lane of every

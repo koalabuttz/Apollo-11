@@ -102,15 +102,71 @@ minutes, 700 bytes a second) and the AGC then started as above. An SD2IEC
 has not been tried. `make flight-disk-vice` runs
 only the fast path.
 
-## What runs after the load
+## The DSKY
 
-Today the flight resident has no display or keyboard: after the hand-off
-the screen shows the loader's last lines and the AGC runs headless. So the
-next step, the DSKY on the screen and the keyboard as the DSKY's keys, is
-needed before a person can type `V37E00E` to select P00 or load a pad and
-start P63. Until then the flight scenarios run in VICE from snapshots the
-host flight run writes (tools/flight_scenario_vice.py), not from these
-disks.
+Once the AGC runs, the screen is its DSKY. Here is the CM in VICE after the
+boot and `V37` ENTR `00` ENTR, with PROG and RESTART lit (yellow on the
+screen):
+
+```text
+ APOLLO 11 CM DSKY
+
+ UPLINK ACTY  TEMP         COMP ACTY
+ NO ATT       GIMBAL LOCK  PROG
+ KEY REL      RESTART      TRACKER
+ OPR ERR      ALT          VEL
+
+        VERB    NOUN    PROG
+                         00
+
+            R1
+            R2
+            R3
+
+ V VERB  N NOUN  RETURN ENTR  C CLR
+ R RSET  K KEY REL  P PRO  0-9 + -
+```
+
+The digits are what the AGC sent to the DSKY's
+relays (channel 10, through T4RUPT), so they change as the real ones did,
+a row at a time; the lamps are channel 11's and row 12's, and RESTART is
+the restart flip-flop. VERB and NOUN flash when the AGC asks, as do KEY REL
+and OPR ERR. PRIO DISP, NO DAP and STBY are not shown.
+
+The keys:
+
+| C64 key | DSKY key |
+|---|---|
+| `0`-`9`, `+`, `-` | the same |
+| `V` | VERB |
+| `N` | NOUN |
+| RETURN | ENTR |
+| `C` or DEL | CLR |
+| `R` | RSET |
+| `K` | KEY REL |
+| `P` | PRO (held down for 1 s of AGC time) |
+
+So `V37` RETURN `00` RETURN selects P00, and `V35` RETURN runs the lights
+test. One key at a time: the C64 sees a key 25 times a second and passes
+it on when the AGC is next idle.
+
+To try the keys in VICE without a C64: `tools/flight_disk.py --missions lm
+--vice --keys V37E00E --screenshot` types them into the DSKY's key queue
+through VICE's monitor. With `--xtest`, run under `xvfb-run -a`, it presses
+them on VICE's window instead, so they go through the C64's own keyboard
+scan as typed keys would: `R`, then `V37E00E` on the LM clears RESTART and
+PROG and reaches P00, and `V35E` on the CM runs the lights test.
+
+The DSKY costs the flight resident no memory and the AGC no time: its code
+runs from $0200-$03FF and its tables sit in the screen's last eight rows,
+in the background colour; it draws from the AGC's idle loop, only what
+changed. Under the work clock the AGC's timing does not depend on how fast
+the C64 is, so drawing changes only how fast the C64 runs, not what the AGC
+does.
+
+RSET turns RESTART off, as the AGC's hardware does. If the AGC reaches a
+point the C64 port does not cover yet, it stops there and the display stays
+as it was.
 
 ## The C64 Ultimate (unverified)
 
