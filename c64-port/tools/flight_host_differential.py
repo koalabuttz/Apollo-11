@@ -116,6 +116,26 @@ LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142
 # the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
 LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
 LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
+# lm-p65-autoland-nassp: lm-p63-nassp on to the surface with no crew
+# takeover. P64 at about 1,118 s; at 1,278 s P64's guidance reaches its
+# low gate and starts P65, which holds the LM vertical and descends at
+# about 1 m/s. Touchdown at 1,324.8 s (FLIGHT_TOUCHDOWN: the engine
+# model's true height reaches the surface then); V37E68E at 1,340 s: P68
+# flashes V06N43, PRO at 1,378 s, V37E00E at 1,390 s: P00 on the surface.
+P65 = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_TOUCHDOWN': '132480',
+       'FLIGHT_CHAN': '137800:032=057777,137900:032=077777'}
+P65_KEYS = NASSP_KEYS + '@134000V37E68E@139000V37E00E'
+# lm-p67-nassp: lm-landing-ascent-nassp to P00 on the surface, with the
+# crew on manual throttle (channel 30 bit 5) from 1,240 s to 1,244 s in
+# P66: GUILDENSTERN starts P67 (no throttle commands, the thrust holds),
+# and when the discrete goes again it starts P66 over at the current sink
+# rate; the ROD clicks at 1,250 s and the landing go on as before. The
+# 4 s of held thrust bring touchdown forward to 1,334 s (where the engine
+# model's true height reaches the surface; lm-landing-ascent-nassp
+# touches down at 1,344 s).
+P67 = {**LANDING, 'FLIGHT_TOUCHDOWN': '133400', 'FLIGHT_CHAN': '122500:031=067777,124000:030=036371,124400:030=036351,'
+                                 '134900:031=057777,141000:032=057777,141100:032=077777'}
+P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
 # bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
@@ -362,6 +382,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
+          ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
+          ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),

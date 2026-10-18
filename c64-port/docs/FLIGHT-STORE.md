@@ -729,6 +729,17 @@ port) runs one mission:
    1,679 m/s, about 18 km up. On the host every native routine matches
    yaAGC; the unregistered points are the 3 self-check ones and Pinball's
    RELDSP1 (02,2502, 1 arrival).
+   `lm-p65-autoland-nassp`: the same descent with no crew takeover. P64's
+   guidance reaches its low gate at 1,278 s and starts P65, which holds
+   the LM vertical and descends at about 1 m/s; touchdown at 1,324.8 s,
+   where the engine model's true height (`FLIGHT_LR_TRACE`) reaches the
+   surface; P68 and P00 on the surface as above. Apollo 11 never flew
+   P65 (the crew took P66 at about 500 ft).
+   `lm-p67-nassp`: `lm-landing-ascent-nassp` to P00 on the surface with
+   the crew on manual throttle (channel 30 bit 5) from 1,240 s to
+   1,244 s in P66: GUILDENSTERN starts P67, which issues no throttle
+   commands (the thrust holds), and starts P66 over at the current sink
+   rate when the discrete goes. Touchdown comes 10 s earlier, at 1,334 s.
    `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
    lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
    descent orbit) back to that orbit's apolune and undoes the burn there
