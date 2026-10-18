@@ -2278,3 +2278,7 @@ All of Comanche055 REENTRY_CONTROL (1172 words) is native C on the control-trans
 ## Translate R60,R62
 
 Luminary099 and Comanche055 R60_62.agc (the attitude maneuver and crew-defined maneuver routines, VECPOINT and the FDAI ball angles) are native C on the control-transfer ABI as 196 routines, every word. The channel-reading orders (Luminary G+N,AUTO's and ISITAUTO's READs, Comanche TOBALLC's RXOR; six words) now read the run's latched input channels 30 and 31 (`channel_inputs`). All 100,352 cases equal the original programs in yaAGC. The host and sanitizer tests pass 832 frozen cases, and nine C64 diagnostics pass 268 cases in VICE that take all 1,703 branch outcomes the cases reach. Both files have accepted complete certificates. See `docs/R60-R62.md`.
+
+## Compile Luminary TIME_OF_FREE_FALL for the flight store
+
+Luminary099 TIME_OF_FREE_FALL is compiled as 123 routines of the control-transfer ABI (`src/lm_tff_abi.c`) for the LM flight store, alongside the complete hand-written `src/lm_time_free_fall.c`, so V82 and the other interpretive callers stay native (the LM DOI scenario's 95 + 16 bridged points go to 0). All 31,488 cases equal yaAGC; 984 frozen cases pass the strict and sanitizer host tests, and 196 C64 cases pass in VICE, taking all 2,332 host edges. See `docs/LM-TFF-ABI.md`.
