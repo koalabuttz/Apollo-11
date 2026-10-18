@@ -90,13 +90,28 @@ def _calibrated(table, named):
     return full if full in named else re.sub(r'_[a-z0-9]+_hot_', '_', table)
 
 
+def _word_mct(m):
+    """docs/flight-interp-mct.json (tools/interp_word_mct.py): the yaAGC
+    MCT an interpretive word spends in the interpreter, on average over the
+    flight scenarios; None without it."""
+    path = Path(__file__).resolve().parents[1] / 'docs/flight-interp-mct.json'
+    if not path.exists():
+        return None
+    return json.loads(path.read_text()).get(m, {}).get('mean') or None
+
+
 def mct_weight(m, tables, interp=False):
     """The work clock's weight for a module running these tables
     (platform/c64/resident_flight.h): the mean yaAGC MCT per routine run
     over the calibration (docs/flight-routine-mct.json), of
-    their basic keys (interp: their interpretive keys; tables None: every
-    table's). Tables with no calibrated run take the mission's mean; no
-    calibration at all, 24. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
+    their basic keys (interp: their interpretive keys). Tables with no
+    calibrated run take the mission's mean; no calibration at all, 24.
+    Interpretive routines are one word each, and the interpreter's own
+    weight (tables None, interp: RK_INTERP_MCT, per word it runs) and an
+    interpretive table with no calibrated run take the mean per word
+    (docs/flight-interp-mct.json) where it is measured: the routine
+    calibration's scenarios run few interpretive words, and the mission's
+    mean is the basic routines'. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
     0 marks the background self-check loop (any *_self_check_idle(_hot)_routines
     table): idle, whose run takes the rest of the tick (RK_MCT_IDLE)."""
     if tables and any(t.endswith(('_self_check_idle_routines', '_self_check_idle_hot_routines')) for t in tables):
@@ -106,6 +121,9 @@ def mct_weight(m, tables, interp=False):
     mine = [v for k, v in keys.items()
             if (tables is None or k.split()[0] in {_calibrated(t, named) for t in tables})
             and k.split()[1] == str(int(interp))]
+    word = _word_mct(m) if interp else None
+    if word and (tables is None or not sum(v['n'] for v in mine)):
+        return min(255, max(4, word))
     pool = mine if sum(v['n'] for v in mine) else list(keys.values())
     n = sum(v['n'] for v in pool)
     return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24

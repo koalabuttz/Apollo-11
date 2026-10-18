@@ -26,7 +26,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SHARED = ('Makefile', 'include/agc_word.h', 'src/agc_word.c', 'tools/ci_affected.py', 'tools/mk/_ci-split.mk')
-IGNORED = re.compile(r'^(docs/(?!flight-store-unplaced\.json$|flight-routine-mct\.json$)|evidence/|README\.md$|CONTRIBUTING-port\.md$|tools/ledgers\.py$|'
+IGNORED = re.compile(r'^(docs/(?!flight-store-unplaced\.json$|flight-routine-mct\.json$|flight-interp-mct\.json$)|evidence/|README\.md$|CONTRIBUTING-port\.md$|tools/ledgers\.py$|'
                      r'tools/evidence\.py$|tools/new_milestone\.py$|tools/setup_cloud\.sh$|\.gitignore$)')
 WORD = re.compile(r'[A-Za-z0-9_./+-]+')
 INCLUDE = re.compile(r'^\s*#\s*include\s*"([^"]+)"', re.M)

@@ -1062,9 +1062,13 @@ port) runs one mission:
    run as a whole is one yaAGC run under that tick schedule. No
    free-running reference runs, and no samples are compared.
    `FLIGHT_SCALED=W` replays the work clock instead (docs/RESIDENT-FLIGHT.md,
-   The work clock): each native routine advances the clock by its
-   module's MCT weight (as the flight build computes it from
-   docs/flight-routine-mct.json), a self-check idle routine moves it to
+   The work clock): each native routine advances the clock by the
+   weight the C64 store charges it (host.inc, `c64_mct` in
+   tools/flight_store_build.py once the modules link): its module's
+   FS_MCT from docs/flight-routine-mct.json, or for a table left to the
+   compact interpreter RK_INTERP_MCT, yaAGC's mean per interpretive word
+   (docs/flight-interp-mct.json). A host-only build has no modules and
+   charges each table its own weight. A self-check idle routine moves it to
    the next tick, module swaps cost nothing, and no tick is dropped.
 
 `tools/flight_holes.py` names the file, label and owning lane of every
