@@ -1843,6 +1843,11 @@ def main():
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
         (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+        # Each mission's own, which a later build of the other mission (or
+        # an up-to-date one, which writes none) leaves in place
+        # (tools/flight_scenario_vice.py c64_weights).
+        for m in report:
+            (ROOT / OUT / f'report-{m}.json').write_text(json.dumps(report[m], indent=1) + '\n')
     if errors:
         raise SystemExit('\n'.join(errors))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
