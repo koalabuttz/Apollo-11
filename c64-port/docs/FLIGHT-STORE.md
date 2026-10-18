@@ -388,16 +388,24 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
 - The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
   pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
   burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
-  and `cm_auto_man_hot_routines` (6, with SMALLMP and DPADD from
-  `cm_mysubs_routines`). They are `ALONE` like the entry pack, one pack per
-  file: one pack of all three is far over the job slot, and only a
-  one-table pack splits. The RCS and jet-select packs split into two
+  and `cm_auto_man_hot_routines` (6). SMALLMP and DPADD
+  (`cm_mysubs_routines`) ride in the RCS pack, since the RCS pass calls
+  them every pass. They are `ALONE` like the entry pack: one pack of all
+  three files is far over the job slot. A one-table pack splits into
+  consecutive chunks (`FS_CHUNK`), and a pack of several tables into
+  consecutive runs of its entries in key order (`FS_PICK`). The RCS and jet-select packs split into two
   chunks each. A pack's keys resolve to the pack first, so those hot keys
   load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
   Pack ids follow on: a pack starts after the ids the one before it split
   into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
   (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
   to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
+  Moving SMALLMP into the RCS pack (on a8203cc4 with T6 running, #649)
+  took that window from 18.83x to 14.60x, with T5RUPT job loads 364 to 176
+  and its mean cost 365,047 to 283,208 cycles. Steps fell from 1,722 to
+  1,015 since more of a pass runs inside one module. The T5 pass count
+  also moved (90 to 86): the work clock charges a module's steps at that
+  module's MCT, so the two runs are not step-for-step the same 300 cs.
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
@@ -870,6 +878,16 @@ port) runs one mission:
    ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
    job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
    takes 1,273,194 routines, none that yaAGC did not match.
+   On the C64 (`flight_scenario_vice.py --keys`), one gap shows only
+   there. CONIC_SUBROUTINES' CHECKCTR (12,2644) is KEPLOOP's and LAMBERT's
+   RTB target. On the host it runs only inside lm_conic_compiled's routines
+   (a native range), so no host run reaches it as a basic point. On the C64
+   the interpreter module runs those orders, and P34's TPI recycle stopped
+   there. `lm_conic_checkctr_routines` is its basic table: the same
+   lm_conic_checkctr body, leaving Z at DANZIG for the interpreter's pending
+   BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
+   run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
+   7.38 m/s as on the host.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
