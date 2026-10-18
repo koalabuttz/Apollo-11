@@ -724,7 +724,8 @@ def host_pins(m, packed):
 def pack_report(packs):
     """The report's "packs": each job-slot pack (PACKS) with its tables, the
     ride ones and whether it linked."""
-    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'] or [p['chunk'][0]],
+    return [dict(name=p['prg_name'], id=f"0x{p['id']:04x}", tables=p['basic'] or (list(dict.fromkeys(t for t, _ in p['pick'])) if p.get('pick')
+                                                         else [p['chunk'][0]]),
                  ride=[t for t in p['basic'] if t in RIDE], ok=bool(p.get('ok'))) for p in packs]
 
 
@@ -788,11 +789,12 @@ ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
 # MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
 # task slot and run chunked in the job slot beside the others, so a pass
 # loaded about 7 modules. Each file's hot subset is its own pack (one table
-# per pack, so one too big for the slot splits in key order), KALCMANU's
-# beside MYSUBS, which its callers in the pass share.
-RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines']}
+# per pack, so one too big for the slot splits in key order). MYSUBS's
+# SMALLMP rides with the RCS DAP's: the RCS pass calls it every pass, so
+# beside KALCMANU's it cost two loads a pass.
+RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines', 'cm_mysubs_routines']}
 JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
-MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines', 'cm_mysubs_routines']}
+MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
@@ -1271,6 +1273,8 @@ def main():
         def pick_of(mod):
             """The module's live entries in key order, or None when it links
             every entry of its tables (FS_BASIC or FS_CHUNK as before)."""
+            if mod.get('pick'):
+                return mod['pick']  # a split pack's own entries
             if mod.get('defines') or mod.get('excursion') or mod['interp']:
                 return None
             if mod.get('chunk'):
@@ -1311,24 +1315,32 @@ def main():
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
             return mod, prg, res
-        def split_pack(pack, t):
-            """A stand-alone pack's one table over the job slot, as consecutive
-            chunks that each fit, each as long as fits (binary search on its
-            end, as split_greedy): the pass then loads one per chunk it
-            crosses. Ids follow the pack's."""
-            out, lo, n = [], 0, len(keys[t])
+        def split_pack(pack, pts):
+            """A stand-alone pack over the job slot, as consecutive chunks
+            that each fit, each as long as fits (binary search on its end,
+            as split_greedy): the pass then loads one per chunk it crosses.
+            One table splits by FS_CHUNK; several split their entries in key
+            order (FS_PICK), so a small table's keys go to the chunk with
+            the keys beside them. Ids follow the pack's."""
+            entries = sorted(((t, i) for t in pts for i in range(len(keys[t]))), key=lambda e: keys[e[0]][e[1]])
+
+            def part(lo, hi):
+                if len(pts) == 1:
+                    return dict(basic=[], chunk=(pts[0], lo, hi))
+                return dict(basic=[], pick=entries[lo:hi])
+            out, lo, n = [], 0, len(entries)
             while lo < n:
                 good, bad = lo, n + 1
                 while bad - good > 1:
                     mid = (good + bad) // 2
-                    r = link(dict(pack, basic=[], chunk=(t, lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
+                    r = link(dict(pack, **part(lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
                     if r['ok']:
                         good = mid
                     else:
                         bad = mid
                 if good == lo:
                     return [pack]  # one routine over the slot: the pack stays whole (and fails)
-                out.append(dict(pack, id=pack['id'] + len(out), basic=[], chunk=(t, lo, good),
+                out.append(dict(pack, **part(lo, good), id=pack['id'] + len(out),
                                 prg_name=f"{pack['prg_name']}-{len(out)}"))
                 lo = good
             return out
@@ -1361,8 +1373,8 @@ def main():
             res = link(dict(pack))[2]
             exc_ask |= {n for n in map_symbols(ROOT / OUT / m / f'{name}.prg.map')
                         if not n.startswith(('apollo_ov2_', 'rk_module_tables', '__ov2')) and n not in pts}
-            if name in ALONE and len(pts) == 1 and not res['ok'] and res.get('overflow'):
-                packs += split_pack(pack, pts[0])
+            if name in ALONE and not res['ok'] and res.get('overflow') and not any(t in RIDE for t in pts):
+                packs += split_pack(pack, pts)
             else:
                 packs.append(pack)
         # Pack ids stay in lane F's byte: 0x0800 on is lane G's.
@@ -1633,6 +1645,10 @@ def main():
         for pack in packs:
             if pack.get('ok'):
                 c = pack.get('chunk')
+                if pack.get('pick'):
+                    for t, i in pack['pick']:
+                        module_of[(hot_full(t) or t, keys[t][i])] = pack['id']
+                    continue
                 for t in pack['basic'] or [c[0]]:
                     if t in RIDE:
                         continue
