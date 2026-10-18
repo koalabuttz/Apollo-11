@@ -4763,8 +4763,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/cm-r31.md",
-            "sha256": "53e35c85003dc778c6d11b01e28152c70dbfc7b855fc34912497f8827192e851"
+            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
+            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
@@ -6139,8 +6139,8 @@
             "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-194.md",
-            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
+            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
+            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
           }
         }
       }
