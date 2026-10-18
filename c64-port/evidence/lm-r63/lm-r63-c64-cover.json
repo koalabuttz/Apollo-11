@@ -8,12 +8,12 @@
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
   "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "64afac6c2fcc64acaf20d636f46f0971131623de44fe95da14905717e4ce062d",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
   "tests/lm_r63_target.c": "95cf92f776ce15e55d82224d79503cfc4e5f7e808931f70d998993249ed6f57a"
  },
  "host_cases": 15360,
@@ -39,40 +39,40 @@
   7172,
   7180,
   7696,
-  8208,
-  8816,
-  9224,
-  9744,
-  9760,
-  10256,
-  10764,
-  11292,
-  11800,
-  12292,
-  12828,
-  13332,
-  13852,
-  14336,
-  14864
+  8284,
+  8824,
+  9256,
+  9732,
+  9740,
+  10264,
+  10760,
+  11276,
+  11784,
+  12288,
+  12916,
+  13320,
+  13832,
+  14436,
+  14876
  ],
- "host_branch_arcs": 442,
- "c64_branch_arcs": 442,
+ "host_branch_arcs": 445,
+ "c64_branch_arcs": 445,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    0,
    0
   ],
   "src/agc_image_ops.c": [
-   90,
-   90
+   91,
+   91
   ],
   "src/agc_multiword.c": [
    10,
    10
   ],
   "src/agc_transfer.c": [
-   45,
-   45
+   46,
+   46
   ],
   "src/agc_word.c": [
    2,
@@ -103,8 +103,8 @@
    27
   ],
   "src/lm_r63.c": [
-   132,
-   132
+   133,
+   133
   ],
   "src/rtb_angles.c": [
    25,
