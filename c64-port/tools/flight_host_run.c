@@ -1044,9 +1044,6 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
  for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
-  /* FLIGHT_REPLAY_TRACE: each step's Z, FB, TIME1 and work clock at its
-   * start, as dap_pass_check.c DP_STEPS records them with DP_REPLAY. */
-  if(rp_out&&!snap_path&&getenv("FLIGHT_REPLAY_TRACE"))printf("RT %05o %05o %03o %lu %.0f\n",(unsigned)s.words[5],(unsigned)s.words[4],(unsigned)(s.words[025]&0377u),consumed%9ul,wall-(consumed?step_at(consumed-1ul):0.0));
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
     if((j=differs(s.words,ref[next]))!=0u&&++diffs<=(getenv("FLIGHT_SHOW")?strtoul(getenv("FLIGHT_SHOW"),0,0):20ul)){
@@ -1104,6 +1101,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     if(substitute&&brupt!=s.words[017]&&++lost_brupt==1ul)printf("interrupt at a RESUME point replaced BRUPT %05o with %05o at %lu cs\n",(unsigned)brupt,(unsigned)s.words[017],now(s.words));
     substitute=0;}}
   e=holder(s.words,io.superbank,&call);
+  /* FLIGHT_REPLAY_TRACE: each routine's Z, FB, TIME1, work clock (step,
+   * MCT since it), Q and table, as dap_pass_check.c DP_STEPS records the
+   * C64's steps with DP_REPLAY. */
+  if(rp_out&&!snap_path&&getenv("FLIGHT_REPLAY_TRACE"))printf("RT %05o %05o %03o %lu %.0f Q %05o %s\n",(unsigned)s.words[5],(unsigned)s.words[4],(unsigned)(s.words[025]&0377u),consumed%9ul,wall-(consumed?step_at(consumed-1ul):0.0),(unsigned)s.words[2],e?e->name:"(bridge)");
   if(e&&*e->module)module_load(e,s.words,io.superbank);
   if(getenv("FLIGHT_WATCH_STEP"))watch(s.words);
   /* A radar read starts at any routine boundary and the resident's cycle

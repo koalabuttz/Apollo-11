@@ -269,6 +269,7 @@ static void BOOT load_snapshot(void){
  SNAP_IO(rk_device)
  SNAP_HW(rk_hardware)
  SNAP_FLIGHT(rk_flight)
+ rk_device_from_canonical();
  rk_pending = 0;
 #ifdef DP_REPLAY
  /* The host's replay runs on the work clock from its first step. */

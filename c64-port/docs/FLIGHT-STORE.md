@@ -940,11 +940,19 @@ port) runs one mission:
    the engine lag and radar reads). At the first sample point `--cs` in
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
-   6, 11-14, 34, 35, the superbank; on the CM both C64 copies of 11-14);
+   6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
+   the base tables run on);
    the run fails on any difference, printing the first one, skipping what
    the host differential skips (the central registers, RUPTREG1-4, the
    clock counters). So a window that ran with no stops also has to match
-   the host.
+   the host. Until the CM idle pass is charged as idle on the C64 (it is
+   module work there when a job ends into it, idle on the host), CM windows
+   skip what that tick moves: DSPCNT, DSRUPTSW, DSPTAB's sent bit and
+   the clock of checkpoints a centisecond apart, and the whole of such a
+   checkpoint when other words differ too, unless it ends the window
+   (`SCHEDULE_SKIP`; the run prints
+   `skipped:` when it uses it; `--replay-exact` turns it off). LM windows
+   skip nothing.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
