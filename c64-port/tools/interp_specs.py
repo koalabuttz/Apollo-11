@@ -3219,7 +3219,11 @@ SPECS = {
         'base': {'cm': 'cm_imu_calibration'},
         'symbol': {'cm': 'cm_imu_calibration'},
         # ALLOOP: the task TWIDDLE starts (TC TWIDDLE; ADRES ALLOOP).
-        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT'],
+        # WTLISTNT+2: SLEEPIE's TC ENDOFJOB, where SETGWLST returns (TC
+        # MPAC, its QXCH'd Q) after the TWIDDLE at the end of every compass
+        # or drift iteration; a case from WTLISTNT stops at that boundary.
+        'entries': ['IMUTEST', 'FINETIME', 'EARTHR', 'PROUT', 'P11OUT', 'GCOMPVER', 'RESTEST1', 'ALLOOP', 'WTLISTNT',
+                    'WTLISTNT+2'],
         'externals': {'PRIOCHNG': 'auto', '2PHSCHNG': 'auto', 'ALARM': 'auto', 'BANKCALL': 'auto', 'CHANG1': 'auto', 'CHECKMM': 'auto', 'DOWNFLAG': 'auto', 'FINDVAC': 'auto', 'JOBWAKE': 'auto', 'LONGCALL': 'auto', 'NEWMODEA': 'auto', 'NEWMODEX': 'auto', 'NEWPHASE': 'auto', 'PHASCHNG': 'auto', 'POSTJUMP': 1, 'TWIDDLE': 'auto', 'ENDEXT': None, 'POODOO': None, 'ENDMARK': None, 'ENDOFJOB': None, 'JOBSLEEP': None, 'TASKOVER': None},
         'noreturn': ['POSTJUMP', 'ENDEXT', 'POODOO', 'ENDMARK', 'JOBSLEEP'],
         'resume_keys': True,
@@ -3267,6 +3271,13 @@ SPECS = {
         'ebank': 5,
         # CHECKG1 spins until a PIPA pulse moves PIPAX, FINETIME +1 while
         # LOSCALAR reads 37777 (the scalers are latched for a run).
+        # FINETIME's re-read (02,2563-2565, RXOR LOSCALAR's BZF falling
+        # through) runs only when SCALER1 ticks between its two READs. A
+        # native run sees the scalers latched: the cases latch them on both
+        # sides, and in flight the resident advances channels 3 and 4 only
+        # between steps (rk_timer_phase), as it lands T6RUPT at a step's
+        # end. So the two READs agree and the BZF always branches; the
+        # re-read is the hardware race this timing model does not have.
         'idle': ['CHECKG1', 'FINETIME+1'],
         # FINETIME reads the scalers and CHKCOMED channel 30 (liftoff).
         'channel_inputs': True,
