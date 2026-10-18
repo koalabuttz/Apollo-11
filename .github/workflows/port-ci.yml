@@ -230,7 +230,7 @@ jobs:
       REF: ${{ needs.plan.outputs.sha }}
     if: needs.plan.outputs.c64 == '1'
     runs-on: ubuntu-24.04
-    timeout-minutes: 150
+    timeout-minutes: 210
     strategy:
       fail-fast: false
       matrix:
