@@ -96,26 +96,73 @@ SPLIT_ANY = {'lanec_pin_routines'} | {base for spec in interp_specs.SPECS.values
                                       for base in spec['base'].values()}
 
 
-def lanec_pin_order(table, n):
-    """Pinball's routines grouped by the modules their try-lists run
-    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
-    with the same modules sit together, and address order is kept within a
-    group. A chunk is then a set of entries (FS_PICK), not a key range."""
+# Pinball display chains that each run as one chunk (physical keys): the
+# per-row loop DSPDCPUT, DP1OUTSF, DP3OUTSF, DSPDCEND, DSPDCEND +2; the
+# monitor chain NVMONOPT, KILMONON, NVSUBCOM, NVSUB1, NVSUB2 +9, +11,
+# NVSUBEND and VERBFAN; and ENTPAS0 with MIXNOUN. A monitor display walks
+# them in turn, about 20 points, one load each when they sit in different
+# chunks (docs/LM-FLIGHT-LOAD-PROFILE.md). Each group links under the slot.
+LANEC_PIN_GROUPS = {
+    'lanec_pin_lm_routines': [[34143, 33224, 33231, 34166, 34168],
+                              [2157, 2180, 2168, 34660, 34690, 34692, 2178, 33883],
+                              [33821, 33937]],
+    'lanec_pin_cm_routines': [[34143, 33164, 33171, 34166, 34168],
+                              [2169, 2192, 2180, 34660, 34690, 34692, 2190, 33883],
+                              [33821, 33937]]}
+
+
+def lanec_pin_entries(table, n):
+    """The table's entries in src/lanec_pin_routines.inc: (physical, try-list modules)."""
     inc = (ROOT / 'src/lanec_pin_routines.inc').read_text()
     tries = {k: tuple(sorted(v.replace(' ', '').split(',')[:-1]))
              for k, v in re.findall(r'static const dispatch (try\d+)\[\d+\] = \{ (.*?) \};', inc)}
     body = inc.split(f'agc_routine_entry {table[len("lanec_pin_"):-len("_routines")]}_entries[')[1].split('};')[0]
-    calls = re.findall(r'\{ \d+u, (try\d+)_(?:lm|cm) \}', body)
+    calls = re.findall(r'\{ (\d+)u, (try\d+)_(?:lm|cm) \}', body)
     if len(calls) != n:
         raise SystemExit(f'{table}: {len(calls)} entries in src/lanec_pin_routines.inc, {n} keys')
-    return sorted(range(n), key=lambda i: (tries[calls[i]], i))
+    return [(int(k), tries[t]) for k, t in calls]
+
+
+def lanec_pin_group(table, n):
+    """Each entry's LANEC_PIN_GROUPS group index (len(groups) for the rest)."""
+    groups = LANEC_PIN_GROUPS.get(table, [])
+    of = {k: g for g, ks in enumerate(groups) for k in ks}
+    ents = lanec_pin_entries(table, n)
+    if not set(of) <= {k for k, _ in ents}:
+        raise SystemExit(f'{table}: LANEC_PIN_GROUPS names keys the table lacks: {sorted(set(of) - {k for k, _ in ents})}')
+    return [of.get(k, len(groups)) for k, _ in ents]
+
+
+def lanec_pin_order(table, n):
+    """Pinball's routines grouped by the modules their try-lists run
+    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
+    with the same modules sit together, and address order is kept within a
+    group. LANEC_PIN_GROUPS come first, each in its own chunk (see
+    lanec_pin_breaks). A chunk is then a set of entries (FS_PICK), not a
+    key range."""
+    ents, grp = lanec_pin_entries(table, n), lanec_pin_group(table, n)
+    return sorted(range(n), key=lambda i: (grp[i], ents[i][1], i))
+
+
+def lanec_pin_breaks(table, n):
+    """Positions in lanec_pin_order that no chunk crosses: the end of each
+    LANEC_PIN_GROUPS group."""
+    grp = lanec_pin_group(table, n)
+    ends, at = [], 0
+    for g in range(len(LANEC_PIN_GROUPS.get(table, []))):
+        at += grp.count(g)
+        ends.append(at)
+    return ends
 
 
 # Chunk order per stem: (table, entries) -> the entries' order for packing.
 CHUNK_ORDER = {'lanec_pin_routines': lanec_pin_order}
+# Chunk breaks per stem: (table, entries) -> positions in the chunk order
+# that a chunk does not cross.
+CHUNK_BREAKS = {'lanec_pin_routines': lanec_pin_breaks}
 
 
-def pack_chunks(n, fits, probes):
+def pack_chunks(n, fits, probes, breaks=()):
     """Greedy packing of routines 0..n-1 into chunks of consecutive routines.
 
     Each chunk starts where the last one ended and takes the most routines
@@ -128,15 +175,19 @@ def pack_chunks(n, fits, probes):
     failing end. The chunks depend only on the link results: the same
     inputs give the same chunks in the same order.
 
+    No chunk crosses a position in breaks: a chunk that reaches one ends
+    there.
+
     Returns (kept, over): kept the (start, end) chunks that fit, over the
     (start, overflow) of routines over the slot alone; None on a link error."""
     kept, over, start = [], [], 0
     while start < n:
-        lo, hi, alone = start, n + 1, None      # [start, lo) fits; [start, hi) does not
+        end = min([b for b in breaks if b > start] + [n])
+        lo, hi, alone = start, end + 1, None    # [start, lo) fits; [start, hi) does not
         while hi - lo > 1:
-            if hi == n + 1:                     # gallop until an end fails
+            if hi == end + 1:                   # gallop until an end fails
                 base = lo - start
-                ends = {min(n, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
+                ends = {min(end, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
             else:
                 ends = {lo + (hi - lo) * (i + 1) // (probes + 1) for i in range(probes)}
             ends = sorted(e for e in ends if lo < e < hi) or [lo + 1]
@@ -1635,9 +1686,12 @@ def main():
                     with ThreadPoolExecutor(a.jobs) as pool:
                         got = list(pool.map(lambda e: trial((t, start, e), mod), ends))
                     return [True if r['ok'] or r.get('empty') else r.get('overflow') or None for r in got]
+                breaks = ()
                 if mod['stem'] in CHUNK_ORDER:
                     chunk_order[t] = CHUNK_ORDER[mod['stem']](t, len(keys[t]))
-                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs))
+                if mod['stem'] in CHUNK_BREAKS:
+                    breaks = CHUNK_BREAKS[mod['stem']](t, len(keys[t]))
+                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs), breaks)
                 if got is None:
                     return None
                 kept += [(t, i, j) for i, j in got[0]]
