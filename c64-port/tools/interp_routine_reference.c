@@ -93,7 +93,7 @@ static void qw_hook(unsigned pc){unsigned zp=z_physical(pc),endz,q,insw;const ch
  snprintf(k,sizeof k,"%s %s %+d%s: %s (Q bit 16 %s bit 15; Q %s)",insw?"inside SWITCH":"after SWITCH",t==2?"write":"read",insw?(int)zp-(int)qw_tsq:0,qw_frontier?" past the case's stop":"",nm,((q>>15)&1u)==((q>>14)&1u)?"=":"!=",(q>>14)&1u?"negative":"positive");
  if(!insw&&t!=2&&((q>>14)&1u)&&strcmp(nm,"TC Q")&&strcmp(nm,"QXCH")){char k2[160];snprintf(k2,sizeof k2,"   at %02o,%04o (SWITCH TS Q at %02o,%04o) %s",zp/1024u,(zp%1024u)+((zp/1024u==2u||zp/1024u==3u)?(zp/1024u)*02000u:02000u),qw_tsq/1024u,(qw_tsq%1024u)+02000u,nm);qw_count(k2);}
  qw_count(k);if(!insw)qw_watch=0;}
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned irc3;unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
   if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
@@ -103,13 +103,13 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
  dump=argc>4&&!strcmp(argv[4],"dump");qw_on=getenv("IRC_QWATCH")!=0;InhibitAlarms=1;
  for(i=0;i<2;++i){memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1+i]))return 2;baseline[i]=machine;}
  f=fopen(argv[3],"rb");if(!f)return 2;
- if(rd32(f)!=0x32435249ul){fprintf(stderr,"bad case file\n");return 2;}
+ {unsigned long mg=rd32(f);if(mg!=0x32435249ul&&mg!=0x33435249ul){fprintf(stderr,"bad case file\n");return 2;}irc3=mg==0x33435249ul;}
  for(m=0;m<2;++m){st[m].newops=rd16(f);st[m].nr=rd16(f);if(st[m].nr>64u)return 2;for(i=0;i<st[m].nr;++i){st[m].first[i]=rd16(f);st[m].last[i]=rd16(f);}
   st[m].n=rd16(f);if(st[m].n>64u)return 2;for(i=0;i<st[m].n;++i)st[m].ext[i]=rd16(f);
   st[m].nf=rd16(f);if(st[m].nf>64u)return 2;for(i=0;i<st[m].nf;++i)st[m].from_file[i]=rd16(f);
   st[m].any=0;st[m].nd=0;for(i=0;i+1<st[m].nf;++i)if(st[m].from_file[i]==0xffffu){unsigned j;st[m].any=1;st[m].intpret=st[m].from_file[i+1];
    for(j=i+2;j<st[m].nf&&st[m].nd<8u;++j)st[m].device[st[m].nd++]=st[m].from_file[j];break;}
-  st[m].nt=rd16(f);if(st[m].nt>8u)return 2;for(i=0;i<st[m].nt;++i){st[m].tfirst[i]=rd16(f);st[m].tlast[i]=rd16(f);}}
+  st[m].nt=irc3?rd16(f):0u;if(st[m].nt>8u)return 2;for(i=0;i<st[m].nt;++i){st[m].tfirst[i]=rd16(f);st[m].tlast[i]=rd16(f);}}
  count=(unsigned)rd32(f);
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned stopped=0,stop,zp,prev_in=1,was_in=0,cut=0,atcut=0;const struct stops *t;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);stop=rd16(f);c.nedits=(uint16_t)rd16(f);

@@ -6,11 +6,13 @@ This milestone covers Luminary099 POWERED_FLIGHT_SUBROUTINES.agc, the whole file
 - **Bank 23 (23,3537-3766).** CDUTRIG, CD\*TR\*G, CDUTRIGS and CD\*TR\*GS (sines and cosines of the CDU angles through CDULOGIC, COSINE and SINE), QUICTRIG (SPSIN and SPCOS), the interface routines CDU\*SMNB, TRG\*SMNB, CDU\*NBSM, TRG\*NBSM, \*SMNB\* and \*NBSM\*, and AX\*SR\*T (the axis rotation with DMPSUB). Luminary has no NBSM.
 - **Bank 10 (10,2030-2212).** CALCSMSC and FLESHPOT. FLESHPOT builds the stable-member-to-navigation-base matrix at the ECADR in A (XNB from CALCSMSC, XNBPIP from SERVICER), under that EBANK, with DMP and DMPSUB. Its middle row calls the interpreter's VXV from basic code: `DCA Z`, `AD FOUR`, `DXCH LOC` (LOC at the `TCF VXV` word, 10,2173), EDOP BIT8, `TCF VXV`. VXV ends at DANZIG, whose CCS EDOP runs EXIT into the basic word after the TCF (10,2174).
 
-`tools/interp_compile.py lm-powered-subs` (spec in `tools/interp_specs.py`, `'basic': 'full'`, `resume_keys`) compiles the file into `src/lm_powered_subs.c`, 49 routines:
+`tools/interp_compile.py lm-powered-subs` (spec in `tools/interp_specs.py`, `'basic': 'full'`, `resume_keys`) compiles the file into `src/lm_powered_subs.c`, 39 routines:
 - `lm_powered_subs_interpretive`: each interpretive entry at NEWOPS, and the returns after its TC INTPRET. No order pair here can end in DANZIG with a job waiting, so the file has no CHANG2 resume keys. CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words (23,3567, 3575, 3605) are routines too, keyed at DANZIG (`usprcadr_exits`): USPRCADR leaves LOC there and BIT8 in EDOP, and the interpreter returns through DANZIG, whose CCS EDOP runs EXIT into the next word. FLESHPOT's TCF VXV word (10,2173) is one the same way (`edop_exits`): VXV's DANZIG finds LOC there with EDOP 1 and runs EXIT into 10,2174 (D1's host sweep on 84d550f5 met it in LM P63). These four take any INTBIT15 (`at_exit`): FLESHPOT's DXCH LOC skips INTPRET +2, so INTBIT15 is the caller's, 040000 in P63 after a bank-23 caller. The program puts the DANZIG marker first among its interpretive tables (`tests/lm_powered_subs_target.c`).
-- `lm_powered_subs_basic`: QUICTRIG, AX\*SR\*T, FLESHPOT and FLESHPOT -1 (CALCSMSC's BANKCALL), the words after each EXIT, and the returns after BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF, DMP, DMPSUB and VXV (10,2174).
+- `lm_powered_subs_basic`: QUICTRIG, AX\*SR\*T, FLESHPOT and FLESHPOT -1 (CALCSMSC's BANKCALL), the words after each EXIT, and the returns after BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF and VXV (10,2174).
 
-The transfers out of the file are BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF, DMP, DMPSUB, VXV and SWRETURN, plus the callers' returns. The run stops there, at Z.
+The transfers out of the file are BANKCALL, USPRCADR, SPSIN, SPCOS, MPACVBUF, VXV and SWRETURN, plus the callers' returns. The run stops there, at Z.
+
+The INTERPRETER's DMP and DMPSUB (07103-07135) run in place (`native_calls`, `src/lm_dmpsub.c`, instruction for instruction, ending with TC Q's Q of 3): AX\*SR\*T's and FLESHPOT's TC DMP and TC DMPSUB go on to the next word, so their returns are not routines. They take an erasable operand pair only (ADDRWD 010-01776, unmasked), and return EXEC_OUT_OF_SCOPE before any change otherwise. The oracle runs on through those words (`native_call_words`, a pass-through range in the case file) and compares at the next stop. With them in place, a P63 window makes 11.6% fewer job-slot loads (`docs/LM-FLIGHT-LOAD-PROFILE.md`).
 
 Two additions to `tools/basic_compile.py`, as this file needs them. Neither changes any other spec's output (`tools/interp_compile.py --check`):
 - **A read of Z.** FLESHPOT's `DCA Z` now sees Z as the hardware has it: the address of the next word (10,2167).
@@ -23,9 +25,9 @@ The spec carries `index_carry16` and `image_w` (#260), and `edge_values` (MPAC, 
 As in the CM form, each mid-loop point starts from the words the file's own runs leave there:
 - CD\*TR\*GS (23,3570, 3576, 3606): TEM3 an offset 4, 2 or 0, and TEM2 a caller's return.
 - QUICTRIG (23,3626, 3635): ITEMP2 the offset, ITEMP1 a return outside, and A across its range and +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).
-- AX\*SR\*T (23,3723, 3741): DEXDEX ±1 to ±3, DEX1 and DEX2 offsets, BUF 0 or 1, and RTNSAVER a return.
-- AX\*SR\*T itself, which other files call: A +3 or -3, and Q a return.
-- FLESHPOT after DMP, DMPSUB and VXV: TEM1 the switched address of XNB (1664) or XNBPIP (1545), and TEM2 the caller's EBANK.
+- AX\*SR\*T itself, which other files call: A +3 or -3, and Q a return outside the file (05000). Its loop runs within the one routine.
+- FLESHPOT itself: A the ECADR of XNB (2664) or XNBPIP (2145).
+- FLESHPOT at and after VXV (10,2173, 2174): TEM1 the switched address of XNB (1664) or XNBPIP (1545), and TEM2 the caller's EBANK.
 
 ## Evidence
 

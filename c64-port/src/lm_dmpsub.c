@@ -10,10 +10,10 @@
 #define MPAC2  0156u
 #define ADDRWD 0116u
 #define MPTEMP 0135u
-/* An erasable operand pair at a (12-bit, EB for 01400-01777). */
+/* An erasable operand pair at a (EB for 01400-01777). The whole word is
+ * checked, unmasked: anything else (negative, fixed) stays out of scope. */
 static int erasable_pair(agc_word a)
 {
-    a &= 07777u;
     return a >= 010u && a < 01777u;
 }
 static void dmpsub_body(apollo_overlay_state *s, agc_word a)
@@ -43,7 +43,7 @@ static void dmpsub_body(apollo_overlay_state *s, agc_word a)
 }
 uint8_t lm_dmpsub(apollo_overlay_state *s)
 {
-    agc_word a = (agc_word)(W[ADDRWD] & 07777u);
+    agc_word a = W[ADDRWD];
     if (!erasable_pair(a)) return RTB_OUT_OF_SCOPE;
     dmpsub_body(s, a);
     return RTB_OK;
@@ -55,6 +55,6 @@ uint8_t lm_dmp(apollo_overlay_state *s, uint16_t adres)
     ai_caf(s, adres);
     ai_incr(s, 2u);
     (void)ai_ts(s, ADDRWD);
-    dmpsub_body(s, (agc_word)(adres & 07777u));
+    dmpsub_body(s, (agc_word)adres);
     return RTB_OK;
 }

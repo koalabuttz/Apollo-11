@@ -81,8 +81,8 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
  dump=argc>2&&!strcmp(argv[2],"dump");fbs=argc>2&&!strcmp(argv[2],"fb");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  edges=argc>2&&!strcmp(argv[2],"edges");
  f=fopen(argv[1],"rb");if(!f)return 2;
- if(rd32(f)!=0x32435249ul)return 2;
- for(m=0;m<2;++m){unsigned k,j;rd16(f);k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);for(j=0;j<2u;++j){k=rd16(f);for(i=0;i<k;++i)rd16(f);}k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);}
+ {unsigned long mg=rd32(f);unsigned irc3=mg==0x33435249ul;if(mg!=0x32435249ul&&!irc3)return 2;
+ for(m=0;m<2;++m){unsigned k,j;rd16(f);k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);for(j=0;j<2u;++j){k=rd16(f);for(i=0;i<k;++i)rd16(f);}if(irc3){k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);}}}
  count=(unsigned)rd32(f);
  for(n=0;n<count;++n){irc_case c;apollo_overlay_state s;unsigned kind;uint16_t ie=0;
   c.seed=(uint32_t)rd32(f);c.cm=(uint8_t)fgetc(f);c.interrupt_enabled=(uint8_t)fgetc(f);c.superbank=(agc_word)rd16(f);(void)rd16(f);c.nedits=(uint16_t)rd16(f);

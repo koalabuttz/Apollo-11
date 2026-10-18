@@ -646,7 +646,7 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'],
                     'lm_downtelemetry': ['lm_dntm_rupt_routines'],
                     # A powered-flight DAP pass runs GTS or ACDT+C12 here, then
                     # CLOSEOUT or PAXFILT +4: with those beside them, the pass
-                    # loads one module, not two (pin-split/p66-profile.md).
+                    # loads one module, not two (docs/LM-FLIGHT-LOAD-PROFILE.md).
                     'lm_trim_gimbal': ['lm_p_axis_tg_hot_routines', 'lm_q_r_axis_tg_hot_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_self_check_idle': ['cm_interbank_postjump_hot_routines'],
                     'cm_downtelemetry': ['cm_dntm_rupt_routines']}}

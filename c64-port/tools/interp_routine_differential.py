@@ -848,7 +848,10 @@ class Edits:
 
 def write_cases(path, missions, cases):
     with open(path, 'wb') as f:
-        f.write(struct.pack('<I', 0x32435249))
+        # (IRC3 adds each mission's native-call pass-through ranges; a file
+        # with none stays IRC2, so other milestones keep their case sha.)
+        through = any(mi.through for mi in missions)
+        f.write(struct.pack('<I', 0x33435249 if through else 0x32435249))
         for mi in missions:
             f.write(struct.pack('<2H', mi.newops, len(mi.cp.ranges)))
             for a, b in mi.cp.ranges:
@@ -856,9 +859,10 @@ def write_cases(path, missions, cases):
             for ex in (mi.body_exits, mi.externals):
                 f.write(struct.pack('<H', len(ex)))
                 f.write(struct.pack('<%dH' % len(ex), *ex))
-            f.write(struct.pack('<H', len(mi.through)))
-            for a, b in mi.through:
-                f.write(struct.pack('<2H', a, b))
+            if through:
+                f.write(struct.pack('<H', len(mi.through)))
+                for a, b in mi.through:
+                    f.write(struct.pack('<2H', a, b))
         f.write(struct.pack('<I', len(cases)))
         for c in cases:
             seed, cm, ie, edits = c['seed'], c['cm'], c['ie'], c['edits']

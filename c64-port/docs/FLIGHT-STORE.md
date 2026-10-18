@@ -121,7 +121,7 @@ DAP pass that runs ACDT+C12 or GTS goes on to them there, instead of
 loading the axis file's module. With POWERED_FLIGHT_SUBROUTINES' DMP and
 DMPSUB run in place (docs/INTERP-COMPILE.md `native_calls`), the P63 window
 from 90000 cs went from 640 to 566 job-slot loads in 300 cs and the P66
-window from 123000 cs from 937 to 855 (pin-split/p66-profile.md).
+window from 123000 cs from 937 to 855 (docs/LM-FLIGHT-LOAD-PROFILE.md).
 
 A DOWNRUPT runs in one resident step. It used to take three: the lead-in
 wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,

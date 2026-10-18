@@ -894,7 +894,7 @@ SPECS = {
         # subroutines in place (src/lm_dmpsub.c), not by a hand-off to the
         # interpreter's module: AX*SR*T's loop called DMPSUB about 70 times
         # in 300 cs of the P66 window, a module load each way
-        # (pin-split/p66-profile.md).
+        # (docs/LM-FLIGHT-LOAD-PROFILE.md).
         'native_calls': {'DMP': {'lm': 'lm_dmp(s,{adres})'}, 'DMPSUB': {'lm': 'lm_dmpsub(s)'}},
         'native_call_words': {'lm': [['DMP', 'DMPSUB2+7']]},
         'includes': ['rtb_angles.h', 'lm_dmpsub.h'],
