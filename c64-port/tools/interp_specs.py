@@ -4130,11 +4130,11 @@ SPECS = {
                    'FLASHMGA+2': {'02264': [0o4106, 0o5217]},
                    'LOOPSET': {'vac+046': [0, 2, 4, 6, 8, 10], 'vac+050': [2]},
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
-                   'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
-                   # AUGEKUGL's last DSU BMN V(400) (32,2123) with an entry
-                   # speed of 28,000-28,400 ft/s (MPAC = V - 28K, in DP mode,
-                   # below V(400)'s 0156): BMN LOOPSET.
-                   '32,2123': {'0154': [0, 0o50, 0o150, 'any'], '0163': [0]}},
+                   'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
+        # AUGEKUGL's last DSU BMN V(400) (32,2123, a CHANG2 resume) with an
+        # entry speed of 28,000-28,400 ft/s (MPAC = V - 28K, below V(400)'s
+        # 0156): BMN LOOPSET.
+        'resume_states': {'32,2123': {'0154': [0, 0o50, 0o150, 'flow']}},
         'target': 'tests/cm_p30_p37_target.c',
         'edge_cases': True,
         'resume_keys': True,
