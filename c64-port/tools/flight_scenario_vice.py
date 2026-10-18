@@ -44,6 +44,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import dap_pass_vice as dp  # noqa: E402
 import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
+import reu_layout  # noqa: E402
 
 
 def snapshot(exe, name, cs, tag, replay=0, every=0):
@@ -90,10 +91,10 @@ def compared(i):
 
 def replay_place(manifest, m, image, size):
     """An REU address for size bytes of replay rows and end state: the top
-    of the zeros below the rope (the flight store's spare), which the run
-    must not touch."""
-    top = manifest.get('rope_reu_base') or manifest.get('rope_base') or {'lm': 0x1c0000, 'cm': 0x1e0000}[m]
-    top = int(top, 0) if isinstance(top, str) else top
+    of the zeros between the store and the next declared region (the
+    Pinball trampoline save below the rope, tools/reu_layout.py), which the
+    run must not touch."""
+    top = reu_layout.free_top(m, manifest)
     at = (top - size) & ~0xff
     if at < 0 or any(image[at:top]):
         sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
@@ -395,6 +396,19 @@ def main():
         # rk_device's address comes from the link.
         patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
     r = dp.vice(a, tag, prg, pinned, m, patch)
+    # Every REU byte the run changed lies in a region declared writable
+    # (tools/reu_layout.py): not the store, the rope or the replay rows.
+    after = dp.WORK / f'vice-{tag}' / 'image.reu'
+    if r.get('status') is not None and after.exists():
+        before = bytearray(reu)
+        for at_, data in patch:
+            before[at_:at_ + len(data)] = data
+        bounds = reu_layout.report(m, reu_layout.layout(
+            m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None), before, after.read_bytes(),
+            a.scenario)
+        r['reu_bounds'] = bounds
+        if not bounds['ok']:
+            r['ok'] = False
     if a.replay and r.get('status') is not None:
         mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
         applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
