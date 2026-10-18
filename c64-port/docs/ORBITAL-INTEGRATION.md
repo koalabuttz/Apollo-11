@@ -25,7 +25,7 @@ As in every compiled file, each case is a random 2,048-word image with the routi
 - PBODY (0 Earth or 2 Moon);
 - DIFEQCNT (0, 77763 or 77747 octal);
 - COLREG (0 or a column step, -6 to -48);
-- the X1/X2 index registers (0 or 2 at the entries; at mid-file resumes they hold what the program left there, and at ACCOMP's resumes X2 is the DIFEQ stage 0, -12 or -24). In DOW.. (11,3705-3764) X1 is the stage the flight DIFEQ passes reach it with: 0 from DIFEQ0 (NEXTCOL's AXT,1 0), -12 or -24 from DIFEQCOM; DIFEQ+2 never returns there (`flow_range_states`, review #165);
+- the X1/X2 index registers (0 or 2 at the entries; at mid-file resumes they hold what the program left there, and at ACCOMP's resumes X2 is the DIFEQ stage 0, -12 or -24). In DOW.. (11,3705-3764) X1 is the stage the flight DIFEQ passes reach it with: 0 from DIFEQ0 (NEXTCOL's AXT,1 0), -12 or -24 from DIFEQCOM, and after its `INCR,1 -6` (11,3713-3716) -6, -18 or -30; DIFEQ+2 never returns there (`flow_range_states`, review #165);
 - S1/S2 (0, 2, 4 or 6);
 - PUSHLOC inside the VAC area.
 

@@ -489,22 +489,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
-            "sha256": "1674d2317dfa8cdabcb3eb5ec0c9203bd8165b81f8eee24eada00ffe0fa1db38"
+            "sha256": "a26a9c41ff33eb9bfaf410b97943f3ab7be94f335fb0640a4cf949def0d27c94"
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "2acdca50347651786c3a2c38065bef9abe9b593381e57e6c03735893f1b54c1a",
+            "sha256": "1155eecacb7b46ea16847bafe5edc06a25a72b875417bdb4da0e2bd3ec867071",
             "vice_targets": {
-              "vice-cm-auto-man": 24
+              "vice-cm-auto-man": 30
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "83dca5eefbc9b797c8f4962d7ef3440ab210125779054ba19c8754fa31bbdf14"
+            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -1744,26 +1744,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
+            "sha256": "5ccbc17ef6d1da4e491af56079c053556bf23ff44aff64cf90b9fcfb12255cb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
+            "sha256": "185a232af2b372ebb3d993ddee820f1f75c8fa4996fdfac0a06ee346e8f49f42"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
+            "sha256": "e5dc8c0825782256a9f74c12ec7017f26022ba3fd49d4751d691bd985d4705e1",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
-            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
+            "sha256": "792e1d82ec13bc5bf070cdb21f08c0f2e3a2bca3074c7651958ef5578b9d0951"
           }
         }
       }
@@ -2664,22 +2664,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
-            "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5"
+            "sha256": "0c8d5f21137de0bd7bcee19d074cbf2087ee3e608dc210b0fa64ce856dc7945f"
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "628715dde4705fab777264c2a40f4cedd3a12b8af9edf3e6dd6f857d17871658",
+            "sha256": "a91315fd947ce32025deaba5ffa440719b4858bfc74f8f5663b54faeb096606c",
             "vice_targets": {
               "vice-cm-jet-select": 27
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec"
+            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -2870,26 +2870,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
+            "sha256": "463970bc2b9ef1f2ca02158cc4306b0aa5d1b0b00cd0367097a7ea6ddc65a476"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
-            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+            "sha256": "8f6ff803ef8af9a98a8b29ff05ee09a309c4eb2b50df212055c93e2663d941c5"
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
+            "sha256": "b4280a1eef9c93b2c2e33346cee27568aafe702c7f30b065a25ba7ca9e6913a4",
             "vice_targets": {
-              "vice-lat-long": 197
+              "vice-lat-long": 196
             }
           },
           "independent_review": {
-            "path": "docs/audits/a2-204.md",
-            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
+            "sha256": "4839caecc813699d1e1eef5c5153e89edef2bbc4440c683ca888e9204349dc0d"
           }
         }
       }
@@ -3097,26 +3097,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
+            "sha256": "19f38ba30e47812ac0c3d90325c81f980329a5ea3ee9d1e6e3129b6e3fb694b1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
+            "sha256": "22d9f5856ef62a4ec271a82b4f864f1197d177f1b07b266032ac956a5264c5be"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
+            "sha256": "94c90ab64835dc918f00ff4740040b503fafa505c4eb230a5455f5921ebe12e7",
             "vice_targets": {
               "vice-measurement-inc": 354
             }
           },
           "independent_review": {
-            "path": "docs/audits/measurement-inc.md",
-            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
+            "sha256": "60a80ada594d16db82adaaf61488a5699adb77fdb828cb9b2ac2afd2a13bc2a1"
           }
         }
       }
@@ -4365,7 +4365,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "5e735dbf96792b3221612dcd5dcd71d15bace60a104e0832dc9f96b298c78b13"
+            "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -4989,22 +4989,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "6d508eb63397782fabc5f4172871d961eb3b1a3bc114fb04f0046bac073abcb7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-host.log",
-            "sha256": "e496946cac2bbd6321a72395aa3153d97ab1e602274e0a8fe795d0a213d1d952"
+            "sha256": "0dffd05d67129b267f258486909fef3b9a29eb9413efb22db26df420dc24584b"
           },
           "c64_execution_results": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-vice.log",
-            "sha256": "3263a33d466a0cf6f1e684113c3cc1ea3b94e49c4cdb307a3e16de2d20df098a",
+            "sha256": "14c85ef03044e154ba41d9cca58e83a6cf1803bf956b07ae0620449e06b49eff",
             "vice_targets": {
-              "vice-cm-rcs-dap": 45
+              "vice-cm-rcs-dap": 50
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-rcs-dap/cm-rcs-dap-proof.json",
-            "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
+            "sha256": "6d508eb63397782fabc5f4172871d961eb3b1a3bc114fb04f0046bac073abcb7"
           },
           "independent_review": {
             "path": "docs/audits/rev2-fast-window-eb-599.md",
@@ -5394,26 +5394,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
+            "sha256": "758519d6b7b132457c6ad56496059bb98202049afa284cdfae0201e1f9c87e86"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
+            "sha256": "355b0f5132a0f4a90cd055b13747e02016f6dc09f44931eb20f79e45f780b36d"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
+            "sha256": "b8d2a49ff94ff39b0bd6b13f6c00de2173e88214997714edb22ae0e4d409a78f",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
+            "sha256": "8d9d732fa59895db7eb719938c83ec83c5c6cb2ac9df88e49eb1f8b8fa77a477"
           }
         }
       }
@@ -8741,15 +8741,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/gimbal-lock/gimbal-lock-proof.json",
-            "sha256": "cacf0ba6d84ff55f5c5d23f3f538c66a9ecfeb661a738f293f19fb2cf1cad394"
+            "sha256": "5ccbc17ef6d1da4e491af56079c053556bf23ff44aff64cf90b9fcfb12255cb5"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-host.log",
-            "sha256": "f7928d40588f92530ab0b594dfd9cae62a9348ea1d2f305a26b5412373fd2edc"
+            "sha256": "185a232af2b372ebb3d993ddee820f1f75c8fa4996fdfac0a06ee346e8f49f42"
           },
           "c64_execution_results": {
             "path": "evidence/gimbal-lock/gimbal-lock-vice.log",
-            "sha256": "96aaa58bda1f802b721632fc8e99b2874dc1c6604f1cdb83b31f8f4c3272b555",
+            "sha256": "e5dc8c0825782256a9f74c12ec7017f26022ba3fd49d4751d691bd985d4705e1",
             "vice_targets": {
               "vice-gimbal-lock": 36
             }
@@ -8760,7 +8760,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
-            "sha256": "d6b2162189557527a5e7af94cea45240b9fd4b61dd9c6a9136e46e5d2eb25aa6"
+            "sha256": "792e1d82ec13bc5bf070cdb21f08c0f2e3a2bca3074c7651958ef5578b9d0951"
           }
         }
       }
@@ -10015,17 +10015,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lat-long/lat-long-proof.json",
-            "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a"
+            "sha256": "463970bc2b9ef1f2ca02158cc4306b0aa5d1b0b00cd0367097a7ea6ddc65a476"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lat-long/lat-long-host.log",
-            "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e"
+            "sha256": "8f6ff803ef8af9a98a8b29ff05ee09a309c4eb2b50df212055c93e2663d941c5"
           },
           "c64_execution_results": {
             "path": "evidence/lat-long/lat-long-vice.log",
-            "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
+            "sha256": "b4280a1eef9c93b2c2e33346cee27568aafe702c7f30b065a25ba7ca9e6913a4",
             "vice_targets": {
-              "vice-lat-long": 197
+              "vice-lat-long": 196
             }
           },
           "independent_review": {
@@ -10034,7 +10034,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
-            "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492"
+            "sha256": "4839caecc813699d1e1eef5c5153e89edef2bbc4440c683ca888e9204349dc0d"
           }
         }
       }
@@ -10425,15 +10425,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/measurement-inc/measurement-inc-proof.json",
-            "sha256": "dbb827e0cc886c7e0bd54a9920d6c072e06c96f4a9e1c7402ad770f51c0b9265"
+            "sha256": "19f38ba30e47812ac0c3d90325c81f980329a5ea3ee9d1e6e3129b6e3fb694b1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/measurement-inc/measurement-inc-host.log",
-            "sha256": "6d9adaeb9fa2e1c2cf7da5013a9f5460719682ae091a3a416235de71db05ecee"
+            "sha256": "22d9f5856ef62a4ec271a82b4f864f1197d177f1b07b266032ac956a5264c5be"
           },
           "c64_execution_results": {
             "path": "evidence/measurement-inc/measurement-inc-vice.log",
-            "sha256": "cf6c1c0175d894e7122263c05f37de893b29d130c5a248af03e3a4164924c254",
+            "sha256": "94c90ab64835dc918f00ff4740040b503fafa505c4eb230a5455f5921ebe12e7",
             "vice_targets": {
               "vice-measurement-inc": 354
             }
@@ -10444,7 +10444,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
-            "sha256": "67442d455cf4f236d117df86f0deff708cb47418f9dc8f0c0314c00d021d1724"
+            "sha256": "60a80ada594d16db82adaaf61488a5699adb77fdb828cb9b2ac2afd2a13bc2a1"
           }
         }
       }
@@ -11734,7 +11734,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "2dab7411425e2a3496cb58713450ade7621d020f1a72f74489140c39946e5eb4"
+            "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -12184,7 +12184,7 @@
           "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address, 82 in all. Basic (lm_r31_file_basic, 14): 40,3674 R31CALL, 3700 DSPDELAY (after FINDVAC), 3702 (after FIXDELAY), 3712 (after NOVAC); 37,3113 DISPN5X, 3116 (GOMARKF terminate), 3117 (proceed), 3120 (loaded), 3121 V83CALL, 3155 REV83, 3316 and 3344 (after EXIT), 3330 and 3346 (after PRIOCHNG). Interpretive (lm_r31_file_interpretive, 68, at NEWOPS with LOC there): after TC INTPRET 37,3132, 3166, 3331, 3347, 3371, 3404; the STCALL returns 3136, 3147, 3172, 3217, 3375; the CALL returns 3263, 3365; the GOTO and switch targets 3144 DOCMBASE, 3205, 3211 OTHCONIC, 3236, 3240 COMPDISP, 3363 GETRVN2; the BPL target 3315; and the CHANG2 resume keys after every order pair that can end in DANZIG with a job waiting (3134, 3140, 3142, 3145, 3151, 3153, 3154, 3170, 3175, 3177, 3201, 3207, 3213, 3215, 3222 OTHINT, 3223, 3226, 3230, 3232, 3243, 3246, 3250, 3252, 3254, 3255, 3257, 3261, 3265, 3267, 3271, 3274, 3277, 3300, 3303, 3304, 3306, 3311, 3314, 3334, 3336, 3340, 3343, 3352, 3354, 3355, 3357, 3361, 3373; a quarter of the cases have NEWJOB positive). Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of bank 37 with BANKSET, FB and INTBIT15 agreeing, and SUPERBNK bit 7 clear, as sb_ok reads FB 37 without the superbank bit): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not bank 37 (SUPERBNK bit 7 clear) or, for the bank 40 entries, FB 30 with SUPERBNK 0100; an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. Domain restriction (spec states): at 37,3243 (RTB NORMUNX1) MODE is the vector mode 77776 that the VSU before it leaves; rtb_unit refuses other modes. edge_values gives MPAC, the push-down list and the operands edge vectors in a quarter of the cases.",
           "unreached": "None. The oracle executed all 53 basic instructions and the interpreter read all 143 interpretive words (evidence/lm-r31-file/lm-r31-file-closure.json).",
           "data_validity": "2CADR V83CALL and 2CADR DISPN5X (read by FINDVAC and NOVAC), DEC 100 (read by FIXDELAY), CADR GOMARKF (read by BANKCALL) and V16N54 (VN 1654, read by CAF) are read as the original constants. 37,3335 (VN, STOVL RONE's operand) is an interpretive operand the closure tool lists as data; the interpreter reads it.",
-          "c64_branch_outcomes_note": "The C64 rows take every gcov branch outcome the host cases take (evidence/lm-r31-file/lm-r31-file-c64-cover.json: 1,291 of 1,291, none missing). One of them, the fall-through of GETRVN's BOFF MUNFLAG pair at 37,3347 with MUNFLAG set and no job waiting (src/lm_r31_file.c:1246-1247), is only taken by runs that go on through COMPDISP to CALL CDU*NBSM, too big for one C64 program (proof c64_too_big_cases, host only); the C64 takes it with a truncated row (c64_cuts, group 22): that case run to NEWOPS with LOC at 37,3352, where the yaAGC oracle stops too, its digest the oracle's full state there. See docs/LM-R31-FILE.md."
+          "c64_branch_outcomes_note": "The C64 rows take every gcov branch outcome the host cases take (evidence/lm-r31-file/lm-r31-file-c64-cover.json: 1,291 of 1,291, none missing). One of them, the fall-through of GETRVN's BOFF MUNFLAG pair at 37,3347 with MUNFLAG set and no job waiting (src/lm_r31_file.c:1254-1255), is only taken by runs that go on through COMPDISP to CALL CDU*NBSM, too big for one C64 program (proof c64_too_big_cases, host only); the C64 takes it with a truncated row (c64_cuts, group 22): that case run to NEWOPS with LOC at 37,3352, where the yaAGC oracle stops too, its digest the oracle's full state there. See docs/LM-R31-FILE.md."
         },
         "external_continuations": [
           "FINDVAC, FIXDELAY, NOVAC and BANKCALL GOMARKF, which return to this file's registered return points; PRIOCHNG likewise",
@@ -12841,15 +12841,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/sband-antenna/sband-antenna-proof.json",
-            "sha256": "f25c826c6d011b1d226f8f4f0f38e2df03dd439edb2f5f6546dccea92f243ff6"
+            "sha256": "758519d6b7b132457c6ad56496059bb98202049afa284cdfae0201e1f9c87e86"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/sband-antenna/sband-antenna-host.log",
-            "sha256": "00c08ac83ba8a62596aa37de704fb4cf556ee5397eb37347d83f454194b670d1"
+            "sha256": "355b0f5132a0f4a90cd055b13747e02016f6dc09f44931eb20f79e45f780b36d"
           },
           "c64_execution_results": {
             "path": "evidence/sband-antenna/sband-antenna-vice.log",
-            "sha256": "f1634ee4c6fd4b5803ad5a96a8c089dc8d0c582bf75be0850a1eddb37a4cc13d",
+            "sha256": "b8d2a49ff94ff39b0bd6b13f6c00de2173e88214997714edb22ae0e4d409a78f",
             "vice_targets": {
               "vice-sband-antenna": 224
             }
@@ -12860,7 +12860,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
-            "sha256": "8c7c357867cd8db3314b7a5fb2cbbf5bdd0664b6d1d30d8e2f6d82108fc96610"
+            "sha256": "8d9d732fa59895db7eb719938c83ec83c5c6cb2ac9df88e49eb1f8b8fa77a477"
           }
         }
       }

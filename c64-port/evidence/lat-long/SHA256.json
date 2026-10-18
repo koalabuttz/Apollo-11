@@ -4,8 +4,8 @@
   "release": "evidence-lat-long",
   "files": {
     "lat-long-c64-cover.json": {
-      "sha256": "9f63f1dc565ed802b0ce780a0dac5e66a834e96736fb06266aa89db34477a492",
-      "bytes": 4409,
+      "sha256": "4839caecc813699d1e1eef5c5153e89edef2bbc4440c683ca888e9204349dc0d",
+      "bytes": 4400,
       "store": "tree"
     },
     "lat-long-differential.log": {
@@ -14,13 +14,13 @@
       "store": "release"
     },
     "lat-long-host.log": {
-      "sha256": "1b6d0073fe8d37d5a583ceb89651b14bfad28a84afb7c96b5ae72e343188251e",
-      "bytes": 967,
+      "sha256": "8f6ff803ef8af9a98a8b29ff05ee09a309c4eb2b50df212055c93e2663d941c5",
+      "bytes": 1046,
       "store": "release"
     },
     "lat-long-proof.json": {
-      "sha256": "f694f1ccd0ecd1fd3e75c504a2a2cb36f1cd07951133a8a661d78d7023f3135a",
-      "bytes": 13238,
+      "sha256": "463970bc2b9ef1f2ca02158cc4306b0aa5d1b0b00cd0367097a7ea6ddc65a476",
+      "bytes": 13227,
       "store": "tree"
     },
     "lat-long-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "lat-long-vice.log": {
-      "sha256": "319460c16302b3ceb9c533ec97bde1842b8d4bc1503ec04268ad319210813d9e",
-      "bytes": 7229,
+      "sha256": "b4280a1eef9c93b2c2e33346cee27568aafe702c7f30b065a25ba7ca9e6913a4",
+      "bytes": 6823,
       "store": "release"
     }
   }
