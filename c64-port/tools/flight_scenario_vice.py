@@ -46,14 +46,14 @@ import flight_holes  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
 
 
-def snapshot(exe, name, cs, replay=0, every=0):
+def snapshot(exe, name, cs, tag, replay=0, every=0):
     """replay: the window's centiseconds; the host run then goes on through
     the window and writes its inputs (-snap.h.replay) and its end state
     (-snap.h.end, and every `every` cs before), tools/flight_host_run.c
     FLIGHT_REPLAY."""
     scen = {s[0]: s for s in fhd.FLIGHT}[name]
     _, m, _, keys, env = scen
-    header = dp.WORK / f'{name}-snap.h'
+    header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
     for x in ('.replay', '.end'):
         pathlib.Path(f'{header}{x}').unlink(missing_ok=True)
@@ -65,11 +65,11 @@ def snapshot(exe, name, cs, replay=0, every=0):
                             **({'FLIGHT_REPLAY': f'{replay},0,{every}', 'FLIGHT_REPLAY_MCT': str(c64_weights(m))}
                                if replay else {})},
                        capture_output=True, text=True)
-    (dp.WORK / f'{name}-host.log').write_text(r.stdout + r.stderr)
+    (dp.WORK / f'{tag}-host.log').write_text(r.stdout + r.stderr)
     if not header.exists():
-        sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{name}-host.log)')
+        sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{tag}-host.log)')
     if replay and (r.returncode or not pathlib.Path(f'{header}.end').exists()):
-        sys.exit(f'FAIL: the host run did not reach the end of the {replay} cs window (see {dp.WORK}/{name}-host.log)')
+        sys.exit(f'FAIL: the host run did not reach the end of the {replay} cs window (see {dp.WORK}/{tag}-host.log)')
     return header
 
 
@@ -263,12 +263,12 @@ def window_keys(name, scen_keys, snap_at, cs):
     return header, keys
 
 
-def host_holes(exe, name, cs):
+def host_holes(exe, name, cs, tag):
     """The points the host run to cs bridges, as flight_holes.describe dicts."""
     _, m, _, keys, env = {s[0]: s for s in fhd.FLIGHT}[name]
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2'}, capture_output=True, text=True)
-    (dp.WORK / f'{name}-holes.log').write_text(r.stdout + r.stderr)
+    (dp.WORK / f'{tag}-holes.log').write_text(r.stdout + r.stderr)
     words, owners = flight_holes.listing(flight_holes.MISSION[m]), flight_holes.lanes()
     return [flight_holes.describe(h, words, owners, m) for h in flight_holes.HOLE.finditer(r.stdout)]
 
@@ -305,6 +305,9 @@ def main():
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
+    # Each window's files (snapshot, PRG, VICE directory, result) carry its
+    # start, so windows of one scenario can run side by side.
+    tag = f'{a.scenario}-{a.snap_cs}'
     subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', a.host_cc],
                    cwd=ROOT, check=True)
     subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m,
@@ -316,7 +319,7 @@ def main():
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
-    holes = host_holes(exe, a.scenario, a.snap_cs + a.cs)
+    holes = host_holes(exe, a.scenario, a.snap_cs + a.cs, tag)
     print(f'{a.scenario}: the host run to {a.snap_cs + a.cs} cs bridges {len(holes)} points, each a stop on the C64')
     for d in holes:
         print(f"  {d['kind']:6} {d['point']} {d['label']:14} {d['file']:40} lane {d['lane']:3} {d['arrivals']:>5} arrivals"
@@ -327,7 +330,7 @@ def main():
     if a.replay and a.keys:
         sys.exit('--replay replays the keys itself; leave out --keys')
     every = a.replay_every if 0 < a.replay_every < a.cs else a.cs
-    header = snapshot(exe, a.scenario, a.snap_cs, a.cs if a.replay else 0, every)
+    header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every)
     keys, defines, patch, end_at = None, [], [], None
     if a.replay:
         rows = pathlib.Path(f'{header}.replay').read_bytes()
@@ -351,23 +354,23 @@ def main():
               f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
               f'{kinds.get(3, 0)} interrupt requests)')
     if a.keys:
-        log = (dp.WORK / f'{a.scenario}-host.log').read_text()
+        log = (dp.WORK / f'{tag}-host.log').read_text()
         snap_at = int(re.search(r'^snapshot at (\d+) cs', log, re.M)[1])
-        keys, pressed = window_keys(a.scenario, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
+        keys, pressed = window_keys(tag, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
         print(f'{a.scenario}: snapshot at {snap_at} cs; {len(pressed)} keys pressed on the C64 at '
               + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
-    prg = dp.link(a.cc, a.scenario, header, a.cs + 500 if a.replay else a.cs, scratch, os.environ.get('FSV_STEPS') == '1',
+    prg = dp.link(a.cc, tag, header, a.cs + 500 if a.replay else a.cs, scratch, os.environ.get('FSV_STEPS') == '1',
                   m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
     if a.replay:
         # rk_device's address comes from the link.
         patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
-    r = dp.vice(a, a.scenario, prg, pinned, m, patch)
+    r = dp.vice(a, tag, prg, pinned, m, patch)
     if a.replay and r.get('status') is not None:
-        mail = (dp.WORK / f'vice-{a.scenario}' / 'results.bin').read_bytes()
+        mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
         applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
         r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended))
         # Every state the C64 wrote against the host's at the same point.
-        image = (dp.WORK / f'vice-{a.scenario}' / 'image.reu').read_bytes()
+        image = (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes()
         host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, n_states), m)
         diff, at_cs, matched, skipped = [], None, [], set()
         skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
@@ -409,8 +412,8 @@ def main():
             print(f"{a.scenario}: the C64 {seen}: it ends the window ({end_cs} cs, all {applied} input rows) "
                   "in the host's state")
     if a.profile:
-        r['profile'] = dp.profile(a.scenario)
-    r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
+        r['profile'] = dp.profile(tag)
+    r.update(scenario=a.scenario, snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
     # Status 0 means no step refused; it does not mean the window ran to its
     # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
     # reports status 0). A window that stops short of --cs without a refusal
@@ -419,6 +422,7 @@ def main():
         r.update(ok=False, short=True)
         print(f"FAIL: {a.scenario}: status 0 but the window ended after {r['agc_cs']} of {a.cs} cs")
     (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(r, indent=1) + '\n')
+    (dp.WORK / f'{tag}.json').write_text(json.dumps(r, indent=1) + '\n')
     if os.environ.get('FSV_STEPS') == '1':
         # One record per step: the physical bank (superbank applied) and Z
         # (dap_pass_check.c DP_STEPS); fixed-fixed Z as bank 02 or 03.

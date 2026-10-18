@@ -268,6 +268,14 @@ static inline void rk_device_from_canonical(void)
     rk_device.waitlist_alarm = rk_flight.waitlist_alarm;
 #endif
 }
+/* The channel 13 the timers read (src/resident_rupt.c CH13): on the CM
+ * rk_device's, the copy its tables write (T6START, the radar routines);
+ * rk_hardware.channel13 is only the copy a CM_* kind module leaves. */
+#if RK_CM
+#define RK_TIMER_CH13 rk_device.channel13
+#else
+#define RK_TIMER_CH13 rk_hardware.channel13
+#endif
 extern agc_native_program rk_program;
 /* AGC interrupt requests waiting (RK_RUPT_BIT, include/resident_rupt.h),
  * and the CIA1 interrupts the AGC clock has consumed or dropped. */

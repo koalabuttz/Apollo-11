@@ -62,7 +62,9 @@ COMMON = ['-Iinclude', '-Itests', '-Iplatform/c64', '-std=c99', '-Oz', '-fno-sta
 COMMON += [f'-D{k}={os.environ[k]}u' for k in ('RK_TICK_LAG', 'RK_TIME_DIVISOR') if os.environ.get(k)]
 # The work clock is the default; RK_WALL_CLOCK=1 builds the CIA wall clock.
 COMMON += ['-DRK_WALL_CLOCK=1'] if os.environ.get('RK_WALL_CLOCK') else []
-MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1']}
+# RK_DEVICE_CH13: the CM's timers take channel 13 from rk_device
+# (src/resident_rupt.c), the record its tables write it in.
+MISSION = {'lm': ['-DRK_LM=1', '-DP66_NATIVE_DISPATCH_ONLY'], 'cm': ['-DRK_CM=1', '-DRK_DEVICE_CH13=1']}
 
 
 @functools.lru_cache(maxsize=None)
@@ -389,11 +391,11 @@ def build_modules(cc, m, cases, library):
 
 def rope_check_image(m):
     """The check's store image padded to 2 MB with the mission's rope at its
-    REU base (include/rope_image.h), as flight_store_build.py add_rope places
-    it in the flight store: the resident reads the Executive's inline operand
-    words there (AGC_SITES_ROPE)."""
-    from rope_image_pack import BASES, physical_words
-    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    flight base (FLIGHT_ROPE_BASE, include/rope_image.h), as
+    flight_store_build.py add_rope places it in the flight store: the resident
+    reads the Executive's inline operand words there (AGC_SITES_ROPE)."""
+    from flight_store_build import FLIGHT_ROPE_BASE as base
+    from rope_image_pack import physical_words
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
     if len(image) > base:
