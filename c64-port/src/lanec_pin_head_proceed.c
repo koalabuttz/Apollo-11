@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* Pinball proceed and terminate (bank 40), Luminary099 and Comanche055:
- * VBPROC (CAF ONE, TS LOADSTAT, TC KILMONON) and its returns (TC RELDSP,
- * TC FLASHOFF, TC RECALTST at VBPROC +3, +4, +5), VBTERM (CS ONE,
+ * VBPROC (CAF ONE, TS LOADSTAT, TC KILMONON), VBTERM (CS ONE,
  * TC VBPROC +1), PROCKEY (CAF ZERO, TS REQRET, CS VD1, TS DSPCOUNT,
  * TC VBPROC), VBRESEQ (CS ZERO, TC VBPROC +1) and RECALTST (CCS CADRSTOR,
  * TC RECAL1, TC ENDOFJOB, or on into RECAL1; CADRSTOR -0, which holds no
@@ -30,23 +29,16 @@ enum lanec_status lanec_pin_head_proceed_run(apollo_overlay_state *s, lanec_io *
         lanec_ev_ca(s, 1u);
         (void)lanec_ts(s, LANEC_LM_LOADSTAT);
         lanec_tc(s, S(m, KILMONON), (uint16_t)(z + 3u));
-    } else if (z == proc + 3u) { /* TC RELDSP */
-        lanec_tc(s, S(m, RELDSP), (uint16_t)(z + 1u));
-    } else if (z == proc + 4u) { /* TC FLASHOFF */
-        lanec_tc(s, S(m, FLASHOFF), (uint16_t)(z + 1u));
-    } else if (z == proc + 5u) { /* TC RECALTST */
-        lanec_tc(s, recal, (uint16_t)(z + 1u));
-    } else if (z == proc + 6u || z == proc + 015u) { /* CS ONE / CS ZERO, TC VBPROC +1 */
+    } else if (z == proc + 6u || z == proc + 015u) {    /* CS ONE / CS ZERO, TC VBPROC +1 */
         w[LANEC_A] = z == proc + 6u ? 0177776u : 0177777u;
         lanec_tc(s, (uint16_t)(proc + 1u), (uint16_t)(z + 2u));
-    } else if (z == proc + 010u) { /* CAF ZERO, TS REQRET, CS VD1, TS DSPCOUNT, TC VBPROC */
+    } else if (z == proc + 010u) {                       /* CAF ZERO, TS REQRET, CS VD1, TS DSPCOUNT, TC VBPROC */
         w[LANEC_A] = 0;
         (void)lanec_ts(s, LANEC_LM_REQRET);
         lanec_ev_cs(s, VD1);
         (void)lanec_ts(s, LANEC_LM_DSPCOUNT);
         lanec_tc(s, proc, (uint16_t)(z + 5u));
-    } else if (z == recal &&
-               w[LANEC_LM_CADRSTOR] != 077777u) { /* -0 goes on past RECAL1: not a CADR */
+    } else if (z == recal && w[LANEC_LM_CADRSTOR] != 077777u) {   /* -0 goes on past RECAL1: not a CADR */
         switch (lanec_ccs(s, w[LANEC_LM_CADRSTOR])) {
         case 0: lanec_tc(s, (uint16_t)(recal + 3u), (uint16_t)(z + 2u)); break;   /* TC RECAL1 */
         case 1: lanec_tc(s, S(m, ENDOFJOB), (uint16_t)(z + 3u)); break;            /* TC ENDOFJOB */

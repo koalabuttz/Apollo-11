@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-/* pin-head-proceed: VBPROC and its returns at +3..+5, VBTERM, PROCKEY, VBRESEQ and RECALTST
+/* pin-head-proceed: VBPROC, VBTERM, PROCKEY, VBRESEQ and RECALTST
  * (src/lanec_pin_head_proceed.c), both missions, from the states
  * pw-load-control's accepted cases reach there (lanec_pin_head_reach), else
  * a filled state with CADRSTOR of each sign. The oracle runs the original to
@@ -10,12 +10,10 @@
 #include "lanec_pin_heads.h"
 #include "lanec_symbols.h"
 
-static const uint16_t lm_points[] = { LANEC_LM_VBPROC, LANEC_LM_VBPROC + 3u, LANEC_LM_VBPROC + 4u, LANEC_LM_VBPROC + 5u,
-    LANEC_LM_VBTERM, LANEC_LM_PROCKEY, LANEC_LM_VBRESEQ, LANEC_LM_RECALTST };
-static const uint16_t cm_points[] = { LANEC_CM_VBPROC, LANEC_CM_VBPROC + 3u, LANEC_CM_VBPROC + 4u, LANEC_CM_VBPROC + 5u,
-    LANEC_CM_VBTERM, LANEC_CM_PROCKEY, LANEC_CM_VBRESEQ, LANEC_CM_RECALTST };
+static const uint16_t lm_points[] = { LANEC_LM_VBPROC, LANEC_LM_VBTERM, LANEC_LM_PROCKEY, LANEC_LM_VBRESEQ, LANEC_LM_RECALTST };
+static const uint16_t cm_points[] = { LANEC_CM_VBPROC, LANEC_CM_VBTERM, LANEC_CM_PROCKEY, LANEC_CM_VBRESEQ, LANEC_CM_RECALTST };
 static const uint16_t cadr[] = { 0, 077777u, 3u, 077774u, 01234u, 060000u };
-#define POINTS 8u
+#define POINTS 5u
 #define PER 96u
 #define CASES (POINTS * 2u * PER)
 
