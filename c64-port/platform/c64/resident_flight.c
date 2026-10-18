@@ -451,6 +451,8 @@ static uint8_t rk_point_hi;
 /* platform/c64/agc_find.S, the transfer engine's find (agc_transfer.c). */
 agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
 #endif
+/* POSTJUMP's point (Z 04701, fixed-fixed). */
+#define RK_CM_POSTJUMP (uint16_t)(2048u + (04701u - 04000u))
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uint16_t point)
 {
     uint8_t i;
@@ -509,9 +511,18 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             point != agc_transfer_point(&module_program, IMAGE, rk_device.superbank))
             return EXEC_INVALID_ACTION;
 #endif
-        status = agc_transfer_run_at(&module_program, IMAGE, &rk_device, &rk_device.superbank,
-                                     stop_physical, limit, &steps,
-                                     t->interpretive_count ? AGC_TRANSFER_NONE : point);
+        uint16_t stop = stop_physical;
+#if defined(RK_WORK_CLOCK) && !RK_LM
+        /* The CM idle loop's run ends at POSTJUMP (Z 04701), as on the host,
+         * which takes it as a step of its own (tools/flight_host_run.c): an
+         * interrupt that ends the pass's idle returns there, and POSTJUMP
+         * idles again, rather than to ADVAN. */
+        if (mct == RK_MCT_IDLE && stop == AGC_TRANSFER_NONE && IMAGE->words[5] != 04701u)
+            stop = RK_CM_POSTJUMP;
+#endif
+        status =
+            agc_transfer_run_at(&module_program, IMAGE, &rk_device, &rk_device.superbank, stop,
+                                limit, &steps, t->interpretive_count ? AGC_TRANSFER_NONE : point);
         /* Not this module's point, or its table refuses the entry: the next
          * slot, then the resolver, may hold the point another way. The
          * transfer engine counts a refused call as a step, so a table
