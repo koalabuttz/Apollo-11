@@ -119,7 +119,7 @@ def vice(a, name, prg, pinned, m='lm'):
     scratch = len(image) - SCRATCH_BYTES
     rows = [struct.unpack_from('<4BHI', image, scratch + 10 * i) for i in range(count)]
     if rows[:keep] != ram:
-        rows, lost = ram, 1
+        rows, lost = ram, lost or count > keep
     records = [dict(zip(('request', 'job_loads', 'task_loads', 'status', 'steps', 'cycles'), x)) for x in rows]
     for r in records:
         r['request'] = RUPTS.get(r['request'], str(r['request']))
