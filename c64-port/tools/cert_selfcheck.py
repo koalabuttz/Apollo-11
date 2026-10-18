@@ -190,12 +190,17 @@ class CaseFile:
     def __init__(self, path):
         self.b = open(path, 'rb').read()
         b, o = self.b, 4
+        # (IRC3 adds each mission's native-call pass-through ranges.)
+        irc3 = struct.unpack_from('<I', b, 0)[0] == 0x33435249
         for _ in range(2):
             _, nr = struct.unpack_from('<2H', b, o)
             o += 4 + 4 * nr
             for _ in range(2):
                 (n,) = struct.unpack_from('<H', b, o)
                 o += 2 + 2 * n
+            if irc3:
+                (n,) = struct.unpack_from('<H', b, o)
+                o += 2 + 4 * n
         self.head = b[:o]
         (nc,) = struct.unpack_from('<I', b, o)
         o += 4

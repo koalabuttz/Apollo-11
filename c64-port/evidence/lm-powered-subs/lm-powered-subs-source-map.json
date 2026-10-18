@@ -3,7 +3,7 @@
   "native_file": "src/lm_powered_subs.c",
   "words": 267,
   "untranslated_words": 0,
-  "routines": 49,
+  "routines": 39,
   "map": [
    {
     "address": "23,3537",
@@ -1186,8 +1186,7 @@
     "address": "10,2051",
     "word": "00746",
     "source": " ADRES COSCDUZ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
    },
    {
     "address": "10,2052",
@@ -1382,8 +1381,7 @@
     "address": "10,2105",
     "word": "00740",
     "source": " ADRES SINCDUZ",
-    "routine": "basic code",
-    "function": "basic_run"
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
    },
    {
     "address": "10,2106",
@@ -1417,8 +1415,7 @@
     "address": "10,2112",
     "word": "00736",
     "source": " ADRES SINCDUY",
-    "routine": "basic code",
-    "function": "basic_run"
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
    },
    {
     "address": "10,2113",
@@ -1466,8 +1463,7 @@
     "address": "10,2121",
     "word": "00744",
     "source": " ADRES COSCDUY",
-    "routine": "basic code",
-    "function": "basic_run"
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
    },
    {
     "address": "10,2122",
@@ -1529,8 +1525,7 @@
     "address": "10,2132",
     "word": "00750",
     "source": " ADRES COSCDUX",
-    "routine": "basic code",
-    "function": "basic_run"
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
    },
    {
     "address": "10,2133",

@@ -338,6 +338,23 @@ class Basic:
             return st
         if tp is None:
             raise BasicError('transfer to erasable %04o at %s' % (target_logical, self.where(here)))
+        nc = self.spec.get('native_calls', {}).get(self.L.label_at(tp), {}).get(self.cp.m) if call else None
+        if nc:
+            # Spec 'native_calls' {label: {mission: call}}: an outside basic
+            # subroutine run natively in place; it leaves Q as its own TC Q
+            # does, and the run goes on at the word after the TC. '{adres}'
+            # is the ADRES word after the TC (TC DMP), and the run goes on
+            # past it.
+            nxt = here + 1
+            if '{adres}' in nc:
+                ln = self.L.by_phys.get(nxt)
+                if ln is None or ln.op != 'ADRES':
+                    raise BasicError('TC %s at %s: no ADRES after it' % (self.L.label_at(tp), self.where(here)))
+                nc = nc.replace('{adres}', '0%ou' % self.L.word(nxt))
+                nxt += 1
+            st.append('if(%s!=RTB_OK)return EXEC_OUT_OF_SCOPE; /* %s */' % (nc, self.L.label_at(tp)))
+            st.append('goto %s;' % self.add(nxt, False, clean))
+            return st
         name = self.outside_tc(here, target_logical) if call else (self.L.label_at(tp) or '%04o' % target_logical)
         if not call:
             self.cp.externals[tp] = name

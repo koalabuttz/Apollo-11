@@ -890,6 +890,15 @@ SPECS = {
         # EDOP, so VXV's DANZIG runs EXIT into FLESHPOT+93 (D1's host sweep
         # on 84d550f5, LM P63).
         'edop_exits': ['FLESHPOT+92'],
+        # AX*SR*T's and FLESHPOT's TC DMP and TC DMPSUB run the INTERPRETER's
+        # subroutines in place (src/lm_dmpsub.c), not by a hand-off to the
+        # interpreter's module: AX*SR*T's loop called DMPSUB about 70 times
+        # in 300 cs of the P66 window, a module load each way
+        # (docs/LM-FLIGHT-LOAD-PROFILE.md).
+        'native_calls': {'DMP': {'lm': 'lm_dmp(s,{adres})'}, 'DMPSUB': {'lm': 'lm_dmpsub(s)'}},
+        'native_call_words': {'lm': [['DMP', 'DMPSUB2+7']]},
+        'includes': ['rtb_angles.h', 'lm_dmpsub.h'],
+        'native_sources': ['src/lm_dmpsub.c'],
         # AX*SR*T's INDEX A, DCA INDEXI: A is 0, 1 or 2 (DEX1, DEX2 pairs).
         'fixed_tables': {'INDEXI': (0, 3)},
         # The words each resume point finds, as the file's own runs leave them
@@ -903,20 +912,21 @@ SPECS = {
             # QUICTRIG's loop: ITEMP2 the offset, ITEMP1 a return outside.
             # A across its range and often +-0, for MP BIT14 (reviewer 1, #314).
             **{p: {'62': [0, 2, 4], '61': [0o5000, 0o6000, 0o2356], '0': A_PM0} for p in ('23,3626', '23,3635')},
-            # AX*SR*T's loop: DEXDEX +-3 to +-1, DEX1 and DEX2 offsets, BUF
-            # the component index, RTNSAVER C*MM*N2's return or outside.
-            **{p: {'142': [3, 2, 1, 0o77774, 0o77775, 0o77776], '143': [0, 2, 4], '144': [0, 2, 4],
-                   '130': [0, 1], '145': [0o3656, 0o5000]} for p in ('23,3723', '23,3741')},
             # AX*SR*T itself (called from other files): A +3 (NB to SM) or -3
-            # (16 bits, 177774), Q a return.
-            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o3656, 0o5000]}},
-            # FLESHPOT after DMP, DMPSUB and VXV (and VXV's DANZIG at the TCF
-        # VXV word): TEM1 the matrix's switched
-            # address (XNB from CALCSMSC, XNBPIP from SERVICER), TEM2 the
-            # caller's EBANK.
+            # (16 bits, 177774), Q a return outside the file. With DMPSUB run
+            # in place, a case runs the whole loop to TC RTNSAVER; C*MM*N2's
+            # cases cover its in-file return (03656).
+            **{'AX*SR*T': {'0': [3, 0o177774], '2': [0o5000]}},
+            # FLESHPOT itself: A the matrix's ECADR (XNBECADR's XNB from
+            # CALCSMSC, XNBPIPAD's XNBPIP from SERVICER). With DMP and DMPSUB
+            # run in place, its run goes on through the matrix stores.
+            **{'FLESHPOT': {'0': [0o2664, 0o2145]}},
+            # FLESHPOT after VXV (and VXV's DANZIG at the TCF VXV word): TEM1
+            # the matrix's switched address (XNB from CALCSMSC, XNBPIP from
+            # SERVICER), TEM2 the caller's EBANK. (DMP and DMPSUB run in
+            # place, so the words after them are no longer resume points.)
             **{p: {'141': [0o1664, 0o1545], '142': [0, 0o400, 0o1000, 0o2400, 0o3400]}
-               for p in ('10,2052', '10,2066', '10,2076', '10,2106', '10,2113', '10,2122', '10,2133', '10,2142',
-                         '10,2173', '10,2174')}),
+               for p in ('10,2173', '10,2174')}),
         'edge_values': True,
         'seed_counters': True,
         'cover': True,

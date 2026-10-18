@@ -8,15 +8,15 @@
   "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
- "cases": 25088,
- "cases_sha256": "4b9a29240fd20c3ea525d04309adb0a59447d9164282a2c502ce21b6e2a28783",
- "oracle_sha256": "e93e2a7b1aa2b764373462e8b0de1be120ebb86217aeb47fc8c0c70cebf26a77",
- "frozen_vectors": 1569,
+ "cases": 19968,
+ "cases_sha256": "695586455945d5b813feee69872b388cb232fa2d899f925f3db24aec6690ba1e",
+ "oracle_sha256": "8d892b1f35ecbadff86e20a97d90b5b57485c57c70bb8454387dc68fc3dbdc08",
+ "frozen_vectors": 1248,
  "c64_vectors": [
   {
    "mission": "lm",
-   "keep": "0x1ffffffffffff",
-   "cases": 71,
+   "keep": "0x7fffffffff",
+   "cases": 51,
    "case_ids": [
     32,
     317,
@@ -25,88 +25,69 @@
     828,
     1460,
     1536,
+    2116,
     2332,
-    2584,
-    3376,
-    3520,
-    3132,
-    3548,
-    3732,
-    4196,
-    4960,
-    5168,
-    5696,
-    6276,
-    6480,
-    6152,
-    6324,
-    6708,
-    7192,
-    7932,
-    8244,
-    8964,
-    9373,
-    9860,
-    10372,
-    10784,
-    11284,
-    12116,
-    12312,
-    13236,
-    13668,
-    13364,
-    13376,
-    13316,
-    13468,
-    13524,
-    13700,
-    13440,
-    13860,
-    14808,
-    14896,
-    14964,
-    15636,
-    15768,
-    15916,
-    16604,
-    16960,
-    17516,
-    18312,
-    18468,
-    18960,
-    19492,
-    20008,
-    20928,
-    21088,
-    21512,
-    22040,
-    22556,
-    23084,
-    23668,
-    24372,
-    24368,
-    25052,
-    24688,
-    24648,
-    24676
+    3052,
+    3092,
+    4044,
+    4100,
+    4976,
+    5226,
+    5656,
+    6384,
+    6828,
+    7196,
+    7704,
+    8228,
+    9000,
+    9412,
+    9356,
+    9448,
+    9532,
+    9312,
+    9376,
+    9524,
+    9380,
+    10076,
+    10596,
+    10988,
+    11416,
+    11388,
+    11776,
+    12456,
+    12988,
+    13568,
+    13912,
+    14392,
+    14888,
+    15404,
+    16291,
+    16712,
+    16908,
+    17416,
+    18028,
+    18484,
+    19316,
+    19464
    ]
   }
  ],
  "c64_coverage": {
   "host_labels": 221,
   "c64_labels": 221,
-  "host_edges": 873,
-  "c64_edges": 873,
+  "host_edges": 861,
+  "c64_edges": 861,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 547,
-  "c64_taken": 547,
+  "host_taken": 527,
+  "c64_taken": 527,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
    "src/lm_powered_subs.c",
+   "src/lm_dmpsub.c",
    "src/lm_interp_orders.c",
    "src/lm_interp_steps.c",
    "src/cm_interp_orders.c",
@@ -123,9 +104,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 430,
-  "edges_host_vectors": 430,
-  "edges_c64": 430,
+  "edges_all_cases": 407,
+  "edges_host_vectors": 407,
+  "edges_c64": 407,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -142,33 +123,9 @@
    "06070": 512
   },
   "LM 10,2036 ": {
-   "07103": 512
+   "07460": 512
   },
   "LM 10,2037 FLESHPOT": {
-   "07103": 512
-  },
-  "LM 10,2052 ": {
-   "07107": 512
-  },
-  "LM 10,2066 ": {
-   "07107": 512
-  },
-  "LM 10,2076 ": {
-   "07103": 512
-  },
-  "LM 10,2106 ": {
-   "07103": 512
-  },
-  "LM 10,2113 ": {
-   "07103": 512
-  },
-  "LM 10,2122 ": {
-   "07103": 512
-  },
-  "LM 10,2133 ": {
-   "07107": 512
-  },
-  "LM 10,2142 ": {
    "07460": 512
   },
   "LM 10,2173 ": {
@@ -208,16 +165,16 @@
    "04713": 512
   },
   "LM 23,3605 ": {
-   "04713": 343,
-   "06070": 48,
-   "07532": 87,
-   "05000": 34
+   "04713": 341,
+   "06070": 41,
+   "07532": 100,
+   "05000": 30
   },
   "LM 23,3606 ": {
-   "04713": 360,
-   "05000": 17,
-   "06070": 33,
-   "07532": 102
+   "05000": 21,
+   "04713": 346,
+   "06070": 47,
+   "07532": 98
   },
   "LM 23,3615 QUICTRIG": {
    "05033": 512
@@ -226,10 +183,10 @@
    "05032": 512
   },
   "LM 23,3635 ": {
-   "05000": 61,
-   "05033": 337,
-   "06000": 57,
-   "02356": 57
+   "06000": 59,
+   "05033": 328,
+   "02356": 54,
+   "05000": 71
   },
   "LM 23,3646 CDU*SMNB": {
    "04713": 512
@@ -244,7 +201,7 @@
    "04713": 512
   },
   "LM 23,3654 ": {
-   "07107": 512
+   "06070": 512
   },
   "LM 23,3657 ": {
    "06070": 512
@@ -262,7 +219,7 @@
    "04713": 512
   },
   "LM 23,3667 ": {
-   "07107": 512
+   "06070": 512
   },
   "LM 23,3671 *SMNB*": {
    "07532": 512
@@ -277,18 +234,10 @@
    "07532": 512
   },
   "LM 23,3675 AX*SR*T": {
-   "07107": 512
-  },
-  "LM 23,3723 ": {
-   "07107": 512
-  },
-  "LM 23,3741 ": {
-   "05000": 43,
-   "07107": 431,
-   "06070": 38
+   "05000": 512
   }
  },
- "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, DMP, DMPSUB, MPACVBUF, SPCOS, SPSIN, SWRETURN, USPRCADR, VXV); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, MPACVBUF, SPCOS, SPSIN, SWRETURN, USPRCADR, VXV); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "engine": "pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
  "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",

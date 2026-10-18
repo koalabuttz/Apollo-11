@@ -36,6 +36,7 @@
 extern const agc_routine_table lm_p_axis_routines;
 /* The entries an attitude-hold or jet-firing DAP pass reaches (the pinned DAP set). */
 extern const agc_routine_table lm_p_axis_hot_routines;
+extern const agc_routine_table lm_p_axis_tg_hot_routines;
 /* The inline operands read through Q by the file's TC ALARM calls (OCT 02001
  * after ABORTYZ, OCT 02003 in SELECTP), as compiled site operands. */
 #define LM_PA_SITES 2u
