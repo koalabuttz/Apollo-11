@@ -131,10 +131,12 @@ static void press_due(uint16_t elapsed)
  * --replay). DP_REPLAY_ROWS 8-byte rows at DP_REPLAY_REU in the REU, outside
  * the flight store and the resident: the centiseconds since the snapshot,
  * kind, where (0 at a sample point, 1 at any step boundary), address and
- * value. Kinds: 0 an erasable word set, 1 a PIPA count added, 2 a 16-bit
- * C64 word set and 4 a byte (tools/flight_scenario_vice.py turns the host's
- * channel rows into the addresses of rk_hardware, rk_flight and, on the CM,
- * rk_device's copies), 3 interrupt requests raised. A row is applied before the first step at or after its time where
+ * value, the address a C64 one (tools/flight_scenario_vice.py c64_rows
+ * turns the host's erasable words, channels and requests into the
+ * addresses of the image, rk_hardware, rk_flight, rk_device's copies and
+ * rk_pending). Kinds: 1 a signed count added to a counter word (a PIPA),
+ * 3 bits ORed in (interrupt requests), 4 a byte stored, else a word
+ * stored. A row is applied before the first step at or after its time where
  * it may be (rows go in order: a sample point's row holds back the
  * boundary rows after it). The sample point is the host's: Z at ADVAN in
  * bank 01, NEWJOB -0, no interrupt running or requested; with DP_BUSY also
@@ -155,17 +157,24 @@ static void press_due(uint16_t elapsed)
 #endif
 typedef struct { uint16_t cs; uint8_t kind, where; uint16_t addr, value; } __attribute__((packed)) dp_row;
 _Static_assert(sizeof(dp_row)==8u,"rows are 8 bytes (tools/flight_host_run.c rp_row)");
-/* The row buffer sits in the cassette buffer's top ($03BC-$03FB; the step
+/* The row being applied sits in the cassette buffer ($03F4-$03FB; the step
  * profile uses its bottom), not in the resident's RAM. */
-#define DP_ROW_BUF 8u
-#define rows ((dp_row *)0x03bcu)
-static uint16_t row_next, row_have, row_at;
-static uint32_t replay_t0;
+#define row (*(dp_row *)0x03f4u)
+static uint16_t rows_left = DP_REPLAY_ROWS;
+static uint8_t row_ready;
+static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
+static uint16_t replay_t0;
 #ifdef DP_BUSY
 static uint16_t busy_last;
 #endif
-static uint32_t agc_time(void){return ((uint32_t)(IMAGE->words[024]&037777u)<<14)|(IMAGE->words[025]&037777u);}
-static uint16_t replay_cs(void){return (uint16_t)((agc_time()-replay_t0)&0xfffffffu);}
+#ifndef DP_EVERY
+#define DP_EVERY DP_REPLAY_CS
+#endif
+#define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
+static uint16_t state_next = DP_EVERY;
+static uint8_t states;
+/* TIME1 since the snapshot: a window is at most 16,383 cs. */
+static uint16_t replay_cs(void){return (uint16_t)(IMAGE->words[025]-replay_t0)&037777u;}
 static uint8_t sample_point(uint16_t t){
     if (rk_pending || rk_hardware.in_interrupt) return 0;
     if ((IMAGE->words[5] & 07777u) == DP_ADVAN && (IMAGE->words[4] >> 10) == 1u &&
@@ -177,25 +186,23 @@ static uint8_t sample_point(uint16_t t){
     (void)t;
     return 0;
 }
-/* tools/flight_host_run.c pipa_add: a signed count into a ones' complement
- * counter word, held at +-037777. */
-static void counter_add(uint16_t a, int16_t n){
-    agc_word w = IMAGE->words[a];
-    int16_t v = (int16_t)((w & 040000u) ? -(int16_t)((~w) & 037777u) : (int16_t)w) + n;
-    if (v > 037777) v = 037777;
-    if (v < -037777) v = -037777;
-    IMAGE->words[a] = v < 0 ? (agc_word)((~(uint16_t)(-v)) & 077777u) : (agc_word)v;
+__attribute__((noinline)) static void stash(void *from, uint16_t n){
+    apollo_reu_transfer(APOLLO_REU_STASH, from, state_at, n);
+    state_at += n;
 }
-#ifndef DP_EVERY
-#define DP_EVERY DP_REPLAY_CS
-#endif
-#define DP_STATE_BYTES (2u + 2048u * sizeof(agc_word) + DP_IO_BYTES + 32u)
-#define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
-static uint16_t state_next = DP_EVERY;
-static uint8_t states;
-static void replay_state(uint16_t t);
+/* The state at a sample point: its centiseconds, the erasable words,
+ * rk_hardware and rk_flight, then 32 bytes of rk_device. */
+__attribute__((noinline)) static void replay_state(uint16_t t){
+    static uint16_t at;
+    at = t;
+    ++states;
+    stash(&at, 2u);
+    stash(IMAGE->words, 2048u * sizeof(agc_word));
+    stash((void *)RK_HARDWARE, DP_IO_BYTES);
+    stash(&rk_device, 32u);
+}
 /* The rows due before this step; 1 when the window ends here. */
-static uint8_t replay_due(void){
+__attribute__((noinline)) static uint8_t replay_due(void){
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
     if (sp) {
@@ -211,36 +218,34 @@ static uint8_t replay_due(void){
             while (state_next <= t) state_next += DP_EVERY;
         }
     }
-    for (;;) {
-        dp_row *r;
-        if (row_next >= DP_REPLAY_ROWS) return 0;
-        if (row_at == row_have) {
-            uint16_t n = DP_REPLAY_ROWS - row_next < DP_ROW_BUF ? DP_REPLAY_ROWS - row_next : DP_ROW_BUF;
-            apollo_reu_transfer(APOLLO_REU_FETCH, rows, DP_REPLAY_REU + (uint32_t)row_next * sizeof(dp_row), n * sizeof(dp_row));
-            row_have = n;
-            row_at = 0;
+    while (rows_left) {
+        uint16_t *w;
+        if (!row_ready) {
+            apollo_reu_transfer(APOLLO_REU_FETCH, &row, row_at, sizeof(dp_row));
+            row_at += sizeof(dp_row);
+            row_ready = 1;
         }
-        r = &rows[row_at];
-        if (r->cs > t || (!r->where && !sp)) return 0;
+        if (row.cs > t || (!row.where && !sp)) return 0;
+        w = (uint16_t *)row.addr;
         __asm__ volatile("sei");
-        switch (r->kind) {
-        case 0: IMAGE->words[r->addr] = r->value; break;
-        case 1: counter_add(r->addr, (int16_t)r->value); break;
-        case 2: *(volatile uint16_t *)r->addr = r->value; break;
-        case 3: rk_pending |= r->value; break;
-        case 4: *(volatile uint8_t *)r->addr = (uint8_t)r->value; break;
-        }
+        if (row.kind == 1) {
+            /* tools/flight_host_run.c pipa_add: a signed count into a ones'
+             * complement counter, held at +-037777. */
+            int16_t v = (int16_t)((*w & 040000u) ? -(int16_t)((~*w) & 037777u) : (int16_t)*w) + (int16_t)row.value;
+            if (v > 037777) v = 037777;
+            if (v < -037777) v = -037777;
+            *w = v < 0 ? (uint16_t)((~(uint16_t)(-v)) & 077777u) : (uint16_t)v;
+        } else if (row.kind == 3)
+            *w |= row.value;
+        else if (row.kind == 4)
+            *(uint8_t *)w = (uint8_t)row.value;
+        else
+            *w = row.value;
         __asm__ volatile("cli");
-        ++row_at;
-        ++row_next;
+        row_ready = 0;
+        --rows_left;
     }
-}
-static void replay_state(uint16_t t){
-    uint32_t at = DP_END + (uint32_t)states++ * DP_STATE_BYTES;
-    apollo_reu_transfer(APOLLO_REU_STASH, &t, at, 2u);
-    apollo_reu_transfer(APOLLO_REU_STASH, IMAGE->words, at + 2u, 2048u * sizeof(agc_word));
-    apollo_reu_transfer(APOLLO_REU_STASH, (void *)RK_HARDWARE, at + 2u + 2048ul * sizeof(agc_word), DP_IO_BYTES);
-    apollo_reu_transfer(APOLLO_REU_STASH, &rk_device, at + 2u + 2048ul * sizeof(agc_word) + DP_IO_BYTES, 32u);
+    return 0;
 }
 #endif
 
@@ -256,7 +261,7 @@ static void BOOT load_snapshot(void){
 #ifdef DP_REPLAY
  /* The host's replay runs on the work clock from its first step. */
  rk_work=0;rk_tick_phase=0;
- replay_t0=agc_time();
+ replay_t0=IMAGE->words[025];
 #endif
 }
 
@@ -342,7 +347,7 @@ int main(void){
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
  sum.z=IMAGE->words[5];sum.fb=IMAGE->words[4];sum.superbank=rk_device.superbank;
 #ifdef DP_REPLAY
- {uint16_t t=replay_cs();mail[0x30]=(uint8_t)row_next;mail[0x31]=(uint8_t)(row_next>>8);mail[0x32]=(uint8_t)t;mail[0x33]=(uint8_t)(t>>8);mail[0x34]=replay_ended;mail[0x35]=states;}
+ {uint16_t t=replay_cs();{uint16_t n=DP_REPLAY_ROWS-rows_left;mail[0x30]=(uint8_t)n;mail[0x31]=(uint8_t)(n>>8);}mail[0x32]=(uint8_t)t;mail[0x33]=(uint8_t)(t>>8);mail[0x34]=replay_ended;mail[0x35]=states;}
 #endif
  apollo_reu_transfer(APOLLO_REU_FETCH, RECORDS, DP_SCRATCH,
                      (sum.records < DP_KEEP ? sum.records : DP_KEEP) * sizeof r);

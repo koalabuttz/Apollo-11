@@ -142,14 +142,21 @@ def map_symbol(prg, name):
     sys.exit(f'FAIL: no {name} in {prg}.map')
 
 
-def c64_rows(rows, m, device):
-    """The host's rows for the C64 (dap_pass_check.c DP_REPLAY): a channel
-    row (kind 2) becomes a 16-bit store (kind 2) to each C64 copy of the
-    channel, the radar gate a byte store (kind 4)."""
+IMAGE = 0x7000   # the canonical image (APOLLO_SHARED_ADDRESS, resident_flight.ld)
+
+
+def c64_rows(rows, m, device, pending):
+    """The host's rows for the C64 (dap_pass_check.c DP_REPLAY), each with
+    a C64 address: an erasable word (kind 0) becomes a store (2) into the
+    image, a PIPA count (1) stays a count, a channel (2) a store to each C64
+    copy of it, the radar gate a byte store (4), and interrupt requests (3)
+    an OR into rk_pending."""
     out = []
     for cs, kind, where, addr, value in ROW.iter_unpack(rows):
-        if kind != 2:
-            out.append((cs, kind, where, addr, value))
+        if kind in (0, 1):
+            out.append((cs, 2 if kind == 0 else 1, where, IMAGE + 2 * addr, value))
+        elif kind == 3:
+            out.append((cs, 3, where, pending, value))
         elif addr == 0o377:
             out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value))
         else:
@@ -173,7 +180,10 @@ def c64_states(data, n, m):
         ch = [word(io + HW[c]) for c in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14)]
         ch += [word(io + RK_FLIGHT_IO - RK_HARDWARE + FLIGHT[c]) for c in (0o34, 0o35)]
         ch.append(word(dev + DEVICE[m]['superbank']))
-        out.append((cs, (*words, *ch)))
+        # The CM's second copies of channels 11-14 (rk_device, cm_native_io).
+        copies = {f'channel {c:o} (rk_device)': (END_CHANNELS.index(f'channel {c:o}'), word(dev + DEVICE[m][c]))
+                  for c in (0o11, 0o12, 0o13, 0o14) if c in DEVICE[m]}
+        out.append((cs, (*words, *ch), copies))
     return out
 
 
@@ -304,7 +314,7 @@ def main():
         # The window ends at the C64's first sample point a.cs in; DP_CS
         # stops it later if none comes.
         # The C64's rows (their count does not depend on rk_device's address).
-        n_c64 = len(c64_rows(rows, m, 0)) // ROW.size
+        n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
         defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
                    f'-DDP_REPLAY_CS={a.cs}u', f'-DDP_EVERY={every}u', f'-DDP_END=0x{end_at:x}ul', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
         kinds = {}
@@ -323,41 +333,41 @@ def main():
                   m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
     if a.replay:
         # rk_device's address comes from the link.
-        patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device')))]
+        patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
     r = dp.vice(a, a.scenario, prg, pinned, m, patch)
     if a.replay and r.get('status') is not None:
         mail = (dp.WORK / f'vice-{a.scenario}' / 'results.bin').read_bytes()
         applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
-        r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs)
-        if not ended:
-            r.update(ok=False, replay_ended=False)
-            print(f'FAIL: {a.scenario}: the C64 window did not reach a sample point {a.cs} cs in '
-                  f'({applied} of {n_c64} input rows applied, {end_cs} cs)')
-        else:
-            image = (dp.WORK / f'vice-{a.scenario}' / 'image.reu').read_bytes()
-            host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, n_states), m)
-            diff, at_cs = [], None
-            for (hc, hw), (cc, cw) in zip(host_s, c64_s):
-                diff = replay_compare(hw, cw)
-                if hc != cc:
-                    diff.insert(0, ('centiseconds', hc, cc))
-                if diff:
-                    at_cs = hc
-                    break
-            if not diff and c64_written != n_states:
-                diff = [('states written', n_states, c64_written)]
-            r.update(replay_ended=True, replay_differences=len(diff), replay_differ_at_cs=at_cs,
-                     replay_first=[dict(at=x, host=f'{h:05o}', c64=f'{c:05o}') for x, h, c in diff[:32]])
+        r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended))
+        # Every state the C64 wrote against the host's at the same point.
+        image = (dp.WORK / f'vice-{a.scenario}' / 'image.reu').read_bytes()
+        host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, n_states), m)
+        diff, at_cs, matched = [], None, []
+        for (hc, hw), (cc, cw, copies) in zip(host_s, c64_s):
+            diff = replay_compare(hw, cw) + [(k, hw[2048 + i], v) for k, (i, v) in copies.items() if hw[2048 + i] != v]
+            if hc != cc:
+                diff.insert(0, ('centiseconds', hc, cc))
             if diff:
-                r['ok'] = False
-                print(f'FAIL: {a.scenario}: the C64 leaves the host state '
-                      f"{f'by {at_cs} cs into the window' if at_cs is not None else 'in the window'} "
-                      f'(window end {end_cs} cs, {applied} of {n_c64} input rows): {len(diff)} differences; '
-                      f'first at {diff[0][0]} host {diff[0][1]:05o} C64 {diff[0][2]:05o}')
-                for x, h, c in diff[1:12]:
-                    print(f'  {x} host {h:05o} C64 {c:05o}')
-            else:
-                print(f"{a.scenario}: the C64 ends the window ({end_cs} cs, all {applied} input rows) in the host's state")
+                at_cs = hc
+                break
+            matched.append(hc)
+        r.update(replay_matched_cs=matched, replay_differences=len(diff), replay_differ_at_cs=at_cs,
+                 replay_first=[dict(at=x, host=f'{h:05o}', c64=f'{c:05o}') for x, h, c in diff[:32]])
+        seen = f"matches the host at {', '.join(map(str, matched))} cs" if matched else 'matches the host at no point'
+        if diff:
+            r['ok'] = False
+            print(f'FAIL: {a.scenario}: the C64 {seen}, then leaves it by {at_cs} cs into the window '
+                  f'({applied} of {n_c64} input rows applied): {len(diff)} differences; '
+                  f'first at {diff[0][0]} host {diff[0][1]:05o} C64 {diff[0][2]:05o}')
+            for x, h, c in diff[1:12]:
+                print(f'  {x} host {h:05o} C64 {c:05o}')
+        elif not ended:
+            r['ok'] = False
+            print(f'FAIL: {a.scenario}: the C64 {seen}, then did not reach a sample point {a.cs} cs in '
+                  f'(stopped at {end_cs} cs, {applied} of {n_c64} input rows applied)')
+        else:
+            print(f"{a.scenario}: the C64 {seen}: it ends the window ({end_cs} cs, all {applied} input rows) "
+                  "in the host's state")
     if a.profile:
         r['profile'] = dp.profile(a.scenario)
     r.update(snap_cs=a.snap_cs, requested_cs=a.cs, host_holes=holes)
