@@ -447,6 +447,10 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
  * point reaches), for rk_direct's range checks. Static: absolute addressing
  * is smaller than the soft stack. */
 static uint8_t rk_point_hi;
+#ifdef AGC_TRANSFER_FIND_ASM
+/* platform/c64/agc_find.S, the transfer engine's find (agc_transfer.c). */
+agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
+#endif
 __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uint16_t point)
 {
     uint8_t i;
@@ -476,6 +480,17 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             RK_PROF(5);
             continue;
         }
+#ifdef AGC_TRANSFER_FIND_ASM
+        /* A module without interpretive tables runs from the step's point
+         * (rk_point) first: if its basic tables do not hold it, the run
+         * would take no step, so one find passes the slot over before the
+         * run's setup (rk_limit, rk_module_program). */
+        if (!t->interpretive_count && point != AGC_TRANSFER_NONE &&
+            !agc_find(t->basic, t->basic_count, point)) {
+            RK_PROF(5);
+            continue;
+        }
+#endif
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint8_t mct = t->mct;
