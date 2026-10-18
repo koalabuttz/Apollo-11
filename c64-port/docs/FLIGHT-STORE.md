@@ -704,8 +704,8 @@ port) runs one mission:
    CSM at R61's preferred tracking attitude. `FLIGHT_RR`'s CM side
    (tools/flight_radar.h) holds the CDUs on the DAP's desired angles
    (CDUXD-ZD; Comanche keeps them two words apart), points the SXT at the
-   LM, and answers each VHF range read (channel 13 bit 4) with RNRAD
-   9 cs later and a RADAR RUPT. The keys run V37E20E, V87E (VHF ranging
+   LM, and puts the range in RNRAD when a VHF read starts (channel 13
+   bit 4; the resident timer ends the cycle with RADARUPT). The keys run V37E20E, V87E (VHF ranging
    allowed), V57E and MARK, proceeding on V51 (TRKMKCNT 1: the mark goes
    into the LM state and the W matrix). R22's first VHF range, at about
    125 s, shows V06N49, the 1.8 km. Proceed takes it (VHFCNT 1). The
@@ -715,6 +715,10 @@ port) runs one mission:
    keys their sample points: a key every second, so each CHARIN job runs
    before the next key comes. On a busy stretch with all four keys at
    once, V87 arrived as V77 and cleared PRFTRKAT.
+   On base 1a0ba510 the native run (25,000 cs, scaled x1) takes 651,427
+   routines, none that yaAGC did not match. The one refused point is
+   V87's interpretive SET (EXTENDED_VERBS.agc SETVHFLG +1, 43,3024),
+   which cm_extended_verbs_file_interpretive does not hold.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
