@@ -437,25 +437,24 @@ static int load_parse(const char *t){while(t&&*t){unsigned long cs;int n=0;char 
    pokes[npokes].cs=cs;pokes[npokes].addr=a;pokes[npokes++].value=v&077777u;}
   fclose(f);}
  return 1;}
+/* FLIGHT_LR, FLIGHT_LR_POS2 (tools/flight_lr.h): the landing radar. */
+#include "flight_lr.h"
+/* The channel 33 bits a running model owns (FLIGHT_RR, FLIGHT_LR,
+ * FLIGHT_LR_POS2): a FLIGHT_CHAN write to channel 33 leaves them to the
+ * model. A new model adds its bits here. */
+#if RK_LM
+static agc_word ch33_model_bits(void){return (agc_word)((rr_on?010u:0u)|lr_ch33_bits());}
+#else
+static agc_word ch33_model_bits(void){return rr_on?02u:0u;}
+#endif
 /* The channel changes due at time t, once each side (done counts them):
  * into yaAGC (hw 0) or the native channels. */
 static void chan_due(unsigned long t,unsigned *done,agc_hardware *hw,flight_io *io){
  while(*done<nchans&&t>=chans[*done].cs){unsigned c=chans[*done].ch;agc_word v=(agc_word)chans[*done].value;++*done;
   if(!hw)m.InputChannel[c]=(int16_t)v;
   else if(c==016u)io->channel16=v;
-  else *(c==030u?&hw->channel30:c==031u?&hw->channel31:c==032u?&hw->channel32:&hw->channel33)=v;}}
-/* FLIGHT_LR_POS2=CS: the landing radar antenna. Channel 12 bit 13 (LRPOS2's
- * command) moves it to position 2 CS centiseconds later: channel 33 bit 7
- * (in position 2) goes to 0 and bit 6 (in position 1) to 1, on both
- * sides (LM only). Start the scenario in position 1 (FLIGHT_CH33 bit 6
- * 0, bit 7 1). */
-static unsigned long lr_pos2,lr_ref,lr_nat;
-static void lr_due(unsigned long t,unsigned long *at,agc_hardware *hw){agc_word c12=hw?hw->channel12:(agc_word)m.InputChannel[012];
- if(!lr_pos2||*at==1ul)return;
- if(!*at){if(c12&010000u)*at=t+lr_pos2;return;}
- if(t<*at)return;
- *at=1ul;
- if(hw)hw->channel33=(agc_word)((hw->channel33&~0100u)|040u);else m.InputChannel[033]=(int16_t)((m.InputChannel[033]&~0100)|040);}
+  else if(c==033u)hw->channel33=(agc_word)((v&~ch33_model_bits())|(hw->channel33&ch33_model_bits()));
+  else *(c==030u?&hw->channel30:c==031u?&hw->channel31:&hw->channel32)=v;}}
 /* poke_due takes them in time order. */
 static void pokes_sort(void){unsigned i,j;for(i=1;i<npokes;++i)for(j=i;j>0&&pokes[j-1].cs>pokes[j].cs;--j){unsigned long c=pokes[j].cs;unsigned a=pokes[j].addr,v=pokes[j].value;
   pokes[j]=pokes[j-1];pokes[j-1].cs=c;pokes[j-1].addr=a;pokes[j-1].value=v;}}
@@ -568,6 +567,7 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   e->bits+=(e->ramp-e->bits)*(1.0-exp(-dt/engine_lag));}
  ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0);mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0);
  dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ if(w){double dv[3];for(k=0;k<3u;++k)dv[k]=a*dt*dir[k];lrm_dv(dv,t,dt);}
  for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0;n=(long)e->carry[k];e->carry[k]-=(double)n;
   v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
@@ -763,6 +763,7 @@ static agc_word *hwc(agc_hardware *hw,unsigned i){agc_word *c[]={&hw->channel3,&
 static void load(const apollo_overlay_state *s,const flight_io *io,agc_hardware *hw){unsigned i;
  for(i=0;i<2048u;++i)*cell(i)=(int16_t)s->words[i];
  for(i=0;i<CHANNELS;++i)m.InputChannel[ch[i]]=(int16_t)*hwc(hw,i);
+ m.InputChannel[013]&=043777;   /* bits 12-14 arm the traps (io->trap*), and yaAGC reads its channel 13 back */
  m.InputChannel[016]=(int16_t)io->channel16;m.InputChannel[034]=(int16_t)io->channel34;m.InputChannel[035]=(int16_t)io->channel35;
  m.InputChannel[7]=m.OutputChannel7=(int16_t)io->superbank;m.AllowInterrupt=io->interrupt_enabled!=0u;m.InIsr=hw->in_interrupt!=0u;
  m.Trap31A=io->trap31a;m.Trap31B=io->trap31b;m.Trap32=io->trap32;m.RadarGateCounter=hw->radar_gate;
@@ -1005,9 +1006,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
- if(getenv("FLIGHT_LR"))lr_model=atoi(getenv("FLIGHT_LR"));
- if(!drops_parse(&lr_drops,getenv("FLIGHT_LR_DROP"))){fprintf(stderr,"FLIGHT_LR_DROP=T0-T1[,T0-T1...]\n");return 2;}
- if(lr_model&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_LR needs FLIGHT_SCALED\n");return 2;}
+ if(!lrm_parse(getenv("FLIGHT_LR"))){fprintf(stderr,"FLIGHT_LR=CS[:DH]\n");return 2;}
+ if(!drops_parse(&lrm.drops,getenv("FLIGHT_LR_DROP"))){fprintf(stderr,"FLIGHT_LR_DROP=T0-T1[,T0-T1...]\n");return 2;}
+ if(lrm.on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_LR needs FLIGHT_SCALED\n");return 2;}
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
  if(!drops_parse(&rr_drops,getenv("FLIGHT_RR_DROP"))){fprintf(stderr,"FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");return 2;}
@@ -1124,9 +1125,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    saturn_due(now(s.words),&sat_nat,s.words,&hw);
    sivb_due(now(s.words),&sivb_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
-#if RK_LM
-   lr_model_due(now(s.words),&lr_nat_read,s.words,&hw.channel13,&hw.channel33);
-#endif
+   lrm_due(now(s.words),touchdown_cs,s.words,&hw.channel13,&hw.channel33);
    chan_due(now(s.words),&cnat,&hw,&io);
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
@@ -1171,11 +1170,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * model answers it at the boundary where channel 13 bit 4 comes on. A
    * read ends when bit 4 drops, often between sample points too; the next
    * read (LM R22's range after range rate) must find the model ready. */
+  if(lrm.on&&!(hw.channel13&010u))lrm.active=0;
+  else if(lrm.on&&!lrm.active&&(hw.channel13&04u)){if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);lrm_due(now(s.words),touchdown_cs,s.words,&hw.channel13,&hw.channel33);if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);}
   if(rr_on&&!(hw.channel13&010u))rr_nat.active=0;
   else if(rr_on&&!rr_nat.active){int r=0;if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);}
 #if RK_LM
-  if(lr_model&&!(hw.channel13&010u))lr_nat_read.active=0;
-  else if(lr_model&&!lr_nat_read.active){if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);lr_model_due(now(s.words),&lr_nat_read,s.words,&hw.channel13,&hw.channel33);if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);}
 #endif
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
   if(e){flight_io io0=io;agc_hardware hw0=hw;long n;

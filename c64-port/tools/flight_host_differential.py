@@ -105,6 +105,13 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
+# lm-landing-lr-nassp: lm-landing-ascent-nassp with the landing radar
+# (FLIGHT_LR=60000:150, the surface 150 m above the LGC's landing site)
+# and V57E at 660 s (LR updates permitted): DELTAH starts near -126 m and
+# R12's updates take it to about 0 by 950 s; the landing, P12 and orbit
+# insertion run as without it, with no alarms.
+LANDING_LR = {**LANDING, 'FLIGHT_LR': '60000:150'}
+LANDING_LR_KEYS = LANDING_KEYS.replace('@122700M', '@66000V57E@122700M')
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
 # bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
@@ -315,15 +322,14 @@ LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
 # their own.
 CM_P20_VHF_DROP = {**CM_P20, 'FLIGHT_RR_DROP': '18000-19000'}
 CM_P20_VHF_DROP_KEYS = CM_P20_KEYS.replace('@20000V33E', '')
-# lm-p63-lr-dropout: lm-p63-nassp with the landing radar's altitude beam
-# (FLIGHT_LR: the slant range the LGC's own altitude and attitude give,
-# good below 50,000 ft) and its range data good lost from 800 s to 900 s
-# (FLIGHT_LR_DROP). R12 reads it from 35,000 ft (HMEAS, DELTAH within
-# 300 ft; no V57, so no update); in the dropout the reads fail (RADMODES
-# LR range fail, no altitude measured), and R12 measures again from
-# 906 s. (A dropout from 850 s to 950 s also gives alarm 1210 at high
-# gate: R12's read and the antenna's move to position 2 meet.)
-LR_DROP = {**NASSP, 'FLIGHT_LR': '1', 'FLIGHT_LR_DROP': '80000-90000'}
+# lm-p63-lr-dropout: lm-p63-nassp with the landing radar from 600 s
+# (FLIGHT_LR, tools/flight_lr.h: range and velocity beams from the true
+# trajectory, data good below 50,000 ft of slant range) and its data good
+# lost from 880 s to 950 s (FLIGHT_LR_DROP). R12's range reads fail
+# (RADMODES LR range fail) until the slant range comes inside 50,000 ft
+# at 816 s (about 38,000 ft up), pass, fail again in the dropout, and
+# pass again from 952 s. No V57, so nothing is updated.
+LR_DROP = {**NASSP, 'FLIGHT_LR': '60000', 'FLIGHT_LR_DROP': '88000-95000'}
 # lm-uplink-reject: the ground's uplink (FLIGHT_UPLINK) in P00, rejected
 # by the V71 checks: V71 (P27 flashes V21N01), 25 components (octal: 21,
 # over OHWELL1's limit of 20, so V21N01 again), V34 (P27 ends); a garbled
@@ -351,6 +357,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
+          ('lm-landing-lr-nassp', 'lm', 215000, LANDING_LR_KEYS, LANDING_LR),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
