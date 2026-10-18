@@ -179,6 +179,11 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
      * lookups a byte instead of eight shifts. The whole store passes through
      * here at boot, so this is most of the boot's time. */
     uint8_t *crc_high = buffer + 256, *crc_low = buffer + 512;
+    /* The CRC at buffer+768: in memory at a fixed
+     * address (the resident's buffer is), not on the soft stack, where
+     * every byte of the loop below reloads them (about 60 cycles a byte
+     * instead of 47: a minute of the C64's boot). */
+    volatile uint8_t *crc_hi = buffer + 768, *crc_lo = buffer + 769;
     for (i = 0; i < 256u; ++i) {
         uint16_t t = apollo_overlay_crc16(0, (uint8_t)i);
         crc_high[i] = (uint8_t)(t >> 8);
@@ -187,7 +192,6 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
     for(id=1;id<(uint16_t)(s->index_blocks<<8);++id) {
         apollo_ov2_dirent d;
         uint16_t offset;
-        uint8_t high = 0xffu, low = 0xffu;
         if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
             s->record,APOLLO_REU_INDEX_RECORD)) return APOLLO_OV2_IO_ERROR;
         if(!(s->record[11] & APOLLO_OV2_DIRENT_PRESENT)) {
@@ -200,6 +204,7 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
            d.bytes>apollo_ov2_slot_bytes(d.slot) || d.flags!=APOLLO_OV2_DIRENT_PRESENT ||
            s->record[12] || s->record[13] || s->record[14] || s->record[15])
             return APOLLO_OV2_BAD_DIRECTORY;
+        *crc_hi = *crc_lo = 0xffu;
         for(offset=0;offset<d.bytes;) {
             uint16_t chunk=(uint16_t)(d.bytes-offset);
             if(chunk>256u) chunk=256u;
@@ -231,15 +236,16 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
             {
                 /* chunk is 1 to 256: an 8-bit count (0 for 256) */
                 uint8_t j = 0;
+                const uint8_t end = (uint8_t)chunk;
                 do {
-                    uint8_t x = (uint8_t)(high ^ buffer[j]);
-                    high = (uint8_t)(low ^ crc_high[x]);
-                    low = crc_low[x];
-                } while (++j != (uint8_t)chunk);
+                    uint8_t x = (uint8_t)(*crc_hi ^ buffer[j]);
+                    *crc_hi = (uint8_t)(*crc_lo ^ crc_high[x]);
+                    *crc_lo = crc_low[x];
+                } while (++j != end);
             }
             offset=(uint16_t)(offset+chunk);
         }
-        if ((uint16_t)((uint16_t)high << 8 | low) != d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
+        if ((uint16_t)((uint16_t)*crc_hi << 8 | *crc_lo) != d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
         ++count;
     }
     if(count!=s->module_count) return APOLLO_OV2_BAD_DIRECTORY;

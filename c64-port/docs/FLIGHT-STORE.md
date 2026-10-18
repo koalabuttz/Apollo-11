@@ -54,17 +54,19 @@ per source) for the harness. A module's `fixed_data` is the resident's
 runs, and `lm_trim_gimbal` (GTS reads an indexed CA through `fixed_data`)
 reads every rope word from the mission rope image the store carries
 (`FS_ROPE_DATA`, `platform/c64/rope_image_reu.c`). The builder writes that
-image into `<m>.reu` at the rope base (`tools/rope_image_pack.py` `BASES`:
-LM 0x1c0000, CM 0x1e0000) and pads the store to 2 MB.
+image into `<m>.reu` at the rope base (`tools/flight_store_build.py`
+`FLIGHT_ROPE_BASE`, 0x1e0000 for either mission: a flight store carries one
+rope, `include/rope_image.h` under `RK_LM` or `RK_CM`) and pads the store to
+2 MB. Builds that carry both ropes (`tools/rope_image_pack.py` `BASES`) keep
+the LM's at 0x1c0000.
 
 The 2 MB REU, by address:
 
 | REU range | Use |
 | --- | --- |
-| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1c0000 |
-| 0x1c0000-0x1d1fff | LM rope image (LM store only) |
+| 0x000000 up | The module store (header, index, resolver, modules); then the module-test harness's case blob, below 0x1df000 (`REU_LIMIT`) |
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
-| 0x1e0000-0x1f1fff | CM rope image (CM store only) |
+| 0x1e0000-0x1f1fff | The mission's rope image |
 | 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`; the build checks that the rope image ends at or below it and that it is unused) |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
@@ -366,7 +368,7 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   starts there, with no load. These are ride tables (`RIDE`): the resolver
   still sends their keys to their own modules. With them the pack is
   10,459 bytes.
-- The *CM entry pack* (`ENTRYPACK`, modules $07F7 and $07F8) packs the 26
+- The *CM entry pack* (`ENTRYPACK`, from module $07F7) packs the 26
   entries a CM entry DAP pass (T5RUPT) reaches (`cm_entry_dap_hot_routines`,
   Lane G; `HOT_FULL` names its full table, `cm_entry_dap_basic`). Those
   entries were spread over all of the full table's chunks, so a pass loaded
@@ -378,6 +380,19 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   4214bb6a the CM entry window from 17000 cs (172 cs) went from 21.24x to
   20.05x real time, with T5RUPT job loads 85 to 69 and its mean cost 577 K
   to 465 K cycles.
+- The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
+  pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
+  burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)
+  and `cm_auto_man_hot_routines` (6, with SMALLMP and DPADD from
+  `cm_mysubs_routines`). They are `ALONE` like the entry pack, one pack per
+  file: one pack of all three is far over the job slot, and only a
+  one-table pack splits. The RCS and jet-select packs split into two
+  chunks each. A pack's keys resolve to the pack first, so those hot keys
+  load the pack and the full tables' chunks keep the rest (`HOT_FULL`).
+  Pack ids follow on: a pack starts after the ids the one before it split
+  into, and the build fails if one passes 0x07FF (0x0800 on is lane G's). On 8d547e12 the cm-p40 window from 70660 cs
+  (300 cs) went from 21.96x to 16.03x real time, with T5RUPT job loads 635
+  to 364 and its mean cost 568,910 to 374,331 cycles per pass (90 passes).
 
 The excursion and the T4RUPT pack (`PACKS`) are linked only beside a packed
 class-4 home, the `ALONE` packs with or without one. Each links once on its own before `pin_pair`; the home then
@@ -687,6 +702,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
+   crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
+   28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
+   bit of the core's channel 30 (036351; the rest of it, PGNCS mode and
+   the IMU, must stay as it is): bit 1, ABORT, for P70, or bit 4, ABORT
+   STAGE, for P71. R10,R11 reads it on its next pass and starts the
+   program, which restarts through ENEMA into the abort guidance. P70
+   keeps the descent engine (THROTUP's BIT13 THRUST command takes it to
+   full thrust, which the engine model gives in MODREG 70) and cuts off at
+   about 1,408 s: 1,667 m/s, 18.3 km up, climbing 9 m/s. P71 stages
+   (`FLIGHT_STAGE`: from the abort the engine is the ascent engine of
+   `FLIGHT_ASCENT=4888`) and cuts off at about 1,579 s: 1,678 m/s, 18.3 km,
+   climbing 7 m/s. The flight store resolves P70-P71's basic keys to
+   lm_p70_p71_file, the file's whole-file certificate, before the older
+   lm_p70_p71 tables (flight_store_build.py `rank`), since lm_p70_p71
+   refuses THROTUP's WOR CHAN14. On the host every native routine matches
+   yaAGC in both; the unregistered points are the 3 self-check ones and
+   Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -867,12 +900,34 @@ port) runs one mission:
    solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
    V37E00E. On the host every native routine matches yaAGC; the
    unregistered points are Pinball's VBPROC +3 to +5.
+   `cm-tei`: Apollo 11's transearth injection at 135:23:42 GET, the SPS
+   burn on the far side that left lunar orbit. cm_tei.py sets it up as
+   cm_p40.py does LOI-1 (the same TVC and SPS pads, `FLIGHT_SPS`): the
+   CSM alone (16,400 kg) in a circular 60 nmi lunar orbit, the platform
+   with X along the DV, the CDUs at the ignition attitude R60 asks for,
+   RLS for the altitude displays, and TEPHEM so the CMC clock's 300 s is
+   TIG. The TEI-1 pad is keyed: V37E30E, V25 on V06N33 (TIG 300 s on the
+   CMC clock), V25 on V06N81 (+3283.6 ft/s), proceed on N81, N42 (9999.9
+   x 60.0 nmi) and V16N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 and on V99N40 at TIG-5. The SPS burns about 154 s to
+   cutoff (N40 VG 6.1 ft/s); proceed on V16N40 and N85, V37E00E; V82 shows
+   V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
+   matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
+   RELDSP1.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
-   interrupt; a refused or untranslated point stops it.
+   interrupt; a refused or untranslated point stops it. With `--keys` it
+   presses the scenario's DSKY keys that fall in the window, at the
+   centiseconds the host run presses them (channel 15 and KEYRUPT1, or a
+   mark's channel 16 bits and KEYRUPT2; on the CM also rk_device's
+   main_keys and navigation_keys, which each store module on a CM record
+   writes back to those channels). Without it the window presses none.
+   Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
+   radar model) are not replayed. `--watch 1011,...` prints up to five
+   erasable words as the window ends (1011 is Comanche's MODREG).
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under

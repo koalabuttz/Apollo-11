@@ -16,8 +16,8 @@ Steps, per mission:
    interrupt bodies its wrappers run) and the certified Executive tables the
    thin kernel replaces are not packed. A key two packed tables both hold is
    a collision: the resolver sends it to the table of the file
-   docs/port-coverage.json lists first for that AGC file (else the first by
-   name), and the report lists every collision for its lanes.
+   docs/port-coverage.json lists first for that AGC file (a whole-file
+   *_file table before an older one, else the first by name), and the report lists every collision for its lanes.
 4. Modules. One module per source file that defines packed tables: the
    generic wrapper platform/c64/flight_table_module.c around that file's
    tables, linked with the file's link closure (every src/*.c that defines
@@ -53,6 +53,7 @@ import sys
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import interp_specs  # noqa: E402
 from overlay_runtime_library import prepare  # noqa: E402
 from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, mct_weight,  # noqa: E402
                                    resident_sources, wrapper_records)
@@ -62,7 +63,12 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path('build/flight-store')
 NM = ROOT / 'deps/llvm-mos/bin/llvm-nm'
 PIN_LTO = ['-Wl,-mllvm,-inline-threshold=-50']
-REU_LIMIT = 0x1c0000          # tools/overlay_allocation.py REU_STORE_LIMIT
+# A flight store carries one mission's rope, at FLIGHT_ROPE_BASE whichever
+# the mission (include/rope_image.h under RK_LM or RK_CM; RK's flight-only
+# rope move), so the store may run up to Lane C's Pinball trampoline save
+# at 0x1df000 (src/lanec_pin_trampoline.c LANEC_PIN_REU_SAVE).
+FLIGHT_ROPE_BASE = 0x1e0000
+REU_LIMIT = 0x1df000
 SLOT_BYTES = {0: 0x4000, 1: 0x1FFA}
 LANE_BYTE = {'A': 0x01, 'B': 0x02, 'C': 0x03, 'D1': 0x04, 'D2': 0x05, 'E': 0x06, 'F': 0x07, 'G': 0x08, 'H': 0x09}
 LANE_LIMIT = {'A': 0xDF}       # lane A 0xE0-0xFF: the resident's and the flight check's modules
@@ -82,9 +88,12 @@ ERASABLE_BASE = 40960
 # Modules over their slot by more than this are not split (a split needs
 # about two trial links per routine), except the stems in SPLIT_ANY: their
 # routines are known to fit one by one (Lane C's Pinball try-lists,
-# docs/LANEC-PIN-HEADS.md), so any overflow is split.
+# docs/LANEC-PIN-HEADS.md; a compiled file whose spec stops each basic
+# routine at the next key, tools/interp_compile.py 'basic_key_stops'), so
+# any overflow is split.
 SPLIT_LIMIT = 65536
-SPLIT_ANY = {'lanec_pin_routines'}
+SPLIT_ANY = {'lanec_pin_routines'} | {base for spec in interp_specs.SPECS.values() if spec.get('basic_key_stops')
+                                      for base in spec['base'].values()}
 
 
 def lanec_pin_order(table, n):
@@ -362,6 +371,17 @@ def source_owners():
     return owners
 
 
+def rank(t, packed, owners):
+    """Resolution preference of a packed table: the file docs/port-coverage.json
+    lists first for its AGC file, then by name, except that a whole-file
+    table (stem *_file, the file's later certificate) goes just before its
+    older twin of the same name (LM P70-P71: lm_p70_p71 cannot write
+    channel 14, which THROTUP does)."""
+    twin = t.replace('_file_', '_', 1)
+    name = (twin, 0) if packed[t].endswith('_file') and twin in packed else (t, 1)
+    return (min((i for _, i in owners.get(packed[t], [])), default=99), name)
+
+
 def placements():
     alloc = json.loads((ROOT / 'docs/overlay-allocation.json').read_text())
     return {f['path']: (f['lane'], f['placement']) for m in alloc['missions'] for f in m['files']}
@@ -543,15 +563,16 @@ def flight_undo_area():
 
 def add_rope(m):
     """Put the mission's rope image where include/rope_image.h reads it on the
-    C64 (the top of a 2 MB REU, above the store), for the modules whose
-    fixed_data reads the rope (self-check, FIXED_DATA 'rope')."""
-    from rope_image_pack import BASES, physical_words
+    C64 (FLIGHT_ROPE_BASE near the top of a 2 MB REU, above the store), for
+    the modules whose fixed_data reads the rope (self-check, FIXED_DATA
+    'rope')."""
+    from rope_image_pack import physical_words
     program = {'lm': 'Luminary099', 'cm': 'Comanche055'}[m]
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
-    base = BASES[program]
-    if len(image) > base and any(image[base:]):
-        raise SystemExit(f'{m}: the store reaches the rope image at {base:#x}')
+    base = FLIGHT_ROPE_BASE
+    if len(image) > REU_LIMIT and any(image[REU_LIMIT:]):
+        raise SystemExit(f'{m}: the store ({len(image):#x} bytes) reaches the Pinball trampoline save at {REU_LIMIT:#x}')
     image += bytes(2 * 1024 * 1024 - len(image))
     words = list(physical_words(ROOT / f'build/fixed-data/{program}/MAIN.agc.bin'))
     undo, undo_end = flight_undo_area()
@@ -762,20 +783,32 @@ T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lea
 # it about 1. CM pins no class-4 home, so the pack links its own runtime
 # (ALONE).
 ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
+# The CM docked RCS DAP pass (T5RUPT) reaches 12 routines of
+# cm_rcs_dap_basic, 21 of cm_jet_select_basic, 6 of cm_auto_man_basic and
+# MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
+# task slot and run chunked in the job slot beside the others, so a pass
+# loaded about 7 modules. Each file's hot subset is its own pack (one table
+# per pack, so one too big for the slot splits in key order), KALCMANU's
+# beside MYSUBS, which its callers in the pass share.
+RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines']}
+JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
+MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines', 'cm_mysubs_routines']}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
-             ('cm_entry', ENTRYPACK[m], 0x07F7)] for m in ('lm', 'cm')}
+             ('cm_entry', ENTRYPACK[m], 0x07F7), ('cm_rcs', RCSPACK[m], 0x07F8),
+             ('cm_jet', JETPACK[m], 0x07FA), ('cm_man', MANPACK[m], 0x07FC)] for m in ('lm', 'cm')}
 # Packs that link the runtime themselves, as any job-slot module does, so
 # they are packed with no class-4 home; the others take it from the home
 # (pin_pair) and are packed only beside it.
-ALONE = {'cm_entry'}
+ALONE = {'cm_entry', 'cm_rcs', 'cm_jet', 'cm_man'}
 # Hot subsets (a file's *_hot_routines: the entries one DAP pass reaches) are
 # for PIN only: the file's modules pack its full table, which holds the same
 # keys and routines.
 # A hot subset's full table where it is not <file>_routines: a generated
 # file names its full table <file>_basic (tools/basic_compile.py).
-HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic',
+HOT_FULL = {'cm_entry_dap_hot_routines': 'cm_entry_dap_basic', 'cm_rcs_dap_hot_routines': 'cm_rcs_dap_basic',
+            'cm_jet_select_hot_routines': 'cm_jet_select_basic', 'cm_auto_man_hot_routines': 'cm_auto_man_basic',
             'lm_interbank_postjump_t4_hot_routines': 'lm_interbank_routines'}
 # Tables that run only from the self-check idle loop: a module carrying them
 # beside others runs them as the work clock's idle outside an interrupt
@@ -1091,7 +1124,7 @@ def main():
         parts = {stem: part_keys(a.host_cc, m, stem, sorted(t for t, o in packed.items()
                                                            if o == stem and not interpretive_table(t)))
                  for stem in FLIGHT_PARTS[m] if stem in packed.values()}
-        for t in sorted(packed, key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t)):
+        for t in sorted(packed, key=lambda t: rank(t, packed, owners)):
             if hot_full(t):
                 continue
             kind = 'i' if interpretive_table(t) else 'b'
@@ -1101,7 +1134,7 @@ def main():
         collisions = collections.Counter(tuple(v) for v in holders.values() if len(v) > 1)
         shadowed = sum(1 for k in holders if k in resident_keys)
         order = list(dict.fromkeys(RESIDENT[m] + sorted(
-            (t for t in packed if not hot_full(t)), key=lambda t: (min((i for _, i in owners.get(packed[t], [])), default=99), t))))
+            (t for t in packed if not hot_full(t)), key=lambda t: rank(t, packed, owners))))
         check_site_includers()
         also = collections.defaultdict(list)
         for host, ts in CO_LOCATE[m].items():
@@ -1308,6 +1341,9 @@ def main():
             pts = [t for t in pts if t in packed]
             if not pts:
                 continue
+            # A split pack takes the ids after its own: the next pack starts
+            # past them, so ids never collide.
+            ident = max([ident] + [p['id'] + 1 for p in packs])
             stems = list(dict.fromkeys(packed[t] for t in pts))
             lane = lane_slot(stems[0], m, owners, place)[0]
             sites = {}
@@ -1329,6 +1365,9 @@ def main():
                 packs += split_pack(pack, pts[0])
             else:
                 packs.append(pack)
+        # Pack ids stay in lane F's byte: 0x0800 on is lane G's.
+        if any(p['id'] > 0x07FF for p in packs):
+            raise SystemExit(f"{m}: pack ids {[hex(p['id']) for p in packs]} run past 0x07FF")
         # The pinned sets, measured: one module per slot with the set's
         # tables and its files' operand sites (a fit as linked; an overflow
         # beyond the slot otherwise). Class 4 links first: beside it, class
@@ -1721,13 +1760,12 @@ def main():
             raise SystemExit(f'{m}: overlay_v2_pack.py failed: {pack.stderr.strip()}')
         # Chunks and the store against the rope image above it, printed
         # before add_rope so an overflow shows its size.
-        from rope_image_pack import BASES
         chunked = [mod for mod in modules if mod.get('chunk_of') is not None and mod.get('ok')]
         fill = sum(mod['bytes'] for mod in chunked) / sum(SLOT_BYTES[mod['slot']] for mod in chunked) if chunked else 0
         image = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())['image_bytes']
-        rope = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+        rope = FLIGHT_ROPE_BASE
         print(f'{m}: {len(chunked)} chunks, mean fill {fill:.0%}; store image {image} bytes, rope image at '
-              f'{rope:#x} ({rope - image:+d} bytes left)')
+              f'{rope:#x} ({REU_LIMIT - image:+d} bytes left below the Pinball trampoline save)')
         add_rope(m)
         store = json.loads((ROOT / OUT / f'{m}-manifest.json').read_text())
         # A class-4 module holds the task slot's $E000 from boot: a task-slot

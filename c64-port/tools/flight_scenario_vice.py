@@ -7,9 +7,11 @@ scenario's inputs and keys) writes the native state at SNAP_CS
 resident on the whole-program flight store in VICE, loads that state and
 runs resident steps with CIA1 interrupts on for --cs centiseconds of AGC
 time, recording cycles, steps and module loads per AGC interrupt (as
-tools/dap_pass_vice.py does for the DAP). The C64 run has no keys and no
-engine model: it continues from the snapshot as the AGC would with the
-PIPAs still.
+tools/dap_pass_vice.py does for the DAP). The C64 run has no engine model:
+it continues from the snapshot as the AGC would with the PIPAs still. With
+--keys it presses the scenario's DSKY keys that fall in the window, at the
+times the host run presses them; without, it presses none. Other scheduled
+inputs (FLIGHT_CHAN, FLIGHT_POKE/LOAD, the radar model) are not replayed.
 
 First lists the points the host run to the end of the C64 window bridges
 to yaAGC (unregistered, or refused by their table), with file, label and
@@ -27,6 +29,7 @@ import argparse
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -52,6 +55,44 @@ def snapshot(exe, name, cs, tag):
     if not header.exists():
         sys.exit(f'FAIL: no snapshot for {name} (see {dp.WORK}/{tag}-host.log)')
     return header
+
+
+# tools/flight_host_run.c's key schedule (keys_parse, keycode, key_due).
+KEY_AT, KEY_GAP = 200, 50
+KEYCODE = {'V': 0o21, 'N': 0o37, 'E': 0o34, '0': 0o20, '+': 0o32, '-': 0o33, 'C': 0o36, 'P': 0o22, 'K': 0o31,
+           'R': 0o22, 'M': 0o400 | 0o40, 'J': 0o400 | 0o100, 'x': 0o400 | 0o4, 'y': 0o400 | 0o10,
+           'j': 0o400 | 0o20}
+
+
+def key_schedule(keys):
+    """(centisecond, code) for each key in a flight_host_run key string; a
+    mark key's code is 0400 | its channel 16 bits."""
+    out, at, i = [], KEY_AT, 0
+    while i < len(keys):
+        if keys[i] == '@':
+            j = i + 1
+            while j < len(keys) and keys[j].isdigit():
+                j += 1
+            at = max(at, int(keys[i + 1:j]))
+            i = j
+            continue
+        c = keys[i]
+        out.append((at, KEYCODE.get(c, ord(c) - ord('0'))))
+        at += KEY_GAP
+        i += 1
+    return out
+
+
+def window_keys(name, scen_keys, snap_at, cs):
+    """The DP_KEYS header for the keys the host run had not pressed by its
+    snapshot (at snap_at cs) and that fall in the cs-long window, timed from
+    the window's start."""
+    keys = [(t - snap_at, k) for t, k in key_schedule(scen_keys) if snap_at < t < snap_at + cs]
+    header = dp.WORK / f'{name}-keys.h'
+    header.write_text(f'#define DP_NKEYS {len(keys)}u\n'
+                      f"static const uint16_t dp_key_cs[{max(len(keys), 1)}]={{{','.join(str(t) for t, _ in keys) or '0'}}};\n"
+                      f"static const uint16_t dp_key_code[{max(len(keys), 1)}]={{{','.join(f'0{k:o}' for _, k in keys) or '0'}}};\n")
+    return header, keys
 
 
 def host_holes(exe, name, cs, tag):
@@ -80,6 +121,10 @@ def main():
     p.add_argument('--timeout', type=int, default=3600)
     p.add_argument('--stop-on-holes', action='store_true', help='fail before VICE if the host run bridges any point')
     p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
+    p.add_argument('--keys', action='store_true',
+                   help="press the scenario's DSKY keys that fall in the window on the C64, as the host run does")
+    p.add_argument('--watch', default='', help='up to five erasable words (octal addresses, comma separated) '
+                   'printed as the window ends, e.g. 1011 for Comanche MODREG')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = {s[0]: s for s in fhd.FLIGHT}[a.scenario][1]
@@ -106,7 +151,15 @@ def main():
         (dp.OUT / 'flight-scenario-vice.json').write_text(json.dumps(dict(ok=False, host_holes=holes), indent=1) + '\n')
         return 1
     header = snapshot(exe, a.scenario, a.snap_cs, tag)
-    prg = dp.link(a.cc, tag, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile)
+    keys = None
+    if a.keys:
+        log = (dp.WORK / f'{tag}-host.log').read_text()
+        snap_at = int(re.search(r'^snapshot at (\d+) cs', log, re.M)[1])
+        keys, pressed = window_keys(tag, {s[0]: s for s in fhd.FLIGHT}[a.scenario][3], snap_at, a.cs)
+        print(f'{a.scenario}: snapshot at {snap_at} cs; {len(pressed)} keys pressed on the C64 at '
+              + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
+    prg = dp.link(a.cc, tag, header, a.cs, scratch, os.environ.get('FSV_STEPS') == '1', m, a.profile, keys,
+                  [w for w in a.watch.split(',') if w][:5])
     r = dp.vice(a, tag, prg, pinned, m)
     if a.profile:
         r['profile'] = dp.profile(tag)
@@ -132,6 +185,8 @@ def main():
         print(f"{a.scenario} from {a.snap_cs} cs: {r['wall_cycles']} cycles for {r['agc_cs']} AGC cs "
               f"({r['wall_per_agc']} x real time), {r['dropped_ticks']} ticks dropped, {r['steps']} steps, "
               f"status {r['status']} at {r['at']} (Z {r['z']} FB {r['fb']} superbank {r['superbank']})")
+        if a.watch:
+            print('  at the end: ' + ' '.join(f'{w}={v:05o}' for w, v in zip([w for w in a.watch.split(',') if w], r['watched'])))
         for k, b in sorted(r['by_request'].items()):
             print(f"  {k}: {b['count']} x, mean {b['cycles'] // b['count']} cycles (max {b['max_cycles']}), "
                   f"{b['steps']} steps, {b['job_loads']} job and {b['task_loads']} task loads")

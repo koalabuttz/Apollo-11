@@ -8,6 +8,9 @@
 /* Comanche055/AUTOMATIC_MANEUVERS.agc: interpretive routines keyed by the physical
  * LOC at NEWOPS (6037), basic ones by physical Z. */
 extern const agc_routine_table cm_auto_man_interpretive,cm_auto_man_basic;
+/* The basic routines one pass of the file reaches (spec hot_points), for
+ * the flight store's pack: the same wrappers as cm_auto_man_basic. */
+extern const agc_routine_table cm_auto_man_hot_routines;
 /* Every routine (physical address, 1 interpretive), the erasable
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */

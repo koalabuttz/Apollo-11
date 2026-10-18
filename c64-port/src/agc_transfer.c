@@ -30,6 +30,9 @@ bool agc_resume_exact(const agc_native_program *p,const apollo_overlay_state *s,
  * APOLLO_ROPE_REU_CM, so the REU bank is the base's plus bit 15 of the
  * address. */
 static agc_word rope_cell; /* DMA target */
+/* The CM rope's banks above the LM's: 2 when both ropes are in the REU, 0 in
+ * a one-mission flight build that puts its rope at 0x1e0000 (rope_image.h). */
+#define ROPE_CM_STEP ((uint8_t)((APOLLO_ROPE_REU_CM - APOLLO_ROPE_REU_LM) >> 16))
 static bool rope_word(uint16_t physical, uint16_t count, agc_word *word)
 {
     volatile uint8_t *reu = (volatile uint8_t *)0xdf00u;
@@ -39,9 +42,11 @@ static bool rope_word(uint16_t physical, uint16_t count, agc_word *word)
     reu[APOLLO_REU_C64_HI] = (uint8_t)((uintptr_t)&rope_cell >> 8);
     reu[APOLLO_REU_REU_LO] = (uint8_t)(physical << 1);
     reu[APOLLO_REU_REU_HI] = (uint8_t)(physical >> 7);
-    /* APOLLO_ROPE_REU_LM's bank, two more for Comanche055 (AGC_SITES_CM_ROPE is bit 14). */
+    /* APOLLO_ROPE_REU_LM's bank, plus ROPE_CM_STEP for Comanche055
+     * (AGC_SITES_CM_ROPE is bit 14, so count >> 13 has it at bit 1). */
     reu[APOLLO_REU_REU_BANK] = (uint8_t)((uint8_t)(APOLLO_ROPE_REU_LM >> 16) +
-                                         ((uint8_t)(count >> 13) & 2u) + (uint8_t)(physical >> 15));
+                                         ((uint8_t)(count >> 13) & ROPE_CM_STEP) +
+                                         (uint8_t)(physical >> 15));
     reu[APOLLO_REU_LEN_LO] = 2u;
     reu[APOLLO_REU_LEN_HI] = 0;
     reu[APOLLO_REU_COMMAND] = APOLLO_REU_FETCH;
@@ -52,7 +57,7 @@ static bool rope_word(uint16_t physical, uint16_t count, agc_word *word)
     return true;
 }
 _Static_assert((APOLLO_ROPE_REU_LM & 0xffffu) == 0u &&
-                   APOLLO_ROPE_REU_CM - APOLLO_ROPE_REU_LM == 0x20000u &&
+                   (ROPE_CM_STEP == 2u || ROPE_CM_STEP == 0u) &&
                    AGC_SITES_CM_ROPE == 0x4000u,
                "rope_word's bank sum");
 #endif
@@ -182,15 +187,69 @@ bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state
  return agc_site_lookup(p->operands,p->operand_count,agc_fixed_physical(q,s->words[4],superbank),word);
 }
 /* One transfer point per step: the stop check and the routine lookup share it. */
-enum exec_status agc_transfer_run(const agc_native_program *p,apollo_overlay_state *s,void *io,const agc_word *superbank,uint16_t stop,uint16_t max_steps,uint16_t *steps){uint16_t n=0,point;enum exec_status status=EXEC_OK;agc_routine call;bool in;
- if(!p||!s||!superbank)return EXEC_OUT_OF_SCOPE;
- while((point=transfer_point(p,s,*superbank,&in))!=stop){
-  if(n==max_steps){status=EXEC_OUT_OF_SCOPE;break;}
-  call=resolve_at(p,point,in);
-  if(!call){status=EXEC_UNMAPPED;break;}
-  ++n;status=call(p,s,io);
-  if(status!=EXEC_OK)break;
- }
- if(steps)*steps=n;
- return status;
+#ifdef AGC_TRANSFER_RUN_AT
+/* The first step's point may come from the caller (agc_transfer.h). */
+enum exec_status agc_transfer_run_at(const agc_native_program *p, apollo_overlay_state *s, void *io,
+                                     const agc_word *superbank, uint16_t stop, uint16_t max_steps,
+                                     uint16_t *steps, uint16_t first)
+{
+    uint16_t n = 0, point = first;
+    enum exec_status status = EXEC_OK;
+    agc_routine call;
+    bool in = false;
+    if (!p || !s || !superbank) return EXEC_OUT_OF_SCOPE;
+    if (point == AGC_TRANSFER_NONE) point = transfer_point(p, s, *superbank, &in);
+    while (point != stop) {
+        if (n == max_steps) {
+            status = EXEC_OUT_OF_SCOPE;
+            break;
+        }
+        call = resolve_at(p, point, in);
+        if (!call) {
+            status = EXEC_UNMAPPED;
+            break;
+        }
+        ++n;
+        status = call(p, s, io);
+        if (status != EXEC_OK) break;
+        point = transfer_point(p, s, *superbank, &in);
+    }
+    if (steps) *steps = n;
+    return status;
 }
+enum exec_status agc_transfer_run(const agc_native_program *p, apollo_overlay_state *s, void *io,
+                                  const agc_word *superbank, uint16_t stop, uint16_t max_steps,
+                                  uint16_t *steps)
+{
+    return agc_transfer_run_at(p, s, io, superbank, stop, max_steps, steps, AGC_TRANSFER_NONE);
+}
+#else
+/* The same loop with no first point given: one call site of transfer_point,
+ * smaller on the C64 than agc_transfer_run_at with AGC_TRANSFER_NONE. */
+enum exec_status agc_transfer_run(const agc_native_program *p, apollo_overlay_state *s, void *io,
+                                  const agc_word *superbank, uint16_t stop, uint16_t max_steps,
+                                  uint16_t *steps)
+{
+    uint16_t n = 0, point;
+    enum exec_status status = EXEC_OK;
+    agc_routine call;
+    bool in;
+    if (!p || !s || !superbank) return EXEC_OUT_OF_SCOPE;
+    while ((point = transfer_point(p, s, *superbank, &in)) != stop) {
+        if (n == max_steps) {
+            status = EXEC_OUT_OF_SCOPE;
+            break;
+        }
+        call = resolve_at(p, point, in);
+        if (!call) {
+            status = EXEC_UNMAPPED;
+            break;
+        }
+        ++n;
+        status = call(p, s, io);
+        if (status != EXEC_OK) break;
+    }
+    if (steps) *steps = n;
+    return status;
+}
+#endif

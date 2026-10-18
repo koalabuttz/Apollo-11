@@ -57,11 +57,12 @@ def snapshot(exe, name, cs):
     return header
 
 
-def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False):
+def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys=None, watch=None):
     out = WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
         cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
-        f'-DDP_SCRATCH=0x{scratch:x}ul', f'-DDP_SCRATCH_BYTES={SCRATCH_BYTES}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
+        f'-DDP_SCRATCH=0x{scratch:x}ul', f'-DDP_SCRATCH_BYTES={SCRATCH_BYTES}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), *([f'-DDP_KEYS="{keys}"'] if keys else []),
+        *([f"-DDP_WATCH={','.join('0' + w for w in watch)}"] if watch else []), '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
         'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
@@ -132,7 +133,8 @@ def vice(a, name, prg, pinned, m='lm'):
         b['max_cycles'] = max(b['max_cycles'], r['cycles'])
         for k in ('steps', 'job_loads', 'task_loads'):
             b[k] += r[k]
-    return dict(scenario=name, ok=status == 0 and not lost, status=status, z=f'{z:05o}', fb=f'{fb:05o}',
+    watched = [struct.unpack_from('<H', data, 6 + 2 * i)[0] for i in range(5)]
+    return dict(scenario=name, ok=status == 0 and not lost, watched=watched, status=status, z=f'{z:05o}', fb=f'{fb:05o}',
                 superbank=f'{superbank:04o}', bank=f'{bank:02o}', at=at,
                 wall_cycles=cycles, agc_cs=agc_cs, dropped_ticks=dilation, steps=steps,
                 wall_per_agc=round(cycles / (agc_cs * PAL_HZ / 100), 3) if agc_cs else None,

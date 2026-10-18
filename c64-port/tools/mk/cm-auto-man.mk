@@ -14,6 +14,15 @@ build/test-cm-auto-man: $(CM_AUTO_MAN_SRC) tests/test_cm_auto_man.c $(CM_AUTO_MA
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_AUTO_MAN_SRC) tests/test_cm_auto_man.c -o $@
 test-cm-auto-man: build/test-cm-auto-man
 	./build/test-cm-auto-man
+# The hot table (spec hot_points, the flight store's docked RCS DAP packs)
+# calls the full table's functions for its keys.
+.PHONY: test-cm-auto-man-hot
+all: build/test-cm-auto-man-hot
+test: test-cm-auto-man-hot
+build/test-cm-auto-man-hot: $(CM_AUTO_MAN_SRC) tests/test_cm_auto_man_hot.c $(CM_AUTO_MAN_HDR) | build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(CM_AUTO_MAN_SRC) tests/test_cm_auto_man_hot.c -o $@
+test-cm-auto-man-hot: build/test-cm-auto-man-hot
+	./build/test-cm-auto-man-hot
 sanitize-cm-auto-man: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined $(CM_AUTO_MAN_SRC) tests/test_cm_auto_man.c -o build/test-cm-auto-man-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-auto-man-sanitize

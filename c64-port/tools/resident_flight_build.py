@@ -232,8 +232,10 @@ def run(cmd):
 
 # The resident's find() is platform/c64/agc_find.S (agc_transfer.c
 # AGC_TRANSFER_FIND_ASM): defined with the resident's sources rather than in
-# COMMON, as the flight modules keep agc_transfer.c's C find.
-RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM']
+# COMMON, as the flight modules keep agc_transfer.c's C find. So is
+# agc_transfer_run_at (AGC_TRANSFER_RUN_AT, include/agc_transfer.h), which
+# rk_direct calls: other programs keep the smaller agc_transfer_run alone.
+RESIDENT_DEFINES = ['-DAGC_TRANSFER_FIND_ASM', '-DAGC_TRANSFER_RUN_AT']
 
 
 def resident_sources(m):
@@ -275,7 +277,7 @@ def defined_symbols(cc, m, source):
     """Names a source defines (functions and objects, static included)."""
     obj = OUT / 'symbols' / (source.replace('/', '_') + f'.{m}.o')
     obj.parent.mkdir(parents=True, exist_ok=True)
-    run([cc, *[f for f in COMMON if f != '-mlto-zp=0'], *MISSION[m], '-c', source, '-o', obj])
+    run([cc, *[f for f in COMMON if f != '-mlto-zp=0'], *MISSION[m], *RESIDENT_DEFINES, '-c', source, '-o', obj])
     nm = Path(cc).parent / 'llvm-nm'
     names = set()
     for line in subprocess.run([str(nm), str(obj)], cwd=ROOT, check=True, capture_output=True,
@@ -387,11 +389,11 @@ def build_modules(cc, m, cases, library):
 
 def rope_check_image(m):
     """The check's store image padded to 2 MB with the mission's rope at its
-    REU base (include/rope_image.h), as flight_store_build.py add_rope places
-    it in the flight store: the resident reads the Executive's inline operand
-    words there (AGC_SITES_ROPE)."""
-    from rope_image_pack import BASES, physical_words
-    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    flight base (FLIGHT_ROPE_BASE, include/rope_image.h), as
+    flight_store_build.py add_rope places it in the flight store: the resident
+    reads the Executive's inline operand words there (AGC_SITES_ROPE)."""
+    from flight_store_build import FLIGHT_ROPE_BASE as base
+    from rope_image_pack import physical_words
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
     if len(image) > base:

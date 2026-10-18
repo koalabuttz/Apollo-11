@@ -8,6 +8,9 @@
 /* Comanche055/JET_SELECTION_LOGIC.agc: interpretive routines keyed by the physical
  * LOC at NEWOPS (6037), basic ones by physical Z. */
 extern const agc_routine_table cm_jet_select_interpretive,cm_jet_select_basic;
+/* The basic routines one pass of the file reaches (spec hot_points), for
+ * the flight store's pack: the same wrappers as cm_jet_select_basic. */
+extern const agc_routine_table cm_jet_select_hot_routines;
 /* Every routine (physical address, 1 interpretive), the erasable
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */

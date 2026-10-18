@@ -9,13 +9,13 @@
       "store": "tree"
     },
     "cm-jet-select-host.log": {
-      "sha256": "fd0ee0d2ba0af910ec33f8c12637a42043a0316ca03955f65d45141b1e5b68f5",
-      "bytes": 1028,
+      "sha256": "0c8d5f21137de0bd7bcee19d074cbf2087ee3e608dc210b0fa64ce856dc7945f",
+      "bytes": 1532,
       "store": "tree"
     },
     "cm-jet-select-proof.json": {
-      "sha256": "b75788edd5a85e54bafbf4bef81032d12dc0346068051c45adddb477e349d2ec",
-      "bytes": 3261,
+      "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe",
+      "bytes": 3259,
       "store": "tree"
     },
     "cm-jet-select-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-jet-select-vice.log": {
-      "sha256": "cb8dfe04dd5ded9d7e2bc38e2f81357fac3417409d38f9005df9d2dc911e9f9b",
-      "bytes": 512,
+      "sha256": "a91315fd947ce32025deaba5ffa440719b4858bfc74f8f5663b54faeb096606c",
+      "bytes": 517,
       "store": "tree"
     }
   }

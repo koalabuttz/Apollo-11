@@ -614,8 +614,10 @@ def case(mi, point, n, rng):
                 # return (TC RTRN under the FB it restores) leaves the file.
                 jstop = v
                 continue
-            # (Its own set: 'held' is 'pinned', which the counters read.)
-            a = state_address(mi, k, vac)
+            # (Its own set: 'held' is 'pinned', which the counters read.
+            # 'E:<addr>' is the switched word under the case's EBANK, as in
+            # 'states'.)
+            a = (eb << 8) + int(k[2:], 8) - 0o1400 if k.startswith('E:') else state_address(mi, k, vac)
             jpinned.add(a)
             E[a] = v & 0o77777
     if mi.cp.novac(point) and rng.random() < 0.5:
@@ -673,6 +675,8 @@ def case(mi, point, n, rng):
     # mask of the bits a case may set): a channel edit each, so the run and
     # the digest cover them (tests/interp_case.h).
     for k, mask in sorted(mi.io_channels.items()):
+        if 0x8000 | k in pinned or 0x8000 | k in jpinned:
+            continue    # a state's channel value (key '1000<ch>', octal 0100000 + channel)
         E[0x8000 | k] = rng.getrandbits(15) & mask if rng.random() < 0.75 else rng.choice([0, mask])
     if mi.cp.spec.get('in_isr'):
         # 'in_isr': the program's in_interrupt (yaAGC's InIsr) 0 or 1 at the
