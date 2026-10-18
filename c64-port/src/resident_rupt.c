@@ -2,6 +2,20 @@
 /* The flight resident's AGC timers and interrupt entry (resident_rupt.h). */
 #include "resident_rupt.h"
 
+/* Channel 13, the timers' T6 enable (bit 15) and radar activity (bit 4):
+ * the program's agc_hardware's, unless the build keeps the flight
+ * program's channel 13 in another record. The C64 CM resident
+ * (tools/resident_flight_build.py, RK_DEVICE_CH13) runs its CM tables on
+ * rk_device (cm_native_io), whose channel 13 T6START and the radar
+ * routines write, so the timers read and clear that one. */
+#if RK_DEVICE_CH13
+#include "cm_native_image.h"
+extern cm_native_io rk_device;
+#define CH13(hw) rk_device.channel13
+#else
+#define CH13(hw) (hw)->channel13
+#endif
+
 /* yaAGC CounterPINC: +1 in one's complement, 037777 overflows to +0, -0
  * steps to +1. */
 static uint8_t pinc(agc_word *w) {
@@ -29,9 +43,9 @@ static __attribute__((noinline)) void radar(agc_hardware *hw, uint16_t *pending,
         /* Low byte of channel 13, high byte of the requests (RADARUPT is
          * bit 9): both targets are little-endian, and a byte access is half
          * the 6502 code. */
-        *(uint8_t *)&hw->channel13 &= (uint8_t)~010u;
+        *(uint8_t *)&CH13(hw) &= (uint8_t)~010u;
         ((uint8_t *)pending)[1] |= (uint8_t)(RK_RUPT_BIT(RK_RUPT_RADAR) >> 8);
-    } else if (*(uint8_t *)&hw->channel13 & 010u)
+    } else if (*(uint8_t *)&CH13(hw) & 010u)
         ++n;
     hw->radar_gate = n;
 }
@@ -58,11 +72,11 @@ void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending
     /* yaAGC CounterDINC on every odd SCALER1 count, half the counts: toward
      * zero by one through the one's complement adder, so +1 and -1 both
      * step to -0; at +0 or -0 the ZOUT. */
-    for (i = 0, n >>= 1; i < n && (hw->channel13 & 040000u); ++i) {
+    for (i = 0, n >>= 1; i < n && (CH13(hw) & 040000u); ++i) {
         agc_word t = w[031];
         if (t == 0u || t == AGC_MASK) {
             *pending |= RK_RUPT_BIT(RK_RUPT_T6);
-            hw->channel13 &= 037777u;
+            CH13(hw) &= 037777u;
         } else
             w[031] = (agc_word)(t == 1u ? AGC_MASK : (t & AGC_SIGN) ? t + 1u : t - 1u);
     }

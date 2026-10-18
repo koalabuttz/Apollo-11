@@ -127,6 +127,13 @@ ASan/UBSan.
   step to -0 through the one's complement adder, and a DINC of ±0
   requests T6RUPT and clears the bit. T6RUPT therefore lands at the end of
   the step, not at its 0.625 ms DINC.
+
+  On the CM the timers read and clear channel 13 in `rk_device`
+  (`cm_native_io`, build flag `RK_DEVICE_CH13`), the record the CM tables
+  write it in (T6START's WOR, the radar routines).
+  `rk_hardware.channel13` is only the copy a module on another CM io kind
+  leaves behind. While the CM timers read that copy, T6 did not start on
+  the C64 CM (0 T6RUPTs in 300 cs of CM P40 from 70660 cs; 30 since).
 - `rk_rupt_take` vectors the highest pending request when no interrupt is
   in progress, interrupts are enabled, A holds no overflow and the word at
   Z is not RELINT, INHINT or EXTEND. It sets ZRUPT = Z + 1, BRUPT = the word
