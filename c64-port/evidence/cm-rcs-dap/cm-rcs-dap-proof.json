@@ -9,13 +9,13 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 4352,
- "cases_sha256": "112d23c34eb8fdcd3c313d93c97c7223054580d8c2c2723d0fdee0bfaf9446a8",
- "oracle_sha256": "612f18a82a7f7fdc9e3131c956fb068a0d1d2a407024cd6cffa98732926b9dc4",
+ "cases_sha256": "c2a868333d520f2848c81e617d700d91567e11ebff158b808f7640c8bf5046d9",
+ "oracle_sha256": "fe773cb309f4f71fddee5bfd13ca68dc2aaccf5c860c82edb8c8eb58f68d32ae",
  "frozen_vectors": 136,
  "c64_vectors": [
   {
    "mission": "cm",
-   "keep": "0x1ea030e07052c0817",
+   "keep": "0x1ea030e07052c4817",
    "cases": 28,
    "case_ids": [
     14,
@@ -30,22 +30,22 @@
     237,
     207,
     54,
-    322,
+    502,
+    262,
+    375,
+    484,
+    436,
+    505,
+    287,
+    430,
+    450,
+    256,
+    469,
     415,
-    279,
-    445,
-    295,
-    495,
-    496,
-    394,
-    463,
     451,
-    383,
-    296,
-    316,
-    454,
-    280,
-    352
+    445,
+    481,
+    286
    ]
   },
   {
@@ -53,14 +53,14 @@
    "keep": "0x3000073995d17398",
    "cases": 22,
    "case_ids": [
-    718,
-    685,
-    766,
-    639,
-    580,
-    834,
+    668,
+    617,
+    710,
+    748,
+    593,
+    843,
     1141,
-    1099,
+    1027,
     1412,
     1524,
     1758,
@@ -79,16 +79,16 @@
   }
  ],
  "c64_coverage": {
-  "host_labels": 539,
-  "c64_labels": 539,
-  "host_edges": 1243,
-  "c64_edges": 1243,
+  "host_labels": 540,
+  "c64_labels": 540,
+  "host_edges": 1245,
+  "c64_edges": 1245,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 754,
-  "c64_taken": 754,
+  "host_taken": 755,
+  "c64_taken": 755,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -116,27 +116,28 @@
    "05134": 13
   },
   "CM 21,2122 RCSATT": {
-   "05333": 89,
-   "03441": 59,
-   "03757": 28,
-   "04740": 51,
-   "03250": 14,
-   "02042": 7,
-   "05134": 8
+   "05333": 123,
+   "03441": 33,
+   "02042": 10,
+   "03250": 8,
+   "03757": 24,
+   "05134": 14,
+   "04740": 43,
+   "02054": 1
   },
   "CM 21,2236 ": {
-   "02054": 29,
-   "05333": 39,
    "02042": 174,
-   "05134": 14
+   "05333": 39,
+   "05134": 23,
+   "02054": 20
   },
   "CM 21,2360 ": {
-   "05333": 171,
-   "02054": 85
+   "05333": 159,
+   "02054": 97
   },
   "CM 21,2401 ": {
-   "05333": 86,
-   "02054": 170
+   "05333": 90,
+   "02054": 166
   },
   "CM 21,2420 NEEDLER": {
    "03524": 4,

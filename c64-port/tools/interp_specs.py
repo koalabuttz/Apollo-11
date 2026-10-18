@@ -2359,8 +2359,10 @@ SPECS = {
         # clear MERUPDAT and NORATE's SPNDXCHK arm run) or different (the
         # damping bits set). RCSFLAGS bit 14 clear (the rate filter
         # initialised) lets the manual rate commands run.
-        'states': {'RCSATT': {'T5PHASE': [0, 0, 'any'], 'ATTKALMN': [0, 0o77776, 'any'],
-                              'RCSFLAGS': [0, 0, 0o4000, 0o16000, 'any']}},
+        # (Also phase 1, T5PHASE -0, with RCSFLAGS bit 14 set as RCSATT and
+        # the IMU check leave it, so the first pass's BZF +2 skips to KMATRIX.)
+        'states': {'RCSATT': {'T5PHASE': [0, 0, 0o77777, 'any'], 'ATTKALMN': [0, 0o77776, 'any'],
+                              'RCSFLAGS': [0, 0, 0o4000, 0o16000, 0o20000, 0o20000, 'any']}},
         'joint_states': {'RCSATT': [{}] * 12 + [
             {'100031': ch, 'CH31TEMP': t}
             for ch in (0o37777, 0o37776, 0o37775, 0o37767, 0o37700, 0o37752)
@@ -2441,7 +2443,13 @@ SPECS = {
                               ((0o77777 - 18, 0o77777 - 1000), 600), ((10, 2000), 0o77777 - 600),
                               ((10, 16000), 0o77777 - 600), ((14, 0), 0o77777 - 600),
                               ((0, 0o77777 - 500), 600), ((0o77777, 0o77777 - 500), 600),
-                              ((0, 0o77777), 600))]},
+                              ((0, 0o77777), 600))] + [
+            # NJ23's A > 0 (J24): EDOTVEL below WL-H and AERRVEL just above
+            # -(ADB+AF) - WL-H/SLOPE.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
+                 **{f'ADOT+{i}': (2, 0)[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 0o77777 - err for i in range(3)})
+            for adb, err in ((46, 70), (455, 480))]},
         'target': 'tests/cm_auto_man_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
@@ -2496,8 +2504,14 @@ SPECS = {
         # +1/2), and over 0.1 s, of both signs (PBLASTOK and YBLASTOK
         # taken, AD14MSP/AD14MSY's 14 ms floor, the 0.1 s limit).
         'states': {'JETSLECT': {
+            'TAU': [10, 40, 150, 300, 0o77777 - 40, 0o77777 - 150, 'any', 'any'],
             'TAU1': [10, 40, 150, 300, 0o77777 - 40, 0o77777 - 150, 'any', 'any'],
             'TAU2': [10, 40, 150, 300, 0o77777 - 40, 0o77777 - 150, 'any', 'any']}},
+        # T6START with TIME6 run out (+0) and the roll and pitch words already
+        # replaced (BLAST, BLAST1 -1), so T6L2 takes REPLACE2 with BLAST2 +-0
+        # (BLAST2 +1, the branch index, from the cells above).
+        'joint_states': {'T6START': [{}] * 4 + [
+            {'31': 0, 'BLAST': 0o77776, 'BLAST1': 0o77776, 'BLAST2': b2} for b2 in (0, 0o77777)]},
         'target': 'tests/cm_jet_select_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
