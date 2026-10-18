@@ -16,17 +16,57 @@
   {
    "mission": "lm",
    "keep": "0x1ff",
-   "cases": 16
+   "cases": 16,
+   "case_ids": [
+    16,
+    0,
+    544,
+    1072,
+    1648,
+    1880,
+    2048,
+    2517,
+    2051,
+    2640,
+    2744,
+    2712,
+    3232,
+    3400,
+    3752,
+    4096
+   ]
   },
   {
    "mission": "cm",
    "keep": "0x7ff",
-   "cases": 20
+   "cases": 20,
+   "case_ids": [
+    4832,
+    4624,
+    5120,
+    5264,
+    5760,
+    5688,
+    6272,
+    6159,
+    6231,
+    7120,
+    6816,
+    7064,
+    7416,
+    7256,
+    7928,
+    7760,
+    8192,
+    8736,
+    9256,
+    9752
+   ]
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 462,
-  "c64_taken": 462,
+  "host_taken": 592,
+  "c64_taken": 592,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -48,9 +88,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 636,
-  "edges_host_vectors": 636,
-  "edges_c64": 636,
+  "edges_all_cases": 639,
+  "edges_host_vectors": 639,
+  "edges_c64": 639,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -134,9 +174,9 @@
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: CHANG2; cm: CHANG2)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "host_cases_traced": 1330,
- "host_branch_arcs": 488,
+ "host_cases_traced": 1360,
+ "host_branch_arcs": 621,
  "c64_rows": 36,
- "c64_branch_arcs": 488,
+ "c64_branch_arcs": 621,
  "host_branches_missing_on_c64": []
 }

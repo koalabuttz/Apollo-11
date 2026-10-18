@@ -394,11 +394,11 @@ def build_modules(cc, m, cases, library):
 
 def rope_check_image(m):
     """The check's store image padded to 2 MB with the mission's rope at its
-    REU base (include/rope_image.h), as flight_store_build.py add_rope places
-    it in the flight store: the resident reads the Executive's inline operand
-    words there (AGC_SITES_ROPE)."""
-    from rope_image_pack import BASES, physical_words
-    base = BASES[{'lm': 'Luminary099', 'cm': 'Comanche055'}[m]]
+    flight base (FLIGHT_ROPE_BASE, include/rope_image.h), as
+    flight_store_build.py add_rope places it in the flight store: the resident
+    reads the Executive's inline operand words there (AGC_SITES_ROPE)."""
+    from flight_store_build import FLIGHT_ROPE_BASE as base
+    from rope_image_pack import physical_words
     reu = ROOT / OUT / f'{m}.reu'
     image = bytearray(reu.read_bytes())
     if len(image) > base:
