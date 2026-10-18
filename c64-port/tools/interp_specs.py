@@ -2546,15 +2546,17 @@ SPECS = {
         # EB 6 window fast forms (include/agc_fast_redirect.h).
         'fast_window': True,
         'native_sources': ['src/agc_fast_ops.c', 'src/agc_fast_window.c'],
-        # The 26 basic routines one entry DAP pass (T5RUPT) reaches in the CM
+        # The 27 basic routines one entry DAP pass (T5RUPT) reaches in the CM
         # entry window (cm-entry from 17000 cs, per-routine profile,
         # lane-g/cm-entry-profile-80342904.md): cm_entry_dap_hot_routines,
         # the flight store's entry pack, so a pass loads one module rather
-        # than about five chunks of the whole table.
+        # than about five chunks of the whole table. ATTRATES+66 (15,2753)
+        # runs every pass from about 21000 cs on: without it each pass
+        # swapped the job slot to a full-table chunk and back.
         'hot_points': ('15,2434', '15,2507', '15,2522', '15,2536', '15,2540', '15,2543', '15,2551',
                        '15,2607', '15,2651', '15,2665', '15,2676', '15,2700', '15,2712', '15,2724',
-                       '15,2730', '15,2734', '15,2741', '15,2770', '15,3006', '15,3037', '15,3112',
-                       '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
+                       '15,2730', '15,2734', '15,2741', '15,2753', '15,2770', '15,3006', '15,3037',
+                       '15,3112', '15,3123', '15,3253', '15,3677', '15,3705', '15,3717'),
         'max_steps': 2000,
         # Every word another file names, and the file's own CADRs.
         'entries': ['@external'],

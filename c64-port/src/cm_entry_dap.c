@@ -6567,6 +6567,9 @@ static const agc_routine_entry hot_entries[]={
 #if (CM_ENTRY_DAP_KEEP0 >> 35) & 1
  {13793,r32741_abi},
 #endif
+#if (CM_ENTRY_DAP_KEEP0 >> 36) & 1
+ {13803,r32753_abi},
+#endif
 #if (CM_ENTRY_DAP_KEEP0 >> 39) & 1
  {13816,r32770_abi},
 #endif

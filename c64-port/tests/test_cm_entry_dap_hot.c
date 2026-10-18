@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: MIT */
 /* cm_entry_dap_hot_routines against cm_entry_dap_basic: the hot table (the
- * spec's 26 hot_points, the flight store's entry pack) holds each of its
+ * spec's 27 hot_points, the flight store's entry pack) holds each of its
  * keys once, in key order, and calls the same function the full table calls
  * for that key, so a pass runs the same routine through either table. */
 #include <stdio.h>
 #include "cm_entry_dap.h"
-#define HOT_POINTS 26u /* tools/interp_specs.py cm-entry-dap hot_points */
+#define HOT_POINTS 27u /* tools/interp_specs.py cm-entry-dap hot_points */
 static agc_routine find(const agc_routine_table *t, uint16_t physical)
 {
     uint16_t i;
