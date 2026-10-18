@@ -8,7 +8,7 @@ static int dsky_store_domain(const apollo_overlay_state *s,const dsky_lamp_io *i
  if(e==0){if(w[0]>2u||w[2]<0100u||w[2]>07777u||(w[0140]!=1u&&w[0140]!=2u))return 0;}else if(w[0115]<0100u||w[0115]>07777u)return 0;
  if(e==3)return 1;
  k=e==0 ? w[0] : w[0117];if(e!=1&&k>2u)return 0;
- if(e==2){address=dsky_store_address(w[0145],w[3]);return w[0145]>=0100u&&w[0145]<=01774u&&address+k>=010u&&(address+k<017u||address+k>023u)&&address+k<=03775u;}
+ if(e==2){address=dsky_store_address((uint16_t)(w[0145]+k),w[3]);return w[0145]+k<=01777u&&address>=010u&&(address<017u||address>023u);}
  mix=(uint16_t)(e==0&&w[0140]==2u);dec=w[01000];if(dec==0u&&(w[0140]!=1u&&w[0140]!=2u))return 0;
  if(dec==0u&&((w[w[0140]==1u ? 0147u : 0146u]>>10)&010u))return 1;
  code=(uint16_t)(mix ? (w[0153]>>(k*5u))&037u : (w[0147]>>5)&037u);

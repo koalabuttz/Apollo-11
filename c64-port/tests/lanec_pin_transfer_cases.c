@@ -242,6 +242,11 @@ static enum exec_status chain(const agc_native_program *p, apollo_overlay_state 
     return call ? call(p, s, io) : EXEC_UNMAPPED;
 }
 
+/* Set for the *-flight suites: only the tables of the flight modules the C64
+ * module test loads (INTER-BANK, Pinball and the keypress modules), not the
+ * DI or Executive tables. */
+static uint8_t flight_tables;
+
 /* At most max_steps routines. */
 enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission, uint16_t stop,
                                      uint16_t max_steps, uint16_t *steps)
@@ -266,6 +271,7 @@ enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum
         tables[5] = lanec_pin_keys_num_lm_routines; tables[6] = lanec_pin_keys_cmd_lm_routines;
         tables[7] = lanec_pin_keys_release_lm_routines; tables[8] = lanec_pin_keys_clear_lm_routines;
         tables[9] = lanec_pin_keys_sign_lm_routines; program.basic_count = 10u;
+        if (flight_tables) { tables[1] = tables[2]; memmove(&tables[2], &tables[5], 5u * sizeof tables[0]); program.basic_count = 7u; }
         program.operands = lm_operands(); program.operand_count = lm_operand_count;
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
@@ -279,6 +285,7 @@ enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum
         tables[3] = lanec_pin_keys_num_cm_routines; tables[4] = lanec_pin_keys_cmd_cm_routines;
         tables[5] = lanec_pin_keys_release_cm_routines; tables[6] = lanec_pin_keys_clear_cm_routines;
         tables[7] = lanec_pin_keys_sign_cm_routines; program.basic_count = 8u;
+        if (flight_tables) { memmove(&tables[1], &tables[2], 6u * sizeof tables[0]); program.basic_count = 7u; }
         program.operands = cm_interbank_site_table(&count); program.operand_count = count;
         memset(&cm, 0, sizeof cm);
         cm.io.superbank = io->superbank; cm.io.interrupt_enabled = io->interrupt_enabled;
@@ -374,6 +381,40 @@ static void make_refuse(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec
     }
 }
 const lanec_suite lanec_suite_pin_refuse = { "pin-refuse", 3u * 510u, make_refuse, run };
+
+/* pin-transfer-flight, pin-decdsp3-flight, pin-refuse-flight: the cases of
+ * pin-transfer, pin-decdsp3 and pin-refuse run as the C64 module test runs
+ * them through the flight modules loaded from the REU store
+ * (tools/module_test.c run_case, make vice-lanec-pin-chains): one routine at
+ * a time through the INTER-BANK, Pinball and keypress tables, up to 64, until
+ * a point none of them holds. A first routine that refuses is a refused case
+ * (state unchanged); one that refuses later ends the case where it stands,
+ * which the runner prints as status 2. These rows are what the C64 must
+ * reproduce; the cases' Virtual AGC comparison is the host suites'. */
+static enum lanec_status run_flight(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
+{
+    static apollo_overlay_state entry;
+    static lanec_io entry_io;
+    enum exec_status status = EXEC_OK;
+    uint16_t steps, n = 0;
+    entry = *s; entry_io = *io;
+    flight_tables = 1u;
+    while (n < 64u) {
+        status = lanec_pin_chain_max(s, io, mission, AGC_TRANSFER_NONE, 1u, &steps);
+        if (!steps) break;
+        ++n;
+        if (status != EXEC_OK) break;
+    }
+    flight_tables = 0;
+    if (n && status != EXEC_OUT_OF_SCOPE) return LANEC_OK;
+    if (n <= 1u) { *s = entry; *io = entry_io; }
+    return LANEC_OUT_OF_SCOPE;
+}
+const lanec_suite lanec_suite_pin_transfer_flight = { "pin-transfer-flight", LANEC_PIN_TRANSFER_CASES, make, run_flight };
+const lanec_suite lanec_suite_pin_refuse_flight = { "pin-refuse-flight", 3u * 510u, make_refuse, run_flight };
+#ifdef LANEC_PIN_HAS_CM
+const lanec_suite lanec_suite_pin_decdsp3_flight = { "pin-decdsp3-flight", DECDSP3_CASES, make_decdsp3, run_flight };
+#endif
 #endif
 
 /* pin-transfer-c64: the round trips as the C64 runs them. Every module
