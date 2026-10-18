@@ -70,7 +70,9 @@ extern volatile uint16_t ov2_irq_count;
 static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
 
 /* CIA2 timer A counts cycles from $FFFF, timer B its underflows; read
- * without stopping them (B again if A wrapped between the reads). */
+ * without stopping them, again if a high byte changed under the reads (A's
+ * low byte wrapping: 256 cycles; A wrapping: B; B's low byte wrapping between
+ * its two bytes: a 2^24-cycle tear, one in a long run). */
 #define CIA2 ((volatile uint8_t *)0xdd00)
 static void BOOT timer_start(void){
  CIA2[0x0e]=0;CIA2[0x0f]=0;
@@ -78,7 +80,7 @@ static void BOOT timer_start(void){
  CIA2[0x0f]=0x51;
  CIA2[0x0e]=0x11;}
 static uint32_t now(void){uint8_t b0,b1,a0,a1;
- do{b1=CIA2[0x07];b0=CIA2[0x06];a1=CIA2[0x05];a0=CIA2[0x04];}while(b0!=CIA2[0x06]);
+ do{b1=CIA2[0x07];b0=CIA2[0x06];a1=CIA2[0x05];a0=CIA2[0x04];}while(a1!=CIA2[0x05]||b0!=CIA2[0x06]||b1!=CIA2[0x07]);
  return ~(((uint32_t)b1<<24)|((uint32_t)b0<<16)|((uint16_t)a1<<8)|a0);}
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
