@@ -319,7 +319,14 @@ checks that CIA1 counted three more periods.
 Between interrupts the AGC spends most of its time in two steps of the
 idle loop: the self-check pass from SELFRET's return (CCS SMODE, CHECKNJ,
 POSTJUMP to ADVAN, at 43,3304 LM / 43,3306 CM) and ADVAN with no job ready
-(01,3214 LM / 01,3231 CM), which returns through SELFRET to the pass. Each
+(01,3214 LM / 01,3231 CM), which returns through SELFRET to the pass.
+On the CM the pass's run stops at POSTJUMP (Z 04701), which runs as a step
+of its own, as on the host (`tools/flight_host_run.c` takes each routine as
+a step): an interrupt that ends the pass's idle returns to POSTJUMP, which
+idles again, not to ADVAN. Chaining the pass through POSTJUMP put the C64
+one step ahead after such an interrupt (cm-entry 29000+400 under
+`flight_scenario_vice.py --replay --replay-exact` left the host at its
+first checkpoint; with the stop it matches there). Each
 costs a module run (and after a DAP excursion, a reload of the idle
 module), yet each is a pure function of a few words. With NEWJOB -0, SMODE
 +0, FB at the step's bank and outside an interrupt, each reads only its key
