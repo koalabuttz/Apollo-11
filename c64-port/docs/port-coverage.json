@@ -4377,8 +4377,15 @@
             "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
-              "vice-lanec-pw": 925,
-              "vice-lanec-pin-transfer": 292,
+              "vice-lanec-pw-1": 140,
+              "vice-lanec-pw-2": 328,
+              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-4": 186,
+              "vice-lanec-pw-5": 104,
+              "vice-lanec-pin-transfer-1": 79,
+              "vice-lanec-pin-transfer-2": 92,
+              "vice-lanec-pin-transfer-3": 71,
+              "vice-lanec-pin-transfer-4": 50,
               "vice-lanec-pin-flight": 81
             }
           },
@@ -11739,8 +11746,15 @@
             "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
             "vice_targets": {
               "vice-lanec-pin-gaps": 50,
-              "vice-lanec-pw": 925,
-              "vice-lanec-pin-transfer": 292,
+              "vice-lanec-pw-1": 140,
+              "vice-lanec-pw-2": 328,
+              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-4": 186,
+              "vice-lanec-pw-5": 104,
+              "vice-lanec-pin-transfer-1": 79,
+              "vice-lanec-pin-transfer-2": 92,
+              "vice-lanec-pin-transfer-3": 71,
+              "vice-lanec-pin-transfer-4": 50,
               "vice-lanec-pin-flight": 81
             }
           },
