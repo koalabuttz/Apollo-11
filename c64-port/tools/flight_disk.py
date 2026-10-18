@@ -384,7 +384,7 @@ DSKY_KEYS = {**{str(d): d or 0o20 for d in range(10)}, 'V': 0o21, 'N': 0o37, '+'
 
 def xtest_keys(keys, wait):
     """Type keys on VICE's window through the X server (XTEST), so the
-    C64's keyboard scan sees them: digits, V, N, E (RETURN) and C."""
+    C64's keyboard scan sees them: E is RETURN (ENTR), the rest as typed."""
     import ctypes
     x11, xtst = ctypes.CDLL('libX11.so.6'), ctypes.CDLL('libXtst.so.6')
     x11.XOpenDisplay.restype = ctypes.c_void_p
@@ -392,9 +392,10 @@ def xtest_keys(keys, wait):
     dpy = ctypes.c_void_p(x11.XOpenDisplay(None))
     assert dpy.value, 'no X display'
     xtst.XTestFakeMotionEvent(dpy, -1, 160, 120, 0)  # over VICE's window: focus follows the pointer
-    names = {'E': b'Return', 'V': b'v', 'N': b'n', 'C': b'c'}
+    names = {'E': b'Return', '+': b'plus', '-': b'minus'}
     for ch in keys:
-        code = x11.XKeysymToKeycode(dpy, ctypes.c_ulong(x11.XStringToKeysym(names.get(ch, ch.encode()))))
+        code = x11.XKeysymToKeycode(dpy, ctypes.c_ulong(x11.XStringToKeysym(names.get(ch, ch.lower().encode()))))
+        assert code, f'no X keycode for {ch}'
         for down in (1, 0):
             xtst.XTestFakeKeyEvent(dpy, code, down, 0)
             x11.XFlush(dpy)
@@ -423,7 +424,9 @@ def vice(a, m, info):
     disks = [OUT / d for d in info['disks']]
     cmd = [a.vice, '-default', *([] if a.xtest else ['-console']), '-pal', '-warp', '+sound',
            '-kernal', rom / 'kernal-901227-03.bin', '-basic', rom / 'basic-901226-01.bin',
-           '-chargen', rom / 'chargen-901225-01.bin', '-directory', f'{a.data_dir.resolve()}:{rom.parent}',
+           '-chargen', rom / 'chargen-901225-01.bin', '-directory',
+           # the window's shaders and keymaps (/usr/share/vice) with --xtest
+           f'{a.data_dir.resolve()}:{rom.parent}' + (':/usr/share/vice:/usr/share/vice/C64' if a.xtest else ''),
            *(['+drive8truedrive', '-virtualdev8', '-iecdevice8'] if a.slow else ['-drive8truedrive', '+virtualdev8']),
            '-drive8type', '1581', '-8', disks[0],
            '-reu', '-reusize', '2048', '-reuimage', reu, '-reuimagerw',
