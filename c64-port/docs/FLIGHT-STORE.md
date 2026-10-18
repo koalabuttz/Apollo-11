@@ -1047,6 +1047,36 @@ port) runs one mission:
    stop at PINBALL's NVMONOPT (unmapped in the store until #425).
    tools/flight_scenarios/sighting.py holds the conversions, catalog and
    gimbal matrices lm_p52.py uses.
+   Off-nominal inputs: four scenarios repeat a nominal one with one
+   input gone wrong. `FLIGHT_RR_DROP=T0-T1[,...]` holds the radar's data
+   good high (not good) over those centiseconds whatever the tracker
+   does (tools/flight_radar.h: channel 33 bit 4 on the LM, bit 2 on the
+   CM); the reads still answer. `lm-rendezvous-rr-dropout` drops it from
+   195 s to 210 s, over R22's third mark: the read fails (alarm 521,
+   RADMODES data fail), R22 drops the lock and R21 flashes V50N72 again;
+   proceed at 215 s, the RR locks on and the marks go on, one fewer, and
+   P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
+   from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
+   so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
+   incorporate on their own. `FLIGHT_LR=1` is the LM landing radar's
+   altitude beam, agreeing with the LGC's own navigation: data good
+   (channel 33 bit 5) in position 1 or 2 below 50,000 ft, and an LR
+   range read gives the slant range HCALC, HBEAMNB, XNBPIP and UNIT/R/
+   imply (high scale, 5.395 ft a count, no Doppler term: DELTAH stays
+   within 300 ft, and with no V57 nothing is updated); velocity is not
+   modelled, so channel 33 bit 8 stays not good. `lm-p63-lr-dropout` is
+   lm-p63-nassp with it and `FLIGHT_LR_DROP` from 800 s to 900 s: R12
+   reads altitude from 35,000 ft, its reads fail in the window (RADMODES
+   LR range fail) and it measures again from 906 s.
+   `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
+   key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
+   word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is
+   ERROR RESET. `lm-uplink-reject` in P00: V71 (P27 flashes V21N01), 25
+   components (octal, over the limit of 20 OHWELL1 checks, so V21N01
+   again), V34 (P27 ends); a garbled word (#00001) at 50 s locks the
+   uplink out (FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET
+   at 65 s unlocks it and V37E00E takes P00. On the host every native
+   routine of the four matches yaAGC.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
