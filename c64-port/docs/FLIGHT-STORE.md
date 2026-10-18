@@ -756,6 +756,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `FLIGHT_RCS=KG` (LM) is the RCS jets' translation for a KG kilogram
+   vehicle: 444.8 N a jet along the axis the DAP's jet tables give it
+   (channel 5 even bits +X, odd bits -X; channel 6 bits 5 and 8 +Y, 6
+   and 7 -Y, 1 and 4 +Z, 2 and 3 -Z; rotation couples cancel), counted
+   to the centisecond at each native routine boundary into PIPAX-Z
+   through CDUX-Z. No attitude dynamics. The crew's translation hand
+   controller is channel 31 bits 7-12 (+X, -X, +Y, -Y, +Z, -Z, active 0).
+   `lm-p47-nassp`: P47 from the lm-doi-nassp start; 10 s of +X (two jets)
+   reads 1.9 ft/s on N83. `lm-p41-nassp`: lm-doi-nassp's P30 with a
+   5.0 ft/s retrograde trim, done by RCS in P41: V16N85 shows body VG
+   4.6, 1.8, -0.8 ft/s at TIG and the crew's +X, +Y and -Z translations
+   null it to 0.1, 0, 0. `lm-p42-nassp`: the DOI burn on the ascent
+   engine after an abort stage at 1.5 s (`FLIGHT_STAGE`, `FLIGHT_ASCENT`)
+   and V48 (DAPDATR1 11002: ascent stage, which sets APSFLAG; 10,776 lb
+   on N47); the APS burns about 6.6 s, and with no attitude dynamics the
+   steering does not turn the LM, so cutoff leaves N85 at 5.3, 14.3,
+   -0.1 ft/s. All three end in P00 and match yaAGC at every native
+   routine.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one

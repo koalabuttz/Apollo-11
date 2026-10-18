@@ -236,6 +236,34 @@ DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
 del DOI['FLIGHT_LR_POS2']
 DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
             '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# lm-p47-nassp: the lm-doi-nassp start in P00 with the RCS translation
+# model (FLIGHT_RCS: 15,100 kg). V37E47E: P47 shows V16N83 from 25 s; the
+# crew's +X translation (channel 31 bit 7) from 30 s to 40 s, two jets,
+# reads 1.9 ft/s on N83 X; PRO at 50 s and V37E00E: P00.
+P47 = {**{k: v for k, v in DOI.items() if k != 'FLIGHT_POKE'}, 'FLIGHT_RCS': '15100',
+       'FLIGHT_CHAN': '3000:031=057677,4000:031=057777'}
+P47_KEYS = '@200V37E47E@5000V33E@5500V37E00E'
+# lm-p41-nassp: lm-doi-nassp's P30 with a 5.0 ft/s retrograde trim in
+# place of DOI, done by RCS: V37E41E, the crew's maneuver to P41's N18
+# angles (FLIGHT_POKE), ENTER, V16N85 (body VG 4.6, 1.8, -0.8 ft/s); from
+# TIG the crew translates +X 23.5 s, +Y 9.3 s and -Z 4.1 s (FLIGHT_RCS,
+# FLIGHT_CHAN), nulling N85 to 0.1, 0, 0; PRO and V37E00E: P00.
+P41 = {**DOI, 'FLIGHT_RCS': '15100',
+       'FLIGHT_POKE': '7000:032=77776,7000:033=56420,7000:034=74217,7000:3235=77776,7000:3236=56420,7000:3237=74217',
+       'FLIGHT_CHAN': '49000:031=057677,51350:031=057777,51400:031=057377,52330:031=057777,52400:031=053777,52810:031=057777'}
+P41_KEYS = DOI_KEYS.split('@6000')[0].replace('-00764E', '-00050E') + '@6000V37E41E@7200E@53500V33E@54500V37E00E'
+# lm-p42-nassp: lm-doi-nassp's DOI burned on the ascent engine. The
+# descent stage goes at 1.5 s (FLIGHT_STAGE, FLIGHT_ASCENT 4,888 kg); V48:
+# DAPDATR1 11002 (ascent stage, so APSFLAG) and 10,776 lb on N47; P30 as
+# in lm-doi-nassp; V37E42E, the R60 maneuver as there, PRO on V99N40; the
+# APS burns about 6.6 s. With no attitude dynamics the DAP's steering does
+# not turn the LM, so cutoff leaves N85 at 5.3, 14.3, -0.1 ft/s. PRO on
+# V16N40 and N85, V37E00E: P00.
+P42 = {**DOI, 'FLIGHT_STAGE': '150', 'FLIGHT_ASCENT': '4888',
+       'FLIGHT_POKE': '10000:032=77776,10000:033=60216,10000:034=74211,10000:3235=77776,10000:3236=60216,10000:3237=74211'}
+P42_KEYS = ('@200V48E@600V21E11002E@1400V33E@2000V21E+10776E@2800V33E@3200V37E30E@4000V25E+00102E+00034E+00000E'
+            '@5000V33E@5600V25E-00764E+00000E+00000E@6600V33E@7400V33E@9000V37E42E@10200E@48500V33E@52000V33E'
+            '@53000V33E@54000V37E00E')
 # cm-p11: Apollo 11's launch (16 July 1969 13:32 UT), the pad load at 1 s
 # (tools/flight_scenarios/cm_p11.py: launch complex 39A, the 72.058
 # degree flight azimuth, TEPHEM for a 100 s liftoff). The IMU model
@@ -385,6 +413,9 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
+          ('lm-p47-nassp', 'lm', 7500, P47_KEYS, P47),
+          ('lm-p41-nassp', 'lm', 57500, P41_KEYS, P41),
+          ('lm-p42-nassp', 'lm', 57000, P42_KEYS, P42),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware

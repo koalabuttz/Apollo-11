@@ -573,6 +573,37 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
   if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
 
+/* FLIGHT_RCS=KG (LM): the RCS jets' translation, for a vehicle of KG
+ * kilograms. Each jet gives 444.8 N (100 lbf) along the axis the DAP's
+ * jet tables name: channel 5's even bits +X, odd bits -X; channel 6's
+ * bits 5 and 8 +Y, 6 and 7 -Y, 1 and 4 +Z, 2 and 3 -Z (rotation couples
+ * cancel). Each native routine boundary adds the jets' velocity since the
+ * last, to the centisecond, put into stable-member axes from CDUX-Z, to
+ * PIPAX-Z (1 cm/s a count), carrying the fraction. No attitude dynamics
+ * and no propellant use. The crew's translation hand controller is
+ * channel 31 bits 7-12 (+X, -X, +Y, -Y, +Z, -Z, active 0) with
+ * FLIGHT_CHAN. */
+#if RK_LM
+static double rcs_kg;
+static struct { unsigned long t; agc_word c5,c6; double carry[3]; } rcs;
+static int rcs_pop(unsigned v){int n=0;for(;v;v&=v-1u)++n;return n;}
+static void rcs_due(unsigned long t,agc_word *w,const agc_hardware *hw){double b[3],d[3],dt;unsigned k;
+ if(!rcs_kg)return;
+ if(rcs.t&&t>rcs.t){dt=(double)(t-rcs.t)*0.01;
+  b[0]=(double)(rcs_pop(rcs.c5&0252u)-rcs_pop(rcs.c5&0125u));
+  b[1]=(double)(rcs_pop(rcs.c6&0220u)-rcs_pop(rcs.c6&0140u));
+  b[2]=(double)(rcs_pop(rcs.c6&0011u)-rcs_pop(rcs.c6&0006u));
+  if(b[0]!=0.0||b[1]!=0.0||b[2]!=0.0){
+   for(k=0;k<3u;++k)b[k]*=444.8/rcs_kg*dt;
+   lr_nbsm(lr_angle(w[CDUY]),lr_angle(w[CDUZ]),lr_angle(w[CDUX]),b,d);
+   lrm_dv(d,t,dt);
+   for(k=0;k<3u;++k){long n;rcs.carry[k]+=d[k]*100.0;n=(long)rcs.carry[k];rcs.carry[k]-=(double)n;pipa_add(w,k,n);}}}
+ if(t>rcs.t)rcs.t=t;
+ rcs.c5=hw->channel5;rcs.c6=hw->channel6;}
+#else
+static void rcs_due(unsigned long t,agc_word *w,const agc_hardware *hw){(void)t;(void)w;(void)hw;}
+#endif
+
 /* FLIGHT_SPS=KG (CM): the service propulsion engine, the same on both
  * sides, so P40 sees its burn. From the first sample point with ENGONFLG
  * set (FLAGWRD5 bit 7) it thrusts 91,188 N along the engine bell, body X
@@ -1003,6 +1034,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_TOUCHDOWN"))touchdown_cs=strtoul(getenv("FLIGHT_TOUCHDOWN"),0,10);
  if(getenv("FLIGHT_PILOT"))pilot_tau=strtod(getenv("FLIGHT_PILOT"),0);
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
+ if(getenv("FLIGHT_RCS"))rcs_kg=strtod(getenv("FLIGHT_RCS"),0);
+ if(rcs_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RCS needs FLIGHT_SCALED\n");return 2;}
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
@@ -1152,6 +1185,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * between. */
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words);
+   rcs_due(now(s.words),s.words,&hw);
    if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);
    if(got){
     /* At a RESUME point the instruction to run is BRUPT, not the word at
