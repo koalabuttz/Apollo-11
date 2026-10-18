@@ -643,8 +643,8 @@
             "sha256": "af32f2220dbe1ce0ba6a2f60ee2cc9749e4100e93fc929339033a606bc1163dc"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g527.md",
-            "sha256": "ebc6421f899358c08cc9472cb90d212acad056914fbc69b1f019e0533f524a82"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           }
         }
       }
@@ -1907,8 +1907,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-imu-calibration/cm-imu-calibration-c64-cover.json",
@@ -4996,8 +4996,8 @@
             "sha256": "d29de0a81be3b1ae739d657bbdd7643650d0f004f8a8be3662c057c3b7b6bd75"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g515.md",
-            "sha256": "ecbefda843d8a324330de32bdd3427eed6d29b0948868f9ccd1c7483a2fcfe26"
+            "path": "docs/audits/rev2-fast-window-eb-599.md",
+            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
           }
         }
       }
