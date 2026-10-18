@@ -4746,17 +4746,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-r31/cm-r31-proof.json",
-            "sha256": "6fda45b2532d86c9bafa4bace9f081b6fdd55216ff0b90430e7457209f74b58f"
+            "sha256": "c3a3e13d1b4a7dbcaddba9ebc94dc14c7a1adc9b4eecaabaaf872ebd44e7a273"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-r31/cm-r31-host.log",
-            "sha256": "66f3ab38280d41e6e3069eb737cc401c3b9c2b8dff1ea5fc3f5aac6d65818bb2"
+            "sha256": "5e63c2fe8c4b05b1d595652f1b76fd40dd0d5029fa33f0d89ef19e376a19d75a"
           },
           "c64_execution_results": {
             "path": "evidence/cm-r31/cm-r31-vice.log",
-            "sha256": "4f333ac25f13449d9cc5a1c82216a27e54e9a772143c7f1518039c1422ced40b",
+            "sha256": "5c108ebd1602e315c99ac97de646eef72606572090e87058c8b4516a27c41fbb",
             "vice_targets": {
-              "vice-cm-r31": 118
+              "vice-cm-r31": 117
             }
           },
           "independent_review": {
@@ -4765,7 +4765,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
-            "sha256": "3863afe4e20cdc83969915cf3b846c133c714edd65a8815b5a71a89855e680ce"
+            "sha256": "cf53e5ca67a25e8f6e4cef5355e323f9a862d515f544cd67800eaa0303986229"
           }
         }
       }
@@ -6118,22 +6118,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "25c53efb28a034d83f10b3a23bb5932d5614985416b4aa49283a6072d38514d5"
+            "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
-            "sha256": "07701059d4b8f410b39d705f2e7ba70a0600832bb5a7034357571d159b61799e"
+            "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d"
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "ecf27bcfc4111e633256e4ab2513604b6309df5e3dc6e2be2302557d9ddb6a7f",
+            "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
             "vice_targets": {
               "vice-cm-tpi-search": 248
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
+            "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
           },
           "independent_review": {
             "path": "docs/audits/lane-e-194.md",
