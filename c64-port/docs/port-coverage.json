@@ -674,7 +674,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH TAU. is small and the period positive so PERIODCH ends as in flight. Other conic erasables take any value. Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under EB 6 (the file's EBANK=), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH TAU. is small and the period positive so PERIODCH ends as in flight. Other conic erasables take any value. Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
         "external_continuations": [
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
           "DANZIG (outside basic routine)",
@@ -691,7 +691,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c009a46ea2f7ffab6517294899e4786be7d6c1d20250242393d62d181b1ac280"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-conics/cm-conics-host.log",
@@ -699,16 +699,16 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-conics/cm-conics-vice.log",
-            "sha256": "6401f0d1eced75e447a1643994c075bc72a139a8174712b671a499a239a364a9",
+            "sha256": "3e4d5dbe282ec1269c3dd10144d644e69373d52f67bdbea85f8cb698cac9ade4",
             "vice_targets": {
-              "vice-cm-conics-1": 317,
-              "vice-cm-conics-2": 122,
-              "vice-cm-conics-3": 181
+              "vice-cm-conics-1": 318,
+              "vice-cm-conics-2": 128,
+              "vice-cm-conics-3": 174
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "06720504867caee92a3eed9627007f98003c2ca283a5b2ff35b3c5cbd7d1065f"
+            "sha256": "c009a46ea2f7ffab6517294899e4786be7d6c1d20250242393d62d181b1ac280"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-b506.md",
@@ -6041,7 +6041,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area. A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). Also entered at DANZIG with LOC at an RTB T(X) operand word (27,3211, 27,3274) and DMP's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): T(X)'s TC DANZIG comes back there and the routine runs the DMP; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area. A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). Also entered at DANZIG with LOC at an RTB T(X) operand word (27,3211, 27,3274) and DMP's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): T(X)'s TC DANZIG comes back there and the routine runs the DMP; any other EDOP is refused with the image unchanged.",
         "external_continuations": [
           "BOVB SIGNMPAC (outside basic routine)",
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
@@ -6057,7 +6057,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
-            "sha256": "aff3170fedbbe096441d33db98d29c47f8e0ae7eae532099c571901a838076c6"
+            "sha256": "82ba95b6646127f7cc5a119c860874b59b0b8e4f12c9b9b570f1aa624349c3c0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-host.log",
@@ -6065,14 +6065,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-vice.log",
-            "sha256": "842e58abab39da6fb811e06f9f7b4451353d86d867cb0ae6d0c0062e2b8802e0",
+            "sha256": "f9e6cb2baaac5a93aa99db7f6b2f451ba9149d903dc28f428dd393d84fe52f92",
             "vice_targets": {
-              "vice-cm-time-free-fall": 194
+              "vice-cm-time-free-fall": 192
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
-            "sha256": "aff3170fedbbe096441d33db98d29c47f8e0ae7eae532099c571901a838076c6"
+            "sha256": "82ba95b6646127f7cc5a119c860874b59b0b8e4f12c9b9b570f1aa624349c3c0"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-b506.md",

@@ -134,6 +134,7 @@ class Mission:
         self.body_exits = sorted(set([L.labels[n] for n in BODY_EXITS[m]] + list(self.cp.externals_any)
                                      + [0xC000 | k for k in self.cp.erasable_calls]))
         self.returns = self.caller_returns(spec)
+        self.off_keys = bool(spec.get('outside_off_keys'))
         self.operands = self.operand_addresses()
         self.ebank = spec.get('ebank')
         if self.ebank == 'listing':
@@ -374,6 +375,12 @@ class Mission:
             bank = rng.randrange(2, 0o30)
             off = rng.randrange(0, 0o1776)
             phys = bank * 1024 + off
+            # ('outside_off_keys') Not a routine key the file registers
+            # outside its code (DANZIG's marker, an RTB's pending-DANZIG
+            # operand word) nor DANZIG: no CALL returns there in flight
+            # (auditor, #553).
+            if self.off_keys and (phys in self.cp.blocks or phys == self.danzig):
+                continue
             if not self.cp.in_file(phys):
                 return cadr(phys)
 
