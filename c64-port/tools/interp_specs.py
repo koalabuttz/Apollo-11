@@ -67,6 +67,36 @@ def anglfind_joint():
     return out
 
 
+def attitude_arm_joint(m):
+    """Issue #658: KALCMANU's exact 0 and 180 degree cases, whose
+    saturation guards (BOVB SIGNMPAC) fire because COS(0)/2 and COS(180)/2
+    come out exactly +-1/2. DCMTOCDU with C3 (the matrix's +6D) +-0, so
+    the middle gimbal angle is 0 (PUSH COS; SL1 overflows); DELCOMP with A
+    180 degrees (R60 ROT180: 1-COS A overflows) and with A 35 or 50
+    degrees about a body axis (R60 COMPMFSN, the diagonal terms at
+    exactly 1); KALCMAN3 from CDUs 0 to a 180 degree flip (ALTCALC's 1-CAM).
+    Each point's other half of the cases keep their own values."""
+    mats = {'lm': (0o3246, 0o2230, 0o3303), 'cm': (0o3266, 0o3320, 0o3425)}[m]
+    dcm = [{'vac+046': 0o77777 ^ a, '%o' % (a + 6): z, '%o' % (a + 7): z} for a in mats for z in (0, 0o77777)]
+
+    def ang(deg):
+        x = deg / 360 * (1 << 14)
+        hi = int(x)
+        return hi, round((x - hi) * (1 << 14)) & 0o37777
+
+    dp = lambda hl: {'0154': hl[0], '0155': hl[1], '0163': 0}  # noqa: E731
+    half = 0o20000
+    cofs = [{'COF': 0, 'COF+1': 0, 'COF+2': 0, 'COF+3': 0, 'COF+4': half, 'COF+5': 0},
+            {'COF': half, 'COF+1': 0, 'COF+2': 0, 'COF+3': 0, 'COF+4': 0, 'COF+5': 0}]
+    delcomp = [dp((half, 0)), dp((0o57777, 0o77777))] + [dict(dp(ang(d)), **c) for d in (35, 50) for c in cofs]
+    flip = [{'032': 0, '033': 0, '034': 0, 'CPHI': ph, 'CTHETA': th, 'CPSI': 0}
+            for ph, th in ((0o40000, 0), (0, 0o40000), (0o40000, 0o40000))]
+    # (and ALTCALC itself with CAM, the cosine of AM over 4, at -1/2)
+    alt = [{'CAM': 0o57777, 'CAM+1': 0o77777}, {'CAM': 0o57777, 'CAM+1': 0o77777, '0163': 0}]
+    return {'DCMTOCDU': [{}] * len(dcm) + dcm, 'DELCOMP': [{}] * len(delcomp) + delcomp,
+            'KALCMAN3': [{}] * len(flip) + flip, 'ALTCALC': [{}, {}] + alt}
+
+
 def axisgen_states():
     """AXISGEN's loops entered at their heads or at any resume point in them
     (AXISGEN+1..AXISGEN1+28 with AXISGEN1's, the AXISGEN2 and AXISGEN3
@@ -2956,8 +2986,12 @@ SPECS = {
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]},
                        'vac+047': {'lm': [0o77777 ^ a for a in (0o3246, 0o2230, 0o3303)],
                                    'cm': [0o77777 ^ a for a in (0o3266, 0o3320, 0o3425)]}},
-        # Half the cases start from one MFI or COF set (anglfind_joint).
-        'joint_states': {'*': anglfind_joint()},
+        # Half the cases start from one MFI or COF set (anglfind_joint);
+        # at DCMTOCDU, DELCOMP, KALCMAN3 and ALTCALC half from the exact 0 and 180
+        # degree sets of attitude_arm_joint instead.
+        'joint_states': dict({'*': anglfind_joint()},
+                             **{p: {m: attitude_arm_joint(m)[p] for m in ('lm', 'cm')}
+                                for p in ('DCMTOCDU', 'DELCOMP', 'KALCMAN3', 'ALTCALC')}),
         # -fno-inline keeps KALCMAN3's whole path in one diagnostic.
         'c64_flags': ['-fno-inline'],
         # KALCMANU's matrix loops run past 200 routines from some resume points.
