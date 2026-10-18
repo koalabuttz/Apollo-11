@@ -181,16 +181,39 @@ bool agc_transfer_operand(const agc_native_program *p,const apollo_overlay_state
  if(q<02000u){physical=(uint16_t)(s->words[3]+(q&0377u));if(physical<0100u||physical>=APOLLO_SHARED_WORDS)return false;*word=s->words[physical];return true;}
  return agc_site_lookup(p->operands,p->operand_count,agc_fixed_physical(q,s->words[4],superbank),word);
 }
-/* One transfer point per step: the stop check and the routine lookup share it. */
-enum exec_status agc_transfer_run(const agc_native_program *p,apollo_overlay_state *s,void *io,const agc_word *superbank,uint16_t stop,uint16_t max_steps,uint16_t *steps){uint16_t n=0,point;enum exec_status status=EXEC_OK;agc_routine call;bool in;
- if(!p||!s||!superbank)return EXEC_OUT_OF_SCOPE;
- while((point=transfer_point(p,s,*superbank,&in))!=stop){
-  if(n==max_steps){status=EXEC_OUT_OF_SCOPE;break;}
-  call=resolve_at(p,point,in);
-  if(!call){status=EXEC_UNMAPPED;break;}
-  ++n;status=call(p,s,io);
-  if(status!=EXEC_OK)break;
- }
- if(steps)*steps=n;
- return status;
+/* One transfer point per step: the stop check and the routine lookup share it.
+ * The first step's point may come from the caller (agc_transfer.h). */
+enum exec_status agc_transfer_run_at(const agc_native_program *p, apollo_overlay_state *s, void *io,
+                                     const agc_word *superbank, uint16_t stop, uint16_t max_steps,
+                                     uint16_t *steps, uint16_t first)
+{
+    uint16_t n = 0, point = first;
+    enum exec_status status = EXEC_OK;
+    agc_routine call;
+    bool in = false;
+    if (!p || !s || !superbank) return EXEC_OUT_OF_SCOPE;
+    if (point == AGC_TRANSFER_NONE) point = transfer_point(p, s, *superbank, &in);
+    while (point != stop) {
+        if (n == max_steps) {
+            status = EXEC_OUT_OF_SCOPE;
+            break;
+        }
+        call = resolve_at(p, point, in);
+        if (!call) {
+            status = EXEC_UNMAPPED;
+            break;
+        }
+        ++n;
+        status = call(p, s, io);
+        if (status != EXEC_OK) break;
+        point = transfer_point(p, s, *superbank, &in);
+    }
+    if (steps) *steps = n;
+    return status;
+}
+enum exec_status agc_transfer_run(const agc_native_program *p, apollo_overlay_state *s, void *io,
+                                  const agc_word *superbank, uint16_t stop, uint16_t max_steps,
+                                  uint16_t *steps)
+{
+    return agc_transfer_run_at(p, s, io, superbank, stop, max_steps, steps, AGC_TRANSFER_NONE);
 }

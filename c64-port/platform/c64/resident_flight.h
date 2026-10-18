@@ -150,7 +150,11 @@ typedef struct {
 #define RK_TABLES_NOT_DIRECT 2u
 _Static_assert(offsetof(rk_module_tables,operand_count)==offsetof(agc_native_program,operand_count),
                "rk_module_tables must start like agc_native_program");
-/* The resident's program with a module's tables, operands and fixed_data. */
+/* The resident's program with a module's tables, operands and fixed_data.
+ * It never sets interpreter_fetch, loc or bankset (they stay rk_program's),
+ * so a step's transfer point is the same for every module program without
+ * interpretive tables (resident_flight.c rk_point): keep it that way, or
+ * recompute per module. */
 static inline void rk_module_program(agc_native_program *p,const rk_module_tables *t) {
     memcpy(p,t,offsetof(rk_module_tables,fixed_data));
     p->fixed_data=t->fixed_data;
@@ -281,7 +285,7 @@ enum exec_status rk_resident_step(uint16_t stop_physical);
 uint8_t rk_gojam(void);
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
-enum exec_status rk_direct(uint16_t stop_physical);
+enum exec_status rk_direct(uint16_t stop_physical, uint16_t point);
 
 /* The canonical resolver bank for 12-bit address loc, the physical bank in
  * FB form: 04000 or 06000 for fixed-fixed, otherwise FB (bits 14-10), plus
