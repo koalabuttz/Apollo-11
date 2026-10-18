@@ -643,8 +643,8 @@
             "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-fast-window-eb-599.md",
-            "sha256": "a1540ddbc0b98383563092071d10494687961abd4a425467811b611a23ab080f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -711,8 +711,8 @@
             "sha256": "c3f86b736e07bd6448c7c9170ed9ed16ff7f5ba0f59a94ec35c0ad05e375c518"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-b506.md",
-            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -2233,8 +2233,8 @@
             "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g457.md",
-            "sha256": "855ea754164cb909e04174a2fc369563aa4eb6ac09aa16e6457801c48d94b083"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
@@ -5092,8 +5092,8 @@
             "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-reentry.md",
-            "sha256": "42a540afbfae4aae9b397c42c8bb2717a63471750c071ad37deff599e2c1afdf"
+            "path": "docs/audits/rev2-cm-arms-679.md",
+            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
           }
         }
       }
