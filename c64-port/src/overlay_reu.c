@@ -154,9 +154,20 @@ apollo_ov2_store apollo_reu_store_backend(apollo_reu_store *s,
 enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buffer) {
     uint16_t id,count=0,i;
     uint32_t previous=0;
+    /* The CRC a byte at a time from a table (the high bytes at buffer+256,
+     * the low at buffer+512): the same CRC as apollo_overlay_crc16, two
+     * lookups a byte instead of eight shifts. The whole store passes through
+     * here at boot, so this is most of the boot's time. */
+    uint8_t *crc_high = buffer + 256, *crc_low = buffer + 512;
+    for (i = 0; i < 256u; ++i) {
+        uint16_t t = apollo_overlay_crc16(0, (uint8_t)i);
+        crc_high[i] = (uint8_t)(t >> 8);
+        crc_low[i] = (uint8_t)t;
+    }
     for(id=1;id<(uint16_t)(s->index_blocks<<8);++id) {
         apollo_ov2_dirent d;
-        uint16_t offset,crc=0xffffu;
+        uint16_t offset;
+        uint8_t high = 0xffu, low = 0xffu;
         if(!read_bytes(page_address(s,s->index_page)+(uint32_t)id*APOLLO_REU_INDEX_RECORD,
             s->record,APOLLO_REU_INDEX_RECORD)) return APOLLO_OV2_IO_ERROR;
         if(!(s->record[11] & APOLLO_OV2_DIRENT_PRESENT)) {
@@ -197,10 +208,18 @@ enum apollo_ov2_status apollo_reu_store_verify(apollo_reu_store *s,uint8_t *buff
                     le16(buffer + APOLLO_OV2_H_SELECTORS) != d.selectors)
                     return APOLLO_OV2_BAD_HEADER;
             }
-            for(i=0;i<chunk;++i) crc=apollo_overlay_crc16(crc,buffer[i]);
+            {
+                /* chunk is 1 to 256: an 8-bit count (0 for 256) */
+                uint8_t j = 0;
+                do {
+                    uint8_t x = (uint8_t)(high ^ buffer[j]);
+                    high = (uint8_t)(low ^ crc_high[x]);
+                    low = crc_low[x];
+                } while (++j != (uint8_t)chunk);
+            }
             offset=(uint16_t)(offset+chunk);
         }
-        if(crc!=d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
+        if ((uint16_t)((uint16_t)high << 8 | low) != d.crc16) return APOLLO_OV2_BAD_CHECKSUM;
         ++count;
     }
     if(count!=s->module_count) return APOLLO_OV2_BAD_DIRECTORY;
