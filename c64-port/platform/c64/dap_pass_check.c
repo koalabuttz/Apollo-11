@@ -89,7 +89,8 @@ static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
  * tools/flight_scenario_vice.py --keys from the scenario's key string): key
  * k is pressed at the first step at or after dp_key_cs[k] centiseconds into
  * the window, as tools/flight_host_run.c presses it: channel 15 and a
- * KEYRUPT1 request, or for a mark key (bit 0400) channel 16 and KEYRUPT2. */
+ * KEYRUPT1 request, or for a mark key (bit 0400) channel 16 and KEYRUPT2.
+ * The key stays in its channel until the next one, as on the host. */
 #include "resident_rupt.h"
 #include DP_KEYS
 static uint8_t key_next;
@@ -99,6 +100,12 @@ static void press_due(uint16_t elapsed){uint16_t k;
  __asm__ volatile("sei");
  if(k&0400u){rk_flight.channel16=(agc_word)(k&0377u);rk_pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
  else{rk_hardware.channel15=(agc_word)k;rk_pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
+#if !RK_LM
+ /* On the CM, rk_device (cm_native_io) holds the keys too: each store
+  * module on a CM record writes its main_keys and navigation_keys back to
+  * channels 15 and 16 (platform/c64/flight_table_module.c). */
+ rk_device.main_keys=rk_hardware.channel15;rk_device.navigation_keys=rk_flight.channel16;
+#endif
  __asm__ volatile("cli");}
 #endif
 
