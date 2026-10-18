@@ -389,6 +389,13 @@ LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
 
+# (cm-conics KEPLERN: R1's high word with C2's (B+6) and with
+# (1/64 - C2/64)/2's, flight pairs that keep ALPHA in range; #664.)
+_R1C2 = {0o310: (-0.03, 0.5, 0.97), 0o340: (-0.05, 0.5, 1.54), 0o2000: (0.87, 2.7),
+         0o17571: (3, 7, 15, 20), 0o26706: (-0.97, -0.3)}
+R1C2 = [(r, round(c * 256) % 0o77777) for r, cs in _R1C2.items() for c in cs]
+R1C2A = [(r, round((1 - c) * 128) % 0o77777) for r, cs in _R1C2.items() for c in cs]
+
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
     'lm-aotmark': {
@@ -1926,15 +1933,6 @@ SPECS = {
                              # the period comes out 0 and PERIODCH loops for
                              # good (#553; reviewer 1, #664).
                              **({'vac+040': [0o310, 0o340, 0o2000, 0o17571, 0o26706]} if a <= 0o2077 else {}),
-                             # C2 = RV.V/MU - 1 (B+6, MPAC at its STORE
-                             # KEPC2 and BDSU) from -1/2 (apoapsis) to 3
-                             # (hyperbolic), and (1/64 - C2/64)/2 at DDV R1:
-                             # a random one (near -1 or past it) makes
-                             # ALPHA an orbit far below R1/2, a period of a
-                             # few centiseconds and PERIODCH loops for
-                             # thousands of passes (reviewer 1, #664).
-                             **({'0154': [0o77577, 0o77700, 0, 0o200, 0o400, 0o1400]} if a in (0o2074, 0o2075) else {}),
-                             **({'0154': [0o77577, 0o77700, 1, 0o100, 0o200, 0o300]} if a == 0o2077 else {}),
                              # The hyperbolic arm (DDV ALPHA, SQRT; 12,2105,
                              # 12,2110) with ALPHA negative, as BPL 1REV sends
                              # it there, and MPAC = -50SC/ALPHA positive; and
@@ -1983,6 +1981,18 @@ SPECS = {
                                   for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
                                   for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
                                  + [{}] * 9,
+                        # (KEPLERN's C2 = RV.V/MU - 1, B+6, in MPAC at
+                        # STORE KEPC2 and BDSU (12,2074, 12,2075), and
+                        # (1/64 - C2/64)/2 at DDV R1 (12,2077), with R1 so
+                        # that ALPHA = 1/a stays in range (|a| > 2^22 m at
+                        # Earth, 2^20 m at the Moon), as every flight conic
+                        # is: LEO and Earth-to-Moon distance, LLO, and
+                        # hyperbolas out to the Moon's sphere of influence
+                        # (C2 up to 20). Otherwise ALPHA's DDV overflows,
+                        # the period is +0 and PERIODCH never ends; yaAGC
+                        # and the port loop alike (reviewer 1, #664).)
+                        **{'KEPLERN+%d' % n: [{'vac+040': r, '0154': m} for r, m in pairs]
+                           for n, pairs in ((26, R1C2), (27, R1C2), (29, R1C2A))},
                         # (BPL 1REV, 12,2102: MPAC is the ALPHA just
                         # stored, so the arm it picks reads the same ALPHA;
                         # #664)

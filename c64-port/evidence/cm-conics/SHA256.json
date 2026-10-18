@@ -4,7 +4,7 @@
   "release": "evidence-cm-conics",
   "files": {
     "cm-conics-differential.log": {
-      "sha256": "c068222ec79c233614fb5d5efef98e7c0f955eecc5c150370950b498c4a30950",
+      "sha256": "54f7cff880964eb44303d6fe104d4c2d7bcff8fc00ec13b89e373608e5010cb9",
       "bytes": 76720,
       "store": "tree"
     },
@@ -14,7 +14,7 @@
       "store": "tree"
     },
     "cm-conics-proof.json": {
-      "sha256": "badd50964acd57820755a83a0186ef5bfee3ada24df0542beac69c607884a12a",
+      "sha256": "41b58c7b9629751d102a1f51f0aac36f6091a0c27d378dbc737774cf80a1d80c",
       "bytes": 85998,
       "store": "tree"
     },
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-conics-vice.log": {
-      "sha256": "484b8cea235a67a1908b91c36e1bef0aedd0359e1f93e3bd4f44585604ebbd61",
+      "sha256": "87a99b1213d068a1ee5cfa1d724ac2a8cc45c76ff4f55880a4852119799c0e2f",
       "bytes": 4291,
       "store": "tree"
     }

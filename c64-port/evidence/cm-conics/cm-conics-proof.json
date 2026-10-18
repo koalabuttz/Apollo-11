@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 114944,
- "cases_sha256": "9c9f7d35d83eead7467df44a327492acc3413cdfe9fcb324058ef3e4450dd847",
- "oracle_sha256": "3dc4b5f1d4e0d05cd6b3710d2e81b9b311b30da51aa19862760931bb945e65fd",
+ "cases_sha256": "b2120fe5424f721beaf0c10f5017825f99c752c8394de4a1f44cb3427a56eaac",
+ "oracle_sha256": "89fac87211396bf6f8a56b92954fa7f6531ff33a921ce643e2ed455c3f515827",
  "frozen_vectors": 3592,
  "c64_vectors": [
   {
@@ -123,19 +123,18 @@
   {
    "mission": "cm",
    "keep": "0x180000000100000003fffffffffe0000000000",
-   "cases": 55,
+   "cases": 54,
    "case_ids": [
     10559,
     10743,
     10857,
-    11140,
-    11011,
-    11273,
-    11592,
-    11782,
-    12218,
-    12245,
-    12038,
+    11041,
+    11411,
+    11562,
+    11881,
+    12164,
+    12161,
+    12035,
     12315,
     12312,
     12580,
@@ -444,13 +443,14 @@
   },
   {
    "mission": "cm",
-   "keep": "0x3f807ff7fffffffff0000000000000000000000000000000000000000000000000000000000",
-   "cases": 51,
+   "keep": "0x3f807ffffffffffff0000000000000000000000000000000000000000000000000000000000",
+   "cases": 39,
    "case_ids": [
     59416,
     59639,
     59657,
     59907,
+    60061,
     60286,
     60310,
     60497,
@@ -484,7 +484,14 @@
     65069,
     65316,
     65722,
-    65861,
+    65861
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3fffffffffc4040000000000000000000000000000000000000000000000000000000000000",
+   "cases": 45,
+   "case_ids": [
     66081,
     66163,
     66391,
@@ -497,14 +504,7 @@
     68105,
     68424,
     68632,
-    68888
-   ]
-  },
-  {
-   "mission": "cm",
-   "keep": "0x3ffffffc0004040000000000000000000000000000000000000000000000000000000000000",
-   "cases": 32,
-   "case_ids": [
+    68888,
     69168,
     69427,
     69635,
@@ -843,14 +843,14 @@
  "c64_coverage": {
   "host_labels": 12,
   "c64_labels": 12,
-  "host_edges": 4644,
-  "c64_edges": 4644,
+  "host_edges": 4641,
+  "c64_edges": 4641,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 2164,
-  "c64_taken": 2164,
+  "host_taken": 2163,
+  "c64_taken": 2163,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -4622,25 +4622,25 @@
    "05170": 68
   },
   "CM 12,2074 ": {
-   "07171": 198,
-   "05170": 58
+   "07171": 185,
+   "05170": 71
   },
   "CM 12,2075 ": {
-   "07171": 204,
-   "05170": 52
+   "07171": 190,
+   "05170": 66
   },
   "CM 12,2077 ": {
-   "07171": 191,
-   "05170": 65
+   "07171": 189,
+   "05170": 67
   },
   "CM 12,2101 ": {
-   "05170": 66,
-   "07171": 190
+   "07171": 194,
+   "05170": 62
   },
   "CM 12,2102 ": {
-   "05170": 60,
-   "07171": 181,
-   "05721": 15
+   "07171": 168,
+   "05170": 67,
+   "05721": 21
   },
   "CM 12,2105 ": {
    "07171": 176,
