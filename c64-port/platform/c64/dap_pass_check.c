@@ -298,11 +298,297 @@ static void close_record(uint32_t cycles,enum exec_status st){
 #ifdef DP_REPLAY
 static uint8_t replay_ended;
 #endif
+
+#ifdef DP_HW_CHECK
+/* The hardware check disk (tools/flight_disk.py, the "test" set;
+ * docs/RUN-ON-C64.md, Checking real hardware): a DP_REPLAY window whose
+ * report is on the screen, for a photograph. After the store check it
+ * prints the video standard, the REU's size and its DMA speed both ways;
+ * at the window's end the C64 time, the speed against real time and a
+ * CRC of the end state (the erasable words tools/flight_scenario_vice.py
+ * compares, the timers and the centiseconds), with PASS when it is the CRC
+ * VICE's run of the same program gave (DP_HW_EXPECT; 0 in that first
+ * run), and the host run's CRC (DP_HW_HOST) beside it. The CRC and the
+ * verdict also go to $c036-$c038, before the mailbox's $a5:
+ * tools/flight_disk.py reads them, and its run from the disk stops at
+ * dp_done.
+ *
+ * The resident has no room for this, so all of it is boot-only code: boot
+ * stashes the boot code in the REU at DP_HW_SAVE (spare bytes below the
+ * rope) before the window's module loads overwrite it, and the window's
+ * end fetches it back. Its text and variables are boot-only data too, and it uses no
+ * multiply or divide helpers, which would link into the resident. */
+#define SCREEN ((volatile uint8_t *)0x0400)
+#define COLOUR ((volatile uint8_t *)0xd800)
+#define VIC    ((volatile uint8_t *)0xd000)
+#define REU    ((volatile uint8_t *)0xdf00)
+#define TEXT(name, text)                                                                           \
+    static const char name[] __attribute__((section(".boot.text.hw_text"))) = text
+TEXT(t_title, "APOLLO 11 ON THE C64: HARDWARE CHECK\n\n");
+TEXT(t_pal, "VIDEO: PAL, 985248 HZ\n");
+TEXT(t_ntsc, "VIDEO: NTSC, 1022727 HZ\n");
+TEXT(t_reu, "REU: ");
+TEXT(t_kb, " KB\n");
+TEXT(t_dma, "REU DMA, BYTES/S: C64>REU ");
+TEXT(t_dma2, "\n                 REU>C64 ");
+TEXT(t_run, "\n\nRUNNING " DP_HW_WINDOW "...\n\n");
+TEXT(t_agc, "AGC TIME: ");
+TEXT(t_cs, " CS IN ");
+TEXT(t_steps, " STEPS\nC64 TIME: ");
+TEXT(t_s, " S, ");
+TEXT(t_x, " X REAL TIME\n\nEND STATE CRC ");
+TEXT(t_vice, " (VICE ");
+TEXT(t_host, ")\nHOST RUN'S CRC ");
+TEXT(t_same, " (THE SAME)");
+TEXT(t_differ, " (NOT YET THE SAME)");
+TEXT(t_pass, "\n\nPASS: THIS C64 COMPUTES WHAT VICE DOES");
+TEXT(t_fail, "\n\nFAIL: THIS C64 DIFFERS FROM VICE");
+TEXT(t_status, " (STEP STATUS ");
+static const uint32_t hw_ten[10] __attribute__((section(".boot.text.hw_text"))) = {
+    1000000000ul, 100000000ul, 10000000ul, 1000000ul, 100000ul, 10000ul, 1000ul, 100ul, 10ul, 1ul};
+extern char __rk_boot_start[], __rk_boot_end[];
+/* Boot-only data too, kept by the stash (taken once these are set). */
+#define HW_DATA __attribute__((section(".boot.text.hw_data")))
+static uint16_t hw_at HW_DATA = 0; /* the next screen cell */
+static uint8_t hw_col HW_DATA = 0; /* and its column */
+static uint32_t hw_hz HW_DATA = 0; /* the C64's clock: PAL or NTSC */
+static uint16_t hw_end_crc HW_DATA = 0;
+static uint8_t hw_pass HW_DATA = 0;
+static void BOOT hw_putc(char c)
+{
+    uint8_t k = (uint8_t)c;
+    if (k == '\n') {
+        hw_at = (uint16_t)(hw_at + 40u - hw_col);
+        hw_col = 0;
+        return;
+    }
+    if (k >= 0x40u) k = (uint8_t)(k - 0x40u); /* upper case to screen codes */
+    SCREEN[hw_at] = k;
+    COLOUR[hw_at] = 1u;
+    ++hw_at;
+    ++hw_col;
+}
+static void BOOT hw_puts(const char *s)
+{
+    while (*s) hw_putc(*s++);
+}
+static uint32_t BOOT hw_div(uint32_t n, uint32_t d)
+{
+    uint32_t q = 0, r = 0;
+    uint8_t i;
+    for (i = 0; i < 32u; ++i) {
+        r = r << 1 | n >> 31;
+        n <<= 1;
+        q <<= 1;
+        if (r >= d) {
+            r -= d;
+            q |= 1u;
+        }
+    }
+    return q;
+}
+static uint32_t BOOT hw_mul(uint32_t a, uint16_t b)
+{
+    uint32_t p = 0;
+    for (; b; b >>= 1, a <<= 1)
+        if (b & 1u) p += a;
+    return p;
+}
+static void BOOT hw_putu(uint32_t v)
+{
+    uint8_t i, d, any = 0;
+    for (i = 0; i < 10u; ++i) {
+        for (d = 0; v >= hw_ten[i]; ++d) v -= hw_ten[i];
+        if (d || any || i == 9u) {
+            hw_putc((char)('0' + d));
+            any = 1;
+        }
+    }
+}
+/* v hundredths, as units and two decimals. */
+static void BOOT hw_put100(uint32_t v)
+{
+    uint32_t units = hw_div(v, 100u);
+    uint8_t r = (uint8_t)(v - hw_mul(units, 100u));
+    hw_putu(units);
+    hw_putc('.');
+    if (r < 10u) hw_putc('0');
+    hw_putu(r);
+}
+static void BOOT hw_putx(uint16_t v)
+{
+    uint8_t i, d;
+    for (i = 0; i < 4u; ++i, v = (uint16_t)(v << 4)) {
+        d = (uint8_t)(v >> 12);
+        hw_putc((char)(d < 10u ? '0' + d : 'A' - 10 + d));
+    }
+}
+static void BOOT hw_dma(uint8_t command, volatile uint8_t *c64, uint32_t reu, uint16_t n,
+                        uint8_t fix)
+{
+    REU[2] = (uint8_t)(uint16_t)c64;
+    REU[3] = (uint8_t)((uint16_t)c64 >> 8);
+    REU[4] = (uint8_t)reu;
+    REU[5] = (uint8_t)(reu >> 8);
+    REU[6] = (uint8_t)(reu >> 16);
+    REU[7] = (uint8_t)n;
+    REU[8] = (uint8_t)(n >> 8);
+    REU[10] = fix;
+    REU[1] = command;
+    REU[10] = 0;
+}
+static volatile uint8_t hw_byte HW_DATA = 0;
+static uint8_t BOOT hw_peek(uint32_t at)
+{
+    hw_dma(APOLLO_REU_FETCH, &hw_byte, at, 1u, 0);
+    return hw_byte;
+}
+static void BOOT hw_poke(uint32_t at, uint8_t v)
+{
+    hw_byte = v;
+    hw_dma(APOLLO_REU_STASH, &hw_byte, at, 1u, 0);
+}
+/* 32 KB through the REU scratch one way, as bytes a second. */
+static uint32_t BOOT hw_speed(uint8_t command)
+{
+    uint32_t t = now();
+    if (command == APOLLO_REU_STASH)
+        hw_dma(command, (volatile uint8_t *)0x0801, DP_SCRATCH, 0x8000u, 0);
+    else
+        hw_dma(command, &hw_byte, DP_SCRATCH, 0x8000u, 0x80u); /* the C64 address held */
+    t = now() - t;
+    return hw_div(hw_hz << 11, t >> 4);
+}
+static void BOOT hw_start(void)
+{
+    uint16_t i;
+    uint8_t top = 0, seen, keep0, keep;
+    /* The text screen at $0400 with the ROM characters, white on black. */
+    CIA2[0] |= 3u;
+    VIC[0x11] = 0x1bu;
+    VIC[0x16] = 0xc8u;
+    VIC[0x18] = 0x15u;
+    VIC[0x20] = 0;
+    VIC[0x21] = 0;
+    for (i = 0; i < 1000u; ++i) SCREEN[i] = 0x20u;
+    hw_puts(t_title);
+    /* PAL counts 312 raster lines, NTSC 262 or 263. */
+    while (!(VIC[0x11] & 0x80u)) {
+    }
+    while (VIC[0x11] & 0x80u)
+        if (VIC[0x12] > top) top = VIC[0x12];
+    hw_hz = top >= 0x20u ? 985248ul : 1022727ul;
+    hw_puts(top >= 0x20u ? t_pal : t_ntsc);
+    /* The REU's size: the first bank (128 KB up) whose address wraps to 0;
+     * the bytes it touches are put back. */
+    keep0 = hw_peek(0);
+    for (i = 2; i <= 128u; i = (uint16_t)(i << 1)) {
+        keep = hw_peek((uint32_t)i << 16);
+        hw_poke(0, 0x55u);
+        hw_poke((uint32_t)i << 16, 0xaau);
+        seen = hw_peek(0);
+        hw_poke((uint32_t)i << 16, keep);
+        hw_poke(0, keep0);
+        if (seen == 0xaau) break;
+    }
+    hw_puts(t_reu);
+    hw_putu((uint32_t)i << 6);
+    hw_puts(t_kb);
+    timer_start();
+    hw_puts(t_dma);
+    hw_putu(hw_speed(APOLLO_REU_STASH));
+    hw_puts(t_dma2);
+    hw_putu(hw_speed(APOLLO_REU_FETCH));
+    hw_puts(t_run);
+    apollo_reu_transfer(APOLLO_REU_STASH, __rk_boot_start, DP_HW_SAVE,
+                        (uint16_t)(__rk_boot_end - __rk_boot_start));
+}
+static uint16_t BOOT hw_crc_byte(uint16_t c, uint8_t b)
+{
+    uint8_t k;
+    c ^= (uint16_t)b << 8;
+    for (k = 0; k < 8u; ++k) c = (c & 0x8000u) ? (uint16_t)(c << 1) ^ 0x1021u : (uint16_t)(c << 1);
+    return c;
+}
+/* CRC-16/CCITT of the end state, as tools/flight_disk.py check_crc. */
+static uint16_t BOOT hw_crc(uint16_t cs)
+{
+    uint16_t c = 0xffffu, i, w;
+    for (i = 020u; i < 2048u; ++i) {
+        if (i >= 070u && i <= 073u) continue;
+        w = IMAGE->words[i];
+        if (i >= 037u && i <= 041u && w == 077777u) w = 0; /* a PIPA's -0 is +0 */
+        c = hw_crc_byte(c, (uint8_t)w);
+        c = hw_crc_byte(c, (uint8_t)(w >> 8));
+    }
+    c = hw_crc_byte(c, (uint8_t)cs);
+    return hw_crc_byte(c, (uint8_t)(cs >> 8));
+}
+static void hw_report(enum exec_status st);
+/* The result, once the boot code is back: the CRC and the verdict at
+ * $c036-$c038, the mailbox's $a5, then the report. */
+static void BOOT hw_result(enum exec_status st)
+{
+    hw_end_crc = hw_crc((uint16_t)(mail[0x32] | mail[0x33] << 8));
+    hw_pass = st == EXEC_OK && replay_ended && hw_end_crc == DP_HW_EXPECT;
+    mail[0x36] = (uint8_t)hw_end_crc;
+    mail[0x37] = (uint8_t)(hw_end_crc >> 8);
+    mail[0x38] = hw_pass;
+    mail[0] = 0xa5;
+    hw_report(st);
+}
+/* The window's end (interrupts off): the boot code back from the REU (its
+ * region held module code during the window), then the result. main jumps
+ * here from inline assembly: a C call costs main some 240 bytes of RAM. */
+__attribute__((noinline, used, noreturn)) void dp_hw_end(void)
+{
+    apollo_reu_transfer(APOLLO_REU_FETCH, __rk_boot_start, DP_HW_SAVE,
+                        (uint16_t)(__rk_boot_end - __rk_boot_start));
+    hw_result((enum exec_status)sum.status);
+    for (;;) {
+    }
+}
+__attribute__((noinline)) void dp_done(void)
+{
+    for (;;) {
+    }
+}
+static void BOOT hw_report(enum exec_status st)
+{
+    uint16_t agc = (uint16_t)(sum.end_cs - sum.start_cs) & 037777u;
+    uint32_t hz100 = hw_div(hw_hz, 100u);
+    hw_puts(t_agc);
+    hw_putu(agc);
+    hw_puts(t_cs);
+    hw_putu(sum.steps);
+    hw_puts(t_steps);
+    hw_put100(hw_div(sum.cycles, hz100));
+    hw_puts(t_s);
+    if (agc) hw_put100(hw_div(sum.cycles, hw_div(hw_mul(hz100, agc), 100u)));
+    hw_puts(t_x);
+    hw_putx(hw_end_crc);
+    hw_puts(t_vice);
+    hw_putx(DP_HW_EXPECT);
+    hw_puts(t_host);
+    hw_putx(DP_HW_HOST);
+    hw_puts(hw_end_crc == DP_HW_HOST ? t_same : t_differ);
+    hw_puts(hw_pass ? t_pass : t_fail);
+    if (st != EXEC_OK) {
+        hw_puts(t_status);
+        hw_putu((uint8_t)st);
+        hw_putc(')');
+    }
+    dp_done();
+}
+#endif
 int main(void){
  uint16_t job=0,task=0;
  uint32_t t,dil;
  enum exec_status st=EXEC_OK;
  if(rk_boot()){mail[1]=1;mail[5]=1;mail[0]=0xa5;for(;;){}}
+#ifdef DP_HW_CHECK
+ hw_start();
+#endif
  load_snapshot();
  __asm__ volatile("sei");
  rk_ticks=ov2_irq_count;
@@ -405,6 +691,9 @@ int main(void){
 #endif
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);
+#ifdef DP_HW_CHECK
+ __asm__ volatile("jmp dp_hw_end");
+#endif
  mail[0]=0xa5;
  for(;;){}
 }

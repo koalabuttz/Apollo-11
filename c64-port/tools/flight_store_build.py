@@ -665,6 +665,9 @@ def add_rope(m):
     data = json.loads(manifest.read_text())
     data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
     manifest.write_text(json.dumps(data, indent=1) + '\n')
+    # The declared runtime regions (tools/reu_layout.py) must not overlap.
+    import reu_layout
+    reu_layout.layout(m, data)
 
 
 SCRATCH_BYTES = 32768
