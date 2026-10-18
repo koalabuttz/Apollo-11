@@ -207,7 +207,7 @@
   {
    "mission": "lm",
    "keep": "0x3ffffe000060000",
-   "cases": 28,
+   "cases": 30,
    "case_ids": [
     18984,
     19436,
@@ -236,16 +236,16 @@
     23188,
     23588,
     24300,
-    24900
+    24900,
+    25116,
+    25291
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x107fffe000000000000",
-   "cases": 21,
+   "keep": "0x107fffc000000000000",
+   "cases": 19,
    "case_ids": [
-    25116,
-    25291,
     25688,
     26236,
     26692,
@@ -310,13 +310,13 @@
  "c64_coverage": {
   "host_labels": 54,
   "c64_labels": 54,
-  "host_edges": 2262,
-  "c64_edges": 2262,
+  "host_edges": 2265,
+  "c64_edges": 2265,
   "host_edges_not_c64": 0,
   "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
  },
  "c64_gcov_branches": {
-  "host_taken": 1247,
+  "host_taken": 1249,
   "c64_taken": 1261,
   "host_taken_not_c64": 0,
   "missing": [],
@@ -1869,11 +1869,11 @@
  ],
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
-  "edges_all_cases": 1130,
-  "edges_host_vectors": 1130,
-  "edges_c64": 1129,
+  "edges_all_cases": 1129,
+  "edges_host_vectors": 1129,
+  "edges_c64": 1128,
   "edges_not_on_c64": [
-   "src/lm_r31_file.c:1247"
+   "src/lm_r31_file.c:1255"
   ]
  },
  "stops": {

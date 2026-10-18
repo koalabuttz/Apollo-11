@@ -689,6 +689,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
+   crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
+   28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
+   bit of the core's channel 30 (036351; the rest of it, PGNCS mode and
+   the IMU, must stay as it is): bit 1, ABORT, for P70, or bit 4, ABORT
+   STAGE, for P71. R10,R11 reads it on its next pass and starts the
+   program, which restarts through ENEMA into the abort guidance. P70
+   keeps the descent engine (THROTUP's BIT13 THRUST command takes it to
+   full thrust, which the engine model gives in MODREG 70) and cuts off at
+   about 1,408 s: 1,667 m/s, 18.3 km up, climbing 9 m/s. P71 stages
+   (`FLIGHT_STAGE`: from the abort the engine is the ascent engine of
+   `FLIGHT_ASCENT=4888`) and cuts off at about 1,579 s: 1,678 m/s, 18.3 km,
+   climbing 7 m/s. The flight store resolves P70-P71's basic keys to
+   lm_p70_p71_file, the file's whole-file certificate, before the older
+   lm_p70_p71 tables (flight_store_build.py `rank`), since lm_p70_p71
+   refuses THROTUP's WOR CHAN14. On the host every native routine matches
+   yaAGC in both; the unregistered points are the 3 self-check ones and
+   Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -852,12 +870,51 @@ port) runs one mission:
    TIGON starts, so the cm-p40-p47 spec admits FIXLOC 0110 there
    (`novac`). On the host every native routine matches yaAGC; the
    unregistered point is Pinball's RELDSP1.
+   `cm-p22`: lunar-orbit navigation on a known landmark, as Collins
+   tracked landmark 130 before the landing (synthetic, about 98 h GET).
+   cm_p22.py writes cm-p22.load: the CSM in a 60 nmi retrograde orbit
+   passing over the landmark (1.20 N, 23.70 E, 1,500 m below the CMC's
+   lunar radius) in the CMC's own moon frame (MOONMX with the rope's
+   constants), the CMC's state 1.4 km off the true orbit, REFSMMAT and
+   platform local vertical, the sextant's shaft axis on the landmark at
+   mid-pass, and the W matrix pads. The mark loads put CDUS and CDUT where
+   the true orbit sees the landmark at each MARK. N89 holds half the
+   longitude (LLASRDA doubles it into LONG). V37E22E, proceed on V06N45;
+   V22E10000E on V05N70 (landmark known, so N89), proceed; proceed on
+   V06N89; R52 drives the optics on V06N92; the optics switch to MANUAL
+   (FLIGHT_CHAN), MARK at 132 s and 152 s, proceed on V51; proceed on
+   V05N71 and V06N89; V06N49 shows 0.6 nmi, proceed; the landmark
+   solution on V06N89 (1.205, 11.847, -0.74 nmi), proceed; V05N70, then
+   V37E00E. On the host every native routine matches yaAGC; the
+   unregistered points are Pinball's VBPROC +3 to +5.
+   `cm-tei`: Apollo 11's transearth injection at 135:23:42 GET, the SPS
+   burn on the far side that left lunar orbit. cm_tei.py sets it up as
+   cm_p40.py does LOI-1 (the same TVC and SPS pads, `FLIGHT_SPS`): the
+   CSM alone (16,400 kg) in a circular 60 nmi lunar orbit, the platform
+   with X along the DV, the CDUs at the ignition attitude R60 asks for,
+   RLS for the altitude displays, and TEPHEM so the CMC clock's 300 s is
+   TIG. The TEI-1 pad is keyed: V37E30E, V25 on V06N33 (TIG 300 s on the
+   CMC clock), V25 on V06N81 (+3283.6 ft/s), proceed on N81, N42 (9999.9
+   x 60.0 nmi) and V16N45; V37E40E, proceed and ENTER on V50N18, proceed
+   on V50N25 00204 and on V99N40 at TIG-5. The SPS burns about 154 s to
+   cutoff (N40 VG 6.1 ft/s); proceed on V16N40 and N85, V37E00E; V82 shows
+   V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
+   matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
+   RELDSP1.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
    (platform/c64/dap_pass_check.c, as tools/dap_pass_vice.py does), run
    for `--cs` centiseconds with cycles, steps and module loads per AGC
-   interrupt; a refused or untranslated point stops it.
+   interrupt; a refused or untranslated point stops it. With `--keys` it
+   presses the scenario's DSKY keys that fall in the window, at the
+   centiseconds the host run presses them (channel 15 and KEYRUPT1, or a
+   mark's channel 16 bits and KEYRUPT2; on the CM also rk_device's
+   main_keys and navigation_keys, which each store module on a CM record
+   writes back to those channels). Without it the window presses none.
+   Other scheduled inputs (FLIGHT_CHAN, FLIGHT_POKE and FLIGHT_LOAD, the
+   radar model) are not replayed. `--watch 1011,...` prints up to five
+   erasable words as the window ends (1011 is Comanche's MODREG).
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under

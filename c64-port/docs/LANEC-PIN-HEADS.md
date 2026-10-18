@@ -53,6 +53,7 @@ missions) covers the heads where they join the rest of Pinball.
 | request | operator_request, operator_schedule | VBRQEXEC, VBRQWAIT (bank 41) |
 | proceed | load_control | VBPROC, VBTERM, PROCKEY, VBRESEQ, RECALTST (bank 40) |
 | nvsub | nv_admission, nv_consumer | NVSUB, NVMONOPT (fixed-fixed) |
+| release | (none: before it, no routine took these points) | VBPROC +3..+5 (bank 40: the calls after KILMONON returns), RELDSP1 (fixed-fixed) |
 
 Dropped: nv_update (nv_update_general accepts its states), decimal
 (decimal_general and decimal_raw accept its states), Comanche's

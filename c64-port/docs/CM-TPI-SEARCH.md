@@ -27,4 +27,6 @@ Hashes: `evidence/cm-tpi-search/SHA256.json`. Bulk files are assets of the `evid
 - **Source map.** `cm-tpi-search-source-map.json` lists all 443 words with the routine that compiles each; none is untranslated.
 - **Independent assembly comparison.** `make cm-tpi-search-differential`: 512 states per routine (33,280 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. Every 128th case is frozen in `tests/cm_tpi_search_vectors.h`.
 - **Host and sanitizer results.** `make test-cm-tpi-search sanitize-cm-tpi-search` runs the 260 frozen cases (`cm-tpi-search-host.log`).
-- **C64 execution results.** `make vice-cm-tpi-search` runs eight diagnostics with 114 cases (`cm-tpi-search-vice.log`). Seven routines run too much code for one C64 program and are checked on the host only (`c64_host_only`): 35,3177, 35,3210, 35,3216, 35,3220, 36,2027, 36,2070 and 36,2307.
+- **C64 execution results.** `make vice-cm-tpi-search` runs 16 diagnostics with 248 cases (`cm-tpi-search-vice.log`). No routine is host-only.
+
+The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.

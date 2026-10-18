@@ -165,6 +165,13 @@ uint16_t agc_transfer_point(const agc_native_program *, const apollo_overlay_sta
  * (not searched) or has none. One transfer point instead of two. */
 uint16_t agc_transfer_next(const agc_native_program *, const apollo_overlay_state *,
                            agc_word superbank, uint16_t stop, agc_routine *call);
+/* agc_transfer_next, searching only a point whose page (its high byte k,
+ * taken mod 64) is marked in pages (bit k & 7 of pages[(k >> 3) & 7]): a
+ * caller that marks the page of every key its tables hold gets the same
+ * answer, with no search for a point in an unmarked page. */
+uint16_t agc_transfer_next_paged(const agc_native_program *, const apollo_overlay_state *,
+                                 agc_word superbank, uint16_t stop, agc_routine *call,
+                                 const uint8_t pages[8]);
 /* Trampoline: call the routine at the current point, then the routine at its
  * continuation, and so on, until the point equals stop (the caller's own
  * continuation) or a routine reports anything but EXEC_OK. Each routine returns

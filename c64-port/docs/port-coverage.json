@@ -1490,8 +1490,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/cm-extended-verbs.md",
-            "sha256": "ea3d885d22513068f2e39563ae52966c40f132c78e020ac7c5f7b89d23e9f858"
+            "path": "docs/audits/rev2-cm-extended-verbs-623.md",
+            "sha256": "1a2f3c3620d464a8d1d29a0521060df320f8b7824bc99c3bba014f1df8fbd4d1"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-extended-verbs-file/cm-extended-verbs-file-proof.json",
@@ -4365,7 +4365,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "f14c9628add04c727c352940a1311de9e5d218cf16e2f707dd25e91f05cd4350"
+            "sha256": "5e735dbf96792b3221612dcd5dcd71d15bace60a104e0832dc9f96b298c78b13"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -4749,26 +4749,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-r31/cm-r31-proof.json",
-            "sha256": "6fda45b2532d86c9bafa4bace9f081b6fdd55216ff0b90430e7457209f74b58f"
+            "sha256": "c3a3e13d1b4a7dbcaddba9ebc94dc14c7a1adc9b4eecaabaaf872ebd44e7a273"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-r31/cm-r31-host.log",
-            "sha256": "66f3ab38280d41e6e3069eb737cc401c3b9c2b8dff1ea5fc3f5aac6d65818bb2"
+            "sha256": "5e63c2fe8c4b05b1d595652f1b76fd40dd0d5029fa33f0d89ef19e376a19d75a"
           },
           "c64_execution_results": {
             "path": "evidence/cm-r31/cm-r31-vice.log",
-            "sha256": "4f333ac25f13449d9cc5a1c82216a27e54e9a772143c7f1518039c1422ced40b",
+            "sha256": "5c108ebd1602e315c99ac97de646eef72606572090e87058c8b4516a27c41fbb",
             "vice_targets": {
-              "vice-cm-r31": 118
+              "vice-cm-r31": 117
             }
           },
           "independent_review": {
-            "path": "docs/audits/cm-r31.md",
-            "sha256": "53e35c85003dc778c6d11b01e28152c70dbfc7b855fc34912497f8827192e851"
+            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
+            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
-            "sha256": "3863afe4e20cdc83969915cf3b846c133c714edd65a8815b5a71a89855e680ce"
+            "sha256": "cf53e5ca67a25e8f6e4cef5355e323f9a862d515f544cd67800eaa0303986229"
           }
         }
       }
@@ -6121,26 +6121,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "25c53efb28a034d83f10b3a23bb5932d5614985416b4aa49283a6072d38514d5"
+            "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
-            "sha256": "07701059d4b8f410b39d705f2e7ba70a0600832bb5a7034357571d159b61799e"
+            "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d"
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "ecf27bcfc4111e633256e4ab2513604b6309df5e3dc6e2be2302557d9ddb6a7f",
+            "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
             "vice_targets": {
               "vice-cm-tpi-search": 248
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "54ece4ce97fd34c5ac74d89c0fff49bf73d04645065ee6ca15cdd43307d6fd22"
+            "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-194.md",
-            "sha256": "bafb3b327450ce35ff3b5d6bbf3052ed887b4ff9b2769f7b51aa3c4122ce0c68"
+            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
+            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
           }
         }
       }
@@ -10680,7 +10680,7 @@
             "src/agc_transfer.c",
             "include/agc_channel_ops.h"
           ],
-          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 1,026 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG; basic routines stop at the file's next basic key; the table holds the routines directly, direct_abi), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
+          "scope": "Every word of the file (3,254 words in banks 02, 03, 23-26 and 30-33): P20, P22 and P25, R21 and R22 (radar designate and data read), R29, V67, the RR and LR read, designate, remode and reposition routines and the radar channel bookkeeping, as 1,028 routines of the control-transfer ABI compiled by tools/interp_compile.py (a routine at every branch target, return point and word after a DANZIG; basic routines stop at the file's next basic key; the table holds the routines directly, direct_abi), with the channel instructions on the shared I/O channel model and INDEX Q reads of a caller's inline word chosen by the return in Q; LOADTIME and CDULOGIC through RTB as the native rtb_angles.",
           "verification": "docs/LM-P20-P25.md"
         }
       ],
@@ -10688,7 +10688,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area with PUSHLOC within it for the interpretive routines and the basic routines that enter the interpreter or index through FIXLOC, and any FIXLOC with NEWJOB also -0 for the other basic routines (the WAITLIST, TWIDDLE, FIXDELAY and VARDELAY tasks, the RADARUPT and T4RUPT callers RADAREAD, RRLIMCHK, SETTRKF, RRTURNON, DORREPOS and FLIP, and the NOVAC jobs N49DSP, R29REMOJ, R29RDJOB and R29DODES, whose resumes run under its FIXLOC 052), MODE, OVFIND, Q and caller returns outside the file, and these values as their producers leave them: the INDEX MPAC table returns' MPAC (LPS20.2 and LRS22.2 0 or 1, LRS22.1 0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, G+N,AUTO's A (0, 0777 or BIT14), X1 at R21LEM12's STORE,1 (INTEXIT's -2 or -10D, and 0-6), LITIT +3's ITEMP6 (R12LITES's returns 25,3614 and 25,3615), SPCOS's A and TANG at 32,2662 and TANG at TESTCOS +6 (0 or 1), RRINDEX 0 or 1 through RR1AX2, V67's X1 from 6 to 54 with S1 6, R22LEM96's N49FLAG and NEWJOB together, HFLSHBIT's index 0 or -1, DESCOUNT and PIPCTR not -0, LOSCOUNT 0 to 3 at NOTP20 (read under the case's EBANK), ITEMP2 0 or 1 at RROUT2 +6 and SETRRCTR, and any values of the other erasables (including EBANK); the cases also pin SAMPLIM, MODREG, OPTION2, RADCADR, NSRCHPNT, ITEMP1 (at GOODRAD, RROUT2 +6 and SETRRCTR), RNRAD, MPAC at R22LEM96's BZE resume, MPAC and MODE at LRS22.1's DSU BMN, OVFIND at V67's BOV, A at 32,2641-2652 and 0154/0155 at DONBRD +58 to the values their arms test, besides random ones.",
+        "supported_domain": "Canonical 2048-word image entered at NEWOPS with LOC at any of the file's interpretive routines or with Z at any of its basic ones (FB of the routine's bank), the input channels 3, 4, 16 and 30-33 latched and the output channels 5, 6 and 11-14 in the program's agc_hardware at any values, TIME2/TIME1 and the CDUs across their range, NEWJOB +0 or positive (a job waiting), CHANG2 resumes in the state the program reaches them in, FIXLOC a VAC area with PUSHLOC within it for the interpretive routines and the basic routines that enter the interpreter or index through FIXLOC, and any FIXLOC with NEWJOB also -0 for the other basic routines (the WAITLIST, TWIDDLE, FIXDELAY and VARDELAY tasks, the RADARUPT and T4RUPT callers RADAREAD, RRLIMCHK, SETTRKF, RRTURNON, DORREPOS and FLIP, and the NOVAC jobs N49DSP, R29REMOJ, R29RDJOB and R29DODES, whose resumes run under its FIXLOC 052), MODE, OVFIND, Q and caller returns outside the file, and these values as their producers leave them: the INDEX MPAC table returns' MPAC (LPS20.2 and LRS22.2 0 or 1, LRS22.1 0, 1 or 2), LRVEL's VBEAM index 0, 2 or 4, G+N,AUTO's A (0, 0777 or BIT14), X1 at R21LEM12's STORE,1 (INTEXIT's -2 or -10D, and 0-6), LITIT +3's ITEMP6 (R12LITES's returns 25,3614 and 25,3615), SPCOS's A and TANG at 32,2662 and TANG at TESTCOS +6 (0 or 1), RRINDEX 0 or 1 through RR1AX2, V67's X1 from 6 to 54 with S1 6, R22LEM96's N49FLAG and NEWJOB together, HFLSHBIT's index 0 or -1, DESCOUNT and PIPCTR not -0, LOSCOUNT 0 to 3 from DODES through NOTP20 (read under the case's EBANK; the DORROUT entries reach NOTP20 with it, auditor #508), ITEMP2 0 or 1 at RROUT2 +6 and SETRRCTR, and any values of the other erasables (including EBANK); the cases also pin SAMPLIM, MODREG, OPTION2, RADCADR, NSRCHPNT, ITEMP1 (at GOODRAD, RROUT2 +6 and SETRRCTR), RNRAD, MPAC at R22LEM96's BZE resume, MPAC and MODE at LRS22.1's DSU BMN, OVFIND at V67's BOV, A at 32,2641-2652 and 0154/0155 at DONBRD +58 to the values their arms test, besides random ones.",
         "external_continuations": [
           "CHANG2 (NEWJOB positive at a DANZIG), where the Executive resumes the job at NEWOPS with LOC +1, the next routine's key",
           "BANKCALL, IBNKCALL and POSTJUMP with their inline CADRs, whose returns are routines of the file",
@@ -10702,21 +10702,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-source-map.json",
-            "sha256": "f538657e3888fd60dd425e644352caf26fea16aac799719a77197017912c13d0"
+            "sha256": "77b462a8489e3e582a28c43be9784f245662c6425d8bf32eb54f2681ebd2672a"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-proof.json",
-            "sha256": "28740025a28ccc72f86b5133277bc3d8ed4955fdcbf39bed33e1427aeb7ae616"
+            "sha256": "4bce1f88c282ac36099abae7235c7c8b0def8c0010914ef87cda130c0a0ee042"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-host.log",
-            "sha256": "53074aa541873caf701f19576233417c92846b3d81460e44d4e422d88da47ef5"
+            "sha256": "1dc8fed697cbdee337e9f918dd522602df132f1eaf5030013b403716dbed0ce6"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-vice.log",
-            "sha256": "bc7d7340b13040adb26b8a904586af03811e81d23872659a1b9b9e9f6e27dcd6",
+            "sha256": "7aaa8ae69dbd2d59a35dba3413386b281d458bf2f1fab1db6596ed94f96fded5",
             "vice_targets": {
-              "vice-lm-p20-p25": 1224
+              "vice-lm-p20-p25": 1233
             }
           },
           "independent_review": {
@@ -10725,7 +10725,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p20-p25/lm-p20-p25-c64-cover.json",
-            "sha256": "9279fadf9d2464e14d233294571e5c4e288e9b028878a341174b7470bf6704c6"
+            "sha256": "facaa64044a60de83679d9a282b7fb63454db3177ae296fb546bc0a118cbd8b9"
           }
         }
       }
@@ -11734,7 +11734,7 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "b73a761a874ed44b812a47a816f2122d1f85bfe9f5c77f51f94a24743b8491e4"
+            "sha256": "2dab7411425e2a3496cb58713450ade7621d020f1a72f74489140c39946e5eb4"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
@@ -12201,22 +12201,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r31-file/lm-r31-file-proof.json",
-            "sha256": "33417b2506314b8f8f6691c52d0656a41b86aba97417fb060a534e7de488ddcb"
+            "sha256": "9114b2e3ca9f5516e6ded791013adcf8834bc3d7b71c980fcea7748ff60d7eae"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r31-file/lm-r31-file-host.log",
-            "sha256": "fd3b63235e8bf36d3516c8aa6618c9c927d5fdfc80b039f2d3a99edf91d7960a"
+            "sha256": "0df947d75aa37e441b6c49a91c8af2c6c1aea13667f04ffba11f4231d97dacce"
           },
           "c64_execution_results": {
             "path": "evidence/lm-r31-file/lm-r31-file-vice.log",
-            "sha256": "1708a5bb233d5852a3dea2a63a3aa6d395fbd0457270de2ce564070ce25c01f8",
+            "sha256": "e5acd114b5613ebb0572e15c118b7e6a62ce45d2bd4f4b3b5f74334cb7099642",
             "vice_targets": {
               "vice-lm-r31-file": 139
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r31-file/lm-r31-file-c64-cover.json",
-            "sha256": "66fc8aef998de36cd1b30055a30fe39339b0291b8c7503c9d42f54a01529a6bb"
+            "sha256": "d5fdcce7ed97f6bee8b406d54b44574b5349e23aa60cf2b401ebdce2fb245d8a"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-r31-file/lm-r31-file-closure.json",

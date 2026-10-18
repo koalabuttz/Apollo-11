@@ -4,7 +4,9 @@
  * every logical address under every FB bank, with junk in FB's other bits,
  * and the superbank values that matter plus junk; then random words.
  * agc_transfer_next against agc_transfer_point plus agc_transfer_resolve, on
- * random states over basic and interpretive tables. Any difference fails. */
+ * random states over basic and interpretive tables, and
+ * agc_transfer_next_paged against agc_transfer_next: the same answer with
+ * every key's page marked, and no search with none. Any difference fails. */
 #include <stdio.h>
 #include <stdlib.h>
 #include "agc_transfer.h"
@@ -36,6 +38,9 @@ static unsigned long next_checks(unsigned long *checks) {
     apollo_overlay_state s;
     unsigned long failures = 0;
     uint32_t i, x = 777u;
+    uint8_t all[8] = {0}, none[8] = {0};
+    for (i = 0; i < sizeof keys / sizeof keys[0]; ++i) all[(keys[i] >> 11) & 7u] |= (uint8_t)(1u << (keys[i] >> 8 & 7u));
+    all[((AGC_TRANSFER_ERASABLE_BASE + 01234u) >> 11) & 7u] |= (uint8_t)(1u << ((AGC_TRANSFER_ERASABLE_BASE + 01234u) >> 8 & 7u));
     for (i = 0; i < 2000000u; ++i) {
         uint16_t k, stop, point;
         agc_routine call;
@@ -56,6 +61,13 @@ static unsigned long next_checks(unsigned long *checks) {
         ++*checks;
         point = agc_transfer_next(&p, &s, sb, stop, &call);
         if (point != agc_transfer_point(&p, &s, sb) || call != (point == stop ? 0 : agc_transfer_resolve(&p, &s, sb))) ++failures;
+        {
+            agc_routine paged;
+            ++*checks;
+            if (agc_transfer_next_paged(&p, &s, sb, stop, &paged, all) != point || paged != call) ++failures;
+            ++*checks;
+            if (agc_transfer_next_paged(&p, &s, sb, stop, &paged, none) != point || paged) ++failures;
+        }
     }
     return failures;
 }

@@ -1079,6 +1079,11 @@ class Compiler:
                     # file resumes at that order's return or target.
                     right = split_op(self.right_op)[0]
                     rw = self.L.word(cur)
+                    if self.pending_danzig:
+                        # (The RTB target's TC DANZIG comes back with the
+                        # right order in EDOP and LOC at the RTB's operand
+                        # word: a routine of its own, as above.)
+                        self.pending_rtb(cur, lab)
                     if right == 'CALL':
                         self.call_return(cur + 1, 'RTB %s CALL return' % lab)
                         if rw & 0o74000:
