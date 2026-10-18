@@ -39,7 +39,7 @@ $6FBE, which also holds the channels compiled routines use (5, 6, 30-33 on
 the CM, the LM DAP's channels, built with `-DAGC_CHANNELS_HW=rk_hardware`;
 on the CM inputs 30-33 start at the values yaAGC starts with), and
 `rk_flight` (the `flight_io` fields neither `rk_io` nor `agc_hardware`
-holds) at $6FDC. Below them, at $6FBC (`RK_IRQ_COUNT`), is
+holds) at $6FDD. Below them, at $6FBC (`RK_IRQ_COUNT`), is
 `ov2_irq_count`, the CIA1 interrupt count, so that a long-running module
 (the interpreter) can return to the step when an interrupt arrives, and
 below that, at $6FB8 (`RK_DILATION`), `rk_dilation`, the 32-bit count of

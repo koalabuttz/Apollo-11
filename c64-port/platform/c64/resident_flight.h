@@ -201,7 +201,7 @@ extern rk_module_env rk_env;
  * latches, ...), for the modules whose tables take another io record. Its
  * superbank and interrupt_enabled are copies, refreshed from rk_device
  * around each such run. At RK_FLIGHT_IO. */
-#define RK_FLIGHT_IO 0x6fdcu
+#define RK_FLIGHT_IO 0x6fddu
 /* rk_hardware sits at RK_HARDWARE, below rk_flight, so those modules
  * convert with absolute addressing. */
 #define RK_HARDWARE 0x6fbeu
@@ -216,7 +216,7 @@ extern flight_io rk_flight;
  * ERROR RESET's WRITE 77 clears: nonzero while lit. At RK_RESTART_LAMP,
  * above rk_flight, so the Pinball modules read and write it there (Lane C:
  * their restart_light). */
-#define RK_RESTART_LAMP 0x6ff4u
+#define RK_RESTART_LAMP 0x6ff5u
 extern uint8_t rk_restart_lamp;
 #if RK_LM
 #define RK_IO_BASE FLIGHT_IO_P66

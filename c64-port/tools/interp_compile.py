@@ -452,6 +452,8 @@ class Compiler:
         # files reach directly: 'native_entries' {label: {mission: C call
         # returning RTB_OK}}, registered as routines of their own.
         for lab, calls in self.spec.get('native_entries', {}).items():
+            if self.m not in calls:
+                continue
             phys = self.label_phys(lab)
             if phys is None or not self.is_basic(phys):
                 raise CompileError('native entry %s is not a basic word of the file' % lab)
