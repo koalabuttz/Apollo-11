@@ -440,17 +440,14 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical) {
     return EXEC_UNMAPPED;
 }
 #endif
-__attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical) {
+/* The step after the interrupts: the kernel's routine, a loaded module's,
+ * or the resolver's module. */
+__attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_physical)
+{
     apollo_overlay_state *s=IMAGE;
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
-    /* The soft stack ran into the pinned module below it. */
-    if (*(volatile uint8_t *)RK_STACK_CANARY != RK_STACK_CANARY_VALUE)
-        return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
-    RK_PROF(0);
-    rk_rupts();
-    RK_PROF(1);
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) { RK_PROF(2); return status; }
     RK_PROF(3);
@@ -477,4 +474,111 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     if(rk_env.status==EXEC_UNMAPPED) return rk_direct(stop_physical);
 #endif
     return rk_env.status;
+}
+#if defined(RK_WORK_CLOCK) && !defined(RK_RUNS_ONLY)
+/* The idle loop's two steps, remembered (docs/RESIDENT-FLIGHT.md, Idle
+ * memo): the self-check pass from SELFRET's return (CCS SMODE, CHECKNJ,
+ * POSTJUMP to ADVAN) and ADVAN with no job ready (DXCH Z back to the
+ * pass). With NEWJOB -0 and SMODE +0, each reads only its key (Z, L, EB, BB,
+ * SELFRET and the superbank) and writes only its result (the key's words
+ * and A, Q, FB): tests/test_idle_memo.c checks both on random images. So a
+ * step that starts on the key it started on last time ends on the result it
+ * ended on: the resident writes the result and charges the work it charged,
+ * without running the step or loading the idle module. The resident check
+ * builds (RK_RUNS_ONLY) leave it out. */
+#define RK_IDLE_MEMO 1
+#if RK_LM
+#define RK_MEMO_PASS  03304u /* 43,3304 */
+#define RK_MEMO_ADVAN 03214u /* 01,3214 */
+#else
+#define RK_MEMO_PASS  03306u /* 43,3306 */
+#define RK_MEMO_ADVAN 03231u /* 01,3231 */
+#endif
+/* The words a step reads or writes: the first six are its key, all nine
+ * its result. */
+#define RK_SELFRET    01361u
+#define RK_MEMO_KEY   6u
+#define RK_MEMO_WORDS 9u
+static agc_word *const rk_memo_at[RK_MEMO_WORDS] = {
+    &IMAGE->words[5], &IMAGE->words[1],          &IMAGE->words[3],
+    &IMAGE->words[6], &IMAGE->words[RK_SELFRET], &rk_device.superbank,
+    &IMAGE->words[0], &IMAGE->words[2],          &IMAGE->words[4]};
+/* A memo: the key bytes, the result bytes, the work the step charged (the
+ * idle loop's rest of the period, or a count) and whether it holds a step.
+ * The step works on rk_memo at a fixed address, which the 6502 reaches in
+ * one instruction, and swaps it with rk_memo_next after. */
+typedef struct {
+    uint8_t in[2u * RK_MEMO_KEY], out[2u * RK_MEMO_WORDS];
+    uint16_t work;
+    uint8_t idle, ok;
+} rk_memo_bytes;
+static rk_memo_bytes rk_memo, rk_memo_next;
+static uint8_t rk_memo_now[2u * RK_MEMO_WORDS];
+__attribute__((noinline)) static void rk_memo_get(void)
+{
+    uint8_t i;
+    for (i = 0; i < RK_MEMO_WORDS; ++i) ((agc_word *)rk_memo_now)[i] = *rk_memo_at[i];
+}
+__attribute__((noinline)) static enum exec_status rk_memo_run(uint16_t stop_physical)
+{
+    enum exec_status status;
+    uint8_t i;
+    rk_memo_get();
+    if (rk_memo.ok) {
+        for (i = 0; i < sizeof rk_memo.in; ++i)
+            if (rk_memo.in[i] != rk_memo_now[i]) goto run;
+        for (i = 0; i < RK_MEMO_WORDS; ++i) *rk_memo_at[i] = ((const agc_word *)rk_memo.out)[i];
+        if (rk_memo.idle)
+            rk_charge(0u, RK_MCT_IDLE);
+        else
+            rk_work += rk_memo.work;
+        return EXEC_OK;
+    }
+run:
+    for (i = 0; i < sizeof rk_memo.in; ++i) rk_memo.in[i] = rk_memo_now[i];
+    rk_memo.work = rk_work;
+    status = rk_step_run(stop_physical);
+    /* rk_rupts cleared rk_idle at this step's start. */
+    rk_memo.idle = rk_idle;
+    rk_memo.work = (uint16_t)(rk_work - rk_memo.work);
+    rk_memo.ok = status == EXEC_OK;
+    rk_memo_get();
+    for (i = 0; i < sizeof rk_memo.out; ++i) rk_memo.out[i] = rk_memo_now[i];
+    return status;
+}
+/* The pass and ADVAN alternate, so after each the other's memo comes in
+ * (Z, in the key, keeps a memo from answering for the other step). */
+__attribute__((noinline)) static enum exec_status rk_memo_step(uint16_t stop_physical)
+{
+    enum exec_status status = rk_memo_run(stop_physical);
+    uint8_t i, t;
+    for (i = 0; i < sizeof rk_memo; ++i) {
+        t = ((uint8_t *)&rk_memo)[i];
+        ((uint8_t *)&rk_memo)[i] = ((uint8_t *)&rk_memo_next)[i];
+        ((uint8_t *)&rk_memo_next)[i] = t;
+    }
+    return status;
+}
+#endif
+__attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical)
+{
+    /* The soft stack ran into the pinned module below it. */
+    if (*(volatile uint8_t *)RK_STACK_CANARY != RK_STACK_CANARY_VALUE)
+        return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
+    RK_PROF(0);
+    rk_rupts();
+    RK_PROF(1);
+#ifdef RK_IDLE_MEMO
+    /* A flight step (no stop point) of the pass or ADVAN outside an
+     * interrupt, with no job ready and SMODE +0. */
+    {
+        const agc_word *w = IMAGE->words;
+        if (stop_physical == AGC_TRANSFER_NONE && !rk_hardware.in_interrupt && w[067u] == 077777u &&
+            !w[01362u] &&
+            ((w[4] == 066000u && w[5] == RK_MEMO_PASS) ||
+             (w[4] == 02000u && w[5] == RK_MEMO_ADVAN)))
+            return rk_memo_step(stop_physical);
+    }
+#endif
+    return rk_step_run(stop_physical);
 }
