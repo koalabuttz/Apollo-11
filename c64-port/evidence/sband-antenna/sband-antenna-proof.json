@@ -65,7 +65,7 @@
   {
    "mission": "lm",
    "keep": "0x7fffffff80000",
-   "cases": 8,
+   "cases": 9,
    "case_ids": [
     9912,
     9903,
@@ -74,15 +74,15 @@
     10456,
     10512,
     11008,
-    10891
+    10891,
+    11263
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x7ffffffe00000",
+   "keep": "0x7ffffffc00000",
    "cases": 12,
    "case_ids": [
-    11263,
     11696,
     11456,
     11495,
@@ -93,15 +93,15 @@
     12472,
     12336,
     12712,
-    12832
+    12832,
+    12955
    ]
   },
   {
    "mission": "lm",
    "keep": "0x7fffffe000000",
-   "cases": 12,
+   "cases": 13,
    "case_ids": [
-    12955,
     13291,
     13288,
     13162,
@@ -112,16 +112,16 @@
     13864,
     14184,
     14168,
-    14440
+    14440,
+    14343,
+    14944
    ]
   },
   {
    "mission": "lm",
-   "keep": "0x7fffff0000000",
-   "cases": 18,
+   "keep": "0x7ffffe0000000",
+   "cases": 42,
    "case_ids": [
-    14343,
-    14944,
     15303,
     15376,
     15594,
@@ -137,14 +137,7 @@
     17117,
     17448,
     17456,
-    17487
-   ]
-  },
-  {
-   "mission": "lm",
-   "keep": "0x1fffffc00000000",
-   "cases": 42,
-   "case_ids": [
+    17487,
     17595,
     18088,
     18425,
@@ -170,7 +163,14 @@
     22716,
     22775,
     22964,
-    23264,
+    23264
+   ]
+  },
+  {
+   "mission": "lm",
+   "keep": "0x3ffe00000000004",
+   "cases": 18,
+   "case_ids": [
     23400,
     23800,
     23747,
@@ -186,14 +186,7 @@
     27152,
     27656,
     28160,
-    28696
-   ]
-  },
-  {
-   "mission": "lm",
-   "keep": "0x200000000000004",
-   "cases": 2,
-   "case_ids": [
+    28696,
     29328,
     29614
    ]
@@ -309,14 +302,16 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1249,
-  "c64_taken": 1249,
+  "host_taken": 1264,
+  "c64_taken": 1264,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
    "src/lm_sband_antenna.c",
    "src/cm_sband_antenna.c",
    "src/rtb_angles.c",
+   "src/agc_fast_ops.c",
+   "src/agc_fast_window.c",
    "src/lm_interp_orders.c",
    "src/lm_interp_steps.c",
    "src/cm_interp_orders.c",
@@ -333,9 +328,9 @@
  },
  "outcome_cover": {
   "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c); with site_edges, every edge of the shared code and the milestone's own helpers counts once per call site (the routine block that made the call)",
-  "edges_all_cases": 13322,
-  "edges_host_vectors": 13322,
-  "edges_c64": 13322,
+  "edges_all_cases": 13341,
+  "edges_host_vectors": 13341,
+  "edges_c64": 13341,
   "edges_not_on_c64": []
  },
  "stops": {
@@ -797,8 +792,8 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 6648,
- "host_branch_arcs": 1275,
+ "host_branch_arcs": 1293,
  "c64_rows": 224,
- "c64_branch_arcs": 1275,
+ "c64_branch_arcs": 1293,
  "host_branches_missing_on_c64": []
 }
