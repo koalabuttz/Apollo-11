@@ -11,7 +11,7 @@ reach flag, then the interrupt inhibit, SUPERBNK and the 2048 erasable words,
 Fletcher as ibo_digest) into tests/interbank_oracle_vectors.h and every third
 into tests/interbank_oracle_c64_vectors.h. Writes build/interbank-oracle-proof.json.
 """
-import collections, hashlib, json, os, pathlib, subprocess
+import collections, hashlib, json, os, pathlib, re, subprocess
 
 R = pathlib.Path(__file__).resolve().parents[1]
 E = R / 'deps/virtualagc/yaAGC'
@@ -23,7 +23,9 @@ HEADERS = ['include/agc_transfer.h', 'include/lm_interbank_routines.h', 'include
 FLAGS = ['cc', '-std=c99', '-O2', '-Iinclude', '-Itests', '-Itools', '-Iplatform/host']
 ENTRIES = ['BANKCALL', 'SWCALL', 'SWRETURN', 'POSTJUMP', 'BANKJUMP', 'QJUMP', 'MAKECADR', 'SUPDACAL', 'IBNKCALL',
            'ISWCALL', 'ISWRETRN', 'USPRCADR', 'SUPERSW', 'SWCALL -1']
-SITES = {'LM': 448, 'CM': 354}
+# Cases 0.. are the site tables' operand words, LM then CM (their counts from the tables).
+SITES = {m: int(re.search(rf'#define {m}_INTERBANK_SITES_COUNT (\d+)u', (R / f'src/{m.lower()}_interbank_sites.inc').read_text())[1])
+         for m in ('LM', 'CM')}
 
 
 def digest(fields):

@@ -26,7 +26,12 @@ static uint8_t data_cm;
 static bool data_word(const agc_native_program *p,uint16_t physical,agc_word *word){uint16_t i;uint8_t cm=data_cm;(void)p;
  for(i=0;i<IBO_DATA;++i)if(ibo_data_physical(cm,i)==physical){*word=ibo_data[cm][i];return true;}
  return false;}
-void ibo_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint16_t n){uint32_t x=0x1b0u+n*2654435761u;
+/* Each entry case draws from its own index among the entry cases (after the
+ * 802 site cases there were at first), so a site added to a table leaves the
+ * entry cases as they were. */
+#define IBO_ENTRY_SEED 802u
+void ibo_input(apollo_overlay_state *s,uint16_t *superbank,uint16_t *inhint,uint16_t n){
+ uint32_t x=0x1b0u+(n<IBO_SITES?n:(uint32_t)IBO_ENTRY_SEED+n-IBO_SITES)*2654435761u;
  uint16_t i,bank,fb,eb,phys,q,z,k;uint8_t m=ibo_mission(n);
  /* The image from a 16-bit xorshift (cheap on the 6502), the rest from the LCG. */
  {uint16_t r=(uint16_t)(rnd(&x)|1u);for(i=0;i<APOLLO_SHARED_WORDS;++i){r^=(uint16_t)(r<<7);r^=(uint16_t)(r>>9);r^=(uint16_t)(r<<8);s->words[i]=(uint16_t)(r&077777u);}}
