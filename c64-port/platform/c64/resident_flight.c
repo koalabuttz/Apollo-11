@@ -72,7 +72,7 @@ uint16_t rk_budget(void);
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
     if (mct == RK_MCT_IDLE) {
-        rk_work = rk_phase_rest[rk_tick_phase];
+        rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
         return;
     }
@@ -250,6 +250,9 @@ uint8_t BOOT rk_boot(void) {
         rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]=0;
     }
     *(volatile uint8_t *)RK_STACK_CANARY=RK_STACK_CANARY_VALUE;
+#ifdef RK_DSKY
+    rk_dsky_install(); /* before the first module load reuses the boot-only code */
+#endif
     return 0;
 }
 
@@ -624,9 +627,12 @@ __attribute__((noinline)) static enum exec_status rk_memo_run(uint16_t stop_phys
         for (i = 0; i < sizeof rk_memo.in; ++i)
             if (rk_memo.in[i] != rk_memo_now[i]) goto run;
         for (i = 0; i < RK_MEMO_WORDS; ++i) *rk_memo_at[i] = ((const agc_word *)rk_memo.out)[i];
-        if (rk_memo.idle)
+        if (rk_memo.idle) {
             rk_charge(0u, RK_MCT_IDLE);
-        else
+#ifdef RK_DSKY
+            rk_dsky_idle();
+#endif
+        } else
             rk_work += rk_memo.work;
         return EXEC_OK;
     }

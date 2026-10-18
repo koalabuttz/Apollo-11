@@ -268,6 +268,11 @@ def check_services():
     run([sys.executable, 'tools/overlay_v2_services.py', '--spec', CHECKS / 'services.json', '--out-dir', CHECKS])
 
 
+# The flight program's resident (resident_flight_main.c) with its DSKY,
+# which runs from $0200 and costs no resident bytes.
+FLIGHT_MAIN = ['platform/c64/resident_flight_main.c', 'platform/c64/resident_dsky.c', 'platform/c64/resident_dsky.S']
+
+
 def link_resident(cc, m, name, sources, defines=(), services=OUT):
     out = OUT / f'{m}-{name}.prg'
     run([cc, *COMMON, *MISSION[m], *defines, '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
@@ -433,7 +438,7 @@ def main():
             link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
                           ['-DRK_RUNS_ONLY', '-DRK_NO_DIRECT', f'-DRK_PART={part}', f'-DRK_SERVICES_VERSION={CHECK_SERVICES:#06x}u'],
                           CHECKS)
-        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', ['platform/c64/resident_flight_main.c']))
+        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', FLIGHT_MAIN, ['-DRK_DSKY=1']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:
         print(json.dumps(report, indent=1))

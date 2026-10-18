@@ -258,6 +258,11 @@ extern agc_native_program rk_program;
 /* AGC interrupt requests waiting (RK_RUPT_BIT, include/resident_rupt.h),
  * and the CIA1 interrupts the AGC clock has consumed or dropped. */
 extern uint16_t rk_pending, rk_ticks;
+/* The flight program's DSKY on the C64's screen and keyboard
+ * (platform/c64/resident_dsky.c; RK_DSKY builds): rk_dsky_install once
+ * after rk_boot, rk_dsky_idle from the idle loop. */
+void rk_dsky_install(void);
+void rk_dsky_idle(void);
 
 /* Boot: KERNAL and BASIC out ($01=$35), the resident RAM interrupt
  * vectors, CIA1 timer A at 10 ms, the REU store at offset 0 opened and
