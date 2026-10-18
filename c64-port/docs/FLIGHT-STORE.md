@@ -777,6 +777,24 @@ port) runs one mission:
    routines, none that yaAGC did not match. The one refused point is
    V87's interpretive SET (EXTENDED_VERBS.agc SETVHFLG +1, 43,3024),
    which cm_extended_verbs_file_interpretive does not hold.
+   `lm-rendezvous`: the LM's side, P20 with rendezvous radar tracking and
+   then P34 TPI targeting. lm_rendezvous.py writes lm-rendezvous.load:
+   the same two orbits, the AGC's state vectors on them, R22's pads and
+   P34's TTPI and ELEV. R22's variances (RANGEVAR, RATEVAR, RVARMIN,
+   VVARMIN) are loaded: left zero, the gain blows up and every mark asks
+   V06N49. WRENDPOS is integer metres (SR 5 into W's B-19). P34's N37
+   shows TTPI, not TIG. The orbits have to be retrograde: for the moon
+   INITVEL takes Lambert's direction from the sign of the orbit normal's
+   Z, so a posigrade pair solves TPI the long way round (3,215 m/s).
+   `FLIGHT_RR`'s LM side points the RR at the CSM and answers range and
+   range-rate reads. The keys run V37E20E, proceed and ENTER on R61's
+   V50N18, and proceed on R21's V50N72 lock-on. R22 then marks every 61 s
+   (6 marks by 340 s, no N49). V37E34E comes at 290 s: proceed on N37,
+   N55 and N45. P34 solves TPI for 26.6 degrees elevation (N58: 7.4 m/s;
+   an independent Lambert solve gives 7.5). Proceed on N37, N58 and N81,
+   ending on N59. `FLIGHT_BUSY_SAMPLE=50` gives keys sample points while a
+   job busy-waits. On base 03e28d4a the native run (40,000 cs, scaled x1)
+   takes 1,273,194 routines, none that yaAGC did not match.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
