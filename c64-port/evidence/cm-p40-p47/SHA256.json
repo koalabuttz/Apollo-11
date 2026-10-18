@@ -9,13 +9,13 @@
       "store": "tree"
     },
     "cm-p40-p47-host.log": {
-      "sha256": "c758e9c801458d92d4f5ab86da1b4cd7da70b226d5cb450d795c8ef75dbc8d00",
-      "bytes": 1022,
+      "sha256": "e4720bdeaa15df573fb40bc7f22d79399f4e2dd2f03e868b51153393b18ef8e4",
+      "bytes": 1066,
       "store": "tree"
     },
     "cm-p40-p47-proof.json": {
-      "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0",
-      "bytes": 79440,
+      "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9",
+      "bytes": 79276,
       "store": "tree"
     },
     "cm-p40-p47-source-map.json": {
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-p40-p47-vice.log": {
-      "sha256": "0a23210104f1a2c992e4a1a2bba0c292b90d487c3090dea64eeebf3425421637",
-      "bytes": 13158,
+      "sha256": "77de36e0a969cf12744fece94d557b7fc5d32c5b0895b1c60f13a3dc43ee7ca0",
+      "bytes": 49952,
       "store": "tree"
     }
   }

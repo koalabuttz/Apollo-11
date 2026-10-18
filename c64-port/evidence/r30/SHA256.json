@@ -4,8 +4,8 @@
   "release": "evidence-r30",
   "files": {
     "r30-c64-cover.json": {
-      "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569",
-      "bytes": 5230,
+      "sha256": "b735b8f9623208151915c9f7e508a5c6f015001d4e07e985db97e178cd85fcf3",
+      "bytes": 5248,
       "store": "tree"
     },
     "r30-differential.log": {
@@ -14,13 +14,13 @@
       "store": "release"
     },
     "r30-host.log": {
-      "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84",
-      "bytes": 920,
+      "sha256": "5a0a1bb60d1a168fe4f495013b52206c14a8a4ba188a6449ffba7465543c69f9",
+      "bytes": 1000,
       "store": "release"
     },
     "r30-proof.json": {
-      "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354",
-      "bytes": 16941,
+      "sha256": "4b9afb310d7db6e0f519e155b9e66bb5c329e2d3d9f5b0a541a2f00f84f00d58",
+      "bytes": 17011,
       "store": "tree"
     },
     "r30-source-map.json": {
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "r30-vice.log": {
-      "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
-      "bytes": 4107,
+      "sha256": "25cc6f8b94ff0fdc4ed88ed2bb8192ddb94d7147c2ca4534c13bd67bb3cb0e88",
+      "bytes": 4174,
       "store": "release"
     }
   }
