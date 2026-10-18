@@ -1758,8 +1758,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/gimbal-lock/gimbal-lock-c64-cover.json",
@@ -2884,8 +2884,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/a2-204.md",
-            "sha256": "d755850abc09e3475bd586b8191cc01da1215e4f68033f9c3dc1a7dbda396f7b"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lat-long/lat-long-c64-cover.json",
@@ -3111,8 +3111,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/measurement-inc.md",
-            "sha256": "09822fbd8d1ac4d8e9aa1be06cac516402d1a23971b9ac05e4275e96baeb2602"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/measurement-inc/measurement-inc-c64-cover.json",
@@ -5408,8 +5408,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/lane-d1-208.md",
-            "sha256": "715610924b4910236b1a22fad5dd4931578845b0796591dd7a7b7e2138eba5af"
+            "path": "docs/audits/rev2-cm-trusted-image-641.md",
+            "sha256": "9e2ba14fb1da3ea91fe409c309500468d8efc1e4db5354ec19d68c7cc2c91f46"
           },
           "c64_branch_outcomes": {
             "path": "evidence/sband-antenna/sband-antenna-c64-cover.json",
