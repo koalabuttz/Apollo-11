@@ -391,7 +391,15 @@ reaches (the hold bench's per-pass keys, 21.9 KB after the compaction in
   two pack routines, two job-slot swaps a pass. On c6bcf271 the 500 cs
   windows from 21000, 25000, 33000 and 41000 cs went 4.1-4.2% faster
   (16.06x to 15.40x from 33000); the window from 17000 cs, before that
-  point is reached, is unchanged. The pack is one 13,373-byte module.
+  point is reached, is unchanged. SPSIN and SPCOS ride in it too
+  (`cm_sp_hot_routines`, the resident's `cm_sp_routines` entries; `RIDE`):
+  a pass calls them 7 times, and each call used to end the pack's module
+  run, run the resident's copy as a step of its own and start the run again
+  at the return. With them in the pack the run carries on through each
+  call. On d39f68d6 the windows from 17000 and 33000 cs (500 cs) went from
+  14.388x to 13.753x (−4.4%) and 14.675x to 14.053x (−4.2%). The pack is
+  one 14,890-byte module, still charged 13 MCT a step; the resident is
+  unchanged (gc-sections drops the unused copy).
 - The *CM docked RCS DAP packs* (`RCSPACK`, `JETPACK`, `MANPACK`, Lane D1)
   pack the entries one docked RCS DAP pass (T5RUPT) reaches after an SPS
   burn: `cm_rcs_dap_hot_routines` (12), `cm_jet_select_hot_routines` (21)

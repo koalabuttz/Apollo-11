@@ -785,7 +785,7 @@ EXCURSION = {'lm': ['lm_p_axis_hot_routines', 'lm_q_r_axis_hot_routines', 'lm_ka
 # the pack is loaded, but other callers keep loading their own (smaller)
 # modules, so the resolver does not send their keys to the pack.
 RIDE = {'lm_t6rupt_jets_hot_routines', 'lm_interbank_dap_hot_routines', 'lm_lead_in_hot_routines',
-        'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines'}
+        'lm_self_check_idle_hot_routines', 'lm_interbank_postjump_t4_hot_routines', 'cm_sp_hot_routines'}
 # A ride table whose operands are another file's sites (IBNKCALL's CADR is
 # its caller's word, compiled into lm_interbank_routines' site list): the
 # pack takes that file's sites in the banks its own tables' keys are in.
@@ -806,7 +806,10 @@ T4PACK = {'lm': ['lm_t4rupt_core_hot_routines', 'lm_t4rupt_rr_routines', 'lm_lea
 # (lane-g/cm-entry-profile-80342904.md): its hot subset in one module makes
 # it about 1. CM pins no class-4 home, so the pack links its own runtime
 # (ALONE).
-ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines']}
+# SPSIN and SPCOS ride along (cm_sp_hot_routines, the resident's two
+# entries): a pass calls them 7 times, and in the pack its run carries on
+# through each call instead of ending for a resident step and starting again.
+ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines', 'cm_sp_hot_routines']}
 # The CM docked RCS DAP pass (T5RUPT) reaches 12 routines of
 # cm_rcs_dap_basic, 21 of cm_jet_select_basic, 6 of cm_auto_man_basic and
 # MYSUBS's SMALLMP (cm-p40 after the burn). The first two files overflow the
