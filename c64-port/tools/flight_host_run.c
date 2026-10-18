@@ -133,18 +133,6 @@ static const entry tables[]={
 };
 #undef FLIGHT_TABLE
 #define TABLES (sizeof tables/sizeof tables[0])
-/* FLIGHT_REPLAY_MCT=PATH (FLIGHT_REPLAY): each table's work clock weight as
- * the C64 flight store charges it (lines NAME WEIGHT, from
- * tools/flight_scenario_vice.py: the weight of the module that runs it, or
- * the interpreter's per routine), in place of host.inc's own from the
- * snapshot on. */
-static uint16_t c64_mct[TABLES];static int c64_weights;
-static unsigned weight(const entry *e){return c64_weights?c64_mct[e-tables]:e->mct;}
-static int c64_mct_read(const char *path){FILE *f=fopen(path,"r");char name[200];unsigned w,i,n=0;
- if(!f){perror(path);return 0;}
- for(i=0;i<TABLES;++i)c64_mct[i]=tables[i].mct;
- while(fscanf(f,"%199s %u",name,&w)==2)for(i=0;i<TABLES;++i)if(!strcmp(tables[i].name,name)){c64_mct[i]=(uint16_t)w;++n;}
- fclose(f);printf("FLIGHT_REPLAY_MCT: %u table weights\n",n);return 1;}
 
 /* Virtual AGC adapter: no peripherals; channel 7 as SocketAPI.c stores it. */
 void BacktraceAdd(agc_t *s,int cause){(void)s;(void)cause;}
@@ -390,10 +378,19 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * difference can be found by time. A hardware restart in the window fails the run (exit 3).
  * SEED: each routine's work weighs 0.8 to 1.25 times its
  * weight at random instead (a different tick schedule, for the words a
- * schedule moves: tools/flight_scenario_vice.py --replay). */
+ * schedule moves: tools/flight_scenario_vice.py --replay).
+ * CHAIN (FLIGHT_REPLAY=CS,SEED,EVERY,CHAIN): CHAIN windows back to back
+ * (tools/flight_scenario_vice.py --chain). A window ends at the first
+ * sample point CS or more centiseconds in with no interrupt pending; there
+ * the run writes the next window's snapshot (PATH-1, PATH-2, ...), after
+ * that point's inputs, which go to its .seam rows (the end state plus the
+ * seam rows is the snapshot), and starts the next window's work clock as
+ * a C64 window starts its own. A key or an interrupt request at that point
+ * holds the snapshot off and fails the run (exit 4). */
 static long ones(agc_word v);
 static FILE *rp_out;static unsigned long rp_seed;
-static unsigned long rp_t0,rp_cs,rp_rows;
+static unsigned long rp_t0,rp_cs,rp_rows;static unsigned rp_chain=1u,rp_win;static FILE *rp_seam;
+static char rp_base[512],rp_path[600];
 static agc_word rp_w[2048];static agc_hardware rp_hw;static agc_word rp_c16;static uint16_t rp_pending;
 static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsigned v){unsigned char b[8];unsigned long d=t-rp_t0;
  if(d>0xffffu){fprintf(stderr,"FLIGHT_REPLAY: window longer than 65535 cs\n");exit(2);}
@@ -989,7 +986,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   snap_path=path_buf;
   if(getenv("FLIGHT_REPLAY")){static char rp_buf[600];char *c;rp_cs=strtoul(getenv("FLIGHT_REPLAY"),&c,10);
    if(*c==',')rp_seed=strtoul(c+1,&c,10);
-   rp_every=*c==','?strtoul(c+1,0,10):0ul;if(!rp_every||rp_every>rp_cs)rp_every=rp_cs;rp_next=rp_every;
+   rp_every=*c==','?strtoul(c+1,&c,10):0ul;if(!rp_every||rp_every>rp_cs)rp_every=rp_cs;rp_next=rp_every;
+   if(*c==','&&(rp_chain=(unsigned)strtoul(c+1,0,10))<1u)rp_chain=1u;
+   snprintf(rp_base,sizeof rp_base,"%s",snap_path);
    snprintf(rp_buf,sizeof rp_buf,"%s.replay",snap_path);if(!rp_cs||!(rp_out=fopen(rp_buf,"wb"))){fprintf(stderr,"FLIGHT_REPLAY=CS[,SEED[,EVERY]] (with FLIGHT_SNAPSHOT)\n");return 2;}
    snprintf(rp_buf,sizeof rp_buf,"%s.end",snap_path);if(!(rp_ends=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}}}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
@@ -1108,8 +1107,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     ++next;}
    if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
-   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs){
-    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);return 0;}
+   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
+    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
+    if(++rp_win>=rp_chain)return 0;
+    /* CHAIN: the next window starts here (FLIGHT_REPLAY above). */
+    snprintf(rp_path,sizeof rp_path,"%s-%u",rp_base,rp_win);snap_path=rp_path;snap_cs=now(s.words);snap_any=0;
+    {char b[640];snprintf(b,sizeof b,"%s.replay",rp_path);rp_out=fopen(b,"wb");snprintf(b,sizeof b,"%s.end",rp_path);rp_ends=fopen(b,"wb");
+     snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_seam){perror(b);return 2;}}
+    rp_mark(s.words,&hw,io.channel16,pending);}
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
@@ -1134,10 +1139,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
    else if((k=uplink_due(now(s.words),&unat))>=0){s.words[045]=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_UP);}
    if(rp_out&&!snap_path)rp_diff(now(s.words),0u,s.words,&hw,io.channel16,pending);
+   if(rp_seam&&snap_path&&pending){fprintf(stderr,"FLIGHT_REPLAY: a key or interrupt request at the chain point %lu cs\n",now(s.words));return 4;}
+   if(rp_seam&&snap_path){FILE *o=rp_out;rp_out=rp_seam;rp_t0=now(s.words);rp_diff(now(s.words),0u,s.words,&hw,io.channel16,pending);fclose(rp_seam);rp_seam=0;rp_out=o;rp_rows=0;rp_next=rp_every;}
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    if(getenv("FLIGHT_REPLAY_MCT")){if(!c64_mct_read(getenv("FLIGHT_REPLAY_MCT")))return 2;c64_weights=1;}
     snap_path=0;rp_t0=now(s.words);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;}}
   {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
@@ -1205,7 +1211,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      dl_clear();
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
-     if(scaled){if(work&&!weight(e))idle_tick();else spend(work?weight(e):span_mct);}
+     if(scaled){if(work&&!e->mct)idle_tick();else spend(work?e->mct:span_mct);}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by

@@ -989,9 +989,7 @@ port) runs one mission:
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
    snapshot through the window on the C64's work clock, charging each
-   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
-   of the module that runs it, the interpreter's per routine for the tables
-   left to it), and writes every input its models and schedules give the
+   table the weight the C64 store charges it (host.inc's, #650), and writes every input its models and schedules give the
    AGC there (the engine, SPS and aero models' PIPA counts, keys,
    FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go into the
    zeros below the rope in the run's REU image, outside the store and the
@@ -1016,6 +1014,42 @@ port) runs one mission:
    #650, RK #663), both missions skip a TIME5 one count apart when TIME1
    agrees: the two sides sampled in different thirds of the centisecond
    (`TIME5_PHASE`, printed when used). LM windows skip nothing else.
+
+   **What "matches host" means** (whole-program acceptance, bar item 3).
+   It is a chain of two checks on the same inputs:
+   - *Host = yaAGC.* The scenario's host run (native C on the PC,
+     `tools/flight_host_differential.py`) and yaAGC run the same rope,
+     load, keys, channels and device models. At every sample point the
+     erasable words are compared, all 2048 but three groups. The central
+     registers (0-017) hold the interrupted step's working values. The
+     clock counters (024-031) are left out because the two clocks are
+     driven differently (FLIGHT_TIMERS compares them). RUPTREG1-4
+     (070-073) hold only what the last interrupt left. A scoreboard row
+     is "host clean" when this finds 0 mismatches over the whole scenario.
+   - *C64 = host (`--replay`).* The C64 window starts from the host's
+     snapshot and gets the host's inputs as rows. At the window's end, and
+     every `--replay-every` cs, it is compared with the host on a wider
+     scope than the first check: the same erasable set, plus the timers
+     TIME1-TIME6 (both sides run one work clock here), plus output channels
+     5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
+     equal. Anything else is a difference, apart from the temporary skips
+     above, which are named in every result that uses them.
+   A window "matches host" when its `--replay` log has no FAIL line. It
+   "matches exactly" when the log also has no `skipped` line.
+
+   **Seams (`--chain K`, bar item 4).** One replay window is limited to
+   16,383 cs, so a whole phase runs as K windows back to back. The host
+   run goes on through all K windows. A window ends at the first sample
+   point `--cs` or more in that has no interrupt pending. At that point
+   the host writes the next window's snapshot (`-snap.h-1`, `-snap.h-2`,
+   ...), taken after that point's inputs, which it also writes as `.seam`
+   rows. It then starts the next window's work clock the way a C64 window
+   starts its own. Each window runs on the C64 as above. Before window n
+   runs, the C64's end state of window n-1, plus the seam rows, is
+   compared with window n's snapshot on the `--replay` scope. So the run
+   fails unless every window matches the host and every seam is
+   continuous. A key or an interrupt request at a seam point fails the
+   host run (exit 4); move the seam by changing `--cs`.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under

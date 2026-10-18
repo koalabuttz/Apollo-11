@@ -174,6 +174,12 @@ static uint16_t busy_last;
 #ifndef DP_EVERY
 #define DP_EVERY DP_REPLAY_CS
 #endif
+/* --chain: the host's own window length, which the checkpoints stay
+ * below; the window itself runs on to DP_REPLAY_CS, the first sample point
+ * with no interrupt pending that the host ended it at. */
+#ifndef DP_EVERY_UNTIL
+#define DP_EVERY_UNTIL DP_REPLAY_CS
+#endif
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_EVERY;
 static uint8_t states;
@@ -224,7 +230,7 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             replay_state(t);
             return 1;
         }
-        if (t >= state_next) {
+        if (t >= state_next && t < DP_EVERY_UNTIL) {
             replay_state(t);
             while (state_next <= t) state_next += DP_EVERY;
         }
