@@ -4179,6 +4179,15 @@ SPECS = {
                    'V2T150+2': {'03632': [0], '03633': [0]},
                    'GAMDV35': {'vac+025': [0], 'vac+026': [0, 1]},
                    'RTE360+2': {'0154': [0], '0155': [0]}},
+        # Flight arms no random case reached (issue #661), each in half of
+        # its routine's cases (the CHANG2 resumes after it flow from them):
+        # RTE373's conic convergence, GETERAD's radius (MPAC) plus E3RTE
+        # within EPC2RTE of RCON, so BMN RTE374; PREC175's first precision
+        # pass, NN1A = 10RTE, so BZE PREC207; and the crew's RCS option on
+        # V04N06, OPTION2 = 2, so BZE P37Q.
+        'joint_states': {'RTE373+6': [{'MPAC': 0, 'MPAC+1': 0, 'RCON': 3, 'RCON+1': 0o27040}, {}],
+                         'PREC175': [{'NN1A': 0, 'NN1A+1': 0o12}, {}],
+                         'P37N+8': [{'OPTION2': 2}, {}]},
         'target': 'tests/cm_p37_p70_target.c',
         'edge_cases': True,
         'resume_keys': True,

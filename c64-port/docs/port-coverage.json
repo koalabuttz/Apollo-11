@@ -3608,7 +3608,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-proof.json",
-            "sha256": "b3988e620cfc8195fe266c219d3ed6a6e70e7f9d4568da54e3140cfeabed7bfb"
+            "sha256": "941c19b45e94fd93ca2992cd5d37388954caa70ef0bcd7eb4fa813768afdf47c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-host.log",
@@ -3616,14 +3616,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-vice.log",
-            "sha256": "8291dfc535ddbe0777240b4664b902d4bc29c5983b09823bd3a7c8df752a85c2",
+            "sha256": "59ada0400b5fd2f09af425a394d8f4cd17d4bc7c0d92758bb21501baad0f2c32",
             "vice_targets": {
-              "vice-cm-p37-p70": 699
+              "vice-cm-p37-p70": 698
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
-            "sha256": "6fe9ad0fed25eb5f5e6e059ae604e3714559c222eb1f65b0f927ab2055042b9e"
+            "sha256": "a99258d6dee596a62f860ff40c47bb7a41596e3fc5fa3614af56bfb7693d232b"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-e465.md",
