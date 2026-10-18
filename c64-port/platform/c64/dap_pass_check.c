@@ -94,19 +94,28 @@ static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
 #include "resident_rupt.h"
 #include DP_KEYS
 static uint8_t key_next;
-static void press_due(uint16_t elapsed){uint16_t k;
- if(key_next>=DP_NKEYS||elapsed<dp_key_cs[key_next])return;
- k=dp_key_code[key_next++];
- __asm__ volatile("sei");
- if(k&0400u){rk_flight.channel16=(agc_word)(k&0377u);rk_pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
- else{rk_hardware.channel15=(agc_word)k;rk_pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}
+static void press_due(uint16_t elapsed)
+{
+    uint16_t k;
+    if (key_next >= DP_NKEYS || elapsed < dp_key_cs[key_next]) return;
+    k = dp_key_code[key_next++];
+    __asm__ volatile("sei");
+    if (k & 0400u) {
+        rk_flight.channel16 = (agc_word)(k & 0377u);
+        rk_pending |= RK_RUPT_BIT(RK_RUPT_KEY2);
+    } else {
+        rk_hardware.channel15 = (agc_word)k;
+        rk_pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+    }
 #if !RK_LM
- /* On the CM, rk_device (cm_native_io) holds the keys too: each store
+    /* On the CM, rk_device (cm_native_io) holds the keys too: each store
   * module on a CM record writes its main_keys and navigation_keys back to
   * channels 15 and 16 (platform/c64/flight_table_module.c). */
- rk_device.main_keys=rk_hardware.channel15;rk_device.navigation_keys=rk_flight.channel16;
+    rk_device.main_keys = rk_hardware.channel15;
+    rk_device.navigation_keys = rk_flight.channel16;
 #endif
- __asm__ volatile("cli");}
+    __asm__ volatile("cli");
+}
 #endif
 
 static void BOOT load_snapshot(void){
@@ -148,7 +157,7 @@ int main(void){
 #endif
   rk_rupt_last=0;
 #ifdef DP_KEYS
-  press_due((uint16_t)(agc_cs()-sum.start_cs)&037777u);
+  press_due((uint16_t)(agc_cs() - sum.start_cs) & 037777u);
 #endif
 #ifdef RK_STEP_PROFILE
   prof_last=now();
@@ -194,8 +203,14 @@ int main(void){
 #ifdef DP_WATCH
  /* Up to five erasable words at the end of the window (DP_WATCH: their
   * octal addresses, comma separated), at $c006 for the dump. */
- {static const uint16_t w[]={DP_WATCH};uint8_t i;
-  for(i=0;i<sizeof w/sizeof w[0]&&i<5u;++i){mail[6u+2u*i]=(uint8_t)IMAGE->words[w[i]];mail[7u+2u*i]=(uint8_t)(IMAGE->words[w[i]]>>8);}}
+ {
+     static const uint16_t w[] = {DP_WATCH};
+     uint8_t i;
+     for (i = 0; i < sizeof w / sizeof w[0] && i < 5u; ++i) {
+         mail[6u + 2u * i] = (uint8_t)IMAGE->words[w[i]];
+         mail[7u + 2u * i] = (uint8_t)(IMAGE->words[w[i]] >> 8);
+     }
+ }
 #endif
  mail[1]=(uint8_t)(st!=EXEC_OK);mail[2]=0;mail[3]=(uint8_t)sum.records;mail[4]=(uint8_t)(sum.records>>8);
  mail[5]=(uint8_t)(st!=EXEC_OK?2:0);
