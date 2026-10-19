@@ -3959,6 +3959,11 @@ SPECS = {
         # starts) enter from outside the file.
         'entries': ['V83', 'R31CALL', 'V83CALL'],
         'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        # R31CALL, DSPDELAY and the DISPN5X display loop run in the NOVAC
+        # job the extended verb starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6)
+        # - LOC(QPRET)); only V83CALL's FINDVAC job has a VAC area. None of
+        # that basic code indexes through FIXLOC, so it takes any FIXLOC.
+        'any_fixloc': True,
         # V83's job: a DANZIG that finds a job waiting stops at CHANG2, and
         # the word after it is where the job resumes.
         'edge_cases': True,
