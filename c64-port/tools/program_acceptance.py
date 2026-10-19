@@ -251,16 +251,15 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
     lines += ['', '## Scenarios', '',
               'Each mapped row\'s scenarios, run whole on the host at this commit (exit, routines yaAGC did '
               'not match, points the host bridged; core-start points of a mid-flight core are not counted).', '',
-              '| Scenario | Centiseconds | Major mode at end (native / yaAGC) | Result | Evidence |',
-              '|---|---|---|---|---|']
+              '| Scenario | Centiseconds | Native routines run | Instructions bridged (core-start points included) | Result | Evidence |',
+              '|---|---|---|---|---|---|']
     for s in used:
         row = host.get(s)
         if row is None:
-            lines.append(f"| {s} | | | {'stale (' + stale_host[s] + ')' if s in stale_host else 'not run'} | |")
+            lines.append(f"| {s} | | | | {'stale (' + stale_host[s] + ')' if s in stale_host else 'not run'} | |")
             continue
-        mode = row.get('major_mode') or {}
-        lines.append(f"| {s} | {row['centiseconds']} | {mode.get('native', '')} / {mode.get('yaagc', '')} | "
-                     f"{cell(host_result(row)[1])} | {ev(('host', s))} |")
+        lines.append(f"| {s} | {row['centiseconds']} | {row.get('native_routines') or 0:,} | "
+                     f"{row.get('bridged_instructions') or 0:,} | {cell(host_result(row)[1])} | {ev(('host', s))} |")
     lines += ['', '## C64 replay windows', '',
               'Each window starts from the host\'s state at its start (a snapshot), applies the host\'s inputs '
               '(PIPA counts, channels, erasable writes, interrupt requests) at the host\'s times, and compares '
