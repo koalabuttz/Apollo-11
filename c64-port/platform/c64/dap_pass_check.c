@@ -178,7 +178,8 @@ _Static_assert(sizeof(dp_row) == 10u, "rows are 10 bytes (tools/flight_host_run.
  * fills from its load copy, not from the resident's RAM. */
 #define LOW_TEXT(name) __attribute__((noinline, section(".dsky.text." name)))
 extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
-__attribute__((section(".dsky.text.dp_steps"))) static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
+#define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
+LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
 LOW_TEXT("dp_early") static uint8_t row_early(void)
 {
     uint8_t at = row.where >> 1 & 3u, step = phase_step[rk_tick_phase];
@@ -251,7 +252,9 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * PIPA count: the PIPAs count whether or not the C64 is idle, and a
          * READACCS on a C64 that missed the host's sample point would read
          * fewer counts than the host's. */
-        if (row.cs > t || (!(row.where & 1u) && !sp && (row.kind != 1u || row.cs >= t)) || row_early()) return;
+        if (row.cs > t || (!(row.where & 1u) && !sp && (row.kind != 1u || row.cs >= t)) ||
+            row_early())
+            return;
         w = (uint16_t *)row.addr;
         __asm__ volatile("sei");
         if (row.kind == 1) {
