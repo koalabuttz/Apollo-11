@@ -53,6 +53,8 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_matched_cs=[])),
                          (False, 'no checkpoint compared'))
         self.assertFalse(pa.replay_result(dict(replay('lm-a', 0), ok=False, error='seam'))[0])
+        self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_skipped=['DSPCNT'])),
+                         (False, 'matches host except skipped DSPCNT'))
 
     def test_chain_verdicts(self):
         w = replay('lm-a', 0)

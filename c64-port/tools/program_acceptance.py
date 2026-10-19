@@ -124,6 +124,8 @@ def replay_result(r):
             return False, 'no checkpoint compared'
         if r.get('ok') is False:          # the run failed for a reason this tool does not name
             return False, f"run failed ({r.get('error') or 'ok is false'})"
+        if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
+            return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
         return True, 'matches host'
     if not r.get('replay_differences') and r.get('replay_ended') is False:
         return False, 'did not reach the next checkpoint'
