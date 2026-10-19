@@ -202,7 +202,7 @@ def write_doc(m, commit):
     lines += ['', 'Load is the loader reading and expanding the disks into the REU (from its own CIA count, '
               'PAL cycles); the store check is the flight resident verifying every module header and CRC, the '
               'resolver and the rope\'s site words before the GOJAM. The KERNAL\'s own load of the 6 KB loader '
-              'adds about 10 s. A disk asked for twice is the loader asking again after a read it did not accept (a wrong disk or a read error), as it does on real hardware; the load then went on. Boot status 0 means every store check passed. Each boot record '
+              'adds about 10 s. A disk asked for twice means the loader did not take the first try: the run attaches the next image and presses RETURN at once, and the loader asks again when the id sector it reads is not the new disk\'s or the read fails, as it would on real hardware; the second try loads. The loader\'s message at each ask is in the run\'s JSON (`swap_prompts`). Boot status 0 means every store check passed. Each boot record '
               f'(`{m}-<run>-boot.json`, written by `flight_disk.py --p00`) binds the commit, the disk images, '
               'the loader and resident PRGs, the REU store image and the VICE log by SHA-256.', '',
               'REU bounds is the check of acceptance item 9 (tools/reu_layout.py, #681) on each boot. The '

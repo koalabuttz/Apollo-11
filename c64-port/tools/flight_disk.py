@@ -740,6 +740,10 @@ def vice(a, m, info):
                 print(f"{time.time() - t0:.0f}s: loader state {state}, mailbox {box.hex()}", flush=True)
             if state == 2:
                 d = box[1]
+                # The loader's message: INSERT DISK (another disk, or none,
+                # in the drive) or READ ERROR.
+                rows = [r for r in screen_text(mon.mem(0x0400, 0x0400 + 999), 25) if r.strip()]
+                result.setdefault('swap_prompts', []).append(' '.join(r.strip() for r in rows[-2:]))
                 mon.cmd(f'attach "{disks[d - 1]}" 8')
                 # RETURN into the keyboard buffer.
                 mon.cmd('> 0277 0d')
@@ -885,7 +889,10 @@ def boot_evidence(a, m, info):
     VICE log and the screen's text after the keys, with the verdict."""
     r = info['vice']
     head = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True, cwd=ROOT).stdout.strip()
-    dirty = bool(subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], capture_output=True,
+    # Dirty: a change to what the boot is built from (evidence and docs,
+    # which tools/boot_acceptance.py rewrites around the runs, are not).
+    dirty = bool(subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no', '--', '.',
+                                 ':(exclude)evidence', ':(exclude)docs'], capture_output=True,
                                 text=True, cwd=ROOT).stdout.strip())
     files = [OUT / d for d in info['disks']] + [OUT / f'{m}-loader.prg', OUT / f'{m}-resident.prg', STORE / f'{m}.reu']
     ev = dict(mission=m, commit=head, dirty=dirty, drive=a.drive, keys=a.keys, ok=r['ok'], p00=r.get('p00'),
