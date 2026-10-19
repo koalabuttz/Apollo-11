@@ -31,9 +31,6 @@ NOT_RTB_TARGETS = {
 # Known holes with a fix on the way. (spec, mission, label): owner. Remove an
 # entry when its key lands; the check then fails if the hole comes back.
 KNOWN_HOLES = {
-    ('p51-p53', 'lm', 'RDCDUS'): 'Lane D1b',
-    ('p51-p53', 'cm', 'RDCDUS'): 'Lane D1b',
-    ('p51-p53', 'cm', 'SET1/PDT'): 'Lane D1b',
 }
 
 
