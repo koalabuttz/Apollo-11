@@ -1,0 +1,49 @@
+{
+ "mission": "cm",
+ "commit": "baf974b9dfa7b6deb33da8f3a0b3691b8d421796",
+ "dirty": false,
+ "drive": "1541",
+ "keys": "RV37E00E",
+ "ok": true,
+ "p00": true,
+ "boot_status": 0,
+ "modreg": "00000",
+ "failreg": [
+  "00000",
+  "00000",
+  "00000"
+ ],
+ "load_s": 2190.0,
+ "boot_s": 109.1,
+ "sha256": {
+  "flight-disk/cm-1.d64": "e08e92afc621d907383271f8e586a16bfe1243cceea9f0ea441e73393bf68413",
+  "flight-disk/cm-2.d64": "dc7907aa262381b3952cc0ae3cff9aa62540e168712029c2dce1a51b7e830186",
+  "flight-disk/cm-3.d64": "8202c3674e405714246d3cda42f3f11c60524a1db598bcf1406397354bcaa56a",
+  "flight-disk/cm-4.d64": "873bde0ad645f19533238e18b5eedce03ecfbc0f89b60a879e16301c0227aa80",
+  "flight-disk/cm-5.d64": "129062912d5bf994f8732e57676ec02f657a58c33dd7102458cb05d90204c18d",
+  "flight-disk/cm-loader.prg": "64d1501ea7aed917e84e2b1248c4f822de3afc17591b077741015e0f30a81c15",
+  "flight-disk/cm-resident.prg": "613ec33f630c389b7d4314b15e811c89541350ca418cd026c799a7c36696644a",
+  "flight-store/cm.reu": "778e6996e07cb713ef4df58b177d5889655e47701cbbcdac3398c61e7aae4402"
+ },
+ "vice_log_sha256": "cf263d0368b621bc9794984192d82b13710154b0bee5a093dc9ea0c621e685cd",
+ "screen_sha256": "2af4a287541ddb1a8b5b95f77837045970a086c2bc6b56f26fe2f63275f188cd",
+ "screen": [
+  " APOLLO 11 CM DSKY",
+  "",
+  " UPLINK ACTY  TEMP         COMP ACTY",
+  " NO ATT       GIMBAL LOCK  PROG",
+  " KEY REL      RESTART      TRACKER",
+  " OPR ERR      ALT          VEL",
+  "",
+  "        VERB    NOUN    PROG",
+  "                         00",
+  "",
+  "            R1",
+  "            R2",
+  "            R3",
+  "",
+  " V VERB  N NOUN  RETURN ENTR  C CLR",
+  " R RSET  K KEY REL  P PRO  0-9 + -",
+  ""
+ ]
+}

@@ -1,0 +1,119 @@
+Detecting ISA HardSID boards.
+Could not open '/dev/port'.
+Cannot get permission to access $300.
+Detecting PCI HardSID boards.
+No PCI HardSID boards found.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+VSP Bug: safe channels are: 1235. Emulation of memory corruption is disabled.
+c64cartridge_reset changed: 1
+set_cartridge_type: -1
+512KiB unit installed.
+2048KiB unit installed.
+2048KiB unit installed.
+Reading REU image /tmp/x/dk/c64-port/build/flight-disk/vice-test/image.reu.
+ 
+*** VICE Version 3.7.1 ***
+ 
+Welcome to x64sc, the free portable C64 Emulator.
+ 
+Current VICE team members:
+Martin Pottendorfer, Marco van den Heuvel, Fabrizio Gennari, Groepaz, 
+Errol Smith, Ingo Korb, Olaf Seibert, Marcus Sutton, Kajtar Zsolt, AreaScout, 
+Bas Wassink, Michael C. Martin, Christopher Phillips, David Hogan, 
+Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
+ 
+This is free software with ABSOLUTELY NO WARRANTY.
+See the "About VICE" command for more info.
+ 
+random seed was: 0x6ad5c48e
+command line was: /usr/bin/x64sc -default -console -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/test-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-test/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6601 -keybuf load"*",8,1\nrun\n
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin'.
+MPS-803: Error - Could not load MPS-803 charset 'mps803.bin'.
+Palette: Error - Palette not found: `mps803.vpl'.
+MPS-803: Error - Cannot load palette file `mps803.vpl'.
+NL10: Error - Could not load NL-10 ROM file 'nl10.bin'.
+Palette: Error - Palette not found: `1520.vpl'.
+plot1520: Error - Cannot load palette file `1520.vpl'.
+DriveROM: Error - 1540 ROM image not found. Hardware-level 1540 emulation is not available.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/DRIVES/dos1541-325302-01+901229-05.bin'.
+DriveROM: Error - 1541-II ROM image not found. Hardware-level 1541-II emulation is not available.
+DriveROM: Error - 1570 ROM image not found. Hardware-level 1570 emulation is not available.
+DriveROM: Error - 1571 ROM image not found. Hardware-level 1571 emulation is not available.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/DRIVES/dos1581-318045-02.bin'.
+DriveROM: Error - 2000 ROM image not found. Hardware-level 2000 emulation is not available.
+DriveROM: Error - 4000 ROM image not found. Hardware-level 4000 emulation is not available.
+DriveROM: Error - CMDHD ROM image not found. Hardware-level CMDHD emulation is not available.
+DriveROM: Error - 2031 ROM image not found. Hardware-level 2031 emulation is not available.
+DriveROM: Error - 2040 ROM image not found. Hardware-level 2040 emulation is not available.
+DriveROM: Error - 3040 ROM image not found. Hardware-level 3040 emulation is not available.
+DriveROM: Error - 4040 ROM image not found. Hardware-level 4040 emulation is not available.
+DriveROM: Error - 1001/8050/8250 ROM image not found. Hardware-level 1001/8050/8250 emulation is not available.
+DriveROM: Error - D9090/9060 ROM image not found. Hardware-level D9090/9060 emulation is not available.
+Drive: Finished loading ROM images.
+VIC-II: Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+opening dynamic library libmp3lame.so failed!
+ERROR setting up dynamic lame lib!
+Sound: Available sound devices: pulse alsa dummy fs dump wav voc iff aiff mp3 soundmovie
+Joystick: Linux joystick interface initialization...
+Joystick: Warning - Cannot open joystick device `/dev/input/js0'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js1'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js2'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js3'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js4'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js5'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js6'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js7'.
+GTK3MOUSE: Status changed: 0 (disabled)
+Error - Default keymap not found, this should be fixed. Going on anyway...
+Main CPU: starting at ($FFFC).
+Main CPU: RESET.
+Sync reset
+Unit 8: RESET.
+Increasing trap_func array size to 1 with 1 to run
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+VICE thread initiating shutdown
+VICE thread is exiting
+
+Resources with non default values:
+Directory="/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data"
+Sound=0
+ChargenName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin"
+BasicName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin"
+REUfilename="/tmp/x/dk/c64-port/build/flight-disk/vice-test/image.reu"
+REUImageWrite=1
+REUsize=2048
+REU=1
+Drive8Type=1581
+MonitorServerAddress="ip4://127.0.0.1:6601"
+MonitorServer=1
+
+reconstructed commandline options (might be incomplete):
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data" +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-test/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6601"
+
+VICE thread has been joined.
+REU: Writing REU image /tmp/x/dk/c64-port/build/flight-disk/vice-test/image.reu.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+VIC-II: VSP Bug: safe channels are: 256. Emulation of memory corruption is disabled.

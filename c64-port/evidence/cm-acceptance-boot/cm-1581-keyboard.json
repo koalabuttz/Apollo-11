@@ -1,0 +1,99 @@
+{
+ "mission": "cm",
+ "disks": [
+  "cm-1.d81"
+ ],
+ "loader_bytes": 6392,
+ "resident_bytes": 38012,
+ "resident_start": 2061,
+ "boot_return": 2589,
+ "dsky_queue": 1921,
+ "hardware": 28606,
+ "resident_staged": "0x1f6b00",
+ "bytes_loaded": 1858776,
+ "data_bytes": [
+  788177
+ ],
+ "vice": {
+  "mission": "cm",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 259963373,
+  "load_s": 263.9,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 80770,
+  "boot_cycles": 107489727,
+  "boot_s": 109.1,
+  "boot_status": 0,
+  "samples": [
+   {
+    "cycles": 37699379,
+    "time1": "03715",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 73886074,
+    "time1": "07615",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 106731252,
+    "time1": "13233",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 141192211,
+    "time1": "16767",
+    "z": "02000",
+    "fb": "20000",
+    "modreg": "77777"
+   }
+  ],
+  "pc": "e3eb",
+  "screen": [
+   " APOLLO 11 CM DSKY",
+   "",
+   " UPLINK ACTY  TEMP         COMP ACTY",
+   " NO ATT       GIMBAL LOCK  PROG",
+   " KEY REL      RESTART      TRACKER",
+   " OPR ERR      ALT          VEL",
+   "",
+   "        VERB    NOUN    PROG",
+   "                         00",
+   "",
+   "            R1",
+   "            R2",
+   "            R3",
+   "",
+   " V VERB  N NOUN  RETURN ENTR  C CLR",
+   " R RSET  K KEY REL  P PRO  0-9 + -",
+   ""
+  ],
+  "failreg": [
+   "00000",
+   "00000",
+   "00000"
+  ],
+  "modreg": "00000",
+  "fb": "14000",
+  "z": "02000",
+  "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
+  "p00": true,
+  "reu_blocks_changed": [
+   "0x1df000",
+   "0x1df100",
+   "0x1df200",
+   "0x1df300",
+   "0x1df400",
+   "0x1df500",
+   "0x1df600",
+   "0x1dfd00"
+  ]
+ }
+}

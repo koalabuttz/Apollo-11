@@ -1,0 +1,129 @@
+{
+ "mission": "cm",
+ "disks": [
+  "cm-1.d81"
+ ],
+ "loader_bytes": 6392,
+ "resident_bytes": 38012,
+ "resident_start": 2061,
+ "boot_return": 2589,
+ "dsky_queue": 1921,
+ "hardware": 28606,
+ "resident_staged": "0x1f6b00",
+ "bytes_loaded": 1858776,
+ "data_bytes": [
+  788177
+ ],
+ "vice": {
+  "mission": "cm",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 259963373,
+  "load_s": 263.9,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 80770,
+  "boot_cycles": 107489727,
+  "boot_s": 109.1,
+  "boot_status": 0,
+  "samples": [
+   {
+    "cycles": 36834515,
+    "time1": "03636",
+    "z": "03306",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 74043324,
+    "time1": "07627",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 110701764,
+    "time1": "13563",
+    "z": "03231",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 150603442,
+    "time1": "17773",
+    "z": "05333",
+    "fb": "14000",
+    "modreg": "77777"
+   }
+  ],
+  "key_pcs": [
+   "c517",
+   "0200",
+   "395e",
+   "511c",
+   "4659",
+   "8cef",
+   "e190",
+   "0e26"
+  ],
+  "key_ch32": [
+   "7f",
+   "7f",
+   "7f",
+   "7f",
+   "7f",
+   "7f",
+   "7f",
+   "7f"
+  ],
+  "key_imodes33": [
+   "36000",
+   "36000",
+   "36000",
+   "36000",
+   "36000",
+   "36000",
+   "36000",
+   "36000"
+  ],
+  "pc": "4665",
+  "screen": [
+   " APOLLO 11 CM DSKY",
+   "",
+   " UPLINK ACTY  TEMP         COMP ACTY",
+   " NO ATT       GIMBAL LOCK  PROG",
+   " KEY REL      RESTART      TRACKER",
+   " OPR ERR      ALT          VEL",
+   "",
+   "        VERB    NOUN    PROG",
+   "                         00",
+   "",
+   "            R1",
+   "            R2",
+   "            R3",
+   "",
+   " V VERB  N NOUN  RETURN ENTR  C CLR",
+   " R RSET  K KEY REL  P PRO  0-9 + -",
+   ""
+  ],
+  "failreg": [
+   "00000",
+   "00000",
+   "00000"
+  ],
+  "modreg": "00000",
+  "fb": "02000",
+  "z": "03231",
+  "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
+  "p00": true,
+  "reu_blocks_changed": [
+   "0x1df000",
+   "0x1df100",
+   "0x1df200",
+   "0x1df300",
+   "0x1df400",
+   "0x1df500",
+   "0x1df600",
+   "0x1dfd00"
+  ]
+ }
+}

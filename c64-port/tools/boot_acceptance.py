@@ -172,7 +172,7 @@ def write_doc(m, commit):
             lines.append(f'| {n} | {how} | {keys} | | | | | | | not run | |')
             continue
         v = r['vice']
-        swaps = f" ({len(v['swaps'])} swaps)" if v.get('swaps') else ''
+        swaps = f" (disks asked for: {', '.join(map(str, v['swaps']))})" if v.get('swaps') else ''
         files = [ev / f'{m}-{n}.json', ev / f'{m}-{n}-vice.log'] + \
             ([ev / f'{m}-{n}-boot.json'] if n in boots else [])
         lines.append(f"| {n} | {how}{swaps} | {keys} | {v.get('load_s')} s | {v.get('boot_s')} s | "
@@ -182,7 +182,7 @@ def write_doc(m, commit):
     lines += ['', 'Load is the loader reading and expanding the disks into the REU (from its own CIA count, '
               'PAL cycles); the store check is the flight resident verifying every module header and CRC, the '
               'resolver and the rope\'s site words before the GOJAM. The KERNAL\'s own load of the 6 KB loader '
-              'adds about 10 s. Boot status 0 means every store check passed. Each boot record '
+              'adds about 10 s. A disk asked for twice is the loader asking again after a read it did not accept (a wrong disk or a read error), as it does on real hardware; the load then went on. Boot status 0 means every store check passed. Each boot record '
               f'(`{m}-<run>-boot.json`, written by `flight_disk.py --p00`) binds the commit, the disk images, '
               'the loader and resident PRGs, the REU store image and the VICE log by SHA-256.', '']
     b = boots.get('1581') or next(iter(boots.values()), None)
@@ -248,7 +248,13 @@ def main(argv=None):
     a = ap.parse_args(argv)
     dirty = git('status', '--porcelain', '--untracked-files=no', '--', *SOURCES)
     commit = git('rev-parse', '--short=12', 'HEAD') + (' (dirty)' if dirty else '')
-    if not a.doc_only:
+    if a.doc_only:
+        # The runs' commit, from their boot records: the doc reports what ran.
+        recs = sorted((ROOT / 'evidence' / f'{a.mission}-acceptance-boot').glob('*-boot.json'))
+        ran = {json.loads(r.read_text())['commit'][:12] for r in recs}
+        if len(ran) == 1:
+            commit = ran.pop()
+    else:
         stage = STAGE / a.mission
         shutil.rmtree(stage, ignore_errors=True)
         old = ROOT / 'evidence' / f'{a.mission}-acceptance-boot'

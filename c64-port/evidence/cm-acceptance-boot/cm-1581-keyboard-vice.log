@@ -1,0 +1,175 @@
+Detecting ISA HardSID boards.
+Could not open '/dev/port'.
+Cannot get permission to access $300.
+Detecting PCI HardSID boards.
+No PCI HardSID boards found.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+VSP Bug: safe channels are: 12467. Emulation of memory corruption is disabled.
+c64cartridge_reset changed: 1
+set_cartridge_type: -1
+512KiB unit installed.
+2048KiB unit installed.
+2048KiB unit installed.
+Reading REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
+ 
+*** VICE Version 3.7.1 ***
+ 
+Welcome to x64sc, the free portable C64 Emulator.
+ 
+Current VICE team members:
+Martin Pottendorfer, Marco van den Heuvel, Fabrizio Gennari, Groepaz, 
+Errol Smith, Ingo Korb, Olaf Seibert, Marcus Sutton, Kajtar Zsolt, AreaScout, 
+Bas Wassink, Michael C. Martin, Christopher Phillips, David Hogan, 
+Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
+ 
+This is free software with ABSOLUTELY NO WARRANTY.
+See the "About VICE" command for more info.
+ 
+random seed was: 0x6ad5c50d
+command line was: /usr/bin/x64sc -default -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64 -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6842 -keybuf load"*",8,1\nrun\n
+(x64sc:25388): dconf-WARNING **: 07:21:49.452: failed to commit changes to dconf: Failed to execute child process “dbus-launc
+h” (No such file or directory)
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin'.
+MPS-803: Error - Could not load MPS-803 charset 'mps803.bin'.
+Palette: Loading palette `/usr/share/vice/PRINTER/mps803.vpl'.
+NL10: Error - Could not load NL-10 ROM file 'nl10.bin'.
+Palette: Loading palette `/usr/share/vice/PRINTER/1520.vpl'.
+DriveROM: Error - 1540 ROM image not found. Hardware-level 1540 emulation is not available.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/DRIVES/dos1541-325302-01+901229-05.bin'.
+DriveROM: Error - 1541-II ROM image not found. Hardware-level 1541-II emulation is not available.
+DriveROM: Error - 1570 ROM image not found. Hardware-level 1570 emulation is not available.
+DriveROM: Error - 1571 ROM image not found. Hardware-level 1571 emulation is not available.
+Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/DRIVES/dos1581-318045-02.bin'.
+DriveROM: Error - 2000 ROM image not found. Hardware-level 2000 emulation is not available.
+DriveROM: Error - 4000 ROM image not found. Hardware-level 4000 emulation is not available.
+DriveROM: Error - CMDHD ROM image not found. Hardware-level CMDHD emulation is not available.
+DriveROM: Error - 2031 ROM image not found. Hardware-level 2031 emulation is not available.
+DriveROM: Error - 2040 ROM image not found. Hardware-level 2040 emulation is not available.
+DriveROM: Error - 3040 ROM image not found. Hardware-level 3040 emulation is not available.
+DriveROM: Error - 4040 ROM image not found. Hardware-level 4040 emulation is not available.
+DriveROM: Error - 1001/8050/8250 ROM image not found. Hardware-level 1001/8050/8250 emulation is not available.
+DriveROM: Error - D9090/9060 ROM image not found. Hardware-level D9090/9060 emulation is not available.
+Drive: Finished loading ROM images.
+VIC-II: Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
+Error - Failed to obtain pixbuf for C64.svg, Error: Unrecognized image file format
+using GTK3 backend: OpenGL
+chip_name: VICII
+ screen_size: 384 x 312
+ first/lastline: 0 x 0
+ gfx_size: 320 x 200
+ gfx_position: 32 x 51
+ first/last displayed line: 16 x 287
+ extra offscreen border left/right: 0 x 0
+ screen_display_wh: 0.000000 x 0.000000
+ canvas_physical_wh: 0 x 0
+ scalexy: 2 x 2
+ sizexy: 1 x 1
+ rmode: 1
+ aspect ratio: 0.936508
+ hstretch: 0
+ vstretch: 0
+ initializing with width, height: 704 x 507
+GLX version: 1.4
+Getting matching framebuffer configs
+Found 16 matching FB configs.
+Obtained OpenGL 4.5 context
+	  Vendor: Mesa
+	Renderer: llvmpipe (LLVM 20.1.2, 256 bits)
+	 Version: 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4
+	  Legacy: no
+Direct GLX rendering context obtained
+Swap control support. glXSwapIntervalMESA: 1 glXSwapIntervalEXT: 1 glXSwapIntervalSGI: 1
+Loading vertex shader: /usr/share/vice/GLSL/viewport.vert
+Loading fragment shader: /usr/share/vice/GLSL/builtin.frag
+Loading vertex shader: /usr/share/vice/GLSL/viewport.vert
+Loading fragment shader: /usr/share/vice/GLSL/builtin-interlaced.frag
+Loading vertex shader: /usr/share/vice/GLSL/viewport.vert
+Loading fragment shader: /usr/share/vice/GLSL/bicubic.frag
+Loading vertex shader: /usr/share/vice/GLSL/viewport.vert
+Loading fragment shader: /usr/share/vice/GLSL/bicubic-interlaced.frag
+Created render thread 0
+Render thread initialised
+Error - glXSwapIntervalMESA(1) failed with error: 5 (suppressing futher errors)
+opening dynamic library libmp3lame.so failed!
+ERROR setting up dynamic lame lib!
+Sound: Available sound devices: pulse alsa dummy fs dump wav voc iff aiff mp3 soundmovie
+Joystick: Linux joystick interface initialization...
+Joystick: Warning - Cannot open joystick device `/dev/input/js0'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js1'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js2'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js3'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js4'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js5'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js6'.
+Joystick: Warning - Cannot open joystick device `/dev/input/js7'.
+GTK3MOUSE: Status changed: 0 (disabled)
+Loading keymap `/usr/share/vice/C64/gtk3_sym.vkm'.
+HOTKEYS: Hotkeys: Initializing.
+HOTKEYS: Hotkeys: Parsing C64 hotkeys file:
+HOTKEYS: Hotkeys: OK.
+Main CPU: starting at ($FFFC).
+Main CPU: RESET.
+Sync reset
+Unit 8: RESET.
+Increasing trap_func array size to 1 with 1 to run
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+VICE thread initiating shutdown
+VICE thread is exiting
+Initiating render thread 0 shutdown
+Joining render thread 0 ...
+Joined render thread 0.
+
+Resources with non default values:
+Directory="/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64"
+Window0Height=644
+Window0Width=720
+Window0Xpos=160
+Window0Ypos=74
+Sound=0
+ChargenName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin"
+BasicName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin"
+REUfilename="/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu"
+REUImageWrite=1
+REUsize=2048
+REU=1
+Drive8Type=1581
+MonitorServerAddress="ip4://127.0.0.1:6842"
+MonitorServer=1
+
+reconstructed commandline options (might be incomplete):
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64" +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6842"
+
+VICE thread has been joined.
+REU: Writing REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
+CART: detach main -1: type: -1 id: -1
+CART: unset cart config
+VIC-II: VSP Bug: safe channels are: 157. Emulation of memory corruption is disabled.

@@ -1,0 +1,45 @@
+{
+ "mission": "cm",
+ "commit": "baf974b9dfa7b6deb33da8f3a0b3691b8d421796",
+ "dirty": false,
+ "drive": "1581",
+ "keys": "RV37E00E",
+ "ok": true,
+ "p00": true,
+ "boot_status": 0,
+ "modreg": "00000",
+ "failreg": [
+  "00000",
+  "00000",
+  "00000"
+ ],
+ "load_s": 1275.3,
+ "boot_s": 109.1,
+ "sha256": {
+  "flight-disk/cm-1.d81": "28bd250967b55ac7fe8c069b1fbbfd17df14a98026d4ab791f50746ebff54276",
+  "flight-disk/cm-loader.prg": "033ad42a6be71eaf09b0170efe1272e81e80623716bbf34f28c70dc05adb9e8a",
+  "flight-disk/cm-resident.prg": "613ec33f630c389b7d4314b15e811c89541350ca418cd026c799a7c36696644a",
+  "flight-store/cm.reu": "778e6996e07cb713ef4df58b177d5889655e47701cbbcdac3398c61e7aae4402"
+ },
+ "vice_log_sha256": "3f878abf4f5c73a58cf6df975539deaebcb41ab80abb9ee93bc17c3f85dc1e11",
+ "screen_sha256": "2af4a287541ddb1a8b5b95f77837045970a086c2bc6b56f26fe2f63275f188cd",
+ "screen": [
+  " APOLLO 11 CM DSKY",
+  "",
+  " UPLINK ACTY  TEMP         COMP ACTY",
+  " NO ATT       GIMBAL LOCK  PROG",
+  " KEY REL      RESTART      TRACKER",
+  " OPR ERR      ALT          VEL",
+  "",
+  "        VERB    NOUN    PROG",
+  "                         00",
+  "",
+  "            R1",
+  "            R2",
+  "            R3",
+  "",
+  " V VERB  N NOUN  RETURN ENTR  C CLR",
+  " R RSET  K KEY REL  P PRO  0-9 + -",
+  ""
+ ]
+}

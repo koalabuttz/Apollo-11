@@ -1,0 +1,63 @@
+{
+ "mission": "test",
+ "disks": [
+  "test-1.d81"
+ ],
+ "loader_bytes": 6405,
+ "resident_bytes": 44416,
+ "resident_start": 2061,
+ "boot_return": null,
+ "dsky_queue": null,
+ "hardware": null,
+ "resident_staged": "0x1f5200",
+ "bytes_loaded": 1921526,
+ "data_bytes": [
+  794081
+ ],
+ "check_expect": "43d7",
+ "check_host": "25a1",
+ "done": 2645,
+ "vice": {
+  "mission": "test",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 262114430,
+  "load_s": 266.0,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 94471,
+  "run_s": 158.5,
+  "check_crc": "43d7",
+  "check_expect": "43d7",
+  "check_pass": true,
+  "window_cs": 200,
+  "window_steps": 1201,
+  "window_x": 21.09,
+  "screen": [
+   "APOLLO 11 ON THE C64: HARDWARE CHECK",
+   "",
+   "VIDEO: PAL, 985248 HZ",
+   "REU: 2048 KB OR MORE",
+   "REU DMA, BYTES/S: C64>REU 923472",
+   "                 REU>C64 926866",
+   "",
+   "RUNNING LM P63 FROM 17513 CS...",
+   "",
+   "AGC TIME: 200 CS IN 1201 STEPS",
+   "C64 TIME: 42.19 S, 21.09 X REAL TIME",
+   "",
+   "END STATE CRC 43D7 (VICE 43D7)",
+   "HOST RUN'S CRC 25A1 (NOT YET THE SAME)",
+   "",
+   "PASS: THIS C64 COMPUTES WHAT VICE DOES",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ]
+ }
+}

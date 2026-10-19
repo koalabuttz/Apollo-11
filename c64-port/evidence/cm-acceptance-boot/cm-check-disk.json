@@ -1,0 +1,63 @@
+{
+ "mission": "test",
+ "disks": [
+  "test-1.d81"
+ ],
+ "loader_bytes": 6405,
+ "resident_bytes": 44416,
+ "resident_start": 2061,
+ "boot_return": null,
+ "dsky_queue": null,
+ "hardware": null,
+ "resident_staged": "0x1f5200",
+ "bytes_loaded": 1921750,
+ "data_bytes": [
+  794166
+ ],
+ "check_expect": "b66a",
+ "check_host": "ccfa",
+ "done": 2645,
+ "vice": {
+  "mission": "test",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 262149188,
+  "load_s": 266.1,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 94222,
+  "run_s": 158.5,
+  "check_crc": "b66a",
+  "check_expect": "b66a",
+  "check_pass": true,
+  "window_cs": 200,
+  "window_steps": 1201,
+  "window_x": 21.1,
+  "screen": [
+   "APOLLO 11 ON THE C64: HARDWARE CHECK",
+   "",
+   "VIDEO: PAL, 985248 HZ",
+   "REU: 2048 KB OR MORE",
+   "REU DMA, BYTES/S: C64>REU 923472",
+   "                 REU>C64 928145",
+   "",
+   "RUNNING LM P63 FROM 17513 CS...",
+   "",
+   "AGC TIME: 200 CS IN 1201 STEPS",
+   "C64 TIME: 42.20 S, 21.10 X REAL TIME",
+   "",
+   "END STATE CRC B66A (VICE B66A)",
+   "HOST RUN'S CRC CCFA (NOT YET THE SAME)",
+   "",
+   "PASS: THIS C64 COMPUTES WHAT VICE DOES",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ]
+ }
+}
