@@ -2522,7 +2522,33 @@ SPECS = {
             dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
                  **{f'ADOT+{i}': (2, 0)[i % 2] for i in range(6)},
                  **{f'ERRORX+{i}': 0o77777 - err for i in range(3)})
-            for adb, err in ((46, 70), (455, 480))]},
+            for adb, err in ((46, 70), (455, 480))] + [
+            # (Certificate fixes, the exact-zero arms the arm check found.)
+            # EDOTVEL exactly WL+H (18, 3350) or WL-H (10, 15117), with
+            # AERRVEL -600: SIGNCK2's and SIGNCK3's low word -0, to NJ22 and
+            # NJ23. A ones' complement sum is +0 only when both addends
+            # are, and -WLH, -WLMH and T5TEMP never are, so the CCS +0 arms
+            # stay impossible.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
+                 **{f'ADOT+{i}': edot[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 0o77777 - 600 for i in range(3)})
+            for adb in (46, 455) for edot in ((18, 3350), (10, 15117), (0, 0))] + [
+            # NJ22's sum -0 (to J23): EDOTVEL (14, 0) / SLOPE is 58, so
+            # AERRVEL = -(58 + ADB + 4), with a neighbour either side.
+            # NJ23's sum -0 (to J22): EDOTVEL (2, 0) keeps NJ22's sum
+            # negative and AERRVEL = -(ADB + 4 + 45). EDOT (0, 0) above
+            # takes J22's SIGNCK5 +0 arm to JN.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
+                 **{f'ADOT+{i}': edot[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 0o77777 - err for i in range(3)})
+            for adb in (46, 455)
+            for edot, err in [((14, 0), 58 + adb + 4 + d) for d in (-1, 0, 1)]
+            + [((2, 0), adb + 4 + 45)]] + [
+            # J21's SIGNCK4 >0 arm (to JP): EDOT (+0, 500) with AERRVEL 600,
+            # past ADB + 4 + 45, so J6 and J7 go on to J21.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': 46},
+                 **{f'ADOT+{i}': (0, 500)[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 600 for i in range(3)})]},
         'target': 'tests/cm_auto_man_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
@@ -2568,9 +2594,10 @@ SPECS = {
         # indices 0, 4 and 11 (REPLACER, REPLACEP, REPLACEY): INDEX them
         # before TC REPLACER.
         'index_cells': {0o1460: [0, 4, 11], 0o1462: [0, 4, 11], 0o1464: [0, 4, 11]},
-        # XTRANS (E6,1631) as P40's ullage setup leaves it: +0, +1 or -1.
+        # XTRANS (E6,1631) as P40's ullage setup leaves it: +0, +1, -1, or
+        # -0 when DAPDATR1 selects both quads (1 + -1: TS then ADS).
         'cells': {0o3060: [0, 4, 11], 0o3062: [0, 4, 11], 0o3064: [0, 4, 11],
-                  0o3231: [0, 1, 0o77776]},
+                  0o3231: [0, 1, 0o77776, 0o77777]},
         # Pitch and yaw on-times (TAU1/TAU2, units of 0.625 ms) the RCS DAP's
         # phase plane hands JETSLECT: a minimum impulse below 14 ms (23),
         # between 14 ms and 0.1 s (160) for one jet or two (NJET +1 or
