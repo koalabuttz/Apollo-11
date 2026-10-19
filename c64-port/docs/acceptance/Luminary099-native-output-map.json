@@ -1,0 +1,227 @@
+{
+ "note": "Luminary099 outputs. Windows follow docs/acceptance/Luminary099-program-map.json where they share a start.",
+ "rows": [
+  {
+   "section": "DSKY",
+   "row": "Noun x verb sweep",
+   "kind": "dsky",
+   "status": "pending",
+   "note": "Every flight noun x display verb (V01-V06, V11-V16, V21-V25), plus V32/V33/V34/V37, PROCEED and KEY REL on the C64 build (bar item 6): the Certificate fixes lane's DSKY sweep tool, run by Lane C on its Pinball certificate. Not on base yet"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Descent and ascent list (P63), before and after a GOJAM",
+   "kind": "downlink",
+   "host": [
+    "lm-p63-descent-restart"
+   ],
+   "c64": [
+    "lm-p63-descent",
+    "lm-p63-descent-after-gojam"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Coast and align list (P00)",
+   "kind": "downlink",
+   "host": [
+    "lm-p00-restart",
+    "lm-dap-hold-restart"
+   ],
+   "c64": [
+    "lm-p00"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Rendezvous/prethrust list (P20)",
+   "kind": "downlink",
+   "host": [
+    "lm-rendezvous-restart"
+   ],
+   "c64": [
+    "lm-rendezvous"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Orbital maneuvers, lunar surface align, AGS initialization lists",
+   "kind": "downlink",
+   "status": "not exercised",
+   "note": "Their phases (DOI, P12, P57, V47) start from the NASSP core, which runs on scaled time, where flight_host_run.c takes no DOWNRUPT (flight_downlink_check.py). The list code is the same DNTM routines the three rows above run"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Erasable dump (V74)",
+   "kind": "downlink",
+   "status": "not exercised",
+   "note": "No scenario keys V74"
+  },
+  {
+   "section": "Output channels",
+   "row": "RCS jets (Q/R and P axes)",
+   "kind": "channels",
+   "channels": [
+    5,
+    6
+   ],
+   "windows": [
+    [
+     "lm-p63-descent-thrust",
+     17500,
+     120
+    ],
+    [
+     "lm-p47-nassp",
+     2950,
+     1000
+    ],
+    [
+     "lm-p41-nassp",
+     49000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Engine on / off (bits 13, 14)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "lm-doi-nassp",
+     48800,
+     1000
+    ],
+    [
+     "lm-p42-nassp",
+     48800,
+     1000
+    ],
+    [
+     "lm-landing-ascent-nassp",
+     156000,
+     1000
+    ],
+    [
+     "lm-abort-p70-nassp",
+     115000,
+     600
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "DSKY lamps and alarms (ISS warning, computer activity, KEY REL, V/N flash, OPER ERR)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500,
+     200
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "CDU and radar error-counter enables, coarse align, descent engine gimbal trim",
+   "kind": "channels",
+   "channels": [
+    10
+   ],
+   "windows": [
+    [
+     "lm-p63-descent-thrust",
+     17500,
+     120
+    ],
+    [
+     "lm-p52-realign",
+     2000,
+     600
+    ],
+    [
+     "lm-abort-p71-nassp",
+     115000,
+     600
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Radar select and read (RR, LR)",
+   "kind": "channels",
+   "channels": [
+    11
+   ],
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000,
+     600
+    ],
+    [
+     "lm-p63-lr-update",
+     90000,
+     1000
+    ],
+    [
+     "lm-p63-v60-nassp",
+     99500,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Thrust drive (throttle)",
+   "kind": "channels",
+   "channels": [
+    12
+   ],
+   "windows": [
+    [
+     "lm-p63-descent-thrust",
+     17500,
+     120
+    ],
+    [
+     "lm-abort-p70-nassp",
+     115000,
+     600
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "IMU CDU, RR CDU and gyro drives",
+   "kind": "channels",
+   "channels": [
+    12
+   ],
+   "windows": [
+    [
+     "lm-p52-realign",
+     2000,
+     600
+    ],
+    [
+     "lm-p57",
+     12000,
+     600
+    ],
+    [
+     "lm-rendezvous",
+     29000,
+     600
+    ]
+   ]
+  }
+ ]
+}
