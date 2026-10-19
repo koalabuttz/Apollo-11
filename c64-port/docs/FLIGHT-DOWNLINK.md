@@ -174,8 +174,8 @@ counts: `rk_timer_phase` in `src/resident_rupt.c`, the rule
 counts, so a pass is a change in channel 4's bit 6, one byte test. The
 flight program on its disk (`tools/flight_disk.py`) and the resident size
 report (`tools/resident_flight_build.py`) build with it; it costs 24 bytes
-on each program (LM 23,891 resident bytes, 2,476 free; CM 23,634, 2,733
-free; the floor is 2,048). Every other build leaves it off.
+on each program (LM 23,675 resident bytes, 2,692 free; CM 23,418, 2,949
+free; the floor is 2,048). The resident-kernel lane counts the 24 bytes toward the resident bytes it is recovering. Figures from `tools/resident_flight_build.py` on base f22a31dc with this change. Every other build leaves it off.
 
 `tools/flight_scenario_vice.py --replay --downrupt` runs a window with
 DOWNRUPT on both sides (`FLIGHT_DOWNRUPT=1` on the host, `RK_DOWNRUPT=1` on
@@ -185,14 +185,14 @@ erasable state (DNTMGOTO, LDATALST and the list words) with the rest; with
 
 | Window | Result |
 |---|---|
-| `cm-p22` 14000 + 40, every 2 cs | matches at all 20 checkpoints, one per DOWNRUPT: the P22 list (77773) from its ID and sync words on |
+| `cm-p22` 14000 + 40, every 2 cs (`make flight-downlink-live-vice`) | matches at all 20 checkpoints, one per DOWNRUPT, with no schedule skips: the P22 list (77773) from its ID and sync words on |
 | `cm-p22` 14000 + 800, every 50 cs | matches at all 16 checkpoints and ends in the host's state |
-| `lm-csi` 2100 + 800, every 50 cs | matches at 50-400 cs; at 450 cs LDATALST is one word ahead on the C64 (02215 against 02214). Without DOWNRUPT the same window leaves the host at 51 cs (centiseconds 62 against 63): the LM clock drift on the replay-mismatch list, not the downlink |
+| `lm-csi` 2100 + 800, every 50 cs | matches at 50-400 cs; at 450 cs LDATALST is one word ahead on the C64 (02215 against 02214). Without DOWNRUPT the same window leaves the host at 51 cs (centiseconds 62 against 63): the LM clock drift on the replay-mismatch list (owner RK), not the downlink. Open: no LM live window matches yet |
 
 ## Gaps
 
 - The C64 windows above run with a frozen clock and set DOWNRUPT pending
-  themselves; the live flight program is checked below.
+  themselves; the live flight program is checked in the section above.
 - The x86 program (docs/X86-FLIGHT.md) does not take `FLIGHT_DOWNRUPT` yet
   (`platform/x86/flight_scenario.h` is Lane B's).
 - Nothing reads the stream as telemetry yet (yaAGC's

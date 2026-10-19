@@ -198,8 +198,9 @@ def c64_window(a, exe, window, scratch, pinned):
                    f'reference exit {r.returncode} {r.stderr.strip()}')
     if row['records_differ']:
         bad.append(f"{row['records_differ']} DOWNRUPTs' words differ from yaAGC's")
-    if not any(words[k][0] == list_id for k in starts):
-        bad.append(f'no {list_id:05o} {NAMES[m].get(list_id, "?")} list started')
+    if not starts or words[starts[0]][0] != list_id:
+        bad.append(f'the first list started is not {list_id:05o} {NAMES[m].get(list_id, "?")}: '
+                   + (f'{words[starts[0]][0]:05o}' if starts else 'none started'))
     row.update(ok=not bad, failures=bad)
     return row
 
@@ -228,6 +229,9 @@ def vice(a, exe, only=None):
               f"first words {row.get('first_words')}; lists started "
               + ', '.join(f"{x['id']} {x['name']} at DOWNRUPT {x['downrupt']}" for x in row.get('list_starts', []))
               + ('' if row['ok'] else ' FAILED: ' + '; '.join(row['failures'])))
+        # tools/ci_run.py copies summary: lines into the CI log.
+        print(f"summary: C64 {row['window']}: {row.get('records')} of {row['downrupts']} DOWNRUPTs, "
+              f"{row.get('records_differ')} differ from yaAGC's, {'pass' if row['ok'] else 'FAIL'}")
         rows.append(row)
     return rows
 
@@ -266,6 +270,9 @@ def main():
     # time, where flight_host_run.c has no DOWNRUPT: those rows stay out.
     todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4]
             and not (a.run_vice and a.c64_only)]
+    windows = [w for w in VICE_WINDOWS if not only or w[0] in only or w[1] in only] if a.run_vice else []
+    if not todo and not windows:
+        sys.exit('FAIL: nothing to run (--only names only NASSP-core rows, or host rows under --c64-only)')
     with ThreadPoolExecutor(max(1, a.jobs)) as pool:
         rows = list(pool.map(lambda x: check(exe, x), todo))
     for row in rows:
@@ -280,6 +287,8 @@ def main():
               f"then at {ag.get('cs')} cs {ag.get('words')} ({ag.get('list')} {ag.get('list_name')}, {ag.get('list_words')} words)"
               + f"; {len(row['mismatches'])} yaAGC did not match ({len(row['new_mismatches'])} new)"
               + ('' if row['ok'] else ' FAILED: ' + '; '.join(row['failures'])))
+        print(f"summary: {row['scenario']}: {row['native_words']} native words, {row['span_differ']} differ from "
+              f"yaAGC's, {'pass' if row['ok'] else 'FAIL'}")
     c64 = vice(a, exe, only) if a.run_vice else []
     (OUT / 'summary.json').write_text(json.dumps(dict(host=rows, c64=c64), indent=1) + '\n')
     return 1 if any(not r['ok'] for r in rows + c64) else 0

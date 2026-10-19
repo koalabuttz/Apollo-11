@@ -50,6 +50,11 @@ static __attribute__((noinline)) void radar(agc_hardware *hw, uint16_t *pending,
     hw->radar_gate = n;
 }
 
+#if RK_DOWNRUPT
+/* The DOWNRUPT request below sets its bit in pending's high byte. */
+typedef char rk_downrupt_in_high_byte[RK_RUPT_DOWN >= 8 && RK_RUPT_DOWN < 16 ? 1 : -1];
+#endif
+
 void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending, uint8_t phase)
 {
     /* Each step's counter and the request its overflow raises. */
