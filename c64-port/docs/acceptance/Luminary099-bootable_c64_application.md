@@ -96,6 +96,8 @@ HOST RUN'S CRC 25A1 (NOT YET THE SAME)
 PASS: THIS C64 COMPUTES WHAT VICE DOES
 ```
 
+The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure. The check passes when the C64 computes what VICE does; the host run's CRC is shown for reference and differs because of the known C64-versus-host mismatch in this P63 window (docs/RUN-ON-C64.md, Check on real hardware). It becomes the same when that window matches the host.
+
 ## Real hardware
 
 Not yet run on a real C64. The first try is the check disk above on David's C64 Ultimate; its photographed screen will be added here. It is not a blocker for this category: the acceptance plan counts real hardware as a bonus.

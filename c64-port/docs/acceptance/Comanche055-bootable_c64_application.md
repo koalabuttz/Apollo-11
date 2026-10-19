@@ -73,7 +73,9 @@ In the `1581-keyboard` run the keys are pressed on VICE's window through the X s
 
 Every port-ci run whose changes touch the boot path (the watch list in tools/mk/ci-extra.mk: the disk tool, the loader, the drive code, the decompressor, the resident's main) runs `make flight-disk-vice`: the `1581` run above for both programs, and the check disk. It fails unless both reach P00 and the check passes. The run keeps the boot records (`flight-disk-boot-<m>.json`), their VICE logs and the disk images it booted in its `c64…-logs` artifact.
 
-## Hardware check disk
+## Hardware check disk (the LM build's)
+
+There is one check disk, and it is built from the LM's store: it checks the machine (the C64, its REU and its drive) rather than one program, so it runs LM code, not Comanche055. It is reported here because a C64 that fails it is not fit to run either program. This program's own boot is the runs above.
 
 The check disk (`test-1.d81`, `LOAD"APOLLO TEST",8`) loads the LM's store like the LM disk, then measures the video standard, the REU's size and DMA speed, runs the LM's P63 for 200 cs from a host snapshot with the host's inputs, and compares a CRC of the end state against the one VICE gave when the disk was made (docs/RUN-ON-C64.md, Check on real hardware). In VICE: CRC B66A against B66A, PASS; load 266.1 s. Evidence: `evidence/cm-acceptance-boot/cm-check-disk.json` (sha256 `adb425ce3a229ef1...`), `evidence/cm-acceptance-boot/cm-check-disk-vice.log` (sha256 `ea6400abadf9d1ea...`).
 
@@ -95,6 +97,8 @@ HOST RUN'S CRC CCFA (NOT YET THE SAME)
 
 PASS: THIS C64 COMPUTES WHAT VICE DOES
 ```
+
+The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure. The check passes when the C64 computes what VICE does; the host run's CRC is shown for reference and differs because of the known C64-versus-host mismatch in this P63 window (docs/RUN-ON-C64.md, Check on real hardware). It becomes the same when that window matches the host.
 
 ## Real hardware
 

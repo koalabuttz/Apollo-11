@@ -214,7 +214,12 @@ def write_doc(m, commit):
               'unless both reach P00 and the check passes. The run keeps the boot records '
               '(`flight-disk-boot-<m>.json`), their VICE logs and the disk images it booted in its '
               '`c64…-logs` artifact.', '']
-    lines += ['## Hardware check disk', '']
+    lines += ['## Hardware check disk' + (" (the LM build's)" if m != 'lm' else ''), '']
+    if check and m != 'lm':
+        lines += ["There is one check disk, and it is built from the LM's store: it checks the machine (the "
+                  'C64, its REU and its drive) rather than one program, so it runs LM code, not Comanche055. It '
+                  'is reported here because a C64 that fails it is not fit to run either program. This '
+                  "program's own boot is the runs above.", '']
     if check:
         v = check['vice']
         lines += ['The check disk (`test-1.d81`, `LOAD"APOLLO TEST",8`) loads the LM\'s store like the LM disk, '
@@ -224,7 +229,12 @@ def write_doc(m, commit):
                   f"In VICE: CRC {v.get('check_crc', '').upper()} against {v.get('check_expect', '').upper()}, "
                   f"{'PASS' if v.get('ok') else 'FAIL'}; load {v.get('load_s')} s. Evidence: "
                   f"{digest(check_path)}, {digest(ev / f'{m}-check-disk-vice.log')}.", '',
-                  '```text', *trim(v.get('screen', [])), '```', '']
+                  '```text', *trim(v.get('screen', [])), '```', '',
+                  "The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure. The check passes "
+                  "when the C64 computes what VICE does; the host run's CRC is shown for reference and differs "
+                  'because of the known C64-versus-host mismatch in this P63 window '
+                  '(docs/RUN-ON-C64.md, Check on '
+                  'real hardware). It becomes the same when that window matches the host.', '']
     else:
         lines += ['Not run.', '']
     lines += ['## Real hardware', '',
