@@ -8195,7 +8195,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
-            "sha256": "ddb0a1f7545dff78140e903858c3cdcdb39c72841806adc4f237b66f7ee016ce"
+            "sha256": "8217e0e6ff22d80ad4e509e7cdd47d58fa7b728200cb1329c43f048979f88755"
           }
         }
       },
