@@ -167,7 +167,7 @@ def link_check(a):
     n_c64 = len(fsv.c64_rows(rows, m, 0, 0)) // fsv.ROW.size
     busy = {x[0]: x for x in fhd.FLIGHT}[scen][4].get('FLIGHT_BUSY_SAMPLE')
     defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u', f'-DDP_REPLAY_CS={cs}u',
-               f'-DDP_EVERY={cs}u', f'-DDP_END=0x{end_at:x}ul', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+               f'-DDP_EVERY={cs}u', f'-DDP_END=0x{end_at:x}ul', '-DDP_STATES_MAX=1u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
                '-DDP_HW_CHECK', f'-DDP_HW_SAVE=0x{save_at:x}ul', f'-DDP_HW_HOST=0x{host:04x}u', f'-DDP_HW_WINDOW="LM P63 FROM {snap_at} CS"']
 
     def link(expect):

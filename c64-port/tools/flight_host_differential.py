@@ -548,6 +548,30 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# Crew verbs the other CM scenarios do not key (the Comanche055 coverage
+# map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
+# cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
+# (option 2), proceed, V06N16 (event time 0: now), proceed, V06N90 (Y and
+# Y-dot 0: the two orbits are coplanar, PSI 180 degrees), proceed. V44
+# (surface flag set): R61 recomputes the tracking attitude for an LM on
+# the surface, stores alarm 00407 through R52's path and asks for a
+# maneuver (V50N18); V45 (reset), V88 (VHF ranging off) and V58 (auto
+# maneuver enabled) go in under the flashing V50N18, then V93 (RENDWFLG cleared: the W matrix is no longer valid).
+CM_P20_CREW_KEYS = CM_P20_KEYS + '@21000V90E@22000V33E@23000V33E@24000V33E@25000V33E@26000V44E@27000V45E@28000V88E@29000V58E@30000V93E'
+# cm-p23-attached: cm-p23 to P00, then V66 (vehicles attached): ATTACHIT
+# copies the CSM's state vector into the LM's, as after docking.
+P23_ATTACHED_KEYS = P23_KEYS + '@28500V66E'
+# cm-v49-maneuver: cm-p40's start (the docked stack before LOI), V76
+# (preferred attitude flag set), then V49 (R62): V06N22 loaded with V25 to roll 180 degrees, proceed, R60's
+# V50N18, proceed: KALCMANU steers toward the new attitude and R60 shows
+# V06N18. The harness has no CM attitude dynamics, so the CDUs stay put
+# and the steering runs to the end of the run.
+V49_KEYS = '@2000V76E@3000V49E@4000V25E+18000E+00000E+00000E@5500V33E@6500V33E'
+# cm-p21: cm-p52 to P00, then V37E21E (P21, ground track): V04N06 option 2
+# (this vehicle), proceed; V06N34 (the GET of interest: now, 00:33:00.81),
+# proceed; V06N43 shows the latitude, longitude and altitude there
+# (-7.40, +111.70 degrees, 97.1 nmi).
+P21_KEYS = P52_KEYS + '@19500V37E21E@20500V33E@21500V33E@22500V33E@23500V33E'
 # lm-p63-lr-dropout: lm-p63-nassp with the landing radar from 600 s
 # (FLIGHT_LR, tools/flight_lr.h: range and velocity beams from the true
 # trajectory, data good below 50,000 ft of slant range) and its data good
@@ -622,6 +646,10 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p52-imu-fail', 'cm', 20000, P52_KEYS, CM_P52_IMU_FAIL),
           ('cm-p52-imu-cage', 'cm', 20000, P52_KEYS, CM_P52_IMU_CAGE),
           ('cm-p52-gimbal-lock', 'cm', 21000, P52_KEYS, CM_P52_GIMBAL_LOCK),
+          ('cm-p20-crew-verbs', 'cm', 32000, CM_P20_CREW_KEYS, CM_P20),
+          ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
+          ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
+          ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
