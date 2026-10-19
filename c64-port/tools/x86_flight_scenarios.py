@@ -23,6 +23,16 @@ the x86 program passes when
     plus WORDS_PLUS. This is what sees programs that do not move the
     state vector: P52 and P57 with their marks left out differ in about
     200 words against a spread of 6 and 18.
+With the rendezvous radar (FLIGHT_RR), when the harness's two clocks
+leave the state vector at different times (PIPTIME), the state vector
+check is against the truth instead. Marks move the state vector and its time (PIPTIME) by
+amounts that depend on when each mark falls, so two good runs can hold
+state vectors hundreds of kilometres apart, each correct for its own
+time (LM P78: the harness at PIPTIME 19,234 cs, the x86 program at
+41,786). So each run's own state vector is compared with the true orbit
+FLIGHT_RR gives at that run's PIPTIME, and the x86 program's error must be
+within SPREAD_K times the larger of the harness's two errors, plus
+RN_FLOOR / VN_FLOOR.
 KNOWN lists scenarios outside the RN/VN bounds with the reason and an
 envelope of their own: such a run is reported and does not fail when it
 reaches the compare point, exits 0, has the same major mode, stays within
@@ -32,11 +42,11 @@ build/x86-flight/scenarios/summary.json.
   x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
 
 Scenarios that need a model the x86 program does not have yet (the
-rendezvous and landing radars, the NASSP P63 core, uplink, stolen time)
-are left out. Needs yaAGC (deps/virtualagc) for the harness; the x86
+landing radar, the NASSP P63 core, uplink, stolen time) are left out, and
+GAPS lists those that stop at a routine not yet certified. Needs yaAGC (deps/virtualagc) for the harness; the x86
 program itself links none.
 """
-import argparse, json, os, re, subprocess, sys
+import argparse, json, math, os, re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,13 +67,47 @@ WORDS = range(0o61, 0o4000)
 KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; '
                                 "the harness's other clock: 10022), and P11 navigates from that time",
                          rn=600.0, vn=1.0)}   # measured 449 m, 0.73 m/s
-UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_RR', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
-# Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7).
+UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
+# Scenarios the x86 program cannot fly yet: it stops at a routine whose
+# table is not certified (it has no yaAGC bridge).
+GAPS = {name: "LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending (Lane C)"
+        for name in ('lm-cdh', 'lm-cdh-csm')}
+# Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
+PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
+MOON_MU = 4.9028e12
 
 
 def supported():
     return [row for row in fhd.FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+
+
+def kepler(s, dt):
+    """The conic state dt seconds after s (platform/x86/radar_models.h's
+    rm_kepler)."""
+    r0, v2 = math.sqrt(sum(v * v for v in s[:3])), sum(v * v for v in s[3:])
+    a = 1.0 / (2.0 / r0 - v2 / MOON_MU)
+    sg = sum(s[i] * s[i + 3] for i in range(3)) / math.sqrt(MOON_MU)
+    n, sa = math.sqrt(MOON_MU / a ** 3), math.sqrt(a)
+    de = n * dt
+    for _ in range(50):
+        fn = de + sg / sa * (1 - math.cos(de)) - (1 - r0 / a) * math.sin(de) - n * dt
+        de -= fn / (1 + sg / sa * math.sin(de) - (1 - r0 / a) * math.cos(de))
+    r = a + (r0 - a) * math.cos(de) + sg * sa * math.sin(de)
+    f, g = 1 - a / r0 * (1 - math.cos(de)), a * sg / math.sqrt(MOON_MU) * (1 - math.cos(de)) + r0 * math.sqrt(a / MOON_MU) * math.sin(de)
+    fd, gd = -math.sqrt(MOON_MU * a) / (r * r0) * math.sin(de), 1 - a / r * (1 - math.cos(de))
+    return [f * s[i] + g * s[i + 3] for i in range(3)], [fd * s[i] + gd * s[i + 3] for i in range(3)]
+
+
+def truth_errors(m, env, w):
+    """The run's own state vector against FLIGHT_RR's true orbit at its
+    PIPTIME: (RN error m, VN error m/s, PIPTIME cs)."""
+    t0, lm, csm = env['FLIGHT_RR'].split(':')
+    own = [float(v) for v in (lm if m == 'lm' else csm).split(',')]
+    modreg, rn, vn = STATE[m]
+    pip = ones(w[PIPTIME[m]]) * 16384 + ones(w[PIPTIME[m] + 1])
+    r, v = kepler(own, (pip - int(t0)) * 0.01)
+    return distance(vector(w, rn, 29, 1.0), r), distance(vector(w, vn, 7, 100.0), v), pip
 
 
 def ones(v):
@@ -91,10 +135,10 @@ def harness_state(m, cs, keys, env, at, clock='W'):
 
 
 def x86_state(m, keys, env, at):
-    """The x86 program's erasable image at its sample for centisecond at:
+    """The x86 program's erasable image at its first sample point at or after centisecond at:
     (run, centisecond, 2048 words), centisecond None when it wrote none."""
     samples = OUT / f'samples-{os.getpid()}.txt'
-    r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(at + 1)] + ([keys] if keys else []), cwd=ROOT,
+    r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(at + 1000)] + ([keys] if keys else []), cwd=ROOT,
                        env={**os.environ, **env, 'X86_SPEED': '0', 'X86_SAMPLES': str(samples),
                             'X86_SAMPLES_FROM': str(at)}, capture_output=True, text=True)
     line = samples.read_text().split('\n', 1)[0].split() if samples.exists() else []
@@ -131,18 +175,33 @@ def compare(name, m, cs, keys, env, drop=''):
     spread_words = sum(hw[i] != sw[i] for i in WORDS)
     rn_tol, vn_tol = SPREAD_K * s_rn + RN_FLOOR, SPREAD_K * s_vn + VN_FLOOR
     words_tol = int(WORDS_K * spread_words) + WORDS_PLUS
+    truth = None
+    h_err, o_err, x_err = (truth_errors(m, env, w) for w in (hw, sw, xw)) if 'FLIGHT_RR' in env else (None,) * 3
+    if h_err and h_err[2] != o_err[2]:
+        d_rn, s_rn, d_vn, s_vn = x_err[0], max(h_err[0], o_err[0]), x_err[1], max(h_err[1], o_err[1])
+        rn_tol, vn_tol = SPREAD_K * s_rn + RN_FLOOR, SPREAD_K * s_vn + VN_FLOOR
+        truth = dict(pip_cs=dict(harness=h_err[2], other_clock=o_err[2], x86=x_err[2]),
+                     rn_error_m=dict(harness=round(h_err[0], 1), other_clock=round(o_err[0], 1), x86=round(x_err[0], 1)),
+                     vn_error_mps=dict(harness=round(h_err[1], 3), other_clock=round(o_err[1], 3),
+                                       x86=round(x_err[1], 3)))
     ok = r.returncode == 0 and hw[modreg] == xw[modreg] and d_rn <= rn_tol and d_vn <= vn_tol and words <= words_tol
-    line = (f"{name}: at {at} cs major mode {hw[modreg]:02o}/{xw[modreg]:02o} (harness/x86), "
-            f"RN {d_rn:.1f} m apart (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
-            f"{words} words differ (limit {words_tol}; the harness's clocks: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s, "
-            f"{spread_words} words)")
+    if truth:
+        line = (f"{name}: at {at} cs major mode {hw[modreg]:02o}/{xw[modreg]:02o} (harness/x86), "
+                f"RN {d_rn:.1f} m from the true orbit (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
+                f"{words} words differ (limit {words_tol}; the harness's errors: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s; "
+                f"its clocks differ in {spread_words} words)")
+    else:
+        line = (f"{name}: at {at} cs major mode {hw[modreg]:02o}/{xw[modreg]:02o} (harness/x86), "
+                f"RN {d_rn:.1f} m apart (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
+                f"{words} words differ (limit {words_tol}; the harness's clocks: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s, "
+                f"{spread_words} words)")
     return dict(scenario=name, mission=m, centisecond=at, x86_exit=r.returncode,
                 major_mode=dict(harness=f'{hw[modreg]:02o}', x86=f'{xw[modreg]:02o}'),
                 rn_metres=dict(harness=[round(v, 1) for v in state['rn'][0]], x86=[round(v, 1) for v in state['rn'][2]],
                                difference=round(d_rn, 1), spread=round(s_rn, 1), limit=round(rn_tol, 1)),
                 vn_mps=dict(harness=[round(v, 2) for v in state['vn'][0]], x86=[round(v, 2) for v in state['vn'][2]],
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
-                words=dict(differ=words, spread=spread_words, limit=words_tol), inputs=env, line=line), ok
+                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, inputs=env, line=line), ok
 
 
 def within_known(name, row):
@@ -176,6 +235,10 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     summary, failed = [], 0
     for name, m, cs, keys, env in rows:
+        if name in GAPS:
+            summary.append(dict(scenario=name, mission=m, gap=GAPS[name]))
+            print(f'{name}: not flown, {GAPS[name]}', flush=True)
+            continue
         row, ok = compare(name, m, cs, keys, env, a.drop_keys)
         known = None if ok else within_known(name, row)
         failed += not ok and not known
