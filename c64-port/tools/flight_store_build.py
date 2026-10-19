@@ -507,7 +507,9 @@ def c64_mct(m, to_interp, modules):
                 if t not in RIDE and not idle_table(t):
                     out.setdefault(t, mct_weight(m, [x for x in mod['basic'] if x not in LEAD_INS and not idle_table(x)]))
     for mod in modules:
-        weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        weighed = [mod['chunk'][0]] if mod.get('chunk') else (list(mod.get('basic') or [])
+                                                               + list(dict.fromkeys(t for t, _ in mod.get('pick') or []))
+                                                               + list(mod.get('interp') or []))
         rupt = [t for t in weighed if not idle_table(t)]
         own = [t for t in rupt if t not in LEAD_INS] or rupt
         for t in weighed:
@@ -533,6 +535,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    picked_tables = list(dict.fromkeys(t for t, _ in pick)) if pick else []
     if pick is not None:
         head, basic = '#define FS_PICK(X) ' + ' '.join(f'X({t},{i})' for t, i in pick) + '\n', []
     if keys is not None and (chunk or pick is not None):
@@ -554,11 +557,18 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     # The work clock's weight (resident_flight.h): its tables' calibrated
     # MCT per routine.
     head += f'#define FS_KEY_LO {key_range[0]}u\n#define FS_KEY_SPAN {key_range[1] - key_range[0]}u\n'
-    weighed = [chunk[0]] if chunk else list(basic) + list(interp)
+    # A picked module (FS_PICK: live entries, or a split pack's part) weighs
+    # the tables its entries come from; it has no basic list of its own.
+    weighed = [chunk[0]] if chunk else list(basic) + picked_tables + list(interp)
     rupt = [t for t in weighed if not idle_table(t)]
     # The lead-ins riding in a pack keep the pack's own weight.
     own = [t for t in rupt if t not in LEAD_INS] or rupt
-    head += f'#define FS_MCT {mct_weight(m, own) if own else 0}u\n'
+    mct = mct_weight(m, own) if own else 0
+    if not mct and (chunk or pick or basic or interp) and not (weighed and all(idle_table(t) for t in weighed)):
+        # 0 is the idle weight (RK_MCT_IDLE): the C64 would charge each
+        # step the rest of its budget.
+        raise SystemExit(f'{m}: {prg.name} links routines but weighs 0 MCT (the idle weight)')
+    head += f'#define FS_MCT {mct}u\n'
     if rupt and len(rupt) < len(weighed):
         # rk_direct honours the idle flag on the LM only (resident_flight.c):
         # a CM module packing the idle loop with other tables would charge
@@ -1032,9 +1042,10 @@ def interp_modules(cc, m, library):
 # Modules whose fixed_data is not the resident's boundary words: self-check's
 # own hook (include/self_check.h), or 'rope', every rope word from the REU
 # image (include/rope_image.h; LM TRIM_GIMBAL's GTS reads DOSHIFT's indexed
-# CA operands through it).
+# CA operands through it, and SUPDACAL in the interbank routines reads any
+# fixed word: V27 N02's fixed memory display).
 FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data',
-              'lm_trim_gimbal': 'rope'}
+              'lm_trim_gimbal': 'rope', 'lm_interbank_routines': 'rope', 'cm_interbank_routines': 'rope'}
 FIXED_KIND = {None: 0, 'rope': 2}
 # Where the resident's own tables read their inline operands: the thin
 # kernel's program holds the Executive's site table.
