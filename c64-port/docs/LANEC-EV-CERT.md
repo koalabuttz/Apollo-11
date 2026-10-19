@@ -92,6 +92,13 @@ Hashes: `evidence/lanec-ev-cert/SHA256.json`.
   every call of a shared helper (`lanec_ccs`, `lanec_ts`, `lanec_ev_zero`,
   `lanec_ev_mp` and the rest) takes each of its host outcomes at that call
   site, not just somewhere in the file (`LANEC_COVER_SITES`).
+- V56 in flight: `lanec-ev-v56-lm-rendezvous-tpm.log` is the host run of the
+  `lm-rendezvous-tpm` scenario (`tools/flight_host_differential.py`,
+  `FLIGHT_SCALED=1,1,2`), which keys V56 at 70,000 cs. Before #697 this run
+  bridged at 42,2063/2065 (TRMTRAK1 in Pinball's NOVAC job, FIXLOC 0110,
+  which the guard refused). Now: 0 bridged yaAGC instructions, 0 native
+  routines differing from yaAGC and 0 unregistered or refused points in
+  71,000 cs. It is not produced by `cert_evidence.py`.
 
 The supported domain and the external continuations are written into the
 certificate itself.

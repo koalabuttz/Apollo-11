@@ -27,6 +27,11 @@
       "sha256": "1158185460795ff0b8790279e18f479fe2b9c2e6f862aa712ff7265d4ed26352",
       "bytes": 243031,
       "store": "tree"
+    },
+    "lanec-ev-v56-lm-rendezvous-tpm.log": {
+      "sha256": "0af8ef7a87a9f1724ae51239c48ddac005e49dddb5ee35409430103f11b9084a",
+      "bytes": 26430,
+      "store": "tree"
     }
   }
 }
