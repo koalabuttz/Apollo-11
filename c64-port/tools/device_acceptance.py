@@ -231,7 +231,7 @@ def first_diff(r):
     return f"{r.get('replay_differences')} words by {at} cs" + (f' ({w})' if w else '')
 
 
-def write_doc(m, table, runs, logs, host_src, commit):
+def write_doc(m, table, runs, logs, host_src, host_cite, commit):
     p = PROGRAM[m]
     bad = []
     lines = [f'# {p}: device adapter tests', '',
@@ -246,7 +246,8 @@ def write_doc(m, table, runs, logs, host_src, commit):
              'the host\'s snapshot, takes the host\'s inputs as rows, and must end every checkpoint in the host\'s '
              'state (erasable words, TIME1-6, output channels 5, 6, 11-14, 34, 35 and the superbank; '
              'docs/FLIGHT-STORE.md "matches host"). A window exercises an input role when its rows touch the role\'s '
-             'words, channels or interrupt requests; outputs are compared in every window.', '',
+             'words, channels or interrupt requests; outputs are compared in every window.'
+             + (f' Host differential summary: {host_cite}.' if host_cite else ''), '',
              '## Summary', '', '| Role | In/out | Adapters | Host check | C64 check | Status |', '|---|---|---|---|---|---|']
     detail = []
     for t in table:
@@ -276,14 +277,14 @@ def write_doc(m, table, runs, logs, host_src, commit):
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               f"{'matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs' if r['_match'] else 'differs: ' + first_diff(r)}"
               f"{' (skips: ' + '; '.join(r['replay_skipped']) + ')' if r.get('replay_skipped') else ''}; "
-              f"inputs {json.dumps(inputs(r).get('counts', {}))} (`{r['_evidence']}`)" for r in wins] or ['- none']
+              f"inputs {json.dumps(inputs(r).get('counts', {}))} ({r['_evidence']})" for r in wins] or ['- none']
         targets = make_targets()
         bad += [f"{t['key']}: no make target {u}" for u in t['units'] if u not in targets]
         d += ['', 'Routine-level checks (host differential against yaAGC, then the same cases on the C64 in VICE): '
               + ', '.join(f'`make {u}`' for u in t['units']) + '.']
         for k in t['logs']:
             if k in logs:
-                d.append(f"Log: `{logs[k]}`.")
+                d.append(f"Log: {logs[k]}.")
         if t['gap'] or not matched:
             d += ['', f"**Open:** {t['gap'] or 'no C64 window exercises this role yet'}."
                   + (f" Closes it: {t['closes']}." if t['closes'] else '')]
@@ -297,7 +298,7 @@ def write_doc(m, table, runs, logs, host_src, commit):
               '| Scenario | Start cs | cs | Every cs | Result | Evidence |', '|---|---|---|---|---|---|']
     for r in runs:
         lines.append(f"| {r['scenario']} | {r['snap_cs']} | {r.get('requested_cs')} | {r.get('replay_every', '')} | "
-                     f"{'matches' if r['_match'] else 'differs: ' + first_diff(r)} | `{r['_evidence']}` (sha256 `{r['_sha'][:16]}...`) |")
+                     f"{'matches' if r['_match'] else 'differs: ' + first_diff(r)} | {r['_evidence']} |")
     lines += ['', '## Reproduce', '', '```sh', f'python3 tools/device_acceptance.py {m}   # host differential + the windows above',
               '# one window: python3 tools/flight_scenario_vice.py --scenario <scenario> --snap-cs <cs> --cs <n> --replay --replay-every <every>',
               '```', '']
@@ -365,7 +366,7 @@ def main(argv=None):
 
     def stored(copy):
         copies.append(copy)
-        return f'evidence/{eid}/{copy.name}'
+        return f'`evidence/{eid}/{copy.name}` (sha256 `{sha(copy)[:16]}...`)'
     if not a.host:
         # A scenario that differs ends the differential nonzero; its summary
         # still holds every row. No summary means the run itself broke.
@@ -380,12 +381,12 @@ def main(argv=None):
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
         a.run = [str(run_window(*w, out)) for w in WINDOWS[a.mission]]
-    host = None
+    host, host_cite = None, None
     if a.host:
         host = json.loads(pathlib.Path(a.host).read_text())
         copy = dest / 'host-summary.json'
         copy.write_text(json.dumps(host, indent=1) + '\n')
-        stored(copy)
+        host_cite = stored(copy)
     runs = []
     for path in a.run:
         r = json.loads(pathlib.Path(path).read_text())
@@ -393,7 +394,7 @@ def main(argv=None):
             continue
         copy = dest / f"{r['scenario']}-{r.get('snap_cs', 'x')}.json"
         copy.write_text(json.dumps(r, indent=1) + '\n')
-        r['_evidence'], r['_sha'] = stored(copy), sha(copy)
+        r['_evidence'] = stored(copy)
         r['_match'] = bool(r.get('replay_ended')) and r.get('replay_differences') == 0 and r.get('replay_applied') == r.get('replay_rows')
         runs.append(r)
     logs = {}
@@ -407,7 +408,7 @@ def main(argv=None):
         # evidence/<id>/ is flat, with its SHA256.json (tools/ci_guard.py).
         subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, *map(str, copies), '--tree'],
                        cwd=ROOT, check=True)
-    path, bad = write_doc(a.mission, roles(a.mission), runs, logs, host, commit)
+    path, bad = write_doc(a.mission, roles(a.mission), runs, logs, host, host_cite, commit)
     print(f"{path.relative_to(ROOT)}: {'PASS' if not bad else 'FAIL'} (sha256 {sha(path)})")
     for b in bad:
         print(f'FAIL: {b}')
