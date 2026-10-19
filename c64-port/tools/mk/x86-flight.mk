@@ -7,8 +7,11 @@
 # missions and the LM DAP hold in lockstep against yaAGC (clock frozen, the
 # x86 program's schedule), in both modes. x86-flight-mct re-measures the
 # routine costs (docs/flight-routine-mct.json) from the host differential.
+# x86-flight-scenarios flies the host differential's flight scenarios on the
+# x86 program with its vehicle models and compares each with the harness on
+# the work clock (tools/x86_flight_scenarios.py; not in CI).
 # All need the listings (build/fixed-data/<mission>/assembly.lst).
-.PHONY: x86-flight x86-flight-check x86-flight-mct
+.PHONY: x86-flight x86-flight-check x86-flight-mct x86-flight-scenarios
 x86-flight: | build
 	python3 tools/x86_flight_build.py
 x86-flight-check: build/agc_engine_hardware_dv.o | build
@@ -20,3 +23,5 @@ x86-flight-check: build/agc_engine_hardware_dv.o | build
 	python3 tools/x86_flight_check.py --skip-index
 x86-flight-mct: build/agc_engine_hardware_dv.o | build
 	python3 tools/x86_flight_mct.py
+x86-flight-scenarios: build/agc_engine_hardware_dv.o | build
+	python3 tools/x86_flight_scenarios.py

@@ -313,8 +313,8 @@ ARMS = {
         ],
     },
     'cm-stable-orbit': {
-        'cases': 26368, 'cases_sha256': '7cffabff9287c354c7c70176395d2b2e096ebf77172622889ed7d322d8ef9659',
-        'sources_sha256': {'src/cm_stable_orbit.c': '2e64a95cea25d6e2b26df8904f5fcadae7fa26e0b0a19bf3c1985865fe7d306a'},
+        'cases': 26624, 'cases_sha256': '286b81277bf21dd3db91bd6fdea04ba80c33b209413b7464045de63b3c542181',
+        'sources_sha256': {'src/cm_stable_orbit.c': '2785e9f81214eeb7f6ada85e86cf0ee414b8165e4e84966c2fd90e5115a2e39c'},
         'arms': [
         ],
     },

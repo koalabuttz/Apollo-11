@@ -501,14 +501,24 @@ def host_mct(m, t):
     return mct_weight(m, [t], interp=interpretive_table(t))
 
 
-def c64_mct(m, to_interp, modules):
+def c64_mct(m, to_interp, modules, pins=()):
     """{table: work clock weight} as the C64 store charges it: the
     interpreter's per word (INTERP_PER_WORD) for a table left to the
     interpreter module, 0 for the self-check idle tables (FS_IDLE, or a
     module of idle tables only), else the FS_MCT of the first module that
     runs it (link_module). host.inc carries these, so the host's work clock
-    (FLIGHT_SCALED) charges what the C64 does."""
+    (FLIGHT_SCALED) charges what the C64 does. pins: the packed pinned
+    modules' link parameters, class 3 first."""
     out = {t: INTERP_PER_WORD for t in to_interp}
+    # rk_direct tries the class-3 pinned module before any slot, and its
+    # table list names the class-4 home's tables too, so every table of the
+    # pinned sets is charged class 3's one FS_MCT (#710).
+    for mod in pins:
+        weighed = list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        rupt = [t for t in weighed if not idle_table(t)]
+        own = [t for t in rupt if t not in LEAD_INS] or rupt
+        for t in weighed:
+            out.setdefault(t, 0 if idle_table(t) or not own else mct_weight(m, own))
     # A pack's own tables (not its ride ones) resolve to the pack before
     # their files' modules, so the pack's FS_MCT is what the C64 charges
     # them (RATELOOP's lm_kalman_basic in the excursion, the radar step in
@@ -1792,7 +1802,9 @@ def main():
                         continue
                     for k in keys[t][c[1]:c[2]] if c else keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
-        write_host(packed_pins(pinned), pack_tables(pack_report(packs)), c64_mct(m, to_interp, modules))
+        write_host(packed_pins(pinned), pack_tables(pack_report(packs)), c64_mct(
+            m, to_interp, modules,
+            [params[f"pin-{p['slot']}"] for p in sorted(pinned, key=lambda p: p['slot'] != 'pinned') if p['packed']]))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):

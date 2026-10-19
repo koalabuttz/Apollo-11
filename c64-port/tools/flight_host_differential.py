@@ -515,6 +515,39 @@ LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
 # their own.
 CM_P20_VHF_DROP = {**CM_P20, 'FLIGHT_RR_DROP': '18000-19000'}
 CM_P20_VHF_DROP_KEYS = CM_P20_KEYS.replace('@20000V33E', '')
+# Off-nominal IMU inputs, each a P52 scenario with one IMU input gone
+# wrong (channel 30, inverted: FLIGHT_CHAN; the gimbal angle: FLIGHT_POKE
+# of CDUZ). docs/FLIGHT-STORE.md, Flight scenarios.
+# lm-p52-imu-fail: lm-p52-realign with IMU FAIL (channel 30 bit 13) from
+# 30 s to 45 s, over the first star's marks: IMUMON records it in
+# IMODES30, stores alarm 07777 and lights ISS WARNING (channel 11 bit 1);
+# P52 goes on as before and ends in V37.
+LM_P52_IMU_FAIL = {**LM_P52, 'FLIGHT_CHAN': '3000:030=026351,4500:030=036351'}
+# lm-p52-imu-cage: lm-p52-realign with the IMU caged (channel 30 bit 11)
+# from 30 s to 35 s: IMUCAGE zeroes the CDUs and lights NO ATT
+# (DSPTAB+11D bit 4), and the first star's marks are made against the
+# caged platform, so N05 shows 114.83 degrees and N93 large torquing
+# angles; P52 still ends in V37.
+LM_P52_IMU_CAGE = {**LM_P52, 'FLIGHT_CHAN': '3000:030=034351,3500:030=036351'}
+# cm-p52-imu-fail: cm-p52 with IMU FAIL from 60 s to 70 s, on V04N06
+# and V50N25:
+# IMUMON records it in IMODES30 and stores alarm 07777 (FAILREG +1); P52
+# goes on as before (N93 -0.012, +0.022, -0.010) and ends in P00.
+CM_P52_IMU_FAIL = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=027377,7000:030=037377,9000:033=077777,'
+                                         '11600:033=077757,13000:033=077777'}
+# cm-p52-imu-cage: cm-p52 with the IMU caged from 60 s to 65 s, on
+# V04N06: NO ATT lights (DSPTAB+11D bit 4), and the marks are made
+# against the caged platform: N05 shows 5.44 degrees, N93 large torquing
+# angles, and P52 ends in P00.
+CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:030=037377,9000:033=077777,'
+                                         '11600:033=077757,13000:033=077777'}
+# cm-p52-gimbal-lock: cm-p52 with the middle gimbal (CDUZ) at 72 degrees
+# from 30 s to 36 s: GLOCKMON lights GIMBAL LOCK (DSPTAB+11D bit 6) and
+# turns it off when the angle comes back; P52 runs as before to P00.
+# At 190 s CDUZ goes to 86 degrees: past 85, GLOCKMON coarse aligns the
+# platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
+# GIMBAL LOCK.
+CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
 # lm-p63-lr-dropout: lm-p63-nassp with the landing radar from 600 s
 # (FLIGHT_LR, tools/flight_lr.h: range and velocity beams from the true
 # trajectory, data good below 50,000 ft of slant range) and its data good
@@ -584,6 +617,11 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
+          ('lm-p52-imu-fail', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_FAIL),
+          ('lm-p52-imu-cage', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_CAGE),
+          ('cm-p52-imu-fail', 'cm', 20000, P52_KEYS, CM_P52_IMU_FAIL),
+          ('cm-p52-imu-cage', 'cm', 20000, P52_KEYS, CM_P52_IMU_CAGE),
+          ('cm-p52-gimbal-lock', 'cm', 21000, P52_KEYS, CM_P52_GIMBAL_LOCK),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),

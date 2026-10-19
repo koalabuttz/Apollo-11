@@ -28,8 +28,8 @@
     696,
     5759
    ],
-   "host_branch_arcs": 209,
-   "c64_branch_arcs": 209,
+   "host_branch_arcs": 217,
+   "c64_branch_arcs": 217,
    "sources_measured": [
     "src/lanec.c",
     "src/lanec_ev_front.c",
@@ -165,8 +165,8 @@
     4837,
     6367
    ],
-   "host_branch_arcs": 418,
-   "c64_branch_arcs": 418,
+   "host_branch_arcs": 426,
+   "c64_branch_arcs": 426,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -285,8 +285,8 @@
     3913,
     5055
    ],
-   "host_branch_arcs": 433,
-   "c64_branch_arcs": 433,
+   "host_branch_arcs": 441,
+   "c64_branch_arcs": 441,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -332,8 +332,8 @@
     2055,
     2447
    ],
-   "host_branch_arcs": 208,
-   "c64_branch_arcs": 208,
+   "host_branch_arcs": 216,
+   "c64_branch_arcs": 216,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -394,8 +394,8 @@
     2364,
     2831
    ],
-   "host_branch_arcs": 343,
-   "c64_branch_arcs": 343,
+   "host_branch_arcs": 351,
+   "c64_branch_arcs": 351,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -423,8 +423,8 @@
     598,
     1151
    ],
-   "host_branch_arcs": 175,
-   "c64_branch_arcs": 175,
+   "host_branch_arcs": 183,
+   "c64_branch_arcs": 183,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -477,8 +477,8 @@
     394,
     2303
    ],
-   "host_branch_arcs": 186,
-   "c64_branch_arcs": 186,
+   "host_branch_arcs": 194,
+   "c64_branch_arcs": 194,
    "sources_measured": [
     "include/lanec_ev_internal.h",
     "src/lanec.c",
@@ -505,6 +505,7 @@
     23,
     25,
     26,
+    49,
     62,
     81,
     88,
@@ -533,8 +534,8 @@
     1046,
     1855
    ],
-   "host_branch_arcs": 468,
-   "c64_branch_arcs": 468,
+   "host_branch_arcs": 483,
+   "c64_branch_arcs": 483,
    "sources_measured": [
     "src/agc_hardware_divide.c",
     "src/agc_image_ops.c",
@@ -618,8 +619,8 @@
     62,
     63
    ],
-   "host_branch_arcs": 217,
-   "c64_branch_arcs": 217,
+   "host_branch_arcs": 226,
+   "c64_branch_arcs": 226,
    "sources_measured": [
     "src/agc_transfer.c",
     "src/agc_word.c",
@@ -627,6 +628,7 @@
     "src/lanec_ev_front.c",
     "src/lanec_ev_routines.c",
     "src/lm_interbank.c",
+    "src/lm_interbank_idle.c",
     "src/lm_interbank_routines.c",
     "tests/lanec_case.c",
     "tests/lanec_ev_front_cases.c",
