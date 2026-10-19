@@ -2091,7 +2091,20 @@ SPECS = {
                         # of its cases with VTARGTAG +0, so the BZE to
                         # TARGETV is taken as for a caller that asks for
                         # the target velocity.
-                        'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}]},
+                        'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}],
+                        # 12,3605's VXSC VSU (a CHANG2 resume in LAMBERT,
+                        # PL at 6): MPAC's scalar near +1 times UR1 with each
+                        # component 1/2 + 1/2^15, less a push-down vector of
+                        # -1/2 + 1/2^15 (a negative major word and positive
+                        # minor word). Each component's double add carries
+                        # its major word to exactly 1, with a negative minor
+                        # word, which the interpreter's OVERFLOW can absorb
+                        # (major 037777) and return without OVFIND. #659's
+                        # TARGETV-5 state reshuffled the random case that
+                        # took this.
+                        '12,3605': [{}] * 3 + [{'0154': 0o37777, '0155': 0o37777, '0163': 0,
+                                                **{'E:%o' % (0o1724 + i): (0o20000, 0o20000)[i % 2] for i in range(6)},
+                                                **{'vac+%o' % i: (0o57777, 0o20000)[i % 2] for i in range(6)}}]},
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,

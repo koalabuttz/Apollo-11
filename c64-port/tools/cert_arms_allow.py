@@ -46,7 +46,7 @@ ARMS = {
         ],
     },
     'cm-conics': {
-        'cases': 114944, 'cases_sha256': '28dc0164e33ce724cda51a088224f173b89844d0ddb7fcf49916ae8e65d57dba',
+        'cases': 114944, 'cases_sha256': '3c5465352653c83e46849fd3207535e89884b62ec8eeb1d6e88a00c9aa10df62',
         'sources_sha256': {'src/cm_conics.c': '1eb02a4d9260e75ab439d635f7fe383014562369761f5bf43ca94bf5c357bbdb'},
         'arms': [
             {'src': 'src/cm_conics.c', 'line': 1147, 'agc': '12,2147', 'op': 'SIGN BZE', 'what': 'branch never taken', 'class': 'UNSURE', 'why': 'Needs the guess XKEPNEW = 0, which KEPPREP produces only for TAU.=0 after RECTIFY (XKEP=0); settled by whether a caller ever asks for a zero-length conic (e.g. RVCON with TDEC=TET, or CSMCONIC/LEMCONIC with zero interval).'},
@@ -373,7 +373,7 @@ ARMS = {
         ],
     },
     'cm-time-free-fall': {
-        'cases': 31488, 'cases_sha256': 'c0d62e88fa897fd7a2c735f34a286f0daecc321e24319460224e08e544b328fa',
+        'cases': 31488, 'cases_sha256': '39090fe867202b3dca3f1aceb0a36491ad88fadeca38eb470f73029814ad929b',
         'sources_sha256': {'src/cm_time_free_fall.c': '8c108f1cee998d9ecb63a2b910304a295d48024df6ed197dbbaa1e8bf8b8f717'},
         'arms': [
         ],
