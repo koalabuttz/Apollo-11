@@ -548,6 +548,35 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# cm-p52-coarse: P52 option 2 (nominal), the coarse align R50 runs (the
+# Comanche055 coverage map). cm-p52's load, the IMU model on (FLIGHT_IMU:
+# with channel 12 bits 4 and 6 set the CDUs go to THETAD); V37E52E,
+# proceed on V04N06 (option 00002, the default with PFRATFLG clear);
+# proceed on V06N34 with the time 0 (now): S52.3 computes the nominal
+# orientation and S52.2 the gimbal angles, V06N22 353.72, 110.96, 359.93
+# degrees; proceed; proceed on V50N25 00013 (coarse align, not gyro
+# torque): CAL53A coarse aligns (CDUY 314.7 to 111.0 degrees) and P52
+# goes on to V50N25 00015 (the star acquisition); terminate (V34), P00.
+CM_P52_COARSE = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1',
+                 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load'}
+CM_P52_COARSE_KEYS = '@4500V37E52E@6500V33E@7500V33E@8500V33E@9500V33E@12000V34E@13000V37E00E'
+# cm-p41: an RCS midcourse correction in translunar coast (the Comanche055
+# coverage map; inferred: a correction too small for the SPS). cm-p23's
+# load (the CSM at 24:30 GET), the vehicle held at the burn attitude
+# (FLIGHT_POKE puts the RCS DAP's CDUXD-ZD at the gimbal angles P41's
+# S40.1 asks for, 0.05, 266.07, 0.04 degrees, and FLIGHT_SPS's attitude
+# hold puts the CDUs there; the SPS never lights). V37E30E: V25 on V06N33
+# loads TIG at 8 minutes on the CMC clock, V25 on V06N81 a DV of 5.0 ft/s
+# along local horizontal X; proceed on N81, N42 and N45. V37E41E: R60's
+# maneuver is nil (proceed, then ENTER on V50N18); V06N85 shows VG 5.0
+# ft/s, average G starts at TIG-35 s, V16N85 at TIG. No CM RCS
+# translation model: the crew's +X translation gives no thrust, so VG
+# stays 5.0; proceed at 500 s, then P00.
+CM_P41 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_SPS': '28800', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p23.load',
+          'FLIGHT_POKE': '2100:3246=00005,2100:3250=57232,2100:3252=00004'}
+CM_P41_KEYS = ('@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+00050E+00000E+00000E'
+               '@8500V33E@9500V33E@10500V33E@11500V37E41E@12500V33E@13500E@50000V33E@51000V37E00E')
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -669,6 +698,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
           ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
+          ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
+          ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
@@ -809,6 +840,7 @@ def main():
     words = {m: flight_holes.listing(flight_holes.MISSION[m]) for m in exe}
     lanes = flight_holes.lanes()
     summary, failed = [], 0
+    commit = flight_holes.source_commit()
     for m, cs, keys in SCENARIOS:
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -826,7 +858,7 @@ def main():
                              label=flight_holes.label(words[m], x[3]), count=int(x[4]))
                         for x in re.findall(r'^  load (\S+) slot (\d) (basic |interp) (\d\d,\d{4}): (\d+)$', text, re.M)),
                        key=lambda d: -d['count'])
-        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode,
+        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode, commit=commit,
                    samples=int(s[1]) if s else 0, equal=int(s[2]) if s else 0, differ=int(s[3]) if s else None,
                    major_mode=dict(native=mode[1], yaagc=mode[2]) if mode else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
@@ -852,11 +884,13 @@ def main():
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
+        holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
-                   cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
+                   commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
-                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses])
+                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
+                   unregistered=holes)
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "

@@ -219,7 +219,7 @@ def sha(path):
 
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
-               '-DDP_EVERY=037777u', '-DDP_EVERY_UNTIL=037777u', '-DDP_STATES_MAX=1u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:

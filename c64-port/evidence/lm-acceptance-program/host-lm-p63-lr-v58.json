@@ -1,0 +1,27 @@
+{
+ "scenario": "lm-p63-lr-v58-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 96000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@66000V57E@88000V58E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_LR": "60000:150"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 98267,
+ "periods_taken": 96001,
+ "periods_dropped": 2266,
+ "agc_centiseconds": 96001,
+ "native_routines": 4320853,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "22abcdb7b8e6e9f3912d3233d3c2312766e74eb819c2f8733ff4f04dcb635301"
+}
