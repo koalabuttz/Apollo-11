@@ -1287,6 +1287,10 @@ port) runs one mission:
    `cm-v48-dap` keys V48 (R03) from cm-p40's load: the crew loads the
    wide deadband on V04N46 (21112), proceeds on N47 and N48, and S41.2
    sets ADB and RATEINDX; then V46 (STABLISH). It matches yaAGC.
+   `cm-p40-sps-fail` is cm-p40 with the SPS failing to light (no
+   FLIGHT_SPS): R40 finds the thrust low and flashes V97N40 at TIG+3 s,
+   the crew terminates (V97T: engine off, RCS DAP) and goes to P00. It
+   matches yaAGC, output channels included.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
