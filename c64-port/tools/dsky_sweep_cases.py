@@ -9,7 +9,8 @@ load path takes, for a flight run from a fresh start (Lane C, #674).
 A case is (mission, keys, centiseconds): keys in the form of the flight
 runs' key argument (tools/flight_host_run.c keys_parse: V, N, digits, +, -,
 E for ENTR, C for CLR, K for KEY REL, R for RSET; PRO is channel 32 bit 14,
-FLIGHT_CHAN, not a key), keyed at the start of the run, and the run length.
+FLIGHT_CHAN, not a key), keyed at the start of the run, and the run length; pro_cases() adds the
+FLIGHT_CHAN value that presses PRO, and all_cases() is both.
 Noun 15 (increment machine address) is run only after N01 sets NOUNADD: from
 the fresh-start NOUNADD it reads central registers 1-3, which the
 certificate's flight domain refuses (docs/LANEC-PIN-CERT.md). The host
@@ -23,9 +24,15 @@ import argparse, concurrent.futures, os, pathlib, re, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 NOUNS = [f'{n:02d}' for n in range(1, 100)]
-# nouns for the monitor verbs: low erasable, mixed, time, top of erasable
-MONITOR_NOUNS = ['05', '13', '16', '20', '21', '34', '36', '43', '49', '54', '62', '65', '68', '92']
 CS = 1000
+# PRO (PROCEED): channel 32 bit 14 low for one second, three seconds after
+# the last key, after each of these key sequences: no display, a monitor, a
+# display, a load that waits (verb or R1 flashing), a finished load, the
+# extended verbs that flash a display, V37's program request, an alarm
+# display, and PRO twice.
+PRO_AFTER = ['', 'V16N36E', 'V06N36E', 'V05N09E', 'V21N01E', 'V21N01E01000E', 'V25N01E', 'V25N01E00001E',
+             'V27N02E02000E', 'V01N01E01000E', 'V32E', 'V33E', 'V34E', 'V35E', 'V37E', 'V37E00E', 'V82E',
+             'V83E', 'V16N36EK']
 
 
 def cases():
@@ -34,7 +41,7 @@ def cases():
         for v in ('01', '02', '03', '04', '05', '06', '21', '22', '23', '24', '25'):
             out += [(m, f'V{v}N{n}E', CS) for n in NOUNS if n != '15' or v in ('06', '21', '22', '23', '24', '25')]
         for v in ('11', '12', '13', '14', '15', '16', '17'):
-            out += [(m, f'V{v}N{n}E', CS) for n in MONITOR_NOUNS]
+            out += [(m, f'V{v}N{n}E', CS) for n in NOUNS if n != '15']
         out += [(m, k, CS) for k in ('V32E', 'V33E', 'V34E', 'V35E', 'V36E', 'V37E00E', 'V37E06E', 'V37E12E',
                                      'V82E', 'V83E', 'V16N36EV32E', 'V27N02E02000E',
                                      'V01N01E01000EV01N15E', 'V05N01E01000EV05N15E', 'V21N01E00010E',
@@ -44,12 +51,30 @@ def cases():
     return out
 
 
+def pro_cases():
+    """(mission, keys, centiseconds, FLIGHT_CHAN): PRO after each PRO_AFTER
+    sequence, once and twice."""
+    out = []
+    for m in ('lm', 'cm'):
+        for keys in PRO_AFTER:
+            at = 200 + 50 * len(keys) + 300
+            for n in (1, 2):
+                chan = ','.join(f'{at + 200 * i}:032=057777,{at + 200 * i + 100}:032=077777' for i in range(n))
+                out.append((m, keys, max(CS, at + 200 * n + 500), chan))
+    return out
+
+
+def all_cases():
+    return [c + ('',) for c in cases()] + pro_cases()
+
+
 def host(case):
-    m, keys, cs = case
+    m, keys, cs, chan = case
     exe = ROOT / f'build/flight-store/flight-host-run-{m}'
     rope = ROOT / f'evidence/fixed-data-{m}-original.rope.bin'
     r = subprocess.run([str(exe), str(rope), str(cs), keys], cwd=ROOT, capture_output=True,
-                       env=dict(os.environ, FLIGHT_SCALED='1,1,2'), errors='replace')
+                       env=dict(os.environ, FLIGHT_SCALED='1,1,2', **({'FLIGHT_CHAN': chan} if chan else {})),
+                       errors='replace')
     text = r.stdout + r.stderr
     bad, points = [], False
     for line in text.splitlines():
@@ -73,16 +98,16 @@ if __name__ == '__main__':
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 1)
     a = p.parse_args()
     if a.list or not a.host:
-        for m, keys, cs in cases():
-            print(m, keys, cs)
+        for m, keys, cs, chan in all_cases():
+            print(m, keys or '-', cs, *([f'FLIGHT_CHAN={chan}'] if chan else []))
         sys.exit(0)
     failed = 0
     with concurrent.futures.ThreadPoolExecutor(a.jobs) as pool:
-        for (m, keys, cs), rc, bad in pool.map(host, cases()):
+        for (m, keys, cs, chan), rc, bad in pool.map(host, all_cases()):
             if rc or bad:
                 failed += 1
-                print(f'FAIL: {m} {keys}: ' + ('; '.join(bad) or f'exit {rc}'))
-    n = len(cases())
+                print(f'FAIL: {m} {keys}{" PRO " + chan if chan else ""}: ' + ('; '.join(bad) or f'exit {rc}'))
+    n = len(all_cases())
     print(f'{"FAIL" if failed else "PASS"}: DSKY sweep on the host: {n - failed} of {n} runs with no refused or '
           f'unregistered Pinball point')
     sys.exit(1 if failed else 0)
