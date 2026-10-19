@@ -378,10 +378,14 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * snapshot the run goes on, on the work clock from its first step (the
  * C64 window's own clock: rk_work and rk_tick_phase 0), for CS
  * centiseconds. Every input the models, keys, pokes and channel changes
- * give it in that time is one 8-byte row of PATH.replay (little-endian:
- * centiseconds since the snapshot, kind, where, address, value): where 0
- * at a sample point, 1 at any routine boundary (the engine lag's PIPA
- * counts, the radar model's reads). Kinds: 0 an erasable word set, 1 a
+ * give it in that time is one 10-byte row of PATH.replay (little-endian:
+ * centiseconds since the snapshot, kind, where, address, value, work):
+ * where bit 0 is 0 at a sample point, 1 at any routine boundary (the
+ * engine lag's PIPA counts and CDUs, the radar model's reads); bits 1-2
+ * the work clock's step in the centisecond (1 the TIME1/TIME3 step's,
+ * then 2 and 3) and work the MCT since that step, so the C64 applies a
+ * boundary row at the same point of the centisecond (a DAP pass reads
+ * the CDUs on the same side of the row). Kinds: 0 an erasable word set, 1 a
  * counter (PIPA) word moved by a signed count, 2 an input channel set
  * (address: the channel; 0377 the radar gate), 3 interrupt requests raised
  * (value: RK_RUPT_BIT bits). At the first sample point CS or more
@@ -407,11 +411,17 @@ static FILE *rp_out;static unsigned long rp_seed;
 static unsigned long rp_t0,rp_cs,rp_rows;static unsigned rp_chain=1u,rp_win;static FILE *rp_seam;
 static char rp_base[512],rp_path[600];
 static agc_word rp_w[2048];static agc_hardware rp_hw;static agc_word rp_c16;static uint16_t rp_pending;
-static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsigned v){unsigned char b[8];unsigned long d=t-rp_t0;
+static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsigned v){unsigned char b[10];unsigned long d=t-rp_t0;
+ /* The work clock where the row comes: the step taken last (the TIME1
+  * step's is 2 mod 3, consumed counting from the window's start) and the
+  * MCT since it, as the C64's rk_tick_phase and rk_work. */
+ double since=wall-(consumed?step_at(consumed-1ul):0.0);unsigned work=since<0.0?0u:since>65535.0?65535u:(unsigned)since;
+ where|=(unsigned)((consumed+1ul)%3ul+1ul)<<1;
  if(d>0xffffu){fprintf(stderr,"FLIGHT_REPLAY: window longer than 65535 cs\n");exit(2);}
  b[0]=(unsigned char)d;b[1]=(unsigned char)(d>>8);b[2]=(unsigned char)kind;b[3]=(unsigned char)where;
  b[4]=(unsigned char)a;b[5]=(unsigned char)(a>>8);b[6]=(unsigned char)v;b[7]=(unsigned char)(v>>8);
- fwrite(b,1,8,rp_out);++rp_rows;}
+ b[8]=(unsigned char)work;b[9]=(unsigned char)(work>>8);
+ fwrite(b,1,10,rp_out);++rp_rows;}
 static void rp_mark(const agc_word *w,const agc_hardware *hw,agc_word c16,uint16_t pending){memcpy(rp_w,w,sizeof rp_w);rp_hw=*hw;rp_c16=c16;rp_pending=pending;}
 /* The rows for what changed since rp_mark. */
 static void rp_diff(unsigned long t,unsigned where,const agc_word *w,const agc_hardware *hw,agc_word c16,uint16_t pending){unsigned i;

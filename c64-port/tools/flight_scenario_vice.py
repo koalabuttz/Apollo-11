@@ -81,7 +81,9 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
 # (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
                 'channel 35', 'superbank']
-ROW = struct.Struct('<HBBHH')
+# tools/flight_host_run.c rp_row: centiseconds, kind, where (bit 0; bits
+# 1-2 the work clock's step in the centisecond), address, value, work.
+ROW = struct.Struct('<HBBHHH')
 # A snapshot more than this far past --snap-cs is reported as slid.
 SLIDE_CS = 100
 
@@ -137,19 +139,19 @@ def c64_rows(rows, m, device, pending):
     copy of it, the radar gate a byte store (4), and interrupt requests (3)
     an OR into rk_pending."""
     out = []
-    for cs, kind, where, addr, value in ROW.iter_unpack(rows):
+    for cs, kind, where, addr, value, work in ROW.iter_unpack(rows):
         if kind in (0, 1):
-            out.append((cs, 2 if kind == 0 else 1, where, IMAGE + 2 * addr, value))
+            out.append((cs, 2 if kind == 0 else 1, where, IMAGE + 2 * addr, value, work))
         elif kind == 3:
-            out.append((cs, 3, where, pending, value))
+            out.append((cs, 3, where, pending, value, work))
         elif addr == 0o377:
-            out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value))
+            out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value, work))
         else:
             at = [RK_HARDWARE + HW[addr]] if addr in HW else [RK_FLIGHT_IO + FLIGHT[addr]] if addr in FLIGHT else []
             at += [device + DEVICE[m][addr]] if addr in DEVICE[m] else []
             if not at:
                 sys.exit(f'FAIL: no C64 copy of channel {addr:o} for the replay')
-            out += [(cs, 2, where, x, value) for x in at]
+            out += [(cs, 2, where, x, value, work) for x in at]
     return b''.join(ROW.pack(*x) for x in out)
 
 
@@ -302,7 +304,7 @@ def seam_check(header, c64_end, m):
         return [('C64 end state', 0, 0)]
     w = list(c64_end)
     chans = {0o5: 0, 0o6: 1, 0o11: 2, 0o12: 3, 0o13: 4, 0o14: 5, 0o34: 6, 0o35: 7}
-    for _, kind, _, addr, value in ROW.iter_unpack(pathlib.Path(f'{header}.seam').read_bytes()):
+    for _, kind, _, addr, value, _ in ROW.iter_unpack(pathlib.Path(f'{header}.seam').read_bytes()):
         if kind == 0:
             w[addr] = value
         elif kind == 1:
