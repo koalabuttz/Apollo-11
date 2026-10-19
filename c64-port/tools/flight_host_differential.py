@@ -110,10 +110,10 @@ LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142
 # V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
 # take HCALC from about 186 m above the true height to about 77 m by
 # 955 s (HCALC lags the truth by 40-60 m here, a sample apart, with no
-# bias). It stops at 960 s, before the velocity reads: on the host the
-# LR velocity read then starts while an altitude read is still running
-# (SERVICER reaches READV 6 cs after READACCS), HMEAS 0 is stored and
-# the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
+# bias). From 1,005 s SERVICER also reads the LR velocity (READV, LRVJOB)
+# after each altitude read; it runs to 1,100 s, 50 velocity reads, and
+# HMEAS is never zeroed (the interpretive words run with per-word
+# interrupt and NEWJOB points, #739).
 LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
 LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
 # lm-p65-autoland-nassp: lm-p63-nassp on to the surface with no crew
@@ -743,7 +743,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-tpi-search', 'cm', 44000, CM_TPI_SEARCH_KEYS, CM_P20),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
-          ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
+          ('lm-p63-lr-update', 'lm', 110000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),

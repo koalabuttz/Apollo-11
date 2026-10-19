@@ -1310,12 +1310,13 @@ port) runs one mission:
    `FLIGHT_LR=60000:150` (the surface 150 m above the landing site) and
    V57E at 660 s: from 816 s R12's altitude updates take HCALC from about
    186 m above the true height to about 77 m by 955 s (with no bias it
-   runs 40-60 m above, a sample's lag). It ends at 960 s, before the
-   velocity reads: on the host SERVICER reaches READV 6 cs after
-   READACCS, so the velocity read starts while the altitude read is
-   still running, HMEAS 0 is stored and the update moves HCALC about
-   1,200 m. That is a timing question for the interpretive charge, not
-   the radar (replay-mismatches.md).
+   runs 40-60 m above, a sample's lag). From 1,005 s SERVICER also
+   reads the LR velocity (READV queues LRVJOB) after each altitude read,
+   and the run goes on to 1,100 s: 50 velocity reads, HMEAS never
+   zeroed. Before #739 the velocity read started while the altitude
+   read was still running and stored HMEAS 0, because the compiled
+   stretch from MOONSPOT to READV had no interrupt or NEWJOB point; the
+   interpretive words now run with per-word points.
    `lm-p63-lr-v58` adds V58E at 880 s: the updates (HCALC from about
    187 m above the true height to about 96 m by 873 s) stop as LRINH
    clears. `lm-p63-v60-nassp` is lm-p63-nassp with the radar (no V57) and
