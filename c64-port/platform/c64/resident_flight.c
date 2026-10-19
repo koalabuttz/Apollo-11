@@ -427,7 +427,7 @@ __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2
  * reliably the later). The merge ends the step, so the next step's timers
  * (rk_timer_phase's TIME6 enable, channel 13) and CDU drive (channel 14)
  * see it. */
-static agc_word rk_ch_last[4];
+agc_word rk_ch_last[4];
 static const uint8_t rk_ch_at[4] = {
     offsetof(agc_hardware, channel11), offsetof(agc_hardware, channel12),
     offsetof(agc_hardware, channel13), offsetof(agc_hardware, channel14)};

@@ -228,6 +228,9 @@ static void vector_rows(apollo_overlay_state *image){rk_vector_row *const row=VE
   row->n=(uint16_t)(r*RR_C64_VSTRIDE);
   if(call(0,RK_MODULE_VECTOR,0,(uint16_t)(uintptr_t)row)!=1u){expect(0,16);continue;}
   rk_device=row->c.CASE_IO;rk_hardware=row->c.hw;rk_pending=row->c.pending;
+#if RK_CM
+  rk_channels_seed(); /* the row's channels are rk_hardware's */
+#endif
   stop=agc_transfer_point(&rk_program,image,rk_device.superbank);
   kind=RR_V_RUNAWAY;
   for(n=0;n<RR_V_MAX;++n){
