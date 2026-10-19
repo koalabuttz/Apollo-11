@@ -1341,6 +1341,19 @@ port) runs one mission:
    the host does not model, so the CMC's VERB69 loops until the run ends. A V16
    monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
    the Pinball suite refuses it when ENTRET re-enters it each second.
+   Six LM scenarios cover the rows of the Luminary099 program map
+   (docs/acceptance/Luminary099-program-map.json) that no flight reached.
+   Four start from lm-rendezvous's load. `lm-coast-verbs` keys the coast
+   verbs one after another, each ended by the crew (V61-V67, V74-V77,
+   V80/V81, V89/R63, V90, V93/V95, V47/R47, V43/V44, V49/R62, V42 fine
+   align, V41 coarse align, V40 CDU zero, V96). `lm-coast-v55` loads
+   V21N24 (the N24 load bridges Pinball's HMSIN at 42,3452). `lm-coast-r04`
+   runs V63's radar self test on the RR (one bridge, RDRUSECK's TC Q at
+   50,2002). `lm-coast-programs` selects P21, P31, P25 and P06 with V37.
+   `lm-p51` runs P51 from lm-p52-realign's core, marking Regulus and
+   Gienah (V53 after each X mark). `lm-p22-surface` runs P22 from
+   lm-p57's load: the CSM is beyond the RR's 400 nm, so R21 flashes alarm
+   526 until V34. Every native routine they run matches yaAGC.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
