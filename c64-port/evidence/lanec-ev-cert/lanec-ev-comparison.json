@@ -88,9 +88,9 @@
    "suite": "ev-lmi",
    "cases": 1856,
    "differing": 0,
-   "native_sha256": "37f9898d4c5eda30efa4157a4175ad7895146be4f75284ad23d13ac03166564c",
-   "oracle_sha256": "37f9898d4c5eda30efa4157a4175ad7895146be4f75284ad23d13ac03166564c",
-   "oracle_crc_sha256": "6b06c56fada775030260245290d4b475e5e619d417494aaa6a78e81f21350726",
+   "native_sha256": "8b7246bce5d5af86227e7c659e02e9d76f7ee637e980e68656eec795bc9e47af",
+   "oracle_sha256": "8b7246bce5d5af86227e7c659e02e9d76f7ee637e980e68656eec795bc9e47af",
+   "oracle_crc_sha256": "1d668062c483b653e249a0dab032e6277aadcc0255f9e8d20038c624d09bcfaf",
    "accepted_cases_by_mission": {
     "LMI": 1856
    }

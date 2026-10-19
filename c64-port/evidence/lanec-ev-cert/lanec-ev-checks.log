@@ -28,5 +28,5 @@ ev-radar C64: PASS: VICE PAL lanec-ev-radar.prg: 31 checks, 0 failures
 ev-dap C64: PASS: VICE PAL lanec-ev-dap.prg: 46 checks, 0 failures
 ev-time C64: PASS: VICE PAL lanec-ev-time.prg: 13 checks, 0 failures
 ev-track C64: PASS: VICE PAL lanec-ev-track.prg: 38 checks, 0 failures
-ev-lmi C64: PASS: VICE PAL lanec-ev-lmi.prg: 40 checks, 0 failures
+ev-lmi C64: PASS: VICE PAL lanec-ev-lmi.prg: 41 checks, 0 failures
 ev-transfer-c64 C64: PASS: VICE PAL lanec-ev-transfer.prg: 64 checks, 0 failures

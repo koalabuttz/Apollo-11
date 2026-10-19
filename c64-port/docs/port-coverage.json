@@ -5676,7 +5676,7 @@
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-vice.log",
             "sha256": "99a9ee20dad8e58c9a6b3ef7adba9b23b3c791eb19a9f324f2d89a106cc46a3d",
             "vice_targets": {
-              "vice-cm-stable-orbit": 139
+              "vice-cm-stable-orbit": 140
             }
           },
           "c64_branch_outcomes": {
@@ -8168,15 +8168,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
-            "sha256": "c5db55685c2387ec3dcb2abde5fc65a050067ee81e9229e2806038f654a1a4f9"
+            "sha256": "b4c329c63f0431e750903d0c8209cf037c43ca8a9eeb91af1fa777663e8c7da7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
-            "sha256": "9f9a91e755e449cf85916a04ac6107ca458f0eaf38bf32b4a1f26bfd915212e3"
+            "sha256": "34bc0d0d962b17ba60297cdc1f21939c8380d3c85b1405b203363367cbf98dac"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
-            "sha256": "eb9676d7d136c548ab058f56a464e1ecf598a06bcaa9fe5ffafc2ea75e37b022",
+            "sha256": "d78533afbee60d756cfc1432e7eedb6d20805964e8ba831ee8055558bb7af265",
             "vice_targets": {
               "vice-lanec-ev-front": 23,
               "vice-lanec-ev-short": 122,
@@ -8185,7 +8185,7 @@
               "vice-lanec-ev-dap": 46,
               "vice-lanec-ev-time": 13,
               "vice-lanec-ev-track": 38,
-              "vice-lanec-ev-lmi": 40,
+              "vice-lanec-ev-lmi": 41,
               "vice-lanec-ev-transfer": 64
             }
           },
@@ -8195,7 +8195,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
-            "sha256": "983b90d6279080c8d314f7c313c976fa9a86c63eabe2b9ea625c154a3493e9a8"
+            "sha256": "ddb0a1f7545dff78140e903858c3cdcdb39c72841806adc4f237b66f7ee016ce"
           }
         }
       },
