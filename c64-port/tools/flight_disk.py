@@ -166,8 +166,8 @@ def link_check(a):
     assert save_at > 0 and not any(image[save_at:at]), f'no 16 KB of zeros below 0x{at:x} in the LM store'
     n_c64 = len(fsv.c64_rows(rows, m, 0, 0)) // fsv.ROW.size
     busy = {x[0]: x for x in fhd.FLIGHT}[scen][4].get('FLIGHT_BUSY_SAMPLE')
-    defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u', f'-DDP_REPLAY_CS={cs}u',
-               f'-DDP_EVERY={cs}u', f'-DDP_END=0x{end_at:x}ul', '-DDP_STATES_MAX=1u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+    defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u', f'-DDP_REPLAY_CS={end_cs}u',
+               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', f'-DDP_END=0x{end_at:x}ul', '-DDP_STATES_MAX=1u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
                '-DDP_HW_CHECK', f'-DDP_HW_SAVE=0x{save_at:x}ul', f'-DDP_HW_HOST=0x{host:04x}u', f'-DDP_HW_WINDOW="LM P63 FROM {snap_at} CS"']
 
     def link(expect):

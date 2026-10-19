@@ -153,7 +153,9 @@ static void press_due(uint16_t elapsed)
  * the window ends: the centiseconds, the erasable words, rk_hardware and
  * rk_flight (RK_HARDWARE up to RK_RESTART_LAMP) and 32 bytes of rk_device
  * go to DP_END in the REU, after the same state at the first sample point at or
- * after each DP_EVERY centiseconds before; the rows applied to $c030, the
+ * after each centisecond the host wrote a checkpoint at (DP_STATE_FIRST, then
+ * the 2-byte table at DP_STATE_TABLE, ended by 0xFFFF; DP_REPLAY_CS is the
+ * host's own end, so both sides end at the same point); the rows applied to $c030, the
  * end's centiseconds to $c032, $c034 1 if the end was reached and $c035
  * the states written. */
 #include "resident_rupt.h"
@@ -197,14 +199,8 @@ static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
-#ifndef DP_EVERY
-#define DP_EVERY DP_REPLAY_CS
-#endif
-/* --chain: the host's own window length, which the checkpoints stay
- * below; the window itself runs on to DP_REPLAY_CS, the first sample point
- * with no interrupt pending that the host ended it at. */
-#ifndef DP_EVERY_UNTIL
-#define DP_EVERY_UNTIL DP_REPLAY_CS
+#if !defined(DP_STATE_FIRST) || !defined(DP_STATE_TABLE)
+#error "DP_REPLAY needs DP_STATE_FIRST and DP_STATE_TABLE, the host's checkpoint centiseconds"
 #endif
 /* The states DP_END has room for (tools/flight_scenario_vice.py
  * max_states): the checkpoints stop one short of it, so the end always has
@@ -214,7 +210,7 @@ static uint16_t busy_last CASSETTE;
 #endif
 _Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written are counted in a byte ($c035)");
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
-static uint16_t state_next = DP_EVERY;
+static uint16_t state_next = DP_STATE_FIRST;
 static uint8_t states CASSETTE;
 /* TIME1 since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
@@ -307,9 +303,11 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             replay_state(t);
             return 1;
         }
-        if (t >= state_next && t < DP_EVERY_UNTIL && states < DP_STATES_MAX - 1u) {
+        if (t >= state_next && states < DP_STATES_MAX - 1u) {
+            /* The next host checkpoint: table entry `states` - 1 after
+             * this one is written (entry 0 follows DP_STATE_FIRST). */
             replay_state(t);
-            while (state_next <= t) state_next += DP_EVERY;
+            apollo_reu_transfer(APOLLO_REU_FETCH, &state_next, DP_STATE_TABLE + 2ul * (states - 1u), 2u);
         }
     }
     replay_rows(t, sp);

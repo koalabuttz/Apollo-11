@@ -1137,11 +1137,15 @@ port) runs one mission:
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
    6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on). Each side writes at its own sample points, so
-   the states are paired by their centiseconds, not by order: two ends
-   always pair, and a checkpoint with no state at the same centisecond on
-   the other side (a mark the host was busy through, for one) is listed
-   as unpaired and not compared. The C64's state area holds `--cs` /
+   the base tables run on). The C64 takes its states at the host's: at
+   its first sample point at or after each centisecond the host wrote a
+   state at, the end included (the first sample point at or after the
+   asked centisecond can come a tick before the host's, and every timer
+   then reads one count off). The states are paired by their
+   centiseconds, not by order: the two ends always pair, and a checkpoint
+   with no state at the same centisecond on the other side (the C64 still
+   busy at the host's point, for one) is listed as unpaired and not
+   compared. The C64's state area holds `--cs` /
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
    VICE starts;
@@ -1273,6 +1277,13 @@ port) runs one mission:
    runs (with no CM attitude model the CDUs stay put); `cm-p21` is cm-p52
    on to P21 (ground track): V06N43 shows -7.40, +111.70 degrees and 97.1
    nmi now. All four match yaAGC.
+   `cm-p52-coarse` is P52 option 2 (nominal) from cm-p52's load with
+   the IMU model on: S52.3's nominal orientation is far from the
+   platform, so CAL53A (R50) coarse aligns (CDUY 314.7 to 111.0 degrees)
+   before the star acquisition; then V34 and P00. `cm-p41` is a 5 ft/s
+   RCS midcourse correction keyed through P30 (V25 on N33 and N81) from
+   cm-p23's load, then P41 to TIG and V16N85; with no CM RCS translation
+   model VG holds at 5.0 ft/s. Both match yaAGC.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus

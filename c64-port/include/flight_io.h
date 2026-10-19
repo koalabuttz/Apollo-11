@@ -8,7 +8,9 @@
  * offsets, so the flight program keeps one canonical record: the channels in
  * the program's agc_hardware, everything else here. Before a table's routines
  * run, flight_io_enter writes the table's own record from the canonical one;
- * after, flight_io_leave writes back every field that record holds. */
+ * after, flight_io_leave writes back every field that record holds, a
+ * channel only when the routines changed the record's copy: a routine may
+ * also write agc_hardware straight (p->hardware), and that write stands. */
 #include "agc_transfer.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"

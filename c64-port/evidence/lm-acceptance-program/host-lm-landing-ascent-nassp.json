@@ -1,0 +1,31 @@
+{
+ "scenario": "lm-landing-ascent-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 215000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_PILOT": "8",
+  "FLIGHT_TOUCHDOWN": "134400",
+  "FLIGHT_ASCENT": "4888",
+  "FLIGHT_CHAN": "122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 223977,
+ "periods_taken": 215000,
+ "periods_dropped": 8977,
+ "agc_centiseconds": 215000,
+ "native_routines": 8736825,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "e6a62fa64e8d30bd398f05dbf079514ad9fbeea4df7ff0941f187aa135e3957e"
+}
