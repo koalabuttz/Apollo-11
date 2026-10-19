@@ -334,3 +334,85 @@ Head **c1759c2c** (refreeze on top of b16e817e, which merges ef6cfa02 with base 
 
 - **Verified by running:** everything under Reproduced, the three-way arc diff, the per-case 12,3605 measurement, the corrected-state variant, the operand EB decoding (lmi_direct, listing 12,3606 = 02724 → E5,1723), the PR body and the mergeability.
 - **Inferred:** the flight plausibility of the 12,3605 values and of the lost DDV edges, and when XKEPNEW is ±0.
+
+---
+
+# Round 6 (973725f1)
+
+Head **973725f1** has one parent, c1759c2c. It changes interp_specs.py (the 12,3605 state), cert_arms_allow.py (the case sha), the cm-conics vectors, groups and evidence, CM-CONICS.md, port-coverage.json (the domain text, hashes and independent_review), and adds docs/audits/rev1-cm-conics-664.md. It touches no src/ file and no file of the linked native sources or the tools that build them. The base tip is now 19275ba8. Since f7d5802 the base has changed only other specs' parts of interp_specs.py, none of this PR's files. Worktree /home/claude/apollo-r6c, removed at the end.
+
+- **cm-time-free-fall (Comanche055/TIME_OF_FREE_FALL.agc): ACCEPT** (evidence unchanged; only independent_review moves)
+- **cm-conics (Comanche055/CONIC_SUBROUTINES.agc): ACCEPT**
+
+## Round-5 blockers
+
+| # | status |
+|---|---|
+| 1 12,3605 state | **Fixed (verified).** The spec now writes `'UR1+%d'` (E5,1723-1730, the operand's own bank) and pins `'12,3605': {'0166': ['vac+6']}` (interp_specs.py:1994-1996, 2098-2112). The comment says TIMERAD and "Not a flight state: an edge state for the shared interpreter". Per case: 59 of the 256 frozen cases at 12,3605 carry the state. **All 59** take OVERFLOW's absorb arm (lm_interp_orders.c:298), 174 times in all, across EB 0-7 (I counted 3-12 cases per EB). No other case takes it. The domain text (port-coverage.json:677, CM-CONICS.md:469) now gives PUSHLOC vac+6, UR1 E5,1723-1730, the values, and "edge state … not a flight state", which matches the cases. |
+| 2 stale counts | **Fixed.** CM-CONICS.md:478 now says 29 programs, 624 cases (322/172/130), 4643 of 4643 edges and 2164 of 2164. These match the proof (c64_coverage 4643/4643, c64_gcov_branches 2164/2164), the 29 groups and port-coverage's vice_targets. |
+| EB text (r5, not blocking) | Now "any EB 0-7, one per case". This is right, but see Not blocking 1. |
+
+## Reproduced (verified)
+
+- **`make cm-conics-differential`:** PASS 114,944 (449 routines), rc 0.
+  - The vectors and groups are clean under `git diff --exit-code`.
+  - The regenerated proof is byte-identical to the committed one (cases_sha256 df691df0…, the same as cert_arms_allow.py).
+- **`make test-cm-conics sanitize-cm-conics`:** 3592 checks, 0 failures.
+- **`make cm-conics-vice` (full rerun):**
+  - 29 PRGs, **624 checks, 0 failures**;
+  - every PASS line equals cm-conics-vice.log;
+  - all 29 PRG SHA-256s equal the log.
+- **`cert_selfcheck.py cm-conics`:** OK, no gaps.
+- **Certificate checks:**
+  - `cert_precheck` on both files: PASS (1 WARN: no vice manifest cached);
+  - `ledgers.py --validate`: PASS;
+  - `evidence.py verify` on both: PASS;
+  - every port-coverage.json evidence hash for both files: OK, including independent_review → docs/audits/rev1-cm-conics-664.md (sha 5521ff77…);
+  - `cert_arms.py check`: 0 failures, with the same 6 cm-conics arms (5 OFFNOM, plus the UNSURE arm 1147) and 0 for tff.
+  - Both files are still `complete`.
+
+### Per-object gcov arc diffs
+
+Same wrapper as round 5. Each revision's interp_specs.py regenerates its frozen cases, and each case set hashes to its own proof's cases_sha256. The 12 linked sources are identical in all four revisions.
+
+| from → 973725f1 | host arcs | lost | gained |
+|---|---|---|---|
+| ef6cfa02 | 2163 → 2164 | **0** | lm_interp_orders.c@cm_interp_orders:658 b1 |
+| c1759c2c | 2164 → 2164 | **1**: :611 b2 | :658 b1 |
+| f7d5802 (base) | 2161 → 2164 | **6**: agc_transfer.c:9 b0, :14 b0/b3, :95 b2, :123 b1; lm_interp_orders.c:703 b2 | 9 shared DDV/SQRT arcs (346, 354, 383, 401, 616, 654, 655, 740, 741) |
+
+- These match the lane's claims. The head takes 2164 arcs on the host and on the C64, with 0 taken on the host only.
+- **Is losing :611 b2 acceptable? Yes.**
+  - It is GENDDV's "+DOWN" test, `SU BUF; BZF +3` (lm_interp_orders.c:611). The lost outcome is SU BUF = 0 exactly, a remainder correction equal to the divisor (the head's counts: that outcome 0, the other 281,639).
+  - It is a shared-interpreter arithmetic corner, not a cm_conics.c arm, so it is not in cert_arms (and so not FLIGHT).
+  - Base f7d5802, whose `complete` certificate is the one being re-cited, and ef6cfa02 never took it. Only c1759c2c took it, by chance, and c1759c2c was never accepted.
+  - Inferred: it is not a flight-typical conics state. A DDV edge state (GETX+13-style) could pin it if the interpreter's own certificate wants it.
+- **Losses against the base:** the 5 agc_transfer arcs were accepted in rounds 2-3 (outside CADRs and EDOP, by design under #553), and :703 b2 in round 3. Round 5's :658 b1 is now taken again (1 case).
+- **The #659 arms** cm_conics.c:5575 and 5579 (all outcomes) are still taken. The cm_conics.c `#####` lines are unchanged from round 5: 1147 UNSURE, the 5 OFFNOM arms, the unused helpers and the scope guards.
+
+### docs/audits/rev1-cm-conics-664.md
+
+- It is byte-identical to /mnt/project-files/cert-reviews/cm-conics-664.md as of round 5 (336 lines, `diff` empty). It carries the round-5 text and ends with round 5's **REJECT**.
+- It claims no acceptance and has no misleading edits.
+- But both certificates now cite a review whose last verdict is REJECT. See housekeeping below.
+
+## Blocking
+
+None.
+
+## Before merge (housekeeping, not a certificate defect)
+
+- **Re-copy the audit.** Copy this file, now with Round 6, to docs/audits/rev1-cm-conics-664.md, and update the two independent_review sha256s in port-coverage.json. Otherwise the cited review ends at a REJECT.
+- **While there, fix "(the file's `EBANK=` is 6)".** It appears in port-coverage.json:677 and CM-CONICS.md:469. The file's only `EBANK=` is `EBANK= UR1` at KEPLERN (CONIC_SUBROUTINES.agc:585; listing 12,2042 shows `E5,1723`), so it is **E5**. The domain itself ("any EB 0-7, one per case") is correct.
+- Neither change needs a refreeze. Both touch only docs and hashes; re-run `cert_precheck`, `ledgers --validate` and `evidence.py verify`.
+
+## Not blocking
+
+1. The EB parenthetical above.
+2. The UNSURE arm 1147 (12,2147), unchanged and under #659, as in round 5.
+3. This is a **re-cite**, not a flip. Both files are already `complete` on the base, and Lane B merges it. With the re-copy above, independent_review = docs/audits/rev1-cm-conics-664.md is the right citation for both files.
+
+## Verified vs inferred
+
+- **Verified by running:** everything above, including the per-case 12,3605 measurement and the :611 outcome counts.
+- **Inferred:** that the :611 and lost DDV corners are not flight-typical for conics.
