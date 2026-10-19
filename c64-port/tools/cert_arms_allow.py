@@ -203,15 +203,9 @@ ARMS = {
         ],
     },
     'cm-p34-p35': {
-        'cases': 262656, 'cases_sha256': 'fb0f6f29eec0c4335b20e299b249f7bbddc6c77bcb1f1b7818d105442e94b1e5',
+        'cases': 262656, 'cases_sha256': 'b59edc2986835fd48ee086602d259f2b03fa79401ae0f99643b3c6dddf95fc83',
         'sources_sha256': {'src/cm_p34_p35.c': '31f6f1d1973a741dd49d9972067ce27ab6e5b5f5c66b9fe747e4c207d3dccccd'},
         'arms': [
-            {'src': 'src/cm_p34_p35.c', 'line': 1199, 'agc': '11,2123', 'op': 'BHIZ VLOAD', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': "X1 = RTX1+2 (if 18D>=0) or RTX1+10 (if 18D<0), so it is 0 for Earth with z of -N >= 0 or Moon with z of -N < 0. This depends on the orbit sense and on whether the transfer angle is over 180 deg, all legitimate geometry; cases never pair a valid RTX1 with that sign. (Low priority: in Apollo's own Earth-prograde / lunar-retrograde orbits it needs a transfer angle >180 deg.)"},
-            {'src': 'src/cm_p34_p35.c', 'line': 1530, 'agc': '11,2205', 'op': 'SLOAD BHIZ', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'X2 = ITCTR - VTARGTAG(=NUMIT) reaches 0 when the precision-offset Lambert/Encke iterations are done; every INITVEL call with NUMIT>0 (P34/P35 with NN offsets, TPI search) leaves the loop here.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 2035, 'agc': '22,3206', 'op': 'SLOAD BHIZ', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'X2 = X1+2 is 0 for Earth (X1=-2): PERIAPO/PERIAPO1 (P30/P31/R30 apsides) in Earth orbit uses RPAD; cases evidently always have a lunar or non-standard X1.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6680, 'agc': '41,3743', 'op': 'BZF LREGCHK', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6693, 'agc': '41,3766', 'op': 'BZF ENTTIM2', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6701, 'agc': '41,3771', 'op': 'TC INTPRET', 'what': 'never executed', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
         ],
     },
     'cm-p37-p70': {

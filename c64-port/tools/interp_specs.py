@@ -4412,13 +4412,27 @@ SPECS = {
         # sites, with TBASE5 the caller's FB and RTRN its return (E4,1767 as
         # the routine names it, so 1767 under every EB). The seven outside
         # this file (TPI_SEARCH, P32-P33_P72-P73) are the case's stop.
-        'joint_states': {lab: [dict({'01063': fb << 10}, **({'@stop': fb * 1024 + ret - 0o2000} if out else {}),
+        #
+        # Flight arms no random case reached (issue #661), each in a share
+        # of its routine's cases (the CHANG2 resumes after it flow from
+        # them): R36's crew PRO on V06N16 with no time keyed (DSPTEMX and
+        # DSPTEMX +1 still the zeros R36A put there), so BZF LREGCHK and
+        # BZF ENTTIM2 take present time; the last offset iteration
+        # (ITCTR one below NUMIT in VTARGTAG), so BHIZ INITVEL6 ends the
+        # Lambert/Encke loop; SETRAD in earth orbit (X1 -2, so X2 0 and
+        # BHIZ SETRADX keeps RPAD); and INITVEL3's X1 of 0 past the BMN
+        # (RTX1 -10, the moon, with -N's z negative).
+        'joint_states': {'R36P3+4': [{'DSPTEMX': 0, 'DSPTEMX+1': 0}, {}],
+                         'INITVEL5+13': [{'ITCTR': 0, 'VTARGTAG': 1}, {}],
+                         'SETRAD': [{'vac+046': 0o77775}, {}],
+                         'INITVEL3+15': [{'vac+046': 0o77765}, {}],
+                         **{lab: [dict({'01063': fb << 10}, **({'@stop': fb * 1024 + ret - 0o2000} if out else {}),
                                     **{'0%o' % (eb * 0o400 + 0o367): ret for eb in range(8)})
                                for fb, ret, out in ((0o35, 0o2006, 0), (0o35, 0o2072, 0), (0o35, 0o2150, 0),
                                                     (0o35, 0o2756, 0), (0o35, 0o2777, 0), (0o35, 0o3157, 1),
                                                     (0o4, 0o3341, 1), (0o4, 0o3351, 1), (0o4, 0o3416, 1),
                                                     (0o4, 0o3445, 1), (0o4, 0o3547, 1), (0o37, 0o2642, 1))]
-                         for lab in ('VNBANK-1', 'VNBANK+1')},
+                         for lab in ('VNBANK-1', 'VNBANK+1')}},
         # VNPOOH's entry: Q a return to one of its calls outside the file,
         # under that call's FB (35, 04 or 37).
         'q_callers': ['VNPOOH'],
