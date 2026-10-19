@@ -149,12 +149,29 @@ def dma_trace(regions):
     outside = terms[0]
     for t in terms[1:]:
         outside = f'({outside} && {t})'
-    return f'trace store df01 if {outside}'
+    # On each hit VICE also prints the controller's registers (io $df00),
+    # so the log names the DMA: dma_hits() reads them back.
+    return f'trace store df01 if {outside}\ncommand 2 "io $df00"'
 
 
 def dma_misses(monitor_log, checkpoint=2):
     """DMAs the trace logged (tools/dap_pass_vice.py's monitor.log)."""
     return len(re.findall(rf'^#{checkpoint} \(Trace store df01\)', monitor_log, re.M))
+
+
+def dma_hits(monitor_log, checkpoint=2):
+    """[dict(pc, command, c64, start, end)] of each DMA the trace logged,
+    from the registers VICE printed after the hit."""
+    out = []
+    for m in re.finditer(rf'^#{checkpoint} \(Trace store df01\).*\n\.C:([0-9a-f]{{4}}).*\n'
+                         r'(?:Executing:.*\n)?RAM Expansion Module:\n>C:df00((?:\s+[0-9a-f]{2}){11})',
+                         monitor_log, re.M):
+        b = [int(x, 16) for x in m.group(2).split()]
+        start = b[4] | b[5] << 8 | b[6] << 16
+        length = (b[7] | b[8] << 8) or 0x10000
+        out.append(dict(pc=f'${m.group(1)}', command=f'${b[1]:02x}', c64=f'${b[2] | b[3] << 8:04x}',
+                        start=hex(start), end=hex(start + length)))
+    return out
 
 
 def report(m, regions, before, after, label=''):
