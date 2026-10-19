@@ -138,6 +138,23 @@ P65_KEYS = NASSP_KEYS + '@134000V37E68E@139000V37E00E'
 P67 = {**LANDING, 'FLIGHT_TOUCHDOWN': '133400', 'FLIGHT_CHAN': '122500:031=067777,124000:030=036371,124400:030=036351,'
                                  '134900:031=057777,141000:032=057777,141100:032=077777'}
 P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
+# lm-p63-lr-v58: lm-p63-lr-update with V58E at 880 s (LR updates
+# inhibited, FLGWRD11 LRINH cleared): the updates take HCALC from about
+# 187 m above the true height to about 96 m by 873 s, then stop; HCALC
+# drifts with the navigation after that (about 107 m by 953 s).
+LR_V58_KEYS = LR_UPDATE_KEYS + '@88000V58E'
+# lm-p63-v60-nassp: lm-p63-nassp with the landing radar (no V57) and V60E
+# at 1,000 s: LRPOS2K commands the antenna to position 2 (RADMODES bit 6),
+# the antenna gets there 5 s later (FLIGHT_LR_POS2) with no alarm 523;
+# P64 at about 1,120 s. Three alarms fire, as Luminary 099 does in this
+# state (yaAGC records the same): 1210 at 1,002.99 s, a BAILOUT1 software
+# restart, because V60's RADSTALL and R12's next radar read wait on the
+# same device (RDRUSECK should refuse V60 while R12 is on, but LRBYBIT is
+# bit 15, so CS/MASK leave a negative value and CCS skips past the check);
+# 522 at 1,003.87 s, R12's LRPOSCHK while the antenna is between positions;
+# 511 at 1,007.88 s, SERVICER's POS1CHK: P63 wants position 1, so the
+# update is bypassed.
+V60 = {**NASSP, 'FLIGHT_LR': '60000'}
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
 # bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
@@ -511,6 +528,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
           ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
+          ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
+          ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),

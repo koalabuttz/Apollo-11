@@ -19,6 +19,7 @@ SECTIONS {
         SHORT(__interp_ext_end - 0xD000) SHORT(__ov2_services) SHORT(1) SHORT(0)
         BYTE(0x60)
         KEEP(*(.interp_ext))
+        *(.interp_ext_ro)
         __interp_ext_end = .;
     } > interp_ext
 }
