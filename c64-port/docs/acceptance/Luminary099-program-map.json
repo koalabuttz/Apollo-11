@@ -311,6 +311,11 @@
    "lm-uplink-accept",
    11900,
    1000
+  ],
+  [
+   "lm-p63-lr-update",
+   100400,
+   1000
   ]
  ],
  "rows": [
@@ -1593,12 +1598,16 @@
    "scenarios": [
     "lm-p63-lr-update"
    ],
-   "note": "R12 altitude updates; the velocity-update path is still open (#687)",
-   "owner": "unassigned",
+   "note": "lm-p63-lr-update: R12 altitude updates from 816 s, then from 1,005 s the velocity updates (READV, LRVJOB) after each altitude read, to 1,100 s (Lane F host check on #739, 10-19)",
+   "owner": "F",
    "windows": [
     [
      "lm-p63-lr-update",
      90000
+    ],
+    [
+     "lm-p63-lr-update",
+     100400
     ]
    ]
   },
