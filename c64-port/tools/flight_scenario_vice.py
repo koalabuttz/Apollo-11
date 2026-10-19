@@ -183,11 +183,9 @@ def states(data, n):
 # (the rest of the period), so the C64's schedule can sit a tick off the
 # host's (RK: FS_IDLE honouring on the CM idle+interbank set). Until that
 # lands, CM windows skip what a tick moves: DSPCNT and DSRUPTSW (T4RUPT's
-# display cycle), DSPTAB's sent bit (a word and its complement are the same
-# digits, sent or not) and a checkpoint one centisecond off (not compared
-# at all when its words differ, unless it ends the window). Every result
-# that skips anything says so. Remove with the RK fix.
-SCHEDULE_SKIP = {'cm': dict(words={0o776: 'DSPCNT', 0o1302: 'DSRUPTSW'}, sent=range(0o1023, 0o1037), cs=1)}
+# display cycle) and DSPTAB's sent bit (a word and its complement are the
+# same digits, sent or not). Every result that skips anything says so.
+SCHEDULE_SKIP = {'cm': dict(words={0o776: 'DSPCNT', 0o1302: 'DSRUPTSW'}, sent=range(0o1023, 0o1037))}
 
 
 TIMERS = {0o24: 'TIME2', 0o25: 'TIME1', 0o26: 'TIME3', 0o27: 'TIME4', 0o30: 'TIME5', 0o31: 'TIME6'}
@@ -200,14 +198,13 @@ TIMERS = {0o24: 'TIME2', 0o25: 'TIME1', 0o26: 'TIME3', 0o27: 'TIME4', 0o30: 'TIM
 TIME5_PHASE = 'TIME5 a count apart (a third of a centisecond)'
 
 
-def replay_compare(h, c, skip=None, skipped=None, apart=False):
+def replay_compare(h, c, skip=None, skipped=None):
     """The differences between a host state and the C64's: (name, host,
     C64) for each compared erasable word, the timers, then each output
-    channel. apart: the states are a skipped centisecond apart, so the
-    timers are not compared."""
+    channel."""
     out = []
     for i, name in TIMERS.items():
-        if apart or h[i] == c[i]:
+        if h[i] == c[i]:
             continue
         if i == 0o30 and h[0o25] == c[0o25] and (h[i] - c[i]) % 0o40000 in (1, 0o37777):
             skipped.add(TIME5_PHASE)
@@ -487,17 +484,9 @@ def main():
             diff, at_cs, matched, skipped = [], None, [], set()
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
             pairs = list(zip(host_s, c64_s))
-            for k, ((hc, hw), (cc, cw)) in enumerate(pairs):
-                apart = hc != cc and skip and abs(hc - cc) <= skip['cs']
-                diff = replay_compare(hw, cw, skip, skipped, apart)
-                if apart:
-                    # A tick apart, an interrupt's temporaries can differ
-                    # too; such a checkpoint is skipped, the window's end is not.
-                    if diff and k < len(pairs) - 1:
-                        skipped.add(f'checkpoint at {hc} cs a centisecond apart ({len(diff)} words)')
-                        continue
-                    skipped.add('checkpoints a centisecond apart')
-                elif hc != cc:
+            for (hc, hw), (cc, cw) in pairs:
+                diff = replay_compare(hw, cw, skip, skipped)
+                if hc != cc:
                     diff.insert(0, ('centiseconds', hc, cc))
                 if diff:
                     at_cs = hc
