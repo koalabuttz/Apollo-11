@@ -13,12 +13,11 @@ ROOT = Path(__file__).resolve().parents[1]
 MISSION = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 HOLE = re.compile(r'^\s+(basic |interp) (\d\d),(\d{4}) .*: (\d+) arrivals, (\d+) instructions(?:, refused by (\S+))?', re.M)
 # Points a scenario bridges only because its core snapshot starts mid-way
-# through code, not port gaps: the NASSP LM cores (lm-p63-nassp, lm-p52)
-# start inside the self-check idle loop with its state half set, so the
-# host bridges the loop's first pass (1 arrival each). From a real start
-# the loop runs native (milestone self-check). Steward's ruling for P63,
-# /mnt/project-files/flight-scenarios/lm-p52-stops.md.
-CORE_START = {('lm', '43,3303'), ('lm', '43,3332'), ('lm', '43,3334')}
+# through code, not port gaps, as (mission, 'bank,offset'). None now: the
+# NASSP LM cores (lm-p63-nassp, lm-p52) start inside the self-check idle
+# loop at 43,3303, and its words 3303, 3332 and 3334 are entries of the
+# idle table (docs/SELF-CHECK.md), so the loop runs native from there.
+CORE_START = set()
 
 
 def listing(mission):

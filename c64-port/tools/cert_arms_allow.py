@@ -257,8 +257,8 @@ ARMS = {
         ],
     },
     'cm-r31': {
-        'cases': 45568, 'cases_sha256': '175e9379284dc3b16cd0f20b60afc1ad764eadbac5938eaedcef0a8574b10c2b',
-        'sources_sha256': {'src/cm_r31.c': '3ff530b9539da9ffbaed89bf775fa9ef7a9e8ebe90042988e97b8a2ff06c4b0a'},
+        'cases': 45568, 'cases_sha256': 'c67a7f5a2dea83461eeb7519ab9312b68d0e33f261a75a83726af6f8045f39f0',
+        'sources_sha256': {'src/cm_r31.c': '7479f06a385f8b3be1d989f99be435d512d3313b50e9c69c071b1b21ed8ccefe'},
         'arms': [
         ],
     },

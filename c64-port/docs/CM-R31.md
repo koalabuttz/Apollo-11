@@ -26,8 +26,10 @@ Two shared-tool additions came with this file. `interp_compile.py` compiles VXM,
 Hashes: `evidence/cm-r31/SHA256.json`. Bulk files are assets of the `evidence-cm-r31` release.
 
 - **Source map.** `cm-r31-source-map.json` lists all 218 words with the routine that compiles each; none is untranslated.
-- **Independent assembly comparison.** `make cm-r31-differential`: 512 states per routine (22,528 cases) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. The stops reached per routine are in `cm-r31-proof.json`. Every 32nd case is frozen in `tests/cm_r31_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-r31 sanitize-cm-r31` runs the 704 frozen cases (`cm-r31-host.log`).
-- **C64 execution results.** `make vice-cm-r31` runs eight diagnostics, one per group of routines, with 117 cases (`cm-r31-vice.log`).
+- **Independent assembly comparison.** `make cm-r31-differential`: 512 states per routine (45,568 cases, 89 routines) equal yaAGC in Z, all 2,048 erasable words and the interrupt-enable state. The stops reached per routine are in `cm-r31-proof.json`. Every 128th case is frozen in `tests/cm_r31_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-r31 sanitize-cm-r31` runs the 356 frozen cases (`cm-r31-host.log`).
+- **C64 execution results.** `make vice-cm-r31` runs eight diagnostics, one per group of routines, with 115 cases (`cm-r31-vice.log`).
+
+R31CALL, DSPDELAY and the DISPN5X display loop run in the NOVAC job the extended verb starts in (FIXLOC 0110); only V83CALL's FINDVAC job has a VAC area. None of that basic code indexes through FIXLOC, so the spec sets `any_fixloc` and half of each such routine's cases take any FIXLOC (the V83 rows of cm-rendezvous-tpm bridged these points before).
 
 The spec sets `trusted_image`. In flight builds (`RK_FIXED_IMAGE`), the entry checks skip their scan of the whole erasable image, which costs about 121,000 cycles a routine on the C64. Host tests and C64 diagnostics keep the scan.

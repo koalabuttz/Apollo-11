@@ -78,23 +78,35 @@ static enum exec_status idle(const agc_native_program *p,apollo_overlay_state *s
  (void)p;
  if(!ctx(s,io))return EXEC_OUT_OF_SCOPE;
  sc_s=s;
- if(at==K(03340u))goto L3340;
- goto L3306;
+ switch(at){
+ case K(03340u):goto L3340;
+ case K(03303u):goto L3303;
+ case K(03305u):goto L3305;
+ case K(03310u):goto L3310;
+ case K(03334u):goto L3334;
+ case K(03336u):goto L3336;
+ default:goto L3306;}
 L3340: TCL(03341u,L3303);                                  /* SELFCHK TC SMODECHK */
 L3303: ai_qxch(s,SKEEP1);                                  /* 3303-3304 EXTEND; QXCH SKEEP1 */
 L3305: TCL(03306u,L3334);                                  /* TC CHECKNJ */
 L3334: ai_qxch(s,SELFRET);                                 /* 3334-3335 EXTEND; QXCH SELFRET */
- OUT(K(03337u),SC_POSTJUMP);                               /* 3336 TC POSTJUMP; 3337 CADR ADVAN */
+L3336: OUT(K(03337u),SC_POSTJUMP);                         /* 3336 TC POSTJUMP; 3337 CADR ADVAN */
 L3306: switch(ai_ccs(s,SMODE)){
  case 0:W[5]=K(03307u);return EXEC_OK;                     /* 3307 TC SOPTIONS (SC_TABLE) */
- case 1:TCL(03311u,L3305);                                 /* 3310 TC SMODECHK +2 */
+ case 1:goto L3310;
  case 2:W[5]=K(03311u);return EXEC_OK;                     /* 3311 TC SOPTIONS (SC_TABLE) */
  default:W[5]=K(03312u);return EXEC_OK;}                   /* 3312 INCR SCOUNT (SC_TABLE) */
+L3310: TCL(03311u,L3305);                                  /* 3310 TC SMODECHK +2 */
 }
 #define SC_ENTRY(z) static enum exec_status e##z(const agc_native_program *p,apollo_overlay_state *s,void *io){return idle(p,s,io,K(0##z##u));}
-SC_ENTRY(3306) SC_ENTRY(3340)
+SC_ENTRY(3303) SC_ENTRY(3305) SC_ENTRY(3306) SC_ENTRY(3310) SC_ENTRY(3334) SC_ENTRY(3336) SC_ENTRY(3340)
 #define P43(z) (uint16_t)(043u*1024u+(K(z)-02000u))
-static const agc_routine_entry entries[SELF_CHECK_IDLE_ROUTINES]={{P43(03306u),e3306},{P43(03340u),e3340}};
+/* 3303 (SMODECHK), 3305, 3310, 3334 and 3336 are the loop's own words: a
+ * run can start at any of them (a restored erasable image caught mid-loop,
+ * such as the NASSP LM cores of the flight scenarios). The main table has
+ * the loop's 3313 (TC SKEEP1). */
+static const agc_routine_entry entries[SELF_CHECK_IDLE_ROUTINES]={{P43(03303u),e3303},{P43(03305u),e3305},
+ {P43(03306u),e3306},{P43(03310u),e3310},{P43(03334u),e3334},{P43(03336u),e3336},{P43(03340u),e3340}};
 const agc_routine_table SC_IDLE_TABLE={entries,SELF_CHECK_IDLE_ROUTINES};
 #ifdef SC_IDLE_HOT_TABLE
 /* The same entries for the T4RUPT pack (tools/flight_store_build.py
@@ -126,6 +138,7 @@ static enum exec_status body(const agc_native_program *p,apollo_overlay_state *s
  if(at==K(03307u))goto L3307;
  if(at==K(03311u))goto L3311;
  if(at==K(03312u))goto L3312;
+ if(at==K(03313u))goto L3313;                              /* the loop's TC SKEEP1, an entry */
 jump:
  /* The words a TC Q or a TC through SFAIL/SKEEP1 can continue at: the
   * entries, the returns of TC -1CHK and TC ADSUM, ERASCHK and ROPECHK. */
@@ -171,7 +184,7 @@ L3303: ai_qxch(s,SKEEP1);                                  /* 3303-3304 EXTEND; 
 L3307: TCL(03310u,L3314);                                  /* TC SOPTIONS, after the idle table's CCS SMODE */
 L3311: TCL(03312u,L3314);                                  /* TC SOPTIONS */
 L3312: ai_incr(s,SCOUNT);
- TCREG(SKEEP1);                                            /* 3313 TC SKEEP1 */
+L3313: TCREG(SKEEP1);                                      /* 3313 TC SKEEP1 */
 L3314: ai_adf(s,SCK(SM7));                                 /* SOPTIONS */
  if(!ai_bzmf(s))TCL(03320u,L3271);                         /* 3315-3316 EXTEND; BZMF +2; 3317 BNKOPTN TC SIDLOOP */
  ai_incr(s,SCOUNT); ai_adf(s,SCK(SP7));                    /* 3320-3321 */
@@ -375,13 +388,13 @@ const agc_site_operand *SC_SITE_TABLE(uint16_t *count){if(count){*count=SC_OPERA
 bool SC_ROPE_DATA(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(SC_MISSION,physical,word);}
 
 #define SC_ENTRY(z) static enum exec_status e##z(const agc_native_program *p,apollo_overlay_state *s,void *io){return body(p,s,io,K(0##z##u));}
-SC_ENTRY(3270) SC_ENTRY(3307) SC_ENTRY(3311) SC_ENTRY(3312) SC_ENTRY(3443) SC_ENTRY(3524) SC_ENTRY(3542)
+SC_ENTRY(3270) SC_ENTRY(3307) SC_ENTRY(3311) SC_ENTRY(3312) SC_ENTRY(3313) SC_ENTRY(3443) SC_ENTRY(3524) SC_ENTRY(3542)
 SC_ENTRY(3625) SC_ENTRY(3627) SC_ENTRY(3635) SC_ENTRY(3675) SC_ENTRY(3713)
 #define P43(z) (uint16_t)(043u*1024u+(K(z)-02000u))
-const uint16_t SC_ENTRIES[SELF_CHECK_ROUTINES]={K(03270u),K(03306u),K(03340u),K(03443u),K(03524u),K(03542u),
+const uint16_t SC_ENTRIES[SELF_CHECK_ROUTINES]={K(03270u),K(03303u),K(03305u),K(03306u),K(03310u),K(03313u),K(03334u),K(03336u),K(03340u),K(03443u),K(03524u),K(03542u),
  K(03625u),K(03627u),K(03635u),K(03675u),K(03713u)};
 static const agc_routine_entry entries[SELF_CHECK_MAIN_ROUTINES]={
- {P43(03270u),e3270},{P43(03307u),e3307},{P43(03311u),e3311},{P43(03312u),e3312},{P43(03443u),e3443},{P43(03524u),e3524},
+ {P43(03270u),e3270},{P43(03307u),e3307},{P43(03311u),e3311},{P43(03312u),e3312},{P43(03313u),e3313},{P43(03443u),e3443},{P43(03524u),e3524},
  {P43(03542u),e3542},{P43(03625u),e3625},{P43(03627u),e3627},{P43(03635u),e3635},{P43(03675u),e3675},{P43(03713u),e3713}};
 const agc_routine_table SC_TABLE={entries,SELF_CHECK_MAIN_ROUTINES};
 #endif
