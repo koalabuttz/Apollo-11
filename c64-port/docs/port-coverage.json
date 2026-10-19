@@ -101,7 +101,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3234-3725: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (17 entries incl. the return after every TC out of the file and the idle loop's own words 3303, 3305, 3310, 3313, 3334 and 3336 (Comanche055 numbering), where a restored image caught mid-loop starts, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -109,9 +109,9 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64.json",
-            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
+            "sha256": "dffd52d1e6c0fe8709c76b18126b062d6e6a26ae6492683ce0557a6d0f43fca3",
             "vice_targets": {
-              "vice-self-check": 85
+              "vice-self-check": 94
             }
           },
           "independent_review": {
@@ -120,19 +120,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-host.json",
-            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
+            "sha256": "f55dabf9d3a2b4784464b9a31e8280ed149170d215df1738a84b2e7038042226"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-comparison.json",
-            "sha256": "bcb69dd2bad76e57614843b15bcc8c0fb804d8fd0d3aefb58b0ca49f40cffdba"
+            "sha256": "f53e8c417d68344447ded6a47d072d7aa0335f04058e2b6a870bfe9fbb11ab1c"
           },
           "source_to_native_map": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-source-map.json",
-            "sha256": "a3562a47664eed60ac79b7c7dc550ffd7fbb3caf8af569f27a1dac520e891e9c"
+            "sha256": "3c3c2a9af89ff1d4977338c1d6a053435842e757c821b61a19fc3b5bbd7ebfec"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-self-check-complete/cm-self-check-complete-c64-cover.json",
-            "sha256": "53b43bb75ea43bc3ac14c652b99009a808116266d42edbab228387aa1e2bf2ab"
+            "sha256": "745ff75530ad82413b7add6a64e54ec918b7c486e81493e2773dadfbbc4734b4"
           }
         },
         "external_continuations": [
@@ -6810,7 +6810,7 @@
             "src/agc_image_ops.c",
             "src/agc_transfer.c"
           ],
-          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (11 entries incl. the return after every TC out of the file, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
+          "scope": "Every instruction of bank 43 3232-3723: SELFCHK/SMODECHK with SOPTIONS and CHECKNJ, -1CHK, ERRORS/PRERRORS with the ERESTORE repair, ERASCHK, CNTRCHK, CYCLSHFT, ROPECHK/STSHOSUM with FXADRS, ADSUM, ADRSCHK, NXTBNK and SOPTION/BNKCHK as control-transfer ABI routines (17 entries incl. the return after every TC out of the file and the idle loop's own words 3303, 3305, 3310, 3313, 3334 and 3336 (Comanche055 numbering), where a restored image caught mid-loop starts, in two tables: the idle loop SELFCHK/SMODECHK/CHECKNJ, and the rest); constants compiled from the source listing. FXADRS reads the unmodified rope through include/rope_image.h (self-check only, enforced by ci_guard): the assembled rope on the host, a 2 MB REU image on the C64. Whole-rope cases run ROPECHK and SHOWSUM over all 36 banks to ENDSUMS.",
           "verification": "docs/SELF-CHECK.md"
         }
       ],
@@ -6818,9 +6818,9 @@
         "evidence": {
           "c64_execution_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64.json",
-            "sha256": "abb0bce93a43bbb258009218dddda45ddf391952d7c2f3701c4c09ff731305ae",
+            "sha256": "dffd52d1e6c0fe8709c76b18126b062d6e6a26ae6492683ce0557a6d0f43fca3",
             "vice_targets": {
-              "vice-self-check": 84
+              "vice-self-check": 90
             }
           },
           "independent_review": {
@@ -6829,19 +6829,19 @@
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-host.json",
-            "sha256": "499418dbd8bff196732cbf7caa3418dd4db34908ce26535dbf85d8f9aaf0114f"
+            "sha256": "f55dabf9d3a2b4784464b9a31e8280ed149170d215df1738a84b2e7038042226"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-comparison.json",
-            "sha256": "afac6d9b44b2b44d804f4e6c9548670e6294e1defb1094e7e29afaba3ef74ab6"
+            "sha256": "cfa349bbd4fe80231759b8767e455e3e8760767913d68973ad6206861cc2c44c"
           },
           "source_to_native_map": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-source-map.json",
-            "sha256": "697aca0da88ce924e082fba1b3af3871f29bcd5980a56485ad95dc8d35d4b1b3"
+            "sha256": "3235908915d7ae23e6b5220f015acb22ac72b4447e03511022953b4e6f154949"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-self-check-complete/lm-self-check-complete-c64-cover.json",
-            "sha256": "a9382b79438a91d1e0546b13f09d68d177440929ccb2933e5e09ad959515d159"
+            "sha256": "7a4ec27ade54db32ae26d45e814ebf05d5367ba14a0274863c67e4c7ecc31765"
           }
         },
         "external_continuations": [

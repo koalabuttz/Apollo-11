@@ -20,6 +20,7 @@ tests/{lm,cm}_self_check_c64_vectors.h. Also writes build/self-check-proof.json.
 import hashlib
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -31,6 +32,8 @@ R = pathlib.Path(__file__).resolve().parents[1]
 B = R / 'build'
 E = R / 'deps/virtualagc/yaAGC'
 STRIDE = 64
+# Entry slots (case n enters entry n % ENTRY_SLOTS): include/self_check.h.
+ENTRY_SLOTS = int(re.search(r'#define SELF_CHECK_ROUTINES (\d+)u', (R / 'include/self_check.h').read_text())[1])
 ROPE_STRIDE = 64
 # mission index, name, prefix, offset of its words below Comanche055's
 MISSIONS = [(0, 'Luminary099', 'lm_self_check', 2), (1, 'Comanche055', 'cm_self_check', 0)]
@@ -114,7 +117,7 @@ def main():
                 f'self-check-{m}{tag.replace("_", "-")}', C64_SRC[mission], ['self_check_cases.h', 'rope_image.h'],
                 f'if(!apollo_rope_load({mission}u,"build/fixed-data/{name}/MAIN.agc.bin"))return 2;'
                 f'self_check{tag}_digest({mission}u,&s,(uint16_t)n,&st);', len(values), stride=stride,
-                flags=(f'-DSELF_CHECK_{m.upper()}_ONLY',), slots=None if tag else 11)
+                flags=(f'-DSELF_CHECK_{m.upper()}_ONLY',), slots=None if tag else ENTRY_SLOTS)
             c64.append(a2_c64_rows.header('self_check_freeze.py', prefix + tag, values, chosen, stride))
             record[f'cases{tag}'] = len(values)
             record[f'snapshot{tag}_sha256'] = hashlib.sha256(ref).hexdigest()
